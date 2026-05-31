@@ -43,17 +43,28 @@ impl ModItemInfo for Riftmaker {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
-        let Some(entity_ref) = ctx.get_entity(target) else {
+    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, entity: usize) {
+        let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let hp = entity_ref.hp();
-        let bonus_damage = hp.max * 6 / 100; // 6% max hp
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+        let Some(player_champ_ref) = player_ref.champion() else {
+            return;
+        };
+        // Make sure the killed unit is another champion, not a minion or monster
+        let Some(target_ref) = ctx.get_player(entity) else {
+            return;
+        };
+        let Some(_target_champ_ref) = target_ref.champion() else {
+            return;
+        };
+        // Heal the player for 50 + 2% of their max HP
+        let hp = player_champ_ref.hp();
+        let heal_amount = 50 + (hp.max * 2 / 100);
+        ctx.heal(player, entity, heal_amount);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP, ItemTag::HpPercentDamage]
+        vec![ItemTag::HP, ItemTag::AP, ItemTag::Vamp]
     }
 
     fn category(&self) -> ItemCategory {
@@ -97,17 +108,28 @@ impl ModItemInfo for RadiantRiftmaker {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
-        let Some(entity_ref) = ctx.get_entity(target) else {
+    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, entity: usize) {
+        let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let hp = entity_ref.hp();
-        let bonus_damage = hp.max * 6 / 100; // 6% max hp
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+        let Some(player_champ_ref) = player_ref.champion() else {
+            return;
+        };
+        // Make sure the killed unit is another champion, not a minion or monster
+        let Some(target_ref) = ctx.get_player(entity) else {
+            return;
+        };
+        let Some(_target_champ_ref) = target_ref.champion() else {
+            return;
+        };
+        // Heal the player for 100 + 5% of their max HP
+        let hp = player_champ_ref.hp();
+        let heal_amount = 100 + (hp.max * 5 / 100);
+        ctx.heal(player, entity, heal_amount);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP, ItemTag::HpPercentDamage]
+        vec![ItemTag::HP, ItemTag::AP, ItemTag::Vamp]
     }
 
     fn category(&self) -> ItemCategory {
