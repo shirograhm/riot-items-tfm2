@@ -39,7 +39,6 @@ impl ModItemInfo for MortalReminder {
         BuffState {
             attack: 55,
             attack_speed_mult: 25,
-            heal_reduce: 25,
             ..Default::default()
         }
     }
@@ -50,6 +49,24 @@ impl ModItemInfo for MortalReminder {
 
     fn category(&self) -> ItemCategory {
         ItemCategory::AD
+    }
+
+    fn on_attack(
+        &mut self,
+        ctx: &mut GameCtx,
+        _caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageType,
+    ) {
+        ctx.add_buff(
+            target,
+            BuffState {
+                duration: BuffType::Time { tick: 180 },
+                heal_reduce: 40,
+                ..Default::default()
+            },
+        );
     }
 }
 
@@ -85,7 +102,6 @@ impl ModItemInfo for RadiantMortalReminder {
         BuffState {
             attack: 70,
             attack_speed_mult: 40,
-            heal_reduce: 40,
             ..Default::default()
         }
     }
@@ -98,5 +114,21 @@ impl ModItemInfo for RadiantMortalReminder {
         ItemCategory::AD
     }
 
-    
+    fn on_attack(
+        &mut self,
+        ctx: &mut GameCtx,
+        _caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageType,
+    ) {
+        ctx.add_buff(
+            target,
+            BuffState {
+                duration: BuffType::Time { tick: 180 },
+                heal_reduce: 40,
+                ..Default::default()
+            },
+        );
+    }
 }

@@ -58,7 +58,7 @@ impl ModItemInfo for ExecutionersCalling {
         ctx.add_buff(
             target,
             BuffState {
-                duration: BuffType::Time { tick: 120 }, // ~2 seconds, adjust to taste
+                duration: BuffType::Time { tick: 180 }, // ~3 seconds, adjust to taste
                 heal_reduce: 25,                        // 25% healing reduction
                 ..Default::default()
             },

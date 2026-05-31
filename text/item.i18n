@@ -228,7 +228,7 @@
       "dot_amplify": "\nMaleficent: Your damage over time effects are {Value}% stronger.",
       "hp_regen": "+{Value} HP/s",
       "crit_chance": "+{Value}% Critical Strike Chance",
-      "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from Basic Attacks by {Value}%.",
+      "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from Basic Attacks by <#e8a800ff>{Value}%<>.",
       "skill_damaged_reduce": "\nStalwart: Reduce the damage you take from skills by {Value}%.",
       "toughness": "\nUnbounded: Gain {Value}% Tenacity."
     },
@@ -290,7 +290,7 @@
     },
     "impregnable_fortress": {
       "name": "Radiant Thornmail",
-      "option": "Thorns: When hit by a basic attack, deal <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:defense_0><#ffdd8eff>Armor<> as magic damage to the attacker."
+      "option": "Thorns: When hit by a basic attack, deal <#ffdd8eff>{Flat} + {Ratio}% of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0>Armor<> as <#a974ffff>magic damage<> to the attacker."
     },
     "mystic_cloak": {
       "name": "Null-Magic Mantle",
@@ -350,7 +350,7 @@
     },
     "giants_horn_shard": {
       "name": "Radiant Warmog's Armor",
-      "option": "Mending: <#60e84dff>Recover {RegenFlat} HP<> every second.\n\nDisdain: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}% max HP<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} Range<>."
+      "option": "Mending: <#60e84dff>Recover {RegenFlat} HP<> every second.\n\nDisdain: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}% max HP<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0>Range<>."
     },
     "bf_sword": {
       "name": "B.F. Sword",
@@ -426,23 +426,23 @@
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
-      "option": "Serrated: Damaging an enemy <#d94c49ff>reduces their healing<> by 25% for <#e8a800ff>3 seconds<>."
+      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>3 seconds<>."
     },
     "mortal_reminder": {
       "name": "Mortal Reminder",
-      "option": "Serrated: Damaging an enemy <#d94c49ff>reduces their healing<> by 40% for <#e8a800ff>3 seconds<>."
+      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>3 seconds<>."
     },
     "radiant_mortal_reminder": {
       "name": "Radiant Mortal Reminder",
-      "option": "Serrated: Damaging an enemy <#d94c49ff>reduces their healing<> by 40% for <#e8a800ff>3 seconds<>."
+      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>3 seconds<>."
     },
     "experimental_hexplate": {
       "name": "Experimental Hexplate",
-      "option": "Overdrive: Reduce your ultimate's cooldown by 15%."
+      "option": "Overdrive: Reduce your ultimate's cooldown by <#e8a800ff>15%<>."
     },
     "radiant_experimental_hexplate": {
       "name": "Radiant Experimental Hexplate",
-      "option": "Overdrive: Reduce your ultimate's cooldown by 25%."
+      "option": "Overdrive: Reduce your ultimate's cooldown by <#e8a800ff>25%<>."
     }
   },
   "ja": {
