@@ -17,7 +17,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn price(&self) -> usize {
-        1300
+        1400
     }
 
     fn tier(&self) -> usize {
@@ -41,6 +41,15 @@ impl ModItemInfo for Riftmaker {
             magic_power: 60,
             ..Default::default()
         }
+    }
+
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        let Some(entity_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let hp = entity_ref.hp();
+        let bonus_damage = hp.max * 6 / 100; // 6% max hp
+        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -69,7 +78,7 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn price(&self) -> usize {
-        1950
+        2100
     }
 
     fn tier(&self) -> usize {
@@ -82,11 +91,19 @@ impl ModItemInfo for RadiantRiftmaker {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 550,
-            magic_power: 70,
-            skill_enemy_max_hp_damage: 3,
+            hp: 500,
+            magic_power: 100,
             ..Default::default()
         }
+    }
+
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        let Some(entity_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let hp = entity_ref.hp();
+        let bonus_damage = hp.max * 6 / 100; // 6% max hp
+        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
