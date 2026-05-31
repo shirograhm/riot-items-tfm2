@@ -41,8 +41,29 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         }
     }
 
+    fn on_attack(
+        &mut self,
+        ctx: &mut GameCtx,
+        caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageType,
+    ) {
+        let Some(entity_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let hp = entity_ref.hp();
+        let bonus_damage = hp.current * 5 / 100; // 5% current hp
+        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+    }
+
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::Vamp]
+        vec![
+            ItemTag::AD,
+            ItemTag::AS,
+            ItemTag::Vamp,
+            ItemTag::HpPercentDamage,
+        ]
     }
 
     fn category(&self) -> ItemCategory {
@@ -83,9 +104,28 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
             attack: 50,
             attack_speed_mult: 35,
             vamp: 10,
-            base_attack_enemy_max_hp_damage: 5,
             ..Default::default()
         }
+    }
+
+    fn on_attack(
+        &mut self,
+        ctx: &mut GameCtx,
+        caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        damage_type: DamageType,
+    ) {
+        // Only proc on base attacks, not skills or dots
+        if damage_type != DamageType::AD {
+            return;
+        }
+        let Some(entity_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let hp = entity_ref.hp();
+        let bonus_damage = hp.current * 8 / 100; // 8% current hp
+        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
