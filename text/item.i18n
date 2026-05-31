@@ -48,12 +48,12 @@
       "skill_enemy_hp_ratio": "+{Value}% Skill Enemy HP",
       "attack_my_hp_ratio": "+{Value}% Attack My HP",
       "reflect": "+{Value}% Reflect Damage",
-      "dot_amplify": "+{Value}% Damage over Time Amplification",
+      "dot_amplify": "+{Value}% DoT Amplification",
       "hp_regen": "+{Value} HP/s",
       "crit_chance": "+{Value}% Critical Strike Chance",
       "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from Basic Attacks by <#e8a800ff>{Value}%<>.",
-      "skill_damaged_reduce": "\nStalwart: Reduce the damage you take from skills by {Value}%.",
-      "toughness": "\nUnbounded: Gain {Value}% Tenacity."
+      "skill_damaged_reduce": "+{Value}% Skill Damage Reduction",
+      "toughness": "+{Value}% Tenacity"
     },
     "ironsword": {
       "name": "Long Sword",
