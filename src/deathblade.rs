@@ -35,7 +35,7 @@ impl ModItemInfo for DeathBlade {
     fn stat(&self) -> BuffState {
         BuffState {
             attack: 90,
-            damaged_amplify: 15,
+            attack_mult: 15,
             ..Default::default()
         }
     }
@@ -80,7 +80,7 @@ impl ModItemInfo for RadiantDeathBlade {
     fn stat(&self) -> BuffState {
         BuffState {
             attack: 140,
-            damaged_amplify: 25,
+            attack_mult: 25,
             ..Default::default()
         }
     }

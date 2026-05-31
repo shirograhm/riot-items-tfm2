@@ -210,7 +210,7 @@
       "defence": "+{Value} Armor",
       "hp": "+{Value} HP",
       "magic_resistance": "+{Value} Magic Resist",
-      "vamp": "+{Value}% Omnivamp",
+      "vamp": "+{Value}% Lifesteal",
       "hp_mult": "\nGrowth: Increase your total HP by {Value}%.",
       "move_speed_mult": "+{Value}% Movement Speed",
       "attack_speed_mult": "+{Value}% Attack Speed",
@@ -219,13 +219,13 @@
       "defence_mult": "\nSecond Skin: Increase your total Armor by {Value}%.",
       "defence_penetration": "+{Value}% Armor Penetration",
       "magic_resistance_penetration": "+{Value}% Magic Penetration",
-      "heal_reduce": "\nGrievous Wounds: Damaging an enemy reduces their healing by {Value}% for 2 seconds.",
+      "heal_reduce": "\n+{Value}% Healing Reduction",
       "shield_break": "Reave: Damage you deal destroys {Value}% of the target's shields.",
       "attack_enemy_hp_ratio": "\nMist's Edge: Basic attacks deal {Value}% of the target's max HP as physical damage on hit.",
       "skill_enemy_hp_ratio": "\nCorruption: Skills deal damage equal to {Value}% of the target's max HP.",
       "attack_my_hp_ratio": "\nCleave: Basic attacks deal damage equal to {Value}% of your max HP.",
       "reflect": "+{Value}% Reflect Damage",
-      "dot_amplify": "\nMaleficent: Damage over time effects you apply deal {Value}% more damage.",
+      "dot_amplify": "\nMaleficent: Your damage over time effects are {Value}% stronger.",
       "hp_regen": "+{Value} HP/s",
       "crit_chance": "+{Value}% Critical Strike Chance",
       "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from Basic Attacks by {Value}%.",
@@ -290,7 +290,7 @@
     },
     "impregnable_fortress": {
       "name": "Radiant Thornmail",
-      "option": "Thorns: When hit by a basic attack, deal {Flat} + {Ratio}% of your Armor as magic damage to the attacker."
+      "option": "Thorns: When hit by a basic attack, deal <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:defense_0><#ffdd8eff>Armor<> as magic damage to the attacker."
     },
     "mystic_cloak": {
       "name": "Null-Magic Mantle",
@@ -342,15 +342,15 @@
     },
     "ring_of_reincarnation": {
       "name": "Giant's Belt",
-      "option": "Mending: Recover {Flat} HP every second."
+      "option": "Mending: <#60e84dff>Recover {Flat} HP<> every second."
     },
     "hourglass_of_eternity": {
       "name": "Warmog's Armor",
-      "option": "Mending: Recover {Flat} HP every second."
+      "option": "Mending: <#60e84dff>Recover {Flat} HP<> every second."
     },
     "giants_horn_shard": {
       "name": "Radiant Warmog's Armor",
-      "option": "Mending: Recover {RegenFlat} HP every second.\n\nDisdain: Deal {DmgFlat} + {DmgRatio}% of your max HP as magic damage to all enemies within {Range} range."
+      "option": "Mending: <#60e84dff>Recover {RegenFlat} HP<> every second.\n\nDisdain: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}% max HP<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} Range<>."
     },
     "bf_sword": {
       "name": "B.F. Sword",
@@ -366,11 +366,11 @@
     },
     "deathblade": {
       "name": "Deathblade",
-      "option": "Apex: Gain 15% Damage Amplification."
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#ff9028ff>Attack Damage<> by <#ff9028ff>15%<>."
     },
     "radiant_deathblade": {
       "name": "Radiant Deathblade",
-      "option": "Apex: Gain 25% Damage Amplification."
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#ff9028ff>Attack Damage<> by <#ff9028ff>25%<>."
     },
     "needlessly_large_rod": {
       "name": "Needlessly Large Rod",
@@ -378,11 +378,11 @@
     },
     "rabadons_deathcap": {
       "name": "Rabadon's Deathcap",
-      "option": "Opus: Increase total Ability Power by 20%."
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Ability Power<> by <#a974ffff>20%<>."
     },
     "radiant_rabadons_deathcap": {
       "name": "Radiant Rabadon's Deathcap",
-      "option": "Opus: Increase total Ability Power by 35%."
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Ability Power<> by <#a974ffff>35%<>."
     },
     "protectors_vow": {
       "name": "Protector's Vow",
@@ -426,15 +426,15 @@
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
-      "option": ""
+      "option": "Serrated: Damaging an enemy <#d94c49ff>reduces their healing<> by 25% for <#e8a800ff>3 seconds<>."
     },
     "mortal_reminder": {
       "name": "Mortal Reminder",
-      "option": ""
+      "option": "Serrated: Damaging an enemy <#d94c49ff>reduces their healing<> by 40% for <#e8a800ff>3 seconds<>."
     },
     "radiant_mortal_reminder": {
       "name": "Radiant Mortal Reminder",
-      "option": ""
+      "option": "Serrated: Damaging an enemy <#d94c49ff>reduces their healing<> by 40% for <#e8a800ff>3 seconds<>."
     },
     "experimental_hexplate": {
       "name": "Experimental Hexplate",

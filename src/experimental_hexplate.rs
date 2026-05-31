@@ -46,7 +46,7 @@ impl ModItemInfo for ExperimentalHexplate {
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+        ItemCategory::AttackSpeed
     }
 }
 
@@ -82,16 +82,22 @@ impl ModItemInfo for RadiantExperimentalHexplate {
         BuffState {
             hp: 500,
             attack_speed_mult: 50,
+            move_speed_mult: 5,
             ult_cooldown_mult: 25,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AS, ItemTag::CooltimeReduce]
+        vec![
+            ItemTag::HP,
+            ItemTag::AS,
+            ItemTag::MoveSpeed,
+            ItemTag::CooltimeReduce,
+        ]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+        ItemCategory::AttackSpeed
     }
 }
