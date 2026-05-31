@@ -40,8 +40,19 @@ impl ModItemInfo for BlackfireTorch {
         }
     }
 
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        ctx.add_buff(
+            caster,
+            BuffState {
+                duration: BuffType::Time { tick: 300 },
+                magic_power: 10,
+                ..Default::default()
+            },
+        );
+    }
+
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::CooltimeReduce, ItemTag::DotDamage]
+        vec![ItemTag::AP, ItemTag::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategory {
@@ -66,7 +77,7 @@ impl ModItemInfo for RadiantBlackfireTorch {
     }
 
     fn price(&self) -> usize {
-        1900
+        2000
     }
 
     fn tier(&self) -> usize {
@@ -81,13 +92,23 @@ impl ModItemInfo for RadiantBlackfireTorch {
         BuffState {
             magic_power: 180,
             skill_cooldown_mult: 20,
-            dot_amplify: 20,
             ..Default::default()
         }
     }
 
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        ctx.add_buff(
+            caster,
+            BuffState {
+                duration: BuffType::Time { tick: 300 },
+                magic_power: 20,
+                ..Default::default()
+            },
+        );
+    }
+
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::CooltimeReduce, ItemTag::DotDamage]
+        vec![ItemTag::AP, ItemTag::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategory {
