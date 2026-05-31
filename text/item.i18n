@@ -113,7 +113,7 @@
     },
     "impregnable_fortress": {
       "name": "Radiant Thornmail",
-      "option": "Thorns: When hit by a basic attack, deal <#ffdd8eff>{Flat} + {Ratio}% of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0>Armor<> as <#a974ffff>magic damage<> to the attacker."
+      "option": "Thorns: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
     },
     "mystic_cloak": {
       "name": "Null-Magic Mantle",
@@ -165,15 +165,15 @@
     },
     "ring_of_reincarnation": {
       "name": "Giant's Belt",
-      "option": "Mending: <#60e84dff>Recover {Flat} HP<> every second."
+      "option": "Mending: Recover <#60e84dff>{Flat} health<> every second."
     },
     "hourglass_of_eternity": {
       "name": "Warmog's Armor",
-      "option": "Mending: <#60e84dff>Recover {Flat} HP<> every second."
+      "option": "Mending: Recover <#60e84dff>{Flat} health<> every second."
     },
     "giants_horn_shard": {
       "name": "Radiant Warmog's Armor",
-      "option": "Mending: <#60e84dff>Recover {RegenFlat} HP<> every second.\n\nDisdain: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}% max HP<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0>Range<>."
+      "option": "Mending: Recover <#60e84dff>{RegenFlat} health<> every second.\n\nDisdain: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
     },
     "bf_sword": {
       "name": "B.F. Sword",
@@ -189,11 +189,11 @@
     },
     "deathblade": {
       "name": "Deathblade",
-      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#ff9028ff>Attack Damage<> by <#ff9028ff>15%<>."
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>15%<>."
     },
     "radiant_deathblade": {
       "name": "Radiant Deathblade",
-      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#ff9028ff>Attack Damage<> by <#ff9028ff>25%<>."
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>25%<>."
     },
     "needlessly_large_rod": {
       "name": "Needlessly Large Rod",
@@ -201,11 +201,11 @@
     },
     "rabadons_deathcap": {
       "name": "Rabadon's Deathcap",
-      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Ability Power<> by <#a974ffff>20%<>."
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> by <#a974ffff>20%<>."
     },
     "radiant_rabadons_deathcap": {
       "name": "Radiant Rabadon's Deathcap",
-      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Ability Power<> by <#a974ffff>35%<>."
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> by <#a974ffff>35%<>."
     },
     "protectors_vow": {
       "name": "Protector's Vow",
@@ -217,35 +217,35 @@
     },
     "frozen_mallet": {
       "name": "Frozen Mallet",
-      "option": "Icy: On attack, deal <#ff9028ff>20<> + <#60e84dff>3%<><i#asset/base/ui/banpick/champion_stat_icon:hp_0> as <#ff9028ff>bonus physical damage<>."
+      "option": "Icy: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>20<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "radiant_frozen_mallet": {
       "name": "Radiant Frozen Mallet",
-      "option": "Icy: On attack, deal <#ff9028ff>20<> + <#60e84dff>3%<><i#asset/base/ui/banpick/champion_stat_icon:hp_0> as <#ff9028ff>bonus physical damage<> and <#d94c49ff>slow the target<> by 15% for <#e8a800ff>2 seconds<>."
+      "option": "Icy: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>20<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> and apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
     },
     "riftmaker": {
       "name": "Riftmaker",
-      "option": "Corruption: Skills deal <#a974ffff>bonus magic damage<> equal to <#e8a800ff>6%<> of the <#60e84dff>target's max HP<>."
+      "option": "Siphon: On champion kill, heal for <#60e84dff>50<> + <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "radiant_riftmaker": {
       "name": "Radiant Riftmaker",
-      "option": "Corruption: Skills deal <#a974ffff>bonus magic damage<> equal to <#e8a800ff>6%<> of the <#60e84dff>target's max HP<>."
+      "option": "Siphon: On champion kill, heal for <#60e84dff>100<> + <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "blade_of_the_ruined_king": {
       "name": "Blade of the Ruined King",
-      "option": "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#e8a800ff>5%<> of the <#60e84dff>target's current HP<>."
+      "option": "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>."
     },
     "radiant_blade_of_the_ruined_king": {
       "name": "Radiant Blade of the Ruined King",
-      "option": "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#e8a800ff>8%<> of the <#60e84dff>target's current HP<>."
+      "option": "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>8% of the target's current health<>."
     },
     "blackfire_torch": {
       "name": "Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Ability Power<> for <#e8a800ff>5 seconds<>."
+      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>5 seconds<>. This effect can stack up to <#e8a800ff>5 times<>."
     },
     "radiant_blackfire_torch": {
       "name": "Radiant Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Ability Power<> for <#e8a800ff>5 seconds<>."
+      "option": "Maleficent: Spell hits grant <#a974ffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>5 seconds<>. This effect can stack up to <#e8a800ff>5 times<>."
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
