@@ -18,7 +18,7 @@ impl ModItemInfo for FrozenMallet {
     }
 
     fn price(&self) -> usize {
-        1350
+        1300
     }
 
     fn tier(&self) -> usize {
@@ -89,7 +89,7 @@ impl ModItemInfo for RadiantFrozenMallet {
     }
 
     fn price(&self) -> usize {
-        1900
+        1850
     }
 
     fn tier(&self) -> usize {
@@ -131,7 +131,7 @@ impl ModItemInfo for RadiantFrozenMallet {
             return;
         };
         let already_slowed = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_frozen_mallet_slow");
 
         if !already_slowed {
             ctx.add_buff(
@@ -139,7 +139,7 @@ impl ModItemInfo for RadiantFrozenMallet {
                 BuffState {
                     duration: BuffType::Time { tick: 120 },
                     move_speed_mult: -15,
-                    name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
+                    name: ArrayString::try_from("radiant_frozen_mallet_slow").unwrap(),
                     ..Default::default()
                 },
             );
