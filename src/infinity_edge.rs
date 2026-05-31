@@ -34,7 +34,7 @@ impl ModItemInfo for InfinityEdge {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 80,
+            attack: 75,
             crit_chance: 20,
             ..Default::default()
         }
@@ -79,7 +79,7 @@ impl ModItemInfo for RadiantInfinityEdge {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 120,
+            attack: 100,
             crit_chance: 45,
             ..Default::default()
         }
