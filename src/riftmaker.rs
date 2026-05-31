@@ -53,7 +53,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP]
+        vec![ItemTag::HP, ItemTag::AP, ItemTag::HpPercentDamage]
     }
 
     fn category(&self) -> ItemCategory {
@@ -107,7 +107,7 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP, ItemTag::MyHpPercentDamage]
+        vec![ItemTag::HP, ItemTag::AP, ItemTag::HpPercentDamage]
     }
 
     fn category(&self) -> ItemCategory {
