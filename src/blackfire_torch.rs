@@ -1,3 +1,4 @@
+use arrayvec::ArrayString;
 use mod_api::*;
 
 #[derive(Default, Clone, Debug)]
@@ -34,21 +35,30 @@ impl ModItemInfo for BlackfireTorch {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 135,
+            magic_power: 125,
             skill_cooldown_mult: 15,
             ..Default::default()
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        ctx.add_buff(
-            caster,
-            BuffState {
-                duration: BuffType::Time { tick: 300 },
-                magic_power: 10,
-                ..Default::default()
-            },
-        );
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        let Some(entity_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let already_buffed = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "blackfire_torch_buff");
+
+        if !already_buffed {
+            ctx.add_buff(
+                caster,
+                BuffState {
+                    duration: BuffType::Time { tick: 300 },
+                    magic_power: 10,
+                    name: ArrayString::try_from("blackfire_torch_buff").unwrap(),
+                    ..Default::default()
+                },
+            );
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -90,21 +100,30 @@ impl ModItemInfo for RadiantBlackfireTorch {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 180,
+            magic_power: 150,
             skill_cooldown_mult: 20,
             ..Default::default()
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        ctx.add_buff(
-            caster,
-            BuffState {
-                duration: BuffType::Time { tick: 300 },
-                magic_power: 20,
-                ..Default::default()
-            },
-        );
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        let Some(entity_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let stack_count = (0..entity_ref.buff_count())
+            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_blackfire_torch_buff")
+            .count();
+        if stack_count < 5 {
+            ctx.add_buff(
+                caster,
+                BuffState {
+                    duration: BuffType::Time { tick: 300 },
+                    magic_power: 20,
+                    name: ArrayString::try_from("radiant_blackfire_torch_buff").unwrap(),
+                    ..Default::default()
+                },
+            );
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
