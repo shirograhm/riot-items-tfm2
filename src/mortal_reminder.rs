@@ -43,14 +43,6 @@ impl ModItemInfo for MortalReminder {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::HealReduce]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
-    }
-
     fn on_attack(
         &mut self,
         ctx: &mut GameCtx,
@@ -67,6 +59,14 @@ impl ModItemInfo for MortalReminder {
                 ..Default::default()
             },
         );
+    }
+
+    fn tags(&self) -> Vec<ItemTag> {
+        vec![ItemTag::AD, ItemTag::AS, ItemTag::HealReduce]
+    }
+
+    fn category(&self) -> ItemCategory {
+        ItemCategory::AD
     }
 }
 
@@ -106,14 +106,6 @@ impl ModItemInfo for RadiantMortalReminder {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::HealReduce]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
-    }
-
     fn on_attack(
         &mut self,
         ctx: &mut GameCtx,
@@ -130,5 +122,13 @@ impl ModItemInfo for RadiantMortalReminder {
                 ..Default::default()
             },
         );
+    }
+
+    fn tags(&self) -> Vec<ItemTag> {
+        vec![ItemTag::AD, ItemTag::AS, ItemTag::HealReduce]
+    }
+
+    fn category(&self) -> ItemCategory {
+        ItemCategory::AD
     }
 }
