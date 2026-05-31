@@ -1,0 +1,2395 @@
+{
+  "ko": {
+    "category": {
+      "all": "전체",
+      "ad": "공격력",
+      "attack_speed": "공격속도",
+      "defense": "방어력",
+      "magic_resistance": "마법저항력",
+      "magic": "주문력",
+      "hp": "체력"
+    },
+    "info": {
+      "tier": "티어",
+      "price": "가격",
+      "stat": "스탯",
+      "option": "효과"
+    },
+    "tier_header": {
+      "1": "티어 1",
+      "2": "티어 2",
+      "3": "티어 3",
+      "4": "티어 4",
+      "5": "티어 5"
+    },
+    "related": {
+      "sub_items": "하위 아이템",
+      "upper_items": "상위 아이템"
+    },
+    "tier": "티어 {Tier}",
+    "spec": {
+      "attack": "공격력 +{Value}",
+      "magic_power": "주문력 +{Value}",
+      "defence": "방어력 +{Value}",
+      "hp": "체력 +{Value}",
+      "magic_resistance": "마법저항력 +{Value}",
+      "vamp": "흡혈 +{Value}%",
+      "hp_mult": "체력 +{Value}%",
+      "move_speed_mult": "이동속도 +{Value}%",
+      "attack_speed_mult": "공격속도 +{Value}%",
+      "skill_cooldown_mult": "재사용 대기시간 감소 +{Value}%",
+      "range": "사거리 +{Value}",
+      "defence_mult": "방어력 +{Value}%",
+      "defence_penetration": "방어력 관통 +{Value}%",
+      "magic_resistance_penetration": "마법저항력 관통 +{Value}%",
+      "heal_reduce": "2초 동안 적 치유 감소 +{Value}%",
+      "shield_break": "공격시 적 보호막 수치의 {Value}% 파괴",
+      "attack_enemy_hp_ratio": "기본 공격 적 체력 비례 대미지 +{Value}%",
+      "skill_enemy_hp_ratio": "스킬 적 체력 비례 대미지 +{Value}%",
+      "attack_my_hp_ratio": "내 최대 체력 비례 대미지 +{Value}%",
+      "reflect": "반사 대미지 +{Value}%",
+      "dot_amplify": "지속 대미지 +{Value}%",
+      "hp_regen": "초당 체력 재생 +{Value}",
+      "crit_chance": "치명타 확률 +{Value}%",
+      "base_attack_damaged_reduce": "기본 공격 피해량 감소 +{Value}%",
+      "skill_damaged_reduce": "스킬 피해량 감소 +{Value}%",
+      "toughness": "강인함 +{Value}%"
+    },
+    "ironsword": {
+      "name": "롱소드",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "곡괭이",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "흡혈의 낫",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "피바라기",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "오른의 걸작 피바라기",
+      "option": ""
+    },
+    "dagger": {
+      "name": "단검",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "곡궁",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "열정의 검",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "유령 무희",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "오른의 걸작 유령 무희",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "천 갑옷",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "쇠사슬 조끼",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "덤불 조끼",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "가시 갑옷",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "오른의 걸작 가시 갑옷",
+      "option": "기본 공격에 맞았을 때 {Flat}+방어력의 {Ratio}%만큼의 마법 대미지를 적에게 입힙니다."
+    },
+    "mystic_cloak": {
+      "name": "마법무효화의 망토",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "음전자 망토",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "망령의 두건",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "케이닉 루컨",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "오른의 걸작 케이닉 루컨",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "증폭의 고서",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "방출의 마법봉",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "쓸데없이 큰 지팡이",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "그림자불꽃",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "오른의 걸작 그림자불꽃",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "루비 수정",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "점화석",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "바미의 불씨",
+      "option": "매 초 {Flat}+최대 체력의 {Ratio}%만큼 체력을 회복합니다."
+    },
+    "hourglass_of_eternity": {
+      "name": "태양불꽃 방패",
+      "option": "매 초 {Flat}+최대 체력의 {Ratio}%만큼 체력을 회복합니다."
+    },
+    "giants_horn_shard": {
+      "name": "대장간 불꽃 문장",
+      "option": "매 초 {RegenFlat}만큼 체력을 회복하고, 주변 {Range} 범위 내 모든 적에게 {DmgFlat}+최대 체력의 {DmgRatio}%만큼 마법 대미지를 입힙니다."
+    }
+  },
+  "en": {
+    "category": {
+      "all": "All",
+      "ad": "Attack Damage",
+      "attack_speed": "Attack Speed",
+      "defense": "Armor",
+      "magic_resistance": "Magic Resist",
+      "magic": "Ability Power",
+      "hp": "HP"
+    },
+    "info": {
+      "tier": "Tier",
+      "price": "Price",
+      "stat": "Stats",
+      "option": "Effect"
+    },
+    "tier_header": {
+      "1": "Tier 1",
+      "2": "Tier 2",
+      "3": "Tier 3",
+      "4": "Tier 4",
+      "5": "Tier 5"
+    },
+    "related": {
+      "sub_items": "Builds From",
+      "upper_items": "Builds Into"
+    },
+    "tier": "Tier {Tier}",
+    "spec": {
+      "attack": "+{Value} Attack Damage",
+      "magic_power": "+{Value} Ability Power",
+      "defence": "+{Value} Armor",
+      "hp": "+{Value} HP",
+      "magic_resistance": "+{Value} Magic Resist",
+      "vamp": "+{Value}% Omnivamp",
+      "hp_mult": "\nGrowth: Increase your total HP by {Value}%.",
+      "move_speed_mult": "+{Value}% Movement Speed",
+      "attack_speed_mult": "+{Value}% Attack Speed",
+      "skill_cooldown_mult": "+{Value}% Cooldown Reduction",
+      "range": "+{Value} Range",
+      "defence_mult": "\nSecond Skin: Increase your total Armor by {Value}%.",
+      "defence_penetration": "+{Value}% Armor Penetration",
+      "magic_resistance_penetration": "+{Value}% Magic Penetration",
+      "heal_reduce": "\nGrievous Wounds: Damaging an enemy reduces their healing by {Value}% for 2 seconds.",
+      "shield_break": "Reave: Damage you deal destroys {Value}% of the target's shields.",
+      "attack_enemy_hp_ratio": "\nMist's Edge: Basic attacks deal {Value}% of the target's max HP as physical damage on hit.",
+      "skill_enemy_hp_ratio": "\nCorruption: Skills deal damage equal to {Value}% of the target's max HP.",
+      "attack_my_hp_ratio": "\nCleave: Basic attacks deal damage equal to {Value}% of your max HP.",
+      "reflect": "+{Value}% Reflect Damage",
+      "dot_amplify": "\nMaleficent: Damage over time effects you apply deal {Value}% more damage.",
+      "hp_regen": "+{Value} HP/s",
+      "crit_chance": "+{Value}% Critical Strike Chance",
+      "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from Basic Attacks by {Value}%.",
+      "skill_damaged_reduce": "\nStalwart: Reduce the damage you take from skills by {Value}%.",
+      "toughness": "\nUnbounded: Gain {Value}% Tenacity."
+    },
+    "ironsword": {
+      "name": "Long Sword",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Pickaxe",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Vampiric Scepter",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Bloodthirster",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Radiant Bloodthirster",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Dagger",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Recurve Bow",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Zeal",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Phantom Dancer",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Radiant Phantom Dancer",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Cloth Armor",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Chain Vest",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Bramble Vest",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Thornmail",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Radiant Thornmail",
+      "option": "Thorns: When hit by a basic attack, deal {Flat} + {Ratio}% of your Armor as magic damage to the attacker."
+    },
+    "mystic_cloak": {
+      "name": "Null-Magic Mantle",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Negatron Cloak",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Spectre's Cowl",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Dragon's Claw",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Radiant Dragon's Claw",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Amplifying Tome",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Blasting Wand",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Lost Chapter",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Luden's Tempest",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Radiant Luden's Tempest",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Ruby Crystal",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Kindlegem",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Giant's Belt",
+      "option": "Mending: Recover {Flat} HP every second."
+    },
+    "hourglass_of_eternity": {
+      "name": "Warmog's Armor",
+      "option": "Mending: Recover {Flat} HP every second."
+    },
+    "giants_horn_shard": {
+      "name": "Radiant Warmog's Armor",
+      "option": "Mending: Recover {RegenFlat} HP every second.\n\nDisdain: Deal {DmgFlat} + {DmgRatio}% of your max HP as magic damage to all enemies within {Range} range."
+    },
+    "bf_sword": {
+      "name": "B.F. Sword",
+      "option": ""
+    },
+    "infinity_edge": {
+      "name": "Infinity Edge",
+      "option": ""
+    },
+    "radiant_infinity_edge": {
+      "name": "Radiant Infinity Edge",
+      "option": ""
+    },
+    "deathblade": {
+      "name": "Deathblade",
+      "option": "Apex: Gain 15% Damage Amplification."
+    },
+    "radiant_deathblade": {
+      "name": "Radiant Deathblade",
+      "option": "Apex: Gain 25% Damage Amplification."
+    },
+    "needlessly_large_rod": {
+      "name": "Needlessly Large Rod",
+      "option": ""
+    },
+    "rabadons_deathcap": {
+      "name": "Rabadon's Deathcap",
+      "option": "Opus: Increase total Ability Power by 20%."
+    },
+    "radiant_rabadons_deathcap": {
+      "name": "Radiant Rabadon's Deathcap",
+      "option": "Opus: Increase total Ability Power by 35%."
+    },
+    "protectors_vow": {
+      "name": "Protector's Vow",
+      "option": ""
+    },
+    "radiant_protectors_vow": {
+      "name": "Radiant Protector's Vow",
+      "option": ""
+    },
+    "steraks_gage": {
+      "name": "Sterak's Gage",
+      "option": ""
+    },
+    "radiant_steraks_gage": {
+      "name": "Radiant Sterak's Gage",
+      "option": ""
+    },
+    "riftmaker": {
+      "name": "Riftmaker",
+      "option": ""
+    },
+    "radiant_riftmaker": {
+      "name": "Radiant Riftmaker",
+      "option": ""
+    },
+    "blade_of_the_ruined_king": {
+      "name": "Blade of the Ruined King",
+      "option": ""
+    },
+    "radiant_blade_of_the_ruined_king": {
+      "name": "Radiant Blade of the Ruined King",
+      "option": ""
+    },
+    "blackfire_torch": {
+      "name": "Blackfire Torch",
+      "option": ""
+    },
+    "radiant_blackfire_torch": {
+      "name": "Radiant Blackfire Torch",
+      "option": ""
+    },
+    "executioners_calling": {
+      "name": "Executioner's Calling",
+      "option": ""
+    },
+    "mortal_reminder": {
+      "name": "Mortal Reminder",
+      "option": ""
+    },
+    "radiant_mortal_reminder": {
+      "name": "Radiant Mortal Reminder",
+      "option": ""
+    },
+    "experimental_hexplate": {
+      "name": "Experimental Hexplate",
+      "option": "Overdrive: Reduce your ultimate's cooldown by 15%."
+    },
+    "radiant_experimental_hexplate": {
+      "name": "Radiant Experimental Hexplate",
+      "option": "Overdrive: Reduce your ultimate's cooldown by 25%."
+    }
+  },
+  "ja": {
+    "category": {
+      "all": "すべて",
+      "ad": "攻撃力",
+      "attack_speed": "攻撃速度",
+      "defense": "防御力",
+      "magic_resistance": "魔法抵抗力",
+      "magic": "魔法力",
+      "hp": "体力"
+    },
+    "info": {
+      "tier": "ティア",
+      "price": "価格",
+      "stat": "ステータス",
+      "option": "効果"
+    },
+    "tier_header": {
+      "1": "ティア 1",
+      "2": "ティア 2",
+      "3": "ティア 3",
+      "4": "ティア 4",
+      "5": "ティア 5"
+    },
+    "related": {
+      "sub_items": "素材アイテム",
+      "upper_items": "派生アイテム"
+    },
+    "tier": "ティア {Tier}",
+    "spec": {
+      "attack": "攻撃力 +{Value}",
+      "magic_power": "魔法力 +{Value}",
+      "defence": "防御力 +{Value}",
+      "hp": "体力 +{Value}",
+      "magic_resistance": "魔法抵抗力 +{Value}",
+      "vamp": "吸血 +{Value}%",
+      "hp_mult": "体力 +{Value}%",
+      "move_speed_mult": "移動速度 +{Value}%",
+      "attack_speed_mult": "攻撃速度 +{Value}%",
+      "skill_cooldown_mult": "スキルクールダウン減少 +{Value}%",
+      "range": "射程 +{Value}",
+      "defence_mult": "防御力 +{Value}%",
+      "defence_penetration": "防御力貫通 +{Value}%",
+      "magic_resistance_penetration": "魔法抵抗力貫通 +{Value}%",
+      "heal_reduce": "2秒間、敵の回復量を{Value}%減少",
+      "shield_break": "攻撃時、敵のシールド量の{Value}%を破壊",
+      "attack_enemy_hp_ratio": "通常攻撃の敵最大体力比例ダメージ +{Value}%",
+      "skill_enemy_hp_ratio": "スキルの敵最大体力比例ダメージ +{Value}%",
+      "attack_my_hp_ratio": "自身の最大体力比例ダメージ +{Value}%",
+      "reflect": "反射ダメージ +{Value}%",
+      "dot_amplify": "継続ダメージ +{Value}%",
+      "hp_regen": "毎秒体力再生 +{Value}",
+      "crit_chance": "クリティカル率 +{Value}%",
+      "base_attack_damaged_reduce": "通常攻撃ダメージ減少 +{Value}%",
+      "skill_damaged_reduce": "スキルダメージ減少 +{Value}%",
+      "toughness": "強靭性 +{Value}%"
+    },
+    "ironsword": {
+      "name": "ロング ソード",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "ピッケル",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "ヴァンパイア セプタ",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "ブラッドサースター",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "オーンの傑作:ブラッドサースター",
+      "option": ""
+    },
+    "dagger": {
+      "name": "ダガー",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "ドラン ボウ",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "熱情",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "ファントムダンサー",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "オーンの傑作:ファントムダンサー",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "クロース アーマー",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "チェイン ベスト",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "ブランブルベスト",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "ソーンメイル",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "オーンの傑作:ソーンメイル",
+      "option": "通常攻撃を受けた時、{Flat}+防御力の{Ratio}%の魔法ダメージを敵に与えます。"
+    },
+    "mystic_cloak": {
+      "name": "ヌルマジック マント",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "ネガトロン クローク",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "スペクター カウル",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "ケイニック ルーケルン",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "オーンの傑作:ケニックルカーン",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "増魔の書",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "ブラスティング ワンド",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "ムダニ デカイ ロッド",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "シャドウフレイム",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "オーンの傑作:シャドウフレイム",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "ルビー クリスタル",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "キンドルジェム",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "バミ シンダー",
+      "option": "毎秒 {Flat}+最大体力の{Ratio}%の体力を回復します。"
+    },
+    "hourglass_of_eternity": {
+      "name": "サンファイア イージス",
+      "option": "毎秒 {Flat}+最大体力の{Ratio}%の体力を回復します。"
+    },
+    "giants_horn_shard": {
+      "name": "フォージファイアの紋章",
+      "option": "毎秒{RegenFlat}の体力を回復し、周囲{Range}範囲の全ての敵に{DmgFlat}+最大体力の{DmgRatio}%の魔法ダメージを与えます。"
+    }
+  },
+  "de": {
+    "category": {
+      "all": "Alle",
+      "ad": "Angriff",
+      "attack_speed": "Tempo",
+      "defense": "Verteidigung",
+      "magic_resistance": "Magieresistenz",
+      "magic": "Zauberkraft",
+      "hp": "HP"
+    },
+    "info": {
+      "tier": "Stufe",
+      "price": "Preis",
+      "stat": "Werte",
+      "option": "Effekt"
+    },
+    "tier_header": {
+      "1": "Stufe 1",
+      "2": "Stufe 2",
+      "3": "Stufe 3",
+      "4": "Stufe 4",
+      "5": "Stufe 5"
+    },
+    "related": {
+      "sub_items": "Bestandteile",
+      "upper_items": "Baut sich zu"
+    },
+    "tier": "Stufe {Tier}",
+    "spec": {
+      "attack": "Angriff +{Value}",
+      "magic_power": "Zauberkraft +{Value}",
+      "defence": "Verteidigung +{Value}",
+      "hp": "HP +{Value}",
+      "magic_resistance": "Magieresistenz +{Value}",
+      "vamp": "Lebensraub +{Value}%",
+      "hp_mult": "HP +{Value}%",
+      "move_speed_mult": "Lauftempo +{Value}%",
+      "attack_speed_mult": "Angriffstempo +{Value}%",
+      "skill_cooldown_mult": "Abklingzeitverringerung +{Value}%",
+      "range": "Reichweite +{Value}",
+      "defence_mult": "Verteidigung +{Value}%",
+      "defence_penetration": "Verteidigungsdurchdringung +{Value}%",
+      "magic_resistance_penetration": "Magiedurchdringung +{Value}%",
+      "heal_reduce": "Verringert gegnerische Heilung 2 Sek. lang um {Value}%",
+      "shield_break": "Zerstört bei Angriff {Value}% des gegnerischen Schilds",
+      "attack_enemy_hp_ratio": "Normalangriff-Schaden nach gegnerischen max. HP +{Value}%",
+      "skill_enemy_hp_ratio": "Skill-Schaden nach gegnerischen max. HP +{Value}%",
+      "attack_my_hp_ratio": "Schaden nach eigenen max. HP +{Value}%",
+      "reflect": "Reflektierter Schaden +{Value}%",
+      "dot_amplify": "Schaden über Zeit +{Value}%",
+      "hp_regen": "HP-Regeneration pro Sekunde +{Value}",
+      "crit_chance": "Kritische Trefferchance +{Value}%",
+      "base_attack_damaged_reduce": "Normalangriff-Schadensreduktion +{Value}%",
+      "skill_damaged_reduce": "Skill-Schadensreduktion +{Value}%",
+      "toughness": "Zähigkeit +{Value}%"
+    },
+    "ironsword": {
+      "name": "Langschwert",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Spitzhacke",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Vampirisches Zepter",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Blutdürster",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Ornns Meisterwerk: Blutdürster",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Dolch",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Rekursivbogen",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Eifer",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Phantomtänzerin",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Ornns Meisterwerk: Phantomtänzerin",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Stoffrüstung",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Kettenweste",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Dornenweste",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Dornenpanzer",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Ornns Meisterwerk: Dornenpanzer",
+      "option": "Wenn du von einem normalen Angriff getroffen wirst, fügt es dem Angreifer {Flat}+{Ratio}% deiner Rüstung als magischen Schaden zu."
+    },
+    "mystic_cloak": {
+      "name": "Nullmagie-Mantel",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Negatron-Mantel",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Geisterkutte",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Kaenic Rookern",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Ornns Meisterwerk: Kaenic Rookern",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Verstärkender Wälzer",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Zauberstab",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Übergroßer Stab",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Schattenflamme",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Ornns Meisterwerk: Schattenflamme",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Rubinkristall",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Zündjuwel",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Bamis Glutstein",
+      "option": "Stellt jede Sekunde {Flat}+{Ratio}% der max. LP wieder her."
+    },
+    "hourglass_of_eternity": {
+      "name": "Sonnenfeuer-Ägide",
+      "option": "Stellt jede Sekunde {Flat}+{Ratio}% der max. LP wieder her."
+    },
+    "giants_horn_shard": {
+      "name": "Schmiedefeuer-Wappen",
+      "option": "Stellt jede Sekunde {RegenFlat} LP wieder her und fügt allen Gegnern im Umkreis von {Range} {DmgFlat}+{DmgRatio}% der max. LP als magischen Schaden zu."
+    }
+  },
+  "vi": {
+    "category": {
+      "all": "Tất cả",
+      "ad": "Sức Mạnh Công Kích",
+      "attack_speed": "Tốc Độ Đánh",
+      "defense": "Giáp",
+      "magic_resistance": "Kháng Phép",
+      "magic": "Sức Mạnh Phép Thuật",
+      "hp": "Máu"
+    },
+    "info": {
+      "tier": "Bậc",
+      "price": "Giá",
+      "stat": "Chỉ Số",
+      "option": "Hiệu Ứng"
+    },
+    "tier_header": {
+      "1": "Bậc 1",
+      "2": "Bậc 2",
+      "3": "Bậc 3",
+      "4": "Bậc 4",
+      "5": "Bậc 5"
+    },
+    "related": {
+      "sub_items": "Ghép từ",
+      "upper_items": "Ghép thành"
+    },
+    "tier": "Bậc {Tier}",
+    "spec": {
+      "attack": "Sức Mạnh Công Kích +{Value}",
+      "magic_power": "Sức Mạnh Phép Thuật +{Value}",
+      "defence": "Giáp +{Value}",
+      "hp": "Máu +{Value}",
+      "magic_resistance": "Kháng Phép +{Value}",
+      "vamp": "Hút Máu +{Value}%",
+      "hp_mult": "Máu +{Value}%",
+      "move_speed_mult": "Tốc Độ Di Chuyển +{Value}%",
+      "attack_speed_mult": "Tốc Độ Đánh +{Value}%",
+      "skill_cooldown_mult": "Giảm Thời Gian Hồi Chiêu +{Value}%",
+      "range": "Tầm Đánh +{Value}",
+      "defence_mult": "Giáp +{Value}%",
+      "defence_penetration": "Xuyên Giáp +{Value}%",
+      "magic_resistance_penetration": "Xuyên Kháng Phép +{Value}%",
+      "heal_reduce": "Giảm Hồi Máu của địch {Value}% trong 2 giây",
+      "shield_break": "Phá hủy {Value}% lá chắn của địch khi tấn công",
+      "attack_enemy_hp_ratio": "Sát thương Đánh thường theo Máu Tối đa của địch +{Value}%",
+      "skill_enemy_hp_ratio": "Sát thương Kỹ năng theo Máu Tối đa của địch +{Value}%",
+      "attack_my_hp_ratio": "Sát thương theo Máu Tối đa của Bản thân +{Value}%",
+      "reflect": "Phản sát thương +{Value}%",
+      "dot_amplify": "Sát thương theo Thời gian +{Value}%",
+      "hp_regen": "Hồi Máu mỗi giây +{Value}",
+      "crit_chance": "Tỷ Lệ Chí Mạng +{Value}%",
+      "base_attack_damaged_reduce": "Giảm Sát thương Đánh thường +{Value}%",
+      "skill_damaged_reduce": "Giảm Sát thương Kỹ năng +{Value}%",
+      "toughness": "Kháng Hiệu Ứng +{Value}%"
+    },
+    "ironsword": {
+      "name": "Trường Kiếm",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Cúp Chim",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Trượng Hút Máu",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Kẻ Khát Máu",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Kiệt Tác Của Ornn: Kẻ Khát Máu",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Chủy Thủ",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Cung Cong",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Nhiệt Huyết",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Vũ Công Bóng Ma",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Kiệt Tác Của Ornn: Vũ Công Bóng Ma",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Giáp Vải",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Áo Giáp Xích",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Áo Giáp Gai",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Giáp Gai",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Kiệt Tác Của Ornn: Giáp Gai",
+      "option": "Khi bị đánh thường, gây {Flat}+{Ratio}% Giáp của bạn thành Sát Phương Phép lên kẻ tấn công."
+    },
+    "mystic_cloak": {
+      "name": "Áo Choàng Vô Hiệu Phép",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Áo Choàng Negatron",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Mũ Trùm Bóng Ma",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Kaenic Rookern",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Kiệt Tác Của Ornn: Kaenic Rookern",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Sách Tăng Lực",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Đũa Phép Nổ",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Gậy Phép Lớn Vô Dụng",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Ngọn Lửa Bóng Tối",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Kiệt Tác Của Ornn: Ngọn Lửa Bóng Tối",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Pha Lê Hồng Ngọc",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Đá Mồi Lửa",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Tàn Lửa Của Bami",
+      "option": "Hồi {Flat}+{Ratio}% Máu Tối Đa mỗi giây."
+    },
+    "hourglass_of_eternity": {
+      "name": "Khiên Lửa Mặt Trời",
+      "option": "Hồi {Flat}+{Ratio}% Máu Tối Đa mỗi giây."
+    },
+    "giants_horn_shard": {
+      "name": "Huy Hiệu Lửa Rèn",
+      "option": "Hồi {RegenFlat} Máu mỗi giây và gây {DmgFlat}+{DmgRatio}% Máu Tối Đa thành Sát Thương Phép lên tất cả kẻ địch trong phạm vi {Range}."
+    }
+  },
+  "pt-BR": {
+    "category": {
+      "all": "Todos",
+      "ad": "Dano de Ataque",
+      "attack_speed": "Velocidade de Ataque",
+      "defense": "Armadura",
+      "magic_resistance": "Resistência Mágica",
+      "magic": "Poder de Habilidade",
+      "hp": "HP"
+    },
+    "info": {
+      "tier": "Tier",
+      "price": "Preço",
+      "stat": "Atributos",
+      "option": "Efeito"
+    },
+    "tier_header": {
+      "1": "Tier 1",
+      "2": "Tier 2",
+      "3": "Tier 3",
+      "4": "Tier 4",
+      "5": "Tier 5"
+    },
+    "related": {
+      "sub_items": "Componentes",
+      "upper_items": "Evolui para"
+    },
+    "tier": "Tier {Tier}",
+    "spec": {
+      "attack": "Dano de Ataque +{Value}",
+      "magic_power": "Poder de Habilidade +{Value}",
+      "defence": "Armadura +{Value}",
+      "hp": "HP +{Value}",
+      "magic_resistance": "Resistência Mágica +{Value}",
+      "vamp": "Roubo de Vida +{Value}%",
+      "hp_mult": "HP +{Value}%",
+      "move_speed_mult": "Velocidade de Movimento +{Value}%",
+      "attack_speed_mult": "Velocidade de Ataque +{Value}%",
+      "skill_cooldown_mult": "Redução de Recarga +{Value}%",
+      "range": "Alcance +{Value}",
+      "defence_mult": "Armadura +{Value}%",
+      "defence_penetration": "Penetração de Armadura +{Value}%",
+      "magic_resistance_penetration": "Penetração Mágica +{Value}%",
+      "heal_reduce": "Reduz a cura inimiga em {Value}% por 2 segundos",
+      "shield_break": "Destrói {Value}% do escudo inimigo ao atacar",
+      "attack_enemy_hp_ratio": "Dano de ataque básico por HP máximo inimigo +{Value}%",
+      "skill_enemy_hp_ratio": "Dano de habilidade por HP máximo inimigo +{Value}%",
+      "attack_my_hp_ratio": "Dano baseado no HP máximo próprio +{Value}%",
+      "reflect": "Dano refletido +{Value}%",
+      "dot_amplify": "Dano ao longo do tempo +{Value}%",
+      "hp_regen": "Regeneração de HP por segundo +{Value}",
+      "crit_chance": "Chance de Crítico +{Value}%",
+      "base_attack_damaged_reduce": "Redução de dano de ataque básico +{Value}%",
+      "skill_damaged_reduce": "Redução de dano de habilidade +{Value}%",
+      "toughness": "Tenacidade +{Value}%"
+    },
+    "ironsword": {
+      "name": "Espada Longa",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Picareta",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Cetro Vampírico",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Sedento de Sangue",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Obra-Prima de Ornn: Sedento de Sangue",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Adaga",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Arco Recurvo",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Fervor",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Dançarina Fantasma",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Obra-Prima de Ornn: Dançarina Fantasma",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Armadura de Tecido",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Colete de Malha",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Colete de Espinhos",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Cota de Espinhos",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Obra-Prima de Ornn: Cota de Espinhos",
+      "option": "Ao receber um ataque básico, causa {Flat}+{Ratio}% da sua Armadura como dano mágico ao atacante."
+    },
+    "mystic_cloak": {
+      "name": "Manto Anulamagia",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Manto Négatron",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Capuz do Espectro",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Rookern Caênico",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Obra-Prima de Ornn: Rookern Caênico",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Tomo Amplificador",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Varinha Explosiva",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Bastão Desnecessariamente Grande",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Chama Sombria",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Obra-Prima de Ornn: Chama Sombria",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Cristal de Rubi",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Pedra-Brasa",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Brasa de Bami",
+      "option": "Recupera {Flat}+{Ratio}% do HP máximo por segundo."
+    },
+    "hourglass_of_eternity": {
+      "name": "Égide Solar",
+      "option": "Recupera {Flat}+{Ratio}% do HP máximo por segundo."
+    },
+    "giants_horn_shard": {
+      "name": "Crista da Forjachama",
+      "option": "Recupera {RegenFlat} de HP por segundo e causa {DmgFlat}+{DmgRatio}% do HP máximo como dano mágico a todos os inimigos dentro de {Range} de alcance."
+    }
+  },
+  "tr": {
+    "category": {
+      "all": "Tümü",
+      "ad": "Saldırı Gücü",
+      "attack_speed": "Saldırı Hızı",
+      "defense": "Zırh",
+      "magic_resistance": "Büyü Direnci",
+      "magic": "Yetenek Gücü",
+      "hp": "CP"
+    },
+    "info": {
+      "tier": "Kademe",
+      "price": "Fiyat",
+      "stat": "Nitelikler",
+      "option": "Etki"
+    },
+    "tier_header": {
+      "1": "Kademe 1",
+      "2": "Kademe 2",
+      "3": "Kademe 3",
+      "4": "Kademe 4",
+      "5": "Kademe 5"
+    },
+    "related": {
+      "sub_items": "Bileşenler",
+      "upper_items": "Dönüşür"
+    },
+    "tier": "Kademe {Tier}",
+    "spec": {
+      "attack": "Saldırı Gücü +{Value}",
+      "magic_power": "Yetenek Gücü +{Value}",
+      "defence": "Zırh +{Value}",
+      "hp": "CP +{Value}",
+      "magic_resistance": "Büyü Direnci +{Value}",
+      "vamp": "Can Çalma +{Value}%",
+      "hp_mult": "CP +{Value}%",
+      "move_speed_mult": "Hareket Hızı +{Value}%",
+      "attack_speed_mult": "Saldırı Hızı +{Value}%",
+      "skill_cooldown_mult": "Bekleme Süresi Azaltma +{Value}%",
+      "range": "Menzil +{Value}",
+      "defence_mult": "Zırh +{Value}%",
+      "defence_penetration": "Zırh Delme +{Value}%",
+      "magic_resistance_penetration": "Büyü Delme +{Value}%",
+      "heal_reduce": "Düşman iyileştirmesini 2 saniye boyunca {Value}% azaltır",
+      "shield_break": "Saldırıda düşman kalkanının {Value}%'ini yok eder",
+      "attack_enemy_hp_ratio": "Normal saldırı düşman azami CP hasarı +{Value}%",
+      "skill_enemy_hp_ratio": "Yetenek düşman azami CP hasarı +{Value}%",
+      "attack_my_hp_ratio": "Kendi azami CP'ne bağlı hasar +{Value}%",
+      "reflect": "Yansıtılan Hasar +{Value}%",
+      "dot_amplify": "Zamanla hasar +{Value}%",
+      "hp_regen": "Saniyede CP yenileme +{Value}",
+      "crit_chance": "Kritik Vuruş Şansı +{Value}%",
+      "base_attack_damaged_reduce": "Normal saldırı hasarı azaltma +{Value}%",
+      "skill_damaged_reduce": "Yetenek hasarı azaltma +{Value}%",
+      "toughness": "Dayanıklılık +{Value}%"
+    },
+    "ironsword": {
+      "name": "Uzun Kılıç",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Kazma",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Vampirik Asa",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Kana Susamış",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Ornn'un Şaheseri: Kana Susamış",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Hançer",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Yay",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Şevk",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Hayalet Dansçı",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Ornn'un Şaheseri: Hayalet Dansçı",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Kumaş Zırh",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Zincir Yelek",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Dikenli Yelek",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Dikenzırh",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Ornn'un Şaheseri: Dikenzırh",
+      "option": "Normal saldırıyla vurulduğunda saldırgana {Flat}+Zırhının {Ratio}%'i kadar büyü hasarı verir."
+    },
+    "mystic_cloak": {
+      "name": "Sihir İptal Pelerini",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Negatron Pelerini",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Hayalet Başlığı",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Kaenik Rookern",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Ornn'un Şaheseri: Kaenik Rookern",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Güçlendirme Kitabı",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Patlayıcı Asa",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Gereğinden Büyük Değnek",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Gölgealev",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Ornn'un Şaheseri: Gölgealev",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Yakut Kristali",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Tutuşturmataşı",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Bami'nin Koru",
+      "option": "Saniyede {Flat}+azami CP'nin {Ratio}%'i kadar CP yeniler."
+    },
+    "hourglass_of_eternity": {
+      "name": "Güneşalevi Kalkanı",
+      "option": "Saniyede {Flat}+azami CP'nin {Ratio}%'i kadar CP yeniler."
+    },
+    "giants_horn_shard": {
+      "name": "Demirci Ateşi Arması",
+      "option": "Saniyede {RegenFlat} CP yeniler ve {Range} menzil içindeki tüm düşmanlara {DmgFlat}+azami CP'nin {DmgRatio}%'i kadar büyü hasarı verir."
+    }
+  },
+  "nl": {
+    "category": {
+      "all": "Alles",
+      "ad": "Aanvalsschade",
+      "attack_speed": "Aanvalssnelheid",
+      "defense": "Pantser",
+      "magic_resistance": "Magieweerstand",
+      "magic": "Vaardigheidskracht",
+      "hp": "HP"
+    },
+    "info": {
+      "tier": "Tier",
+      "price": "Prijs",
+      "stat": "Stats",
+      "option": "Effect"
+    },
+    "tier_header": {
+      "1": "Tier 1",
+      "2": "Tier 2",
+      "3": "Tier 3",
+      "4": "Tier 4",
+      "5": "Tier 5"
+    },
+    "related": {
+      "sub_items": "Gemaakt van",
+      "upper_items": "Bouwt naar"
+    },
+    "tier": "Tier {Tier}",
+    "spec": {
+      "attack": "Aanvalsschade +{Value}",
+      "magic_power": "Vaardigheidskracht +{Value}",
+      "defence": "Pantser +{Value}",
+      "hp": "HP +{Value}",
+      "magic_resistance": "Magieweerstand +{Value}",
+      "vamp": "Levensroof +{Value}%",
+      "hp_mult": "HP +{Value}%",
+      "move_speed_mult": "Bewegingssnelheid +{Value}%",
+      "attack_speed_mult": "Aanvalssnelheid +{Value}%",
+      "skill_cooldown_mult": "Afkoelingsreductie +{Value}%",
+      "range": "Bereik +{Value}",
+      "defence_mult": "Pantser +{Value}%",
+      "defence_penetration": "Pantserdoorboring +{Value}%",
+      "magic_resistance_penetration": "Magische doorboring +{Value}%",
+      "heal_reduce": "Vermindert vijandelijke genezing 2 seconden met {Value}%",
+      "shield_break": "Vernietigt bij aanval {Value}% van vijandelijk schild",
+      "attack_enemy_hp_ratio": "Basisaanval-schade op basis van vijandelijke max HP +{Value}%",
+      "skill_enemy_hp_ratio": "Vaardigheidsschade op basis van vijandelijke max HP +{Value}%",
+      "attack_my_hp_ratio": "Schade op basis van eigen max HP +{Value}%",
+      "reflect": "Weerkaatste schade +{Value}%",
+      "dot_amplify": "Schade over tijd +{Value}%",
+      "hp_regen": "HP-regeneratie per seconde +{Value}",
+      "crit_chance": "Kritieke trefkans +{Value}%",
+      "base_attack_damaged_reduce": "Basisaanval-schadereductie +{Value}%",
+      "skill_damaged_reduce": "Vaardigheidsschadereductie +{Value}%",
+      "toughness": "Taaiheid +{Value}%"
+    },
+    "ironsword": {
+      "name": "Langzwaard",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Houweel",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Vampirische Scepter",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Bloeddorster",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Ornns Meesterwerk: Bloeddorster",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Dolk",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Recurveboog",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "IJver",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Fantoomdanser",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Ornns Meesterwerk: Fantoomdanser",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Stoffen Harnas",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Maliënvest",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Doornvest",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Doornmaliën",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Ornns Meesterwerk: Doornmaliën",
+      "option": "Wanneer je door een basisaanval wordt geraakt, brengt dit {Flat}+{Ratio}% van je Pantser als magische schade toe aan de aanvaller."
+    },
+    "mystic_cloak": {
+      "name": "Nulmagie-Mantel",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Negatron-Mantel",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Spookkap",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Kaenic Rookern",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Ornns Meesterwerk: Kaenic Rookern",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Versterkende Tome",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Ontploffingsstaf",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Onnodig Grote Staf",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Schaduwvlam",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Ornns Meesterwerk: Schaduwvlam",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Robijnkristal",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Vuursteen",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Bami's Sintel",
+      "option": "Herstelt elke seconde {Flat}+{Ratio}% van max HP."
+    },
+    "hourglass_of_eternity": {
+      "name": "Zonnevuur-Aegis",
+      "option": "Herstelt elke seconde {Flat}+{Ratio}% van max HP."
+    },
+    "giants_horn_shard": {
+      "name": "Smeedvuur-Wapen",
+      "option": "Herstelt elke seconde {RegenFlat} HP en brengt {DmgFlat}+{DmgRatio}% van max HP als magische schade toe aan alle vijanden binnen {Range} bereik."
+    }
+  },
+  "ru": {
+    "category": {
+      "all": "Все",
+      "ad": "Сила атаки",
+      "attack_speed": "Скорость атаки",
+      "defense": "Броня",
+      "magic_resistance": "Сопротивление магии",
+      "magic": "Сила умений",
+      "hp": "Здоровье"
+    },
+    "info": {
+      "tier": "Уровень",
+      "price": "Цена",
+      "stat": "Характеристики",
+      "option": "Эффект"
+    },
+    "tier_header": {
+      "1": "Уровень 1",
+      "2": "Уровень 2",
+      "3": "Уровень 3",
+      "4": "Уровень 4",
+      "5": "Уровень 5"
+    },
+    "related": {
+      "sub_items": "Компоненты",
+      "upper_items": "Улучшается в"
+    },
+    "tier": "Уровень {Tier}",
+    "spec": {
+      "attack": "Сила атаки +{Value}",
+      "magic_power": "Сила умений +{Value}",
+      "defence": "Броня +{Value}",
+      "hp": "Здоровье +{Value}",
+      "magic_resistance": "Сопротивление магии +{Value}",
+      "vamp": "Вампиризм +{Value}%",
+      "hp_mult": "Здоровье +{Value}%",
+      "move_speed_mult": "Скорость передвижения +{Value}%",
+      "attack_speed_mult": "Скорость атаки +{Value}%",
+      "skill_cooldown_mult": "Ускорение умений +{Value}%",
+      "range": "Дальность атаки +{Value}",
+      "defence_mult": "Броня +{Value}%",
+      "defence_penetration": "Пробивание брони +{Value}%",
+      "magic_resistance_penetration": "Магическое пробивание +{Value}%",
+      "heal_reduce": "Снижает лечение врага на {Value}% на 2 секунды",
+      "shield_break": "При атаке уничтожает {Value}% щита врага",
+      "attack_enemy_hp_ratio": "Урон автоатак от макс. здоровья врага +{Value}%",
+      "skill_enemy_hp_ratio": "Урон умений от макс. здоровья врага +{Value}%",
+      "attack_my_hp_ratio": "Урон автоатак от собственного макс. здоровья +{Value}%",
+      "reflect": "Отражение урона +{Value}%",
+      "dot_amplify": "Периодический урон +{Value}%",
+      "hp_regen": "Регенерация здоровья в секунду +{Value}",
+      "crit_chance": "Шанс критического удара +{Value}%",
+      "base_attack_damaged_reduce": "Снижение урона от автоатак +{Value}%",
+      "skill_damaged_reduce": "Снижение урона от умений +{Value}%",
+      "toughness": "Стойкость +{Value}%"
+    },
+    "ironsword": {
+      "name": "Длинный меч",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Кирка",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Скипетр вампира",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Кровожад",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Шедевр Орна: Кровожад",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Кинжал",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Изогнутый лук",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Рвение",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Призрачный танцор",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Шедевр Орна: Призрачный танцор",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Тканевая броня",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Кольчужный жилет",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Колючий жилет",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Шипованная кольчуга",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Шедевр Орна: Шипованная кольчуга",
+      "option": "Получая урон от автоатаки, возвращает атакующему магический урон: {Flat} + {Ratio}% от вашей брони."
+    },
+    "mystic_cloak": {
+      "name": "Плащ подавления магии",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Плащ негатрона",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Капюшон призрака",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Кеникский рукерн",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Шедевр Орна: Кеникский рукерн",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Том усиления",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Взрывной жезл",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Несоразмерно большой посох",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Тенепламя",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Шедевр Орна: Тенепламя",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Рубиновый кристалл",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Самоцвет искр",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Уголёк Бэми",
+      "option": "Восстанавливает {Flat}+{Ratio}% от макс. здоровья каждую секунду."
+    },
+    "hourglass_of_eternity": {
+      "name": "Эгида солнечного огня",
+      "option": "Восстанавливает {Flat}+{Ratio}% от макс. здоровья каждую секунду."
+    },
+    "giants_horn_shard": {
+      "name": "Герб кузнечного пламени",
+      "option": "Каждую секунду восстанавливает {RegenFlat} здоровье и наносит врагам в радиусе {Range} магический урон в размере {DmgFlat} + {DmgRatio}% от макс. здоровья."
+    }
+  },
+  "es-ES": {
+    "category": {
+      "all": "Todo",
+      "ad": "Daño de ataque",
+      "attack_speed": "Velocidad de ataque",
+      "defense": "Armadura",
+      "magic_resistance": "Resistencia mágica",
+      "magic": "Poder de habilidad",
+      "hp": "PV"
+    },
+    "info": {
+      "tier": "Tier",
+      "price": "Precio",
+      "stat": "Atributos",
+      "option": "Efecto"
+    },
+    "tier_header": {
+      "1": "Tier 1",
+      "2": "Tier 2",
+      "3": "Tier 3",
+      "4": "Tier 4",
+      "5": "Tier 5"
+    },
+    "related": {
+      "sub_items": "Componentes",
+      "upper_items": "Se convierte en"
+    },
+    "tier": "Tier {Tier}",
+    "spec": {
+      "attack": "Daño de ataque +{Value}",
+      "magic_power": "Poder de habilidad +{Value}",
+      "defence": "Armadura +{Value}",
+      "hp": "PV +{Value}",
+      "magic_resistance": "Resistencia mágica +{Value}",
+      "vamp": "Robo de vida +{Value}%",
+      "hp_mult": "PV +{Value}%",
+      "move_speed_mult": "Velocidad de movimiento +{Value}%",
+      "attack_speed_mult": "Velocidad de ataque +{Value}%",
+      "skill_cooldown_mult": "Reducción de enfriamiento +{Value}%",
+      "range": "Alcance +{Value}",
+      "defence_mult": "Armadura +{Value}%",
+      "defence_penetration": "Penetración de armadura +{Value}%",
+      "magic_resistance_penetration": "Penetración mágica +{Value}%",
+      "heal_reduce": "Reduce la curación enemiga un {Value}% durante 2 segundos",
+      "shield_break": "Destruye un {Value}% del escudo enemigo al atacar",
+      "attack_enemy_hp_ratio": "Daño de ataque básico por PV máximos enemigos +{Value}%",
+      "skill_enemy_hp_ratio": "Daño de habilidad por PV máximos enemigos +{Value}%",
+      "attack_my_hp_ratio": "Daño basado en tus PV máximos +{Value}%",
+      "reflect": "Daño reflejado +{Value}%",
+      "dot_amplify": "Daño prolongado +{Value}%",
+      "hp_regen": "Regeneración de PV por segundo +{Value}",
+      "crit_chance": "Probabilidad de crítico +{Value}%",
+      "base_attack_damaged_reduce": "Reducción de daño de ataque básico +{Value}%",
+      "skill_damaged_reduce": "Reducción de daño de habilidad +{Value}%",
+      "toughness": "Tenacidad +{Value}%"
+    },
+    "ironsword": {
+      "name": "Espada larga",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Pico",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Cetro vampírico",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Sediento de sangre",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Obra maestra de Ornn: Sediento de sangre",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Daga",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Arco recurvo",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Brío",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Bailarina fantasma",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Obra maestra de Ornn: Bailarina fantasma",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Armadura de tela",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Cota de mallas",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Chaleco de espinas",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Cota de espinas",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Obra maestra de Ornn: Cota de espinas",
+      "option": "Al recibir un ataque básico, inflige {Flat}+{Ratio}% de tu Armadura como daño mágico al atacante."
+    },
+    "mystic_cloak": {
+      "name": "Manto de Magia Nula",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Capa Negatrón",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Capucha del Espectro",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Rookern Caénico",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Obra maestra de Ornn: Rookern Caénico",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Tomo amplificador",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Vara explosiva",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Vara innecesariamente grande",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Llama umbría",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Obra maestra de Ornn: Llama umbría",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Cristal de rubí",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Gema flamígera",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Ascua de Bami",
+      "option": "Recupera {Flat}+{Ratio}% de los PV máximos por segundo."
+    },
+    "hourglass_of_eternity": {
+      "name": "Égida solar",
+      "option": "Recupera {Flat}+{Ratio}% de los PV máximos por segundo."
+    },
+    "giants_horn_shard": {
+      "name": "Cresta del fuego de forja",
+      "option": "Recupera {RegenFlat} PV por segundo e inflige {DmgFlat}+{DmgRatio}% de los PV máximos como daño mágico a todos los enemigos dentro de {Range} de alcance."
+    }
+  },
+  "fr": {
+    "category": {
+      "all": "Tous",
+      "ad": "Dégâts d'attaque",
+      "attack_speed": "Vitesse d'attaque",
+      "defense": "Armure",
+      "magic_resistance": "Résistance magique",
+      "magic": "Puissance",
+      "hp": "PV"
+    },
+    "info": {
+      "tier": "Tier",
+      "price": "Prix",
+      "stat": "Stats",
+      "option": "Effet"
+    },
+    "tier_header": {
+      "1": "Tier 1",
+      "2": "Tier 2",
+      "3": "Tier 3",
+      "4": "Tier 4",
+      "5": "Tier 5"
+    },
+    "related": {
+      "sub_items": "Composants",
+      "upper_items": "Évolue en"
+    },
+    "tier": "Tier {Tier}",
+    "spec": {
+      "attack": "Dégâts d'attaque +{Value}",
+      "magic_power": "Puissance +{Value}",
+      "defence": "Armure +{Value}",
+      "hp": "PV +{Value}",
+      "magic_resistance": "Résistance magique +{Value}",
+      "vamp": "Vol de vie +{Value}%",
+      "hp_mult": "PV +{Value}%",
+      "move_speed_mult": "Vitesse de déplacement +{Value}%",
+      "attack_speed_mult": "Vitesse d'attaque +{Value}%",
+      "skill_cooldown_mult": "Réduction de récupération +{Value}%",
+      "range": "Portée +{Value}",
+      "defence_mult": "Armure +{Value}%",
+      "defence_penetration": "Pénétration d'armure +{Value}%",
+      "magic_resistance_penetration": "Pénétration magique +{Value}%",
+      "heal_reduce": "Réduit les soins ennemis de {Value}% pendant 2 secondes",
+      "shield_break": "Détruit {Value}% du bouclier ennemi à l'attaque",
+      "attack_enemy_hp_ratio": "Dégâts d'attaque de base selon les PV max ennemis +{Value}%",
+      "skill_enemy_hp_ratio": "Dégâts de compétence selon les PV max ennemis +{Value}%",
+      "attack_my_hp_ratio": "Dégâts selon vos PV max +{Value}%",
+      "reflect": "Dégâts réfléchis +{Value}%",
+      "dot_amplify": "Dégâts sur la durée +{Value}%",
+      "hp_regen": "Régénération de PV par seconde +{Value}",
+      "crit_chance": "Chances de coup critique +{Value}%",
+      "base_attack_damaged_reduce": "Réduction des dégâts d'attaque de base +{Value}%",
+      "skill_damaged_reduce": "Réduction des dégâts de compétence +{Value}%",
+      "toughness": "Ténacité +{Value}%"
+    },
+    "ironsword": {
+      "name": "Épée longue",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Pioche",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Sceptre vampirique",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Assoiffé de sang",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Chef-d'œuvre d'Ornn: Assoiffé de sang",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Dague",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Arc recourbé",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Ferveur",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Danseur fantôme",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Chef-d'œuvre d'Ornn: Danseur fantôme",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Armure de tissu",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Cotte de mailles",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Gilet de ronces",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Cotte épineuse",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Chef-d'œuvre d'Ornn: Cotte épineuse",
+      "option": "Quand vous subissez une attaque de base, inflige {Flat}+{Ratio}% de votre Armure en dégâts magiques à l'attaquant."
+    },
+    "mystic_cloak": {
+      "name": "Cape de magie nulle",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Cape Négatron",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Capuche du spectre",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Rookern kaenic",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Chef-d'œuvre d'Ornn: Rookern kaenic",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Tome d'amplification",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Baguette explosive",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Bâton inutilement grand",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Flamme d'ombre",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Chef-d'œuvre d'Ornn: Flamme d'ombre",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Cristal de rubis",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Gemme d'embrasement",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Brûlot de Bami",
+      "option": "Restaure {Flat}+{Ratio}% des PV max chaque seconde."
+    },
+    "hourglass_of_eternity": {
+      "name": "Égide solaire",
+      "option": "Restaure {Flat}+{Ratio}% des PV max chaque seconde."
+    },
+    "giants_horn_shard": {
+      "name": "Cimier de feu de forge",
+      "option": "Restaure {RegenFlat} PV par seconde et inflige {DmgFlat}+{DmgRatio}% des PV max en dégâts magiques à tous les ennemis dans une portée de {Range}."
+    }
+  },
+  "zh-hans": {
+    "category": {
+      "all": "全部",
+      "ad": "攻击力",
+      "attack_speed": "攻击速度",
+      "defense": "护甲",
+      "magic_resistance": "魔法抗性",
+      "magic": "法术强度",
+      "hp": "生命值"
+    },
+    "info": {
+      "tier": "品阶",
+      "price": "价格",
+      "stat": "属性",
+      "option": "效果"
+    },
+    "tier_header": {
+      "1": "品阶 1",
+      "2": "品阶 2",
+      "3": "品阶 3",
+      "4": "品阶 4",
+      "5": "品阶 5"
+    },
+    "related": {
+      "sub_items": "合成素材",
+      "upper_items": "可合成"
+    },
+    "tier": "品阶 {Tier}",
+    "spec": {
+      "attack": "攻击力 +{Value}",
+      "magic_power": "法术强度 +{Value}",
+      "defence": "护甲 +{Value}",
+      "hp": "生命值 +{Value}",
+      "magic_resistance": "魔法抗性 +{Value}",
+      "vamp": "生命偷取 +{Value}%",
+      "hp_mult": "生命值 +{Value}%",
+      "move_speed_mult": "移动速度 +{Value}%",
+      "attack_speed_mult": "攻击速度 +{Value}%",
+      "skill_cooldown_mult": "冷却缩减 +{Value}%",
+      "range": "射程 +{Value}",
+      "defence_mult": "护甲 +{Value}%",
+      "defence_penetration": "护甲穿透 +{Value}%",
+      "magic_resistance_penetration": "法术穿透 +{Value}%",
+      "heal_reduce": "使敌方治疗效果降低 {Value}%，持续2秒",
+      "shield_break": "攻击时摧毁敌方护盾值的 {Value}%",
+      "attack_enemy_hp_ratio": "普通攻击基于敌方最大生命值造成伤害 +{Value}%",
+      "skill_enemy_hp_ratio": "技能基于敌方最大生命值造成伤害 +{Value}%",
+      "attack_my_hp_ratio": "基于自身最大生命值造成伤害 +{Value}%",
+      "reflect": "反射伤害 +{Value}%",
+      "dot_amplify": "持续伤害 +{Value}%",
+      "hp_regen": "每秒生命回复 +{Value}",
+      "crit_chance": "暴击率 +{Value}%",
+      "base_attack_damaged_reduce": "普通攻击伤害减免 +{Value}%",
+      "skill_damaged_reduce": "技能伤害减免 +{Value}%",
+      "toughness": "韧性 +{Value}%"
+    },
+    "ironsword": {
+      "name": "长剑",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "十字镐",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "吸血鬼节杖",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "嗜血者",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "奥恩杰作:嗜血者",
+      "option": ""
+    },
+    "dagger": {
+      "name": "短剑",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "反曲之弓",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "狂热",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "幻影之舞",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "奥恩杰作:幻影之舞",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "布甲",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "锁子甲",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "棘刺背心",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "荆棘之甲",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "奥恩杰作:荆棘之甲",
+      "option": "受到普通攻击时，对攻击者造成 {Flat}+护甲的 {Ratio}% 魔法伤害。"
+    },
+    "mystic_cloak": {
+      "name": "抗魔斗篷",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "负极斗篷",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "幽魂兜帽",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "凯尼克栖巢",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "奥恩杰作:凯尼克栖巢",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "增幅典籍",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "爆裂魔杖",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "无谓的大棒",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "暗影之焰",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "奥恩杰作:暗影之焰",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "红水晶",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "点燃宝石",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "巴米的余烬",
+      "option": "每秒回复 {Flat}+最大生命值的 {Ratio}%。"
+    },
+    "hourglass_of_eternity": {
+      "name": "日炎斗篷",
+      "option": "每秒回复 {Flat}+最大生命值的 {Ratio}%。"
+    },
+    "giants_horn_shard": {
+      "name": "锻炎纹章",
+      "option": "每秒回复 {RegenFlat} 生命值，并对周围 {Range} 范围内所有敌人造成 {DmgFlat}+最大生命值的 {DmgRatio}% 魔法伤害。"
+    }
+  },
+  "zh-hant": {
+    "category": {
+      "all": "全部",
+      "ad": "攻擊力",
+      "attack_speed": "攻擊速度",
+      "defense": "護甲",
+      "magic_resistance": "魔法抗性",
+      "magic": "法術強度",
+      "hp": "生命值"
+    },
+    "info": {
+      "tier": "階級",
+      "price": "價格",
+      "stat": "屬性",
+      "option": "效果"
+    },
+    "tier_header": {
+      "1": "階級 1",
+      "2": "階級 2",
+      "3": "階級 3",
+      "4": "階級 4",
+      "5": "階級 5"
+    },
+    "related": {
+      "sub_items": "合成材料",
+      "upper_items": "可合成"
+    },
+    "tier": "階級 {Tier}",
+    "spec": {
+      "attack": "攻擊力 +{Value}",
+      "magic_power": "法術強度 +{Value}",
+      "defence": "護甲 +{Value}",
+      "hp": "生命值 +{Value}",
+      "magic_resistance": "魔法抗性 +{Value}",
+      "vamp": "生命偷取 +{Value}%",
+      "hp_mult": "生命值 +{Value}%",
+      "move_speed_mult": "移動速度 +{Value}%",
+      "attack_speed_mult": "攻擊速度 +{Value}%",
+      "skill_cooldown_mult": "冷卻縮減 +{Value}%",
+      "range": "射程 +{Value}",
+      "defence_mult": "護甲 +{Value}%",
+      "defence_penetration": "護甲穿透 +{Value}%",
+      "magic_resistance_penetration": "法術穿透 +{Value}%",
+      "heal_reduce": "使敵方治療效果降低 {Value}%，持續2秒",
+      "shield_break": "攻擊時摧毀敵方護盾值的 {Value}%",
+      "attack_enemy_hp_ratio": "普通攻擊按敵方最大生命值造成傷害 +{Value}%",
+      "skill_enemy_hp_ratio": "技能按敵方最大生命值造成傷害 +{Value}%",
+      "attack_my_hp_ratio": "按自身最大生命值造成傷害 +{Value}%",
+      "reflect": "反射傷害 +{Value}%",
+      "dot_amplify": "持續傷害 +{Value}%",
+      "hp_regen": "每秒生命回復 +{Value}",
+      "crit_chance": "暴擊率 +{Value}%",
+      "base_attack_damaged_reduce": "普通攻擊傷害減免 +{Value}%",
+      "skill_damaged_reduce": "技能傷害減免 +{Value}%",
+      "toughness": "韌性 +{Value}%"
+    },
+    "ironsword": {
+      "name": "長劍",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "鶴嘴鋤",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "吸血權杖",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "嗜血劍",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "歐恩傑作:嗜血劍",
+      "option": ""
+    },
+    "dagger": {
+      "name": "匕首",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "反曲之弓",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "狂熱",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "幽靈舞者",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "歐恩傑作:幽靈舞者",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "布甲",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "鎖甲背心",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "棘刺背心",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "棘刺鎧甲",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "歐恩傑作:棘刺鎧甲",
+      "option": "受到普通攻擊時，對攻擊者造成 {Flat}+護甲的 {Ratio}% 魔法傷害。"
+    },
+    "mystic_cloak": {
+      "name": "虛無法力斗篷",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "負極斗篷",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "幽魂兜帽",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "凱尼克棲巢",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "歐恩傑作:凱尼克棲巢",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "增幅魔典",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "爆裂魔杖",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "無謂的大法杖",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "暗影之焰",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "歐恩傑作:暗影之焰",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "紅水晶",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "點燃寶石",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "巴米的餘燼",
+      "option": "每秒回復 {Flat}+最大生命值的 {Ratio}%。"
+    },
+    "hourglass_of_eternity": {
+      "name": "太陽神之炎護盾",
+      "option": "每秒回復 {Flat}+最大生命值的 {Ratio}%。"
+    },
+    "giants_horn_shard": {
+      "name": "鍛炎紋章",
+      "option": "每秒回復 {RegenFlat} 生命值，並對周圍 {Range} 範圍內所有敵人造成 {DmgFlat}+最大生命值的 {DmgRatio}% 魔法傷害。"
+    }
+  }
+}
