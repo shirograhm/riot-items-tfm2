@@ -17,7 +17,7 @@ impl ModItemInfo for BlackfireTorch {
     }
 
     fn price(&self) -> usize {
-        1350
+        1400
     }
 
     fn tier(&self) -> usize {
