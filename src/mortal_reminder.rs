@@ -1,3 +1,4 @@
+use arrayvec::ArrayString;
 use mod_api::*;
 
 #[derive(Default, Clone, Debug)]
@@ -48,14 +49,23 @@ impl ModItemInfo for MortalReminder {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        ctx.add_buff(
-            target,
-            BuffState {
-                duration: BuffType::Time { tick: 180 },
-                heal_reduce: 40,
-                ..Default::default()
-            },
-        );
+        let Some(entity_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let already_reduced = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "mortal_reminder_heal_cut");
+
+        if !already_reduced {
+            ctx.add_buff(
+                target,
+                BuffState {
+                    duration: BuffType::Time { tick: 120 },
+                    heal_reduce: 40,
+                    name: ArrayString::try_from("mortal_reminder_heal_cut").unwrap(),
+                    ..Default::default()
+                },
+            );
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -115,14 +125,23 @@ impl ModItemInfo for RadiantMortalReminder {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        ctx.add_buff(
-            target,
-            BuffState {
-                duration: BuffType::Time { tick: 180 },
-                heal_reduce: 40,
-                ..Default::default()
-            },
-        );
+        let Some(entity_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let already_reduced = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_mortal_reminder_heal_cut");
+
+        if !already_reduced {
+            ctx.add_buff(
+                target,
+                BuffState {
+                    duration: BuffType::Time { tick: 120 },
+                    heal_reduce: 40,
+                    name: ArrayString::try_from("radiant_mortal_reminder_heal_cut").unwrap(),
+                    ..Default::default()
+                },
+            );
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
