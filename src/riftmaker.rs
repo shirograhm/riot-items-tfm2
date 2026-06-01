@@ -17,7 +17,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn price(&self) -> usize {
-        1350
+        1300
     }
 
     fn tier(&self) -> usize {
@@ -52,7 +52,7 @@ impl ModItemInfo for Riftmaker {
         };
         // Heal the player for 25 + 1% of their max HP on skill hit
         let hp = player_champ_ref.hp();
-        let heal_amount = 25 + (hp.max * 1 / 100);
+        let heal_amount = 55 + (hp.max * 1 / 100);
         ctx.heal(caster, caster, heal_amount);
     }
 
@@ -82,7 +82,7 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn price(&self) -> usize {
-        2000
+        1900
     }
 
     fn tier(&self) -> usize {
@@ -110,7 +110,7 @@ impl ModItemInfo for RadiantRiftmaker {
         };
         // Heal the player for 40 + 4% of their max HP on skill hit
         let hp = player_champ_ref.hp();
-        let heal_amount = 40 + (hp.max * 4 / 100);
+        let heal_amount = 90 + (hp.max * 4 / 100);
         ctx.heal(caster, caster, heal_amount);
     }
 
