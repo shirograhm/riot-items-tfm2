@@ -98,7 +98,7 @@ impl ModItemInfo for RadiantFrozenMallet {
     }
 
     fn price(&self) -> usize {
-        1850
+        1900
     }
 
     fn tier(&self) -> usize {
