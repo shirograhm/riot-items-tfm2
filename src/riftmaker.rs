@@ -50,9 +50,9 @@ impl ModItemInfo for Riftmaker {
         let Some(player_champ_ref) = player_ref.champion() else {
             return;
         };
-        // Heal the player for 15 + 1% of their max HP on skill hit
+        // Heal the player for 25 + 1% of their max HP on skill hit
         let hp = player_champ_ref.hp();
-        let heal_amount = 15 + (hp.max * 1 / 100);
+        let heal_amount = 25 + (hp.max * 1 / 100);
         ctx.heal(caster, caster, heal_amount);
     }
 
@@ -108,9 +108,9 @@ impl ModItemInfo for RadiantRiftmaker {
         let Some(player_champ_ref) = player_ref.champion() else {
             return;
         };
-        // Heal the player for 30 + 3% of their max HP on skill hit
+        // Heal the player for 40 + 4% of their max HP on skill hit
         let hp = player_champ_ref.hp();
-        let heal_amount = 30 + (hp.max * 3 / 100);
+        let heal_amount = 40 + (hp.max * 4 / 100);
         ctx.heal(caster, caster, heal_amount);
     }
 
