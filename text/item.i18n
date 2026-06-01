@@ -225,11 +225,11 @@
     },
     "riftmaker": {
       "name": "Riftmaker",
-      "option": "Siphon: Spell hits heal you for <#60e84dff>15<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+      "option": "Siphon: Spell hits heal you for <#60e84dff>25<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "radiant_riftmaker": {
       "name": "Radiant Riftmaker",
-      "option": "Siphon: Spell hits heal you for <#60e84dff>30<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+      "option": "Siphon: Spell hits heal you for <#60e84dff>40<> + <#60e84dff>4%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "blade_of_the_ruined_king": {
       "name": "Blade of the Ruined King",
@@ -241,23 +241,23 @@
     },
     "blackfire_torch": {
       "name": "Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>5 seconds<>. This effect can stack up to <#e8a800ff>5 times<>."
+      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<>. This effect can stack up to <#e8a800ff>4 times<>."
     },
     "radiant_blackfire_torch": {
       "name": "Radiant Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>5 seconds<>. This effect can stack up to <#e8a800ff>5 times<>."
+      "option": "Maleficent: Spell hits grant <#a974ffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<>. This effect can stack up to <#e8a800ff>4 times<>."
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
-      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>3 seconds<>."
+      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>2 seconds<>."
     },
     "mortal_reminder": {
       "name": "Mortal Reminder",
-      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>3 seconds<>."
+      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "radiant_mortal_reminder": {
       "name": "Radiant Mortal Reminder",
-      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>3 seconds<>."
+      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "experimental_hexplate": {
       "name": "Experimental Hexplate",
