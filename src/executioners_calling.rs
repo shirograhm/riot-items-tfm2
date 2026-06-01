@@ -39,14 +39,6 @@ impl ModItemInfo for ExecutionersCalling {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::HealReduce]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
-    }
-
     fn on_attack(
         &mut self,
         ctx: &mut GameCtx,
@@ -63,5 +55,13 @@ impl ModItemInfo for ExecutionersCalling {
                 ..Default::default()
             },
         );
+    }
+
+    fn tags(&self) -> Vec<ItemTag> {
+        vec![ItemTag::AD, ItemTag::HealReduce]
+    }
+
+    fn category(&self) -> ItemCategory {
+        ItemCategory::AD
     }
 }

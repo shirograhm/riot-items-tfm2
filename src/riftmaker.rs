@@ -17,7 +17,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn price(&self) -> usize {
-        1400
+        1350
     }
 
     fn tier(&self) -> usize {
@@ -50,14 +50,7 @@ impl ModItemInfo for Riftmaker {
         let Some(player_champ_ref) = player_ref.champion() else {
             return;
         };
-        // Make sure the killed unit is another champion, not a minion or monster
-        let Some(target_ref) = ctx.get_player(entity) else {
-            return;
-        };
-        let Some(_target_champ_ref) = target_ref.champion() else {
-            return;
-        };
-        // Heal the player for 50 + 2% of their max HP
+        // Heal the player for 50 + 2% of their max HP on unit kill
         let hp = player_champ_ref.hp();
         let heal_amount = 50 + (hp.max * 2 / 100);
         ctx.heal(player, entity, heal_amount);
@@ -89,7 +82,7 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn price(&self) -> usize {
-        2100
+        2000
     }
 
     fn tier(&self) -> usize {
@@ -115,14 +108,7 @@ impl ModItemInfo for RadiantRiftmaker {
         let Some(player_champ_ref) = player_ref.champion() else {
             return;
         };
-        // Make sure the killed unit is another champion, not a minion or monster
-        let Some(target_ref) = ctx.get_player(entity) else {
-            return;
-        };
-        let Some(_target_champ_ref) = target_ref.champion() else {
-            return;
-        };
-        // Heal the player for 100 + 5% of their max HP
+        // Heal the player for 100 + 5% of their max HP on unit kill
         let hp = player_champ_ref.hp();
         let heal_amount = 100 + (hp.max * 5 / 100);
         ctx.heal(player, entity, heal_amount);

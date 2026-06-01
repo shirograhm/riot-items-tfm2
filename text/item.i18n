@@ -225,11 +225,11 @@
     },
     "riftmaker": {
       "name": "Riftmaker",
-      "option": "Siphon: On champion kill, heal for <#60e84dff>50<> + <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+      "option": "Siphon: On kill, heal for <#60e84dff>50<> + <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "radiant_riftmaker": {
       "name": "Radiant Riftmaker",
-      "option": "Siphon: On champion kill, heal for <#60e84dff>100<> + <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+      "option": "Siphon: On kill, heal for <#60e84dff>100<> + <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "blade_of_the_ruined_king": {
       "name": "Blade of the Ruined King",

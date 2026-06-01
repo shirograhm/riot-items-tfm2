@@ -38,7 +38,7 @@ impl ModItemInfo for MortalReminder {
     fn stat(&self) -> BuffState {
         BuffState {
             attack: 55,
-            attack_speed_mult: 25,
+            defence_penetration: 20,
             ..Default::default()
         }
     }
@@ -62,7 +62,11 @@ impl ModItemInfo for MortalReminder {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::HealReduce]
+        vec![
+            ItemTag::AD,
+            ItemTag::DefensePenetration,
+            ItemTag::HealReduce,
+        ]
     }
 
     fn category(&self) -> ItemCategory {
@@ -101,7 +105,7 @@ impl ModItemInfo for RadiantMortalReminder {
     fn stat(&self) -> BuffState {
         BuffState {
             attack: 70,
-            attack_speed_mult: 40,
+            defence_penetration: 35,
             ..Default::default()
         }
     }
@@ -125,7 +129,11 @@ impl ModItemInfo for RadiantMortalReminder {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::HealReduce]
+        vec![
+            ItemTag::AD,
+            ItemTag::DefensePenetration,
+            ItemTag::HealReduce,
+        ]
     }
 
     fn category(&self) -> ItemCategory {
