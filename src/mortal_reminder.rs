@@ -88,7 +88,7 @@ impl ModItemInfo for RadiantMortalReminder {
     }
 
     fn price(&self) -> usize {
-        1800
+        1850
     }
 
     fn tier(&self) -> usize {
@@ -102,7 +102,7 @@ impl ModItemInfo for RadiantMortalReminder {
     fn stat(&self) -> BuffState {
         BuffState {
             attack: 70,
-            defence_penetration: 35,
+            defence_penetration: 30,
             ..Default::default()
         }
     }
