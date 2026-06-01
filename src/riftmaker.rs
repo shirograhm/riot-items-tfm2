@@ -43,17 +43,17 @@ impl ModItemInfo for Riftmaker {
         }
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, entity: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        let Some(player_ref) = ctx.get_player(caster) else {
             return;
         };
         let Some(player_champ_ref) = player_ref.champion() else {
             return;
         };
-        // Heal the player for 50 + 2% of their max HP on unit kill
+        // Heal the player for 15 + 1% of their max HP on skill hit
         let hp = player_champ_ref.hp();
-        let heal_amount = 50 + (hp.max * 2 / 100);
-        ctx.heal(player, entity, heal_amount);
+        let heal_amount = 15 + (hp.max * 1 / 100);
+        ctx.heal(caster, caster, heal_amount);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -101,17 +101,17 @@ impl ModItemInfo for RadiantRiftmaker {
         }
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, entity: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        let Some(player_ref) = ctx.get_player(caster) else {
             return;
         };
         let Some(player_champ_ref) = player_ref.champion() else {
             return;
         };
-        // Heal the player for 100 + 5% of their max HP on unit kill
+        // Heal the player for 30 + 3% of their max HP on skill hit
         let hp = player_champ_ref.hp();
-        let heal_amount = 100 + (hp.max * 5 / 100);
-        ctx.heal(player, entity, heal_amount);
+        let heal_amount = 30 + (hp.max * 3 / 100);
+        ctx.heal(caster, caster, heal_amount);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
