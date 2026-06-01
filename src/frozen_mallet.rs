@@ -39,7 +39,7 @@ impl ModItemInfo for FrozenMallet {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: 450,
-            attack: 35,
+            attack: 45,
             ..Default::default()
         }
     }
@@ -47,20 +47,29 @@ impl ModItemInfo for FrozenMallet {
     fn on_attack(
         &mut self,
         ctx: &mut GameCtx,
-        caster: usize,
+        _caster: usize,
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        // Mallet on-hit physical damage
-        let Some(player_ref) = ctx.get_player(caster) else {
+        // Mallet slow debuff
+        let Some(entity_ref) = ctx.get_entity(target) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
-            return;
-        };
-        let bonus_damage = 20 + entity_ref.hp().max * 3 / 100; // 20 + 3% of max hp as bonus physical damage
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+        let already_slowed = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
+
+        if !already_slowed {
+            ctx.add_buff(
+                target,
+                BuffState {
+                    duration: BuffType::Time { tick: 120 },
+                    move_speed_mult: -15,
+                    name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
+                    ..Default::default()
+                },
+            );
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -103,7 +112,7 @@ impl ModItemInfo for RadiantFrozenMallet {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: 600,
-            attack: 40,
+            attack: 60,
             ..Default::default()
         }
     }
@@ -131,7 +140,7 @@ impl ModItemInfo for RadiantFrozenMallet {
             return;
         };
         let already_slowed = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_frozen_mallet_slow");
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
 
         if !already_slowed {
             ctx.add_buff(
@@ -139,7 +148,7 @@ impl ModItemInfo for RadiantFrozenMallet {
                 BuffState {
                     duration: BuffType::Time { tick: 120 },
                     move_speed_mult: -15,
-                    name: ArrayString::try_from("radiant_frozen_mallet_slow").unwrap(),
+                    name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
                     ..Default::default()
                 },
             );
