@@ -45,14 +45,14 @@ impl ModItemInfo for BlackfireTorch {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;
         };
-        let already_buffed = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "blackfire_torch_buff");
-
-        if !already_buffed {
+        let stack_count = (0..entity_ref.buff_count())
+            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "blackfire_torch_buff")
+            .count();
+        if stack_count < 4 {
             ctx.add_buff(
                 caster,
                 BuffState {
-                    duration: BuffType::Time { tick: 300 },
+                    duration: BuffType::Time { tick: 240 },
                     magic_power: 10,
                     name: ArrayString::try_from("blackfire_torch_buff").unwrap(),
                     ..Default::default()
@@ -113,11 +113,11 @@ impl ModItemInfo for RadiantBlackfireTorch {
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_blackfire_torch_buff")
             .count();
-        if stack_count < 5 {
+        if stack_count < 4 {
             ctx.add_buff(
                 caster,
                 BuffState {
-                    duration: BuffType::Time { tick: 300 },
+                    duration: BuffType::Time { tick: 240 },
                     magic_power: 20,
                     name: ArrayString::try_from("radiant_blackfire_torch_buff").unwrap(),
                     ..Default::default()
