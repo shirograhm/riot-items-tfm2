@@ -25,10 +25,7 @@ impl ModItemInfo for MortalReminder {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "executioners_calling".to_string(),
-            "wind_dagger".to_string(),
-        ]
+        vec!["executioners_calling".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
