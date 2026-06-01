@@ -18,7 +18,7 @@ impl ModItemInfo for FrozenMallet {
     }
 
     fn price(&self) -> usize {
-        1300
+        1400
     }
 
     fn tier(&self) -> usize {

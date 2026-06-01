@@ -17,7 +17,7 @@ impl ModItemInfo for RabadonsDeathcap {
     }
 
     fn price(&self) -> usize {
-        1500
+        1550
     }
 
     fn tier(&self) -> usize {
