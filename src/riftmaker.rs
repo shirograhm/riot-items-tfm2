@@ -17,7 +17,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn price(&self) -> usize {
-        1350
+        1300
     }
 
     fn tier(&self) -> usize {
@@ -82,7 +82,7 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn price(&self) -> usize {
-        1950
+        1900
     }
 
     fn tier(&self) -> usize {
