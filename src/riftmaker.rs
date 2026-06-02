@@ -38,7 +38,7 @@ impl ModItemInfo for Riftmaker {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: 450,
-            magic_power: 90,
+            magic_power: 100,
             ..Default::default()
         }
     }
@@ -95,7 +95,7 @@ impl ModItemInfo for RadiantRiftmaker {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 500,
+            hp: 600,
             magic_power: 150,
             ..Default::default()
         }
@@ -108,9 +108,9 @@ impl ModItemInfo for RadiantRiftmaker {
         let Some(player_champ_ref) = player_ref.champion() else {
             return;
         };
-        // Heal the player for 90 + 4% of their max HP on skill hit
+        // Heal the player for 90 + 3% of their max HP on skill hit
         let hp = player_champ_ref.hp();
-        let heal_amount = 90 + (hp.max * 4 / 100);
+        let heal_amount = 90 + (hp.max * 3 / 100);
         ctx.heal(caster, caster, heal_amount);
     }
 

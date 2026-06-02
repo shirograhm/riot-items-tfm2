@@ -7,7 +7,6 @@ mod experimental_hexplate;
 mod frozen_mallet;
 mod infinity_edge;
 mod mortal_reminder;
-mod nashors_tooth;
 mod needlessly_large_rod;
 mod protectors_vow;
 mod rabadons_deathcap;
@@ -22,7 +21,6 @@ use experimental_hexplate::*;
 use frozen_mallet::*;
 use infinity_edge::*;
 use mortal_reminder::*;
-use nashors_tooth::*;
 use needlessly_large_rod::*;
 use protectors_vow::*;
 use rabadons_deathcap::*;
@@ -55,8 +53,6 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(ExecutionersCalling::default());
     reg.add_item(MortalReminder::default());
     reg.add_item(RadiantMortalReminder::default());
-    reg.add_item(NashorsTooth::default());
-    reg.add_item(RadiantNashorsTooth::default());
     reg
 }
 
