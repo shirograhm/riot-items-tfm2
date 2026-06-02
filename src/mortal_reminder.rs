@@ -18,7 +18,7 @@ impl ModItemInfo for MortalReminder {
     }
 
     fn price(&self) -> usize {
-        1200
+        1300
     }
 
     fn tier(&self) -> usize {
@@ -98,7 +98,7 @@ impl ModItemInfo for RadiantMortalReminder {
     }
 
     fn price(&self) -> usize {
-        1850
+        1950
     }
 
     fn tier(&self) -> usize {
