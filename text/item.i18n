@@ -249,15 +249,15 @@
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
-      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>2 seconds<>."
+      "option": "Grievous Wounds: Damaging an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>2 seconds<>."
     },
     "mortal_reminder": {
       "name": "Mortal Reminder",
-      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+      "option": "Grievous Wounds: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "radiant_mortal_reminder": {
       "name": "Radiant Mortal Reminder",
-      "option": "Serrated: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+      "option": "Grievous Wounds: Damaging an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "experimental_hexplate": {
       "name": "Experimental Hexplate",
