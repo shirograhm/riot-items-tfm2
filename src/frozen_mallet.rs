@@ -64,7 +64,7 @@ impl ModItemInfo for FrozenMallet {
                 target,
                 BuffState {
                     duration: BuffType::Time { tick: 120 },
-                    move_speed_mult: -15,
+                    move_speed_mult: -25,
                     name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
                     ..Default::default()
                 },
@@ -147,7 +147,7 @@ impl ModItemInfo for RadiantFrozenMallet {
                 target,
                 BuffState {
                     duration: BuffType::Time { tick: 120 },
-                    move_speed_mult: -15,
+                    move_speed_mult: -25,
                     name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
                     ..Default::default()
                 },

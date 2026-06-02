@@ -66,7 +66,7 @@ impl ModItemInfo for RadiantInfinityEdge {
     }
 
     fn price(&self) -> usize {
-        1900
+        2000
     }
 
     fn tier(&self) -> usize {
@@ -79,7 +79,7 @@ impl ModItemInfo for RadiantInfinityEdge {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 110,
+            attack: 120,
             crit_chance: 50,
             ..Default::default()
         }
