@@ -35,8 +35,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
     fn stat(&self) -> BuffState {
         BuffState {
             attack: 50,
-            attack_speed_mult: 25,
-            vamp: 5,
+            attack_speed_mult: 35,
             ..Default::default()
         }
     }
@@ -102,7 +101,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
     fn stat(&self) -> BuffState {
         BuffState {
             attack: 50,
-            attack_speed_mult: 35,
+            attack_speed_mult: 50,
             vamp: 10,
             ..Default::default()
         }
