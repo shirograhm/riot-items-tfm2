@@ -17,7 +17,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn price(&self) -> usize {
-        1300
+        1350
     }
 
     fn tier(&self) -> usize {
@@ -37,8 +37,8 @@ impl ModItemInfo for Riftmaker {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 400,
-            magic_power: 60,
+            hp: 450,
+            magic_power: 90,
             ..Default::default()
         }
     }
@@ -50,7 +50,7 @@ impl ModItemInfo for Riftmaker {
         let Some(player_champ_ref) = player_ref.champion() else {
             return;
         };
-        // Heal the player for 25 + 1% of their max HP on skill hit
+        // Heal the player for 55 + 1% of their max HP on skill hit
         let hp = player_champ_ref.hp();
         let heal_amount = 55 + (hp.max * 1 / 100);
         ctx.heal(caster, caster, heal_amount);
@@ -96,7 +96,7 @@ impl ModItemInfo for RadiantRiftmaker {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: 500,
-            magic_power: 100,
+            magic_power: 150,
             ..Default::default()
         }
     }
@@ -108,7 +108,7 @@ impl ModItemInfo for RadiantRiftmaker {
         let Some(player_champ_ref) = player_ref.champion() else {
             return;
         };
-        // Heal the player for 40 + 4% of their max HP on skill hit
+        // Heal the player for 90 + 4% of their max HP on skill hit
         let hp = player_champ_ref.hp();
         let heal_amount = 90 + (hp.max * 4 / 100);
         ctx.heal(caster, caster, heal_amount);
