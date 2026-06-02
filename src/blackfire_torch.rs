@@ -35,7 +35,7 @@ impl ModItemInfo for BlackfireTorch {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 125,
+            magic_power: 130,
             skill_cooldown_mult: 15,
             ..Default::default()
         }
@@ -100,7 +100,7 @@ impl ModItemInfo for RadiantBlackfireTorch {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 150,
+            magic_power: 160,
             skill_cooldown_mult: 20,
             ..Default::default()
         }

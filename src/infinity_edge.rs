@@ -17,7 +17,7 @@ impl ModItemInfo for InfinityEdge {
     }
 
     fn price(&self) -> usize {
-        1350
+        1300
     }
 
     fn tier(&self) -> usize {
@@ -66,7 +66,7 @@ impl ModItemInfo for RadiantInfinityEdge {
     }
 
     fn price(&self) -> usize {
-        2000
+        1900
     }
 
     fn tier(&self) -> usize {

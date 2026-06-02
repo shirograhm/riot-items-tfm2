@@ -17,7 +17,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
     }
 
     fn price(&self) -> usize {
-        1450
+        1400
     }
 
     fn tier(&self) -> usize {
@@ -88,7 +88,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
     }
 
     fn price(&self) -> usize {
-        2000
+        1950
     }
 
     fn tier(&self) -> usize {

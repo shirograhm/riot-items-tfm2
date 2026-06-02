@@ -67,7 +67,7 @@ impl ModItemInfo for RadiantExperimentalHexplate {
     }
 
     fn price(&self) -> usize {
-        1900
+        1850
     }
 
     fn tier(&self) -> usize {
