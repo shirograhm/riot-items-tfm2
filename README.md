@@ -93,7 +93,8 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > 
 > **Blade of the Ruined King - 1400G**
 > +50 Attack Damage
-> +35% Attack Speed
+> +25% Attack Speed
+> +5% Lifesteal
 > <u>Mist's Edge</u>: On attack, deal bonus physical damage equal to 5% of the target's current health.
 > 
 > **Blackfire Torch - 1400G**
@@ -141,7 +142,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > <u>Icy</u>: On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds.
 > 
 > **Radiant Blade of the Ruined King - 1950G**
-> +50 Attack Damage
+> +60 Attack Damage
 > +50% Attack Speed
 > +10% Lifesteal
 > <u>Mist's Edge</u>: On attack, deal bonus physical damage equal to 8% of the target's current health.
