@@ -39,8 +39,8 @@ impl ModItemInfo for Riftmaker {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 450,
-            magic_power: 100,
+            hp: 400,
+            magic_power: 75,
             ..Default::default()
         }
     }
