@@ -6,6 +6,7 @@ mod executioners_calling;
 mod experimental_hexplate;
 mod frozen_mallet;
 mod infinity_edge;
+mod jaksho_the_protean;
 mod mortal_reminder;
 mod nashors_tooth;
 mod needlessly_large_rod;
@@ -21,6 +22,7 @@ use executioners_calling::*;
 use experimental_hexplate::*;
 use frozen_mallet::*;
 use infinity_edge::*;
+use jaksho_the_protean::*;
 use mortal_reminder::*;
 use nashors_tooth::*;
 use needlessly_large_rod::*;
@@ -57,6 +59,8 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(RadiantMortalReminder::default());
     reg.add_item(NashorsTooth::default());
     reg.add_item(RadiantNashorsTooth::default());
+    reg.add_item(JakshoTheProtean::default());
+    reg.add_item(RadiantJakshoTheProtean::default());
     reg
 }
 
