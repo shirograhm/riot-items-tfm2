@@ -245,7 +245,7 @@
     },
     "radiant_blackfire_torch": {
       "name": "Radiant Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Maleficent: Spell hits grant <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "executioners_calling": {
       "name": "Executioner's Calling",

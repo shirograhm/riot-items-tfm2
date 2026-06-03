@@ -101,7 +101,7 @@ impl ModItemInfo for RadiantBlackfireTorch {
     fn stat(&self) -> BuffState {
         BuffState {
             magic_power: 160,
-            skill_cooldown_mult: 20,
+            skill_cooldown_mult: 25,
             ..Default::default()
         }
     }
@@ -118,7 +118,7 @@ impl ModItemInfo for RadiantBlackfireTorch {
                 caster,
                 BuffState {
                     duration: BuffType::Time { tick: 240 },
-                    magic_power: 20,
+                    magic_power: 30,
                     name: ArrayString::try_from("radiant_blackfire_torch_buff").unwrap(),
                     ..Default::default()
                 },

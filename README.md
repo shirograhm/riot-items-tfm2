@@ -148,8 +148,8 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > 
 > **Radiant Blackfire Torch - 2000G**
 > +160 Ability Power
-> +20% Skill Cooldown Reduction
-> <u>Maleficent</u>: Spell hits grant 20 Ability Power for 4 seconds. This effect can stack up to 4 times.
+> +25% Skill Cooldown Reduction
+> <u>Maleficent</u>: Spell hits grant 30 Ability Power for 4 seconds. This effect can stack up to 4 times.
 > 
 > **Radiant Experimental Hexplate - 1850G**
 > +500 HP
