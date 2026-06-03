@@ -17,7 +17,7 @@ impl ModItemInfo for ProtectorsVow {
     }
 
     fn price(&self) -> usize {
-        1350
+        1300
     }
 
     fn tier(&self) -> usize {
@@ -69,7 +69,7 @@ impl ModItemInfo for RadiantProtectorsVow {
     }
 
     fn price(&self) -> usize {
-        1950
+        1800
     }
 
     fn tier(&self) -> usize {
