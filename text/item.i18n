@@ -277,11 +277,11 @@
     },
     "jaksho_the_protean": {
       "name": "Jak'sho, The Protean",
-      "option": "Resilience: When you take damage from an enemy champion, gain <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic_resistance_0> magic resistance<> for <#e8a800ff>5 seconds<> (max 5 stacks)."
+      "option": "Resilience: When you take damage from an enemy champion, gain <#ffdd8eff>6% armor<> and <#88ccffff>6% magic resistance<> for <#e8a800ff>5 seconds<> (max 5 stacks)."
     },
     "radiant_jaksho_the_protean": {
       "name": "Radiant Jak'sho, The Protean",
-      "option": "Resilience: When you take damage from an enemy champion, gain <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic_resistance_0> magic resistance<> for <#e8a800ff>5 seconds<> (max 5 stacks)."
+      "option": "Resilience: When you take damage from an enemy champion, gain <#ffdd8eff>10% armor<> and <#88ccffff>10% magic resistance<> for <#e8a800ff>5 seconds<> (max 5 stacks)."
     }
   }
 }
