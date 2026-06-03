@@ -111,7 +111,11 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > +55 Attack Damage
 > +20% Armor Penetration
 > <u>Executioner</u>: On attack, reduce healing by 40% for 2 seconds.
-
+> 
+> **Nashor's Tooth - 1400G**
+> +115 Ability Power
+> +25% Attack Speed
+> <u>Icathian Bite</u>: On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power.
 
 #### Tier 5
 > **Radiant Infinity Edge - 1900G**
@@ -162,3 +166,8 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > +70 Attack Damage
 > +30% Armor Penetration
 > <u>Executioner</u>: On attack, reduce healing by 40% for 2 seconds.
+> 
+> **Radiant Nashor's Tooth - 2000G**
+> +180 Ability Power
+> +40% Attack Speed
+> <u>Icathian Bite</u>: On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power.

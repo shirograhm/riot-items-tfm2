@@ -273,7 +273,8 @@
     },
     "radiant_nashors_tooth": {
       "name": "Radiant Nashor's Tooth",
-      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>60<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+    },
     }
   }
 }
