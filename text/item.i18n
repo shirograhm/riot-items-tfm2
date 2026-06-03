@@ -282,6 +282,14 @@
     "radiant_jaksho_the_protean": {
       "name": "Radiant Jak'sho, The Protean",
       "option": "Resilience: When you take damage from an enemy champion, gain <#ffdd8eff>10% armor<> and <#88ccffff>10% magic resistance<> for <#e8a800ff>5 seconds<> (max 5 stacks)."
+    },
+    "terminus": {
+      "name": "Terminus",
+      "option": "Juxtaposition: On attack, gain either 5 <#ffdd8eff>armor<> and <#88ccffff>magic resistance<> or 5% <#ffdd8eff>armor penetration<> and <#88ccffff>magic penetration<> for 4 seconds, alternating (max 4 stacks)."
+    },
+    "radiant_terminus": {
+      "name": "Radiant Terminus",
+      "option": "Juxtaposition: On attack, gain either 8 <#ffdd8eff>armor<> and <#88ccffff>magic resistance<> or 8% <#ffdd8eff>armor penetration<> and <#88ccffff>magic penetration<> for 4 seconds, alternating (max 4 stacks)."
     }
   }
 }

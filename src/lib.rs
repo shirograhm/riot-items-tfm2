@@ -13,6 +13,7 @@ mod needlessly_large_rod;
 mod protectors_vow;
 mod rabadons_deathcap;
 mod riftmaker;
+mod terminus;
 
 use bf_sword::*;
 use blackfire_torch::*;
@@ -29,6 +30,7 @@ use needlessly_large_rod::*;
 use protectors_vow::*;
 use rabadons_deathcap::*;
 use riftmaker::*;
+use terminus::*;
 
 use mod_api::*;
 
@@ -65,6 +67,8 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(RadiantNashorsTooth::default());
     reg.add_item(JakshoTheProtean::default());
     reg.add_item(RadiantJakshoTheProtean::default());
+    reg.add_item(Terminus::default());
+    reg.add_item(RadiantTerminus::default());
     reg
 }
 
