@@ -1,5 +1,7 @@
 use mod_api::*;
 
+use crate::percent_of;
+
 #[derive(Default, Clone, Debug)]
 pub struct Riftmaker;
 
@@ -44,11 +46,11 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        // Heal the player for 55 + 1% of their max HP on skill hit
-        let heal_amount = 55
+        // Heal the player for 40 + 1% of their max HP on skill hit
+        let heal_amount = 40
             + ctx
                 .get_entity(caster)
-                .map(|e| (e.hp().max as f64 * 3.0 / 100.0).round() as usize)
+                .map(|e| percent_of(e.hp().max, 1.0))
                 .unwrap_or(0);
         ctx.heal(caster, caster, heal_amount);
     }
@@ -99,11 +101,11 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        // Heal the player for 90 + 3% of their max HP on skill hit
-        let heal_amount = 90
+        // Heal the player for 75 + 3% of their max HP on skill hit
+        let heal_amount = 75
             + ctx
                 .get_entity(caster)
-                .map(|e| (e.hp().max as f64 * 3.0 / 100.0).round() as usize)
+                .map(|e| percent_of(e.hp().max, 3.0))
                 .unwrap_or(0);
         ctx.heal(caster, caster, heal_amount);
     }

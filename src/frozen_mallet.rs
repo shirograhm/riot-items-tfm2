@@ -1,6 +1,8 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
+use crate::percent_of;
+
 #[derive(Default, Clone, Debug)]
 pub struct FrozenMallet;
 
@@ -129,7 +131,7 @@ impl ModItemInfo for RadiantFrozenMallet {
         let bonus_damage = 20
             + ctx
                 .get_entity(caster)
-                .map(|e| (e.hp().max as f64 * 3.0 / 100.0).round() as usize)
+                .map(|e| percent_of(e.hp().max, 3.0))
                 .unwrap_or(0);
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
 

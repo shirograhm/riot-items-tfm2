@@ -1,5 +1,7 @@
 use mod_api::*;
 
+use crate::percent_of;
+
 #[derive(Default, Clone, Debug)]
 pub struct BladeOfTheRuinedKing;
 
@@ -52,7 +54,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         // Bonus damage equal to 5% of the target's current HP on hit
         let bonus_damage = ctx
             .get_entity(target)
-            .map(|e| (e.hp().current as f64 * 5.0 / 100.0).round() as usize)
+            .map(|e| percent_of(e.hp().current, 5.0))
             .unwrap_or(0);
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
@@ -119,7 +121,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         // Bonus damage equal to 8% of the target's current HP on hit
         let bonus_damage = ctx
             .get_entity(target)
-            .map(|e| (e.hp().current as f64 * 8.0 / 100.0).round() as usize)
+            .map(|e| percent_of(e.hp().current, 8.0))
             .unwrap_or(0);
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }

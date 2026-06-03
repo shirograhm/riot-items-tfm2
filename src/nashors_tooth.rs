@@ -1,5 +1,7 @@
 use mod_api::*;
 
+use crate::percent_of;
+
 #[derive(Default, Clone, Debug)]
 pub struct NashorsTooth;
 
@@ -54,7 +56,7 @@ impl ModItemInfo for NashorsTooth {
         let bonus_damage = 35
             + ctx
                 .get_entity(caster)
-                .map(|e| (e.stat().magic_power as f64 * 3.0 / 100.0).round() as usize)
+                .map(|e| percent_of(e.stat().magic_power, 3.0))
                 .unwrap_or(0);
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }
@@ -115,7 +117,7 @@ impl ModItemInfo for RadiantNashorsTooth {
         let bonus_damage = 50
             + ctx
                 .get_entity(caster)
-                .map(|e| (e.stat().magic_power as f64 * 5.0 / 100.0).round() as usize)
+                .map(|e| percent_of(e.stat().magic_power, 5.0))
                 .unwrap_or(0);
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }

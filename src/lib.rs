@@ -32,6 +32,10 @@ use riftmaker::*;
 
 use mod_api::*;
 
+fn percent_of(value: usize, percent: f64) -> usize {
+    (value as f64 * percent / 100.0).round() as usize
+}
+
 fn init(_ctx: &GameCtx) -> ModRegistration {
     let mut reg = ModRegistration::new("riot_items_tfm2");
     reg.add_item(BFSword::default());
