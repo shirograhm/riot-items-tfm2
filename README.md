@@ -116,6 +116,11 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > +115 Ability Power
 > +25% Attack Speed
 > <u>Icathian Bite</u>: On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power.
+> **Jak'sho, The Protean - 1400G**
+> +300 HP
+> +40 Armor
+> +65 Magic Resistance
+> <u>Resilience</u>: When you take damage from an enemy champion, gain 6% armor and 6% magic resistance for 5 seconds (max 5 stacks).
 
 #### Tier 5
 > **Radiant Infinity Edge - 1900G**
@@ -171,3 +176,9 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > +180 Ability Power
 > +40% Attack Speed
 > <u>Icathian Bite</u>: On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power.
+> 
+> **Radiant Jak'sho, The Protean - 2000G**
+> +550 HP
+> +65 Armor
+> +65 Magic Resistance
+> <u>Resilience</u>: When you take damage from an enemy champion, gain 10% armor and 10% magic resistance for 5 seconds (max 5 stacks).
