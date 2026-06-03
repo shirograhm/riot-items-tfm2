@@ -1,6 +1,9 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
+const JAKSHO_BUFF_DURATION: usize = 240;
+const JAKSHO_MAX_STACKS: usize = 4;
+
 #[derive(Default, Clone, Debug)]
 pub struct JakshoTheProtean;
 
@@ -56,11 +59,13 @@ impl ModItemInfo for JakshoTheProtean {
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "jaksho_the_protean_stack")
             .count();
-        if stack_count < 5 {
+        if stack_count < JAKSHO_MAX_STACKS {
             ctx.add_buff(
                 entity,
                 BuffState {
-                    duration: BuffType::Time { tick: 300 },
+                    duration: BuffType::Time {
+                        tick: JAKSHO_BUFF_DURATION,
+                    },
                     defence_mult: 6,
                     magic_resistance_mult: 6,
                     name: ArrayString::try_from("jaksho_the_protean_stack").unwrap(),
@@ -130,11 +135,13 @@ impl ModItemInfo for RadiantJakshoTheProtean {
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_jaksho_the_protean_stack")
             .count();
-        if stack_count < 5 {
+        if stack_count < JAKSHO_MAX_STACKS {
             ctx.add_buff(
                 entity,
                 BuffState {
-                    duration: BuffType::Time { tick: 300 },
+                    duration: BuffType::Time {
+                        tick: JAKSHO_BUFF_DURATION,
+                    },
                     defence_mult: 10,
                     magic_resistance_mult: 10,
                     name: ArrayString::try_from("radiant_jaksho_the_protean_stack").unwrap(),
