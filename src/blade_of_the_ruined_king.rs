@@ -27,7 +27,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["wind_dagger".to_string(), "ruinous_blade".to_string()]
+        vec!["wind_dagger".to_string(), "soldiers_longsword".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -38,7 +38,6 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         BuffState {
             attack: 50,
             attack_speed_mult: 25,
-            vamp: 5,
             ..Default::default()
         }
     }
@@ -118,10 +117,10 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        // Bonus damage equal to 8% of the target's current HP on hit
+        // Bonus damage equal to 5% of the target's current HP on hit
         let bonus_damage = ctx
             .get_entity(target)
-            .map(|e| percent_of(e.hp().current, 8.0))
+            .map(|e| percent_of(e.hp().current, 5.0))
             .unwrap_or(0);
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }

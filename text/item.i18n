@@ -237,7 +237,7 @@
     },
     "radiant_blade_of_the_ruined_king": {
       "name": "Radiant Blade of the Ruined King",
-      "option": "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>8% of the target's current health<>."
+      "option": "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>."
     },
     "blackfire_torch": {
       "name": "Blackfire Torch",
