@@ -241,31 +241,31 @@
     },
     "blackfire_torch": {
       "name": "Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<>. This effect can stack up to <#e8a800ff>4 times<>."
+      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "radiant_blackfire_torch": {
       "name": "Radiant Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<>. This effect can stack up to <#e8a800ff>4 times<>."
+      "option": "Maleficent: Spell hits grant <#a974ffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
-      "option": "Grievous Wounds: On attack, <#d94c49ff>reduce healing by 25%<> for <#e8a800ff>2 seconds<>."
+      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 25%<> for <#e8a800ff>2 seconds<>."
     },
     "mortal_reminder": {
       "name": "Mortal Reminder",
-      "option": "Grievous Wounds: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
+      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "radiant_mortal_reminder": {
       "name": "Radiant Mortal Reminder",
-      "option": "Grievous Wounds: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
+      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "experimental_hexplate": {
       "name": "Experimental Hexplate",
-      "option": "Overdrive: Reduce your ultimate's cooldown by <#e8a800ff>15%<>."
+      "option": "Overdrive: Reduce the cooldown of your ultimate skill by <#e8a800ff>15%<>."
     },
     "radiant_experimental_hexplate": {
       "name": "Radiant Experimental Hexplate",
-      "option": "Overdrive: Reduce your ultimate's cooldown by <#e8a800ff>25%<>."
+      "option": "Overdrive: Reduce the cooldown of your ultimate skill by <#e8a800ff>25%<>."
     },
     "nashors_tooth": {
       "name": "Nashor's Tooth",
