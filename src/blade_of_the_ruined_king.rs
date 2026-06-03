@@ -49,11 +49,11 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let Some(entity_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        let hp = entity_ref.hp();
-        let bonus_damage = hp.current * 5 / 100; // 5% current hp
+        // Bonus damage equal to 5% of the target's current HP on hit
+        let bonus_damage = ctx
+            .get_entity(target)
+            .map(|e| e.hp().current * 5.0 / 100)
+            .unwrap_or(0);
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
 
@@ -114,17 +114,13 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        damage_type: DamageType,
+        _damage_type: DamageType,
     ) {
-        // Only proc on base attacks, not skills or dots
-        if damage_type != DamageType::AD {
-            return;
-        }
-        let Some(entity_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        let hp = entity_ref.hp();
-        let bonus_damage = hp.current * 8 / 100; // 8% current hp
+        // Bonus damage equal to 8% of the target's current HP on hit
+        let bonus_damage = ctx
+            .get_entity(target)
+            .map(|e| e.hp().current * 8.0 / 100)
+            .unwrap_or(0);
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
 

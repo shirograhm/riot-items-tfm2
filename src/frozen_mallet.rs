@@ -18,7 +18,7 @@ impl ModItemInfo for FrozenMallet {
     }
 
     fn price(&self) -> usize {
-        1400
+        1300
     }
 
     fn tier(&self) -> usize {
@@ -125,14 +125,12 @@ impl ModItemInfo for RadiantFrozenMallet {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        // Mallet on-hit physical damage
-        let Some(player_ref) = ctx.get_player(caster) else {
-            return;
-        };
-        let Some(entity_ref) = player_ref.champion() else {
-            return;
-        };
-        let bonus_damage = 20 + entity_ref.hp().max * 3 / 100; // 20 + 3% of max hp as bonus physical damage
+        // Mallet on attack damage: 20 + 3% of caster's max HP
+        let bonus_damage = 20
+            + ctx
+                .get_entity(caster)
+                .map(|e| e.hp().max * 3.0 / 100)
+                .unwrap_or(0);
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
 
         // Mallet slow debuff

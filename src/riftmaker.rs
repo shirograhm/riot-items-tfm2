@@ -44,15 +44,12 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        let Some(player_ref) = ctx.get_player(caster) else {
-            return;
-        };
-        let Some(player_champ_ref) = player_ref.champion() else {
-            return;
-        };
         // Heal the player for 55 + 1% of their max HP on skill hit
-        let hp = player_champ_ref.hp();
-        let heal_amount = 55 + (hp.max * 1 / 100);
+        let heal_amount = 55
+            + ctx
+                .get_entity(caster)
+                .map(|e| e.hp().max * 1.0 / 100)
+                .unwrap_or(0);
         ctx.heal(caster, caster, heal_amount);
     }
 
@@ -102,15 +99,12 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        let Some(player_ref) = ctx.get_player(caster) else {
-            return;
-        };
-        let Some(player_champ_ref) = player_ref.champion() else {
-            return;
-        };
         // Heal the player for 90 + 3% of their max HP on skill hit
-        let hp = player_champ_ref.hp();
-        let heal_amount = 90 + (hp.max * 3 / 100);
+        let heal_amount = 90
+            + ctx
+                .get_entity(caster)
+                .map(|e| e.hp().max * 3.0 / 100)
+                .unwrap_or(0);
         ctx.heal(caster, caster, heal_amount);
     }
 
