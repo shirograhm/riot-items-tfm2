@@ -64,8 +64,8 @@ impl ModItemInfo for Terminus {
         let defenses_stack_count = (0..caster_entity_ref.buff_count())
             .filter(|&i| caster_entity_ref.buff_at(i).name.as_str() == "terminus_defence_buff")
             .count();
-        let pen_stack_count = (0..caster_entity_ref.buff_count())
-            .filter(|&i| caster_entity_ref.buff_at(i).name.as_str() == "terminus_penetration_buff")
+        let resistance_stack_count = (0..caster_entity_ref.buff_count())
+            .filter(|&i| caster_entity_ref.buff_at(i).name.as_str() == "terminus_resistance_buff")
             .count();
         if self.flip_flop {
             if defenses_stack_count < TERMINUS_MAX_STACKS {
@@ -75,8 +75,7 @@ impl ModItemInfo for Terminus {
                         duration: BuffType::Time {
                             tick: TERMINUS_BUFF_DURATION,
                         },
-                        defence: 5,
-                        magic_resistance: 5,
+                        defence: 6,
                         name: ArrayString::try_from("terminus_defence_buff").unwrap(),
                         ..Default::default()
                     },
@@ -84,16 +83,15 @@ impl ModItemInfo for Terminus {
             }
             self.flip_flop = false;
         } else {
-            if pen_stack_count < TERMINUS_MAX_STACKS {
+            if resistance_stack_count < TERMINUS_MAX_STACKS {
                 ctx.add_buff(
                     caster,
                     BuffState {
                         duration: BuffType::Time {
                             tick: TERMINUS_BUFF_DURATION,
                         },
-                        defence_penetration: 5,
-                        magic_resistance_penetration: 5,
-                        name: ArrayString::try_from("terminus_penetration_buff").unwrap(),
+                        magic_resistance: 10,
+                        name: ArrayString::try_from("terminus_resistance_buff").unwrap(),
                         ..Default::default()
                     },
                 );
@@ -174,9 +172,9 @@ impl ModItemInfo for RadiantTerminus {
                 caster_entity_ref.buff_at(i).name.as_str() == "radiant_terminus_defence_buff"
             })
             .count();
-        let pen_stack_count = (0..caster_entity_ref.buff_count())
+        let resistance_stack_count = (0..caster_entity_ref.buff_count())
             .filter(|&i| {
-                caster_entity_ref.buff_at(i).name.as_str() == "radiant_terminus_penetration_buff"
+                caster_entity_ref.buff_at(i).name.as_str() == "radiant_terminus_resistance_buff"
             })
             .count();
         if self.flip_flop {
@@ -187,8 +185,7 @@ impl ModItemInfo for RadiantTerminus {
                         duration: BuffType::Time {
                             tick: TERMINUS_BUFF_DURATION,
                         },
-                        defence: 8,
-                        magic_resistance: 8,
+                        defence: 12,
                         name: ArrayString::try_from("radiant_terminus_defence_buff").unwrap(),
                         ..Default::default()
                     },
@@ -196,16 +193,15 @@ impl ModItemInfo for RadiantTerminus {
             }
             self.flip_flop = false;
         } else {
-            if pen_stack_count < TERMINUS_MAX_STACKS {
+            if resistance_stack_count < TERMINUS_MAX_STACKS {
                 ctx.add_buff(
                     caster,
                     BuffState {
                         duration: BuffType::Time {
                             tick: TERMINUS_BUFF_DURATION,
                         },
-                        defence_penetration: 8,
-                        magic_resistance_penetration: 8,
-                        name: ArrayString::try_from("radiant_terminus_penetration_buff").unwrap(),
+                        magic_resistance: 20,
+                        name: ArrayString::try_from("radiant_terminus_resistance_buff").unwrap(),
                         ..Default::default()
                     },
                 );

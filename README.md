@@ -121,6 +121,11 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > +40 Armor
 > +65 Magic Resistance
 > <u>Resilience</u>: When you take damage from an enemy champion, gain 6% armor and 6% magic resistance for 5 seconds (max 5 stacks).
+> 
+> **Terminus - 1300G**
+> +30 Attack Damage
+> +35% Attack Speed
+> <u>Juxtaposition</u>: On attack, gain either 6 armor or 10 magic resistance, alternating (max 4 stacks).
 
 #### Tier 5
 > **Radiant Infinity Edge - 1900G**
@@ -182,3 +187,8 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > +65 Armor
 > +65 Magic Resistance
 > <u>Resilience</u>: When you take damage from an enemy champion, gain 10% armor and 10% magic resistance for 5 seconds (max 5 stacks).
+> 
+> **Radiant Terminus - 1900G**
+> +50 Attack Damage
+> +60% Attack Speed
+> <u>Juxtaposition</u>: On attack, gain either 12 armor or 20 magic resistance, alternating (max 4 stacks).
