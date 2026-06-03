@@ -129,7 +129,7 @@ impl ModItemInfo for RadiantFrozenMallet {
         let bonus_damage = 20
             + ctx
                 .get_entity(caster)
-                .map(|e| e.hp().max * 3.0 / 100)
+                .map(|e| (e.hp().max as f64 * 3.0 / 100.0).round() as usize)
                 .unwrap_or(0);
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
 

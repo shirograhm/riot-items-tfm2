@@ -54,7 +54,7 @@ impl ModItemInfo for NashorsTooth {
         let bonus_damage = 35
             + ctx
                 .get_entity(caster)
-                .map(|e| e.stat().magic_power * 3.0 / 100)
+                .map(|e| (e.stat().magic_power as f64 * 3.0 / 100.0).round() as usize)
                 .unwrap_or(0);
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }
@@ -115,7 +115,7 @@ impl ModItemInfo for RadiantNashorsTooth {
         let bonus_damage = 50
             + ctx
                 .get_entity(caster)
-                .map(|e| e.stat().magic_power * 5.0 / 100)
+                .map(|e| (e.stat().magic_power as f64 * 5.0 / 100.0).round() as usize)
                 .unwrap_or(0);
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }

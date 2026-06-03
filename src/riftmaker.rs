@@ -48,7 +48,7 @@ impl ModItemInfo for Riftmaker {
         let heal_amount = 55
             + ctx
                 .get_entity(caster)
-                .map(|e| e.hp().max * 1.0 / 100)
+                .map(|e| (e.hp().max as f64 * 3.0 / 100.0).round() as usize)
                 .unwrap_or(0);
         ctx.heal(caster, caster, heal_amount);
     }
@@ -103,7 +103,7 @@ impl ModItemInfo for RadiantRiftmaker {
         let heal_amount = 90
             + ctx
                 .get_entity(caster)
-                .map(|e| e.hp().max * 3.0 / 100)
+                .map(|e| (e.hp().max as f64 * 3.0 / 100.0).round() as usize)
                 .unwrap_or(0);
         ctx.heal(caster, caster, heal_amount);
     }
