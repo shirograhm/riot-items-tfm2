@@ -19,7 +19,7 @@ impl ModItemInfo for NashorsTooth {
     }
 
     fn price(&self) -> usize {
-        1400
+        1450
     }
 
     fn tier(&self) -> usize {
@@ -87,7 +87,7 @@ impl ModItemInfo for RadiantNashorsTooth {
     }
 
     fn price(&self) -> usize {
-        2000
+        2050
     }
 
     fn tier(&self) -> usize {
