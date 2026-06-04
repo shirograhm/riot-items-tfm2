@@ -277,11 +277,11 @@
     },
     "jaksho_the_protean": {
       "name": "Jak'sho, The Protean",
-      "option": "Resilience: When you take damage from an enemy champion, gain <#ffdd8eff>6% armor<> and <#88ccffff>6% magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Resilience: Taking damage grants <#ffdd8eff>6% armor<> and <#88ccffff>6% magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "radiant_jaksho_the_protean": {
       "name": "Radiant Jak'sho, The Protean",
-      "option": "Resilience: When you take damage from an enemy champion, gain <#ffdd8eff>10% armor<> and <#88ccffff>10% magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Resilience: Taking damage grants <#ffdd8eff>10% armor<> and <#88ccffff>10% magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "terminus": {
       "name": "Terminus",
@@ -290,6 +290,14 @@
     "radiant_terminus": {
       "name": "Radiant Terminus",
       "option": "Juxtaposition: On attack, gain either <#ffdd8eff>12 armor<> or <#88ccffff>20 magic resistance<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+    },
+    "spirit_visage": {
+      "name": "Spirit Visage",
+      "option": "Vitality: increase all <#60e84dff>healing received<> by <#60e84dff>20%<>."
+    },
+    "radiant_spirit_visage": {
+      "name": "Radiant Spirit Visage",
+      "option": "Vitality: increase all <#60e84dff>healing received<> by <#60e84dff>20%<>."
     }
   }
 }

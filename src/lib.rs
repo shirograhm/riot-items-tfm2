@@ -1,3 +1,5 @@
+use mod_api::*;
+
 mod bf_sword;
 mod blackfire_torch;
 mod blade_of_the_ruined_king;
@@ -13,6 +15,7 @@ mod needlessly_large_rod;
 mod protectors_vow;
 mod rabadons_deathcap;
 mod riftmaker;
+mod spirit_visage;
 mod terminus;
 
 use bf_sword::*;
@@ -30,9 +33,8 @@ use needlessly_large_rod::*;
 use protectors_vow::*;
 use rabadons_deathcap::*;
 use riftmaker::*;
+use spirit_visage::*;
 use terminus::*;
-
-use mod_api::*;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -69,6 +71,8 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(RadiantJakshoTheProtean::default());
     reg.add_item(Terminus::default());
     reg.add_item(RadiantTerminus::default());
+    reg.add_item(SpiritVisage::default());
+    reg.add_item(RadiantSpiritVisage::default());
     reg
 }
 
