@@ -46,8 +46,8 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        // Heal the player for 40 + 1% of their max HP on skill hit
-        let heal_amount = 40
+        // Heal the player for 10 + 1% of their max HP on skill hit
+        let heal_amount = 10
             + ctx
                 .get_entity(caster)
                 .map(|e| percent_of(e.hp().max, 1.0))
@@ -101,8 +101,8 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        // Heal the player for 75 + 3% of their max HP on skill hit
-        let heal_amount = 75
+        // Heal the player for 25 + 3% of their max HP on skill hit
+        let heal_amount = 25
             + ctx
                 .get_entity(caster)
                 .map(|e| percent_of(e.hp().max, 3.0))

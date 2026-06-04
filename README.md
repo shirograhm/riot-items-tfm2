@@ -76,7 +76,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > **Riftmaker - 1300G**
 > +450 HP
 > +100 Ability Power
-> <u>Siphon</u>: Spell hits heal you for 55 + 1% of your maximum health.
+> <u>Siphon</u>: Spell hits heal you for 10 + 1% of your maximum health.
 > 
 > **Rabadon's Deathcap - 1500G**
 > +165 Ability Power
@@ -139,7 +139,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > **Radiant Riftmaker - 1900G**
 > +600 HP
 > +150 Ability Power
-> <u>Siphon</u>: Spell hits heal you for 90 + 3% of your maximum health.
+> <u>Siphon</u>: Spell hits heal you for 25 + 3% of your maximum health.
 > 
 > **Radiant Rabadon's Deathcap - 2200G**
 > +220 Ability Power
