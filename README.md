@@ -120,7 +120,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > +300 HP
 > +40 Armor
 > +65 Magic Resistance
-> <u>Resilience</u>: When you take damage from an enemy champion, gain 6% armor and 6% magic resistance for 5 seconds (max 5 stacks).
+> <u>Resilience</u>: When you take damage from an enemy champion, gain 6% armor and 6% magic resistance for 4 seconds (max 4 stacks).
 > 
 > **Terminus - 1300G**
 > +30 Attack Damage
@@ -186,7 +186,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > +550 HP
 > +65 Armor
 > +65 Magic Resistance
-> <u>Resilience</u>: When you take damage from an enemy champion, gain 10% armor and 10% magic resistance for 5 seconds (max 5 stacks).
+> <u>Resilience</u>: When you take damage from an enemy champion, gain 10% armor and 10% magic resistance for 4 seconds (max 4 stacks).
 > 
 > **Radiant Terminus - 1900G**
 > +50 Attack Damage
