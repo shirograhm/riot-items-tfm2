@@ -18,7 +18,7 @@ impl ModItemInfo for BlackfireTorch {
     }
 
     fn price(&self) -> usize {
-        1400
+        1300
     }
 
     fn tier(&self) -> usize {
@@ -87,7 +87,7 @@ impl ModItemInfo for RadiantBlackfireTorch {
     }
 
     fn price(&self) -> usize {
-        2000
+        1900
     }
 
     fn tier(&self) -> usize {
@@ -100,7 +100,7 @@ impl ModItemInfo for RadiantBlackfireTorch {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 160,
+            magic_power: 175,
             skill_cooldown_mult: 25,
             ..Default::default()
         }
