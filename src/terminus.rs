@@ -3,6 +3,7 @@ use mod_api::*;
 
 const TERMINUS_BUFF_DURATION: usize = 240;
 const TERMINUS_MAX_STACKS: usize = 4;
+const TERMINUS_PEN_PER_STACK: usize = 4;
 
 #[derive(Default, Clone, Debug)]
 pub struct Terminus {
@@ -62,10 +63,12 @@ impl ModItemInfo for Terminus {
             return;
         };
         let defenses_stack_count = (0..caster_entity_ref.buff_count())
-            .filter(|&i| caster_entity_ref.buff_at(i).name.as_str() == "terminus_defence_buff")
+            .filter(|&i| caster_entity_ref.buff_at(i).name.as_str() == "terminus_armor_pen_buff")
             .count();
         let resistance_stack_count = (0..caster_entity_ref.buff_count())
-            .filter(|&i| caster_entity_ref.buff_at(i).name.as_str() == "terminus_resistance_buff")
+            .filter(|&i| {
+                caster_entity_ref.buff_at(i).name.as_str() == "terminus_magic_resistance_pen_buff"
+            })
             .count();
         if self.flip_flop {
             if defenses_stack_count < TERMINUS_MAX_STACKS {
@@ -75,8 +78,8 @@ impl ModItemInfo for Terminus {
                         duration: BuffType::Time {
                             tick: TERMINUS_BUFF_DURATION,
                         },
-                        defence: 6,
-                        name: ArrayString::try_from("terminus_defence_buff").unwrap(),
+                        defence_penetration: TERMINUS_PEN_PER_STACK,
+                        name: ArrayString::try_from("terminus_armor_pen_buff").unwrap(),
                         ..Default::default()
                     },
                 );
@@ -90,8 +93,8 @@ impl ModItemInfo for Terminus {
                         duration: BuffType::Time {
                             tick: TERMINUS_BUFF_DURATION,
                         },
-                        magic_resistance: 10,
-                        name: ArrayString::try_from("terminus_resistance_buff").unwrap(),
+                        magic_resistance_penetration: TERMINUS_PEN_PER_STACK,
+                        name: ArrayString::try_from("terminus_magic_resistance_pen_buff").unwrap(),
                         ..Default::default()
                     },
                 );
@@ -104,8 +107,8 @@ impl ModItemInfo for Terminus {
         vec![
             ItemTag::AD,
             ItemTag::AS,
-            ItemTag::Defense,
-            ItemTag::MagicResistance,
+            ItemTag::DefensePenetration,
+            ItemTag::MRPenetration,
         ]
     }
 
@@ -169,12 +172,13 @@ impl ModItemInfo for RadiantTerminus {
         };
         let defenses_stack_count = (0..caster_entity_ref.buff_count())
             .filter(|&i| {
-                caster_entity_ref.buff_at(i).name.as_str() == "radiant_terminus_defence_buff"
+                caster_entity_ref.buff_at(i).name.as_str() == "radiant_terminus_armor_pen_buff"
             })
             .count();
         let resistance_stack_count = (0..caster_entity_ref.buff_count())
             .filter(|&i| {
-                caster_entity_ref.buff_at(i).name.as_str() == "radiant_terminus_resistance_buff"
+                caster_entity_ref.buff_at(i).name.as_str()
+                    == "radiant_terminus_magic_resistance_pen_buff"
             })
             .count();
         if self.flip_flop {
@@ -185,8 +189,8 @@ impl ModItemInfo for RadiantTerminus {
                         duration: BuffType::Time {
                             tick: TERMINUS_BUFF_DURATION,
                         },
-                        defence: 12,
-                        name: ArrayString::try_from("radiant_terminus_defence_buff").unwrap(),
+                        defence_penetration: TERMINUS_PEN_PER_STACK,
+                        name: ArrayString::try_from("radiant_terminus_armor_pen_buff").unwrap(),
                         ..Default::default()
                     },
                 );
@@ -200,8 +204,9 @@ impl ModItemInfo for RadiantTerminus {
                         duration: BuffType::Time {
                             tick: TERMINUS_BUFF_DURATION,
                         },
-                        magic_resistance: 20,
-                        name: ArrayString::try_from("radiant_terminus_resistance_buff").unwrap(),
+                        magic_resistance_penetration: TERMINUS_PEN_PER_STACK,
+                        name: ArrayString::try_from("radiant_terminus_magic_resistance_pen_buff")
+                            .unwrap(),
                         ..Default::default()
                     },
                 );
@@ -214,8 +219,8 @@ impl ModItemInfo for RadiantTerminus {
         vec![
             ItemTag::AD,
             ItemTag::AS,
-            ItemTag::Defense,
-            ItemTag::MagicResistance,
+            ItemTag::DefensePenetration,
+            ItemTag::MRPenetration,
         ]
     }
 

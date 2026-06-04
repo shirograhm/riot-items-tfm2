@@ -125,7 +125,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > **Terminus - 1300G**
 > +30 Attack Damage
 > +35% Attack Speed
-> <u>Juxtaposition</u>: On attack, gain either 6 armor or 10 magic resistance, alternating (max 4 stacks).
+> <u>Juxtaposition</u>: On attack, gain either 4% armor penetration or 4% magic resistance penetration, alternating (max 4 stacks).
 
 #### Tier 5
 > **Radiant Infinity Edge - 1900G**
@@ -191,4 +191,4 @@ In order for the AI to realize that these items exist, it is best to add this mo
 > **Radiant Terminus - 1900G**
 > +50 Attack Damage
 > +60% Attack Speed
-> <u>Juxtaposition</u>: On attack, gain either 12 armor or 20 magic resistance, alternating (max 4 stacks).
+> <u>Juxtaposition</u>: On attack, gain either 4% armor penetration or 4% magic resistance penetration, alternating (max 4 stacks).

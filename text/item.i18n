@@ -285,11 +285,11 @@
     },
     "terminus": {
       "name": "Terminus",
-      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>6 armor<> or <#88ccffff>10 magic resistance<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>4% armor penetration<> or <#88ccffff>4% magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
     },
     "radiant_terminus": {
       "name": "Radiant Terminus",
-      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>12 armor<> or <#88ccffff>20 magic resistance<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>4% armor penetration<> or <#88ccffff>4% magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
     },
     "spirit_visage": {
       "name": "Spirit Visage",
