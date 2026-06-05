@@ -103,59 +103,59 @@ In order for the AI to realize that these items exist, it is best to add this mo
 +140 Attack Damage  
 <u>Apex</u>: Increase your total Attack Damage by 25%.  
   
-**Radiant Riftmaker - 1900G**  
+###### **Radiant Riftmaker - 1900G**  
 +600 HP  
 +150 Ability Power  
 <u>Siphon</u>: Spell hits heal you for 25 + 3% of your maximum health.  
   
-**Radiant Rabadon's Deathcap - 2200G**  
+###### **Radiant Rabadon's Deathcap - 2200G**  
 +220 Ability Power  
 <u>Opus</u>: Increase your total Ability Power by 35%.  
   
-**Radiant Protector's Vow - 1950G**  
+###### **Radiant Protector's Vow - 1950G**  
 +550 HP  
 +75 Armor  
 +15% Skill Cooldown Reduction  
   
-**Radiant Frozen Mallet - 1900G**  
+###### **Radiant Frozen Mallet - 1900G**  
 +600 HP  
 +60 Attack Damage  
 <u>Icy</u>: On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds.  
   
-**Radiant Blade of the Ruined King - 1950G**  
+###### **Radiant Blade of the Ruined King - 1950G**  
 +60 Attack Damage  
 +50% Attack Speed  
 +10% Lifesteal  
 <u>Mist's Edge</u>: On attack, deal bonus physical damage equal to 8% of the target's current health.  
  
-**Radiant Blackfire Torch - 2000G**  
+###### **Radiant Blackfire Torch - 2000G**  
 +160 Ability Power  
 +25% Skill Cooldown Reduction  
 <u>Maleficent</u>: Spell hits grant 30 Ability Power for 4 seconds. This effect can stack up to 4 times.  
   
-**Radiant Experimental Hexplate - 1850G**  
+###### **Radiant Experimental Hexplate - 1850G**  
 +500 HP  
 +50% Attack Speed  
 +5% Movement Speed  
 <u>Overdrive</u>: Reduce the cooldown of your ultimate skill by 25%.  
   
-**Radiant Mortal Reminder - 2000G**  
+###### **Radiant Mortal Reminder - 2000G**  
 +70 Attack Damage  
 +30% Armor Penetration  
 <u>Executioner</u>: On attack, reduce healing by 40% for 2 seconds.  
   
-**Radiant Nashor's Tooth - 2000G**  
+###### **Radiant Nashor's Tooth - 2000G**  
 +180 Ability Power  
 +40% Attack Speed  
 <u>Icathian Bite</u>: On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power.  
   
-**Radiant Jak'sho, The Protean - 2000G**  
+###### **Radiant Jak'sho, The Protean - 2000G**  
 +550 HP  
 +65 Armor  
 +65 Magic Resistance  
 <u>Resilience</u>: When you take damage from an enemy champion, gain 10% armor and 10% magic resistance for 4 seconds (max 4 stacks).  
   
-**Radiant Terminus - 1900G**  
+###### **Radiant Terminus - 1900G**  
 +50 Attack Damage  
 +60% Attack Speed  
 <u>Juxtaposition</u>: On attack, gain either 4% armor penetration or 4% magic resistance penetration, alternating (max 4 stacks).  
