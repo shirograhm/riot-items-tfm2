@@ -16,185 +16,84 @@ In order for the AI to realize that these items exist, it is best to add this mo
 
 ### Added Items
 
-#### Tier 2
-###### **Executioner's Calling - 500G**  
-+25 Attack Damage   
-<u>Executioner</u>: On attack, reduce healing by 25% for 2 seconds.  
+#### Tier 1
+| Item | Cost | Stats | Passive |
+| --- | --- | --- | --- |
+| **[Executioner's Calling](ca://s?q=Expand_Executioner%27s_Calling)** | 500G | +25 Attack Damage | On attack, reduce the target's healing by 25% for 2 seconds. |
 
+
+#### Tier 2
+| Item | Cost | Stats | Passive |
+| --- | --- | --- | --- |
+| **[B.F. Sword](ca://s?q=Expand_BF_Sword)** | 800G | +65 Attack Damage | — |
+| **[Needlessly Large Rod](ca://s?q=Expand_Needlessly_Large_Rod)** | 850G | +115 Ability Power | — |
 
 #### Tier 3
-###### **B.F. Sword - 800G**  
-+65 Attack Damage  
-  
-###### **Needlessly Large Rod - 850G**  
-+115 Ability Power  
+| Item | Cost | Stats | Passive |
+| --- | --- | --- | --- |
+| **[Infinity Edge](ca://s?q=Expand_Infinity_Edge)** | 1300G | +80 AD, +25% Crit Chance | — |
+| **[Deathblade](ca://s?q=Expand_Deathblade)** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
+| **[Riftmaker](ca://s?q=Expand_Riftmaker)** | 1300G | +400 HP, +75 AP | Spell hits heal you for 10 + 1% of your maximum health. |
+| **[Rabadon’s Deathcap](ca://s?q=Expand_Rabadons_Deathcap)** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
+| **[Protector's Vow](ca://s?q=Expand_Protectors_Vow)** | 1300G | +350 HP<br>+50 Armor | — |
+| **[Frozen Mallet](ca://s?q=Expand_Frozen_Mallet)** | 1300G | +450 HP<br>+45 AD | On attack, apply a 25% slow for 2 seconds. |
+| **[Blade of the Ruined King](ca://s?q=Expand_Blade_of_the_Ruined_King)** | 1450G | +50 AD<br>+25% AS<br>+5% Lifesteal | On attack, deal bonus physical damage equal to 5% of the target's current health. |
+| **[Blackfire Torch](ca://s?q=Expand_Blackfire_Torch)** | 1300G | +130 AP<br> +15% CDR | Spell hits grant +10 Ability Power for 4 seconds (max 4 stacks). |
+| **[Experimental Hexplate](ca://s?q=Expand_Experimental_Hexplate)** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
+| **[Mortal Reminder](ca://s?q=Expand_Mortal_Reminder)** | 1400G | +55 AD<br>+20% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
+| **[Nashor's Tooth](ca://s?q=Expand_Nashors_Tooth)** | 1450G | +115 AP<br>+25% AS | On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power. |
+| **[Jak’Sho, The Protean](ca://s?q=Expand_Jaksho)** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
+| **[Terminus](ca://s?q=Expand_Terminus)** | 1300G | +30 AD<br>+35% AS | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 
-
-#### Tier 4
-###### **Infinity Edge - 1300G**  
-+80 Attack Damage  
-+20% Critical Strike Chance  
- 
-###### **Deathblade - 1400G**  
-+90 Attack Damage  
-<u>Apex</u>: Increase your total Attack Damage by 15%.  
- 
-###### **Riftmaker - 1300G**  
-+450 HP  
-+100 Ability Power  
-<u>Siphon</u>: Spell hits heal you for 10 + 1% of your maximum health.  
- 
-###### **Rabadon's Deathcap - 1500G**  
-+165 Ability Power  
-<u>Opus</u>: Increase your total Ability Power by 20%.  
- 
-###### **Protector's Vow - 1350G**  
-+350 HP  
-+50 Armor  
-
-###### **Frozen Mallet - 1400G**  
-+450 HP  
-+45 Attack Damage  
-<u>Icy</u>: On attack, apply a 25% slow for 2 seconds.  
- 
-###### **Blade of the Ruined King - 1400G**  
-+50 Attack Damage  
-+25% Attack Speed  
-+5% Lifesteal  
-<u>Mist's Edge</u>: On attack, deal bonus physical damage equal to 5% of the target's current health.  
-   
-###### **Blackfire Torch - 1400G**  
-+130 Ability Power  
-+15% Skill Cooldown Reduction  
-<u>Maleficent</u>: Spell hits grant 10 Ability Power for 4 seconds (max 4 stacks).  
-  
-###### **Experimental Hexplate - 1200G**  
-+350 HP  
-+35% Attack Speed  
-<u>Overdrive</u>: Reduce your ultimate's cooldown by 15%.  
-   
-###### **Mortal Reminder - 1400G**  
-+55 Attack Damage  
-+20% Armor Penetration  
-<u>Executioner</u>: On attack, reduce healing by 40% for 2 seconds.  
-   
-###### **Nashor's Tooth - 1400G**  
-+115 Ability Power  
-+25% Attack Speed  
-<u>Icathian Bite</u>: On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power.  
-   
-###### **Jak'sho, The Protean - 1400G**  
-+300 HP  
-+40 Armor  
-+65 Magic Resistance  
-<u>Resilience</u>: When you take damage from an enemy champion, gain 6% armor and 6% magic resistance for 4 seconds (max 4 stacks).  
-   
-###### **Terminus - 1300G**  
-+30 Attack Damage  
-+35% Attack Speed  
-<u>Juxtaposition</u>: On attack, gain either 4% armor penetration or 4% magic resistance penetration, alternating (max 4 stacks).  
-  
-#### Tier 5  
-###### **Radiant Infinity Edge - 1900G**  
-+120 Attack Damage  
-+50% Critical Strike Chance  
-  
-###### **Radiant Deathblade - 2000G**  
-+140 Attack Damage  
-<u>Apex</u>: Increase your total Attack Damage by 25%.  
-  
-###### **Radiant Riftmaker - 1900G**  
-+600 HP  
-+150 Ability Power  
-<u>Siphon</u>: Spell hits heal you for 25 + 3% of your maximum health.  
-  
-###### **Radiant Rabadon's Deathcap - 2200G**  
-+220 Ability Power  
-<u>Opus</u>: Increase your total Ability Power by 35%.  
-  
-###### **Radiant Protector's Vow - 1950G**  
-+550 HP  
-+75 Armor  
-+15% Skill Cooldown Reduction  
-  
-###### **Radiant Frozen Mallet - 1900G**  
-+600 HP  
-+60 Attack Damage  
-<u>Icy</u>: On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds.  
-  
-###### **Radiant Blade of the Ruined King - 1950G**  
-+60 Attack Damage  
-+50% Attack Speed  
-+10% Lifesteal  
-<u>Mist's Edge</u>: On attack, deal bonus physical damage equal to 8% of the target's current health.  
- 
-###### **Radiant Blackfire Torch - 2000G**  
-+160 Ability Power  
-+25% Skill Cooldown Reduction  
-<u>Maleficent</u>: Spell hits grant 30 Ability Power for 4 seconds. This effect can stack up to 4 times.  
-  
-###### **Radiant Experimental Hexplate - 1850G**  
-+500 HP  
-+50% Attack Speed  
-+5% Movement Speed  
-<u>Overdrive</u>: Reduce the cooldown of your ultimate skill by 25%.  
-  
-###### **Radiant Mortal Reminder - 2000G**  
-+70 Attack Damage  
-+30% Armor Penetration  
-<u>Executioner</u>: On attack, reduce healing by 40% for 2 seconds.  
-  
-###### **Radiant Nashor's Tooth - 2000G**  
-+180 Ability Power  
-+40% Attack Speed  
-<u>Icathian Bite</u>: On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power.  
-  
-###### **Radiant Jak'sho, The Protean - 2000G**  
-+550 HP  
-+65 Armor  
-+65 Magic Resistance  
-<u>Resilience</u>: When you take damage from an enemy champion, gain 10% armor and 10% magic resistance for 4 seconds (max 4 stacks).  
-  
-###### **Radiant Terminus - 1900G**  
-+50 Attack Damage  
-+60% Attack Speed  
-<u>Juxtaposition</u>: On attack, gain either 4% armor penetration or 4% magic resistance penetration, alternating (max 4 stacks).  
+#### Tier 4  
+| Item | Cost | Stats | Passive |
+| --- | --- | --- | --- |
+| **[Radiant Infinity Edge](ca://s?q=Expand_Radiant_Infinity_Edge)** | 1900G | +120 AD<br>+50% Crit Chance | — |
+| **[Radiant Deathblade](ca://s?q=Expand_Radiant_Deathblade)** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
+| **[Radiant Riftmaker](ca://s?q=Expand_Radiant_Riftmaker)** | 1900G | +600 HP<br>+150 AP | Spell hits heal you for 25 + 3% of your maximum health. |
+| **[Radiant Rabadon’s Deathcap](ca://s?q=Expand_Radiant_Rabadons)** | 2200G | +220 AP | Increase your total Ability Power by 35%. |
+| **[Radiant Protector’s Vow](ca://s?q=Expand_Radiant_Protectors_Vow)** | 1950G | +550 HP<br>+75 Armor<br>+15% CDR | — |
+| **[Radiant Frozen Mallet](ca://s?q=Expand_Radiant_Frozen_Mallet)** | 1900G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds. |
+| **[Radiant Blade of the Ruined King](ca://s?q=Expand_Radiant_BotRK)** | 1950G | +60 AD<br>+50% AS<br>+10% Lifesteal | On attack, deal bonus physical damage equal to 8% of the target’s current health. |
+| **[Radiant Blackfire Torch](ca://s?q=Expand_Radiant_Blackfire_Torch)** | 2000G | +160 AP<br>+25% CDR | Spell hits grant +30 Ability Power for 4 seconds (max 4 stacks). |
+| **[Radiant Experimental Hexplate](ca://s?q=Expand_Radiant_Hexplate)** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Reduce the cooldown of your ultimate ability by 25%. |
+| **[Radiant Mortal Reminder](ca://s?q=Expand_Radiant_Mortal_Reminder)** | 2000G | +70 AD<br>+30% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
+| **[Radiant Nashor’s Tooth](ca://s?q=Expand_Radiant_Nashors)** | 2000G | +180 AP<br>+40% AS | On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power. |
+| **[Radiant Jak’Sho, The Protean](ca://s?q=Expand_Radiant_Jaksho)** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | When you take damage from an enemy champion, gain +10% armor and +10% magic resistance for 4 seconds (max 4 stacks). |
+| **[Radiant Terminus](ca://s?q=Expand_Radiant_Terminus)** | 1900G | +50 AD<br>+60% AS | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 
 
 ### Base Item Reskins
 
-> Iron Sword ⇒ Long Sword  
-> Soldier's Longsword ⇒ Pickaxe  
-> Ruinous Blade ⇒ Vampiric Scepter  
-> Conqueror's Greatsword ⇒ Bloodthirster  
-> Warlord's Final Judgement ⇒ Radiant Bloodthirster  
-
-> Dagger ⇒ Dagger  
-> Wind Dagger ⇒ Recurve Bow  
-> Twin Stormblade ⇒ Zeal  
-> Thunderclaw ⇒ Phantom Dancer  
-> Storm Sovereign ⇒ Radiant Phantom Dancer  
-
-> Steel Armor ⇒ Cloth Armor  
-> Gatekeeper's Armor ⇒ Chain Vest  
-> Black Knight's Heavy Plate ⇒ Bramble Vest  
-> Eternal Iron Plate ⇒ Thornmail  
-> Impregnable Fortress ⇒ Radiant Thornmail  
-
-> Mystic Cloak ⇒ Null-Magic Mantle  
-> Night Hood ⇒ Negatron Cloak  
-> Dusk Raven ⇒ Spectre's Cowl  
-> Soul's Edge ⇒ Dragon's Claw  
-> Veil of Annihilation ⇒ Radiant Dragon's Claw  
-
-> Arcane Crystal ⇒ Amplifying Tome  
-> Spirit Crystal ⇒ Blasting Wand  
-> Staff of Rapture ⇒ Lost Chapter  
-> Angel's Fang ⇒ Luden's Tempest  
-> Prophet of the Abyss ⇒ Radiant Luden's Tempest  
-
-> Vital Orb ⇒ Ruby Crystal  
-> Hardened Heart ⇒ Kindlegem  
-> Ring of Reincarnation ⇒ Giant's Belt  
-> Hourglass of Eternity ⇒ Warmog's Armor  
-> Giant's Horn Shard ⇒ Radiant Warmog's Armor  
+| Original Name | New Name |
+| --- | --- |
+| Iron Sword | Long Sword |
+| Soldier’s Longsword | Pickaxe |
+| Ruinous Blade | Vampiric Scepter |
+| Conqueror’s Greatsword | Bloodthirster |
+| Warlord’s Final Judgement | Radiant Bloodthirster |
+| Dagger | Dagger |
+| Wind Dagger | Recurve Bow |
+| Twin Stormblade | Zeal |
+| Thunderclaw | Phantom Dancer |
+| Storm Sovereign | Radiant Phantom Dancer |
+| Steel Armor | Cloth Armor |
+| Gatekeeper’s Armor | Chain Vest |
+| Black Knight’s Heavy Plate | Bramble Vest |
+| Eternal Iron Plate | Thornmail |
+| Impregnable Fortress | Radiant Thornmail |
+| Mystic Cloak | Null-Magic Mantle |
+| Night Hood | Negatron Cloak |
+| Dusk Raven | Spectre’s Cowl |
+| Soul’s Edge | Dragon’s Claw |
+| Veil of Annihilation | Radiant Dragon’s Claw |
+| Arcane Crystal | Amplifying Tome |
+| Spirit Crystal | Blasting Wand |
+| Staff of Rapture | Lost Chapter |
+| Angel’s Fang | Luden’s Tempest |
+| Prophet of the Abyss | Radiant Luden’s Tempest |
+| Vital Orb | Ruby Crystal |
+| Hardened Heart | Kindlegem |
+| Ring of Reincarnation | Giant’s Belt |
+| Hourglass of Eternity | Warmog’s Armor |
+| Giant’s Horn Shard | Radiant Warmog’s Armor |
