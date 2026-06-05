@@ -231,6 +231,14 @@
       "name": "Radiant Riftmaker",
       "option": "Siphon: Spell hits heal you for <#60e84dff>25<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
+    "unending_despair": {
+      "name": "Unending Despair",
+      "option": "Anguish: Spell hits heal you for <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+    },
+    "radiant_unending_despair": {
+      "name": "Radiant Unending Despair",
+      "option": "Anguish: Spell hits heal you for <#60e84dff>25<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+    },
     "blade_of_the_ruined_king": {
       "name": "Blade of the Ruined King",
       "option": "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>."

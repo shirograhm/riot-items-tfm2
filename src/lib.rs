@@ -17,6 +17,7 @@ mod rabadons_deathcap;
 mod riftmaker;
 mod spirit_visage;
 mod terminus;
+mod unending_despair;
 
 use bf_sword::*;
 use blackfire_torch::*;
@@ -35,6 +36,7 @@ use rabadons_deathcap::*;
 use riftmaker::*;
 use spirit_visage::*;
 use terminus::*;
+use unending_despair::*;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -48,6 +50,8 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(InfinityEdge::default());
     reg.add_item(RadiantInfinityEdge::default());
     reg.add_item(NeedlesslyLargeRod::default());
+    reg.add_item(UnendingDespair::default());
+    reg.add_item(RadiantUnendingDespair::default());
     reg.add_item(Riftmaker::default());
     reg.add_item(RadiantRiftmaker::default());
     reg.add_item(RabadonsDeathcap::default());
