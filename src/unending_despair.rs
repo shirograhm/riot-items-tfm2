@@ -81,7 +81,7 @@ impl ModItemInfo for RadiantUnendingDespair {
     }
 
     fn price(&self) -> usize {
-        1900
+        2100
     }
 
     fn tier(&self) -> usize {
