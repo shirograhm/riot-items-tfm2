@@ -7,7 +7,7 @@
       "defense": "Armor",
       "magic_resistance": "Magic Resist",
       "magic": "Ability Power",
-      "hp": "HP"
+      "hp": "Max Health"
     },
     "info": {
       "tier": "Tier",
@@ -31,10 +31,10 @@
       "attack": "+{Value} Attack Damage",
       "magic_power": "+{Value} Ability Power",
       "defence": "+{Value} Armor",
-      "hp": "+{Value} HP",
+      "hp": "+{Value} Max Health",
       "magic_resistance": "+{Value} Magic Resist",
       "vamp": "+{Value}% Lifesteal",
-      "hp_mult": "\nGrowth: Increase your total HP by {Value}%.",
+      "hp_mult": "\nGrowth: Increase your total Max Health by {Value}%.",
       "move_speed_mult": "+{Value}% Movement Speed",
       "attack_speed_mult": "+{Value}% Attack Speed",
       "skill_cooldown_mult": "+{Value}% Cooldown Reduction",
@@ -49,7 +49,7 @@
       "attack_my_hp_ratio": "+{Value}% Attack My HP",
       "reflect": "+{Value}% Reflect Damage",
       "dot_amplify": "+{Value}% DoT Amplification",
-      "hp_regen": "+{Value} HP/s",
+      "hp_regen": "+{Value} Max Health Regen",
       "crit_chance": "+{Value}% Critical Strike Chance",
       "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from Basic Attacks by <#e8a800ff>{Value}%<>.",
       "skill_damaged_reduce": "+{Value}% Skill Damage Reduction",
