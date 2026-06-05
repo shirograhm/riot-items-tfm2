@@ -225,11 +225,11 @@
     },
     "riftmaker": {
       "name": "Riftmaker",
-      "option": "Siphon: Spell hits heal you for <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+      "option": "Infusion: Gain <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "radiant_riftmaker": {
       "name": "Radiant Riftmaker",
-      "option": "Siphon: Spell hits heal you for <#60e84dff>25<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+      "option": "Infusion: Gain <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "unending_despair": {
       "name": "Unending Despair",

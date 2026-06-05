@@ -1,3 +1,4 @@
+use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::percent_of;
@@ -45,14 +46,30 @@ impl ModItemInfo for Riftmaker {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        // Heal the player for 10 + 1% of their max HP on skill hit
-        let heal_amount = 10
-            + ctx
-                .get_entity(caster)
-                .map(|e| percent_of(e.hp().max, 1.0))
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+        let Some(player_ref) = ctx.get_entity(player) else {
+            return;
+        };
+        let already_granted = (0..player_ref.buff_count())
+            .any(|i| player_ref.buff_at(i).name.as_str() == "riftmaker_magic_power_buff");
+
+        if !already_granted {
+            // Bonus magic power is 3% HP
+            let bonus_power = ctx
+                .get_entity(player)
+                .map(|e| percent_of(e.hp().max, 3.0))
                 .unwrap_or(0);
-        ctx.heal(caster, caster, heal_amount);
+
+            ctx.add_buff(
+                player,
+                BuffState {
+                    duration: BuffType::Permanent,
+                    magic_power: bonus_power as i32,
+                    name: ArrayString::try_from("riftmaker_magic_power_buff").unwrap(),
+                    ..Default::default()
+                },
+            );
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -100,15 +117,41 @@ impl ModItemInfo for RadiantRiftmaker {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        // Heal the player for 25 + 3% of their max HP on skill hit
-        let heal_amount = 25
-            + ctx
-                .get_entity(caster)
-                .map(|e| percent_of(e.hp().max, 3.0))
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+        let Some(player_ref) = ctx.get_entity(player) else {
+            return;
+        };
+        let already_granted = (0..player_ref.buff_count())
+            .any(|i| player_ref.buff_at(i).name.as_str() == "radiant_riftmaker_magic_power_buff");
+
+        if !already_granted {
+            // Bonus magic power is 5% HP
+            let bonus_power = ctx
+                .get_entity(player)
+                .map(|e| percent_of(e.hp().max, 5.0))
                 .unwrap_or(0);
-        ctx.heal(caster, caster, heal_amount);
+
+            ctx.add_buff(
+                player,
+                BuffState {
+                    duration: BuffType::Permanent,
+                    magic_power: bonus_power as i32,
+                    name: ArrayString::try_from("radiant_riftmaker_magic_power_buff").unwrap(),
+                    ..Default::default()
+                },
+            );
+        }
     }
+
+    // fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+    //     // Heal the player for 25 + 3% of their max HP on skill hit
+    //     let heal_amount = 25
+    //         + ctx
+    //             .get_entity(caster)
+    //             .map(|e| percent_of(e.hp().max, 3.0))
+    //             .unwrap_or(0);
+    //     ctx.heal(caster, caster, heal_amount);
+    // }
 
     fn tags(&self) -> Vec<ItemTag> {
         vec![ItemTag::HP, ItemTag::AP, ItemTag::Vamp]
