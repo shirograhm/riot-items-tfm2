@@ -16,22 +16,22 @@ In order for the AI to realize that these items exist, it is best to add this mo
 
 ### Added Items
 
-#### Tier 1
+#### Tier 2
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **[Executioner's Calling](ca://s?q=Expand_Executioner%27s_Calling)** | 500G | +25 Attack Damage | On attack, reduce the target's healing by 25% for 2 seconds. |
 
 
-#### Tier 2
+#### Tier 3
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **[B.F. Sword](ca://s?q=Expand_BF_Sword)** | 800G | +65 Attack Damage | — |
 | **[Needlessly Large Rod](ca://s?q=Expand_Needlessly_Large_Rod)** | 850G | +115 Ability Power | — |
 
-#### Tier 3
+#### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **[Infinity Edge](ca://s?q=Expand_Infinity_Edge)** | 1300G | +80 AD, +25% Crit Chance | — |
+| **[Infinity Edge](ca://s?q=Expand_Infinity_Edge)** | 1300G | +80 AD<br>+25% Crit Chance | — |
 | **[Deathblade](ca://s?q=Expand_Deathblade)** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **[Riftmaker](ca://s?q=Expand_Riftmaker)** | 1300G | +400 HP, +75 AP | Spell hits heal you for 10 + 1% of your maximum health. |
 | **[Rabadon’s Deathcap](ca://s?q=Expand_Rabadons_Deathcap)** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
@@ -45,7 +45,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 | **[Jak’Sho, The Protean](ca://s?q=Expand_Jaksho)** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
 | **[Terminus](ca://s?q=Expand_Terminus)** | 1300G | +30 AD<br>+35% AS | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 
-#### Tier 4  
+#### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **[Radiant Infinity Edge](ca://s?q=Expand_Radiant_Infinity_Edge)** | 1900G | +120 AD<br>+50% Crit Chance | — |
