@@ -14,40 +14,6 @@ In order for the AI to realize that these items exist, it is best to add this mo
 4. Restart the game.
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
-
-### Base Item Reskins
-> Iron Sword ⇒ Long Sword  
-> Soldier's Longsword ⇒ Pickaxe  
-> Ruinous Blade ⇒ Vampiric Scepter  
-> Conqueror's Greatsword ⇒ Bloodthirster  
-> Warlord's Final Judgement ⇒ Radiant Bloodthirster  
-> Dagger ⇒ Dagger  
-> Wind Dagger ⇒ Recurve Bow  
-> Twin Stormblade ⇒ Zeal  
-> Thunderclaw ⇒ Phantom Dancer  
-> Storm Sovereign ⇒ Radiant Phantom Dancer  
-> Steel Armor ⇒ Cloth Armor  
-> Gatekeeper's Armor ⇒ Chain Vest  
-> Black Knight's Heavy Plate ⇒ Bramble Vest  
-> Eternal Iron Plate ⇒ Thornmail  
-> Impregnable Fortress ⇒ Radiant Thornmail  
-> Mystic Cloak ⇒ Null-Magic Mantle  
-> Night Hood ⇒ Negatron Cloak  
-> Dusk Raven ⇒ Spectre's Cowl  
-> Soul's Edge ⇒ Dragon's Claw  
-> Veil of Annihilation ⇒ Radiant Dragon's Claw  
-> Arcane Crystal ⇒ Amplifying Tome  
-> Spirit Crystal ⇒ Blasting Wand  
-> Staff of Rapture ⇒ Lost Chapter  
-> Angel's Fang ⇒ Luden's Tempest  
-> Prophet of the Abyss ⇒ Radiant Luden's Tempest  
-> Vital Orb ⇒ Ruby Crystal  
-> Hardened Heart ⇒ Kindlegem  
-> Ring of Reincarnation ⇒ Giant's Belt  
-> Hourglass of Eternity ⇒ Warmog's Armor  
-> Giant's Horn Shard ⇒ Radiant Warmog's Armor  
-
-
 ### Added Items
 
 #### Tier 2
@@ -193,3 +159,42 @@ In order for the AI to realize that these items exist, it is best to add this mo
 +50 Attack Damage  
 +60% Attack Speed  
 <u>Juxtaposition</u>: On attack, gain either 4% armor penetration or 4% magic resistance penetration, alternating (max 4 stacks).  
+
+
+### Base Item Reskins
+
+> Iron Sword ⇒ Long Sword  
+> Soldier's Longsword ⇒ Pickaxe  
+> Ruinous Blade ⇒ Vampiric Scepter  
+> Conqueror's Greatsword ⇒ Bloodthirster  
+> Warlord's Final Judgement ⇒ Radiant Bloodthirster  
+
+> Dagger ⇒ Dagger  
+> Wind Dagger ⇒ Recurve Bow  
+> Twin Stormblade ⇒ Zeal  
+> Thunderclaw ⇒ Phantom Dancer  
+> Storm Sovereign ⇒ Radiant Phantom Dancer  
+
+> Steel Armor ⇒ Cloth Armor  
+> Gatekeeper's Armor ⇒ Chain Vest  
+> Black Knight's Heavy Plate ⇒ Bramble Vest  
+> Eternal Iron Plate ⇒ Thornmail  
+> Impregnable Fortress ⇒ Radiant Thornmail  
+
+> Mystic Cloak ⇒ Null-Magic Mantle  
+> Night Hood ⇒ Negatron Cloak  
+> Dusk Raven ⇒ Spectre's Cowl  
+> Soul's Edge ⇒ Dragon's Claw  
+> Veil of Annihilation ⇒ Radiant Dragon's Claw  
+
+> Arcane Crystal ⇒ Amplifying Tome  
+> Spirit Crystal ⇒ Blasting Wand  
+> Staff of Rapture ⇒ Lost Chapter  
+> Angel's Fang ⇒ Luden's Tempest  
+> Prophet of the Abyss ⇒ Radiant Luden's Tempest  
+
+> Vital Orb ⇒ Ruby Crystal  
+> Hardened Heart ⇒ Kindlegem  
+> Ring of Reincarnation ⇒ Giant's Belt  
+> Hourglass of Eternity ⇒ Warmog's Armor  
+> Giant's Horn Shard ⇒ Radiant Warmog's Armor  
