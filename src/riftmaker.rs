@@ -3,6 +3,10 @@ use mod_api::*;
 
 use crate::percent_of;
 
+const RIFTMAKER_BUFF_TICK_DURATION: usize = 300;
+const RIFTMAKER_BUFF_MAX_STACKS: usize = 3;
+const RIFTMAKER_BUFF_POWER_PER_STACK_PERCENT: f64 = 3.0;
+
 #[derive(Default, Clone, Debug)]
 pub struct Riftmaker;
 
@@ -46,24 +50,25 @@ impl ModItemInfo for Riftmaker {
         }
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        let Some(player_ref) = ctx.get_entity(player) else {
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let already_granted = (0..player_ref.buff_count())
-            .any(|i| player_ref.buff_at(i).name.as_str() == "riftmaker_magic_power_buff");
+        let bonus_power = ctx
+            .get_entity(caster)
+            .map(|e| percent_of(e.hp().max, RIFTMAKER_BUFF_POWER_PER_STACK_PERCENT))
+            .unwrap_or(0);
 
-        if !already_granted {
-            // Bonus magic power is 3% HP
-            let bonus_power = ctx
-                .get_entity(player)
-                .map(|e| percent_of(e.hp().max, 3.0))
-                .unwrap_or(0);
-
+        let stack_count = (0..caster_ref.buff_count())
+            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "riftmaker_magic_power_buff")
+            .count();
+        if stack_count < RIFTMAKER_BUFF_MAX_STACKS {
             ctx.add_buff(
-                player,
+                caster,
                 BuffState {
-                    duration: BuffType::Permanent,
+                    duration: BuffType::Time {
+                        tick: RIFTMAKER_BUFF_TICK_DURATION,
+                    },
                     magic_power: bonus_power as i32,
                     name: ArrayString::try_from("riftmaker_magic_power_buff").unwrap(),
                     ..Default::default()
@@ -73,7 +78,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP, ItemTag::Vamp]
+        vec![ItemTag::HP, ItemTag::AP]
     }
 
     fn category(&self) -> ItemCategory {
@@ -117,24 +122,27 @@ impl ModItemInfo for RadiantRiftmaker {
         }
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        let Some(player_ref) = ctx.get_entity(player) else {
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let already_granted = (0..player_ref.buff_count())
-            .any(|i| player_ref.buff_at(i).name.as_str() == "radiant_riftmaker_magic_power_buff");
+        let bonus_power = ctx
+            .get_entity(caster)
+            .map(|e| percent_of(e.hp().max, RIFTMAKER_BUFF_POWER_PER_STACK_PERCENT))
+            .unwrap_or(0);
 
-        if !already_granted {
-            // Bonus magic power is 5% HP
-            let bonus_power = ctx
-                .get_entity(player)
-                .map(|e| percent_of(e.hp().max, 5.0))
-                .unwrap_or(0);
-
+        let stack_count = (0..caster_ref.buff_count())
+            .filter(|&i| {
+                caster_ref.buff_at(i).name.as_str() == "radiant_riftmaker_magic_power_buff"
+            })
+            .count();
+        if stack_count < RIFTMAKER_BUFF_MAX_STACKS {
             ctx.add_buff(
-                player,
+                caster,
                 BuffState {
-                    duration: BuffType::Permanent,
+                    duration: BuffType::Time {
+                        tick: RIFTMAKER_BUFF_TICK_DURATION,
+                    },
                     magic_power: bonus_power as i32,
                     name: ArrayString::try_from("radiant_riftmaker_magic_power_buff").unwrap(),
                     ..Default::default()
@@ -143,18 +151,8 @@ impl ModItemInfo for RadiantRiftmaker {
         }
     }
 
-    // fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-    //     // Heal the player for 25 + 3% of their max HP on skill hit
-    //     let heal_amount = 25
-    //         + ctx
-    //             .get_entity(caster)
-    //             .map(|e| percent_of(e.hp().max, 3.0))
-    //             .unwrap_or(0);
-    //     ctx.heal(caster, caster, heal_amount);
-    // }
-
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP, ItemTag::Vamp]
+        vec![ItemTag::HP, ItemTag::AP]
     }
 
     fn category(&self) -> ItemCategory {
