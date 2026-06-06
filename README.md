@@ -1,4 +1,4 @@
-Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.
+Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
 Reskins the 6 current item lines and also adds 16 additional items to the game.
 
 ### Important
