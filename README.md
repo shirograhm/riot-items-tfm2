@@ -38,7 +38,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 | **[Protector's Vow](ca://s?q=Expand_Protectors_Vow)** | 1300G | +350 HP<br>+50 Armor | — |
 | **[Frozen Mallet](ca://s?q=Expand_Frozen_Mallet)** | 1300G | +450 HP<br>+45 AD | On attack, apply a 25% slow for 2 seconds. |
 | **[Blade of the Ruined King](ca://s?q=Expand_Blade_of_the_Ruined_King)** | 1450G | +50 AD<br>+25% AS<br>+5% Lifesteal | On attack, deal bonus physical damage equal to 5% of the target's current health. |
-| **[Blackfire Torch](ca://s?q=Expand_Blackfire_Torch)** | 1300G | +130 AP<br> +15% CDR | Spell hits grant +10 Ability Power for 4 seconds (max 4 stacks). |
+| **[Blackfire Torch](ca://s?q=Expand_Blackfire_Torch)** | 1300G | +130 AP<br>+15% CDR | Spell hits grant +10 Ability Power for 4 seconds (max 4 stacks). |
 | **[Experimental Hexplate](ca://s?q=Expand_Experimental_Hexplate)** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
 | **[Mortal Reminder](ca://s?q=Expand_Mortal_Reminder)** | 1400G | +55 AD<br>+20% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
 | **[Nashor's Tooth](ca://s?q=Expand_Nashors_Tooth)** | 1450G | +115 AP<br>+25% AS | On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power. |

@@ -5,7 +5,7 @@ use crate::percent_of;
 
 const PROTOPLASM_HARNESS_THRESHOLD: f64 = 40.0; // 40% HP threshold for activation
 const PROTOPLASM_HARNESS_BUFF_DURATION: usize = 360; // 6 seconds in ticks
-const PROTOPLASM_HARNESS_HP_PERCENT_BOOST: i32 = 100; // 100% HP boost
+const PROTOPLASM_HARNESS_HP_PERCENT_BOOST: f64 = 25.0; // 25% HP boost
 const PROTOPLASM_HARNESS_COOLDOWN: usize = 1800; // 30 seconds in ticks
 
 #[derive(Default, Clone, Debug)]
@@ -75,13 +75,16 @@ impl ModItemInfo for ProtoplasmHarness {
         let hp_threshold = percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_THRESHOLD);
 
         if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
+            // Bonus HP granted is 400 + 25% of max HP
+            let bonus_hp =
+                400 + percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_HP_PERCENT_BOOST) as i32;
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
                         tick: PROTOPLASM_HARNESS_BUFF_DURATION,
                     },
-                    hp_mult: PROTOPLASM_HARNESS_HP_PERCENT_BOOST,
+                    hp: bonus_hp,
                     name: ArrayString::try_from("protoplasm_harness_buff").unwrap(),
                     ..Default::default()
                 },
@@ -164,13 +167,16 @@ impl ModItemInfo for RadiantProtoplasmHarness {
         let hp_threshold = percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_THRESHOLD);
 
         if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
+            // Bonus HP granted is 600 + 25% of max HP
+            let bonus_hp =
+                600 + percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_HP_PERCENT_BOOST) as i32;
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
                         tick: PROTOPLASM_HARNESS_BUFF_DURATION,
                     },
-                    hp_mult: PROTOPLASM_HARNESS_HP_PERCENT_BOOST,
+                    hp: bonus_hp,
                     name: ArrayString::try_from("radiant_protoplasm_harness_buff").unwrap(),
                     ..Default::default()
                 },

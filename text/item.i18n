@@ -7,7 +7,7 @@
       "defense": "Armor",
       "magic_resistance": "Magic Resist",
       "magic": "Ability Power",
-      "hp": "Max Health"
+      "hp": "Health"
     },
     "info": {
       "tier": "Tier",
@@ -217,11 +217,11 @@
     },
     "protoplasm_harness": {
       "name": "Protoplasm Harness",
-      "option": "Fortification: Taking damage below <#60e84dff>40% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> max health<> doubles your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>max health<> for <#e8a800ff>6 seconds<> (30 second cooldown)."
+      "option": "Fortification: Taking damage below <#60e84dff>40% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> max health<> grants <#60e84dff>400<> + <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> of your <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> (30 second cooldown)."
     },
     "radiant_protoplasm_harness": {
       "name": "Radiant Protoplasm Harness",
-      "option": "Fortification: Taking damage below <#60e84dff>40% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> max health<> doubles your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>max health<> for <#e8a800ff>6 seconds<> (30 second cooldown)."
+      "option": "Fortification: Taking damage below <#60e84dff>40% <i#asset/base/ui/banpick/champion_stat_icon:hp_0> max health<> grants <#60e84dff>600<> + <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> of your <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> (30 second cooldown)."
     },
     "frozen_mallet": {
       "name": "Frozen Mallet",

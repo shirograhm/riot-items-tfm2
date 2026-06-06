@@ -1,7 +1,7 @@
 {
   "asset/base/text/item": {
     "remapping": "asset/riot_items_tfm2/text/item",
-    "type": "override"
+    "type": "merge"
   },
   "asset/base/aseprite_resources/ingame/item_icons_18x18#sheet": {
     "remapping": "asset/riot_items_tfm2/aseprite_resources/ingame/item_icons_640X640#sheet",
