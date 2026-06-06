@@ -1,25 +1,15 @@
+use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::percent_of;
 
-#[derive(Clone, Debug)]
-pub struct ProtoplasmHarness {
-    healing_active: bool,
-    healing_remaining_ticks: usize,
-    heal_per_tick: usize,
-    cooldown_remaining: usize,
-}
+const PROTOPLASM_HARNESS_THRESHOLD: f64 = 40.0; // 40% HP threshold for activation
+const PROTOPLASM_HARNESS_BUFF_DURATION: usize = 360; // 6 seconds in ticks
+const PROTOPLASM_HARNESS_HP_PERCENT_BOOST: i32 = 100; // 100% HP boost
+const PROTOPLASM_HARNESS_COOLDOWN: usize = 1800; // 30 seconds in ticks
 
-impl Default for ProtoplasmHarness {
-    fn default() -> Self {
-        Self {
-            healing_active: false,
-            healing_remaining_ticks: 0,
-            heal_per_tick: 0,
-            cooldown_remaining: 0,
-        }
-    }
-}
+#[derive(Default, Clone, Debug)]
+pub struct ProtoplasmHarness;
 
 impl ModItemInfo for ProtoplasmHarness {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -60,12 +50,7 @@ impl ModItemInfo for ProtoplasmHarness {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![
-            ItemTag::HP,
-            ItemTag::HPRegen,
-            ItemTag::CooltimeReduce,
-            ItemTag::MoveSpeed,
-        ]
+        vec![ItemTag::HP, ItemTag::CooltimeReduce, ItemTag::MoveSpeed]
     }
 
     fn category(&self) -> ItemCategory {
@@ -80,62 +65,43 @@ impl ModItemInfo for ProtoplasmHarness {
         _attacker: usize,
         _damage: usize,
     ) {
-        // Only trigger if not already healing and cooldown is ready
-        if !self.healing_active && self.cooldown_remaining == 0 {
-            if let Some(entity_ref) = ctx.get_entity(entity) {
-                let hp = entity_ref.hp();
-                let hp_threshold = percent_of(hp.max, 30.0);
+        let Some(entity_ref) = ctx.get_entity(entity) else {
+            return;
+        };
+        let has_harness_buff: bool = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "protoplasm_harness_buff");
+        let has_cooldown_buff: bool = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "protoplasm_harness_cooldown_buff");
+        let hp_threshold = percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_THRESHOLD);
 
-                // If current HP is below 30% of max HP
-                if hp.current < hp_threshold {
-                    let missing_hp = hp.max - hp.current;
-                    let heal_total = percent_of(missing_hp, 50.0);
-
-                    // 3 seconds = 180 ticks (at 60 ticks/second)
-                    self.healing_remaining_ticks = 180;
-                    self.heal_per_tick = heal_total / 180;
-                    self.healing_active = true;
-                    // 30 seconds cooldown = 1800 ticks (at 60 ticks/second)
-                    self.cooldown_remaining = 1800;
-                }
-            }
-        }
-    }
-
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        if self.healing_active && self.healing_remaining_ticks > 0 {
-            ctx.heal(player, player, self.heal_per_tick);
-            self.healing_remaining_ticks -= 1;
-
-            if self.healing_remaining_ticks == 0 {
-                self.healing_active = false;
-            }
-        }
-
-        if self.cooldown_remaining > 0 {
-            self.cooldown_remaining -= 1;
+        if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
+            ctx.add_buff(
+                entity,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: PROTOPLASM_HARNESS_BUFF_DURATION,
+                    },
+                    hp_mult: PROTOPLASM_HARNESS_HP_PERCENT_BOOST,
+                    name: ArrayString::try_from("protoplasm_harness_buff").unwrap(),
+                    ..Default::default()
+                },
+            );
+            ctx.add_buff(
+                entity,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: PROTOPLASM_HARNESS_COOLDOWN,
+                    },
+                    name: ArrayString::try_from("protoplasm_harness_cooldown_buff").unwrap(),
+                    ..Default::default()
+                },
+            );
         }
     }
 }
 
-#[derive(Clone, Debug)]
-pub struct RadiantProtoplasmHarness {
-    healing_active: bool,
-    healing_remaining_ticks: usize,
-    heal_per_tick: usize,
-    cooldown_remaining: usize,
-}
-
-impl Default for RadiantProtoplasmHarness {
-    fn default() -> Self {
-        Self {
-            healing_active: false,
-            healing_remaining_ticks: 0,
-            heal_per_tick: 0,
-            cooldown_remaining: 0,
-        }
-    }
-}
+#[derive(Default, Clone, Debug)]
+pub struct RadiantProtoplasmHarness;
 
 impl ModItemInfo for RadiantProtoplasmHarness {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -172,12 +138,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![
-            ItemTag::HP,
-            ItemTag::HPRegen,
-            ItemTag::CooltimeReduce,
-            ItemTag::MoveSpeed,
-        ]
+        vec![ItemTag::HP, ItemTag::CooltimeReduce, ItemTag::MoveSpeed]
     }
 
     fn category(&self) -> ItemCategory {
@@ -192,40 +153,39 @@ impl ModItemInfo for RadiantProtoplasmHarness {
         _attacker: usize,
         _damage: usize,
     ) {
-        // Only trigger if not already healing and cooldown is ready
-        if !self.healing_active && self.cooldown_remaining == 0 {
-            if let Some(entity_ref) = ctx.get_entity(entity) {
-                let hp = entity_ref.hp();
-                let hp_threshold = percent_of(hp.max, 30.0);
+        let Some(entity_ref) = ctx.get_entity(entity) else {
+            return;
+        };
+        let has_harness_buff: bool = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_protoplasm_harness_buff");
+        let has_cooldown_buff: bool = (0..entity_ref.buff_count()).any(|i| {
+            entity_ref.buff_at(i).name.as_str() == "radiant_protoplasm_harness_cooldown_buff"
+        });
+        let hp_threshold = percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_THRESHOLD);
 
-                // If current HP is below 30% of max HP
-                if hp.current < hp_threshold {
-                    let missing_hp = hp.max - hp.current;
-                    let heal_total = percent_of(missing_hp, 75.0); // 75% for radiant version
-
-                    // 3 seconds = 180 ticks (at 60 ticks/second)
-                    self.healing_remaining_ticks = 180;
-                    self.heal_per_tick = heal_total / 180;
-                    self.healing_active = true;
-                    // 30 seconds cooldown = 1800 ticks (at 60 ticks/second)
-                    self.cooldown_remaining = 1800;
-                }
-            }
-        }
-    }
-
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        if self.healing_active && self.healing_remaining_ticks > 0 {
-            ctx.heal(player, player, self.heal_per_tick);
-            self.healing_remaining_ticks -= 1;
-
-            if self.healing_remaining_ticks == 0 {
-                self.healing_active = false;
-            }
-        }
-
-        if self.cooldown_remaining > 0 {
-            self.cooldown_remaining -= 1;
+        if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
+            ctx.add_buff(
+                entity,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: PROTOPLASM_HARNESS_BUFF_DURATION,
+                    },
+                    hp_mult: PROTOPLASM_HARNESS_HP_PERCENT_BOOST,
+                    name: ArrayString::try_from("radiant_protoplasm_harness_buff").unwrap(),
+                    ..Default::default()
+                },
+            );
+            ctx.add_buff(
+                entity,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: PROTOPLASM_HARNESS_COOLDOWN,
+                    },
+                    name: ArrayString::try_from("radiant_protoplasm_harness_cooldown_buff")
+                        .unwrap(),
+                    ..Default::default()
+                },
+            );
         }
     }
 }
