@@ -309,11 +309,11 @@
     },
     "spirit_visage": {
       "name": "Spirit Visage",
-      "option": "Vitality: increase all <#60e84dff>healing received<> by <#60e84dff>20%<>."
+      "option": "Vitality: Increase all <#60e84dff>healing received<> by <#60e84dff>20%<>."
     },
     "radiant_spirit_visage": {
       "name": "Radiant Spirit Visage",
-      "option": "Vitality: increase all <#60e84dff>healing received<> by <#60e84dff>20%<>."
+      "option": "Vitality: Increase all <#60e84dff>healing received<> by <#60e84dff>20%<>."
     }
   }
 }
