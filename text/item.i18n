@@ -215,6 +215,14 @@
       "name": "Radiant Protector's Vow",
       "option": ""
     },
+    "protoplasm_harness": {
+      "name": "Protoplasm Harness",
+      "option": "Regeneration: Falling below <#60e84dff>30% max health<> causes you to regenerate <#60e84dff>50%<> of your <#60e84dff>missing health<> over <#e8a800ff>3 seconds<> (30 second cooldown)."
+    },
+    "radiant_protoplasm_harness": {
+      "name": "Radiant Protoplasm Harness",
+      "option": "Regeneration: Falling below <#60e84dff>30% max health<> causes you to regenerate <#60e84dff>75%<> of your <#60e84dff>missing health<> over <#e8a800ff>3 seconds<> (30 second cooldown)."
+    },
     "frozen_mallet": {
       "name": "Frozen Mallet",
       "option": "Icy: On attack, apply a <#d94c49ff>25% slow<> for <#e8a800ff>2 seconds<>."
