@@ -21,7 +21,8 @@ In order for the AI to realize that these items exist, it is best to add this mo
 
 ### Known Issues
 
-The item info page doesn't support scrolling natively, so the tier 5 items can't be seen when you look at the game info.
+[strike]The item info page doesn't support scrolling natively, so the tier 5 items can't be seen when you look at the game info.[/strike]  
+Using the Item Scroller mod is recommended. See here: https://steamcommunity.com/sharedfiles/filedetails/?id=3739984076  
 
 The effects of the items (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
 
@@ -87,7 +88,7 @@ Effect: None
 
 Protoplasm Harness - 1000G
 Stats: +400 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
-Effect: Fortification: Taking damage below 40% max health grants 400 + 25% of your maximum health as bonus health for 6 seconds (30 second cooldown).
+Effect: Fortification: Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and instantly heals you for half that amount (30 second cooldown).
 
 Rabadon’s Deathcap – 1500G
 Stats: +165 Ability Power
@@ -153,7 +154,7 @@ Effect: None
 
 Radiant Protoplasm Harness - 1600G
 Stats: +800 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
-Effect: Fortification: Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds (30 second cooldown).
+Effect: Fortification: Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and instantly heals you for half that amount (30 second cooldown).
 
 Radiant Rabadon’s Deathcap – 2200G
 Stats: +220 Ability Power
