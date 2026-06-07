@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::percent_of;
+use crate::percent_of_i32;
 
 const PROTOPLASM_HARNESS_THRESHOLD: f64 = 40.0; // 40% HP threshold for activation
 const PROTOPLASM_HARNESS_BUFF_DURATION: usize = 360; // 6 seconds in ticks
@@ -75,17 +76,26 @@ impl ModItemInfo for ProtoplasmHarness {
         let hp_threshold = percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_THRESHOLD);
 
         if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
-            // Bonus HP granted is 400 + 25% of max HP
-            let bonus_hp =
-                400 + percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_HP_PERCENT_BOOST) as i32;
+            // Bonus HP granted is 300 + 25% of max HP
+            let bonus_max_hp =
+                300 + percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_HP_PERCENT_BOOST) as i32;
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
                         tick: PROTOPLASM_HARNESS_BUFF_DURATION,
                     },
-                    hp: bonus_hp,
+                    hp: bonus_max_hp,
                     name: ArrayString::try_from("protoplasm_harness_buff").unwrap(),
+                    ..Default::default()
+                },
+            );
+            // Heal for half the amount of heal you gain
+            ctx.add_buff(
+                entity,
+                BuffState {
+                    duration: BuffType::Time { tick: 60 },
+                    hp_regen: percent_of_i32(bonus_max_hp, 50.0),
                     ..Default::default()
                 },
             );
@@ -168,7 +178,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
 
         if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
             // Bonus HP granted is 600 + 25% of max HP
-            let bonus_hp =
+            let bonus_max_hp =
                 600 + percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_HP_PERCENT_BOOST) as i32;
             ctx.add_buff(
                 entity,
@@ -176,8 +186,17 @@ impl ModItemInfo for RadiantProtoplasmHarness {
                     duration: BuffType::Time {
                         tick: PROTOPLASM_HARNESS_BUFF_DURATION,
                     },
-                    hp: bonus_hp,
+                    hp: bonus_max_hp,
                     name: ArrayString::try_from("radiant_protoplasm_harness_buff").unwrap(),
+                    ..Default::default()
+                },
+            );
+            // Heal for half the amount of heal you gain
+            ctx.add_buff(
+                entity,
+                BuffState {
+                    duration: BuffType::Time { tick: 60 },
+                    hp_regen: percent_of_i32(bonus_max_hp, 50.0),
                     ..Default::default()
                 },
             );
