@@ -52,7 +52,14 @@ impl ModItemInfo for UnendingDespair {
                 .get_entity(caster)
                 .map(|e| percent_of(e.hp().max, 1.0))
                 .unwrap_or(0);
-        ctx.heal(caster, caster, heal_amount);
+        ctx.add_buff(
+            caster,
+            BuffState {
+                duration: BuffType::Time { tick: 60 },
+                hp_regen: heal_amount as i32,
+                ..Default::default()
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -107,7 +114,14 @@ impl ModItemInfo for RadiantUnendingDespair {
                 .get_entity(caster)
                 .map(|e| percent_of(e.hp().max, 3.0))
                 .unwrap_or(0);
-        ctx.heal(caster, caster, heal_amount);
+        ctx.add_buff(
+            caster,
+            BuffState {
+                duration: BuffType::Time { tick: 60 },
+                hp_regen: heal_amount as i32,
+                ..Default::default()
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTag> {

@@ -47,7 +47,14 @@ impl ModItemInfo for SpiritVisage {
     fn on_healed(&mut self, ctx: &mut GameCtx, _caster: Option<usize>, entity: usize, heal: usize) {
         // Healing you receive is increased by 20%
         let bonus_heal = percent_of(heal, SPIRIT_VISAGE_HEAL_MULT);
-        ctx.heal(entity, entity, bonus_heal);
+        ctx.add_buff(
+            entity,
+            BuffState {
+                duration: BuffType::Time { tick: 60 },
+                hp_regen: bonus_heal as i32,
+                ..Default::default()
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -98,7 +105,14 @@ impl ModItemInfo for RadiantSpiritVisage {
     fn on_healed(&mut self, ctx: &mut GameCtx, _caster: Option<usize>, entity: usize, heal: usize) {
         // Healing you receive is increased by 20%
         let bonus_heal = percent_of(heal, SPIRIT_VISAGE_HEAL_MULT);
-        ctx.heal(entity, entity, bonus_heal);
+        ctx.add_buff(
+            entity,
+            BuffState {
+                duration: BuffType::Time { tick: 60 },
+                hp_regen: bonus_heal as i32,
+                ..Default::default()
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTag> {
