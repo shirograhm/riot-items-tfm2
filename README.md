@@ -1,6 +1,11 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
 Reskins the 6 current item lines and also adds 16 additional items to the game.
 
+##### Check it out on Steam Workshop! 
+https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
+##### Item Scroller Mod Add-On
+https://steamcommunity.com/sharedfiles/filedetails/?id=3739984076
+
 ### Important
 
 This is an EN only mod. You can use it with other languages, but the names and descriptions of the items will be broken.
