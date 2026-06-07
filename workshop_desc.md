@@ -25,7 +25,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 Using the Item Scroller mod is recommended. See here: 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739984076  
 
-The effects of the items (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
+Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
 
 Selecting a specific item for the AI to buy will cause the AI to always buy the base game item in that category. I am not sure why this happens or how to fix this yet, and the API does not seem to provide hooks for item purchase behavior. To get maximum use out of this mod, you'll have to trust your players!  
 
