@@ -314,6 +314,14 @@
     "radiant_spirit_visage": {
       "name": "Radiant Spirit Visage",
       "option": "Vitality: Increase all <#60e84dff>healing received<> by <#60e84dff>20%<>."
+    },
+    "guinsoos_rageblade": {
+      "name": "Guinsoo's Rageblade",
+      "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8% bonus<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+    },
+    "radiant_guinsoos_rageblade": {
+      "name": "RadiantGuinsoo's Rageblade",
+      "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8% bonus<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     }
   }
 }
