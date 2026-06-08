@@ -52,6 +52,7 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
 | **Frozen Mallet** | 1300G | +450 HP<br>+45 AD | On attack, apply a 25% slow for 2 seconds. |
+| **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% Attack Speed | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | — |
 | **Jak’Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
 | **Mortal Reminder** | 1400G | +55 AD<br>+20% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
@@ -73,6 +74,7 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Reduce the cooldown of your ultimate ability by 25%. |
 | **Radiant Frozen Mallet** | 1900G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds. |
+| **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% Attack Speed | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | — |
 | **Radiant Jak’Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | When you take damage from an enemy champion, gain +10% armor and +10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Mortal Reminder** | 2000G | +70 AD<br>+30% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
