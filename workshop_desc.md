@@ -27,153 +27,157 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3739984076
 
 Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
 
-Selecting a specific item for the AI to buy will cause the AI to always buy the base game item in that category. I am not sure why this happens or how to fix this yet, and the API does not seem to provide hooks for item purchase behavior. To get maximum use out of this mod, you'll have to trust your players!  
+Selecting a specific item category for the AI will cause the AI to always buy the base game item. I am not sure why this happens or how to fix this yet, and the API does not seem to provide hooks for item purchase behavior. To get maximum use out of this mod, you'll have to trust your players!  
 
 [h1] Added Items [/h1]
 
 [h3] Tier 2 [/h3]
 Executioner’s Calling – 500G
 Stats: +25 Attack Damage
-Effect: [u]Executioner[/u]: On attack, reduce healing by 25% for 2 seconds.
+[u]Executioner[/u]: On attack, reduce healing by 25% for 2 seconds.
 
 [h3] Tier 3 [/h3]
 B.F. Sword – 800G
 Stats: +65 Attack Damage
-Effect: None
 
 Needlessly Large Rod – 850G
 Stats: +115 Ability Power
-Effect: None
 
 [h3] Tier 4 [/h3]
 Blackfire Torch – 1300G
 Stats: +130 Ability Power, +15% Skill Cooldown Reduction
-Effect: [u]Maleficent[/u]: Spell hits grant +10 Ability Power for 4 seconds (max 4 stacks).
+[u]Maleficent[/u]: Spell hits grant +10 Ability Power for 4 seconds (max 4 stacks).
 
 Blade of the Ruined King – 1450G
 Stats: +50 Attack Damage, +25% Attack Speed
-Effect: [u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
+[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
 
 Deathblade – 1400G
 Stats: +90 Attack Damage
-Effect: [u]Apex[/u]: Increase your total Attack Damage by 15%.
+[u]Apex[/u]: Increase your total Attack Damage by 15%.
 
 Experimental Hexplate – 1200G
 Stats: +350 HP, +35% Attack Speed
-Effect: [u]Overdrive[/u]: Reduce the cooldown of your ultimate skill by 15%.
+[u]Overdrive[/u]: Reduce the cooldown of your ultimate skill by 15%.
 
 Frozen Mallet – 1300G
 Stats: +450 HP, +45 Attack Damage
-Effect: [u]Icy[/u]: On attack, apply a 25% slow for 2 seconds.
+[u]Icy[/u]: On attack, apply a 25% slow for 2 seconds.
+
+Guinsoo's Rageblade – 1350G
+Stats: +30 Attack Damage, +30 Ability Power, +30% Attack Speed
+[u]Wrath[/u]: Your basic attacks deal 30 bonus magic damage.
+[u]Seething Strike[/u]: On attack, gain 8% attack speed for 4 seconds (max 4 stacks).
 
 Infinity Edge – 1300G
 Stats: +80 Attack Damage, +25% Critical Strike Chance
-Effect: None
 
 Jak’Sho, The Protean – 1400G
 Stats: +300 HP, +40 Armor, +65 Magic Resist
-Effect: [u]Resilience[/u]: Taking damage grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks).
+[u]Resilience[/u]: Taking damage grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks).
 
 Mortal Reminder – 1400G
 Stats: +55 Attack Damage, +20% Armor Penetration
-Effect: [u]Executioner[/u]: On attack, reduce healing by 40% for 2 seconds.
+[u]Executioner[/u]: On attack, reduce healing by 40% for 2 seconds.
 
 Nashor's Tooth – 1450G
 Stats: +115 Ability Power, +25% Attack Speed
-Effect: [u]Icathian Bite[/u]: On attack, deal bonus magic damage equal to 35 + 3% Ability Power.
+[u]Icathian Bite[/u]: On attack, deal bonus magic damage equal to 35 + 3% Ability Power.
 
 Protector’s Vow – 1300G
 Stats: +350 HP, +50 Armor
-Effect: None
 
 Protoplasm Harness - 1000G
 Stats: +400 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
-Effect: [u]Fortification[/u]: Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and instantly heals you for half that amount (30 second cooldown).
+[u]Fortification[/u]: Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and instantly heals you for half that amount (30 second cooldown).
 
 Rabadon’s Deathcap – 1500G
 Stats: +165 Ability Power
-Effect: [u]Opus[/u]: Increase your total Ability Power by 20%.
+[u]Opus[/u]: Increase your total Ability Power by 20%.
 
 Riftmaker – 1300G
 Stats: +450 HP, +75 Ability Power
-Effect: [u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
+[u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
 
 Spirit Visage - 1400G
 Stats: +400 HP, +50 Magic Resist
-Effect: [u]Vitality[/u]: Increase all healing received by 20%.
+[u]Vitality[/u]: Increase all healing received by 20%.
 
 Terminus – 1300G
 Stats: +30 Attack Damage, +35% Attack Speed
-Effect: [u]Juxtaposition[/u]: On attack, gain either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each).
+[u]Juxtaposition[/u]: On attack, gain either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each).
 
 Unending Despair - 1450G
 Stats: +450 HP, +30 Armor
-Effect: [u]Anguish[/u]: Spell hits heal you for 10 + 1% of your maximum health.
+[u]Anguish[/u]: Spell hits heal you for 10 + 1% of your maximum health.
 
 [h3] Tier 5 [/h3]
 Radiant Blackfire Torch – 1900G
 Stats: +175 Ability Power, +25% Skill Cooldown Reduction
-Effect: [u]Maleficent[/u]: Spell hits grant +30 Ability Power for 4 seconds (max 4 stacks).
+[u]Maleficent[/u]: Spell hits grant +30 Ability Power for 4 seconds (max 4 stacks).
 
 Radiant Blade of the Ruined King – 2100G
 Stats: +60 Attack Damage, +50% Attack Speed, +10% Lifesteal
-Effect: [u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
+[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
 
 Radiant Deathblade – 2000G
 Stats: +140 Attack Damage
-Effect: [u]Apex[/u]: Increase your total Attack Damage by 25%.
+[u]Apex[/u]: Increase your total Attack Damage by 25%.
 
 Radiant Experimental Hexplate – 1850G
 Stats: +500 HP, +50% Attack Speed, +5% Movement Speed
-Effect: [u]Overdrive[/u]: Reduce the cooldown of your ultimate skill by 25%.
+[u]Overdrive[/u]: Reduce the cooldown of your ultimate skill by 25%.
 
 Radiant Frozen Mallet – 1900G
 Stats: +600 HP, +60 Attack Damage
-Effect: [u]Icy[/u]: On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds.
+[u]Icy[/u]: On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds.
+
+Radiant Guinsoo's Rageblade – 1900G
+Stats: +50 Attack Damage, +50 Ability Power, +50% Attack Speed
+[u]Wrath[/u]: Your basic attacks deal 30 bonus magic damage.
+[u]Seething Strike[/u]: On attack, gain 8% attack speed for 4 seconds (max 4 stacks).
 
 Radiant Infinity Edge – 1900G
 Stats: +120 Attack Damage, +50% Critical Strike Chance
-Effect: None
 
 Radiant Jak’Sho, The Protean – 2000G
 Stats: +550 HP, +65 Armor, +65 Magic Resist
-Effect: [u]Resilience[/u]: Taking damage grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks).
+[u]Resilience[/u]: Taking damage grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks).
 
 Radiant Mortal Reminder – 2000G
 Stats: +70 Attack Damage, +30% Armor Penetration
-Effect: [u]Executioner[/u]: On attack, reduce healing by 40% for 2 seconds.
+[u]Executioner[/u]: On attack, reduce healing by 40% for 2 seconds.
 
 Radiant Nashor's Tooth – 2050G
 Stats: +180 Ability Power, +40% Attack Speed
-Effect: [u]Icathian Bite[/u]: On attack, deal bonus magic damage equal to 50 + 5% Ability Power.
+[u]Icathian Bite[/u]: On attack, deal bonus magic damage equal to 50 + 5% Ability Power.
 
 Radiant Protector’s Vow – 1800G
 Stats: +550 HP, +75 Armor, +15% Skill Cooldown Reduction
-Effect: None
 
 Radiant Protoplasm Harness - 1600G
 Stats: +800 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
-Effect: [u]Fortification[/u]: Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and instantly heals you for half that amount (30 second cooldown).
+[u]Fortification[/u]: Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and instantly heals you for half that amount (30 second cooldown).
 
 Radiant Rabadon’s Deathcap – 2200G
 Stats: +220 Ability Power
-Effect: [u]Opus[/u]: Increase your total Ability Power by 35%.
+[u]Opus[/u]: Increase your total Ability Power by 35%.
 
 Radiant Riftmaker – 1900G
 Stats: +600 HP, +150 Ability Power
-Effect: [u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
+[u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
 
 Radiant Spirit Visage - 1900G
 Stats: +600 HP, +100 Magic Resist
-Effect: [u]Vitality[/u]: Increase all healing received by 20%.
+[u]Vitality[/u]: Increase all healing received by 20%.
 
 Radiant Terminus – 1900G
 Stats: +50 Attack Damage, +60% Attack Speed
-Effect: [u]Juxtaposition[/u]: On attack, gain either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each).
+[u]Juxtaposition[/u]: On attack, gain either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each).
 
 Radiant Unending Despair - 2100G
 Stats: +700 HP, +50 Armor
-Effect: [u]Anguish[/u]: Spell hits heal you for 25 + 3% of your maximum health.
+[u]Anguish[/u]: Spell hits heal you for 25 + 3% of your maximum health.
 
 [h2] Legalese [/h2]
 
