@@ -53,7 +53,7 @@ impl ModItemInfo for GuinsoosRageblade {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let Some(entity_ref) = ctx.get_entity(target) else {
+        let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
         let stack_count = (0..entity_ref.buff_count())
@@ -128,7 +128,7 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let Some(entity_ref) = ctx.get_entity(target) else {
+        let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
         let stack_count = (0..entity_ref.buff_count())

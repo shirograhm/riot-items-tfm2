@@ -41,8 +41,8 @@ impl ModItemInfo for BlackfireTorch {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
-        let Some(entity_ref) = ctx.get_entity(target) else {
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
         let stack_count = (0..entity_ref.buff_count())
@@ -106,8 +106,8 @@ impl ModItemInfo for RadiantBlackfireTorch {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
-        let Some(entity_ref) = ctx.get_entity(target) else {
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
         let stack_count = (0..entity_ref.buff_count())
