@@ -51,7 +51,7 @@
       "dot_amplify": "+{Value}% DoT Amplification",
       "hp_regen": "+{Value} Max Health Regen",
       "crit_chance": "+{Value}% Critical Strike Chance",
-      "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from Basic Attacks by <#e8a800ff>{Value}%<>.",
+      "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from basic attacks by <#e8a800ff>{Value}%<>.",
       "skill_damaged_reduce": "+{Value}% Skill Damage Reduction",
       "toughness": "+{Value}% Tenacity"
     },
@@ -217,11 +217,11 @@
     },
     "protoplasm_harness": {
       "name": "Protoplasm Harness",
-      "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>300<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and instantly <#60e84dff>heals you<> for half that amount (30 second cooldown)."
+      "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>300<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <#60e84dff>heals you<> for half that amount after <#e8a800ff>1 second<> (30 second cooldown)."
     },
     "radiant_protoplasm_harness": {
       "name": "Radiant Protoplasm Harness",
-      "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>600<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and instantly <#60e84dff>heals you<> for half that amount (30 second cooldown)."
+      "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>600<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <#60e84dff>heals you<> for half that amount after <#e8a800ff>1 second<> (30 second cooldown)."
     },
     "frozen_mallet": {
       "name": "Frozen Mallet",
@@ -317,11 +317,11 @@
     },
     "guinsoos_rageblade": {
       "name": "Guinsoo's Rageblade",
-      "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8% bonus<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "radiant_guinsoos_rageblade": {
-      "name": "RadiantGuinsoo's Rageblade",
-      "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8% bonus<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "name": "Radiant Guinsoo's Rageblade",
+      "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     }
   }
 }

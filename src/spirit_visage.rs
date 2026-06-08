@@ -62,7 +62,7 @@ impl ModItemInfo for SpiritVisage {
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+        ItemCategory::MagicResistance
     }
 }
 
@@ -120,6 +120,6 @@ impl ModItemInfo for RadiantSpiritVisage {
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+        ItemCategory::MagicResistance
     }
 }
