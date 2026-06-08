@@ -5,7 +5,5 @@ edition = "2021"
 
 [lib]
 crate-type = ["cdylib"]
-
-[dependencies]
 # Add external crates here. Do not add mod-api here; the SDK/uploader
 # injects the matching prebuilt mod_api crate during the build.

@@ -19,3 +19,6 @@ target/
 *.workshop_id
 *.dll
 *.xcf
+
+.cargo/*
+.vscode/*
