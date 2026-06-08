@@ -18,7 +18,7 @@ impl ModItemInfo for GuinsoosRageblade {
     }
 
     fn price(&self) -> usize {
-        1250
+        1350
     }
 
     fn tier(&self) -> usize {
