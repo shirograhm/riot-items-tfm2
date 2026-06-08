@@ -1,13 +1,13 @@
 {
   "name": "Riot Items TFM2",
   "author": "shirograhm",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Adds items from Riot Games (LoL, TFT) to Teamfight Manager 2.",
   "last_updated": "2026-05-29",
   "dependencies": [
     {
       "mod_id": "base",
-      "version": ">=0.1.3"
+      "version": ">=0.1.4"
     }
   ]
 }

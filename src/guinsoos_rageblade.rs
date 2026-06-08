@@ -2,23 +2,23 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 #[derive(Default, Clone, Debug)]
-pub struct BlackfireTorch;
+pub struct GuinsoosRageblade;
 
-impl ModItemInfo for BlackfireTorch {
+impl ModItemInfo for GuinsoosRageblade {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "blackfire_torch"
+        "guinsoos_rageblade"
     }
 
     fn icon(&self) -> &str {
-        "t7_6"
+        "t9_5"
     }
 
     fn price(&self) -> usize {
-        1300
+        1350
     }
 
     fn tier(&self) -> usize {
@@ -26,64 +26,77 @@ impl ModItemInfo for BlackfireTorch {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["staff_of_rapture".to_string()]
+        vec![
+            "soldiers_longsword".to_string(),
+            "arcane_crystal".to_string(),
+        ]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_blackfire_torch".to_string()]
+        vec!["radiant_guinsoos_rageblade".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 130,
-            skill_cooldown_mult: 15,
+            attack: 30,
+            magic_power: 30,
+            attack_speed_mult: 30,
             ..Default::default()
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_attack(
+        &mut self,
+        ctx: &mut GameCtx,
+        caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageType,
+    ) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
         let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "blackfire_torch_buff")
+            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_buff")
             .count();
         if stack_count < 4 {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time { tick: 240 },
-                    magic_power: 10,
-                    name: ArrayString::try_from("blackfire_torch_buff").unwrap(),
+                    attack_speed_mult: 8,
+                    name: ArrayString::try_from("guinsoos_rageblade_buff").unwrap(),
                     ..Default::default()
                 },
             );
         }
+        // Basic attacks deal 30 bonus magic damage
+        ctx.deal_damage(caster, target, 0, 30, AttackType::BaseAttack);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::CooltimeReduce]
+        vec![ItemTag::AD, ItemTag::AP, ItemTag::AS]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+        ItemCategory::AttackSpeed
     }
 }
 
 #[derive(Default, Clone, Debug)]
-pub struct RadiantBlackfireTorch;
+pub struct RadiantGuinsoosRageblade;
 
-impl ModItemInfo for RadiantBlackfireTorch {
+impl ModItemInfo for RadiantGuinsoosRageblade {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_blackfire_torch"
+        "radiant_guinsoos_rageblade"
     }
 
     fn icon(&self) -> &str {
-        "t7_7"
+        "t9_6"
     }
 
     fn price(&self) -> usize {
@@ -95,42 +108,52 @@ impl ModItemInfo for RadiantBlackfireTorch {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["blackfire_torch".to_string()]
+        vec!["guinsoos_rageblade".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 175,
-            skill_cooldown_mult: 25,
+            attack: 50,
+            magic_power: 50,
+            attack_speed_mult: 50,
             ..Default::default()
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_attack(
+        &mut self,
+        ctx: &mut GameCtx,
+        caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageType,
+    ) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
         let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_blackfire_torch_buff")
+            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff")
             .count();
         if stack_count < 4 {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time { tick: 240 },
-                    magic_power: 30,
-                    name: ArrayString::try_from("radiant_blackfire_torch_buff").unwrap(),
+                    attack_speed_mult: 8,
+                    name: ArrayString::try_from("radiant_guinsoos_rageblade_buff").unwrap(),
                     ..Default::default()
                 },
             );
         }
+        // Basic attacks deal 30 bonus magic damage
+        ctx.deal_damage(caster, target, 0, 30, AttackType::BaseAttack);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::CooltimeReduce]
+        vec![ItemTag::AD, ItemTag::AP, ItemTag::AS]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+        ItemCategory::AttackSpeed
     }
 }
