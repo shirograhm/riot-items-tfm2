@@ -129,6 +129,6 @@ impl ModItemInfo for RadiantUnendingDespair {
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+        ItemCategory::Hp
     }
 }
