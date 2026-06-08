@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 6 current item lines and also adds 16 additional items to the game.
+Reskins the 30 existing items and also adds 37 additional items to the game.
 
 [h1] Important [/h1]
 
@@ -32,150 +32,150 @@ Selecting a specific item category for the AI will cause the AI to always buy th
 [h1] Added Items [/h1]
 
 [h3] Tier 2 [/h3]
-Executioner’s Calling – 500G
+[b]Executioner’s Calling[/b] – 500G
 Stats: +25 Attack Damage
 [u]Executioner[/u]: On attack, reduce healing by 25% for 2 seconds.
 
 [h3] Tier 3 [/h3]
-B.F. Sword – 800G
+[b]B.F. Sword[/b] – 800G
 Stats: +65 Attack Damage
 
-Needlessly Large Rod – 850G
+[b]Needlessly Large Rod[/b] – 850G
 Stats: +115 Ability Power
 
 [h3] Tier 4 [/h3]
-Blackfire Torch – 1300G
+[b]Blackfire Torch[/b] – 1300G
 Stats: +130 Ability Power, +15% Skill Cooldown Reduction
 [u]Maleficent[/u]: Spell hits grant +10 Ability Power for 4 seconds (max 4 stacks).
 
-Blade of the Ruined King – 1450G
+[b]Blade of the Ruined King[/b] – 1450G
 Stats: +50 Attack Damage, +25% Attack Speed
 [u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
 
-Deathblade – 1400G
+[b]Deathblade[/b] – 1400G
 Stats: +90 Attack Damage
 [u]Apex[/u]: Increase your total Attack Damage by 15%.
 
-Experimental Hexplate – 1200G
+[b]Experimental Hexplate[/b] – 1200G
 Stats: +350 HP, +35% Attack Speed
 [u]Overdrive[/u]: Reduce the cooldown of your ultimate skill by 15%.
 
-Frozen Mallet – 1300G
+[b]Frozen Mallet[/b] – 1300G
 Stats: +450 HP, +45 Attack Damage
 [u]Icy[/u]: On attack, apply a 25% slow for 2 seconds.
 
-Guinsoo's Rageblade – 1350G
+[b]Guinsoo's Rageblade[/b] – 1350G
 Stats: +30 Attack Damage, +30 Ability Power, +30% Attack Speed
 [u]Wrath[/u]: Your basic attacks deal 30 bonus magic damage.
 [u]Seething Strike[/u]: On attack, gain 8% attack speed for 4 seconds (max 4 stacks).
 
-Infinity Edge – 1300G
+[b]Infinity Edge[/b] – 1300G
 Stats: +80 Attack Damage, +25% Critical Strike Chance
 
-Jak’Sho, The Protean – 1400G
+[b]Jak’Sho, The Protean[/b] – 1400G
 Stats: +300 HP, +40 Armor, +65 Magic Resist
 [u]Resilience[/u]: Taking damage grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks).
 
-Mortal Reminder – 1400G
+[b]Mortal Reminder[/b] – 1400G
 Stats: +55 Attack Damage, +20% Armor Penetration
 [u]Executioner[/u]: On attack, reduce healing by 40% for 2 seconds.
 
-Nashor's Tooth – 1450G
+[b]Nashor's Tooth[/b] – 1450G
 Stats: +115 Ability Power, +25% Attack Speed
 [u]Icathian Bite[/u]: On attack, deal bonus magic damage equal to 35 + 3% Ability Power.
 
-Protector’s Vow – 1300G
+[b]Protector’s Vow[/b] – 1300G
 Stats: +350 HP, +50 Armor
 
-Protoplasm Harness - 1000G
+[b]Protoplasm Harness[/b] - 1000G
 Stats: +400 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
 [u]Fortification[/u]: Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and instantly heals you for half that amount (30 second cooldown).
 
-Rabadon’s Deathcap – 1500G
+[b]Rabadon’s Deathcap[/b] – 1500G
 Stats: +165 Ability Power
 [u]Opus[/u]: Increase your total Ability Power by 20%.
 
-Riftmaker – 1300G
+[b]Riftmaker[/b] – 1300G
 Stats: +450 HP, +75 Ability Power
 [u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
 
-Spirit Visage - 1400G
+[b]Spirit Visage[/b] - 1400G
 Stats: +400 HP, +50 Magic Resist
 [u]Vitality[/u]: Increase all healing received by 20%.
 
-Terminus – 1300G
+[b]Terminus[/b] – 1300G
 Stats: +30 Attack Damage, +35% Attack Speed
 [u]Juxtaposition[/u]: On attack, gain either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each).
 
-Unending Despair - 1450G
+[b]Unending Despair[/b] - 1450G
 Stats: +450 HP, +30 Armor
 [u]Anguish[/u]: Spell hits heal you for 10 + 1% of your maximum health.
 
 [h3] Tier 5 [/h3]
-Radiant Blackfire Torch – 1900G
+[b]Radiant Blackfire Torch[/b] – 1900G
 Stats: +175 Ability Power, +25% Skill Cooldown Reduction
 [u]Maleficent[/u]: Spell hits grant +30 Ability Power for 4 seconds (max 4 stacks).
 
-Radiant Blade of the Ruined King – 2100G
+[b]Radiant Blade of the Ruined King[/b] – 2100G
 Stats: +60 Attack Damage, +50% Attack Speed, +10% Lifesteal
 [u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
 
-Radiant Deathblade – 2000G
+[b]Radiant Deathblade[/b] – 2000G
 Stats: +140 Attack Damage
 [u]Apex[/u]: Increase your total Attack Damage by 25%.
 
-Radiant Experimental Hexplate – 1850G
+[b]Radiant Experimental Hexplate[/b] – 1850G
 Stats: +500 HP, +50% Attack Speed, +5% Movement Speed
 [u]Overdrive[/u]: Reduce the cooldown of your ultimate skill by 25%.
 
-Radiant Frozen Mallet – 1900G
+[b]Radiant Frozen Mallet[/b] – 1900G
 Stats: +600 HP, +60 Attack Damage
 [u]Icy[/u]: On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds.
 
-Radiant Guinsoo's Rageblade – 1900G
+[b]Radiant Guinsoo's Rageblade[/b] – 1900G
 Stats: +50 Attack Damage, +50 Ability Power, +50% Attack Speed
 [u]Wrath[/u]: Your basic attacks deal 30 bonus magic damage.
 [u]Seething Strike[/u]: On attack, gain 8% attack speed for 4 seconds (max 4 stacks).
 
-Radiant Infinity Edge – 1900G
+[b]Radiant Infinity Edge[/b] – 1900G
 Stats: +120 Attack Damage, +50% Critical Strike Chance
 
-Radiant Jak’Sho, The Protean – 2000G
+[b]Radiant Jak’Sho, The Protean[/b] – 2000G
 Stats: +550 HP, +65 Armor, +65 Magic Resist
 [u]Resilience[/u]: Taking damage grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks).
 
-Radiant Mortal Reminder – 2000G
+[b]Radiant Mortal Reminder[/b] – 2000G
 Stats: +70 Attack Damage, +30% Armor Penetration
 [u]Executioner[/u]: On attack, reduce healing by 40% for 2 seconds.
 
-Radiant Nashor's Tooth – 2050G
+[b]Radiant Nashor's Tooth[/b] – 2050G
 Stats: +180 Ability Power, +40% Attack Speed
 [u]Icathian Bite[/u]: On attack, deal bonus magic damage equal to 50 + 5% Ability Power.
 
-Radiant Protector’s Vow – 1800G
+[b]Radiant Protector’s Vow[/b] – 1800G
 Stats: +550 HP, +75 Armor, +15% Skill Cooldown Reduction
 
-Radiant Protoplasm Harness - 1600G
+[b]Radiant Protoplasm Harness[/b] - 1600G
 Stats: +800 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
 [u]Fortification[/u]: Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and instantly heals you for half that amount (30 second cooldown).
 
-Radiant Rabadon’s Deathcap – 2200G
+[b]Radiant Rabadon’s Deathcap[/b] – 2200G
 Stats: +220 Ability Power
 [u]Opus[/u]: Increase your total Ability Power by 35%.
 
-Radiant Riftmaker – 1900G
+[b]Radiant Riftmaker[/b] – 1900G
 Stats: +600 HP, +150 Ability Power
 [u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
 
-Radiant Spirit Visage - 1900G
+[b]Radiant Spirit Visage[/b] - 1900G
 Stats: +600 HP, +100 Magic Resist
 [u]Vitality[/u]: Increase all healing received by 20%.
 
-Radiant Terminus – 1900G
+[b]Radiant Terminus[/b] – 1900G
 Stats: +50 Attack Damage, +60% Attack Speed
 [u]Juxtaposition[/u]: On attack, gain either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each).
 
-Radiant Unending Despair - 2100G
+[b]Radiant Unending Despair[/b] - 2100G
 Stats: +700 HP, +50 Armor
 [u]Anguish[/u]: Spell hits heal you for 25 + 3% of your maximum health.
 
