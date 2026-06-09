@@ -50,7 +50,7 @@ Stats: +130 Ability Power, +15% Skill Cooldown Reduction
 
 [b]Blade of the Ruined King[/b] - 1450G
 Stats: +50 Attack Damage, +25% Attack Speed
-[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
+[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health. Deals a maximum of 50 physical damage against minions and monsters.
 
 [b]Deathblade[/b] - 1400G
 Stats: +90 Attack Damage
@@ -89,7 +89,7 @@ Stats: +350 HP, +50 Armor
 
 [b]Protoplasm Harness[/b] - 1000G
 Stats: +400 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
-[u]Fortification[/u]: Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount after 1 second (30 second cooldown).
+[u]Fortification[/u]: Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown).
 
 [b]Rabadon’s Deathcap[/b] - 1500G
 Stats: +165 Ability Power
@@ -97,7 +97,7 @@ Stats: +165 Ability Power
 
 [b]Riftmaker[/b] - 1300G
 Stats: +450 HP, +75 Ability Power
-[u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
+[u]Infusion[/u]: Spell hits grant Ability Power equal to 2% of your maximum health for 5 seconds (max 3 stacks).
 
 [b]Spirit Visage[/b] - 1400G
 Stats: +400 HP, +50 Magic Resist
@@ -118,7 +118,7 @@ Stats: +175 Ability Power, +25% Skill Cooldown Reduction
 
 [b]Radiant Blade of the Ruined King[/b] - 2100G
 Stats: +60 Attack Damage, +50% Attack Speed, +10% Lifesteal
-[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
+[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health. Deals a maximum of 50 physical damage against minions and monsters.
 
 [b]Radiant Deathblade[/b] - 2000G
 Stats: +140 Attack Damage
@@ -157,7 +157,7 @@ Stats: +550 HP, +75 Armor, +15% Skill Cooldown Reduction
 
 [b]Radiant Protoplasm Harness[/b] - 1600G
 Stats: +800 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
-[u]Fortification[/u]: Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount after 1 second (30 second cooldown).
+[u]Fortification[/u]: Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown).
 
 [b]Radiant Rabadon’s Deathcap[/b] - 2200G
 Stats: +220 Ability Power
@@ -165,7 +165,7 @@ Stats: +220 Ability Power
 
 [b]Radiant Riftmaker[/b] - 1900G
 Stats: +600 HP, +150 Ability Power
-[u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
+[u]Infusion[/u]: Spell hits grant Ability Power equal to 2% of your maximum health for 5 seconds (max 3 stacks).
 
 [b]Radiant Spirit Visage[/b] - 1900G
 Stats: +600 HP, +100 Magic Resist

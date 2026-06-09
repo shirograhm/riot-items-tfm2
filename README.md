@@ -48,7 +48,7 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Spell hits grant +10 Ability Power for 4 seconds (max 4 stacks). |
-| **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS | On attack, deal bonus physical damage equal to 5% of the target's current health. |
+| **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
 | **Frozen Mallet** | 1300G | +450 HP<br>+45 AD | On attack, apply a 25% slow for 2 seconds. |
@@ -58,9 +58,9 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | **Mortal Reminder** | 1400G | +55 AD<br>+20% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
 | **Nashor's Tooth** | 1450G | +115 AP<br>+25% AS | On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power. |
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | — |
-| **Protoplasm Harness** | 1000G | +400 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 400 + 25% of your maximum health as bonus health for 6 seconds (30 second cooldown). |
+| **Protoplasm Harness** | 1000G | +400 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
-| **Riftmaker** | 1300G | +400 HP, +75 AP | Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks). |
+| **Riftmaker** | 1300G | +400 HP, +75 AP | Spell hits grant Ability Power equal to 2% of your maximum health for 5 seconds (max 3 stacks). |
 | **Spirit Visage** | 1400G | +400 HP<br>+50 MR | Increase all healing received by 20%. |
 | **Terminus** | 1300G | +30 AD<br>+35% AS | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Spell hits heal you for 10 + 1% of your maximum health. |
@@ -70,7 +70,7 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Spell hits grant +30 Ability Power for 4 seconds (max 4 stacks). |
-| **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Lifesteal | On attack, deal bonus physical damage equal to 5% of the target's current health. |
+| **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Lifesteal | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Reduce the cooldown of your ultimate ability by 25%. |
 | **Radiant Frozen Mallet** | 1900G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds. |
@@ -80,9 +80,9 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | **Radiant Mortal Reminder** | 2000G | +70 AD<br>+30% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
 | **Radiant Nashor's Tooth** | 2050G | +180 AP<br>+40% AS | On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power. |
 | **Radiant Protector's Vow** | 1800G | +550 HP<br>+75 Armor<br>+15% Skill CDR | — |
-| **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds (30 second cooldown). |
+| **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon’s Deathcap** | 2200G | +220 AP | Increase your total Ability Power by 35%. |
-| **Radiant Riftmaker** | 1900G | +600 HP, +150 AP | Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks). |
+| **Radiant Riftmaker** | 1900G | +600 HP, +150 AP | Spell hits grant Ability Power equal to 2% of your maximum health for 5 seconds (max 3 stacks). |
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+100 MR | Increase all healing received by 20%. |
 | **Radiant Terminus** | 1900G | +50 AD<br>+60% AS | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Spell hits heal you for 25 + 3% of your maximum health. |
