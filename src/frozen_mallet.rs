@@ -3,6 +3,9 @@ use mod_api::*;
 
 use crate::percent_of;
 
+const FROZEN_MALLET_SLOW_DURATION: usize = 120;
+const FROZEN_MALLET_SLOW_PERCENT: i32 = -25;
+
 #[derive(Default, Clone, Debug)]
 pub struct FrozenMallet;
 
@@ -54,19 +57,27 @@ impl ModItemInfo for FrozenMallet {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        // Mallet slow debuff
-        let Some(entity_ref) = ctx.get_entity(target) else {
+        let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        let already_slowed = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
+
+        // Don't apply buff or damage to towers
+        if target_ref.is_tower() {
+            return;
+        }
+
+        // Mallet slow debuff
+        let already_slowed = (0..target_ref.buff_count())
+            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
 
         if !already_slowed {
             ctx.add_buff(
                 target,
                 BuffState {
-                    duration: BuffType::Time { tick: 120 },
-                    move_speed_mult: -25,
+                    duration: BuffType::Time {
+                        tick: FROZEN_MALLET_SLOW_DURATION,
+                    },
+                    move_speed_mult: FROZEN_MALLET_SLOW_PERCENT,
                     name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
                     ..Default::default()
                 },
@@ -127,32 +138,39 @@ impl ModItemInfo for RadiantFrozenMallet {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        // Mallet on attack damage: 20 + 3% of caster's max HP
-        let bonus_damage = 20
-            + ctx
-                .get_entity(caster)
-                .map(|e| percent_of(e.hp().max, 3.0))
-                .unwrap_or(0);
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
-
-        // Mallet slow debuff
-        let Some(entity_ref) = ctx.get_entity(target) else {
+        let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        let already_slowed = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
+        let Some(caster_ref) = ctx.get_entity(caster) else {
+            return;
+        };
+        let bonus_damage = 20 + percent_of(caster_ref.hp().max, 3.0);
+
+        // Don't apply buff or damage to towers
+        if target_ref.is_tower() {
+            return;
+        }
+
+        // Mallet slow debuff
+        let already_slowed = (0..target_ref.buff_count())
+            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
 
         if !already_slowed {
             ctx.add_buff(
                 target,
                 BuffState {
-                    duration: BuffType::Time { tick: 120 },
-                    move_speed_mult: -25,
+                    duration: BuffType::Time {
+                        tick: FROZEN_MALLET_SLOW_DURATION,
+                    },
+                    move_speed_mult: FROZEN_MALLET_SLOW_PERCENT,
                     name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
                     ..Default::default()
                 },
             );
         }
+
+        // Mallet on attack damage: 20 + 3% of caster's max HP
+        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
 
     fn tags(&self) -> Vec<ItemTag> {

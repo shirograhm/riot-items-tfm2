@@ -2,6 +2,9 @@ use mod_api::*;
 
 use crate::percent_of;
 
+const BLADE_PERCENT_DAMAGE: f64 = 5.0;
+const MAX_MINION_FLAT_DAMAGE: usize = 50;
+
 #[derive(Default, Clone, Debug)]
 pub struct BladeOfTheRuinedKing;
 
@@ -50,11 +53,19 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        // Don't apply this damage to towers
+        if target_ref.is_tower() {
+            return;
+        }
         // Bonus damage equal to 5% of the target's current HP on hit
-        let bonus_damage = ctx
-            .get_entity(target)
-            .map(|e| percent_of(e.hp().current, 5.0))
-            .unwrap_or(0);
+        let mut bonus_damage = percent_of(target_ref.hp().current, BLADE_PERCENT_DAMAGE);
+        // If the target is not a champion, cap at 50 flat damage.
+        if !target_ref.is_champion() {
+            bonus_damage = bonus_damage.clamp(usize::MIN, MAX_MINION_FLAT_DAMAGE);
+        }
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
 
@@ -117,11 +128,19 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        // Don't apply this damage to towers
+        if target_ref.is_tower() {
+            return;
+        }
         // Bonus damage equal to 5% of the target's current HP on hit
-        let bonus_damage = ctx
-            .get_entity(target)
-            .map(|e| percent_of(e.hp().current, 5.0))
-            .unwrap_or(0);
+        let mut bonus_damage = percent_of(target_ref.hp().current, BLADE_PERCENT_DAMAGE);
+        // If the target is not a champion, cap at 50 flat damage.
+        if !target_ref.is_champion() {
+            bonus_damage = bonus_damage.clamp(usize::MIN, MAX_MINION_FLAT_DAMAGE);
+        }
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
 

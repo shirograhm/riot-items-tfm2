@@ -5,7 +5,7 @@ use crate::percent_of;
 
 const RIFTMAKER_BUFF_TICK_DURATION: usize = 300;
 const RIFTMAKER_BUFF_MAX_STACKS: usize = 3;
-const RIFTMAKER_BUFF_POWER_PER_STACK_PERCENT: f64 = 3.0;
+const RIFTMAKER_BUFF_POWER_PER_STACK_PERCENT: f64 = 2.0;
 
 #[derive(Default, Clone, Debug)]
 pub struct Riftmaker;
@@ -54,10 +54,8 @@ impl ModItemInfo for Riftmaker {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_power = ctx
-            .get_entity(caster)
-            .map(|e| percent_of(e.hp().max, RIFTMAKER_BUFF_POWER_PER_STACK_PERCENT))
-            .unwrap_or(0);
+
+        let bonus_power = percent_of(caster_ref.hp().max, RIFTMAKER_BUFF_POWER_PER_STACK_PERCENT);
 
         let stack_count = (0..caster_ref.buff_count())
             .filter(|&i| caster_ref.buff_at(i).name.as_str() == "riftmaker_magic_power_buff")
@@ -126,10 +124,8 @@ impl ModItemInfo for RadiantRiftmaker {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_power = ctx
-            .get_entity(caster)
-            .map(|e| percent_of(e.hp().max, RIFTMAKER_BUFF_POWER_PER_STACK_PERCENT))
-            .unwrap_or(0);
+
+        let bonus_power = percent_of(caster_ref.hp().max, RIFTMAKER_BUFF_POWER_PER_STACK_PERCENT);
 
         let stack_count = (0..caster_ref.buff_count())
             .filter(|&i| {

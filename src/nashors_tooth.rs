@@ -53,11 +53,20 @@ impl ModItemInfo for NashorsTooth {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let bonus_damage = 35
-            + ctx
-                .get_entity(caster)
-                .map(|e| percent_of(e.stat().magic_power, 3.0))
-                .unwrap_or(0);
+        let Some(caster_ref) = ctx.get_entity(caster) else {
+            return;
+        };
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+
+        // Don't apply this damage to towers
+        if target_ref.is_tower() {
+            return;
+        }
+
+        // On hit, deal 35 + 3% AP damage
+        let bonus_damage = 35 + percent_of(caster_ref.stat().magic_power, 3.0);
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }
 
@@ -114,11 +123,20 @@ impl ModItemInfo for RadiantNashorsTooth {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let bonus_damage = 50
-            + ctx
-                .get_entity(caster)
-                .map(|e| percent_of(e.stat().magic_power, 5.0))
-                .unwrap_or(0);
+        let Some(caster_ref) = ctx.get_entity(caster) else {
+            return;
+        };
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+
+        // Don't apply this damage to towers
+        if target_ref.is_tower() {
+            return;
+        }
+
+        // On hit, deal 50 + 5% AP damage
+        let bonus_damage = 50 + percent_of(caster_ref.stat().magic_power, 5.0);
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }
 
