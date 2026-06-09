@@ -64,7 +64,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         let mut bonus_damage = percent_of(target_ref.hp().current, BLADE_PERCENT_DAMAGE);
         // If the target is not a champion, cap at 50 flat damage.
         if !target_ref.is_champion() {
-            bonus_damage = bonus_damage.clamp(usize::MIN, MAX_MINION_FLAT_DAMAGE);
+            bonus_damage = bonus_damage.clamp(0, MAX_MINION_FLAT_DAMAGE);
         }
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
@@ -139,7 +139,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         let mut bonus_damage = percent_of(target_ref.hp().current, BLADE_PERCENT_DAMAGE);
         // If the target is not a champion, cap at 50 flat damage.
         if !target_ref.is_champion() {
-            bonus_damage = bonus_damage.clamp(usize::MIN, MAX_MINION_FLAT_DAMAGE);
+            bonus_damage = bonus_damage.clamp(0, MAX_MINION_FLAT_DAMAGE);
         }
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
