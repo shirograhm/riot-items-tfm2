@@ -21,10 +21,6 @@ In order for the AI to realize that these items exist, it is best to add this mo
 
 [h1] Known Issues [/h1]
 
-[strike]The item info page doesn't support scrolling natively, so the tier 5 items can't be seen when you look at the game info.[/strike]  
-Using the Item Scroller mod is recommended. See here: 
-https://steamcommunity.com/sharedfiles/filedetails/?id=3739984076  
-
 Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
 
 Selecting a specific item category for the AI will cause the AI to always buy the base game item. I am not sure why this happens or how to fix this yet, and the API does not seem to provide hooks for item purchase behavior. To get maximum use out of this mod, you'll have to trust your players!  
