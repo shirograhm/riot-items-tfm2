@@ -58,7 +58,7 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | **Mortal Reminder** | 1400G | +55 AD<br>+20% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
 | **Nashor's Tooth** | 1450G | +115 AP<br>+25% AS | On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power. |
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | — |
-| **Protoplasm Harness** | 1000G | +400 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 400 + 25% of your maximum health as bonus health for 6 seconds (30 second cooldown). |
+| **Protoplasm Harness** | 1000G | +400 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
 | **Riftmaker** | 1300G | +400 HP, +75 AP | Spell hits grant Ability Power equal to 2% of your maximum health for 5 seconds (max 3 stacks). |
 | **Spirit Visage** | 1400G | +400 HP<br>+50 MR | Increase all healing received by 20%. |
@@ -80,7 +80,7 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | **Radiant Mortal Reminder** | 2000G | +70 AD<br>+30% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
 | **Radiant Nashor's Tooth** | 2050G | +180 AP<br>+40% AS | On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power. |
 | **Radiant Protector's Vow** | 1800G | +550 HP<br>+75 Armor<br>+15% Skill CDR | — |
-| **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds (30 second cooldown). |
+| **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon’s Deathcap** | 2200G | +220 AP | Increase your total Ability Power by 35%. |
 | **Radiant Riftmaker** | 1900G | +600 HP, +150 AP | Spell hits grant Ability Power equal to 2% of your maximum health for 5 seconds (max 3 stacks). |
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+100 MR | Increase all healing received by 20%. |

@@ -89,7 +89,7 @@ Stats: +350 HP, +50 Armor
 
 [b]Protoplasm Harness[/b] - 1000G
 Stats: +400 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
-[u]Fortification[/u]: Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount after 1 second (30 second cooldown).
+[u]Fortification[/u]: Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown).
 
 [b]Rabadon’s Deathcap[/b] - 1500G
 Stats: +165 Ability Power
@@ -157,7 +157,7 @@ Stats: +550 HP, +75 Armor, +15% Skill Cooldown Reduction
 
 [b]Radiant Protoplasm Harness[/b] - 1600G
 Stats: +800 HP, +20% Skill Cooldown Reduction, +5% Movement Speed
-[u]Fortification[/u]: Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount after 1 second (30 second cooldown).
+[u]Fortification[/u]: Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown).
 
 [b]Radiant Rabadon’s Deathcap[/b] - 2200G
 Stats: +220 Ability Power
