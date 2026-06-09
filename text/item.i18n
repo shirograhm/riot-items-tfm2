@@ -293,11 +293,11 @@
     },
     "jaksho_the_protean": {
       "name": "Jak'sho, The Protean",
-      "option": "Resilience: Taking damage from enemy champions grants <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "radiant_jaksho_the_protean": {
       "name": "Radiant Jak'sho, The Protean",
-      "option": "Resilience: Taking damage from enemy champions grants <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "terminus": {
       "name": "Terminus",
