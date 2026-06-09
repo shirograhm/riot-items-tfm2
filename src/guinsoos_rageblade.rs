@@ -62,7 +62,7 @@ impl ModItemInfo for GuinsoosRageblade {
 
         // Get current Seething Strike stacks
         let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff")
+            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_buff")
             .count();
 
         // Don't apply on hit damage to towers
@@ -78,7 +78,7 @@ impl ModItemInfo for GuinsoosRageblade {
                 BuffState {
                     duration: BuffType::Time { tick: 240 },
                     attack_speed_mult: 8,
-                    name: ArrayString::try_from("radiant_guinsoos_rageblade_buff").unwrap(),
+                    name: ArrayString::try_from("guinsoos_rageblade_buff").unwrap(),
                     ..Default::default()
                 },
             );
