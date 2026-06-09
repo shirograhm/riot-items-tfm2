@@ -50,12 +50,21 @@ impl ModItemInfo for JakshoTheProtean {
         ctx: &mut GameCtx,
         _player: usize,
         entity: usize,
-        _attacker: usize,
+        attacker: usize,
         _damage: usize,
     ) {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
         };
+
+        // Only gain resists when taking damage from champions
+        let Some(attacker_ref) = ctx.get_entity(attacker) else {
+            return;
+        };
+        if !attacker_ref.is_champion() {
+            return;
+        }
+
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "jaksho_the_protean_stack")
             .count();
@@ -126,12 +135,21 @@ impl ModItemInfo for RadiantJakshoTheProtean {
         ctx: &mut GameCtx,
         _player: usize,
         entity: usize,
-        _attacker: usize,
+        attacker: usize,
         _damage: usize,
     ) {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
         };
+
+        // Only gain resists when taking damage from champions
+        let Some(attacker_ref) = ctx.get_entity(attacker) else {
+            return;
+        };
+        if !attacker_ref.is_champion() {
+            return;
+        }
+
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_jaksho_the_protean_stack")
             .count();
