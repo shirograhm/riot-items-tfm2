@@ -56,22 +56,33 @@ impl ModItemInfo for GuinsoosRageblade {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+
+        // Get current Seething Strike stacks
         let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_buff")
+            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff")
             .count();
+
+        // Don't apply on hit damage to towers
+        if !target_ref.is_tower() {
+            // Basic attacks deal 30 bonus magic damage
+            ctx.deal_damage(caster, target, 0, 30, AttackType::BaseAttack);
+        }
+
+        // Apply attack speed on hit no matter what
         if stack_count < 4 {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time { tick: 240 },
                     attack_speed_mult: 8,
-                    name: ArrayString::try_from("guinsoos_rageblade_buff").unwrap(),
+                    name: ArrayString::try_from("radiant_guinsoos_rageblade_buff").unwrap(),
                     ..Default::default()
                 },
             );
         }
-        // Basic attacks deal 30 bonus magic damage
-        ctx.deal_damage(caster, target, 0, 30, AttackType::BaseAttack);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -131,9 +142,22 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+
+        // Get current Seething Strike stacks
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff")
             .count();
+
+        // Don't apply on hit damage to towers
+        if !target_ref.is_tower() {
+            // Basic attacks deal 30 bonus magic damage
+            ctx.deal_damage(caster, target, 0, 30, AttackType::BaseAttack);
+        }
+
+        // Apply attack speed on hit no matter what
         if stack_count < 4 {
             ctx.add_buff(
                 caster,
@@ -145,8 +169,6 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
                 },
             );
         }
-        // Basic attacks deal 30 bonus magic damage
-        ctx.deal_damage(caster, target, 0, 30, AttackType::BaseAttack);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
