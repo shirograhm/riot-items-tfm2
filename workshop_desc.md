@@ -97,7 +97,7 @@ Stats: +165 Ability Power
 
 [b]Riftmaker[/b] - 1300G
 Stats: +450 HP, +75 Ability Power
-[u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
+[u]Infusion[/u]: Spell hits grant Ability Power equal to 2% of your maximum health for 5 seconds (max 3 stacks).
 
 [b]Spirit Visage[/b] - 1400G
 Stats: +400 HP, +50 Magic Resist
@@ -165,7 +165,7 @@ Stats: +220 Ability Power
 
 [b]Radiant Riftmaker[/b] - 1900G
 Stats: +600 HP, +150 Ability Power
-[u]Infusion[/u]: Spell hits grant Ability Power equal to 3% of your maximum health for 5 seconds (max 3 stacks).
+[u]Infusion[/u]: Spell hits grant Ability Power equal to 2% of your maximum health for 5 seconds (max 3 stacks).
 
 [b]Radiant Spirit Visage[/b] - 1900G
 Stats: +600 HP, +100 Magic Resist
