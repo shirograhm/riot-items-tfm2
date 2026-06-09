@@ -50,7 +50,7 @@ Stats: +130 Ability Power, +15% Skill Cooldown Reduction
 
 [b]Blade of the Ruined King[/b] - 1450G
 Stats: +50 Attack Damage, +25% Attack Speed
-[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
+[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health. Deals a maximum of 50 physical damage against minions and monsters.
 
 [b]Deathblade[/b] - 1400G
 Stats: +90 Attack Damage
@@ -118,7 +118,7 @@ Stats: +175 Ability Power, +25% Skill Cooldown Reduction
 
 [b]Radiant Blade of the Ruined King[/b] - 2100G
 Stats: +60 Attack Damage, +50% Attack Speed, +10% Lifesteal
-[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health.
+[u]Mist’s Edge[/u]: On attack, deal bonus physical damage equal to 5% of the target’s current health. Deals a maximum of 50 physical damage against minions and monsters.
 
 [b]Radiant Deathblade[/b] - 2000G
 Stats: +140 Attack Damage
