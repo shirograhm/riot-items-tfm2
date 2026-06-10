@@ -2,11 +2,11 @@
   "en": {
     "category": {
       "all": "All",
-      "ad": "Attack Damage",
+      "ad": "attack damage",
       "attack_speed": "Attack Speed",
       "defense": "Armor",
       "magic_resistance": "Magic Resist",
-      "magic": "Ability Power",
+      "magic": "ability power",
       "hp": "Health"
     },
     "info": {
@@ -49,7 +49,7 @@
       "attack_my_hp_ratio": "+{Value}% Attack My HP",
       "reflect": "+{Value}% Reflect Damage",
       "dot_amplify": "+{Value}% DoT Amplification",
-      "hp_regen": "+{Value} Max Health Regen",
+      "hp_regen": "+{Value} Health Regen",
       "crit_chance": "+{Value}% Critical Strike Chance",
       "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from basic attacks by <#e8a800ff>{Value}%<>.",
       "skill_damaged_reduce": "+{Value}% Skill Damage Reduction",
@@ -189,11 +189,11 @@
     },
     "deathblade": {
       "name": "Deathblade",
-      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>15%<>."
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>attack damage<> by <#ff9028ff>15%<>."
     },
     "radiant_deathblade": {
       "name": "Radiant Deathblade",
-      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>25%<>."
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>attack damage<> by <#ff9028ff>25%<>."
     },
     "needlessly_large_rod": {
       "name": "Needlessly Large Rod",
@@ -201,11 +201,11 @@
     },
     "rabadons_deathcap": {
       "name": "Rabadon's Deathcap",
-      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> by <#a974ffff>20%<>."
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> by <#a974ffff>20%<>."
     },
     "radiant_rabadons_deathcap": {
       "name": "Radiant Rabadon's Deathcap",
-      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> by <#a974ffff>35%<>."
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> by <#a974ffff>35%<>."
     },
     "protectors_vow": {
       "name": "Protector's Vow",
@@ -233,11 +233,11 @@
     },
     "riftmaker": {
       "name": "Riftmaker",
-      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
     },
     "radiant_riftmaker": {
       "name": "Radiant Riftmaker",
-      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
     },
     "unending_despair": {
       "name": "Unending Despair",
@@ -257,11 +257,11 @@
     },
     "blackfire_torch": {
       "name": "Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "radiant_blackfire_torch": {
       "name": "Radiant Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Maleficent: Spell hits grant <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
@@ -285,11 +285,11 @@
     },
     "nashors_tooth": {
       "name": "Nashor's Tooth",
-      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<>."
     },
     "radiant_nashors_tooth": {
       "name": "Radiant Nashor's Tooth",
-      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<>."
     },
     "jaksho_the_protean": {
       "name": "Jak'sho, The Protean",
@@ -322,6 +322,14 @@
     "radiant_guinsoos_rageblade": {
       "name": "Radiant Guinsoo's Rageblade",
       "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+    },
+    "ardent_censer": {
+      "name": "Ardent Censer",
+      "option": "Sanctify: Healing an ally grants them <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>adaptive force<> and <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
+    },
+    "radiant_ardent_censer": {
+      "name": "Radiant Ardent Censer",
+      "option": "Sanctify: Healing an ally grants them <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>adaptive force<> and <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
     }
   }
 }

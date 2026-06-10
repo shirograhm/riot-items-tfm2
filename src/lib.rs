@@ -1,5 +1,6 @@
 use mod_api::*;
 
+mod ardent_censer;
 mod bf_sword;
 mod blackfire_torch;
 mod blade_of_the_ruined_king;
@@ -21,6 +22,7 @@ mod spirit_visage;
 mod terminus;
 mod unending_despair;
 
+use ardent_censer::*;
 use bf_sword::*;
 use blackfire_torch::*;
 use blade_of_the_ruined_king::*;
@@ -74,6 +76,8 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(RadiantBladeOfTheRuinedKing::default());
     reg.add_item(BlackfireTorch::default());
     reg.add_item(RadiantBlackfireTorch::default());
+    reg.add_item(ArdentCenser::default());
+    reg.add_item(RadiantArdentCenser::default());
     reg.add_item(ExperimentalHexplate::default());
     reg.add_item(RadiantExperimentalHexplate::default());
     reg.add_item(ExecutionersCalling::default());
