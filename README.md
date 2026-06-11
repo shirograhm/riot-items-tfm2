@@ -55,6 +55,7 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% Attack Speed | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | — |
 | **Jak’Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
+| **Mirage Blade** | 1500G | +40% AS<br>+10% MS | Gain 60 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
 | **Mortal Reminder** | 1400G | +55 AD<br>+20% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
 | **Nashor's Tooth** | 1450G | +115 AP<br>+25% AS | On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power. |
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | — |
@@ -78,6 +79,7 @@ The effects of the items (on-hit damage, healing) may not show the damage number
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | — |
 | **Radiant Jak’Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | When you take damage from an enemy champion, gain +10% armor and +10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Mortal Reminder** | 2000G | +70 AD<br>+30% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |
+| **Radiant Mirage Blade** | 2100G | +65% AS<br>+15% MS | Gain 100 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
 | **Radiant Nashor's Tooth** | 2050G | +180 AP<br>+40% AS | On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power. |
 | **Radiant Protector's Vow** | 1800G | +550 HP<br>+75 Armor<br>+15% Skill CDR | — |
 | **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
