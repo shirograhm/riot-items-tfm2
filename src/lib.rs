@@ -52,6 +52,14 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
     (value as f64 * percent / 100.0).round() as i32
 }
 
+fn force_to_ap(force: i32) -> i32 {
+    force
+}
+
+fn force_to_ad(force: i32) -> i32 {
+    (force as f64 * 0.6).round() as i32
+}
+
 fn init(_ctx: &GameCtx) -> ModRegistration {
     let mut reg = ModRegistration::new("riot_items_tfm2");
     reg.add_item(BFSword::default());
