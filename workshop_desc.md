@@ -5,7 +5,7 @@ Also reskins the 30 existing items to match.
 
 This is an EN only mod. You can use it with other languages, but the names and descriptions of the items will be broken.
 
-Saves played with this mod enabled may be corrupted if you play the save with this mod disabled. I have had players buy ghost items when this happens.
+Saves played with this mod enabled will be corrupted if you play the save with this mod disabled. I have had players buy ghost items when this happens.
 
 [h3][i] THIS MOD WILL CHANGE THE BALANCE OF YOUR GAME. USE WITH CAUTION. [/i][/h3]
 
