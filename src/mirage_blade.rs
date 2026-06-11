@@ -4,7 +4,8 @@ use mod_api::*;
 use crate::force_to_ad;
 use crate::force_to_ap;
 
-const MIRAGE_BLADE_ADAPTIVE_FORCE: i32 = 60;
+const MIRAGE_BLADE_FORCE_BUFF: i32 = 60;
+const MIRAGE_BLADE_FORCE_BUFF_RADIANT: i32 = 100;
 const MIRAGE_BLADE_MOVE_SPEED: i32 = 20;
 const MIRAGE_BLADE_MOVE_SPEED_DURATION: usize = 120;
 
@@ -66,7 +67,7 @@ impl ModItemInfo for MirageBlade {
                     entity_ref.id(),
                     BuffState {
                         duration: BuffType::Permanent,
-                        magic_power: force_to_ap(MIRAGE_BLADE_ADAPTIVE_FORCE),
+                        magic_power: force_to_ap(MIRAGE_BLADE_FORCE_BUFF),
                         name: ArrayString::try_from("mirage_blade_bonus_damage").unwrap(),
                         ..Default::default()
                     },
@@ -76,7 +77,7 @@ impl ModItemInfo for MirageBlade {
                     entity_ref.id(),
                     BuffState {
                         duration: BuffType::Permanent,
-                        attack: force_to_ad(MIRAGE_BLADE_ADAPTIVE_FORCE),
+                        attack: force_to_ad(MIRAGE_BLADE_FORCE_BUFF),
                         name: ArrayString::try_from("mirage_blade_bonus_damage").unwrap(),
                         ..Default::default()
                     },
@@ -175,7 +176,7 @@ impl ModItemInfo for RadiantMirageBlade {
                     entity_ref.id(),
                     BuffState {
                         duration: BuffType::Permanent,
-                        magic_power: force_to_ap(MIRAGE_BLADE_ADAPTIVE_FORCE),
+                        magic_power: force_to_ap(MIRAGE_BLADE_FORCE_BUFF_RADIANT),
                         name: ArrayString::try_from("mirage_blade_bonus_damage").unwrap(),
                         ..Default::default()
                     },
@@ -185,7 +186,7 @@ impl ModItemInfo for RadiantMirageBlade {
                     entity_ref.id(),
                     BuffState {
                         duration: BuffType::Permanent,
-                        attack: force_to_ad(MIRAGE_BLADE_ADAPTIVE_FORCE),
+                        attack: force_to_ad(MIRAGE_BLADE_FORCE_BUFF_RADIANT),
                         name: ArrayString::try_from("mirage_blade_bonus_damage").unwrap(),
                         ..Default::default()
                     },

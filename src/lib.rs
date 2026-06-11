@@ -62,45 +62,54 @@ fn force_to_ad(force: i32) -> i32 {
 
 fn init(_ctx: &GameCtx) -> ModRegistration {
     let mut reg = ModRegistration::new("riot_items_tfm2");
-    reg.add_item(BFSword::default());
-    reg.add_item(DeathBlade::default());
-    reg.add_item(RadiantDeathBlade::default());
-    reg.add_item(InfinityEdge::default());
-    reg.add_item(RadiantInfinityEdge::default());
-    reg.add_item(NeedlesslyLargeRod::default());
-    reg.add_item(UnendingDespair::default());
-    reg.add_item(RadiantUnendingDespair::default());
-    reg.add_item(Riftmaker::default());
-    reg.add_item(RadiantRiftmaker::default());
-    reg.add_item(RabadonsDeathcap::default());
-    reg.add_item(RadiantRabadonsDeathcap::default());
-    reg.add_item(ProtectorsVow::default());
-    reg.add_item(RadiantProtectorsVow::default());
-    reg.add_item(ProtoplasmHarness::default());
-    reg.add_item(RadiantProtoplasmHarness::default());
-    reg.add_item(FrozenMallet::default());
-    reg.add_item(RadiantFrozenMallet::default());
-    reg.add_item(BladeOfTheRuinedKing::default());
-    reg.add_item(RadiantBladeOfTheRuinedKing::default());
-    reg.add_item(BlackfireTorch::default());
-    reg.add_item(RadiantBlackfireTorch::default());
-    reg.add_item(ExperimentalHexplate::default());
-    reg.add_item(RadiantExperimentalHexplate::default());
+
+    // Tier 2
     reg.add_item(ExecutionersCalling::default());
-    reg.add_item(MortalReminder::default());
-    reg.add_item(RadiantMortalReminder::default());
-    reg.add_item(NashorsTooth::default());
-    reg.add_item(RadiantNashorsTooth::default());
+
+    // Tier 3
+    reg.add_item(BFSword::default());
+    reg.add_item(NeedlesslyLargeRod::default());
+
+    // Tier 4
+    reg.add_item(BlackfireTorch::default());
+    reg.add_item(BladeOfTheRuinedKing::default());
+    reg.add_item(DeathBlade::default());
+    reg.add_item(ExperimentalHexplate::default());
+    reg.add_item(FrozenMallet::default());
     reg.add_item(GuinsoosRageblade::default());
-    reg.add_item(RadiantGuinsoosRageblade::default());
-    reg.add_item(MirageBlade::default());
-    reg.add_item(RadiantMirageBlade::default());
+    reg.add_item(InfinityEdge::default());
     reg.add_item(JakshoTheProtean::default());
-    reg.add_item(RadiantJakshoTheProtean::default());
-    reg.add_item(Terminus::default());
-    reg.add_item(RadiantTerminus::default());
+    reg.add_item(MirageBlade::default());
+    reg.add_item(MortalReminder::default());
+    reg.add_item(NashorsTooth::default());
+    reg.add_item(ProtectorsVow::default());
+    reg.add_item(ProtoplasmHarness::default());
+    reg.add_item(RabadonsDeathcap::default());
+    reg.add_item(Riftmaker::default());
     reg.add_item(SpiritVisage::default());
+    reg.add_item(Terminus::default());
+    reg.add_item(UnendingDespair::default());
+
+    // Tier 5
+    reg.add_item(RadiantBlackfireTorch::default());
+    reg.add_item(RadiantBladeOfTheRuinedKing::default());
+    reg.add_item(RadiantDeathBlade::default());
+    reg.add_item(RadiantExperimentalHexplate::default());
+    reg.add_item(RadiantFrozenMallet::default());
+    reg.add_item(RadiantGuinsoosRageblade::default());
+    reg.add_item(RadiantInfinityEdge::default());
+    reg.add_item(RadiantJakshoTheProtean::default());
+    reg.add_item(RadiantMirageBlade::default());
+    reg.add_item(RadiantMortalReminder::default());
+    reg.add_item(RadiantNashorsTooth::default());
+    reg.add_item(RadiantProtectorsVow::default());
+    reg.add_item(RadiantProtoplasmHarness::default());
+    reg.add_item(RadiantRabadonsDeathcap::default());
+    reg.add_item(RadiantRiftmaker::default());
     reg.add_item(RadiantSpiritVisage::default());
+    reg.add_item(RadiantTerminus::default());
+    reg.add_item(RadiantUnendingDespair::default());
+
     reg
 }
 
