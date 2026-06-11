@@ -2,7 +2,7 @@
   "name": "Riot Items TFM2",
   "author": "shirograhm",
   "version": "0.2.0",
-  "description": "Adds items from Riot Games (LoL, TFT) to Teamfight Manager 2.",
+  "description": "Adds items from Riot Games (LoL, TFT, Arena) to Teamfight Manager 2.",
   "last_updated": "2026-06-11",
   "dependencies": [
     {
