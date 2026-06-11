@@ -19,6 +19,8 @@ In order for the AI to realize that these items exist, it is best to add this mo
 4. Restart the game.
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
+Currently updated for game version >= 0.4.12.
+
 [h1] Known Issues [/h1]
 
 Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
