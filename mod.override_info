@@ -10,5 +10,13 @@
   "asset/base/aseprite_resources/ingame/item_icons_18x18#data": {
     "remapping": "asset/riot_items_tfm2/aseprite_resources/ingame/item_icons_640X640#data",
     "type": "override"
+  },
+  "asset/base/ui/banpick/champion_stat_icon#sheet": {
+    "remapping": "asset/riot_items_tfm2/ui/banpick/champion_stat_icon#sheet",
+    "type": "override"
+  },
+  "asset/base/ui/banpick/champion_stat_icon#data": {
+    "remapping": "asset/riot_items_tfm2/ui/banpick/champion_stat_icon#data",
+    "type": "override"
   }
 }
