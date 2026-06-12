@@ -1,13 +1,55 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
-const TERMINUS_BUFF_DURATION: usize = 240;
-const TERMINUS_MAX_STACKS: usize = 4;
-const TERMINUS_PEN_PER_STACK: usize = 4;
+use crate::config::ItemConfig;
 
-#[derive(Default, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct Terminus {
+    price: usize,
+    attack: i32,
+    attack_speed_mult: i32,
+    effect_armor_pen_per_stack: usize,
+    effect_magic_pen_per_stack: usize,
+    effect_max_stacks: usize,
+    effect_duration_seconds: usize,
     flip_flop: bool,
+}
+
+impl Default for Terminus {
+    fn default() -> Self {
+        Self {
+            price: 1300,
+            attack: 30,
+            attack_speed_mult: 35,
+            effect_armor_pen_per_stack: 4,
+            effect_magic_pen_per_stack: 4,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4,
+            flip_flop: false,
+        }
+    }
+}
+
+impl Terminus {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            effect_armor_pen_per_stack: cfg
+                .effect_armor_pen_per_stack
+                .unwrap_or(d.effect_armor_pen_per_stack),
+            effect_magic_pen_per_stack: cfg
+                .effect_magic_pen_per_stack
+                .unwrap_or(d.effect_magic_pen_per_stack),
+            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+            flip_flop: false,
+        }
+    }
 }
 
 impl ModItemInfo for Terminus {
@@ -24,7 +66,7 @@ impl ModItemInfo for Terminus {
     }
 
     fn price(&self) -> usize {
-        1300
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -41,8 +83,8 @@ impl ModItemInfo for Terminus {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 30,
-            attack_speed_mult: 35,
+            attack: self.attack,
+            attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
         }
     }
@@ -71,14 +113,14 @@ impl ModItemInfo for Terminus {
             })
             .count();
         if self.flip_flop {
-            if defenses_stack_count < TERMINUS_MAX_STACKS {
+            if defenses_stack_count < self.effect_max_stacks {
                 ctx.add_buff(
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: TERMINUS_BUFF_DURATION,
+                            tick: self.effect_duration_seconds * 60,
                         },
-                        defence_penetration: TERMINUS_PEN_PER_STACK,
+                        defence_penetration: self.effect_armor_pen_per_stack,
                         name: ArrayString::try_from("terminus_armor_pen_buff").unwrap(),
                         ..Default::default()
                     },
@@ -86,14 +128,14 @@ impl ModItemInfo for Terminus {
             }
             self.flip_flop = false;
         } else {
-            if resistance_stack_count < TERMINUS_MAX_STACKS {
+            if resistance_stack_count < self.effect_max_stacks {
                 ctx.add_buff(
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: TERMINUS_BUFF_DURATION,
+                            tick: self.effect_duration_seconds * 60,
                         },
-                        magic_resistance_penetration: TERMINUS_PEN_PER_STACK,
+                        magic_resistance_penetration: self.effect_magic_pen_per_stack,
                         name: ArrayString::try_from("terminus_magic_resistance_pen_buff").unwrap(),
                         ..Default::default()
                     },
@@ -117,9 +159,53 @@ impl ModItemInfo for Terminus {
     }
 }
 
-#[derive(Default, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct RadiantTerminus {
+    price: usize,
+    attack: i32,
+    attack_speed_mult: i32,
+    effect_armor_pen_per_stack: usize,
+    effect_magic_pen_per_stack: usize,
+    effect_max_stacks: usize,
+    effect_duration_seconds: usize,
     flip_flop: bool,
+}
+
+impl Default for RadiantTerminus {
+    fn default() -> Self {
+        Self {
+            price: 1900,
+            attack: 50,
+            attack_speed_mult: 60,
+            effect_armor_pen_per_stack: 4,
+            effect_magic_pen_per_stack: 4,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4,
+            flip_flop: false,
+        }
+    }
+}
+
+impl RadiantTerminus {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            effect_armor_pen_per_stack: cfg
+                .effect_armor_pen_per_stack
+                .unwrap_or(d.effect_armor_pen_per_stack),
+            effect_magic_pen_per_stack: cfg
+                .effect_magic_pen_per_stack
+                .unwrap_or(d.effect_magic_pen_per_stack),
+            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+            flip_flop: false,
+        }
+    }
 }
 
 impl ModItemInfo for RadiantTerminus {
@@ -136,7 +222,7 @@ impl ModItemInfo for RadiantTerminus {
     }
 
     fn price(&self) -> usize {
-        1900
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -149,8 +235,8 @@ impl ModItemInfo for RadiantTerminus {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 50,
-            attack_speed_mult: 60,
+            attack: self.attack,
+            attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
         }
     }
@@ -182,14 +268,14 @@ impl ModItemInfo for RadiantTerminus {
             })
             .count();
         if self.flip_flop {
-            if defenses_stack_count < TERMINUS_MAX_STACKS {
+            if defenses_stack_count < self.effect_max_stacks {
                 ctx.add_buff(
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: TERMINUS_BUFF_DURATION,
+                            tick: self.effect_duration_seconds * 60,
                         },
-                        defence_penetration: TERMINUS_PEN_PER_STACK,
+                        defence_penetration: self.effect_armor_pen_per_stack,
                         name: ArrayString::try_from("radiant_terminus_armor_pen_buff").unwrap(),
                         ..Default::default()
                     },
@@ -197,14 +283,14 @@ impl ModItemInfo for RadiantTerminus {
             }
             self.flip_flop = false;
         } else {
-            if resistance_stack_count < TERMINUS_MAX_STACKS {
+            if resistance_stack_count < self.effect_max_stacks {
                 ctx.add_buff(
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: TERMINUS_BUFF_DURATION,
+                            tick: self.effect_duration_seconds * 60,
                         },
-                        magic_resistance_penetration: TERMINUS_PEN_PER_STACK,
+                        magic_resistance_penetration: self.effect_magic_pen_per_stack,
                         name: ArrayString::try_from("radiant_terminus_magic_resistance_pen_buff")
                             .unwrap(),
                         ..Default::default()

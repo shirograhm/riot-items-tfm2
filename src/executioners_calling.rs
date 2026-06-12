@@ -1,7 +1,38 @@
+use crate::config::ItemConfig;
 use mod_api::*;
 
-#[derive(Default, Clone, Debug)]
-pub struct ExecutionersCalling;
+#[derive(Clone, Debug)]
+pub struct ExecutionersCalling {
+    price: usize,
+    attack: i32,
+    effect_heal_reduce: usize,
+    effect_duration_seconds: usize,
+}
+
+impl Default for ExecutionersCalling {
+    fn default() -> Self {
+        Self {
+            price: 500,
+            attack: 25,
+            effect_heal_reduce: 25,
+            effect_duration_seconds: 2,
+        }
+    }
+}
+
+impl ExecutionersCalling {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for ExecutionersCalling {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -17,7 +48,7 @@ impl ModItemInfo for ExecutionersCalling {
     }
 
     fn price(&self) -> usize {
-        500
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -34,7 +65,7 @@ impl ModItemInfo for ExecutionersCalling {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 25,
+            attack: self.attack,
             ..Default::default()
         }
     }
@@ -50,8 +81,10 @@ impl ModItemInfo for ExecutionersCalling {
         ctx.add_buff(
             target,
             BuffState {
-                duration: BuffType::Time { tick: 120 }, // ~2 seconds, adjust to taste
-                heal_reduce: 25,                        // 25% healing reduction
+                duration: BuffType::Time {
+                    tick: self.effect_duration_seconds * 60,
+                },
+                heal_reduce: self.effect_heal_reduce,
                 ..Default::default()
             },
         );

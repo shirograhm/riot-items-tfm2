@@ -1,8 +1,43 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
-#[derive(Default, Clone, Debug)]
-pub struct MortalReminder;
+use crate::config::ItemConfig;
+
+#[derive(Clone, Debug)]
+pub struct MortalReminder {
+    price: usize,
+    attack: i32,
+    defence_penetration: usize,
+    effect_heal_reduce: usize,
+    effect_duration_seconds: usize,
+}
+
+impl Default for MortalReminder {
+    fn default() -> Self {
+        Self {
+            price: 1400,
+            attack: 55,
+            defence_penetration: 20,
+            effect_heal_reduce: 40,
+            effect_duration_seconds: 2,
+        }
+    }
+}
+
+impl MortalReminder {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
+            effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for MortalReminder {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -18,7 +53,7 @@ impl ModItemInfo for MortalReminder {
     }
 
     fn price(&self) -> usize {
-        1400
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -35,8 +70,8 @@ impl ModItemInfo for MortalReminder {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 55,
-            defence_penetration: 20,
+            attack: self.attack,
+            defence_penetration: self.defence_penetration,
             ..Default::default()
         }
     }
@@ -54,13 +89,14 @@ impl ModItemInfo for MortalReminder {
         };
         let already_reduced = (0..entity_ref.buff_count())
             .any(|i| entity_ref.buff_at(i).name.as_str() == "mortal_reminder_heal_cut");
-
         if !already_reduced {
             ctx.add_buff(
                 target,
                 BuffState {
-                    duration: BuffType::Time { tick: 120 },
-                    heal_reduce: 40,
+                    duration: BuffType::Time {
+                        tick: self.effect_duration_seconds * 60,
+                    },
+                    heal_reduce: self.effect_heal_reduce,
                     name: ArrayString::try_from("mortal_reminder_heal_cut").unwrap(),
                     ..Default::default()
                 },
@@ -81,8 +117,41 @@ impl ModItemInfo for MortalReminder {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantMortalReminder;
+#[derive(Clone, Debug)]
+pub struct RadiantMortalReminder {
+    price: usize,
+    attack: i32,
+    defence_penetration: usize,
+    effect_heal_reduce: usize,
+    effect_duration_seconds: usize,
+}
+
+impl Default for RadiantMortalReminder {
+    fn default() -> Self {
+        Self {
+            price: 2000,
+            attack: 70,
+            defence_penetration: 30,
+            effect_heal_reduce: 40,
+            effect_duration_seconds: 2,
+        }
+    }
+}
+
+impl RadiantMortalReminder {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
+            effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantMortalReminder {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -98,7 +167,7 @@ impl ModItemInfo for RadiantMortalReminder {
     }
 
     fn price(&self) -> usize {
-        2000
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -111,8 +180,8 @@ impl ModItemInfo for RadiantMortalReminder {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 70,
-            defence_penetration: 30,
+            attack: self.attack,
+            defence_penetration: self.defence_penetration,
             ..Default::default()
         }
     }
@@ -130,13 +199,14 @@ impl ModItemInfo for RadiantMortalReminder {
         };
         let already_reduced = (0..entity_ref.buff_count())
             .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_mortal_reminder_heal_cut");
-
         if !already_reduced {
             ctx.add_buff(
                 target,
                 BuffState {
-                    duration: BuffType::Time { tick: 120 },
-                    heal_reduce: 40,
+                    duration: BuffType::Time {
+                        tick: self.effect_duration_seconds * 60,
+                    },
+                    heal_reduce: self.effect_heal_reduce,
                     name: ArrayString::try_from("radiant_mortal_reminder_heal_cut").unwrap(),
                     ..Default::default()
                 },

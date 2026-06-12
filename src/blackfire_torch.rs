@@ -1,8 +1,48 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
-#[derive(Default, Clone, Debug)]
-pub struct BlackfireTorch;
+use crate::config::ItemConfig;
+
+#[derive(Clone, Debug)]
+pub struct BlackfireTorch {
+    price: usize,
+    magic_power: i32,
+    skill_cooldown_mult: i32,
+    effect_stack_magic_power: i32,
+    effect_max_stacks: usize,
+    effect_duration_seconds: usize,
+}
+
+impl Default for BlackfireTorch {
+    fn default() -> Self {
+        Self {
+            price: 1300,
+            magic_power: 130,
+            skill_cooldown_mult: 15,
+            effect_stack_magic_power: 10,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4,
+        }
+    }
+}
+
+impl BlackfireTorch {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            effect_stack_magic_power: cfg
+                .effect_stack_magic_power
+                .unwrap_or(d.effect_stack_magic_power),
+            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for BlackfireTorch {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -18,7 +58,7 @@ impl ModItemInfo for BlackfireTorch {
     }
 
     fn price(&self) -> usize {
-        1300
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -35,8 +75,8 @@ impl ModItemInfo for BlackfireTorch {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 130,
-            skill_cooldown_mult: 15,
+            magic_power: self.magic_power,
+            skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -48,12 +88,14 @@ impl ModItemInfo for BlackfireTorch {
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "blackfire_torch_buff")
             .count();
-        if stack_count < 4 {
+        if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
-                    duration: BuffType::Time { tick: 240 },
-                    magic_power: 10,
+                    duration: BuffType::Time {
+                        tick: self.effect_duration_seconds * 60,
+                    },
+                    magic_power: self.effect_stack_magic_power,
                     name: ArrayString::try_from("blackfire_torch_buff").unwrap(),
                     ..Default::default()
                 },
@@ -70,8 +112,46 @@ impl ModItemInfo for BlackfireTorch {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantBlackfireTorch;
+#[derive(Clone, Debug)]
+pub struct RadiantBlackfireTorch {
+    price: usize,
+    magic_power: i32,
+    skill_cooldown_mult: i32,
+    effect_stack_magic_power: i32,
+    effect_max_stacks: usize,
+    effect_duration_seconds: usize,
+}
+
+impl Default for RadiantBlackfireTorch {
+    fn default() -> Self {
+        Self {
+            price: 1900,
+            magic_power: 175,
+            skill_cooldown_mult: 25,
+            effect_stack_magic_power: 30,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4,
+        }
+    }
+}
+
+impl RadiantBlackfireTorch {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            effect_stack_magic_power: cfg
+                .effect_stack_magic_power
+                .unwrap_or(d.effect_stack_magic_power),
+            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantBlackfireTorch {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -87,7 +167,7 @@ impl ModItemInfo for RadiantBlackfireTorch {
     }
 
     fn price(&self) -> usize {
-        1900
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -100,8 +180,8 @@ impl ModItemInfo for RadiantBlackfireTorch {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 175,
-            skill_cooldown_mult: 25,
+            magic_power: self.magic_power,
+            skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -113,12 +193,14 @@ impl ModItemInfo for RadiantBlackfireTorch {
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_blackfire_torch_buff")
             .count();
-        if stack_count < 4 {
+        if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
-                    duration: BuffType::Time { tick: 240 },
-                    magic_power: 30,
+                    duration: BuffType::Time {
+                        tick: self.effect_duration_seconds * 60,
+                    },
+                    magic_power: self.effect_stack_magic_power,
                     name: ArrayString::try_from("radiant_blackfire_torch_buff").unwrap(),
                     ..Default::default()
                 },

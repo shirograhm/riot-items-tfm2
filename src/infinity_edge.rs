@@ -1,7 +1,29 @@
 use mod_api::*;
+use crate::config::ItemConfig;
 
-#[derive(Default, Clone, Debug)]
-pub struct InfinityEdge;
+#[derive(Clone, Debug)]
+pub struct InfinityEdge {
+    price: usize,
+    attack: i32,
+    crit_chance: i32,
+}
+
+impl Default for InfinityEdge {
+    fn default() -> Self {
+        Self { price: 1300, attack: 80, crit_chance: 25 }
+    }
+}
+
+impl InfinityEdge {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
+        }
+    }
+}
 
 impl ModItemInfo for InfinityEdge {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -17,7 +39,7 @@ impl ModItemInfo for InfinityEdge {
     }
 
     fn price(&self) -> usize {
-        1300
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -34,8 +56,8 @@ impl ModItemInfo for InfinityEdge {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 80,
-            crit_chance: 25,
+            attack: self.attack,
+            crit_chance: self.crit_chance,
             ..Default::default()
         }
     }
@@ -49,8 +71,29 @@ impl ModItemInfo for InfinityEdge {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantInfinityEdge;
+#[derive(Clone, Debug)]
+pub struct RadiantInfinityEdge {
+    price: usize,
+    attack: i32,
+    crit_chance: i32,
+}
+
+impl Default for RadiantInfinityEdge {
+    fn default() -> Self {
+        Self { price: 1900, attack: 120, crit_chance: 50 }
+    }
+}
+
+impl RadiantInfinityEdge {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantInfinityEdge {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -66,7 +109,7 @@ impl ModItemInfo for RadiantInfinityEdge {
     }
 
     fn price(&self) -> usize {
-        1900
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -79,8 +122,8 @@ impl ModItemInfo for RadiantInfinityEdge {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 120,
-            crit_chance: 50,
+            attack: self.attack,
+            crit_chance: self.crit_chance,
             ..Default::default()
         }
     }

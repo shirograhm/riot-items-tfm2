@@ -1,9 +1,45 @@
 use mod_api::*;
 
+use crate::config::ItemConfig;
 use crate::percent_of;
 
-#[derive(Default, Clone, Debug)]
-pub struct NashorsTooth;
+#[derive(Clone, Debug)]
+pub struct NashorsTooth {
+    price: usize,
+    magic_power: i32,
+    attack_speed_mult: i32,
+    effect_bonus_flat_damage: i32,
+    effect_ap_percent_damage: f64,
+}
+
+impl Default for NashorsTooth {
+    fn default() -> Self {
+        Self {
+            price: 1450,
+            magic_power: 115,
+            attack_speed_mult: 25,
+            effect_bonus_flat_damage: 35,
+            effect_ap_percent_damage: 3.0,
+        }
+    }
+}
+
+impl NashorsTooth {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            effect_bonus_flat_damage: cfg
+                .effect_bonus_flat_damage
+                .unwrap_or(d.effect_bonus_flat_damage),
+            effect_ap_percent_damage: cfg
+                .effect_ap_percent_damage
+                .unwrap_or(d.effect_ap_percent_damage),
+        }
+    }
+}
 
 impl ModItemInfo for NashorsTooth {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -19,7 +55,7 @@ impl ModItemInfo for NashorsTooth {
     }
 
     fn price(&self) -> usize {
-        1450
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -39,8 +75,8 @@ impl ModItemInfo for NashorsTooth {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 115,
-            attack_speed_mult: 25,
+            magic_power: self.magic_power,
+            attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
         }
     }
@@ -59,14 +95,11 @@ impl ModItemInfo for NashorsTooth {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-
-        // Don't apply this damage to towers
         if target_ref.is_tower() {
             return;
         }
-
-        // On hit, deal 35 + 3% AP damage
-        let bonus_damage = 35 + percent_of(caster_ref.stat().magic_power, 3.0);
+        let bonus_damage = self.effect_bonus_flat_damage as usize
+            + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }
 
@@ -79,8 +112,43 @@ impl ModItemInfo for NashorsTooth {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantNashorsTooth;
+#[derive(Clone, Debug)]
+pub struct RadiantNashorsTooth {
+    price: usize,
+    magic_power: i32,
+    attack_speed_mult: i32,
+    effect_bonus_flat_damage: i32,
+    effect_ap_percent_damage: f64,
+}
+
+impl Default for RadiantNashorsTooth {
+    fn default() -> Self {
+        Self {
+            price: 2050,
+            magic_power: 180,
+            attack_speed_mult: 40,
+            effect_bonus_flat_damage: 50,
+            effect_ap_percent_damage: 5.0,
+        }
+    }
+}
+
+impl RadiantNashorsTooth {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            effect_bonus_flat_damage: cfg
+                .effect_bonus_flat_damage
+                .unwrap_or(d.effect_bonus_flat_damage),
+            effect_ap_percent_damage: cfg
+                .effect_ap_percent_damage
+                .unwrap_or(d.effect_ap_percent_damage),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantNashorsTooth {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -96,7 +164,7 @@ impl ModItemInfo for RadiantNashorsTooth {
     }
 
     fn price(&self) -> usize {
-        2050
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -109,8 +177,8 @@ impl ModItemInfo for RadiantNashorsTooth {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 180,
-            attack_speed_mult: 40,
+            magic_power: self.magic_power,
+            attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
         }
     }
@@ -129,14 +197,11 @@ impl ModItemInfo for RadiantNashorsTooth {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-
-        // Don't apply this damage to towers
         if target_ref.is_tower() {
             return;
         }
-
-        // On hit, deal 50 + 5% AP damage
-        let bonus_damage = 50 + percent_of(caster_ref.stat().magic_power, 5.0);
+        let bonus_damage = self.effect_bonus_flat_damage as usize
+            + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
     }
 

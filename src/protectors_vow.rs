@@ -1,7 +1,34 @@
 use mod_api::*;
 
-#[derive(Default, Clone, Debug)]
-pub struct ProtectorsVow;
+use crate::config::ItemConfig;
+
+#[derive(Clone, Debug)]
+pub struct ProtectorsVow {
+    price: usize,
+    hp: i32,
+    defence: i32,
+}
+
+impl Default for ProtectorsVow {
+    fn default() -> Self {
+        Self {
+            price: 1300,
+            hp: 350,
+            defence: 50,
+        }
+    }
+}
+
+impl ProtectorsVow {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            defence: cfg.defence.unwrap_or(d.defence),
+        }
+    }
+}
 
 impl ModItemInfo for ProtectorsVow {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -17,7 +44,7 @@ impl ModItemInfo for ProtectorsVow {
     }
 
     fn price(&self) -> usize {
-        1300
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -37,8 +64,8 @@ impl ModItemInfo for ProtectorsVow {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 350,
-            defence: 50,
+            hp: self.hp,
+            defence: self.defence,
             ..Default::default()
         }
     }
@@ -52,8 +79,36 @@ impl ModItemInfo for ProtectorsVow {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantProtectorsVow;
+#[derive(Clone, Debug)]
+pub struct RadiantProtectorsVow {
+    price: usize,
+    hp: i32,
+    defence: i32,
+    skill_cooldown_mult: i32,
+}
+
+impl Default for RadiantProtectorsVow {
+    fn default() -> Self {
+        Self {
+            price: 1800,
+            hp: 550,
+            defence: 75,
+            skill_cooldown_mult: 15,
+        }
+    }
+}
+
+impl RadiantProtectorsVow {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            defence: cfg.defence.unwrap_or(d.defence),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantProtectorsVow {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -69,7 +124,7 @@ impl ModItemInfo for RadiantProtectorsVow {
     }
 
     fn price(&self) -> usize {
-        1800
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -82,9 +137,9 @@ impl ModItemInfo for RadiantProtectorsVow {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 550,
-            defence: 75,
-            skill_cooldown_mult: 15,
+            hp: self.hp,
+            defence: self.defence,
+            skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }

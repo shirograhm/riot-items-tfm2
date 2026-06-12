@@ -1,7 +1,27 @@
 use mod_api::*;
+use crate::config::ItemConfig;
 
-#[derive(Default, Clone, Debug)]
-pub struct BFSword;
+#[derive(Clone, Debug)]
+pub struct BFSword {
+    price: usize,
+    attack: i32,
+}
+
+impl Default for BFSword {
+    fn default() -> Self {
+        Self { price: 800, attack: 65 }
+    }
+}
+
+impl BFSword {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+        }
+    }
+}
 
 impl ModItemInfo for BFSword {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -17,7 +37,7 @@ impl ModItemInfo for BFSword {
     }
 
     fn price(&self) -> usize {
-        800
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -34,7 +54,7 @@ impl ModItemInfo for BFSword {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 65,
+            attack: self.attack,
             ..Default::default()
         }
     }

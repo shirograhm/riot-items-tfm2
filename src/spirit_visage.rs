@@ -1,11 +1,38 @@
 use mod_api::*;
 
+use crate::config::ItemConfig;
 use crate::percent_of;
 
-const SPIRIT_VISAGE_HEAL_MULT: f64 = 20.0;
+#[derive(Clone, Debug)]
+pub struct SpiritVisage {
+    price: usize,
+    hp: i32,
+    magic_resistance: i32,
+    effect_heal_mult: f64,
+}
 
-#[derive(Default, Clone, Debug)]
-pub struct SpiritVisage;
+impl Default for SpiritVisage {
+    fn default() -> Self {
+        Self {
+            price: 1400,
+            hp: 400,
+            magic_resistance: 50,
+            effect_heal_mult: 20.0,
+        }
+    }
+}
+
+impl SpiritVisage {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            magic_resistance: cfg.magic_resistance.unwrap_or(d.magic_resistance),
+            effect_heal_mult: cfg.effect_heal_mult.unwrap_or(d.effect_heal_mult),
+        }
+    }
+}
 
 impl ModItemInfo for SpiritVisage {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -21,7 +48,7 @@ impl ModItemInfo for SpiritVisage {
     }
 
     fn price(&self) -> usize {
-        1400
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -38,15 +65,14 @@ impl ModItemInfo for SpiritVisage {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 400,
-            magic_resistance: 50,
+            hp: self.hp,
+            magic_resistance: self.magic_resistance,
             ..Default::default()
         }
     }
 
     fn on_healed(&mut self, ctx: &mut GameCtx, _caster: Option<usize>, entity: usize, heal: usize) {
-        // Healing you receive is increased by 20%
-        let bonus_heal = percent_of(heal, SPIRIT_VISAGE_HEAL_MULT);
+        let bonus_heal = percent_of(heal, self.effect_heal_mult);
         ctx.add_buff(
             entity,
             BuffState {
@@ -66,8 +92,36 @@ impl ModItemInfo for SpiritVisage {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantSpiritVisage;
+#[derive(Clone, Debug)]
+pub struct RadiantSpiritVisage {
+    price: usize,
+    hp: i32,
+    magic_resistance: i32,
+    effect_heal_mult: f64,
+}
+
+impl Default for RadiantSpiritVisage {
+    fn default() -> Self {
+        Self {
+            price: 1900,
+            hp: 600,
+            magic_resistance: 100,
+            effect_heal_mult: 20.0,
+        }
+    }
+}
+
+impl RadiantSpiritVisage {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            magic_resistance: cfg.magic_resistance.unwrap_or(d.magic_resistance),
+            effect_heal_mult: cfg.effect_heal_mult.unwrap_or(d.effect_heal_mult),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantSpiritVisage {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -83,7 +137,7 @@ impl ModItemInfo for RadiantSpiritVisage {
     }
 
     fn price(&self) -> usize {
-        1900
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -96,15 +150,14 @@ impl ModItemInfo for RadiantSpiritVisage {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 600,
-            magic_resistance: 100,
+            hp: self.hp,
+            magic_resistance: self.magic_resistance,
             ..Default::default()
         }
     }
 
     fn on_healed(&mut self, ctx: &mut GameCtx, _caster: Option<usize>, entity: usize, heal: usize) {
-        // Healing you receive is increased by 20%
-        let bonus_heal = percent_of(heal, SPIRIT_VISAGE_HEAL_MULT);
+        let bonus_heal = percent_of(heal, self.effect_heal_mult);
         ctx.add_buff(
             entity,
             BuffState {

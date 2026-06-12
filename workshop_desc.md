@@ -1,5 +1,5 @@
-Adds 37 new items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Also reskins the 30 existing items to match.
+Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
+Re-skins the 30 existing items and also adds 39 new items (18 new item lines) to the game.  
 
 [h1] Important [/h1]
 
@@ -20,6 +20,12 @@ In order for the AI to realize that these items exist, it is best to add this mo
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
 Currently updated for game version >= 0.4.12.
+
+[h1] Custom Item Values [/h1]
+
+This mod supports full customization with item values. To do so:
+1. Edit the config.json located at SteamLibrary/steamapps/workshop/content/3009300/3739568852/config.json.
+2. Run apply_config.bat to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the values in the effect text may not match.  
 
 [h1] Known Issues [/h1]
 
