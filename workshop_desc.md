@@ -23,9 +23,10 @@ Currently updated for game version >= 0.4.12.
 
 [h1] Custom Item Values [/h1]
 
-This mod supports full customization with item values. To do so:
-1. Edit the config.json located at SteamLibrary/steamapps/workshop/content/3009300/3739568852/config.json.
-2. Run apply_config.bat to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the values in the effect text may not match.  
+This mod supports full customization on all item values. To do so:
+1. Edit the config.json that ships with this mod (located at SteamLibrary/steamapps/workshop/content/3009300/3739568852/config.json).
+2. Run apply_config.bat (also located at SteamLibrary/steamapps/workshop/content/3009300/3739568852/apply_config.bat) to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the item effect's text may not match.  
+3. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!
 
 [h1] Known Issues [/h1]
 
