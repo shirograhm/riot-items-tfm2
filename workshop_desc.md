@@ -1,5 +1,6 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
 Re-skins the 30 existing items and also adds 39 new items (18 new item lines) to the game.  
+Supports custom item values! Now you can be Phreak! See the instructions below.  
 
 [h1] Important [/h1]
 
@@ -23,10 +24,13 @@ Currently updated for game version >= 0.4.12.
 
 [h1] Custom Item Values [/h1]
 
-This mod supports full customization on all item values. To do so:
-1. Edit the config.json that ships with this mod (located at SteamLibrary/steamapps/workshop/content/3009300/3739568852/config.json).
-2. Run apply_config.bat (also located at SteamLibrary/steamapps/workshop/content/3009300/3739568852/apply_config.bat) to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the item effect's text may not match.  
+This mod works directly out of the box!  
+However, if any items feel too strong/weak, this mod supports full customization on all item values. To do so:
+1. Edit the [b]config.json[/b] that ships with this mod.
+2. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the item effect's text may not match.  
 3. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!
+
+Both files should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
 
 [h1] Known Issues [/h1]
 
@@ -36,10 +40,18 @@ Some AI champions seem to prefer the wrong stats. Magic Knight tends to buy AD a
 
 Selecting a specific item category for the AI to buy will cause it to always buy the base game item. To get maximum use out of this mod, you'll have to trust your players!  
 
+[h1] Planned Features [/h1]
+
+Support items (Ardent Censer?)
+
+Ability for the user to select specific items on each champion in the post-draft screen.
+
+Make items unique purchases (one per champion) to prevent effects from stacking.
+
 [h2] Legalese [/h2]
 
 This is a free fan-made mod. I am not affiliated with Riot Games in any way. Item concepts, names, and effects are all property to Riot Games.
 
 [Code Mod Notice]
 This Workshop item contains native/executable code files. Enabling it allows code to run inside the game process. Use only mods from creators you trust.
-Files: riot_items_tfm2.dll
+Files: apply_config.bat, apply_config.ps1, riot_items_tfm2.dll
