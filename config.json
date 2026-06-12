@@ -1,0 +1,32 @@
+{
+  "deathblade": {
+    "price": 1400,
+    "attack": 90,
+    "attack_mult": 15
+  },
+  "radiant_deathblade": {
+    "price": 2000,
+    "attack": 140,
+    "attack_mult": 25
+  },
+  "rabadons_deathcap": {
+    "price": 1500,
+    "magic_power": 165,
+    "magic_power_mult": 20
+  },
+  "radiant_rabadons_deathcap": {
+    "price": 2200,
+    "magic_power": 220,
+    "magic_power_mult": 35
+  },
+  "infinity_edge": {
+    "price": 1300,
+    "attack": 80,
+    "crit_chance": 25
+  },
+  "radiant_infinity_edge": {
+    "price": 1900,
+    "attack": 120,
+    "crit_chance": 50
+  }
+}

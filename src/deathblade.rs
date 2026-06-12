@@ -1,7 +1,33 @@
+use crate::config::ItemConfig;
 use mod_api::*;
 
-#[derive(Default, Clone, Debug)]
-pub struct DeathBlade;
+#[derive(Clone, Debug)]
+pub struct DeathBlade {
+    price: usize,
+    attack: i32,
+    attack_mult: i32,
+}
+
+impl Default for DeathBlade {
+    fn default() -> Self {
+        Self {
+            price: 1400,
+            attack: 90,
+            attack_mult: 15,
+        }
+    }
+}
+
+impl DeathBlade {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            attack_mult: cfg.attack_mult.unwrap_or(d.attack_mult),
+        }
+    }
+}
 
 impl ModItemInfo for DeathBlade {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -17,7 +43,7 @@ impl ModItemInfo for DeathBlade {
     }
 
     fn price(&self) -> usize {
-        1400
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -34,8 +60,8 @@ impl ModItemInfo for DeathBlade {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 90,
-            attack_mult: 15,
+            attack: self.attack,
+            attack_mult: self.attack_mult,
             ..Default::default()
         }
     }
@@ -49,8 +75,33 @@ impl ModItemInfo for DeathBlade {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantDeathBlade;
+#[derive(Clone, Debug)]
+pub struct RadiantDeathBlade {
+    price: usize,
+    attack: i32,
+    attack_mult: i32,
+}
+
+impl Default for RadiantDeathBlade {
+    fn default() -> Self {
+        Self {
+            price: 2000,
+            attack: 140,
+            attack_mult: 25,
+        }
+    }
+}
+
+impl RadiantDeathBlade {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            attack_mult: cfg.attack_mult.unwrap_or(d.attack_mult),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantDeathBlade {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -66,7 +117,7 @@ impl ModItemInfo for RadiantDeathBlade {
     }
 
     fn price(&self) -> usize {
-        2000
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -79,8 +130,8 @@ impl ModItemInfo for RadiantDeathBlade {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 140,
-            attack_mult: 25,
+            attack: self.attack,
+            attack_mult: self.attack_mult,
             ..Default::default()
         }
     }

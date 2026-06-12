@@ -3,6 +3,7 @@ use mod_api::*;
 mod bf_sword;
 mod blackfire_torch;
 mod blade_of_the_ruined_king;
+mod config;
 mod deathblade;
 mod executioners_calling;
 mod experimental_hexplate;
@@ -62,6 +63,7 @@ fn force_to_ad(force: i32) -> i32 {
 
 fn init(_ctx: &GameCtx) -> ModRegistration {
     let mut reg = ModRegistration::new("riot_items_tfm2");
+    let configs = config::load();
 
     // Tier 2
     reg.add_item(ExecutionersCalling::default());
@@ -73,18 +75,23 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 4
     reg.add_item(BlackfireTorch::default());
     reg.add_item(BladeOfTheRuinedKing::default());
-    reg.add_item(DeathBlade::default());
+    reg.add_item(
+        configs
+            .get("deathblade")
+            .map(DeathBlade::with_config)
+            .unwrap_or_default(),
+    );
     reg.add_item(ExperimentalHexplate::default());
     reg.add_item(FrozenMallet::default());
     reg.add_item(GuinsoosRageblade::default());
-    reg.add_item(InfinityEdge::default());
+    reg.add_item(configs.get("infinity_edge").map(InfinityEdge::with_config).unwrap_or_default());
     reg.add_item(JakshoTheProtean::default());
     reg.add_item(MirageBlade::default());
     reg.add_item(MortalReminder::default());
     reg.add_item(NashorsTooth::default());
     reg.add_item(ProtectorsVow::default());
     reg.add_item(ProtoplasmHarness::default());
-    reg.add_item(RabadonsDeathcap::default());
+    reg.add_item(configs.get("rabadons_deathcap").map(RabadonsDeathcap::with_config).unwrap_or_default());
     reg.add_item(Riftmaker::default());
     reg.add_item(SpiritVisage::default());
     reg.add_item(Terminus::default());
@@ -93,18 +100,23 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 5
     reg.add_item(RadiantBlackfireTorch::default());
     reg.add_item(RadiantBladeOfTheRuinedKing::default());
-    reg.add_item(RadiantDeathBlade::default());
+    reg.add_item(
+        configs
+            .get("radiant_deathblade")
+            .map(RadiantDeathBlade::with_config)
+            .unwrap_or_default(),
+    );
     reg.add_item(RadiantExperimentalHexplate::default());
     reg.add_item(RadiantFrozenMallet::default());
     reg.add_item(RadiantGuinsoosRageblade::default());
-    reg.add_item(RadiantInfinityEdge::default());
+    reg.add_item(configs.get("radiant_infinity_edge").map(RadiantInfinityEdge::with_config).unwrap_or_default());
     reg.add_item(RadiantJakshoTheProtean::default());
     reg.add_item(RadiantMirageBlade::default());
     reg.add_item(RadiantMortalReminder::default());
     reg.add_item(RadiantNashorsTooth::default());
     reg.add_item(RadiantProtectorsVow::default());
     reg.add_item(RadiantProtoplasmHarness::default());
-    reg.add_item(RadiantRabadonsDeathcap::default());
+    reg.add_item(configs.get("radiant_rabadons_deathcap").map(RadiantRabadonsDeathcap::with_config).unwrap_or_default());
     reg.add_item(RadiantRiftmaker::default());
     reg.add_item(RadiantSpiritVisage::default());
     reg.add_item(RadiantTerminus::default());

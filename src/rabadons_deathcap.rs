@@ -1,7 +1,29 @@
 use mod_api::*;
+use crate::config::ItemConfig;
 
-#[derive(Default, Clone, Debug)]
-pub struct RabadonsDeathcap;
+#[derive(Clone, Debug)]
+pub struct RabadonsDeathcap {
+    price: usize,
+    magic_power: i32,
+    magic_power_mult: i32,
+}
+
+impl Default for RabadonsDeathcap {
+    fn default() -> Self {
+        Self { price: 1500, magic_power: 165, magic_power_mult: 20 }
+    }
+}
+
+impl RabadonsDeathcap {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            magic_power_mult: cfg.magic_power_mult.unwrap_or(d.magic_power_mult),
+        }
+    }
+}
 
 impl ModItemInfo for RabadonsDeathcap {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -17,7 +39,7 @@ impl ModItemInfo for RabadonsDeathcap {
     }
 
     fn price(&self) -> usize {
-        1500
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -34,8 +56,8 @@ impl ModItemInfo for RabadonsDeathcap {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 165,
-            magic_power_mult: 20,
+            magic_power: self.magic_power,
+            magic_power_mult: self.magic_power_mult,
             ..Default::default()
         }
     }
@@ -49,8 +71,29 @@ impl ModItemInfo for RabadonsDeathcap {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantRabadonsDeathcap;
+#[derive(Clone, Debug)]
+pub struct RadiantRabadonsDeathcap {
+    price: usize,
+    magic_power: i32,
+    magic_power_mult: i32,
+}
+
+impl Default for RadiantRabadonsDeathcap {
+    fn default() -> Self {
+        Self { price: 2200, magic_power: 220, magic_power_mult: 35 }
+    }
+}
+
+impl RadiantRabadonsDeathcap {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            magic_power_mult: cfg.magic_power_mult.unwrap_or(d.magic_power_mult),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantRabadonsDeathcap {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -66,7 +109,7 @@ impl ModItemInfo for RadiantRabadonsDeathcap {
     }
 
     fn price(&self) -> usize {
-        2200
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -79,8 +122,8 @@ impl ModItemInfo for RadiantRabadonsDeathcap {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 220,
-            magic_power_mult: 35,
+            magic_power: self.magic_power,
+            magic_power_mult: self.magic_power_mult,
             ..Default::default()
         }
     }
