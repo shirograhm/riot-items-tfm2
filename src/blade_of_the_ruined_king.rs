@@ -8,7 +8,7 @@ pub struct BladeOfTheRuinedKing {
     price: usize,
     attack: i32,
     attack_speed_mult: i32,
-    effect_hp_percent_damage: i32,
+    effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
 }
 
@@ -18,7 +18,7 @@ impl Default for BladeOfTheRuinedKing {
             price: 1450,
             attack: 50,
             attack_speed_mult: 25,
-            effect_hp_percent_damage: 5,
+            effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
         }
     }
@@ -122,7 +122,7 @@ pub struct RadiantBladeOfTheRuinedKing {
     attack: i32,
     attack_speed_mult: i32,
     vamp: i32,
-    effect_hp_percent_damage: i32,
+    effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
 }
 
@@ -133,7 +133,7 @@ impl Default for RadiantBladeOfTheRuinedKing {
             attack: 60,
             attack_speed_mult: 50,
             vamp: 10,
-            effect_hp_percent_damage: 5,
+            effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
         }
     }

@@ -52,8 +52,8 @@
       "hp_regen": "+{Value} Max Health Regen",
       "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Critical Strike Chance",
       "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from basic attacks by <#e8a800ff>{Value}%<>.",
-      "skill_damaged_reduce": "+{Value}% Skill Damage Reduction",
-      "toughness": "+{Value}% Tenacity"
+      "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Skill Damage Reduction",
+      "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> {Value}% Tenacity"
     },
     "ironsword": {
       "name": "Long Sword",

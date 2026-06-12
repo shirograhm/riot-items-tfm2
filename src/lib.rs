@@ -83,40 +83,40 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
-    reg.add_item(FrozenMallet::default());
+    reg.add_item(configured!("frozen_mallet" => FrozenMallet));
     reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
-    reg.add_item(JakshoTheProtean::default());
+    reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured!("mirage_blade" => MirageBlade));
-    reg.add_item(MortalReminder::default());
-    reg.add_item(NashorsTooth::default());
-    reg.add_item(ProtectorsVow::default());
-    reg.add_item(ProtoplasmHarness::default());
+    reg.add_item(configured!("mortal_reminder" => MortalReminder));
+    reg.add_item(configured!("nashors_tooth" => NashorsTooth));
+    reg.add_item(configured!("protectors_vow" => ProtectorsVow));
+    reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
-    reg.add_item(Riftmaker::default());
-    reg.add_item(SpiritVisage::default());
-    reg.add_item(Terminus::default());
-    reg.add_item(UnendingDespair::default());
+    reg.add_item(configured!("riftmaker" => Riftmaker));
+    reg.add_item(configured!("spirit_visage" => SpiritVisage));
+    reg.add_item(configured!("terminus" => Terminus));
+    reg.add_item(configured!("unending_despair" => UnendingDespair));
 
     // Tier 5
     reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
     reg.add_item(configured!("radiant_blade_of_the_ruined_king" => RadiantBladeOfTheRuinedKing));
     reg.add_item(configured!("radiant_deathblade" => RadiantDeathBlade));
     reg.add_item(configured!("radiant_experimental_hexplate" => RadiantExperimentalHexplate));
-    reg.add_item(RadiantFrozenMallet::default());
+    reg.add_item(configured!("radiant_frozen_mallet" => RadiantFrozenMallet));
     reg.add_item(configured!("radiant_guinsoos_rageblade" => RadiantGuinsoosRageblade));
     reg.add_item(configured!("radiant_infinity_edge" => RadiantInfinityEdge));
-    reg.add_item(RadiantJakshoTheProtean::default());
+    reg.add_item(configured!("radiant_jaksho_the_protean" => RadiantJakshoTheProtean));
     reg.add_item(configured!("radiant_mirage_blade" => RadiantMirageBlade));
-    reg.add_item(RadiantMortalReminder::default());
-    reg.add_item(RadiantNashorsTooth::default());
-    reg.add_item(RadiantProtectorsVow::default());
-    reg.add_item(RadiantProtoplasmHarness::default());
+    reg.add_item(configured!("radiant_mortal_reminder" => RadiantMortalReminder));
+    reg.add_item(configured!("radiant_nashors_tooth" => RadiantNashorsTooth));
+    reg.add_item(configured!("radiant_protectors_vow" => RadiantProtectorsVow));
+    reg.add_item(configured!("radiant_protoplasm_harness" => RadiantProtoplasmHarness));
     reg.add_item(configured!("radiant_rabadons_deathcap" => RadiantRabadonsDeathcap));
-    reg.add_item(RadiantRiftmaker::default());
-    reg.add_item(RadiantSpiritVisage::default());
-    reg.add_item(RadiantTerminus::default());
-    reg.add_item(RadiantUnendingDespair::default());
+    reg.add_item(configured!("radiant_riftmaker" => RadiantRiftmaker));
+    reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));
+    reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
+    reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
 
     reg
 }
