@@ -31,7 +31,7 @@
       "attack": "<i#asset/base/ui/banpick/champion_stat_icon:ad_0> {Value} Attack Damage",
       "magic_power": "<i#asset/base/ui/banpick/champion_stat_icon:ap_0> {Value} Ability Power",
       "defence": "<i#asset/base/ui/banpick/champion_stat_icon:armor_0> {Value} Armor",
-      "hp": "<i#asset/base/ui/banpick/champion_stat_icon:hp_0> {Value} Max Health",
+      "hp": "<i#asset/base/ui/banpick/champion_stat_icon:hp_0> {Value} Health",
       "magic_resistance": "<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> {Value} Magic Resist",
       "vamp": "<i#asset/base/ui/banpick/champion_stat_icon:vamp_0> {Value}% Omnivamp",
       "hp_mult": "\nGrowth: Increase your total Max Health by {Value}%.",
