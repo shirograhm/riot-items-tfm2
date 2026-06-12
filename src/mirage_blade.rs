@@ -13,6 +13,8 @@ pub struct MirageBlade {
     adaptive_force: i32,
     effect_move_speed_mult: i32,
     effect_duration_seconds: usize,
+
+    is_force_applied: bool,
 }
 
 impl Default for MirageBlade {
@@ -24,6 +26,8 @@ impl Default for MirageBlade {
             adaptive_force: 60,
             effect_move_speed_mult: 20,
             effect_duration_seconds: 2,
+
+            is_force_applied: false,
         }
     }
 }
@@ -42,6 +46,8 @@ impl MirageBlade {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
+
+            is_force_applied: false,
         }
     }
 }
@@ -91,17 +97,13 @@ impl ModItemInfo for MirageBlade {
             return;
         };
 
-        let is_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_bonus_damage");
-
-        if !is_buff_applied {
+        if !self.is_force_applied {
             if entity_ref.stat().magic_power > entity_ref.stat().attack {
                 ctx.add_buff(
                     entity_ref.id(),
                     BuffState {
                         duration: BuffType::Permanent,
                         magic_power: force_to_ap(self.adaptive_force),
-                        name: ArrayString::try_from("mirage_blade_bonus_damage").unwrap(),
                         ..Default::default()
                     },
                 )
@@ -111,11 +113,12 @@ impl ModItemInfo for MirageBlade {
                     BuffState {
                         duration: BuffType::Permanent,
                         attack: force_to_ad(self.adaptive_force),
-                        name: ArrayString::try_from("mirage_blade_bonus_damage").unwrap(),
                         ..Default::default()
                     },
                 )
             }
+
+            self.is_force_applied = true;
         }
     }
 
@@ -162,6 +165,8 @@ pub struct RadiantMirageBlade {
     adaptive_force: i32,
     effect_move_speed_mult: i32,
     effect_duration_seconds: usize,
+
+    is_force_applied: bool,
 }
 
 impl Default for RadiantMirageBlade {
@@ -173,6 +178,8 @@ impl Default for RadiantMirageBlade {
             adaptive_force: 100,
             effect_move_speed_mult: 20,
             effect_duration_seconds: 2,
+
+            is_force_applied: false,
         }
     }
 }
@@ -191,6 +198,8 @@ impl RadiantMirageBlade {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
+
+            is_force_applied: false,
         }
     }
 }
@@ -236,17 +245,13 @@ impl ModItemInfo for RadiantMirageBlade {
             return;
         };
 
-        let is_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_bonus_damage");
-
-        if !is_buff_applied {
+        if !self.is_force_applied {
             if entity_ref.stat().magic_power > entity_ref.stat().attack {
                 ctx.add_buff(
                     entity_ref.id(),
                     BuffState {
                         duration: BuffType::Permanent,
                         magic_power: force_to_ap(self.adaptive_force),
-                        name: ArrayString::try_from("mirage_blade_bonus_damage").unwrap(),
                         ..Default::default()
                     },
                 )
@@ -256,11 +261,12 @@ impl ModItemInfo for RadiantMirageBlade {
                     BuffState {
                         duration: BuffType::Permanent,
                         attack: force_to_ad(self.adaptive_force),
-                        name: ArrayString::try_from("mirage_blade_bonus_damage").unwrap(),
                         ..Default::default()
                     },
                 )
             }
+
+            self.is_force_applied = true;
         }
     }
 
