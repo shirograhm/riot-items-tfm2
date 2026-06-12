@@ -1,7 +1,37 @@
 use mod_api::*;
 
-#[derive(Default, Clone, Debug)]
-pub struct ExperimentalHexplate;
+use crate::config::ItemConfig;
+
+#[derive(Clone, Debug)]
+pub struct ExperimentalHexplate {
+    price: usize,
+    hp: i32,
+    attack_speed_mult: i32,
+    ult_cooldown_mult: i32,
+}
+
+impl Default for ExperimentalHexplate {
+    fn default() -> Self {
+        Self {
+            price: 1200,
+            hp: 350,
+            attack_speed_mult: 35,
+            ult_cooldown_mult: 15,
+        }
+    }
+}
+
+impl ExperimentalHexplate {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
+        }
+    }
+}
 
 impl ModItemInfo for ExperimentalHexplate {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -17,7 +47,7 @@ impl ModItemInfo for ExperimentalHexplate {
     }
 
     fn price(&self) -> usize {
-        1200
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -34,9 +64,9 @@ impl ModItemInfo for ExperimentalHexplate {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 350,
-            attack_speed_mult: 35,
-            ult_cooldown_mult: 15,
+            hp: self.hp,
+            attack_speed_mult: self.attack_speed_mult,
+            ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
         }
     }
@@ -50,8 +80,39 @@ impl ModItemInfo for ExperimentalHexplate {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantExperimentalHexplate;
+#[derive(Clone, Debug)]
+pub struct RadiantExperimentalHexplate {
+    price: usize,
+    hp: i32,
+    attack_speed_mult: i32,
+    move_speed_mult: i32,
+    ult_cooldown_mult: i32,
+}
+
+impl Default for RadiantExperimentalHexplate {
+    fn default() -> Self {
+        Self {
+            price: 1850,
+            hp: 500,
+            attack_speed_mult: 50,
+            move_speed_mult: 5,
+            ult_cooldown_mult: 25,
+        }
+    }
+}
+
+impl RadiantExperimentalHexplate {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            move_speed_mult: cfg.move_speed_mult.unwrap_or(d.move_speed_mult),
+            ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantExperimentalHexplate {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -67,7 +128,7 @@ impl ModItemInfo for RadiantExperimentalHexplate {
     }
 
     fn price(&self) -> usize {
-        1850
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -80,10 +141,10 @@ impl ModItemInfo for RadiantExperimentalHexplate {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 500,
-            attack_speed_mult: 50,
-            move_speed_mult: 5,
-            ult_cooldown_mult: 25,
+            hp: self.hp,
+            attack_speed_mult: self.attack_speed_mult,
+            move_speed_mult: self.move_speed_mult,
+            ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
         }
     }

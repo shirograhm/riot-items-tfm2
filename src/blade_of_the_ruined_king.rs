@@ -1,12 +1,45 @@
 use mod_api::*;
 
+use crate::config::ItemConfig;
 use crate::percent_of;
 
-const BLADE_PERCENT_DAMAGE: f64 = 5.0;
-const MAX_MINION_FLAT_DAMAGE: usize = 50;
+#[derive(Clone, Debug)]
+pub struct BladeOfTheRuinedKing {
+    price: usize,
+    attack: i32,
+    attack_speed_mult: i32,
+    effect_hp_percent_damage: i32,
+    effect_minion_damage_cap: usize,
+}
 
-#[derive(Default, Clone, Debug)]
-pub struct BladeOfTheRuinedKing;
+impl Default for BladeOfTheRuinedKing {
+    fn default() -> Self {
+        Self {
+            price: 1450,
+            attack: 50,
+            attack_speed_mult: 25,
+            effect_hp_percent_damage: 5,
+            effect_minion_damage_cap: 50,
+        }
+    }
+}
+
+impl BladeOfTheRuinedKing {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            effect_hp_percent_damage: cfg
+                .effect_hp_percent_damage
+                .unwrap_or(d.effect_hp_percent_damage),
+            effect_minion_damage_cap: cfg
+                .effect_minion_damage_cap
+                .unwrap_or(d.effect_minion_damage_cap),
+        }
+    }
+}
 
 impl ModItemInfo for BladeOfTheRuinedKing {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -22,7 +55,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
     }
 
     fn price(&self) -> usize {
-        1450
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -39,8 +72,8 @@ impl ModItemInfo for BladeOfTheRuinedKing {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 50,
-            attack_speed_mult: 25,
+            attack: self.attack,
+            attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
         }
     }
@@ -56,15 +89,15 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        // Don't apply this damage to towers
         if target_ref.is_tower() {
             return;
         }
-        // Bonus damage equal to 5% of the target's current HP on hit
-        let mut bonus_damage = percent_of(target_ref.hp().current, BLADE_PERCENT_DAMAGE);
-        // If the target is not a champion, cap at 50 flat damage.
+        let mut bonus_damage = percent_of(
+            target_ref.hp().current,
+            self.effect_hp_percent_damage as f64,
+        );
         if !target_ref.is_champion() {
-            bonus_damage = bonus_damage.clamp(0, MAX_MINION_FLAT_DAMAGE);
+            bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
@@ -83,8 +116,46 @@ impl ModItemInfo for BladeOfTheRuinedKing {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantBladeOfTheRuinedKing;
+#[derive(Clone, Debug)]
+pub struct RadiantBladeOfTheRuinedKing {
+    price: usize,
+    attack: i32,
+    attack_speed_mult: i32,
+    vamp: i32,
+    effect_hp_percent_damage: i32,
+    effect_minion_damage_cap: usize,
+}
+
+impl Default for RadiantBladeOfTheRuinedKing {
+    fn default() -> Self {
+        Self {
+            price: 2100,
+            attack: 60,
+            attack_speed_mult: 50,
+            vamp: 10,
+            effect_hp_percent_damage: 5,
+            effect_minion_damage_cap: 50,
+        }
+    }
+}
+
+impl RadiantBladeOfTheRuinedKing {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            vamp: cfg.vamp.unwrap_or(d.vamp),
+            effect_hp_percent_damage: cfg
+                .effect_hp_percent_damage
+                .unwrap_or(d.effect_hp_percent_damage),
+            effect_minion_damage_cap: cfg
+                .effect_minion_damage_cap
+                .unwrap_or(d.effect_minion_damage_cap),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantBladeOfTheRuinedKing {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -100,7 +171,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
     }
 
     fn price(&self) -> usize {
-        2100
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -113,9 +184,9 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 60,
-            attack_speed_mult: 50,
-            vamp: 10,
+            attack: self.attack,
+            attack_speed_mult: self.attack_speed_mult,
+            vamp: self.vamp,
             ..Default::default()
         }
     }
@@ -131,15 +202,15 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        // Don't apply this damage to towers
         if target_ref.is_tower() {
             return;
         }
-        // Bonus damage equal to 5% of the target's current HP on hit
-        let mut bonus_damage = percent_of(target_ref.hp().current, BLADE_PERCENT_DAMAGE);
-        // If the target is not a champion, cap at 50 flat damage.
+        let mut bonus_damage = percent_of(
+            target_ref.hp().current,
+            self.effect_hp_percent_damage as f64,
+        );
         if !target_ref.is_champion() {
-            bonus_damage = bonus_damage.clamp(0, MAX_MINION_FLAT_DAMAGE);
+            bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }

@@ -65,58 +65,54 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     let mut reg = ModRegistration::new("riot_items_tfm2");
     let configs = config::load();
 
+    macro_rules! configured {
+        ($key:literal => $T:ty) => {
+            configs.get($key).map(<$T>::with_config).unwrap_or_default()
+        };
+    }
+
     // Tier 2
-    reg.add_item(ExecutionersCalling::default());
+    reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
 
     // Tier 3
-    reg.add_item(BFSword::default());
-    reg.add_item(NeedlesslyLargeRod::default());
+    reg.add_item(configured!("bf_sword" => BFSword));
+    reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
 
     // Tier 4
-    reg.add_item(BlackfireTorch::default());
-    reg.add_item(BladeOfTheRuinedKing::default());
-    reg.add_item(
-        configs
-            .get("deathblade")
-            .map(DeathBlade::with_config)
-            .unwrap_or_default(),
-    );
-    reg.add_item(ExperimentalHexplate::default());
+    reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
+    reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
+    reg.add_item(configured!("deathblade" => DeathBlade));
+    reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(FrozenMallet::default());
-    reg.add_item(GuinsoosRageblade::default());
-    reg.add_item(configs.get("infinity_edge").map(InfinityEdge::with_config).unwrap_or_default());
+    reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
+    reg.add_item(configured!("infinity_edge" => InfinityEdge));
     reg.add_item(JakshoTheProtean::default());
-    reg.add_item(MirageBlade::default());
+    reg.add_item(configured!("mirage_blade" => MirageBlade));
     reg.add_item(MortalReminder::default());
     reg.add_item(NashorsTooth::default());
     reg.add_item(ProtectorsVow::default());
     reg.add_item(ProtoplasmHarness::default());
-    reg.add_item(configs.get("rabadons_deathcap").map(RabadonsDeathcap::with_config).unwrap_or_default());
+    reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(Riftmaker::default());
     reg.add_item(SpiritVisage::default());
     reg.add_item(Terminus::default());
     reg.add_item(UnendingDespair::default());
 
     // Tier 5
-    reg.add_item(RadiantBlackfireTorch::default());
-    reg.add_item(RadiantBladeOfTheRuinedKing::default());
-    reg.add_item(
-        configs
-            .get("radiant_deathblade")
-            .map(RadiantDeathBlade::with_config)
-            .unwrap_or_default(),
-    );
-    reg.add_item(RadiantExperimentalHexplate::default());
+    reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
+    reg.add_item(configured!("radiant_blade_of_the_ruined_king" => RadiantBladeOfTheRuinedKing));
+    reg.add_item(configured!("radiant_deathblade" => RadiantDeathBlade));
+    reg.add_item(configured!("radiant_experimental_hexplate" => RadiantExperimentalHexplate));
     reg.add_item(RadiantFrozenMallet::default());
-    reg.add_item(RadiantGuinsoosRageblade::default());
-    reg.add_item(configs.get("radiant_infinity_edge").map(RadiantInfinityEdge::with_config).unwrap_or_default());
+    reg.add_item(configured!("radiant_guinsoos_rageblade" => RadiantGuinsoosRageblade));
+    reg.add_item(configured!("radiant_infinity_edge" => RadiantInfinityEdge));
     reg.add_item(RadiantJakshoTheProtean::default());
-    reg.add_item(RadiantMirageBlade::default());
+    reg.add_item(configured!("radiant_mirage_blade" => RadiantMirageBlade));
     reg.add_item(RadiantMortalReminder::default());
     reg.add_item(RadiantNashorsTooth::default());
     reg.add_item(RadiantProtectorsVow::default());
     reg.add_item(RadiantProtoplasmHarness::default());
-    reg.add_item(configs.get("radiant_rabadons_deathcap").map(RadiantRabadonsDeathcap::with_config).unwrap_or_default());
+    reg.add_item(configured!("radiant_rabadons_deathcap" => RadiantRabadonsDeathcap));
     reg.add_item(RadiantRiftmaker::default());
     reg.add_item(RadiantSpiritVisage::default());
     reg.add_item(RadiantTerminus::default());

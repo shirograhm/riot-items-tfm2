@@ -1,8 +1,56 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
-#[derive(Default, Clone, Debug)]
-pub struct GuinsoosRageblade;
+use crate::config::ItemConfig;
+
+#[derive(Clone, Debug)]
+pub struct GuinsoosRageblade {
+    price: usize,
+    attack: i32,
+    magic_power: i32,
+    attack_speed_mult: i32,
+    effect_bonus_magic_damage: i32,
+    effect_stack_attack_speed_mult: i32,
+    effect_max_stacks: usize,
+    effect_duration_seconds: usize,
+}
+
+impl Default for GuinsoosRageblade {
+    fn default() -> Self {
+        Self {
+            price: 1350,
+            attack: 30,
+            magic_power: 30,
+            attack_speed_mult: 30,
+            effect_bonus_magic_damage: 30,
+            effect_stack_attack_speed_mult: 8,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4,
+        }
+    }
+}
+
+impl GuinsoosRageblade {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            effect_bonus_magic_damage: cfg
+                .effect_bonus_magic_damage
+                .unwrap_or(d.effect_bonus_magic_damage),
+            effect_stack_attack_speed_mult: cfg
+                .effect_stack_attack_speed_mult
+                .unwrap_or(d.effect_stack_attack_speed_mult),
+            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for GuinsoosRageblade {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -18,7 +66,7 @@ impl ModItemInfo for GuinsoosRageblade {
     }
 
     fn price(&self) -> usize {
-        1350
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -38,9 +86,9 @@ impl ModItemInfo for GuinsoosRageblade {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 30,
-            magic_power: 30,
-            attack_speed_mult: 30,
+            attack: self.attack,
+            magic_power: self.magic_power,
+            attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
         }
     }
@@ -60,24 +108,28 @@ impl ModItemInfo for GuinsoosRageblade {
             return;
         };
 
-        // Get current Seething Strike stacks
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_buff")
             .count();
 
-        // Don't apply on hit damage to towers
         if !target_ref.is_tower() {
-            // Basic attacks deal 30 bonus magic damage
-            ctx.deal_damage(caster, target, 0, 30, AttackType::BaseAttack);
+            ctx.deal_damage(
+                caster,
+                target,
+                0,
+                self.effect_bonus_magic_damage as usize,
+                AttackType::BaseAttack,
+            );
         }
 
-        // Apply attack speed on hit no matter what
-        if stack_count < 4 {
+        if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
-                    duration: BuffType::Time { tick: 240 },
-                    attack_speed_mult: 8,
+                    duration: BuffType::Time {
+                        tick: self.effect_duration_seconds * 60,
+                    },
+                    attack_speed_mult: self.effect_stack_attack_speed_mult,
                     name: ArrayString::try_from("guinsoos_rageblade_buff").unwrap(),
                     ..Default::default()
                 },
@@ -94,8 +146,54 @@ impl ModItemInfo for GuinsoosRageblade {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantGuinsoosRageblade;
+#[derive(Clone, Debug)]
+pub struct RadiantGuinsoosRageblade {
+    price: usize,
+    attack: i32,
+    magic_power: i32,
+    attack_speed_mult: i32,
+    effect_bonus_magic_damage: i32,
+    effect_stack_attack_speed_mult: i32,
+    effect_max_stacks: usize,
+    effect_duration_seconds: usize,
+}
+
+impl Default for RadiantGuinsoosRageblade {
+    fn default() -> Self {
+        Self {
+            price: 1900,
+            attack: 50,
+            magic_power: 50,
+            attack_speed_mult: 50,
+            effect_bonus_magic_damage: 30,
+            effect_stack_attack_speed_mult: 8,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4,
+        }
+    }
+}
+
+impl RadiantGuinsoosRageblade {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            attack: cfg.attack.unwrap_or(d.attack),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            effect_bonus_magic_damage: cfg
+                .effect_bonus_magic_damage
+                .unwrap_or(d.effect_bonus_magic_damage),
+            effect_stack_attack_speed_mult: cfg
+                .effect_stack_attack_speed_mult
+                .unwrap_or(d.effect_stack_attack_speed_mult),
+            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantGuinsoosRageblade {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -111,7 +209,7 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
     }
 
     fn price(&self) -> usize {
-        1900
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -124,9 +222,9 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: 50,
-            magic_power: 50,
-            attack_speed_mult: 50,
+            attack: self.attack,
+            magic_power: self.magic_power,
+            attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
         }
     }
@@ -146,24 +244,30 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
             return;
         };
 
-        // Get current Seething Strike stacks
         let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff")
+            .filter(|&i| {
+                entity_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff"
+            })
             .count();
 
-        // Don't apply on hit damage to towers
         if !target_ref.is_tower() {
-            // Basic attacks deal 30 bonus magic damage
-            ctx.deal_damage(caster, target, 0, 30, AttackType::BaseAttack);
+            ctx.deal_damage(
+                caster,
+                target,
+                0,
+                self.effect_bonus_magic_damage as usize,
+                AttackType::BaseAttack,
+            );
         }
 
-        // Apply attack speed on hit no matter what
-        if stack_count < 4 {
+        if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
-                    duration: BuffType::Time { tick: 240 },
-                    attack_speed_mult: 8,
+                    duration: BuffType::Time {
+                        tick: self.effect_duration_seconds * 60,
+                    },
+                    attack_speed_mult: self.effect_stack_attack_speed_mult,
                     name: ArrayString::try_from("radiant_guinsoos_rageblade_buff").unwrap(),
                     ..Default::default()
                 },

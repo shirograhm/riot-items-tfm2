@@ -12,8 +12,23 @@ pub struct ItemConfig {
     pub magic_power: Option<i32>,
     pub magic_power_mult: Option<i32>,
     pub crit_chance: Option<i32>,
+    pub attack_speed_mult: Option<i32>,
+    pub move_speed_mult: Option<i32>,
+    pub adaptive_force: Option<i32>,
+    pub effect_move_speed_mult: Option<i32>,
+    pub effect_duration_seconds: Option<usize>,
+    pub effect_heal_reduce: Option<usize>,
+    pub effect_hp_percent_damage: Option<i32>,
+    pub effect_minion_damage_cap: Option<usize>,
+    pub effect_bonus_magic_damage: Option<i32>,
+    pub effect_max_stacks: Option<usize>,
+    pub effect_stack_attack_speed_mult: Option<i32>,
+    pub effect_stack_magic_power: Option<i32>,
+    pub hp: Option<i32>,
+    pub skill_cooldown_mult: Option<i32>,
+    pub ult_cooldown_mult: Option<i32>,
+    pub vamp: Option<i32>,
 }
-
 
 pub fn load() -> HashMap<String, ItemConfig> {
     let path = dll_dir()
