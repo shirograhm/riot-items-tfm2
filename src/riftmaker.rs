@@ -20,7 +20,7 @@ impl Default for Riftmaker {
             price: 1300,
             hp: 400,
             magic_power: 75,
-            effect_caster_hp_percent_power: 2.0,
+            effect_caster_hp_percent_power: 1.0,
             effect_max_stacks: 3,
             effect_duration_seconds: 5,
         }
@@ -136,7 +136,7 @@ impl Default for RadiantRiftmaker {
             price: 1900,
             hp: 600,
             magic_power: 150,
-            effect_caster_hp_percent_power: 2.0,
+            effect_caster_hp_percent_power: 1.0,
             effect_max_stacks: 3,
             effect_duration_seconds: 5,
         }
