@@ -31,11 +31,12 @@ This mod works directly out of the box!
 
 However, if any of the modded items feel too strong/weak, this mod supports full customization on all item values. Only modded items can be adjusted. To do so:
 
-1. Edit the [b]config.json[/b] that ships with this mod.
+1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
+1. Edit the new [b]config.json[/b] with the custom values that you want.
 2. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the item effect's text may not match.  
 3. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!
 
-Your config.json is your item information save. If you lose it, you can redownload the mod to regenerate the default values. 
+Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.
 
 Both files should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
 
