@@ -83,6 +83,42 @@ impl ModItemInfo for MirageBlade {
         }
     }
 
+    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(entity_ref) = player_ref.champion() else {
+            return;
+        };
+
+        let is_buff_applied = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_adaptive_force");
+
+        if !is_buff_applied {
+            if entity_ref.stat().magic_power > entity_ref.stat().attack {
+                ctx.add_buff(
+                    entity_ref.id(),
+                    BuffState {
+                        duration: BuffType::Permanent,
+                        magic_power: force_to_ap(self.adaptive_force),
+                        name: ArrayString::try_from("mirage_blade_adaptive_force").unwrap(),
+                        ..Default::default()
+                    },
+                )
+            } else {
+                ctx.add_buff(
+                    entity_ref.id(),
+                    BuffState {
+                        duration: BuffType::Permanent,
+                        attack: force_to_ad(self.adaptive_force),
+                        name: ArrayString::try_from("mirage_blade_adaptive_force").unwrap(),
+                        ..Default::default()
+                    },
+                )
+            }
+        }
+    }
+
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
@@ -225,6 +261,50 @@ impl ModItemInfo for RadiantMirageBlade {
             attack_speed_mult: self.attack_speed_mult,
             move_speed_mult: self.move_speed_mult,
             ..Default::default()
+        }
+    }
+
+    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(entity_ref) = player_ref.champion() else {
+            return;
+        };
+
+        let is_prior_buff_applied = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_adaptive_force");
+        let is_buff_applied = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_mirage_blade_adaptive_force");
+
+        if !is_buff_applied {
+            let force_to_apply = if is_prior_buff_applied {
+                self.adaptive_force - MirageBlade::default().adaptive_force
+            } else {
+                self.adaptive_force
+            };
+
+            if entity_ref.stat().magic_power > entity_ref.stat().attack {
+                ctx.add_buff(
+                    entity_ref.id(),
+                    BuffState {
+                        duration: BuffType::Permanent,
+                        magic_power: force_to_ap(force_to_apply),
+                        name: ArrayString::try_from("radiant_mirage_blade_adaptive_force").unwrap(),
+                        ..Default::default()
+                    },
+                )
+            } else {
+                ctx.add_buff(
+                    entity_ref.id(),
+                    BuffState {
+                        duration: BuffType::Permanent,
+                        attack: force_to_ad(force_to_apply),
+                        name: ArrayString::try_from("radiant_mirage_blade_adaptive_force").unwrap(),
+                        ..Default::default()
+                    },
+                )
+            }
         }
     }
 
