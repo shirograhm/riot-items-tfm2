@@ -1,16 +1,63 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
+use crate::config::ItemConfig;
 use crate::percent_of;
 use crate::percent_of_i32;
 
-const PROTOPLASM_HARNESS_THRESHOLD: f64 = 40.0; // 40% HP threshold for activation
-const PROTOPLASM_HARNESS_BUFF_DURATION: usize = 360; // 6 seconds in ticks
-const PROTOPLASM_HARNESS_HP_PERCENT_BOOST: f64 = 25.0; // 25% HP boost
-const PROTOPLASM_HARNESS_COOLDOWN: usize = 1800; // 30 seconds in ticks
+#[derive(Clone, Debug)]
+pub struct ProtoplasmHarness {
+    price: usize,
+    hp: i32,
+    skill_cooldown_mult: i32,
+    move_speed_mult: i32,
+    effect_bonus_flat_hp: i32,
+    effect_hp_percent_boost: f64,
+    effect_hp_percent_threshold: f64,
+    effect_duration_seconds: usize,
+    effect_cooldown_seconds: usize,
+}
 
-#[derive(Default, Clone, Debug)]
-pub struct ProtoplasmHarness;
+impl Default for ProtoplasmHarness {
+    fn default() -> Self {
+        Self {
+            price: 1000,
+            hp: 400,
+            skill_cooldown_mult: 20,
+            move_speed_mult: 5,
+            effect_bonus_flat_hp: 300,
+            effect_hp_percent_boost: 25.0,
+            effect_hp_percent_threshold: 40.0,
+            effect_duration_seconds: 6,
+            effect_cooldown_seconds: 30,
+        }
+    }
+}
+
+impl ProtoplasmHarness {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            move_speed_mult: cfg.move_speed_mult.unwrap_or(d.move_speed_mult),
+            effect_bonus_flat_hp: cfg.effect_bonus_flat_hp.unwrap_or(d.effect_bonus_flat_hp),
+            effect_hp_percent_boost: cfg
+                .effect_hp_percent_boost
+                .unwrap_or(d.effect_hp_percent_boost),
+            effect_hp_percent_threshold: cfg
+                .effect_hp_percent_threshold
+                .unwrap_or(d.effect_hp_percent_threshold),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+            effect_cooldown_seconds: cfg
+                .effect_cooldown_seconds
+                .unwrap_or(d.effect_cooldown_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for ProtoplasmHarness {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -26,7 +73,7 @@ impl ModItemInfo for ProtoplasmHarness {
     }
 
     fn price(&self) -> usize {
-        1000
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -43,9 +90,9 @@ impl ModItemInfo for ProtoplasmHarness {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 400,
-            skill_cooldown_mult: 20,
-            move_speed_mult: 5,
+            hp: self.hp,
+            skill_cooldown_mult: self.skill_cooldown_mult,
+            move_speed_mult: self.move_speed_mult,
             ..Default::default()
         }
     }
@@ -73,24 +120,22 @@ impl ModItemInfo for ProtoplasmHarness {
             .any(|i| entity_ref.buff_at(i).name.as_str() == "protoplasm_harness_buff");
         let has_cooldown_buff: bool = (0..entity_ref.buff_count())
             .any(|i| entity_ref.buff_at(i).name.as_str() == "protoplasm_harness_cooldown_buff");
-        let hp_threshold = percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_THRESHOLD);
+        let hp_threshold = percent_of(entity_ref.hp().max, self.effect_hp_percent_threshold);
 
         if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
-            // Bonus HP granted is 300 + 25% of max HP
-            let bonus_max_hp =
-                300 + percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_HP_PERCENT_BOOST) as i32;
+            let bonus_max_hp = self.effect_bonus_flat_hp
+                + percent_of(entity_ref.hp().max, self.effect_hp_percent_boost) as i32;
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: PROTOPLASM_HARNESS_BUFF_DURATION,
+                        tick: self.effect_duration_seconds * 60,
                     },
                     hp: bonus_max_hp,
                     name: ArrayString::try_from("protoplasm_harness_buff").unwrap(),
                     ..Default::default()
                 },
             );
-            // Heal for half the amount of heal you gain
             ctx.add_buff(
                 entity,
                 BuffState {
@@ -103,7 +148,7 @@ impl ModItemInfo for ProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: PROTOPLASM_HARNESS_COOLDOWN,
+                        tick: self.effect_cooldown_seconds * 60,
                     },
                     name: ArrayString::try_from("protoplasm_harness_cooldown_buff").unwrap(),
                     ..Default::default()
@@ -113,8 +158,59 @@ impl ModItemInfo for ProtoplasmHarness {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantProtoplasmHarness;
+#[derive(Clone, Debug)]
+pub struct RadiantProtoplasmHarness {
+    price: usize,
+    hp: i32,
+    skill_cooldown_mult: i32,
+    move_speed_mult: i32,
+    effect_bonus_flat_hp: i32,
+    effect_hp_percent_boost: f64,
+    effect_hp_percent_threshold: f64,
+    effect_duration_seconds: usize,
+    effect_cooldown_seconds: usize,
+}
+
+impl Default for RadiantProtoplasmHarness {
+    fn default() -> Self {
+        Self {
+            price: 1600,
+            hp: 800,
+            skill_cooldown_mult: 20,
+            move_speed_mult: 5,
+            effect_bonus_flat_hp: 600,
+            effect_hp_percent_boost: 25.0,
+            effect_hp_percent_threshold: 40.0,
+            effect_duration_seconds: 6,
+            effect_cooldown_seconds: 30,
+        }
+    }
+}
+
+impl RadiantProtoplasmHarness {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            move_speed_mult: cfg.move_speed_mult.unwrap_or(d.move_speed_mult),
+            effect_bonus_flat_hp: cfg.effect_bonus_flat_hp.unwrap_or(d.effect_bonus_flat_hp),
+            effect_hp_percent_boost: cfg
+                .effect_hp_percent_boost
+                .unwrap_or(d.effect_hp_percent_boost),
+            effect_hp_percent_threshold: cfg
+                .effect_hp_percent_threshold
+                .unwrap_or(d.effect_hp_percent_threshold),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+            effect_cooldown_seconds: cfg
+                .effect_cooldown_seconds
+                .unwrap_or(d.effect_cooldown_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantProtoplasmHarness {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -130,7 +226,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
     }
 
     fn price(&self) -> usize {
-        1600
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -143,9 +239,9 @@ impl ModItemInfo for RadiantProtoplasmHarness {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 800,
-            skill_cooldown_mult: 20,
-            move_speed_mult: 5,
+            hp: self.hp,
+            skill_cooldown_mult: self.skill_cooldown_mult,
+            move_speed_mult: self.move_speed_mult,
             ..Default::default()
         }
     }
@@ -174,24 +270,22 @@ impl ModItemInfo for RadiantProtoplasmHarness {
         let has_cooldown_buff: bool = (0..entity_ref.buff_count()).any(|i| {
             entity_ref.buff_at(i).name.as_str() == "radiant_protoplasm_harness_cooldown_buff"
         });
-        let hp_threshold = percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_THRESHOLD);
+        let hp_threshold = percent_of(entity_ref.hp().max, self.effect_hp_percent_threshold);
 
         if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
-            // Bonus HP granted is 600 + 25% of max HP
-            let bonus_max_hp =
-                600 + percent_of(entity_ref.hp().max, PROTOPLASM_HARNESS_HP_PERCENT_BOOST) as i32;
+            let bonus_max_hp = self.effect_bonus_flat_hp
+                + percent_of(entity_ref.hp().max, self.effect_hp_percent_boost) as i32;
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: PROTOPLASM_HARNESS_BUFF_DURATION,
+                        tick: self.effect_duration_seconds * 60,
                     },
                     hp: bonus_max_hp,
                     name: ArrayString::try_from("radiant_protoplasm_harness_buff").unwrap(),
                     ..Default::default()
                 },
             );
-            // Heal for half the amount of heal you gain
             ctx.add_buff(
                 entity,
                 BuffState {
@@ -204,7 +298,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: PROTOPLASM_HARNESS_COOLDOWN,
+                        tick: self.effect_cooldown_seconds * 60,
                     },
                     name: ArrayString::try_from("radiant_protoplasm_harness_cooldown_buff")
                         .unwrap(),

@@ -1,7 +1,27 @@
 use mod_api::*;
+use crate::config::ItemConfig;
 
-#[derive(Default, Clone, Debug)]
-pub struct NeedlesslyLargeRod;
+#[derive(Clone, Debug)]
+pub struct NeedlesslyLargeRod {
+    price: usize,
+    magic_power: i32,
+}
+
+impl Default for NeedlesslyLargeRod {
+    fn default() -> Self {
+        Self { price: 850, magic_power: 115 }
+    }
+}
+
+impl NeedlesslyLargeRod {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+        }
+    }
+}
 
 impl ModItemInfo for NeedlesslyLargeRod {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -17,7 +37,7 @@ impl ModItemInfo for NeedlesslyLargeRod {
     }
 
     fn price(&self) -> usize {
-        850
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -34,7 +54,7 @@ impl ModItemInfo for NeedlesslyLargeRod {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            magic_power: 115,
+            magic_power: self.magic_power,
             ..Default::default()
         }
     }

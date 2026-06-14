@@ -1,9 +1,9 @@
 use mod_api::*;
 
-mod ardent_censer;
 mod bf_sword;
 mod blackfire_torch;
 mod blade_of_the_ruined_king;
+mod config;
 mod deathblade;
 mod executioners_calling;
 mod experimental_hexplate;
@@ -11,6 +11,7 @@ mod frozen_mallet;
 mod guinsoos_rageblade;
 mod infinity_edge;
 mod jaksho_the_protean;
+mod mirage_blade;
 mod mortal_reminder;
 mod nashors_tooth;
 mod needlessly_large_rod;
@@ -22,7 +23,6 @@ mod spirit_visage;
 mod terminus;
 mod unending_despair;
 
-use ardent_censer::*;
 use bf_sword::*;
 use blackfire_torch::*;
 use blade_of_the_ruined_king::*;
@@ -33,6 +33,7 @@ use frozen_mallet::*;
 use guinsoos_rageblade::*;
 use infinity_edge::*;
 use jaksho_the_protean::*;
+use mirage_blade::*;
 use mortal_reminder::*;
 use nashors_tooth::*;
 use needlessly_large_rod::*;
@@ -52,47 +53,71 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
     (value as f64 * percent / 100.0).round() as i32
 }
 
+fn force_to_ap(force: i32) -> i32 {
+    force
+}
+
+fn force_to_ad(force: i32) -> i32 {
+    (force as f64 * 0.6).round() as i32
+}
+
 fn init(_ctx: &GameCtx) -> ModRegistration {
     let mut reg = ModRegistration::new("riot_items_tfm2");
-    reg.add_item(BFSword::default());
-    reg.add_item(DeathBlade::default());
-    reg.add_item(RadiantDeathBlade::default());
-    reg.add_item(InfinityEdge::default());
-    reg.add_item(RadiantInfinityEdge::default());
-    reg.add_item(NeedlesslyLargeRod::default());
-    reg.add_item(UnendingDespair::default());
-    reg.add_item(RadiantUnendingDespair::default());
-    reg.add_item(Riftmaker::default());
-    reg.add_item(RadiantRiftmaker::default());
-    reg.add_item(RabadonsDeathcap::default());
-    reg.add_item(RadiantRabadonsDeathcap::default());
-    reg.add_item(ProtectorsVow::default());
-    reg.add_item(RadiantProtectorsVow::default());
-    reg.add_item(ProtoplasmHarness::default());
-    reg.add_item(RadiantProtoplasmHarness::default());
-    reg.add_item(FrozenMallet::default());
-    reg.add_item(RadiantFrozenMallet::default());
-    reg.add_item(BladeOfTheRuinedKing::default());
-    reg.add_item(RadiantBladeOfTheRuinedKing::default());
-    reg.add_item(BlackfireTorch::default());
-    reg.add_item(RadiantBlackfireTorch::default());
-    reg.add_item(ArdentCenser::default());
-    reg.add_item(RadiantArdentCenser::default());
-    reg.add_item(ExperimentalHexplate::default());
-    reg.add_item(RadiantExperimentalHexplate::default());
-    reg.add_item(ExecutionersCalling::default());
-    reg.add_item(MortalReminder::default());
-    reg.add_item(RadiantMortalReminder::default());
-    reg.add_item(NashorsTooth::default());
-    reg.add_item(RadiantNashorsTooth::default());
-    reg.add_item(GuinsoosRageblade::default());
-    reg.add_item(RadiantGuinsoosRageblade::default());
-    reg.add_item(JakshoTheProtean::default());
-    reg.add_item(RadiantJakshoTheProtean::default());
-    reg.add_item(Terminus::default());
-    reg.add_item(RadiantTerminus::default());
-    reg.add_item(SpiritVisage::default());
-    reg.add_item(RadiantSpiritVisage::default());
+    let configs = config::load();
+
+    macro_rules! configured {
+        ($key:literal => $T:ty) => {
+            configs.get($key).map(<$T>::with_config).unwrap_or_default()
+        };
+    }
+
+    // Tier 2
+    reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
+
+    // Tier 3
+    reg.add_item(configured!("bf_sword" => BFSword));
+    reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
+
+    // Tier 4
+    reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
+    reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
+    reg.add_item(configured!("deathblade" => DeathBlade));
+    reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured!("frozen_mallet" => FrozenMallet));
+    reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
+    reg.add_item(configured!("infinity_edge" => InfinityEdge));
+    reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
+    reg.add_item(configured!("mirage_blade" => MirageBlade));
+    reg.add_item(configured!("mortal_reminder" => MortalReminder));
+    reg.add_item(configured!("nashors_tooth" => NashorsTooth));
+    reg.add_item(configured!("protectors_vow" => ProtectorsVow));
+    reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
+    reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
+    reg.add_item(configured!("riftmaker" => Riftmaker));
+    reg.add_item(configured!("spirit_visage" => SpiritVisage));
+    reg.add_item(configured!("terminus" => Terminus));
+    reg.add_item(configured!("unending_despair" => UnendingDespair));
+
+    // Tier 5
+    reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
+    reg.add_item(configured!("radiant_blade_of_the_ruined_king" => RadiantBladeOfTheRuinedKing));
+    reg.add_item(configured!("radiant_deathblade" => RadiantDeathBlade));
+    reg.add_item(configured!("radiant_experimental_hexplate" => RadiantExperimentalHexplate));
+    reg.add_item(configured!("radiant_frozen_mallet" => RadiantFrozenMallet));
+    reg.add_item(configured!("radiant_guinsoos_rageblade" => RadiantGuinsoosRageblade));
+    reg.add_item(configured!("radiant_infinity_edge" => RadiantInfinityEdge));
+    reg.add_item(configured!("radiant_jaksho_the_protean" => RadiantJakshoTheProtean));
+    reg.add_item(configured!("radiant_mirage_blade" => RadiantMirageBlade));
+    reg.add_item(configured!("radiant_mortal_reminder" => RadiantMortalReminder));
+    reg.add_item(configured!("radiant_nashors_tooth" => RadiantNashorsTooth));
+    reg.add_item(configured!("radiant_protectors_vow" => RadiantProtectorsVow));
+    reg.add_item(configured!("radiant_protoplasm_harness" => RadiantProtoplasmHarness));
+    reg.add_item(configured!("radiant_rabadons_deathcap" => RadiantRabadonsDeathcap));
+    reg.add_item(configured!("radiant_riftmaker" => RadiantRiftmaker));
+    reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));
+    reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
+    reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
+
     reg
 }
 

@@ -1,9 +1,45 @@
 use mod_api::*;
 
+use crate::config::ItemConfig;
 use crate::percent_of;
 
-#[derive(Default, Clone, Debug)]
-pub struct UnendingDespair;
+#[derive(Clone, Debug)]
+pub struct UnendingDespair {
+    price: usize,
+    hp: i32,
+    defence: i32,
+    effect_bonus_flat_heal: i32,
+    effect_caster_hp_percent_heal: f64,
+}
+
+impl Default for UnendingDespair {
+    fn default() -> Self {
+        Self {
+            price: 1450,
+            hp: 450,
+            defence: 30,
+            effect_bonus_flat_heal: 10,
+            effect_caster_hp_percent_heal: 1.0,
+        }
+    }
+}
+
+impl UnendingDespair {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            defence: cfg.defence.unwrap_or(d.defence),
+            effect_bonus_flat_heal: cfg
+                .effect_bonus_flat_heal
+                .unwrap_or(d.effect_bonus_flat_heal),
+            effect_caster_hp_percent_heal: cfg
+                .effect_caster_hp_percent_heal
+                .unwrap_or(d.effect_caster_hp_percent_heal),
+        }
+    }
+}
 
 impl ModItemInfo for UnendingDespair {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -19,7 +55,7 @@ impl ModItemInfo for UnendingDespair {
     }
 
     fn price(&self) -> usize {
-        1450
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -39,18 +75,17 @@ impl ModItemInfo for UnendingDespair {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 450,
-            defence: 30,
+            hp: self.hp,
+            defence: self.defence,
             ..Default::default()
         }
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        // Heal the player for 10 + 1% of their max HP on skill hit
-        let heal_amount = 10
+        let heal_amount = self.effect_bonus_flat_heal as usize
             + ctx
                 .get_entity(caster)
-                .map(|e| percent_of(e.hp().max, 1.0))
+                .map(|e| percent_of(e.hp().max, self.effect_caster_hp_percent_heal))
                 .unwrap_or(0);
         ctx.add_buff(
             caster,
@@ -71,8 +106,43 @@ impl ModItemInfo for UnendingDespair {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantUnendingDespair;
+#[derive(Clone, Debug)]
+pub struct RadiantUnendingDespair {
+    price: usize,
+    hp: i32,
+    defence: i32,
+    effect_bonus_flat_heal: i32,
+    effect_caster_hp_percent_heal: f64,
+}
+
+impl Default for RadiantUnendingDespair {
+    fn default() -> Self {
+        Self {
+            price: 2100,
+            hp: 700,
+            defence: 50,
+            effect_bonus_flat_heal: 25,
+            effect_caster_hp_percent_heal: 3.0,
+        }
+    }
+}
+
+impl RadiantUnendingDespair {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            defence: cfg.defence.unwrap_or(d.defence),
+            effect_bonus_flat_heal: cfg
+                .effect_bonus_flat_heal
+                .unwrap_or(d.effect_bonus_flat_heal),
+            effect_caster_hp_percent_heal: cfg
+                .effect_caster_hp_percent_heal
+                .unwrap_or(d.effect_caster_hp_percent_heal),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantUnendingDespair {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -88,7 +158,7 @@ impl ModItemInfo for RadiantUnendingDespair {
     }
 
     fn price(&self) -> usize {
-        2100
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -101,18 +171,17 @@ impl ModItemInfo for RadiantUnendingDespair {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 700,
-            defence: 50,
+            hp: self.hp,
+            defence: self.defence,
             ..Default::default()
         }
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        // Heal the player for 25 + 3% of their max HP on skill hit
-        let heal_amount = 25
+        let heal_amount = self.effect_bonus_flat_heal as usize
             + ctx
                 .get_entity(caster)
-                .map(|e| percent_of(e.hp().max, 3.0))
+                .map(|e| percent_of(e.hp().max, self.effect_caster_hp_percent_heal))
                 .unwrap_or(0);
         ctx.add_buff(
             caster,

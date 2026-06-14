@@ -1,0 +1,281 @@
+{
+  "executioners_calling": {
+    "price": 500,
+    "attack": 25,
+    "effect_heal_reduce": 25,
+    "effect_duration_seconds": 2
+  },
+  "bf_sword": {
+    "price": 800,
+    "attack": 65
+  },
+  "needlessly_large_rod": {
+    "price": 850,
+    "magic_power": 115
+  },
+  "blackfire_torch": {
+    "price": 1300,
+    "magic_power": 130,
+    "skill_cooldown_mult": 15,
+    "effect_stack_magic_power": 10,
+    "effect_max_stacks": 4,
+    "effect_duration_seconds": 4
+  },
+  "blade_of_the_ruined_king": {
+    "price": 1450,
+    "attack": 50,
+    "attack_speed_mult": 25,
+    "effect_hp_percent_damage": 5.0,
+    "effect_minion_damage_cap": 50
+  },
+  "experimental_hexplate": {
+    "price": 1200,
+    "hp": 350,
+    "attack_speed_mult": 35,
+    "ult_cooldown_mult": 15
+  },
+  "deathblade": {
+    "price": 1400,
+    "attack": 90,
+    "attack_mult": 15
+  },
+  "frozen_mallet": {
+    "price": 1300,
+    "hp": 450,
+    "attack": 45,
+    "effect_slow_amount": 25,
+    "effect_duration_seconds": 2
+  },
+  "guinsoos_rageblade": {
+    "price": 1350,
+    "attack": 30,
+    "magic_power": 30,
+    "attack_speed_mult": 30,
+    "effect_bonus_magic_damage": 30,
+    "effect_stack_attack_speed_mult": 8,
+    "effect_max_stacks": 4,
+    "effect_duration_seconds": 4
+  },
+  "infinity_edge": {
+    "price": 1300,
+    "attack": 80,
+    "crit_chance": 25
+  },
+  "jaksho_the_protean": {
+    "price": 1400,
+    "hp": 300,
+    "defence": 40,
+    "magic_resistance": 65,
+    "effect_stack_defence_mult": 6,
+    "effect_stack_magic_resistance_mult": 6,
+    "effect_max_stacks": 4,
+    "effect_duration_seconds": 4
+  },
+  "mirage_blade": {
+    "price": 1500,
+    "attack_speed_mult": 40,
+    "move_speed_mult": 10,
+    "adaptive_force": 60,
+    "effect_move_speed_mult": 20,
+    "effect_duration_seconds": 2
+  },
+  "nashors_tooth": {
+    "price": 1450,
+    "magic_power": 115,
+    "attack_speed_mult": 25,
+    "effect_bonus_flat_damage": 35,
+    "effect_ap_percent_damage": 3.0
+  },
+  "mortal_reminder": {
+    "price": 1400,
+    "attack": 55,
+    "defence_penetration": 20,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 2
+  },
+  "riftmaker": {
+    "price": 1300,
+    "hp": 400,
+    "magic_power": 75,
+    "effect_caster_hp_percent_power": 1.0,
+    "effect_max_stacks": 3,
+    "effect_duration_seconds": 5
+  },
+  "terminus": {
+    "price": 1300,
+    "attack": 30,
+    "attack_speed_mult": 35,
+    "effect_pen_per_stack": 4,
+    "effect_max_stacks": 4,
+    "effect_duration_seconds": 4
+  },
+  "protectors_vow": {
+    "price": 1300,
+    "hp": 350,
+    "defence": 50
+  },
+  "protoplasm_harness": {
+    "price": 1000,
+    "hp": 400,
+    "skill_cooldown_mult": 20,
+    "move_speed_mult": 5,
+    "effect_bonus_flat_hp": 300,
+    "effect_hp_percent_boost": 25.0,
+    "effect_hp_percent_threshold": 40.0,
+    "effect_duration_seconds": 6,
+    "effect_cooldown_seconds": 30
+  },
+  "rabadons_deathcap": {
+    "price": 1500,
+    "magic_power": 165,
+    "magic_power_mult": 20
+  },
+  "spirit_visage": {
+    "price": 1400,
+    "hp": 400,
+    "magic_resistance": 50,
+    "effect_heal_mult": 20.0
+  },
+  "unending_despair": {
+    "price": 1450,
+    "hp": 450,
+    "defence": 30,
+    "effect_bonus_flat_heal": 10,
+    "effect_caster_hp_percent_heal": 1.0
+  },
+  "radiant_experimental_hexplate": {
+    "price": 1850,
+    "hp": 500,
+    "attack_speed_mult": 50,
+    "move_speed_mult": 5,
+    "ult_cooldown_mult": 25
+  },
+  "radiant_blackfire_torch": {
+    "price": 1900,
+    "magic_power": 175,
+    "skill_cooldown_mult": 25,
+    "effect_stack_magic_power": 30,
+    "effect_max_stacks": 4,
+    "effect_duration_seconds": 4
+  },
+  "radiant_blade_of_the_ruined_king": {
+    "price": 2100,
+    "attack": 60,
+    "attack_speed_mult": 50,
+    "vamp": 10,
+    "effect_hp_percent_damage": 5.0,
+    "effect_minion_damage_cap": 50
+  },
+  "radiant_frozen_mallet": {
+    "price": 1900,
+    "hp": 600,
+    "attack": 60,
+    "effect_slow_amount": 25,
+    "effect_duration_seconds": 2,
+    "effect_bonus_flat_damage": 20,
+    "effect_caster_hp_percent_damage": 3.0
+  },
+  "radiant_guinsoos_rageblade": {
+    "price": 1900,
+    "attack": 50,
+    "magic_power": 50,
+    "attack_speed_mult": 50,
+    "effect_bonus_magic_damage": 30,
+    "effect_stack_attack_speed_mult": 8,
+    "effect_max_stacks": 4,
+    "effect_duration_seconds": 4
+  },
+  "radiant_deathblade": {
+    "price": 2000,
+    "attack": 140,
+    "attack_mult": 25
+  },
+  "radiant_infinity_edge": {
+    "price": 1900,
+    "attack": 120,
+    "crit_chance": 50
+  },
+  "radiant_nashors_tooth": {
+    "price": 2050,
+    "magic_power": 180,
+    "attack_speed_mult": 40,
+    "effect_bonus_flat_damage": 50,
+    "effect_ap_percent_damage": 5.0
+  },
+  "radiant_mortal_reminder": {
+    "price": 2000,
+    "attack": 70,
+    "defence_penetration": 30,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 2
+  },
+  "radiant_jaksho_the_protean": {
+    "price": 2000,
+    "hp": 550,
+    "defence": 65,
+    "magic_resistance": 65,
+    "effect_stack_defence_mult": 10,
+    "effect_stack_magic_resistance_mult": 10,
+    "effect_max_stacks": 4,
+    "effect_duration_seconds": 4
+  },
+  "radiant_mirage_blade": {
+    "price": 2100,
+    "attack_speed_mult": 65,
+    "move_speed_mult": 15,
+    "adaptive_force": 100,
+    "effect_move_speed_mult": 20,
+    "effect_duration_seconds": 2
+  },
+  "radiant_terminus": {
+    "price": 1900,
+    "attack": 50,
+    "attack_speed_mult": 60,
+    "effect_pen_per_stack": 4,
+    "effect_max_stacks": 4,
+    "effect_duration_seconds": 4
+  },
+  "radiant_protectors_vow": {
+    "price": 1800,
+    "hp": 550,
+    "defence": 75,
+    "skill_cooldown_mult": 15
+  },
+  "radiant_protoplasm_harness": {
+    "price": 1600,
+    "hp": 800,
+    "skill_cooldown_mult": 20,
+    "move_speed_mult": 5,
+    "effect_bonus_flat_hp": 600,
+    "effect_hp_percent_boost": 25.0,
+    "effect_hp_percent_threshold": 40.0,
+    "effect_duration_seconds": 6,
+    "effect_cooldown_seconds": 30
+  },
+  "radiant_riftmaker": {
+    "price": 1900,
+    "hp": 600,
+    "magic_power": 150,
+    "effect_caster_hp_percent_power": 1.0,
+    "effect_max_stacks": 3,
+    "effect_duration_seconds": 5
+  },
+  "radiant_rabadons_deathcap": {
+    "price": 2200,
+    "magic_power": 220,
+    "magic_power_mult": 35
+  },
+  "radiant_spirit_visage": {
+    "price": 1900,
+    "hp": 600,
+    "magic_resistance": 100,
+    "effect_heal_mult": 20.0
+  },
+  "radiant_unending_despair": {
+    "price": 2100,
+    "hp": 700,
+    "defence": 50,
+    "effect_bonus_flat_heal": 25,
+    "effect_caster_hp_percent_heal": 3.0
+  }
+}

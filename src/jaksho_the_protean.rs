@@ -1,11 +1,56 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
-const JAKSHO_BUFF_DURATION: usize = 240;
-const JAKSHO_MAX_STACKS: usize = 4;
+use crate::config::ItemConfig;
 
-#[derive(Default, Clone, Debug)]
-pub struct JakshoTheProtean;
+#[derive(Clone, Debug)]
+pub struct JakshoTheProtean {
+    price: usize,
+    hp: i32,
+    defence: i32,
+    magic_resistance: i32,
+    effect_stack_defence_mult: i32,
+    effect_stack_magic_resistance_mult: i32,
+    effect_max_stacks: usize,
+    effect_duration_seconds: usize,
+}
+
+impl Default for JakshoTheProtean {
+    fn default() -> Self {
+        Self {
+            price: 1400,
+            hp: 300,
+            defence: 40,
+            magic_resistance: 65,
+            effect_stack_defence_mult: 6,
+            effect_stack_magic_resistance_mult: 6,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4,
+        }
+    }
+}
+
+impl JakshoTheProtean {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            defence: cfg.defence.unwrap_or(d.defence),
+            magic_resistance: cfg.magic_resistance.unwrap_or(d.magic_resistance),
+            effect_stack_defence_mult: cfg
+                .effect_stack_defence_mult
+                .unwrap_or(d.effect_stack_defence_mult),
+            effect_stack_magic_resistance_mult: cfg
+                .effect_stack_magic_resistance_mult
+                .unwrap_or(d.effect_stack_magic_resistance_mult),
+            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for JakshoTheProtean {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -21,7 +66,7 @@ impl ModItemInfo for JakshoTheProtean {
     }
 
     fn price(&self) -> usize {
-        1400
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -38,9 +83,9 @@ impl ModItemInfo for JakshoTheProtean {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 300,
-            defence: 40,
-            magic_resistance: 65,
+            hp: self.hp,
+            defence: self.defence,
+            magic_resistance: self.magic_resistance,
             ..Default::default()
         }
     }
@@ -56,27 +101,24 @@ impl ModItemInfo for JakshoTheProtean {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
         };
-
-        // Only gain resists when taking damage from champions
         let Some(attacker_ref) = ctx.get_entity(attacker) else {
             return;
         };
         if !attacker_ref.is_champion() {
             return;
         }
-
         let stack_count = (0..entity_ref.buff_count())
             .filter(|&i| entity_ref.buff_at(i).name.as_str() == "jaksho_the_protean_stack")
             .count();
-        if stack_count < JAKSHO_MAX_STACKS {
+        if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: JAKSHO_BUFF_DURATION,
+                        tick: self.effect_duration_seconds * 60,
                     },
-                    defence_mult: 6,
-                    magic_resistance_mult: 6,
+                    defence_mult: self.effect_stack_defence_mult,
+                    magic_resistance_mult: self.effect_stack_magic_resistance_mult,
                     name: ArrayString::try_from("jaksho_the_protean_stack").unwrap(),
                     ..Default::default()
                 },
@@ -93,8 +135,54 @@ impl ModItemInfo for JakshoTheProtean {
     }
 }
 
-#[derive(Default, Clone, Debug)]
-pub struct RadiantJakshoTheProtean;
+#[derive(Clone, Debug)]
+pub struct RadiantJakshoTheProtean {
+    price: usize,
+    hp: i32,
+    defence: i32,
+    magic_resistance: i32,
+    effect_stack_defence_mult: i32,
+    effect_stack_magic_resistance_mult: i32,
+    effect_max_stacks: usize,
+    effect_duration_seconds: usize,
+}
+
+impl Default for RadiantJakshoTheProtean {
+    fn default() -> Self {
+        Self {
+            price: 2000,
+            hp: 550,
+            defence: 65,
+            magic_resistance: 65,
+            effect_stack_defence_mult: 10,
+            effect_stack_magic_resistance_mult: 10,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4,
+        }
+    }
+}
+
+impl RadiantJakshoTheProtean {
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        let d = Self::default();
+        Self {
+            price: cfg.price.unwrap_or(d.price),
+            hp: cfg.hp.unwrap_or(d.hp),
+            defence: cfg.defence.unwrap_or(d.defence),
+            magic_resistance: cfg.magic_resistance.unwrap_or(d.magic_resistance),
+            effect_stack_defence_mult: cfg
+                .effect_stack_defence_mult
+                .unwrap_or(d.effect_stack_defence_mult),
+            effect_stack_magic_resistance_mult: cfg
+                .effect_stack_magic_resistance_mult
+                .unwrap_or(d.effect_stack_magic_resistance_mult),
+            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
+            effect_duration_seconds: cfg
+                .effect_duration_seconds
+                .unwrap_or(d.effect_duration_seconds),
+        }
+    }
+}
 
 impl ModItemInfo for RadiantJakshoTheProtean {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
@@ -110,7 +198,7 @@ impl ModItemInfo for RadiantJakshoTheProtean {
     }
 
     fn price(&self) -> usize {
-        2000
+        self.price
     }
 
     fn tier(&self) -> usize {
@@ -123,9 +211,9 @@ impl ModItemInfo for RadiantJakshoTheProtean {
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: 550,
-            defence: 65,
-            magic_resistance: 65,
+            hp: self.hp,
+            defence: self.defence,
+            magic_resistance: self.magic_resistance,
             ..Default::default()
         }
     }
@@ -141,27 +229,26 @@ impl ModItemInfo for RadiantJakshoTheProtean {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
         };
-
-        // Only gain resists when taking damage from champions
         let Some(attacker_ref) = ctx.get_entity(attacker) else {
             return;
         };
         if !attacker_ref.is_champion() {
             return;
         }
-
         let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_jaksho_the_protean_stack")
+            .filter(|&i| {
+                entity_ref.buff_at(i).name.as_str() == "radiant_jaksho_the_protean_stack"
+            })
             .count();
-        if stack_count < JAKSHO_MAX_STACKS {
+        if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: JAKSHO_BUFF_DURATION,
+                        tick: self.effect_duration_seconds * 60,
                     },
-                    defence_mult: 10,
-                    magic_resistance_mult: 10,
+                    defence_mult: self.effect_stack_defence_mult,
+                    magic_resistance_mult: self.effect_stack_magic_resistance_mult,
                     name: ArrayString::try_from("radiant_jaksho_the_protean_stack").unwrap(),
                     ..Default::default()
                 },

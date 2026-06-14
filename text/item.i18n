@@ -2,11 +2,11 @@
   "en": {
     "category": {
       "all": "All",
-      "ad": "attack damage",
+      "ad": "Attack Damage",
       "attack_speed": "Attack Speed",
       "defense": "Armor",
       "magic_resistance": "Magic Resist",
-      "magic": "ability power",
+      "magic": "Ability Power",
       "hp": "Health"
     },
     "info": {
@@ -28,32 +28,32 @@
     },
     "tier": "Tier {Tier}",
     "spec": {
-      "attack": "+{Value} Attack Damage",
-      "magic_power": "+{Value} Ability Power",
-      "defence": "+{Value} Armor",
-      "hp": "+{Value} Max Health",
-      "magic_resistance": "+{Value} Magic Resist",
-      "vamp": "+{Value}% Lifesteal",
+      "attack": "<i#asset/base/ui/banpick/champion_stat_icon:ad_0> {Value} Attack Damage",
+      "magic_power": "<i#asset/base/ui/banpick/champion_stat_icon:ap_0> {Value} Ability Power",
+      "defence": "<i#asset/base/ui/banpick/champion_stat_icon:armor_0> {Value} Armor",
+      "hp": "<i#asset/base/ui/banpick/champion_stat_icon:hp_0> {Value} Health",
+      "magic_resistance": "<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> {Value} Magic Resist",
+      "vamp": "<i#asset/base/ui/banpick/champion_stat_icon:vamp_0> {Value}% Omnivamp",
       "hp_mult": "\nGrowth: Increase your total Max Health by {Value}%.",
-      "move_speed_mult": "+{Value}% Movement Speed",
-      "attack_speed_mult": "+{Value}% Attack Speed",
-      "skill_cooldown_mult": "+{Value}% Cooldown Reduction",
+      "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> {Value}% Movement Speed",
+      "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> {Value}% Attack Speed",
+      "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value}% Cooldown Reduction",
       "range": "+{Value} Range",
       "defence_mult": "\nSecond Skin: Increase your total Armor by {Value}%.",
-      "defence_penetration": "+{Value}% Armor Penetration",
-      "magic_resistance_penetration": "+{Value}% Magic Penetration",
-      "heal_reduce": "\n+{Value}% Healing Reduction",
-      "shield_break": "Reave: Damage you deal destroys {Value}% of the target's shields.",
+      "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> {Value}% Armor Penetration",
+      "magic_resistance_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> {Value}% Magic Penetration",
+      "heal_reduce": "+{Value}% Healing Reduction",
+      "shield_break": "\nReave: Damage you deal destroys {Value}% of the target's shields.",
       "attack_enemy_hp_ratio": "+{Value}% Attack Enemy HP",
       "skill_enemy_hp_ratio": "+{Value}% Skill Enemy HP",
       "attack_my_hp_ratio": "+{Value}% Attack My HP",
       "reflect": "+{Value}% Reflect Damage",
       "dot_amplify": "+{Value}% DoT Amplification",
-      "hp_regen": "+{Value} Health Regen",
-      "crit_chance": "+{Value}% Critical Strike Chance",
+      "hp_regen": "+{Value} Max Health Regen",
+      "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Critical Strike Chance",
       "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from basic attacks by <#e8a800ff>{Value}%<>.",
-      "skill_damaged_reduce": "+{Value}% Skill Damage Reduction",
-      "toughness": "+{Value}% Tenacity"
+      "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Skill Damage Reduction",
+      "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> {Value}% Tenacity"
     },
     "ironsword": {
       "name": "Long Sword",
@@ -189,11 +189,11 @@
     },
     "deathblade": {
       "name": "Deathblade",
-      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>attack damage<> by <#ff9028ff>15%<>."
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>15%<>."
     },
     "radiant_deathblade": {
       "name": "Radiant Deathblade",
-      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>attack damage<> by <#ff9028ff>25%<>."
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>25%<>."
     },
     "needlessly_large_rod": {
       "name": "Needlessly Large Rod",
@@ -201,11 +201,11 @@
     },
     "rabadons_deathcap": {
       "name": "Rabadon's Deathcap",
-      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> by <#a974ffff>20%<>."
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> by <#a974ffff>20%<>."
     },
     "radiant_rabadons_deathcap": {
       "name": "Radiant Rabadon's Deathcap",
-      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> by <#a974ffff>35%<>."
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> by <#a974ffff>35%<>."
     },
     "protectors_vow": {
       "name": "Protector's Vow",
@@ -233,11 +233,11 @@
     },
     "riftmaker": {
       "name": "Riftmaker",
-      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
     },
     "radiant_riftmaker": {
       "name": "Radiant Riftmaker",
-      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
     },
     "unending_despair": {
       "name": "Unending Despair",
@@ -257,11 +257,11 @@
     },
     "blackfire_torch": {
       "name": "Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "radiant_blackfire_torch": {
       "name": "Radiant Blackfire Torch",
-      "option": "Maleficent: Spell hits grant <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+      "option": "Maleficent: Spell hits grant <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
@@ -277,19 +277,19 @@
     },
     "experimental_hexplate": {
       "name": "Experimental Hexplate",
-      "option": "Overdrive: Reduce the cooldown of your ultimate skill by <#e8a800ff>15%<>."
+      "option": "Overdrive: Gain <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
     },
     "radiant_experimental_hexplate": {
       "name": "Radiant Experimental Hexplate",
-      "option": "Overdrive: Reduce the cooldown of your ultimate skill by <#e8a800ff>25%<>."
+      "option": "Overdrive: Gain <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
     },
     "nashors_tooth": {
       "name": "Nashor's Tooth",
-      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<>."
+      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
     },
     "radiant_nashors_tooth": {
       "name": "Radiant Nashor's Tooth",
-      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>ability power<>."
+      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
     },
     "jaksho_the_protean": {
       "name": "Jak'sho, The Protean",
@@ -301,11 +301,11 @@
     },
     "terminus": {
       "name": "Terminus",
-      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>4% armor penetration<> or <#88ccffff>4% magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
     },
     "radiant_terminus": {
       "name": "Radiant Terminus",
-      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>4% armor penetration<> or <#88ccffff>4% magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
     },
     "spirit_visage": {
       "name": "Spirit Visage",
@@ -323,13 +323,13 @@
       "name": "Radiant Guinsoo's Rageblade",
       "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
     },
-    "ardent_censer": {
-      "name": "Ardent Censer",
-      "option": "Sanctify: Healing an ally grants them <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>adaptive force<> and <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
+    "mirage_blade": {
+      "name": "Mirage Blade",
+      "option": "Illusion: Gain <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nBlur: On kill, gain <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
     },
-    "radiant_ardent_censer": {
-      "name": "Radiant Ardent Censer",
-      "option": "Sanctify: Healing an ally grants them <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>adaptive force<> and <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
+    "radiant_mirage_blade": {
+      "name": "Radiant Mirage Blade",
+      "option": "Illusion: Gain <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nBlur: On kill, gain <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
     }
   }
 }
