@@ -277,11 +277,11 @@
     },
     "experimental_hexplate": {
       "name": "Experimental Hexplate",
-      "option": "Overdrive: Reduce the cooldown of your ultimate skill by <#e8a800ff>15%<>."
+      "option": "Overdrive: Gain <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
     },
     "radiant_experimental_hexplate": {
       "name": "Radiant Experimental Hexplate",
-      "option": "Overdrive: Reduce the cooldown of your ultimate skill by <#e8a800ff>25%<>."
+      "option": "Overdrive: Gain <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
     },
     "nashors_tooth": {
       "name": "Nashor's Tooth",
