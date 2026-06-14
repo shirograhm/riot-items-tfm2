@@ -8,6 +8,7 @@ use std::path::PathBuf;
 pub struct ItemConfig {
     pub price: Option<usize>,
     pub hp: Option<i32>,
+    pub hp_regen: Option<i32>,
     pub attack: Option<i32>,
     pub attack_mult: Option<i32>,
     pub magic_power: Option<i32>,
@@ -47,6 +48,8 @@ pub struct ItemConfig {
     pub effect_heal_mult: Option<f64>,
     pub effect_bonus_flat_heal: Option<i32>,
     pub effect_caster_hp_percent_heal: Option<f64>,
+    pub effect_force_buff: Option<i32>,
+    pub effect_attack_speed_buff: Option<i32>,
 }
 
 pub fn load() -> HashMap<String, ItemConfig> {

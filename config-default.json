@@ -143,6 +143,26 @@
     "effect_bonus_flat_heal": 10,
     "effect_caster_hp_percent_heal": 1.0
   },
+  "ardent_censer": {
+    "price": 1100,
+    "magic_power": 100,
+    "hp_regen": 20,
+    "skill_cooldown_mult": 10,
+    "move_speed_mult": 10,
+    "effect_force_buff": 60,
+    "effect_attack_speed_buff": 20,
+    "effect_duration_seconds": 6
+  },
+  "radiant_ardent_censer": {
+    "price": 1650,
+    "magic_power": 150,
+    "hp_regen": 30,
+    "skill_cooldown_mult": 20,
+    "move_speed_mult": 20,
+    "effect_force_buff": 60,
+    "effect_attack_speed_buff": 20,
+    "effect_duration_seconds": 6
+  },
   "radiant_experimental_hexplate": {
     "price": 1850,
     "hp": 500,
