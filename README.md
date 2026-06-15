@@ -9,8 +9,6 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3739984076
 ##### Gold Efficiency Stats - For Base Values
 https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWpGO02nyy00m7mcyySuxhGvUaU8HGrvljAChaHQx2n_yO5V8S/pubhtml
 
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWpGO02nyy00m7mcyySuxhGvUaU8HGrvljAChaHQx2n_yO5V8S/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
-
 ### Added Items
 
 #### Tier 2
