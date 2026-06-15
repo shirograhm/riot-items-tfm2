@@ -7,7 +7,7 @@
   "dependencies": [
     {
       "mod_id": "base",
-      "version": ">=0.2.3"
+      "version": "=0.4.12"
     }
   ]
 }
