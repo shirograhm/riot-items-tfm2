@@ -331,5 +331,338 @@
       "name": "Radiant Mirage Blade",
       "option": "Illusion: Gain <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nBlur: On kill, gain <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
     }
+  },
+  "vi": {
+    "category": {
+      "all": "Tất cả",
+      "ad": "Sức Mạnh Công Kích",
+      "attack_speed": "Tốc Độ Đánh",
+      "defense": "Giáp",
+      "magic_resistance": "Kháng Phép",
+      "magic": "Sức Mạnh Phép Thuật",
+      "hp": "Máu"
+    },
+    "info": {
+      "tier": "Bậc",
+      "price": "Giá",
+      "stat": "Chỉ Số",
+      "option": "Hiệu Ứng"
+    },
+    "tier_header": {
+      "1": "Bậc 1",
+      "2": "Bậc 2",
+      "3": "Bậc 3",
+      "4": "Bậc 4",
+      "5": "Bậc 5"
+    },
+    "related": {
+      "sub_items": "Ghép từ",
+      "upper_items": "Ghép thành"
+    },
+    "tier": "Bậc {Tier}",
+    "spec": {
+      "attack": "Sức Mạnh Công Kích <i#asset/base/ui/banpick/champion_stat_icon:ad_0> {Value}",
+      "magic_power": "Sức Mạnh Phép Thuật <i#asset/base/ui/banpick/champion_stat_icon:ap_0> {Value}",
+      "defence": "Giáp <i#asset/base/ui/banpick/champion_stat_icon:armor_0> {Value}",
+      "hp": "Máu <i#asset/base/ui/banpick/champion_stat_icon:hp_0> {Value}",
+      "magic_resistance": "Kháng Phép <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> {Value}",
+      "vamp": "Hút Máu <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> {Value}%",
+      "hp_mult": "Máu +{Value}%",
+      "move_speed_mult": "Tốc Độ Di Chuyển <i#asset/base/ui/banpick/champion_stat_icon:speed_0> {Value}%",
+      "attack_speed_mult": "Tốc Độ Đánh <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> {Value}%",
+      "skill_cooldown_mult": "Giảm Thời Gian Hồi Chiêu <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value}%",
+      "range": "Tầm Đánh +{Value}",
+      "defence_mult": "Giáp +{Value}%",
+      "defence_penetration": "Xuyên Giáp <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> {Value}%",
+      "magic_resistance_penetration": "Xuyên Kháng Phép <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> {Value}%",
+      "heal_reduce": "\nGiảm Hồi Máu của địch {Value}% trong 2 giây.",
+      "shield_break": "\nPhá hủy {Value}% lá chắn của địch khi tấn công.",
+      "attack_enemy_hp_ratio": "\nSát thương Đánh thường theo Máu Tối đa của địch +{Value}%.",
+      "skill_enemy_hp_ratio": "\nSát thương Kỹ năng theo Máu Tối đa của địch +{Value}%.",
+      "attack_my_hp_ratio": "\nGây thêm sát thương bằng +{Value}% Máu tối đa của bản thân.",
+      "reflect": "Phản sát thương +{Value}%",
+      "dot_amplify": "Sát thương theo Thời gian +{Value}%",
+      "hp_regen": "Hồi Máu mỗi giây +{Value}",
+      "crit_chance": "Tỷ Lệ Chí Mạng <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}%",
+      "base_attack_damaged_reduce": "\nGiáp tấm: Giảm <#e8a800ff>{Value}%<> sát thương nhận vào từ các đòn tấn công cơ bản.",
+      "skill_damaged_reduce": "Giảm Sát thương Kỹ năng <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}%",
+      "toughness": "Kháng Hiệu Ứng <i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> {Value}%"
+    },
+    "ironsword": {
+      "name": "Kiếm Dài",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Cuốc Chim",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Huyết Trượng",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Huyết Kiếm",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Huyết Kiếm Ánh Sáng",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Dao Găm",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Cung Gỗ",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Song Kiếm",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Ma Vũ Song Kiếm",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Ma Vũ Song Kiếm Ánh Sáng",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Giáp Lụa",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Giáp Lưới",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Áo Choàng Gai",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Giáp Gai",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Giáp Gai Ánh Sáng",
+      "option": "Gai: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}% Giáp<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> của bạn thành Sát Phương Phép lên kẻ tấn công."
+    },
+    "mystic_cloak": {
+      "name": "Áo Vải",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Áo Choàng Bạc",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Áo Choàng Ám Ảnh",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Vuốt Rồng",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Vuốt Rồng Ánh Sáng",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Sách Cũ",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Gậy Bùng Nổ",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Bí Chương Thất Truyền",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Vọng Âm Luden",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Vọng Âm Luden Ánh Sáng",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Hồng Ngọc",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Hoả Ngọc",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Đai Khổng Lồ",
+      "option": "Sửa chữa: Hồi <#60e84dff>{Flat} Máu<> Tối Đa mỗi giây."
+    },
+    "hourglass_of_eternity": {
+      "name": "Giáp Máu Warmog",
+      "option": "Sửa chữa: Hồi <#60e84dff>{Flat} Máu<> Tối Đa mỗi giây."
+    },
+    "giants_horn_shard": {
+      "name": "Giáp Máu Warmog Ánh Sáng",
+      "option": "Sửa chữa: Hồi <#60e84dff>{RegenFlat} Máu<> Tối Đa mỗi giây.\n\nKhinh Miệt: Gây <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{Range}<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>."
+    },
+    "bf_sword": {
+      "name": "Kiếm B.F.",
+      "option": ""
+    },
+    "infinity_edge": {
+      "name": "Vô Cực Kiếm",
+      "option": ""
+    },
+    "radiant_infinity_edge": {
+      "name": "Vô Cực Kiếm Ánh Sáng",
+      "option": ""
+    },
+    "deathblade": {
+      "name": "Kiếm Tử Thần",
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>15%<>."
+    },
+    "radiant_deathblade": {
+      "name": "Kiếm Tử Thần Ánh Sáng",
+      "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>25%<>."
+    },
+    "needlessly_large_rod": {
+      "name": "Gậy Quá Khổ",
+      "option": ""
+    },
+    "rabadons_deathcap": {
+      "name": "Mũ Phù Thủy Rabadon",
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> by <#a974ffff>20%<>."
+    },
+    "radiant_rabadons_deathcap": {
+      "name": "Mũ Phù Thủy Rabadon Ánh Sáng",
+      "option": "Opus: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> by <#a974ffff>35%<>."
+    },
+    "protectors_vow": {
+      "name": "Băng Giáp",
+      "option": ""
+    },
+    "radiant_protectors_vow": {
+      "name": "Băng Giáp Ánh Sáng",
+      "option": ""
+    },
+    "protoplasm_harness": {
+      "name": "Đai Nguyên Sinh",
+      "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>300<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <#60e84dff>heals you<> for half that amount (30 second cooldown)."
+    },
+    "radiant_protoplasm_harness": {
+      "name": "Đai Nguyên Sinh Ánh Sáng",
+      "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>600<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <#60e84dff>heals you<> for half that amount (30 second cooldown)."
+    },
+    "frozen_mallet": {
+      "name": "Búa Băng",
+      "option": "Icy: On attack, apply a <#d94c49ff>25% slow<> for <#e8a800ff>2 seconds<>."
+    },
+    "radiant_frozen_mallet": {
+      "name": "Búa Băng Ánh Sáng",
+      "option": "Icy: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>20<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> and apply a <#d94c49ff>25% slow<> for <#e8a800ff>2 seconds<>."
+    },
+    "riftmaker": {
+      "name": "Quyền Trượng Ác Thần",
+      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+    },
+    "radiant_riftmaker": {
+      "name": "Quyền Trượng Ác Thần Ánh Sáng",
+      "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+    },
+    "unending_despair": {
+      "name": "Áo Choàng Diệt Vong",
+      "option": "Anguish: Spell hits heal you for <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+    },
+    "radiant_unending_despair": {
+      "name": "Áo Choàng Diệt Vong Ánh Sáng",
+      "option": "Anguish: Spell hits heal you for <#60e84dff>25<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+    },
+    "blade_of_the_ruined_king": {
+      "name": "Gươm Suy Vong",
+      "option": "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+    },
+    "radiant_blade_of_the_ruined_king": {
+      "name": "Gươm Suy Vong Ánh Sáng",
+      "option": "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+    },
+    "blackfire_torch": {
+      "name": "Đuốc Lửa Đen",
+      "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+    },
+    "radiant_blackfire_torch": {
+      "name": "Đuốc Lửa Đen Ánh Sáng",
+      "option": "Maleficent: Spell hits grant <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+    },
+    "executioners_calling": {
+      "name": "Gươm Đồ Tể",
+      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 25%<> for <#e8a800ff>2 seconds<>."
+    },
+    "mortal_reminder": {
+      "name": "Lời Nhắc Tử Vong",
+      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
+    },
+    "radiant_mortal_reminder": {
+      "name": "Lời Nhắc Tử Vong Ánh Sáng",
+      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
+    },
+    "experimental_hexplate": {
+      "name": "Khiên Hextech Thử Nghiệm",
+      "option": "Overdrive: Gain <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+    },
+    "radiant_experimental_hexplate": {
+      "name": "Khiên Hextech Thử Nghiệm Ánh Sáng",
+      "option": "Overdrive: Gain <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+    },
+    "nashors_tooth": {
+      "name": "Nanh Nashor",
+      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+    },
+    "radiant_nashors_tooth": {
+      "name": "Nanh Nashor Ánh Sáng",
+      "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+    },
+    "jaksho_the_protean": {
+      "name": "Jak'sho Vỏ Bọc Thích Nghi",
+      "option": "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+    },
+    "radiant_jaksho_the_protean": {
+      "name": "Jak'sho Vỏ Bọc Thích Nghi Ánh Sáng",
+      "option": "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+    },
+    "terminus": {
+      "name": "Cung Chạng Vạng",
+      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+    },
+    "radiant_terminus": {
+      "name": "Cung Chạng Vạng Ánh Sáng",
+      "option": "Juxtaposition: On attack, gain either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+    },
+    "spirit_visage": {
+      "name": "Giáp Tâm Linh",
+      "option": "Vitality: Increase all <#60e84dff>healing received<> by <#60e84dff>20%<>."
+    },
+    "radiant_spirit_visage": {
+      "name": "Giáp Tâm Linh Ánh Sáng",
+      "option": "Vitality: Increase all <#60e84dff>healing received<> by <#60e84dff>20%<>."
+    },
+    "guinsoos_rageblade": {
+      "name": "Cuồng Đao Guinsoo",
+      "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+    },
+    "radiant_guinsoos_rageblade": {
+      "name": "Cuồng Đao Guinsoo Ánh Sáng",
+      "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+    },
+    "mirage_blade": {
+      "name": "Kiếm Chích",
+      "option": "Illusion: Gain <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nBlur: On kill, gain <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
+    },
+    "radiant_mirage_blade": {
+      "name": "Kiếm Chích Ánh Sáng",
+      "option": "Illusion: Gain <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nBlur: On kill, gain <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
+    }
   }
 }
