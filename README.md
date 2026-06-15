@@ -7,7 +7,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739984076
 
 ##### Gold Efficiency Stats - For Base Values
-https://docs.google.com/spreadsheets/d/1pJW-7nsQUz9tXHZG6wgaWZ9CrM9zB_nRe7FH1pmgBfc/edit?gid=0#gid=0
+https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWpGO02nyy00m7mcyySuxhGvUaU8HGrvljAChaHQx2n_yO5V8S/pubhtml
 
 ### Added Items
 
