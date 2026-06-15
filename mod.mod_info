@@ -1,13 +1,13 @@
 {
   "name": "Riot Games Item Expansion Pack",
   "author": "shirograhm",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Adds items from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.",
-  "last_updated": "2026-06-13",
+  "last_updated": "2026-06-14",
   "dependencies": [
     {
       "mod_id": "base",
-      "version": ">=0.2.2"
+      "version": "=0.4.12"
     }
   ]
 }

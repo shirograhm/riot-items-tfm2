@@ -133,7 +133,7 @@
   "spirit_visage": {
     "price": 1400,
     "hp": 400,
-    "magic_resistance": 50,
+    "magic_resistance": 100,
     "effect_heal_mult": 20.0
   },
   "unending_despair": {
@@ -268,7 +268,7 @@
   "radiant_spirit_visage": {
     "price": 1900,
     "hp": 600,
-    "magic_resistance": 100,
+    "magic_resistance": 150,
     "effect_heal_mult": 20.0
   },
   "radiant_unending_despair": {

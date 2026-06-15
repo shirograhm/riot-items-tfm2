@@ -16,7 +16,7 @@ impl Default for SpiritVisage {
         Self {
             price: 1400,
             hp: 400,
-            magic_resistance: 50,
+            magic_resistance: 100,
             effect_heal_mult: 20.0,
         }
     }
@@ -105,7 +105,7 @@ impl Default for RadiantSpiritVisage {
         Self {
             price: 1900,
             hp: 600,
-            magic_resistance: 100,
+            magic_resistance: 150,
             effect_heal_mult: 20.0,
         }
     }

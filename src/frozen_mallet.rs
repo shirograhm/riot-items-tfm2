@@ -9,7 +9,7 @@ pub struct FrozenMallet {
     price: usize,
     hp: i32,
     attack: i32,
-    effect_slow_percent: i32,
+    effect_slow_amount: i32,
     effect_duration_seconds: usize,
 }
 
@@ -19,7 +19,7 @@ impl Default for FrozenMallet {
             price: 1300,
             hp: 450,
             attack: 45,
-            effect_slow_percent: 25,
+            effect_slow_amount: 25,
             effect_duration_seconds: 2,
         }
     }
@@ -32,7 +32,7 @@ impl FrozenMallet {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
             attack: cfg.attack.unwrap_or(d.attack),
-            effect_slow_percent: cfg.effect_slow_amount.unwrap_or(d.effect_slow_percent),
+            effect_slow_amount: cfg.effect_slow_amount.unwrap_or(d.effect_slow_amount),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
@@ -103,7 +103,7 @@ impl ModItemInfo for FrozenMallet {
                     duration: BuffType::Time {
                         tick: self.effect_duration_seconds * 60,
                     },
-                    move_speed_mult: -self.effect_slow_percent,
+                    move_speed_mult: -self.effect_slow_amount,
                     name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
                     ..Default::default()
                 },
