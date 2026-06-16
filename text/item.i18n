@@ -446,7 +446,7 @@
     },
     "impregnable_fortress": {
       "name": "Giáp Gai Ánh Sáng",
-      "option": "Gai: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}% Giáp<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> của bạn thành Sát Phương Phép lên kẻ tấn công."
+      "option": "Gai: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Giáp<> của bạn thành Sát Phương Phép lên kẻ tấn công."
     },
     "mystic_cloak": {
       "name": "Áo Vải",
@@ -522,11 +522,11 @@
     },
     "deathblade": {
       "name": "Kiếm Tử Thần",
-      "option": "Cường hóa: Tăng <#ff9028ff>SMCK<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> của bản thân thêm <#ff9028ff>15%<>."
+      "option": "Cường hóa: Tăng <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bản thân thêm <#ff9028ff>15%<>."
     },
     "radiant_deathblade": {
       "name": "Kiếm Tử Thần Ánh Sáng",
-      "option": "Cường hóa: Tăng <#ff9028ff>SMCK<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> của bản thân thêm <#ff9028ff>25%<>."
+      "option": "Cường hóa: Tăng <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bản thân thêm <#ff9028ff>25%<>."
     },
     "needlessly_large_rod": {
       "name": "Gậy Quá Khổ",
@@ -534,11 +534,11 @@
     },
     "rabadons_deathcap": {
       "name": "Mũ Phù Thủy Rabadon",
-      "option": "Hạt nhân: Tăng <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> của bản thân thêm <#a974ffff>20%<>."
+      "option": "Hạt nhân: Tăng <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> của bản thân thêm <#a974ffff>20%<>."
     },
     "radiant_rabadons_deathcap": {
       "name": "Mũ Phù Thủy Rabadon Ánh Sáng",
-      "option": "Hạt nhân: Tăng <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> của bản thân thêm <#a974ffff>35%<>."
+      "option": "Hạt nhân: Tăng <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> của bản thân thêm <#a974ffff>35%<>."
     },
     "protectors_vow": {
       "name": "Băng Giáp",
@@ -550,11 +550,11 @@
     },
     "protoplasm_harness": {
       "name": "Đai Nguyên Sinh",
-      "option": "Vững chãi: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>300<> + <#60e84dff>25%<> <#60e84dff>máu tối đa<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>6 giây<> và <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong 30 giây.)."
+      "option": "Vững chãi: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>300<> + <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>6 giây<> và <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong 30 giây.)."
     },
     "radiant_protoplasm_harness": {
       "name": "Đai Nguyên Sinh Ánh Sáng",
-      "option": "Vững chãi: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>600<> + <#60e84dff>25%<> <#60e84dff>máu tối đa<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>6 giây<> và <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong 30 giây.)."
+      "option": "Vững chãi: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>600<> + <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>6 giây<> và <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong 30 giây.)."
     },
     "frozen_mallet": {
       "name": "Búa Băng",
@@ -562,23 +562,23 @@
     },
     "radiant_frozen_mallet": {
       "name": "Búa Băng Ánh Sáng",
-      "option": "Băng kết: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>20<> + <#60e84dff>3%<> <#60e84dff>máu tối đa<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> của bản thân và gây <#d94c49ff>25% kiệt sức <> trong <#e8a800ff>2 giây<>."
+      "option": "Băng kết: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>20<> + <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân và gây <#d94c49ff>25% kiệt sức <> trong <#e8a800ff>2 giây<>."
     },
     "riftmaker": {
       "name": "Quyền Trượng Ác Thần",
-      "option": "Dung hòa: Kĩ năng trúng đích sẽ tăng <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> tương ứng <#60e84dff>1%<> <#60e84dff>máu tối đa<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> của bản thân trong <#e8a800ff>5 giây<> (tối đa 3 cộng dồn)."
+      "option": "Dung hòa: Kĩ năng trúng đích sẽ tăng <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> tương ứng <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>5 giây<> (tối đa 3 cộng dồn)."
     },
     "radiant_riftmaker": {
       "name": "Quyền Trượng Ác Thần Ánh Sáng",
-      "option": "Dung hòa: Kĩ năng trúng đích sẽ tăng <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> tương ứng <#60e84dff>1%<> <#60e84dff>máu tối đa<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> của bản thân trong <#e8a800ff>5 giây<> (tối đa 3 cộng dồn)."
+      "option": "Dung hòa: Kĩ năng trúng đích sẽ tăng <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> tương ứng <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>5 giây<> (tối đa 3 cộng dồn)."
     },
     "unending_despair": {
       "name": "Áo Choàng Diệt Vong",
-      "option": "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>10<> + <#60e84dff>1%<> <#60e84dff>máu tối đa<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> cho bản thân."
+      "option": "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
     },
     "radiant_unending_despair": {
       "name": "Áo Choàng Diệt Vong Ánh Sáng",
-      "option": "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>25<> + <#60e84dff>3%<> <#60e84dff>máu tối đa<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> cho bản thân."
+      "option": "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>25<> + <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
     },
     "blade_of_the_ruined_king": {
       "name": "Gươm Suy Vong",
@@ -590,11 +590,11 @@
     },
     "blackfire_torch": {
       "name": "Đuốc Lửa Đen",
-      "option": "Tội ác: Kĩ năng trúng sẽ tăng <#a974ffff>10<> <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+      "option": "Tội ác: Kĩ năng trúng sẽ tăng <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
     },
     "radiant_blackfire_torch": {
       "name": "Đuốc Lửa Đen Ánh Sáng",
-      "option": "Tội ác: Kĩ năng trúng sẽ tăng <#a974ffff>30<> <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+      "option": "Tội ác: Kĩ năng trúng sẽ tăng <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
     },
     "executioners_calling": {
       "name": "Gươm Đồ Tể",
@@ -610,35 +610,35 @@
     },
     "experimental_hexplate": {
       "name": "Khiên Hextech Thử Nghiệm",
-      "option": "Tăng tốc: Nhận <#4b7cffff>15%<> <#4b7cffff>giảm thời gian hồi chiêu<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> cuối."
+      "option": "Tăng tốc: Nhận <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
     },
     "radiant_experimental_hexplate": {
       "name": "Khiên Hextech Thử Nghiệm Ánh Sáng",
-      "option": "Tăng tốc: Nhận <#4b7cffff>25%<> <#4b7cffff>giảm thời gian hồi chiêu<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> cuối."
+      "option": "Tăng tốc: Nhận <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
     },
     "nashors_tooth": {
       "name": "Nanh Nashor",
-      "option": "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>35<> + <#a974ffff>3%<> <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>."
+      "option": "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
     },
     "radiant_nashors_tooth": {
       "name": "Nanh Nashor Ánh Sáng",
-      "option": "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>50<> + <#a974ffff>5%<> <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>."
+      "option": "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
     },
     "jaksho_the_protean": {
       "name": "Jak'sho Vỏ Bọc Thích Nghi",
-      "option": "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>6% giáp<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> và <#88ccffff>6% kháng phép<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+      "option": "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> và <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
     },
     "radiant_jaksho_the_protean": {
       "name": "Jak'sho Vỏ Bọc Thích Nghi Ánh Sáng",
-      "option": "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>10% giáp<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> và <#88ccffff>10% kháng phép<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+      "option": "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> và <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
     },
     "terminus": {
       "name": "Cung Chạng Vạng",
-      "option": "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>4% xuyên giáp<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> hoặc <#88ccffff>4% xuyên kháng phép<> <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
+      "option": "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
     },
     "radiant_terminus": {
       "name": "Cung Chạng Vạng Ánh Sáng",
-      "option": "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>4% xuyên giáp<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> hoặc <#88ccffff>4% xuyên kháng phép<> <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
+      "option": "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
     },
     "spirit_visage": {
       "name": "Giáp Tâm Linh",
@@ -650,19 +650,19 @@
     },
     "guinsoos_rageblade": {
       "name": "Cuồng Đao Guinsoo",
-      "option": "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>30 sát thương phép thuật<>.\n\nDồn dập: Khi tấn công, nhận <#ceff99ff>8%<> <#ceff99ff>tốc độ đánh<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+      "option": "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>30 sát thương phép thuật<>.\n\nDồn dập: Khi tấn công, nhận <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
     },
     "radiant_guinsoos_rageblade": {
       "name": "Cuồng Đao Guinsoo Ánh Sáng",
-      "option": "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>30 sát thương phép thuật<>.\n\nDồn dập: Khi tấn công, nhận <#ceff99ff>8%<> <#ceff99ff>tốc độ đánh<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+      "option": "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>30 sát thương phép thuật<>.\n\nDồn dập: Khi tấn công, nhận <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
     },
     "mirage_blade": {
       "name": "Kiếm Chích",
-      "option": "Ảo ảnh: Nhận <#d48294ff>60<> <#d48294ff>Lực Thích Ứng<> <i#asset/base/ui/banpick/champion_stat_icon:force_0>. Với mỗi <#d48294ff>Lực Thích Ứng<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> tăng <#ff9028ff>0.6<> <#ff9028ff>SMCK<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> hoặc <#a974ffff>1<> <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>, tùy vào bên nào cao hơn.\n\nMờ ảo: Khi kết liễu tướng địch, nhận <#ffffffff>20%<> <#ffffffff>tốc độ di chuyển<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> trong <#e8a800ff>2 giây<>."
+      "option": "Ảo ảnh: Nhận <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nMờ ảo: Khi kết liễu tướng địch, nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<>."
     },
     "radiant_mirage_blade": {
       "name": "Kiếm Chích Ánh Sáng",
-      "option": "Ảo ảnh: Nhận <#d48294ff>100<> <#d48294ff>Lực Thích Ứng<> <i#asset/base/ui/banpick/champion_stat_icon:force_0>. Với mỗi <#d48294ff>Lực Thích Ứng<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> tăng <#ff9028ff>0.6<> <#ff9028ff>SMCK<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> hoặc <#a974ffff>1<> <#a974ffff>SMPT<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>, tùy vào bên nào cao hơn.\n\nMờ ảo: Khi kết liễu tướng địch, nhận <#ffffffff>20%<> <#ffffffff>tốc độ di chuyển<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> trong <#e8a800ff>2 giây<>."
+      "option": "Ảo ảnh: Nhận <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nMờ ảo: Khi kết liễu tướng địch, nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<>."
     }
   }
 }
