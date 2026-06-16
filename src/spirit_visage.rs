@@ -72,6 +72,9 @@ impl ModItemInfo for SpiritVisage {
     }
 
     fn on_healed(&mut self, ctx: &mut GameCtx, _caster: Option<usize>, entity: usize, heal: usize) {
+        let Some(_entity_ref) = ctx.get_entity(entity) else {
+            return;
+        };
         let bonus_heal = percent_of(heal, self.effect_heal_mult);
         ctx.add_buff(
             entity,
@@ -157,6 +160,9 @@ impl ModItemInfo for RadiantSpiritVisage {
     }
 
     fn on_healed(&mut self, ctx: &mut GameCtx, _caster: Option<usize>, entity: usize, heal: usize) {
+        let Some(_entity_ref) = ctx.get_entity(entity) else {
+            return;
+        };
         let bonus_heal = percent_of(heal, self.effect_heal_mult);
         ctx.add_buff(
             entity,
