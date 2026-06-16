@@ -1,4 +1,4 @@
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+﻿$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $configPath = Join-Path $scriptDir "config.json"
 $i18nPath = Join-Path $scriptDir "text\item.i18n"
 
@@ -91,7 +91,7 @@ $rtPen = if ($null -ne $config.radiant_terminus.effect_pen_per_stack) { [int]$co
 $rtDur = if ($null -ne $config.radiant_terminus.effect_duration_seconds) { [int]$config.radiant_terminus.effect_duration_seconds } else { 4 }
 $rtStacks = if ($null -ne $config.radiant_terminus.effect_max_stacks) { [int]$config.radiant_terminus.effect_max_stacks }         else { 4 }
 
-$i18n = Get-Content $i18nPath -Raw | ConvertFrom-Json
+$i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
 $adIcon = "i#asset/base/ui/banpick/champion_stat_icon:ad_0"
 $armorIcon = "i#asset/base/ui/banpick/champion_stat_icon:armor_0"
@@ -104,6 +104,8 @@ $speedIcon = "i#asset/base/ui/banpick/champion_stat_icon:speed_0"
 $cdrIcon = "i#asset/base/ui/banpick/champion_stat_icon:cdr_0"
 $armorPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0"
 $magicPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0"
+
+Write-Host "Updating English text."
 
 $i18n.en.executioners_calling.option = "Executioner: On attack, <#d94c49ff>reduce healing by ${execHeal}%<> for <#e8a800ff>${execDur} seconds<>."
 $i18n.en.nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
@@ -140,6 +142,45 @@ $i18n.en.protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below 40
 $i18n.en.radiant_protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>${rphDur} seconds<> and <#60e84dff>heals you<> for half that amount (${rphCd} second cooldown)."
 $i18n.en.terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${tPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${tPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${tDur} seconds<>, alternating (max ${tStacks} stacks each)."
 $i18n.en.radiant_terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${rtPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${rtPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${rtDur} seconds<>, alternating (max ${rtStacks} stacks each)."
+
+Write-Host "Done."
+Write-Host "Updating Vietnamese text."
+
+$i18n.vi.executioners_calling.option = "Đao phủ: Khi tấn công, gây <#d94c49ff>${execHeal}% giảm hồi máu<> trong <#e8a800ff>${execDur} giây<>."
+$i18n.vi.nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
+$i18n.vi.radiant_nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
+$i18n.vi.riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rmDur} giây<> (tối đa ${rmStacks} cộng dồn)."
+$i18n.vi.radiant_riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rrmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rrmDur} giây<> (tối đa ${rrmStacks} cộng dồn)."
+$i18n.vi.mortal_reminder.option = "Đao phủ: Khi tấn công, gây <#d94c49ff>${mrHeal}% giảm hồi máu<> trong <#e8a800ff>${mrDur} giây<>."
+$i18n.vi.radiant_mortal_reminder.option = "Đao phủ: Khi tấn công, gây <#d94c49ff>${rmrHeal}% giảm hồi máu<> trong <#e8a800ff>${rmrDur} giây<>."
+$i18n.vi.jaksho_the_protean.option = "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>${jakDefMult}% <$armorIcon> giáp<> và <#88ccffff>${jakMrMult}% <$mrIcon> kháng phép<> trong <#e8a800ff>${jakDur} giây<> (tối đa ${jakStacks} cộng dồn)."
+$i18n.vi.radiant_jaksho_the_protean.option = "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>${rjakDefMult}% <$armorIcon> giáp<> và <#88ccffff>${rjakMrMult}% <$mrIcon> kháng phép<> trong <#e8a800ff>${rjakDur} giây<> (tối đa ${rjakStacks} cộng dồn)."
+$i18n.vi.frozen_mallet.option = "Băng kết: Khi tấn công, gây <#d94c49ff>${fmSlow}% kiệt sức <> trong <#e8a800ff>${fmDur} giây<>."
+$i18n.vi.radiant_frozen_mallet.option = "Băng kết: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân và gây <#d94c49ff>${rfmSlow}% kiệt sức <> trong <#e8a800ff>${rfmDur} giây<>."
+$i18n.vi.experimental_hexplate.option = "Tăng tốc: Nhận <#4b7cffff>${hexUltCdr}%<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+$i18n.vi.radiant_experimental_hexplate.option = "Tăng tốc: Nhận <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+$i18n.vi.guinsoos_rageblade.option = "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>${gbDmg} sát thương phép thuật<>.`n`nDồn dập: Khi tấn công, nhận <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${gbDur} giây<> (tối đa ${gbStacks} cộng dồn)."
+$i18n.vi.radiant_guinsoos_rageblade.option = "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>${rgbDmg} sát thương phép thuật<>.`n`nDồn dập: Khi tấn công, nhận <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${rgbDur} giây<> (tối đa ${rgbStacks} cộng dồn)."
+$i18n.vi.blackfire_torch.option = "Tội ác: Kĩ năng trúng sẽ tăng <#a974ffff>${bftPower}<> <$apIcon> <#a974ffff>SMPT<> trong <#e8a800ff>${bftDur} giây<> (tối đa ${bftStacks} cộng dồn)."
+$i18n.vi.radiant_blackfire_torch.option = "Tội ác: Kĩ năng trúng sẽ tăng <#a974ffff>${rbftPower}<> <$apIcon> <#a974ffff>SMPT<> trong <#e8a800ff>${rbftDur} giây<> (tối đa ${rbftStacks} cộng dồn)."
+$i18n.vi.blade_of_the_ruined_king.option = "Nanh vuốt sương mù: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>${borkPct}% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>${borkCap} sát thương vật lí<> lên lính và quái vật."
+$i18n.vi.radiant_blade_of_the_ruined_king.option = "Nanh vuốt sương mù: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>${rborkPct}% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>${rborkCap} sát thương vật lí<> lên lính và quái vật."
+$i18n.vi.deathblade.option = "Cường hóa: Tăng <$adIcon> <#ff9028ff>SMCK<> của bản thân thêm <#ff9028ff>${dbMult}%<>."
+$i18n.vi.radiant_deathblade.option = "Cường hóa: Tăng <$adIcon> <#ff9028ff>SMCK<> của bản thân thêm <#ff9028ff>${rdbMult}%<>."
+$i18n.vi.rabadons_deathcap.option = "Hạt nhân: Tăng <$apIcon> <#a974ffff>SMPT<> của bản thân thêm <#a974ffff>${rabMult}%<>."
+$i18n.vi.radiant_rabadons_deathcap.option = "Hạt nhân: Tăng <$apIcon> <#a974ffff>SMPT<> của bản thân thêm <#a974ffff>${radRabMult}%<>."
+
+$mbIllusionVi = "Ảo ảnh: Nhận <#d48294ff>{0}<> <$forceIcon> <#d48294ff>Lực Thích Ứng<>. Với mỗi <$forceIcon> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <$apIcon> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.`n`nMờ ảo: Khi kết liễu tướng địch, nhận <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>{2} giây<>."
+$i18n.vi.mirage_blade.option = $mbIllusionVi -f $mbForce, $mbMoveSpeed, $mbDuration
+$i18n.vi.radiant_mirage_blade.option = $mbIllusionVi -f $rmbForce, $rmbMoveSpeed, $rmbDuration
+$i18n.vi.spirit_visage.option = "Sức sống: Tăng khả năng <#60e84dff>nhận hồi máu<> thêm <#60e84dff>${svHeal}%<>."
+$i18n.vi.radiant_spirit_visage.option = "Sức sống: Tăng khả năng <#60e84dff>nhận hồi máu<> thêm <#60e84dff>${rsvHeal}%<>."
+$i18n.vi.unending_despair.option = "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>${udFlat}<> + <#60e84dff>${udHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> cho bản thân."
+$i18n.vi.radiant_unending_despair.option = "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>${rudFlat}<> + <#60e84dff>${rudHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> cho bản thân."
+$i18n.vi.protoplasm_harness.option = "Vững chãi: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>${phFlat}<> + <#60e84dff>${phHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>${phDur} giây<> và <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong ${phCd} giây.)."
+$i18n.vi.radiant_protoplasm_harness.option = "Vững chãi: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>${rphDur} giây<> và <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong ${rphCd} giây.)."
+$i18n.vi.terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>${tPen}% <$armorPenIcon> xuyên giáp<> hoặc <#88ccffff>${tPen}% <$magicPenIcon> xuyên kháng phép<> trong <#e8a800ff>${tDur} giây<> (tối đa ${tStacks} cộng dồn cho mỗi loại)."
+$i18n.vi.radiant_terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>${rtPen}% <$armorPenIcon> xuyên giáp<> hoặc <#88ccffff>${rtPen}% <$magicPenIcon> xuyên kháng phép<> trong <#e8a800ff>${rtDur} giây<> (tối đa ${rtStacks} cộng dồn cho mỗi loại)."
 
 [System.IO.File]::WriteAllText($i18nPath, ($i18n | ConvertTo-Json -Depth 10))
 

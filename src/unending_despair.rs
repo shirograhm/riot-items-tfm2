@@ -82,11 +82,11 @@ impl ModItemInfo for UnendingDespair {
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        let Some(entity_ref) = ctx.get_entity(caster) else {
+            return;
+        };
         let heal_amount = self.effect_bonus_flat_heal as usize
-            + ctx
-                .get_entity(caster)
-                .map(|e| percent_of(e.hp().max, self.effect_caster_hp_percent_heal))
-                .unwrap_or(0);
+            + percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_heal);
         ctx.add_buff(
             caster,
             BuffState {
@@ -178,11 +178,11 @@ impl ModItemInfo for RadiantUnendingDespair {
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+        let Some(entity_ref) = ctx.get_entity(caster) else {
+            return;
+        };
         let heal_amount = self.effect_bonus_flat_heal as usize
-            + ctx
-                .get_entity(caster)
-                .map(|e| percent_of(e.hp().max, self.effect_caster_hp_percent_heal))
-                .unwrap_or(0);
+            + percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_heal);
         ctx.add_buff(
             caster,
             BuffState {

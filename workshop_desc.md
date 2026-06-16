@@ -7,7 +7,9 @@ Also adds some custom icons for Armor Penetration, Magic Penetration, Cooldown R
 
 [h1] Important [/h1]
 
-This is an EN only mod. You can use it with other languages, but the names and descriptions of the items will be broken.
+This mod currently supports both English and Vietnamese locales. You can use it with other languages, but the names and descriptions of the items will be broken.
+
+If you would like to provide translations, please, shoot me a message on Discord @shirograhm.
 
 Saves played with this mod enabled will be corrupted if you play the save with this mod disabled. I have had players buy ghost items when this happens.
 
