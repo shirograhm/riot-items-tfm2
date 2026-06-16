@@ -88,7 +88,7 @@ impl ModItemInfo for MortalReminder {
             return;
         };
         let already_reduced = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mortal_reminder_heal_cut");
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "40_percent_heal_cut");
         if !already_reduced {
             ctx.add_buff(
                 target,
@@ -97,7 +97,7 @@ impl ModItemInfo for MortalReminder {
                         tick: self.effect_duration_seconds * 60,
                     },
                     heal_reduce: self.effect_heal_reduce,
-                    name: ArrayString::try_from("mortal_reminder_heal_cut").unwrap(),
+                    name: ArrayString::try_from("40_percent_heal_cut").unwrap(),
                     ..Default::default()
                 },
             );
@@ -198,7 +198,7 @@ impl ModItemInfo for RadiantMortalReminder {
             return;
         };
         let already_reduced = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_mortal_reminder_heal_cut");
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "40_percent_heal_cut");
         if !already_reduced {
             ctx.add_buff(
                 target,
@@ -207,7 +207,7 @@ impl ModItemInfo for RadiantMortalReminder {
                         tick: self.effect_duration_seconds * 60,
                     },
                     heal_reduce: self.effect_heal_reduce,
-                    name: ArrayString::try_from("radiant_mortal_reminder_heal_cut").unwrap(),
+                    name: ArrayString::try_from("40_percent_heal_cut").unwrap(),
                     ..Default::default()
                 },
             );
