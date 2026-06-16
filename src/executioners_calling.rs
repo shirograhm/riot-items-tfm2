@@ -1,5 +1,7 @@
-use crate::config::ItemConfig;
+use arrayvec::ArrayString;
 use mod_api::*;
+
+use crate::config::ItemConfig;
 
 #[derive(Clone, Debug)]
 pub struct ExecutionersCalling {
@@ -78,16 +80,24 @@ impl ModItemInfo for ExecutionersCalling {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        ctx.add_buff(
-            target,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: self.effect_duration_seconds * 60,
+        let Some(entity_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let already_reduced = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "25_percent_heal_cut");
+        if !already_reduced {
+            ctx.add_buff(
+                target,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: self.effect_duration_seconds * 60,
+                    },
+                    heal_reduce: self.effect_heal_reduce,
+                    name: ArrayString::try_from("25_percent_heal_cut").unwrap(),
+                    ..Default::default()
                 },
-                heal_reduce: self.effect_heal_reduce,
-                ..Default::default()
-            },
-        );
+            );
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
