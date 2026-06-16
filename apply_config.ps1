@@ -1,4 +1,4 @@
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+﻿$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $configPath = Join-Path $scriptDir "config.json"
 $i18nPath = Join-Path $scriptDir "text\item.i18n"
 
@@ -91,7 +91,7 @@ $rtPen = if ($null -ne $config.radiant_terminus.effect_pen_per_stack) { [int]$co
 $rtDur = if ($null -ne $config.radiant_terminus.effect_duration_seconds) { [int]$config.radiant_terminus.effect_duration_seconds } else { 4 }
 $rtStacks = if ($null -ne $config.radiant_terminus.effect_max_stacks) { [int]$config.radiant_terminus.effect_max_stacks }         else { 4 }
 
-$i18n = Get-Content $i18nPath -Raw | ConvertFrom-Json
+$i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
 $adIcon = "i#asset/base/ui/banpick/champion_stat_icon:ad_0"
 $armorIcon = "i#asset/base/ui/banpick/champion_stat_icon:armor_0"
