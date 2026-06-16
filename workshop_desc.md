@@ -15,17 +15,25 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 [h3][i] THIS MOD WILL CHANGE THE BALANCE OF YOUR GAME. USE WITH CAUTION. [/i][/h3]
 
+[h1] Known Issues [/h1]
+
+Selecting a specific item category for the AI to buy will cause it to always buy the base game item. [i][b]To get maximum use out of this mod, you'll have to trust your players![/b][/i]  
+
+Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
+
+Some AI champions seem to prefer the wrong stats. Magic Knight tends to buy AD and AS items instead of AP, for example.
+
 [h1] Instructions [/h1]
 
 In order for the AI to realize that these items exist, it is best to add this mod to an existing save instead of creating a new one. Try the following:
 
 1. Subscribe to this modpack in the Steam workshop.
-2. Launch Teamfight Manager 2 and create a new game with the mod still disabled.
+2. Launch Teamfight Manager 2 and create a new game with the mod disabled.
 3. Save and exit back to the main menu, then enable the mod.
 4. Restart the game.
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
-Currently updated for game version >= 0.4.12.
+Currently updated for game version ^0.4.12.
 
 [h1] Custom Item Values [/h1]
 
@@ -41,14 +49,6 @@ However, if any of the modded items feel too strong/weak, this mod supports full
 Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.
 
 Both files should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
-
-[h1] Known Issues [/h1]
-
-Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
-
-Some AI champions seem to prefer the wrong stats. Magic Knight tends to buy AD and AS items instead of AP, for example.
-
-Selecting a specific item category for the AI to buy will cause it to always buy the base game item. To get maximum use out of this mod, you'll have to trust your players!  
 
 [h1] Planned Features [/h1]
 
