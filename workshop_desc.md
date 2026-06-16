@@ -61,6 +61,11 @@ Selecting a specific item category for the AI to buy will cause it to always buy
 
 Check the Item/Feature Requests forum in the mod for the most up-to-date information.
 
+[h2] Credits [/h2]
+
+Thank you to @Formula Piggy and @Yuuroo in the discord for Vietnamese translations!
+Thank you to the discord for their help with the mod-sdk setup, documentation, and general coolness.
+
 [h2] Legalese [/h2]
 
 This is a free fan-made mod. I am not affiliated with Riot Games in any way. Item concepts, names, and effects are all property to Riot Games.
