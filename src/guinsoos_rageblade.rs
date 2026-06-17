@@ -30,7 +30,7 @@ impl Default for GuinsoosRageblade {
             effect_max_stacks: 4,
             effect_duration_seconds: 4,
 
-            has_cooldown: false,
+            has_cooldown: true,
             effect_cooldown_seconds: 1,
         }
     }
@@ -208,7 +208,7 @@ impl Default for RadiantGuinsoosRageblade {
             effect_max_stacks: 4,
             effect_duration_seconds: 4,
 
-            has_cooldown: false,
+            has_cooldown: true,
             effect_cooldown_seconds: 1,
         }
     }

@@ -25,7 +25,7 @@ impl Default for BladeOfTheRuinedKing {
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
 
-            has_cooldown: false,
+            has_cooldown: true,
             effect_cooldown_seconds: 1,
         }
     }
@@ -170,7 +170,7 @@ impl Default for RadiantBladeOfTheRuinedKing {
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
 
-            has_cooldown: false,
+            has_cooldown: true,
             effect_cooldown_seconds: 1,
         }
     }

@@ -25,7 +25,7 @@ impl Default for NashorsTooth {
             effect_bonus_flat_damage: 35,
             effect_ap_percent_damage: 3.0,
 
-            has_cooldown: false,
+            has_cooldown: true,
             effect_cooldown_seconds: 1,
         }
     }
@@ -165,7 +165,7 @@ impl Default for RadiantNashorsTooth {
             effect_bonus_flat_damage: 50,
             effect_ap_percent_damage: 5.0,
 
-            has_cooldown: false,
+            has_cooldown: true,
             effect_cooldown_seconds: 1,
         }
     }
