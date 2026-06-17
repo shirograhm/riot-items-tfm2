@@ -1,3 +1,4 @@
+use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
@@ -10,6 +11,9 @@ pub struct BladeOfTheRuinedKing {
     attack_speed_mult: i32,
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
+
+    has_cooldown: bool,
+    effect_cooldown_seconds: usize,
 }
 
 impl Default for BladeOfTheRuinedKing {
@@ -20,6 +24,9 @@ impl Default for BladeOfTheRuinedKing {
             attack_speed_mult: 25,
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
+
+            has_cooldown: false,
+            effect_cooldown_seconds: 1,
         }
     }
 }
@@ -37,6 +44,11 @@ impl BladeOfTheRuinedKing {
             effect_minion_damage_cap: cfg
                 .effect_minion_damage_cap
                 .unwrap_or(d.effect_minion_damage_cap),
+
+            has_cooldown: cfg.has_cooldown.unwrap_or(d.has_cooldown),
+            effect_cooldown_seconds: cfg
+                .effect_cooldown_seconds
+                .unwrap_or(d.effect_cooldown_seconds),
         }
     }
 }
@@ -89,9 +101,13 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
+        let Some(caster_ref) = ctx.get_entity(caster) else {
+            return;
+        };
         if target_ref.is_tower() {
             return;
         }
+
         let mut bonus_damage = percent_of(
             target_ref.hp().current,
             self.effect_hp_percent_damage as f64,
@@ -99,16 +115,31 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         if !target_ref.is_champion() {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+
+        if self.has_cooldown {
+            let is_cooldown_ticking = (0..caster_ref.buff_count()).any(|i| {
+                caster_ref.buff_at(i).name.as_str() == "blade_of_the_ruined_king_cooldown"
+            });
+            if !is_cooldown_ticking {
+                ctx.add_buff(
+                    target,
+                    BuffState {
+                        duration: BuffType::Time {
+                            tick: self.effect_cooldown_seconds * 60,
+                        },
+                        name: ArrayString::try_from("blade_of_the_ruined_king_cooldown").unwrap(),
+                        ..Default::default()
+                    },
+                );
+                ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+            }
+        } else {
+            ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![
-            ItemTag::AD,
-            ItemTag::AS,
-            ItemTag::Vamp,
-            ItemTag::HpPercentDamage,
-        ]
+        vec![ItemTag::AD, ItemTag::AS, ItemTag::HpPercentDamage]
     }
 
     fn category(&self) -> ItemCategory {
@@ -124,6 +155,9 @@ pub struct RadiantBladeOfTheRuinedKing {
     vamp: i32,
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
+
+    has_cooldown: bool,
+    effect_cooldown_seconds: usize,
 }
 
 impl Default for RadiantBladeOfTheRuinedKing {
@@ -135,6 +169,9 @@ impl Default for RadiantBladeOfTheRuinedKing {
             vamp: 10,
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
+
+            has_cooldown: false,
+            effect_cooldown_seconds: 1,
         }
     }
 }
@@ -153,6 +190,11 @@ impl RadiantBladeOfTheRuinedKing {
             effect_minion_damage_cap: cfg
                 .effect_minion_damage_cap
                 .unwrap_or(d.effect_minion_damage_cap),
+
+            has_cooldown: cfg.has_cooldown.unwrap_or(d.has_cooldown),
+            effect_cooldown_seconds: cfg
+                .effect_cooldown_seconds
+                .unwrap_or(d.effect_cooldown_seconds),
         }
     }
 }
@@ -202,6 +244,9 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
+        let Some(caster_ref) = ctx.get_entity(caster) else {
+            return;
+        };
         if target_ref.is_tower() {
             return;
         }
@@ -212,7 +257,28 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         if !target_ref.is_champion() {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+
+        if self.has_cooldown {
+            let is_cooldown_ticking = (0..caster_ref.buff_count()).any(|i| {
+                caster_ref.buff_at(i).name.as_str() == "radiant_blade_of_the_ruined_king_cooldown"
+            });
+            if !is_cooldown_ticking {
+                ctx.add_buff(
+                    target,
+                    BuffState {
+                        duration: BuffType::Time {
+                            tick: self.effect_cooldown_seconds * 60,
+                        },
+                        name: ArrayString::try_from("radiant_blade_of_the_ruined_king_cooldown")
+                            .unwrap(),
+                        ..Default::default()
+                    },
+                );
+                ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+            }
+        } else {
+            ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {

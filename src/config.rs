@@ -47,6 +47,8 @@ pub struct ItemConfig {
     pub effect_heal_mult: Option<f64>,
     pub effect_bonus_flat_heal: Option<i32>,
     pub effect_caster_hp_percent_heal: Option<f64>,
+
+    pub has_cooldown: Option<bool>,
 }
 
 pub fn load() -> HashMap<String, ItemConfig> {
