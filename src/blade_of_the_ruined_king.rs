@@ -122,7 +122,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
             });
             if !is_cooldown_ticking {
                 ctx.add_buff(
-                    target,
+                    caster,
                     BuffState {
                         duration: BuffType::Time {
                             tick: self.effect_cooldown_seconds * 60,
@@ -250,6 +250,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         if target_ref.is_tower() {
             return;
         }
+
         let mut bonus_damage = percent_of(
             target_ref.hp().current,
             self.effect_hp_percent_damage as f64,
@@ -264,7 +265,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
             });
             if !is_cooldown_ticking {
                 ctx.add_buff(
-                    target,
+                    caster,
                     BuffState {
                         duration: BuffType::Time {
                             tick: self.effect_cooldown_seconds * 60,

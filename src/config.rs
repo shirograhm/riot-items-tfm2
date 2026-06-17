@@ -27,7 +27,7 @@ pub struct ItemConfig {
     pub effect_heal_reduce: Option<usize>,
     pub effect_minion_damage_cap: Option<usize>,
     pub effect_ap_percent_damage: Option<f64>,
-    pub effect_bonus_flat_damage: Option<i32>,
+    pub effect_bonus_flat_damage: Option<usize>,
     pub effect_bonus_magic_damage: Option<i32>,
     pub effect_hp_percent_damage: Option<f64>,
     pub effect_caster_hp_percent_damage: Option<f64>,

@@ -127,7 +127,7 @@ pub struct RadiantFrozenMallet {
     attack: i32,
     effect_slow_amount: i32,
     effect_duration_seconds: usize,
-    effect_bonus_flat_damage: i32,
+    effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
 }
 
@@ -213,15 +213,12 @@ impl ModItemInfo for RadiantFrozenMallet {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_damage = self.effect_bonus_flat_damage as usize
-            + percent_of(
-                caster_ref.hp().max,
-                self.effect_caster_hp_percent_damage as f64,
-            );
-
         if target_ref.is_tower() {
             return;
         }
+
+        let bonus_damage = self.effect_bonus_flat_damage
+            + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_damage);
 
         let already_slowed = (0..target_ref.buff_count())
             .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
