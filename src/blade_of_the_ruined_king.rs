@@ -11,9 +11,7 @@ pub struct BladeOfTheRuinedKing {
     attack_speed_mult: i32,
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
-
-    has_cooldown: bool,
-    effect_cooldown_seconds: usize,
+    on_hit_cooldown_seconds: f64,
 }
 
 impl Default for BladeOfTheRuinedKing {
@@ -24,9 +22,7 @@ impl Default for BladeOfTheRuinedKing {
             attack_speed_mult: 25,
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
-
-            has_cooldown: true,
-            effect_cooldown_seconds: 1,
+            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
@@ -45,10 +41,9 @@ impl BladeOfTheRuinedKing {
                 .effect_minion_damage_cap
                 .unwrap_or(d.effect_minion_damage_cap),
 
-            has_cooldown: cfg.has_cooldown.unwrap_or(d.has_cooldown),
-            effect_cooldown_seconds: cfg
-                .effect_cooldown_seconds
-                .unwrap_or(d.effect_cooldown_seconds),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
@@ -116,7 +111,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
-        if self.has_cooldown {
+        if self.on_hit_cooldown_seconds > 0.0 {
             let is_cooldown_ticking = (0..caster_ref.buff_count()).any(|i| {
                 caster_ref.buff_at(i).name.as_str() == "blade_of_the_ruined_king_cooldown"
             });
@@ -125,7 +120,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: self.effect_cooldown_seconds * 60,
+                            tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                         },
                         name: ArrayString::try_from("blade_of_the_ruined_king_cooldown").unwrap(),
                         ..Default::default()
@@ -155,9 +150,7 @@ pub struct RadiantBladeOfTheRuinedKing {
     vamp: i32,
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
-
-    has_cooldown: bool,
-    effect_cooldown_seconds: usize,
+    on_hit_cooldown_seconds: f64,
 }
 
 impl Default for RadiantBladeOfTheRuinedKing {
@@ -169,9 +162,7 @@ impl Default for RadiantBladeOfTheRuinedKing {
             vamp: 10,
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
-
-            has_cooldown: true,
-            effect_cooldown_seconds: 1,
+            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
@@ -190,11 +181,9 @@ impl RadiantBladeOfTheRuinedKing {
             effect_minion_damage_cap: cfg
                 .effect_minion_damage_cap
                 .unwrap_or(d.effect_minion_damage_cap),
-
-            has_cooldown: cfg.has_cooldown.unwrap_or(d.has_cooldown),
-            effect_cooldown_seconds: cfg
-                .effect_cooldown_seconds
-                .unwrap_or(d.effect_cooldown_seconds),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
@@ -259,7 +248,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
-        if self.has_cooldown {
+        if self.on_hit_cooldown_seconds > 0.0 {
             let is_cooldown_ticking = (0..caster_ref.buff_count()).any(|i| {
                 caster_ref.buff_at(i).name.as_str() == "radiant_blade_of_the_ruined_king_cooldown"
             });
@@ -268,7 +257,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: self.effect_cooldown_seconds * 60,
+                            tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                         },
                         name: ArrayString::try_from("radiant_blade_of_the_ruined_king_cooldown")
                             .unwrap(),

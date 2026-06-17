@@ -129,6 +129,7 @@ pub struct RadiantFrozenMallet {
     effect_duration_seconds: usize,
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
+    on_hit_cooldown_seconds: f64,
 }
 
 impl Default for RadiantFrozenMallet {
@@ -141,6 +142,7 @@ impl Default for RadiantFrozenMallet {
             effect_duration_seconds: 2,
             effect_bonus_flat_damage: 20,
             effect_caster_hp_percent_damage: 3.0,
+            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
@@ -162,6 +164,9 @@ impl RadiantFrozenMallet {
             effect_caster_hp_percent_damage: cfg
                 .effect_caster_hp_percent_damage
                 .unwrap_or(d.effect_caster_hp_percent_damage),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
@@ -217,11 +222,32 @@ impl ModItemInfo for RadiantFrozenMallet {
             return;
         }
 
+        let already_slowed = (0..target_ref.buff_count())
+            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
+
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_damage);
 
-        let already_slowed = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
+        if self.on_hit_cooldown_seconds > 0.0 {
+            let is_cooldown_ticking = (0..caster_ref.buff_count())
+                .any(|i| caster_ref.buff_at(i).name.as_str() == "radiant_frozen_mallet_cooldown");
+            if !is_cooldown_ticking {
+                ctx.add_buff(
+                    caster,
+                    BuffState {
+                        duration: BuffType::Time {
+                            tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+                        },
+                        name: ArrayString::try_from("radiant_frozen_mallet_cooldown").unwrap(),
+                        ..Default::default()
+                    },
+                );
+                ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+            }
+        } else {
+            ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+        }
+
         if !already_slowed {
             ctx.add_buff(
                 target,
@@ -235,8 +261,6 @@ impl ModItemInfo for RadiantFrozenMallet {
                 },
             );
         }
-
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
 
     fn tags(&self) -> Vec<ItemTag> {

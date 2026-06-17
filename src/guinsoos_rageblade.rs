@@ -13,9 +13,7 @@ pub struct GuinsoosRageblade {
     effect_stack_attack_speed_mult: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: usize,
-
-    has_cooldown: bool,
-    effect_cooldown_seconds: usize,
+    on_hit_cooldown_seconds: f64,
 }
 
 impl Default for GuinsoosRageblade {
@@ -29,9 +27,7 @@ impl Default for GuinsoosRageblade {
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
             effect_duration_seconds: 4,
-
-            has_cooldown: true,
-            effect_cooldown_seconds: 1,
+            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
@@ -54,11 +50,9 @@ impl GuinsoosRageblade {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
-
-            has_cooldown: cfg.has_cooldown.unwrap_or(d.has_cooldown),
-            effect_cooldown_seconds: cfg
-                .effect_cooldown_seconds
-                .unwrap_or(d.effect_cooldown_seconds),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
@@ -124,7 +118,7 @@ impl ModItemInfo for GuinsoosRageblade {
             .count();
 
         if !target_ref.is_tower() {
-            if self.has_cooldown {
+            if self.on_hit_cooldown_seconds > 0.0 {
                 let is_cooldown_ticking = (0..caster_ref.buff_count())
                     .any(|i| caster_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_cooldown");
                 if !is_cooldown_ticking {
@@ -132,7 +126,7 @@ impl ModItemInfo for GuinsoosRageblade {
                         caster,
                         BuffState {
                             duration: BuffType::Time {
-                                tick: self.effect_cooldown_seconds * 60,
+                                tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                             },
                             name: ArrayString::try_from("guinsoos_rageblade_cooldown").unwrap(),
                             ..Default::default()
@@ -191,9 +185,7 @@ pub struct RadiantGuinsoosRageblade {
     effect_stack_attack_speed_mult: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: usize,
-
-    has_cooldown: bool,
-    effect_cooldown_seconds: usize,
+    on_hit_cooldown_seconds: f64,
 }
 
 impl Default for RadiantGuinsoosRageblade {
@@ -207,9 +199,7 @@ impl Default for RadiantGuinsoosRageblade {
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
             effect_duration_seconds: 4,
-
-            has_cooldown: true,
-            effect_cooldown_seconds: 1,
+            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
@@ -232,11 +222,9 @@ impl RadiantGuinsoosRageblade {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
-
-            has_cooldown: cfg.has_cooldown.unwrap_or(d.has_cooldown),
-            effect_cooldown_seconds: cfg
-                .effect_cooldown_seconds
-                .unwrap_or(d.effect_cooldown_seconds),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
@@ -295,7 +283,7 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
             .count();
 
         if !target_ref.is_tower() {
-            if self.has_cooldown {
+            if self.on_hit_cooldown_seconds > 0.0 {
                 let is_cooldown_ticking = (0..caster_ref.buff_count()).any(|i| {
                     caster_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_cooldown"
                 });
@@ -304,7 +292,7 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
                         caster,
                         BuffState {
                             duration: BuffType::Time {
-                                tick: self.effect_cooldown_seconds * 60,
+                                tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                             },
                             name: ArrayString::try_from("radiant_guinsoos_rageblade_cooldown")
                                 .unwrap(),
