@@ -1,5 +1,6 @@
 use arrayvec::ArrayString;
 use mod_api::*;
+use std::fmt::Write;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
@@ -40,7 +41,6 @@ impl BladeOfTheRuinedKing {
             effect_minion_damage_cap: cfg
                 .effect_minion_damage_cap
                 .unwrap_or(d.effect_minion_damage_cap),
-
             on_hit_cooldown_seconds: cfg
                 .on_hit_cooldown_seconds
                 .unwrap_or(d.on_hit_cooldown_seconds),
@@ -93,10 +93,10 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let Some(target_ref) = ctx.get_entity(target) else {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let Some(caster_ref) = ctx.get_entity(caster) else {
+        let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
         if target_ref.is_tower() {
@@ -111,10 +111,18 @@ impl ModItemInfo for BladeOfTheRuinedKing {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
+        // CD String per champion
+        let mut cooldown_str = ArrayString::<64>::new();
+        write!(
+            &mut cooldown_str,
+            "blade_of_the_ruined_king_cooldown_{}",
+            target
+        )
+        .unwrap();
+
         if self.on_hit_cooldown_seconds > 0.0 {
-            let is_cooldown_ticking = (0..caster_ref.buff_count()).any(|i| {
-                caster_ref.buff_at(i).name.as_str() == "blade_of_the_ruined_king_cooldown"
-            });
+            let is_cooldown_ticking =
+                (0..caster_ref.buff_count()).any(|i| caster_ref.buff_at(i).name == *cooldown_str);
             if !is_cooldown_ticking {
                 ctx.add_buff(
                     caster,
@@ -122,7 +130,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
                         duration: BuffType::Time {
                             tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                         },
-                        name: ArrayString::try_from("blade_of_the_ruined_king_cooldown").unwrap(),
+                        name: ArrayString::try_from(cooldown_str).unwrap(),
                         ..Default::default()
                     },
                 );
@@ -230,10 +238,10 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let Some(target_ref) = ctx.get_entity(target) else {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let Some(caster_ref) = ctx.get_entity(caster) else {
+        let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
         if target_ref.is_tower() {
@@ -248,10 +256,18 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
+        // CD String per champion
+        let mut cooldown_str = ArrayString::<64>::new();
+        write!(
+            &mut cooldown_str,
+            "radiant_blade_of_the_ruined_king_cooldown_{}",
+            target
+        )
+        .unwrap();
+
         if self.on_hit_cooldown_seconds > 0.0 {
-            let is_cooldown_ticking = (0..caster_ref.buff_count()).any(|i| {
-                caster_ref.buff_at(i).name.as_str() == "radiant_blade_of_the_ruined_king_cooldown"
-            });
+            let is_cooldown_ticking =
+                (0..caster_ref.buff_count()).any(|i| caster_ref.buff_at(i).name == *cooldown_str);
             if !is_cooldown_ticking {
                 ctx.add_buff(
                     caster,
@@ -259,8 +275,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
                         duration: BuffType::Time {
                             tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                         },
-                        name: ArrayString::try_from("radiant_blade_of_the_ruined_king_cooldown")
-                            .unwrap(),
+                        name: ArrayString::try_from(cooldown_str).unwrap(),
                         ..Default::default()
                     },
                 );

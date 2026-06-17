@@ -1,5 +1,6 @@
 use arrayvec::ArrayString;
 use mod_api::*;
+use std::fmt::Write;
 
 use crate::config::ItemConfig;
 
@@ -117,10 +118,14 @@ impl ModItemInfo for GuinsoosRageblade {
             .filter(|&i| caster_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_buff")
             .count();
 
+        // CD String per champion
+        let mut cooldown_str = ArrayString::<64>::new();
+        write!(&mut cooldown_str, "guinsoos_rageblade_cooldown_{}", target).unwrap();
+
         if !target_ref.is_tower() {
             if self.on_hit_cooldown_seconds > 0.0 {
                 let is_cooldown_ticking = (0..caster_ref.buff_count())
-                    .any(|i| caster_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_cooldown");
+                    .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
                 if !is_cooldown_ticking {
                     ctx.add_buff(
                         caster,
@@ -128,7 +133,7 @@ impl ModItemInfo for GuinsoosRageblade {
                             duration: BuffType::Time {
                                 tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                             },
-                            name: ArrayString::try_from("guinsoos_rageblade_cooldown").unwrap(),
+                            name: cooldown_str,
                             ..Default::default()
                         },
                     );

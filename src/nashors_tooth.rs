@@ -1,5 +1,6 @@
 use arrayvec::ArrayString;
 use mod_api::*;
+use std::fmt::Write;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
@@ -40,7 +41,6 @@ impl NashorsTooth {
             effect_ap_percent_damage: cfg
                 .effect_ap_percent_damage
                 .unwrap_or(d.effect_ap_percent_damage),
-
             on_hit_cooldown_seconds: cfg
                 .on_hit_cooldown_seconds
                 .unwrap_or(d.on_hit_cooldown_seconds),
@@ -109,9 +109,13 @@ impl ModItemInfo for NashorsTooth {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
 
+        // CD String per champion
+        let mut cooldown_str = ArrayString::<64>::new();
+        write!(&mut cooldown_str, "nashors_tooth_cooldown_{}", target).unwrap();
+
         if self.on_hit_cooldown_seconds > 0.0 {
             let is_cooldown_ticking = (0..caster_ref.buff_count())
-                .any(|i| caster_ref.buff_at(i).name.as_str() == "nashors_tooth_cooldown");
+                .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
             if !is_cooldown_ticking {
                 ctx.add_buff(
                     caster,
@@ -119,7 +123,7 @@ impl ModItemInfo for NashorsTooth {
                         duration: BuffType::Time {
                             tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                         },
-                        name: ArrayString::try_from("nashors_tooth_cooldown").unwrap(),
+                        name: cooldown_str,
                         ..Default::default()
                     },
                 );
@@ -236,9 +240,18 @@ impl ModItemInfo for RadiantNashorsTooth {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
 
+        // CD String per champion
+        let mut cooldown_str = ArrayString::<64>::new();
+        write!(
+            &mut cooldown_str,
+            "radiant_nashors_tooth_cooldown_{}",
+            target
+        )
+        .unwrap();
+
         if self.on_hit_cooldown_seconds > 0.0 {
             let is_cooldown_ticking = (0..caster_ref.buff_count())
-                .any(|i| caster_ref.buff_at(i).name.as_str() == "radiant_nashors_tooth_cooldown");
+                .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
             if !is_cooldown_ticking {
                 ctx.add_buff(
                     caster,
@@ -246,7 +259,7 @@ impl ModItemInfo for RadiantNashorsTooth {
                         duration: BuffType::Time {
                             tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                         },
-                        name: ArrayString::try_from("radiant_nashors_tooth_cooldown").unwrap(),
+                        name: cooldown_str,
                         ..Default::default()
                     },
                 );
