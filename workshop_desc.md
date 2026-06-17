@@ -21,6 +21,8 @@ Selecting a specific item category for the AI to buy will cause it to always buy
 
 Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
 
+Some item effects are roughly simulated to the best of my ability using the available mod-sdk.
+
 Some AI champions seem to prefer the wrong stats. Magic Knight tends to buy AD and AS items instead of AP, for example.
 
 [h1] Instructions [/h1]
@@ -33,7 +35,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 4. Restart the game.
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
-Currently updated for game version ^0.4.12.
+Currently updated for game version ^0.4.13.
 
 [h1] Custom Item Values [/h1]
 
@@ -64,7 +66,7 @@ Check the Item/Feature Requests forum in the mod for the most up-to-date informa
 [h2] Credits [/h2]
 
 Thank you to @Formula Piggy and @Yuuroo in the discord for Vietnamese translations!
-Thank you to the discord for their help with the mod-sdk setup, documentation, and general coolness.
+Thank you to the people in the discord for their help with the mod-sdk setup, documentation, and general coolness.
 
 [h2] Legalese [/h2]
 
