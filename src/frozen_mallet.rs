@@ -113,7 +113,12 @@ impl ModItemInfo for FrozenMallet {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD, ItemTag::MoveSpeed]
+        vec![
+            ItemTag::HP,
+            ItemTag::AD,
+            ItemTag::MyHpPercentDamage,
+            ItemTag::MoveSpeed,
+        ]
     }
 
     fn category(&self) -> ItemCategory {

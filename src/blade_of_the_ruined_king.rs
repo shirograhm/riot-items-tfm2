@@ -142,7 +142,12 @@ impl ModItemInfo for BladeOfTheRuinedKing {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::HpPercentDamage]
+        vec![
+            ItemTag::AD,
+            ItemTag::AS,
+            ItemTag::Vamp,
+            ItemTag::HpPercentDamage,
+        ]
     }
 
     fn category(&self) -> ItemCategory {
