@@ -22,13 +22,14 @@ pub struct ItemConfig {
     pub skill_cooldown_mult: Option<i32>,
     pub ult_cooldown_mult: Option<i32>,
     pub vamp: Option<i32>,
+
     pub effect_move_speed_mult: Option<i32>,
     pub effect_duration_seconds: Option<usize>,
     pub effect_heal_reduce: Option<usize>,
     pub effect_minion_damage_cap: Option<usize>,
     pub effect_ap_percent_damage: Option<f64>,
-    pub effect_bonus_flat_damage: Option<i32>,
-    pub effect_bonus_magic_damage: Option<i32>,
+    pub effect_bonus_flat_damage: Option<usize>,
+    pub effect_bonus_magic_damage: Option<usize>,
     pub effect_hp_percent_damage: Option<f64>,
     pub effect_caster_hp_percent_damage: Option<f64>,
     pub effect_caster_hp_percent_power: Option<f64>,
@@ -47,6 +48,8 @@ pub struct ItemConfig {
     pub effect_heal_mult: Option<f64>,
     pub effect_bonus_flat_heal: Option<i32>,
     pub effect_caster_hp_percent_heal: Option<f64>,
+
+    pub on_hit_cooldown_seconds: Option<f64>,
 }
 
 pub fn load() -> HashMap<String, ItemConfig> {

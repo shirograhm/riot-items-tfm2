@@ -1,4 +1,6 @@
+use arrayvec::ArrayString;
 use mod_api::*;
+use std::fmt::Write;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
@@ -8,8 +10,9 @@ pub struct NashorsTooth {
     price: usize,
     magic_power: i32,
     attack_speed_mult: i32,
-    effect_bonus_flat_damage: i32,
+    effect_bonus_flat_damage: usize,
     effect_ap_percent_damage: f64,
+    on_hit_cooldown_seconds: f64,
 }
 
 impl Default for NashorsTooth {
@@ -20,6 +23,7 @@ impl Default for NashorsTooth {
             attack_speed_mult: 25,
             effect_bonus_flat_damage: 35,
             effect_ap_percent_damage: 3.0,
+            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
@@ -37,6 +41,9 @@ impl NashorsTooth {
             effect_ap_percent_damage: cfg
                 .effect_ap_percent_damage
                 .unwrap_or(d.effect_ap_percent_damage),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
@@ -98,9 +105,33 @@ impl ModItemInfo for NashorsTooth {
         if target_ref.is_tower() {
             return;
         }
-        let bonus_damage = self.effect_bonus_flat_damage as usize
+
+        let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+
+        // CD String per champion
+        let mut cooldown_str = ArrayString::<64>::new();
+        write!(&mut cooldown_str, "nashors_tooth_cooldown_{}", target).unwrap();
+
+        if self.on_hit_cooldown_seconds > 0.0 {
+            let is_cooldown_ticking = (0..caster_ref.buff_count())
+                .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
+            if !is_cooldown_ticking {
+                ctx.add_buff(
+                    caster,
+                    BuffState {
+                        duration: BuffType::Time {
+                            tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+                        },
+                        name: cooldown_str,
+                        ..Default::default()
+                    },
+                );
+                ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+            }
+        } else {
+            ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -117,8 +148,9 @@ pub struct RadiantNashorsTooth {
     price: usize,
     magic_power: i32,
     attack_speed_mult: i32,
-    effect_bonus_flat_damage: i32,
+    effect_bonus_flat_damage: usize,
     effect_ap_percent_damage: f64,
+    on_hit_cooldown_seconds: f64,
 }
 
 impl Default for RadiantNashorsTooth {
@@ -129,6 +161,7 @@ impl Default for RadiantNashorsTooth {
             attack_speed_mult: 40,
             effect_bonus_flat_damage: 50,
             effect_ap_percent_damage: 5.0,
+            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
@@ -146,6 +179,9 @@ impl RadiantNashorsTooth {
             effect_ap_percent_damage: cfg
                 .effect_ap_percent_damage
                 .unwrap_or(d.effect_ap_percent_damage),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
@@ -200,9 +236,38 @@ impl ModItemInfo for RadiantNashorsTooth {
         if target_ref.is_tower() {
             return;
         }
-        let bonus_damage = self.effect_bonus_flat_damage as usize
+
+        let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+
+        // CD String per champion
+        let mut cooldown_str = ArrayString::<64>::new();
+        write!(
+            &mut cooldown_str,
+            "radiant_nashors_tooth_cooldown_{}",
+            target
+        )
+        .unwrap();
+
+        if self.on_hit_cooldown_seconds > 0.0 {
+            let is_cooldown_ticking = (0..caster_ref.buff_count())
+                .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
+            if !is_cooldown_ticking {
+                ctx.add_buff(
+                    caster,
+                    BuffState {
+                        duration: BuffType::Time {
+                            tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+                        },
+                        name: cooldown_str,
+                        ..Default::default()
+                    },
+                );
+                ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+            }
+        } else {
+            ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTag> {

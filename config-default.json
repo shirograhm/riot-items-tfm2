@@ -26,7 +26,8 @@
     "attack": 50,
     "attack_speed_mult": 25,
     "effect_hp_percent_damage": 5.0,
-    "effect_minion_damage_cap": 50
+    "effect_minion_damage_cap": 50,
+    "on_hit_cooldown_seconds": 0.5
   },
   "experimental_hexplate": {
     "price": 1200,
@@ -54,7 +55,8 @@
     "effect_bonus_magic_damage": 30,
     "effect_stack_attack_speed_mult": 8,
     "effect_max_stacks": 4,
-    "effect_duration_seconds": 4
+    "effect_duration_seconds": 4,
+    "on_hit_cooldown_seconds": 0.5
   },
   "infinity_edge": {
     "price": 1300,
@@ -84,7 +86,8 @@
     "magic_power": 115,
     "attack_speed_mult": 25,
     "effect_bonus_flat_damage": 35,
-    "effect_ap_percent_damage": 3.0
+    "effect_ap_percent_damage": 3.0,
+    "on_hit_cooldown_seconds": 0.5
   },
   "mortal_reminder": {
     "price": 1400,
@@ -164,7 +167,8 @@
     "attack_speed_mult": 50,
     "vamp": 10,
     "effect_hp_percent_damage": 5.0,
-    "effect_minion_damage_cap": 50
+    "effect_minion_damage_cap": 50,
+    "on_hit_cooldown_seconds": 0.5
   },
   "radiant_frozen_mallet": {
     "price": 1900,
@@ -173,7 +177,8 @@
     "effect_slow_amount": 25,
     "effect_duration_seconds": 2,
     "effect_bonus_flat_damage": 20,
-    "effect_caster_hp_percent_damage": 3.0
+    "effect_caster_hp_percent_damage": 3.0,
+    "on_hit_cooldown_seconds": 0.5
   },
   "radiant_guinsoos_rageblade": {
     "price": 1900,
@@ -183,7 +188,8 @@
     "effect_bonus_magic_damage": 30,
     "effect_stack_attack_speed_mult": 8,
     "effect_max_stacks": 4,
-    "effect_duration_seconds": 4
+    "effect_duration_seconds": 4,
+    "on_hit_cooldown_seconds": 0.5
   },
   "radiant_deathblade": {
     "price": 2000,
@@ -200,7 +206,8 @@
     "magic_power": 180,
     "attack_speed_mult": 40,
     "effect_bonus_flat_damage": 50,
-    "effect_ap_percent_damage": 5.0
+    "effect_ap_percent_damage": 5.0,
+    "on_hit_cooldown_seconds": 0.5
   },
   "radiant_mortal_reminder": {
     "price": 2000,

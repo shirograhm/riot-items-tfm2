@@ -1,5 +1,6 @@
 use arrayvec::ArrayString;
 use mod_api::*;
+use std::fmt::Write;
 
 use crate::config::ItemConfig;
 
@@ -9,10 +10,11 @@ pub struct GuinsoosRageblade {
     attack: i32,
     magic_power: i32,
     attack_speed_mult: i32,
-    effect_bonus_magic_damage: i32,
+    effect_bonus_magic_damage: usize,
     effect_stack_attack_speed_mult: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: usize,
+    on_hit_cooldown_seconds: f64,
 }
 
 impl Default for GuinsoosRageblade {
@@ -26,6 +28,7 @@ impl Default for GuinsoosRageblade {
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
             effect_duration_seconds: 4,
+            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
@@ -48,6 +51,9 @@ impl GuinsoosRageblade {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
@@ -101,25 +107,53 @@ impl ModItemInfo for GuinsoosRageblade {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let Some(entity_ref) = ctx.get_entity(caster) else {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
 
-        let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_buff")
+        let stack_count = (0..caster_ref.buff_count())
+            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_buff")
             .count();
 
+        // CD String per champion
+        let mut cooldown_str = ArrayString::<64>::new();
+        write!(&mut cooldown_str, "guinsoos_rageblade_cooldown_{}", target).unwrap();
+
         if !target_ref.is_tower() {
-            ctx.deal_damage(
-                caster,
-                target,
-                0,
-                self.effect_bonus_magic_damage as usize,
-                AttackType::BaseAttack,
-            );
+            if self.on_hit_cooldown_seconds > 0.0 {
+                let is_cooldown_ticking = (0..caster_ref.buff_count())
+                    .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
+                if !is_cooldown_ticking {
+                    ctx.add_buff(
+                        caster,
+                        BuffState {
+                            duration: BuffType::Time {
+                                tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+                            },
+                            name: cooldown_str,
+                            ..Default::default()
+                        },
+                    );
+                    ctx.deal_damage(
+                        caster,
+                        target,
+                        0,
+                        self.effect_bonus_magic_damage,
+                        AttackType::BaseAttack,
+                    );
+                }
+            } else {
+                ctx.deal_damage(
+                    caster,
+                    target,
+                    0,
+                    self.effect_bonus_magic_damage,
+                    AttackType::BaseAttack,
+                );
+            }
         }
 
         if stack_count < self.effect_max_stacks {
@@ -152,10 +186,11 @@ pub struct RadiantGuinsoosRageblade {
     attack: i32,
     magic_power: i32,
     attack_speed_mult: i32,
-    effect_bonus_magic_damage: i32,
+    effect_bonus_magic_damage: usize,
     effect_stack_attack_speed_mult: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: usize,
+    on_hit_cooldown_seconds: f64,
 }
 
 impl Default for RadiantGuinsoosRageblade {
@@ -169,6 +204,7 @@ impl Default for RadiantGuinsoosRageblade {
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
             effect_duration_seconds: 4,
+            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
@@ -191,6 +227,9 @@ impl RadiantGuinsoosRageblade {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
@@ -237,27 +276,51 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
         _damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let Some(entity_ref) = ctx.get_entity(caster) else {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
 
-        let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| {
-                entity_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff"
-            })
+        let stack_count = (0..caster_ref.buff_count())
+            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff")
             .count();
 
         if !target_ref.is_tower() {
-            ctx.deal_damage(
-                caster,
-                target,
-                0,
-                self.effect_bonus_magic_damage as usize,
-                AttackType::BaseAttack,
-            );
+            if self.on_hit_cooldown_seconds > 0.0 {
+                let is_cooldown_ticking = (0..caster_ref.buff_count()).any(|i| {
+                    caster_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_cooldown"
+                });
+                if !is_cooldown_ticking {
+                    ctx.add_buff(
+                        caster,
+                        BuffState {
+                            duration: BuffType::Time {
+                                tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+                            },
+                            name: ArrayString::try_from("radiant_guinsoos_rageblade_cooldown")
+                                .unwrap(),
+                            ..Default::default()
+                        },
+                    );
+                    ctx.deal_damage(
+                        caster,
+                        target,
+                        0,
+                        self.effect_bonus_magic_damage,
+                        AttackType::BaseAttack,
+                    );
+                }
+            } else {
+                ctx.deal_damage(
+                    caster,
+                    target,
+                    0,
+                    self.effect_bonus_magic_damage,
+                    AttackType::BaseAttack,
+                );
+            }
         }
 
         if stack_count < self.effect_max_stacks {
