@@ -92,6 +92,8 @@ $tStacks = if ($null -ne $config.terminus.effect_max_stacks) { [int]$config.term
 $rtPen = if ($null -ne $config.radiant_terminus.effect_pen_per_stack) { [int]$config.radiant_terminus.effect_pen_per_stack }      else { 4 }
 $rtDur = if ($null -ne $config.radiant_terminus.effect_duration_seconds) { [int]$config.radiant_terminus.effect_duration_seconds } else { 4 }
 $rtStacks = if ($null -ne $config.radiant_terminus.effect_max_stacks) { [int]$config.radiant_terminus.effect_max_stacks }         else { 4 }
+$colThreshold = if ($null -ne $config.collector.effect_hp_percent_threshold) { [double]$config.collector.effect_hp_percent_threshold }                  else { 5.0 }
+$rcolThreshold = if ($null -ne $config.radiant_collector.effect_hp_percent_threshold) { [double]$config.radiant_collector.effect_hp_percent_threshold } else { 5.0 }
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -144,6 +146,8 @@ $i18n.en.protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${
 $i18n.en.radiant_protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${rphThreshold}% health<> grants <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>${rphDur} seconds<> and <#60e84dff>heals you<> for half that amount (${rphCd} second cooldown)."
 $i18n.en.terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${tPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${tPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${tDur} seconds<>, alternating (max ${tStacks} stacks each)."
 $i18n.en.radiant_terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${rtPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${rtPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${rtDur} seconds<>, alternating (max ${rtStacks} stacks each)."
+$i18n.en.collector.option = "Death: Dealing damage to enemies below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+$i18n.en.radiant_collector.option = "Death: Dealing damage to enemies below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -220,3 +224,5 @@ Write-Host "  Protoplasm Harness:         ${phThreshold} max HP Threshold / ${ph
 Write-Host "  Radiant Protoplasm Harness: ${rphThreshold} max HP Threshold / ${rphFlat} + ${rphHpPct}% max HP / ${rphDur}s / ${rphCd}s cooldown"
 Write-Host "  Terminus:               ${tPen}% pen/stack / ${tDur}s / ${tStacks} stacks"
 Write-Host "  Radiant Terminus:       ${rtPen}% pen/stack / ${rtDur}s / ${rtStacks} stacks"
+Write-Host "  Collector:              executes below ${colThreshold}% HP"
+Write-Host "  Radiant Collector:      executes below ${rcolThreshold}% HP"

@@ -29,6 +29,13 @@
     "effect_minion_damage_cap": 50,
     "on_hit_cooldown_seconds": 0.5
   },
+  "collector": {
+    "price": 1400,
+    "attack": 55,
+    "crit_chance": 20,
+    "defence_penetration": 10,
+    "effect_hp_percent_threshold": 8.0
+  },
   "experimental_hexplate": {
     "price": 1200,
     "hp": 350,
@@ -213,8 +220,16 @@
     "price": 2000,
     "attack": 70,
     "defence_penetration": 30,
+    "crit_chance": 0,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
+  },
+  "radiant_collector": {
+    "price": 2000,
+    "attack": 105,
+    "crit_chance": 25,
+    "defence_penetration": 10,
+    "effect_hp_percent_threshold": 8.0
   },
   "radiant_jaksho_the_protean": {
     "price": 2000,
