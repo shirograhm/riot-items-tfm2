@@ -146,8 +146,8 @@ $i18n.en.protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${
 $i18n.en.radiant_protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${rphThreshold}% health<> grants <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>${rphDur} seconds<> and <#60e84dff>heals you<> for half that amount (${rphCd} second cooldown)."
 $i18n.en.terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${tPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${tPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${tDur} seconds<>, alternating (max ${tStacks} stacks each)."
 $i18n.en.radiant_terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${rtPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${rtPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${rtDur} seconds<>, alternating (max ${rtStacks} stacks each)."
-$i18n.en.collector.option = "Taxes: Dealing damage to enemies below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
-$i18n.en.radiant_collector.option = "Taxes: Dealing damage to enemies below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+$i18n.en.collector.option = "Death: Dealing damage to enemies below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+$i18n.en.radiant_collector.option = "Death: Dealing damage to enemies below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."

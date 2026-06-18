@@ -19,7 +19,7 @@ impl Default for Collector {
             attack: 55,
             crit_chance: 20,
             defence_penetration: 10,
-            effect_hp_percent_threshold: 10.0,
+            effect_hp_percent_threshold: 8.0,
         }
     }
 }
@@ -124,7 +124,7 @@ impl Default for RadiantCollector {
             attack: 105,
             crit_chance: 25,
             defence_penetration: 10,
-            effect_hp_percent_threshold: 10.0,
+            effect_hp_percent_threshold: 8.0,
         }
     }
 }
