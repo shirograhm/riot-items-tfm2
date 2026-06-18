@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
-Re-skins the 30 existing items and also adds 39 new items (18 new item lines) to the game.  
+Re-skins the 30 existing items and also adds 41 new items (19 new item lines) to the game.  
 
 Also adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
