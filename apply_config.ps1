@@ -92,8 +92,8 @@ $tStacks = if ($null -ne $config.terminus.effect_max_stacks) { [int]$config.term
 $rtPen = if ($null -ne $config.radiant_terminus.effect_pen_per_stack) { [int]$config.radiant_terminus.effect_pen_per_stack }      else { 4 }
 $rtDur = if ($null -ne $config.radiant_terminus.effect_duration_seconds) { [int]$config.radiant_terminus.effect_duration_seconds } else { 4 }
 $rtStacks = if ($null -ne $config.radiant_terminus.effect_max_stacks) { [int]$config.radiant_terminus.effect_max_stacks }         else { 4 }
-$colThreshold = if ($null -ne $config.collector.effect_hp_percent_threshold) { [double]$config.collector.effect_hp_percent_threshold }                  else { 5.0 }
-$rcolThreshold = if ($null -ne $config.radiant_collector.effect_hp_percent_threshold) { [double]$config.radiant_collector.effect_hp_percent_threshold } else { 5.0 }
+$colThreshold = if ($null -ne $config.collector.effect_hp_percent_threshold) { [double]$config.collector.effect_hp_percent_threshold }                  else { 8.0 }
+$rcolThreshold = if ($null -ne $config.radiant_collector.effect_hp_percent_threshold) { [double]$config.radiant_collector.effect_hp_percent_threshold } else { 8.0 }
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
