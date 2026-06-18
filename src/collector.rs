@@ -19,7 +19,7 @@ impl Default for Collector {
             attack: 55,
             crit_chance: 20,
             defence_penetration: 10,
-            effect_hp_percent_threshold: 5.0,
+            effect_hp_percent_threshold: 10.0,
         }
     }
 }
@@ -100,7 +100,11 @@ impl ModItemInfo for Collector {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::DefensePenetration]
+        vec![
+            ItemTag::AD,
+            ItemTag::DefensePenetration,
+            ItemTag::HpPercentDamage,
+        ]
     }
 
     fn category(&self) -> ItemCategory {
@@ -124,7 +128,7 @@ impl Default for RadiantCollector {
             attack: 105,
             crit_chance: 25,
             defence_penetration: 10,
-            effect_hp_percent_threshold: 5.0,
+            effect_hp_percent_threshold: 10.0,
         }
     }
 }
@@ -201,7 +205,11 @@ impl ModItemInfo for RadiantCollector {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::DefensePenetration]
+        vec![
+            ItemTag::AD,
+            ItemTag::DefensePenetration,
+            ItemTag::HpPercentDamage,
+        ]
     }
 
     fn category(&self) -> ItemCategory {

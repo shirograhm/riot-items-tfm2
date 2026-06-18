@@ -333,11 +333,11 @@
     },
     "collector": {
       "name": "Collector",
-      "option": "Taxes: Dealing damage to enemies below <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+      "option": "Taxes: Dealing damage to enemies below <#60e84dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
     },
     "radiant_collector": {
       "name": "Radiant Collector",
-      "option": "Taxes: Dealing damage to enemies below <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+      "option": "Taxes: Dealing damage to enemies below <#60e84dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
     }
   },
   "vi": {
