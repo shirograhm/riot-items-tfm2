@@ -122,6 +122,7 @@ pub struct RadiantMortalReminder {
     price: usize,
     attack: i32,
     defence_penetration: usize,
+    crit_chance: i32,
     effect_heal_reduce: usize,
     effect_duration_seconds: usize,
 }
@@ -132,6 +133,7 @@ impl Default for RadiantMortalReminder {
             price: 2000,
             attack: 70,
             defence_penetration: 30,
+            crit_chance: 25,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2,
         }
@@ -145,6 +147,7 @@ impl RadiantMortalReminder {
             price: cfg.price.unwrap_or(d.price),
             attack: cfg.attack.unwrap_or(d.attack),
             defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
+            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
             effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
@@ -182,6 +185,7 @@ impl ModItemInfo for RadiantMortalReminder {
         BuffState {
             attack: self.attack,
             defence_penetration: self.defence_penetration,
+            crit_chance: self.crit_chance,
             ..Default::default()
         }
     }
