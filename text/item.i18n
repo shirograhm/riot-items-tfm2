@@ -333,11 +333,11 @@
     },
     "collector": {
       "name": "Collector",
-      "option": "Death: Dealing damage to enemies below <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+      "option": "Death: Dealing damage to enemy champions below <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
     },
     "radiant_collector": {
       "name": "Radiant Collector",
-      "option": "Death: Dealing damage to enemies below <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+      "option": "Death: Dealing damage to enemy champions below <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
     }
   },
   "vi": {
