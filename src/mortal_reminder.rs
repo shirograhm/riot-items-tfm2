@@ -133,7 +133,7 @@ impl Default for RadiantMortalReminder {
             price: 2000,
             attack: 70,
             defence_penetration: 30,
-            crit_chance: 25,
+            crit_chance: 0,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2,
         }

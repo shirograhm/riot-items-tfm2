@@ -82,7 +82,7 @@ impl ModItemInfo for Collector {
         ctx: &mut GameCtx,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
+        damage: &mut usize,
         _damage_type: DamageType,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
@@ -93,18 +93,14 @@ impl ModItemInfo for Collector {
         }
 
         let hp_threshold = percent_of(target_ref.hp().max, self.effect_hp_percent_threshold);
-        if target_ref.hp().current <= hp_threshold {
+        if target_ref.hp().current - *damage <= hp_threshold {
             let lethal_damage = target_ref.hp().current;
             ctx.deal_damage(caster, target, lethal_damage, 0, AttackType::Item);
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![
-            ItemTag::AD,
-            ItemTag::DefensePenetration,
-            ItemTag::HpPercentDamage,
-        ]
+        vec![ItemTag::AD, ItemTag::DefensePenetration]
     }
 
     fn category(&self) -> ItemCategory {
@@ -187,7 +183,7 @@ impl ModItemInfo for RadiantCollector {
         ctx: &mut GameCtx,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
+        damage: &mut usize,
         _damage_type: DamageType,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
@@ -198,18 +194,14 @@ impl ModItemInfo for RadiantCollector {
         }
 
         let hp_threshold = percent_of(target_ref.hp().max, self.effect_hp_percent_threshold);
-        if target_ref.hp().current <= hp_threshold {
+        if target_ref.hp().current - *damage <= hp_threshold {
             let lethal_damage = target_ref.hp().current;
             ctx.deal_damage(caster, target, lethal_damage, 0, AttackType::Item);
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![
-            ItemTag::AD,
-            ItemTag::DefensePenetration,
-            ItemTag::HpPercentDamage,
-        ]
+        vec![ItemTag::AD, ItemTag::DefensePenetration]
     }
 
     fn category(&self) -> ItemCategory {
