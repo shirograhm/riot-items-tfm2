@@ -671,6 +671,14 @@
     "radiant_mirage_blade": {
       "name": "Kiếm Chích Ánh Sáng",
       "option": "Ảo ảnh: Nhận <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nMờ ảo: Khi kết liễu tướng địch, nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<>."
+    },
+    "collector": {
+      "name": "Súng Hải Tặc",
+      "option": "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
+    },
+    "radiant_collector": {
+      "name": "Súng Hải Tặc Ánh Sáng",
+      "option": "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
     }
   }
 }
