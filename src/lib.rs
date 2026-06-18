@@ -3,6 +3,7 @@ use mod_api::*;
 mod bf_sword;
 mod blackfire_torch;
 mod blade_of_the_ruined_king;
+mod collector;
 mod config;
 mod deathblade;
 mod executioners_calling;
@@ -26,6 +27,7 @@ mod unending_despair;
 use bf_sword::*;
 use blackfire_torch::*;
 use blade_of_the_ruined_king::*;
+use collector::*;
 use deathblade::*;
 use executioners_calling::*;
 use experimental_hexplate::*;
@@ -81,6 +83,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 4
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
+    reg.add_item(configured!("collector" => Collector));
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
@@ -101,6 +104,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 5
     reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
     reg.add_item(configured!("radiant_blade_of_the_ruined_king" => RadiantBladeOfTheRuinedKing));
+    reg.add_item(configured!("radiant_collector" => RadiantCollector));
     reg.add_item(configured!("radiant_deathblade" => RadiantDeathBlade));
     reg.add_item(configured!("radiant_experimental_hexplate" => RadiantExperimentalHexplate));
     reg.add_item(configured!("radiant_frozen_mallet" => RadiantFrozenMallet));
