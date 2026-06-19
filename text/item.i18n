@@ -1021,5 +1021,346 @@
       "name": "光明版收集者",
       "option": "死：对生命值低于 <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
     }
+  },
+  "pt-BR": {
+    "category": {
+      "all": "Tudo",
+      "ad": "Dano de Ataque",
+      "attack_speed": "Velocidade de Ataque",
+      "defense": "Armadura",
+      "magic_resistance": "Resistência Mágica",
+      "magic": "Poder de Habilidade",
+      "hp": "Vida"
+    },
+    "info": {
+      "tier": "Tier",
+      "price": "Preço",
+      "stat": "Status",
+      "option": "Efeito"
+    },
+    "tier_header": {
+      "1": "Tier 1",
+      "2": "Tier 2",
+      "3": "Tier 3",
+      "4": "Tier 4",
+      "5": "Tier 5"
+    },
+    "related": {
+      "sub_items": "Componentes",
+      "upper_items": "Evolui para"
+    },
+    "tier": "Tier {Tier}",
+    "spec": {
+      "attack": "<i#asset/base/ui/banpick/champion_stat_icon:ad_0> {Value} Dano de Ataque",
+      "magic_power": "<i#asset/base/ui/banpick/champion_stat_icon:ap_0> {Value} Poder de Habilidade",
+      "defence": "<i#asset/base/ui/banpick/champion_stat_icon:armor_0> {Value} Armadura",
+      "hp": "<i#asset/base/ui/banpick/champion_stat_icon:hp_0> {Value} Vida",
+      "magic_resistance": "<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> {Value} Resistência Mágica",
+      "vamp": "<i#asset/base/ui/banpick/champion_stat_icon:vamp_0> {Value}% Roubo de Vida",
+      "hp_mult": "\nVitalidade: Aumenta sua Vida Máxima em {Value}%.",
+      "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> {Value}% Velocidade de Movimento",
+      "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> {Value}% Velocidade de Ataque",
+      "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value}% Redução de Tempo de Recarga",
+      "range": "+{Value} Alcance",
+      "defence_mult": "\nSegunda Pele: Aumenta sua Armadura em {Value}%.",
+      "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> {Value}% Penetração de Armadura",
+      "magic_resistance_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> {Value}% Penetração Mágica",
+      "heal_reduce": "+{Value}% Redução de Cura",
+      "shield_break": "\nCeifar: Causar dano destrói {Value}% do escudo.",
+      "attack_enemy_hp_ratio": "+{Value}% da Vida Máxima em Ataques",
+      "skill_enemy_hp_ratio": "+{Value}% da Vida Máxima em Habilidades",
+      "attack_my_hp_ratio": "+{Value}% da sua Vida Máxima em Ataques",
+      "reflect": "+{Value}% Dano Refletido",
+      "dot_amplify": "+{Value}% Amplicação de Dano ao Longo do Tempo",
+      "hp_regen": "+{Value} Regeneração de Vida Máxima",
+      "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Chance de Acerto Crítico",
+      "base_attack_damaged_reduce": "\nBarricada: Reduz o dano sofrido de Ataques em <#e8a800ff>{Value}%<>.",
+      "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Redução de Dano de Habilidades",
+      "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> {Value}% Tenacidade"
+    },
+    "ironsword": {
+      "name": "Espada Longa",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Picareta",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Cetro Vampírico",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Sedenta",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Sedenta Radiante",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Adaga",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Arco Recurvo",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Zelo",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Dançarina Fantasma",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Dançarina Fantasma Radiante",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Couraça de Pano",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Cota de Malha",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Colete Espinhoso",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Armadura de Espinhos",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Armadura de Espinhos Radiante",
+      "option": "Espinhos: Ao ser atingido por um Ataque, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
+    },
+    "mystic_cloak": {
+      "name": "Manto Anula-Magia",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Capa Negatron",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Capuz do Espectro",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Garra do Dragão",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Garra do Dragão Radiante",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Tomo Amplificador",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Varinha Explosiva",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Capítulo Perdido",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Eco de Luden",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Eco de Luden Radiante",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Cristal de Rubi",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Gema Ardente",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Cinto do Gigante",
+      "option": "Coração: Restaura <#60e84dff>{Flat} de Vida<> por segundo."
+    },
+    "hourglass_of_eternity": {
+      "name": "Warmog's Armor",
+      "option": "Coração: Restaura <#60e84dff>{Flat} de Vida<> por segundo."
+    },
+    "giants_horn_shard": {
+      "name": "Radiant Warmog's Armor",
+      "option": "Coração: Restaura <#60e84dff>{RegenFlat} de Vida<> por segundo.\n\nImolar: Causa <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+    },
+    "bf_sword": {
+      "name": "Espada G. p. C.",
+      "option": ""
+    },
+    "infinity_edge": {
+      "name": "Gume do Infinito",
+      "option": ""
+    },
+    "radiant_infinity_edge": {
+      "name": "Gume do Infinito Radiante",
+      "option": ""
+    },
+    "deathblade": {
+      "name": "Lâmina Mortal",
+      "option": "Apex: Aumenta seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> em <#ff9028ff>15%<>."
+    },
+    "radiant_deathblade": {
+      "name": "Lâmina Mortal Radiante",
+      "option": "Apex: Aumenta seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> em <#ff9028ff>25%<>."
+    },
+    "needlessly_large_rod": {
+      "name": "Bastão Desnecessariamente Grande",
+      "option": ""
+    },
+    "rabadons_deathcap": {
+      "name": "Capuz da Morte de Rabadon",
+      "option": "Apogeu: Aumenta o <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> total em <#a974ffff>20%<>."
+    },
+    "radiant_rabadons_deathcap": {
+      "name": "Capuz da Morte de Rabadon Radiante",
+      "option": "Apogeu: Aumenta o <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> total em <#a974ffff>35%<>"
+    },
+    "protectors_vow": {
+      "name": "Juramento do Protetor",
+      "option": ""
+    },
+    "radiant_protectors_vow": {
+      "name": "Juramento do Protetor Radiante",
+      "option": ""
+    },
+    "protoplasm_harness": {
+      "name": "Couraça Protoplásmatica",
+      "option": "Fortificação: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de 40%<> você, recebe <#60e84dff>300<> + <#60e84dff>25%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>6 segundos<>, depois <#60e84dff>cura<> por metade desse valor (30s)."
+    },
+    "radiant_protoplasm_harness": {
+      "name": "Couraça Protoplásmatica Radiante",
+      "option": "Fortificação: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de 40%<> você, recebe <#60e84dff>600<> + <#60e84dff>25%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>6 segundos<>, depois <#60e84dff>cura<> por metade desse valor (30s)."
+    },
+    "frozen_mallet": {
+      "name": "Malho Congelado",
+      "option": "Congelante: Seus ataques aplicam <#d94c49ff>25% de lentidão<> por <#e8a800ff>2 segundos<>."
+    },
+    "radiant_frozen_mallet": {
+      "name": "Malho Congelado Radiante",
+      "option": "Congelante: Seus ataques causam <#ff9028ff>dano físico<> igual a <#ff9028ff>20<> + <#60e84dff>3%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> e aplicam <#d94c49ff>25% de lentidão<> por <#e8a800ff>2 segundos<>."
+    },
+    "riftmaker": {
+      "name": "Criafendas",
+      "option": "Corrupção: Suas mágias te dão <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>5 segundos<> (acumula 3x)."
+    },
+    "radiant_riftmaker": {
+      "name": "Criafendas Radiante",
+      "option": "Corrupção: Suas mágias te dão <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>5 segundos<> (acumula 3x)."
+    },
+    "unending_despair": {
+      "name": "Desespero Eterno",
+      "option": "Angústia: Suas mágias te curam em <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+    },
+    "radiant_unending_despair": {
+      "name": "Desespero Eterno Radiante",
+      "option": "Angústia: Suas mágias te curam em <#60e84dff>25<> + <#60e84dff>3%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+    },
+    "blade_of_the_ruined_king": {
+      "name": "Espada do Rei Destruído",
+      "option": "Gume da Névoa: Ataques causam <#d94c49ff>5% da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
+    },
+    "radiant_blade_of_the_ruined_king": {
+      "name": "Espada do Rei Destruído Radiante",
+      "option": "Gume da Névoa: Ataques causam <#d94c49ff>5% da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
+    },
+    "blackfire_torch": {
+      "name": "Tocha de Chamas Negras",
+      "option": "Nefastidão: Suas mágias te dão <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+    },
+    "radiant_blackfire_torch": {
+      "name": "Tocha de Chamas Negras",
+      "option": "Nefastidão: Suas mágias te dão <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+    },
+    "executioners_calling": {
+      "name": "Chamado do Carrasco",
+      "option": "Executor: Ataques aplicam <#d94c49ff>25% de Redução de Cura<> for <#e8a800ff>2 segundos<>."
+    },
+    "mortal_reminder": {
+      "name": "Lembrete Mortal",
+      "option": "Executor: Ataques aplicam <#d94c49ff>40% de Redução de Cura<> for <#e8a800ff>2 segundos<>."
+    },
+    "radiant_mortal_reminder": {
+      "name": "Lembrete Mortal Radiante",
+      "option": "Executor: Ataques aplicam <#d94c49ff>40% de Redução de Cura<> for <#e8a800ff>2 segundos<>."
+    },
+    "experimental_hexplate": {
+      "name": "Hexoplaca Experimental",
+      "option": "Hexcarregado: Recebe <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+    },
+    "radiant_experimental_hexplate": {
+      "name": "Hexoplaca Experimental Radiante",
+      "option": "Hexcarregado: Recebe <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+    },
+    "nashors_tooth": {
+      "name": "Dente de Nashor",
+      "option": "Mordida Icathiana: Ataques causam <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
+    },
+    "radiant_nashors_tooth": {
+      "name": "Dente de Nashor Radiante",
+      "option": "Mordida Icathiana: Ataques causam <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
+    },
+    "jaksho_the_protean": {
+      "name": "Jak'sho, O Inconstante",
+      "option": "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> de Armadura<> e <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> de Resistência Mágica<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+    },
+    "radiant_jaksho_the_protean": {
+      "name": "Jak'sho, O Inconstante Radiante",
+      "option": "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> de Armadura<> e <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> de Resistência Mágica<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+    },
+    "terminus": {
+      "name": "Terminus",
+      "option": "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
+    },
+    "radiant_terminus": {
+      "name": "Terminus Radiante",
+      "option": "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
+    },
+    "spirit_visage": {
+      "name": "Semblante Espiritual",
+      "option": "Vitalidade: <#60e84dff>Curas recebidas<> são aumentadas em <#60e84dff>20%<>."
+    },
+    "radiant_spirit_visage": {
+      "name": "Semblante Espiritual Radiante",
+      "option": "Vitalidade: <#60e84dff>Curas recebidas<> são aumentadas em <#60e84dff>20%<>."
+    },
+    "guinsoos_rageblade": {
+      "name": "Lâmina da Fúria de Guinsoo",
+      "option": "Ira: Ataques causam <#a974ffff>30 de dano mágico adicional<>.\n\nFervendo: Ataques concedem <#ceff99ff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Veloidade de Ataque<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+    },
+    "radiant_guinsoos_rageblade": {
+      "name": "Lâmina da Fúria de Guinsoo Radiante",
+      "option": "Ira: Ataques causam <#a974ffff>30 de dano mágico adicional<>.\n\nFervendo: Ataques concedem <#ceff99ff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Veloidade de Ataque<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+    },
+    "mirage_blade": {
+      "name": "Espada da Miragem",
+      "option": "Ilusão: Ganha <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nBorrão: Abates concedem <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<>."
+    },
+    "radiant_mirage_blade": {
+      "name": "Espada da Miragem Radiante",
+      "option": "Ilusão: Ganha <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nBorrão: Abates concedem <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<>."
+    },
+    "collector": {
+      "name": "A Coletora",
+      "option": "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+    },
+    "radiant_collector": {
+      "name": "A Coletora Radiante",
+      "option": "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+    }
   }
 }
