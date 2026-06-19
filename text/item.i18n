@@ -1340,11 +1340,11 @@
     },
     "guinsoos_rageblade": {
       "name": "Lâmina da Fúria de Guinsoo",
-      "option": "Ira: Ataques causam <#a974ffff>30 de dano mágico adicional<>.\n\nFervendo: Ataques concedem <#ceff99ff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Veloidade de Ataque<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+      "option": "Ira: Ataques causam <#a974ffff>30 de dano mágico adicional<>.\n\nFervendo: Ataques concedem <#ceff99ff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>4 segundos<> (acumula 4x)."
     },
     "radiant_guinsoos_rageblade": {
       "name": "Lâmina da Fúria de Guinsoo Radiante",
-      "option": "Ira: Ataques causam <#a974ffff>30 de dano mágico adicional<>.\n\nFervendo: Ataques concedem <#ceff99ff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Veloidade de Ataque<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+      "option": "Ira: Ataques causam <#a974ffff>30 de dano mágico adicional<>.\n\nFervendo: Ataques concedem <#ceff99ff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>4 segundos<> (acumula 4x)."
     },
     "mirage_blade": {
       "name": "Espada da Miragem",
@@ -1352,7 +1352,7 @@
     },
     "radiant_mirage_blade": {
       "name": "Espada da Miragem Radiante",
-      "option": "Ilusão: Ganha <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nBorrão: Abates concedem <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<>."
+      "option": "Ilusão: Ganha <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nBorrão: Abates concedem <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<>."
     },
     "collector": {
       "name": "A Coletora",

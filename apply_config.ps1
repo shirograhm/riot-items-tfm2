@@ -231,6 +231,47 @@ $i18n.'zh-hans'.radiant_terminus.option = "交相：普通攻击会交替获得 
 $i18n.'zh-hans'.collector.option = "死：对生命值低于 <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
 $i18n.'zh-hans'.radiant_collector.option = "死：对生命值低于 <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
 
+Write-Host "Done."
+Write-Host "Updating Portuguese (Brazil) text."
+
+$i18n.'pt-BR'.executioners_calling.option = "Executor: Ataques aplicam <#d94c49ff>${execHeal}% de Redução de Cura<> for <#e8a800ff>${execDur} segundos<>."
+$i18n.'pt-BR'.nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
+$i18n.'pt-BR'.radiant_nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
+$i18n.'pt-BR'.riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rmDur} segundos<> (acumula ${rmStacks}x)."
+$i18n.'pt-BR'.radiant_riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rrmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rrmDur} segundos<> (acumula ${rrmStacks}x)."
+$i18n.'pt-BR'.mortal_reminder.option = "Executor: Ataques aplicam <#d94c49ff>${mrHeal}% de Redução de Cura<> for <#e8a800ff>${mrDur} segundos<>."
+$i18n.'pt-BR'.radiant_mortal_reminder.option = "Executor: Ataques aplicam <#d94c49ff>${rmrHeal}% de Redução de Cura<> for <#e8a800ff>${rmrDur} segundos<>."
+$i18n.'pt-BR'.jaksho_the_protean.option = "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>${jakDefMult}% <$armorIcon> de Armadura<> e <#88ccffff>${jakMrMult}% <$mrIcon> de Resistência Mágica<> por <#e8a800ff>${jakDur} segundos<> (acumula ${jakStacks}x)."
+$i18n.'pt-BR'.radiant_jaksho_the_protean.option = "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>${rjakDefMult}% <$armorIcon> de Armadura<> e <#88ccffff>${rjakMrMult}% <$mrIcon> de Resistência Mágica<> por <#e8a800ff>${rjakDur} segundos<> (acumula ${rjakStacks}x)."
+$i18n.'pt-BR'.frozen_mallet.option = "Congelante: Seus ataques aplicam <#d94c49ff>${fmSlow}% de lentidão<> por <#e8a800ff>${fmDur} segundos<>."
+$i18n.'pt-BR'.radiant_frozen_mallet.option = "Congelante: Seus ataques causam <#ff9028ff>dano físico<> igual a <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> e aplicam <#d94c49ff>${rfmSlow}% de lentidão<> por <#e8a800ff>${rfmDur} segundos<>."
+$i18n.'pt-BR'.experimental_hexplate.option = "Hexcarregado: Recebe <#4b7cffff>${hexUltCdr}%<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+$i18n.'pt-BR'.radiant_experimental_hexplate.option = "Hexcarregado: Recebe <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+$i18n.'pt-BR'.guinsoos_rageblade.option = "Ira: Ataques causam <#a974ffff>${gbDmg} de dano mágico adicional<>.`n`nFervendo: Ataques concedem <#ceff99ff>${gbSpeed}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${gbDur} segundos<> (acumula ${gbStacks}x)."
+$i18n.'pt-BR'.radiant_guinsoos_rageblade.option = "Ira: Ataques causam <#a974ffff>${rgbDmg} de dano mágico adicional<>.`n`nFervendo: Ataques concedem <#ceff99ff>${rgbSpeed}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${rgbDur} segundos<> (acumula ${rgbStacks}x)."
+$i18n.'pt-BR'.blackfire_torch.option = "Nefastidão: Suas mágias te dão <#a974ffff>${bftPower}<> <$apIcon> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>${bftDur} segundos<> (acumula ${bftStacks}x)."
+$i18n.'pt-BR'.radiant_blackfire_torch.option = "Nefastidão: Suas mágias te dão <#a974ffff>${rbftPower}<> <$apIcon> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>${rbftDur} segundos<> (acumula ${rbftStacks}x)."
+$i18n.'pt-BR'.blade_of_the_ruined_king.option = "Gume da Névoa: Ataques causam <#d94c49ff>${borkPct}% da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>${borkCap}<> contra tropas e monstros.)"
+$i18n.'pt-BR'.radiant_blade_of_the_ruined_king.option = "Gume da Névoa: Ataques causam <#d94c49ff>${rborkPct}% da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>${rborkCap}<> contra tropas e monstros.)"
+$i18n.'pt-BR'.deathblade.option = "Apex: Aumenta seu <$adIcon> <#ff9028ff>Dano de Ataque<> em <#ff9028ff>${dbMult}%<>."
+$i18n.'pt-BR'.radiant_deathblade.option = "Apex: Aumenta seu <$adIcon> <#ff9028ff>Dano de Ataque<> em <#ff9028ff>${rdbMult}%<>."
+$i18n.'pt-BR'.rabadons_deathcap.option = "Apogeu: Aumenta o <$apIcon> <#a974ffff>Poder de Habilidade<> total em <#a974ffff>${rabMult}%<>."
+$i18n.'pt-BR'.radiant_rabadons_deathcap.option = "Apogeu: Aumenta o <$apIcon> <#a974ffff>Poder de Habilidade<> total em <#a974ffff>${radRabMult}%<>"
+
+$mbIllusionPt = "Ilusão: Ganha <#d48294ff>{0}<> <$forceIcon> de <#d48294ff>Força Adaptativa<>. Cada <$forceIcon> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <$apIcon> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.`n`nBorrão: Abates concedem <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>{2} segundos<>."
+$i18n.'pt-BR'.mirage_blade.option = $mbIllusionPt -f $mbForce, $mbMoveSpeed, $mbDuration
+$i18n.'pt-BR'.radiant_mirage_blade.option = $mbIllusionPt -f $rmbForce, $rmbMoveSpeed, $rmbDuration
+$i18n.'pt-BR'.spirit_visage.option = "Vitalidade: <#60e84dff>Curas recebidas<> são aumentadas em <#60e84dff>${svHeal}%<>."
+$i18n.'pt-BR'.radiant_spirit_visage.option = "Vitalidade: <#60e84dff>Curas recebidas<> são aumentadas em <#60e84dff>${rsvHeal}%<>."
+$i18n.'pt-BR'.unending_despair.option = "Angústia: Suas mágias te curam em <#60e84dff>${udFlat}<> + <#60e84dff>${udHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>."
+$i18n.'pt-BR'.radiant_unending_despair.option = "Angústia: Suas mágias te curam em <#60e84dff>${rudFlat}<> + <#60e84dff>${rudHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>."
+$i18n.'pt-BR'.protoplasm_harness.option = "Fortificação: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de ${phThreshold}%<> você, recebe <#60e84dff>${phFlat}<> + <#60e84dff>${phHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${phDur} segundos<>, depois <#60e84dff>cura<> por metade desse valor (${phCd}s)."
+$i18n.'pt-BR'.radiant_protoplasm_harness.option = "Fortificação: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de ${rphThreshold}%<> você, recebe <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rphDur} segundos<>, depois <#60e84dff>cura<> por metade desse valor (${rphCd}s)."
+$i18n.'pt-BR'.terminus.option = "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>${tPen}% <$armorPenIcon> de Penetração de Armadura<> ou <#88ccffff>${tPen}% <$magicPenIcon> Penetração Mágica<> por <#e8a800ff>${tDur} segundos<>. (acumula ${tStacks}x cada)."
+$i18n.'pt-BR'.radiant_terminus.option = "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>${rtPen}% <$armorPenIcon> de Penetração de Armadura<> ou <#88ccffff>${rtPen}% <$magicPenIcon> Penetração Mágica<> por <#e8a800ff>${rtDur} segundos<>. (acumula ${rtStacks}x cada)."
+$i18n.'pt-BR'.collector.option = "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+$i18n.'pt-BR'.radiant_collector.option = "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
 [System.IO.File]::WriteAllText($i18nPath, $i18nJson)
