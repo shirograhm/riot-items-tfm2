@@ -35,7 +35,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 4. Restart the game.
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
-Currently updated for game version ^0.4.13.
+Currently updated for game version ^0.4.12.
 
 [h1] Custom Item Values [/h1]
 
