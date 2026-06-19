@@ -190,7 +190,50 @@ $i18n.vi.radiant_terminus.option = "Đối lập: Khi tấn công, nhận luân 
 $i18n.vi.collector.option = "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
 $i18n.vi.radiant_collector.option = "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
 
-[System.IO.File]::WriteAllText($i18nPath, ($i18n | ConvertTo-Json -Depth 10))
+Write-Host "Done."
+Write-Host "Updating Chinese (Simplified) text."
+
+$i18n.'zh-hans'.executioners_calling.option = "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低${execHeal}%<>，持续 <#e8a800ff>${execDur}秒<>。"
+$i18n.'zh-hans'.nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${ntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${ntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
+$i18n.'zh-hans'.radiant_nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${rntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${rntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
+$i18n.'zh-hans'.riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rmDur}秒<>（最多叠加${rmStacks}层）。"
+$i18n.'zh-hans'.radiant_riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rrmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rrmDur}秒<>（最多叠加${rrmStacks}层）。"
+$i18n.'zh-hans'.mortal_reminder.option = "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低${mrHeal}%<>，持续 <#e8a800ff>${mrDur}秒<>。"
+$i18n.'zh-hans'.radiant_mortal_reminder.option = "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低${rmrHeal}%<>，持续 <#e8a800ff>${rmrDur}秒<>。"
+$i18n.'zh-hans'.jaksho_the_protean.option = "复原力：受到敌方英雄伤害时，获得 <#ffdd8eff>${jakDefMult}% <$armorIcon> 护甲<>和 <#88ccffff>${jakMrMult}% <$mrIcon> 魔法抗性<>，持续 <#e8a800ff>${jakDur}秒<>（最多叠加${jakStacks}层）。"
+$i18n.'zh-hans'.radiant_jaksho_the_protean.option = "复原力：受到敌方英雄伤害时，获得 <#ffdd8eff>${rjakDefMult}% <$armorIcon> 护甲<>和 <#88ccffff>${rjakMrMult}% <$mrIcon> 魔法抗性<>，持续 <#e8a800ff>${rjakDur}秒<>（最多叠加${rjakStacks}层）。"
+$i18n.'zh-hans'.frozen_mallet.option = "冰寒：普通攻击会施加 <#d94c49ff>${fmSlow}%减速<>，持续 <#e8a800ff>${fmDur}秒<>。"
+$i18n.'zh-hans'.radiant_frozen_mallet.option = "冰寒：普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>${rfmFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rfmHpPct}%<>，并施加 <#d94c49ff>${rfmSlow}%减速<>，持续 <#e8a800ff>${rfmDur}秒<>。"
+$i18n.'zh-hans'.experimental_hexplate.option = "过载：终极技能获得 <#4b7cffff>${hexUltCdr}%<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
+$i18n.'zh-hans'.radiant_experimental_hexplate.option = "过载：终极技能获得 <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
+$i18n.'zh-hans'.guinsoos_rageblade.option = "怨怒：普通攻击造成 <#a974ffff>${gbDmg}点额外魔法伤害<>。`n`n沸腾打击：普通攻击时获得 <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${gbDur}秒<>（最多叠加${gbStacks}层）。"
+$i18n.'zh-hans'.radiant_guinsoos_rageblade.option = "怨怒：普通攻击造成 <#a974ffff>${rgbDmg}点额外魔法伤害<>。`n`n沸腾打击：普通攻击时获得 <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${rgbDur}秒<>（最多叠加${rgbStacks}层）。"
+$i18n.'zh-hans'.blackfire_torch.option = "邪焰：技能命中时获得 <#a974ffff>${bftPower}<> <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${bftDur}秒<>（最多叠加${bftStacks}层）。"
+$i18n.'zh-hans'.radiant_blackfire_torch.option = "邪焰：技能命中时获得 <#a974ffff>${rbftPower}<> <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rbftDur}秒<>（最多叠加${rbftStacks}层）。"
+$i18n.'zh-hans'.blade_of_the_ruined_king.option = "雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值${borkPct}%<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>${borkCap}点物理伤害<>。"
+$i18n.'zh-hans'.radiant_blade_of_the_ruined_king.option = "雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值${rborkPct}%<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>${rborkCap}点物理伤害<>。"
+$i18n.'zh-hans'.deathblade.option = "顶峰：你的总 <$adIcon> <#ff9028ff>攻击力<>提升 <#ff9028ff>${dbMult}%<>。"
+$i18n.'zh-hans'.radiant_deathblade.option = "顶峰：你的总 <$adIcon> <#ff9028ff>攻击力<>提升 <#ff9028ff>${rdbMult}%<>。"
+$i18n.'zh-hans'.rabadons_deathcap.option = "魔法乐章：你的总 <$apIcon> <#a974ffff>法术强度<>提升 <#a974ffff>${rabMult}%<>。"
+$i18n.'zh-hans'.radiant_rabadons_deathcap.option = "魔法乐章：你的总 <$apIcon> <#a974ffff>法术强度<>提升 <#a974ffff>${radRabMult}%<>。"
+
+$mbIllusionZh = "幻象：获得 <#d48294ff>{0}<> <$forceIcon> <#d48294ff>自适应之力<>。每点 <$forceIcon> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <$apIcon> <#a974ffff>法术强度<>。`n`n模糊：击杀时获得 <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>移动速度<>，持续 <#e8a800ff>{2}秒<>。"
+$i18n.'zh-hans'.mirage_blade.option = $mbIllusionZh -f $mbForce, $mbMoveSpeed, $mbDuration
+$i18n.'zh-hans'.radiant_mirage_blade.option = $mbIllusionZh -f $rmbForce, $rmbMoveSpeed, $rmbDuration
+$i18n.'zh-hans'.spirit_visage.option = "无拘活力：受到的所有<#60e84dff>治疗效果<>提升 <#60e84dff>${svHeal}%<>。"
+$i18n.'zh-hans'.radiant_spirit_visage.option = "无拘活力：受到的所有<#60e84dff>治疗效果<>提升 <#60e84dff>${rsvHeal}%<>。"
+$i18n.'zh-hans'.unending_despair.option = "苦楚：技能命中时，回复 <#60e84dff>${udFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${udHpPct}%<> 的生命值。"
+$i18n.'zh-hans'.radiant_unending_despair.option = "苦楚：技能命中时，回复 <#60e84dff>${rudFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rudHpPct}%<> 的生命值。"
+$i18n.'zh-hans'.protoplasm_harness.option = "筑防：<#d94c49ff>生命值降至${phThreshold}%以下<>时，获得 <#60e84dff>${phFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${phHpPct}%<> 作为<#60e84dff>额外生命值<>，持续 <#e8a800ff>${phDur}秒<>，并<#60e84dff>回复<>该数值一半的生命值（冷却时间${phCd}秒）。"
+$i18n.'zh-hans'.radiant_protoplasm_harness.option = "筑防：<#d94c49ff>生命值降至${rphThreshold}%以下<>时，获得 <#60e84dff>${rphFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rphHpPct}%<> 作为<#60e84dff>额外生命值<>，持续 <#e8a800ff>${rphDur}秒<>，并<#60e84dff>回复<>该数值一半的生命值（冷却时间${rphCd}秒）。"
+$i18n.'zh-hans'.terminus.option = "交相：普通攻击会交替获得 <#ffdd8eff>${tPen}% <$armorPenIcon> 穿甲<>或 <#88ccffff>${tPen}% <$magicPenIcon> 法术穿透<>，持续 <#e8a800ff>${tDur}秒<>（每种最多叠加${tStacks}层）。"
+$i18n.'zh-hans'.radiant_terminus.option = "交相：普通攻击会交替获得 <#ffdd8eff>${rtPen}% <$armorPenIcon> 穿甲<>或 <#88ccffff>${rtPen}% <$magicPenIcon> 法术穿透<>，持续 <#e8a800ff>${rtDur}秒<>（每种最多叠加${rtStacks}层）。"
+$i18n.'zh-hans'.collector.option = "死：对生命值低于 <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
+$i18n.'zh-hans'.radiant_collector.option = "死：对生命值低于 <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
+
+$i18nJson = $i18n | ConvertTo-Json -Depth 10
+$i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
+[System.IO.File]::WriteAllText($i18nPath, $i18nJson)
 
 Write-Host "Done."
 Write-Host "  Executioner's Calling:   -${execHeal}% healing / ${execDur}s"
