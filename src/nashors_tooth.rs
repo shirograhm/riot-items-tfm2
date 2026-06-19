@@ -135,7 +135,7 @@ impl ModItemInfo for NashorsTooth {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::AS]
+        vec![ItemTag::AP]
     }
 
     fn category(&self) -> ItemCategory {
@@ -271,7 +271,7 @@ impl ModItemInfo for RadiantNashorsTooth {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::AS]
+        vec![ItemTag::AP]
     }
 
     fn category(&self) -> ItemCategory {
