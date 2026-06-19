@@ -146,12 +146,7 @@ impl ModItemInfo for Terminus {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![
-            ItemTag::AD,
-            ItemTag::AS,
-            ItemTag::DefensePenetration,
-            ItemTag::MRPenetration,
-        ]
+        vec![ItemTag::AD, ItemTag::AS, ItemTag::DefensePenetration]
     }
 
     fn category(&self) -> ItemCategory {
@@ -302,12 +297,7 @@ impl ModItemInfo for RadiantTerminus {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![
-            ItemTag::AD,
-            ItemTag::AS,
-            ItemTag::DefensePenetration,
-            ItemTag::MRPenetration,
-        ]
+        vec![ItemTag::AD, ItemTag::AS, ItemTag::DefensePenetration]
     }
 
     fn category(&self) -> ItemCategory {
