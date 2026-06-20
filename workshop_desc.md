@@ -7,7 +7,7 @@ Also adds some custom icons for Armor Penetration, Magic Penetration, Cooldown R
 
 [h1] Important [/h1]
 
-This mod currently supports both English and Vietnamese locales. You can use it with other languages, but the names and descriptions of the items will be broken.
+This mod currently supports both English, Vietnamese, Portuguese (BR), and Chinese (Simplified) locales. You can use it with other languages, but the names and descriptions of the items will be broken.
 
 If you would like to provide translations, please, shoot me a message on Discord @shirograhm.
 
@@ -65,8 +65,11 @@ Check the Item/Feature Requests forum in the mod for the most up-to-date informa
 
 [h2] Credits [/h2]
 
-Thank you to @Formula Piggy and @Yuuroo in the discord for Vietnamese translations!
-Thank you to the people in the discord for their help with the mod-sdk setup, documentation, and general coolness.
+Thank you to @Formula Piggy and @Yuuroo on discord for Vietnamese translations!
+Thank you to @GeoStelar on discord for the Portuguese (BR) translations!
+Thank you to @Monsoon on discord for the Chinese (Simplified) translations!
+
+Thank you to the people in the modding discord for their help with the mod-sdk setup, documentation, and general coolness.
 
 [h2] Legalese [/h2]
 
