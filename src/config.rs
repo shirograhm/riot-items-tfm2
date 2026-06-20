@@ -44,6 +44,7 @@ pub struct ItemConfig {
     pub effect_bonus_flat_hp: Option<i32>,
     pub effect_hp_percent_boost: Option<f64>,
     pub effect_hp_percent_threshold: Option<f64>,
+    pub effect_bonus_hp_percent_of_damage: Option<f64>,
     pub effect_cooldown_seconds: Option<usize>,
     pub effect_heal_mult: Option<f64>,
     pub effect_bonus_flat_heal: Option<i32>,
