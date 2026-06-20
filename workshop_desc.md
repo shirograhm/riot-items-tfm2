@@ -1,7 +1,6 @@
-Adds items inspired from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
-Re-skins the 30 existing items and also adds 41 new items (19 new item lines) to the game.  
+Adds 41 new items (19 new item lines) inspired from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
 
-Also adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
+Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]This mod supports custom item values! Now you can be Phreak! See the instructions below.[/b]  
 
