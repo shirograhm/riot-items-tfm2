@@ -1,0 +1,22 @@
+{
+  "soldier": [
+    "collector",
+    "infinity_edge",
+    "deathblade"
+  ],
+  "magic_knight": [
+    "nashors_tooth",
+    "riftmaker",
+    "jaksho_the_protean"
+  ],
+  "ogre": [
+    "protoplasm_harness",
+    "frozen_mallet",
+    "spirit_visage"
+  ],
+  "dancer": [
+    "mirage_blade",
+    "guinsoos_rageblade",
+    "blade_of_the_ruined_king"
+  ]
+}

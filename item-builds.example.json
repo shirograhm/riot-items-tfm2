@@ -1,0 +1,22 @@
+{
+  "soldier": [
+    "collector",
+    "infinity_edge",
+    "bloodthirster"
+  ],
+  "magic_knight": [
+    "nashors_tooth",
+    "riftmaker",
+    "jaksho_the_protean"
+  ],
+  "ogre": [
+    "protoplasm_harness",
+    "warmogs_armor",
+    "spirit_visage"
+  ],
+  "": [
+    "protoplasm_harness",
+    "warmogs_armor",
+    "spirit_visage"
+  ]
+}
