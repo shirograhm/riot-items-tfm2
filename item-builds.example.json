@@ -11,12 +11,12 @@
   ],
   "ogre": [
     "protoplasm_harness",
-    "warmogs_armor",
+    "frozen_mallet",
     "spirit_visage"
   ],
-  "": [
-    "protoplasm_harness",
-    "warmogs_armor",
-    "spirit_visage"
+  "dancer": [
+    "mirage_blade",
+    "guinsoos_rageblade",
+    "blade_of_the_ruined_king"
   ]
 }

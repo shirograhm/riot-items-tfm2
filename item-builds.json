@@ -2,7 +2,7 @@
   "soldier": [
     "collector",
     "infinity_edge",
-    "deathblade"
+    "bloodthirster"
   ],
   "magic_knight": [
     "nashors_tooth",
@@ -15,8 +15,8 @@
     "spirit_visage"
   ],
   "dancer": [
-    "mirage_blade",
+    "phantom_dancer",
     "guinsoos_rageblade",
-    "blade_of_the_ruined_king"
+    "mirage_blade"
   ]
 }
