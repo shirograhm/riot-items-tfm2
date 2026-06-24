@@ -23,7 +23,6 @@ extern crate game_core;
 use game_core::{ChampionInfoSheet, ItemInfo, LogisticSGDAgent, Position};
 
 use crate::build_config;
-use crate::report;
 
 const STOLEN_LEN: usize = 19;
 const ABSOLUTE_JUMP_LEN: usize = 12;
@@ -76,8 +75,6 @@ type OriginalFn = unsafe fn(
 static ORIGINAL: OnceLock<OriginalFn> = OnceLock::new();
 static INSTALL_LOCK: Mutex<()> = Mutex::new(());
 static INSTALLED: AtomicBool = AtomicBool::new(false);
-static BUILD_CONFIG_ERROR_REPORTED: AtomicBool = AtomicBool::new(false);
-static LINEUP_MISMATCH_REPORTED: AtomicBool = AtomicBool::new(false);
 
 unsafe fn read_u16(address: *const u8) -> u16 {
     ptr::read_unaligned(address.cast::<u16>())
@@ -211,13 +208,6 @@ unsafe fn patch_target(target: *mut u8) -> Result<Vec<String>, String> {
     Ok(warnings)
 }
 
-fn format_lineup(team: &[(Position, String)]) -> String {
-    team.iter()
-        .map(|(position, champion)| format!("{position:?}:{champion}"))
-        .collect::<Vec<_>>()
-        .join(",")
-}
-
 unsafe fn detour(
     agent: &LogisticSGDAgent,
     items: &Vec<Box<dyn ItemInfo>>,
@@ -232,15 +222,6 @@ unsafe fn detour(
         .copied()
         .expect("item build hook original function missing");
     let mut routes = original(agent, items, champions, champion_ids, team1, team2, mode);
-    let _ = report::record(&format!(
-        "item_build_probe mode={mode} item_count={} champion_id_count={} route_count={} champion_ids=[{}] team1=[{}] team2=[{}]",
-        items.len(),
-        champion_ids.len(),
-        routes.len(),
-        champion_ids.join(","),
-        format_lineup(team1),
-        format_lineup(team2),
-    ));
 
     let item_keys = items
         .iter()
@@ -248,38 +229,22 @@ unsafe fn detour(
         .collect::<Vec<_>>();
 
     // Routes are keyed off the lineup the game builds for (`team1`), in route
-    // order — NOT the 60-entry `champion_ids` roster. The probe confirmed
-    // `route_count` tracks `team1` size, not `champion_id_count`. If that ever
-    // stops holding, the position-by-index mapping below is unsafe, so record
-    // it once for diagnosis.
+    // order — NOT the 60-entry `champion_ids` roster. The position-by-index
+    // mapping below relies on `route_count` tracking `team1` size; verified
+    // in-game.
     let lineup = team1
         .iter()
         .map(|(_, champion)| champion.clone())
         .collect::<Vec<_>>();
-    if routes.len() != lineup.len() && !LINEUP_MISMATCH_REPORTED.swap(true, Ordering::SeqCst) {
-        let _ = report::record(&format!(
-            "item_build_lineup_mismatch route_count={} team1_len={}",
-            routes.len(),
-            lineup.len()
-        ));
-    }
 
     match build_config::load() {
         Ok(Some(config)) if !config.is_empty() => {
-            let applied = build_config::apply(&config, &item_keys, &lineup, &mut routes);
-            let _ = report::record(&format!(
-                "item_build_set routes_set={} unknown_keys=[{}]",
-                applied.routes_set,
-                applied.unknown_keys.join(",")
-            ));
+            build_config::apply(&config, &item_keys, &lineup, &mut routes);
         }
         // No config file, or an empty one: leave the game's routes untouched.
         Ok(_) => {}
-        Err(error) => {
-            if !BUILD_CONFIG_ERROR_REPORTED.swap(true, Ordering::SeqCst) {
-                let _ = report::record(&format!("build_config_refused error={error}"));
-            }
-        }
+        // A malformed config is ignored so the game's routes stay untouched.
+        Err(_) => {}
     }
 
     routes
@@ -302,7 +267,7 @@ pub fn install_hook() -> Result<usize, String> {
         let warnings = patch_target(target)?;
         INSTALLED.store(true, Ordering::SeqCst);
         for warning in warnings {
-            let _ = report::record(&format!("post_patch_warning warning={warning}"));
+            eprintln!("riot_items_tfm2: post_patch_warning warning={warning}");
         }
         Ok(target as usize)
     }

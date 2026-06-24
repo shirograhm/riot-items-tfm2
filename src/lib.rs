@@ -21,7 +21,6 @@ mod needlessly_large_rod;
 mod protectors_vow;
 mod protoplasm_harness;
 mod rabadons_deathcap;
-mod report;
 mod riftmaker;
 mod spirit_visage;
 mod terminus;
@@ -76,13 +75,11 @@ impl ModServerExtension for ItemBuildHookExtension {
         match hook::install_hook() {
             Ok(address) => {
                 let message = format!("hook_installed address=0x{address:x}");
-                let _ = report::record(&message);
                 eprintln!("riot_items_tfm2: {message}");
             }
             Err(error) if error == "hook already installed" => {}
             Err(error) => {
                 let message = format!("hook_refused error={error}");
-                let _ = report::record(&message);
                 eprintln!("riot_items_tfm2: {message}");
             }
         }

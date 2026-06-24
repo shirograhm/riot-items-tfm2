@@ -3,6 +3,7 @@ Adds 41 new items (19 new item lines) inspired from Riot Games (LoL/TFT/Arena) t
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]This mod supports custom item values! Now you can be Phreak! See the instructions below.[/b]  
+[b]This mod also supports custom item builds! See the instructions below.[/b]  
 
 [h1] Important [/h1]
 
@@ -48,6 +49,20 @@ However, if any of the modded items feel too strong/weak, this mod supports full
 3. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!
 
 Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.
+
+Both files should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
+
+[h1] Custom Item Builds [/h1]
+
+This mod allows for the user to override the current in-game Item Strategy Screen to choose any item in the game. To do so:
+
+1. Make a copy of the [b]item-builds-example.json[/b] that ships with this mod. This file contains some examples on how to use the build config (they can be deleted).
+2. Name it [b]item-builds.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
+3. Keep [b]item-builds.json[/b] open while your game is running.
+4. After draft, while on the Item Strategy Screen, edit [b]item-builds.json[/b] with your custom item builds. You can reference [b]item-build-data-reference.txt[/b] for champion and item IDs.
+5. Start the simulated match! Your characters should build based on what was chosen in the JSON file. If they do not, check for typos in the character or item names.
+
+Your item-builds.json is your build path save.
 
 Both files should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
 

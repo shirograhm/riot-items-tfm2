@@ -37,17 +37,6 @@ impl BuildConfig {
     }
 }
 
-/// Outcome of applying a config to a route list, for logging.
-pub struct ApplyReport {
-    /// Total number of route slots overwritten (each one matched a `by_champion`
-    /// entry; routes with no match are left untouched).
-    pub routes_set: usize,
-    /// Resolved item keys (after `radiant_` normalization) that were not present
-    /// in the game's item list (deduplicated). A non-empty list usually means a
-    /// typo or an item this mod/version does not register.
-    pub unknown_keys: Vec<String>,
-}
-
 /// Loads `item-builds.json` from next to the mod DLL.
 ///
 /// Returns `Ok(None)` when the file is absent (the common, non-error case so
@@ -76,64 +65,42 @@ fn config_path() -> Result<PathBuf, String> {
 /// `lineup` is the champion id for each route in route order — the team the game
 /// generates these builds for (`team1`), so `routes[i]` is the build for
 /// `lineup[i]`. This is the lineup, *not* the game's 60-entry `champion_ids`
-/// roster: the `item_build_probe` log shows `route_count` tracks `team1` size,
-/// far smaller than `champion_id_count`.
+/// roster: `route_count` tracks `team1` size, far smaller than
+/// `champion_id_count`.
 ///
 /// Each route slot whose `lineup` champion has a `by_champion` entry is
 /// overwritten with that build; every other slot is left exactly as the game
-/// generated it. Unknown item keys are skipped and reported rather than aborting,
-/// so one typo does not discard the rest of a build. The route count is never
-/// changed.
+/// generated it. Unknown item keys are skipped rather than aborting, so one typo
+/// does not discard the rest of a build. The route count is never changed.
 pub fn apply(
     config: &BuildConfig,
     item_keys: &[String],
     lineup: &[String],
     routes: &mut [Vec<usize>],
-) -> ApplyReport {
+) {
     let index_by_key: HashMap<&str, usize> = item_keys
         .iter()
         .enumerate()
         .map(|(index, key)| (key.as_str(), index))
         .collect();
 
-    let mut unknown = Vec::new();
-    let mut routes_set = 0;
-
     for (index, slot) in routes.iter_mut().enumerate() {
         let champion_build = lineup
             .get(index)
             .and_then(|champion_id| config.by_champion.get(champion_id));
         if let Some(build) = champion_build {
-            *slot = resolve_build(build, &index_by_key, &mut unknown);
-            routes_set += 1;
+            *slot = resolve_build(build, &index_by_key);
         }
-    }
-
-    unknown.sort();
-    unknown.dedup();
-    ApplyReport {
-        routes_set,
-        unknown_keys: unknown,
     }
 }
 
-fn resolve_build(
-    build: &[String],
-    index_by_key: &HashMap<&str, usize>,
-    unknown: &mut Vec<String>,
-) -> Vec<usize> {
+fn resolve_build(build: &[String], index_by_key: &HashMap<&str, usize>) -> Vec<usize> {
     build
         .iter()
         .filter_map(|key| {
             let radiant = radiant_key(key);
             let resolved = alias_key(radiant.as_ref());
-            match index_by_key.get(resolved) {
-                Some(&index) => Some(index),
-                None => {
-                    unknown.push(resolved.to_string());
-                    None
-                }
-            }
+            index_by_key.get(resolved).copied()
         })
         .collect()
 }
