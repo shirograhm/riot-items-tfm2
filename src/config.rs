@@ -65,7 +65,7 @@ pub fn load() -> HashMap<String, ItemConfig> {
 
 // Returns the directory containing this DLL by passing a static address within
 // it to GetModuleHandleExW (FROM_ADDRESS flag), then resolving the full path.
-fn dll_dir() -> Option<PathBuf> {
+pub(crate) fn dll_dir() -> Option<PathBuf> {
     extern "system" {
         fn GetModuleHandleExW(flags: u32, name: *const u16, module: *mut *mut c_void) -> i32;
         fn GetModuleFileNameW(module: *mut c_void, filename: *mut u16, size: u32) -> u32;

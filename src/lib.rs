@@ -3,6 +3,7 @@ use mod_api::*;
 mod bf_sword;
 mod blackfire_torch;
 mod blade_of_the_ruined_king;
+mod build_config;
 mod collector;
 mod config;
 mod deathblade;
@@ -10,6 +11,7 @@ mod executioners_calling;
 mod experimental_hexplate;
 mod frozen_mallet;
 mod guinsoos_rageblade;
+mod hook;
 mod infinity_edge;
 mod jaksho_the_protean;
 mod mirage_blade;
@@ -19,6 +21,7 @@ mod needlessly_large_rod;
 mod protectors_vow;
 mod protoplasm_harness;
 mod rabadons_deathcap;
+mod report;
 mod riftmaker;
 mod spirit_visage;
 mod terminus;
@@ -61,6 +64,29 @@ fn force_to_ap(force: i32) -> i32 {
 
 fn force_to_ad(force: i32) -> i32 {
     (force as f64 * 0.6).round() as i32
+}
+
+// Installs the experimental item-build route hook when the server starts. The
+// hook is fail-closed (see `hook.rs`): on any mismatch it records a refusal and
+// leaves the game function untouched.
+struct ItemBuildHookExtension;
+
+impl ModServerExtension for ItemBuildHookExtension {
+    fn on_server_start(&self, _ctx: &mut ServerModContext<'_>) {
+        match hook::install_hook() {
+            Ok(address) => {
+                let message = format!("hook_installed address=0x{address:x}");
+                let _ = report::record(&message);
+                eprintln!("riot_items_tfm2: {message}");
+            }
+            Err(error) if error == "hook already installed" => {}
+            Err(error) => {
+                let message = format!("hook_refused error={error}");
+                let _ = report::record(&message);
+                eprintln!("riot_items_tfm2: {message}");
+            }
+        }
+    }
 }
 
 fn init(_ctx: &GameCtx) -> ModRegistration {
@@ -121,6 +147,8 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));
     reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
+
+    reg.set_server_extension(ItemBuildHookExtension);
 
     reg
 }
