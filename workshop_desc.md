@@ -17,13 +17,13 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 [h1] Known Issues [/h1]
 
-Selecting a specific item category for the AI to buy will cause it to always buy the base game item. [i][b]To get maximum use out of this mod, you'll have to trust your players![/b][/i]  
+Selecting a specific item category on the Item Selection Screen forces the AI to buy the base game item in that category. See the [b]Custom Item Builds[/b] section below if you want to control the items your players build!
 
-Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects should be working.
+Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects are working.  
 
 Some item effects are roughly simulated to the best of my ability using the available mod-sdk.
 
-Some AI champions seem to prefer the wrong stats. Magic Knight tends to buy AD and AS items instead of AP, for example.
+Some AI champions seem to prefer the wrong stats when given deference of item selection. Magic Knight tends to buy AD and AS items instead of AP, for example.  
 
 [h1] Instructions [/h1]
 
@@ -50,7 +50,7 @@ However, if any of the modded items feel too strong/weak, this mod supports full
 
 Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.
 
-Both files should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
+Both files (config-default & apply_config.bat) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
 
 [h1] Custom Item Builds [/h1]
 
@@ -62,14 +62,12 @@ This mod allows for the user to override the current in-game Item Strategy Scree
 4. After draft, while on the Item Strategy Screen, edit [b]item-builds.json[/b] with your custom item builds. You can reference [b]item-build-data-reference.txt[/b] for champion and item IDs.
 5. Start the simulated match! Your characters should build based on what was chosen in the JSON file. If they do not, check for typos in the character or item names.
 
-Your item-builds.json is your build path save.
-
-Both files should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
+Both files (item-builds-example & item-build-data-reference) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
 
 [h1] Planned Features [/h1]
 
 - Support items (Ardent Censer?) and possibly a 7th item category?
-- Ability for the user to select specific items on each champion in the post-draft screen.
+- Ability for the user to select specific items on each champion in the post-draft screen. [i]Currently works in JSON only.[/i]
 - Make items unique purchases (one per champion) to prevent effects from stacking.
 - Ability to edit values on the 30 base game items, in addition to the current config.json.
 - Translations for other locales.
@@ -82,6 +80,8 @@ Check the Item/Feature Requests forum in the mod for the most up-to-date informa
 Thank you to @Formula Piggy and @Yuuroo on discord for Vietnamese translations!
 Thank you to @GeoStelar on discord for the Portuguese (BR) translations!
 Thank you to @Monsoon on discord for the Chinese (Simplified) translations!
+
+Special thanks to @Monsoon for helping with the custom item builds functionality!
 
 Thank you to the people in the modding discord for their help with the mod-sdk setup, documentation, and general coolness.
 
