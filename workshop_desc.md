@@ -58,18 +58,18 @@ Both files (config-default & apply_config.bat) should be located in the mod's wo
 
 This mod allows for the user to override the current in-game Item Strategy Screen to choose any item in the game. To do so:
 
-1. Make a copy of the [b]item-builds-example.json[/b] that ships with this mod. This file contains some examples on how to use the build config (they can be deleted).
-2. Name it [b]item-builds.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
-3. Keep [b]item-builds.json[/b] open while your game is running.
-4. After draft, while on the Item Strategy Screen, edit [b]item-builds.json[/b] with your custom item builds. You can reference [b]item-build-data-reference.txt[/b] for champion and item IDs.
-5. Start the simulated match! Your characters should build based on what was chosen in the JSON file. If they do not, check for typos in the character or item names.
+1. Navigate to the SteamLibrary workshop folder: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
+2. Run [b]item-build-editor.bat[/b] to open the editor GUI. Keep the [b]Item Build Editor[/b] GUI open while your game is running.
+3. After draft, while on the Item Strategy Screen, add champions to the GUI and set up your builds.
+  a. This also supports modded champions, given you know the champion ID. For Silverbear's mod, use names formatted like [b]"test_mod_vayne"[/b].
+4. Start the simulated match!
 
-Both files (item-builds-example & item-build-data-reference) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
+[b]NOTE: Custom item builds override all matches at the moment. So your build becomes the meta. It is extremely powerful and can affect both simulated games, soloQ, and even the other team's champions in your match. Please use it with caution![/b]
 
 [h1] Planned Features [/h1]
 
 - Support items (Ardent Censer?) and possibly a 7th item category?
-- Ability for the user to select specific items on each champion in the post-draft screen. [i]Currently works in JSON only.[/i]
+- Ability for the user to select specific items on each champion in the post-draft screen. [i]Currently works with a side-loaded GUI.[/i]
 - Make items unique purchases (one per champion) to prevent effects from stacking.
 - Ability to edit values on the 30 base game items, in addition to the current config.json.
 - Translations for other locales.
@@ -93,4 +93,4 @@ This is a free fan-made mod. I am not affiliated with Riot Games in any way. Ite
 
 [Code Mod Notice]
 This Workshop item contains native/executable code files. Enabling it allows code to run inside the game process. Use only mods from creators you trust.
-Files: apply_config.bat, apply_config.ps1, riot_items_tfm2.dll
+Files: apply_config.bat, apply_config.ps1, item-build-editor.bat, item-build-editor.ps1, riot_items_tfm2.dll
