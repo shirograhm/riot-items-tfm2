@@ -18,5 +18,10 @@
     "phantom_dancer",
     "guinsoos_rageblade",
     "mirage_blade"
+  ],
+  "test_mod_gragas": [
+    "ludens_tempest",
+    "frozen_mallet",
+    "rabadons_deathcap"
   ]
 }
