@@ -19,6 +19,8 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 Selecting a specific item category on the Item Selection Screen forces the AI to buy the base game item in that category. See the [b]Custom Item Builds[/b] section below if you want to control the items your players build!
 
+The item build override affects all champions in the match. This means you could control the enemy's items. Currently there is no fix without removing the custom item build behavior completely.  
+
 Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects are working.  
 
 Some item effects are roughly simulated to the best of my ability using the available mod-sdk.
