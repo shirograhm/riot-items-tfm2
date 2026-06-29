@@ -88,7 +88,7 @@ impl ModItemInfo for SpearOfShojin {
     }
 
     fn icon(&self) -> &str {
-        "t10_1"
+        "t10_3"
     }
 
     fn price(&self) -> usize {
@@ -217,7 +217,7 @@ impl ModItemInfo for RadiantSpearOfShojin {
     }
 
     fn icon(&self) -> &str {
-        "t10_2"
+        "t10_4"
     }
 
     fn price(&self) -> usize {
