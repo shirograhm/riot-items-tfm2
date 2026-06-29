@@ -33,6 +33,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
 | **Frozen Mallet** | 1300G | +450 HP<br>+45 AD | On attack, apply a 25% slow for 2 seconds. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
+| **Heartsteel** | 1500G | +500 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 10% of that damage as permanent bonus health. |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | — |
 | **Jak’Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
 | **Mirage Blade** | 1500G | +40% AS<br>+10% MS | Gain 60 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |

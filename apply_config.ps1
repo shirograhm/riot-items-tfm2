@@ -94,6 +94,10 @@ $rtDur = if ($null -ne $config.radiant_terminus.effect_duration_seconds) { [int]
 $rtStacks = if ($null -ne $config.radiant_terminus.effect_max_stacks) { [int]$config.radiant_terminus.effect_max_stacks }         else { 4 }
 $colThreshold = if ($null -ne $config.collector.effect_hp_percent_threshold) { [double]$config.collector.effect_hp_percent_threshold }                  else { 8.0 }
 $rcolThreshold = if ($null -ne $config.radiant_collector.effect_hp_percent_threshold) { [double]$config.radiant_collector.effect_hp_percent_threshold } else { 8.0 }
+$hsFlat = if ($null -ne $config.heartsteel.effect_bonus_flat_damage) { [int]$config.heartsteel.effect_bonus_flat_damage }                              else { 15 }
+$hsHpPct = if ($null -ne $config.heartsteel.effect_caster_hp_percent_damage) { [double]$config.heartsteel.effect_caster_hp_percent_damage }            else { 6.0 }
+$hsBonusHpPct = if ($null -ne $config.heartsteel.effect_bonus_hp_percent_of_damage) { [double]$config.heartsteel.effect_bonus_hp_percent_of_damage }   else { 10.0 }
+$hsCd = if ($null -ne $config.heartsteel.effect_cooldown_seconds) { [int]$config.heartsteel.effect_cooldown_seconds }                                  else { 15 }
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -148,6 +152,7 @@ $i18n.en.terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${t
 $i18n.en.radiant_terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${rtPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${rtPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${rtDur} seconds<>, alternating (max ${rtStacks} stacks each)."
 $i18n.en.collector.option = "Death: Dealing damage to enemy champions below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
 $i18n.en.radiant_collector.option = "Death: Dealing damage to enemy champions below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+$i18n.en.heartsteel.option = "Ironheart: Every <#e8a800ff>${hsCd} seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>, granting <#60e84dff>${hsBonusHpPct}%<> of that damage as permanent <#60e84dff>bonus health<>."
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -189,6 +194,7 @@ $i18n.vi.terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <
 $i18n.vi.radiant_terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>${rtPen}% <$armorPenIcon> xuyên giáp<> hoặc <#88ccffff>${rtPen}% <$magicPenIcon> xuyên kháng phép<> trong <#e8a800ff>${rtDur} giây<> (tối đa ${rtStacks} cộng dồn cho mỗi loại)."
 $i18n.vi.collector.option = "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
 $i18n.vi.radiant_collector.option = "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
+$i18n.vi.heartsteel.option = "Trái Tim Sắt Đá: Mỗi <#e8a800ff>${hsCd} giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>${hsBonusHpPct}%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -230,6 +236,7 @@ $i18n.'zh-hans'.terminus.option = "交相：普通攻击会交替获得 <#ffdd8e
 $i18n.'zh-hans'.radiant_terminus.option = "交相：普通攻击会交替获得 <#ffdd8eff>${rtPen}% <$armorPenIcon> 穿甲<>或 <#88ccffff>${rtPen}% <$magicPenIcon> 法术穿透<>，持续 <#e8a800ff>${rtDur}秒<>（每种最多叠加${rtStacks}层）。"
 $i18n.'zh-hans'.collector.option = "死：对生命值低于 <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
 $i18n.'zh-hans'.radiant_collector.option = "死：对生命值低于 <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
+$i18n.'zh-hans'.heartsteel.option = "铁石心肠：每隔 <#e8a800ff>${hsCd}秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>${hsFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${hsHpPct}%<>，并永久获得该伤害 <#60e84dff>${hsBonusHpPct}%<> 作为 <#60e84dff>额外生命值<>。"
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -271,6 +278,7 @@ $i18n.'pt-BR'.terminus.option = "Justaposição: Ataques alternam para conceder 
 $i18n.'pt-BR'.radiant_terminus.option = "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>${rtPen}% <$armorPenIcon> de Penetração de Armadura<> ou <#88ccffff>${rtPen}% <$magicPenIcon> Penetração Mágica<> por <#e8a800ff>${rtDur} segundos<>. (acumula ${rtStacks}x cada)."
 $i18n.'pt-BR'.collector.option = "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
 $i18n.'pt-BR'.radiant_collector.option = "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+$i18n.'pt-BR'.heartsteel.option = "Coração Forjado: A cada <#e8a800ff>${hsCd} segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>${hsBonusHpPct}%<> desse dano como <#60e84dff>vida bônus<>."
 
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
@@ -312,3 +320,4 @@ Write-Host "  Terminus:               ${tPen}% pen/stack / ${tDur}s / ${tStacks}
 Write-Host "  Radiant Terminus:       ${rtPen}% pen/stack / ${rtDur}s / ${rtStacks} stacks"
 Write-Host "  Collector:              executes below ${colThreshold}% HP"
 Write-Host "  Radiant Collector:      executes below ${rcolThreshold}% HP"
+Write-Host "  Heartsteel:             ${hsFlat} + ${hsHpPct}% max HP dmg / ${hsBonusHpPct}% bonus HP / ${hsCd}s cooldown"
