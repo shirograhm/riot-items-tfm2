@@ -342,6 +342,14 @@
     "heartsteel": {
       "name": "Heartsteel",
       "option": "Ironheart: Every <#e8a800ff>15 seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>10%<> of that damage as permanent <#60e84dff>bonus health<>."
+    },
+    "spear_of_shojin": {
+      "name": "Spear of Shojin",
+      "option": "Focused Will: Landing abilities on enemy champions grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
+    },
+    "radiant_spear_of_shojin": {
+      "name": "Radiant Spear of Shojin",
+      "option": "Focused Will: Landing abilities on enemy champions grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
     }
   },
   "vi": {
@@ -687,6 +695,14 @@
     "heartsteel": {
       "name": "Tâm Thép",
       "option": "Trái Tim Sắt Đá: Mỗi <#e8a800ff>15 giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>10%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
+    },
+    "spear_of_shojin": {
+      "name": "Ngọn Giáo Shojin",
+      "option": "Ý Chí Tập Trung: Kĩ năng trúng tướng địch sẽ tăng <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> trong <#e8a800ff>5 giây<> (tối đa 4 cộng dồn)."
+    },
+    "radiant_spear_of_shojin": {
+      "name": "Ngọn Giáo Shojin Ánh Sáng",
+      "option": "Ý Chí Tập Trung: Kĩ năng trúng tướng địch sẽ tăng <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> trong <#e8a800ff>5 giây<> (tối đa 4 cộng dồn)."
     }
   },
   "zh-hans": {
@@ -1032,6 +1048,14 @@
     "heartsteel": {
       "name": "心之钢",
       "option": "铁石心肠：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>10%<> 作为 <#60e84dff>额外生命值<>。"
+    },
+    "spear_of_shojin": {
+      "name": "朔极之矛",
+      "option": "专注意志：技能命中敌方英雄时获得 <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>，持续 <#e8a800ff>5秒<>（最多叠加4层）。"
+    },
+    "radiant_spear_of_shojin": {
+      "name": "光明版朔极之矛",
+      "option": "专注意志：技能命中敌方英雄时获得 <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>，持续 <#e8a800ff>5秒<>（最多叠加4层）。"
     }
   },
   "pt-BR": {
@@ -1377,6 +1401,14 @@
     "heartsteel": {
       "name": "Coração de Aço",
       "option": "Coração Forjado: A cada <#e8a800ff>15 segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>10%<> desse dano como <#60e84dff>vida bônus<>."
+    },
+    "spear_of_shojin": {
+      "name": "Lança de Shojin",
+      "option": "Vontade Focada: Acertar habilidades em campeões inimigos concede <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>5 segundos<> (acumula 4x)."
+    },
+    "radiant_spear_of_shojin": {
+      "name": "Lança de Shojin Radiante",
+      "option": "Vontade Focada: Acertar habilidades em campeões inimigos concede <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>5 segundos<> (acumula 4x)."
     }
   }
 }
