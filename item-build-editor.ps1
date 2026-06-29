@@ -254,6 +254,28 @@ function Update-Validation {
   else { Set-Status "$($script:RowsPanel.Controls.Count) row(s). Target: $script:TargetPath" }
 }
 
+# Hides rows whose champion doesn't contain the search text. Purely visual:
+# hidden rows are still saved (Get-Builds walks the control collection, not
+# visibility). Matches against both the champion id and its display name, so
+# "magic" or "Magic Knight" both find magic_knight; modded raw ids match too.
+function Update-Filter {
+  $q = ([string]$script:SearchBox.Text).Trim().ToLower()
+  $script:RowsPanel.SuspendLayout()
+  foreach ($row in $script:RowsPanel.Controls) {
+    if (-not $q) { $row.Visible = $true; continue }
+    $id = Get-ChampValue $row
+    $display = if ($id -and $script:ChampToDisplay.ContainsKey($id)) { $script:ChampToDisplay[$id] } else { $id }
+    $row.Visible = ("$id $display").ToLower().Contains($q)
+  }
+  $script:RowsPanel.ResumeLayout()
+  if ($q) {
+    $total = $script:RowsPanel.Controls.Count
+    $shown = @($script:RowsPanel.Controls | Where-Object { $_.Visible }).Count
+    Set-Status "Filter: showing $shown of $total build(s)."
+  }
+  else { Update-Validation }
+}
+
 function Import-Builds($path) {
   $script:RowsPanel.SuspendLayout()
   $script:RowsPanel.Controls.Clear()
@@ -351,6 +373,28 @@ $header.Controls.AddRange(@(
     (New-HeaderLabel 'Item 3' $COL.I3[0] $COL.I3[1])
   ))
 
+# search / filter bar
+$searchBar = New-Object System.Windows.Forms.Panel
+$searchBar.Dock = 'Top'; $searchBar.Height = 46; $searchBar.BackColor = $cPanel2
+
+$searchLabel = New-Object System.Windows.Forms.Label
+$searchLabel.Text = 'Filter by champion:'; $searchLabel.Left = 15; $searchLabel.Top = 14
+$searchLabel.Width = 145; $searchLabel.Height = 22
+$searchLabel.ForeColor = $cMuted; $searchLabel.Font = New-Object System.Drawing.Font('Segoe UI', 10)
+
+$script:SearchBox = New-Object System.Windows.Forms.TextBox
+$script:SearchBox.Left = 165; $script:SearchBox.Top = 9; $script:SearchBox.Width = 320; $script:SearchBox.Height = 28
+$script:SearchBox.BackColor = $cPanel2; $script:SearchBox.ForeColor = $cText; $script:SearchBox.BorderStyle = 'FixedSingle'
+$script:SearchBox.Add_HandleCreated({ [void][Native.Edit]::SendMessage($this.Handle, 0x1501, 1, 'type a champion name to filter...') })
+$script:SearchBox.Add_TextChanged({ Update-Filter })
+
+$btnClear = New-Object System.Windows.Forms.Button
+$btnClear.Text = 'Clear'; $btnClear.Left = 495; $btnClear.Top = 8; $btnClear.Width = 70; $btnClear.Height = 30
+$btnClear.FlatStyle = 'Flat'; $btnClear.BackColor = $cPanel; $btnClear.ForeColor = $cText
+$btnClear.Add_Click({ $script:SearchBox.Text = '' })
+
+$searchBar.Controls.AddRange(@($searchLabel, $script:SearchBox, $btnClear))
+
 # rows (scrollable)
 $script:RowsPanel = New-Object System.Windows.Forms.FlowLayoutPanel
 $script:RowsPanel.Dock = 'Fill'
@@ -361,12 +405,16 @@ $script:RowsPanel.BackColor = $cBg
 $script:RowsPanel.Padding = New-Object System.Windows.Forms.Padding(15, 10, 15, 15)
 
 # add in this order so docked Top bars stack above the Fill panel
+# (later-added Top docks sit higher: toolbar, then searchBar, then header)
 $form.Controls.Add($script:RowsPanel)
 $form.Controls.Add($header)
+$form.Controls.Add($searchBar)
 $form.Controls.Add($toolbar)
 
 # wire buttons
 $btnAdd.Add_Click({
+    # clear any active filter so the new (championless) row isn't hidden
+    $script:SearchBox.Text = ''
     $row = New-Row
     [void]$script:RowsPanel.Controls.Add($row)
     $script:RowsPanel.ScrollControlIntoView($row)

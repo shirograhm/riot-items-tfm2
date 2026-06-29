@@ -9,7 +9,7 @@ Also re-skins the 30 existing items and adds some custom icons for Armor Penetra
 
 This mod currently supports both English, Vietnamese, Portuguese (BR), and Chinese (Simplified) locales. You can use it with other languages, but the names and descriptions of the items will be broken.
 
-If you would like to provide translations, please, shoot me a message on Discord @shirograhm.
+  If you would like to provide translations, feel free to shoot me a message on Discord @shirograhm.
 
 Saves played with this mod enabled will be corrupted if you play the save with this mod disabled. I have had players buy ghost items when this happens.
 
