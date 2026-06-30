@@ -14,6 +14,7 @@ pub struct DeathsDance {
     effect_burn_hp_percent_cap: f64,
     effect_kill_heal_missing_percent: f64,
     accumulated_damage: i32,
+    last_damaged_by: usize,
 }
 
 impl Default for DeathsDance {
@@ -27,6 +28,7 @@ impl Default for DeathsDance {
             effect_burn_hp_percent_cap: 5.0,
             effect_kill_heal_missing_percent: 15.0,
             accumulated_damage: 0,
+            last_damaged_by: 0,
         }
     }
 }
@@ -49,6 +51,7 @@ impl DeathsDance {
                 .effect_kill_heal_missing_percent
                 .unwrap_or(d.effect_kill_heal_missing_percent),
             accumulated_damage: d.accumulated_damage,
+            last_damaged_by: d.last_damaged_by,
         }
     }
 }
@@ -115,7 +118,7 @@ impl ModItemInfo for DeathsDance {
 
         let entity = entity_ref.id();
         let per_second_cap =
-            percent_of(entity_ref.hp().max, self.effect_burn_hp_percent_cap) as i32;
+            percent_of(entity_ref.hp().max, self.effect_burn_hp_percent_cap / 5.0) as i32;
 
         let tick_damage = self.accumulated_damage.min(per_second_cap);
         if tick_damage <= 0 {
@@ -124,12 +127,18 @@ impl ModItemInfo for DeathsDance {
         ctx.add_buff(
             entity,
             BuffState {
-                duration: BuffType::Time { tick: 60 },
+                duration: BuffType::Time { tick: 12 },
                 name: ArrayString::try_from("deaths_dance_burn").unwrap(),
                 ..Default::default()
             },
         );
-        ctx.deal_damage(entity, entity, tick_damage as usize, 0, AttackType::Item);
+        ctx.deal_damage(
+            self.last_damaged_by,
+            entity,
+            tick_damage as usize,
+            0,
+            AttackType::Item,
+        );
         self.accumulated_damage -= tick_damage;
     }
 
@@ -145,7 +154,12 @@ impl ModItemInfo for DeathsDance {
             return;
         }
 
-        self.accumulated_damage += percent_of(damage, self.effect_delayed_damage_percent) as i32;
+        self.accumulated_damage += percent_of(
+            (damage as f64 * 4.0 / 3.0).round() as usize,
+            self.effect_delayed_damage_percent,
+        ) as i32;
+
+        self.last_damaged_by = attacker
     }
 
     fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
@@ -194,6 +208,7 @@ pub struct RadiantDeathsDance {
     effect_burn_hp_percent_cap: f64,
     effect_kill_heal_missing_percent: f64,
     accumulated_damage: i32,
+    last_damaged_by: usize,
 }
 
 impl Default for RadiantDeathsDance {
@@ -207,6 +222,7 @@ impl Default for RadiantDeathsDance {
             effect_burn_hp_percent_cap: 5.0,
             effect_kill_heal_missing_percent: 15.0,
             accumulated_damage: 0,
+            last_damaged_by: 0,
         }
     }
 }
@@ -229,6 +245,7 @@ impl RadiantDeathsDance {
                 .effect_kill_heal_missing_percent
                 .unwrap_or(d.effect_kill_heal_missing_percent),
             accumulated_damage: d.accumulated_damage,
+            last_damaged_by: d.last_damaged_by,
         }
     }
 }
@@ -288,7 +305,7 @@ impl ModItemInfo for RadiantDeathsDance {
 
         let entity = entity_ref.id();
         let per_second_cap =
-            percent_of(entity_ref.hp().max, self.effect_burn_hp_percent_cap) as i32;
+            percent_of(entity_ref.hp().max, self.effect_burn_hp_percent_cap / 5.0) as i32;
 
         let tick_damage = self.accumulated_damage.min(per_second_cap);
         if tick_damage <= 0 {
@@ -297,12 +314,18 @@ impl ModItemInfo for RadiantDeathsDance {
         ctx.add_buff(
             entity,
             BuffState {
-                duration: BuffType::Time { tick: 60 },
+                duration: BuffType::Time { tick: 12 },
                 name: ArrayString::try_from("radiant_deaths_dance_burn").unwrap(),
                 ..Default::default()
             },
         );
-        ctx.deal_damage(entity, entity, tick_damage as usize, 0, AttackType::Item);
+        ctx.deal_damage(
+            self.last_damaged_by,
+            entity,
+            tick_damage as usize,
+            0,
+            AttackType::Item,
+        );
         self.accumulated_damage -= tick_damage;
     }
 
@@ -318,7 +341,12 @@ impl ModItemInfo for RadiantDeathsDance {
             return;
         }
 
-        self.accumulated_damage += percent_of(damage, self.effect_delayed_damage_percent) as i32;
+        self.accumulated_damage += percent_of(
+            (damage as f64 * 4.0 / 3.0).round() as usize,
+            self.effect_delayed_damage_percent,
+        ) as i32;
+
+        self.last_damaged_by = attacker
     }
 
     fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
