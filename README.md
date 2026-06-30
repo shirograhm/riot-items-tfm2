@@ -58,6 +58,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Reduce the cooldown of your ultimate ability by 25%. |
 | **Radiant Frozen Mallet** | 1900G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
+| **Radiant Heartsteel** | 2100G | +800 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 10% of that damage as permanent bonus health. |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | — |
 | **Radiant Jak’Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | When you take damage from an enemy champion, gain +10% armor and +10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Mortal Reminder** | 2000G | +70 AD<br>+30% Armor Pen | On attack, reduce the target’s healing by 40% for 2 seconds. |

@@ -138,6 +138,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_experimental_hexplate" => RadiantExperimentalHexplate));
     reg.add_item(configured!("radiant_frozen_mallet" => RadiantFrozenMallet));
     reg.add_item(configured!("radiant_guinsoos_rageblade" => RadiantGuinsoosRageblade));
+    reg.add_item(configured!("radiant_heartsteel" => RadiantHeartsteel));
     reg.add_item(configured!("radiant_infinity_edge" => RadiantInfinityEdge));
     reg.add_item(configured!("radiant_jaksho_the_protean" => RadiantJakshoTheProtean));
     reg.add_item(configured!("radiant_mirage_blade" => RadiantMirageBlade));
