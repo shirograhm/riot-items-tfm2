@@ -341,11 +341,11 @@
     },
     "heartsteel": {
       "name": "Heartsteel",
-      "option": "Ironheart: Every <#e8a800ff>15 seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>10%<> of that damage as permanent <#60e84dff>bonus health<>."
+      "option": "Ironheart: Every <#e8a800ff>15 seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>15%<> of that damage as permanent <#60e84dff>bonus health<>."
     },
     "radiant_heartsteel": {
       "name": "Radiant Heartsteel",
-      "option": "Ironheart: Every <#e8a800ff>15 seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>10%<> of that damage as permanent <#60e84dff>bonus health<>."
+      "option": "Ironheart: Every <#e8a800ff>15 seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>15%<> of that damage as permanent <#60e84dff>bonus health<>."
     },
     "spear_of_shojin": {
       "name": "Spear of Shojin",
@@ -698,11 +698,11 @@
     },
     "heartsteel": {
       "name": "Tâm Thép",
-      "option": "Trái Tim Sắt Đá: Mỗi <#e8a800ff>15 giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>10%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
+      "option": "Trái Tim Sắt Đá: Mỗi <#e8a800ff>15 giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>15%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
     },
     "radiant_heartsteel": {
       "name": "Tâm Thép Ánh Sáng",
-      "option": "Trái Tim Sắt Đá: Mỗi <#e8a800ff>15 giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>10%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
+      "option": "Trái Tim Sắt Đá: Mỗi <#e8a800ff>15 giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>15%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
     },
     "spear_of_shojin": {
       "name": "Ngọn Giáo Shojin",
@@ -1055,11 +1055,11 @@
     },
     "heartsteel": {
       "name": "心之钢",
-      "option": "铁石心肠：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>10%<> 作为 <#60e84dff>额外生命值<>。"
+      "option": "铁石心肠：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>15%<> 作为 <#60e84dff>额外生命值<>。"
     },
     "radiant_heartsteel": {
       "name": "光明版心之钢",
-      "option": "铁石心肠：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>10%<> 作为 <#60e84dff>额外生命值<>。"
+      "option": "铁石心肠：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>15%<> 作为 <#60e84dff>额外生命值<>。"
     },
     "spear_of_shojin": {
       "name": "朔极之矛",
@@ -1412,11 +1412,11 @@
     },
     "heartsteel": {
       "name": "Coração de Aço",
-      "option": "Coração Forjado: A cada <#e8a800ff>15 segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>10%<> desse dano como <#60e84dff>vida bônus<>."
+      "option": "Coração Forjado: A cada <#e8a800ff>15 segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>15%<> desse dano como <#60e84dff>vida bônus<>."
     },
     "radiant_heartsteel": {
       "name": "Coração de Aço Radiante",
-      "option": "Coração Forjado: A cada <#e8a800ff>15 segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>10%<> desse dano como <#60e84dff>vida bônus<>."
+      "option": "Coração Forjado: A cada <#e8a800ff>15 segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>15%<> desse dano como <#60e84dff>vida bônus<>."
     },
     "spear_of_shojin": {
       "name": "Lança de Shojin",
