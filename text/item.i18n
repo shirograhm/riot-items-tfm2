@@ -195,6 +195,14 @@
       "name": "Radiant Deathblade",
       "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>25%<>."
     },
+    "deaths_dance": {
+      "name": "Death's Dance",
+      "option": "Ignore Pain: <#e8a800ff>25%<> of damage taken is stored and dealt back to you over time as <#d94c49ff>bonus physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, the stored damage is cleared and you <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+    },
+    "radiant_deaths_dance": {
+      "name": "Radiant Death's Dance",
+      "option": "Ignore Pain: <#e8a800ff>25%<> of damage taken is stored and dealt back to you over time as <#d94c49ff>bonus physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, the stored damage is cleared and you <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+    },
     "needlessly_large_rod": {
       "name": "Needlessly Large Rod",
       "option": ""
@@ -551,6 +559,14 @@
     "radiant_deathblade": {
       "name": "Kiếm Tử Thần Ánh Sáng",
       "option": "Cường hóa: Tăng <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bản thân thêm <#ff9028ff>25%<>."
+    },
+    "deaths_dance": {
+      "name": "Vũ Điệu Tử Thần",
+      "option": "Phớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Khi hạ gục, lượng sát thương tích trữ bị xóa và bạn <#60e84dff>hồi<> <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
+    },
+    "radiant_deaths_dance": {
+      "name": "Vũ Điệu Tử Thần Ánh Sáng",
+      "option": "Phớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Khi hạ gục, lượng sát thương tích trữ bị xóa và bạn <#60e84dff>hồi<> <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
     },
     "needlessly_large_rod": {
       "name": "Gậy Quá Khổ",
@@ -909,6 +925,14 @@
       "name": "光明版死亡之刃",
       "option": "顶峰：你的总 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>提升 <#ff9028ff>25%<>。"
     },
+    "deaths_dance": {
+      "name": "死亡之舞",
+      "option": "无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>5%<>）。\n\n拒止：击杀时，储存的伤害被清除，并为你回复 <#60e84dff>15%<> <#60e84dff>已损失生命值<>。"
+    },
+    "radiant_deaths_dance": {
+      "name": "光明版死亡之舞",
+      "option": "无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>5%<>）。\n\n拒止：击杀时，储存的伤害被清除，并为你回复 <#60e84dff>15%<> <#60e84dff>已损失生命值<>。"
+    },
     "needlessly_large_rod": {
       "name": "无用大棒",
       "option": ""
@@ -1265,6 +1289,14 @@
     "radiant_deathblade": {
       "name": "Lâmina Mortal Radiante",
       "option": "Apex: Aumenta seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> em <#ff9028ff>25%<>."
+    },
+    "deaths_dance": {
+      "name": "Dança da Morte",
+      "option": "Ignorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Ao abater, o dano armazenado é removido e você se <#60e84dff>cura<> em <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
+    },
+    "radiant_deaths_dance": {
+      "name": "Dança da Morte Radiante",
+      "option": "Ignorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Ao abater, o dano armazenado é removido e você se <#60e84dff>cura<> em <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
     },
     "needlessly_large_rod": {
       "name": "Bastão Desnecessariamente Grande",

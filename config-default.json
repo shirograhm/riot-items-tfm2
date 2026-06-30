@@ -47,6 +47,15 @@
     "attack": 90,
     "attack_mult": 15
   },
+  "deaths_dance": {
+    "price": 1450,
+    "attack": 50,
+    "defence": 50,
+    "skill_cooldown_mult": 10,
+    "effect_delayed_damage_percent": 25.0,
+    "effect_burn_hp_percent_cap": 5.0,
+    "effect_kill_heal_missing_percent": 15.0
+  },
   "frozen_mallet": {
     "price": 1300,
     "hp": 450,
@@ -226,6 +235,15 @@
     "price": 2000,
     "attack": 140,
     "attack_mult": 25
+  },
+  "radiant_deaths_dance": {
+    "price": 2100,
+    "attack": 85,
+    "defence": 85,
+    "skill_cooldown_mult": 10,
+    "effect_delayed_damage_percent": 25.0,
+    "effect_burn_hp_percent_cap": 5.0,
+    "effect_kill_heal_missing_percent": 15.0
   },
   "radiant_infinity_edge": {
     "price": 1900,
