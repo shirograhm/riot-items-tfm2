@@ -197,11 +197,11 @@
     },
     "deaths_dance": {
       "name": "Death's Dance",
-      "option": "Ignore Pain: <#e8a800ff>25%<> of damage taken is stored and dealt back to you over time as <#d94c49ff>bonus physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, the stored damage is cleared and you <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+      "option": "Ignore Pain: <#e8a800ff>25%<> of damage taken is instead dealt over time as <#d94c49ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, cleanse all stored damage and <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
     },
     "radiant_deaths_dance": {
       "name": "Radiant Death's Dance",
-      "option": "Ignore Pain: <#e8a800ff>25%<> of damage taken is stored and dealt back to you over time as <#d94c49ff>bonus physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, the stored damage is cleared and you <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+      "option": "Ignore Pain: <#e8a800ff>25%<> of damage taken is instead dealt over time as <#d94c49ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, cleanse all stored damage and <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
     },
     "needlessly_large_rod": {
       "name": "Needlessly Large Rod",
