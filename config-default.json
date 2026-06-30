@@ -65,6 +65,14 @@
     "effect_duration_seconds": 4,
     "on_hit_cooldown_seconds": 0.5
   },
+  "heartsteel": {
+    "price": 1500,
+    "hp": 500,
+    "effect_bonus_flat_damage": 15,
+    "effect_caster_hp_percent_damage": 6.0,
+    "effect_bonus_hp_percent_of_damage": 15.0,
+    "effect_cooldown_seconds": 15
+  },
   "infinity_edge": {
     "price": 1300,
     "attack": 80,
@@ -109,6 +117,14 @@
     "magic_power": 75,
     "effect_caster_hp_percent_power": 1.0,
     "effect_max_stacks": 3,
+    "effect_duration_seconds": 5
+  },
+  "spear_of_shojin": {
+    "price": 1400,
+    "hp": 350,
+    "attack": 35,
+    "effect_stack_attack_mult": 3,
+    "effect_max_stacks": 4,
     "effect_duration_seconds": 5
   },
   "terminus": {
@@ -198,6 +214,14 @@
     "effect_duration_seconds": 4,
     "on_hit_cooldown_seconds": 0.5
   },
+  "radiant_heartsteel": {
+    "price": 2100,
+    "hp": 800,
+    "effect_bonus_flat_damage": 15,
+    "effect_caster_hp_percent_damage": 6.0,
+    "effect_bonus_hp_percent_of_damage": 15.0,
+    "effect_cooldown_seconds": 15
+  },
   "radiant_deathblade": {
     "price": 2000,
     "attack": 140,
@@ -280,6 +304,14 @@
     "magic_power": 150,
     "effect_caster_hp_percent_power": 1.0,
     "effect_max_stacks": 3,
+    "effect_duration_seconds": 5
+  },
+  "radiant_spear_of_shojin": {
+    "price": 2200,
+    "hp": 600,
+    "attack": 60,
+    "effect_stack_attack_mult": 3,
+    "effect_max_stacks": 4,
     "effect_duration_seconds": 5
   },
   "radiant_rabadons_deathcap": {

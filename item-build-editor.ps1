@@ -41,9 +41,9 @@ $CHAMPIONS = @(
 $ITEMS = @(
   'blackfire_torch', 'blade_of_the_ruined_king', 'bloodthirster', 'collector',
   'deathblade', 'dragons_claw', 'experimental_hexplate', 'frozen_mallet',
-  'guinsoos_rageblade', 'infinity_edge', 'jaksho_the_protean', 'ludens_tempest',
+  'guinsoos_rageblade', 'heartsteel', 'infinity_edge', 'jaksho_the_protean', 'ludens_tempest',
   'mirage_blade', 'mortal_reminder', 'nashors_tooth', 'phantom_dancer',
-  'protectors_vow', 'protoplasm_harness', 'rabadons_deathcap', 'riftmaker',
+  'protectors_vow', 'protoplasm_harness', 'rabadons_deathcap', 'riftmaker', 'spear_of_shojin',
   'spirit_visage', 'terminus', 'thornmail', 'unending_despair',
   'warmogs_armor'
 )
