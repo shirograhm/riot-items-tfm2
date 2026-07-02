@@ -4,30 +4,30 @@ use mod_api::*;
 use crate::config::ItemConfig;
 
 #[derive(Clone, Debug)]
-pub struct ExecutionersCalling {
+pub struct OblivionOrb {
     price: usize,
-    attack: i32,
+    magic_power: i32,
     effect_heal_reduce: usize,
     effect_duration_seconds: usize,
 }
 
-impl Default for ExecutionersCalling {
+impl Default for OblivionOrb {
     fn default() -> Self {
         Self {
             price: 500,
-            attack: 25,
+            magic_power: 50,
             effect_heal_reduce: 25,
             effect_duration_seconds: 2,
         }
     }
 }
 
-impl ExecutionersCalling {
+impl OblivionOrb {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
             effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
@@ -36,17 +36,17 @@ impl ExecutionersCalling {
     }
 }
 
-impl ModItemInfo for ExecutionersCalling {
+impl ModItemInfo for OblivionOrb {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "executioners_calling"
+        "oblivion_orb"
     }
 
     fn icon(&self) -> &str {
-        "t8_2"
+        "t10_7"
     }
 
     fn price(&self) -> usize {
@@ -58,16 +58,16 @@ impl ModItemInfo for ExecutionersCalling {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["ironsword".to_string()]
+        vec!["arcane_crystal".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["mortal_reminder".to_string()]
+        vec!["morellonomicon".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
+            magic_power: self.magic_power,
             ..Default::default()
         }
     }
@@ -84,7 +84,7 @@ impl ModItemInfo for ExecutionersCalling {
             return;
         };
 
-        if damage_type != DamageType::AD {
+        if damage_type != DamageType::AP {
             return;
         }
 
@@ -106,10 +106,10 @@ impl ModItemInfo for ExecutionersCalling {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::HealReduce]
+        vec![ItemTag::AP, ItemTag::HealReduce]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+        ItemCategory::Magic
     }
 }

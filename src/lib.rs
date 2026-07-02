@@ -20,6 +20,7 @@ mod mirage_blade;
 mod mortal_reminder;
 mod nashors_tooth;
 mod needlessly_large_rod;
+mod oblivion_orb;
 mod protectors_vow;
 mod protoplasm_harness;
 mod rabadons_deathcap;
@@ -46,6 +47,7 @@ use mirage_blade::*;
 use mortal_reminder::*;
 use nashors_tooth::*;
 use needlessly_large_rod::*;
+use oblivion_orb::*;
 use protectors_vow::*;
 use protoplasm_harness::*;
 use rabadons_deathcap::*;
@@ -108,6 +110,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 3
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
+    reg.add_item(configured!("oblivion_orb" => OblivionOrb));
 
     // Tier 4
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));

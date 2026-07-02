@@ -82,11 +82,16 @@ impl ModItemInfo for MortalReminder {
         _caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        damage_type: DamageType,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;
         };
+
+        if damage_type != DamageType::AD {
+            return;
+        }
+
         let already_reduced = (0..entity_ref.buff_count())
             .any(|i| entity_ref.buff_at(i).name.as_str() == "40_percent_heal_cut");
         if !already_reduced {
@@ -196,11 +201,16 @@ impl ModItemInfo for RadiantMortalReminder {
         _caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        damage_type: DamageType,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;
         };
+
+        if damage_type != DamageType::AD {
+            return;
+        }
+
         let already_reduced = (0..entity_ref.buff_count())
             .any(|i| entity_ref.buff_at(i).name.as_str() == "40_percent_heal_cut");
         if !already_reduced {
