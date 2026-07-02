@@ -40,6 +40,10 @@ $mrHeal = if ($null -ne $config.mortal_reminder.effect_heal_reduce) { [int]$conf
 $mrDur = if ($null -ne $config.mortal_reminder.effect_duration_seconds) { [int]$config.mortal_reminder.effect_duration_seconds }      else { 2 }
 $rmrHeal = if ($null -ne $config.radiant_mortal_reminder.effect_heal_reduce) { [int]$config.radiant_mortal_reminder.effect_heal_reduce }    else { 40 }
 $rmrDur = if ($null -ne $config.radiant_mortal_reminder.effect_duration_seconds) { [int]$config.radiant_mortal_reminder.effect_duration_seconds } else { 2 }
+$morHeal = if ($null -ne $config.morellonomicon.effect_heal_reduce) { [int]$config.morellonomicon.effect_heal_reduce }                              else { 40 }
+$morDur = if ($null -ne $config.morellonomicon.effect_duration_seconds) { [int]$config.morellonomicon.effect_duration_seconds }                    else { 2 }
+$rmorHeal = if ($null -ne $config.radiant_morellonomicon.effect_heal_reduce) { [int]$config.radiant_morellonomicon.effect_heal_reduce }            else { 40 }
+$rmorDur = if ($null -ne $config.radiant_morellonomicon.effect_duration_seconds) { [int]$config.radiant_morellonomicon.effect_duration_seconds }  else { 2 }
 $jakDefMult = if ($null -ne $config.jaksho_the_protean.effect_stack_defence_mult) { [int]$config.jaksho_the_protean.effect_stack_defence_mult }                      else { 6 }
 $jakMrMult = if ($null -ne $config.jaksho_the_protean.effect_stack_magic_resistance_mult) { [int]$config.jaksho_the_protean.effect_stack_magic_resistance_mult }        else { 6 }
 $jakDur = if ($null -ne $config.jaksho_the_protean.effect_duration_seconds) { [int]$config.jaksho_the_protean.effect_duration_seconds }                                else { 4 }
@@ -147,6 +151,8 @@ Write-Host "Updating English text."
 
 $i18n.en.executioners_calling.option = "Executioner: On attack, <#d94c49ff>reduce healing by ${execHeal}%<> for <#e8a800ff>${execDur} seconds<>."
 $i18n.en.oblivion_orb.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${ooHeal}%<> for <#e8a800ff>${ooDur} seconds<>."
+$i18n.en.morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${morHeal}%<> for <#e8a800ff>${morDur} seconds<>."
+$i18n.en.radiant_morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rmorHeal}%<> for <#e8a800ff>${rmorDur} seconds<>."
 $i18n.en.overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>${obmAtk}%<> of your <$hpIcon> <#ff9028ff>maximum health<>."
 $i18n.en.radiant_overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>${robmAtk}%<> of your <$hpIcon> <#ff9028ff>maximum health<>."
 $i18n.en.night_harvester.option = "Soulrend: Damaging an enemy champion deals <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#4b7cffff>${nhMs}%<> <$speedIcon> <#4b7cffff>movement speed<> for <#e8a800ff>${nhDur} seconds<> (${nhCd} second cooldown per target)."
@@ -199,6 +205,8 @@ Write-Host "Updating Vietnamese text."
 
 $i18n.vi.executioners_calling.option = "Đao phủ: Khi tấn công, gây <#d94c49ff>${execHeal}% giảm hồi máu<> trong <#e8a800ff>${execDur} giây<>."
 $i18n.vi.oblivion_orb.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${ooHeal}%<> trong <#e8a800ff>${ooDur} giây<>."
+$i18n.vi.morellonomicon.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${morHeal}%<> trong <#e8a800ff>${morDur} giây<>."
+$i18n.vi.radiant_morellonomicon.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rmorHeal}%<> trong <#e8a800ff>${rmorDur} giây<>."
 $i18n.vi.overlords_bloodmail.option = "Bạo Ngược: Nhận <#ff9028ff>thêm<> <$adIcon> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>${obmAtk}%<> <$hpIcon> <#ff9028ff>máu tối đa<> của bản thân."
 $i18n.vi.radiant_overlords_bloodmail.option = "Bạo Ngược: Nhận <#ff9028ff>thêm<> <$adIcon> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>${robmAtk}%<> <$hpIcon> <#ff9028ff>máu tối đa<> của bản thân."
 $i18n.vi.night_harvester.option = "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#4b7cffff>${nhMs}%<> <$speedIcon> <#4b7cffff>tốc độ di chuyển<> trong <#e8a800ff>${nhDur} giây<> (hồi chiêu ${nhCd} giây mỗi mục tiêu)."
@@ -251,6 +259,8 @@ Write-Host "Updating Chinese (Simplified) text."
 
 $i18n.'zh-hans'.executioners_calling.option = "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低${execHeal}%<>，持续 <#e8a800ff>${execDur}秒<>。"
 $i18n.'zh-hans'.oblivion_orb.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${ooHeal}%<>，持续 <#e8a800ff>${ooDur}秒<>。"
+$i18n.'zh-hans'.morellonomicon.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${morHeal}%<>，持续 <#e8a800ff>${morDur}秒<>。"
+$i18n.'zh-hans'.radiant_morellonomicon.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${rmorHeal}%<>，持续 <#e8a800ff>${rmorDur}秒<>。"
 $i18n.'zh-hans'.overlords_bloodmail.option = "暴政：获得相当于你的 <$hpIcon> <#ff9028ff>最大生命值<>的 <#ff9028ff>${obmAtk}%<> 的<#ff9028ff>额外<> <$adIcon> <#ff9028ff>攻击力<>。"
 $i18n.'zh-hans'.radiant_overlords_bloodmail.option = "暴政：获得相当于你的 <$hpIcon> <#ff9028ff>最大生命值<>的 <#ff9028ff>${robmAtk}%<> 的<#ff9028ff>额外<> <$adIcon> <#ff9028ff>攻击力<>。"
 $i18n.'zh-hans'.night_harvester.option = "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#4b7cffff>${nhMs}%<> <$speedIcon> <#4b7cffff>移动速度<>，持续 <#e8a800ff>${nhDur}秒<>（每个目标冷却${nhCd}秒）。"
@@ -303,6 +313,8 @@ Write-Host "Updating Portuguese (Brazil) text."
 
 $i18n.'pt-BR'.executioners_calling.option = "Executor: Ataques aplicam <#d94c49ff>${execHeal}% de Redução de Cura<> for <#e8a800ff>${execDur} segundos<>."
 $i18n.'pt-BR'.oblivion_orb.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${ooHeal}%<> por <#e8a800ff>${ooDur} segundos<>."
+$i18n.'pt-BR'.morellonomicon.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${morHeal}%<> por <#e8a800ff>${morDur} segundos<>."
+$i18n.'pt-BR'.radiant_morellonomicon.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rmorHeal}%<> por <#e8a800ff>${rmorDur} segundos<>."
 $i18n.'pt-BR'.overlords_bloodmail.option = "Tirania: Ganha <#ff9028ff>bônus<> de <$adIcon> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>${obmAtk}%<> da sua <$hpIcon> <#ff9028ff>Vida Máxima<>."
 $i18n.'pt-BR'.radiant_overlords_bloodmail.option = "Tirania: Ganha <#ff9028ff>bônus<> de <$adIcon> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>${robmAtk}%<> da sua <$hpIcon> <#ff9028ff>Vida Máxima<>."
 $i18n.'pt-BR'.night_harvester.option = "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> de <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#4b7cffff>${nhMs}%<> de <$speedIcon> <#4b7cffff>Velocidade de Movimento<> por <#e8a800ff>${nhDur} segundos<> (recarga de ${nhCd} segundos por alvo)."
@@ -355,6 +367,8 @@ Write-Host "Updating Russian text."
 
 $i18n.ru.executioners_calling.option = "Палач: При атаке, <#d94c49ff>снижает лечение на ${execHeal}%<> на <#e8a800ff>${execDur} секунды<>."
 $i18n.ru.oblivion_orb.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${ooHeal}%<> на <#e8a800ff>${ooDur} секунды<>."
+$i18n.ru.morellonomicon.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${morHeal}%<> на <#e8a800ff>${morDur} секунды<>."
+$i18n.ru.radiant_morellonomicon.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rmorHeal}%<> на <#e8a800ff>${rmorDur} секунды<>."
 $i18n.ru.overlords_bloodmail.option = "Тирания: Даёт <#ff9028ff>дополнительную<> <$adIcon> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>${obmAtk}%<> от вашего <$hpIcon> <#ff9028ff>максимального здоровья<>."
 $i18n.ru.radiant_overlords_bloodmail.option = "Тирания: Даёт <#ff9028ff>дополнительную<> <$adIcon> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>${robmAtk}%<> от вашего <$hpIcon> <#ff9028ff>максимального здоровья<>."
 $i18n.ru.night_harvester.option = "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#4b7cffff>${nhMs}%<> <$speedIcon> <#4b7cffff>скорости передвижения<> на <#e8a800ff>${nhDur} секунды<> (перезарядка ${nhCd} секунд на каждую цель)."
@@ -409,6 +423,8 @@ $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '
 Write-Host "Done."
 Write-Host "  Executioner's Calling:   -${execHeal}% healing / ${execDur}s"
 Write-Host "  Oblivion Orb:            -${ooHeal}% healing / ${ooDur}s"
+Write-Host "  Morellonomicon:          -${morHeal}% healing / ${morDur}s"
+Write-Host "  Radiant Morellonomicon:  -${rmorHeal}% healing / ${rmorDur}s"
 Write-Host "  Overlord's Bloodmail:         ${obmAtk}% max HP as AD"
 Write-Host "  Radiant Overlord's Bloodmail: ${robmAtk}% max HP as AD"
 Write-Host "  Night Harvester:              ${nhFlat} + ${nhApPct}% AP magic dmg / ${nhMs}% MS ${nhDur}s / ${nhCd}s per-target CD"

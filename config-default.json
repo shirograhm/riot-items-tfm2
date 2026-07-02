@@ -126,6 +126,14 @@
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
   },
+  "morellonomicon": {
+    "price": 1300,
+    "hp": 200,
+    "magic_power": 115,
+    "skill_cooldown_mult": 10,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 2
+  },
   "riftmaker": {
     "price": 1300,
     "hp": 400,
@@ -286,6 +294,14 @@
     "attack": 70,
     "defence_penetration": 30,
     "crit_chance": 0,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 2
+  },
+  "radiant_morellonomicon": {
+    "price": 1850,
+    "hp": 350,
+    "magic_power": 185,
+    "skill_cooldown_mult": 10,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
   },

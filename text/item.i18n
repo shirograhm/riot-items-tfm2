@@ -760,6 +760,14 @@
       "name": "Quả Cầu Lãng Quên",
       "option": "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 25%<> trong <#e8a800ff>2 giây<>."
     },
+    "morellonomicon": {
+      "name": "Morellonomicon",
+      "option": "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+    },
+    "radiant_morellonomicon": {
+      "name": "Morellonomicon Ánh Sáng",
+      "option": "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+    },
     "overlords_bloodmail": {
       "name": "Giáp Máu Lãnh Chúa",
       "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
@@ -1144,6 +1152,14 @@
     "oblivion_orb": {
       "name": "湮灭宝珠",
       "option": "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低25%<>，持续 <#e8a800ff>2秒<>。"
+    },
+    "morellonomicon": {
+      "name": "莫雷洛秘典",
+      "option": "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+    },
+    "radiant_morellonomicon": {
+      "name": "光明版莫雷洛秘典",
+      "option": "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
     },
     "overlords_bloodmail": {
       "name": "霸主血甲",
@@ -1530,6 +1546,14 @@
       "name": "Orbe do Esquecimento",
       "option": "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 25%<> por <#e8a800ff>2 segundos<>."
     },
+    "morellonomicon": {
+      "name": "Morellonomicon",
+      "option": "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+    },
+    "radiant_morellonomicon": {
+      "name": "Morellonomicon Radiante",
+      "option": "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+    },
     "overlords_bloodmail": {
       "name": "Cota de Sangue do Suserano",
       "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
@@ -1914,6 +1938,14 @@
     "oblivion_orb": {
       "name": "Сфера забвения",
       "option": "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 25%<> на <#e8a800ff>2 секунды<>."
+    },
+    "morellonomicon": {
+      "name": "Морелленомикон",
+      "option": "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+    },
+    "radiant_morellonomicon": {
+      "name": "Лучезарный Морелленомикон",
+      "option": "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
     },
     "overlords_bloodmail": {
       "name": "Кровавая кольчуга властелина",
