@@ -88,6 +88,12 @@
     "effect_bonus_hp_percent_of_damage": 15.0,
     "effect_cooldown_seconds": 15
   },
+  "hextech_gunblade": {
+    "price": 1400,
+    "attack": 30,
+    "magic_power": 100,
+    "vamp": 10
+  },
   "infinity_edge": {
     "price": 1300,
     "attack": 80,
@@ -261,6 +267,12 @@
     "effect_caster_hp_percent_damage": 6.0,
     "effect_bonus_hp_percent_of_damage": 15.0,
     "effect_cooldown_seconds": 15
+  },
+  "radiant_hextech_gunblade": {
+    "price": 1900,
+    "attack": 50,
+    "magic_power": 150,
+    "vamp": 15
   },
   "radiant_deathblade": {
     "price": 2000,

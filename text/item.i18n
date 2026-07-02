@@ -390,6 +390,14 @@
     "radiant_night_harvester": {
       "name": "Radiant Night Harvester",
       "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
+    },
+    "hextech_gunblade": {
+      "name": "Hextech Gunblade",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "Radiant Hextech Gunblade",
+      "option": ""
     }
   },
   "vi": {
@@ -783,6 +791,14 @@
     "radiant_night_harvester": {
       "name": "Kẻ Gặt Đêm Ánh Sáng",
       "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
+    },
+    "hextech_gunblade": {
+      "name": "Súng Kiếm Hextech",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "Súng Kiếm Hextech Ánh Sáng",
+      "option": ""
     }
   },
   "zh-hans": {
@@ -1176,6 +1192,14 @@
     "radiant_night_harvester": {
       "name": "光明版夜幕收割者",
       "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
+    },
+    "hextech_gunblade": {
+      "name": "海克斯科技枪刃",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "光明版海克斯科技枪刃",
+      "option": ""
     }
   },
   "pt-BR": {
@@ -1569,6 +1593,14 @@
     "radiant_night_harvester": {
       "name": "Ceifador Noturno Radiante",
       "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#4b7cffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
+    },
+    "hextech_gunblade": {
+      "name": "Lâmina Hextech",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "Lâmina Hextech Radiante",
+      "option": ""
     }
   },
   "ru": {
@@ -1962,6 +1994,14 @@
     "radiant_night_harvester": {
       "name": "Лучезарный Ночной жнец",
       "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
+    },
+    "hextech_gunblade": {
+      "name": "Хекстековый пистолет-клинок",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "Лучезарный Хекстековый пистолет-клинок",
+      "option": ""
     }
   }
 }
