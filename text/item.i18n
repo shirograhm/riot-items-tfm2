@@ -755,6 +755,10 @@
     "radiant_spear_of_shojin": {
       "name": "Ngọn Giáo Shojin Ánh Sáng",
       "option": "Ý Chí Tập Trung: Kĩ năng trúng tướng địch sẽ tăng <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> trong <#e8a800ff>5 giây<> (tối đa 4 cộng dồn)."
+    },
+    "oblivion_orb": {
+      "name": "Quả Cầu Lãng Quên",
+      "option": "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 25%<> trong <#e8a800ff>2 giây<>."
     }
   },
   "zh-hans": {
@@ -1120,6 +1124,10 @@
     "radiant_spear_of_shojin": {
       "name": "光明版朔极之矛",
       "option": "专注意志：技能命中敌方英雄时获得 <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>，持续 <#e8a800ff>5秒<>（最多叠加4层）。"
+    },
+    "oblivion_orb": {
+      "name": "湮灭宝珠",
+      "option": "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低25%<>，持续 <#e8a800ff>2秒<>。"
     }
   },
   "pt-BR": {
@@ -1485,6 +1493,10 @@
     "radiant_spear_of_shojin": {
       "name": "Lança de Shojin Radiante",
       "option": "Vontade Focada: Acertar habilidades em campeões inimigos concede <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>5 segundos<> (acumula 4x)."
+    },
+    "oblivion_orb": {
+      "name": "Orbe do Esquecimento",
+      "option": "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 25%<> por <#e8a800ff>2 segundos<>."
     }
   },
   "ru": {
@@ -1850,6 +1862,10 @@
     "radiant_spear_of_shojin": {
       "name": "Копье Хираны",
       "option": "Концентрация: Попадания способностями по вражеским чемпионам дают <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>5 секунд<> (макс. 4 стака)."
+    },
+    "oblivion_orb": {
+      "name": "Сфера забвения",
+      "option": "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 25%<> на <#e8a800ff>2 секунды<>."
     }
   }
 }
