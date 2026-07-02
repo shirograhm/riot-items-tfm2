@@ -65,8 +65,7 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        // TODO: fill in the build recipe (component item keys).
-        vec![]
+        vec!["ironsword".to_string(), "ring_of_reincarnation".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
