@@ -167,7 +167,9 @@
   "protectors_vow": {
     "price": 1300,
     "hp": 350,
-    "defence": 50
+    "defence": 50,
+    "effect_bonus_flat_hp": 50,
+    "effect_caster_defence_percent_hp": 80.0
   },
   "protoplasm_harness": {
     "price": 1000,
@@ -354,7 +356,9 @@
     "price": 1800,
     "hp": 550,
     "defence": 75,
-    "skill_cooldown_mult": 15
+    "skill_cooldown_mult": 15,
+    "effect_bonus_flat_hp": 50,
+    "effect_caster_defence_percent_hp": 80.0
   },
   "radiant_protoplasm_harness": {
     "price": 1600,

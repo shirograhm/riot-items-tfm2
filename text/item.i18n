@@ -217,11 +217,11 @@
     },
     "protectors_vow": {
       "name": "Protector's Vow",
-      "option": ""
+      "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#60e84dff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
     },
     "radiant_protectors_vow": {
       "name": "Radiant Protector's Vow",
-      "option": ""
+      "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#60e84dff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
     },
     "protoplasm_harness": {
       "name": "Protoplasm Harness",
