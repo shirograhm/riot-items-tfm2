@@ -383,13 +383,13 @@
       "name": "Radiant Overlord's Bloodmail",
       "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>maximum health<>."
     },
-    "cosmic_drive": {
-      "name": "Cosmic Drive",
-      "option": "Spelldance: Dealing <#a974ffff>magic damage<> to an enemy champion grants <#4b7cffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>movement speed<> for <#e8a800ff>4 seconds<>."
+    "night_harvester": {
+      "name": "Night Harvester",
+      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
     },
-    "radiant_cosmic_drive": {
-      "name": "Radiant Cosmic Drive",
-      "option": "Spelldance: Dealing <#a974ffff>magic damage<> to an enemy champion grants <#4b7cffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>movement speed<> for <#e8a800ff>4 seconds<>."
+    "radiant_night_harvester": {
+      "name": "Radiant Night Harvester",
+      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
     }
   },
   "vi": {
