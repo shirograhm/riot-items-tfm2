@@ -23,7 +23,7 @@ impl Default for Morellonomicon {
         Self {
             price: 1300,
             hp: 200,
-            magic_power: 100,
+            magic_power: 120,
             skill_cooldown_mult: 10,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2,
@@ -70,7 +70,7 @@ impl ModItemInfo for Morellonomicon {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["oblivion_orb".to_string()]
+        vec!["oblivion_orb".to_string(), "hardened_heart".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -148,7 +148,7 @@ impl Default for RadiantMorellonomicon {
         Self {
             price: 1850,
             hp: 350,
-            magic_power: 160,
+            magic_power: 190,
             skill_cooldown_mult: 10,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2,
