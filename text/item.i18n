@@ -217,11 +217,11 @@
     },
     "protectors_vow": {
       "name": "Protector's Vow",
-      "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#60e84dff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
+      "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#ffdd8eff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
     },
     "radiant_protectors_vow": {
       "name": "Radiant Protector's Vow",
-      "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#60e84dff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
+      "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#ffdd8eff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
     },
     "protoplasm_harness": {
       "name": "Protoplasm Harness",
@@ -377,19 +377,19 @@
     },
     "overlords_bloodmail": {
       "name": "Overlord's Bloodmail",
-      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>maximum health<>."
+      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "radiant_overlords_bloodmail": {
       "name": "Radiant Overlord's Bloodmail",
-      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>maximum health<>."
+      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
     },
     "night_harvester": {
       "name": "Night Harvester",
-      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
+      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
     },
     "radiant_night_harvester": {
       "name": "Radiant Night Harvester",
-      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
+      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
     },
     "hextech_gunblade": {
       "name": "Hextech Gunblade",
@@ -618,11 +618,11 @@
     },
     "protectors_vow": {
       "name": "Băng Giáp",
-      "option": ""
+      "option": "Kính Sợ: Nhận <#60e84dff>máu cộng thêm<> tương ứng <#60e84dff>50<> + <#ffdd8eff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn."
     },
     "radiant_protectors_vow": {
       "name": "Băng Giáp Ánh Sáng",
-      "option": ""
+      "option": "Kính Sợ: Nhận <#60e84dff>máu cộng thêm<> tương ứng <#60e84dff>50<> + <#ffdd8eff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn."
     },
     "protoplasm_harness": {
       "name": "Đai Nguyên Sinh",
@@ -778,19 +778,19 @@
     },
     "overlords_bloodmail": {
       "name": "Giáp Máu Lãnh Chúa",
-      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
+      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân."
     },
     "radiant_overlords_bloodmail": {
       "name": "Giáp Máu Lãnh Chúa Ánh Sáng",
-      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
+      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân."
     },
     "night_harvester": {
       "name": "Kẻ Gặt Đêm",
-      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
+      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
     },
     "radiant_night_harvester": {
       "name": "Kẻ Gặt Đêm Ánh Sáng",
-      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
+      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
     },
     "hextech_gunblade": {
       "name": "Súng Kiếm Hextech",
@@ -1019,11 +1019,11 @@
     },
     "protectors_vow": {
       "name": "圣盾使的誓约",
-      "option": ""
+      "option": "敬畏：获得 <#60e84dff>50<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<> 的 <#ffdd8eff>80%<> 作为<#60e84dff>额外生命值<>。"
     },
     "radiant_protectors_vow": {
       "name": "光明版圣盾使的誓约",
-      "option": ""
+      "option": "敬畏：获得 <#60e84dff>50<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<> 的 <#ffdd8eff>80%<> 作为<#60e84dff>额外生命值<>。"
     },
     "protoplasm_harness": {
       "name": "原生质护带",
@@ -1179,19 +1179,19 @@
     },
     "overlords_bloodmail": {
       "name": "霸主血甲",
-      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>最大生命值<>的 <#ff9028ff>1.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
+      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
     },
     "radiant_overlords_bloodmail": {
       "name": "光明版霸主血甲",
-      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>最大生命值<>的 <#ff9028ff>1.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
+      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
     },
     "night_harvester": {
       "name": "夜幕收割者",
-      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
+      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
     },
     "radiant_night_harvester": {
       "name": "光明版夜幕收割者",
-      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
+      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
     },
     "hextech_gunblade": {
       "name": "海克斯科技枪刃",
@@ -1420,11 +1420,11 @@
     },
     "protectors_vow": {
       "name": "Juramento do Protetor",
-      "option": ""
+      "option": "Temor: Ganha <#60e84dff>vida bônus<> igual a <#60e84dff>50<> + <#ffdd8eff>80%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<>."
     },
     "radiant_protectors_vow": {
       "name": "Juramento do Protetor Radiante",
-      "option": ""
+      "option": "Temor: Ganha <#60e84dff>vida bônus<> igual a <#60e84dff>50<> + <#ffdd8eff>80%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<>."
     },
     "protoplasm_harness": {
       "name": "Couraça Protoplásmatica",
@@ -1580,19 +1580,19 @@
     },
     "overlords_bloodmail": {
       "name": "Cota de Sangue do Suserano",
-      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
+      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
     },
     "radiant_overlords_bloodmail": {
       "name": "Cota de Sangue do Suserano Radiante",
-      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
+      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
     },
     "night_harvester": {
       "name": "Ceifador Noturno",
-      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#4b7cffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
+      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
     },
     "radiant_night_harvester": {
       "name": "Ceifador Noturno Radiante",
-      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#4b7cffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
+      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
     },
     "hextech_gunblade": {
       "name": "Lâmina Hextech",
@@ -1821,11 +1821,11 @@
     },
     "protectors_vow": {
       "name": "Вестник Зимы",
-      "option": ""
+      "option": "Трепет: Даёт <#60e84dff>дополнительное здоровье<> равное <#60e84dff>50<> + <#ffdd8eff>80%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<>."
     },
     "radiant_protectors_vow": {
       "name": "Обет Защитника",
-      "option": ""
+      "option": "Трепет: Даёт <#60e84dff>дополнительное здоровье<> равное <#60e84dff>50<> + <#ffdd8eff>80%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<>."
     },
     "protoplasm_harness": {
       "name": "Протоплазменная Упряжь",
@@ -1981,19 +1981,19 @@
     },
     "overlords_bloodmail": {
       "name": "Кровавая кольчуга властелина",
-      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>максимального здоровья<>."
+      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
     },
     "radiant_overlords_bloodmail": {
       "name": "Лучезарная Кровавая кольчуга властелина",
-      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>максимального здоровья<>."
+      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
     },
     "night_harvester": {
       "name": "Ночной жнец",
-      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
+      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
     },
     "radiant_night_harvester": {
       "name": "Лучезарный Ночной жнец",
-      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
+      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
     },
     "hextech_gunblade": {
       "name": "Хекстековый пистолет-клинок",
