@@ -217,11 +217,11 @@
     },
     "protectors_vow": {
       "name": "Protector's Vow",
-      "option": ""
+      "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#ffdd8eff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
     },
     "radiant_protectors_vow": {
       "name": "Radiant Protector's Vow",
-      "option": ""
+      "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#ffdd8eff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
     },
     "protoplasm_harness": {
       "name": "Protoplasm Harness",
@@ -273,15 +273,15 @@
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
-      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 25%<> for <#e8a800ff>2 seconds<>."
+      "option": "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>2 seconds<>."
     },
     "mortal_reminder": {
       "name": "Mortal Reminder",
-      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
+      "option": "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "radiant_mortal_reminder": {
       "name": "Radiant Mortal Reminder",
-      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
+      "option": "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "experimental_hexplate": {
       "name": "Experimental Hexplate",
@@ -362,6 +362,42 @@
     "radiant_spear_of_shojin": {
       "name": "Radiant Spear of Shojin",
       "option": "Focused Will: Landing abilities on enemy champions grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
+    },
+    "oblivion_orb": {
+      "name": "Oblivion Orb",
+      "option": "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>2 seconds<>."
+    },
+    "morellonomicon": {
+      "name": "Morellonomicon",
+      "option": "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+    },
+    "radiant_morellonomicon": {
+      "name": "Radiant Morellonomicon",
+      "option": "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+    },
+    "overlords_bloodmail": {
+      "name": "Overlord's Bloodmail",
+      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "Radiant Overlord's Bloodmail",
+      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+    },
+    "night_harvester": {
+      "name": "Night Harvester",
+      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
+    },
+    "radiant_night_harvester": {
+      "name": "Radiant Night Harvester",
+      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
+    },
+    "hextech_gunblade": {
+      "name": "Hextech Gunblade",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "Radiant Hextech Gunblade",
+      "option": ""
     }
   },
   "vi": {
@@ -582,11 +618,11 @@
     },
     "protectors_vow": {
       "name": "Băng Giáp",
-      "option": ""
+      "option": "Kính Sợ: Nhận <#60e84dff>máu cộng thêm<> tương ứng <#60e84dff>50<> + <#ffdd8eff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn."
     },
     "radiant_protectors_vow": {
       "name": "Băng Giáp Ánh Sáng",
-      "option": ""
+      "option": "Kính Sợ: Nhận <#60e84dff>máu cộng thêm<> tương ứng <#60e84dff>50<> + <#ffdd8eff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn."
     },
     "protoplasm_harness": {
       "name": "Đai Nguyên Sinh",
@@ -727,6 +763,42 @@
     "radiant_spear_of_shojin": {
       "name": "Ngọn Giáo Shojin Ánh Sáng",
       "option": "Ý Chí Tập Trung: Kĩ năng trúng tướng địch sẽ tăng <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> trong <#e8a800ff>5 giây<> (tối đa 4 cộng dồn)."
+    },
+    "oblivion_orb": {
+      "name": "Quả Cầu Lãng Quên",
+      "option": "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 25%<> trong <#e8a800ff>2 giây<>."
+    },
+    "morellonomicon": {
+      "name": "Morellonomicon",
+      "option": "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+    },
+    "radiant_morellonomicon": {
+      "name": "Morellonomicon Ánh Sáng",
+      "option": "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+    },
+    "overlords_bloodmail": {
+      "name": "Giáp Máu Lãnh Chúa",
+      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân."
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "Giáp Máu Lãnh Chúa Ánh Sáng",
+      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân."
+    },
+    "night_harvester": {
+      "name": "Kẻ Gặt Đêm",
+      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
+    },
+    "radiant_night_harvester": {
+      "name": "Kẻ Gặt Đêm Ánh Sáng",
+      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
+    },
+    "hextech_gunblade": {
+      "name": "Súng Kiếm Hextech",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "Súng Kiếm Hextech Ánh Sáng",
+      "option": ""
     }
   },
   "zh-hans": {
@@ -947,11 +1019,11 @@
     },
     "protectors_vow": {
       "name": "圣盾使的誓约",
-      "option": ""
+      "option": "敬畏：获得 <#60e84dff>50<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<> 的 <#ffdd8eff>80%<> 作为<#60e84dff>额外生命值<>。"
     },
     "radiant_protectors_vow": {
       "name": "光明版圣盾使的誓约",
-      "option": ""
+      "option": "敬畏：获得 <#60e84dff>50<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<> 的 <#ffdd8eff>80%<> 作为<#60e84dff>额外生命值<>。"
     },
     "protoplasm_harness": {
       "name": "原生质护带",
@@ -1092,6 +1164,42 @@
     "radiant_spear_of_shojin": {
       "name": "光明版朔极之矛",
       "option": "专注意志：技能命中敌方英雄时获得 <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>，持续 <#e8a800ff>5秒<>（最多叠加4层）。"
+    },
+    "oblivion_orb": {
+      "name": "湮灭宝珠",
+      "option": "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低25%<>，持续 <#e8a800ff>2秒<>。"
+    },
+    "morellonomicon": {
+      "name": "莫雷洛秘典",
+      "option": "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+    },
+    "radiant_morellonomicon": {
+      "name": "光明版莫雷洛秘典",
+      "option": "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+    },
+    "overlords_bloodmail": {
+      "name": "霸主血甲",
+      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "光明版霸主血甲",
+      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
+    },
+    "night_harvester": {
+      "name": "夜幕收割者",
+      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
+    },
+    "radiant_night_harvester": {
+      "name": "光明版夜幕收割者",
+      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
+    },
+    "hextech_gunblade": {
+      "name": "海克斯科技枪刃",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "光明版海克斯科技枪刃",
+      "option": ""
     }
   },
   "pt-BR": {
@@ -1312,11 +1420,11 @@
     },
     "protectors_vow": {
       "name": "Juramento do Protetor",
-      "option": ""
+      "option": "Temor: Ganha <#60e84dff>vida bônus<> igual a <#60e84dff>50<> + <#ffdd8eff>80%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<>."
     },
     "radiant_protectors_vow": {
       "name": "Juramento do Protetor Radiante",
-      "option": ""
+      "option": "Temor: Ganha <#60e84dff>vida bônus<> igual a <#60e84dff>50<> + <#ffdd8eff>80%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<>."
     },
     "protoplasm_harness": {
       "name": "Couraça Protoplásmatica",
@@ -1457,6 +1565,443 @@
     "radiant_spear_of_shojin": {
       "name": "Lança de Shojin Radiante",
       "option": "Vontade Focada: Acertar habilidades em campeões inimigos concede <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>5 segundos<> (acumula 4x)."
+    },
+    "oblivion_orb": {
+      "name": "Orbe do Esquecimento",
+      "option": "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 25%<> por <#e8a800ff>2 segundos<>."
+    },
+    "morellonomicon": {
+      "name": "Morellonomicon",
+      "option": "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+    },
+    "radiant_morellonomicon": {
+      "name": "Morellonomicon Radiante",
+      "option": "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+    },
+    "overlords_bloodmail": {
+      "name": "Cota de Sangue do Suserano",
+      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "Cota de Sangue do Suserano Radiante",
+      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+    },
+    "night_harvester": {
+      "name": "Ceifador Noturno",
+      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
+    },
+    "radiant_night_harvester": {
+      "name": "Ceifador Noturno Radiante",
+      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
+    },
+    "hextech_gunblade": {
+      "name": "Lâmina Hextech",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "Lâmina Hextech Radiante",
+      "option": ""
+    }
+  },
+  "ru": {
+    "category": {
+      "all": "Все",
+      "ad": "Сила Атаки",
+      "attack_speed": "Скорость Атаки",
+      "defense": "Броня",
+      "magic_resistance": "Сопротивление Магии",
+      "magic": "Сила Умений",
+      "hp": "Здоровье"
+    },
+    "info": {
+      "tier": "Уровень",
+      "price": "Цена",
+      "stat": "Характеристики",
+      "option": "Эффект"
+    },
+    "tier_header": {
+      "1": "Уровень 1",
+      "2": "Уровень 2",
+      "3": "Уровень 3",
+      "4": "Уровень 4",
+      "5": "Уровень 5"
+    },
+    "related": {
+      "sub_items": "Компоненты",
+      "upper_items": "Улучшается в"
+    },
+    "tier": "Уровень {Tier}",
+    "spec": {
+      "attack": "<i#asset/base/ui/banpick/champion_stat_icon:ad_0> {Value} Сила Атаки",
+      "magic_power": "<i#asset/base/ui/banpick/champion_stat_icon:ap_0> {Value} Сила Умений",
+      "defence": "<i#asset/base/ui/banpick/champion_stat_icon:armor_0> {Value} Броня",
+      "hp": "<i#asset/base/ui/banpick/champion_stat_icon:hp_0> {Value} Здоровье",
+      "magic_resistance": "<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> {Value} Сопротивление Магии",
+      "vamp": "<i#asset/base/ui/banpick/champion_stat_icon:vamp_0> {Value}% Всестороннее Вытягивание Жизни",
+      "hp_mult": "\nGrowth: Увеличивает ваше максимальное здоровье на {Value}%.",
+      "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> {Value}% Скорость передвижения",
+      "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> {Value}% Скорость Атаки",
+      "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value}% Ускорение Умений",
+      "range": "+{Value} Дальность",
+      "defence_mult": "\nВторая Кожа: Увеличивает вашу общую броню на {Value}%.",
+      "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> {Value}% Пробивание Брони",
+      "magic_resistance_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> {Value}% Магическое Пробивание",
+      "heal_reduce": "+{Value}% Снижение Лечения",
+      "shield_break": "\nReave: Наносимый вами урон разрушает {Value}% щитов цели.",
+      "attack_enemy_hp_ratio": "+{Value}% от здоровья врага атакой",
+      "skill_enemy_hp_ratio": "+{Value}% от здоровья врага умением",
+      "attack_my_hp_ratio": "+{Value}% от моего здоровья атакой",
+      "reflect": "+{Value}% отражение урона",
+      "dot_amplify": "+{Value}% Усиление периодического урона",
+      "hp_regen": "+{Value} максимального восстановления здоровья",
+      "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Шанс Критического Удара",
+      "base_attack_damaged_reduce": "\nPlating: Снижает получаемый урон от базовых атак на <#e8a800ff>{Value}%<>.",
+      "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Снижение урона от умений",
+      "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> {Value}% Стойкость"
+    },
+    "ironsword": {
+      "name": "Длинный Меч",
+      "option": ""
+    },
+    "soldiers_longsword": {
+      "name": "Кирка",
+      "option": ""
+    },
+    "ruinous_blade": {
+      "name": "Вампирский Скипитр",
+      "option": ""
+    },
+    "conquerors_greatsword": {
+      "name": "Кровопийца",
+      "option": ""
+    },
+    "warlords_final_judgement": {
+      "name": "Благословенный Кровопийца",
+      "option": ""
+    },
+    "dagger": {
+      "name": "Кинжал",
+      "option": ""
+    },
+    "wind_dagger": {
+      "name": "Изогнутый Лук",
+      "option": ""
+    },
+    "twin_stormblade": {
+      "name": "Рвение",
+      "option": ""
+    },
+    "thunderclaw": {
+      "name": "Призрачный Танцор",
+      "option": ""
+    },
+    "storm_sovereign": {
+      "name": "Лучезарный Призрачный Танцор",
+      "option": ""
+    },
+    "steel_armor": {
+      "name": "Тканевая Броня",
+      "option": ""
+    },
+    "gatekeepers_armor": {
+      "name": "Кольчуга",
+      "option": ""
+    },
+    "black_knights_heavy_plate": {
+      "name": "Терновый Жилет",
+      "option": ""
+    },
+    "eternal_iron_plate": {
+      "name": "Шипованный Доспех",
+      "option": ""
+    },
+    "impregnable_fortress": {
+      "name": "Лучезарный Шипованный Доспех",
+      "option": "Шипы: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>"
+    },
+    "mystic_cloak": {
+      "name": "Антимагическая Мантия",
+      "option": ""
+    },
+    "night_hood": {
+      "name": "Поглощающий Плащ",
+      "option": ""
+    },
+    "dusk_raven": {
+      "name": "Капюшон Призрака",
+      "option": ""
+    },
+    "souls_edge": {
+      "name": "Коготь Дракона",
+      "option": ""
+    },
+    "veil_of_annihilation": {
+      "name": "Воля Дракона",
+      "option": ""
+    },
+    "arcane_crystal": {
+      "name": "Усиливающий Фолиант",
+      "option": ""
+    },
+    "spirit_crystal": {
+      "name": "Разящий Жезл",
+      "option": ""
+    },
+    "staff_of_rapture": {
+      "name": "Потерянная Глава",
+      "option": ""
+    },
+    "angels_fang": {
+      "name": "Буря Людена",
+      "option": ""
+    },
+    "prophet_of_the_abyss": {
+      "name": "Лучезарная Буря Людена",
+      "option": ""
+    },
+    "vital_orb": {
+      "name": "Рубиновый Кристалл",
+      "option": ""
+    },
+    "hardened_heart": {
+      "name": "Воспламеняющий Камень",
+      "option": ""
+    },
+    "ring_of_reincarnation": {
+      "name": "Пояс Великана",
+      "option": "Восстановление: Восстанавливает <#60e84dff>{Flat} здоровья<> каждую секунду."
+    },
+    "hourglass_of_eternity": {
+      "name": "Доспех Вармога",
+      "option": "Восстановление: Восстанавливает <#60e84dff>{Flat} здоровья<> каждую секунду."
+    },
+    "giants_horn_shard": {
+      "name": "Гордость Вармога",
+      "option": "Восстановление: Восстанавливает <#60e84dff>{RegenFlat} здоровья<> каждую секунду.\n\nDisdain: Наносит <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+    },
+    "bf_sword": {
+      "name": "Самый Лучший Меч",
+      "option": ""
+    },
+    "infinity_edge": {
+      "name": "Грань Бесконечности",
+      "option": ""
+    },
+    "radiant_infinity_edge": {
+      "name": "Грань Зенита",
+      "option": ""
+    },
+    "deathblade": {
+      "name": "Клинок Смерти",
+      "option": "Вершина: Увеличивает вашу общую <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> на <#ff9028ff>15%<>."
+    },
+    "radiant_deathblade": {
+      "name": "Светоносный Клинок Смерти",
+      "option": "Вершина: Увеличивает вашу общую <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> на <#ff9028ff>25%<>."
+    },
+    "deaths_dance": {
+      "name": "Танец Смерти",
+      "option": "Игнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: При убийстве снимает весь накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
+    },
+    "radiant_deaths_dance": {
+      "name": "Лучезарный Танец Смерти",
+      "option": "Игнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: При убийстве снимает весь накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
+    },
+    "needlessly_large_rod": {
+      "name": "Слишком Большой Жезл",
+      "option": ""
+    },
+    "rabadons_deathcap": {
+      "name": "Смертельная Шляпа Рабадона",
+      "option": "Опус: Увеличивает вашу общую <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> на <#a974ffff>20%<>."
+    },
+    "radiant_rabadons_deathcap": {
+      "name": "Вознесенная Шляпа Рабадона",
+      "option": "Опус: Увеличивает вашу общую <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> на <#a974ffff>35%<>."
+    },
+    "protectors_vow": {
+      "name": "Вестник Зимы",
+      "option": "Трепет: Даёт <#60e84dff>дополнительное здоровье<> равное <#60e84dff>50<> + <#ffdd8eff>80%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<>."
+    },
+    "radiant_protectors_vow": {
+      "name": "Обет Защитника",
+      "option": "Трепет: Даёт <#60e84dff>дополнительное здоровье<> равное <#60e84dff>50<> + <#ffdd8eff>80%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<>."
+    },
+    "protoplasm_harness": {
+      "name": "Протоплазменная Упряжь",
+      "option": "Укрепление: При <#d94c49ff>падении здоровья ниже 40%<> даёт <#60e84dff>300<> + <#60e84dff>25%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#60e84dff>дополнительное здоровье<> на <#e8a800ff>6 секунд<> и <#60e84dff>восстанавливает вам<> половину этого количества (перезарядка 30 секунд)."
+    },
+    "radiant_protoplasm_harness": {
+      "name": "Лучезарная Протоплазменная Упряжь",
+      "option": "Укрепление: При <#d94c49ff>падении здоровья ниже 40%<> даёт <#60e84dff>600<> + <#60e84dff>25%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#60e84dff>дополнительное здоровье<> на <#e8a800ff>6 секунд<> и <#60e84dff>восстанавливает вам<> половину этого количества (перезарядка 30 секунд)."
+    },
+    "frozen_mallet": {
+      "name": "Замёрзший Молот",
+      "option": "Обледенение: При атаке накладывает <#d94c49ff>замедление на 25%<> на <#e8a800ff>2 секунды<>."
+    },
+    "radiant_frozen_mallet": {
+      "name": "Лучезарный Замёрзший Молот",
+      "option": "Обледенение: При атаке наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>20<> + <#60e84dff>3%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> и накладывает <#d94c49ff>замедление на 25%<> на <#e8a800ff>2 секунды<>."
+    },
+    "riftmaker": {
+      "name": "Творец Разломов",
+      "option": "Наполнение: Попадания умениями дают <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> равную <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> на <#e8a800ff>5 секунд<> (макс. 3 стака)."
+    },
+    "radiant_riftmaker": {
+      "name": "Лучезарный Творец Разломов",
+      "option": "Наполнение: Попадания умениями дают <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> равную <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> на <#e8a800ff>5 секунд<> (макс. 3 стака)."
+    },
+    "unending_despair": {
+      "name": "Бесконечное Отчаяние",
+      "option": "Страдание: Попадания умениями восстанавливают вам <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+    },
+    "radiant_unending_despair": {
+      "name": "Лучезарное Бесконечное Отчаяние",
+      "option": "Страдание: Попадания умениями восстанавливают вам <#60e84dff>25<> + <#60e84dff>3%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+    },
+    "blade_of_the_ruined_king": {
+      "name": "Клинок падшего короля",
+      "option": "Край тумана: При атаке наносит <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>5% текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
+    },
+    "radiant_blade_of_the_ruined_king": {
+      "name": "Лучезарный Клинок падшего короля",
+      "option": "Край тумана: При атаке наносит <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>5% текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
+    },
+    "blackfire_torch": {
+      "name": "Факел Тёмного Огня",
+      "option": "Злодейский: Попадания умениями дают <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+    },
+    "radiant_blackfire_torch": {
+      "name": "Лучезарный Факел Тёмного Огня",
+      "option": "Злодейский: Попадания умениями дают <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+    },
+    "executioners_calling": {
+      "name": "Призвание Палача",
+      "option": "Палач: При атаке, <#d94c49ff>снижает лечение на 25%<> на <#e8a800ff>2 секунды<>."
+    },
+    "mortal_reminder": {
+      "name": "Глашатай Смерти",
+      "option": "Палач: При атаке, <#d94c49ff>снижает лечение на 40%<> на <#e8a800ff>2 секунды<>."
+    },
+    "radiant_mortal_reminder": {
+      "name": "Лучезарный Глашатай Смерти",
+      "option": "Палач: При атаке, <#d94c49ff>снижает лечение на 40%<> на <#e8a800ff>2 секунды<>."
+    },
+    "experimental_hexplate": {
+      "name": "Экспериментальная Хекстековая Броня",
+      "option": "Перегрузка: Даёт <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+    },
+    "radiant_experimental_hexplate": {
+      "name": "Лучезарная Экспериментальная Хекс Броня",
+      "option": "Перегрузка: Даёт <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+    },
+    "nashors_tooth": {
+      "name": "Зуб Нашора",
+      "option": "Укус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
+    },
+    "radiant_nashors_tooth": {
+      "name": "Дар Барона",
+      "option": "Укус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
+    },
+    "jaksho_the_protean": {
+      "name": "Жак'Шо Многоликий",
+      "option": "Стойкость: Получение урона от вражеского чемпиона даёт <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> и <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+    },
+    "radiant_jaksho_the_protean": {
+      "name": "Лучезарный Жак'Шо Многоликий",
+      "option": "Стойкость: Получение урона от вражеского чемпиона даёт <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> и <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+    },
+    "terminus": {
+      "name": "Светотень",
+      "option": "Соприкосновение: При атаке получает либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
+    },
+    "radiant_terminus": {
+      "name": "Лучезарная Светотень",
+      "option": "Соприкосновение: При атаке получает либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<> либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
+    },
+    "spirit_visage": {
+      "name": "Облачение Духов",
+      "option": "Живительная Сила: Увеличивает всё <#60e84dff>получаемое лечение<> на <#60e84dff>20%<>."
+    },
+    "radiant_spirit_visage": {
+      "name": "Лучезарное Облачение Духов",
+      "option": "Живительная Сила: Увеличивает всё <#60e84dff>получаемое лечение<> на <#60e84dff>20%<>."
+    },
+    "guinsoos_rageblade": {
+      "name": "Клинок Ярости Гинсу",
+      "option": "Гнев: Ваши базовые атаки наносят <#a974ffff>30 дополнительного магического урона<>.\n\nЯростный Удар: При атаке даёт <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+    },
+    "radiant_guinsoos_rageblade": {
+      "name": "Расплата Гинсу",
+      "option": "Гнев: Ваши базовые атаки наносят <#a974ffff>30 дополнительного магического урона<>.\n\nЯростный Удар: При атаке даёт <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+    },
+    "mirage_blade": {
+      "name": "Призрачный Клинок",
+      "option": "Иллюзия: Даёт <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nРазымытие: При убийстве даёт <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<>."
+    },
+    "radiant_mirage_blade": {
+      "name": "Лучезарный Призрачный Клинок",
+      "option": "Иллюзия: Даёт <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nРазымытие: При убийстве даёт <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<>."
+    },
+    "collector": {
+      "name": "Сборщик Долгов",
+      "option": "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
+    },
+    "radiant_collector": {
+      "name": "Лучезарный Сборщик Долгов",
+      "option": "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
+    },
+    "heartsteel": {
+      "name": "Сердце Стали",
+      "option": "Железное сердце: Каждые <#e8a800ff>15 секунд<>, ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>15%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
+    },
+    "radiant_heartsteel": {
+      "name": "Лучезарное Сердце Стали",
+      "option": "Железное сердце: Каждые <#e8a800ff>15 секунд<>, ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>15%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
+    },
+    "spear_of_shojin": {
+      "name": "Копье Седзина",
+      "option": "Концентрация: Попадания способностями по вражеским чемпионам дают <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>5 секунд<> (макс. 4 стака)."
+    },
+    "radiant_spear_of_shojin": {
+      "name": "Копье Хираны",
+      "option": "Концентрация: Попадания способностями по вражеским чемпионам дают <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>5 секунд<> (макс. 4 стака)."
+    },
+    "oblivion_orb": {
+      "name": "Сфера забвения",
+      "option": "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 25%<> на <#e8a800ff>2 секунды<>."
+    },
+    "morellonomicon": {
+      "name": "Морелленомикон",
+      "option": "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+    },
+    "radiant_morellonomicon": {
+      "name": "Лучезарный Морелленомикон",
+      "option": "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+    },
+    "overlords_bloodmail": {
+      "name": "Кровавая кольчуга властелина",
+      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "Лучезарная Кровавая кольчуга властелина",
+      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+    },
+    "night_harvester": {
+      "name": "Ночной жнец",
+      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
+    },
+    "radiant_night_harvester": {
+      "name": "Лучезарный Ночной жнец",
+      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
+    },
+    "hextech_gunblade": {
+      "name": "Хекстековый пистолет-клинок",
+      "option": ""
+    },
+    "radiant_hextech_gunblade": {
+      "name": "Лучезарный Хекстековый пистолет-клинок",
+      "option": ""
     }
   }
 }

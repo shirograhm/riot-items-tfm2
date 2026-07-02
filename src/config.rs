@@ -33,6 +33,8 @@ pub struct ItemConfig {
     pub effect_hp_percent_damage: Option<f64>,
     pub effect_caster_hp_percent_damage: Option<f64>,
     pub effect_caster_hp_percent_power: Option<f64>,
+    pub effect_caster_hp_percent_attack: Option<f64>,
+    pub effect_caster_defence_percent_hp: Option<f64>,
     pub effect_armor_pen_per_stack: Option<usize>,
     pub effect_magic_pen_per_stack: Option<usize>,
     pub effect_slow_amount: Option<i32>,
