@@ -57,8 +57,7 @@ impl ModItemInfo for Morellonomicon {
     }
 
     fn icon(&self) -> &str {
-        // TODO: set the real item icon id.
-        "t11_4"
+        "t10_8"
     }
 
     fn price(&self) -> usize {
@@ -182,8 +181,7 @@ impl ModItemInfo for RadiantMorellonomicon {
     }
 
     fn icon(&self) -> &str {
-        // TODO: set the real item icon id.
-        "t11_5"
+        "t10_9"
     }
 
     fn price(&self) -> usize {
