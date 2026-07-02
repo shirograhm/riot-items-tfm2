@@ -16,6 +16,16 @@ $ooHeal = if ($null -ne $config.oblivion_orb.effect_heal_reduce) { [int]$config.
 $ooDur = if ($null -ne $config.oblivion_orb.effect_duration_seconds) { [int]$config.oblivion_orb.effect_duration_seconds }                    else { 2 }
 $obmAtk = if ($null -ne $config.overlords_bloodmail.effect_caster_hp_percent_attack) { [double]$config.overlords_bloodmail.effect_caster_hp_percent_attack }                else { 1.5 }
 $robmAtk = if ($null -ne $config.radiant_overlords_bloodmail.effect_caster_hp_percent_attack) { [double]$config.radiant_overlords_bloodmail.effect_caster_hp_percent_attack } else { 1.5 }
+$nhFlat = if ($null -ne $config.night_harvester.effect_bonus_flat_damage) { [int]$config.night_harvester.effect_bonus_flat_damage }                      else { 160 }
+$nhApPct = if ($null -ne $config.night_harvester.effect_ap_percent_damage) { [double]$config.night_harvester.effect_ap_percent_damage }                 else { 40.0 }
+$nhMs = if ($null -ne $config.night_harvester.effect_move_speed_mult) { [int]$config.night_harvester.effect_move_speed_mult }                            else { 40 }
+$nhDur = if ($null -ne $config.night_harvester.effect_duration_seconds) { [int]$config.night_harvester.effect_duration_seconds }                         else { 2 }
+$nhCd = if ($null -ne $config.night_harvester.effect_cooldown_seconds) { [int]$config.night_harvester.effect_cooldown_seconds }                          else { 10 }
+$rnhFlat = if ($null -ne $config.radiant_night_harvester.effect_bonus_flat_damage) { [int]$config.radiant_night_harvester.effect_bonus_flat_damage }    else { 160 }
+$rnhApPct = if ($null -ne $config.radiant_night_harvester.effect_ap_percent_damage) { [double]$config.radiant_night_harvester.effect_ap_percent_damage } else { 40.0 }
+$rnhMs = if ($null -ne $config.radiant_night_harvester.effect_move_speed_mult) { [int]$config.radiant_night_harvester.effect_move_speed_mult }           else { 40 }
+$rnhDur = if ($null -ne $config.radiant_night_harvester.effect_duration_seconds) { [int]$config.radiant_night_harvester.effect_duration_seconds }       else { 2 }
+$rnhCd = if ($null -ne $config.radiant_night_harvester.effect_cooldown_seconds) { [int]$config.radiant_night_harvester.effect_cooldown_seconds }        else { 10 }
 $ntFlat = if ($null -ne $config.nashors_tooth.effect_bonus_flat_damage) { [int]$config.nashors_tooth.effect_bonus_flat_damage }              else { 35 }
 $ntApPct = if ($null -ne $config.nashors_tooth.effect_ap_percent_damage) { [double]$config.nashors_tooth.effect_ap_percent_damage }              else { 3.0 }
 $rntFlat = if ($null -ne $config.radiant_nashors_tooth.effect_bonus_flat_damage) { [int]$config.radiant_nashors_tooth.effect_bonus_flat_damage } else { 50 }
@@ -139,6 +149,8 @@ $i18n.en.executioners_calling.option = "Executioner: On attack, <#d94c49ff>reduc
 $i18n.en.oblivion_orb.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${ooHeal}%<> for <#e8a800ff>${ooDur} seconds<>."
 $i18n.en.overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>${obmAtk}%<> of your <$hpIcon> <#ff9028ff>maximum health<>."
 $i18n.en.radiant_overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>${robmAtk}%<> of your <$hpIcon> <#ff9028ff>maximum health<>."
+$i18n.en.night_harvester.option = "Soulrend: Damaging an enemy champion deals <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#4b7cffff>${nhMs}%<> <$speedIcon> <#4b7cffff>movement speed<> for <#e8a800ff>${nhDur} seconds<> (${nhCd} second cooldown per target)."
+$i18n.en.radiant_night_harvester.option = "Soulrend: Damaging an enemy champion deals <#a974ffff>${rnhFlat}<> + <#a974ffff>${rnhApPct}%<> <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#4b7cffff>${rnhMs}%<> <$speedIcon> <#4b7cffff>movement speed<> for <#e8a800ff>${rnhDur} seconds<> (${rnhCd} second cooldown per target)."
 $i18n.en.nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
 $i18n.en.radiant_nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
 $i18n.en.riftmaker.option = "Infusion: Spell hits grant <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rmDur} seconds<> (max ${rmStacks} stacks)."
@@ -189,6 +201,8 @@ $i18n.vi.executioners_calling.option = "Đao phủ: Khi tấn công, gây <#d94c
 $i18n.vi.oblivion_orb.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${ooHeal}%<> trong <#e8a800ff>${ooDur} giây<>."
 $i18n.vi.overlords_bloodmail.option = "Bạo Ngược: Nhận <#ff9028ff>thêm<> <$adIcon> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>${obmAtk}%<> <$hpIcon> <#ff9028ff>máu tối đa<> của bản thân."
 $i18n.vi.radiant_overlords_bloodmail.option = "Bạo Ngược: Nhận <#ff9028ff>thêm<> <$adIcon> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>${robmAtk}%<> <$hpIcon> <#ff9028ff>máu tối đa<> của bản thân."
+$i18n.vi.night_harvester.option = "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#4b7cffff>${nhMs}%<> <$speedIcon> <#4b7cffff>tốc độ di chuyển<> trong <#e8a800ff>${nhDur} giây<> (hồi chiêu ${nhCd} giây mỗi mục tiêu)."
+$i18n.vi.radiant_night_harvester.option = "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>${rnhFlat}<> + <#a974ffff>${rnhApPct}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#4b7cffff>${rnhMs}%<> <$speedIcon> <#4b7cffff>tốc độ di chuyển<> trong <#e8a800ff>${rnhDur} giây<> (hồi chiêu ${rnhCd} giây mỗi mục tiêu)."
 $i18n.vi.nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
 $i18n.vi.radiant_nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
 $i18n.vi.riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rmDur} giây<> (tối đa ${rmStacks} cộng dồn)."
@@ -239,6 +253,8 @@ $i18n.'zh-hans'.executioners_calling.option = "重伤：普通攻击使目标的
 $i18n.'zh-hans'.oblivion_orb.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${ooHeal}%<>，持续 <#e8a800ff>${ooDur}秒<>。"
 $i18n.'zh-hans'.overlords_bloodmail.option = "暴政：获得相当于你的 <$hpIcon> <#ff9028ff>最大生命值<>的 <#ff9028ff>${obmAtk}%<> 的<#ff9028ff>额外<> <$adIcon> <#ff9028ff>攻击力<>。"
 $i18n.'zh-hans'.radiant_overlords_bloodmail.option = "暴政：获得相当于你的 <$hpIcon> <#ff9028ff>最大生命值<>的 <#ff9028ff>${robmAtk}%<> 的<#ff9028ff>额外<> <$adIcon> <#ff9028ff>攻击力<>。"
+$i18n.'zh-hans'.night_harvester.option = "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#4b7cffff>${nhMs}%<> <$speedIcon> <#4b7cffff>移动速度<>，持续 <#e8a800ff>${nhDur}秒<>（每个目标冷却${nhCd}秒）。"
+$i18n.'zh-hans'.radiant_night_harvester.option = "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>${rnhFlat}<> + <#a974ffff>${rnhApPct}%<> <$apIcon> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#4b7cffff>${rnhMs}%<> <$speedIcon> <#4b7cffff>移动速度<>，持续 <#e8a800ff>${rnhDur}秒<>（每个目标冷却${rnhCd}秒）。"
 $i18n.'zh-hans'.nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${ntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${ntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
 $i18n.'zh-hans'.radiant_nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${rntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${rntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
 $i18n.'zh-hans'.riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rmDur}秒<>（最多叠加${rmStacks}层）。"
@@ -289,6 +305,8 @@ $i18n.'pt-BR'.executioners_calling.option = "Executor: Ataques aplicam <#d94c49f
 $i18n.'pt-BR'.oblivion_orb.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${ooHeal}%<> por <#e8a800ff>${ooDur} segundos<>."
 $i18n.'pt-BR'.overlords_bloodmail.option = "Tirania: Ganha <#ff9028ff>bônus<> de <$adIcon> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>${obmAtk}%<> da sua <$hpIcon> <#ff9028ff>Vida Máxima<>."
 $i18n.'pt-BR'.radiant_overlords_bloodmail.option = "Tirania: Ganha <#ff9028ff>bônus<> de <$adIcon> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>${robmAtk}%<> da sua <$hpIcon> <#ff9028ff>Vida Máxima<>."
+$i18n.'pt-BR'.night_harvester.option = "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> de <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#4b7cffff>${nhMs}%<> de <$speedIcon> <#4b7cffff>Velocidade de Movimento<> por <#e8a800ff>${nhDur} segundos<> (recarga de ${nhCd} segundos por alvo)."
+$i18n.'pt-BR'.radiant_night_harvester.option = "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>${rnhFlat}<> + <#a974ffff>${rnhApPct}%<> de <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#4b7cffff>${rnhMs}%<> de <$speedIcon> <#4b7cffff>Velocidade de Movimento<> por <#e8a800ff>${rnhDur} segundos<> (recarga de ${rnhCd} segundos por alvo)."
 $i18n.'pt-BR'.nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
 $i18n.'pt-BR'.radiant_nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
 $i18n.'pt-BR'.riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rmDur} segundos<> (acumula ${rmStacks}x)."
@@ -339,6 +357,8 @@ $i18n.ru.executioners_calling.option = "Палач: При атаке, <#d94c49f
 $i18n.ru.oblivion_orb.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${ooHeal}%<> на <#e8a800ff>${ooDur} секунды<>."
 $i18n.ru.overlords_bloodmail.option = "Тирания: Даёт <#ff9028ff>дополнительную<> <$adIcon> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>${obmAtk}%<> от вашего <$hpIcon> <#ff9028ff>максимального здоровья<>."
 $i18n.ru.radiant_overlords_bloodmail.option = "Тирания: Даёт <#ff9028ff>дополнительную<> <$adIcon> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>${robmAtk}%<> от вашего <$hpIcon> <#ff9028ff>максимального здоровья<>."
+$i18n.ru.night_harvester.option = "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#4b7cffff>${nhMs}%<> <$speedIcon> <#4b7cffff>скорости передвижения<> на <#e8a800ff>${nhDur} секунды<> (перезарядка ${nhCd} секунд на каждую цель)."
+$i18n.ru.radiant_night_harvester.option = "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>${rnhFlat}<> + <#a974ffff>${rnhApPct}%<> <$apIcon> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#4b7cffff>${rnhMs}%<> <$speedIcon> <#4b7cffff>скорости передвижения<> на <#e8a800ff>${rnhDur} секунды<> (перезарядка ${rnhCd} секунд на каждую цель)."
 $i18n.ru.nashors_tooth.option = "Укус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Силы Умений<>."
 $i18n.ru.radiant_nashors_tooth.option = "Укус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Силы Умений<>."
 $i18n.ru.riftmaker.option = "Наполнение: Попадания умениями дают <$apIcon> <#a974ffff>Силу Умений<> равную <#60e84dff>${rmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> на <#e8a800ff>${rmDur} секунд<> (макс. ${rmStacks} стака)."
@@ -391,6 +411,8 @@ Write-Host "  Executioner's Calling:   -${execHeal}% healing / ${execDur}s"
 Write-Host "  Oblivion Orb:            -${ooHeal}% healing / ${ooDur}s"
 Write-Host "  Overlord's Bloodmail:         ${obmAtk}% max HP as AD"
 Write-Host "  Radiant Overlord's Bloodmail: ${robmAtk}% max HP as AD"
+Write-Host "  Night Harvester:              ${nhFlat} + ${nhApPct}% AP magic dmg / ${nhMs}% MS ${nhDur}s / ${nhCd}s per-target CD"
+Write-Host "  Radiant Night Harvester:      ${rnhFlat} + ${rnhApPct}% AP magic dmg / ${rnhMs}% MS ${rnhDur}s / ${rnhCd}s per-target CD"
 Write-Host "  Nashor's Tooth:         ${ntFlat} + ${ntApPct}% AP magic dmg"
 Write-Host "  Radiant Nashor's Tooth: ${rntFlat} + ${rntApPct}% AP magic dmg"
 Write-Host "  Riftmaker:         ${rmHpPct}% max HP AP/stack / ${rmDur}s / ${rmStacks} stacks"

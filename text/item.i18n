@@ -767,6 +767,14 @@
     "radiant_overlords_bloodmail": {
       "name": "Giáp Máu Lãnh Chúa Ánh Sáng",
       "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
+    },
+    "night_harvester": {
+      "name": "Kẻ Gặt Đêm",
+      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
+    },
+    "radiant_night_harvester": {
+      "name": "Kẻ Gặt Đêm Ánh Sáng",
+      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
     }
   },
   "zh-hans": {
@@ -1144,6 +1152,14 @@
     "radiant_overlords_bloodmail": {
       "name": "光明版霸主血甲",
       "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>最大生命值<>的 <#ff9028ff>1.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
+    },
+    "night_harvester": {
+      "name": "夜幕收割者",
+      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
+    },
+    "radiant_night_harvester": {
+      "name": "光明版夜幕收割者",
+      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
     }
   },
   "pt-BR": {
@@ -1521,6 +1537,14 @@
     "radiant_overlords_bloodmail": {
       "name": "Cota de Sangue do Suserano Radiante",
       "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
+    },
+    "night_harvester": {
+      "name": "Ceifador Noturno",
+      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#4b7cffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
+    },
+    "radiant_night_harvester": {
+      "name": "Ceifador Noturno Radiante",
+      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#4b7cffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
     }
   },
   "ru": {
@@ -1898,6 +1922,14 @@
     "radiant_overlords_bloodmail": {
       "name": "Лучезарная Кровавая кольчуга властелина",
       "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>максимального здоровья<>."
+    },
+    "night_harvester": {
+      "name": "Ночной жнец",
+      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
+    },
+    "radiant_night_harvester": {
+      "name": "Лучезарный Ночной жнец",
+      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#4b7cffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
     }
   }
 }
