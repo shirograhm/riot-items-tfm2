@@ -273,15 +273,15 @@
     },
     "executioners_calling": {
       "name": "Executioner's Calling",
-      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 25%<> for <#e8a800ff>2 seconds<>."
+      "option": "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>2 seconds<>."
     },
     "mortal_reminder": {
       "name": "Mortal Reminder",
-      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
+      "option": "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "radiant_mortal_reminder": {
       "name": "Radiant Mortal Reminder",
-      "option": "Executioner: On attack, <#d94c49ff>reduce healing by 40%<> for <#e8a800ff>2 seconds<>."
+      "option": "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
     },
     "experimental_hexplate": {
       "name": "Experimental Hexplate",
@@ -362,6 +362,34 @@
     "radiant_spear_of_shojin": {
       "name": "Radiant Spear of Shojin",
       "option": "Focused Will: Landing abilities on enemy champions grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
+    },
+    "oblivion_orb": {
+      "name": "Oblivion Orb",
+      "option": "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>2 seconds<>."
+    },
+    "morellonomicon": {
+      "name": "Morellonomicon",
+      "option": "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+    },
+    "radiant_morellonomicon": {
+      "name": "Radiant Morellonomicon",
+      "option": "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+    },
+    "overlords_bloodmail": {
+      "name": "Overlord's Bloodmail",
+      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>maximum health<>."
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "Radiant Overlord's Bloodmail",
+      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>maximum health<>."
+    },
+    "cosmic_drive": {
+      "name": "Cosmic Drive",
+      "option": "Spelldance: Dealing <#a974ffff>magic damage<> to an enemy champion grants <#4b7cffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>movement speed<> for <#e8a800ff>4 seconds<>."
+    },
+    "radiant_cosmic_drive": {
+      "name": "Radiant Cosmic Drive",
+      "option": "Spelldance: Dealing <#a974ffff>magic damage<> to an enemy champion grants <#4b7cffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#4b7cffff>movement speed<> for <#e8a800ff>4 seconds<>."
     }
   },
   "vi": {
