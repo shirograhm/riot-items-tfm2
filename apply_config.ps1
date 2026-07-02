@@ -14,6 +14,8 @@ $execHeal = if ($null -ne $config.executioners_calling.effect_heal_reduce) { [in
 $execDur = if ($null -ne $config.executioners_calling.effect_duration_seconds) { [int]$config.executioners_calling.effect_duration_seconds } else { 2 }
 $ooHeal = if ($null -ne $config.oblivion_orb.effect_heal_reduce) { [int]$config.oblivion_orb.effect_heal_reduce }                             else { 25 }
 $ooDur = if ($null -ne $config.oblivion_orb.effect_duration_seconds) { [int]$config.oblivion_orb.effect_duration_seconds }                    else { 2 }
+$obmAtk = if ($null -ne $config.overlords_bloodmail.effect_caster_hp_percent_attack) { [double]$config.overlords_bloodmail.effect_caster_hp_percent_attack }                else { 2.5 }
+$robmAtk = if ($null -ne $config.radiant_overlords_bloodmail.effect_caster_hp_percent_attack) { [double]$config.radiant_overlords_bloodmail.effect_caster_hp_percent_attack } else { 2.5 }
 $ntFlat = if ($null -ne $config.nashors_tooth.effect_bonus_flat_damage) { [int]$config.nashors_tooth.effect_bonus_flat_damage }              else { 35 }
 $ntApPct = if ($null -ne $config.nashors_tooth.effect_ap_percent_damage) { [double]$config.nashors_tooth.effect_ap_percent_damage }              else { 3.0 }
 $rntFlat = if ($null -ne $config.radiant_nashors_tooth.effect_bonus_flat_damage) { [int]$config.radiant_nashors_tooth.effect_bonus_flat_damage } else { 50 }
@@ -135,6 +137,8 @@ Write-Host "Updating English text."
 
 $i18n.en.executioners_calling.option = "Executioner: On attack, <#d94c49ff>reduce healing by ${execHeal}%<> for <#e8a800ff>${execDur} seconds<>."
 $i18n.en.oblivion_orb.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${ooHeal}%<> for <#e8a800ff>${ooDur} seconds<>."
+$i18n.en.overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>${obmAtk}%<> of your <$hpIcon> <#ff9028ff>maximum health<>."
+$i18n.en.radiant_overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>${robmAtk}%<> of your <$hpIcon> <#ff9028ff>maximum health<>."
 $i18n.en.nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
 $i18n.en.radiant_nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
 $i18n.en.riftmaker.option = "Infusion: Spell hits grant <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rmDur} seconds<> (max ${rmStacks} stacks)."
@@ -183,6 +187,8 @@ Write-Host "Updating Vietnamese text."
 
 $i18n.vi.executioners_calling.option = "Đao phủ: Khi tấn công, gây <#d94c49ff>${execHeal}% giảm hồi máu<> trong <#e8a800ff>${execDur} giây<>."
 $i18n.vi.oblivion_orb.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${ooHeal}%<> trong <#e8a800ff>${ooDur} giây<>."
+$i18n.vi.overlords_bloodmail.option = "Bạo Ngược: Nhận <#ff9028ff>thêm<> <$adIcon> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>${obmAtk}%<> <$hpIcon> <#ff9028ff>máu tối đa<> của bản thân."
+$i18n.vi.radiant_overlords_bloodmail.option = "Bạo Ngược: Nhận <#ff9028ff>thêm<> <$adIcon> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>${robmAtk}%<> <$hpIcon> <#ff9028ff>máu tối đa<> của bản thân."
 $i18n.vi.nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
 $i18n.vi.radiant_nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
 $i18n.vi.riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rmDur} giây<> (tối đa ${rmStacks} cộng dồn)."
@@ -231,6 +237,8 @@ Write-Host "Updating Chinese (Simplified) text."
 
 $i18n.'zh-hans'.executioners_calling.option = "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低${execHeal}%<>，持续 <#e8a800ff>${execDur}秒<>。"
 $i18n.'zh-hans'.oblivion_orb.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${ooHeal}%<>，持续 <#e8a800ff>${ooDur}秒<>。"
+$i18n.'zh-hans'.overlords_bloodmail.option = "暴政：获得相当于你的 <$hpIcon> <#ff9028ff>最大生命值<>的 <#ff9028ff>${obmAtk}%<> 的<#ff9028ff>额外<> <$adIcon> <#ff9028ff>攻击力<>。"
+$i18n.'zh-hans'.radiant_overlords_bloodmail.option = "暴政：获得相当于你的 <$hpIcon> <#ff9028ff>最大生命值<>的 <#ff9028ff>${robmAtk}%<> 的<#ff9028ff>额外<> <$adIcon> <#ff9028ff>攻击力<>。"
 $i18n.'zh-hans'.nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${ntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${ntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
 $i18n.'zh-hans'.radiant_nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${rntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${rntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
 $i18n.'zh-hans'.riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rmDur}秒<>（最多叠加${rmStacks}层）。"
@@ -279,6 +287,8 @@ Write-Host "Updating Portuguese (Brazil) text."
 
 $i18n.'pt-BR'.executioners_calling.option = "Executor: Ataques aplicam <#d94c49ff>${execHeal}% de Redução de Cura<> for <#e8a800ff>${execDur} segundos<>."
 $i18n.'pt-BR'.oblivion_orb.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${ooHeal}%<> por <#e8a800ff>${ooDur} segundos<>."
+$i18n.'pt-BR'.overlords_bloodmail.option = "Tirania: Ganha <#ff9028ff>bônus<> de <$adIcon> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>${obmAtk}%<> da sua <$hpIcon> <#ff9028ff>Vida Máxima<>."
+$i18n.'pt-BR'.radiant_overlords_bloodmail.option = "Tirania: Ganha <#ff9028ff>bônus<> de <$adIcon> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>${robmAtk}%<> da sua <$hpIcon> <#ff9028ff>Vida Máxima<>."
 $i18n.'pt-BR'.nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
 $i18n.'pt-BR'.radiant_nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
 $i18n.'pt-BR'.riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rmDur} segundos<> (acumula ${rmStacks}x)."
@@ -327,6 +337,8 @@ Write-Host "Updating Russian text."
 
 $i18n.ru.executioners_calling.option = "Палач: При атаке, <#d94c49ff>снижает лечение на ${execHeal}%<> на <#e8a800ff>${execDur} секунды<>."
 $i18n.ru.oblivion_orb.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${ooHeal}%<> на <#e8a800ff>${ooDur} секунды<>."
+$i18n.ru.overlords_bloodmail.option = "Тирания: Даёт <#ff9028ff>дополнительную<> <$adIcon> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>${obmAtk}%<> от вашего <$hpIcon> <#ff9028ff>максимального здоровья<>."
+$i18n.ru.radiant_overlords_bloodmail.option = "Тирания: Даёт <#ff9028ff>дополнительную<> <$adIcon> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>${robmAtk}%<> от вашего <$hpIcon> <#ff9028ff>максимального здоровья<>."
 $i18n.ru.nashors_tooth.option = "Укус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Силы Умений<>."
 $i18n.ru.radiant_nashors_tooth.option = "Укус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Силы Умений<>."
 $i18n.ru.riftmaker.option = "Наполнение: Попадания умениями дают <$apIcon> <#a974ffff>Силу Умений<> равную <#60e84dff>${rmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> на <#e8a800ff>${rmDur} секунд<> (макс. ${rmStacks} стака)."
@@ -377,6 +389,8 @@ $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '
 Write-Host "Done."
 Write-Host "  Executioner's Calling:   -${execHeal}% healing / ${execDur}s"
 Write-Host "  Oblivion Orb:            -${ooHeal}% healing / ${ooDur}s"
+Write-Host "  Overlord's Bloodmail:         ${obmAtk}% max HP as AD"
+Write-Host "  Radiant Overlord's Bloodmail: ${robmAtk}% max HP as AD"
 Write-Host "  Nashor's Tooth:         ${ntFlat} + ${ntApPct}% AP magic dmg"
 Write-Host "  Radiant Nashor's Tooth: ${rntFlat} + ${rntApPct}% AP magic dmg"
 Write-Host "  Riftmaker:         ${rmHpPct}% max HP AP/stack / ${rmDur}s / ${rmStacks} stacks"

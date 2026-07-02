@@ -759,6 +759,14 @@
     "oblivion_orb": {
       "name": "Quả Cầu Lãng Quên",
       "option": "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 25%<> trong <#e8a800ff>2 giây<>."
+    },
+    "overlords_bloodmail": {
+      "name": "Giáp Máu Lãnh Chúa",
+      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "Giáp Máu Lãnh Chúa Ánh Sáng",
+      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
     }
   },
   "zh-hans": {
@@ -1128,6 +1136,14 @@
     "oblivion_orb": {
       "name": "湮灭宝珠",
       "option": "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低25%<>，持续 <#e8a800ff>2秒<>。"
+    },
+    "overlords_bloodmail": {
+      "name": "霸主血甲",
+      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>最大生命值<>的 <#ff9028ff>2.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "光明版霸主血甲",
+      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>最大生命值<>的 <#ff9028ff>2.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
     }
   },
   "pt-BR": {
@@ -1497,6 +1513,14 @@
     "oblivion_orb": {
       "name": "Orbe do Esquecimento",
       "option": "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 25%<> por <#e8a800ff>2 segundos<>."
+    },
+    "overlords_bloodmail": {
+      "name": "Cota de Sangue do Suserano",
+      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "Cota de Sangue do Suserano Radiante",
+      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
     }
   },
   "ru": {
@@ -1866,6 +1890,14 @@
     "oblivion_orb": {
       "name": "Сфера забвения",
       "option": "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 25%<> на <#e8a800ff>2 секунды<>."
+    },
+    "overlords_bloodmail": {
+      "name": "Кровавая кольчуга властелина",
+      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>максимального здоровья<>."
+    },
+    "radiant_overlords_bloodmail": {
+      "name": "Лучезарная Кровавая кольчуга властелина",
+      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>максимального здоровья<>."
     }
   }
 }
