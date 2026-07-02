@@ -95,7 +95,10 @@ impl ModItemInfo for ProtectorsVow {
         }
 
         let bonus_hp = self.effect_bonus_flat_hp
-            + percent_of(entity_ref.stat().defence, self.effect_caster_defence_percent_hp) as i32;
+            + percent_of(
+                entity_ref.stat().defence,
+                self.effect_caster_defence_percent_hp,
+            ) as i32;
         let entity_id = entity_ref.id();
         ctx.add_buff(
             entity_id,
@@ -205,7 +208,10 @@ impl ModItemInfo for RadiantProtectorsVow {
         }
 
         let bonus_hp = self.effect_bonus_flat_hp
-            + percent_of(entity_ref.stat().defence, self.effect_caster_defence_percent_hp) as i32;
+            + percent_of(
+                entity_ref.stat().defence,
+                self.effect_caster_defence_percent_hp,
+            ) as i32;
         let entity_id = entity_ref.id();
         ctx.add_buff(
             entity_id,
