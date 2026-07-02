@@ -22,9 +22,9 @@ impl Default for OverlordsBloodmail {
     fn default() -> Self {
         Self {
             price: 1400,
-            attack: 55,
-            hp: 250,
-            effect_caster_hp_percent_attack: 2.5,
+            attack: 25,
+            hp: 400,
+            effect_caster_hp_percent_attack: 1.5,
         }
     }
 }
@@ -130,9 +130,9 @@ impl Default for RadiantOverlordsBloodmail {
     fn default() -> Self {
         Self {
             price: 2000,
-            attack: 105,
-            hp: 450,
-            effect_caster_hp_percent_attack: 2.5,
+            attack: 40,
+            hp: 650,
+            effect_caster_hp_percent_attack: 1.5,
         }
     }
 }

@@ -377,11 +377,11 @@
     },
     "overlords_bloodmail": {
       "name": "Overlord's Bloodmail",
-      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>maximum health<>."
+      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>maximum health<>."
     },
     "radiant_overlords_bloodmail": {
       "name": "Radiant Overlord's Bloodmail",
-      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>maximum health<>."
+      "option": "Tyranny: Gain <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> equal to <#ff9028ff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>maximum health<>."
     },
     "night_harvester": {
       "name": "Night Harvester",
@@ -762,11 +762,11 @@
     },
     "overlords_bloodmail": {
       "name": "Giáp Máu Lãnh Chúa",
-      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
+      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
     },
     "radiant_overlords_bloodmail": {
       "name": "Giáp Máu Lãnh Chúa Ánh Sáng",
-      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
+      "option": "Bạo Ngược: Nhận <#ff9028ff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> tương ứng <#ff9028ff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>máu tối đa<> của bản thân."
     }
   },
   "zh-hans": {
@@ -1139,11 +1139,11 @@
     },
     "overlords_bloodmail": {
       "name": "霸主血甲",
-      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>最大生命值<>的 <#ff9028ff>2.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
+      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>最大生命值<>的 <#ff9028ff>1.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
     },
     "radiant_overlords_bloodmail": {
       "name": "光明版霸主血甲",
-      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>最大生命值<>的 <#ff9028ff>2.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
+      "option": "暴政：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>最大生命值<>的 <#ff9028ff>1.5%<> 的<#ff9028ff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>。"
     }
   },
   "pt-BR": {
@@ -1516,11 +1516,11 @@
     },
     "overlords_bloodmail": {
       "name": "Cota de Sangue do Suserano",
-      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
+      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
     },
     "radiant_overlords_bloodmail": {
       "name": "Cota de Sangue do Suserano Radiante",
-      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
+      "option": "Tirania: Ganha <#ff9028ff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> igual a <#ff9028ff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>Vida Máxima<>."
     }
   },
   "ru": {
@@ -1893,11 +1893,11 @@
     },
     "overlords_bloodmail": {
       "name": "Кровавая кольчуга властелина",
-      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>максимального здоровья<>."
+      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>максимального здоровья<>."
     },
     "radiant_overlords_bloodmail": {
       "name": "Лучезарная Кровавая кольчуга властелина",
-      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>максимального здоровья<>."
+      "option": "Тирания: Даёт <#ff9028ff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силу Атаки<> равную <#ff9028ff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#ff9028ff>максимального здоровья<>."
     }
   }
 }
