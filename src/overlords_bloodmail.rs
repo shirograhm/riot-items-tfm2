@@ -1,14 +1,31 @@
 use arrayvec::ArrayString;
+use core::fmt::Write;
 use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
 
 // Tyranny passive: while equipped, the wielder gains bonus Attack Damage equal to
-// `effect_caster_hp_percent_attack`% of their maximum health. `update` maintains
-// this as a short (30-tick) buff that is re-applied once it lapses, so the bonus
-// tracks the champion's current maximum health (see mirage_blade.rs for the same
-// maintained-buff pattern).
+// `effect_caster_hp_percent_attack`% of their maximum health. The bonus must track
+// max HP gained mid-battle (levels, Heartsteel, etc.), but a live buff can't be
+// mutated or removed, and re-adding a same-named buff stacks rather than replaces.
+//
+// So the bonus is granted as *permanent, incremental* buffs whose name encodes the
+// cumulative AD granted so far (`overlords_bloodmail_tyranny_<total>`). Each tick we
+// recompute the target bonus from current max HP, read back the largest total already
+// granted from the buff names, and — only if the target is higher — add a permanent
+// buff for the *difference*, tagged with the new total. The deltas sum to the target,
+// and because the buffs never expire the AD never lapses: this removes the ~1-tick
+// flicker the old expiring-buff approach had. `refresh_lockout` still bridges the few
+// ticks before a freshly added buff becomes visible to `buff_count()`, so a delta is
+// never granted twice. Reading the running total from the buff names (rather than a
+// field on `self`) also self-heals: if the buffs are cleared on respawn/dispel, the
+// total reads back as 0 and the full bonus re-grants.
+//
+// Trade-off: max HP is assumed monotonic within a battle (it only rises from levels /
+// items). If it ever dropped the bonus couldn't be lowered — but mid-battle max-HP
+// loss doesn't occur, and the alternative was a visible flicker.
+const REFRESH_LOCKOUT_TICKS: usize = 3;
 
 #[derive(Clone, Debug)]
 pub struct OverlordsBloodmail {
@@ -16,6 +33,9 @@ pub struct OverlordsBloodmail {
     attack: i32,
     hp: i32,
     effect_caster_hp_percent_attack: f64,
+    // Ticks remaining during which `apply_tyranny` skips its presence check, so a
+    // freshly added buff can't be duplicated before it becomes visible.
+    refresh_lockout: usize,
 }
 
 impl Default for OverlordsBloodmail {
@@ -25,6 +45,7 @@ impl Default for OverlordsBloodmail {
             attack: 25,
             hp: 400,
             effect_caster_hp_percent_attack: 1.5,
+            refresh_lockout: 0,
         }
     }
 }
@@ -39,7 +60,60 @@ impl OverlordsBloodmail {
             effect_caster_hp_percent_attack: cfg
                 .effect_caster_hp_percent_attack
                 .unwrap_or(d.effect_caster_hp_percent_attack),
+            refresh_lockout: 0,
         }
+    }
+
+    // Top up the Tyranny bonus. Recompute the target AD from the champion's *current*
+    // max HP, read back the largest cumulative total already granted (encoded in the
+    // buff names), and add a permanent buff for the difference only when the target has
+    // grown. `refresh_lockout` skips a few ticks after each add so a delta can't be
+    // granted twice before the new buff is visible to `buff_count()`.
+    fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
+        if self.refresh_lockout > 0 {
+            self.refresh_lockout -= 1;
+            return;
+        }
+
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(entity_ref) = player_ref.champion() else {
+            return;
+        };
+
+        let prefix = "overlords_bloodmail_tyranny_";
+        let granted = (0..entity_ref.buff_count())
+            .filter_map(|i| {
+                entity_ref
+                    .buff_at(i)
+                    .name
+                    .as_str()
+                    .strip_prefix(prefix)
+                    .and_then(|total| total.parse::<i32>().ok())
+            })
+            .max()
+            .unwrap_or(0);
+
+        let target = percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
+        if target <= granted {
+            return;
+        }
+
+        let entity_id = entity_ref.id();
+        let mut name = ArrayString::<64>::new();
+        write!(&mut name, "{prefix}{target}").unwrap();
+
+        ctx.add_buff(
+            entity_id,
+            BuffState {
+                name,
+                duration: BuffType::Permanent,
+                attack: target - granted,
+                ..Default::default()
+            },
+        );
+        self.refresh_lockout = REFRESH_LOCKOUT_TICKS;
     }
 }
 
@@ -80,32 +154,16 @@ impl ModItemInfo for OverlordsBloodmail {
         }
     }
 
+    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        // Seed the bonus at spawn; the refresh lockout in `apply_tyranny` then guards
+        // against a duplicate add before this one becomes visible.
+        self.apply_tyranny(ctx, player);
+    }
+
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(entity_ref) = player_ref.champion() else {
-            return;
-        };
-
-        let has_buff = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "overlords_bloodmail_tyranny");
-        if has_buff {
-            return;
-        }
-
-        let bonus_attack =
-            percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
-        let entity_id = entity_ref.id();
-        ctx.add_buff(
-            entity_id,
-            BuffState {
-                duration: BuffType::Time { tick: 30 },
-                attack: bonus_attack,
-                name: ArrayString::try_from("overlords_bloodmail_tyranny").unwrap(),
-                ..Default::default()
-            },
-        );
+        // Top up the bonus as max HP grows; also re-grants the full amount if the buffs
+        // were cleared (respawn/dispel), since the running total then reads back as 0.
+        self.apply_tyranny(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -123,6 +181,9 @@ pub struct RadiantOverlordsBloodmail {
     attack: i32,
     hp: i32,
     effect_caster_hp_percent_attack: f64,
+    // Ticks remaining during which `apply_tyranny` skips its presence check, so a
+    // freshly added buff can't be duplicated before it becomes visible.
+    refresh_lockout: usize,
 }
 
 impl Default for RadiantOverlordsBloodmail {
@@ -132,6 +193,7 @@ impl Default for RadiantOverlordsBloodmail {
             attack: 40,
             hp: 650,
             effect_caster_hp_percent_attack: 1.5,
+            refresh_lockout: 0,
         }
     }
 }
@@ -146,7 +208,60 @@ impl RadiantOverlordsBloodmail {
             effect_caster_hp_percent_attack: cfg
                 .effect_caster_hp_percent_attack
                 .unwrap_or(d.effect_caster_hp_percent_attack),
+            refresh_lockout: 0,
         }
+    }
+
+    // Top up the Tyranny bonus. Recompute the target AD from the champion's *current*
+    // max HP, read back the largest cumulative total already granted (encoded in the
+    // buff names), and add a permanent buff for the difference only when the target has
+    // grown. `refresh_lockout` skips a few ticks after each add so a delta can't be
+    // granted twice before the new buff is visible to `buff_count()`.
+    fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
+        if self.refresh_lockout > 0 {
+            self.refresh_lockout -= 1;
+            return;
+        }
+
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(entity_ref) = player_ref.champion() else {
+            return;
+        };
+
+        let prefix = "radiant_overlords_bloodmail_tyranny_";
+        let granted = (0..entity_ref.buff_count())
+            .filter_map(|i| {
+                entity_ref
+                    .buff_at(i)
+                    .name
+                    .as_str()
+                    .strip_prefix(prefix)
+                    .and_then(|total| total.parse::<i32>().ok())
+            })
+            .max()
+            .unwrap_or(0);
+
+        let target = percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
+        if target <= granted {
+            return;
+        }
+
+        let entity_id = entity_ref.id();
+        let mut name = ArrayString::<64>::new();
+        write!(&mut name, "{prefix}{target}").unwrap();
+
+        ctx.add_buff(
+            entity_id,
+            BuffState {
+                name,
+                duration: BuffType::Permanent,
+                attack: target - granted,
+                ..Default::default()
+            },
+        );
+        self.refresh_lockout = REFRESH_LOCKOUT_TICKS;
     }
 }
 
@@ -183,32 +298,16 @@ impl ModItemInfo for RadiantOverlordsBloodmail {
         }
     }
 
+    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        // Seed the bonus at spawn; the refresh lockout in `apply_tyranny` then guards
+        // against a duplicate add before this one becomes visible.
+        self.apply_tyranny(ctx, player);
+    }
+
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(entity_ref) = player_ref.champion() else {
-            return;
-        };
-
-        let has_buff = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_overlords_bloodmail_tyranny");
-        if has_buff {
-            return;
-        }
-
-        let bonus_attack =
-            percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
-        let entity_id = entity_ref.id();
-        ctx.add_buff(
-            entity_id,
-            BuffState {
-                duration: BuffType::Time { tick: 30 },
-                attack: bonus_attack,
-                name: ArrayString::try_from("radiant_overlords_bloodmail_tyranny").unwrap(),
-                ..Default::default()
-            },
-        );
+        // Top up the bonus as max HP grows; also re-grants the full amount if the buffs
+        // were cleared (respawn/dispel), since the running total then reads back as 0.
+        self.apply_tyranny(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
