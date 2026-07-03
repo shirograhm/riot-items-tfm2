@@ -16,16 +16,16 @@ $ooHeal = if ($null -ne $config.oblivion_orb.effect_heal_reduce) { [int]$config.
 $ooDur = if ($null -ne $config.oblivion_orb.effect_duration_seconds) { [int]$config.oblivion_orb.effect_duration_seconds }                    else { 2 }
 $obmAtk = if ($null -ne $config.overlords_bloodmail.effect_caster_hp_percent_attack) { [double]$config.overlords_bloodmail.effect_caster_hp_percent_attack }                else { 1.5 }
 $robmAtk = if ($null -ne $config.radiant_overlords_bloodmail.effect_caster_hp_percent_attack) { [double]$config.radiant_overlords_bloodmail.effect_caster_hp_percent_attack } else { 1.5 }
-$nhFlat = if ($null -ne $config.night_harvester.effect_bonus_flat_damage) { [int]$config.night_harvester.effect_bonus_flat_damage }                      else { 160 }
-$nhApPct = if ($null -ne $config.night_harvester.effect_ap_percent_damage) { [double]$config.night_harvester.effect_ap_percent_damage }                 else { 40.0 }
+$nhFlat = if ($null -ne $config.night_harvester.effect_bonus_flat_damage) { [int]$config.night_harvester.effect_bonus_flat_damage }                      else { 150 }
+$nhApPct = if ($null -ne $config.night_harvester.effect_ap_percent_damage) { [double]$config.night_harvester.effect_ap_percent_damage }                 else { 30.0 }
 $nhMs = if ($null -ne $config.night_harvester.effect_move_speed_mult) { [int]$config.night_harvester.effect_move_speed_mult }                            else { 40 }
 $nhDur = if ($null -ne $config.night_harvester.effect_duration_seconds) { [int]$config.night_harvester.effect_duration_seconds }                         else { 2 }
-$nhCd = if ($null -ne $config.night_harvester.effect_cooldown_seconds) { [int]$config.night_harvester.effect_cooldown_seconds }                          else { 10 }
-$rnhFlat = if ($null -ne $config.radiant_night_harvester.effect_bonus_flat_damage) { [int]$config.radiant_night_harvester.effect_bonus_flat_damage }    else { 160 }
-$rnhApPct = if ($null -ne $config.radiant_night_harvester.effect_ap_percent_damage) { [double]$config.radiant_night_harvester.effect_ap_percent_damage } else { 40.0 }
+$nhCd = if ($null -ne $config.night_harvester.effect_cooldown_seconds) { [int]$config.night_harvester.effect_cooldown_seconds }                          else { 45 }
+$rnhFlat = if ($null -ne $config.radiant_night_harvester.effect_bonus_flat_damage) { [int]$config.radiant_night_harvester.effect_bonus_flat_damage }    else { 150 }
+$rnhApPct = if ($null -ne $config.radiant_night_harvester.effect_ap_percent_damage) { [double]$config.radiant_night_harvester.effect_ap_percent_damage } else { 30.0 }
 $rnhMs = if ($null -ne $config.radiant_night_harvester.effect_move_speed_mult) { [int]$config.radiant_night_harvester.effect_move_speed_mult }           else { 40 }
 $rnhDur = if ($null -ne $config.radiant_night_harvester.effect_duration_seconds) { [int]$config.radiant_night_harvester.effect_duration_seconds }       else { 2 }
-$rnhCd = if ($null -ne $config.radiant_night_harvester.effect_cooldown_seconds) { [int]$config.radiant_night_harvester.effect_cooldown_seconds }        else { 10 }
+$rnhCd = if ($null -ne $config.radiant_night_harvester.effect_cooldown_seconds) { [int]$config.radiant_night_harvester.effect_cooldown_seconds }        else { 45 }
 $pvFlat = if ($null -ne $config.protectors_vow.effect_bonus_flat_hp) { [int]$config.protectors_vow.effect_bonus_flat_hp }                                else { 50 }
 $pvArmorPct = if ($null -ne $config.protectors_vow.effect_caster_defence_percent_hp) { [double]$config.protectors_vow.effect_caster_defence_percent_hp }             else { 80.0 }
 $rpvFlat = if ($null -ne $config.radiant_protectors_vow.effect_bonus_flat_hp) { [int]$config.radiant_protectors_vow.effect_bonus_flat_hp }               else { 50 }
@@ -153,7 +153,7 @@ $magicPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0"
 
 Write-Host "Updating English text."
 
-$i18n.en.executioners_calling.option = "Executioner: On attack, <#d94c49ff>reduce healing by ${execHeal}%<> for <#e8a800ff>${execDur} seconds<>."
+$i18n.en.executioners_calling.option = "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${execHeal}%<> for <#e8a800ff>${execDur} seconds<>."
 $i18n.en.oblivion_orb.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${ooHeal}%<> for <#e8a800ff>${ooDur} seconds<>."
 $i18n.en.morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${morHeal}%<> for <#e8a800ff>${morDur} seconds<>."
 $i18n.en.radiant_morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rmorHeal}%<> for <#e8a800ff>${rmorDur} seconds<>."
@@ -167,8 +167,8 @@ $i18n.en.nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus
 $i18n.en.radiant_nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
 $i18n.en.riftmaker.option = "Infusion: Spell hits grant <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rmDur} seconds<> (max ${rmStacks} stacks)."
 $i18n.en.radiant_riftmaker.option = "Infusion: Spell hits grant <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rrmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rrmDur} seconds<> (max ${rrmStacks} stacks)."
-$i18n.en.mortal_reminder.option = "Executioner: On attack, <#d94c49ff>reduce healing by ${mrHeal}%<> for <#e8a800ff>${mrDur} seconds<>."
-$i18n.en.radiant_mortal_reminder.option = "Executioner: On attack, <#d94c49ff>reduce healing by ${rmrHeal}%<> for <#e8a800ff>${rmrDur} seconds<>."
+$i18n.en.mortal_reminder.option = "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${mrHeal}%<> for <#e8a800ff>${mrDur} seconds<>."
+$i18n.en.radiant_mortal_reminder.option = "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rmrHeal}%<> for <#e8a800ff>${rmrDur} seconds<>."
 $i18n.en.jaksho_the_protean.option = "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>${jakDefMult}% <$armorIcon> armor<> and <#88ccffff>${jakMrMult}% <$mrIcon> magic resistance<> for <#e8a800ff>${jakDur} seconds<> (max ${jakStacks} stacks)."
 $i18n.en.radiant_jaksho_the_protean.option = "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>${rjakDefMult}% <$armorIcon> armor<> and <#88ccffff>${rjakMrMult}% <$mrIcon> magic resistance<> for <#e8a800ff>${rjakDur} seconds<> (max ${rjakStacks} stacks)."
 $i18n.en.frozen_mallet.option = "Icy: On attack, apply a <#d94c49ff>${fmSlow}% slow<> for <#e8a800ff>${fmDur} seconds<>."
@@ -209,7 +209,7 @@ $i18n.en.radiant_spear_of_shojin.option = "Focused Will: Landing abilities on en
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
 
-$i18n.vi.executioners_calling.option = "Đao phủ: Khi tấn công, gây <#d94c49ff>${execHeal}% giảm hồi máu<> trong <#e8a800ff>${execDur} giây<>."
+$i18n.vi.executioners_calling.option = "Đao phủ: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${execHeal}%<> trong <#e8a800ff>${execDur} giây<>."
 $i18n.vi.oblivion_orb.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${ooHeal}%<> trong <#e8a800ff>${ooDur} giây<>."
 $i18n.vi.morellonomicon.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${morHeal}%<> trong <#e8a800ff>${morDur} giây<>."
 $i18n.vi.radiant_morellonomicon.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rmorHeal}%<> trong <#e8a800ff>${rmorDur} giây<>."
@@ -223,8 +223,8 @@ $i18n.vi.nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a
 $i18n.vi.radiant_nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
 $i18n.vi.riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rmDur} giây<> (tối đa ${rmStacks} cộng dồn)."
 $i18n.vi.radiant_riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rrmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rrmDur} giây<> (tối đa ${rrmStacks} cộng dồn)."
-$i18n.vi.mortal_reminder.option = "Đao phủ: Khi tấn công, gây <#d94c49ff>${mrHeal}% giảm hồi máu<> trong <#e8a800ff>${mrDur} giây<>."
-$i18n.vi.radiant_mortal_reminder.option = "Đao phủ: Khi tấn công, gây <#d94c49ff>${rmrHeal}% giảm hồi máu<> trong <#e8a800ff>${rmrDur} giây<>."
+$i18n.vi.mortal_reminder.option = "Đao phủ: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${mrHeal}%<> trong <#e8a800ff>${mrDur} giây<>."
+$i18n.vi.radiant_mortal_reminder.option = "Đao phủ: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rmrHeal}%<> trong <#e8a800ff>${rmrDur} giây<>."
 $i18n.vi.jaksho_the_protean.option = "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>${jakDefMult}% <$armorIcon> giáp<> và <#88ccffff>${jakMrMult}% <$mrIcon> kháng phép<> trong <#e8a800ff>${jakDur} giây<> (tối đa ${jakStacks} cộng dồn)."
 $i18n.vi.radiant_jaksho_the_protean.option = "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>${rjakDefMult}% <$armorIcon> giáp<> và <#88ccffff>${rjakMrMult}% <$mrIcon> kháng phép<> trong <#e8a800ff>${rjakDur} giây<> (tối đa ${rjakStacks} cộng dồn)."
 $i18n.vi.frozen_mallet.option = "Băng kết: Khi tấn công, gây <#d94c49ff>${fmSlow}% kiệt sức <> trong <#e8a800ff>${fmDur} giây<>."
@@ -265,7 +265,7 @@ $i18n.vi.radiant_spear_of_shojin.option = "Ý Chí Tập Trung: Kĩ năng trúng
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
 
-$i18n.'zh-hans'.executioners_calling.option = "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低${execHeal}%<>，持续 <#e8a800ff>${execDur}秒<>。"
+$i18n.'zh-hans'.executioners_calling.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${execHeal}%<>，持续 <#e8a800ff>${execDur}秒<>。"
 $i18n.'zh-hans'.oblivion_orb.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${ooHeal}%<>，持续 <#e8a800ff>${ooDur}秒<>。"
 $i18n.'zh-hans'.morellonomicon.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${morHeal}%<>，持续 <#e8a800ff>${morDur}秒<>。"
 $i18n.'zh-hans'.radiant_morellonomicon.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${rmorHeal}%<>，持续 <#e8a800ff>${rmorDur}秒<>。"
@@ -279,8 +279,8 @@ $i18n.'zh-hans'.nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 
 $i18n.'zh-hans'.radiant_nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${rntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${rntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
 $i18n.'zh-hans'.riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rmDur}秒<>（最多叠加${rmStacks}层）。"
 $i18n.'zh-hans'.radiant_riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rrmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rrmDur}秒<>（最多叠加${rrmStacks}层）。"
-$i18n.'zh-hans'.mortal_reminder.option = "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低${mrHeal}%<>，持续 <#e8a800ff>${mrDur}秒<>。"
-$i18n.'zh-hans'.radiant_mortal_reminder.option = "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低${rmrHeal}%<>，持续 <#e8a800ff>${rmrDur}秒<>。"
+$i18n.'zh-hans'.mortal_reminder.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${mrHeal}%<>，持续 <#e8a800ff>${mrDur}秒<>。"
+$i18n.'zh-hans'.radiant_mortal_reminder.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${rmrHeal}%<>，持续 <#e8a800ff>${rmrDur}秒<>。"
 $i18n.'zh-hans'.jaksho_the_protean.option = "复原力：受到敌方英雄伤害时，获得 <#ffdd8eff>${jakDefMult}% <$armorIcon> 护甲<>和 <#88ccffff>${jakMrMult}% <$mrIcon> 魔法抗性<>，持续 <#e8a800ff>${jakDur}秒<>（最多叠加${jakStacks}层）。"
 $i18n.'zh-hans'.radiant_jaksho_the_protean.option = "复原力：受到敌方英雄伤害时，获得 <#ffdd8eff>${rjakDefMult}% <$armorIcon> 护甲<>和 <#88ccffff>${rjakMrMult}% <$mrIcon> 魔法抗性<>，持续 <#e8a800ff>${rjakDur}秒<>（最多叠加${rjakStacks}层）。"
 $i18n.'zh-hans'.frozen_mallet.option = "冰寒：普通攻击会施加 <#d94c49ff>${fmSlow}%减速<>，持续 <#e8a800ff>${fmDur}秒<>。"
@@ -321,7 +321,7 @@ $i18n.'zh-hans'.radiant_spear_of_shojin.option = "专注意志：技能命中敌
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
 
-$i18n.'pt-BR'.executioners_calling.option = "Executor: Ataques aplicam <#d94c49ff>${execHeal}% de Redução de Cura<> for <#e8a800ff>${execDur} segundos<>."
+$i18n.'pt-BR'.executioners_calling.option = "Executor: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${execHeal}%<> por <#e8a800ff>${execDur} segundos<>."
 $i18n.'pt-BR'.oblivion_orb.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${ooHeal}%<> por <#e8a800ff>${ooDur} segundos<>."
 $i18n.'pt-BR'.morellonomicon.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${morHeal}%<> por <#e8a800ff>${morDur} segundos<>."
 $i18n.'pt-BR'.radiant_morellonomicon.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rmorHeal}%<> por <#e8a800ff>${rmorDur} segundos<>."
@@ -335,8 +335,8 @@ $i18n.'pt-BR'.nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ff
 $i18n.'pt-BR'.radiant_nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
 $i18n.'pt-BR'.riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rmDur} segundos<> (acumula ${rmStacks}x)."
 $i18n.'pt-BR'.radiant_riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rrmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rrmDur} segundos<> (acumula ${rrmStacks}x)."
-$i18n.'pt-BR'.mortal_reminder.option = "Executor: Ataques aplicam <#d94c49ff>${mrHeal}% de Redução de Cura<> for <#e8a800ff>${mrDur} segundos<>."
-$i18n.'pt-BR'.radiant_mortal_reminder.option = "Executor: Ataques aplicam <#d94c49ff>${rmrHeal}% de Redução de Cura<> for <#e8a800ff>${rmrDur} segundos<>."
+$i18n.'pt-BR'.mortal_reminder.option = "Executor: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${mrHeal}%<> por <#e8a800ff>${mrDur} segundos<>."
+$i18n.'pt-BR'.radiant_mortal_reminder.option = "Executor: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rmrHeal}%<> por <#e8a800ff>${rmrDur} segundos<>."
 $i18n.'pt-BR'.jaksho_the_protean.option = "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>${jakDefMult}% <$armorIcon> de Armadura<> e <#88ccffff>${jakMrMult}% <$mrIcon> de Resistência Mágica<> por <#e8a800ff>${jakDur} segundos<> (acumula ${jakStacks}x)."
 $i18n.'pt-BR'.radiant_jaksho_the_protean.option = "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>${rjakDefMult}% <$armorIcon> de Armadura<> e <#88ccffff>${rjakMrMult}% <$mrIcon> de Resistência Mágica<> por <#e8a800ff>${rjakDur} segundos<> (acumula ${rjakStacks}x)."
 $i18n.'pt-BR'.frozen_mallet.option = "Congelante: Seus ataques aplicam <#d94c49ff>${fmSlow}% de lentidão<> por <#e8a800ff>${fmDur} segundos<>."
@@ -377,7 +377,7 @@ $i18n.'pt-BR'.radiant_spear_of_shojin.option = "Vontade Focada: Acertar habilida
 Write-Host "Done."
 Write-Host "Updating Russian text."
 
-$i18n.ru.executioners_calling.option = "Палач: При атаке, <#d94c49ff>снижает лечение на ${execHeal}%<> на <#e8a800ff>${execDur} секунды<>."
+$i18n.ru.executioners_calling.option = "Палач: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${execHeal}%<> на <#e8a800ff>${execDur} секунды<>."
 $i18n.ru.oblivion_orb.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${ooHeal}%<> на <#e8a800ff>${ooDur} секунды<>."
 $i18n.ru.morellonomicon.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${morHeal}%<> на <#e8a800ff>${morDur} секунды<>."
 $i18n.ru.radiant_morellonomicon.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rmorHeal}%<> на <#e8a800ff>${rmorDur} секунды<>."
@@ -391,8 +391,8 @@ $i18n.ru.nashors_tooth.option = "Укус Икатии: При атаке нан
 $i18n.ru.radiant_nashors_tooth.option = "Укус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Силы Умений<>."
 $i18n.ru.riftmaker.option = "Наполнение: Попадания умениями дают <$apIcon> <#a974ffff>Силу Умений<> равную <#60e84dff>${rmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> на <#e8a800ff>${rmDur} секунд<> (макс. ${rmStacks} стака)."
 $i18n.ru.radiant_riftmaker.option = "Наполнение: Попадания умениями дают <$apIcon> <#a974ffff>Силу Умений<> равную <#60e84dff>${rrmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> на <#e8a800ff>${rrmDur} секунд<> (макс. ${rrmStacks} стака)."
-$i18n.ru.mortal_reminder.option = "Палач: При атаке, <#d94c49ff>снижает лечение на ${mrHeal}%<> на <#e8a800ff>${mrDur} секунды<>."
-$i18n.ru.radiant_mortal_reminder.option = "Палач: При атаке, <#d94c49ff>снижает лечение на ${rmrHeal}%<> на <#e8a800ff>${rmrDur} секунды<>."
+$i18n.ru.mortal_reminder.option = "Палач: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${mrHeal}%<> на <#e8a800ff>${mrDur} секунды<>."
+$i18n.ru.radiant_mortal_reminder.option = "Палач: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rmrHeal}%<> на <#e8a800ff>${rmrDur} секунды<>."
 $i18n.ru.jaksho_the_protean.option = "Стойкость: Получение урона от вражеского чемпиона даёт <#ffdd8eff>${jakDefMult}% <$armorIcon> брони<> и <#88ccffff>${jakMrMult}% <$mrIcon> сопротивления магии<> на <#e8a800ff>${jakDur} секунды<> (макс. ${jakStacks} стака)."
 $i18n.ru.radiant_jaksho_the_protean.option = "Стойкость: Получение урона от вражеского чемпиона даёт <#ffdd8eff>${rjakDefMult}% <$armorIcon> брони<> и <#88ccffff>${rjakMrMult}% <$mrIcon> сопротивления магии<> на <#e8a800ff>${rjakDur} секунды<> (макс. ${rjakStacks} стака)."
 $i18n.ru.frozen_mallet.option = "Обледенение: При атаке накладывает <#d94c49ff>замедление на ${fmSlow}%<> на <#e8a800ff>${fmDur} секунды<>."

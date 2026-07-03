@@ -385,11 +385,11 @@
     },
     "night_harvester": {
       "name": "Night Harvester",
-      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
+      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (45 second cooldown per target)."
     },
     "radiant_night_harvester": {
       "name": "Radiant Night Harvester",
-      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (10 second cooldown per target)."
+      "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (45 second cooldown per target)."
     },
     "hextech_gunblade": {
       "name": "Hextech Gunblade",
@@ -674,15 +674,15 @@
     },
     "executioners_calling": {
       "name": "Gươm Đồ Tể",
-      "option": "Đao phủ: Khi tấn công, gây <#d94c49ff>25% giảm hồi máu<> trong <#e8a800ff>2 giây<>."
+      "option": "Đao phủ: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 25%<> trong <#e8a800ff>2 giây<>."
     },
     "mortal_reminder": {
       "name": "Lời Nhắc Tử Vong",
-      "option": "Đao phủ: Khi tấn công, gây <#d94c49ff>40% giảm hồi máu<> trong <#e8a800ff>2 giây<>."
+      "option": "Đao phủ: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
     },
     "radiant_mortal_reminder": {
       "name": "Lời Nhắc Tử Vong Ánh Sáng",
-      "option": "Đao phủ: Khi tấn công, gây <#d94c49ff>40% giảm hồi máu<> trong <#e8a800ff>2 giây<>."
+      "option": "Đao phủ: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
     },
     "experimental_hexplate": {
       "name": "Khiên Hextech Thử Nghiệm",
@@ -786,11 +786,11 @@
     },
     "night_harvester": {
       "name": "Kẻ Gặt Đêm",
-      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
+      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 45 giây mỗi mục tiêu)."
     },
     "radiant_night_harvester": {
       "name": "Kẻ Gặt Đêm Ánh Sáng",
-      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 10 giây mỗi mục tiêu)."
+      "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 45 giây mỗi mục tiêu)."
     },
     "hextech_gunblade": {
       "name": "Súng Kiếm Hextech",
@@ -1075,15 +1075,15 @@
     },
     "executioners_calling": {
       "name": "死刑宣告",
-      "option": "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低25%<>，持续 <#e8a800ff>2秒<>。"
+      "option": "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低25%<>，持续 <#e8a800ff>2秒<>。"
     },
     "mortal_reminder": {
       "name": "凡性的提醒",
-      "option": "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+      "option": "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
     },
     "radiant_mortal_reminder": {
       "name": "光明版凡性的提醒",
-      "option": "重伤：普通攻击使目标的<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+      "option": "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
     },
     "experimental_hexplate": {
       "name": "海克斯注力刚壁",
@@ -1187,11 +1187,11 @@
     },
     "night_harvester": {
       "name": "夜幕收割者",
-      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
+      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却45秒）。"
     },
     "radiant_night_harvester": {
       "name": "光明版夜幕收割者",
-      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却10秒）。"
+      "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却45秒）。"
     },
     "hextech_gunblade": {
       "name": "海克斯科技枪刃",
@@ -1476,15 +1476,15 @@
     },
     "executioners_calling": {
       "name": "Chamado do Carrasco",
-      "option": "Executor: Ataques aplicam <#d94c49ff>25% de Redução de Cura<> for <#e8a800ff>2 segundos<>."
+      "option": "Executor: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 25%<> por <#e8a800ff>2 segundos<>."
     },
     "mortal_reminder": {
       "name": "Lembrete Mortal",
-      "option": "Executor: Ataques aplicam <#d94c49ff>40% de Redução de Cura<> for <#e8a800ff>2 segundos<>."
+      "option": "Executor: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
     },
     "radiant_mortal_reminder": {
       "name": "Lembrete Mortal Radiante",
-      "option": "Executor: Ataques aplicam <#d94c49ff>40% de Redução de Cura<> for <#e8a800ff>2 segundos<>."
+      "option": "Executor: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
     },
     "experimental_hexplate": {
       "name": "Hexoplaca Experimental",
@@ -1588,11 +1588,11 @@
     },
     "night_harvester": {
       "name": "Ceifador Noturno",
-      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
+      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>150<> + <#a974ffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 45 segundos por alvo)."
     },
     "radiant_night_harvester": {
       "name": "Ceifador Noturno Radiante",
-      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>160<> + <#a974ffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 10 segundos por alvo)."
+      "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>150<> + <#a974ffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 45 segundos por alvo)."
     },
     "hextech_gunblade": {
       "name": "Lâmina Hextech",
@@ -1877,15 +1877,15 @@
     },
     "executioners_calling": {
       "name": "Призвание Палача",
-      "option": "Палач: При атаке, <#d94c49ff>снижает лечение на 25%<> на <#e8a800ff>2 секунды<>."
+      "option": "Палач: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 25%<> на <#e8a800ff>2 секунды<>."
     },
     "mortal_reminder": {
       "name": "Глашатай Смерти",
-      "option": "Палач: При атаке, <#d94c49ff>снижает лечение на 40%<> на <#e8a800ff>2 секунды<>."
+      "option": "Палач: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
     },
     "radiant_mortal_reminder": {
       "name": "Лучезарный Глашатай Смерти",
-      "option": "Палач: При атаке, <#d94c49ff>снижает лечение на 40%<> на <#e8a800ff>2 секунды<>."
+      "option": "Палач: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
     },
     "experimental_hexplate": {
       "name": "Экспериментальная Хекстековая Броня",
@@ -1989,11 +1989,11 @@
     },
     "night_harvester": {
       "name": "Ночной жнец",
-      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
+      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 45 секунд на каждую цель)."
     },
     "radiant_night_harvester": {
       "name": "Лучезарный Ночной жнец",
-      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>160<> + <#a974ffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 10 секунд на каждую цель)."
+      "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 45 секунд на каждую цель)."
     },
     "hextech_gunblade": {
       "name": "Хекстековый пистолет-клинок",
