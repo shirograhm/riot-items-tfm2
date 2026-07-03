@@ -3,34 +3,42 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 
+// Grievous Wounds: dealing magic damage to an enemy champion applies a healing
+// reduction (the same heal-cut passive as mortal_reminder.rs, gated on AP damage
+// since this is the magic-damage counterpart / oblivion_orb's upgrade). Shares the
+// `40_percent_heal_cut` buff name with mortal_reminder so the two do not stack.
+
 #[derive(Clone, Debug)]
-pub struct MortalReminder {
+pub struct Morellonomicon {
     price: usize,
-    attack: i32,
-    defence_penetration: usize,
+    hp: i32,
+    magic_power: i32,
+    skill_cooldown_mult: i32,
     effect_heal_reduce: usize,
     effect_duration_seconds: usize,
 }
 
-impl Default for MortalReminder {
+impl Default for Morellonomicon {
     fn default() -> Self {
         Self {
-            price: 1400,
-            attack: 55,
-            defence_penetration: 20,
+            price: 1300,
+            hp: 200,
+            magic_power: 120,
+            skill_cooldown_mult: 10,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2,
         }
     }
 }
 
-impl MortalReminder {
+impl Morellonomicon {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
+            hp: cfg.hp.unwrap_or(d.hp),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
             effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
@@ -39,17 +47,17 @@ impl MortalReminder {
     }
 }
 
-impl ModItemInfo for MortalReminder {
+impl ModItemInfo for Morellonomicon {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "mortal_reminder"
+        "morellonomicon"
     }
 
     fn icon(&self) -> &str {
-        "t7_8"
+        "t10_8"
     }
 
     fn price(&self) -> usize {
@@ -61,17 +69,18 @@ impl ModItemInfo for MortalReminder {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["executioners_calling".to_string()]
+        vec!["oblivion_orb".to_string(), "hardened_heart".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_mortal_reminder".to_string()]
+        vec!["radiant_morellonomicon".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
-            defence_penetration: self.defence_penetration,
+            hp: self.hp,
+            magic_power: self.magic_power,
+            skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -88,7 +97,7 @@ impl ModItemInfo for MortalReminder {
             return;
         };
 
-        if damage_type != DamageType::AD {
+        if damage_type != DamageType::AP {
             return;
         }
 
@@ -111,48 +120,49 @@ impl ModItemInfo for MortalReminder {
 
     fn tags(&self) -> Vec<ItemTag> {
         vec![
-            ItemTag::AD,
-            ItemTag::DefensePenetration,
+            ItemTag::HP,
+            ItemTag::AP,
+            ItemTag::CooltimeReduce,
             ItemTag::HealReduce,
         ]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+        ItemCategory::Magic
     }
 }
 
 #[derive(Clone, Debug)]
-pub struct RadiantMortalReminder {
+pub struct RadiantMorellonomicon {
     price: usize,
-    attack: i32,
-    defence_penetration: usize,
-    crit_chance: i32,
+    hp: i32,
+    magic_power: i32,
+    skill_cooldown_mult: i32,
     effect_heal_reduce: usize,
     effect_duration_seconds: usize,
 }
 
-impl Default for RadiantMortalReminder {
+impl Default for RadiantMorellonomicon {
     fn default() -> Self {
         Self {
-            price: 2000,
-            attack: 70,
-            defence_penetration: 30,
-            crit_chance: 0,
+            price: 1850,
+            hp: 350,
+            magic_power: 190,
+            skill_cooldown_mult: 10,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2,
         }
     }
 }
 
-impl RadiantMortalReminder {
+impl RadiantMorellonomicon {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
-            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
+            hp: cfg.hp.unwrap_or(d.hp),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
             effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
@@ -161,17 +171,17 @@ impl RadiantMortalReminder {
     }
 }
 
-impl ModItemInfo for RadiantMortalReminder {
+impl ModItemInfo for RadiantMorellonomicon {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_mortal_reminder"
+        "radiant_morellonomicon"
     }
 
     fn icon(&self) -> &str {
-        "t7_9"
+        "t10_9"
     }
 
     fn price(&self) -> usize {
@@ -183,14 +193,14 @@ impl ModItemInfo for RadiantMortalReminder {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["mortal_reminder".to_string()]
+        vec!["morellonomicon".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
-            defence_penetration: self.defence_penetration,
-            crit_chance: self.crit_chance,
+            hp: self.hp,
+            magic_power: self.magic_power,
+            skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -207,7 +217,7 @@ impl ModItemInfo for RadiantMortalReminder {
             return;
         };
 
-        if damage_type != DamageType::AD {
+        if damage_type != DamageType::AP {
             return;
         }
 
@@ -230,13 +240,14 @@ impl ModItemInfo for RadiantMortalReminder {
 
     fn tags(&self) -> Vec<ItemTag> {
         vec![
-            ItemTag::AD,
-            ItemTag::DefensePenetration,
+            ItemTag::HP,
+            ItemTag::AP,
+            ItemTag::CooltimeReduce,
             ItemTag::HealReduce,
         ]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+        ItemCategory::Magic
     }
 }

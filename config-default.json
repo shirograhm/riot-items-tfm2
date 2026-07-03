@@ -13,6 +13,12 @@
     "price": 850,
     "magic_power": 115
   },
+  "oblivion_orb": {
+    "price": 500,
+    "magic_power": 50,
+    "effect_heal_reduce": 25,
+    "effect_duration_seconds": 2
+  },
   "blackfire_torch": {
     "price": 1300,
     "magic_power": 130,
@@ -82,6 +88,12 @@
     "effect_bonus_hp_percent_of_damage": 15.0,
     "effect_cooldown_seconds": 15
   },
+  "hextech_gunblade": {
+    "price": 1400,
+    "attack": 30,
+    "magic_power": 100,
+    "vamp": 10
+  },
   "infinity_edge": {
     "price": 1300,
     "attack": 80,
@@ -120,6 +132,14 @@
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
   },
+  "morellonomicon": {
+    "price": 1300,
+    "hp": 200,
+    "magic_power": 120,
+    "skill_cooldown_mult": 10,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 2
+  },
   "riftmaker": {
     "price": 1300,
     "hp": 400,
@@ -147,7 +167,9 @@
   "protectors_vow": {
     "price": 1300,
     "hp": 350,
-    "defence": 50
+    "defence": 50,
+    "effect_bonus_flat_hp": 50,
+    "effect_caster_defence_percent_hp": 80.0
   },
   "protoplasm_harness": {
     "price": 1000,
@@ -177,6 +199,23 @@
     "defence": 30,
     "effect_bonus_flat_heal": 10,
     "effect_caster_hp_percent_heal": 1.0
+  },
+  "night_harvester": {
+    "price": 1400,
+    "hp": 300,
+    "magic_power": 100,
+    "skill_cooldown_mult": 10,
+    "effect_bonus_flat_damage": 150,
+    "effect_ap_percent_damage": 30.0,
+    "effect_move_speed_mult": 40,
+    "effect_duration_seconds": 2,
+    "effect_cooldown_seconds": 45
+  },
+  "overlords_bloodmail": {
+    "price": 1400,
+    "attack": 25,
+    "hp": 400,
+    "effect_caster_hp_percent_attack": 2.5
   },
   "radiant_experimental_hexplate": {
     "price": 1850,
@@ -231,6 +270,12 @@
     "effect_bonus_hp_percent_of_damage": 15.0,
     "effect_cooldown_seconds": 15
   },
+  "radiant_hextech_gunblade": {
+    "price": 1900,
+    "attack": 50,
+    "magic_power": 150,
+    "vamp": 15
+  },
   "radiant_deathblade": {
     "price": 2000,
     "attack": 140,
@@ -263,6 +308,14 @@
     "attack": 70,
     "defence_penetration": 30,
     "crit_chance": 0,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 2
+  },
+  "radiant_morellonomicon": {
+    "price": 1850,
+    "hp": 350,
+    "magic_power": 190,
+    "skill_cooldown_mult": 10,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
   },
@@ -303,7 +356,9 @@
     "price": 1800,
     "hp": 550,
     "defence": 75,
-    "skill_cooldown_mult": 15
+    "skill_cooldown_mult": 15,
+    "effect_bonus_flat_hp": 50,
+    "effect_caster_defence_percent_hp": 80.0
   },
   "radiant_protoplasm_harness": {
     "price": 1600,
@@ -349,5 +404,22 @@
     "defence": 50,
     "effect_bonus_flat_heal": 25,
     "effect_caster_hp_percent_heal": 3.0
+  },
+  "radiant_night_harvester": {
+    "price": 2000,
+    "hp": 500,
+    "magic_power": 160,
+    "skill_cooldown_mult": 10,
+    "effect_bonus_flat_damage": 150,
+    "effect_ap_percent_damage": 30.0,
+    "effect_move_speed_mult": 40,
+    "effect_duration_seconds": 2,
+    "effect_cooldown_seconds": 45
+  },
+  "radiant_overlords_bloodmail": {
+    "price": 2000,
+    "attack": 40,
+    "hp": 650,
+    "effect_caster_hp_percent_attack": 2.5
   }
 }
