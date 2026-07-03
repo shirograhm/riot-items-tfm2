@@ -44,7 +44,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Mortal Reminder** | 1400G | +55 AD<br>+20% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
 | **Nashor's Tooth** | 1450G | +115 AP<br>+25% AS | On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power. |
 | **Night Harvester** | 1400G | +300 HP<br>+100 AP<br>+10% CDR | Damaging an enemy champion deals 150 + 30% of your Ability Power as bonus magic damage and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
-| **Overlord's Bloodmail** | 1400G | +25 AD<br>+400 HP | Gain bonus Attack Damage equal to 1.5% of your maximum health. |
+| **Overlord's Bloodmail** | 1400G | +25 AD<br>+400 HP | Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | Gain bonus health equal to 50 + 80% of your Armor. |
 | **Protoplasm Harness** | 1000G | +400 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
@@ -75,7 +75,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Morellonomicon** | 1850G | +350 HP<br>+190 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |
 | **Radiant Nashor's Tooth** | 2050G | +180 AP<br>+40% AS | On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power. |
 | **Radiant Night Harvester** | 2000G | +500 HP<br>+160 AP<br>+10% CDR | Damaging an enemy champion deals 150 + 30% of your Ability Power as bonus magic damage and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
-| **Radiant Overlord's Bloodmail** | 2000G | +40 AD<br>+650 HP | Gain bonus Attack Damage equal to 1.5% of your maximum health. |
+| **Radiant Overlord's Bloodmail** | 2000G | +40 AD<br>+650 HP | Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Radiant Protector's Vow** | 1800G | +550 HP<br>+75 Armor<br>+15% Skill CDR | Gain bonus health equal to 50 + 80% of your Armor. |
 | **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon’s Deathcap** | 2200G | +220 AP | Increase your total Ability Power by 35%. |

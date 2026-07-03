@@ -44,7 +44,7 @@ impl Default for OverlordsBloodmail {
             price: 1400,
             attack: 25,
             hp: 400,
-            effect_caster_hp_percent_attack: 1.5,
+            effect_caster_hp_percent_attack: 2.5,
             refresh_lockout: 0,
         }
     }
@@ -192,7 +192,7 @@ impl Default for RadiantOverlordsBloodmail {
             price: 2000,
             attack: 40,
             hp: 650,
-            effect_caster_hp_percent_attack: 1.5,
+            effect_caster_hp_percent_attack: 2.5,
             refresh_lockout: 0,
         }
     }
