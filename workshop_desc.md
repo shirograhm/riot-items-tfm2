@@ -1,4 +1,4 @@
-Adds 47 new items (22 new item lines) inspired from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Adds 56 new items (30 base + 26 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
 
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
@@ -7,9 +7,9 @@ Also re-skins the 30 existing items and adds some custom icons for Armor Penetra
 
 [h1] Important [/h1]
 
-This mod currently supports both English, Vietnamese, Portuguese (BR), and Chinese (Simplified) locales. You can use it with other languages, but the names and descriptions of the items will be broken.
+This mod currently supports English, Vietnamese, Portuguese (BR), Russian, and Chinese (Simplified) locales. You can use it with other languages, but the names and descriptions of the items will be broken.
 
-  If you would like to provide translations, feel free to shoot me a message on Discord @shirograhm.
+If you would like to provide translations, feel free to shoot me a message on Discord @shirograhm.
 
 Saves played with this mod enabled will be corrupted if you play the save with this mod disabled. I have had players buy ghost items when this happens.
 
@@ -46,9 +46,9 @@ This mod works directly out of the box!
 However, if any of the modded items feel too strong/weak, this mod supports full customization on all item values. Only modded items can be adjusted. To do so:
 
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
-1. Edit the new [b]config.json[/b] with the custom values that you want.
-2. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the item effect's text may not match.  
-3. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!
+2. Edit the new [b]config.json[/b] with the custom values that you want.
+3. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the item effect's text may not match.  
+4. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!
 
 Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.
 
@@ -82,6 +82,7 @@ Check the Item/Feature Requests forum in the mod for the most up-to-date informa
 Thank you to @Formula Piggy and @Yuuroo on discord for Vietnamese translations!
 Thank you to @GeoStelar on discord for the Portuguese (BR) translations!
 Thank you to @Monsoon on discord for the Chinese (Simplified) translations!
+Thank you to @Dushnerd on discord for the Russian translations!
 
 Special thanks to @Monsoon for helping with the custom item builds functionality!
 
