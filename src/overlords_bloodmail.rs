@@ -5,26 +5,6 @@ use mod_api::*;
 use crate::config::ItemConfig;
 use crate::percent_of;
 
-// Tyranny passive: while equipped, the wielder gains bonus Attack Damage equal to
-// `effect_caster_hp_percent_attack`% of their maximum health. The bonus must track
-// max HP gained mid-battle (levels, Heartsteel, etc.), but a live buff can't be
-// mutated or removed, and re-adding a same-named buff stacks rather than replaces.
-//
-// So the bonus is granted as *permanent, incremental* buffs whose name encodes the
-// cumulative AD granted so far (`overlords_bloodmail_tyranny_<total>`). Each tick we
-// recompute the target bonus from current max HP, read back the largest total already
-// granted from the buff names, and — only if the target is higher — add a permanent
-// buff for the *difference*, tagged with the new total. The deltas sum to the target,
-// and because the buffs never expire the AD never lapses: this removes the ~1-tick
-// flicker the old expiring-buff approach had. `refresh_lockout` still bridges the few
-// ticks before a freshly added buff becomes visible to `buff_count()`, so a delta is
-// never granted twice. Reading the running total from the buff names (rather than a
-// field on `self`) also self-heals: if the buffs are cleared on respawn/dispel, the
-// total reads back as 0 and the full bonus re-grants.
-//
-// Trade-off: max HP is assumed monotonic within a battle (it only rises from levels /
-// items). If it ever dropped the bonus couldn't be lowered — but mid-battle max-HP
-// loss doesn't occur, and the alternative was a visible flicker.
 const REFRESH_LOCKOUT_TICKS: usize = 3;
 
 #[derive(Clone, Debug)]
@@ -33,8 +13,6 @@ pub struct OverlordsBloodmail {
     attack: i32,
     hp: i32,
     effect_caster_hp_percent_attack: f64,
-    // Ticks remaining during which `apply_tyranny` skips its presence check, so a
-    // freshly added buff can't be duplicated before it becomes visible.
     refresh_lockout: usize,
 }
 
@@ -64,11 +42,6 @@ impl OverlordsBloodmail {
         }
     }
 
-    // Top up the Tyranny bonus. Recompute the target AD from the champion's *current*
-    // max HP, read back the largest cumulative total already granted (encoded in the
-    // buff names), and add a permanent buff for the difference only when the target has
-    // grown. `refresh_lockout` skips a few ticks after each add so a delta can't be
-    // granted twice before the new buff is visible to `buff_count()`.
     fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
         if self.refresh_lockout > 0 {
             self.refresh_lockout -= 1;
@@ -139,7 +112,10 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["ironsword".to_string(), "ring_of_reincarnation".to_string()]
+        vec![
+            "soldiers_longsword".to_string(),
+            "hardened_heart".to_string(),
+        ]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -155,14 +131,10 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
-        // Seed the bonus at spawn; the refresh lockout in `apply_tyranny` then guards
-        // against a duplicate add before this one becomes visible.
         self.apply_tyranny(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        // Top up the bonus as max HP grows; also re-grants the full amount if the buffs
-        // were cleared (respawn/dispel), since the running total then reads back as 0.
         self.apply_tyranny(ctx, player);
     }
 
@@ -212,11 +184,6 @@ impl RadiantOverlordsBloodmail {
         }
     }
 
-    // Top up the Tyranny bonus. Recompute the target AD from the champion's *current*
-    // max HP, read back the largest cumulative total already granted (encoded in the
-    // buff names), and add a permanent buff for the difference only when the target has
-    // grown. `refresh_lockout` skips a few ticks after each add so a delta can't be
-    // granted twice before the new buff is visible to `buff_count()`.
     fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
         if self.refresh_lockout > 0 {
             self.refresh_lockout -= 1;
@@ -299,14 +266,10 @@ impl ModItemInfo for RadiantOverlordsBloodmail {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
-        // Seed the bonus at spawn; the refresh lockout in `apply_tyranny` then guards
-        // against a duplicate add before this one becomes visible.
         self.apply_tyranny(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        // Top up the bonus as max HP grows; also re-grants the full amount if the buffs
-        // were cleared (respawn/dispel), since the running total then reads back as 0.
         self.apply_tyranny(ctx, player);
     }
 

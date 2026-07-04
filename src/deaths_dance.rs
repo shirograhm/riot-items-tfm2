@@ -109,7 +109,6 @@ impl ModItemInfo for DeathsDance {
             return;
         };
 
-        // Throttle the bleed to one tick per second; `update` runs every tick.
         let is_burn_applied = (0..entity_ref.buff_count())
             .any(|i| entity_ref.buff_at(i).name.as_str() == "deaths_dance_burn");
         if is_burn_applied {
@@ -163,7 +162,6 @@ impl ModItemInfo for DeathsDance {
     }
 
     fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
-        // Defy: clear the deferred-damage pool and heal a share of missing health.
         self.accumulated_damage = 0;
 
         let Some(player_ref) = ctx.get_player(player) else {
@@ -296,7 +294,6 @@ impl ModItemInfo for RadiantDeathsDance {
             return;
         };
 
-        // Throttle the bleed to one tick per second; `update` runs every tick.
         let is_burn_applied = (0..entity_ref.buff_count())
             .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_deaths_dance_burn");
         if is_burn_applied {
@@ -350,7 +347,6 @@ impl ModItemInfo for RadiantDeathsDance {
     }
 
     fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
-        // Defy: clear the deferred-damage pool and heal a share of missing health.
         self.accumulated_damage = 0;
 
         let Some(player_ref) = ctx.get_player(player) else {

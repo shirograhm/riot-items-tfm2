@@ -5,28 +5,6 @@ use mod_api::*;
 use crate::config::ItemConfig;
 use crate::percent_of;
 
-// Awe passive: while equipped, the wielder gains bonus max HP equal to
-// `effect_bonus_flat_hp` plus `effect_caster_defence_percent_hp`% of their defence. The
-// bonus must track defence gained mid-battle (levels, stacking armor buffs, etc.), but a
-// live buff can't be mutated or removed, and re-adding a same-named buff stacks rather
-// than replaces.
-//
-// So the bonus is granted as *permanent, incremental* buffs whose name encodes the
-// cumulative HP granted so far (`protectors_vow_awe_<total>`). Each tick we recompute the
-// target bonus from current defence, read back the largest total already granted from the
-// buff names, and — only if the target is higher — add a permanent buff for the
-// *difference*, tagged with the new total. The deltas sum to the target, and because the
-// buffs never expire the HP never lapses: this removes the ~1-tick flicker the old
-// expiring-buff approach had (especially visible here, since it flashes the HP bar).
-// `refresh_lockout` still bridges the few ticks before a freshly added buff becomes
-// visible to `buff_count()`, so a delta is never granted twice. Reading the running total
-// from the buff names (rather than a field on `self`) also self-heals: if the buffs are
-// cleared on respawn/dispel, the total reads back as 0 and the full bonus re-grants.
-//
-// Trade-off: defence is assumed monotonic within a battle (it only rises from levels /
-// items / stacking buffs — enemy armor penetration doesn't lower `stat().defence`). If it
-// ever dropped the bonus couldn't be lowered, but the alternative was a visible HP-bar
-// flicker.
 const REFRESH_LOCKOUT_TICKS: usize = 3;
 
 #[derive(Clone, Debug)]
@@ -36,8 +14,6 @@ pub struct ProtectorsVow {
     defence: i32,
     effect_bonus_flat_hp: i32,
     effect_caster_defence_percent_hp: f64,
-    // Ticks remaining during which `apply_awe` skips its work, so a freshly added buff
-    // can't be duplicated before it becomes visible.
     refresh_lockout: usize,
 }
 
@@ -69,11 +45,6 @@ impl ProtectorsVow {
         }
     }
 
-    // Top up the Awe bonus. Recompute the target HP from the champion's *current* defence,
-    // read back the largest cumulative total already granted (encoded in the buff names),
-    // and add a permanent buff for the difference only when the target has grown.
-    // `refresh_lockout` skips a few ticks after each add so a delta can't be granted twice
-    // before the new buff is visible to `buff_count()`.
     fn apply_awe(&mut self, ctx: &mut GameCtx, player: usize) {
         if self.refresh_lockout > 0 {
             self.refresh_lockout -= 1;
@@ -167,14 +138,10 @@ impl ModItemInfo for ProtectorsVow {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
-        // Seed the bonus at spawn; the refresh lockout in `apply_awe` then guards against
-        // a duplicate add before this one becomes visible.
         self.apply_awe(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        // Top up the bonus as defence grows; also re-grants the full amount if the buffs
-        // were cleared (respawn/dispel), since the running total then reads back as 0.
         self.apply_awe(ctx, player);
     }
 
@@ -195,8 +162,6 @@ pub struct RadiantProtectorsVow {
     skill_cooldown_mult: i32,
     effect_bonus_flat_hp: i32,
     effect_caster_defence_percent_hp: f64,
-    // Ticks remaining during which `apply_awe` skips its work, so a freshly added buff
-    // can't be duplicated before it becomes visible.
     refresh_lockout: usize,
 }
 
@@ -230,11 +195,6 @@ impl RadiantProtectorsVow {
         }
     }
 
-    // Top up the Awe bonus. Recompute the target HP from the champion's *current* defence,
-    // read back the largest cumulative total already granted (encoded in the buff names),
-    // and add a permanent buff for the difference only when the target has grown.
-    // `refresh_lockout` skips a few ticks after each add so a delta can't be granted twice
-    // before the new buff is visible to `buff_count()`.
     fn apply_awe(&mut self, ctx: &mut GameCtx, player: usize) {
         if self.refresh_lockout > 0 {
             self.refresh_lockout -= 1;
@@ -322,14 +282,10 @@ impl ModItemInfo for RadiantProtectorsVow {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
-        // Seed the bonus at spawn; the refresh lockout in `apply_awe` then guards against
-        // a duplicate add before this one becomes visible.
         self.apply_awe(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        // Top up the bonus as defence grows; also re-grants the full amount if the buffs
-        // were cleared (respawn/dispel), since the running total then reads back as 0.
         self.apply_awe(ctx, player);
     }
 
