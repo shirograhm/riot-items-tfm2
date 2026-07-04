@@ -273,15 +273,15 @@
         },
         "executioners_calling": {
             "name": "Executioner's Calling",
-            "option": "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>2 seconds<>."
+            "option": "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 25%<> for <#e8a800ff>2 seconds<>."
         },
         "mortal_reminder": {
             "name": "Mortal Reminder",
-            "option": "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+            "option": "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
         },
         "radiant_mortal_reminder": {
             "name": "Radiant Mortal Reminder",
-            "option": "Executioner: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+            "option": "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
         },
         "experimental_hexplate": {
             "name": "Experimental Hexplate",
@@ -674,15 +674,15 @@
         },
         "executioners_calling": {
             "name": "Gươm Đồ Tể",
-            "option": "Đao phủ: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 25%<> trong <#e8a800ff>2 giây<>."
+            "option": "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 25%<> trong <#e8a800ff>2 giây<>."
         },
         "mortal_reminder": {
             "name": "Lời Nhắc Tử Vong",
-            "option": "Đao phủ: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+            "option": "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
         },
         "radiant_mortal_reminder": {
             "name": "Lời Nhắc Tử Vong Ánh Sáng",
-            "option": "Đao phủ: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+            "option": "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
         },
         "experimental_hexplate": {
             "name": "Khiên Hextech Thử Nghiệm",
@@ -1476,15 +1476,15 @@
         },
         "executioners_calling": {
             "name": "Chamado do Carrasco",
-            "option": "Executor: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 25%<> por <#e8a800ff>2 segundos<>."
+            "option": "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 25%<> por <#e8a800ff>2 segundos<>."
         },
         "mortal_reminder": {
             "name": "Lembrete Mortal",
-            "option": "Executor: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+            "option": "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
         },
         "radiant_mortal_reminder": {
             "name": "Lembrete Mortal Radiante",
-            "option": "Executor: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+            "option": "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
         },
         "experimental_hexplate": {
             "name": "Hexoplaca Experimental",
@@ -1877,15 +1877,15 @@
         },
         "executioners_calling": {
             "name": "Призвание Палача",
-            "option": "Палач: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 25%<> на <#e8a800ff>2 секунды<>."
+            "option": "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 25%<> на <#e8a800ff>2 секунды<>."
         },
         "mortal_reminder": {
             "name": "Глашатай Смерти",
-            "option": "Палач: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+            "option": "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
         },
         "radiant_mortal_reminder": {
             "name": "Лучезарный Глашатай Смерти",
-            "option": "Палач: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+            "option": "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
         },
         "experimental_hexplate": {
             "name": "Экспериментальная Хекстековая Броня",
