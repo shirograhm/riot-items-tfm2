@@ -19,6 +19,7 @@ pub struct ItemConfig {
     pub defence: Option<i32>,
     pub magic_resistance: Option<i32>,
     pub defence_penetration: Option<usize>,
+    pub magic_resistance_penetration: Option<usize>,
     pub skill_cooldown_mult: Option<i32>,
     pub ult_cooldown_mult: Option<i32>,
     pub vamp: Option<i32>,

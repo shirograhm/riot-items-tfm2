@@ -122,6 +122,11 @@ $rtDur = if ($null -ne $config.radiant_terminus.effect_duration_seconds) { [int]
 $rtStacks = if ($null -ne $config.radiant_terminus.effect_max_stacks) { [int]$config.radiant_terminus.effect_max_stacks }         else { 4 }
 $colThreshold = if ($null -ne $config.collector.effect_hp_percent_threshold) { [double]$config.collector.effect_hp_percent_threshold }                  else { 8.0 }
 $rcolThreshold = if ($null -ne $config.radiant_collector.effect_hp_percent_threshold) { [double]$config.radiant_collector.effect_hp_percent_threshold } else { 8.0 }
+$sfThreshold = if ($null -ne $config.shadowflame.effect_hp_percent_threshold) { [double]$config.shadowflame.effect_hp_percent_threshold }              else { 0.3 }
+$rsfThreshold = if ($null -ne $config.radiant_shadowflame.effect_hp_percent_threshold) { [double]$config.radiant_shadowflame.effect_hp_percent_threshold } else { 0.3 }
+# Shadowflame stores its threshold as a 0-1 fraction (matches src/shadowflame.rs); display it as a percent.
+$sfThresholdPct = [int]($sfThreshold * 100)
+$rsfThresholdPct = [int]($rsfThreshold * 100)
 $hsFlat = if ($null -ne $config.heartsteel.effect_bonus_flat_damage) { [int]$config.heartsteel.effect_bonus_flat_damage }                              else { 15 }
 $hsHpPct = if ($null -ne $config.heartsteel.effect_caster_hp_percent_damage) { [double]$config.heartsteel.effect_caster_hp_percent_damage }            else { 6.0 }
 $hsBonusHpPct = if ($null -ne $config.heartsteel.effect_bonus_hp_percent_of_damage) { [double]$config.heartsteel.effect_bonus_hp_percent_of_damage }   else { 15.0 }
@@ -173,6 +178,10 @@ $i18n.en.nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus
 $i18n.en.radiant_nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
 $i18n.en.riftmaker.option = "Infusion: Landing an Ability on an enemy champion grants <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rmDur} seconds<> (max ${rmStacks} stacks)."
 $i18n.en.radiant_riftmaker.option = "Infusion: Landing an Ability on an enemy champion grants <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rrmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rrmDur} seconds<> (max ${rrmStacks} stacks)."
+# Shadowflame — Cinderbloom: AP damage amplified against low-health champions (see src/shadowflame.rs).
+# The 20% amp is hardcoded in Rust; only the HP threshold is config-driven.
+$i18n.en.shadowflame.option = "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below ${sfThresholdPct}% maximum health<>."
+$i18n.en.radiant_shadowflame.option = "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below ${rsfThresholdPct}% maximum health<>."
 $i18n.en.mortal_reminder.option = "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${mrHeal}%<> for <#e8a800ff>${mrDur} seconds<>."
 $i18n.en.radiant_mortal_reminder.option = "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rmrHeal}%<> for <#e8a800ff>${rmrDur} seconds<>."
 $i18n.en.jaksho_the_protean.option = "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>${jakDefMult}% <$armorIcon> armor<> and <#88ccffff>${jakMrMult}% <$mrIcon> magic resistance<> for <#e8a800ff>${jakDur} seconds<> (max ${jakStacks} stacks)."
@@ -231,6 +240,8 @@ $i18n.vi.nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a
 $i18n.vi.radiant_nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
 $i18n.vi.riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rmDur} giây<> (tối đa ${rmStacks} cộng dồn)."
 $i18n.vi.radiant_riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rrmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rrmDur} giây<> (tối đa ${rrmStacks} cộng dồn)."
+$i18n.vi.shadowflame.option = "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới ${sfThresholdPct}% máu tối đa<>."
+$i18n.vi.radiant_shadowflame.option = "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới ${rsfThresholdPct}% máu tối đa<>."
 $i18n.vi.mortal_reminder.option = "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${mrHeal}%<> trong <#e8a800ff>${mrDur} giây<>."
 $i18n.vi.radiant_mortal_reminder.option = "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rmrHeal}%<> trong <#e8a800ff>${rmrDur} giây<>."
 $i18n.vi.jaksho_the_protean.option = "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>${jakDefMult}% <$armorIcon> giáp<> và <#88ccffff>${jakMrMult}% <$mrIcon> kháng phép<> trong <#e8a800ff>${jakDur} giây<> (tối đa ${jakStacks} cộng dồn)."
@@ -289,6 +300,8 @@ $i18n.'zh-hans'.nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 
 $i18n.'zh-hans'.radiant_nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${rntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${rntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
 $i18n.'zh-hans'.riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rmDur}秒<>（最多叠加${rmStacks}层）。"
 $i18n.'zh-hans'.radiant_riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rrmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rrmDur}秒<>（最多叠加${rrmStacks}层）。"
+$i18n.'zh-hans'.shadowflame.option = "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于${sfThresholdPct}%<>的敌人<#ff9028ff>提高20%<>。"
+$i18n.'zh-hans'.radiant_shadowflame.option = "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于${rsfThresholdPct}%<>的敌人<#ff9028ff>提高20%<>。"
 $i18n.'zh-hans'.mortal_reminder.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${mrHeal}%<>，持续 <#e8a800ff>${mrDur}秒<>。"
 $i18n.'zh-hans'.radiant_mortal_reminder.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${rmrHeal}%<>，持续 <#e8a800ff>${rmrDur}秒<>。"
 $i18n.'zh-hans'.jaksho_the_protean.option = "复原力：受到敌方英雄伤害时，获得 <#ffdd8eff>${jakDefMult}% <$armorIcon> 护甲<>和 <#88ccffff>${jakMrMult}% <$mrIcon> 魔法抗性<>，持续 <#e8a800ff>${jakDur}秒<>（最多叠加${jakStacks}层）。"
@@ -347,6 +360,8 @@ $i18n.'pt-BR'.nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ff
 $i18n.'pt-BR'.radiant_nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
 $i18n.'pt-BR'.riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rmDur} segundos<> (acumula ${rmStacks}x)."
 $i18n.'pt-BR'.radiant_riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rrmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rrmDur} segundos<> (acumula ${rrmStacks}x)."
+$i18n.'pt-BR'.shadowflame.option = "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de ${sfThresholdPct}% da Vida Máxima<>."
+$i18n.'pt-BR'.radiant_shadowflame.option = "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de ${rsfThresholdPct}% da Vida Máxima<>."
 $i18n.'pt-BR'.mortal_reminder.option = "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${mrHeal}%<> por <#e8a800ff>${mrDur} segundos<>."
 $i18n.'pt-BR'.radiant_mortal_reminder.option = "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rmrHeal}%<> por <#e8a800ff>${rmrDur} segundos<>."
 $i18n.'pt-BR'.jaksho_the_protean.option = "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>${jakDefMult}% <$armorIcon> de Armadura<> e <#88ccffff>${jakMrMult}% <$mrIcon> de Resistência Mágica<> por <#e8a800ff>${jakDur} segundos<> (acumula ${jakStacks}x)."
@@ -405,6 +420,8 @@ $i18n.ru.nashors_tooth.option = "Укус Икатии: При атаке нан
 $i18n.ru.radiant_nashors_tooth.option = "Укус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Силы Умений<>."
 $i18n.ru.riftmaker.option = "Наполнение: Попадания умениями дают <$apIcon> <#a974ffff>Силу Умений<> равную <#60e84dff>${rmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> на <#e8a800ff>${rmDur} секунд<> (макс. ${rmStacks} стака)."
 $i18n.ru.radiant_riftmaker.option = "Наполнение: Попадания умениями дают <$apIcon> <#a974ffff>Силу Умений<> равную <#60e84dff>${rrmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> на <#e8a800ff>${rrmDur} секунд<> (макс. ${rrmStacks} стака)."
+$i18n.ru.shadowflame.option = "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже ${sfThresholdPct}% от максимального<>."
+$i18n.ru.radiant_shadowflame.option = "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже ${rsfThresholdPct}% от максимального<>."
 $i18n.ru.mortal_reminder.option = "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${mrHeal}%<> на <#e8a800ff>${mrDur} секунды<>."
 $i18n.ru.radiant_mortal_reminder.option = "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rmrHeal}%<> на <#e8a800ff>${rmrDur} секунды<>."
 $i18n.ru.jaksho_the_protean.option = "Стойкость: Получение урона от вражеского чемпиона даёт <#ffdd8eff>${jakDefMult}% <$armorIcon> брони<> и <#88ccffff>${jakMrMult}% <$mrIcon> сопротивления магии<> на <#e8a800ff>${jakDur} секунды<> (макс. ${jakStacks} стака)."
@@ -503,3 +520,5 @@ Write-Host "  Spear of Shojin:         ${sosAtkMult}% AD/stack / ${sosDur}s / ${
 Write-Host "  Radiant Spear of Shojin: ${rsosAtkMult}% AD/stack / ${rsosDur}s / ${rsosStacks} stacks"
 Write-Host "  Warmog's Armor:          ${waHeal}% max HP/s / ${waMs} movement speed / ${waDur} out of combat cooldown"
 Write-Host "  Radiant Warmog's Armor:  ${rwaHeal}% max HP/s / ${rwaMs} movement speed / ${rwaDur} out of combat cooldown"
+Write-Host "  Shadowflame:             +20% AP dmg vs targets below ${sfThresholdPct}% HP"
+Write-Host "  Radiant Shadowflame:     +20% AP dmg vs targets below ${rsfThresholdPct}% HP"

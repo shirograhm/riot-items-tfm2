@@ -255,6 +255,14 @@
             "name": "Radiant Riftmaker",
             "option": "Infusion: Landing an Ability on an enemy champion grants <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
         },
+        "shadowflame": {
+            "name": "Shadowflame",
+            "option": "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
+        },
+        "radiant_shadowflame": {
+            "name": "Radiant Shadowflame",
+            "option": "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
+        },
         "unending_despair": {
             "name": "Unending Despair",
             "option": "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
@@ -663,6 +671,14 @@
         "radiant_riftmaker": {
             "name": "Quyền Trượng Ác Thần Ánh Sáng",
             "option": "Dung hòa: Kĩ năng trúng đích sẽ tăng <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> tương ứng <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>5 giây<> (tối đa 3 cộng dồn)."
+        },
+        "shadowflame": {
+            "name": "Ngọn Lửa Hắc Hóa",
+            "option": "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
+        },
+        "radiant_shadowflame": {
+            "name": "Ngọn Lửa Hắc Hóa Ánh Sáng",
+            "option": "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
         },
         "unending_despair": {
             "name": "Áo Choàng Diệt Vong",
@@ -1073,6 +1089,14 @@
             "name": "光明版裂隙制造者",
             "option": "虚空灌注：技能命中时，获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，持续 <#e8a800ff>5秒<>（最多叠加3层）。"
         },
+        "shadowflame": {
+            "name": "影焰",
+            "option": "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#ff9028ff>提高20%<>。"
+        },
+        "radiant_shadowflame": {
+            "name": "光明版影焰",
+            "option": "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#ff9028ff>提高20%<>。"
+        },
         "unending_despair": {
             "name": "无终恨意",
             "option": "苦楚：技能命中时，回复 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的生命值。"
@@ -1482,6 +1506,14 @@
             "name": "Criafendas Radiante",
             "option": "Corrupção: Suas mágias te dão <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>5 segundos<> (acumula 3x)."
         },
+        "shadowflame": {
+            "name": "Chama Sombria",
+            "option": "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
+        },
+        "radiant_shadowflame": {
+            "name": "Chama Sombria Radiante",
+            "option": "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
+        },
         "unending_despair": {
             "name": "Desespero Eterno",
             "option": "Angústia: Suas mágias te curam em <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
@@ -1890,6 +1922,14 @@
         "radiant_riftmaker": {
             "name": "Лучезарный Творец Разломов",
             "option": "Наполнение: Попадания умениями дают <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> равную <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> на <#e8a800ff>5 секунд<> (макс. 3 стака)."
+        },
+        "shadowflame": {
+            "name": "Сумрачное пламя",
+            "option": "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
+        },
+        "radiant_shadowflame": {
+            "name": "Лучезарное Сумрачное пламя",
+            "option": "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
         },
         "unending_despair": {
             "name": "Бесконечное Отчаяние",

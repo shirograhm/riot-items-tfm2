@@ -149,6 +149,12 @@
     "effect_max_stacks": 3,
     "effect_duration_seconds": 5
   },
+  "shadowflame": {
+    "price": 1350,
+    "magic_power": 115,
+    "magic_resistance_penetration": 15,
+    "effect_hp_percent_threshold": 0.3
+  },
   "spear_of_shojin": {
     "price": 1400,
     "hp": 350,
@@ -384,6 +390,12 @@
     "effect_caster_hp_percent_power": 1.0,
     "effect_max_stacks": 3,
     "effect_duration_seconds": 5
+  },
+  "radiant_shadowflame": {
+    "price": 1800,
+    "magic_power": 210,
+    "magic_resistance_penetration": 15,
+    "effect_hp_percent_threshold": 0.3
   },
   "radiant_spear_of_shojin": {
     "price": 2200,
