@@ -4,17 +4,8 @@ use mod_api::*;
 use crate::config::ItemConfig;
 use crate::percent_of;
 
-// The regen pulses every 0.5s (30 ticks). `hp_regen` restores its value over a
-// 1-second (tick: 60) window, matching the other healing items in this mod, so
-// consecutive pulses overlap into a smooth regen at the configured rate.
 const REGEN_PERIOD_TICKS: usize = 30;
-// The move-speed buff is short and re-applied whenever it is absent while the
-// holder is safe, so it stays up continuously and then falls off within this
-// many ticks after the holder is hit (`ticks_since_damage` resets in on_damaged).
 const MOVE_SPEED_REFRESH_TICKS: usize = 30;
-// TODO: placeholder icon (reuses the Protoplasm Harness sprite) — swap for real
-// Warmog's Armor art once it exists.
-const PLACEHOLDER_ICON: &str = "t9_3";
 
 #[derive(Clone, Debug)]
 pub struct WarmogsArmor {
@@ -123,7 +114,7 @@ impl ModItemInfo for WarmogsArmor {
     }
 
     fn icon(&self) -> &str {
-        PLACEHOLDER_ICON
+        "t11_6"
     }
 
     fn price(&self) -> usize {
@@ -289,7 +280,7 @@ impl ModItemInfo for RadiantWarmogsArmor {
     }
 
     fn icon(&self) -> &str {
-        PLACEHOLDER_ICON
+        "t11_7"
     }
 
     fn price(&self) -> usize {
