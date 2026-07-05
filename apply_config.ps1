@@ -501,3 +501,5 @@ Write-Host "  Heartsteel:             ${hsFlat} + ${hsHpPct}% max HP dmg / ${hsB
 Write-Host "  Radiant Heartsteel:     ${rhsFlat} + ${rhsHpPct}% max HP dmg / ${rhsBonusHpPct}% bonus HP / ${rhsCd}s cooldown"
 Write-Host "  Spear of Shojin:         ${sosAtkMult}% AD/stack / ${sosDur}s / ${sosStacks} stacks"
 Write-Host "  Radiant Spear of Shojin: ${rsosAtkMult}% AD/stack / ${rsosDur}s / ${rsosStacks} stacks"
+Write-Host "  Warmog's Armor:          ${waHeal}% max HP/s / ${waMs} movement speed / ${waDur} out of combat cooldown"
+Write-Host "  Radiant Warmog's Armor:  ${rwaHeal}% max HP/s / ${rwaMs} movement speed / ${rwaDur} out of combat cooldown"
