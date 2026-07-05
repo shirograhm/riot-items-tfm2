@@ -87,7 +87,9 @@ impl WarmogsArmor {
                 ctx.add_buff(
                     entity,
                     BuffState {
-                        duration: BuffType::Time { tick: 60 },
+                        duration: BuffType::Time {
+                            tick: REGEN_PERIOD_TICKS,
+                        },
                         hp_regen: heal,
                         ..Default::default()
                     },
@@ -269,7 +271,9 @@ impl RadiantWarmogsArmor {
                 ctx.add_buff(
                     entity,
                     BuffState {
-                        duration: BuffType::Time { tick: 60 },
+                        duration: BuffType::Time {
+                            tick: REGEN_PERIOD_TICKS,
+                        },
                         hp_regen: heal,
                         ..Default::default()
                     },
