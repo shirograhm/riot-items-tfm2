@@ -55,7 +55,7 @@ impl ModItemInfo for Shadowflame {
     }
 
     fn tier(&self) -> usize {
-        4
+        3
     }
 
     fn previous_tier(&self) -> Vec<String> {
@@ -157,7 +157,7 @@ impl ModItemInfo for RadiantShadowflame {
     }
 
     fn tier(&self) -> usize {
-        5
+        4
     }
 
     fn previous_tier(&self) -> Vec<String> {
