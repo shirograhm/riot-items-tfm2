@@ -65,7 +65,12 @@ impl WarmogsArmor {
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "warmogs_armor_recently_damaged");
             let has_move_speed = (0..entity_ref.buff_count())
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "warmogs_armor_move_speed");
-            Some((entity_ref.id(), entity_ref.hp().max, has_move_speed, recently_damaged))
+            Some((
+                entity_ref.id(),
+                entity_ref.hp().max,
+                has_move_speed,
+                recently_damaged,
+            ))
         }) else {
             return;
         };
@@ -179,7 +184,7 @@ impl ModItemInfo for WarmogsArmor {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::MoveSpeed]
+        vec![ItemTag::HP, ItemTag::HPRegen, ItemTag::MoveSpeed]
     }
 
     fn category(&self) -> ItemCategory {
@@ -242,7 +247,12 @@ impl RadiantWarmogsArmor {
             });
             let has_move_speed = (0..entity_ref.buff_count())
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_warmogs_armor_move_speed");
-            Some((entity_ref.id(), entity_ref.hp().max, has_move_speed, recently_damaged))
+            Some((
+                entity_ref.id(),
+                entity_ref.hp().max,
+                has_move_speed,
+                recently_damaged,
+            ))
         }) else {
             return;
         };
@@ -352,7 +362,7 @@ impl ModItemInfo for RadiantWarmogsArmor {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::MoveSpeed]
+        vec![ItemTag::HP, ItemTag::HPRegen, ItemTag::MoveSpeed]
     }
 
     fn category(&self) -> ItemCategory {
