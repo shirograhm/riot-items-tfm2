@@ -45,7 +45,7 @@ $ITEMS = @(
   'ludens_tempest', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
   'night_harvester', 'overlords_bloodmail', 'phantom_dancer',
   'protectors_vow', 'protoplasm_harness', 'rabadons_deathcap', 'riftmaker', 'spear_of_shojin',
-  'spirit_visage', 'terminus', 'thornmail', 'unending_despair',
+  'spirit_visage', 'sunfire_cape', 'terminus', 'thornmail', 'unending_despair',
   'warmogs_armor'
 )
 

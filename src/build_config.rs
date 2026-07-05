@@ -140,8 +140,8 @@ fn alias_key(key: &str) -> &str {
         "radiant_dragons_claw" => "veil_of_annihilation",
         // Radiant Luden's Tempest
         "radiant_ludens_tempest" => "prophet_of_the_abyss",
-        // Radiant Warmog's Armor
-        "radiant_warmogs_armor" => "giants_horn_shard",
+        // Radiant Sunfire Cape
+        "radiant_sunfire_cape" => "giants_horn_shard",
         other => other,
     }
 }
