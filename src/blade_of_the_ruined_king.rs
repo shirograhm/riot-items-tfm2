@@ -10,6 +10,7 @@ pub struct BladeOfTheRuinedKing {
     price: usize,
     attack: i32,
     attack_speed_mult: i32,
+    vamp: i32,
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
     on_hit_cooldown_seconds: f64,
@@ -21,6 +22,7 @@ impl Default for BladeOfTheRuinedKing {
             price: 1450,
             attack: 50,
             attack_speed_mult: 25,
+            vamp: 5,
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
             on_hit_cooldown_seconds: 0.5,
@@ -35,6 +37,7 @@ impl BladeOfTheRuinedKing {
             price: cfg.price.unwrap_or(d.price),
             attack: cfg.attack.unwrap_or(d.attack),
             attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            vamp: cfg.vamp.unwrap_or(d.vamp),
             effect_hp_percent_damage: cfg
                 .effect_hp_percent_damage
                 .unwrap_or(d.effect_hp_percent_damage),
@@ -70,7 +73,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["wind_dagger".to_string(), "soldiers_longsword".to_string()]
+        vec!["wind_dagger".to_string(), "ruinous_blade".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -81,6 +84,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         BuffState {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
+            vamp: self.vamp,
             ..Default::default()
         }
     }

@@ -8,6 +8,7 @@ pub struct Terminus {
     price: usize,
     attack: i32,
     attack_speed_mult: i32,
+    crit_chance: i32,
     effect_armor_pen_per_stack: usize,
     effect_magic_pen_per_stack: usize,
     effect_max_stacks: usize,
@@ -18,9 +19,10 @@ pub struct Terminus {
 impl Default for Terminus {
     fn default() -> Self {
         Self {
-            price: 1300,
+            price: 1400,
             attack: 30,
             attack_speed_mult: 35,
+            crit_chance: 20,
             effect_armor_pen_per_stack: 4,
             effect_magic_pen_per_stack: 4,
             effect_max_stacks: 4,
@@ -37,6 +39,7 @@ impl Terminus {
             price: cfg.price.unwrap_or(d.price),
             attack: cfg.attack.unwrap_or(d.attack),
             attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
             effect_armor_pen_per_stack: cfg
                 .effect_armor_pen_per_stack
                 .unwrap_or(d.effect_armor_pen_per_stack),
@@ -74,7 +77,7 @@ impl ModItemInfo for Terminus {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["soldiers_longsword".to_string(), "wind_dagger".to_string()]
+        vec!["twin_stormblade".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -85,6 +88,7 @@ impl ModItemInfo for Terminus {
         BuffState {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
+            crit_chance: self.crit_chance,
             ..Default::default()
         }
     }
@@ -159,6 +163,7 @@ pub struct RadiantTerminus {
     price: usize,
     attack: i32,
     attack_speed_mult: i32,
+    crit_chance: i32,
     effect_armor_pen_per_stack: usize,
     effect_magic_pen_per_stack: usize,
     effect_max_stacks: usize,
@@ -169,9 +174,10 @@ pub struct RadiantTerminus {
 impl Default for RadiantTerminus {
     fn default() -> Self {
         Self {
-            price: 1900,
+            price: 2000,
             attack: 50,
             attack_speed_mult: 60,
+            crit_chance: 25,
             effect_armor_pen_per_stack: 4,
             effect_magic_pen_per_stack: 4,
             effect_max_stacks: 4,
@@ -188,6 +194,7 @@ impl RadiantTerminus {
             price: cfg.price.unwrap_or(d.price),
             attack: cfg.attack.unwrap_or(d.attack),
             attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
+            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
             effect_armor_pen_per_stack: cfg
                 .effect_armor_pen_per_stack
                 .unwrap_or(d.effect_armor_pen_per_stack),
@@ -232,6 +239,7 @@ impl ModItemInfo for RadiantTerminus {
         BuffState {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
+            crit_chance: self.crit_chance,
             ..Default::default()
         }
     }

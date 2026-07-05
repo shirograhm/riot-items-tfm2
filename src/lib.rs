@@ -33,6 +33,7 @@ mod spear_of_shojin;
 mod spirit_visage;
 mod terminus;
 mod unending_despair;
+mod warmogs_armor;
 
 use bf_sword::*;
 use blackfire_torch::*;
@@ -64,6 +65,7 @@ use spear_of_shojin::*;
 use spirit_visage::*;
 use terminus::*;
 use unending_despair::*;
+use warmogs_armor::*;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -147,6 +149,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
+    reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
 
     // Tier 5
     reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
@@ -175,6 +178,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));
     reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
+    reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
 
     reg.set_server_extension(ItemBuildHookExtension);
 

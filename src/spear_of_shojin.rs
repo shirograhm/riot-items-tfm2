@@ -102,7 +102,7 @@ impl ModItemInfo for SpearOfShojin {
     fn previous_tier(&self) -> Vec<String> {
         vec![
             "soldiers_longsword".to_string(),
-            "ring_of_reincarnation".to_string(),
+            "hardened_heart".to_string(),
         ]
     }
 

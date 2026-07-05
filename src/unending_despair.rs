@@ -63,10 +63,7 @@ impl ModItemInfo for UnendingDespair {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "steel_armor".to_string(),
-            "ring_of_reincarnation".to_string(),
-        ]
+        vec!["ring_of_reincarnation".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

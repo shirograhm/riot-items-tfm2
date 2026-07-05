@@ -118,5 +118,5 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Vital Orb | Ruby Crystal |
 | Hardened Heart | Kindlegem |
 | Ring of Reincarnation | Giant’s Belt |
-| Hourglass of Eternity | Warmog’s Armor |
-| Giant’s Horn Shard | Radiant Warmog’s Armor |
+| Hourglass of Eternity | Sunfire Cape |
+| Giant’s Horn Shard | Radiant Sunfire Cape |

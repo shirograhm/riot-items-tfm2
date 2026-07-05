@@ -31,6 +31,7 @@
     "price": 1450,
     "attack": 50,
     "attack_speed_mult": 25,
+    "vamp": 5,
     "effect_hp_percent_damage": 5.0,
     "effect_minion_damage_cap": 50,
     "on_hit_cooldown_seconds": 0.5
@@ -152,15 +153,18 @@
     "price": 1400,
     "hp": 350,
     "attack": 35,
+    "skill_cooldown_mult": 10,
     "effect_stack_attack_mult": 3,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 5
   },
   "terminus": {
-    "price": 1300,
+    "price": 1400,
     "attack": 30,
     "attack_speed_mult": 35,
-    "effect_pen_per_stack": 4,
+    "crit_chance": 20,
+    "effect_armor_pen_per_stack": 4,
+    "effect_magic_pen_per_stack": 4,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 4
   },
@@ -345,10 +349,12 @@
     "effect_duration_seconds": 2
   },
   "radiant_terminus": {
-    "price": 1900,
+    "price": 2000,
     "attack": 50,
     "attack_speed_mult": 60,
-    "effect_pen_per_stack": 4,
+    "crit_chance": 25,
+    "effect_armor_pen_per_stack": 4,
+    "effect_magic_pen_per_stack": 4,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 4
   },
@@ -383,6 +389,7 @@
     "price": 2200,
     "hp": 600,
     "attack": 60,
+    "skill_cooldown_mult": 20,
     "effect_stack_attack_mult": 3,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 5
@@ -421,5 +428,19 @@
     "attack": 40,
     "hp": 650,
     "effect_caster_hp_percent_attack": 2.5
+  },
+  "warmogs_armor": {
+    "price": 1400,
+    "hp": 550,
+    "effect_caster_hp_percent_heal": 2.0,
+    "effect_move_speed_mult": 4,
+    "effect_duration_seconds": 6
+  },
+  "radiant_warmogs_armor": {
+    "price": 2000,
+    "hp": 900,
+    "effect_caster_hp_percent_heal": 2.0,
+    "effect_move_speed_mult": 4,
+    "effect_duration_seconds": 6
   }
 }

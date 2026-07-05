@@ -90,7 +90,7 @@ impl ModItemInfo for NightHarvester {
     fn previous_tier(&self) -> Vec<String> {
         vec![
             "ring_of_reincarnation".to_string(),
-            "spirit_crystal".to_string(),
+            "staff_of_rapture".to_string(),
         ]
     }
 
@@ -269,7 +269,12 @@ impl ModItemInfo for RadiantNightHarvester {
 
         // Per-target cooldown, tracked as a buff on the caster keyed by target.
         let mut cooldown_str = ArrayString::<64>::new();
-        write!(&mut cooldown_str, "radiant_night_harvester_cooldown_{}", target).unwrap();
+        write!(
+            &mut cooldown_str,
+            "radiant_night_harvester_cooldown_{}",
+            target
+        )
+        .unwrap();
         let is_cooldown_ticking = (0..caster_ref.buff_count())
             .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
         if is_cooldown_ticking {
