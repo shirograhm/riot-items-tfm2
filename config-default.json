@@ -31,6 +31,7 @@
     "price": 1450,
     "attack": 50,
     "attack_speed_mult": 25,
+    "vamp": 5,
     "effect_hp_percent_damage": 5.0,
     "effect_minion_damage_cap": 50,
     "on_hit_cooldown_seconds": 0.5
