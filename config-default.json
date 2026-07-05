@@ -159,9 +159,10 @@
     "effect_duration_seconds": 5
   },
   "terminus": {
-    "price": 1300,
+    "price": 1400,
     "attack": 30,
     "attack_speed_mult": 35,
+    "crit_chance": 20,
     "effect_armor_pen_per_stack": 4,
     "effect_magic_pen_per_stack": 4,
     "effect_max_stacks": 4,
@@ -348,9 +349,10 @@
     "effect_duration_seconds": 2
   },
   "radiant_terminus": {
-    "price": 1900,
+    "price": 2000,
     "attack": 50,
     "attack_speed_mult": 60,
+    "crit_chance": 25,
     "effect_armor_pen_per_stack": 4,
     "effect_magic_pen_per_stack": 4,
     "effect_max_stacks": 4,
