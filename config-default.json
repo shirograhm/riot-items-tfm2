@@ -152,6 +152,7 @@
     "price": 1400,
     "hp": 350,
     "attack": 35,
+    "skill_cooldown_mult": 10,
     "effect_stack_attack_mult": 3,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 5
@@ -160,7 +161,8 @@
     "price": 1300,
     "attack": 30,
     "attack_speed_mult": 35,
-    "effect_pen_per_stack": 4,
+    "effect_armor_pen_per_stack": 4,
+    "effect_magic_pen_per_stack": 4,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 4
   },
@@ -348,7 +350,8 @@
     "price": 1900,
     "attack": 50,
     "attack_speed_mult": 60,
-    "effect_pen_per_stack": 4,
+    "effect_armor_pen_per_stack": 4,
+    "effect_magic_pen_per_stack": 4,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 4
   },
@@ -383,6 +386,7 @@
     "price": 2200,
     "hp": 600,
     "attack": 60,
+    "skill_cooldown_mult": 20,
     "effect_stack_attack_mult": 3,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 5
