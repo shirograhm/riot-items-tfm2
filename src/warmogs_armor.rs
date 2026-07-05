@@ -4,9 +4,9 @@ use mod_api::*;
 use crate::config::ItemConfig;
 use crate::percent_of;
 
-// Regen pulses every 0.5s; each pulse is an `hp_regen` buff spread over a 1-second
+// Regen pulses every 1s; each pulse is an `hp_regen` buff spread over a 1-second
 // (tick: 60) window, matching the other healing items in this mod.
-const REGEN_PERIOD_TICKS: usize = 30;
+const REGEN_PERIOD_TICKS: usize = 60;
 // The move-speed buff is short and re-applied while it is absent, so it stays up
 // continuously while active and falls off shortly after the passive is suppressed.
 const MOVE_SPEED_REFRESH_TICKS: usize = 30;
@@ -26,7 +26,7 @@ impl Default for WarmogsArmor {
         Self {
             price: 1400,
             hp: 550,
-            effect_caster_hp_percent_heal: 2.0,
+            effect_caster_hp_percent_heal: 3.0,
             effect_move_speed_mult: 4,
             effect_duration_seconds: 6,
             regen_cooldown: 0,
@@ -80,7 +80,7 @@ impl WarmogsArmor {
             return;
         }
 
-        // Regenerate a share of maximum health every half-second.
+        // Regenerate a share of maximum health every second.
         if self.regen_cooldown == 0 {
             let heal = percent_of(max_hp, self.effect_caster_hp_percent_heal) as i32;
             if heal > 0 {
@@ -207,7 +207,7 @@ impl Default for RadiantWarmogsArmor {
         Self {
             price: 2000,
             hp: 900,
-            effect_caster_hp_percent_heal: 2.0,
+            effect_caster_hp_percent_heal: 3.0,
             effect_move_speed_mult: 4,
             effect_duration_seconds: 6,
             regen_cooldown: 0,
@@ -262,7 +262,7 @@ impl RadiantWarmogsArmor {
             return;
         }
 
-        // Regenerate a share of maximum health every half-second.
+        // Regenerate a share of maximum health every second.
         if self.regen_cooldown == 0 {
             let heal = percent_of(max_hp, self.effect_caster_hp_percent_heal) as i32;
             if heal > 0 {

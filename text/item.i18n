@@ -169,11 +169,11 @@
         },
         "warmogs_armor": {
             "name": "Warmog's Armor",
-            "option": "Warmog's Heart: Regenerate <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> every <#e8a800ff>0.5 seconds<> and gain <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> if you have not taken damage in the last <#e8a800ff>6 seconds<>."
+            "option": "Warmog's Heart: Regenerate <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> every second and gain <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> if you have not taken damage in the last <#e8a800ff>6 seconds<>."
         },
         "radiant_warmogs_armor": {
             "name": "Radiant Warmog's Armor",
-            "option": "Warmog's Heart: Regenerate <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> every <#e8a800ff>0.5 seconds<> and gain <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> if you have not taken damage in the last <#e8a800ff>6 seconds<>."
+            "option": "Warmog's Heart: Regenerate <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> every second and gain <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> if you have not taken damage in the last <#e8a800ff>6 seconds<>."
         },
         "hourglass_of_eternity": {
             "name": "Sunfire Cape",
@@ -578,11 +578,11 @@
         },
         "warmogs_armor": {
             "name": "Giáp Máu Warmog",
-            "option": "Trái Tim Warmog: Hồi phục <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn mỗi <#e8a800ff>0.5 giây<> và nhận <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> nếu không nhận sát thương trong <#e8a800ff>6 giây<> gần đây."
+            "option": "Trái Tim Warmog: Hồi phục <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn mỗi giây và nhận <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> nếu không nhận sát thương trong <#e8a800ff>6 giây<> gần đây."
         },
         "radiant_warmogs_armor": {
             "name": "Giáp Máu Warmog Ánh Sáng",
-            "option": "Trái Tim Warmog: Hồi phục <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn mỗi <#e8a800ff>0.5 giây<> và nhận <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> nếu không nhận sát thương trong <#e8a800ff>6 giây<> gần đây."
+            "option": "Trái Tim Warmog: Hồi phục <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn mỗi giây và nhận <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> nếu không nhận sát thương trong <#e8a800ff>6 giây<> gần đây."
         },
         "hourglass_of_eternity": {
             "name": "Áo Choàng Lửa Mặt Trời",
@@ -987,11 +987,11 @@
         },
         "warmogs_armor": {
             "name": "狂徒铠甲",
-            "option": "狂徒之心：每 <#e8a800ff>0.5秒<> 回复你 <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>；若在过去 <#e8a800ff>6秒<> 内未受到伤害，则获得 <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。"
+            "option": "狂徒之心：每秒回复你 <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>；若在过去 <#e8a800ff>6秒<> 内未受到伤害，则获得 <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。"
         },
         "radiant_warmogs_armor": {
             "name": "光明版狂徒铠甲",
-            "option": "狂徒之心：每 <#e8a800ff>0.5秒<> 回复你 <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>；若在过去 <#e8a800ff>6秒<> 内未受到伤害，则获得 <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。"
+            "option": "狂徒之心：每秒回复你 <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>；若在过去 <#e8a800ff>6秒<> 内未受到伤害，则获得 <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。"
         },
         "hourglass_of_eternity": {
             "name": "日炎斗篷",
@@ -1396,11 +1396,11 @@
         },
         "warmogs_armor": {
             "name": "Armadura de Warmog",
-            "option": "Coração de Warmog: Regenera <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> a cada <#e8a800ff>0.5 segundos<> e concede <#ffffffff>4%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> se você não sofrer dano nos últimos <#e8a800ff>6 segundos<>."
+            "option": "Coração de Warmog: Regenera <#60e84dff>3%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo e concede <#ffffffff>4%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> se você não sofrer dano nos últimos <#e8a800ff>6 segundos<>."
         },
         "radiant_warmogs_armor": {
             "name": "Armadura de Warmog Radiante",
-            "option": "Coração de Warmog: Regenera <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> a cada <#e8a800ff>0.5 segundos<> e concede <#ffffffff>4%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> se você não sofrer dano nos últimos <#e8a800ff>6 segundos<>."
+            "option": "Coração de Warmog: Regenera <#60e84dff>3%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo e concede <#ffffffff>4%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> se você não sofrer dano nos últimos <#e8a800ff>6 segundos<>."
         },
         "hourglass_of_eternity": {
             "name": "Capa do Sol Nascente",
@@ -1805,11 +1805,11 @@
         },
         "warmogs_armor": {
             "name": "Доспех Вармога",
-            "option": "Сердце Вармога: Восстанавливает <#60e84dff>2%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> каждые <#e8a800ff>0.5 секунды<> и дает <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>, если вы не получали урон последние <#e8a800ff>6 секунд<>."
+            "option": "Сердце Вармога: Восстанавливает <#60e84dff>3%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> каждую секунду и дает <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>, если вы не получали урон последние <#e8a800ff>6 секунд<>."
         },
         "radiant_warmogs_armor": {
             "name": "Гордость Вармога",
-            "option": "Сердце Вармога: Восстанавливает <#60e84dff>2%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> каждые <#e8a800ff>0.5 секунды<> и дает <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>, если вы не получали урон последние <#e8a800ff>6 секунд<>."
+            "option": "Сердце Вармога: Восстанавливает <#60e84dff>3%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> каждую секунду и дает <#ffffffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>, если вы не получали урон последние <#e8a800ff>6 секунд<>."
         },
         "hourglass_of_eternity": {
             "name": "Плащ солнечного пламени",

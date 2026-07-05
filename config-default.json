@@ -432,14 +432,14 @@
   "warmogs_armor": {
     "price": 1400,
     "hp": 550,
-    "effect_caster_hp_percent_heal": 2.0,
+    "effect_caster_hp_percent_heal": 3.0,
     "effect_move_speed_mult": 4,
     "effect_duration_seconds": 6
   },
   "radiant_warmogs_armor": {
     "price": 2000,
     "hp": 900,
-    "effect_caster_hp_percent_heal": 2.0,
+    "effect_caster_hp_percent_heal": 3.0,
     "effect_move_speed_mult": 4,
     "effect_duration_seconds": 6
   }

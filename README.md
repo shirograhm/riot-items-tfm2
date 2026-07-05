@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 56 new items (30 base + 26 Radiant) to the game.
+Reskins the 30 existing items and also adds 58 new items (31 base + 27 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -28,7 +28,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Spell hits grant +10 Ability Power for 4 seconds (max 4 stacks). |
-| **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
+| **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Collector** | 1400G | +55 AD<br>+20% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 8% max health executes them. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 1450G | +50 AD<br>+50 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: On kill, the stored damage is cleared and you heal for 15% of your missing health. |
@@ -49,10 +49,11 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Protoplasm Harness** | 1000G | +400 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
 | **Riftmaker** | 1300G | +400 HP<br>+75 AP | Spell hits grant Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
-| **Spear of Shojin** | 1400G | +350 HP<br>+35 AD | Landing abilities on enemy champions grants 3% Attack Damage for 5 seconds (max 4 stacks). |
-| **Spirit Visage** | 1400G | +400 HP<br>+50 MR | Increase all healing received by 20%. |
-| **Terminus** | 1300G | +30 AD<br>+35% AS | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
+| **Spear of Shojin** | 1400G | +350 HP<br>+35 AD<br>+10% CDR | Landing abilities on enemy champions grants 3% Attack Damage for 5 seconds (max 4 stacks). |
+| **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Increase all healing received by 20%. |
+| **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Spell hits heal you for 10 + 1% of your maximum health. |
+| **Warmog's Armor** | 1400G | +550 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 
 
 #### Tier 5  
@@ -80,10 +81,11 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon’s Deathcap** | 2200G | +220 AP | Increase your total Ability Power by 35%. |
 | **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Spell hits grant Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
-| **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD | Landing abilities on enemy champions grants 3% Attack Damage for 5 seconds (max 4 stacks). |
-| **Radiant Spirit Visage** | 1900G | +600 HP<br>+100 MR | Increase all healing received by 20%. |
-| **Radiant Terminus** | 1900G | +50 AD<br>+60% AS | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
+| **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD<br>+20% CDR | Landing abilities on enemy champions grants 3% Attack Damage for 5 seconds (max 4 stacks). |
+| **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Increase all healing received by 20%. |
+| **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Spell hits heal you for 25 + 3% of your maximum health. |
+| **Radiant Warmog's Armor** | 2000G | +900 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 
 
 ### Base Item Reskins
