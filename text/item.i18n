@@ -265,11 +265,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Yun Tal Wildarrows",
-            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Critical Strike Chance<> permanently, up to <#e8a800ff>25%<>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Attack Speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
+            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Radiant Yun Tal Wildarrows",
-            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Critical Strike Chance<> permanently, up to <#e8a800ff>25%<>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Attack Speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
+            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
         },
         "unending_despair": {
             "name": "Unending Despair",
