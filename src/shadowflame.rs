@@ -1,6 +1,7 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::percent_of;
 
 #[derive(Clone, Debug)]
 pub struct Shadowflame {
@@ -16,7 +17,7 @@ impl Default for Shadowflame {
             price: 1350,
             magic_power: 115,
             magic_resistance_penetration: 15,
-            effect_hp_percent_threshold: 0.3,
+            effect_hp_percent_threshold: 30.0,
         }
     }
 }
@@ -89,8 +90,8 @@ impl ModItemInfo for Shadowflame {
             return;
         }
 
-        let current_hp_percent = target_ref.hp().current as f64 / target_ref.hp().max as f64;
-        if current_hp_percent < self.effect_hp_percent_threshold && damage_type == DamageType::AP {
+        let hp_threshold = percent_of(target_ref.hp().max, self.effect_hp_percent_threshold);
+        if target_ref.hp().current < hp_threshold && damage_type == DamageType::AP {
             *damage = (*damage as f64 * 1.2) as usize;
         }
     }
@@ -118,7 +119,7 @@ impl Default for RadiantShadowflame {
             price: 1800,
             magic_power: 210,
             magic_resistance_penetration: 15,
-            effect_hp_percent_threshold: 0.3,
+            effect_hp_percent_threshold: 30.0,
         }
     }
 }
@@ -187,8 +188,8 @@ impl ModItemInfo for RadiantShadowflame {
             return;
         }
 
-        let current_hp_percent = target_ref.hp().current as f64 / target_ref.hp().max as f64;
-        if current_hp_percent < self.effect_hp_percent_threshold && damage_type == DamageType::AP {
+        let hp_threshold = percent_of(target_ref.hp().max, self.effect_hp_percent_threshold);
+        if target_ref.hp().current < hp_threshold && damage_type == DamageType::AP {
             *damage = (*damage as f64 * 1.2) as usize;
         }
     }
