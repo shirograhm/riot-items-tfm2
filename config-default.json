@@ -37,11 +37,11 @@
     "on_hit_cooldown_seconds": 0.5
   },
   "collector": {
-    "price": 1400,
+    "price": 1450,
     "attack": 55,
     "crit_chance": 20,
     "defence_penetration": 10,
-    "effect_hp_percent_threshold": 8.0
+    "effect_hp_percent_threshold": 6.0
   },
   "experimental_hexplate": {
     "price": 1200,
@@ -68,6 +68,13 @@
     "hp": 450,
     "attack": 45,
     "effect_slow_amount": 25,
+    "effect_duration_seconds": 2
+  },
+  "rylais_crystal_scepter": {
+    "price": 1350,
+    "hp": 250,
+    "magic_power": 125,
+    "effect_slow_amount": 15,
     "effect_duration_seconds": 2
   },
   "guinsoos_rageblade": {
@@ -153,7 +160,7 @@
     "price": 1350,
     "magic_power": 115,
     "magic_resistance_penetration": 15,
-    "effect_hp_percent_threshold": 0.3
+    "effect_hp_percent_threshold": 30.0
   },
   "yun_tal_wildarrows": {
     "price": 1500,
@@ -271,6 +278,13 @@
     "effect_caster_hp_percent_damage": 3.0,
     "on_hit_cooldown_seconds": 0.5
   },
+  "radiant_rylais_crystal_scepter": {
+    "price": 1900,
+    "hp": 400,
+    "magic_power": 200,
+    "effect_slow_amount": 15,
+    "effect_duration_seconds": 2
+  },
   "radiant_guinsoos_rageblade": {
     "price": 1900,
     "attack": 50,
@@ -340,11 +354,11 @@
     "effect_duration_seconds": 2
   },
   "radiant_collector": {
-    "price": 2000,
+    "price": 2100,
     "attack": 105,
     "crit_chance": 25,
     "defence_penetration": 10,
-    "effect_hp_percent_threshold": 8.0
+    "effect_hp_percent_threshold": 6.0
   },
   "radiant_jaksho_the_protean": {
     "price": 2000,
@@ -405,7 +419,7 @@
     "price": 1800,
     "magic_power": 210,
     "magic_resistance_penetration": 15,
-    "effect_hp_percent_threshold": 0.3
+    "effect_hp_percent_threshold": 30.0
   },
   "radiant_yun_tal_wildarrows": {
     "price": 2200,

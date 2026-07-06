@@ -2,36 +2,35 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
 
 #[derive(Clone, Debug)]
-pub struct FrozenMallet {
+pub struct RylaisCrystalScepter {
     price: usize,
     hp: i32,
-    attack: i32,
+    magic_power: i32,
     effect_slow_amount: i32,
     effect_duration_seconds: usize,
 }
 
-impl Default for FrozenMallet {
+impl Default for RylaisCrystalScepter {
     fn default() -> Self {
         Self {
-            price: 1300,
-            hp: 450,
-            attack: 45,
-            effect_slow_amount: 25,
+            price: 1350,
+            hp: 250,
+            magic_power: 125,
+            effect_slow_amount: 15,
             effect_duration_seconds: 2,
         }
     }
 }
 
-impl FrozenMallet {
+impl RylaisCrystalScepter {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
-            attack: cfg.attack.unwrap_or(d.attack),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
             effect_slow_amount: cfg.effect_slow_amount.unwrap_or(d.effect_slow_amount),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
@@ -40,17 +39,17 @@ impl FrozenMallet {
     }
 }
 
-impl ModItemInfo for FrozenMallet {
+impl ModItemInfo for RylaisCrystalScepter {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "frozen_mallet"
+        "rylais_crystal_scepter"
     }
 
     fn icon(&self) -> &str {
-        "t7_0"
+        "t12_2"
     }
 
     fn price(&self) -> usize {
@@ -63,39 +62,33 @@ impl ModItemInfo for FrozenMallet {
 
     fn previous_tier(&self) -> Vec<String> {
         vec![
-            "soldiers_longsword".to_string(),
-            "ring_of_reincarnation".to_string(),
+            "hardened_heart".to_string(),
+            "needlessly_large_rod".to_string(),
         ]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_frozen_mallet".to_string()]
+        vec!["radiant_rylais_crystal_scepter".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
             hp: self.hp,
-            attack: self.attack,
+            magic_power: self.magic_power,
             ..Default::default()
         }
     }
 
-    fn on_attack(
-        &mut self,
-        ctx: &mut GameCtx,
-        _caster: usize,
-        target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageType,
-    ) {
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _caster: usize, target: usize) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
         if target_ref.is_tower() {
             return;
         }
+
         let already_slowed = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
+            .any(|i| target_ref.buff_at(i).name.as_str() == "rylais_crystal_scepter_slow");
         if !already_slowed {
             ctx.add_buff(
                 target,
@@ -104,7 +97,7 @@ impl ModItemInfo for FrozenMallet {
                         tick: self.effect_duration_seconds * 60,
                     },
                     move_speed_mult: -self.effect_slow_amount,
-                    name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
+                    name: ArrayString::try_from("rylais_crystal_scepter_slow").unwrap(),
                     ..Default::default()
                 },
             );
@@ -112,81 +105,61 @@ impl ModItemInfo for FrozenMallet {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![
-            ItemTag::HP,
-            ItemTag::AD,
-            ItemTag::MyHpPercentDamage,
-            ItemTag::MoveSpeed,
-        ]
+        vec![ItemTag::HP, ItemTag::AP]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+        ItemCategory::Magic
     }
 }
 
 #[derive(Clone, Debug)]
-pub struct RadiantFrozenMallet {
+pub struct RadiantRylaisCrystalScepter {
     price: usize,
     hp: i32,
-    attack: i32,
+    magic_power: i32,
     effect_slow_amount: i32,
     effect_duration_seconds: usize,
-    effect_bonus_flat_damage: usize,
-    effect_caster_hp_percent_damage: f64,
-    on_hit_cooldown_seconds: f64,
 }
 
-impl Default for RadiantFrozenMallet {
+impl Default for RadiantRylaisCrystalScepter {
     fn default() -> Self {
         Self {
             price: 1900,
-            hp: 600,
-            attack: 60,
-            effect_slow_amount: 25,
+            hp: 400,
+            magic_power: 200,
+            effect_slow_amount: 15,
             effect_duration_seconds: 2,
-            effect_bonus_flat_damage: 20,
-            effect_caster_hp_percent_damage: 3.0,
-            on_hit_cooldown_seconds: 0.5,
         }
     }
 }
 
-impl RadiantFrozenMallet {
+impl RadiantRylaisCrystalScepter {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
-            attack: cfg.attack.unwrap_or(d.attack),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
             effect_slow_amount: cfg.effect_slow_amount.unwrap_or(d.effect_slow_amount),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
-            effect_bonus_flat_damage: cfg
-                .effect_bonus_flat_damage
-                .unwrap_or(d.effect_bonus_flat_damage),
-            effect_caster_hp_percent_damage: cfg
-                .effect_caster_hp_percent_damage
-                .unwrap_or(d.effect_caster_hp_percent_damage),
-            on_hit_cooldown_seconds: cfg
-                .on_hit_cooldown_seconds
-                .unwrap_or(d.on_hit_cooldown_seconds),
         }
     }
 }
 
-impl ModItemInfo for RadiantFrozenMallet {
+impl ModItemInfo for RadiantRylaisCrystalScepter {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_frozen_mallet"
+        "radiant_rylais_crystal_scepter"
     }
 
     fn icon(&self) -> &str {
-        "t7_1"
+        "t12_3"
     }
 
     fn price(&self) -> usize {
@@ -198,28 +171,18 @@ impl ModItemInfo for RadiantFrozenMallet {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["frozen_mallet".to_string()]
+        vec!["rylais_crystal_scepter".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
             hp: self.hp,
-            attack: self.attack,
+            magic_power: self.magic_power,
             ..Default::default()
         }
     }
 
-    fn on_attack(
-        &mut self,
-        ctx: &mut GameCtx,
-        caster: usize,
-        target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageType,
-    ) {
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _caster: usize, target: usize) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
@@ -227,28 +190,8 @@ impl ModItemInfo for RadiantFrozenMallet {
             return;
         }
 
-        let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_damage);
-
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_on_hit_cooldown");
         let already_slowed = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
-
-        if !is_cooldown_ticking {
-            ctx.add_buff(
-                target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                    },
-                    name: ArrayString::try_from("frozen_mallet_on_hit_cooldown").unwrap(),
-                    ..Default::default()
-                },
-            );
-            ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
-        }
-
+            .any(|i| target_ref.buff_at(i).name.as_str() == "rylais_crystal_scepter_slow");
         if !already_slowed {
             ctx.add_buff(
                 target,
@@ -257,7 +200,7 @@ impl ModItemInfo for RadiantFrozenMallet {
                         tick: self.effect_duration_seconds * 60,
                     },
                     move_speed_mult: -self.effect_slow_amount,
-                    name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
+                    name: ArrayString::try_from("rylais_crystal_scepter_slow").unwrap(),
                     ..Default::default()
                 },
             );
@@ -265,15 +208,10 @@ impl ModItemInfo for RadiantFrozenMallet {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![
-            ItemTag::HP,
-            ItemTag::AD,
-            ItemTag::MyHpPercentDamage,
-            ItemTag::MoveSpeed,
-        ]
+        vec![ItemTag::HP, ItemTag::AP]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+        ItemCategory::Magic
     }
 }

@@ -29,6 +29,7 @@ mod protectors_vow;
 mod protoplasm_harness;
 mod rabadons_deathcap;
 mod riftmaker;
+mod rylais_crystal_scepter;
 mod shadowflame;
 mod spear_of_shojin;
 mod spirit_visage;
@@ -63,6 +64,7 @@ use protectors_vow::*;
 use protoplasm_harness::*;
 use rabadons_deathcap::*;
 use riftmaker::*;
+use rylais_crystal_scepter::*;
 use shadowflame::*;
 use spear_of_shojin::*;
 use spirit_visage::*;
@@ -120,11 +122,11 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
 
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
+    reg.add_item(configured!("oblivion_orb" => OblivionOrb));
 
     // Tier 3
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
-    reg.add_item(configured!("oblivion_orb" => OblivionOrb));
 
     // Tier 4
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
@@ -149,6 +151,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured!("riftmaker" => Riftmaker));
+    reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured!("shadowflame" => Shadowflame));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
@@ -180,6 +183,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_protoplasm_harness" => RadiantProtoplasmHarness));
     reg.add_item(configured!("radiant_rabadons_deathcap" => RadiantRabadonsDeathcap));
     reg.add_item(configured!("radiant_riftmaker" => RadiantRiftmaker));
+    reg.add_item(configured!("radiant_rylais_crystal_scepter" => RadiantRylaisCrystalScepter));
     reg.add_item(configured!("radiant_shadowflame" => RadiantShadowflame));
     reg.add_item(configured!("radiant_spear_of_shojin" => RadiantSpearOfShojin));
     reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));

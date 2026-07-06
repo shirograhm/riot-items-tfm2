@@ -1,6 +1,5 @@
 use arrayvec::ArrayString;
 use mod_api::*;
-use std::fmt::Write;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
@@ -121,22 +120,19 @@ impl ModItemInfo for NightHarvester {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
 
-        // Per-target cooldown, tracked as a buff on the caster keyed by target.
-        let mut cooldown_str = ArrayString::<64>::new();
-        write!(&mut cooldown_str, "night_harvester_cooldown_{}", target).unwrap();
-        let is_cooldown_ticking = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
+        let is_cooldown_ticking = (0..target_ref.buff_count())
+            .any(|i| target_ref.buff_at(i).name.as_str() == "night_harvester_cooldown");
         if is_cooldown_ticking {
             return;
         }
 
         ctx.add_buff(
-            caster,
+            target,
             BuffState {
                 duration: BuffType::Time {
                     tick: self.effect_cooldown_seconds * 60,
                 },
-                name: cooldown_str,
+                name: ArrayString::try_from("night_harvester_cooldown").unwrap(),
                 ..Default::default()
             },
         );
@@ -267,27 +263,19 @@ impl ModItemInfo for RadiantNightHarvester {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
 
-        // Per-target cooldown, tracked as a buff on the caster keyed by target.
-        let mut cooldown_str = ArrayString::<64>::new();
-        write!(
-            &mut cooldown_str,
-            "radiant_night_harvester_cooldown_{}",
-            target
-        )
-        .unwrap();
-        let is_cooldown_ticking = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
+        let is_cooldown_ticking = (0..target_ref.buff_count())
+            .any(|i| target_ref.buff_at(i).name.as_str() == "radiant_night_harvester_cooldown");
         if is_cooldown_ticking {
             return;
         }
 
         ctx.add_buff(
-            caster,
+            target,
             BuffState {
                 duration: BuffType::Time {
                     tick: self.effect_cooldown_seconds * 60,
                 },
-                name: cooldown_str,
+                name: ArrayString::try_from("radiant_night_harvester_cooldown").unwrap(),
                 ..Default::default()
             },
         );
