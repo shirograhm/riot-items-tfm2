@@ -79,6 +79,7 @@ $cMuted = [System.Drawing.Color]::FromArgb(165, 165, 171)
 $cAccent = [System.Drawing.Color]::FromArgb(96, 221, 194)
 $cDanger = [System.Drawing.Color]::FromArgb(232, 100, 90)
 $cBadRow = [System.Drawing.Color]::FromArgb(58, 31, 34)
+$cDragRow = [System.Drawing.Color]::FromArgb(28, 50, 58)  # row being dragged
 
 # column geometry (x, width)
 $COL = @{
@@ -184,7 +185,14 @@ function New-Row {
   $grip.TextAlign = 'MiddleCenter'; $grip.ForeColor = $cMuted
   $grip.Font = New-Object System.Drawing.Font('Segoe UI', 15)
   $grip.Cursor = [System.Windows.Forms.Cursors]::SizeAll
-  $grip.Add_MouseDown({ [void]$this.DoDragDrop($this.Parent, [System.Windows.Forms.DragDropEffects]::Move) })
+  # DoDragDrop blocks until the mouse is released; the panel's DragOver slots the
+  # row into place live while it runs. We highlight here and persist on release.
+  $grip.Add_MouseDown({
+      $row = $this.Parent
+      $row.BackColor = $cDragRow
+      [void]$this.DoDragDrop($row, [System.Windows.Forms.DragDropEffects]::Move)
+      Save-Builds   # writes the new order; also recolors rows by state
+    })
 
   # swap buttons reorder the 3 items (each swaps with its right-hand neighbour)
   $swap1 = New-SwapButton $COL.Swap1[0] 0
@@ -444,27 +452,38 @@ $script:RowsPanel.AutoScroll = $true
 $script:RowsPanel.BackColor = $cBg
 $script:RowsPanel.Padding = New-Object System.Windows.Forms.Padding(15, 10, 15, 15)
 
-# drag-to-reorder rows: a row advertises itself (a Panel) when its grip is
-# dragged; dropping repositions it, which reorders the saved JSON keys.
+# drag-to-reorder rows, live: as the grip is dragged, DragOver keeps slotting the
+# row into its position under the cursor so the list updates in realtime. The
+# grip's MouseDown handler persists the final order on release.
 $script:RowsPanel.AllowDrop = $true
 $script:RowsPanel.Add_DragOver({
     param($sender, $e)
-    if ($e.Data.GetDataPresent([System.Windows.Forms.Panel])) { $e.Effect = [System.Windows.Forms.DragDropEffects]::Move }
-    else { $e.Effect = [System.Windows.Forms.DragDropEffects]::None }
+    if (-not $e.Data.GetDataPresent([System.Windows.Forms.Panel])) {
+      $e.Effect = [System.Windows.Forms.DragDropEffects]::None; return
+    }
+    $e.Effect = [System.Windows.Forms.DragDropEffects]::Move
+    $dragged = $e.Data.GetData([System.Windows.Forms.Panel])
+    $ctrls = $script:RowsPanel.Controls
+
+    # Desired index = how many other visible rows have their midpoint above the
+    # cursor. $e.Y is a screen coord, so measure each row's top in screen space
+    # too (PointToScreen accounts for scrolling). Rows are laid out top-to-bottom
+    # in index order, so we can stop at the first row that sits below the cursor.
+    $k = 0
+    foreach ($c in $ctrls) {
+      if ($c -eq $dragged -or -not $c.Visible) { continue }
+      $top = $c.PointToScreen([System.Drawing.Point]::Empty).Y
+      if (($top + ($c.Height / 2)) -lt $e.Y) { $k++ } else { break }
+    }
+    if ($k -ne $ctrls.GetChildIndex($dragged)) {
+      $script:RowsPanel.SuspendLayout()
+      $ctrls.SetChildIndex($dragged, $k)
+      $script:RowsPanel.ResumeLayout()
+    }
   })
 $script:RowsPanel.Add_DragDrop({
     param($sender, $e)
-    if (-not $e.Data.GetDataPresent([System.Windows.Forms.Panel])) { return }
-    $dragged = $e.Data.GetData([System.Windows.Forms.Panel])
-    $pt = $script:RowsPanel.PointToClient([System.Drawing.Point]::new($e.X, $e.Y))
-    $target = $script:RowsPanel.GetChildAtPoint($pt)
-    if ($null -eq $target) {
-      $script:RowsPanel.Controls.SetChildIndex($dragged, $script:RowsPanel.Controls.Count - 1)
-    }
-    elseif ($target -ne $dragged) {
-      $script:RowsPanel.Controls.SetChildIndex($dragged, $script:RowsPanel.Controls.GetChildIndex($target))
-    }
-    Save-Builds
+    if ($e.Data.GetDataPresent([System.Windows.Forms.Panel])) { $e.Effect = [System.Windows.Forms.DragDropEffects]::Move }
   })
 
 # add in this order so docked Top bars stack above the Fill panel
