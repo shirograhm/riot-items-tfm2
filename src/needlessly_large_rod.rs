@@ -1,5 +1,5 @@
-use mod_api::*;
 use crate::config::ItemConfig;
+use mod_api::*;
 
 #[derive(Clone, Debug)]
 pub struct NeedlesslyLargeRod {
@@ -9,7 +9,10 @@ pub struct NeedlesslyLargeRod {
 
 impl Default for NeedlesslyLargeRod {
     fn default() -> Self {
-        Self { price: 850, magic_power: 115 }
+        Self {
+            price: 850,
+            magic_power: 115,
+        }
     }
 }
 
@@ -49,7 +52,11 @@ impl ModItemInfo for NeedlesslyLargeRod {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["rabadons_deathcap".to_string(), "shadowflame".to_string()]
+        vec![
+            "rabadons_deathcap".to_string(),
+            "shadowflame".to_string(),
+            "rylais_crystal_scepter".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffState {
