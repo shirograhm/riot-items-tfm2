@@ -14,15 +14,15 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 2
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **[Executioner's Calling](ca://s?q=Expand_Executioner%27s_Calling)** | 500G | +25 Attack Damage | Dealing physical damage to an enemy champion reduces the target's healing by 25% for 2 seconds. |
-| **[Oblivion Orb](ca://s?q=Expand_Oblivion_Orb)** | 500G | +50 Ability Power | Dealing magic damage to an enemy champion reduces the target's healing by 25% for 2 seconds. |
+| **Executioner's Calling** | 500G | +25 Attack Damage | Dealing physical damage to an enemy champion reduces the target's healing by 25% for 2 seconds. |
+| **Oblivion Orb** | 500G | +50 Ability Power | Dealing magic damage to an enemy champion reduces the target's healing by 25% for 2 seconds. |
 
 
 #### Tier 3
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **[B.F. Sword](ca://s?q=Expand_BF_Sword)** | 800G | +65 Attack Damage | — |
-| **[Needlessly Large Rod](ca://s?q=Expand_Needlessly_Large_Rod)** | 850G | +115 Ability Power | — |
+| **B.F. Sword** | 800G | +65 Attack Damage | — |
+| **Needlessly Large Rod** | 850G | +115 Ability Power | — |
 
 #### Tier 4
 | Item | Cost | Stats | Passive |
