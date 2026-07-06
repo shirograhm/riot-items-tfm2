@@ -5,35 +5,34 @@ use crate::apply_adaptive_force;
 use crate::config::ItemConfig;
 
 #[derive(Clone, Debug)]
-pub struct MirageBlade {
+pub struct TurboChemtank {
     price: usize,
-    attack_speed_mult: i32,
-    move_speed_mult: i32,
+    hp: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
     effect_duration_seconds: usize,
+    effect_cooldown_seconds: usize,
 }
 
-impl Default for MirageBlade {
+impl Default for TurboChemtank {
     fn default() -> Self {
         Self {
-            price: 1500,
-            attack_speed_mult: 40,
-            move_speed_mult: 10,
-            adaptive_force: 60,
-            effect_move_speed_mult: 20,
-            effect_duration_seconds: 2,
+            price: 1250,
+            hp: 350,
+            adaptive_force: 80,
+            effect_move_speed_mult: 25,
+            effect_duration_seconds: 6,
+            effect_cooldown_seconds: 40,
         }
     }
 }
 
-impl MirageBlade {
+impl TurboChemtank {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            move_speed_mult: cfg.move_speed_mult.unwrap_or(d.move_speed_mult),
+            hp: cfg.hp.unwrap_or(d.hp),
             adaptive_force: cfg.adaptive_force.unwrap_or(d.adaptive_force),
             effect_move_speed_mult: cfg
                 .effect_move_speed_mult
@@ -41,21 +40,24 @@ impl MirageBlade {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
+            effect_cooldown_seconds: cfg
+                .effect_cooldown_seconds
+                .unwrap_or(d.effect_cooldown_seconds),
         }
     }
 }
 
-impl ModItemInfo for MirageBlade {
+impl ModItemInfo for TurboChemtank {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "mirage_blade"
+        "turbo_chemtank"
     }
 
     fn icon(&self) -> &str {
-        "t9_7"
+        "t12_4"
     }
 
     fn price(&self) -> usize {
@@ -67,17 +69,16 @@ impl ModItemInfo for MirageBlade {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["wind_dagger".to_string()]
+        vec!["hardened_heart".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_mirage_blade".to_string()]
+        vec!["radiant_turbo_chemtank".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack_speed_mult: self.attack_speed_mult,
-            move_speed_mult: self.move_speed_mult,
+            hp: self.hp,
             ..Default::default()
         }
     }
@@ -87,7 +88,7 @@ impl ModItemInfo for MirageBlade {
             ctx,
             player,
             self.adaptive_force,
-            "mirage_blade_adaptive_force",
+            "turbo_chemtank_adaptive_force",
         );
     }
 
@@ -96,75 +97,96 @@ impl ModItemInfo for MirageBlade {
             ctx,
             player,
             self.adaptive_force,
-            "mirage_blade_adaptive_force",
+            "turbo_chemtank_adaptive_force",
         );
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
+    fn on_damaged(
+        &mut self,
+        ctx: &mut GameCtx,
+        _rng_seed: usize,
+        player: usize,
+        attacker: usize,
+        _damage: usize,
+    ) {
         let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(attacker_ref) = ctx.get_entity(attacker) else {
             return;
         };
         let Some(entity_ref) = player_ref.champion() else {
             return;
         };
+        if !attacker_ref.is_champion() {
+            return;
+        }
 
-        let is_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
-
-        if !is_buff_applied {
+        let is_on_cooldown = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "turbo_chemtank_cooldown");
+        if !is_on_cooldown {
             ctx.add_buff(
-                entity_ref.id(),
+                player,
                 BuffState {
                     duration: BuffType::Time {
                         tick: self.effect_duration_seconds * 60,
                     },
+                    cc_immune: true,
                     move_speed_mult: self.effect_move_speed_mult,
-                    name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),
                     ..Default::default()
                 },
-            )
+            );
+            ctx.add_buff(
+                player,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: self.effect_cooldown_seconds * 60,
+                    },
+                    name: ArrayString::try_from("turbo_chemtank_cooldown").unwrap(),
+                    ..Default::default()
+                },
+            );
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::AS, ItemTag::MoveSpeed]
+        vec![ItemTag::HP, ItemTag::AD, ItemTag::AP, ItemTag::MoveSpeed]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+        ItemCategory::Hp
     }
 }
 
 #[derive(Clone, Debug)]
-pub struct RadiantMirageBlade {
+pub struct RadiantTurboChemtank {
     price: usize,
-    attack_speed_mult: i32,
-    move_speed_mult: i32,
+    hp: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
     effect_duration_seconds: usize,
+    effect_cooldown_seconds: usize,
 }
 
-impl Default for RadiantMirageBlade {
+impl Default for RadiantTurboChemtank {
     fn default() -> Self {
         Self {
-            price: 2100,
-            attack_speed_mult: 65,
-            move_speed_mult: 15,
-            adaptive_force: 100,
-            effect_move_speed_mult: 20,
-            effect_duration_seconds: 2,
+            price: 1850,
+            hp: 450,
+            adaptive_force: 150,
+            effect_move_speed_mult: 25,
+            effect_duration_seconds: 6,
+            effect_cooldown_seconds: 40,
         }
     }
 }
 
-impl RadiantMirageBlade {
+impl RadiantTurboChemtank {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            move_speed_mult: cfg.move_speed_mult.unwrap_or(d.move_speed_mult),
+            hp: cfg.hp.unwrap_or(d.hp),
             adaptive_force: cfg.adaptive_force.unwrap_or(d.adaptive_force),
             effect_move_speed_mult: cfg
                 .effect_move_speed_mult
@@ -172,6 +194,9 @@ impl RadiantMirageBlade {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
+            effect_cooldown_seconds: cfg
+                .effect_cooldown_seconds
+                .unwrap_or(d.effect_cooldown_seconds),
         }
     }
 
@@ -184,9 +209,9 @@ impl RadiantMirageBlade {
         };
 
         let is_prior_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_adaptive_force");
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "turbo_chemtank_adaptive_force");
         let force_to_apply = if is_prior_buff_applied {
-            self.adaptive_force - MirageBlade::default().adaptive_force
+            self.adaptive_force - RadiantTurboChemtank::default().adaptive_force
         } else {
             self.adaptive_force
         };
@@ -195,22 +220,22 @@ impl RadiantMirageBlade {
             ctx,
             player,
             force_to_apply,
-            "radiant_mirage_blade_adaptive_force",
+            "radiant_turbo_chemtank_adaptive_force",
         );
     }
 }
 
-impl ModItemInfo for RadiantMirageBlade {
+impl ModItemInfo for RadiantTurboChemtank {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_mirage_blade"
+        "radiant_turbo_chemtank"
     }
 
     fn icon(&self) -> &str {
-        "t9_8"
+        "t12_5"
     }
 
     fn price(&self) -> usize {
@@ -222,13 +247,12 @@ impl ModItemInfo for RadiantMirageBlade {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["mirage_blade".to_string()]
+        vec!["turbo_chemtank".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack_speed_mult: self.attack_speed_mult,
-            move_speed_mult: self.move_speed_mult,
+            hp: self.hp,
             ..Default::default()
         }
     }
@@ -241,37 +265,59 @@ impl ModItemInfo for RadiantMirageBlade {
         self.apply_buff(ctx, player);
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
+    fn on_damaged(
+        &mut self,
+        ctx: &mut GameCtx,
+        _rng_seed: usize,
+        player: usize,
+        attacker: usize,
+        _damage: usize,
+    ) {
         let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(attacker_ref) = ctx.get_entity(attacker) else {
             return;
         };
         let Some(entity_ref) = player_ref.champion() else {
             return;
         };
+        if !attacker_ref.is_champion() {
+            return;
+        }
 
-        let is_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
-
-        if !is_buff_applied {
+        let is_on_cooldown = (0..entity_ref.buff_count())
+            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_turbo_chemtank_cooldown");
+        if !is_on_cooldown {
             ctx.add_buff(
-                entity_ref.id(),
+                player,
                 BuffState {
                     duration: BuffType::Time {
                         tick: self.effect_duration_seconds * 60,
                     },
+                    cc_immune: true,
                     move_speed_mult: self.effect_move_speed_mult,
-                    name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),
                     ..Default::default()
                 },
-            )
+            );
+            ctx.add_buff(
+                player,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: self.effect_cooldown_seconds * 60,
+                    },
+                    name: ArrayString::try_from("radiant_turbo_chemtank_cooldown").unwrap(),
+                    ..Default::default()
+                },
+            );
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::AS, ItemTag::MoveSpeed]
+        vec![ItemTag::HP, ItemTag::AD, ItemTag::AP, ItemTag::MoveSpeed]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+        ItemCategory::Hp
     }
 }

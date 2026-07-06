@@ -430,6 +430,14 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Radiant Rylai's Crystal Scepter",
             "option": "Rimefrost: Dealing Ability damage applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+        },
+        "turbo_chemtank": {
+            "name": "Turbo Chemtank",
+            "option": "Supercharged: Taking damage from an enemy champion grants <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#92dc7bff>crowd control immunity<> for <#e8a800ff>6 seconds<> (40 second cooldown)."
+        },
+        "radiant_turbo_chemtank": {
+            "name": "Radiant Turbo Chemtank",
+            "option": "Supercharged: Taking damage from an enemy champion grants <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#92dc7bff>crowd control immunity<> for <#e8a800ff>6 seconds<> (40 second cooldown)."
         }
     },
     "vi": {

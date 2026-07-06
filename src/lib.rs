@@ -34,6 +34,7 @@ mod shadowflame;
 mod spear_of_shojin;
 mod spirit_visage;
 mod terminus;
+mod turbo_chemtank;
 mod unending_despair;
 mod warmogs_armor;
 mod yun_tal_wildarrows;
@@ -69,6 +70,7 @@ use shadowflame::*;
 use spear_of_shojin::*;
 use spirit_visage::*;
 use terminus::*;
+use turbo_chemtank::*;
 use unending_despair::*;
 use warmogs_armor::*;
 use yun_tal_wildarrows::*;
@@ -81,12 +83,40 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
     (value as f64 * percent / 100.0).round() as i32
 }
 
-fn force_to_ap(force: i32) -> i32 {
-    force
-}
+fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, buff_name: &str) {
+    let Some(player_ref) = ctx.get_player(player) else {
+        return;
+    };
+    let Some(entity_ref) = player_ref.champion() else {
+        return;
+    };
 
-fn force_to_ad(force: i32) -> i32 {
-    (force as f64 * 0.6).round() as i32
+    let is_buff_applied =
+        (0..entity_ref.buff_count()).any(|i| entity_ref.buff_at(i).name.as_str() == buff_name);
+
+    if !is_buff_applied {
+        if entity_ref.stat().magic_power > entity_ref.stat().attack {
+            ctx.add_buff(
+                entity_ref.id(),
+                BuffState {
+                    duration: BuffType::Permanent,
+                    magic_power: adaptive_force,
+                    name: buff_name.try_into().unwrap(),
+                    ..Default::default()
+                },
+            )
+        } else {
+            ctx.add_buff(
+                entity_ref.id(),
+                BuffState {
+                    duration: BuffType::Permanent,
+                    attack: (adaptive_force as f64 * 0.6).round() as i32,
+                    name: buff_name.try_into().unwrap(),
+                    ..Default::default()
+                },
+            )
+        }
+    }
 }
 
 // Installs the experimental item-build route hook when the server starts. The
@@ -156,6 +186,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("terminus" => Terminus));
+    reg.add_item(configured!("turbo_chemtank" => TurboChemtank));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows));
@@ -188,6 +219,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_spear_of_shojin" => RadiantSpearOfShojin));
     reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));
     reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
+    reg.add_item(configured!("radiant_turbo_chemtank" => RadiantTurboChemtank));
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
     reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
     reg.add_item(configured!("radiant_yun_tal_wildarrows" => RadiantYunTalWildarrows));
