@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 62 new items (33 base + 29 Radiant) to the game.
+Reskins the 30 existing items and also adds 64 new items (34 base + 30 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -49,6 +49,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Protoplasm Harness** | 1000G | +400 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
 | **Riftmaker** | 1300G | +400 HP<br>+75 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
+| **Rylai's Crystal Scepter** | 1350G | +250 HP<br>+125 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
 | **Shadowflame** | 1350G | +115 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |
 | **Spear of Shojin** | 1400G | +350 HP<br>+35 AD<br>+10% CDR | Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Increase all healing received by 20%. |
@@ -83,6 +84,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon’s Deathcap** | 2200G | +220 AP | Increase your total Ability Power by 35%. |
 | **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
+| **Radiant Rylai's Crystal Scepter** | 1900G | +400 HP<br>+200 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
 | **Radiant Shadowflame** | 1800G | +210 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |
 | **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD<br>+20% CDR | Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Increase all healing received by 20%. |
