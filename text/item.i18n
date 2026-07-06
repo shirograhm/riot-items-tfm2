@@ -422,6 +422,14 @@
         "radiant_hextech_gunblade": {
             "name": "Radiant Hextech Gunblade",
             "option": ""
+        },
+        "rylais_crystal_scepter": {
+            "name": "Rylai's Crystal Scepter",
+            "option": "Rimefrost: Dealing Ability damage slows units hit by <#d94c49ff>15%<> for <#e8a800ff>2 seconds<>."
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Radiant Rylai's Crystal Scepter",
+            "option": "Rimefrost: Dealing Ability damage slows units hit by <#d94c49ff>15%<> for <#e8a800ff>2 seconds<>."
         }
     },
     "vi": {
@@ -847,6 +855,14 @@
         "radiant_hextech_gunblade": {
             "name": "Súng Kiếm Hextech Ánh Sáng",
             "option": ""
+        },
+        "rylais_crystal_scepter": {
+            "name": "Quyền Trượng Pha Lê Rylai",
+            "option": "Sương Giá: Khi gây sát thương kĩ năng, gây <#d94c49ff>15% kiệt sức<> cho mục tiêu trúng đòn trong <#e8a800ff>2 giây<>."
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Quyền Trượng Pha Lê Rylai Ánh Sáng",
+            "option": "Sương Giá: Khi gây sát thương kĩ năng, gây <#d94c49ff>15% kiệt sức<> cho mục tiêu trúng đòn trong <#e8a800ff>2 giây<>."
         }
     },
     "zh-hans": {
@@ -1272,6 +1288,14 @@
         "radiant_hextech_gunblade": {
             "name": "光明版海克斯科技枪刃",
             "option": ""
+        },
+        "rylais_crystal_scepter": {
+            "name": "兰蒂尔的冰晶节杖",
+            "option": "凛霜：造成技能伤害时，对命中的单位施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "光明版兰蒂尔的冰晶节杖",
+            "option": "凛霜：造成技能伤害时，对命中的单位施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
         }
     },
     "pt-BR": {
@@ -1697,6 +1721,14 @@
         "radiant_hextech_gunblade": {
             "name": "Lâmina Hextech Radiante",
             "option": ""
+        },
+        "rylais_crystal_scepter": {
+            "name": "Cetro de Cristal de Rylai",
+            "option": "Gélido: Causar dano de habilidade aplica <#d94c49ff>15% de lentidão<> nas unidades atingidas por <#e8a800ff>2 segundos<>."
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Cetro de Cristal de Rylai Radiante",
+            "option": "Gélido: Causar dano de habilidade aplica <#d94c49ff>15% de lentidão<> nas unidades atingidas por <#e8a800ff>2 segundos<>."
         }
     },
     "ru": {
@@ -2122,6 +2154,14 @@
         "radiant_hextech_gunblade": {
             "name": "Лучезарный Хекстековый пистолет-клинок",
             "option": ""
+        },
+        "rylais_crystal_scepter": {
+            "name": "Кристальный Скипетр Райлая",
+            "option": "Иней: Нанесение урона умением замедляет пораженные цели на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Лучезарный Кристальный Скипетр Райлая",
+            "option": "Иней: Нанесение урона умением замедляет пораженные цели на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
         }
     }
 }

@@ -70,6 +70,13 @@
     "effect_slow_amount": 25,
     "effect_duration_seconds": 2
   },
+  "rylais_crystal_scepter": {
+    "price": 1350,
+    "hp": 250,
+    "magic_power": 125,
+    "effect_slow_amount": 15,
+    "effect_duration_seconds": 2
+  },
   "guinsoos_rageblade": {
     "price": 1350,
     "attack": 30,
@@ -270,6 +277,13 @@
     "effect_bonus_flat_damage": 20,
     "effect_caster_hp_percent_damage": 3.0,
     "on_hit_cooldown_seconds": 0.5
+  },
+  "radiant_rylais_crystal_scepter": {
+    "price": 1900,
+    "hp": 400,
+    "magic_power": 200,
+    "effect_slow_amount": 15,
+    "effect_duration_seconds": 2
   },
   "radiant_guinsoos_rageblade": {
     "price": 1900,
