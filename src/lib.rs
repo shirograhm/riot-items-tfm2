@@ -122,11 +122,11 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
 
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
+    reg.add_item(configured!("oblivion_orb" => OblivionOrb));
 
     // Tier 3
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
-    reg.add_item(configured!("oblivion_orb" => OblivionOrb));
 
     // Tier 4
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
