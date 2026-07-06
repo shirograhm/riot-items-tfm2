@@ -365,11 +365,11 @@
         },
         "collector": {
             "name": "Collector",
-            "option": "Death: Dealing damage to enemy champions below <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+            "option": "Death: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
         },
         "radiant_collector": {
             "name": "Radiant Collector",
-            "option": "Death: Dealing damage to enemy champions below <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+            "option": "Death: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
         },
         "heartsteel": {
             "name": "Heartsteel",
@@ -798,11 +798,11 @@
         },
         "collector": {
             "name": "Súng Hải Tặc",
-            "option": "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
+            "option": "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
         },
         "radiant_collector": {
             "name": "Súng Hải Tặc Ánh Sáng",
-            "option": "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
+            "option": "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
         },
         "heartsteel": {
             "name": "Tâm Thép",
@@ -1231,11 +1231,11 @@
         },
         "collector": {
             "name": "收集者",
-            "option": "死：对生命值低于 <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
+            "option": "死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
         },
         "radiant_collector": {
             "name": "光明版收集者",
-            "option": "死：对生命值低于 <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
+            "option": "死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
         },
         "heartsteel": {
             "name": "心之钢",
@@ -1664,11 +1664,11 @@
         },
         "collector": {
             "name": "A Coletora",
-            "option": "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+            "option": "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
         },
         "radiant_collector": {
             "name": "A Coletora Radiante",
-            "option": "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+            "option": "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
         },
         "heartsteel": {
             "name": "Coração de Aço",
@@ -2097,11 +2097,11 @@
         },
         "collector": {
             "name": "Сборщик Долгов",
-            "option": "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
+            "option": "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
         },
         "radiant_collector": {
             "name": "Лучезарный Сборщик Долгов",
-            "option": "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
+            "option": "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
         },
         "heartsteel": {
             "name": "Сердце Стали",
