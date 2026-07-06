@@ -82,11 +82,14 @@ $cBadRow = [System.Drawing.Color]::FromArgb(58, 31, 34)
 
 # column geometry (x, width)
 $COL = @{
-  Champ = @(0, 275)
-  I1    = @(288, 200)
-  I2    = @(500, 200)
-  I3    = @(712, 200)
-  Del   = @(925, 35)
+  Grip  = @(0, 24)
+  Champ = @(30, 275)
+  I1    = @(318, 200)
+  Swap1 = @(521, 30)
+  I2    = @(554, 200)
+  Swap2 = @(757, 30)
+  I3    = @(790, 200)
+  Del   = @(1003, 35)
 }
 
 # --- target file -----------------------------------------------------------
@@ -116,6 +119,28 @@ function Get-ComboId($cb, $displayToId) {
   return ''
 }
 
+# Swap two of a row's item selections (used by the swap buttons between slots).
+function Swap-ItemValues($row, $a, $b) {
+  $items = $row.Tag.Items
+  $tmp = $items[$a].SelectedItem
+  $items[$a].SelectedItem = $items[$b].SelectedItem
+  $items[$b].SelectedItem = $tmp
+  Save-Builds
+}
+
+# Small "swap with the slot to my right" button; $index is the left slot (0 or 1).
+# Text is a runtime-built glyph so this script can stay pure ASCII (no BOM needed).
+function New-SwapButton($left, $index) {
+  $b = New-Object System.Windows.Forms.Button
+  $b.Text = [string][char]0x21C4   # left-right swap arrows
+  $b.Left = $left; $b.Top = 4; $b.Width = 30; $b.Height = 32
+  $b.FlatStyle = 'Flat'; $b.BackColor = $cPanel2; $b.ForeColor = $cAccent
+  $b.FlatAppearance.BorderSize = 0
+  $b.Tag = $index
+  $b.Add_Click({ $i = [int]$this.Tag; Swap-ItemValues $this.Parent $i ($i + 1) })
+  return $b
+}
+
 # Champion: pick from the list, or choose "(modded champion)" and type a raw id
 # into the per-row textbox.
 function Set-ChampValue($row, $id) {
@@ -143,13 +168,27 @@ function New-Row {
   param([string]$Champ = '', [string[]]$Items = @('', '', ''))
 
   $row = New-Object System.Windows.Forms.Panel
-  $row.Height = 42; $row.Width = 965; $row.Margin = New-Object System.Windows.Forms.Padding(0, 0, 0, 8)
+  $row.Height = 42; $row.Width = 1048; $row.Margin = New-Object System.Windows.Forms.Padding(0, 0, 0, 8)
   $row.BackColor = $cPanel
 
   $cbChamp = New-Combo $script:ChampDisplay $COL.Champ[0] $COL.Champ[1]
   $cb1 = New-Combo $script:ItemDisplay $COL.I1[0] $COL.I1[1]
   $cb2 = New-Combo $script:ItemDisplay $COL.I2[0] $COL.I2[1]
   $cb3 = New-Combo $script:ItemDisplay $COL.I3[0] $COL.I3[1]
+
+  # drag handle to reorder this whole champion line up/down. Text is a runtime
+  # glyph so the script stays pure ASCII (no BOM needed).
+  $grip = New-Object System.Windows.Forms.Label
+  $grip.Text = [string][char]0x2261   # three-bar drag handle
+  $grip.Left = $COL.Grip[0]; $grip.Top = 4; $grip.Width = $COL.Grip[1]; $grip.Height = 32
+  $grip.TextAlign = 'MiddleCenter'; $grip.ForeColor = $cMuted
+  $grip.Font = New-Object System.Drawing.Font('Segoe UI', 15)
+  $grip.Cursor = [System.Windows.Forms.Cursors]::SizeAll
+  $grip.Add_MouseDown({ [void]$this.DoDragDrop($this.Parent, [System.Windows.Forms.DragDropEffects]::Move) })
+
+  # swap buttons reorder the 3 items (each swaps with its right-hand neighbour)
+  $swap1 = New-SwapButton $COL.Swap1[0] 0
+  $swap2 = New-SwapButton $COL.Swap2[0] 1
 
   # raw-id box shown only when "(modded champion)" is selected
   $tbRaw = New-Object System.Windows.Forms.TextBox
@@ -164,7 +203,7 @@ function New-Row {
   $del.Tag = $row
 
   $row.Tag = @{ Champ = $cbChamp; ChampRaw = $tbRaw; Items = @($cb1, $cb2, $cb3) }
-  $row.Controls.AddRange(@($cbChamp, $tbRaw, $cb1, $cb2, $cb3, $del))
+  $row.Controls.AddRange(@($grip, $cbChamp, $tbRaw, $cb1, $swap1, $cb2, $swap2, $cb3, $del))
 
   Set-ChampValue $row $Champ
   Set-ComboId $cb1 $script:ItemToDisplay $Items[0]
@@ -328,7 +367,7 @@ function Save-Builds {
 $form = New-Object System.Windows.Forms.Form
 $form.Text = 'Item Build Editor'
 $form.StartPosition = 'CenterScreen'
-$form.ClientSize = New-Object System.Drawing.Size(1025, 825)
+$form.ClientSize = New-Object System.Drawing.Size(1105, 825)
 $form.BackColor = $cBg; $form.ForeColor = $cText
 $form.Font = New-Object System.Drawing.Font('Segoe UI', 11.25)
 
@@ -352,7 +391,7 @@ $btnAdd.Width = 162
 
 $script:StatusLabel = New-Object System.Windows.Forms.Label
 $script:StatusLabel.AutoSize = $false
-$script:StatusLabel.Left = 382; $script:StatusLabel.Top = 11; $script:StatusLabel.Width = 628; $script:StatusLabel.Height = 38
+$script:StatusLabel.Left = 382; $script:StatusLabel.Top = 11; $script:StatusLabel.Width = 700; $script:StatusLabel.Height = 38
 $script:StatusLabel.TextAlign = 'MiddleLeft'; $script:StatusLabel.ForeColor = $cMuted
 $script:StatusLabel.Anchor = 'Top,Left,Right'
 
@@ -404,6 +443,29 @@ $script:RowsPanel.WrapContents = $false
 $script:RowsPanel.AutoScroll = $true
 $script:RowsPanel.BackColor = $cBg
 $script:RowsPanel.Padding = New-Object System.Windows.Forms.Padding(15, 10, 15, 15)
+
+# drag-to-reorder rows: a row advertises itself (a Panel) when its grip is
+# dragged; dropping repositions it, which reorders the saved JSON keys.
+$script:RowsPanel.AllowDrop = $true
+$script:RowsPanel.Add_DragOver({
+    param($sender, $e)
+    if ($e.Data.GetDataPresent([System.Windows.Forms.Panel])) { $e.Effect = [System.Windows.Forms.DragDropEffects]::Move }
+    else { $e.Effect = [System.Windows.Forms.DragDropEffects]::None }
+  })
+$script:RowsPanel.Add_DragDrop({
+    param($sender, $e)
+    if (-not $e.Data.GetDataPresent([System.Windows.Forms.Panel])) { return }
+    $dragged = $e.Data.GetData([System.Windows.Forms.Panel])
+    $pt = $script:RowsPanel.PointToClient([System.Drawing.Point]::new($e.X, $e.Y))
+    $target = $script:RowsPanel.GetChildAtPoint($pt)
+    if ($null -eq $target) {
+      $script:RowsPanel.Controls.SetChildIndex($dragged, $script:RowsPanel.Controls.Count - 1)
+    }
+    elseif ($target -ne $dragged) {
+      $script:RowsPanel.Controls.SetChildIndex($dragged, $script:RowsPanel.Controls.GetChildIndex($target))
+    }
+    Save-Builds
+  })
 
 # add in this order so docked Top bars stack above the Fill panel
 # (later-added Top docks sit higher: toolbar, then searchBar, then header)
