@@ -1,6 +1,5 @@
 use arrayvec::ArrayString;
 use mod_api::*;
-use std::fmt::Write;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
@@ -108,28 +107,20 @@ impl ModItemInfo for NashorsTooth {
 
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
+        let is_cooldown_ticking = (0..target_ref.buff_count())
+            .any(|i| target_ref.buff_at(i).name.as_str() == "nashors_tooth_on_hit_cooldown");
 
-        // CD String per champion
-        let mut cooldown_str = ArrayString::<64>::new();
-        write!(&mut cooldown_str, "nashors_tooth_cooldown_{}", target).unwrap();
-
-        if self.on_hit_cooldown_seconds > 0.0 {
-            let is_cooldown_ticking = (0..caster_ref.buff_count())
-                .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
-            if !is_cooldown_ticking {
-                ctx.add_buff(
-                    caster,
-                    BuffState {
-                        duration: BuffType::Time {
-                            tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                        },
-                        name: cooldown_str,
-                        ..Default::default()
+        if !is_cooldown_ticking {
+            ctx.add_buff(
+                target,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                     },
-                );
-                ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
-            }
-        } else {
+                    name: ArrayString::try_from("nashors_tooth_on_hit_cooldown").unwrap(),
+                    ..Default::default()
+                },
+            );
             ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
         }
     }
@@ -239,33 +230,20 @@ impl ModItemInfo for RadiantNashorsTooth {
 
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
+        let is_cooldown_ticking = (0..target_ref.buff_count())
+            .any(|i| target_ref.buff_at(i).name.as_str() == "nashors_tooth_on_hit_cooldown");
 
-        // CD String per champion
-        let mut cooldown_str = ArrayString::<64>::new();
-        write!(
-            &mut cooldown_str,
-            "radiant_nashors_tooth_cooldown_{}",
-            target
-        )
-        .unwrap();
-
-        if self.on_hit_cooldown_seconds > 0.0 {
-            let is_cooldown_ticking = (0..caster_ref.buff_count())
-                .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
-            if !is_cooldown_ticking {
-                ctx.add_buff(
-                    caster,
-                    BuffState {
-                        duration: BuffType::Time {
-                            tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                        },
-                        name: cooldown_str,
-                        ..Default::default()
+        if !is_cooldown_ticking {
+            ctx.add_buff(
+                target,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
                     },
-                );
-                ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
-            }
-        } else {
+                    name: ArrayString::try_from("nashors_tooth_on_hit_cooldown").unwrap(),
+                    ..Default::default()
+                },
+            );
             ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
         }
     }

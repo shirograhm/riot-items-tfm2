@@ -1,6 +1,5 @@
 use arrayvec::ArrayString;
 use mod_api::*;
-use std::fmt::Write;
 
 use crate::config::ItemConfig;
 use crate::percent_of;

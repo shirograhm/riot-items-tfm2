@@ -1,6 +1,5 @@
 use arrayvec::ArrayString;
 use mod_api::*;
-use std::fmt::Write;
 
 use crate::config::ItemConfig;
 
@@ -110,47 +109,34 @@ impl ModItemInfo for GuinsoosRageblade {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
+        if target_ref.is_tower() {
+            return;
+        }
 
+        let is_cooldown_ticking = (0..target_ref.buff_count())
+            .any(|i| target_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_on_hit_cooldown");
         let stack_count = (0..caster_ref.buff_count())
             .filter(|&i| caster_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_buff")
             .count();
 
-        // CD String per champion
-        let mut cooldown_str = ArrayString::<64>::new();
-        write!(&mut cooldown_str, "guinsoos_rageblade_cooldown_{}", target).unwrap();
-
-        if !target_ref.is_tower() {
-            if self.on_hit_cooldown_seconds > 0.0 {
-                let is_cooldown_ticking = (0..caster_ref.buff_count())
-                    .any(|i| caster_ref.buff_at(i).name.as_str() == cooldown_str.as_str());
-                if !is_cooldown_ticking {
-                    ctx.add_buff(
-                        caster,
-                        BuffState {
-                            duration: BuffType::Time {
-                                tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                            },
-                            name: cooldown_str,
-                            ..Default::default()
-                        },
-                    );
-                    ctx.deal_damage(
-                        caster,
-                        target,
-                        0,
-                        self.effect_bonus_magic_damage,
-                        AttackType::BaseAttack,
-                    );
-                }
-            } else {
-                ctx.deal_damage(
-                    caster,
-                    target,
-                    0,
-                    self.effect_bonus_magic_damage,
-                    AttackType::BaseAttack,
-                );
-            }
+        if !is_cooldown_ticking {
+            ctx.add_buff(
+                target,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+                    },
+                    name: ArrayString::try_from("guinsoos_rageblade_on_hit_cooldown").unwrap(),
+                    ..Default::default()
+                },
+            );
+            ctx.deal_damage(
+                caster,
+                target,
+                0,
+                self.effect_bonus_magic_damage,
+                AttackType::BaseAttack,
+            );
         }
 
         if stack_count < self.effect_max_stacks {
@@ -279,45 +265,34 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
+        if target_ref.is_tower() {
+            return;
+        }
 
+        let is_cooldown_ticking = (0..target_ref.buff_count())
+            .any(|i| target_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_on_hit_cooldown");
         let stack_count = (0..caster_ref.buff_count())
             .filter(|&i| caster_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff")
             .count();
 
-        if !target_ref.is_tower() {
-            if self.on_hit_cooldown_seconds > 0.0 {
-                let is_cooldown_ticking = (0..caster_ref.buff_count()).any(|i| {
-                    caster_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_cooldown"
-                });
-                if !is_cooldown_ticking {
-                    ctx.add_buff(
-                        caster,
-                        BuffState {
-                            duration: BuffType::Time {
-                                tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                            },
-                            name: ArrayString::try_from("radiant_guinsoos_rageblade_cooldown")
-                                .unwrap(),
-                            ..Default::default()
-                        },
-                    );
-                    ctx.deal_damage(
-                        caster,
-                        target,
-                        0,
-                        self.effect_bonus_magic_damage,
-                        AttackType::BaseAttack,
-                    );
-                }
-            } else {
-                ctx.deal_damage(
-                    caster,
-                    target,
-                    0,
-                    self.effect_bonus_magic_damage,
-                    AttackType::BaseAttack,
-                );
-            }
+        if !is_cooldown_ticking {
+            ctx.add_buff(
+                target,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+                    },
+                    name: ArrayString::try_from("guinsoos_rageblade_on_hit_cooldown").unwrap(),
+                    ..Default::default()
+                },
+            );
+            ctx.deal_damage(
+                caster,
+                target,
+                0,
+                self.effect_bonus_magic_damage,
+                AttackType::BaseAttack,
+            );
         }
 
         if stack_count < self.effect_max_stacks {
