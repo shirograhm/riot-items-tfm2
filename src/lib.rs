@@ -35,6 +35,7 @@ mod spirit_visage;
 mod terminus;
 mod unending_despair;
 mod warmogs_armor;
+mod yun_tal_wildarrows;
 
 use bf_sword::*;
 use blackfire_torch::*;
@@ -68,6 +69,7 @@ use spirit_visage::*;
 use terminus::*;
 use unending_despair::*;
 use warmogs_armor::*;
+use yun_tal_wildarrows::*;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -153,6 +155,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
+    reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows));
 
     // Tier 5
     reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
@@ -183,6 +186,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
     reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
+    reg.add_item(configured!("radiant_yun_tal_wildarrows" => RadiantYunTalWildarrows));
 
     reg.set_server_extension(ItemBuildHookExtension);
 

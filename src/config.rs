@@ -41,6 +41,8 @@ pub struct ItemConfig {
     pub effect_slow_amount: Option<i32>,
     pub effect_stack_attack_mult: Option<i32>,
     pub effect_stack_attack_speed_mult: Option<i32>,
+    pub effect_stack_crit_chance: Option<i32>,
+    pub effect_flurry_attack_speed_mult: Option<i32>,
     pub effect_stack_defence_mult: Option<i32>,
     pub effect_stack_magic_power: Option<i32>,
     pub effect_stack_magic_resistance_mult: Option<i32>,

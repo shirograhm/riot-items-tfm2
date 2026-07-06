@@ -263,6 +263,14 @@
             "name": "Radiant Shadowflame",
             "option": "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
         },
+        "yun_tal_wildarrows": {
+            "name": "Yun Tal Wildarrows",
+            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Critical Strike Chance<> permanently, up to <#e8a800ff>25%<>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Attack Speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Radiant Yun Tal Wildarrows",
+            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Critical Strike Chance<> permanently, up to <#e8a800ff>25%<>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Attack Speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
+        },
         "unending_despair": {
             "name": "Unending Despair",
             "option": "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
@@ -679,6 +687,14 @@
         "radiant_shadowflame": {
             "name": "Ngọn Lửa Hắc Hóa Ánh Sáng",
             "option": "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
+        },
+        "yun_tal_wildarrows": {
+            "name": "Mũi Tên Yun Tal",
+            "option": "Chí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<> (hồi chiêu 15 giây)."
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Mũi Tên Yun Tal Ánh Sáng",
+            "option": "Chí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<> (hồi chiêu 15 giây)."
         },
         "unending_despair": {
             "name": "Áo Choàng Diệt Vong",
@@ -1097,6 +1113,14 @@
             "name": "光明版影焰",
             "option": "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#ff9028ff>提高20%<>。"
         },
+        "yun_tal_wildarrows": {
+            "name": "育恩塔尔荒野箭",
+            "option": "熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n疾风骤雨：普通攻击时，获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>（冷却15秒）。"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "光明版育恩塔尔荒野箭",
+            "option": "熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n疾风骤雨：普通攻击时，获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>（冷却15秒）。"
+        },
         "unending_despair": {
             "name": "无终恨意",
             "option": "苦楚：技能命中时，回复 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的生命值。"
@@ -1514,6 +1538,14 @@
             "name": "Chama Sombria Radiante",
             "option": "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
         },
+        "yun_tal_wildarrows": {
+            "name": "Flechatroz de Yun Tal",
+            "option": "Praticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\nAgitação: Ao atacar, ganha <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<> (recarga de 15 segundos)."
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Flechatroz de Yun Tal Radiante",
+            "option": "Praticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\nAgitação: Ao atacar, ganha <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<> (recarga de 15 segundos)."
+        },
         "unending_despair": {
             "name": "Desespero Eterno",
             "option": "Angústia: Suas mágias te curam em <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
@@ -1930,6 +1962,14 @@
         "radiant_shadowflame": {
             "name": "Лучезарное Сумрачное пламя",
             "option": "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
+        },
+        "yun_tal_wildarrows": {
+            "name": "Дикие стрелы Юнталь",
+            "option": "Убийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\nШквал: При атаке даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<> (перезарядка 15 секунд)."
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Лучезарные Дикие стрелы Юнталь",
+            "option": "Убийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\nШквал: При атаке даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<> (перезарядка 15 секунд)."
         },
         "unending_despair": {
             "name": "Бесконечное Отчаяние",

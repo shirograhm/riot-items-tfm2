@@ -155,6 +155,16 @@
     "magic_resistance_penetration": 15,
     "effect_hp_percent_threshold": 0.3
   },
+  "yun_tal_wildarrows": {
+    "price": 1500,
+    "attack": 65,
+    "attack_speed_mult": 20,
+    "effect_stack_crit_chance": 1,
+    "effect_max_stacks": 25,
+    "effect_flurry_attack_speed_mult": 30,
+    "effect_duration_seconds": 6,
+    "effect_cooldown_seconds": 15
+  },
   "spear_of_shojin": {
     "price": 1400,
     "hp": 350,
@@ -396,6 +406,16 @@
     "magic_power": 210,
     "magic_resistance_penetration": 15,
     "effect_hp_percent_threshold": 0.3
+  },
+  "radiant_yun_tal_wildarrows": {
+    "price": 2200,
+    "attack": 80,
+    "attack_speed_mult": 50,
+    "effect_stack_crit_chance": 1,
+    "effect_max_stacks": 25,
+    "effect_flurry_attack_speed_mult": 30,
+    "effect_duration_seconds": 6,
+    "effect_cooldown_seconds": 15
   },
   "radiant_spear_of_shojin": {
     "price": 2200,

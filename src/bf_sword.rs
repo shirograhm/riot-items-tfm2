@@ -49,7 +49,11 @@ impl ModItemInfo for BFSword {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["infinity_edge".to_string(), "deathblade".to_string()]
+        vec![
+            "infinity_edge".to_string(),
+            "deathblade".to_string(),
+            "yun_tal_wildarrows".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffState {

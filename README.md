@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 60 new items (32 base + 28 Radiant) to the game.
+Reskins the 30 existing items and also adds 62 new items (33 base + 29 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -55,6 +55,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Landing an Ability on an enemy champion heals you for 10 + 1% of your maximum health. |
 | **Warmog's Armor** | 1400G | +550 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
+| **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
 
 
 #### Tier 5  
@@ -88,6 +89,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Landing an Ability on an enemy champion heals you for 25 + 3% of your maximum health. |
 | **Radiant Warmog's Armor** | 2000G | +900 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
+| **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
 
 
 ### Base Item Reskins
