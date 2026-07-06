@@ -124,13 +124,13 @@ $tStacks = if ($null -ne $config.terminus.effect_max_stacks) { [int]$config.term
 $rtPen = if ($null -ne $config.radiant_terminus.effect_pen_per_stack) { [int]$config.radiant_terminus.effect_pen_per_stack }      else { 4 }
 $rtDur = if ($null -ne $config.radiant_terminus.effect_duration_seconds) { [int]$config.radiant_terminus.effect_duration_seconds } else { 4 }
 $rtStacks = if ($null -ne $config.radiant_terminus.effect_max_stacks) { [int]$config.radiant_terminus.effect_max_stacks }         else { 4 }
-$colThreshold = if ($null -ne $config.collector.effect_hp_percent_threshold) { [double]$config.collector.effect_hp_percent_threshold }                  else { 8.0 }
-$rcolThreshold = if ($null -ne $config.radiant_collector.effect_hp_percent_threshold) { [double]$config.radiant_collector.effect_hp_percent_threshold } else { 8.0 }
 $sfThreshold = if ($null -ne $config.shadowflame.effect_hp_percent_threshold) { [double]$config.shadowflame.effect_hp_percent_threshold }              else { 0.3 }
 $rsfThreshold = if ($null -ne $config.radiant_shadowflame.effect_hp_percent_threshold) { [double]$config.radiant_shadowflame.effect_hp_percent_threshold } else { 0.3 }
 # Shadowflame stores its threshold as a 0-1 fraction (matches src/shadowflame.rs); display it as a percent.
 $sfThresholdPct = [int]($sfThreshold * 100)
 $rsfThresholdPct = [int]($rsfThreshold * 100)
+$colThreshold = if ($null -ne $config.collector.effect_hp_percent_threshold) { [double]$config.collector.effect_hp_percent_threshold }                  else { 6.0 }
+$rcolThreshold = if ($null -ne $config.radiant_collector.effect_hp_percent_threshold) { [double]$config.radiant_collector.effect_hp_percent_threshold } else { 6.0 }
 $hsFlat = if ($null -ne $config.heartsteel.effect_bonus_flat_damage) { [int]$config.heartsteel.effect_bonus_flat_damage }                              else { 15 }
 $hsHpPct = if ($null -ne $config.heartsteel.effect_caster_hp_percent_damage) { [double]$config.heartsteel.effect_caster_hp_percent_damage }            else { 6.0 }
 $hsBonusHpPct = if ($null -ne $config.heartsteel.effect_bonus_hp_percent_of_damage) { [double]$config.heartsteel.effect_bonus_hp_percent_of_damage }   else { 15.0 }
@@ -557,7 +557,7 @@ Write-Host "  Spear of Shojin:         ${sosAtkMult}% AD/stack / ${sosDur}s / ${
 Write-Host "  Radiant Spear of Shojin: ${rsosAtkMult}% AD/stack / ${rsosDur}s / ${rsosStacks} stacks"
 Write-Host "  Warmog's Armor:          ${waHeal}% max HP/s / ${waMs} movement speed / ${waDur} out of combat cooldown"
 Write-Host "  Radiant Warmog's Armor:  ${rwaHeal}% max HP/s / ${rwaMs} movement speed / ${rwaDur} out of combat cooldown"
-Write-Host "  Shadowflame:             +20% AP dmg vs targets below ${sfThresholdPct}% HP"
-Write-Host "  Radiant Shadowflame:     +20% AP dmg vs targets below ${rsfThresholdPct}% HP"
+Write-Host "  Shadowflame:             +20% AP dmg vs targets below ${sfThreshold}% HP"
+Write-Host "  Radiant Shadowflame:     +20% AP dmg vs targets below ${rsfThreshold}% HP"
 Write-Host "  Yun Tal Wildarrows:         +${ytCrit}% crit/hit (cap ${ytMaxCrit}%) / +${ytFlurryAS}% AS ${ytDur}s (${ytCd}s CD)"
 Write-Host "  Radiant Yun Tal Wildarrows: +${rytCrit}% crit/hit (cap ${rytMaxCrit}%) / +${rytFlurryAS}% AS ${rytDur}s (${rytCd}s CD)"

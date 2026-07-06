@@ -15,11 +15,11 @@ pub struct Collector {
 impl Default for Collector {
     fn default() -> Self {
         Self {
-            price: 1400,
+            price: 1450,
             attack: 55,
             crit_chance: 20,
             defence_penetration: 10,
-            effect_hp_percent_threshold: 8.0,
+            effect_hp_percent_threshold: 6.0,
         }
     }
 }
@@ -120,11 +120,11 @@ pub struct RadiantCollector {
 impl Default for RadiantCollector {
     fn default() -> Self {
         Self {
-            price: 2000,
+            price: 2100,
             attack: 105,
             crit_chance: 25,
             defence_penetration: 10,
-            effect_hp_percent_threshold: 8.0,
+            effect_hp_percent_threshold: 6.0,
         }
     }
 }
