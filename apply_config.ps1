@@ -122,6 +122,11 @@ $rtDur = if ($null -ne $config.radiant_terminus.effect_duration_seconds) { [int]
 $rtStacks = if ($null -ne $config.radiant_terminus.effect_max_stacks) { [int]$config.radiant_terminus.effect_max_stacks }         else { 4 }
 $colThreshold = if ($null -ne $config.collector.effect_hp_percent_threshold) { [double]$config.collector.effect_hp_percent_threshold }                  else { 8.0 }
 $rcolThreshold = if ($null -ne $config.radiant_collector.effect_hp_percent_threshold) { [double]$config.radiant_collector.effect_hp_percent_threshold } else { 8.0 }
+$sfThreshold = if ($null -ne $config.shadowflame.effect_hp_percent_threshold) { [double]$config.shadowflame.effect_hp_percent_threshold }              else { 0.3 }
+$rsfThreshold = if ($null -ne $config.radiant_shadowflame.effect_hp_percent_threshold) { [double]$config.radiant_shadowflame.effect_hp_percent_threshold } else { 0.3 }
+# Shadowflame stores its threshold as a 0-1 fraction (matches src/shadowflame.rs); display it as a percent.
+$sfThresholdPct = [int]($sfThreshold * 100)
+$rsfThresholdPct = [int]($rsfThreshold * 100)
 $hsFlat = if ($null -ne $config.heartsteel.effect_bonus_flat_damage) { [int]$config.heartsteel.effect_bonus_flat_damage }                              else { 15 }
 $hsHpPct = if ($null -ne $config.heartsteel.effect_caster_hp_percent_damage) { [double]$config.heartsteel.effect_caster_hp_percent_damage }            else { 6.0 }
 $hsBonusHpPct = if ($null -ne $config.heartsteel.effect_bonus_hp_percent_of_damage) { [double]$config.heartsteel.effect_bonus_hp_percent_of_damage }   else { 15.0 }
@@ -142,6 +147,18 @@ $waDur = if ($null -ne $config.warmogs_armor.effect_duration_seconds) { [int]$co
 $rwaHeal = if ($null -ne $config.radiant_warmogs_armor.effect_caster_hp_percent_heal) { [double]$config.radiant_warmogs_armor.effect_caster_hp_percent_heal } else { 3.0 }
 $rwaMs = if ($null -ne $config.radiant_warmogs_armor.effect_move_speed_mult) { [int]$config.radiant_warmogs_armor.effect_move_speed_mult }   else { 4 }
 $rwaDur = if ($null -ne $config.radiant_warmogs_armor.effect_duration_seconds) { [int]$config.radiant_warmogs_armor.effect_duration_seconds } else { 6 }
+$ytCrit = if ($null -ne $config.yun_tal_wildarrows.effect_stack_crit_chance) { [int]$config.yun_tal_wildarrows.effect_stack_crit_chance }                 else { 1 }
+$ytStacks = if ($null -ne $config.yun_tal_wildarrows.effect_max_stacks) { [int]$config.yun_tal_wildarrows.effect_max_stacks }                             else { 25 }
+$ytFlurryAS = if ($null -ne $config.yun_tal_wildarrows.effect_flurry_attack_speed_mult) { [int]$config.yun_tal_wildarrows.effect_flurry_attack_speed_mult } else { 30 }
+$ytDur = if ($null -ne $config.yun_tal_wildarrows.effect_duration_seconds) { [int]$config.yun_tal_wildarrows.effect_duration_seconds }                     else { 6 }
+$ytCd = if ($null -ne $config.yun_tal_wildarrows.effect_cooldown_seconds) { [int]$config.yun_tal_wildarrows.effect_cooldown_seconds }                      else { 15 }
+$ytMaxCrit = $ytCrit * $ytStacks
+$rytCrit = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_stack_crit_chance) { [int]$config.radiant_yun_tal_wildarrows.effect_stack_crit_chance }                 else { 1 }
+$rytStacks = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_max_stacks) { [int]$config.radiant_yun_tal_wildarrows.effect_max_stacks }                             else { 25 }
+$rytFlurryAS = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_flurry_attack_speed_mult) { [int]$config.radiant_yun_tal_wildarrows.effect_flurry_attack_speed_mult } else { 30 }
+$rytDur = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_duration_seconds) { [int]$config.radiant_yun_tal_wildarrows.effect_duration_seconds }                     else { 6 }
+$rytCd = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_cooldown_seconds) { [int]$config.radiant_yun_tal_wildarrows.effect_cooldown_seconds }                      else { 15 }
+$rytMaxCrit = $rytCrit * $rytStacks
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -156,6 +173,7 @@ $speedIcon = "i#asset/base/ui/banpick/champion_stat_icon:speed_0"
 $cdrIcon = "i#asset/base/ui/banpick/champion_stat_icon:cdr_0"
 $armorPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0"
 $magicPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0"
+$critIcon = "i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0"
 
 Write-Host "Updating English text."
 
@@ -165,14 +183,20 @@ $i18n.en.morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic dama
 $i18n.en.radiant_morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rmorHeal}%<> for <#e8a800ff>${rmorDur} seconds<>."
 $i18n.en.overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#60e84dff>${obmAtk}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
 $i18n.en.radiant_overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#60e84dff>${robmAtk}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
-$i18n.en.night_harvester.option = "Soulrend: Damaging an enemy champion deals <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>${nhMs}%<> <$speedIcon> <#ffffffff>movement speed<> for <#e8a800ff>${nhDur} seconds<> (${nhCd} second cooldown per target)."
-$i18n.en.radiant_night_harvester.option = "Soulrend: Damaging an enemy champion deals <#a974ffff>${rnhFlat}<> + <#a974ffff>${rnhApPct}%<> <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>${rnhMs}%<> <$speedIcon> <#ffffffff>movement speed<> for <#e8a800ff>${rnhDur} seconds<> (${rnhCd} second cooldown per target)."
+$i18n.en.night_harvester.option = "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>${nhFlat}<> + <#a974ffff>${nhApPct}%<> <$apIcon> <#a974ffff>Ability Power<> and grants <#ffffffff>${nhMs}%<> <$speedIcon> <#ffffffff>movement speed<> for <#e8a800ff>${nhDur} seconds<> (${nhCd} second cooldown per target)."
+$i18n.en.radiant_night_harvester.option = "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>${rnhFlat}<> + <#a974ffff>${rnhApPct}%<> <$apIcon> <#a974ffff>Ability Power<> and grants <#ffffffff>${rnhMs}%<> <$speedIcon> <#ffffffff>movement speed<> for <#e8a800ff>${rnhDur} seconds<> (${rnhCd} second cooldown per target)."
 $i18n.en.protectors_vow.option = "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>${pvFlat}<> + <#ffdd8eff>${pvArmorPct}%<> of your <$armorIcon> <#ffdd8eff>Armor<>."
 $i18n.en.radiant_protectors_vow.option = "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>${rpvFlat}<> + <#ffdd8eff>${rpvArmorPct}%<> of your <$armorIcon> <#ffdd8eff>Armor<>."
 $i18n.en.nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
 $i18n.en.radiant_nashors_tooth.option = "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
-$i18n.en.riftmaker.option = "Infusion: Spell hits grant <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rmDur} seconds<> (max ${rmStacks} stacks)."
-$i18n.en.radiant_riftmaker.option = "Infusion: Spell hits grant <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rrmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rrmDur} seconds<> (max ${rrmStacks} stacks)."
+$i18n.en.riftmaker.option = "Infusion: Landing an Ability on an enemy champion grants <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rmDur} seconds<> (max ${rmStacks} stacks)."
+$i18n.en.radiant_riftmaker.option = "Infusion: Landing an Ability on an enemy champion grants <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>${rrmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> for <#e8a800ff>${rrmDur} seconds<> (max ${rrmStacks} stacks)."
+# Shadowflame — Cinderbloom: AP damage amplified against low-health champions (see src/shadowflame.rs).
+# The 20% amp is hardcoded in Rust; only the HP threshold is config-driven.
+$i18n.en.shadowflame.option = "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below ${sfThresholdPct}% maximum health<>."
+$i18n.en.radiant_shadowflame.option = "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below ${rsfThresholdPct}% maximum health<>."
+$i18n.en.yun_tal_wildarrows.option = "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>${ytCrit}%<> <$critIcon> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>${ytMaxCrit}%<> <$critIcon>.`n`nFlurry: On attack, gain <#ceff99ff>${ytFlurryAS}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${ytDur} seconds<> (${ytCd} second cooldown)."
+$i18n.en.radiant_yun_tal_wildarrows.option = "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>${rytCrit}%<> <$critIcon> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>${rytMaxCrit}%<> <$critIcon>.`n`nFlurry: On attack, gain <#ceff99ff>${rytFlurryAS}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${rytDur} seconds<> (${rytCd} second cooldown)."
 $i18n.en.mortal_reminder.option = "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${mrHeal}%<> for <#e8a800ff>${mrDur} seconds<>."
 $i18n.en.radiant_mortal_reminder.option = "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rmrHeal}%<> for <#e8a800ff>${rmrDur} seconds<>."
 $i18n.en.jaksho_the_protean.option = "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>${jakDefMult}% <$armorIcon> armor<> and <#88ccffff>${jakMrMult}% <$mrIcon> magic resistance<> for <#e8a800ff>${jakDur} seconds<> (max ${jakStacks} stacks)."
@@ -183,14 +207,14 @@ $i18n.en.experimental_hexplate.option = "Overdrive: Gain <#4b7cffff>${hexUltCdr}
 $i18n.en.radiant_experimental_hexplate.option = "Overdrive: Gain <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
 $i18n.en.guinsoos_rageblade.option = "Wrath: Your basic attacks deal <#a974ffff>${gbDmg} bonus magic damage<>.`n`nSeething Strike: On attack, gain <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${gbDur} seconds<> (max ${gbStacks} stacks)."
 $i18n.en.radiant_guinsoos_rageblade.option = "Wrath: Your basic attacks deal <#a974ffff>${rgbDmg} bonus magic damage<>.`n`nSeething Strike: On attack, gain <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${rgbDur} seconds<> (max ${rgbStacks} stacks)."
-$i18n.en.blackfire_torch.option = "Maleficent: Spell hits grant <#a974ffff>${bftPower}<> <$apIcon> <#a974ffff>Ability Power<> for <#e8a800ff>${bftDur} seconds<> (max ${bftStacks} stacks)."
-$i18n.en.radiant_blackfire_torch.option = "Maleficent: Spell hits grant <#a974ffff>${rbftPower}<> <$apIcon> <#a974ffff>Ability Power<> for <#e8a800ff>${rbftDur} seconds<> (max ${rbftStacks} stacks)."
+$i18n.en.blackfire_torch.option = "Maleficent: Landing an Ability on an enemy champion grants <#a974ffff>${bftPower}<> <$apIcon> <#a974ffff>Ability Power<> for <#e8a800ff>${bftDur} seconds<> (max ${bftStacks} stacks)."
+$i18n.en.radiant_blackfire_torch.option = "Maleficent: Landing an Ability on an enemy champion grants <#a974ffff>${rbftPower}<> <$apIcon> <#a974ffff>Ability Power<> for <#e8a800ff>${rbftDur} seconds<> (max ${rbftStacks} stacks)."
 $i18n.en.blade_of_the_ruined_king.option = "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>${borkPct}% of the target's current health<>. Deals a maximum of <#ff9028ff>${borkCap} physical damage<> against minions and monsters."
 $i18n.en.radiant_blade_of_the_ruined_king.option = "Mist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>${rborkPct}% of the target's current health<>. Deals a maximum of <#ff9028ff>${rborkCap} physical damage<> against minions and monsters."
 $i18n.en.deathblade.option = "Apex: Increase your total <$adIcon> <#ff9028ff>Attack Damage<> by <#ff9028ff>${dbMult}%<>."
 $i18n.en.radiant_deathblade.option = "Apex: Increase your total <$adIcon> <#ff9028ff>Attack Damage<> by <#ff9028ff>${rdbMult}%<>."
-$i18n.en.deaths_dance.option = "Ignore Pain: <#e8a800ff>${ddDelay}%<> of damage taken is stored and dealt back to you over time as <#d94c49ff>bonus physical damage<> (up to <#60e84dff>${ddBurnCap}%<> of your <$hpIcon> <#60e84dff>maximum health<> per second).`n`nDefy: On kill, the stored damage is cleared and you <#60e84dff>heal<> for <#60e84dff>${ddHeal}%<> of your <#60e84dff>missing health<>."
-$i18n.en.radiant_deaths_dance.option = "Ignore Pain: <#e8a800ff>${rddDelay}%<> of damage taken is stored and dealt back to you over time as <#d94c49ff>bonus physical damage<> (up to <#60e84dff>${rddBurnCap}%<> of your <$hpIcon> <#60e84dff>maximum health<> per second).`n`nDefy: On kill, the stored damage is cleared and you <#60e84dff>heal<> for <#60e84dff>${rddHeal}%<> of your <#60e84dff>missing health<>."
+$i18n.en.deaths_dance.option = "Ignore Pain: <#e8a800ff>${ddDelay}%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>${ddBurnCap}%<> of your <$hpIcon> <#60e84dff>maximum health<> per second).`n`nDefy: On kill, cleanse leftover stored damage and <#60e84dff>heal<> for <#60e84dff>${ddHeal}%<> of your <#60e84dff>missing health<>."
+$i18n.en.radiant_deaths_dance.option = "Ignore Pain: <#e8a800ff>${rddDelay}%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>${rddBurnCap}%<> of your <$hpIcon> <#60e84dff>maximum health<> per second).`n`nDefy: On kill, cleanse leftover stored damage and <#60e84dff>heal<> for <#60e84dff>${rddHeal}%<> of your <#60e84dff>missing health<>."
 $i18n.en.rabadons_deathcap.option = "Opus: Increase your total <$apIcon> <#a974ffff>Ability Power<> by <#a974ffff>${rabMult}%<>."
 $i18n.en.radiant_rabadons_deathcap.option = "Opus: Increase your total <$apIcon> <#a974ffff>Ability Power<> by <#a974ffff>${radRabMult}%<>."
 
@@ -199,8 +223,8 @@ $i18n.en.mirage_blade.option = $mbIllusion -f $mbForce, $mbMoveSpeed, $mbDuratio
 $i18n.en.radiant_mirage_blade.option = $mbIllusion -f $rmbForce, $rmbMoveSpeed, $rmbDuration
 $i18n.en.spirit_visage.option = "Vitality: Increase all <#60e84dff>healing received<> by <#60e84dff>${svHeal}%<>."
 $i18n.en.radiant_spirit_visage.option = "Vitality: Increase all <#60e84dff>healing received<> by <#60e84dff>${rsvHeal}%<>."
-$i18n.en.unending_despair.option = "Anguish: Spell hits heal you for <#60e84dff>${udFlat}<> + <#60e84dff>${udHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
-$i18n.en.radiant_unending_despair.option = "Anguish: Spell hits heal you for <#60e84dff>${rudFlat}<> + <#60e84dff>${rudHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
+$i18n.en.unending_despair.option = "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>${udFlat}<> + <#60e84dff>${udHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
+$i18n.en.radiant_unending_despair.option = "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>${rudFlat}<> + <#60e84dff>${rudHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
 $i18n.en.protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${phThreshold}% health<> grants <#60e84dff>${phFlat}<> + <#60e84dff>${phHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>${phDur} seconds<> and <#60e84dff>heals you<> for half that amount (${phCd} second cooldown)."
 $i18n.en.radiant_protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${rphThreshold}% health<> grants <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>${rphDur} seconds<> and <#60e84dff>heals you<> for half that amount (${rphCd} second cooldown)."
 $i18n.en.terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${tPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${tPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${tDur} seconds<>, alternating (max ${tStacks} stacks each)."
@@ -209,8 +233,8 @@ $i18n.en.collector.option = "Death: Dealing damage to enemy champions below <#60
 $i18n.en.radiant_collector.option = "Death: Dealing damage to enemy champions below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
 $i18n.en.heartsteel.option = "Ironheart: Every <#e8a800ff>${hsCd} seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>, granting <#60e84dff>${hsBonusHpPct}%<> of that damage as permanent <#60e84dff>bonus health<>."
 $i18n.en.radiant_heartsteel.option = "Ironheart: Every <#e8a800ff>${rhsCd} seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>${rhsFlat}<> + <#60e84dff>${rhsHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>, granting <#60e84dff>${rhsBonusHpPct}%<> of that damage as permanent <#60e84dff>bonus health<>."
-$i18n.en.spear_of_shojin.option = "Focused Will: Landing abilities on enemy champions grants <#ff9028ff>${sosAtkMult}%<> <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>${sosDur} seconds<> (max ${sosStacks} stacks)."
-$i18n.en.radiant_spear_of_shojin.option = "Focused Will: Landing abilities on enemy champions grants <#ff9028ff>${rsosAtkMult}%<> <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>${rsosDur} seconds<> (max ${rsosStacks} stacks)."
+$i18n.en.spear_of_shojin.option = "Focused Will: Landing an Ability on an enemy champion grants <#ff9028ff>${sosAtkMult}%<> <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>${sosDur} seconds<> (max ${sosStacks} stacks)."
+$i18n.en.radiant_spear_of_shojin.option = "Focused Will: Landing an Ability on an enemy champion grants <#ff9028ff>${rsosAtkMult}%<> <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>${rsosDur} seconds<> (max ${rsosStacks} stacks)."
 $i18n.en.warmogs_armor.option = "Warmog's Heart: Regenerate <#60e84dff>${waHeal}%<> of your <$hpIcon> <#60e84dff>maximum health<> every second and gain <#ffffffff>${waMs}%<> <$speedIcon> <#ffffffff>movement speed<> if you have not taken damage in the last <#e8a800ff>${waDur} seconds<>."
 $i18n.en.radiant_warmogs_armor.option = "Warmog's Heart: Regenerate <#60e84dff>${rwaHeal}%<> of your <$hpIcon> <#60e84dff>maximum health<> every second and gain <#ffffffff>${rwaMs}%<> <$speedIcon> <#ffffffff>movement speed<> if you have not taken damage in the last <#e8a800ff>${rwaDur} seconds<>."
 
@@ -231,6 +255,10 @@ $i18n.vi.nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a
 $i18n.vi.radiant_nashors_tooth.option = "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
 $i18n.vi.riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rmDur} giây<> (tối đa ${rmStacks} cộng dồn)."
 $i18n.vi.radiant_riftmaker.option = "Dung hòa: Kĩ năng trúng đích sẽ tăng <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>${rrmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>${rrmDur} giây<> (tối đa ${rrmStacks} cộng dồn)."
+$i18n.vi.shadowflame.option = "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới ${sfThresholdPct}% máu tối đa<>."
+$i18n.vi.radiant_shadowflame.option = "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới ${rsfThresholdPct}% máu tối đa<>."
+$i18n.vi.yun_tal_wildarrows.option = "Chí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>${ytCrit}%<> <$critIcon> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>${ytMaxCrit}%<>.`n`nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>${ytFlurryAS}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${ytDur} giây<> (hồi chiêu ${ytCd} giây)."
+$i18n.vi.radiant_yun_tal_wildarrows.option = "Chí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>${rytCrit}%<> <$critIcon> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>${rytMaxCrit}%<>.`n`nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>${rytFlurryAS}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${rytDur} giây<> (hồi chiêu ${rytCd} giây)."
 $i18n.vi.mortal_reminder.option = "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${mrHeal}%<> trong <#e8a800ff>${mrDur} giây<>."
 $i18n.vi.radiant_mortal_reminder.option = "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rmrHeal}%<> trong <#e8a800ff>${rmrDur} giây<>."
 $i18n.vi.jaksho_the_protean.option = "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>${jakDefMult}% <$armorIcon> giáp<> và <#88ccffff>${jakMrMult}% <$mrIcon> kháng phép<> trong <#e8a800ff>${jakDur} giây<> (tối đa ${jakStacks} cộng dồn)."
@@ -289,6 +317,10 @@ $i18n.'zh-hans'.nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 
 $i18n.'zh-hans'.radiant_nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${rntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${rntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
 $i18n.'zh-hans'.riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rmDur}秒<>（最多叠加${rmStacks}层）。"
 $i18n.'zh-hans'.radiant_riftmaker.option = "虚空灌注：技能命中时，获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rrmHpPct}%<> 的 <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rrmDur}秒<>（最多叠加${rrmStacks}层）。"
+$i18n.'zh-hans'.shadowflame.option = "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于${sfThresholdPct}%<>的敌人<#ff9028ff>提高20%<>。"
+$i18n.'zh-hans'.radiant_shadowflame.option = "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于${rsfThresholdPct}%<>的敌人<#ff9028ff>提高20%<>。"
+$i18n.'zh-hans'.yun_tal_wildarrows.option = "熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>${ytCrit}%<> <$critIcon> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>${ytMaxCrit}%<>。`n`n疾风骤雨：普通攻击时，获得 <#ceff99ff>${ytFlurryAS}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${ytDur}秒<>（冷却${ytCd}秒）。"
+$i18n.'zh-hans'.radiant_yun_tal_wildarrows.option = "熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>${rytCrit}%<> <$critIcon> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>${rytMaxCrit}%<>。`n`n疾风骤雨：普通攻击时，获得 <#ceff99ff>${rytFlurryAS}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${rytDur}秒<>（冷却${rytCd}秒）。"
 $i18n.'zh-hans'.mortal_reminder.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${mrHeal}%<>，持续 <#e8a800ff>${mrDur}秒<>。"
 $i18n.'zh-hans'.radiant_mortal_reminder.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${rmrHeal}%<>，持续 <#e8a800ff>${rmrDur}秒<>。"
 $i18n.'zh-hans'.jaksho_the_protean.option = "复原力：受到敌方英雄伤害时，获得 <#ffdd8eff>${jakDefMult}% <$armorIcon> 护甲<>和 <#88ccffff>${jakMrMult}% <$mrIcon> 魔法抗性<>，持续 <#e8a800ff>${jakDur}秒<>（最多叠加${jakStacks}层）。"
@@ -347,6 +379,10 @@ $i18n.'pt-BR'.nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ff
 $i18n.'pt-BR'.radiant_nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
 $i18n.'pt-BR'.riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rmDur} segundos<> (acumula ${rmStacks}x)."
 $i18n.'pt-BR'.radiant_riftmaker.option = "Corrupção: Suas mágias te dão <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>${rrmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rrmDur} segundos<> (acumula ${rrmStacks}x)."
+$i18n.'pt-BR'.shadowflame.option = "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de ${sfThresholdPct}% da Vida Máxima<>."
+$i18n.'pt-BR'.radiant_shadowflame.option = "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de ${rsfThresholdPct}% da Vida Máxima<>."
+$i18n.'pt-BR'.yun_tal_wildarrows.option = "Praticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>${ytCrit}%<> de <$critIcon> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>${ytMaxCrit}%<>.`n`nAgitação: Ao atacar, ganha <#ceff99ff>${ytFlurryAS}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${ytDur} segundos<> (recarga de ${ytCd} segundos)."
+$i18n.'pt-BR'.radiant_yun_tal_wildarrows.option = "Praticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>${rytCrit}%<> de <$critIcon> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>${rytMaxCrit}%<>.`n`nAgitação: Ao atacar, ganha <#ceff99ff>${rytFlurryAS}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${rytDur} segundos<> (recarga de ${rytCd} segundos)."
 $i18n.'pt-BR'.mortal_reminder.option = "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${mrHeal}%<> por <#e8a800ff>${mrDur} segundos<>."
 $i18n.'pt-BR'.radiant_mortal_reminder.option = "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rmrHeal}%<> por <#e8a800ff>${rmrDur} segundos<>."
 $i18n.'pt-BR'.jaksho_the_protean.option = "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>${jakDefMult}% <$armorIcon> de Armadura<> e <#88ccffff>${jakMrMult}% <$mrIcon> de Resistência Mágica<> por <#e8a800ff>${jakDur} segundos<> (acumula ${jakStacks}x)."
@@ -405,6 +441,10 @@ $i18n.ru.nashors_tooth.option = "Укус Икатии: При атаке нан
 $i18n.ru.radiant_nashors_tooth.option = "Укус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Силы Умений<>."
 $i18n.ru.riftmaker.option = "Наполнение: Попадания умениями дают <$apIcon> <#a974ffff>Силу Умений<> равную <#60e84dff>${rmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> на <#e8a800ff>${rmDur} секунд<> (макс. ${rmStacks} стака)."
 $i18n.ru.radiant_riftmaker.option = "Наполнение: Попадания умениями дают <$apIcon> <#a974ffff>Силу Умений<> равную <#60e84dff>${rrmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> на <#e8a800ff>${rrmDur} секунд<> (макс. ${rrmStacks} стака)."
+$i18n.ru.shadowflame.option = "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже ${sfThresholdPct}% от максимального<>."
+$i18n.ru.radiant_shadowflame.option = "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже ${rsfThresholdPct}% от максимального<>."
+$i18n.ru.yun_tal_wildarrows.option = "Убийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>${ytCrit}%<> <$critIcon> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>${ytMaxCrit}%<>.`n`nШквал: При атаке даёт <#ceff99ff>${ytFlurryAS}%<> <$asIcon> <#ceff99ff>скорости атаки<> на <#e8a800ff>${ytDur} секунд<> (перезарядка ${ytCd} секунд)."
+$i18n.ru.radiant_yun_tal_wildarrows.option = "Убийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>${rytCrit}%<> <$critIcon> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>${rytMaxCrit}%<>.`n`nШквал: При атаке даёт <#ceff99ff>${rytFlurryAS}%<> <$asIcon> <#ceff99ff>скорости атаки<> на <#e8a800ff>${rytDur} секунд<> (перезарядка ${rytCd} секунд)."
 $i18n.ru.mortal_reminder.option = "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${mrHeal}%<> на <#e8a800ff>${mrDur} секунды<>."
 $i18n.ru.radiant_mortal_reminder.option = "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rmrHeal}%<> на <#e8a800ff>${rmrDur} секунды<>."
 $i18n.ru.jaksho_the_protean.option = "Стойкость: Получение урона от вражеского чемпиона даёт <#ffdd8eff>${jakDefMult}% <$armorIcon> брони<> и <#88ccffff>${jakMrMult}% <$mrIcon> сопротивления магии<> на <#e8a800ff>${jakDur} секунды<> (макс. ${jakStacks} стака)."
@@ -503,3 +543,7 @@ Write-Host "  Spear of Shojin:         ${sosAtkMult}% AD/stack / ${sosDur}s / ${
 Write-Host "  Radiant Spear of Shojin: ${rsosAtkMult}% AD/stack / ${rsosDur}s / ${rsosStacks} stacks"
 Write-Host "  Warmog's Armor:          ${waHeal}% max HP/s / ${waMs} movement speed / ${waDur} out of combat cooldown"
 Write-Host "  Radiant Warmog's Armor:  ${rwaHeal}% max HP/s / ${rwaMs} movement speed / ${rwaDur} out of combat cooldown"
+Write-Host "  Shadowflame:             +20% AP dmg vs targets below ${sfThresholdPct}% HP"
+Write-Host "  Radiant Shadowflame:     +20% AP dmg vs targets below ${rsfThresholdPct}% HP"
+Write-Host "  Yun Tal Wildarrows:         +${ytCrit}% crit/hit (cap ${ytMaxCrit}%) / +${ytFlurryAS}% AS ${ytDur}s (${ytCd}s CD)"
+Write-Host "  Radiant Yun Tal Wildarrows: +${rytCrit}% crit/hit (cap ${rytMaxCrit}%) / +${rytFlurryAS}% AS ${rytDur}s (${rytCd}s CD)"

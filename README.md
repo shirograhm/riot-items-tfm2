@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 58 new items (31 base + 27 Radiant) to the game.
+Reskins the 30 existing items and also adds 62 new items (33 base + 29 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -27,7 +27,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Spell hits grant +10 Ability Power for 4 seconds (max 4 stacks). |
+| **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Landing an Ability on an enemy champion grants +10 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Collector** | 1400G | +55 AD<br>+20% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 8% max health executes them. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
@@ -43,23 +43,25 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Morellonomicon** | 1300G | +200 HP<br>+120 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |
 | **Mortal Reminder** | 1400G | +55 AD<br>+20% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
 | **Nashor's Tooth** | 1450G | +115 AP<br>+25% AS | On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power. |
-| **Night Harvester** | 1400G | +300 HP<br>+100 AP<br>+10% CDR | Damaging an enemy champion deals 150 + 30% of your Ability Power as bonus magic damage and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
+| **Night Harvester** | 1400G | +300 HP<br>+100 AP<br>+10% CDR | Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% of your Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Overlord's Bloodmail** | 1400G | +25 AD<br>+400 HP | Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | Gain bonus health equal to 50 + 80% of your Armor. |
 | **Protoplasm Harness** | 1000G | +400 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
-| **Riftmaker** | 1300G | +400 HP<br>+75 AP | Spell hits grant Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
-| **Spear of Shojin** | 1400G | +350 HP<br>+35 AD<br>+10% CDR | Landing abilities on enemy champions grants 3% Attack Damage for 5 seconds (max 4 stacks). |
+| **Riftmaker** | 1300G | +400 HP<br>+75 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
+| **Shadowflame** | 1350G | +115 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |
+| **Spear of Shojin** | 1400G | +350 HP<br>+35 AD<br>+10% CDR | Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Increase all healing received by 20%. |
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
-| **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Spell hits heal you for 10 + 1% of your maximum health. |
+| **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Landing an Ability on an enemy champion heals you for 10 + 1% of your maximum health. |
 | **Warmog's Armor** | 1400G | +550 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
+| **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
 
 
 #### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Spell hits grant +30 Ability Power for 4 seconds (max 4 stacks). |
+| **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Landing an Ability on an enemy champion grants +30 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Collector** | 2000G | +105 AD<br>+25% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 8% max health executes them. |
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
@@ -75,17 +77,19 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Mirage Blade** | 2100G | +65% AS<br>+15% MS | Gain 100 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
 | **Radiant Morellonomicon** | 1850G | +350 HP<br>+190 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |
 | **Radiant Nashor's Tooth** | 2050G | +180 AP<br>+40% AS | On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power. |
-| **Radiant Night Harvester** | 2000G | +500 HP<br>+160 AP<br>+10% CDR | Damaging an enemy champion deals 150 + 30% of your Ability Power as bonus magic damage and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
+| **Radiant Night Harvester** | 2000G | +500 HP<br>+160 AP<br>+10% CDR | Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% of your Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Radiant Overlord's Bloodmail** | 2000G | +40 AD<br>+650 HP | Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Radiant Protector's Vow** | 1800G | +550 HP<br>+75 Armor<br>+15% Skill CDR | Gain bonus health equal to 50 + 80% of your Armor. |
 | **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon’s Deathcap** | 2200G | +220 AP | Increase your total Ability Power by 35%. |
-| **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Spell hits grant Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
-| **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD<br>+20% CDR | Landing abilities on enemy champions grants 3% Attack Damage for 5 seconds (max 4 stacks). |
+| **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
+| **Radiant Shadowflame** | 1800G | +210 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |
+| **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD<br>+20% CDR | Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Increase all healing received by 20%. |
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
-| **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Spell hits heal you for 25 + 3% of your maximum health. |
+| **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Landing an Ability on an enemy champion heals you for 25 + 3% of your maximum health. |
 | **Radiant Warmog's Armor** | 2000G | +900 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
+| **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
 
 
 ### Base Item Reskins

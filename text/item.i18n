@@ -205,11 +205,11 @@
         },
         "deaths_dance": {
             "name": "Death's Dance",
-            "option": "Ignore Pain: <#e8a800ff>25%<> of damage taken is stored and dealt back to you over time as <#d94c49ff>bonus physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, the stored damage is cleared and you <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+            "option": "Ignore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, cleanse leftover stored damage and <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
         },
         "radiant_deaths_dance": {
             "name": "Radiant Death's Dance",
-            "option": "Ignore Pain: <#e8a800ff>25%<> of damage taken is stored and dealt back to you over time as <#d94c49ff>bonus physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, the stored damage is cleared and you <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+            "option": "Ignore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, cleanse leftover stored damage and <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
         },
         "needlessly_large_rod": {
             "name": "Needlessly Large Rod",
@@ -249,19 +249,35 @@
         },
         "riftmaker": {
             "name": "Riftmaker",
-            "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+            "option": "Infusion: Landing an Ability on an enemy champion grants <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
         },
         "radiant_riftmaker": {
             "name": "Radiant Riftmaker",
-            "option": "Infusion: Spell hits grant <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+            "option": "Infusion: Landing an Ability on an enemy champion grants <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+        },
+        "shadowflame": {
+            "name": "Shadowflame",
+            "option": "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
+        },
+        "radiant_shadowflame": {
+            "name": "Radiant Shadowflame",
+            "option": "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
+        },
+        "yun_tal_wildarrows": {
+            "name": "Yun Tal Wildarrows",
+            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Radiant Yun Tal Wildarrows",
+            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
         },
         "unending_despair": {
             "name": "Unending Despair",
-            "option": "Anguish: Spell hits heal you for <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+            "option": "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "radiant_unending_despair": {
             "name": "Radiant Unending Despair",
-            "option": "Anguish: Spell hits heal you for <#60e84dff>25<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+            "option": "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>25<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Blade of the Ruined King",
@@ -273,11 +289,11 @@
         },
         "blackfire_torch": {
             "name": "Blackfire Torch",
-            "option": "Maleficent: Spell hits grant <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+            "option": "Maleficent: Landing an Ability on an enemy champion grants <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
         },
         "radiant_blackfire_torch": {
             "name": "Radiant Blackfire Torch",
-            "option": "Maleficent: Spell hits grant <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+            "option": "Maleficent: Landing an Ability on an enemy champion grants <#a974ffff>30<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
         },
         "executioners_calling": {
             "name": "Executioner's Calling",
@@ -365,11 +381,11 @@
         },
         "spear_of_shojin": {
             "name": "Spear of Shojin",
-            "option": "Focused Will: Landing abilities on enemy champions grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
+            "option": "Focused Will: Landing an Ability on an enemy champion grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
         },
         "radiant_spear_of_shojin": {
             "name": "Radiant Spear of Shojin",
-            "option": "Focused Will: Landing abilities on enemy champions grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
+            "option": "Focused Will: Landing an Ability on an enemy champion grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
         },
         "oblivion_orb": {
             "name": "Oblivion Orb",
@@ -393,11 +409,11 @@
         },
         "night_harvester": {
             "name": "Night Harvester",
-            "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (45 second cooldown per target)."
+            "option": "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (45 second cooldown per target)."
         },
         "radiant_night_harvester": {
             "name": "Radiant Night Harvester",
-            "option": "Soulrend: Damaging an enemy champion deals <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (45 second cooldown per target)."
+            "option": "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (45 second cooldown per target)."
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
@@ -663,6 +679,22 @@
         "radiant_riftmaker": {
             "name": "Quyền Trượng Ác Thần Ánh Sáng",
             "option": "Dung hòa: Kĩ năng trúng đích sẽ tăng <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> tương ứng <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>5 giây<> (tối đa 3 cộng dồn)."
+        },
+        "shadowflame": {
+            "name": "Ngọn Lửa Hắc Hóa",
+            "option": "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
+        },
+        "radiant_shadowflame": {
+            "name": "Ngọn Lửa Hắc Hóa Ánh Sáng",
+            "option": "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
+        },
+        "yun_tal_wildarrows": {
+            "name": "Mũi Tên Yun Tal",
+            "option": "Chí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<> (hồi chiêu 15 giây)."
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Mũi Tên Yun Tal Ánh Sáng",
+            "option": "Chí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<> (hồi chiêu 15 giây)."
         },
         "unending_despair": {
             "name": "Áo Choàng Diệt Vong",
@@ -1073,6 +1105,22 @@
             "name": "光明版裂隙制造者",
             "option": "虚空灌注：技能命中时，获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，持续 <#e8a800ff>5秒<>（最多叠加3层）。"
         },
+        "shadowflame": {
+            "name": "影焰",
+            "option": "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#ff9028ff>提高20%<>。"
+        },
+        "radiant_shadowflame": {
+            "name": "光明版影焰",
+            "option": "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#ff9028ff>提高20%<>。"
+        },
+        "yun_tal_wildarrows": {
+            "name": "育恩塔尔荒野箭",
+            "option": "熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n疾风骤雨：普通攻击时，获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>（冷却15秒）。"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "光明版育恩塔尔荒野箭",
+            "option": "熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n疾风骤雨：普通攻击时，获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>（冷却15秒）。"
+        },
         "unending_despair": {
             "name": "无终恨意",
             "option": "苦楚：技能命中时，回复 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的生命值。"
@@ -1482,6 +1530,22 @@
             "name": "Criafendas Radiante",
             "option": "Corrupção: Suas mágias te dão <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>5 segundos<> (acumula 3x)."
         },
+        "shadowflame": {
+            "name": "Chama Sombria",
+            "option": "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
+        },
+        "radiant_shadowflame": {
+            "name": "Chama Sombria Radiante",
+            "option": "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
+        },
+        "yun_tal_wildarrows": {
+            "name": "Flechatroz de Yun Tal",
+            "option": "Praticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\nAgitação: Ao atacar, ganha <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<> (recarga de 15 segundos)."
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Flechatroz de Yun Tal Radiante",
+            "option": "Praticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\nAgitação: Ao atacar, ganha <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<> (recarga de 15 segundos)."
+        },
         "unending_despair": {
             "name": "Desespero Eterno",
             "option": "Angústia: Suas mágias te curam em <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
@@ -1890,6 +1954,22 @@
         "radiant_riftmaker": {
             "name": "Лучезарный Творец Разломов",
             "option": "Наполнение: Попадания умениями дают <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> равную <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> на <#e8a800ff>5 секунд<> (макс. 3 стака)."
+        },
+        "shadowflame": {
+            "name": "Сумрачное пламя",
+            "option": "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
+        },
+        "radiant_shadowflame": {
+            "name": "Лучезарное Сумрачное пламя",
+            "option": "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
+        },
+        "yun_tal_wildarrows": {
+            "name": "Дикие стрелы Юнталь",
+            "option": "Убийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\nШквал: При атаке даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<> (перезарядка 15 секунд)."
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Лучезарные Дикие стрелы Юнталь",
+            "option": "Убийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\nШквал: При атаке даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<> (перезарядка 15 секунд)."
         },
         "unending_despair": {
             "name": "Бесконечное Отчаяние",

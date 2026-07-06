@@ -29,11 +29,13 @@ mod protectors_vow;
 mod protoplasm_harness;
 mod rabadons_deathcap;
 mod riftmaker;
+mod shadowflame;
 mod spear_of_shojin;
 mod spirit_visage;
 mod terminus;
 mod unending_despair;
 mod warmogs_armor;
+mod yun_tal_wildarrows;
 
 use bf_sword::*;
 use blackfire_torch::*;
@@ -61,11 +63,13 @@ use protectors_vow::*;
 use protoplasm_harness::*;
 use rabadons_deathcap::*;
 use riftmaker::*;
+use shadowflame::*;
 use spear_of_shojin::*;
 use spirit_visage::*;
 use terminus::*;
 use unending_despair::*;
 use warmogs_armor::*;
+use yun_tal_wildarrows::*;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -145,11 +149,13 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured!("riftmaker" => Riftmaker));
+    reg.add_item(configured!("shadowflame" => Shadowflame));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
+    reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows));
 
     // Tier 5
     reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
@@ -174,11 +180,13 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_protoplasm_harness" => RadiantProtoplasmHarness));
     reg.add_item(configured!("radiant_rabadons_deathcap" => RadiantRabadonsDeathcap));
     reg.add_item(configured!("radiant_riftmaker" => RadiantRiftmaker));
+    reg.add_item(configured!("radiant_shadowflame" => RadiantShadowflame));
     reg.add_item(configured!("radiant_spear_of_shojin" => RadiantSpearOfShojin));
     reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));
     reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
     reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
+    reg.add_item(configured!("radiant_yun_tal_wildarrows" => RadiantYunTalWildarrows));
 
     reg.set_server_extension(ItemBuildHookExtension);
 

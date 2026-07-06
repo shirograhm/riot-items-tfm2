@@ -49,7 +49,7 @@ impl ModItemInfo for NeedlesslyLargeRod {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["rabadons_deathcap".to_string()]
+        vec!["rabadons_deathcap".to_string(), "shadowflame".to_string()]
     }
 
     fn stat(&self) -> BuffState {
