@@ -425,11 +425,11 @@
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
-            "option": "Rimefrost: Dealing Ability damage slows units hit by <#d94c49ff>15%<> for <#e8a800ff>2 seconds<>."
+            "option": "Rimefrost: Dealing Ability damage applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Radiant Rylai's Crystal Scepter",
-            "option": "Rimefrost: Dealing Ability damage slows units hit by <#d94c49ff>15%<> for <#e8a800ff>2 seconds<>."
+            "option": "Rimefrost: Dealing Ability damage applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         }
     },
     "vi": {
