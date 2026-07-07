@@ -111,11 +111,12 @@ impl ModItemInfo for Stormrazor {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() {
-            return;
-        }
 
         if self.energized_stacks >= self.effect_max_stacks {
+            if target_ref.is_tower() {
+                return;
+            }
+
             ctx.deal_damage(
                 caster,
                 target,
@@ -138,15 +139,15 @@ impl ModItemInfo for Stormrazor {
             self.energized_stacks = 0;
         }
 
-        // Gain 4 energized stacks on attacks against champions, up to the max stacks
+        // Gain 6 energized stacks on attacks, up to the max stacks
         if damage_type == DamageType::AD {
-            self.energized_stacks += 4;
+            self.energized_stacks += 6;
         }
     }
 
     fn update(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
-        // Add 1 energized stack per 0.5 seconds
-        if self.energized_update_tick >= 30 {
+        // Add 1 energized stack per 0.2 seconds
+        if self.energized_update_tick >= 12 {
             self.energized_stacks += 1;
             self.energized_update_tick = 0;
         } else {
@@ -271,11 +272,11 @@ impl ModItemInfo for RadiantStormrazor {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() {
-            return;
-        }
-
         if self.energized_stacks >= self.effect_max_stacks {
+            if target_ref.is_tower() {
+                return;
+            }
+
             ctx.deal_damage(
                 caster,
                 target,
@@ -298,15 +299,15 @@ impl ModItemInfo for RadiantStormrazor {
             self.energized_stacks = 0;
         }
 
-        // Gain 4 energized stacks on attacks against champions, up to the max stacks
+        // Gain 6 energized stacks on attacks, up to the max stacks
         if damage_type == DamageType::AD {
-            self.energized_stacks += 4;
+            self.energized_stacks += 6;
         }
     }
 
     fn update(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
-        // Add 1 energized stack per 0.5 seconds
-        if self.energized_update_tick >= 30 {
+        // Add 1 energized stack per 0.2 seconds
+        if self.energized_update_tick >= 12 {
             self.energized_stacks += 1;
             self.energized_update_tick = 0;
         } else {
