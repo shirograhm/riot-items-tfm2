@@ -890,11 +890,11 @@
         },
         "stormrazor": {
             "name": "Kiếm Bão Tố",
-            "option": "Tích Điện: Nhận <#e8a800ff>1<> điểm Tích Điện mỗi giây và <#e8a800ff>3<> điểm mỗi khi gây <#ff9028ff>sát thương vật lí<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi đạt <#e8a800ff>100<> điểm Tích Điện, đòn <#ff9028ff>sát thương vật lí<> tiếp theo tiêu hao toàn bộ điểm để gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
+            "option": "Tích Điện: Nhận <#e8a800ff>1<> điểm <#e8a800ff>Tích Điện<> mỗi giây và <#e8a800ff>3<> điểm mỗi khi gây <#ff9028ff>sát thương vật lí<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi đạt <#e8a800ff>100 điểm Tích Điện<>, đòn <#ff9028ff>sát thương vật lí<> tiếp theo tiêu hao toàn bộ điểm để gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
         },
         "radiant_stormrazor": {
             "name": "Kiếm Bão Tố Ánh Sáng",
-            "option": "Tích Điện: Nhận <#e8a800ff>1<> điểm Tích Điện mỗi giây và <#e8a800ff>3<> điểm mỗi khi gây <#ff9028ff>sát thương vật lí<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi đạt <#e8a800ff>100<> điểm Tích Điện, đòn <#ff9028ff>sát thương vật lí<> tiếp theo tiêu hao toàn bộ điểm để gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
+            "option": "Tích Điện: Nhận <#e8a800ff>1<> điểm <#e8a800ff>Tích Điện<> mỗi giây và <#e8a800ff>3<> điểm mỗi khi gây <#ff9028ff>sát thương vật lí<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi đạt <#e8a800ff>100 điểm Tích Điện<>, đòn <#ff9028ff>sát thương vật lí<> tiếp theo tiêu hao toàn bộ điểm để gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
         }
     },
     "zh-hans": {
@@ -1339,11 +1339,11 @@
         },
         "stormrazor": {
             "name": "风暴利刃",
-            "option": "蓄能：每秒获得 <#e8a800ff>1<> 层蓄能，每次造成 <#ff9028ff>物理伤害<> 时获得 <#e8a800ff>3<> 层，最多 <#e8a800ff>100<> 层。\n\n雷霆：拥有 <#e8a800ff>100<> 层蓄能时，你的下一次 <#ff9028ff>物理伤害<> 会消耗所有蓄能，额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
+            "option": "蓄能：每秒获得 <#e8a800ff>1<> 层<#e8a800ff>蓄能<>，每次造成 <#ff9028ff>物理伤害<> 时获得 <#e8a800ff>3<> 层，最多 <#e8a800ff>100<> 层。\n\n雷霆：拥有 <#e8a800ff>100 层蓄能<>时，你的下一次 <#ff9028ff>物理伤害<> 会消耗所有蓄能，额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
         },
         "radiant_stormrazor": {
             "name": "光明版风暴利刃",
-            "option": "蓄能：每秒获得 <#e8a800ff>1<> 层蓄能，每次造成 <#ff9028ff>物理伤害<> 时获得 <#e8a800ff>3<> 层，最多 <#e8a800ff>100<> 层。\n\n雷霆：拥有 <#e8a800ff>100<> 层蓄能时，你的下一次 <#ff9028ff>物理伤害<> 会消耗所有蓄能，额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
+            "option": "蓄能：每秒获得 <#e8a800ff>1<> 层<#e8a800ff>蓄能<>，每次造成 <#ff9028ff>物理伤害<> 时获得 <#e8a800ff>3<> 层，最多 <#e8a800ff>100<> 层。\n\n雷霆：拥有 <#e8a800ff>100 层蓄能<>时，你的下一次 <#ff9028ff>物理伤害<> 会消耗所有蓄能，额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
         }
     },
     "pt-BR": {
@@ -1788,11 +1788,11 @@
         },
         "stormrazor": {
             "name": "Navalha da Tempestade",
-            "option": "Energizado: Ganha <#e8a800ff>1<> acúmulo de Energia por segundo e <#e8a800ff>3<> acúmulos sempre que causa <#ff9028ff>dano físico<>, até <#e8a800ff>100<>.\n\nRaio: Com <#e8a800ff>100<> acúmulos de Energia, sua próxima instância de <#ff9028ff>dano físico<> consome todos os acúmulos para causar <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
+            "option": "Energizado: Ganha <#e8a800ff>1<> acúmulo de <#e8a800ff>Energia<> por segundo e <#e8a800ff>3<> acúmulos sempre que causa <#ff9028ff>dano físico<>, até <#e8a800ff>100<>.\n\nRaio: Com <#e8a800ff>100 acúmulos de Energia<>, sua próxima instância de <#ff9028ff>dano físico<> consome todos os acúmulos para causar <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
         },
         "radiant_stormrazor": {
             "name": "Navalha da Tempestade Radiante",
-            "option": "Energizado: Ganha <#e8a800ff>1<> acúmulo de Energia por segundo e <#e8a800ff>3<> acúmulos sempre que causa <#ff9028ff>dano físico<>, até <#e8a800ff>100<>.\n\nRaio: Com <#e8a800ff>100<> acúmulos de Energia, sua próxima instância de <#ff9028ff>dano físico<> consome todos os acúmulos para causar <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
+            "option": "Energizado: Ganha <#e8a800ff>1<> acúmulo de <#e8a800ff>Energia<> por segundo e <#e8a800ff>3<> acúmulos sempre que causa <#ff9028ff>dano físico<>, até <#e8a800ff>100<>.\n\nRaio: Com <#e8a800ff>100 acúmulos de Energia<>, sua próxima instância de <#ff9028ff>dano físico<> consome todos os acúmulos para causar <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
         }
     },
     "ru": {
@@ -2237,11 +2237,11 @@
         },
         "stormrazor": {
             "name": "Грозовая бритва",
-            "option": "Заряд: Получает <#e8a800ff>1<> заряд Энергии каждую секунду и <#e8a800ff>3<> заряда при нанесении <#ff9028ff>физического урона<>, до <#e8a800ff>100<>.\n\nМолния: При <#e8a800ff>100<> зарядах Энергии ваш следующий <#ff9028ff>физический урон<> расходует все заряды, нанося <#a974ffff>100 дополнительного магического урона<> и давая <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
+            "option": "Заряд: Получает <#e8a800ff>1<> заряд <#e8a800ff>Энергии<> каждую секунду и <#e8a800ff>3<> заряда при нанесении <#ff9028ff>физического урона<>, до <#e8a800ff>100<>.\n\nМолния: При <#e8a800ff>100 зарядах Энергии<> ваш следующий <#ff9028ff>физический урон<> расходует все заряды, нанося <#a974ffff>100 дополнительного магического урона<> и давая <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
         },
         "radiant_stormrazor": {
             "name": "Лучезарная Грозовая бритва",
-            "option": "Заряд: Получает <#e8a800ff>1<> заряд Энергии каждую секунду и <#e8a800ff>3<> заряда при нанесении <#ff9028ff>физического урона<>, до <#e8a800ff>100<>.\n\nМолния: При <#e8a800ff>100<> зарядах Энергии ваш следующий <#ff9028ff>физический урон<> расходует все заряды, нанося <#a974ffff>100 дополнительного магического урона<> и давая <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
+            "option": "Заряд: Получает <#e8a800ff>1<> заряд <#e8a800ff>Энергии<> каждую секунду и <#e8a800ff>3<> заряда при нанесении <#ff9028ff>физического урона<>, до <#e8a800ff>100<>.\n\nМолния: При <#e8a800ff>100 зарядах Энергии<> ваш следующий <#ff9028ff>физический урон<> расходует все заряды, нанося <#a974ffff>100 дополнительного магического урона<> и давая <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
         }
     }
 }
