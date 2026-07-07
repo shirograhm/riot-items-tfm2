@@ -25,7 +25,7 @@ pub struct ItemConfig {
     pub vamp: Option<i32>,
 
     pub effect_move_speed_mult: Option<i32>,
-    pub effect_duration_seconds: Option<usize>,
+    pub effect_duration_seconds: Option<f64>,
     pub effect_heal_reduce: Option<usize>,
     pub effect_minion_damage_cap: Option<usize>,
     pub effect_ap_percent_damage: Option<f64>,
@@ -51,7 +51,7 @@ pub struct ItemConfig {
     pub effect_hp_percent_boost: Option<f64>,
     pub effect_hp_percent_threshold: Option<f64>,
     pub effect_bonus_hp_percent_of_damage: Option<f64>,
-    pub effect_cooldown_seconds: Option<usize>,
+    pub effect_cooldown_seconds: Option<f64>,
     pub effect_heal_mult: Option<f64>,
     pub effect_bonus_flat_heal: Option<i32>,
     pub effect_caster_hp_percent_heal: Option<f64>,

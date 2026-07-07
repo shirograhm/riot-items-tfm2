@@ -9,7 +9,7 @@ pub struct MortalReminder {
     attack: i32,
     defence_penetration: usize,
     effect_heal_reduce: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for MortalReminder {
@@ -19,7 +19,7 @@ impl Default for MortalReminder {
             attack: 55,
             defence_penetration: 20,
             effect_heal_reduce: 40,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -99,7 +99,7 @@ impl ModItemInfo for MortalReminder {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     heal_reduce: self.effect_heal_reduce,
                     name: ArrayString::try_from("40_percent_heal_cut").unwrap(),
@@ -129,7 +129,7 @@ pub struct RadiantMortalReminder {
     defence_penetration: usize,
     crit_chance: i32,
     effect_heal_reduce: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RadiantMortalReminder {
@@ -140,7 +140,7 @@ impl Default for RadiantMortalReminder {
             defence_penetration: 30,
             crit_chance: 0,
             effect_heal_reduce: 40,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -218,7 +218,7 @@ impl ModItemInfo for RadiantMortalReminder {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     heal_reduce: self.effect_heal_reduce,
                     name: ArrayString::try_from("40_percent_heal_cut").unwrap(),

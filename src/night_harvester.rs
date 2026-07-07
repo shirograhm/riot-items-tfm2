@@ -18,8 +18,8 @@ pub struct NightHarvester {
     effect_bonus_flat_damage: usize,
     effect_ap_percent_damage: f64,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
-    effect_cooldown_seconds: usize,
+    effect_duration_seconds: f64,
+    effect_cooldown_seconds: f64,
 }
 
 impl Default for NightHarvester {
@@ -32,8 +32,8 @@ impl Default for NightHarvester {
             effect_bonus_flat_damage: 150,
             effect_ap_percent_damage: 30.0,
             effect_move_speed_mult: 40,
-            effect_duration_seconds: 2,
-            effect_cooldown_seconds: 45,
+            effect_duration_seconds: 2.0,
+            effect_cooldown_seconds: 45.0,
         }
     }
 }
@@ -130,7 +130,7 @@ impl ModItemInfo for NightHarvester {
             target,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_cooldown_seconds * 60,
+                    tick: (self.effect_cooldown_seconds * 60.0) as usize,
                 },
                 name: ArrayString::try_from("night_harvester_cooldown").unwrap(),
                 ..Default::default()
@@ -141,7 +141,7 @@ impl ModItemInfo for NightHarvester {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_duration_seconds * 60,
+                    tick: (self.effect_duration_seconds * 60.0) as usize,
                 },
                 move_speed_mult: self.effect_move_speed_mult,
                 name: ArrayString::try_from("night_harvester_soulrend").unwrap(),
@@ -168,8 +168,8 @@ pub struct RadiantNightHarvester {
     effect_bonus_flat_damage: usize,
     effect_ap_percent_damage: f64,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
-    effect_cooldown_seconds: usize,
+    effect_duration_seconds: f64,
+    effect_cooldown_seconds: f64,
 }
 
 impl Default for RadiantNightHarvester {
@@ -182,8 +182,8 @@ impl Default for RadiantNightHarvester {
             effect_bonus_flat_damage: 150,
             effect_ap_percent_damage: 30.0,
             effect_move_speed_mult: 40,
-            effect_duration_seconds: 2,
-            effect_cooldown_seconds: 45,
+            effect_duration_seconds: 2.0,
+            effect_cooldown_seconds: 45.0,
         }
     }
 }
@@ -273,7 +273,7 @@ impl ModItemInfo for RadiantNightHarvester {
             target,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_cooldown_seconds * 60,
+                    tick: (self.effect_cooldown_seconds * 60.0) as usize,
                 },
                 name: ArrayString::try_from("radiant_night_harvester_cooldown").unwrap(),
                 ..Default::default()
@@ -284,7 +284,7 @@ impl ModItemInfo for RadiantNightHarvester {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_duration_seconds * 60,
+                    tick: (self.effect_duration_seconds * 60.0) as usize,
                 },
                 move_speed_mult: self.effect_move_speed_mult,
                 name: ArrayString::try_from("radiant_night_harvester_soulrend").unwrap(),

@@ -10,7 +10,7 @@ pub struct BlackfireTorch {
     skill_cooldown_mult: i32,
     effect_stack_magic_power: i32,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for BlackfireTorch {
@@ -21,7 +21,7 @@ impl Default for BlackfireTorch {
             skill_cooldown_mult: 15,
             effect_stack_magic_power: 10,
             effect_max_stacks: 4,
-            effect_duration_seconds: 4,
+            effect_duration_seconds: 4.0,
         }
     }
 }
@@ -93,7 +93,7 @@ impl ModItemInfo for BlackfireTorch {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     magic_power: self.effect_stack_magic_power,
                     name: ArrayString::try_from("blackfire_torch_buff").unwrap(),
@@ -119,7 +119,7 @@ pub struct RadiantBlackfireTorch {
     skill_cooldown_mult: i32,
     effect_stack_magic_power: i32,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RadiantBlackfireTorch {
@@ -130,7 +130,7 @@ impl Default for RadiantBlackfireTorch {
             skill_cooldown_mult: 25,
             effect_stack_magic_power: 30,
             effect_max_stacks: 4,
-            effect_duration_seconds: 4,
+            effect_duration_seconds: 4.0,
         }
     }
 }
@@ -198,7 +198,7 @@ impl ModItemInfo for RadiantBlackfireTorch {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     magic_power: self.effect_stack_magic_power,
                     name: ArrayString::try_from("radiant_blackfire_torch_buff").unwrap(),

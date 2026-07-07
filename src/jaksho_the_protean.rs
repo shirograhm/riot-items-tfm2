@@ -12,7 +12,7 @@ pub struct JakshoTheProtean {
     effect_stack_defence_mult: i32,
     effect_stack_magic_resistance_mult: i32,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for JakshoTheProtean {
@@ -25,7 +25,7 @@ impl Default for JakshoTheProtean {
             effect_stack_defence_mult: 6,
             effect_stack_magic_resistance_mult: 6,
             effect_max_stacks: 4,
-            effect_duration_seconds: 4,
+            effect_duration_seconds: 4.0,
         }
     }
 }
@@ -115,7 +115,7 @@ impl ModItemInfo for JakshoTheProtean {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     defence_mult: self.effect_stack_defence_mult,
                     magic_resistance_mult: self.effect_stack_magic_resistance_mult,
@@ -144,7 +144,7 @@ pub struct RadiantJakshoTheProtean {
     effect_stack_defence_mult: i32,
     effect_stack_magic_resistance_mult: i32,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RadiantJakshoTheProtean {
@@ -157,7 +157,7 @@ impl Default for RadiantJakshoTheProtean {
             effect_stack_defence_mult: 10,
             effect_stack_magic_resistance_mult: 10,
             effect_max_stacks: 4,
-            effect_duration_seconds: 4,
+            effect_duration_seconds: 4.0,
         }
     }
 }
@@ -236,16 +236,14 @@ impl ModItemInfo for RadiantJakshoTheProtean {
             return;
         }
         let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| {
-                entity_ref.buff_at(i).name.as_str() == "radiant_jaksho_the_protean_stack"
-            })
+            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_jaksho_the_protean_stack")
             .count();
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     defence_mult: self.effect_stack_defence_mult,
                     magic_resistance_mult: self.effect_stack_magic_resistance_mult,

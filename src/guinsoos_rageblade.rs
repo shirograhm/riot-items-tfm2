@@ -12,7 +12,7 @@ pub struct GuinsoosRageblade {
     effect_bonus_magic_damage: usize,
     effect_stack_attack_speed_mult: i32,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
     on_hit_cooldown_seconds: f64,
 }
 
@@ -26,7 +26,7 @@ impl Default for GuinsoosRageblade {
             effect_bonus_magic_damage: 30,
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
-            effect_duration_seconds: 4,
+            effect_duration_seconds: 4.0,
             on_hit_cooldown_seconds: 0.5,
         }
     }
@@ -144,7 +144,7 @@ impl ModItemInfo for GuinsoosRageblade {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     attack_speed_mult: self.effect_stack_attack_speed_mult,
                     name: ArrayString::try_from("guinsoos_rageblade_buff").unwrap(),
@@ -172,7 +172,7 @@ pub struct RadiantGuinsoosRageblade {
     effect_bonus_magic_damage: usize,
     effect_stack_attack_speed_mult: i32,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
     on_hit_cooldown_seconds: f64,
 }
 
@@ -186,7 +186,7 @@ impl Default for RadiantGuinsoosRageblade {
             effect_bonus_magic_damage: 30,
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
-            effect_duration_seconds: 4,
+            effect_duration_seconds: 4.0,
             on_hit_cooldown_seconds: 0.5,
         }
     }
@@ -300,7 +300,7 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     attack_speed_mult: self.effect_stack_attack_speed_mult,
                     name: ArrayString::try_from("radiant_guinsoos_rageblade_buff").unwrap(),

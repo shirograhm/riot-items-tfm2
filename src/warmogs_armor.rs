@@ -17,7 +17,7 @@ pub struct WarmogsArmor {
     hp: i32,
     effect_caster_hp_percent_heal: f64,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
     regen_cooldown: usize,
 }
 
@@ -28,7 +28,7 @@ impl Default for WarmogsArmor {
             hp: 550,
             effect_caster_hp_percent_heal: 3.0,
             effect_move_speed_mult: 4,
-            effect_duration_seconds: 6,
+            effect_duration_seconds: 6.0,
             regen_cooldown: 0,
         }
     }
@@ -175,7 +175,7 @@ impl ModItemInfo for WarmogsArmor {
             entity,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_duration_seconds * 60,
+                    tick: (self.effect_duration_seconds * 60.0) as usize,
                 },
                 name: ArrayString::try_from("warmogs_armor_recently_damaged").unwrap(),
                 ..Default::default()
@@ -198,7 +198,7 @@ pub struct RadiantWarmogsArmor {
     hp: i32,
     effect_caster_hp_percent_heal: f64,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
     regen_cooldown: usize,
 }
 
@@ -209,7 +209,7 @@ impl Default for RadiantWarmogsArmor {
             hp: 900,
             effect_caster_hp_percent_heal: 3.0,
             effect_move_speed_mult: 4,
-            effect_duration_seconds: 6,
+            effect_duration_seconds: 6.0,
             regen_cooldown: 0,
         }
     }
@@ -353,7 +353,7 @@ impl ModItemInfo for RadiantWarmogsArmor {
             entity,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_duration_seconds * 60,
+                    tick: (self.effect_duration_seconds * 60.0) as usize,
                 },
                 name: ArrayString::try_from("radiant_warmogs_armor_recently_damaged").unwrap(),
                 ..Default::default()

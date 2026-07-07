@@ -8,7 +8,7 @@ pub struct ExecutionersCalling {
     price: usize,
     attack: i32,
     effect_heal_reduce: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for ExecutionersCalling {
@@ -17,7 +17,7 @@ impl Default for ExecutionersCalling {
             price: 500,
             attack: 25,
             effect_heal_reduce: 25,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -95,7 +95,7 @@ impl ModItemInfo for ExecutionersCalling {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     heal_reduce: self.effect_heal_reduce,
                     name: ArrayString::try_from("25_percent_heal_cut").unwrap(),

@@ -11,7 +11,7 @@ pub struct MirageBlade {
     move_speed_mult: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for MirageBlade {
@@ -22,7 +22,7 @@ impl Default for MirageBlade {
             move_speed_mult: 10,
             adaptive_force: 60,
             effect_move_speed_mult: 20,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -116,7 +116,7 @@ impl ModItemInfo for MirageBlade {
                 entity_ref.id(),
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),
@@ -142,7 +142,7 @@ pub struct RadiantMirageBlade {
     move_speed_mult: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RadiantMirageBlade {
@@ -153,7 +153,7 @@ impl Default for RadiantMirageBlade {
             move_speed_mult: 15,
             adaptive_force: 100,
             effect_move_speed_mult: 20,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -257,7 +257,7 @@ impl ModItemInfo for RadiantMirageBlade {
                 entity_ref.id(),
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),

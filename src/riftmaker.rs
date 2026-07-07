@@ -11,7 +11,7 @@ pub struct Riftmaker {
     magic_power: i32,
     effect_caster_hp_percent_power: f64,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for Riftmaker {
@@ -22,7 +22,7 @@ impl Default for Riftmaker {
             magic_power: 75,
             effect_caster_hp_percent_power: 1.0,
             effect_max_stacks: 3,
-            effect_duration_seconds: 5,
+            effect_duration_seconds: 5.0,
         }
     }
 }
@@ -101,7 +101,7 @@ impl ModItemInfo for Riftmaker {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     magic_power: bonus_power as i32,
                     name: ArrayString::try_from("riftmaker_magic_power_buff").unwrap(),
@@ -127,7 +127,7 @@ pub struct RadiantRiftmaker {
     magic_power: i32,
     effect_caster_hp_percent_power: f64,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RadiantRiftmaker {
@@ -138,7 +138,7 @@ impl Default for RadiantRiftmaker {
             magic_power: 150,
             effect_caster_hp_percent_power: 1.0,
             effect_max_stacks: 3,
-            effect_duration_seconds: 5,
+            effect_duration_seconds: 5.0,
         }
     }
 }
@@ -212,7 +212,7 @@ impl ModItemInfo for RadiantRiftmaker {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     magic_power: bonus_power as i32,
                     name: ArrayString::try_from("radiant_riftmaker_magic_power_buff").unwrap(),

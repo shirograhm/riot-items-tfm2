@@ -10,8 +10,8 @@ pub struct TurboChemtank {
     hp: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
-    effect_cooldown_seconds: usize,
+    effect_duration_seconds: f64,
+    effect_cooldown_seconds: f64,
 }
 
 impl Default for TurboChemtank {
@@ -21,8 +21,8 @@ impl Default for TurboChemtank {
             hp: 350,
             adaptive_force: 80,
             effect_move_speed_mult: 25,
-            effect_duration_seconds: 6,
-            effect_cooldown_seconds: 40,
+            effect_duration_seconds: 6.0,
+            effect_cooldown_seconds: 40.0,
         }
     }
 }
@@ -129,7 +129,7 @@ impl ModItemInfo for TurboChemtank {
                 player,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     cc_immune: true,
                     move_speed_mult: self.effect_move_speed_mult,
@@ -140,7 +140,7 @@ impl ModItemInfo for TurboChemtank {
                 player,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_cooldown_seconds * 60,
+                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
                     },
                     name: ArrayString::try_from("turbo_chemtank_cooldown").unwrap(),
                     ..Default::default()
@@ -164,8 +164,8 @@ pub struct RadiantTurboChemtank {
     hp: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
-    effect_cooldown_seconds: usize,
+    effect_duration_seconds: f64,
+    effect_cooldown_seconds: f64,
 }
 
 impl Default for RadiantTurboChemtank {
@@ -175,8 +175,8 @@ impl Default for RadiantTurboChemtank {
             hp: 450,
             adaptive_force: 150,
             effect_move_speed_mult: 25,
-            effect_duration_seconds: 6,
-            effect_cooldown_seconds: 40,
+            effect_duration_seconds: 6.0,
+            effect_cooldown_seconds: 40.0,
         }
     }
 }
@@ -293,7 +293,7 @@ impl ModItemInfo for RadiantTurboChemtank {
                 player,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     cc_immune: true,
                     move_speed_mult: self.effect_move_speed_mult,
@@ -304,7 +304,7 @@ impl ModItemInfo for RadiantTurboChemtank {
                 player,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_cooldown_seconds * 60,
+                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
                     },
                     name: ArrayString::try_from("radiant_turbo_chemtank_cooldown").unwrap(),
                     ..Default::default()

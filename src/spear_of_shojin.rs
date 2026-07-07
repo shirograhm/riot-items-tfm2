@@ -11,7 +11,7 @@ pub struct SpearOfShojin {
     skill_cooldown_mult: i32,
     effect_stack_attack_mult: i32,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for SpearOfShojin {
@@ -23,7 +23,7 @@ impl Default for SpearOfShojin {
             skill_cooldown_mult: 10,
             effect_stack_attack_mult: 3,
             effect_max_stacks: 4,
-            effect_duration_seconds: 5,
+            effect_duration_seconds: 5.0,
         }
     }
 }
@@ -67,7 +67,7 @@ impl SpearOfShojin {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     attack_mult: self.effect_stack_attack_mult,
                     name: ArrayString::try_from("spear_of_shojin_buff").unwrap(),
@@ -140,7 +140,7 @@ pub struct RadiantSpearOfShojin {
     skill_cooldown_mult: i32,
     effect_stack_attack_mult: i32,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RadiantSpearOfShojin {
@@ -152,7 +152,7 @@ impl Default for RadiantSpearOfShojin {
             skill_cooldown_mult: 20,
             effect_stack_attack_mult: 3,
             effect_max_stacks: 4,
-            effect_duration_seconds: 5,
+            effect_duration_seconds: 5.0,
         }
     }
 }
@@ -196,7 +196,7 @@ impl RadiantSpearOfShojin {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     attack_mult: self.effect_stack_attack_mult,
                     name: ArrayString::try_from("radiant_spear_of_shojin_buff").unwrap(),
