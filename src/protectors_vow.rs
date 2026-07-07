@@ -1,11 +1,19 @@
 use arrayvec::ArrayString;
-use core::fmt::Write;
 use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
 
-const REFRESH_LOCKOUT_TICKS: usize = 3;
+// The Awe bonus HP is granted as a fixed-duration buff that is re-applied on a
+// slightly shorter cycle than it lasts, so a fresh buff is always in place
+// before the previous one expires. This avoids any single-tick gap where the
+// max-HP bonus would vanish and clamp the holder's current HP down, and lets
+// the amount track the holder's current defence each cycle (rising or falling)
+// instead of only ratcheting upward. The trade-off is that during the ~1s
+// overlap both buffs are live, so the bonus is briefly doubled -- harmless,
+// since it only ever overshoots and never dips.
+const AWE_BUFF_DURATION_TICKS: usize = 600; // 10 seconds
+const AWE_REFRESH_PERIOD_TICKS: usize = 598; // 9.966 seconds -> ~.033 second of overlap
 
 #[derive(Clone, Debug)]
 pub struct ProtectorsVow {
@@ -14,7 +22,7 @@ pub struct ProtectorsVow {
     defence: i32,
     effect_bonus_flat_hp: i32,
     effect_caster_defence_percent_hp: f64,
-    refresh_lockout: usize,
+    refresh_cooldown: usize,
 }
 
 impl Default for ProtectorsVow {
@@ -25,7 +33,7 @@ impl Default for ProtectorsVow {
             defence: 50,
             effect_bonus_flat_hp: 50,
             effect_caster_defence_percent_hp: 80.0,
-            refresh_lockout: 0,
+            refresh_cooldown: 0,
         }
     }
 }
@@ -41,13 +49,13 @@ impl ProtectorsVow {
             effect_caster_defence_percent_hp: cfg
                 .effect_caster_defence_percent_hp
                 .unwrap_or(d.effect_caster_defence_percent_hp),
-            refresh_lockout: 0,
+            refresh_cooldown: 0,
         }
     }
 
     fn apply_awe(&mut self, ctx: &mut GameCtx, player: usize) {
-        if self.refresh_lockout > 0 {
-            self.refresh_lockout -= 1;
+        if self.refresh_cooldown > 0 {
+            self.refresh_cooldown -= 1;
             return;
         }
 
@@ -58,42 +66,28 @@ impl ProtectorsVow {
             return;
         };
 
-        let prefix = "protectors_vow_awe_";
-        let granted = (0..entity_ref.buff_count())
-            .filter_map(|i| {
-                entity_ref
-                    .buff_at(i)
-                    .name
-                    .as_str()
-                    .strip_prefix(prefix)
-                    .and_then(|total| total.parse::<i32>().ok())
-            })
-            .max()
-            .unwrap_or(0);
-
         let target = self.effect_bonus_flat_hp
             + percent_of(
                 entity_ref.stat().defence,
                 self.effect_caster_defence_percent_hp,
             ) as i32;
-        if target <= granted {
+        if target <= 0 {
             return;
         }
 
         let entity_id = entity_ref.id();
-        let mut name = ArrayString::<64>::new();
-        write!(&mut name, "{prefix}{target}").unwrap();
-
         ctx.add_buff(
             entity_id,
             BuffState {
-                name,
-                duration: BuffType::Permanent,
-                hp: target - granted,
+                name: ArrayString::try_from("protectors_vow_awe").unwrap(),
+                duration: BuffType::Time {
+                    tick: AWE_BUFF_DURATION_TICKS,
+                },
+                hp: target,
                 ..Default::default()
             },
         );
-        self.refresh_lockout = REFRESH_LOCKOUT_TICKS;
+        self.refresh_cooldown = AWE_REFRESH_PERIOD_TICKS;
     }
 }
 
@@ -138,6 +132,7 @@ impl ModItemInfo for ProtectorsVow {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        self.refresh_cooldown = 0;
         self.apply_awe(ctx, player);
     }
 
@@ -162,7 +157,7 @@ pub struct RadiantProtectorsVow {
     skill_cooldown_mult: i32,
     effect_bonus_flat_hp: i32,
     effect_caster_defence_percent_hp: f64,
-    refresh_lockout: usize,
+    refresh_cooldown: usize,
 }
 
 impl Default for RadiantProtectorsVow {
@@ -174,7 +169,7 @@ impl Default for RadiantProtectorsVow {
             skill_cooldown_mult: 15,
             effect_bonus_flat_hp: 50,
             effect_caster_defence_percent_hp: 80.0,
-            refresh_lockout: 0,
+            refresh_cooldown: 0,
         }
     }
 }
@@ -191,13 +186,13 @@ impl RadiantProtectorsVow {
             effect_caster_defence_percent_hp: cfg
                 .effect_caster_defence_percent_hp
                 .unwrap_or(d.effect_caster_defence_percent_hp),
-            refresh_lockout: 0,
+            refresh_cooldown: 0,
         }
     }
 
     fn apply_awe(&mut self, ctx: &mut GameCtx, player: usize) {
-        if self.refresh_lockout > 0 {
-            self.refresh_lockout -= 1;
+        if self.refresh_cooldown > 0 {
+            self.refresh_cooldown -= 1;
             return;
         }
 
@@ -208,42 +203,28 @@ impl RadiantProtectorsVow {
             return;
         };
 
-        let prefix = "radiant_protectors_vow_awe_";
-        let granted = (0..entity_ref.buff_count())
-            .filter_map(|i| {
-                entity_ref
-                    .buff_at(i)
-                    .name
-                    .as_str()
-                    .strip_prefix(prefix)
-                    .and_then(|total| total.parse::<i32>().ok())
-            })
-            .max()
-            .unwrap_or(0);
-
         let target = self.effect_bonus_flat_hp
             + percent_of(
                 entity_ref.stat().defence,
                 self.effect_caster_defence_percent_hp,
             ) as i32;
-        if target <= granted {
+        if target <= 0 {
             return;
         }
 
         let entity_id = entity_ref.id();
-        let mut name = ArrayString::<64>::new();
-        write!(&mut name, "{prefix}{target}").unwrap();
-
         ctx.add_buff(
             entity_id,
             BuffState {
-                name,
-                duration: BuffType::Permanent,
-                hp: target - granted,
+                name: ArrayString::try_from("radiant_protectors_vow_awe").unwrap(),
+                duration: BuffType::Time {
+                    tick: AWE_BUFF_DURATION_TICKS,
+                },
+                hp: target,
                 ..Default::default()
             },
         );
-        self.refresh_lockout = REFRESH_LOCKOUT_TICKS;
+        self.refresh_cooldown = AWE_REFRESH_PERIOD_TICKS;
     }
 }
 
@@ -282,6 +263,7 @@ impl ModItemInfo for RadiantProtectorsVow {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        self.refresh_cooldown = 0;
         self.apply_awe(ctx, player);
     }
 
