@@ -488,5 +488,43 @@
     "effect_caster_hp_percent_heal": 3.0,
     "effect_move_speed_mult": 4,
     "effect_duration_seconds": 6
+  },
+  "turbo_chemtank": {
+    "price": 1250,
+    "hp": 350,
+    "hp_regen": 10,
+    "adaptive_force": 50,
+    "effect_move_speed_mult": 25,
+    "effect_duration_seconds": 6,
+    "effect_cooldown_seconds": 40
+  },
+  "radiant_turbo_chemtank": {
+    "price": 1850,
+    "hp": 450,
+    "hp_regen": 15,
+    "adaptive_force": 80,
+    "effect_move_speed_mult": 25,
+    "effect_duration_seconds": 6,
+    "effect_cooldown_seconds": 40
+  },
+  "stormrazor": {
+    "price": 1550,
+    "attack": 65,
+    "attack_speed_mult": 20,
+    "crit_chance": 20,
+    "effect_max_stacks": 100,
+    "effect_move_speed_mult": 35,
+    "effect_bonus_flat_damage": 100,
+    "effect_duration_seconds": 1.5
+  },
+  "radiant_stormrazor": {
+    "price": 2200,
+    "attack": 100,
+    "attack_speed_mult": 40,
+    "crit_chance": 25,
+    "effect_max_stacks": 100,
+    "effect_move_speed_mult": 35,
+    "effect_bonus_flat_damage": 100,
+    "effect_duration_seconds": 1.5
   }
 }
