@@ -139,9 +139,9 @@ impl ModItemInfo for Stormrazor {
             self.energized_stacks = 0;
         }
 
-        // Gain 6 energized stacks on attacks, up to the max stacks
+        // Gain 5 energized stacks on attacks, up to the max stacks
         if damage_type == DamageType::AD {
-            self.energized_stacks += 6;
+            self.energized_stacks += 5;
         }
     }
 
@@ -299,9 +299,9 @@ impl ModItemInfo for RadiantStormrazor {
             self.energized_stacks = 0;
         }
 
-        // Gain 6 energized stacks on attacks, up to the max stacks
+        // Gain 5 energized stacks on attacks, up to the max stacks
         if damage_type == DamageType::AD {
-            self.energized_stacks += 6;
+            self.energized_stacks += 5;
         }
     }
 
