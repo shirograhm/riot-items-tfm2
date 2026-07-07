@@ -54,7 +54,7 @@ impl WarmogsArmor {
     }
 
     fn apply_passive(&mut self, ctx: &mut GameCtx, player: usize) {
-        let Some((entity, max_hp, has_move_speed, recently_damaged)) = ({
+        let (entity, max_hp, has_move_speed, recently_damaged) = {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
             };
@@ -65,14 +65,12 @@ impl WarmogsArmor {
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "warmogs_armor_recently_damaged");
             let has_move_speed = (0..entity_ref.buff_count())
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "warmogs_armor_move_speed");
-            Some((
+            (
                 entity_ref.id(),
                 entity_ref.hp().max,
                 has_move_speed,
                 recently_damaged,
-            ))
-        }) else {
-            return;
+            )
         };
 
         // Warmog's Heart is suppressed while the holder has taken damage recently.
@@ -235,7 +233,7 @@ impl RadiantWarmogsArmor {
     }
 
     fn apply_passive(&mut self, ctx: &mut GameCtx, player: usize) {
-        let Some((entity, max_hp, has_move_speed, recently_damaged)) = ({
+        let (entity, max_hp, has_move_speed, recently_damaged) = {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
             };
@@ -247,14 +245,12 @@ impl RadiantWarmogsArmor {
             });
             let has_move_speed = (0..entity_ref.buff_count())
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_warmogs_armor_move_speed");
-            Some((
+            (
                 entity_ref.id(),
                 entity_ref.hp().max,
                 has_move_speed,
                 recently_damaged,
-            ))
-        }) else {
-            return;
+            )
         };
 
         // Warmog's Heart is suppressed while the holder has taken damage recently.
