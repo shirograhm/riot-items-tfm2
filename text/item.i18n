@@ -433,19 +433,19 @@
         },
         "turbo_chemtank": {
             "name": "Turbo Chemtank",
-            "option": "Supercharged: Gain <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Taking damage from an enemy champion grants <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#92dc7bff>crowd control immunity<> for <#e8a800ff>6 seconds<> (40 second cooldown)."
+            "option": "Supercharged: Gain <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Taking damage from an enemy champion grants <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#92dc7bff>crowd control immunity<> for <#e8a800ff>6 seconds<> (40 second cooldown)."
         },
         "radiant_turbo_chemtank": {
             "name": "Radiant Turbo Chemtank",
-            "option": "Supercharged: Gain <#d48294ff>150<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Taking damage from an enemy champion grants <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#92dc7bff>crowd control immunity<> for <#e8a800ff>6 seconds<> (40 second cooldown)."
+            "option": "Supercharged: Gain <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Taking damage from an enemy champion grants <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#92dc7bff>crowd control immunity<> for <#e8a800ff>6 seconds<> (40 second cooldown)."
         },
         "stormrazor": {
             "name": "Stormrazor",
-            "option": "Tempest:"
+            "option": "Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.\n\nBolt: At 100 Energize stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants you 35% bonus movement speed for 1.5 seconds."
         },
         "radiant_stormrazor": {
             "name": "Radiant Stormrazor",
-            "option": "Tempest:"
+            "option": "Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.\n\nBolt: At 100 Energize stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants you 35% bonus movement speed for 1.5 seconds."
         }
     },
     "vi": {

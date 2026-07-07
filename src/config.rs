@@ -8,6 +8,7 @@ use std::path::PathBuf;
 pub struct ItemConfig {
     pub price: Option<usize>,
     pub hp: Option<i32>,
+    pub hp_regen: Option<i32>,
     pub attack: Option<i32>,
     pub attack_mult: Option<i32>,
     pub magic_power: Option<i32>,

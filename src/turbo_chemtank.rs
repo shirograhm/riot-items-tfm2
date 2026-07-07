@@ -8,6 +8,7 @@ use crate::config::ItemConfig;
 pub struct TurboChemtank {
     price: usize,
     hp: i32,
+    hp_regen: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
     effect_duration_seconds: f64,
@@ -19,7 +20,8 @@ impl Default for TurboChemtank {
         Self {
             price: 1250,
             hp: 350,
-            adaptive_force: 80,
+            hp_regen: 10,
+            adaptive_force: 50,
             effect_move_speed_mult: 25,
             effect_duration_seconds: 6.0,
             effect_cooldown_seconds: 40.0,
@@ -33,6 +35,7 @@ impl TurboChemtank {
         Self {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
+            hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             adaptive_force: cfg.adaptive_force.unwrap_or(d.adaptive_force),
             effect_move_speed_mult: cfg
                 .effect_move_speed_mult
@@ -79,6 +82,7 @@ impl ModItemInfo for TurboChemtank {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: self.hp,
+            hp_regen: self.hp_regen,
             ..Default::default()
         }
     }
@@ -150,7 +154,13 @@ impl ModItemInfo for TurboChemtank {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD, ItemTag::AP, ItemTag::MoveSpeed]
+        vec![
+            ItemTag::HP,
+            ItemTag::AD,
+            ItemTag::AP,
+            ItemTag::HPRegen,
+            ItemTag::MoveSpeed,
+        ]
     }
 
     fn category(&self) -> ItemCategory {
@@ -162,6 +172,7 @@ impl ModItemInfo for TurboChemtank {
 pub struct RadiantTurboChemtank {
     price: usize,
     hp: i32,
+    hp_regen: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
     effect_duration_seconds: f64,
@@ -173,7 +184,8 @@ impl Default for RadiantTurboChemtank {
         Self {
             price: 1850,
             hp: 450,
-            adaptive_force: 150,
+            hp_regen: 15,
+            adaptive_force: 80,
             effect_move_speed_mult: 25,
             effect_duration_seconds: 6.0,
             effect_cooldown_seconds: 40.0,
@@ -187,6 +199,7 @@ impl RadiantTurboChemtank {
         Self {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
+            hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             adaptive_force: cfg.adaptive_force.unwrap_or(d.adaptive_force),
             effect_move_speed_mult: cfg
                 .effect_move_speed_mult
@@ -253,6 +266,7 @@ impl ModItemInfo for RadiantTurboChemtank {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: self.hp,
+            hp_regen: self.hp_regen,
             ..Default::default()
         }
     }
@@ -314,7 +328,13 @@ impl ModItemInfo for RadiantTurboChemtank {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD, ItemTag::AP, ItemTag::MoveSpeed]
+        vec![
+            ItemTag::HP,
+            ItemTag::AD,
+            ItemTag::AP,
+            ItemTag::HPRegen,
+            ItemTag::MoveSpeed,
+        ]
     }
 
     fn category(&self) -> ItemCategory {
