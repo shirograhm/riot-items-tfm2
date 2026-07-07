@@ -1,181 +1,200 @@
 ﻿$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $configPath = Join-Path $scriptDir "config.json"
+$defaultConfigPath = Join-Path $scriptDir "config-default.json"
 $i18nPath = Join-Path $scriptDir "text\item.i18n"
 
-if (-not (Test-Path $configPath)) {
-    Write-Host "config.json not found, using defaults."
-    $config = [PSCustomObject]@{}
+# Default values come from config-default.json (one entry per item, mirroring
+# the Rust Default impls). config.json, if present, overrides individual fields.
+if (-not (Test-Path $defaultConfigPath)) {
+    Write-Error "config-default.json not found next to this script."
+    exit 1
+}
+$config = Get-Content $defaultConfigPath -Raw | ConvertFrom-Json
+
+if (Test-Path $configPath) {
+    $overrides = Get-Content $configPath -Raw | ConvertFrom-Json
+    foreach ($item in $overrides.PSObject.Properties) {
+        if (-not $config.PSObject.Properties[$item.Name]) {
+            $config | Add-Member -NotePropertyName $item.Name -NotePropertyValue ([PSCustomObject]@{})
+        }
+        foreach ($field in $item.Value.PSObject.Properties) {
+            $config.$($item.Name) | Add-Member -NotePropertyName $field.Name -NotePropertyValue $field.Value -Force
+        }
+    }
+    Write-Host "Applied overrides from config.json."
 }
 else {
-    $config = Get-Content $configPath -Raw | ConvertFrom-Json
+    Write-Host "config.json not found, using config-default.json values."
 }
 
-$execHeal = if ($null -ne $config.executioners_calling.effect_heal_reduce) { [int]$config.executioners_calling.effect_heal_reduce }           else { 25 }
-$execDur = if ($null -ne $config.executioners_calling.effect_duration_seconds) { [int]$config.executioners_calling.effect_duration_seconds } else { 2 }
-$ooHeal = if ($null -ne $config.oblivion_orb.effect_heal_reduce) { [int]$config.oblivion_orb.effect_heal_reduce }                             else { 25 }
-$ooDur = if ($null -ne $config.oblivion_orb.effect_duration_seconds) { [int]$config.oblivion_orb.effect_duration_seconds }                    else { 2 }
-$obmAtk = if ($null -ne $config.overlords_bloodmail.effect_caster_hp_percent_attack) { [double]$config.overlords_bloodmail.effect_caster_hp_percent_attack }                else { 2.5 }
-$robmAtk = if ($null -ne $config.radiant_overlords_bloodmail.effect_caster_hp_percent_attack) { [double]$config.radiant_overlords_bloodmail.effect_caster_hp_percent_attack } else { 2.5 }
-$nhFlat = if ($null -ne $config.night_harvester.effect_bonus_flat_damage) { [int]$config.night_harvester.effect_bonus_flat_damage }                      else { 150 }
-$nhApPct = if ($null -ne $config.night_harvester.effect_ap_percent_damage) { [double]$config.night_harvester.effect_ap_percent_damage }                 else { 30.0 }
-$nhMs = if ($null -ne $config.night_harvester.effect_move_speed_mult) { [int]$config.night_harvester.effect_move_speed_mult }                            else { 40 }
-$nhDur = if ($null -ne $config.night_harvester.effect_duration_seconds) { [int]$config.night_harvester.effect_duration_seconds }                         else { 2 }
-$nhCd = if ($null -ne $config.night_harvester.effect_cooldown_seconds) { [int]$config.night_harvester.effect_cooldown_seconds }                          else { 45 }
-$rnhFlat = if ($null -ne $config.radiant_night_harvester.effect_bonus_flat_damage) { [int]$config.radiant_night_harvester.effect_bonus_flat_damage }    else { 150 }
-$rnhApPct = if ($null -ne $config.radiant_night_harvester.effect_ap_percent_damage) { [double]$config.radiant_night_harvester.effect_ap_percent_damage } else { 30.0 }
-$rnhMs = if ($null -ne $config.radiant_night_harvester.effect_move_speed_mult) { [int]$config.radiant_night_harvester.effect_move_speed_mult }           else { 40 }
-$rnhDur = if ($null -ne $config.radiant_night_harvester.effect_duration_seconds) { [int]$config.radiant_night_harvester.effect_duration_seconds }       else { 2 }
-$rnhCd = if ($null -ne $config.radiant_night_harvester.effect_cooldown_seconds) { [int]$config.radiant_night_harvester.effect_cooldown_seconds }        else { 45 }
-$pvFlat = if ($null -ne $config.protectors_vow.effect_bonus_flat_hp) { [int]$config.protectors_vow.effect_bonus_flat_hp }                                else { 50 }
-$pvArmorPct = if ($null -ne $config.protectors_vow.effect_caster_defence_percent_hp) { [double]$config.protectors_vow.effect_caster_defence_percent_hp }             else { 80.0 }
-$rpvFlat = if ($null -ne $config.radiant_protectors_vow.effect_bonus_flat_hp) { [int]$config.radiant_protectors_vow.effect_bonus_flat_hp }               else { 50 }
-$rpvArmorPct = if ($null -ne $config.radiant_protectors_vow.effect_caster_defence_percent_hp) { [double]$config.radiant_protectors_vow.effect_caster_defence_percent_hp } else { 80.0 }
-$ntFlat = if ($null -ne $config.nashors_tooth.effect_bonus_flat_damage) { [int]$config.nashors_tooth.effect_bonus_flat_damage }              else { 35 }
-$ntApPct = if ($null -ne $config.nashors_tooth.effect_ap_percent_damage) { [double]$config.nashors_tooth.effect_ap_percent_damage }              else { 3.0 }
-$rntFlat = if ($null -ne $config.radiant_nashors_tooth.effect_bonus_flat_damage) { [int]$config.radiant_nashors_tooth.effect_bonus_flat_damage } else { 50 }
-$rntApPct = if ($null -ne $config.radiant_nashors_tooth.effect_ap_percent_damage) { [double]$config.radiant_nashors_tooth.effect_ap_percent_damage } else { 5.0 }
-$rmHpPct = if ($null -ne $config.riftmaker.effect_caster_hp_percent_power) { [double]$config.riftmaker.effect_caster_hp_percent_power }              else { 1.0 }
-$rmDur = if ($null -ne $config.riftmaker.effect_duration_seconds) { [int]$config.riftmaker.effect_duration_seconds }                             else { 5 }
-$rmStacks = if ($null -ne $config.riftmaker.effect_max_stacks) { [int]$config.riftmaker.effect_max_stacks }                                      else { 3 }
-$rrmHpPct = if ($null -ne $config.radiant_riftmaker.effect_caster_hp_percent_power) { [double]$config.radiant_riftmaker.effect_caster_hp_percent_power } else { 1.0 }
-$rrmDur = if ($null -ne $config.radiant_riftmaker.effect_duration_seconds) { [int]$config.radiant_riftmaker.effect_duration_seconds }                 else { 5 }
-$rrmStacks = if ($null -ne $config.radiant_riftmaker.effect_max_stacks) { [int]$config.radiant_riftmaker.effect_max_stacks }                          else { 3 }
-$mrHeal = if ($null -ne $config.mortal_reminder.effect_heal_reduce) { [int]$config.mortal_reminder.effect_heal_reduce }              else { 40 }
-$mrDur = if ($null -ne $config.mortal_reminder.effect_duration_seconds) { [int]$config.mortal_reminder.effect_duration_seconds }      else { 2 }
-$rmrHeal = if ($null -ne $config.radiant_mortal_reminder.effect_heal_reduce) { [int]$config.radiant_mortal_reminder.effect_heal_reduce }    else { 40 }
-$rmrDur = if ($null -ne $config.radiant_mortal_reminder.effect_duration_seconds) { [int]$config.radiant_mortal_reminder.effect_duration_seconds } else { 2 }
-$morHeal = if ($null -ne $config.morellonomicon.effect_heal_reduce) { [int]$config.morellonomicon.effect_heal_reduce }                              else { 40 }
-$morDur = if ($null -ne $config.morellonomicon.effect_duration_seconds) { [int]$config.morellonomicon.effect_duration_seconds }                    else { 2 }
-$rmorHeal = if ($null -ne $config.radiant_morellonomicon.effect_heal_reduce) { [int]$config.radiant_morellonomicon.effect_heal_reduce }            else { 40 }
-$rmorDur = if ($null -ne $config.radiant_morellonomicon.effect_duration_seconds) { [int]$config.radiant_morellonomicon.effect_duration_seconds }  else { 2 }
-$jakDefMult = if ($null -ne $config.jaksho_the_protean.effect_stack_defence_mult) { [int]$config.jaksho_the_protean.effect_stack_defence_mult }                      else { 6 }
-$jakMrMult = if ($null -ne $config.jaksho_the_protean.effect_stack_magic_resistance_mult) { [int]$config.jaksho_the_protean.effect_stack_magic_resistance_mult }        else { 6 }
-$jakDur = if ($null -ne $config.jaksho_the_protean.effect_duration_seconds) { [int]$config.jaksho_the_protean.effect_duration_seconds }                                else { 4 }
-$jakStacks = if ($null -ne $config.jaksho_the_protean.effect_max_stacks) { [int]$config.jaksho_the_protean.effect_max_stacks }                                         else { 4 }
-$rjakDefMult = if ($null -ne $config.radiant_jaksho_the_protean.effect_stack_defence_mult) { [int]$config.radiant_jaksho_the_protean.effect_stack_defence_mult }        else { 10 }
-$rjakMrMult = if ($null -ne $config.radiant_jaksho_the_protean.effect_stack_magic_resistance_mult) { [int]$config.radiant_jaksho_the_protean.effect_stack_magic_resistance_mult } else { 10 }
-$rjakDur = if ($null -ne $config.radiant_jaksho_the_protean.effect_duration_seconds) { [int]$config.radiant_jaksho_the_protean.effect_duration_seconds }                else { 4 }
-$rjakStacks = if ($null -ne $config.radiant_jaksho_the_protean.effect_max_stacks) { [int]$config.radiant_jaksho_the_protean.effect_max_stacks }                        else { 4 }
-$fmSlow = if ($null -ne $config.frozen_mallet.effect_slow_amount) { [int]$config.frozen_mallet.effect_slow_amount }                              else { 25 }
-$fmDur = if ($null -ne $config.frozen_mallet.effect_duration_seconds) { [int]$config.frozen_mallet.effect_duration_seconds }                          else { 2 }
-$rfmSlow = if ($null -ne $config.radiant_frozen_mallet.effect_slow_amount) { [int]$config.radiant_frozen_mallet.effect_slow_amount }                else { 25 }
-$rfmDur = if ($null -ne $config.radiant_frozen_mallet.effect_duration_seconds) { [int]$config.radiant_frozen_mallet.effect_duration_seconds }          else { 2 }
-$rfmFlat = if ($null -ne $config.radiant_frozen_mallet.effect_bonus_flat_damage) { [int]$config.radiant_frozen_mallet.effect_bonus_flat_damage }       else { 20 }
-$rfmHpPct = if ($null -ne $config.radiant_frozen_mallet.effect_caster_hp_percent_damage) { [double]$config.radiant_frozen_mallet.effect_caster_hp_percent_damage } else { 3.0 }
-$rcsSlow = if ($null -ne $config.rylais_crystal_scepter.effect_slow_amount) { [int]$config.rylais_crystal_scepter.effect_slow_amount }                              else { 15 }
-$rcsDur = if ($null -ne $config.rylais_crystal_scepter.effect_duration_seconds) { [int]$config.rylais_crystal_scepter.effect_duration_seconds }                     else { 2 }
-$rrcsSlow = if ($null -ne $config.radiant_rylais_crystal_scepter.effect_slow_amount) { [int]$config.radiant_rylais_crystal_scepter.effect_slow_amount }             else { 15 }
-$rrcsDur = if ($null -ne $config.radiant_rylais_crystal_scepter.effect_duration_seconds) { [int]$config.radiant_rylais_crystal_scepter.effect_duration_seconds }    else { 2 }
-$hexUltCdr = if ($null -ne $config.experimental_hexplate.ult_cooldown_mult) { [int]$config.experimental_hexplate.ult_cooldown_mult }              else { 15 }
-$rhexUltCdr = if ($null -ne $config.radiant_experimental_hexplate.ult_cooldown_mult) { [int]$config.radiant_experimental_hexplate.ult_cooldown_mult } else { 25 }
-$gbDmg = if ($null -ne $config.guinsoos_rageblade.effect_bonus_magic_damage) { [int]$config.guinsoos_rageblade.effect_bonus_magic_damage }              else { 30 }
-$gbSpeed = if ($null -ne $config.guinsoos_rageblade.effect_stack_attack_speed_mult) { [int]$config.guinsoos_rageblade.effect_stack_attack_speed_mult }  else { 8 }
-$gbDur = if ($null -ne $config.guinsoos_rageblade.effect_duration_seconds) { [int]$config.guinsoos_rageblade.effect_duration_seconds }                 else { 4 }
-$gbStacks = if ($null -ne $config.guinsoos_rageblade.effect_max_stacks) { [int]$config.guinsoos_rageblade.effect_max_stacks }                          else { 4 }
-$rgbDmg = if ($null -ne $config.radiant_guinsoos_rageblade.effect_bonus_magic_damage) { [int]$config.radiant_guinsoos_rageblade.effect_bonus_magic_damage }              else { 30 }
-$rgbSpeed = if ($null -ne $config.radiant_guinsoos_rageblade.effect_stack_attack_speed_mult) { [int]$config.radiant_guinsoos_rageblade.effect_stack_attack_speed_mult }  else { 8 }
-$rgbDur = if ($null -ne $config.radiant_guinsoos_rageblade.effect_duration_seconds) { [int]$config.radiant_guinsoos_rageblade.effect_duration_seconds }                 else { 4 }
-$rgbStacks = if ($null -ne $config.radiant_guinsoos_rageblade.effect_max_stacks) { [int]$config.radiant_guinsoos_rageblade.effect_max_stacks }                          else { 4 }
-$bftPower = if ($null -ne $config.blackfire_torch.effect_stack_magic_power) { [int]$config.blackfire_torch.effect_stack_magic_power }              else { 10 }
-$bftDur = if ($null -ne $config.blackfire_torch.effect_duration_seconds) { [int]$config.blackfire_torch.effect_duration_seconds }                  else { 4 }
-$bftStacks = if ($null -ne $config.blackfire_torch.effect_max_stacks) { [int]$config.blackfire_torch.effect_max_stacks }                           else { 4 }
-$rbftPower = if ($null -ne $config.radiant_blackfire_torch.effect_stack_magic_power) { [int]$config.radiant_blackfire_torch.effect_stack_magic_power } else { 30 }
-$rbftDur = if ($null -ne $config.radiant_blackfire_torch.effect_duration_seconds) { [int]$config.radiant_blackfire_torch.effect_duration_seconds }    else { 4 }
-$rbftStacks = if ($null -ne $config.radiant_blackfire_torch.effect_max_stacks) { [int]$config.radiant_blackfire_torch.effect_max_stacks }             else { 4 }
-$borkPct = if ($null -ne $config.blade_of_the_ruined_king.effect_hp_percent_damage) { [double]$config.blade_of_the_ruined_king.effect_hp_percent_damage } else { 5.0 }
-$borkCap = if ($null -ne $config.blade_of_the_ruined_king.effect_minion_damage_cap) { [int]$config.blade_of_the_ruined_king.effect_minion_damage_cap } else { 50 }
-$rborkPct = if ($null -ne $config.radiant_blade_of_the_ruined_king.effect_hp_percent_damage) { [double]$config.radiant_blade_of_the_ruined_king.effect_hp_percent_damage } else { 5.0 }
-$rborkCap = if ($null -ne $config.radiant_blade_of_the_ruined_king.effect_minion_damage_cap) { [int]$config.radiant_blade_of_the_ruined_king.effect_minion_damage_cap } else { 50 }
-$dbMult = if ($null -ne $config.deathblade.attack_mult) { [int]$config.deathblade.attack_mult }                      else { 15 }
-$rdbMult = if ($null -ne $config.radiant_deathblade.attack_mult) { [int]$config.radiant_deathblade.attack_mult }              else { 25 }
-$ddDelay = if ($null -ne $config.deaths_dance.effect_delayed_damage_percent) { [double]$config.deaths_dance.effect_delayed_damage_percent }              else { 25.0 }
-$ddBurnCap = if ($null -ne $config.deaths_dance.effect_burn_hp_percent_cap) { [double]$config.deaths_dance.effect_burn_hp_percent_cap }                    else { 5.0 }
-$rddDelay = if ($null -ne $config.radiant_deaths_dance.effect_delayed_damage_percent) { [double]$config.radiant_deaths_dance.effect_delayed_damage_percent } else { 25.0 }
-$rddBurnCap = if ($null -ne $config.radiant_deaths_dance.effect_burn_hp_percent_cap) { [double]$config.radiant_deaths_dance.effect_burn_hp_percent_cap }      else { 5.0 }
-$ddHeal = if ($null -ne $config.deaths_dance.effect_kill_heal_missing_percent) { [double]$config.deaths_dance.effect_kill_heal_missing_percent }              else { 15.0 }
-$rddHeal = if ($null -ne $config.radiant_deaths_dance.effect_kill_heal_missing_percent) { [double]$config.radiant_deaths_dance.effect_kill_heal_missing_percent } else { 15.0 }
-$rabMult = if ($null -ne $config.rabadons_deathcap.magic_power_mult) { [int]$config.rabadons_deathcap.magic_power_mult }          else { 20 }
-$radRabMult = if ($null -ne $config.radiant_rabadons_deathcap.magic_power_mult) { [int]$config.radiant_rabadons_deathcap.magic_power_mult }  else { 35 }
-$mbForce = if ($null -ne $config.mirage_blade.adaptive_force) { [int]$config.mirage_blade.adaptive_force }                else { 60 }
-$rmbForce = if ($null -ne $config.radiant_mirage_blade.adaptive_force) { [int]$config.radiant_mirage_blade.adaptive_force }        else { 100 }
-$mbMoveSpeed = if ($null -ne $config.mirage_blade.effect_move_speed_mult) { [int]$config.mirage_blade.effect_move_speed_mult }           else { 20 }
-$rmbMoveSpeed = if ($null -ne $config.radiant_mirage_blade.effect_move_speed_mult) { [int]$config.radiant_mirage_blade.effect_move_speed_mult }  else { 20 }
-$mbDuration = if ($null -ne $config.mirage_blade.effect_duration_seconds) { [int]$config.mirage_blade.effect_duration_seconds }          else { 2 }
-$rmbDuration = if ($null -ne $config.radiant_mirage_blade.effect_duration_seconds) { [int]$config.radiant_mirage_blade.effect_duration_seconds }  else { 2 }
-$svHeal = if ($null -ne $config.spirit_visage.effect_heal_mult) { [double]$config.spirit_visage.effect_heal_mult }                             else { 20.0 }
-$rsvHeal = if ($null -ne $config.radiant_spirit_visage.effect_heal_mult) { [double]$config.radiant_spirit_visage.effect_heal_mult }               else { 20.0 }
-$udFlat = if ($null -ne $config.unending_despair.effect_bonus_flat_heal) { [int]$config.unending_despair.effect_bonus_flat_heal }              else { 10 }
-$udHpPct = if ($null -ne $config.unending_despair.effect_caster_hp_percent_heal) { [double]$config.unending_despair.effect_caster_hp_percent_heal } else { 1.0 }
-$rudFlat = if ($null -ne $config.radiant_unending_despair.effect_bonus_flat_heal) { [int]$config.radiant_unending_despair.effect_bonus_flat_heal } else { 25 }
-$rudHpPct = if ($null -ne $config.radiant_unending_despair.effect_caster_hp_percent_heal) { [double]$config.radiant_unending_despair.effect_caster_hp_percent_heal } else { 3.0 }
-$phThreshold = if ($null -ne $config.protoplasm_harness.effect_hp_percent_threshold) { [int]$config.protoplasm_harness.effect_hp_percent_threshold }                      else { 40.0 }
-$phFlat = if ($null -ne $config.protoplasm_harness.effect_bonus_flat_hp) { [int]$config.protoplasm_harness.effect_bonus_flat_hp }                      else { 300 }
-$phHpPct = if ($null -ne $config.protoplasm_harness.effect_hp_percent_boost) { [double]$config.protoplasm_harness.effect_hp_percent_boost }                  else { 25.0 }
-$phDur = if ($null -ne $config.protoplasm_harness.effect_duration_seconds) { [int]$config.protoplasm_harness.effect_duration_seconds }                    else { 6 }
-$phCd = if ($null -ne $config.protoplasm_harness.effect_cooldown_seconds) { [int]$config.protoplasm_harness.effect_cooldown_seconds }                     else { 30 }
-$rphThreshold = if ($null -ne $config.radiant_protoplasm_harness.effect_hp_percent_threshold) { [int]$config.radiant_protoplasm_harness.effect_hp_percent_threshold }                      else { 40.0 }
-$rphFlat = if ($null -ne $config.radiant_protoplasm_harness.effect_bonus_flat_hp) { [int]$config.radiant_protoplasm_harness.effect_bonus_flat_hp }         else { 600 }
-$rphHpPct = if ($null -ne $config.radiant_protoplasm_harness.effect_hp_percent_boost) { [double]$config.radiant_protoplasm_harness.effect_hp_percent_boost }  else { 25.0 }
-$rphDur = if ($null -ne $config.radiant_protoplasm_harness.effect_duration_seconds) { [int]$config.radiant_protoplasm_harness.effect_duration_seconds }    else { 6 }
-$rphCd = if ($null -ne $config.radiant_protoplasm_harness.effect_cooldown_seconds) { [int]$config.radiant_protoplasm_harness.effect_cooldown_seconds }     else { 30 }
-$tPen = if ($null -ne $config.terminus.effect_pen_per_stack) { [int]$config.terminus.effect_pen_per_stack }                       else { 4 }
-$tDur = if ($null -ne $config.terminus.effect_duration_seconds) { [int]$config.terminus.effect_duration_seconds }                 else { 4 }
-$tStacks = if ($null -ne $config.terminus.effect_max_stacks) { [int]$config.terminus.effect_max_stacks }                          else { 4 }
-$rtPen = if ($null -ne $config.radiant_terminus.effect_pen_per_stack) { [int]$config.radiant_terminus.effect_pen_per_stack }      else { 4 }
-$rtDur = if ($null -ne $config.radiant_terminus.effect_duration_seconds) { [int]$config.radiant_terminus.effect_duration_seconds } else { 4 }
-$rtStacks = if ($null -ne $config.radiant_terminus.effect_max_stacks) { [int]$config.radiant_terminus.effect_max_stacks }         else { 4 }
-$colThreshold = if ($null -ne $config.collector.effect_hp_percent_threshold) { [double]$config.collector.effect_hp_percent_threshold }                  else { 6.0 }
-$rcolThreshold = if ($null -ne $config.radiant_collector.effect_hp_percent_threshold) { [double]$config.radiant_collector.effect_hp_percent_threshold } else { 6.0 }
-$sfThreshold = if ($null -ne $config.shadowflame.effect_hp_percent_threshold) { [double]$config.shadowflame.effect_hp_percent_threshold }              else { 30.0 }
-$rsfThreshold = if ($null -ne $config.radiant_shadowflame.effect_hp_percent_threshold) { [double]$config.radiant_shadowflame.effect_hp_percent_threshold } else { 30.0 }
-$hsFlat = if ($null -ne $config.heartsteel.effect_bonus_flat_damage) { [int]$config.heartsteel.effect_bonus_flat_damage }                              else { 15 }
-$hsHpPct = if ($null -ne $config.heartsteel.effect_caster_hp_percent_damage) { [double]$config.heartsteel.effect_caster_hp_percent_damage }            else { 6.0 }
-$hsBonusHpPct = if ($null -ne $config.heartsteel.effect_bonus_hp_percent_of_damage) { [double]$config.heartsteel.effect_bonus_hp_percent_of_damage }   else { 15.0 }
-$hsCd = if ($null -ne $config.heartsteel.effect_cooldown_seconds) { [int]$config.heartsteel.effect_cooldown_seconds }                                  else { 15 }
-$rhsFlat = if ($null -ne $config.radiant_heartsteel.effect_bonus_flat_damage) { [int]$config.radiant_heartsteel.effect_bonus_flat_damage }              else { 15 }
-$rhsHpPct = if ($null -ne $config.radiant_heartsteel.effect_caster_hp_percent_damage) { [double]$config.radiant_heartsteel.effect_caster_hp_percent_damage }            else { 6.0 }
-$rhsBonusHpPct = if ($null -ne $config.radiant_heartsteel.effect_bonus_hp_percent_of_damage) { [double]$config.radiant_heartsteel.effect_bonus_hp_percent_of_damage }   else { 15.0 }
-$rhsCd = if ($null -ne $config.radiant_heartsteel.effect_cooldown_seconds) { [int]$config.radiant_heartsteel.effect_cooldown_seconds }                                  else { 15 }
-$sosAtkMult = if ($null -ne $config.spear_of_shojin.effect_stack_attack_mult) { [int]$config.spear_of_shojin.effect_stack_attack_mult }                  else { 3 }
-$sosDur = if ($null -ne $config.spear_of_shojin.effect_duration_seconds) { [int]$config.spear_of_shojin.effect_duration_seconds }                        else { 5 }
-$sosStacks = if ($null -ne $config.spear_of_shojin.effect_max_stacks) { [int]$config.spear_of_shojin.effect_max_stacks }                                 else { 4 }
-$rsosAtkMult = if ($null -ne $config.radiant_spear_of_shojin.effect_stack_attack_mult) { [int]$config.radiant_spear_of_shojin.effect_stack_attack_mult } else { 3 }
-$rsosDur = if ($null -ne $config.radiant_spear_of_shojin.effect_duration_seconds) { [int]$config.radiant_spear_of_shojin.effect_duration_seconds }       else { 5 }
-$rsosStacks = if ($null -ne $config.radiant_spear_of_shojin.effect_max_stacks) { [int]$config.radiant_spear_of_shojin.effect_max_stacks }                else { 4 }
-$waHeal = if ($null -ne $config.warmogs_armor.effect_caster_hp_percent_heal) { [double]$config.warmogs_armor.effect_caster_hp_percent_heal } else { 3.0 }
-$waMs = if ($null -ne $config.warmogs_armor.effect_move_speed_mult) { [int]$config.warmogs_armor.effect_move_speed_mult }                    else { 4 }
-$waDur = if ($null -ne $config.warmogs_armor.effect_duration_seconds) { [int]$config.warmogs_armor.effect_duration_seconds }                 else { 6 }
-$rwaHeal = if ($null -ne $config.radiant_warmogs_armor.effect_caster_hp_percent_heal) { [double]$config.radiant_warmogs_armor.effect_caster_hp_percent_heal } else { 3.0 }
-$rwaMs = if ($null -ne $config.radiant_warmogs_armor.effect_move_speed_mult) { [int]$config.radiant_warmogs_armor.effect_move_speed_mult }   else { 4 }
-$rwaDur = if ($null -ne $config.radiant_warmogs_armor.effect_duration_seconds) { [int]$config.radiant_warmogs_armor.effect_duration_seconds } else { 6 }
-$ytCrit = if ($null -ne $config.yun_tal_wildarrows.effect_stack_crit_chance) { [int]$config.yun_tal_wildarrows.effect_stack_crit_chance }                 else { 1 }
-$ytStacks = if ($null -ne $config.yun_tal_wildarrows.effect_max_stacks) { [int]$config.yun_tal_wildarrows.effect_max_stacks }                             else { 25 }
-$ytFlurryAS = if ($null -ne $config.yun_tal_wildarrows.effect_flurry_attack_speed_mult) { [int]$config.yun_tal_wildarrows.effect_flurry_attack_speed_mult } else { 30 }
-$ytDur = if ($null -ne $config.yun_tal_wildarrows.effect_duration_seconds) { [int]$config.yun_tal_wildarrows.effect_duration_seconds }                     else { 6 }
-$ytCd = if ($null -ne $config.yun_tal_wildarrows.effect_cooldown_seconds) { [int]$config.yun_tal_wildarrows.effect_cooldown_seconds }                      else { 15 }
+$execHeal = [int]$config.executioners_calling.effect_heal_reduce
+$execDur = [int]$config.executioners_calling.effect_duration_seconds
+$ooHeal = [int]$config.oblivion_orb.effect_heal_reduce
+$ooDur = [int]$config.oblivion_orb.effect_duration_seconds
+$obmAtk = [double]$config.overlords_bloodmail.effect_caster_hp_percent_attack
+$robmAtk = [double]$config.radiant_overlords_bloodmail.effect_caster_hp_percent_attack
+$nhFlat = [int]$config.night_harvester.effect_bonus_flat_damage
+$nhApPct = [double]$config.night_harvester.effect_ap_percent_damage
+$nhMs = [int]$config.night_harvester.effect_move_speed_mult
+$nhDur = [int]$config.night_harvester.effect_duration_seconds
+$nhCd = [int]$config.night_harvester.effect_cooldown_seconds
+$rnhFlat = [int]$config.radiant_night_harvester.effect_bonus_flat_damage
+$rnhApPct = [double]$config.radiant_night_harvester.effect_ap_percent_damage
+$rnhMs = [int]$config.radiant_night_harvester.effect_move_speed_mult
+$rnhDur = [int]$config.radiant_night_harvester.effect_duration_seconds
+$rnhCd = [int]$config.radiant_night_harvester.effect_cooldown_seconds
+$pvFlat = [int]$config.protectors_vow.effect_bonus_flat_hp
+$pvArmorPct = [double]$config.protectors_vow.effect_caster_defence_percent_hp
+$rpvFlat = [int]$config.radiant_protectors_vow.effect_bonus_flat_hp
+$rpvArmorPct = [double]$config.radiant_protectors_vow.effect_caster_defence_percent_hp
+$ntFlat = [int]$config.nashors_tooth.effect_bonus_flat_damage
+$ntApPct = [double]$config.nashors_tooth.effect_ap_percent_damage
+$rntFlat = [int]$config.radiant_nashors_tooth.effect_bonus_flat_damage
+$rntApPct = [double]$config.radiant_nashors_tooth.effect_ap_percent_damage
+$rmHpPct = [double]$config.riftmaker.effect_caster_hp_percent_power
+$rmDur = [int]$config.riftmaker.effect_duration_seconds
+$rmStacks = [int]$config.riftmaker.effect_max_stacks
+$rrmHpPct = [double]$config.radiant_riftmaker.effect_caster_hp_percent_power
+$rrmDur = [int]$config.radiant_riftmaker.effect_duration_seconds
+$rrmStacks = [int]$config.radiant_riftmaker.effect_max_stacks
+$mrHeal = [int]$config.mortal_reminder.effect_heal_reduce
+$mrDur = [int]$config.mortal_reminder.effect_duration_seconds
+$rmrHeal = [int]$config.radiant_mortal_reminder.effect_heal_reduce
+$rmrDur = [int]$config.radiant_mortal_reminder.effect_duration_seconds
+$morHeal = [int]$config.morellonomicon.effect_heal_reduce
+$morDur = [int]$config.morellonomicon.effect_duration_seconds
+$rmorHeal = [int]$config.radiant_morellonomicon.effect_heal_reduce
+$rmorDur = [int]$config.radiant_morellonomicon.effect_duration_seconds
+$jakDefMult = [int]$config.jaksho_the_protean.effect_stack_defence_mult
+$jakMrMult = [int]$config.jaksho_the_protean.effect_stack_magic_resistance_mult
+$jakDur = [int]$config.jaksho_the_protean.effect_duration_seconds
+$jakStacks = [int]$config.jaksho_the_protean.effect_max_stacks
+$rjakDefMult = [int]$config.radiant_jaksho_the_protean.effect_stack_defence_mult
+$rjakMrMult = [int]$config.radiant_jaksho_the_protean.effect_stack_magic_resistance_mult
+$rjakDur = [int]$config.radiant_jaksho_the_protean.effect_duration_seconds
+$rjakStacks = [int]$config.radiant_jaksho_the_protean.effect_max_stacks
+$fmSlow = [int]$config.frozen_mallet.effect_slow_amount
+$fmDur = [int]$config.frozen_mallet.effect_duration_seconds
+$rfmSlow = [int]$config.radiant_frozen_mallet.effect_slow_amount
+$rfmDur = [int]$config.radiant_frozen_mallet.effect_duration_seconds
+$rfmFlat = [int]$config.radiant_frozen_mallet.effect_bonus_flat_damage
+$rfmHpPct = [double]$config.radiant_frozen_mallet.effect_caster_hp_percent_damage
+$rcsSlow = [int]$config.rylais_crystal_scepter.effect_slow_amount
+$rcsDur = [int]$config.rylais_crystal_scepter.effect_duration_seconds
+$rrcsSlow = [int]$config.radiant_rylais_crystal_scepter.effect_slow_amount
+$rrcsDur = [int]$config.radiant_rylais_crystal_scepter.effect_duration_seconds
+$hexUltCdr = [int]$config.experimental_hexplate.ult_cooldown_mult
+$rhexUltCdr = [int]$config.radiant_experimental_hexplate.ult_cooldown_mult
+$gbDmg = [int]$config.guinsoos_rageblade.effect_bonus_magic_damage
+$gbSpeed = [int]$config.guinsoos_rageblade.effect_stack_attack_speed_mult
+$gbDur = [int]$config.guinsoos_rageblade.effect_duration_seconds
+$gbStacks = [int]$config.guinsoos_rageblade.effect_max_stacks
+$rgbDmg = [int]$config.radiant_guinsoos_rageblade.effect_bonus_magic_damage
+$rgbSpeed = [int]$config.radiant_guinsoos_rageblade.effect_stack_attack_speed_mult
+$rgbDur = [int]$config.radiant_guinsoos_rageblade.effect_duration_seconds
+$rgbStacks = [int]$config.radiant_guinsoos_rageblade.effect_max_stacks
+$bftPower = [int]$config.blackfire_torch.effect_stack_magic_power
+$bftDur = [int]$config.blackfire_torch.effect_duration_seconds
+$bftStacks = [int]$config.blackfire_torch.effect_max_stacks
+$rbftPower = [int]$config.radiant_blackfire_torch.effect_stack_magic_power
+$rbftDur = [int]$config.radiant_blackfire_torch.effect_duration_seconds
+$rbftStacks = [int]$config.radiant_blackfire_torch.effect_max_stacks
+$borkPct = [double]$config.blade_of_the_ruined_king.effect_hp_percent_damage
+$borkCap = [int]$config.blade_of_the_ruined_king.effect_minion_damage_cap
+$rborkPct = [double]$config.radiant_blade_of_the_ruined_king.effect_hp_percent_damage
+$rborkCap = [int]$config.radiant_blade_of_the_ruined_king.effect_minion_damage_cap
+$dbMult = [int]$config.deathblade.attack_mult
+$rdbMult = [int]$config.radiant_deathblade.attack_mult
+$ddDelay = [double]$config.deaths_dance.effect_delayed_damage_percent
+$ddBurnCap = [double]$config.deaths_dance.effect_burn_hp_percent_cap
+$rddDelay = [double]$config.radiant_deaths_dance.effect_delayed_damage_percent
+$rddBurnCap = [double]$config.radiant_deaths_dance.effect_burn_hp_percent_cap
+$ddHeal = [double]$config.deaths_dance.effect_kill_heal_missing_percent
+$rddHeal = [double]$config.radiant_deaths_dance.effect_kill_heal_missing_percent
+$rabMult = [int]$config.rabadons_deathcap.magic_power_mult
+$radRabMult = [int]$config.radiant_rabadons_deathcap.magic_power_mult
+$mbForce = [int]$config.mirage_blade.adaptive_force
+$rmbForce = [int]$config.radiant_mirage_blade.adaptive_force
+$mbMoveSpeed = [int]$config.mirage_blade.effect_move_speed_mult
+$rmbMoveSpeed = [int]$config.radiant_mirage_blade.effect_move_speed_mult
+$mbDuration = [int]$config.mirage_blade.effect_duration_seconds
+$rmbDuration = [int]$config.radiant_mirage_blade.effect_duration_seconds
+$svHeal = [double]$config.spirit_visage.effect_heal_mult
+$rsvHeal = [double]$config.radiant_spirit_visage.effect_heal_mult
+$udFlat = [int]$config.unending_despair.effect_bonus_flat_heal
+$udHpPct = [double]$config.unending_despair.effect_caster_hp_percent_heal
+$rudFlat = [int]$config.radiant_unending_despair.effect_bonus_flat_heal
+$rudHpPct = [double]$config.radiant_unending_despair.effect_caster_hp_percent_heal
+$phThreshold = [int]$config.protoplasm_harness.effect_hp_percent_threshold
+$phFlat = [int]$config.protoplasm_harness.effect_bonus_flat_hp
+$phHpPct = [double]$config.protoplasm_harness.effect_hp_percent_boost
+$phDur = [int]$config.protoplasm_harness.effect_duration_seconds
+$phCd = [int]$config.protoplasm_harness.effect_cooldown_seconds
+$rphThreshold = [int]$config.radiant_protoplasm_harness.effect_hp_percent_threshold
+$rphFlat = [int]$config.radiant_protoplasm_harness.effect_bonus_flat_hp
+$rphHpPct = [double]$config.radiant_protoplasm_harness.effect_hp_percent_boost
+$rphDur = [int]$config.radiant_protoplasm_harness.effect_duration_seconds
+$rphCd = [int]$config.radiant_protoplasm_harness.effect_cooldown_seconds
+$tArmorPen = [int]$config.terminus.effect_armor_pen_per_stack
+$tMagicPen = [int]$config.terminus.effect_magic_pen_per_stack
+$tDur = [int]$config.terminus.effect_duration_seconds
+$tStacks = [int]$config.terminus.effect_max_stacks
+$rtArmorPen = [int]$config.radiant_terminus.effect_armor_pen_per_stack
+$rtMagicPen = [int]$config.radiant_terminus.effect_magic_pen_per_stack
+$rtDur = [int]$config.radiant_terminus.effect_duration_seconds
+$rtStacks = [int]$config.radiant_terminus.effect_max_stacks
+$colThreshold = [double]$config.collector.effect_hp_percent_threshold
+$rcolThreshold = [double]$config.radiant_collector.effect_hp_percent_threshold
+$sfThreshold = [double]$config.shadowflame.effect_hp_percent_threshold
+$rsfThreshold = [double]$config.radiant_shadowflame.effect_hp_percent_threshold
+$hsFlat = [int]$config.heartsteel.effect_bonus_flat_damage
+$hsHpPct = [double]$config.heartsteel.effect_caster_hp_percent_damage
+$hsBonusHpPct = [double]$config.heartsteel.effect_bonus_hp_percent_of_damage
+$hsCd = [int]$config.heartsteel.effect_cooldown_seconds
+$rhsFlat = [int]$config.radiant_heartsteel.effect_bonus_flat_damage
+$rhsHpPct = [double]$config.radiant_heartsteel.effect_caster_hp_percent_damage
+$rhsBonusHpPct = [double]$config.radiant_heartsteel.effect_bonus_hp_percent_of_damage
+$rhsCd = [int]$config.radiant_heartsteel.effect_cooldown_seconds
+$sosAtkMult = [int]$config.spear_of_shojin.effect_stack_attack_mult
+$sosDur = [int]$config.spear_of_shojin.effect_duration_seconds
+$sosStacks = [int]$config.spear_of_shojin.effect_max_stacks
+$rsosAtkMult = [int]$config.radiant_spear_of_shojin.effect_stack_attack_mult
+$rsosDur = [int]$config.radiant_spear_of_shojin.effect_duration_seconds
+$rsosStacks = [int]$config.radiant_spear_of_shojin.effect_max_stacks
+$waHeal = [double]$config.warmogs_armor.effect_caster_hp_percent_heal
+$waMs = [int]$config.warmogs_armor.effect_move_speed_mult
+$waDur = [int]$config.warmogs_armor.effect_duration_seconds
+$rwaHeal = [double]$config.radiant_warmogs_armor.effect_caster_hp_percent_heal
+$rwaMs = [int]$config.radiant_warmogs_armor.effect_move_speed_mult
+$rwaDur = [int]$config.radiant_warmogs_armor.effect_duration_seconds
+$ytCrit = [int]$config.yun_tal_wildarrows.effect_stack_crit_chance
+$ytStacks = [int]$config.yun_tal_wildarrows.effect_max_stacks
+$ytFlurryAS = [int]$config.yun_tal_wildarrows.effect_flurry_attack_speed_mult
+$ytDur = [int]$config.yun_tal_wildarrows.effect_duration_seconds
+$ytCd = [int]$config.yun_tal_wildarrows.effect_cooldown_seconds
 $ytMaxCrit = $ytCrit * $ytStacks
-$rytCrit = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_stack_crit_chance) { [int]$config.radiant_yun_tal_wildarrows.effect_stack_crit_chance }                 else { 1 }
-$rytStacks = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_max_stacks) { [int]$config.radiant_yun_tal_wildarrows.effect_max_stacks }                             else { 25 }
-$rytFlurryAS = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_flurry_attack_speed_mult) { [int]$config.radiant_yun_tal_wildarrows.effect_flurry_attack_speed_mult } else { 30 }
-$rytDur = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_duration_seconds) { [int]$config.radiant_yun_tal_wildarrows.effect_duration_seconds }                     else { 6 }
-$rytCd = if ($null -ne $config.radiant_yun_tal_wildarrows.effect_cooldown_seconds) { [int]$config.radiant_yun_tal_wildarrows.effect_cooldown_seconds }                      else { 15 }
+$rytCrit = [int]$config.radiant_yun_tal_wildarrows.effect_stack_crit_chance
+$rytStacks = [int]$config.radiant_yun_tal_wildarrows.effect_max_stacks
+$rytFlurryAS = [int]$config.radiant_yun_tal_wildarrows.effect_flurry_attack_speed_mult
+$rytDur = [int]$config.radiant_yun_tal_wildarrows.effect_duration_seconds
+$rytCd = [int]$config.radiant_yun_tal_wildarrows.effect_cooldown_seconds
 $rytMaxCrit = $rytCrit * $rytStacks
-$tcForce = if ($null -ne $config.turbo_chemtank.adaptive_force) { [int]$config.turbo_chemtank.adaptive_force }                                     else { 50 }
-$tcMs = if ($null -ne $config.turbo_chemtank.effect_move_speed_mult) { [int]$config.turbo_chemtank.effect_move_speed_mult }                         else { 25 }
-$tcDur = if ($null -ne $config.turbo_chemtank.effect_duration_seconds) { [int]$config.turbo_chemtank.effect_duration_seconds }                      else { 6 }
-$tcCd = if ($null -ne $config.turbo_chemtank.effect_cooldown_seconds) { [int]$config.turbo_chemtank.effect_cooldown_seconds }                       else { 40 }
-$rtcForce = if ($null -ne $config.radiant_turbo_chemtank.adaptive_force) { [int]$config.radiant_turbo_chemtank.adaptive_force }                     else { 80 }
-$rtcMs = if ($null -ne $config.radiant_turbo_chemtank.effect_move_speed_mult) { [int]$config.radiant_turbo_chemtank.effect_move_speed_mult }        else { 25 }
-$rtcDur = if ($null -ne $config.radiant_turbo_chemtank.effect_duration_seconds) { [int]$config.radiant_turbo_chemtank.effect_duration_seconds }     else { 6 }
-$rtcCd = if ($null -ne $config.radiant_turbo_chemtank.effect_cooldown_seconds) { [int]$config.radiant_turbo_chemtank.effect_cooldown_seconds }      else { 40 }
-$srStacks = if ($null -ne $config.stormrazor.effect_max_stacks) { [int]$config.stormrazor.effect_max_stacks }                                       else { 100 }
-$srMs = if ($null -ne $config.stormrazor.effect_move_speed_mult) { [int]$config.stormrazor.effect_move_speed_mult }                                 else { 35 }
-$srDmg = if ($null -ne $config.stormrazor.effect_bonus_flat_damage) { [int]$config.stormrazor.effect_bonus_flat_damage }                            else { 100 }
-$srDur = if ($null -ne $config.stormrazor.effect_duration_seconds) { [double]$config.stormrazor.effect_duration_seconds }                           else { 1.5 }
-$rsrStacks = if ($null -ne $config.radiant_stormrazor.effect_max_stacks) { [int]$config.radiant_stormrazor.effect_max_stacks }                      else { 100 }
-$rsrMs = if ($null -ne $config.radiant_stormrazor.effect_move_speed_mult) { [int]$config.radiant_stormrazor.effect_move_speed_mult }                else { 35 }
-$rsrDmg = if ($null -ne $config.radiant_stormrazor.effect_bonus_flat_damage) { [int]$config.radiant_stormrazor.effect_bonus_flat_damage }           else { 100 }
-$rsrDur = if ($null -ne $config.radiant_stormrazor.effect_duration_seconds) { [double]$config.radiant_stormrazor.effect_duration_seconds }          else { 1.5 }
+$tcForce = [int]$config.turbo_chemtank.adaptive_force
+$tcMs = [int]$config.turbo_chemtank.effect_move_speed_mult
+$tcDur = [int]$config.turbo_chemtank.effect_duration_seconds
+$tcCd = [int]$config.turbo_chemtank.effect_cooldown_seconds
+$rtcForce = [int]$config.radiant_turbo_chemtank.adaptive_force
+$rtcMs = [int]$config.radiant_turbo_chemtank.effect_move_speed_mult
+$rtcDur = [int]$config.radiant_turbo_chemtank.effect_duration_seconds
+$rtcCd = [int]$config.radiant_turbo_chemtank.effect_cooldown_seconds
+$srStacks = [int]$config.stormrazor.effect_max_stacks
+$srMs = [int]$config.stormrazor.effect_move_speed_mult
+$srDmg = [int]$config.stormrazor.effect_bonus_flat_damage
+$srDur = [double]$config.stormrazor.effect_duration_seconds
+$rsrStacks = [int]$config.radiant_stormrazor.effect_max_stacks
+$rsrMs = [int]$config.radiant_stormrazor.effect_move_speed_mult
+$rsrDmg = [int]$config.radiant_stormrazor.effect_bonus_flat_damage
+$rsrDur = [double]$config.radiant_stormrazor.effect_duration_seconds
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -246,8 +265,8 @@ $i18n.en.unending_despair.option = "Anguish: Landing an Ability on an enemy cham
 $i18n.en.radiant_unending_despair.option = "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>${rudFlat}<> + <#60e84dff>${rudHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
 $i18n.en.protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${phThreshold}% health<> grants <#60e84dff>${phFlat}<> + <#60e84dff>${phHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>${phDur} seconds<> and <#60e84dff>heals you<> for half that amount (${phCd} second cooldown)."
 $i18n.en.radiant_protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${rphThreshold}% health<> grants <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>${rphDur} seconds<> and <#60e84dff>heals you<> for half that amount (${rphCd} second cooldown)."
-$i18n.en.terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${tPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${tPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${tDur} seconds<>, alternating (max ${tStacks} stacks each)."
-$i18n.en.radiant_terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${rtPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${rtPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${rtDur} seconds<>, alternating (max ${rtStacks} stacks each)."
+$i18n.en.terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${tArmorPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${tMagicPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${tDur} seconds<>, alternating (max ${tStacks} stacks each)."
+$i18n.en.radiant_terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${rtMagicPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${rtDur} seconds<>, alternating (max ${rtStacks} stacks each)."
 $i18n.en.collector.option = "Death: Dealing damage to enemy champions below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
 $i18n.en.radiant_collector.option = "Death: Dealing damage to enemy champions below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
 $i18n.en.heartsteel.option = "Ironheart: Every <#e8a800ff>${hsCd} seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>, granting <#60e84dff>${hsBonusHpPct}%<> of that damage as permanent <#60e84dff>bonus health<>."
@@ -314,8 +333,8 @@ $i18n.vi.unending_despair.option = "Thống khổ: Kĩ năng trúng bạn sẽ h
 $i18n.vi.radiant_unending_despair.option = "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>${rudFlat}<> + <#60e84dff>${rudHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> cho bản thân."
 $i18n.vi.protoplasm_harness.option = "Vững chãi: Máu rơi xuống dưới <#d94c49ff>${phThreshold}%<> sẽ nhận <#60e84dff>${phFlat}<> + <#60e84dff>${phHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>${phDur} giây<> và <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong ${phCd} giây.)."
 $i18n.vi.radiant_protoplasm_harness.option = "Vững chãi: Máu rơi xuống dưới <#d94c49ff>${rphThreshold}%<> sẽ nhận <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>${rphDur} giây<> và <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong ${rphCd} giây.)."
-$i18n.vi.terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>${tPen}% <$armorPenIcon> xuyên giáp<> hoặc <#88ccffff>${tPen}% <$magicPenIcon> xuyên kháng phép<> trong <#e8a800ff>${tDur} giây<> (tối đa ${tStacks} cộng dồn cho mỗi loại)."
-$i18n.vi.radiant_terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>${rtPen}% <$armorPenIcon> xuyên giáp<> hoặc <#88ccffff>${rtPen}% <$magicPenIcon> xuyên kháng phép<> trong <#e8a800ff>${rtDur} giây<> (tối đa ${rtStacks} cộng dồn cho mỗi loại)."
+$i18n.vi.terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>${tArmorPen}% <$armorPenIcon> xuyên giáp<> hoặc <#88ccffff>${tMagicPen}% <$magicPenIcon> xuyên kháng phép<> trong <#e8a800ff>${tDur} giây<> (tối đa ${tStacks} cộng dồn cho mỗi loại)."
+$i18n.vi.radiant_terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> xuyên giáp<> hoặc <#88ccffff>${rtMagicPen}% <$magicPenIcon> xuyên kháng phép<> trong <#e8a800ff>${rtDur} giây<> (tối đa ${rtStacks} cộng dồn cho mỗi loại)."
 $i18n.vi.collector.option = "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
 $i18n.vi.radiant_collector.option = "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
 $i18n.vi.heartsteel.option = "Trái Tim Sắt Đá: Mỗi <#e8a800ff>${hsCd} giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>${hsBonusHpPct}%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
@@ -382,8 +401,8 @@ $i18n.'zh-hans'.unending_despair.option = "苦楚：技能命中时，回复 <#6
 $i18n.'zh-hans'.radiant_unending_despair.option = "苦楚：技能命中时，回复 <#60e84dff>${rudFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rudHpPct}%<> 的生命值。"
 $i18n.'zh-hans'.protoplasm_harness.option = "筑防：<#d94c49ff>生命值降至${phThreshold}%以下<>时，获得 <#60e84dff>${phFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${phHpPct}%<> 作为<#60e84dff>额外生命值<>，持续 <#e8a800ff>${phDur}秒<>，并<#60e84dff>回复<>该数值一半的生命值（冷却时间${phCd}秒）。"
 $i18n.'zh-hans'.radiant_protoplasm_harness.option = "筑防：<#d94c49ff>生命值降至${rphThreshold}%以下<>时，获得 <#60e84dff>${rphFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rphHpPct}%<> 作为<#60e84dff>额外生命值<>，持续 <#e8a800ff>${rphDur}秒<>，并<#60e84dff>回复<>该数值一半的生命值（冷却时间${rphCd}秒）。"
-$i18n.'zh-hans'.terminus.option = "交相：普通攻击会交替获得 <#ffdd8eff>${tPen}% <$armorPenIcon> 穿甲<>或 <#88ccffff>${tPen}% <$magicPenIcon> 法术穿透<>，持续 <#e8a800ff>${tDur}秒<>（每种最多叠加${tStacks}层）。"
-$i18n.'zh-hans'.radiant_terminus.option = "交相：普通攻击会交替获得 <#ffdd8eff>${rtPen}% <$armorPenIcon> 穿甲<>或 <#88ccffff>${rtPen}% <$magicPenIcon> 法术穿透<>，持续 <#e8a800ff>${rtDur}秒<>（每种最多叠加${rtStacks}层）。"
+$i18n.'zh-hans'.terminus.option = "交相：普通攻击会交替获得 <#ffdd8eff>${tArmorPen}% <$armorPenIcon> 穿甲<>或 <#88ccffff>${tMagicPen}% <$magicPenIcon> 法术穿透<>，持续 <#e8a800ff>${tDur}秒<>（每种最多叠加${tStacks}层）。"
+$i18n.'zh-hans'.radiant_terminus.option = "交相：普通攻击会交替获得 <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> 穿甲<>或 <#88ccffff>${rtMagicPen}% <$magicPenIcon> 法术穿透<>，持续 <#e8a800ff>${rtDur}秒<>（每种最多叠加${rtStacks}层）。"
 $i18n.'zh-hans'.collector.option = "死：对生命值低于 <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
 $i18n.'zh-hans'.radiant_collector.option = "死：对生命值低于 <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
 $i18n.'zh-hans'.heartsteel.option = "铁石心肠：每隔 <#e8a800ff>${hsCd}秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>${hsFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${hsHpPct}%<>，并永久获得该伤害 <#60e84dff>${hsBonusHpPct}%<> 作为 <#60e84dff>额外生命值<>。"
@@ -450,8 +469,8 @@ $i18n.'pt-BR'.unending_despair.option = "Angústia: Suas mágias te curam em <#6
 $i18n.'pt-BR'.radiant_unending_despair.option = "Angústia: Suas mágias te curam em <#60e84dff>${rudFlat}<> + <#60e84dff>${rudHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>."
 $i18n.'pt-BR'.protoplasm_harness.option = "Fortificação: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de ${phThreshold}%<> você, recebe <#60e84dff>${phFlat}<> + <#60e84dff>${phHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${phDur} segundos<>, depois <#60e84dff>cura<> por metade desse valor (${phCd}s)."
 $i18n.'pt-BR'.radiant_protoplasm_harness.option = "Fortificação: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de ${rphThreshold}%<> você, recebe <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rphDur} segundos<>, depois <#60e84dff>cura<> por metade desse valor (${rphCd}s)."
-$i18n.'pt-BR'.terminus.option = "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>${tPen}% <$armorPenIcon> de Penetração de Armadura<> ou <#88ccffff>${tPen}% <$magicPenIcon> Penetração Mágica<> por <#e8a800ff>${tDur} segundos<>. (acumula ${tStacks}x cada)."
-$i18n.'pt-BR'.radiant_terminus.option = "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>${rtPen}% <$armorPenIcon> de Penetração de Armadura<> ou <#88ccffff>${rtPen}% <$magicPenIcon> Penetração Mágica<> por <#e8a800ff>${rtDur} segundos<>. (acumula ${rtStacks}x cada)."
+$i18n.'pt-BR'.terminus.option = "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>${tArmorPen}% <$armorPenIcon> de Penetração de Armadura<> ou <#88ccffff>${tMagicPen}% <$magicPenIcon> Penetração Mágica<> por <#e8a800ff>${tDur} segundos<>. (acumula ${tStacks}x cada)."
+$i18n.'pt-BR'.radiant_terminus.option = "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> de Penetração de Armadura<> ou <#88ccffff>${rtMagicPen}% <$magicPenIcon> Penetração Mágica<> por <#e8a800ff>${rtDur} segundos<>. (acumula ${rtStacks}x cada)."
 $i18n.'pt-BR'.collector.option = "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
 $i18n.'pt-BR'.radiant_collector.option = "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
 $i18n.'pt-BR'.heartsteel.option = "Coração Forjado: A cada <#e8a800ff>${hsCd} segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>${hsBonusHpPct}%<> desse dano como <#60e84dff>vida bônus<>."
@@ -518,8 +537,8 @@ $i18n.ru.unending_despair.option = "Страдание: Попадания ум�
 $i18n.ru.radiant_unending_despair.option = "Страдание: Попадания умениями восстанавливают вам <#60e84dff>${rudFlat}<> + <#60e84dff>${rudHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<>."
 $i18n.ru.protoplasm_harness.option = "Укрепление: При <#d94c49ff>падении здоровья ниже ${phThreshold}%<> даёт <#60e84dff>${phFlat}<> + <#60e84dff>${phHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> как <#60e84dff>дополнительное здоровье<> на <#e8a800ff>${phDur} секунд<> и <#60e84dff>восстанавливает вам<> половину этого количества (перезарядка ${phCd} секунд)."
 $i18n.ru.radiant_protoplasm_harness.option = "Укрепление: При <#d94c49ff>падении здоровья ниже ${rphThreshold}%<> даёт <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> как <#60e84dff>дополнительное здоровье<> на <#e8a800ff>${rphDur} секунд<> и <#60e84dff>восстанавливает вам<> половину этого количества (перезарядка ${rphCd} секунд)."
-$i18n.ru.terminus.option = "Соприкосновение: При атаке получает либо <#ffdd8eff>${tPen}% <$armorPenIcon> пробивания брони<>, либо <#88ccffff>${tPen}% <$magicPenIcon> пробивания магии<> на <#e8a800ff>${tDur} секунды<>, чередуясь (макс. ${tStacks} стака каждого)."
-$i18n.ru.radiant_terminus.option = "Соприкосновение: При атаке получает либо <#ffdd8eff>${rtPen}% <$armorPenIcon> пробивания брони<>, либо <#88ccffff>${rtPen}% <$magicPenIcon> пробивания магии<> на <#e8a800ff>${rtDur} секунды<>, чередуясь (макс. ${rtStacks} стака каждого)."
+$i18n.ru.terminus.option = "Соприкосновение: При атаке получает либо <#ffdd8eff>${tArmorPen}% <$armorPenIcon> пробивания брони<>, либо <#88ccffff>${tMagicPen}% <$magicPenIcon> пробивания магии<> на <#e8a800ff>${tDur} секунды<>, чередуясь (макс. ${tStacks} стака каждого)."
+$i18n.ru.radiant_terminus.option = "Соприкосновение: При атаке получает либо <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> пробивания брони<>, либо <#88ccffff>${rtMagicPen}% <$magicPenIcon> пробивания магии<> на <#e8a800ff>${rtDur} секунды<>, чередуясь (макс. ${rtStacks} стака каждого)."
 $i18n.ru.collector.option = "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${colThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их."
 $i18n.ru.radiant_collector.option = "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их."
 $i18n.ru.heartsteel.option = "Железное сердце: Каждые <#e8a800ff>${hsCd} секунд<>, ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>${hsBonusHpPct}%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
@@ -580,8 +599,8 @@ Write-Host "  Unending Despair:           ${udFlat} + ${udHpPct}% max HP heal/sk
 Write-Host "  Radiant Unending Despair:   ${rudFlat} + ${rudHpPct}% max HP heal/skill"
 Write-Host "  Protoplasm Harness:         ${phThreshold} max HP Threshold / ${phFlat} + ${phHpPct}% max HP / ${phDur}s / ${phCd}s cooldown"
 Write-Host "  Radiant Protoplasm Harness: ${rphThreshold} max HP Threshold / ${rphFlat} + ${rphHpPct}% max HP / ${rphDur}s / ${rphCd}s cooldown"
-Write-Host "  Terminus:               ${tPen}% pen/stack / ${tDur}s / ${tStacks} stacks"
-Write-Host "  Radiant Terminus:       ${rtPen}% pen/stack / ${rtDur}s / ${rtStacks} stacks"
+Write-Host "  Terminus:               ${tArmorPen}%/${tMagicPen}% pen/stack / ${tDur}s / ${tStacks} stacks"
+Write-Host "  Radiant Terminus:       ${rtArmorPen}%/${rtMagicPen}% pen/stack / ${rtDur}s / ${rtStacks} stacks"
 Write-Host "  Collector:              executes below ${colThreshold}% HP"
 Write-Host "  Radiant Collector:      executes below ${rcolThreshold}% HP"
 Write-Host "  Heartsteel:             ${hsFlat} + ${hsHpPct}% max HP dmg / ${hsBonusHpPct}% bonus HP / ${hsCd}s cooldown"
