@@ -441,11 +441,11 @@
         },
         "stormrazor": {
             "name": "Stormrazor",
-            "option": "Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.\n\nBolt: At 100 Energize stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants you 35% bonus movement speed for 1.5 seconds."
+            "option": "Energized: Gain <#e8a800ff>1<> stack of <#e8a800ff>Energize<> every second and <#e8a800ff>3<> stacks whenever you deal <#ff9028ff>physical damage<>, up to <#e8a800ff>100<>.\n\nBolt: At <#e8a800ff>100 Energize stacks<>, your next instance of <#ff9028ff>physical damage<> consumes all stacks to deal <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
         },
         "radiant_stormrazor": {
             "name": "Radiant Stormrazor",
-            "option": "Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.\n\nBolt: At 100 Energize stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants you 35% bonus movement speed for 1.5 seconds."
+            "option": "Energized: Gain <#e8a800ff>1<> stack of <#e8a800ff>Energize<> every second and <#e8a800ff>3<> stacks whenever you deal <#ff9028ff>physical damage<>, up to <#e8a800ff>100<>.\n\nBolt: At <#e8a800ff>100 Energize stacks<>, your next instance of <#ff9028ff>physical damage<> consumes all stacks to deal <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
         }
     },
     "vi": {
@@ -879,6 +879,22 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Quyền Trượng Pha Lê Rylai Ánh Sáng",
             "option": "Sương Giá: Khi gây sát thương kĩ năng, gây <#d94c49ff>15% kiệt sức<> cho mục tiêu trúng đòn trong <#e8a800ff>2 giây<>."
+        },
+        "turbo_chemtank": {
+            "name": "Bình Hóa Chất Turbo",
+            "option": "Tăng Áp: Nhận <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Khi nhận sát thương từ tướng địch, nhận <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> và <#92dc7bff>miễn nhiễm hiệu ứng khống chế<> trong <#e8a800ff>6 giây<> (hồi chiêu 40 giây)."
+        },
+        "radiant_turbo_chemtank": {
+            "name": "Bình Hóa Chất Turbo Ánh Sáng",
+            "option": "Tăng Áp: Nhận <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Khi nhận sát thương từ tướng địch, nhận <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> và <#92dc7bff>miễn nhiễm hiệu ứng khống chế<> trong <#e8a800ff>6 giây<> (hồi chiêu 40 giây)."
+        },
+        "stormrazor": {
+            "name": "Kiếm Bão Tố",
+            "option": "Tích Điện: Nhận <#e8a800ff>1<> điểm Tích Điện mỗi giây và <#e8a800ff>3<> điểm mỗi khi gây <#ff9028ff>sát thương vật lí<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi đạt <#e8a800ff>100<> điểm Tích Điện, đòn <#ff9028ff>sát thương vật lí<> tiếp theo tiêu hao toàn bộ điểm để gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
+        },
+        "radiant_stormrazor": {
+            "name": "Kiếm Bão Tố Ánh Sáng",
+            "option": "Tích Điện: Nhận <#e8a800ff>1<> điểm Tích Điện mỗi giây và <#e8a800ff>3<> điểm mỗi khi gây <#ff9028ff>sát thương vật lí<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi đạt <#e8a800ff>100<> điểm Tích Điện, đòn <#ff9028ff>sát thương vật lí<> tiếp theo tiêu hao toàn bộ điểm để gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
         }
     },
     "zh-hans": {
@@ -1312,6 +1328,22 @@
         "radiant_rylais_crystal_scepter": {
             "name": "光明版兰蒂尔的冰晶节杖",
             "option": "凛霜：造成技能伤害时，对命中的单位施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
+        },
+        "turbo_chemtank": {
+            "name": "涡轮炼金罐",
+            "option": "增压：获得 <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。受到敌方英雄伤害时，获得 <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>和 <#92dc7bff>控制免疫<>，持续 <#e8a800ff>6秒<>（冷却40秒）。"
+        },
+        "radiant_turbo_chemtank": {
+            "name": "光明版涡轮炼金罐",
+            "option": "增压：获得 <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。受到敌方英雄伤害时，获得 <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>和 <#92dc7bff>控制免疫<>，持续 <#e8a800ff>6秒<>（冷却40秒）。"
+        },
+        "stormrazor": {
+            "name": "风暴利刃",
+            "option": "蓄能：每秒获得 <#e8a800ff>1<> 层蓄能，每次造成 <#ff9028ff>物理伤害<> 时获得 <#e8a800ff>3<> 层，最多 <#e8a800ff>100<> 层。\n\n雷霆：拥有 <#e8a800ff>100<> 层蓄能时，你的下一次 <#ff9028ff>物理伤害<> 会消耗所有蓄能，额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
+        },
+        "radiant_stormrazor": {
+            "name": "光明版风暴利刃",
+            "option": "蓄能：每秒获得 <#e8a800ff>1<> 层蓄能，每次造成 <#ff9028ff>物理伤害<> 时获得 <#e8a800ff>3<> 层，最多 <#e8a800ff>100<> 层。\n\n雷霆：拥有 <#e8a800ff>100<> 层蓄能时，你的下一次 <#ff9028ff>物理伤害<> 会消耗所有蓄能，额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
         }
     },
     "pt-BR": {
@@ -1745,6 +1777,22 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Cetro de Cristal de Rylai Radiante",
             "option": "Gélido: Causar dano de habilidade aplica <#d94c49ff>15% de lentidão<> nas unidades atingidas por <#e8a800ff>2 segundos<>."
+        },
+        "turbo_chemtank": {
+            "name": "Tanque Químico Turbo",
+            "option": "Supercarregado: Ganha <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Receber dano de um campeão inimigo concede <#ffffffff>25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> e <#92dc7bff>imunidade a controle de grupo<> por <#e8a800ff>6 segundos<> (recarga de 40 segundos)."
+        },
+        "radiant_turbo_chemtank": {
+            "name": "Tanque Químico Turbo Radiante",
+            "option": "Supercarregado: Ganha <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Receber dano de um campeão inimigo concede <#ffffffff>25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> e <#92dc7bff>imunidade a controle de grupo<> por <#e8a800ff>6 segundos<> (recarga de 40 segundos)."
+        },
+        "stormrazor": {
+            "name": "Navalha da Tempestade",
+            "option": "Energizado: Ganha <#e8a800ff>1<> acúmulo de Energia por segundo e <#e8a800ff>3<> acúmulos sempre que causa <#ff9028ff>dano físico<>, até <#e8a800ff>100<>.\n\nRaio: Com <#e8a800ff>100<> acúmulos de Energia, sua próxima instância de <#ff9028ff>dano físico<> consome todos os acúmulos para causar <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
+        },
+        "radiant_stormrazor": {
+            "name": "Navalha da Tempestade Radiante",
+            "option": "Energizado: Ganha <#e8a800ff>1<> acúmulo de Energia por segundo e <#e8a800ff>3<> acúmulos sempre que causa <#ff9028ff>dano físico<>, até <#e8a800ff>100<>.\n\nRaio: Com <#e8a800ff>100<> acúmulos de Energia, sua próxima instância de <#ff9028ff>dano físico<> consome todos os acúmulos para causar <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
         }
     },
     "ru": {
@@ -2178,6 +2226,22 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Лучезарный Кристальный Скипетр Райлая",
             "option": "Иней: Нанесение урона умением замедляет пораженные цели на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
+        },
+        "turbo_chemtank": {
+            "name": "Турбхимбак",
+            "option": "Сверхзаряд: Даёт <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Получение урона от вражеского чемпиона даёт <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> и <#92dc7bff>иммунитет к эффектам контроля<> на <#e8a800ff>6 секунд<> (перезарядка 40 секунд)."
+        },
+        "radiant_turbo_chemtank": {
+            "name": "Лучезарный Турбхимбак",
+            "option": "Сверхзаряд: Даёт <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Получение урона от вражеского чемпиона даёт <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> и <#92dc7bff>иммунитет к эффектам контроля<> на <#e8a800ff>6 секунд<> (перезарядка 40 секунд)."
+        },
+        "stormrazor": {
+            "name": "Грозовая бритва",
+            "option": "Заряд: Получает <#e8a800ff>1<> заряд Энергии каждую секунду и <#e8a800ff>3<> заряда при нанесении <#ff9028ff>физического урона<>, до <#e8a800ff>100<>.\n\nМолния: При <#e8a800ff>100<> зарядах Энергии ваш следующий <#ff9028ff>физический урон<> расходует все заряды, нанося <#a974ffff>100 дополнительного магического урона<> и давая <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
+        },
+        "radiant_stormrazor": {
+            "name": "Лучезарная Грозовая бритва",
+            "option": "Заряд: Получает <#e8a800ff>1<> заряд Энергии каждую секунду и <#e8a800ff>3<> заряда при нанесении <#ff9028ff>физического урона<>, до <#e8a800ff>100<>.\n\nМолния: При <#e8a800ff>100<> зарядах Энергии ваш следующий <#ff9028ff>физический урон<> расходует все заряды, нанося <#a974ffff>100 дополнительного магического урона<> и давая <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
         }
     }
 }

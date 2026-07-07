@@ -91,6 +91,7 @@ impl ModItemInfo for Stormrazor {
         BuffState {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
+            crit_chance: self.crit_chance,
             ..Default::default()
         }
     }
@@ -250,6 +251,7 @@ impl ModItemInfo for RadiantStormrazor {
         BuffState {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
+            crit_chance: self.crit_chance,
             ..Default::default()
         }
     }
