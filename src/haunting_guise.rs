@@ -2,41 +2,44 @@ use crate::config::ItemConfig;
 use mod_api::*;
 
 #[derive(Clone, Debug)]
-pub struct NeedlesslyLargeRod {
+pub struct HauntingGuise {
     price: usize,
     magic_power: i32,
+    hp: i32,
 }
 
-impl Default for NeedlesslyLargeRod {
+impl Default for HauntingGuise {
     fn default() -> Self {
         Self {
-            price: 850,
-            magic_power: 115,
+            price: 950,
+            magic_power: 60,
+            hp: 200,
         }
     }
 }
 
-impl NeedlesslyLargeRod {
+impl HauntingGuise {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            hp: cfg.hp.unwrap_or(d.hp),
         }
     }
 }
 
-impl ModItemInfo for NeedlesslyLargeRod {
+impl ModItemInfo for HauntingGuise {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "needlessly_large_rod"
+        "haunting_guise"
     }
 
     fn icon(&self) -> &str {
-        "needlessly_large_rod"
+        "haunting_guise"
     }
 
     fn price(&self) -> usize {
@@ -48,20 +51,17 @@ impl ModItemInfo for NeedlesslyLargeRod {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["spirit_crystal".to_string()]
+        vec!["hardened_heart".to_string(), "spirit_crystal".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec![
-            "rabadons_deathcap".to_string(),
-            "shadowflame".to_string(),
-            "rylais_crystal_scepter".to_string(),
-        ]
+        vec!["riftmaker".to_string(), "bloodletters_curse".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
             magic_power: self.magic_power,
+            hp: self.hp,
             ..Default::default()
         }
     }

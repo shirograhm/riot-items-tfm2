@@ -45,7 +45,7 @@ impl ModItemInfo for HextechGunblade {
     }
 
     fn icon(&self) -> &str {
-        "t11_4"
+        "hextech_gunblade"
     }
 
     fn price(&self) -> usize {
@@ -126,7 +126,7 @@ impl ModItemInfo for RadiantHextechGunblade {
     }
 
     fn icon(&self) -> &str {
-        "t11_5"
+        "radiant_hextech_gunblade"
     }
 
     fn price(&self) -> usize {

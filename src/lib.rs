@@ -1,8 +1,10 @@
 use mod_api::*;
 
 mod bf_sword;
+mod black_cleaver;
 mod blackfire_torch;
 mod blade_of_the_ruined_king;
+mod bloodletters_curse;
 mod build_config;
 mod collector;
 mod config;
@@ -12,6 +14,7 @@ mod executioners_calling;
 mod experimental_hexplate;
 mod frozen_mallet;
 mod guinsoos_rageblade;
+mod haunting_guise;
 mod heartsteel;
 mod hextech_gunblade;
 mod hook;
@@ -25,6 +28,7 @@ mod needlessly_large_rod;
 mod night_harvester;
 mod oblivion_orb;
 mod overlords_bloodmail;
+mod phage;
 mod protectors_vow;
 mod protoplasm_harness;
 mod rabadons_deathcap;
@@ -33,14 +37,17 @@ mod rylais_crystal_scepter;
 mod shadowflame;
 mod spear_of_shojin;
 mod spirit_visage;
+mod stormrazor;
 mod terminus;
 mod unending_despair;
 mod warmogs_armor;
 mod yun_tal_wildarrows;
 
 use bf_sword::*;
+use black_cleaver::*;
 use blackfire_torch::*;
 use blade_of_the_ruined_king::*;
+use bloodletters_curse::*;
 use collector::*;
 use deathblade::*;
 use deaths_dance::*;
@@ -48,6 +55,7 @@ use executioners_calling::*;
 use experimental_hexplate::*;
 use frozen_mallet::*;
 use guinsoos_rageblade::*;
+use haunting_guise::*;
 use heartsteel::*;
 use hextech_gunblade::*;
 use infinity_edge::*;
@@ -60,6 +68,7 @@ use needlessly_large_rod::*;
 use night_harvester::*;
 use oblivion_orb::*;
 use overlords_bloodmail::*;
+use phage::*;
 use protectors_vow::*;
 use protoplasm_harness::*;
 use rabadons_deathcap::*;
@@ -68,6 +77,7 @@ use rylais_crystal_scepter::*;
 use shadowflame::*;
 use spear_of_shojin::*;
 use spirit_visage::*;
+use stormrazor::*;
 use terminus::*;
 use unending_despair::*;
 use warmogs_armor::*;
@@ -81,12 +91,40 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
     (value as f64 * percent / 100.0).round() as i32
 }
 
-fn force_to_ap(force: i32) -> i32 {
-    force
-}
+fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, buff_name: &str) {
+    let Some(player_ref) = ctx.get_player(player) else {
+        return;
+    };
+    let Some(entity_ref) = player_ref.champion() else {
+        return;
+    };
 
-fn force_to_ad(force: i32) -> i32 {
-    (force as f64 * 0.6).round() as i32
+    let is_buff_applied =
+        (0..entity_ref.buff_count()).any(|i| entity_ref.buff_at(i).name.as_str() == buff_name);
+
+    if !is_buff_applied {
+        if entity_ref.stat().magic_power > entity_ref.stat().attack {
+            ctx.add_buff(
+                entity_ref.id(),
+                BuffState {
+                    duration: BuffType::Permanent,
+                    magic_power: adaptive_force,
+                    name: buff_name.try_into().unwrap(),
+                    ..Default::default()
+                },
+            )
+        } else {
+            ctx.add_buff(
+                entity_ref.id(),
+                BuffState {
+                    duration: BuffType::Permanent,
+                    attack: (adaptive_force as f64 * 0.6).round() as i32,
+                    name: buff_name.try_into().unwrap(),
+                    ..Default::default()
+                },
+            )
+        }
+    }
 }
 
 // Installs the experimental item-build route hook when the server starts. The
@@ -127,10 +165,14 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 3
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
+    reg.add_item(configured!("haunting_guise" => HauntingGuise));
+    reg.add_item(configured!("phage" => Phage));
 
     // Tier 4
+    reg.add_item(configured!("black_cleaver" => BlackCleaver));
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
+    reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured!("collector" => Collector));
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
@@ -155,14 +197,17 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("shadowflame" => Shadowflame));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
+    reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows));
 
     // Tier 5
+    reg.add_item(configured!("radiant_black_cleaver" => RadiantBlackCleaver));
     reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
     reg.add_item(configured!("radiant_blade_of_the_ruined_king" => RadiantBladeOfTheRuinedKing));
+    reg.add_item(configured!("radiant_bloodletters_curse" => RadiantBloodlettersCurse));
     reg.add_item(configured!("radiant_collector" => RadiantCollector));
     reg.add_item(configured!("radiant_deathblade" => RadiantDeathBlade));
     reg.add_item(configured!("radiant_deaths_dance" => RadiantDeathsDance));
@@ -187,6 +232,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_shadowflame" => RadiantShadowflame));
     reg.add_item(configured!("radiant_spear_of_shojin" => RadiantSpearOfShojin));
     reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));
+    reg.add_item(configured!("radiant_stormrazor" => RadiantStormrazor));
     reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
     reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));

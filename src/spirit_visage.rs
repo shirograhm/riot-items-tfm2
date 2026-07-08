@@ -44,7 +44,7 @@ impl ModItemInfo for SpiritVisage {
     }
 
     fn icon(&self) -> &str {
-        "t8_9"
+        "spirit_visage"
     }
 
     fn price(&self) -> usize {
@@ -136,7 +136,7 @@ impl ModItemInfo for RadiantSpiritVisage {
     }
 
     fn icon(&self) -> &str {
-        "t9_0"
+        "radiant_spirit_visage"
     }
 
     fn price(&self) -> usize {

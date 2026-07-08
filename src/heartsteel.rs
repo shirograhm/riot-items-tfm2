@@ -11,7 +11,7 @@ pub struct Heartsteel {
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
     effect_bonus_hp_percent_of_damage: f64,
-    effect_cooldown_seconds: usize,
+    effect_cooldown_seconds: f64,
     accumulated_bonus_hp: i32,
 }
 
@@ -23,7 +23,7 @@ impl Default for Heartsteel {
             effect_bonus_flat_damage: 15,
             effect_caster_hp_percent_damage: 6.0,
             effect_bonus_hp_percent_of_damage: 15.0,
-            effect_cooldown_seconds: 15,
+            effect_cooldown_seconds: 15.0,
             accumulated_bonus_hp: 0,
         }
     }
@@ -62,7 +62,7 @@ impl ModItemInfo for Heartsteel {
     }
 
     fn icon(&self) -> &str {
-        "t10_1"
+        "heartsteel"
     }
 
     fn price(&self) -> usize {
@@ -141,7 +141,7 @@ impl ModItemInfo for Heartsteel {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_cooldown_seconds * 60,
+                    tick: (self.effect_cooldown_seconds * 60.0) as usize,
                 },
                 name: ArrayString::try_from("heartsteel_cooldown").unwrap(),
                 ..Default::default()
@@ -176,7 +176,7 @@ pub struct RadiantHeartsteel {
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
     effect_bonus_hp_percent_of_damage: f64,
-    effect_cooldown_seconds: usize,
+    effect_cooldown_seconds: f64,
     accumulated_bonus_hp: i32,
 }
 
@@ -188,7 +188,7 @@ impl Default for RadiantHeartsteel {
             effect_bonus_flat_damage: 15,
             effect_caster_hp_percent_damage: 6.0,
             effect_bonus_hp_percent_of_damage: 15.0,
-            effect_cooldown_seconds: 15,
+            effect_cooldown_seconds: 15.0,
             accumulated_bonus_hp: 0,
         }
     }
@@ -227,7 +227,7 @@ impl ModItemInfo for RadiantHeartsteel {
     }
 
     fn icon(&self) -> &str {
-        "t10_2"
+        "radiant_heartsteel"
     }
 
     fn price(&self) -> usize {
@@ -302,7 +302,7 @@ impl ModItemInfo for RadiantHeartsteel {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_cooldown_seconds * 60,
+                    tick: (self.effect_cooldown_seconds * 60.0) as usize,
                 },
                 name: ArrayString::try_from("radiant_heartsteel_cooldown").unwrap(),
                 ..Default::default()

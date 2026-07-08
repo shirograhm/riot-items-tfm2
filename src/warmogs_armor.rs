@@ -15,20 +15,22 @@ const MOVE_SPEED_REFRESH_TICKS: usize = 30;
 pub struct WarmogsArmor {
     price: usize,
     hp: i32,
+    hp_regen: i32,
     effect_caster_hp_percent_heal: f64,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
     regen_cooldown: usize,
 }
 
 impl Default for WarmogsArmor {
     fn default() -> Self {
         Self {
-            price: 1400,
-            hp: 550,
+            price: 1450,
+            hp: 600,
+            hp_regen: 6,
             effect_caster_hp_percent_heal: 3.0,
             effect_move_speed_mult: 4,
-            effect_duration_seconds: 6,
+            effect_duration_seconds: 6.0,
             regen_cooldown: 0,
         }
     }
@@ -40,6 +42,7 @@ impl WarmogsArmor {
         Self {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
+            hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             effect_caster_hp_percent_heal: cfg
                 .effect_caster_hp_percent_heal
                 .unwrap_or(d.effect_caster_hp_percent_heal),
@@ -54,7 +57,7 @@ impl WarmogsArmor {
     }
 
     fn apply_passive(&mut self, ctx: &mut GameCtx, player: usize) {
-        let Some((entity, max_hp, has_move_speed, recently_damaged)) = ({
+        let (entity, max_hp, has_move_speed, recently_damaged) = {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
             };
@@ -65,14 +68,12 @@ impl WarmogsArmor {
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "warmogs_armor_recently_damaged");
             let has_move_speed = (0..entity_ref.buff_count())
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "warmogs_armor_move_speed");
-            Some((
+            (
                 entity_ref.id(),
                 entity_ref.hp().max,
                 has_move_speed,
                 recently_damaged,
-            ))
-        }) else {
-            return;
+            )
         };
 
         // Warmog's Heart is suppressed while the holder has taken damage recently.
@@ -125,7 +126,7 @@ impl ModItemInfo for WarmogsArmor {
     }
 
     fn icon(&self) -> &str {
-        "t11_6"
+        "warmogs_armor"
     }
 
     fn price(&self) -> usize {
@@ -147,6 +148,7 @@ impl ModItemInfo for WarmogsArmor {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: self.hp,
+            hp_regen: self.hp_regen,
             ..Default::default()
         }
     }
@@ -175,7 +177,7 @@ impl ModItemInfo for WarmogsArmor {
             entity,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_duration_seconds * 60,
+                    tick: (self.effect_duration_seconds * 60.0) as usize,
                 },
                 name: ArrayString::try_from("warmogs_armor_recently_damaged").unwrap(),
                 ..Default::default()
@@ -196,20 +198,22 @@ impl ModItemInfo for WarmogsArmor {
 pub struct RadiantWarmogsArmor {
     price: usize,
     hp: i32,
+    hp_regen: i32,
     effect_caster_hp_percent_heal: f64,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
     regen_cooldown: usize,
 }
 
 impl Default for RadiantWarmogsArmor {
     fn default() -> Self {
         Self {
-            price: 2000,
-            hp: 900,
+            price: 2100,
+            hp: 1000,
+            hp_regen: 10,
             effect_caster_hp_percent_heal: 3.0,
             effect_move_speed_mult: 4,
-            effect_duration_seconds: 6,
+            effect_duration_seconds: 6.0,
             regen_cooldown: 0,
         }
     }
@@ -221,6 +225,7 @@ impl RadiantWarmogsArmor {
         Self {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
+            hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             effect_caster_hp_percent_heal: cfg
                 .effect_caster_hp_percent_heal
                 .unwrap_or(d.effect_caster_hp_percent_heal),
@@ -235,7 +240,7 @@ impl RadiantWarmogsArmor {
     }
 
     fn apply_passive(&mut self, ctx: &mut GameCtx, player: usize) {
-        let Some((entity, max_hp, has_move_speed, recently_damaged)) = ({
+        let (entity, max_hp, has_move_speed, recently_damaged) = {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
             };
@@ -247,14 +252,12 @@ impl RadiantWarmogsArmor {
             });
             let has_move_speed = (0..entity_ref.buff_count())
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_warmogs_armor_move_speed");
-            Some((
+            (
                 entity_ref.id(),
                 entity_ref.hp().max,
                 has_move_speed,
                 recently_damaged,
-            ))
-        }) else {
-            return;
+            )
         };
 
         // Warmog's Heart is suppressed while the holder has taken damage recently.
@@ -307,7 +310,7 @@ impl ModItemInfo for RadiantWarmogsArmor {
     }
 
     fn icon(&self) -> &str {
-        "t11_7"
+        "radiant_warmogs_armor"
     }
 
     fn price(&self) -> usize {
@@ -325,6 +328,7 @@ impl ModItemInfo for RadiantWarmogsArmor {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: self.hp,
+            hp_regen: self.hp_regen,
             ..Default::default()
         }
     }
@@ -353,7 +357,7 @@ impl ModItemInfo for RadiantWarmogsArmor {
             entity,
             BuffState {
                 duration: BuffType::Time {
-                    tick: self.effect_duration_seconds * 60,
+                    tick: (self.effect_duration_seconds * 60.0) as usize,
                 },
                 name: ArrayString::try_from("radiant_warmogs_armor_recently_damaged").unwrap(),
                 ..Default::default()

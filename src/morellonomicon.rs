@@ -15,7 +15,7 @@ pub struct Morellonomicon {
     magic_power: i32,
     skill_cooldown_mult: i32,
     effect_heal_reduce: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for Morellonomicon {
@@ -26,7 +26,7 @@ impl Default for Morellonomicon {
             magic_power: 120,
             skill_cooldown_mult: 10,
             effect_heal_reduce: 40,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -57,7 +57,7 @@ impl ModItemInfo for Morellonomicon {
     }
 
     fn icon(&self) -> &str {
-        "t10_8"
+        "morellonomicon"
     }
 
     fn price(&self) -> usize {
@@ -108,7 +108,7 @@ impl ModItemInfo for Morellonomicon {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     heal_reduce: self.effect_heal_reduce,
                     name: ArrayString::try_from("40_percent_heal_cut").unwrap(),
@@ -139,7 +139,7 @@ pub struct RadiantMorellonomicon {
     magic_power: i32,
     skill_cooldown_mult: i32,
     effect_heal_reduce: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RadiantMorellonomicon {
@@ -150,7 +150,7 @@ impl Default for RadiantMorellonomicon {
             magic_power: 190,
             skill_cooldown_mult: 10,
             effect_heal_reduce: 40,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -181,7 +181,7 @@ impl ModItemInfo for RadiantMorellonomicon {
     }
 
     fn icon(&self) -> &str {
-        "t10_9"
+        "radiant_morellonomicon"
     }
 
     fn price(&self) -> usize {
@@ -228,7 +228,7 @@ impl ModItemInfo for RadiantMorellonomicon {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     heal_reduce: self.effect_heal_reduce,
                     name: ArrayString::try_from("40_percent_heal_cut").unwrap(),

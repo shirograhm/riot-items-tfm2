@@ -14,8 +14,8 @@ pub struct ProtoplasmHarness {
     effect_bonus_flat_hp: i32,
     effect_hp_percent_boost: f64,
     effect_hp_percent_threshold: f64,
-    effect_duration_seconds: usize,
-    effect_cooldown_seconds: usize,
+    effect_duration_seconds: f64,
+    effect_cooldown_seconds: f64,
 }
 
 impl Default for ProtoplasmHarness {
@@ -28,8 +28,8 @@ impl Default for ProtoplasmHarness {
             effect_bonus_flat_hp: 300,
             effect_hp_percent_boost: 25.0,
             effect_hp_percent_threshold: 40.0,
-            effect_duration_seconds: 6,
-            effect_cooldown_seconds: 30,
+            effect_duration_seconds: 6.0,
+            effect_cooldown_seconds: 30.0,
         }
     }
 }
@@ -69,7 +69,7 @@ impl ModItemInfo for ProtoplasmHarness {
     }
 
     fn icon(&self) -> &str {
-        "t9_3"
+        "protoplasm_harness"
     }
 
     fn price(&self) -> usize {
@@ -129,7 +129,7 @@ impl ModItemInfo for ProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     hp: bonus_max_hp,
                     name: ArrayString::try_from("protoplasm_harness_buff").unwrap(),
@@ -148,7 +148,7 @@ impl ModItemInfo for ProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_cooldown_seconds * 60,
+                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
                     },
                     name: ArrayString::try_from("protoplasm_harness_cooldown_buff").unwrap(),
                     ..Default::default()
@@ -167,8 +167,8 @@ pub struct RadiantProtoplasmHarness {
     effect_bonus_flat_hp: i32,
     effect_hp_percent_boost: f64,
     effect_hp_percent_threshold: f64,
-    effect_duration_seconds: usize,
-    effect_cooldown_seconds: usize,
+    effect_duration_seconds: f64,
+    effect_cooldown_seconds: f64,
 }
 
 impl Default for RadiantProtoplasmHarness {
@@ -181,8 +181,8 @@ impl Default for RadiantProtoplasmHarness {
             effect_bonus_flat_hp: 600,
             effect_hp_percent_boost: 25.0,
             effect_hp_percent_threshold: 40.0,
-            effect_duration_seconds: 6,
-            effect_cooldown_seconds: 30,
+            effect_duration_seconds: 6.0,
+            effect_cooldown_seconds: 30.0,
         }
     }
 }
@@ -222,7 +222,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
     }
 
     fn icon(&self) -> &str {
-        "t9_4"
+        "radiant_protoplasm_harness"
     }
 
     fn price(&self) -> usize {
@@ -279,7 +279,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     hp: bonus_max_hp,
                     name: ArrayString::try_from("radiant_protoplasm_harness_buff").unwrap(),
@@ -298,7 +298,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_cooldown_seconds * 60,
+                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
                     },
                     name: ArrayString::try_from("radiant_protoplasm_harness_cooldown_buff")
                         .unwrap(),

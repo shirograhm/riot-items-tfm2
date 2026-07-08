@@ -43,7 +43,7 @@ impl ModItemInfo for ExperimentalHexplate {
     }
 
     fn icon(&self) -> &str {
-        "t8_0"
+        "experimental_hexplate"
     }
 
     fn price(&self) -> usize {
@@ -124,7 +124,7 @@ impl ModItemInfo for RadiantExperimentalHexplate {
     }
 
     fn icon(&self) -> &str {
-        "t8_1"
+        "radiant_experimental_hexplate"
     }
 
     fn price(&self) -> usize {

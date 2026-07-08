@@ -10,7 +10,7 @@ pub struct FrozenMallet {
     hp: i32,
     attack: i32,
     effect_slow_amount: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for FrozenMallet {
@@ -20,7 +20,7 @@ impl Default for FrozenMallet {
             hp: 450,
             attack: 45,
             effect_slow_amount: 25,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -50,7 +50,7 @@ impl ModItemInfo for FrozenMallet {
     }
 
     fn icon(&self) -> &str {
-        "t7_0"
+        "frozen_mallet"
     }
 
     fn price(&self) -> usize {
@@ -62,10 +62,7 @@ impl ModItemInfo for FrozenMallet {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "soldiers_longsword".to_string(),
-            "ring_of_reincarnation".to_string(),
-        ]
+        vec!["phage".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -101,7 +98,7 @@ impl ModItemInfo for FrozenMallet {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     move_speed_mult: -self.effect_slow_amount,
                     name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
@@ -131,7 +128,7 @@ pub struct RadiantFrozenMallet {
     hp: i32,
     attack: i32,
     effect_slow_amount: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
     on_hit_cooldown_seconds: f64,
@@ -144,7 +141,7 @@ impl Default for RadiantFrozenMallet {
             hp: 600,
             attack: 60,
             effect_slow_amount: 25,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
             effect_bonus_flat_damage: 20,
             effect_caster_hp_percent_damage: 3.0,
             on_hit_cooldown_seconds: 0.5,
@@ -186,7 +183,7 @@ impl ModItemInfo for RadiantFrozenMallet {
     }
 
     fn icon(&self) -> &str {
-        "t7_1"
+        "radiant_frozen_mallet"
     }
 
     fn price(&self) -> usize {
@@ -254,7 +251,7 @@ impl ModItemInfo for RadiantFrozenMallet {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     move_speed_mult: -self.effect_slow_amount,
                     name: ArrayString::try_from("frozen_mallet_slow").unwrap(),

@@ -9,7 +9,7 @@ pub struct RylaisCrystalScepter {
     hp: i32,
     magic_power: i32,
     effect_slow_amount: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RylaisCrystalScepter {
@@ -19,7 +19,7 @@ impl Default for RylaisCrystalScepter {
             hp: 250,
             magic_power: 125,
             effect_slow_amount: 15,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -49,7 +49,7 @@ impl ModItemInfo for RylaisCrystalScepter {
     }
 
     fn icon(&self) -> &str {
-        "t12_2"
+        "rylais_crystal_scepter"
     }
 
     fn price(&self) -> usize {
@@ -94,7 +94,7 @@ impl ModItemInfo for RylaisCrystalScepter {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     move_speed_mult: -self.effect_slow_amount,
                     name: ArrayString::try_from("rylais_crystal_scepter_slow").unwrap(),
@@ -119,7 +119,7 @@ pub struct RadiantRylaisCrystalScepter {
     hp: i32,
     magic_power: i32,
     effect_slow_amount: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RadiantRylaisCrystalScepter {
@@ -129,7 +129,7 @@ impl Default for RadiantRylaisCrystalScepter {
             hp: 400,
             magic_power: 200,
             effect_slow_amount: 15,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -159,7 +159,7 @@ impl ModItemInfo for RadiantRylaisCrystalScepter {
     }
 
     fn icon(&self) -> &str {
-        "t12_3"
+        "radiant_rylais_crystal_scepter"
     }
 
     fn price(&self) -> usize {
@@ -197,7 +197,7 @@ impl ModItemInfo for RadiantRylaisCrystalScepter {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     move_speed_mult: -self.effect_slow_amount,
                     name: ArrayString::try_from("rylais_crystal_scepter_slow").unwrap(),

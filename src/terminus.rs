@@ -12,7 +12,7 @@ pub struct Terminus {
     effect_armor_pen_per_stack: usize,
     effect_magic_pen_per_stack: usize,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
     flip_flop: bool,
 }
 
@@ -26,7 +26,7 @@ impl Default for Terminus {
             effect_armor_pen_per_stack: 4,
             effect_magic_pen_per_stack: 4,
             effect_max_stacks: 4,
-            effect_duration_seconds: 4,
+            effect_duration_seconds: 4.0,
             flip_flop: false,
         }
     }
@@ -65,7 +65,7 @@ impl ModItemInfo for Terminus {
     }
 
     fn icon(&self) -> &str {
-        "t8_7"
+        "terminus"
     }
 
     fn price(&self) -> usize {
@@ -122,7 +122,7 @@ impl ModItemInfo for Terminus {
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: self.effect_duration_seconds * 60,
+                            tick: (self.effect_duration_seconds * 60.0) as usize,
                         },
                         defence_penetration: self.effect_armor_pen_per_stack,
                         name: ArrayString::try_from("terminus_armor_pen_buff").unwrap(),
@@ -137,7 +137,7 @@ impl ModItemInfo for Terminus {
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: self.effect_duration_seconds * 60,
+                            tick: (self.effect_duration_seconds * 60.0) as usize,
                         },
                         magic_resistance_penetration: self.effect_magic_pen_per_stack,
                         name: ArrayString::try_from("terminus_magic_resistance_pen_buff").unwrap(),
@@ -167,7 +167,7 @@ pub struct RadiantTerminus {
     effect_armor_pen_per_stack: usize,
     effect_magic_pen_per_stack: usize,
     effect_max_stacks: usize,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
     flip_flop: bool,
 }
 
@@ -181,7 +181,7 @@ impl Default for RadiantTerminus {
             effect_armor_pen_per_stack: 4,
             effect_magic_pen_per_stack: 4,
             effect_max_stacks: 4,
-            effect_duration_seconds: 4,
+            effect_duration_seconds: 4.0,
             flip_flop: false,
         }
     }
@@ -220,7 +220,7 @@ impl ModItemInfo for RadiantTerminus {
     }
 
     fn icon(&self) -> &str {
-        "t8_8"
+        "radiant_terminus"
     }
 
     fn price(&self) -> usize {
@@ -276,7 +276,7 @@ impl ModItemInfo for RadiantTerminus {
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: self.effect_duration_seconds * 60,
+                            tick: (self.effect_duration_seconds * 60.0) as usize,
                         },
                         defence_penetration: self.effect_armor_pen_per_stack,
                         name: ArrayString::try_from("radiant_terminus_armor_pen_buff").unwrap(),
@@ -291,7 +291,7 @@ impl ModItemInfo for RadiantTerminus {
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: self.effect_duration_seconds * 60,
+                            tick: (self.effect_duration_seconds * 60.0) as usize,
                         },
                         magic_resistance_penetration: self.effect_magic_pen_per_stack,
                         name: ArrayString::try_from("radiant_terminus_magic_resistance_pen_buff")

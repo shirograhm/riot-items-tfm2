@@ -49,7 +49,7 @@ impl ModItemInfo for Collector {
     }
 
     fn icon(&self) -> &str {
-        "t9_9"
+        "collector"
     }
 
     fn price(&self) -> usize {
@@ -154,7 +154,7 @@ impl ModItemInfo for RadiantCollector {
     }
 
     fn icon(&self) -> &str {
-        "t10_0"
+        "radiant_collector"
     }
 
     fn price(&self) -> usize {

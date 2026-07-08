@@ -1,11 +1,18 @@
 use arrayvec::ArrayString;
-use core::fmt::Write;
 use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
 
-const REFRESH_LOCKOUT_TICKS: usize = 3;
+// The Tyranny bonus attack is granted as a fixed-duration buff that is
+// re-applied on a slightly shorter cycle than it lasts, so a fresh buff is
+// always in place before the previous one expires -- no single-tick gap where
+// the bonus would flicker off. Recomputing the amount each cycle lets it track
+// the holder's current max HP, rising or falling with it, instead of only
+// ratcheting upward. During the brief overlap both buffs are live, so the bonus
+// is momentarily doubled -- harmless, since it only ever overshoots.
+const TYRANNY_BUFF_DURATION_TICKS: usize = 60; // 1 seconds
+const TYRANNY_REFRESH_PERIOD_TICKS: usize = 58; // 0.966 seconds -> ~.033 second of overlap
 
 #[derive(Clone, Debug)]
 pub struct OverlordsBloodmail {
@@ -13,7 +20,7 @@ pub struct OverlordsBloodmail {
     attack: i32,
     hp: i32,
     effect_caster_hp_percent_attack: f64,
-    refresh_lockout: usize,
+    refresh_cooldown: usize,
 }
 
 impl Default for OverlordsBloodmail {
@@ -23,7 +30,7 @@ impl Default for OverlordsBloodmail {
             attack: 25,
             hp: 400,
             effect_caster_hp_percent_attack: 2.5,
-            refresh_lockout: 0,
+            refresh_cooldown: 0,
         }
     }
 }
@@ -38,13 +45,13 @@ impl OverlordsBloodmail {
             effect_caster_hp_percent_attack: cfg
                 .effect_caster_hp_percent_attack
                 .unwrap_or(d.effect_caster_hp_percent_attack),
-            refresh_lockout: 0,
+            refresh_cooldown: 0,
         }
     }
 
     fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
-        if self.refresh_lockout > 0 {
-            self.refresh_lockout -= 1;
+        if self.refresh_cooldown > 0 {
+            self.refresh_cooldown -= 1;
             return;
         }
 
@@ -55,38 +62,24 @@ impl OverlordsBloodmail {
             return;
         };
 
-        let prefix = "overlords_bloodmail_tyranny_";
-        let granted = (0..entity_ref.buff_count())
-            .filter_map(|i| {
-                entity_ref
-                    .buff_at(i)
-                    .name
-                    .as_str()
-                    .strip_prefix(prefix)
-                    .and_then(|total| total.parse::<i32>().ok())
-            })
-            .max()
-            .unwrap_or(0);
-
         let target = percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
-        if target <= granted {
+        if target <= 0 {
             return;
         }
 
         let entity_id = entity_ref.id();
-        let mut name = ArrayString::<64>::new();
-        write!(&mut name, "{prefix}{target}").unwrap();
-
         ctx.add_buff(
             entity_id,
             BuffState {
-                name,
-                duration: BuffType::Permanent,
-                attack: target - granted,
+                name: ArrayString::try_from("overlords_bloodmail_tyranny").unwrap(),
+                duration: BuffType::Time {
+                    tick: TYRANNY_BUFF_DURATION_TICKS,
+                },
+                attack: target,
                 ..Default::default()
             },
         );
-        self.refresh_lockout = REFRESH_LOCKOUT_TICKS;
+        self.refresh_cooldown = TYRANNY_REFRESH_PERIOD_TICKS;
     }
 }
 
@@ -100,7 +93,7 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn icon(&self) -> &str {
-        "t11_0"
+        "overlords_bloodmail"
     }
 
     fn price(&self) -> usize {
@@ -131,6 +124,7 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        self.refresh_cooldown = 0;
         self.apply_tyranny(ctx, player);
     }
 
@@ -153,9 +147,7 @@ pub struct RadiantOverlordsBloodmail {
     attack: i32,
     hp: i32,
     effect_caster_hp_percent_attack: f64,
-    // Ticks remaining during which `apply_tyranny` skips its presence check, so a
-    // freshly added buff can't be duplicated before it becomes visible.
-    refresh_lockout: usize,
+    refresh_cooldown: usize,
 }
 
 impl Default for RadiantOverlordsBloodmail {
@@ -165,7 +157,7 @@ impl Default for RadiantOverlordsBloodmail {
             attack: 40,
             hp: 650,
             effect_caster_hp_percent_attack: 2.5,
-            refresh_lockout: 0,
+            refresh_cooldown: 0,
         }
     }
 }
@@ -180,13 +172,13 @@ impl RadiantOverlordsBloodmail {
             effect_caster_hp_percent_attack: cfg
                 .effect_caster_hp_percent_attack
                 .unwrap_or(d.effect_caster_hp_percent_attack),
-            refresh_lockout: 0,
+            refresh_cooldown: 0,
         }
     }
 
     fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
-        if self.refresh_lockout > 0 {
-            self.refresh_lockout -= 1;
+        if self.refresh_cooldown > 0 {
+            self.refresh_cooldown -= 1;
             return;
         }
 
@@ -197,38 +189,24 @@ impl RadiantOverlordsBloodmail {
             return;
         };
 
-        let prefix = "radiant_overlords_bloodmail_tyranny_";
-        let granted = (0..entity_ref.buff_count())
-            .filter_map(|i| {
-                entity_ref
-                    .buff_at(i)
-                    .name
-                    .as_str()
-                    .strip_prefix(prefix)
-                    .and_then(|total| total.parse::<i32>().ok())
-            })
-            .max()
-            .unwrap_or(0);
-
         let target = percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
-        if target <= granted {
+        if target <= 0 {
             return;
         }
 
         let entity_id = entity_ref.id();
-        let mut name = ArrayString::<64>::new();
-        write!(&mut name, "{prefix}{target}").unwrap();
-
         ctx.add_buff(
             entity_id,
             BuffState {
-                name,
-                duration: BuffType::Permanent,
-                attack: target - granted,
+                name: ArrayString::try_from("radiant_overlords_bloodmail_tyranny").unwrap(),
+                duration: BuffType::Time {
+                    tick: TYRANNY_BUFF_DURATION_TICKS,
+                },
+                attack: target,
                 ..Default::default()
             },
         );
-        self.refresh_lockout = REFRESH_LOCKOUT_TICKS;
+        self.refresh_cooldown = TYRANNY_REFRESH_PERIOD_TICKS;
     }
 }
 
@@ -242,7 +220,7 @@ impl ModItemInfo for RadiantOverlordsBloodmail {
     }
 
     fn icon(&self) -> &str {
-        "t11_1"
+        "radiant_overlords_bloodmail"
     }
 
     fn price(&self) -> usize {
@@ -266,6 +244,7 @@ impl ModItemInfo for RadiantOverlordsBloodmail {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        self.refresh_cooldown = 0;
         self.apply_tyranny(ctx, player);
     }
 

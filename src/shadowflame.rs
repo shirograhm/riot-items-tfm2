@@ -48,7 +48,7 @@ impl ModItemInfo for Shadowflame {
     }
 
     fn icon(&self) -> &str {
-        "t11_8"
+        "shadowflame"
     }
 
     fn price(&self) -> usize {
@@ -150,7 +150,7 @@ impl ModItemInfo for RadiantShadowflame {
     }
 
     fn icon(&self) -> &str {
-        "t11_9"
+        "radiant_shadowflame"
     }
 
     fn price(&self) -> usize {

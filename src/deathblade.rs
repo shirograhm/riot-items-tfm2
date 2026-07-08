@@ -39,7 +39,7 @@ impl ModItemInfo for DeathBlade {
     }
 
     fn icon(&self) -> &str {
-        "t6_2"
+        "deathblade"
     }
 
     fn price(&self) -> usize {
@@ -113,7 +113,7 @@ impl ModItemInfo for RadiantDeathBlade {
     }
 
     fn icon(&self) -> &str {
-        "t6_3"
+        "radiant_deathblade"
     }
 
     fn price(&self) -> usize {

@@ -33,7 +33,7 @@ impl ModItemInfo for BFSword {
     }
 
     fn icon(&self) -> &str {
-        "t6_4"
+        "bf_sword"
     }
 
     fn price(&self) -> usize {

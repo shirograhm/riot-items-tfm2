@@ -13,11 +13,30 @@
     "price": 850,
     "magic_power": 115
   },
+  "haunting_guise": {
+    "price": 950,
+    "magic_power": 60,
+    "hp": 200
+  },
+  "phage": {
+    "price": 950,
+    "hp": 200,
+    "attack": 30
+  },
   "oblivion_orb": {
     "price": 500,
     "magic_power": 50,
     "effect_heal_reduce": 25,
     "effect_duration_seconds": 2
+  },
+  "black_cleaver": {
+    "price": 1500,
+    "attack": 45,
+    "hp": 300,
+    "skill_cooldown_mult": 5,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 6,
+    "effect_percent_armor_shred": 6
   },
   "blackfire_torch": {
     "price": 1300,
@@ -35,6 +54,15 @@
     "effect_hp_percent_damage": 5.0,
     "effect_minion_damage_cap": 50,
     "on_hit_cooldown_seconds": 0.5
+  },
+  "bloodletters_curse": {
+    "price": 1500,
+    "magic_power": 110,
+    "hp": 300,
+    "skill_cooldown_mult": 5,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 6,
+    "effect_percent_mr_shred": 6
   },
   "collector": {
     "price": 1450,
@@ -251,6 +279,15 @@
     "move_speed_mult": 5,
     "ult_cooldown_mult": 25
   },
+  "radiant_black_cleaver": {
+    "price": 2200,
+    "attack": 70,
+    "hp": 500,
+    "skill_cooldown_mult": 10,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 6,
+    "effect_percent_armor_shred": 6
+  },
   "radiant_blackfire_torch": {
     "price": 1900,
     "magic_power": 175,
@@ -352,6 +389,15 @@
     "skill_cooldown_mult": 10,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
+  },
+  "radiant_bloodletters_curse": {
+    "price": 2200,
+    "magic_power": 180,
+    "hp": 500,
+    "skill_cooldown_mult": 10,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 6,
+    "effect_percent_mr_shred": 6
   },
   "radiant_collector": {
     "price": 2100,
@@ -476,17 +522,39 @@
     "effect_caster_hp_percent_attack": 2.5
   },
   "warmogs_armor": {
-    "price": 1400,
-    "hp": 550,
+    "price": 1450,
+    "hp": 600,
+    "hp_regen": 6,
     "effect_caster_hp_percent_heal": 3.0,
     "effect_move_speed_mult": 4,
     "effect_duration_seconds": 6
   },
   "radiant_warmogs_armor": {
-    "price": 2000,
-    "hp": 900,
+    "price": 2100,
+    "hp": 1000,
+    "hp_regen": 10,
     "effect_caster_hp_percent_heal": 3.0,
     "effect_move_speed_mult": 4,
     "effect_duration_seconds": 6
+  },
+  "stormrazor": {
+    "price": 1550,
+    "attack": 65,
+    "attack_speed_mult": 20,
+    "crit_chance": 20,
+    "effect_max_stacks": 100,
+    "effect_move_speed_mult": 35,
+    "effect_bonus_flat_damage": 100,
+    "effect_duration_seconds": 1.5
+  },
+  "radiant_stormrazor": {
+    "price": 2200,
+    "attack": 100,
+    "attack_speed_mult": 40,
+    "crit_chance": 25,
+    "effect_max_stacks": 100,
+    "effect_move_speed_mult": 35,
+    "effect_bonus_flat_damage": 100,
+    "effect_duration_seconds": 1.5
   }
 }

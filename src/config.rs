@@ -8,6 +8,7 @@ use std::path::PathBuf;
 pub struct ItemConfig {
     pub price: Option<usize>,
     pub hp: Option<i32>,
+    pub hp_regen: Option<i32>,
     pub attack: Option<i32>,
     pub attack_mult: Option<i32>,
     pub magic_power: Option<i32>,
@@ -25,7 +26,7 @@ pub struct ItemConfig {
     pub vamp: Option<i32>,
 
     pub effect_move_speed_mult: Option<i32>,
-    pub effect_duration_seconds: Option<usize>,
+    pub effect_duration_seconds: Option<f64>,
     pub effect_heal_reduce: Option<usize>,
     pub effect_minion_damage_cap: Option<usize>,
     pub effect_ap_percent_damage: Option<f64>,
@@ -51,13 +52,15 @@ pub struct ItemConfig {
     pub effect_hp_percent_boost: Option<f64>,
     pub effect_hp_percent_threshold: Option<f64>,
     pub effect_bonus_hp_percent_of_damage: Option<f64>,
-    pub effect_cooldown_seconds: Option<usize>,
+    pub effect_cooldown_seconds: Option<f64>,
     pub effect_heal_mult: Option<f64>,
     pub effect_bonus_flat_heal: Option<i32>,
     pub effect_caster_hp_percent_heal: Option<f64>,
     pub effect_delayed_damage_percent: Option<f64>,
     pub effect_burn_hp_percent_cap: Option<f64>,
     pub effect_kill_heal_missing_percent: Option<f64>,
+    pub effect_percent_armor_shred: Option<i32>,
+    pub effect_percent_mr_shred: Option<i32>,
 
     pub on_hit_cooldown_seconds: Option<f64>,
 }

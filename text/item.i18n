@@ -49,7 +49,7 @@
             "attack_my_hp_ratio": "+{Value}% Attack My HP",
             "reflect": "+{Value}% Reflect Damage",
             "dot_amplify": "+{Value}% DoT Amplification",
-            "hp_regen": "+{Value} Max Health Regen",
+            "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> {Value} Health Regen",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Critical Strike Chance",
             "base_attack_damaged_reduce": "\nPlating: Reduce damage taken from basic attacks by <#e8a800ff>{Value}%<>.",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Skill Damage Reduction",
@@ -187,6 +187,14 @@
             "name": "B.F. Sword",
             "option": ""
         },
+        "phage": {
+            "name": "Phage",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "Haunting Guise",
+            "option": ""
+        },
         "infinity_edge": {
             "name": "Infinity Edge",
             "option": ""
@@ -194,6 +202,22 @@
         "radiant_infinity_edge": {
             "name": "Radiant Infinity Edge",
             "option": ""
+        },
+        "black_cleaver": {
+            "name": "Black Cleaver",
+            "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
+        },
+        "radiant_black_cleaver": {
+            "name": "Radiant Black Cleaver",
+            "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
+        },
+        "bloodletters_curse": {
+            "name": "Bloodletter's Curse",
+            "option": "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Magic Resistance<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Radiant Bloodletter's Curse",
+            "option": "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Magic Resistance<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "deathblade": {
             "name": "Deathblade",
@@ -430,6 +454,14 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Radiant Rylai's Crystal Scepter",
             "option": "Rimefrost: Dealing Ability damage applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+        },
+        "stormrazor": {
+            "name": "Stormrazor",
+            "option": "Energized: Moving and dealing <#ff9028ff>physical damage<> generates <#e8a800ff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#e8a800ff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
+        },
+        "radiant_stormrazor": {
+            "name": "Radiant Stormrazor",
+            "option": "Energized: Moving and dealing <#ff9028ff>physical damage<> generates <#e8a800ff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#e8a800ff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
         }
     },
     "vi": {
@@ -482,7 +514,7 @@
             "attack_my_hp_ratio": "Gây thêm sát thương bằng +{Value}% Máu tối đa của bản thân",
             "reflect": "Phản sát thương +{Value}%",
             "dot_amplify": "Sát thương theo Thời gian +{Value}%",
-            "hp_regen": "Hồi Máu mỗi giây +{Value}",
+            "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> {Value} Hồi Máu mỗi giây",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Tỷ Lệ Chí Mạng",
             "base_attack_damaged_reduce": "\nGiáp tấm: Giảm <#e8a800ff>{Value}%<> sát thương nhận vào từ các đòn tấn công cơ bản.",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Giảm Sát thương Kỹ năng",
@@ -620,6 +652,14 @@
             "name": "Kiếm B.F.",
             "option": ""
         },
+        "phage": {
+            "name": "Búa Gỗ",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "Mặt Nạ Ám Ảnh",
+            "option": ""
+        },
         "infinity_edge": {
             "name": "Vô Cực Kiếm",
             "option": ""
@@ -627,6 +667,22 @@
         "radiant_infinity_edge": {
             "name": "Vô Cực Kiếm Ánh Sáng",
             "option": ""
+        },
+        "black_cleaver": {
+            "name": "Rìu Đen",
+            "option": "Xẻ Thịt: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>giáp<> của chúng 6%<> trong <#e8a800ff>6 giây<> (tối đa 5 cộng dồn)."
+        },
+        "radiant_black_cleaver": {
+            "name": "Rìu Đen Ánh Sáng",
+            "option": "Xẻ Thịt: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>giáp<> của chúng 6%<> trong <#e8a800ff>6 giây<> (tối đa 5 cộng dồn)."
+        },
+        "bloodletters_curse": {
+            "name": "Lời Nguyền Huyết Tự",
+            "option": "Phân Rã: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của chúng 6%<> trong <#e8a800ff>6 giây<> (tối đa 5 cộng dồn)."
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Lời Nguyền Huyết Tự Ánh Sáng",
+            "option": "Phân Rã: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của chúng 6%<> trong <#e8a800ff>6 giây<> (tối đa 5 cộng dồn)."
         },
         "deathblade": {
             "name": "Kiếm Tử Thần",
@@ -863,6 +919,14 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Quyền Trượng Pha Lê Rylai Ánh Sáng",
             "option": "Sương Giá: Khi gây sát thương kĩ năng, gây <#d94c49ff>15% kiệt sức<> cho mục tiêu trúng đòn trong <#e8a800ff>2 giây<>."
+        },
+        "stormrazor": {
+            "name": "Kiếm Bão Tố",
+            "option": "Tích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
+        },
+        "radiant_stormrazor": {
+            "name": "Kiếm Bão Tố Ánh Sáng",
+            "option": "Tích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
         }
     },
     "zh-hans": {
@@ -915,7 +979,7 @@
             "attack_my_hp_ratio": "+{Value}% 自身生命值普攻伤害",
             "reflect": "+{Value}% 伤害反弹",
             "dot_amplify": "+{Value}% 持续伤害增幅",
-            "hp_regen": "+{Value} 最大生命值回复",
+            "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> {Value} 最大生命值回复",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% 暴击几率",
             "base_attack_damaged_reduce": "\n镀层：受到的普通攻击伤害降低<#e8a800ff>{Value}%<>。",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% 技能伤害减免",
@@ -1053,6 +1117,14 @@
             "name": "暴风之剑",
             "option": ""
         },
+        "phage": {
+            "name": "净蚀",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "幽魂面具",
+            "option": ""
+        },
         "infinity_edge": {
             "name": "无尽之刃",
             "option": ""
@@ -1060,6 +1132,22 @@
         "radiant_infinity_edge": {
             "name": "光明版无尽之刃",
             "option": ""
+        },
+        "black_cleaver": {
+            "name": "黑色切割者",
+            "option": "碎裂：对敌方英雄造成<#ff9028ff>物理伤害<>会<#d94c49ff>使其 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<> 降低6%<>，持续 <#e8a800ff>6秒<>（最多叠加5层）。"
+        },
+        "radiant_black_cleaver": {
+            "name": "光明版黑色切割者",
+            "option": "碎裂：对敌方英雄造成<#ff9028ff>物理伤害<>会<#d94c49ff>使其 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<> 降低6%<>，持续 <#e8a800ff>6秒<>（最多叠加5层）。"
+        },
+        "bloodletters_curse": {
+            "name": "放血者的诅咒",
+            "option": "腐蚀：对敌方英雄造成<#a974ffff>魔法伤害<>会<#d94c49ff>使其 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低6%<>，持续 <#e8a800ff>6秒<>（最多叠加5层）。"
+        },
+        "radiant_bloodletters_curse": {
+            "name": "光明版放血者的诅咒",
+            "option": "腐蚀：对敌方英雄造成<#a974ffff>魔法伤害<>会<#d94c49ff>使其 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低6%<>，持续 <#e8a800ff>6秒<>（最多叠加5层）。"
         },
         "deathblade": {
             "name": "死亡之刃",
@@ -1296,6 +1384,14 @@
         "radiant_rylais_crystal_scepter": {
             "name": "光明版兰蒂尔的冰晶节杖",
             "option": "凛霜：造成技能伤害时，对命中的单位施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
+        },
+        "stormrazor": {
+            "name": "风暴利刃",
+            "option": "蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n雷霆：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
+        },
+        "radiant_stormrazor": {
+            "name": "光明版风暴利刃",
+            "option": "蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n雷霆：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
         }
     },
     "pt-BR": {
@@ -1348,7 +1444,7 @@
             "attack_my_hp_ratio": "+{Value}% da sua Vida Máxima em Ataques",
             "reflect": "+{Value}% Dano Refletido",
             "dot_amplify": "+{Value}% Amplicação de Dano ao Longo do Tempo",
-            "hp_regen": "+{Value} Regeneração de Vida Máxima",
+            "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> {Value} Regeneração de Vida Máxima",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Chance de Acerto Crítico",
             "base_attack_damaged_reduce": "\nBarricada: Reduz o dano sofrido de Ataques em <#e8a800ff>{Value}%<>.",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Redução de Dano de Habilidades",
@@ -1486,6 +1582,14 @@
             "name": "Espada G. p. C.",
             "option": ""
         },
+        "phage": {
+            "name": "Fago",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "Máscara Assustadora",
+            "option": ""
+        },
         "infinity_edge": {
             "name": "Gume do Infinito",
             "option": ""
@@ -1493,6 +1597,22 @@
         "radiant_infinity_edge": {
             "name": "Gume do Infinito Radiante",
             "option": ""
+        },
+        "black_cleaver": {
+            "name": "Cutelo Negro",
+            "option": "Retalhar: Causar <#ff9028ff>dano físico<> a campeões inimigos <#d94c49ff>reduz a <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<> deles em 6%<> por <#e8a800ff>6 segundos<> (acumula 5x)."
+        },
+        "radiant_black_cleaver": {
+            "name": "Cutelo Negro Radiante",
+            "option": "Retalhar: Causar <#ff9028ff>dano físico<> a campeões inimigos <#d94c49ff>reduz a <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<> deles em 6%<> por <#e8a800ff>6 segundos<> (acumula 5x)."
+        },
+        "bloodletters_curse": {
+            "name": "Maldição Sanguessuga",
+            "option": "Decaimento: Causar <#a974ffff>dano mágico<> a campeões inimigos <#d94c49ff>reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> deles em 6%<> por <#e8a800ff>6 segundos<> (acumula 5x)."
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Maldição Sanguessuga Radiante",
+            "option": "Decaimento: Causar <#a974ffff>dano mágico<> a campeões inimigos <#d94c49ff>reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> deles em 6%<> por <#e8a800ff>6 segundos<> (acumula 5x)."
         },
         "deathblade": {
             "name": "Lâmina Mortal",
@@ -1729,6 +1849,14 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Cetro de Cristal de Rylai Radiante",
             "option": "Gélido: Causar dano de habilidade aplica <#d94c49ff>15% de lentidão<> nas unidades atingidas por <#e8a800ff>2 segundos<>."
+        },
+        "stormrazor": {
+            "name": "Navalha da Tempestade",
+            "option": "Energizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#e8a800ff>Energia<>, até <#e8a800ff>100<>.\n\nRaio: Quando totalmente <#e8a800ff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
+        },
+        "radiant_stormrazor": {
+            "name": "Navalha da Tempestade Radiante",
+            "option": "Energizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#e8a800ff>Energia<>, até <#e8a800ff>100<>.\n\nRaio: Quando totalmente <#e8a800ff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
         }
     },
     "ru": {
@@ -1781,7 +1909,7 @@
             "attack_my_hp_ratio": "+{Value}% от моего здоровья атакой",
             "reflect": "+{Value}% отражение урона",
             "dot_amplify": "+{Value}% Усиление периодического урона",
-            "hp_regen": "+{Value} максимального восстановления здоровья",
+            "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> {Value} Восстановление Здоровья",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Шанс Критического Удара",
             "base_attack_damaged_reduce": "\nPlating: Снижает получаемый урон от базовых атак на <#e8a800ff>{Value}%<>.",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Снижение урона от умений",
@@ -1919,6 +2047,14 @@
             "name": "Самый Лучший Меч",
             "option": ""
         },
+        "phage": {
+            "name": "Поглотитель",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "Преследующая маска",
+            "option": ""
+        },
         "infinity_edge": {
             "name": "Грань Бесконечности",
             "option": ""
@@ -1926,6 +2062,22 @@
         "radiant_infinity_edge": {
             "name": "Грань Зенита",
             "option": ""
+        },
+        "black_cleaver": {
+            "name": "Черная секира",
+            "option": "Рассечение: Нанесение <#ff9028ff>физического урона<> вражеским чемпионам <#d94c49ff>снижает их <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>броню<> на 6%<> на <#e8a800ff>6 секунд<> (макс. 5 стаков)."
+        },
+        "radiant_black_cleaver": {
+            "name": "Светоносная Черная секира",
+            "option": "Рассечение: Нанесение <#ff9028ff>физического урона<> вражеским чемпионам <#d94c49ff>снижает их <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>броню<> на 6%<> на <#e8a800ff>6 секунд<> (макс. 5 стаков)."
+        },
+        "bloodletters_curse": {
+            "name": "Проклятие кровопускателя",
+            "option": "Распад: Нанесение <#a974ffff>магического урона<> вражеским чемпионам <#d94c49ff>снижает их <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> на 6%<> на <#e8a800ff>6 секунд<> (макс. 5 стаков)."
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Светоносное Проклятие кровопускателя",
+            "option": "Распад: Нанесение <#a974ffff>магического урона<> вражеским чемпионам <#d94c49ff>снижает их <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> на 6%<> на <#e8a800ff>6 секунд<> (макс. 5 стаков)."
         },
         "deathblade": {
             "name": "Клинок Смерти",
@@ -2162,6 +2314,14 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Лучезарный Кристальный Скипетр Райлая",
             "option": "Иней: Нанесение урона умением замедляет пораженные цели на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
+        },
+        "stormrazor": {
+            "name": "Грозовая бритва",
+            "option": "Заряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>100<>.\n\nМолния: При полном <#e8a800ff>Заряде<>, ваш следующий <#ff9028ff>физический урон<> наносит <#a974ffff>100 дополнительного магического урона<> и даёт <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
+        },
+        "radiant_stormrazor": {
+            "name": "Лучезарная Грозовая бритва",
+            "option": "Заряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>100<>.\n\nМолния: При полном <#e8a800ff>Заряде<>, ваш следующий <#ff9028ff>физический урон<> наносит <#a974ffff>100 дополнительного магического урона<> и даёт <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
         }
     }
 }

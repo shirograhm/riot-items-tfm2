@@ -11,8 +11,8 @@ pub struct YunTalWildarrows {
     effect_stack_crit_chance: i32,
     effect_max_stacks: usize,
     effect_flurry_attack_speed_mult: i32,
-    effect_duration_seconds: usize,
-    effect_cooldown_seconds: usize,
+    effect_duration_seconds: f64,
+    effect_cooldown_seconds: f64,
     // Runtime state: total Practice stacks earned, re-applied on each spawn so the
     // permanent crit chance persists across combat rounds (see heartsteel.rs).
     accumulated_stacks: usize,
@@ -27,8 +27,8 @@ impl Default for YunTalWildarrows {
             effect_stack_crit_chance: 1,
             effect_max_stacks: 25,
             effect_flurry_attack_speed_mult: 30,
-            effect_duration_seconds: 6,
-            effect_cooldown_seconds: 15,
+            effect_duration_seconds: 6.0,
+            effect_cooldown_seconds: 15.0,
             accumulated_stacks: 0,
         }
     }
@@ -69,7 +69,7 @@ impl ModItemInfo for YunTalWildarrows {
     }
 
     fn icon(&self) -> &str {
-        "t12_0"
+        "yun_tal_wildarrows"
     }
 
     fn price(&self) -> usize {
@@ -152,7 +152,7 @@ impl ModItemInfo for YunTalWildarrows {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     attack_speed_mult: self.effect_flurry_attack_speed_mult,
                     name: ArrayString::try_from("yun_tal_flurry").unwrap(),
@@ -163,7 +163,7 @@ impl ModItemInfo for YunTalWildarrows {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_cooldown_seconds * 60,
+                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
                     },
                     name: ArrayString::try_from("yun_tal_flurry_cooldown").unwrap(),
                     ..Default::default()
@@ -189,8 +189,8 @@ pub struct RadiantYunTalWildarrows {
     effect_stack_crit_chance: i32,
     effect_max_stacks: usize,
     effect_flurry_attack_speed_mult: i32,
-    effect_duration_seconds: usize,
-    effect_cooldown_seconds: usize,
+    effect_duration_seconds: f64,
+    effect_cooldown_seconds: f64,
     accumulated_stacks: usize,
 }
 
@@ -203,8 +203,8 @@ impl Default for RadiantYunTalWildarrows {
             effect_stack_crit_chance: 1,
             effect_max_stacks: 25,
             effect_flurry_attack_speed_mult: 30,
-            effect_duration_seconds: 6,
-            effect_cooldown_seconds: 15,
+            effect_duration_seconds: 6.0,
+            effect_cooldown_seconds: 15.0,
             accumulated_stacks: 0,
         }
     }
@@ -245,7 +245,7 @@ impl ModItemInfo for RadiantYunTalWildarrows {
     }
 
     fn icon(&self) -> &str {
-        "t12_1"
+        "radiant_yun_tal_wildarrows"
     }
 
     fn price(&self) -> usize {
@@ -323,7 +323,7 @@ impl ModItemInfo for RadiantYunTalWildarrows {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     attack_speed_mult: self.effect_flurry_attack_speed_mult,
                     name: ArrayString::try_from("radiant_yun_tal_flurry").unwrap(),
@@ -334,7 +334,7 @@ impl ModItemInfo for RadiantYunTalWildarrows {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_cooldown_seconds * 60,
+                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
                     },
                     name: ArrayString::try_from("radiant_yun_tal_flurry_cooldown").unwrap(),
                     ..Default::default()

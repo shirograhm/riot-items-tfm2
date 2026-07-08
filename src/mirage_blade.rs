@@ -1,9 +1,8 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
+use crate::apply_adaptive_force;
 use crate::config::ItemConfig;
-use crate::force_to_ad;
-use crate::force_to_ap;
 
 #[derive(Clone, Debug)]
 pub struct MirageBlade {
@@ -12,7 +11,7 @@ pub struct MirageBlade {
     move_speed_mult: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for MirageBlade {
@@ -23,7 +22,7 @@ impl Default for MirageBlade {
             move_speed_mult: 10,
             adaptive_force: 60,
             effect_move_speed_mult: 20,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -44,42 +43,6 @@ impl MirageBlade {
                 .unwrap_or(d.effect_duration_seconds),
         }
     }
-
-    fn apply_adaptive_force(&self, ctx: &mut GameCtx, player: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(entity_ref) = player_ref.champion() else {
-            return;
-        };
-
-        let is_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_adaptive_force");
-
-        if !is_buff_applied {
-            if entity_ref.stat().magic_power > entity_ref.stat().attack {
-                ctx.add_buff(
-                    entity_ref.id(),
-                    BuffState {
-                        duration: BuffType::Permanent,
-                        magic_power: force_to_ap(self.adaptive_force),
-                        name: ArrayString::try_from("mirage_blade_adaptive_force").unwrap(),
-                        ..Default::default()
-                    },
-                )
-            } else {
-                ctx.add_buff(
-                    entity_ref.id(),
-                    BuffState {
-                        duration: BuffType::Permanent,
-                        attack: force_to_ad(self.adaptive_force),
-                        name: ArrayString::try_from("mirage_blade_adaptive_force").unwrap(),
-                        ..Default::default()
-                    },
-                )
-            }
-        }
-    }
 }
 
 impl ModItemInfo for MirageBlade {
@@ -92,7 +55,7 @@ impl ModItemInfo for MirageBlade {
     }
 
     fn icon(&self) -> &str {
-        "t9_7"
+        "mirage_blade"
     }
 
     fn price(&self) -> usize {
@@ -120,11 +83,21 @@ impl ModItemInfo for MirageBlade {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
-        self.apply_adaptive_force(ctx, player);
+        apply_adaptive_force(
+            ctx,
+            player,
+            self.adaptive_force,
+            "mirage_blade_adaptive_force",
+        );
     }
 
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        self.apply_adaptive_force(ctx, player);
+        apply_adaptive_force(
+            ctx,
+            player,
+            self.adaptive_force,
+            "mirage_blade_adaptive_force",
+        );
     }
 
     fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
@@ -143,7 +116,7 @@ impl ModItemInfo for MirageBlade {
                 entity_ref.id(),
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),
@@ -169,7 +142,7 @@ pub struct RadiantMirageBlade {
     move_speed_mult: i32,
     adaptive_force: i32,
     effect_move_speed_mult: i32,
-    effect_duration_seconds: usize,
+    effect_duration_seconds: f64,
 }
 
 impl Default for RadiantMirageBlade {
@@ -180,7 +153,7 @@ impl Default for RadiantMirageBlade {
             move_speed_mult: 15,
             adaptive_force: 100,
             effect_move_speed_mult: 20,
-            effect_duration_seconds: 2,
+            effect_duration_seconds: 2.0,
         }
     }
 }
@@ -202,7 +175,7 @@ impl RadiantMirageBlade {
         }
     }
 
-    fn apply_adaptive_force(&self, ctx: &mut GameCtx, player: usize) {
+    pub fn apply_buff(&self, ctx: &mut GameCtx, player: usize) {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
@@ -212,38 +185,18 @@ impl RadiantMirageBlade {
 
         let is_prior_buff_applied = (0..entity_ref.buff_count())
             .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_adaptive_force");
-        let is_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_mirage_blade_adaptive_force");
+        let force_to_apply = if is_prior_buff_applied {
+            self.adaptive_force - MirageBlade::default().adaptive_force
+        } else {
+            self.adaptive_force
+        };
 
-        if !is_buff_applied {
-            let force_to_apply = if is_prior_buff_applied {
-                self.adaptive_force - MirageBlade::default().adaptive_force
-            } else {
-                self.adaptive_force
-            };
-
-            if entity_ref.stat().magic_power > entity_ref.stat().attack {
-                ctx.add_buff(
-                    entity_ref.id(),
-                    BuffState {
-                        duration: BuffType::Permanent,
-                        magic_power: force_to_ap(force_to_apply),
-                        name: ArrayString::try_from("radiant_mirage_blade_adaptive_force").unwrap(),
-                        ..Default::default()
-                    },
-                )
-            } else {
-                ctx.add_buff(
-                    entity_ref.id(),
-                    BuffState {
-                        duration: BuffType::Permanent,
-                        attack: force_to_ad(force_to_apply),
-                        name: ArrayString::try_from("radiant_mirage_blade_adaptive_force").unwrap(),
-                        ..Default::default()
-                    },
-                )
-            }
-        }
+        apply_adaptive_force(
+            ctx,
+            player,
+            force_to_apply,
+            "radiant_mirage_blade_adaptive_force",
+        );
     }
 }
 
@@ -257,7 +210,7 @@ impl ModItemInfo for RadiantMirageBlade {
     }
 
     fn icon(&self) -> &str {
-        "t9_8"
+        "radiant_mirage_blade"
     }
 
     fn price(&self) -> usize {
@@ -281,11 +234,11 @@ impl ModItemInfo for RadiantMirageBlade {
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
-        self.apply_adaptive_force(ctx, player);
+        self.apply_buff(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        self.apply_adaptive_force(ctx, player);
+        self.apply_buff(ctx, player);
     }
 
     fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
@@ -304,7 +257,7 @@ impl ModItemInfo for RadiantMirageBlade {
                 entity_ref.id(),
                 BuffState {
                     duration: BuffType::Time {
-                        tick: self.effect_duration_seconds * 60,
+                        tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),
