@@ -62,7 +62,7 @@ impl ModItemInfo for Heartsteel {
     }
 
     fn icon(&self) -> &str {
-        "t10_1"
+        "heartsteel"
     }
 
     fn price(&self) -> usize {
@@ -227,7 +227,7 @@ impl ModItemInfo for RadiantHeartsteel {
     }
 
     fn icon(&self) -> &str {
-        "t10_2"
+        "radiant_heartsteel"
     }
 
     fn price(&self) -> usize {

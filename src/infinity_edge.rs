@@ -35,7 +35,7 @@ impl ModItemInfo for InfinityEdge {
     }
 
     fn icon(&self) -> &str {
-        "t6_0"
+        "infinity_edge"
     }
 
     fn price(&self) -> usize {
@@ -105,7 +105,7 @@ impl ModItemInfo for RadiantInfinityEdge {
     }
 
     fn icon(&self) -> &str {
-        "t6_1"
+        "radiant_infinity_edge"
     }
 
     fn price(&self) -> usize {

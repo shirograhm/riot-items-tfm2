@@ -67,7 +67,7 @@ impl ModItemInfo for GuinsoosRageblade {
     }
 
     fn icon(&self) -> &str {
-        "t9_5"
+        "guinsoos_rageblade"
     }
 
     fn price(&self) -> usize {
@@ -227,7 +227,7 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
     }
 
     fn icon(&self) -> &str {
-        "t9_6"
+        "radiant_guinsoos_rageblade"
     }
 
     fn price(&self) -> usize {

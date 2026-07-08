@@ -68,7 +68,7 @@ impl ModItemInfo for Stormrazor {
     }
 
     fn icon(&self) -> &str {
-        "t12_6"
+        "stormrazor"
     }
 
     fn price(&self) -> usize {
@@ -229,7 +229,7 @@ impl ModItemInfo for RadiantStormrazor {
     }
 
     fn icon(&self) -> &str {
-        "t12_7"
+        "radiant_stormrazor"
     }
 
     fn price(&self) -> usize {

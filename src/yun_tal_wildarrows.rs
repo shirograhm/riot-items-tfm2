@@ -69,7 +69,7 @@ impl ModItemInfo for YunTalWildarrows {
     }
 
     fn icon(&self) -> &str {
-        "t12_0"
+        "yun_tal_wildarrows"
     }
 
     fn price(&self) -> usize {
@@ -245,7 +245,7 @@ impl ModItemInfo for RadiantYunTalWildarrows {
     }
 
     fn icon(&self) -> &str {
-        "t12_1"
+        "radiant_yun_tal_wildarrows"
     }
 
     fn price(&self) -> usize {

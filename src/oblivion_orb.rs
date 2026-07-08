@@ -46,7 +46,7 @@ impl ModItemInfo for OblivionOrb {
     }
 
     fn icon(&self) -> &str {
-        "t10_7"
+        "oblivion_orb"
     }
 
     fn price(&self) -> usize {

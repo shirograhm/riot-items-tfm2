@@ -49,7 +49,7 @@ impl ModItemInfo for RylaisCrystalScepter {
     }
 
     fn icon(&self) -> &str {
-        "t12_2"
+        "rylais_crystal_scepter"
     }
 
     fn price(&self) -> usize {
@@ -159,7 +159,7 @@ impl ModItemInfo for RadiantRylaisCrystalScepter {
     }
 
     fn icon(&self) -> &str {
-        "t12_3"
+        "radiant_rylais_crystal_scepter"
     }
 
     fn price(&self) -> usize {

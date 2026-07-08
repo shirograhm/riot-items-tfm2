@@ -39,7 +39,7 @@ impl ModItemInfo for HauntingGuise {
     }
 
     fn icon(&self) -> &str {
-        "t12_4"
+        "haunting_guise"
     }
 
     fn price(&self) -> usize {
@@ -55,7 +55,11 @@ impl ModItemInfo for HauntingGuise {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["riftmaker".to_string(), "night_harvester".to_string()]
+        vec![
+            "riftmaker".to_string(),
+            "night_harvester".to_string(),
+            "bloodletters_curse".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffState {

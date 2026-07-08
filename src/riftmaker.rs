@@ -55,7 +55,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn icon(&self) -> &str {
-        "t7_2"
+        "riftmaker"
     }
 
     fn price(&self) -> usize {
@@ -168,7 +168,7 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn icon(&self) -> &str {
-        "t7_3"
+        "radiant_riftmaker"
     }
 
     fn price(&self) -> usize {

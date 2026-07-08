@@ -51,7 +51,7 @@ impl ModItemInfo for UnendingDespair {
     }
 
     fn icon(&self) -> &str {
-        "t9_1"
+        "unending_despair"
     }
 
     fn price(&self) -> usize {
@@ -151,7 +151,7 @@ impl ModItemInfo for RadiantUnendingDespair {
     }
 
     fn icon(&self) -> &str {
-        "t9_2"
+        "radiant_unending_despair"
     }
 
     fn price(&self) -> usize {

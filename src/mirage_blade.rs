@@ -55,7 +55,7 @@ impl ModItemInfo for MirageBlade {
     }
 
     fn icon(&self) -> &str {
-        "t9_7"
+        "mirage_blade"
     }
 
     fn price(&self) -> usize {
@@ -210,7 +210,7 @@ impl ModItemInfo for RadiantMirageBlade {
     }
 
     fn icon(&self) -> &str {
-        "t9_8"
+        "radiant_mirage_blade"
     }
 
     fn price(&self) -> usize {

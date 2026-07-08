@@ -69,7 +69,7 @@ impl ModItemInfo for ProtoplasmHarness {
     }
 
     fn icon(&self) -> &str {
-        "t9_3"
+        "protoplasm_harness"
     }
 
     fn price(&self) -> usize {
@@ -222,7 +222,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
     }
 
     fn icon(&self) -> &str {
-        "t9_4"
+        "radiant_protoplasm_harness"
     }
 
     fn price(&self) -> usize {

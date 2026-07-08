@@ -49,7 +49,7 @@ impl ModItemInfo for MortalReminder {
     }
 
     fn icon(&self) -> &str {
-        "t7_8"
+        "mortal_reminder"
     }
 
     fn price(&self) -> usize {
@@ -171,7 +171,7 @@ impl ModItemInfo for RadiantMortalReminder {
     }
 
     fn icon(&self) -> &str {
-        "t7_9"
+        "radiant_mortal_reminder"
     }
 
     fn price(&self) -> usize {

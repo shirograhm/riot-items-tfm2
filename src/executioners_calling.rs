@@ -46,7 +46,7 @@ impl ModItemInfo for ExecutionersCalling {
     }
 
     fn icon(&self) -> &str {
-        "t8_2"
+        "executioners_calling"
     }
 
     fn price(&self) -> usize {

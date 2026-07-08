@@ -93,7 +93,7 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn icon(&self) -> &str {
-        "t11_0"
+        "overlords_bloodmail"
     }
 
     fn price(&self) -> usize {
@@ -220,7 +220,7 @@ impl ModItemInfo for RadiantOverlordsBloodmail {
     }
 
     fn icon(&self) -> &str {
-        "t11_1"
+        "radiant_overlords_bloodmail"
     }
 
     fn price(&self) -> usize {

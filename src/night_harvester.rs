@@ -75,7 +75,7 @@ impl ModItemInfo for NightHarvester {
     }
 
     fn icon(&self) -> &str {
-        "t11_2"
+        "night_harvester"
     }
 
     fn price(&self) -> usize {
@@ -225,7 +225,7 @@ impl ModItemInfo for RadiantNightHarvester {
     }
 
     fn icon(&self) -> &str {
-        "t11_3"
+        "radiant_night_harvester"
     }
 
     fn price(&self) -> usize {

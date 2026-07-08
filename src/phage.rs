@@ -39,7 +39,7 @@ impl ModItemInfo for Phage {
     }
 
     fn icon(&self) -> &str {
-        "t12_5"
+        "phage"
     }
 
     fn price(&self) -> usize {
@@ -58,7 +58,7 @@ impl ModItemInfo for Phage {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["frozen_mallet".to_string()]
+        vec!["frozen_mallet".to_string(), "black_cleaver".to_string()]
     }
 
     fn stat(&self) -> BuffState {

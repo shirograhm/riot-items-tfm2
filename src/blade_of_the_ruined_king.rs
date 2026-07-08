@@ -60,7 +60,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
     }
 
     fn icon(&self) -> &str {
-        "t7_4"
+        "blade_of_the_ruined_king"
     }
 
     fn price(&self) -> usize {
@@ -201,7 +201,7 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
     }
 
     fn icon(&self) -> &str {
-        "t7_5"
+        "radiant_blade_of_the_ruined_king"
     }
 
     fn price(&self) -> usize {

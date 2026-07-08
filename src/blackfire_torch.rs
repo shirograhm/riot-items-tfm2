@@ -54,7 +54,7 @@ impl ModItemInfo for BlackfireTorch {
     }
 
     fn icon(&self) -> &str {
-        "t7_6"
+        "blackfire_torch"
     }
 
     fn price(&self) -> usize {
@@ -163,7 +163,7 @@ impl ModItemInfo for RadiantBlackfireTorch {
     }
 
     fn icon(&self) -> &str {
-        "t7_7"
+        "radiant_blackfire_torch"
     }
 
     fn price(&self) -> usize {

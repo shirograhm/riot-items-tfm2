@@ -101,7 +101,7 @@ impl ModItemInfo for ProtectorsVow {
     }
 
     fn icon(&self) -> &str {
-        "t6_7"
+        "protectors_vow"
     }
 
     fn price(&self) -> usize {
@@ -238,7 +238,7 @@ impl ModItemInfo for RadiantProtectorsVow {
     }
 
     fn icon(&self) -> &str {
-        "t6_8"
+        "radiant_protectors_vow"
     }
 
     fn price(&self) -> usize {

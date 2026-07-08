@@ -65,7 +65,7 @@ impl ModItemInfo for Terminus {
     }
 
     fn icon(&self) -> &str {
-        "t8_7"
+        "terminus"
     }
 
     fn price(&self) -> usize {
@@ -220,7 +220,7 @@ impl ModItemInfo for RadiantTerminus {
     }
 
     fn icon(&self) -> &str {
-        "t8_8"
+        "radiant_terminus"
     }
 
     fn price(&self) -> usize {

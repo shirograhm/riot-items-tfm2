@@ -36,7 +36,7 @@ impl ModItemInfo for NeedlesslyLargeRod {
     }
 
     fn icon(&self) -> &str {
-        "t6_9"
+        "needlessly_large_rod"
     }
 
     fn price(&self) -> usize {

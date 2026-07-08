@@ -203,6 +203,22 @@
             "name": "Radiant Infinity Edge",
             "option": ""
         },
+        "black_cleaver": {
+            "name": "Black Cleaver",
+            "option": ""
+        },
+        "radiant_black_cleaver": {
+            "name": "Radiant Black Cleaver",
+            "option": ""
+        },
+        "bloodletters_curse": {
+            "name": "Bloodletter's Curse",
+            "option": ""
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Radiant Bloodletter's Curse",
+            "option": ""
+        },
         "deathblade": {
             "name": "Deathblade",
             "option": "Apex: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> by <#ff9028ff>15%<>."
@@ -650,6 +666,22 @@
         },
         "radiant_infinity_edge": {
             "name": "Vô Cực Kiếm Ánh Sáng",
+            "option": ""
+        },
+        "black_cleaver": {
+            "name": "Rìu Đen",
+            "option": ""
+        },
+        "radiant_black_cleaver": {
+            "name": "Rìu Đen Ánh Sáng",
+            "option": ""
+        },
+        "bloodletters_curse": {
+            "name": "Lời Nguyền Huyết Tự",
+            "option": ""
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Lời Nguyền Huyết Tự Ánh Sáng",
             "option": ""
         },
         "deathblade": {
@@ -1101,6 +1133,22 @@
             "name": "光明版无尽之刃",
             "option": ""
         },
+        "black_cleaver": {
+            "name": "黑色切割者",
+            "option": ""
+        },
+        "radiant_black_cleaver": {
+            "name": "光明版黑色切割者",
+            "option": ""
+        },
+        "bloodletters_curse": {
+            "name": "放血者的诅咒",
+            "option": ""
+        },
+        "radiant_bloodletters_curse": {
+            "name": "光明版放血者的诅咒",
+            "option": ""
+        },
         "deathblade": {
             "name": "死亡之刃",
             "option": "顶峰：你的总 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>提升 <#ff9028ff>15%<>。"
@@ -1550,6 +1598,22 @@
             "name": "Gume do Infinito Radiante",
             "option": ""
         },
+        "black_cleaver": {
+            "name": "Cutelo Negro",
+            "option": ""
+        },
+        "radiant_black_cleaver": {
+            "name": "Cutelo Negro Radiante",
+            "option": ""
+        },
+        "bloodletters_curse": {
+            "name": "Maldição Sanguessuga",
+            "option": ""
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Maldição Sanguessuga Radiante",
+            "option": ""
+        },
         "deathblade": {
             "name": "Lâmina Mortal",
             "option": "Apex: Aumenta seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> em <#ff9028ff>15%<>."
@@ -1997,6 +2061,22 @@
         },
         "radiant_infinity_edge": {
             "name": "Грань Зенита",
+            "option": ""
+        },
+        "black_cleaver": {
+            "name": "Черная секира",
+            "option": ""
+        },
+        "radiant_black_cleaver": {
+            "name": "Светоносная Черная секира",
+            "option": ""
+        },
+        "bloodletters_curse": {
+            "name": "Проклятие кровопускателя",
+            "option": ""
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Светоносное Проклятие кровопускателя",
             "option": ""
         },
         "deathblade": {

@@ -57,7 +57,7 @@ impl ModItemInfo for NashorsTooth {
     }
 
     fn icon(&self) -> &str {
-        "t8_3"
+        "nashors_tooth"
     }
 
     fn price(&self) -> usize {
@@ -187,7 +187,7 @@ impl ModItemInfo for RadiantNashorsTooth {
     }
 
     fn icon(&self) -> &str {
-        "t8_4"
+        "radiant_nashors_tooth"
     }
 
     fn price(&self) -> usize {

@@ -126,7 +126,7 @@ impl ModItemInfo for WarmogsArmor {
     }
 
     fn icon(&self) -> &str {
-        "t11_6"
+        "warmogs_armor"
     }
 
     fn price(&self) -> usize {
@@ -310,7 +310,7 @@ impl ModItemInfo for RadiantWarmogsArmor {
     }
 
     fn icon(&self) -> &str {
-        "t11_7"
+        "radiant_warmogs_armor"
     }
 
     fn price(&self) -> usize {

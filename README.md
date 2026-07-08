@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 68 new items (37 base + 31 Radiant) to the game.
+Reskins the 30 existing items and also adds 72 new items (39 base + 33 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -29,8 +29,10 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
+| **Black Cleaver** | 1500G | +45 AD<br>+300 HP<br>+5% CDR | — |
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Landing an Ability on an enemy champion grants +10 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
+| **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | — |
 | **Collector** | 1400G | +55 AD<br>+20% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 8% max health executes them. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 1450G | +50 AD<br>+50 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: On kill, the stored damage is cleared and you heal for 15% of your missing health. |
@@ -65,8 +67,10 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
+| **Radiant Black Cleaver** | 2200G | +70 AD<br>+500 HP<br>+10% CDR | — |
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Landing an Ability on an enemy champion grants +30 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
+| **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | — |
 | **Radiant Collector** | 2000G | +105 AD<br>+25% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 8% max health executes them. |
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
 | **Radiant Death's Dance** | 2100G | +85 AD<br>+85 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: On kill, the stored damage is cleared and you heal for 15% of your missing health. |

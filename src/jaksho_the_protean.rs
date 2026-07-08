@@ -62,7 +62,7 @@ impl ModItemInfo for JakshoTheProtean {
     }
 
     fn icon(&self) -> &str {
-        "t8_5"
+        "jaksho_the_protean"
     }
 
     fn price(&self) -> usize {
@@ -194,7 +194,7 @@ impl ModItemInfo for RadiantJakshoTheProtean {
     }
 
     fn icon(&self) -> &str {
-        "t8_6"
+        "radiant_jaksho_the_protean"
     }
 
     fn price(&self) -> usize {

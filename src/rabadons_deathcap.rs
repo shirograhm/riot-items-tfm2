@@ -35,7 +35,7 @@ impl ModItemInfo for RabadonsDeathcap {
     }
 
     fn icon(&self) -> &str {
-        "t6_5"
+        "rabadons_deathcap"
     }
 
     fn price(&self) -> usize {
@@ -105,7 +105,7 @@ impl ModItemInfo for RadiantRabadonsDeathcap {
     }
 
     fn icon(&self) -> &str {
-        "t6_6"
+        "radiant_rabadons_deathcap"
     }
 
     fn price(&self) -> usize {

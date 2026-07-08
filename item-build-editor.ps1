@@ -39,7 +39,7 @@ $CHAMPIONS = @(
   'vampire', 'voodoo_shaman', 'werewolf', 'whip_master', 'white_mage', 'wind_mage'
 )
 $ITEMS = @(
-  'blackfire_torch', 'blade_of_the_ruined_king', 'bloodthirster', 'collector',
+  'black_cleaver', 'blackfire_torch', 'blade_of_the_ruined_king', 'bloodletters_curse', 'bloodthirster', 'collector',
   'deathblade', 'deaths_dance', 'dragons_claw', 'experimental_hexplate', 'frozen_mallet',
   'guinsoos_rageblade', 'heartsteel', 'hextech_gunblade', 'infinity_edge', 'jaksho_the_protean',
   'ludens_tempest', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',

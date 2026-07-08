@@ -66,7 +66,7 @@ impl ModItemInfo for DeathsDance {
     }
 
     fn icon(&self) -> &str {
-        "t10_5"
+        "deaths_dance"
     }
 
     fn price(&self) -> usize {
@@ -258,7 +258,7 @@ impl ModItemInfo for RadiantDeathsDance {
     }
 
     fn icon(&self) -> &str {
-        "t10_6"
+        "radiant_deaths_dance"
     }
 
     fn price(&self) -> usize {

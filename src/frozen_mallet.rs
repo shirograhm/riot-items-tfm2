@@ -50,7 +50,7 @@ impl ModItemInfo for FrozenMallet {
     }
 
     fn icon(&self) -> &str {
-        "t7_0"
+        "frozen_mallet"
     }
 
     fn price(&self) -> usize {
@@ -183,7 +183,7 @@ impl ModItemInfo for RadiantFrozenMallet {
     }
 
     fn icon(&self) -> &str {
-        "t7_1"
+        "radiant_frozen_mallet"
     }
 
     fn price(&self) -> usize {
