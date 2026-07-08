@@ -12,8 +12,8 @@ use crate::percent_of;
 // instead of only ratcheting upward. The trade-off is that during the ~1s
 // overlap both buffs are live, so the bonus is briefly doubled -- harmless,
 // since it only ever overshoots and never dips.
-const AWE_BUFF_DURATION_TICKS: usize = 600; // 10 seconds
-const AWE_REFRESH_PERIOD_TICKS: usize = 598; // 9.966 seconds -> ~.033 second of overlap
+const AWE_BUFF_DURATION_TICKS: usize = 60; // 1 seconds
+const AWE_REFRESH_PERIOD_TICKS: usize = 58; // 0.966 seconds -> ~.033 second of overlap
 
 #[derive(Clone, Debug)]
 pub struct ProtectorsVow {

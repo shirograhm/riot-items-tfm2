@@ -11,8 +11,8 @@ use crate::percent_of;
 // the holder's current max HP, rising or falling with it, instead of only
 // ratcheting upward. During the brief overlap both buffs are live, so the bonus
 // is momentarily doubled -- harmless, since it only ever overshoots.
-const TYRANNY_BUFF_DURATION_TICKS: usize = 600; // 10 seconds
-const TYRANNY_REFRESH_PERIOD_TICKS: usize = 598; // 9.966 seconds -> ~.033 second of overlap
+const TYRANNY_BUFF_DURATION_TICKS: usize = 60; // 1 seconds
+const TYRANNY_REFRESH_PERIOD_TICKS: usize = 58; // 0.966 seconds -> ~.033 second of overlap
 
 #[derive(Clone, Debug)]
 pub struct OverlordsBloodmail {
