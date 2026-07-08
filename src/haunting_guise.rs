@@ -11,7 +11,7 @@ pub struct HauntingGuise {
 impl Default for HauntingGuise {
     fn default() -> Self {
         Self {
-            price: 850,
+            price: 950,
             magic_power: 60,
             hp: 200,
         }

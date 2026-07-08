@@ -14,12 +14,12 @@
     "magic_power": 115
   },
   "haunting_guise": {
-    "price": 850,
+    "price": 950,
     "magic_power": 60,
     "hp": 200
   },
   "phage": {
-    "price": 850,
+    "price": 950,
     "hp": 200,
     "attack": 30
   },
