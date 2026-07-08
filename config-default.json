@@ -33,7 +33,10 @@
     "price": 1500,
     "attack": 45,
     "hp": 300,
-    "skill_cooldown_mult": 5
+    "skill_cooldown_mult": 5,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 6,
+    "effect_percent_armor_shred": 6
   },
   "blackfire_torch": {
     "price": 1300,
@@ -56,7 +59,10 @@
     "price": 1500,
     "magic_power": 110,
     "hp": 300,
-    "skill_cooldown_mult": 5
+    "skill_cooldown_mult": 5,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 6,
+    "effect_percent_mr_shred": 6
   },
   "collector": {
     "price": 1450,
@@ -277,7 +283,10 @@
     "price": 2200,
     "attack": 70,
     "hp": 500,
-    "skill_cooldown_mult": 10
+    "skill_cooldown_mult": 10,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 6,
+    "effect_percent_armor_shred": 6
   },
   "radiant_blackfire_torch": {
     "price": 1900,
@@ -385,7 +394,10 @@
     "price": 2200,
     "magic_power": 180,
     "hp": 500,
-    "skill_cooldown_mult": 10
+    "skill_cooldown_mult": 10,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 6,
+    "effect_percent_mr_shred": 6
   },
   "radiant_collector": {
     "price": 2100,

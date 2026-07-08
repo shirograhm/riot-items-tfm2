@@ -205,19 +205,19 @@
         },
         "black_cleaver": {
             "name": "Black Cleaver",
-            "option": ""
+            "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "radiant_black_cleaver": {
             "name": "Radiant Black Cleaver",
-            "option": ""
+            "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "bloodletters_curse": {
             "name": "Bloodletter's Curse",
-            "option": ""
+            "option": "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Magic Resistance<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "radiant_bloodletters_curse": {
             "name": "Radiant Bloodletter's Curse",
-            "option": ""
+            "option": "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Magic Resistance<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "deathblade": {
             "name": "Deathblade",
@@ -670,19 +670,19 @@
         },
         "black_cleaver": {
             "name": "Rìu Đen",
-            "option": ""
+            "option": "Xẻ Thịt: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>giáp<> của chúng 6%<> trong <#e8a800ff>6 giây<> (tối đa 5 cộng dồn)."
         },
         "radiant_black_cleaver": {
             "name": "Rìu Đen Ánh Sáng",
-            "option": ""
+            "option": "Xẻ Thịt: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>giáp<> của chúng 6%<> trong <#e8a800ff>6 giây<> (tối đa 5 cộng dồn)."
         },
         "bloodletters_curse": {
             "name": "Lời Nguyền Huyết Tự",
-            "option": ""
+            "option": "Phân Rã: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của chúng 6%<> trong <#e8a800ff>6 giây<> (tối đa 5 cộng dồn)."
         },
         "radiant_bloodletters_curse": {
             "name": "Lời Nguyền Huyết Tự Ánh Sáng",
-            "option": ""
+            "option": "Phân Rã: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của chúng 6%<> trong <#e8a800ff>6 giây<> (tối đa 5 cộng dồn)."
         },
         "deathblade": {
             "name": "Kiếm Tử Thần",
@@ -1135,19 +1135,19 @@
         },
         "black_cleaver": {
             "name": "黑色切割者",
-            "option": ""
+            "option": "碎裂：对敌方英雄造成<#ff9028ff>物理伤害<>会<#d94c49ff>使其 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<> 降低6%<>，持续 <#e8a800ff>6秒<>（最多叠加5层）。"
         },
         "radiant_black_cleaver": {
             "name": "光明版黑色切割者",
-            "option": ""
+            "option": "碎裂：对敌方英雄造成<#ff9028ff>物理伤害<>会<#d94c49ff>使其 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<> 降低6%<>，持续 <#e8a800ff>6秒<>（最多叠加5层）。"
         },
         "bloodletters_curse": {
             "name": "放血者的诅咒",
-            "option": ""
+            "option": "腐蚀：对敌方英雄造成<#a974ffff>魔法伤害<>会<#d94c49ff>使其 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低6%<>，持续 <#e8a800ff>6秒<>（最多叠加5层）。"
         },
         "radiant_bloodletters_curse": {
             "name": "光明版放血者的诅咒",
-            "option": ""
+            "option": "腐蚀：对敌方英雄造成<#a974ffff>魔法伤害<>会<#d94c49ff>使其 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低6%<>，持续 <#e8a800ff>6秒<>（最多叠加5层）。"
         },
         "deathblade": {
             "name": "死亡之刃",
@@ -1600,19 +1600,19 @@
         },
         "black_cleaver": {
             "name": "Cutelo Negro",
-            "option": ""
+            "option": "Retalhar: Causar <#ff9028ff>dano físico<> a campeões inimigos <#d94c49ff>reduz a <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<> deles em 6%<> por <#e8a800ff>6 segundos<> (acumula 5x)."
         },
         "radiant_black_cleaver": {
             "name": "Cutelo Negro Radiante",
-            "option": ""
+            "option": "Retalhar: Causar <#ff9028ff>dano físico<> a campeões inimigos <#d94c49ff>reduz a <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<> deles em 6%<> por <#e8a800ff>6 segundos<> (acumula 5x)."
         },
         "bloodletters_curse": {
             "name": "Maldição Sanguessuga",
-            "option": ""
+            "option": "Decaimento: Causar <#a974ffff>dano mágico<> a campeões inimigos <#d94c49ff>reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> deles em 6%<> por <#e8a800ff>6 segundos<> (acumula 5x)."
         },
         "radiant_bloodletters_curse": {
             "name": "Maldição Sanguessuga Radiante",
-            "option": ""
+            "option": "Decaimento: Causar <#a974ffff>dano mágico<> a campeões inimigos <#d94c49ff>reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> deles em 6%<> por <#e8a800ff>6 segundos<> (acumula 5x)."
         },
         "deathblade": {
             "name": "Lâmina Mortal",
@@ -2065,19 +2065,19 @@
         },
         "black_cleaver": {
             "name": "Черная секира",
-            "option": ""
+            "option": "Рассечение: Нанесение <#ff9028ff>физического урона<> вражеским чемпионам <#d94c49ff>снижает их <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>броню<> на 6%<> на <#e8a800ff>6 секунд<> (макс. 5 стаков)."
         },
         "radiant_black_cleaver": {
             "name": "Светоносная Черная секира",
-            "option": ""
+            "option": "Рассечение: Нанесение <#ff9028ff>физического урона<> вражеским чемпионам <#d94c49ff>снижает их <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>броню<> на 6%<> на <#e8a800ff>6 секунд<> (макс. 5 стаков)."
         },
         "bloodletters_curse": {
             "name": "Проклятие кровопускателя",
-            "option": ""
+            "option": "Распад: Нанесение <#a974ffff>магического урона<> вражеским чемпионам <#d94c49ff>снижает их <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> на 6%<> на <#e8a800ff>6 секунд<> (макс. 5 стаков)."
         },
         "radiant_bloodletters_curse": {
             "name": "Светоносное Проклятие кровопускателя",
-            "option": ""
+            "option": "Распад: Нанесение <#a974ffff>магического урона<> вражеским чемпионам <#d94c49ff>снижает их <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> на 6%<> на <#e8a800ff>6 секунд<> (макс. 5 стаков)."
         },
         "deathblade": {
             "name": "Клинок Смерти",

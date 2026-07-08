@@ -59,6 +59,8 @@ pub struct ItemConfig {
     pub effect_delayed_damage_percent: Option<f64>,
     pub effect_burn_hp_percent_cap: Option<f64>,
     pub effect_kill_heal_missing_percent: Option<f64>,
+    pub effect_percent_armor_shred: Option<i32>,
+    pub effect_percent_mr_shred: Option<i32>,
 
     pub on_hit_cooldown_seconds: Option<f64>,
 }

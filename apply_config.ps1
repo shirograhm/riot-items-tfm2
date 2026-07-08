@@ -187,6 +187,18 @@ $rsrStacks = [int]$config.radiant_stormrazor.effect_max_stacks
 $rsrMs = [int]$config.radiant_stormrazor.effect_move_speed_mult
 $rsrDmg = [int]$config.radiant_stormrazor.effect_bonus_flat_damage
 $rsrDur = [double]$config.radiant_stormrazor.effect_duration_seconds
+$bcShred = [int]$config.black_cleaver.effect_percent_armor_shred
+$bcDur = [int]$config.black_cleaver.effect_duration_seconds
+$bcStacks = [int]$config.black_cleaver.effect_max_stacks
+$rbcShred = [int]$config.radiant_black_cleaver.effect_percent_armor_shred
+$rbcDur = [int]$config.radiant_black_cleaver.effect_duration_seconds
+$rbcStacks = [int]$config.radiant_black_cleaver.effect_max_stacks
+$blcShred = [int]$config.bloodletters_curse.effect_percent_mr_shred
+$blcDur = [int]$config.bloodletters_curse.effect_duration_seconds
+$blcStacks = [int]$config.bloodletters_curse.effect_max_stacks
+$rblcShred = [int]$config.radiant_bloodletters_curse.effect_percent_mr_shred
+$rblcDur = [int]$config.radiant_bloodletters_curse.effect_duration_seconds
+$rblcStacks = [int]$config.radiant_bloodletters_curse.effect_max_stacks
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -270,6 +282,11 @@ $i18n.en.radiant_warmogs_armor.option = "Warmog's Heart: Regenerate <#60e84dff>$
 $i18n.en.stormrazor.option = "Energized: Moving and dealing <#ff9028ff>physical damage<> generates <#e8a800ff>Energize<> stacks, up to <#e8a800ff>${srStacks}<>.`n`nBolt: When fully <#e8a800ff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>${srDmg} bonus magic damage<> and grants you <#ffffffff>${srMs}%<> <$speedIcon> <#ffffffff>movement speed<> for <#e8a800ff>${srDur} seconds<>."
 $i18n.en.radiant_stormrazor.option = "Energized: Moving and dealing <#ff9028ff>physical damage<> generates <#e8a800ff>Energize<> stacks, up to <#e8a800ff>${rsrStacks}<>.`n`nBolt: When fully <#e8a800ff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>${rsrDmg} bonus magic damage<> and grants you <#ffffffff>${rsrMs}%<> <$speedIcon> <#ffffffff>movement speed<> for <#e8a800ff>${rsrDur} seconds<>."
 
+$i18n.en.black_cleaver.option = "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <$armorIcon> <#ffdd8eff>Armor<> by ${bcShred}%<> for <#e8a800ff>${bcDur} seconds<> (max ${bcStacks} stacks)."
+$i18n.en.radiant_black_cleaver.option = "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <$armorIcon> <#ffdd8eff>Armor<> by ${rbcShred}%<> for <#e8a800ff>${rbcDur} seconds<> (max ${rbcStacks} stacks)."
+$i18n.en.bloodletters_curse.option = "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <$mrIcon> <#88ccffff>Magic Resistance<> by ${blcShred}%<> for <#e8a800ff>${blcDur} seconds<> (max ${blcStacks} stacks)."
+$i18n.en.radiant_bloodletters_curse.option = "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <$mrIcon> <#88ccffff>Magic Resistance<> by ${rblcShred}%<> for <#e8a800ff>${rblcDur} seconds<> (max ${rblcStacks} stacks)."
+
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
 
@@ -335,6 +352,11 @@ $i18n.vi.warmogs_armor.option = "Trái Tim Warmog: Hồi phục <#60e84dff>${waH
 $i18n.vi.radiant_warmogs_armor.option = "Trái Tim Warmog: Hồi phục <#60e84dff>${rwaHeal}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn mỗi giây và nhận <#ffffffff>${rwaMs}%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> nếu không nhận sát thương trong <#e8a800ff>${rwaDur} giây<> gần đây."
 $i18n.vi.stormrazor.option = "Tích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>${srStacks}<>.`n`nTia Sét: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo gây <#a974ffff>${srDmg} sát thương phép cộng thêm<> và tăng <#ffffffff>${srMs}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>${srDur} giây<>."
 $i18n.vi.radiant_stormrazor.option = "Tích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>${rsrStacks}<>.`n`nTia Sét: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo gây <#a974ffff>${rsrDmg} sát thương phép cộng thêm<> và tăng <#ffffffff>${rsrMs}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>${rsrDur} giây<>."
+
+$i18n.vi.black_cleaver.option = "Xẻ Thịt: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm <$armorIcon> <#ffdd8eff>giáp<> của chúng ${bcShred}%<> trong <#e8a800ff>${bcDur} giây<> (tối đa ${bcStacks} cộng dồn)."
+$i18n.vi.radiant_black_cleaver.option = "Xẻ Thịt: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm <$armorIcon> <#ffdd8eff>giáp<> của chúng ${rbcShred}%<> trong <#e8a800ff>${rbcDur} giây<> (tối đa ${rbcStacks} cộng dồn)."
+$i18n.vi.bloodletters_curse.option = "Phân Rã: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm <$mrIcon> <#88ccffff>kháng phép<> của chúng ${blcShred}%<> trong <#e8a800ff>${blcDur} giây<> (tối đa ${blcStacks} cộng dồn)."
+$i18n.vi.radiant_bloodletters_curse.option = "Phân Rã: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm <$mrIcon> <#88ccffff>kháng phép<> của chúng ${rblcShred}%<> trong <#e8a800ff>${rblcDur} giây<> (tối đa ${rblcStacks} cộng dồn)."
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -402,6 +424,11 @@ $i18n.'zh-hans'.radiant_warmogs_armor.option = "狂徒之心：每秒回复你 <
 $i18n.'zh-hans'.stormrazor.option = "蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>${srStacks}<> 层。`n`n雷霆：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 额外造成 <#a974ffff>${srDmg} 点魔法伤害<>，并使你获得 <#ffffffff>${srMs}%<> <$speedIcon> <#ffffffff>移动速度<>，持续 <#e8a800ff>${srDur}秒<>。"
 $i18n.'zh-hans'.radiant_stormrazor.option = "蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>${rsrStacks}<> 层。`n`n雷霆：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 额外造成 <#a974ffff>${rsrDmg} 点魔法伤害<>，并使你获得 <#ffffffff>${rsrMs}%<> <$speedIcon> <#ffffffff>移动速度<>，持续 <#e8a800ff>${rsrDur}秒<>。"
 
+$i18n.'zh-hans'.black_cleaver.option = "碎裂：对敌方英雄造成<#ff9028ff>物理伤害<>会<#d94c49ff>使其 <$armorIcon> <#ffdd8eff>护甲<> 降低${bcShred}%<>，持续 <#e8a800ff>${bcDur}秒<>（最多叠加${bcStacks}层）。"
+$i18n.'zh-hans'.radiant_black_cleaver.option = "碎裂：对敌方英雄造成<#ff9028ff>物理伤害<>会<#d94c49ff>使其 <$armorIcon> <#ffdd8eff>护甲<> 降低${rbcShred}%<>，持续 <#e8a800ff>${rbcDur}秒<>（最多叠加${rbcStacks}层）。"
+$i18n.'zh-hans'.bloodletters_curse.option = "腐蚀：对敌方英雄造成<#a974ffff>魔法伤害<>会<#d94c49ff>使其 <$mrIcon> <#88ccffff>魔法抗性<> 降低${blcShred}%<>，持续 <#e8a800ff>${blcDur}秒<>（最多叠加${blcStacks}层）。"
+$i18n.'zh-hans'.radiant_bloodletters_curse.option = "腐蚀：对敌方英雄造成<#a974ffff>魔法伤害<>会<#d94c49ff>使其 <$mrIcon> <#88ccffff>魔法抗性<> 降低${rblcShred}%<>，持续 <#e8a800ff>${rblcDur}秒<>（最多叠加${rblcStacks}层）。"
+
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
 
@@ -467,6 +494,11 @@ $i18n.'pt-BR'.warmogs_armor.option = "Coração de Warmog: Regenera <#60e84dff>$
 $i18n.'pt-BR'.radiant_warmogs_armor.option = "Coração de Warmog: Regenera <#60e84dff>${rwaHeal}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo e concede <#ffffffff>${rwaMs}%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> se você não sofrer dano nos últimos <#e8a800ff>${rwaDur} segundos<>."
 $i18n.'pt-BR'.stormrazor.option = "Energizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#e8a800ff>Energia<>, até <#e8a800ff>${srStacks}<>.`n`nRaio: Quando totalmente <#e8a800ff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#a974ffff>${srDmg} de dano mágico bônus<> e concede <#ffffffff>${srMs}%<> de <$speedIcon> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>${srDur} segundos<>."
 $i18n.'pt-BR'.radiant_stormrazor.option = "Energizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#e8a800ff>Energia<>, até <#e8a800ff>${rsrStacks}<>.`n`nRaio: Quando totalmente <#e8a800ff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#a974ffff>${rsrDmg} de dano mágico bônus<> e concede <#ffffffff>${rsrMs}%<> de <$speedIcon> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>${rsrDur} segundos<>."
+
+$i18n.'pt-BR'.black_cleaver.option = "Retalhar: Causar <#ff9028ff>dano físico<> a campeões inimigos <#d94c49ff>reduz a <$armorIcon> <#ffdd8eff>Armadura<> deles em ${bcShred}%<> por <#e8a800ff>${bcDur} segundos<> (acumula ${bcStacks}x)."
+$i18n.'pt-BR'.radiant_black_cleaver.option = "Retalhar: Causar <#ff9028ff>dano físico<> a campeões inimigos <#d94c49ff>reduz a <$armorIcon> <#ffdd8eff>Armadura<> deles em ${rbcShred}%<> por <#e8a800ff>${rbcDur} segundos<> (acumula ${rbcStacks}x)."
+$i18n.'pt-BR'.bloodletters_curse.option = "Decaimento: Causar <#a974ffff>dano mágico<> a campeões inimigos <#d94c49ff>reduz a <$mrIcon> <#88ccffff>Resistência Mágica<> deles em ${blcShred}%<> por <#e8a800ff>${blcDur} segundos<> (acumula ${blcStacks}x)."
+$i18n.'pt-BR'.radiant_bloodletters_curse.option = "Decaimento: Causar <#a974ffff>dano mágico<> a campeões inimigos <#d94c49ff>reduz a <$mrIcon> <#88ccffff>Resistência Mágica<> deles em ${rblcShred}%<> por <#e8a800ff>${rblcDur} segundos<> (acumula ${rblcStacks}x)."
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -534,6 +566,11 @@ $i18n.ru.radiant_warmogs_armor.option = "Сердце Вармога: Восст
 $i18n.ru.stormrazor.option = "Заряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>${srStacks}<>.`n`nМолния: При полном <#e8a800ff>Заряде<>, ваш следующий <#ff9028ff>физический урон<> наносит <#a974ffff>${srDmg} дополнительного магического урона<> и даёт <#ffffffff>${srMs}%<> <$speedIcon> <#ffffffff>скорости передвижения<> на <#e8a800ff>${srDur} секунды<>."
 $i18n.ru.radiant_stormrazor.option = "Заряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>${rsrStacks}<>.`n`nМолния: При полном <#e8a800ff>Заряде<>, ваш следующий <#ff9028ff>физический урон<> наносит <#a974ffff>${rsrDmg} дополнительного магического урона<> и даёт <#ffffffff>${rsrMs}%<> <$speedIcon> <#ffffffff>скорости передвижения<> на <#e8a800ff>${rsrDur} секунды<>."
 
+$i18n.ru.black_cleaver.option = "Рассечение: Нанесение <#ff9028ff>физического урона<> вражеским чемпионам <#d94c49ff>снижает их <$armorIcon> <#ffdd8eff>броню<> на ${bcShred}%<> на <#e8a800ff>${bcDur} секунд<> (макс. ${bcStacks} стаков)."
+$i18n.ru.radiant_black_cleaver.option = "Рассечение: Нанесение <#ff9028ff>физического урона<> вражеским чемпионам <#d94c49ff>снижает их <$armorIcon> <#ffdd8eff>броню<> на ${rbcShred}%<> на <#e8a800ff>${rbcDur} секунд<> (макс. ${rbcStacks} стаков)."
+$i18n.ru.bloodletters_curse.option = "Распад: Нанесение <#a974ffff>магического урона<> вражеским чемпионам <#d94c49ff>снижает их <$mrIcon> <#88ccffff>сопротивление магии<> на ${blcShred}%<> на <#e8a800ff>${blcDur} секунд<> (макс. ${blcStacks} стаков)."
+$i18n.ru.radiant_bloodletters_curse.option = "Распад: Нанесение <#a974ffff>магического урона<> вражеским чемпионам <#d94c49ff>снижает их <$mrIcon> <#88ccffff>сопротивление магии<> на ${rblcShred}%<> на <#e8a800ff>${rblcDur} секунд<> (макс. ${rblcStacks} стаков)."
+
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
 [System.IO.File]::WriteAllText($i18nPath, $i18nJson)
@@ -597,3 +634,7 @@ Write-Host "  Yun Tal Wildarrows:         +${ytCrit}% crit/hit (cap ${ytMaxCrit}
 Write-Host "  Radiant Yun Tal Wildarrows: +${rytCrit}% crit/hit (cap ${rytMaxCrit}%) / +${rytFlurryAS}% AS ${rytDur}s (${rytCd}s CD)"
 Write-Host "  Stormrazor:              ${srDmg} magic dmg / ${srMs}% MS ${srDur}s / ${srStacks} stacks"
 Write-Host "  Radiant Stormrazor:      ${rsrDmg} magic dmg / ${rsrMs}% MS ${rsrDur}s / ${rsrStacks} stacks"
+Write-Host "  Black Cleaver:               -${bcShred}% armor / ${bcDur}s / ${bcStacks} stacks"
+Write-Host "  Radiant Black Cleaver:       -${rbcShred}% armor / ${rbcDur}s / ${rbcStacks} stacks"
+Write-Host "  Bloodletter's Curse:         -${blcShred}% MR / ${blcDur}s / ${blcStacks} stacks"
+Write-Host "  Radiant Bloodletter's Curse: -${rblcShred}% MR / ${rblcDur}s / ${rblcStacks} stacks"

@@ -84,7 +84,7 @@ impl ModItemInfo for Stormrazor {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_stormrazor".to_string()]
+        vec!["stormrazor".to_string()]
     }
 
     fn stat(&self) -> BuffState {
