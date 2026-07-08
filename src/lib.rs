@@ -12,6 +12,7 @@ mod executioners_calling;
 mod experimental_hexplate;
 mod frozen_mallet;
 mod guinsoos_rageblade;
+mod haunting_guise;
 mod heartsteel;
 mod hextech_gunblade;
 mod hook;
@@ -25,6 +26,7 @@ mod needlessly_large_rod;
 mod night_harvester;
 mod oblivion_orb;
 mod overlords_bloodmail;
+mod phage;
 mod protectors_vow;
 mod protoplasm_harness;
 mod rabadons_deathcap;
@@ -49,6 +51,7 @@ use executioners_calling::*;
 use experimental_hexplate::*;
 use frozen_mallet::*;
 use guinsoos_rageblade::*;
+use haunting_guise::*;
 use heartsteel::*;
 use hextech_gunblade::*;
 use infinity_edge::*;
@@ -61,6 +64,7 @@ use needlessly_large_rod::*;
 use night_harvester::*;
 use oblivion_orb::*;
 use overlords_bloodmail::*;
+use phage::*;
 use protectors_vow::*;
 use protoplasm_harness::*;
 use rabadons_deathcap::*;
@@ -157,6 +161,8 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 3
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
+    reg.add_item(configured!("haunting_guise" => HauntingGuise));
+    reg.add_item(configured!("phage" => Phage));
 
     // Tier 4
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));

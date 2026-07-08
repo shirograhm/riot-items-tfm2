@@ -15,6 +15,7 @@ const MOVE_SPEED_REFRESH_TICKS: usize = 30;
 pub struct WarmogsArmor {
     price: usize,
     hp: i32,
+    hp_regen: i32,
     effect_caster_hp_percent_heal: f64,
     effect_move_speed_mult: i32,
     effect_duration_seconds: f64,
@@ -25,7 +26,8 @@ impl Default for WarmogsArmor {
     fn default() -> Self {
         Self {
             price: 1400,
-            hp: 550,
+            hp: 600,
+            hp_regen: 6,
             effect_caster_hp_percent_heal: 3.0,
             effect_move_speed_mult: 4,
             effect_duration_seconds: 6.0,
@@ -40,6 +42,7 @@ impl WarmogsArmor {
         Self {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
+            hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             effect_caster_hp_percent_heal: cfg
                 .effect_caster_hp_percent_heal
                 .unwrap_or(d.effect_caster_hp_percent_heal),
@@ -145,6 +148,7 @@ impl ModItemInfo for WarmogsArmor {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: self.hp,
+            hp_regen: self.hp_regen,
             ..Default::default()
         }
     }
@@ -194,6 +198,7 @@ impl ModItemInfo for WarmogsArmor {
 pub struct RadiantWarmogsArmor {
     price: usize,
     hp: i32,
+    hp_regen: i32,
     effect_caster_hp_percent_heal: f64,
     effect_move_speed_mult: i32,
     effect_duration_seconds: f64,
@@ -204,7 +209,8 @@ impl Default for RadiantWarmogsArmor {
     fn default() -> Self {
         Self {
             price: 2000,
-            hp: 900,
+            hp: 1000,
+            hp_regen: 10,
             effect_caster_hp_percent_heal: 3.0,
             effect_move_speed_mult: 4,
             effect_duration_seconds: 6.0,
@@ -219,6 +225,7 @@ impl RadiantWarmogsArmor {
         Self {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
+            hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             effect_caster_hp_percent_heal: cfg
                 .effect_caster_hp_percent_heal
                 .unwrap_or(d.effect_caster_hp_percent_heal),
@@ -321,6 +328,7 @@ impl ModItemInfo for RadiantWarmogsArmor {
     fn stat(&self) -> BuffState {
         BuffState {
             hp: self.hp,
+            hp_regen: self.hp_regen,
             ..Default::default()
         }
     }

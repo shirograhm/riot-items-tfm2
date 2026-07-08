@@ -187,6 +187,14 @@
             "name": "B.F. Sword",
             "option": ""
         },
+        "phage": {
+            "name": "Phage",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "Haunting Guise",
+            "option": ""
+        },
         "infinity_edge": {
             "name": "Infinity Edge",
             "option": ""

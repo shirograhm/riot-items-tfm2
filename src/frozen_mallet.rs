@@ -62,10 +62,7 @@ impl ModItemInfo for FrozenMallet {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "soldiers_longsword".to_string(),
-            "ring_of_reincarnation".to_string(),
-        ]
+        vec!["phage".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
