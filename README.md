@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 68 new items (36 base + 32 Radiant) to the game.
+Reskins the 30 existing items and also adds 68 new items (37 base + 31 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -22,7 +22,9 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **B.F. Sword** | 800G | +65 Attack Damage | — |
+| **Haunting Guise** | 850G | +200 HP<br>+60 AP | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
+| **Phage** | 850G | +200 HP<br>+30 AD | — |
 
 #### Tier 4
 | Item | Cost | Stats | Passive |

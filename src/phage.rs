@@ -70,10 +70,10 @@ impl ModItemInfo for Phage {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP]
+        vec![ItemTag::AD]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+        ItemCategory::AD
     }
 }

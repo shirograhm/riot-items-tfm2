@@ -13,6 +13,16 @@
     "price": 850,
     "magic_power": 115
   },
+  "haunting_guise": {
+    "price": 850,
+    "magic_power": 60,
+    "hp": 200
+  },
+  "phage": {
+    "price": 850,
+    "hp": 200,
+    "attack": 30
+  },
   "oblivion_orb": {
     "price": 500,
     "magic_power": 50,

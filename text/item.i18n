@@ -636,6 +636,14 @@
             "name": "Kiếm B.F.",
             "option": ""
         },
+        "phage": {
+            "name": "Búa Gỗ",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "Mặt Nạ Ám Ảnh",
+            "option": ""
+        },
         "infinity_edge": {
             "name": "Vô Cực Kiếm",
             "option": ""
@@ -1075,6 +1083,14 @@
         },
         "bf_sword": {
             "name": "暴风之剑",
+            "option": ""
+        },
+        "phage": {
+            "name": "净蚀",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "幽魂面具",
             "option": ""
         },
         "infinity_edge": {
@@ -1518,6 +1534,14 @@
             "name": "Espada G. p. C.",
             "option": ""
         },
+        "phage": {
+            "name": "Fago",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "Máscara Assustadora",
+            "option": ""
+        },
         "infinity_edge": {
             "name": "Gume do Infinito",
             "option": ""
@@ -1957,6 +1981,14 @@
         },
         "bf_sword": {
             "name": "Самый Лучший Меч",
+            "option": ""
+        },
+        "phage": {
+            "name": "Поглотитель",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "Преследующая маска",
             "option": ""
         },
         "infinity_edge": {
