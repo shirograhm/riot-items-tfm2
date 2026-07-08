@@ -1,4 +1,4 @@
-use crate::{config::ItemConfig, night_harvester};
+use crate::config::ItemConfig;
 use mod_api::*;
 
 #[derive(Clone, Debug)]

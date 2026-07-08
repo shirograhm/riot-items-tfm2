@@ -87,7 +87,10 @@ impl ModItemInfo for NightHarvester {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["haunting_guise".to_string()]
+        vec![
+            "staff_of_rapture".to_string(),
+            "ring_of_reincarnation".to_string(),
+        ]
     }
 
     fn next_tier(&self) -> Vec<String> {
