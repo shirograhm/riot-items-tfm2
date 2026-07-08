@@ -67,10 +67,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "ring_of_reincarnation".to_string(),
-            "spirit_crystal".to_string(),
-        ]
+        vec!["haunting_guise".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

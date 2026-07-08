@@ -431,14 +431,6 @@
             "name": "Radiant Rylai's Crystal Scepter",
             "option": "Rimefrost: Dealing Ability damage applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
-        "turbo_chemtank": {
-            "name": "Turbo Chemtank",
-            "option": "Supercharged: Gain <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Taking damage from an enemy champion grants <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#92dc7bff>crowd control immunity<> for <#e8a800ff>6 seconds<> (40 second cooldown)."
-        },
-        "radiant_turbo_chemtank": {
-            "name": "Radiant Turbo Chemtank",
-            "option": "Supercharged: Gain <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Taking damage from an enemy champion grants <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#92dc7bff>crowd control immunity<> for <#e8a800ff>6 seconds<> (40 second cooldown)."
-        },
         "stormrazor": {
             "name": "Stormrazor",
             "option": "Energized: Moving and dealing <#ff9028ff>physical damage<> generates <#e8a800ff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#e8a800ff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
@@ -879,14 +871,6 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Quyền Trượng Pha Lê Rylai Ánh Sáng",
             "option": "Sương Giá: Khi gây sát thương kĩ năng, gây <#d94c49ff>15% kiệt sức<> cho mục tiêu trúng đòn trong <#e8a800ff>2 giây<>."
-        },
-        "turbo_chemtank": {
-            "name": "Bình Hóa Chất Turbo",
-            "option": "Tăng Áp: Nhận <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Khi nhận sát thương từ tướng địch, nhận <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> và <#92dc7bff>miễn nhiễm hiệu ứng khống chế<> trong <#e8a800ff>6 giây<> (hồi chiêu 40 giây)."
-        },
-        "radiant_turbo_chemtank": {
-            "name": "Bình Hóa Chất Turbo Ánh Sáng",
-            "option": "Tăng Áp: Nhận <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Khi nhận sát thương từ tướng địch, nhận <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> và <#92dc7bff>miễn nhiễm hiệu ứng khống chế<> trong <#e8a800ff>6 giây<> (hồi chiêu 40 giây)."
         },
         "stormrazor": {
             "name": "Kiếm Bão Tố",
@@ -1329,14 +1313,6 @@
             "name": "光明版兰蒂尔的冰晶节杖",
             "option": "凛霜：造成技能伤害时，对命中的单位施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
         },
-        "turbo_chemtank": {
-            "name": "涡轮炼金罐",
-            "option": "增压：获得 <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。受到敌方英雄伤害时，获得 <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>和 <#92dc7bff>控制免疫<>，持续 <#e8a800ff>6秒<>（冷却40秒）。"
-        },
-        "radiant_turbo_chemtank": {
-            "name": "光明版涡轮炼金罐",
-            "option": "增压：获得 <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。受到敌方英雄伤害时，获得 <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>和 <#92dc7bff>控制免疫<>，持续 <#e8a800ff>6秒<>（冷却40秒）。"
-        },
         "stormrazor": {
             "name": "风暴利刃",
             "option": "蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n雷霆：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
@@ -1778,14 +1754,6 @@
             "name": "Cetro de Cristal de Rylai Radiante",
             "option": "Gélido: Causar dano de habilidade aplica <#d94c49ff>15% de lentidão<> nas unidades atingidas por <#e8a800ff>2 segundos<>."
         },
-        "turbo_chemtank": {
-            "name": "Tanque Químico Turbo",
-            "option": "Supercarregado: Ganha <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Receber dano de um campeão inimigo concede <#ffffffff>25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> e <#92dc7bff>imunidade a controle de grupo<> por <#e8a800ff>6 segundos<> (recarga de 40 segundos)."
-        },
-        "radiant_turbo_chemtank": {
-            "name": "Tanque Químico Turbo Radiante",
-            "option": "Supercarregado: Ganha <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Receber dano de um campeão inimigo concede <#ffffffff>25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> e <#92dc7bff>imunidade a controle de grupo<> por <#e8a800ff>6 segundos<> (recarga de 40 segundos)."
-        },
         "stormrazor": {
             "name": "Navalha da Tempestade",
             "option": "Energizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#e8a800ff>Energia<>, até <#e8a800ff>100<>.\n\nRaio: Quando totalmente <#e8a800ff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
@@ -2226,14 +2194,6 @@
         "radiant_rylais_crystal_scepter": {
             "name": "Лучезарный Кристальный Скипетр Райлая",
             "option": "Иней: Нанесение урона умением замедляет пораженные цели на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
-        },
-        "turbo_chemtank": {
-            "name": "Турбхимбак",
-            "option": "Сверхзаряд: Даёт <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Получение урона от вражеского чемпиона даёт <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> и <#92dc7bff>иммунитет к эффектам контроля<> на <#e8a800ff>6 секунд<> (перезарядка 40 секунд)."
-        },
-        "radiant_turbo_chemtank": {
-            "name": "Лучезарный Турбхимбак",
-            "option": "Сверхзаряд: Даёт <#d48294ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Получение урона от вражеского чемпиона даёт <#ffffffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> и <#92dc7bff>иммунитет к эффектам контроля<> на <#e8a800ff>6 секунд<> (перезарядка 40 секунд)."
         },
         "stormrazor": {
             "name": "Грозовая бритва",

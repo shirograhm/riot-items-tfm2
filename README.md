@@ -55,7 +55,6 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Increase all healing received by 20%. |
 | **Stormrazor** | 1550G | +65 AD<br>+20% AS<br>+20% Crit Chance | Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.<br>Bolt: At 100 stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants 35% movement speed for 1.5 seconds. |
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
-| **Turbo Chemtank** | 1250G | +350 HP<br>+10 HP Regen | Supercharged: Gain 50 Adaptive Force. Taking damage from an enemy champion grants 25% movement speed and crowd control immunity for 6 seconds (40 second cooldown). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Landing an Ability on an enemy champion heals you for 10 + 1% of your maximum health. |
 | **Warmog's Armor** | 1400G | +550 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
@@ -92,7 +91,6 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Increase all healing received by 20%. |
 | **Radiant Stormrazor** | 2200G | +100 AD<br>+40% AS<br>+25% Crit Chance | Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.<br>Bolt: At 100 stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants 35% movement speed for 1.5 seconds. |
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
-| **Radiant Turbo Chemtank** | 1850G | +450 HP<br>+15 HP Regen | Supercharged: Gain 80 Adaptive Force. Taking damage from an enemy champion grants 25% movement speed and crowd control immunity for 6 seconds (40 second cooldown). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Landing an Ability on an enemy champion heals you for 25 + 3% of your maximum health. |
 | **Radiant Warmog's Armor** | 2000G | +900 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |

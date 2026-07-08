@@ -489,24 +489,6 @@
     "effect_move_speed_mult": 4,
     "effect_duration_seconds": 6
   },
-  "turbo_chemtank": {
-    "price": 1250,
-    "hp": 350,
-    "hp_regen": 10,
-    "adaptive_force": 50,
-    "effect_move_speed_mult": 25,
-    "effect_duration_seconds": 6,
-    "effect_cooldown_seconds": 40
-  },
-  "radiant_turbo_chemtank": {
-    "price": 1850,
-    "hp": 450,
-    "hp_regen": 15,
-    "adaptive_force": 80,
-    "effect_move_speed_mult": 25,
-    "effect_duration_seconds": 6,
-    "effect_cooldown_seconds": 40
-  },
   "stormrazor": {
     "price": 1550,
     "attack": 65,
