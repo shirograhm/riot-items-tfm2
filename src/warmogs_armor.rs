@@ -25,7 +25,7 @@ pub struct WarmogsArmor {
 impl Default for WarmogsArmor {
     fn default() -> Self {
         Self {
-            price: 1400,
+            price: 1450,
             hp: 600,
             hp_regen: 6,
             effect_caster_hp_percent_heal: 3.0,
@@ -208,7 +208,7 @@ pub struct RadiantWarmogsArmor {
 impl Default for RadiantWarmogsArmor {
     fn default() -> Self {
         Self {
-            price: 2000,
+            price: 2100,
             hp: 1000,
             hp_regen: 10,
             effect_caster_hp_percent_heal: 3.0,
