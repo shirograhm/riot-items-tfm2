@@ -25,16 +25,15 @@ Add-Type -Namespace Native -Name Edit -MemberDefinition @'
 public static extern int SendMessage(System.IntPtr hWnd, int msg, int wParam, string lParam);
 '@
 
-# --- data (from item-build-data-reference.txt) -----------------------------
 $CHAMPIONS = @(
-  'android', 'archer', 'bard', 'barrier_magician', 'berserker', 'bomber',
-  'boomerang_hunter', 'cavalry_knight', 'chef', 'circus_blade', 'clown', 'dancer',
+  'android', 'alchemist', 'archer', 'bard', 'barrier_magician', 'berserker', 'bomber',
+  'boomerang_hunter', 'cavalry_knight', 'chef', 'circus_blade', 'clown', 'crossbowman', 'dancer',
   'dark_mage', 'demon', 'dokkaebi', 'druid', 'dual_blader', 'enchanter',
   'executioner', 'exorcist', 'fighter', 'gambler', 'ghost', 'guardian_spirit',
   'gunner', 'hammerer', 'hitman', 'hunter', 'ice_mage', 'illusionist',
   'inquisitor', 'jiangshi', 'knight', 'lancer', 'lightning_mage', 'magic_knight',
-  'monk', 'necromancer', 'ninja', 'ogre', 'plague_doctor', 'poison_dart_hunter',
-  'pole_warrior', 'priest', 'prisoner', 'pyromancer', 'pythoness', 'shadowmancer',
+  'monk', 'necromancer', 'nightmare', 'ninja', 'ogre', 'plague_doctor', 'poison_dart_hunter',
+  'pole_warrior', 'priest', 'prisoner', 'pyromancer', 'pythoness', 'sand_mage', 'shadowmancer',
   'shield_bearer', 'siege_breaker', 'soldier', 'spirit_caller', 'swordman', 'taoist',
   'vampire', 'voodoo_shaman', 'werewolf', 'whip_master', 'white_mage', 'wind_mage'
 )
