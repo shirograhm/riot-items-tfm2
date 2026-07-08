@@ -96,6 +96,9 @@ impl ModItemInfo for BlackCleaver {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;
         };
+        if !entity_ref.is_champion() {
+            return;
+        }
 
         if damage_type != DamageType::AD {
             return;
@@ -217,6 +220,9 @@ impl ModItemInfo for RadiantBlackCleaver {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;
         };
+        if !entity_ref.is_champion() {
+            return;
+        }
 
         if damage_type != DamageType::AD {
             return;
