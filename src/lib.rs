@@ -9,6 +9,7 @@ mod bloodletters_curse;
 mod build_config;
 mod collector;
 mod config;
+mod constants;
 mod deathblade;
 mod deaths_dance;
 mod diamond_tipped_spear;
@@ -93,14 +94,7 @@ use warmogs_armor::*;
 use yun_tal_wildarrows::*;
 use zekes_herald::*;
 
-/// Config `effect_max_distance` values are expressed in attack-range units;
-/// multiply by this to convert to the raw game distance units that `distance_sq`
-/// works in. Shared by range-based items (diamond_tipped_spear, zekes_herald).
-pub(crate) const DISTANCE_UNITS_PER_RANGE: usize = 1000;
-
-/// Each point of Adaptive Force grants 1 Ability Power, or this much Attack
-/// Damage, whichever the recipient favors.
-pub(crate) const ADAPTIVE_FORCE_AD_RATIO: f64 = 0.6;
+pub(crate) use constants::*;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize

@@ -243,7 +243,7 @@ impl ModItemInfo for RadiantLiandrysTorment {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["radiant_liandrys_torment".to_string()]
+        vec!["liandrys_torment".to_string()]
     }
 
     fn stat(&self) -> BuffState {

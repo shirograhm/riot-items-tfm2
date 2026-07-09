@@ -3,6 +3,7 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
+use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
 // The Tyranny bonus attack is granted as a fixed-duration buff that is
 // re-applied on a slightly shorter cycle than it lasts, so a fresh buff is
@@ -11,8 +12,6 @@ use crate::percent_of;
 // the holder's current max HP, rising or falling with it, instead of only
 // ratcheting upward. During the brief overlap both buffs are live, so the bonus
 // is momentarily doubled -- harmless, since it only ever overshoots.
-const TYRANNY_BUFF_DURATION_TICKS: usize = 60; // 1 seconds
-const TYRANNY_REFRESH_PERIOD_TICKS: usize = 58; // 0.966 seconds -> ~.033 second of overlap
 
 #[derive(Clone, Debug)]
 pub struct OverlordsBloodmail {
@@ -73,13 +72,13 @@ impl OverlordsBloodmail {
             BuffState {
                 name: ArrayString::try_from("overlords_bloodmail_tyranny").unwrap(),
                 duration: BuffType::Time {
-                    tick: TYRANNY_BUFF_DURATION_TICKS,
+                    tick: BUFF_REFRESH_DURATION_TICKS,
                 },
                 attack: target,
                 ..Default::default()
             },
         );
-        self.refresh_cooldown = TYRANNY_REFRESH_PERIOD_TICKS;
+        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
 }
 
@@ -200,13 +199,13 @@ impl RadiantOverlordsBloodmail {
             BuffState {
                 name: ArrayString::try_from("radiant_overlords_bloodmail_tyranny").unwrap(),
                 duration: BuffType::Time {
-                    tick: TYRANNY_BUFF_DURATION_TICKS,
+                    tick: BUFF_REFRESH_DURATION_TICKS,
                 },
                 attack: target,
                 ..Default::default()
             },
         );
-        self.refresh_cooldown = TYRANNY_REFRESH_PERIOD_TICKS;
+        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
 }
 

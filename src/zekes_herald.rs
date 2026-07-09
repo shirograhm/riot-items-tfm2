@@ -1,8 +1,10 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::ADAPTIVE_FORCE_AD_RATIO;
-use crate::DISTANCE_UNITS_PER_RANGE;
+use crate::{
+    ADAPTIVE_FORCE_AD_RATIO, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
+    DISTANCE_UNITS_PER_RANGE,
+};
 
 // The aura grants Adaptive Force to every allied champion in range as a
 // fixed-duration buff, re-applied on a slightly shorter cycle than it lasts so a
@@ -12,8 +14,6 @@ use crate::DISTANCE_UNITS_PER_RANGE;
 // doubled, which is harmless for a flat combat stat. Same-name buffs stack and
 // there is no removal API, so this cyclic refresh is the only way to make an aura
 // that tracks position up AND down.
-const AURA_BUFF_DURATION_TICKS: usize = 60; // 1 second
-const AURA_REFRESH_PERIOD_TICKS: usize = 58; // 0.966s -> ~2 ticks of overlap
 
 #[derive(Clone, Debug)]
 pub struct ZekesHerald {
@@ -98,7 +98,7 @@ impl ZekesHerald {
             let mut buff = BuffState {
                 name: "zekes_herald_aura".try_into().unwrap(),
                 duration: BuffType::Time {
-                    tick: AURA_BUFF_DURATION_TICKS,
+                    tick: BUFF_REFRESH_DURATION_TICKS,
                 },
                 ..Default::default()
             };
@@ -111,7 +111,7 @@ impl ZekesHerald {
             ctx.add_buff(id, buff);
         }
 
-        self.refresh_cooldown = AURA_REFRESH_PERIOD_TICKS;
+        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
 }
 
@@ -258,7 +258,7 @@ impl RadiantZekesHerald {
             let mut buff = BuffState {
                 name: "radiant_zekes_herald_aura".try_into().unwrap(),
                 duration: BuffType::Time {
-                    tick: AURA_BUFF_DURATION_TICKS,
+                    tick: BUFF_REFRESH_DURATION_TICKS,
                 },
                 ..Default::default()
             };
@@ -271,7 +271,7 @@ impl RadiantZekesHerald {
             ctx.add_buff(id, buff);
         }
 
-        self.refresh_cooldown = AURA_REFRESH_PERIOD_TICKS;
+        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
 }
 

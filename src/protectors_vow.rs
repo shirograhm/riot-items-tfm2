@@ -3,6 +3,7 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
+use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
 // The Awe bonus HP is granted as a fixed-duration buff that is re-applied on a
 // slightly shorter cycle than it lasts, so a fresh buff is always in place
@@ -12,8 +13,6 @@ use crate::percent_of;
 // instead of only ratcheting upward. The trade-off is that during the ~1s
 // overlap both buffs are live, so the bonus is briefly doubled -- harmless,
 // since it only ever overshoots and never dips.
-const AWE_BUFF_DURATION_TICKS: usize = 60; // 1 seconds
-const AWE_REFRESH_PERIOD_TICKS: usize = 58; // 0.966 seconds -> ~.033 second of overlap
 
 #[derive(Clone, Debug)]
 pub struct ProtectorsVow {
@@ -81,13 +80,13 @@ impl ProtectorsVow {
             BuffState {
                 name: ArrayString::try_from("protectors_vow_awe").unwrap(),
                 duration: BuffType::Time {
-                    tick: AWE_BUFF_DURATION_TICKS,
+                    tick: BUFF_REFRESH_DURATION_TICKS,
                 },
                 hp: target,
                 ..Default::default()
             },
         );
-        self.refresh_cooldown = AWE_REFRESH_PERIOD_TICKS;
+        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
 }
 
@@ -218,13 +217,13 @@ impl RadiantProtectorsVow {
             BuffState {
                 name: ArrayString::try_from("radiant_protectors_vow_awe").unwrap(),
                 duration: BuffType::Time {
-                    tick: AWE_BUFF_DURATION_TICKS,
+                    tick: BUFF_REFRESH_DURATION_TICKS,
                 },
                 hp: target,
                 ..Default::default()
             },
         );
-        self.refresh_cooldown = AWE_REFRESH_PERIOD_TICKS;
+        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
 }
 

@@ -603,5 +603,21 @@
     "hp_regen": 2,
     "magic_power": 20,
     "skill_cooldown_mult": 5
+  },
+  "liandrys_torment": {
+    "price": 1400,
+    "hp": 350,
+    "magic_power": 75,
+    "effect_hp_percent_damage": 6.0,
+    "effect_minion_damage_cap": 40,
+    "effect_duration_seconds": 3
+  },
+  "radiant_liandrys_torment": {
+    "price": 2000,
+    "hp": 550,
+    "magic_power": 150,
+    "effect_hp_percent_damage": 6.0,
+    "effect_minion_damage_cap": 40,
+    "effect_duration_seconds": 3
   }
 }
