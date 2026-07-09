@@ -647,6 +647,60 @@
             "y": 0.25,
             "w": 0.05,
             "h": 0.05
+        },
+        "liandrys_torment": {
+            "x": 0.4,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_liandrys_torment": {
+            "x": 0.45,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "bastionbreaker": {
+            "x": 0.5,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_bastionbreaker": {
+            "x": 0.55,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "lord_dominiks_regards": {
+            "x": 0.6,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_lord_dominiks_regards": {
+            "x": 0.65,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "moonstone_renewer": {
+            "x": 0.7,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_moonstone_renewer": {
+            "x": 0.75,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "last_whisper": {
+            "x": 0.8,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
         }
     }
 }

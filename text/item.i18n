@@ -486,6 +486,14 @@
         "radiant_zekes_herald": {
             "name": "Radiant Zeke's Herald",
             "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+        },
+        "liandrys_torment": {
+            "name": "Liandry's Torment",
+            "option": "Suffering: Dealing Ability damage burns enemies, causing them to take <#d94c49ff>6% of the target's maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>3 seconds<>. Deals a maximum of <#a974ffff>40 magic damage<> per tick against minions and monsters."
+        },
+        "radiant_liandrys_torment": {
+            "name": "Liandry's Torment",
+            "option": "Suffering: Dealing Ability damage burns enemies, causing them to take <#d94c49ff>6% of the target's maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>3 seconds<>. Deals a maximum of <#a974ffff>40 magic damage<> per tick against minions and monsters."
         }
     },
     "vi": {

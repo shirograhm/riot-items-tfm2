@@ -41,7 +41,7 @@ $ITEMS = @(
   'black_cleaver', 'blackfire_torch', 'blade_of_the_ruined_king', 'bloodletters_curse', 'bloodthirster', 'collector',
   'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'experimental_hexplate', 'frozen_mallet',
   'guinsoos_rageblade', 'heartsteel', 'hextech_gunblade', 'infinity_edge', 'jaksho_the_protean',
-  'ludens_tempest', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
+  'liandrys_torment', 'ludens_tempest', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
   'night_harvester', 'overlords_bloodmail', 'phantom_dancer',
   'protectors_vow', 'protoplasm_harness', 'rabadons_deathcap', 'riftmaker', 'rylais_crystal_scepter', 'shadowflame', 'spear_of_shojin',
   'spirit_visage', 'stormrazor', 'sunfire_cape', 'terminus', 'thornmail', 'unending_despair',
