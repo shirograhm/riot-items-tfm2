@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 72 new items (39 base + 33 Radiant) to the game.
+Reskins the 30 existing items and also adds 78 new items (43 base + 35 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -22,9 +22,11 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **B.F. Sword** | 800G | +65 Attack Damage | — |
+| **Bandleglass Mirror** | 800G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
 | **Haunting Guise** | 850G | +200 HP<br>+60 AP | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
 | **Phage** | 850G | +200 HP<br>+30 AD | — |
+| **Scout's Slingshot** | 800G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 
 #### Tier 4
 | Item | Cost | Stats | Passive |
@@ -36,6 +38,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Collector** | 1400G | +55 AD<br>+20% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 8% max health executes them. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 1450G | +50 AD<br>+50 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: On kill, the stored damage is cleared and you heal for 15% of your missing health. |
+| **Diamond Tipped Spear** | 1500G | +35% AS<br>+10% CDR | Pierce: Gain 75 Adaptive Force.<br>Sweet Spot: Deal up to 30% bonus damage to enemy champions based on distance (max distance 100000 units). |
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
 | **Frozen Mallet** | 1300G | +450 HP<br>+45 AD | On attack, apply a 25% slow for 2 seconds. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
@@ -62,6 +65,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Landing an Ability on an enemy champion heals you for 10 + 1% of your maximum health. |
 | **Warmog's Armor** | 1400G | +550 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
+| **Zeke's Herald** | 1150G | +350 HP<br>+5 HP Regen<br>+35 AP<br>+10% CDR | Aura: Grant 20 Adaptive Force to all allied champions within 80000 units. |
 
 
 #### Tier 5  
@@ -74,6 +78,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Collector** | 2000G | +105 AD<br>+25% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 8% max health executes them. |
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
 | **Radiant Death's Dance** | 2100G | +85 AD<br>+85 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: On kill, the stored damage is cleared and you heal for 15% of your missing health. |
+| **Radiant Diamond Tipped Spear** | 2250G | +60% AS<br>+10% CDR | Pierce: Gain 120 Adaptive Force.<br>Sweet Spot: Deal up to 30% bonus damage to enemy champions based on distance (max distance 100000 units). |
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Reduce the cooldown of your ultimate ability by 25%. |
 | **Radiant Frozen Mallet** | 1900G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
@@ -100,6 +105,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Landing an Ability on an enemy champion heals you for 25 + 3% of your maximum health. |
 | **Radiant Warmog's Armor** | 2000G | +900 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
+| **Radiant Zeke's Herald** | 1700G | +600 HP<br>+6 HP Regen<br>+60 AP<br>+15% CDR | Aura: Grant 35 Adaptive Force to all allied champions within 80000 units. |
 
 
 ### Base Item Reskins

@@ -1,5 +1,6 @@
 use mod_api::*;
 
+mod bandleglass_mirror;
 mod bf_sword;
 mod black_cleaver;
 mod blackfire_torch;
@@ -35,6 +36,7 @@ mod protoplasm_harness;
 mod rabadons_deathcap;
 mod riftmaker;
 mod rylais_crystal_scepter;
+mod scouts_slingshot;
 mod shadowflame;
 mod spear_of_shojin;
 mod spirit_visage;
@@ -43,7 +45,9 @@ mod terminus;
 mod unending_despair;
 mod warmogs_armor;
 mod yun_tal_wildarrows;
+mod zekes_herald;
 
+use bandleglass_mirror::*;
 use bf_sword::*;
 use black_cleaver::*;
 use blackfire_torch::*;
@@ -76,6 +80,7 @@ use protoplasm_harness::*;
 use rabadons_deathcap::*;
 use riftmaker::*;
 use rylais_crystal_scepter::*;
+use scouts_slingshot::*;
 use shadowflame::*;
 use spear_of_shojin::*;
 use spirit_visage::*;
@@ -84,6 +89,7 @@ use terminus::*;
 use unending_despair::*;
 use warmogs_armor::*;
 use yun_tal_wildarrows::*;
+use zekes_herald::*;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -169,6 +175,8 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
     reg.add_item(configured!("phage" => Phage));
+    reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
+    reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
 
     // Tier 4
     reg.add_item(configured!("black_cleaver" => BlackCleaver));
@@ -205,6 +213,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows));
+    reg.add_item(configured!("zekes_herald" => ZekesHerald));
 
     // Tier 5
     reg.add_item(configured!("radiant_black_cleaver" => RadiantBlackCleaver));
@@ -241,6 +250,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
     reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
     reg.add_item(configured!("radiant_yun_tal_wildarrows" => RadiantYunTalWildarrows));
+    reg.add_item(configured!("radiant_zekes_herald" => RadiantZekesHerald));
 
     reg.set_server_extension(ItemBuildHookExtension);
 

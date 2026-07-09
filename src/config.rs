@@ -25,6 +25,7 @@ pub struct ItemConfig {
     pub ult_cooldown_mult: Option<i32>,
     pub vamp: Option<i32>,
 
+    pub effect_adaptive_force: Option<i32>,
     pub effect_move_speed_mult: Option<i32>,
     pub effect_duration_seconds: Option<f64>,
     pub effect_heal_reduce: Option<usize>,

@@ -257,11 +257,11 @@
         },
         "protoplasm_harness": {
             "name": "Protoplasm Harness",
-            "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>300<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <#60e84dff>heals you<> for half that amount (30 second cooldown)."
+            "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>300<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <#60e84dff>heals you<> for half that amount (<#e8a800ff>30 second<> cooldown)."
         },
         "radiant_protoplasm_harness": {
             "name": "Radiant Protoplasm Harness",
-            "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>600<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <#60e84dff>heals you<> for half that amount (30 second cooldown)."
+            "option": "Fortification: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>600<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <#60e84dff>heals you<> for half that amount (<#e8a800ff>30 second<> cooldown)."
         },
         "frozen_mallet": {
             "name": "Frozen Mallet",
@@ -289,11 +289,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Yun Tal Wildarrows",
-            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
+            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (<#e8a800ff>15 second<> cooldown)."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Radiant Yun Tal Wildarrows",
-            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (15 second cooldown)."
+            "option": "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (<#e8a800ff>15 second<> cooldown)."
         },
         "unending_despair": {
             "name": "Unending Despair",
@@ -433,11 +433,11 @@
         },
         "night_harvester": {
             "name": "Night Harvester",
-            "option": "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (45 second cooldown per target)."
+            "option": "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (<#e8a800ff>45 second<> cooldown per target)."
         },
         "radiant_night_harvester": {
             "name": "Radiant Night Harvester",
-            "option": "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (45 second cooldown per target)."
+            "option": "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (<#e8a800ff>45 second<> cooldown per target)."
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
@@ -470,6 +470,22 @@
         "radiant_diamond_tipped_spear": {
             "name": "Radiant Diamond Tipped Spear",
             "option": "Pierce: Gain <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nSweet Spot: Deal up to <#e8a800ff>30% bonus damage<> to enemy champions based on distance (max distance of <#e8a800ff>100000 units<>)."
+        },
+        "scouts_slingshot": {
+            "name": "Scout's Slingshot",
+            "option": "Bullseye: Damaging an enemy champion deals <#a974ffff>40 bonus magic damage<> (<#e8a800ff>20 second<> cooldown)."
+        },
+        "bandleglass_mirror": {
+            "name": "Bandleglass Mirror",
+            "option": ""
+        },
+        "zekes_herald": {
+            "name": "Zeke's Herald",
+            "option": "Aura: Grant <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#e8a800ff>80000 units<>."
+        },
+        "radiant_zekes_herald": {
+            "name": "Radiant Zeke's Herald",
+            "option": "Aura: Grant <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#e8a800ff>80000 units<>."
         }
     },
     "vi": {
@@ -937,12 +953,28 @@
             "option": "Tích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
         },
         "diamond_tipped_spear": {
-            "name": "Giáo Mũi Kim Cương",
+            "name": "Mũi Giáo Kim Cương",
             "option": "Xuyên Thấu: Nhận <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nĐiểm Lý Tưởng: Gây tối đa <#e8a800ff>30% sát thương cộng thêm<> lên tướng địch dựa trên khoảng cách (khoảng cách tối đa <#e8a800ff>100000 đơn vị<>)."
         },
         "radiant_diamond_tipped_spear": {
-            "name": "Giáo Mũi Kim Cương Ánh Sáng",
+            "name": "Mũi Giáo Kim Cương Ánh Sáng",
             "option": "Xuyên Thấu: Nhận <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nĐiểm Lý Tưởng: Gây tối đa <#e8a800ff>30% sát thương cộng thêm<> lên tướng địch dựa trên khoảng cách (khoảng cách tối đa <#e8a800ff>100000 đơn vị<>)."
+        },
+        "zekes_herald": {
+            "name": "Sứ Giả Của Zeke",
+            "option": "Hào Quang: Cấp <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> cho mọi tướng đồng minh trong phạm vi <#e8a800ff>80000 đơn vị<>."
+        },
+        "radiant_zekes_herald": {
+            "name": "Sứ Giả Của Zeke Ánh Sáng",
+            "option": "Hào Quang: Cấp <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> cho mọi tướng đồng minh trong phạm vi <#e8a800ff>80000 đơn vị<>."
+        },
+        "scouts_slingshot": {
+            "name": "Ná Cao Su Trinh Sát",
+            "option": "Hồng Tâm: Khi gây sát thương cho tướng địch, gây <#a974ffff>40 sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>20 giây<>)."
+        },
+        "bandleglass_mirror": {
+            "name": "Gương Thần Bandle",
+            "option": ""
         }
     },
     "zh-hans": {
@@ -1410,12 +1442,28 @@
             "option": "蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n雷霆：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
         },
         "diamond_tipped_spear": {
-            "name": "钻石尖矛",
+            "name": "钻头长矛",
             "option": "穿刺：获得 <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。每点 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。\n\n最佳距离：根据距离对敌方英雄造成最多 <#e8a800ff>30% 额外伤害<>（最大距离 <#e8a800ff>100000 单位<>）。"
         },
         "radiant_diamond_tipped_spear": {
-            "name": "光明版钻石尖矛",
+            "name": "光明版钻头长矛",
             "option": "穿刺：获得 <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。每点 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。\n\n最佳距离：根据距离对敌方英雄造成最多 <#e8a800ff>30% 额外伤害<>（最大距离 <#e8a800ff>100000 单位<>）。"
+        },
+        "zekes_herald": {
+            "name": "泽克的先驱",
+            "option": "光环：为 <#e8a800ff>80000 单位<>范围内的所有友方英雄提供 <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。"
+        },
+        "radiant_zekes_herald": {
+            "name": "光明版泽克的先驱",
+            "option": "光环：为 <#e8a800ff>80000 单位<>范围内的所有友方英雄提供 <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。"
+        },
+        "scouts_slingshot": {
+            "name": "斥候弹弓",
+            "option": "靶心：对敌方英雄造成伤害时，额外造成 <#a974ffff>40 点魔法伤害<>（冷却 <#e8a800ff>20秒<>）。"
+        },
+        "bandleglass_mirror": {
+            "name": "班德尔玻璃镜",
+            "option": ""
         }
     },
     "pt-BR": {
@@ -1883,12 +1931,28 @@
             "option": "Energizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#e8a800ff>Energia<>, até <#e8a800ff>100<>.\n\nRaio: Quando totalmente <#e8a800ff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
         },
         "diamond_tipped_spear": {
-            "name": "Lança de Ponta de Diamante",
+            "name": "Lança de Diamante",
             "option": "Perfuração: Ganha <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nPonto Ideal: Causa até <#e8a800ff>30% de dano bônus<> a campeões inimigos com base na distância (distância máxima de <#e8a800ff>100000 unidades<>)."
         },
         "radiant_diamond_tipped_spear": {
-            "name": "Lança de Ponta de Diamante Radiante",
+            "name": "Lança de Diamante Radiante",
             "option": "Perfuração: Ganha <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nPonto Ideal: Causa até <#e8a800ff>30% de dano bônus<> a campeões inimigos com base na distância (distância máxima de <#e8a800ff>100000 unidades<>)."
+        },
+        "zekes_herald": {
+            "name": "Arauto de Zeke",
+            "option": "Aura: Concede <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> a todos os campeões aliados dentro de <#e8a800ff>80000 unidades<>."
+        },
+        "radiant_zekes_herald": {
+            "name": "Arauto de Zeke Radiante",
+            "option": "Aura: Concede <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> a todos os campeões aliados dentro de <#e8a800ff>80000 unidades<>."
+        },
+        "scouts_slingshot": {
+            "name": "Estilingue do Patrulheiro",
+            "option": "Na Mosca: Causar dano a um campeão inimigo causa <#a974ffff>40 de dano mágico bônus<> (recarga de <#e8a800ff>20 segundos<>)."
+        },
+        "bandleglass_mirror": {
+            "name": "Espelho de Bandópolis",
+            "option": ""
         }
     },
     "ru": {
@@ -2356,12 +2420,28 @@
             "option": "Заряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>100<>.\n\nМолния: При полном <#e8a800ff>Заряде<>, ваш следующий <#ff9028ff>физический урон<> наносит <#a974ffff>100 дополнительного магического урона<> и даёт <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
         },
         "diamond_tipped_spear": {
-            "name": "Копьё с алмазным наконечником",
+            "name": "Алмазное копье",
             "option": "Пронзание: Даёт <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nИдеальная дистанция: Наносит до <#e8a800ff>30% дополнительного урона<> вражеским чемпионам в зависимости от расстояния (максимальное расстояние <#e8a800ff>100000 единиц<>)."
         },
         "radiant_diamond_tipped_spear": {
-            "name": "Лучезарное копьё с алмазным наконечником",
+            "name": "Лучезарное алмазное копье",
             "option": "Пронзание: Даёт <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nИдеальная дистанция: Наносит до <#e8a800ff>30% дополнительного урона<> вражеским чемпионам в зависимости от расстояния (максимальное расстояние <#e8a800ff>100000 единиц<>)."
+        },
+        "zekes_herald": {
+            "name": "Вестник Зика",
+            "option": "Аура: Даёт <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> всем союзным чемпионам в пределах <#e8a800ff>80000 единиц<>."
+        },
+        "radiant_zekes_herald": {
+            "name": "Лучезарный Вестник Зика",
+            "option": "Аура: Даёт <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> всем союзным чемпионам в пределах <#e8a800ff>80000 единиц<>."
+        },
+        "scouts_slingshot": {
+            "name": "Рогатка скаута",
+            "option": "В яблочко: Нанесение урона вражескому чемпиону наносит <#a974ffff>40 дополнительного магического урона<> (перезарядка <#e8a800ff>20 секунд<>)."
+        },
+        "bandleglass_mirror": {
+            "name": "Зеркало йордлов",
+            "option": ""
         }
     }
 }

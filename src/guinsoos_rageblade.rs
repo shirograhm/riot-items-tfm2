@@ -79,7 +79,7 @@ impl ModItemInfo for GuinsoosRageblade {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["soldiers_longsword".to_string(), "wind_dagger".to_string()]
+        vec!["scouts_slingshot".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

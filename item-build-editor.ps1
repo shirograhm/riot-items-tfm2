@@ -45,7 +45,7 @@ $ITEMS = @(
   'night_harvester', 'overlords_bloodmail', 'phantom_dancer',
   'protectors_vow', 'protoplasm_harness', 'rabadons_deathcap', 'riftmaker', 'rylais_crystal_scepter', 'shadowflame', 'spear_of_shojin',
   'spirit_visage', 'stormrazor', 'sunfire_cape', 'terminus', 'thornmail', 'unending_despair',
-  'warmogs_armor', 'yun_tal_wildarrows'
+  'warmogs_armor', 'yun_tal_wildarrows', 'zekes_herald'
 )
 
 $CHAMP_PLACEHOLDER = '(champion)'

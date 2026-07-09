@@ -572,5 +572,36 @@
     "skill_cooldown_mult": 10,
     "effect_max_percent_bonus": 30.0,
     "effect_max_distance": 100000
+  },
+  "zekes_herald": {
+    "price": 1150,
+    "hp": 350,
+    "hp_regen": 5,
+    "magic_power": 35,
+    "skill_cooldown_mult": 10,
+    "effect_adaptive_force": 20,
+    "effect_max_distance": 80000
+  },
+  "radiant_zekes_herald": {
+    "price": 1700,
+    "hp": 600,
+    "hp_regen": 6,
+    "magic_power": 60,
+    "skill_cooldown_mult": 15,
+    "effect_adaptive_force": 35,
+    "effect_max_distance": 80000
+  },
+  "scouts_slingshot": {
+    "price": 800,
+    "attack_speed_mult": 30,
+    "effect_bonus_flat_damage": 40,
+    "effect_cooldown_seconds": 20
+  },
+  "bandleglass_mirror": {
+    "price": 800,
+    "hp": 200,
+    "hp_regen": 2,
+    "magic_power": 20,
+    "skill_cooldown_mult": 5
   }
 }
