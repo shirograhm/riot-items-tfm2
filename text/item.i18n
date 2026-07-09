@@ -281,11 +281,11 @@
         },
         "shadowflame": {
             "name": "Shadowflame",
-            "option": "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
+            "option": "Cinderbloom: Your <#a974ffff>magic damage<> is <#e8a800ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
         },
         "radiant_shadowflame": {
             "name": "Radiant Shadowflame",
-            "option": "Cinderbloom: Your <#a974ffff>magic damage<> is <#ff9028ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
+            "option": "Cinderbloom: Your <#a974ffff>magic damage<> is <#e8a800ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
         },
         "yun_tal_wildarrows": {
             "name": "Yun Tal Wildarrows",
@@ -462,6 +462,14 @@
         "radiant_stormrazor": {
             "name": "Radiant Stormrazor",
             "option": "Energized: Moving and dealing <#ff9028ff>physical damage<> generates <#e8a800ff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#e8a800ff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
+        },
+        "diamond_tipped_spear": {
+            "name": "Diamond Tipped Spear",
+            "option": "Pierce: Gain <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nSweet Spot: Deal up to <#e8a800ff>30% bonus damage<> to enemy champions based on distance (max distance of <#e8a800ff>100000 units<>)."
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Radiant Diamond Tipped Spear",
+            "option": "Pierce: Gain <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nSweet Spot: Deal up to <#e8a800ff>30% bonus damage<> to enemy champions based on distance (max distance of <#e8a800ff>100000 units<>)."
         }
     },
     "vi": {
@@ -746,11 +754,11 @@
         },
         "shadowflame": {
             "name": "Ngọn Lửa Hắc Hóa",
-            "option": "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
+            "option": "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#e8a800ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
         },
         "radiant_shadowflame": {
             "name": "Ngọn Lửa Hắc Hóa Ánh Sáng",
-            "option": "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#ff9028ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
+            "option": "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#e8a800ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
         },
         "yun_tal_wildarrows": {
             "name": "Mũi Tên Yun Tal",
@@ -927,6 +935,14 @@
         "radiant_stormrazor": {
             "name": "Kiếm Bão Tố Ánh Sáng",
             "option": "Tích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
+        },
+        "diamond_tipped_spear": {
+            "name": "Giáo Mũi Kim Cương",
+            "option": "Xuyên Thấu: Nhận <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nĐiểm Lý Tưởng: Gây tối đa <#e8a800ff>30% sát thương cộng thêm<> lên tướng địch dựa trên khoảng cách (khoảng cách tối đa <#e8a800ff>100000 đơn vị<>)."
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Giáo Mũi Kim Cương Ánh Sáng",
+            "option": "Xuyên Thấu: Nhận <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nĐiểm Lý Tưởng: Gây tối đa <#e8a800ff>30% sát thương cộng thêm<> lên tướng địch dựa trên khoảng cách (khoảng cách tối đa <#e8a800ff>100000 đơn vị<>)."
         }
     },
     "zh-hans": {
@@ -1211,11 +1227,11 @@
         },
         "shadowflame": {
             "name": "影焰",
-            "option": "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#ff9028ff>提高20%<>。"
+            "option": "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#e8a800ff>提高20%<>。"
         },
         "radiant_shadowflame": {
             "name": "光明版影焰",
-            "option": "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#ff9028ff>提高20%<>。"
+            "option": "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#e8a800ff>提高20%<>。"
         },
         "yun_tal_wildarrows": {
             "name": "育恩塔尔荒野箭",
@@ -1392,6 +1408,14 @@
         "radiant_stormrazor": {
             "name": "光明版风暴利刃",
             "option": "蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n雷霆：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
+        },
+        "diamond_tipped_spear": {
+            "name": "钻石尖矛",
+            "option": "穿刺：获得 <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。每点 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。\n\n最佳距离：根据距离对敌方英雄造成最多 <#e8a800ff>30% 额外伤害<>（最大距离 <#e8a800ff>100000 单位<>）。"
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "光明版钻石尖矛",
+            "option": "穿刺：获得 <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。每点 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。\n\n最佳距离：根据距离对敌方英雄造成最多 <#e8a800ff>30% 额外伤害<>（最大距离 <#e8a800ff>100000 单位<>）。"
         }
     },
     "pt-BR": {
@@ -1676,11 +1700,11 @@
         },
         "shadowflame": {
             "name": "Chama Sombria",
-            "option": "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
+            "option": "Floregris: Seu <#a974ffff>dano mágico<> é <#e8a800ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
         },
         "radiant_shadowflame": {
             "name": "Chama Sombria Radiante",
-            "option": "Floregris: Seu <#a974ffff>dano mágico<> é <#ff9028ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
+            "option": "Floregris: Seu <#a974ffff>dano mágico<> é <#e8a800ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
         },
         "yun_tal_wildarrows": {
             "name": "Flechatroz de Yun Tal",
@@ -1857,6 +1881,14 @@
         "radiant_stormrazor": {
             "name": "Navalha da Tempestade Radiante",
             "option": "Energizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#e8a800ff>Energia<>, até <#e8a800ff>100<>.\n\nRaio: Quando totalmente <#e8a800ff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
+        },
+        "diamond_tipped_spear": {
+            "name": "Lança de Ponta de Diamante",
+            "option": "Perfuração: Ganha <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nPonto Ideal: Causa até <#e8a800ff>30% de dano bônus<> a campeões inimigos com base na distância (distância máxima de <#e8a800ff>100000 unidades<>)."
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Lança de Ponta de Diamante Radiante",
+            "option": "Perfuração: Ganha <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nPonto Ideal: Causa até <#e8a800ff>30% de dano bônus<> a campeões inimigos com base na distância (distância máxima de <#e8a800ff>100000 unidades<>)."
         }
     },
     "ru": {
@@ -2141,11 +2173,11 @@
         },
         "shadowflame": {
             "name": "Сумрачное пламя",
-            "option": "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
+            "option": "Огненный цветок: Ваш <#a974ffff>магический урон<> <#e8a800ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
         },
         "radiant_shadowflame": {
             "name": "Лучезарное Сумрачное пламя",
-            "option": "Огненный цветок: Ваш <#a974ffff>магический урон<> <#ff9028ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
+            "option": "Огненный цветок: Ваш <#a974ffff>магический урон<> <#e8a800ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
         },
         "yun_tal_wildarrows": {
             "name": "Дикие стрелы Юнталь",
@@ -2322,6 +2354,14 @@
         "radiant_stormrazor": {
             "name": "Лучезарная Грозовая бритва",
             "option": "Заряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>100<>.\n\nМолния: При полном <#e8a800ff>Заряде<>, ваш следующий <#ff9028ff>физический урон<> наносит <#a974ffff>100 дополнительного магического урона<> и даёт <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
+        },
+        "diamond_tipped_spear": {
+            "name": "Копьё с алмазным наконечником",
+            "option": "Пронзание: Даёт <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nИдеальная дистанция: Наносит до <#e8a800ff>30% дополнительного урона<> вражеским чемпионам в зависимости от расстояния (максимальное расстояние <#e8a800ff>100000 единиц<>)."
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Лучезарное копьё с алмазным наконечником",
+            "option": "Пронзание: Даёт <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nИдеальная дистанция: Наносит до <#e8a800ff>30% дополнительного урона<> вражеским чемпионам в зависимости от расстояния (максимальное расстояние <#e8a800ff>100000 единиц<>)."
         }
     }
 }
