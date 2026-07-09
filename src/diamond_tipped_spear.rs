@@ -3,6 +3,10 @@ use mod_api::*;
 use crate::apply_adaptive_force;
 use crate::config::ItemConfig;
 
+// Config `effect_max_distance` is expressed in attack-range units; multiply by
+// this to convert to the raw game distance units that `distance_sq` works in.
+const DISTANCE_UNITS_PER_RANGE: f64 = 1000.0;
+
 #[derive(Clone, Debug)]
 pub struct DiamondTippedSpear {
     price: usize,
@@ -21,7 +25,7 @@ impl Default for DiamondTippedSpear {
             adaptive_force: 75,
             skill_cooldown_mult: 10,
             effect_max_percent_bonus: 30.0,
-            effect_max_distance: 100000,
+            effect_max_distance: 100,
         }
     }
 }
@@ -114,7 +118,8 @@ impl ModItemInfo for DiamondTippedSpear {
 
         let distance_sq = ctx.distance_sq(caster, target);
         let distance = (distance_sq as f64).sqrt();
-        let ratio = (distance / self.effect_max_distance as f64).min(1.0);
+        let ratio =
+            (distance / (self.effect_max_distance as f64 * DISTANCE_UNITS_PER_RANGE)).min(1.0);
         let scaling = 1.0 + (self.effect_max_percent_bonus / 100.0) * ratio;
         *damage = (*damage as f64 * scaling) as usize;
     }
@@ -146,7 +151,7 @@ impl Default for RadiantDiamondTippedSpear {
             adaptive_force: 120,
             skill_cooldown_mult: 10,
             effect_max_percent_bonus: 30.0,
-            effect_max_distance: 100000,
+            effect_max_distance: 100,
         }
     }
 }
@@ -249,7 +254,8 @@ impl ModItemInfo for RadiantDiamondTippedSpear {
 
         let distance_sq = ctx.distance_sq(caster, target);
         let distance = (distance_sq as f64).sqrt();
-        let ratio = (distance / self.effect_max_distance as f64).min(1.0);
+        let ratio =
+            (distance / (self.effect_max_distance as f64 * DISTANCE_UNITS_PER_RANGE)).min(1.0);
         let scaling = 1.0 + (self.effect_max_percent_bonus / 100.0) * ratio;
         *damage = (*damage as f64 * scaling) as usize;
     }

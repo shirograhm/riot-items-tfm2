@@ -18,6 +18,10 @@ const AURA_REFRESH_PERIOD_TICKS: usize = 58; // 0.966s -> ~2 ticks of overlap
 // as a Time buff instead of a permanent self buff).
 const ADAPTIVE_FORCE_AD_RATIO: f64 = 0.6;
 
+// Config `effect_max_distance` is expressed in attack-range units; multiply by
+// this to convert to the raw game distance units that `distance_sq` works in.
+const DISTANCE_UNITS_PER_RANGE: u64 = 1000;
+
 #[derive(Clone, Debug)]
 pub struct ZekesHerald {
     price: usize,
@@ -38,8 +42,8 @@ impl Default for ZekesHerald {
             hp_regen: 5,
             magic_power: 35,
             skill_cooldown_mult: 10,
-            effect_adaptive_force: 20,
-            effect_max_distance: 80000,
+            effect_adaptive_force: 35,
+            effect_max_distance: 80,
             refresh_cooldown: 0,
         }
     }
@@ -75,7 +79,8 @@ impl ZekesHerald {
         let caster_id = caster.id();
         let caster_team = caster.team();
 
-        let range_sq = (self.effect_max_distance as u64) * (self.effect_max_distance as u64);
+        let range = self.effect_max_distance as u64 * DISTANCE_UNITS_PER_RANGE;
+        let range_sq = range * range;
 
         // Collect targets first: `get_entity` borrows `ctx` immutably, while
         // `add_buff` below needs it mutably. `prefers_ap` is decided per ally so
@@ -187,7 +192,7 @@ pub struct RadiantZekesHerald {
     hp_regen: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
-    adaptive_force: i32,
+    effect_adaptive_force: i32,
     effect_max_distance: usize,
     refresh_cooldown: usize,
 }
@@ -200,8 +205,8 @@ impl Default for RadiantZekesHerald {
             hp_regen: 6,
             magic_power: 60,
             skill_cooldown_mult: 15,
-            adaptive_force: 35,
-            effect_max_distance: 80000,
+            effect_adaptive_force: 60,
+            effect_max_distance: 80,
             refresh_cooldown: 0,
         }
     }
@@ -216,7 +221,7 @@ impl RadiantZekesHerald {
             hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
             skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-            adaptive_force: cfg.adaptive_force.unwrap_or(d.adaptive_force),
+            effect_adaptive_force: cfg.effect_adaptive_force.unwrap_or(d.effect_adaptive_force),
             effect_max_distance: cfg.effect_max_distance.unwrap_or(d.effect_max_distance),
             refresh_cooldown: 0,
         }
@@ -237,7 +242,8 @@ impl RadiantZekesHerald {
         let caster_id = caster.id();
         let caster_team = caster.team();
 
-        let range_sq = (self.effect_max_distance as u64) * (self.effect_max_distance as u64);
+        let range = self.effect_max_distance as u64 * DISTANCE_UNITS_PER_RANGE;
+        let range_sq = range * range;
 
         let mut targets: Vec<(usize, bool)> = Vec::new();
         for index in 0..ctx.champion_count() {
@@ -264,9 +270,9 @@ impl RadiantZekesHerald {
                 ..Default::default()
             };
             if prefers_ap {
-                buff.magic_power = self.adaptive_force;
+                buff.magic_power = self.effect_adaptive_force;
             } else {
-                buff.attack = (self.adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32;
+                buff.attack = (self.effect_adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32;
             }
             ctx.add_buff(id, buff);
         }

@@ -563,7 +563,7 @@
     "adaptive_force": 75,
     "skill_cooldown_mult": 10,
     "effect_max_percent_bonus": 30.0,
-    "effect_max_distance": 100000
+    "effect_max_distance": 100
   },
   "radiant_diamond_tipped_spear": {
     "price": 2250,
@@ -571,7 +571,7 @@
     "adaptive_force": 120,
     "skill_cooldown_mult": 10,
     "effect_max_percent_bonus": 30.0,
-    "effect_max_distance": 100000
+    "effect_max_distance": 100
   },
   "zekes_herald": {
     "price": 1150,
@@ -579,8 +579,8 @@
     "hp_regen": 5,
     "magic_power": 35,
     "skill_cooldown_mult": 10,
-    "effect_adaptive_force": 20,
-    "effect_max_distance": 80000
+    "effect_adaptive_force": 35,
+    "effect_max_distance": 80
   },
   "radiant_zekes_herald": {
     "price": 1700,
@@ -588,8 +588,8 @@
     "hp_regen": 6,
     "magic_power": 60,
     "skill_cooldown_mult": 15,
-    "effect_adaptive_force": 35,
-    "effect_max_distance": 80000
+    "effect_adaptive_force": 60,
+    "effect_max_distance": 80
   },
   "scouts_slingshot": {
     "price": 800,
