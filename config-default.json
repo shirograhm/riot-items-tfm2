@@ -487,8 +487,8 @@
     "effect_duration_seconds": 5
   },
   "radiant_rabadons_deathcap": {
-    "price": 2200,
-    "magic_power": 240,
+    "price": 2300,
+    "magic_power": 230,
     "magic_power_mult": 35
   },
   "radiant_spirit_visage": {

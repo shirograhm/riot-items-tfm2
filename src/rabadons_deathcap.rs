@@ -85,8 +85,8 @@ pub struct RadiantRabadonsDeathcap {
 impl Default for RadiantRabadonsDeathcap {
     fn default() -> Self {
         Self {
-            price: 2200,
-            magic_power: 240,
+            price: 2300,
+            magic_power: 230,
             magic_power_mult: 35,
         }
     }
