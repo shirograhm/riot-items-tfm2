@@ -481,11 +481,11 @@
         },
         "zekes_herald": {
             "name": "Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "Aura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         },
         "radiant_zekes_herald": {
             "name": "Radiant Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         }
     },
     "vi": {
@@ -962,11 +962,11 @@
         },
         "zekes_herald": {
             "name": "Sứ Giả Của Zeke",
-            "option": "Hào Quang: Cấp <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>."
+            "option": "Hào Quang: Cấp <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>."
         },
         "radiant_zekes_herald": {
             "name": "Sứ Giả Của Zeke Ánh Sáng",
-            "option": "Hào Quang: Cấp <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>."
+            "option": "Hào Quang: Cấp <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>."
         },
         "scouts_slingshot": {
             "name": "Ná Cao Su Trinh Sát",
@@ -1451,11 +1451,11 @@
         },
         "zekes_herald": {
             "name": "泽克的先驱",
-            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。"
+            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。"
         },
         "radiant_zekes_herald": {
             "name": "光明版泽克的先驱",
-            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。"
+            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。"
         },
         "scouts_slingshot": {
             "name": "斥候弹弓",
@@ -1940,11 +1940,11 @@
         },
         "zekes_herald": {
             "name": "Arauto de Zeke",
-            "option": "Aura: Concede <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+            "option": "Aura: Concede <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
         },
         "radiant_zekes_herald": {
             "name": "Arauto de Zeke Radiante",
-            "option": "Aura: Concede <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+            "option": "Aura: Concede <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
         },
         "scouts_slingshot": {
             "name": "Estilingue do Patrulheiro",
@@ -2429,11 +2429,11 @@
         },
         "zekes_herald": {
             "name": "Вестник Зика",
-            "option": "Аура: Даёт <#d48294ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "Аура: Даёт <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "radiant_zekes_herald": {
             "name": "Лучезарный Вестник Зика",
-            "option": "Аура: Даёт <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "Аура: Даёт <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "scouts_slingshot": {
             "name": "Рогатка скаута",

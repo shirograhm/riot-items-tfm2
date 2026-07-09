@@ -1,6 +1,8 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::ADAPTIVE_FORCE_AD_RATIO;
+use crate::DISTANCE_UNITS_PER_RANGE;
 
 // The aura grants Adaptive Force to every allied champion in range as a
 // fixed-duration buff, re-applied on a slightly shorter cycle than it lasts so a
@@ -12,15 +14,6 @@ use crate::config::ItemConfig;
 // that tracks position up AND down.
 const AURA_BUFF_DURATION_TICKS: usize = 60; // 1 second
 const AURA_REFRESH_PERIOD_TICKS: usize = 58; // 0.966s -> ~2 ticks of overlap
-
-// Each point of Adaptive Force = 1 Ability Power, or 0.6 Attack Damage, whichever
-// the recipient favors (mirrors `apply_adaptive_force` in lib.rs, but per-ally and
-// as a Time buff instead of a permanent self buff).
-const ADAPTIVE_FORCE_AD_RATIO: f64 = 0.6;
-
-// Config `effect_max_distance` is expressed in attack-range units; multiply by
-// this to convert to the raw game distance units that `distance_sq` works in.
-const DISTANCE_UNITS_PER_RANGE: u64 = 1000;
 
 #[derive(Clone, Debug)]
 pub struct ZekesHerald {
@@ -37,12 +30,12 @@ pub struct ZekesHerald {
 impl Default for ZekesHerald {
     fn default() -> Self {
         Self {
-            price: 1150,
-            hp: 350,
-            hp_regen: 5,
-            magic_power: 35,
+            price: 1050,
+            hp: 300,
+            hp_regen: 3,
+            magic_power: 30,
             skill_cooldown_mult: 10,
-            effect_adaptive_force: 35,
+            effect_adaptive_force: 30,
             effect_max_distance: 80,
             refresh_cooldown: 0,
         }
@@ -79,7 +72,7 @@ impl ZekesHerald {
         let caster_id = caster.id();
         let caster_team = caster.team();
 
-        let range = self.effect_max_distance as u64 * DISTANCE_UNITS_PER_RANGE;
+        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
         let range_sq = range * range;
 
         // Collect targets first: `get_entity` borrows `ctx` immutably, while
@@ -200,12 +193,12 @@ pub struct RadiantZekesHerald {
 impl Default for RadiantZekesHerald {
     fn default() -> Self {
         Self {
-            price: 1700,
-            hp: 600,
-            hp_regen: 6,
-            magic_power: 60,
+            price: 1500,
+            hp: 500,
+            hp_regen: 5,
+            magic_power: 50,
             skill_cooldown_mult: 15,
-            effect_adaptive_force: 60,
+            effect_adaptive_force: 50,
             effect_max_distance: 80,
             refresh_cooldown: 0,
         }
@@ -242,7 +235,7 @@ impl RadiantZekesHerald {
         let caster_id = caster.id();
         let caster_team = caster.team();
 
-        let range = self.effect_max_distance as u64 * DISTANCE_UNITS_PER_RANGE;
+        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
         let range_sq = range * range;
 
         let mut targets: Vec<(usize, bool)> = Vec::new();
@@ -272,7 +265,8 @@ impl RadiantZekesHerald {
             if prefers_ap {
                 buff.magic_power = self.effect_adaptive_force;
             } else {
-                buff.attack = (self.effect_adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32;
+                buff.attack =
+                    (self.effect_adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32;
             }
             ctx.add_buff(id, buff);
         }

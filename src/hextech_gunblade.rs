@@ -15,8 +15,8 @@ pub struct HextechGunblade {
 impl Default for HextechGunblade {
     fn default() -> Self {
         Self {
-            price: 1400,
-            attack: 30,
+            price: 1500,
+            attack: 50,
             magic_power: 100,
             vamp: 10,
         }
@@ -96,8 +96,8 @@ pub struct RadiantHextechGunblade {
 impl Default for RadiantHextechGunblade {
     fn default() -> Self {
         Self {
-            price: 1900,
-            attack: 50,
+            price: 2100,
+            attack: 85,
             magic_power: 150,
             vamp: 15,
         }

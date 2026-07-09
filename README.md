@@ -43,7 +43,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Frozen Mallet** | 1300G | +450 HP<br>+45 AD | On attack, apply a 25% slow for 2 seconds. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
 | **Heartsteel** | 1500G | +500 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 15% of that damage as permanent bonus health. |
-| **Hextech Gunblade** | 1400G | +30 AD<br>+100 AP<br>+10% Omnivamp | — |
+| **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | — |
 | **Jak’Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
 | **Mirage Blade** | 1500G | +40% AS<br>+10% MS | Gain 60 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
@@ -65,7 +65,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Landing an Ability on an enemy champion heals you for 10 + 1% of your maximum health. |
 | **Warmog's Armor** | 1400G | +550 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
-| **Zeke's Herald** | 1150G | +350 HP<br>+5 HP Regen<br>+35 AP<br>+10% CDR | Aura: Grant 35 Adaptive Force to all allied champions within 80 range. |
+| **Zeke's Herald** | 1050G | +300 HP<br>+3 HP Regen<br>+30 AP<br>+10% CDR | Aura: Grant 30 Adaptive Force to all allied champions within 80 range. |
 
 
 #### Tier 5  
@@ -83,7 +83,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Frozen Mallet** | 1900G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 25% slow for 2 seconds. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Heartsteel** | 2100G | +800 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 15% of that damage as permanent bonus health. |
-| **Radiant Hextech Gunblade** | 1900G | +50 AD<br>+150 AP<br>+15% Omnivamp | — |
+| **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | — |
 | **Radiant Jak’Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | When you take damage from an enemy champion, gain +10% armor and +10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Mortal Reminder** | 2000G | +70 AD<br>+30% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
@@ -105,7 +105,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Landing an Ability on an enemy champion heals you for 25 + 3% of your maximum health. |
 | **Radiant Warmog's Armor** | 2000G | +900 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
-| **Radiant Zeke's Herald** | 1700G | +600 HP<br>+6 HP Regen<br>+60 AP<br>+15% CDR | Aura: Grant 60 Adaptive Force to all allied champions within 80 range. |
+| **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+50 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force to all allied champions within 80 range. |
 
 
 ### Base Item Reskins

@@ -91,6 +91,15 @@ use warmogs_armor::*;
 use yun_tal_wildarrows::*;
 use zekes_herald::*;
 
+/// Config `effect_max_distance` values are expressed in attack-range units;
+/// multiply by this to convert to the raw game distance units that `distance_sq`
+/// works in. Shared by range-based items (diamond_tipped_spear, zekes_herald).
+pub(crate) const DISTANCE_UNITS_PER_RANGE: usize = 1000;
+
+/// Each point of Adaptive Force grants 1 Ability Power, or this much Attack
+/// Damage, whichever the recipient favors.
+pub(crate) const ADAPTIVE_FORCE_AD_RATIO: f64 = 0.6;
+
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
 }
@@ -126,7 +135,7 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
                 entity_ref.id(),
                 BuffState {
                     duration: BuffType::Permanent,
-                    attack: (adaptive_force as f64 * 0.6).round() as i32,
+                    attack: (adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32,
                     name: buff_name.try_into().unwrap(),
                     ..Default::default()
                 },

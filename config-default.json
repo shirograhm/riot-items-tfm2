@@ -125,8 +125,8 @@
     "effect_cooldown_seconds": 15
   },
   "hextech_gunblade": {
-    "price": 1400,
-    "attack": 30,
+    "price": 1500,
+    "attack": 50,
     "magic_power": 100,
     "vamp": 10
   },
@@ -342,8 +342,8 @@
     "effect_cooldown_seconds": 15
   },
   "radiant_hextech_gunblade": {
-    "price": 1900,
-    "attack": 50,
+    "price": 2100,
+    "attack": 85,
     "magic_power": 150,
     "vamp": 15
   },
@@ -574,21 +574,21 @@
     "effect_max_distance": 100
   },
   "zekes_herald": {
-    "price": 1150,
-    "hp": 350,
-    "hp_regen": 5,
-    "magic_power": 35,
+    "price": 1050,
+    "hp": 300,
+    "hp_regen": 3,
+    "magic_power": 30,
     "skill_cooldown_mult": 10,
-    "effect_adaptive_force": 35,
+    "effect_adaptive_force": 30,
     "effect_max_distance": 80
   },
   "radiant_zekes_herald": {
-    "price": 1700,
-    "hp": 600,
-    "hp_regen": 6,
-    "magic_power": 60,
+    "price": 1500,
+    "hp": 500,
+    "hp_regen": 5,
+    "magic_power": 50,
     "skill_cooldown_mult": 15,
-    "effect_adaptive_force": 60,
+    "effect_adaptive_force": 50,
     "effect_max_distance": 80
   },
   "scouts_slingshot": {
