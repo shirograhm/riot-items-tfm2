@@ -227,6 +227,12 @@ $rssDamage = [double]$config.radiant_sundered_sky.effect_percent_bonus_damage
 $rssFlatHeal = [double]$config.radiant_sundered_sky.effect_bonus_flat_heal
 $rssPercentHeal = [double]$config.radiant_sundered_sky.effect_caster_hp_percent_heal
 $rssOnHitCD = [double]$config.radiant_sundered_sky.on_hit_cooldown_seconds
+$eohConversion = [int]$config.echoes_of_helia.effect_damage_conversion
+$eohMinCap = [int]$config.echoes_of_helia.effect_min_stacks
+$eohMaxCap = [int]$config.echoes_of_helia.effect_max_stacks
+$reohConversion = [int]$config.radiant_echoes_of_helia.effect_damage_conversion
+$reohMinCap = [int]$config.radiant_echoes_of_helia.effect_min_stacks
+$reohMaxCap = [int]$config.radiant_echoes_of_helia.effect_max_stacks
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -244,6 +250,7 @@ $armorPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0"
 $magicPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0"
 $critIcon = "i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0"
 $vampIcon = "i#asset/base/ui/banpick/champion_stat_icon:vamp_0"
+$levelIcon = "i#asset/base/ui/banpick/champion_stat_icon:level_0"
 
 Write-Host "Updating English text."
 
@@ -327,6 +334,8 @@ $i18n.en.bloodletters_curse.option = "Decay: Dealing <#a974ffff>magic damage<> t
 $i18n.en.radiant_bloodletters_curse.option = "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <$mrIcon> <#88ccffff>Magic Resistance<> by ${rblcShred}%<> for <#e8a800ff>${rblcDur} seconds<> (max ${rblcStacks} stacks)."
 $i18n.en.sundered_sky.option = "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <$critIcon> <#d45656ff>critically strikes<> for <#e8a800ff>${ssDamage}% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>${ssFlatHeal}<> + <#60e84dff>${ssPercentHeal}%<> of your <#60e84dff>missing health<> (<#e8a800ff>${ssOnHitCD} second<> cooldown per target)."
 $i18n.en.radiant_sundered_sky.option = "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <$critIcon> <#d45656ff>critically strikes<> for <#e8a800ff>${rssDamage}% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>${rssFlatHeal}<> + <#60e84dff>${rssPercentHeal}%<> of your <#60e84dff>missing health<> (<#e8a800ff>${rssOnHitCD} second<> cooldown per target)."
+$i18n.en.echoes_of_helia.option = "Soul Siphon: Store <#e8a800ff>${eohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <$levelIcon><#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<>, <#d8c9b3ff>scaling with level<>. Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
+$i18n.en.radiant_echoes_of_helia.option = "Soul Siphon: Store <#e8a800ff>${reohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <$levelIcon><#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<>, <#d8c9b3ff>scaling with level<>. Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
