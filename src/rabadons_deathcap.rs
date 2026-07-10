@@ -66,6 +66,12 @@ impl ModItemInfo for RabadonsDeathcap {
         }
     }
 
+    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        
+    }
+
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {}
+
     fn tags(&self) -> Vec<ItemTag> {
         vec![ItemTag::AP]
     }
@@ -135,6 +141,10 @@ impl ModItemInfo for RadiantRabadonsDeathcap {
             ..Default::default()
         }
     }
+
+    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {}
+
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {}
 
     fn tags(&self) -> Vec<ItemTag> {
         vec![ItemTag::AP]

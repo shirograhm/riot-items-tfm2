@@ -1,8 +1,6 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::BUFF_REFRESH_DURATION_TICKS;
 
 #[derive(Clone, Debug)]
 pub struct EchoesOfHelia {
