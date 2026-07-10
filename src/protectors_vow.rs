@@ -5,15 +5,6 @@ use crate::config::ItemConfig;
 use crate::percent_of;
 use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
-// The Awe bonus HP is granted as a fixed-duration buff that is re-applied on a
-// slightly shorter cycle than it lasts, so a fresh buff is always in place
-// before the previous one expires. This avoids any single-tick gap where the
-// max-HP bonus would vanish and clamp the holder's current HP down, and lets
-// the amount track the holder's current defence each cycle (rising or falling)
-// instead of only ratcheting upward. The trade-off is that during the ~1s
-// overlap both buffs are live, so the bonus is briefly doubled -- harmless,
-// since it only ever overshoots and never dips.
-
 #[derive(Clone, Debug)]
 pub struct ProtectorsVow {
     price: usize,

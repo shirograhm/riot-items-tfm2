@@ -22,8 +22,8 @@ impl Default for ProtoplasmHarness {
     fn default() -> Self {
         Self {
             price: 1000,
-            hp: 400,
-            skill_cooldown_mult: 20,
+            hp: 350,
+            skill_cooldown_mult: 15,
             move_speed_mult: 5,
             effect_bonus_flat_hp: 300,
             effect_hp_percent_boost: 25.0,
@@ -169,7 +169,7 @@ impl Default for RadiantProtoplasmHarness {
     fn default() -> Self {
         Self {
             price: 1600,
-            hp: 800,
+            hp: 700,
             skill_cooldown_mult: 20,
             move_speed_mult: 5,
             effect_bonus_flat_hp: 600,

@@ -59,7 +59,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Night Harvester** | 1400G | +300 HP<br>+100 AP<br>+10% CDR | Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% of your Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Overlord's Bloodmail** | 1400G | +25 AD<br>+400 HP | Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | Gain bonus health equal to 50 + 80% of your Armor. |
-| **Protoplasm Harness** | 1000G | +400 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
+| **Protoplasm Harness** | 1000G | +350 HP<br>+15% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
 | **Riftmaker** | 1300G | +400 HP<br>+75 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
 | **Rylai's Crystal Scepter** | 1350G | +250 HP<br>+125 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
@@ -73,7 +73,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Void Staff** | 1500G | +95 AP<br>+25% Magic Pen | — |
 | **Warmog's Armor** | 1400G | +550 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
-| **Zeke's Herald** | 1050G | +300 HP<br>+3 HP Regen<br>+30 AP<br>+10% CDR | Aura: Grant 30 Adaptive Force and 8% Omnivamp to all allied champions within 80 range, including yourself. |
+| **Zeke's Herald** | 1050G | +300 HP<br>+3 HP Regen<br>+30 AP<br>+10% CDR | Aura: Grant 30 Adaptive Force and 8% Omnivamp to all allied champions within 80 range. |
 
 
 #### Tier 5  
@@ -103,7 +103,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Night Harvester** | 2000G | +500 HP<br>+160 AP<br>+10% CDR | Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% of your Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Radiant Overlord's Bloodmail** | 2000G | +40 AD<br>+650 HP | Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Radiant Protector's Vow** | 1800G | +550 HP<br>+75 Armor<br>+15% Skill CDR | Gain bonus health equal to 50 + 80% of your Armor. |
-| **Radiant Protoplasm Harness** | 1600G | +800 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
+| **Radiant Protoplasm Harness** | 1600G | +700 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon’s Deathcap** | 2200G | +220 AP | Increase your total Ability Power by 35%. |
 | **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
 | **Radiant Rylai's Crystal Scepter** | 1900G | +400 HP<br>+200 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
@@ -117,7 +117,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Void Staff** | 2200G | +160 AP<br>+40% Magic Pen | — |
 | **Radiant Warmog's Armor** | 2000G | +900 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
-| **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+50 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force and 12% Omnivamp to all allied champions within 80 range, including yourself. |
+| **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+50 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force and 12% Omnivamp to all allied champions within 80 range. |
 
 
 ### Base Item Reskins
