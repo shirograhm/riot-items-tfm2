@@ -26,6 +26,7 @@ Some item effects (on-hit damage, healing) may not show the damage numbers. Not 
 Some item effects are roughly simulated to the best of my ability using the available mod-sdk.
 
 Some AI champions seem to prefer the wrong stats when given deference of item selection. Magic Knight tends to buy AD and AS items instead of AP, for example.  
+
 Some AI champions ignore the custom item build editor. This is being investigated, but is likely to be instability that occurs in long term builds.  
 
 [h1] Instructions [/h1]
