@@ -67,7 +67,7 @@ impl ModItemInfo for MirageBlade {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["wind_dagger".to_string()]
+        vec!["scouts_slingshot".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

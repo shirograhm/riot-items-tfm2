@@ -55,7 +55,7 @@ impl ModItemInfo for ExperimentalHexplate {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hardened_heart".to_string(), "wind_dagger".to_string()]
+        vec!["ring_of_reincarnation".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

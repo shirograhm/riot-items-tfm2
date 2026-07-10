@@ -16,10 +16,10 @@ pub struct FrozenMallet {
 impl Default for FrozenMallet {
     fn default() -> Self {
         Self {
-            price: 1300,
-            hp: 450,
-            attack: 45,
-            effect_slow_amount: 25,
+            price: 1400,
+            hp: 400,
+            attack: 40,
+            effect_slow_amount: 15,
             effect_duration_seconds: 2.0,
         }
     }
@@ -137,10 +137,10 @@ pub struct RadiantFrozenMallet {
 impl Default for RadiantFrozenMallet {
     fn default() -> Self {
         Self {
-            price: 1900,
+            price: 2000,
             hp: 600,
             attack: 60,
-            effect_slow_amount: 25,
+            effect_slow_amount: 15,
             effect_duration_seconds: 2.0,
             effect_bonus_flat_damage: 20,
             effect_caster_hp_percent_damage: 3.0,

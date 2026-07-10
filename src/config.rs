@@ -25,6 +25,8 @@ pub struct ItemConfig {
     pub ult_cooldown_mult: Option<i32>,
     pub vamp: Option<i32>,
 
+    pub effect_adaptive_force: Option<i32>,
+    pub effect_vamp: Option<i32>,
     pub effect_move_speed_mult: Option<i32>,
     pub effect_duration_seconds: Option<f64>,
     pub effect_heal_reduce: Option<usize>,
@@ -47,6 +49,7 @@ pub struct ItemConfig {
     pub effect_stack_defence_mult: Option<i32>,
     pub effect_stack_magic_power: Option<i32>,
     pub effect_stack_magic_resistance_mult: Option<i32>,
+    pub effect_min_stacks: Option<usize>,
     pub effect_max_stacks: Option<usize>,
     pub effect_bonus_flat_hp: Option<i32>,
     pub effect_hp_percent_boost: Option<f64>,
@@ -61,6 +64,9 @@ pub struct ItemConfig {
     pub effect_kill_heal_missing_percent: Option<f64>,
     pub effect_percent_armor_shred: Option<i32>,
     pub effect_percent_mr_shred: Option<i32>,
+    pub effect_max_distance: Option<usize>,
+    pub effect_max_percent_bonus: Option<f64>,
+    pub effect_percent_bonus_damage: Option<f64>,
 
     pub on_hit_cooldown_seconds: Option<f64>,
 }

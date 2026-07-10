@@ -121,7 +121,7 @@ impl ModItemInfo for SpearOfShojin {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD]
+        vec![ItemTag::HP, ItemTag::AD, ItemTag::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategory {
@@ -243,7 +243,7 @@ impl ModItemInfo for RadiantSpearOfShojin {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD]
+        vec![ItemTag::HP, ItemTag::AD, ItemTag::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategory {

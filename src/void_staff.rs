@@ -1,51 +1,47 @@
+use crate::config::ItemConfig;
 use mod_api::*;
 
-use crate::config::ItemConfig;
-
-// Stat-only item (AD / AP / Omnivamp). No active effect implemented.
-
 #[derive(Clone, Debug)]
-pub struct HextechGunblade {
+pub struct VoidStaff {
     price: usize,
-    attack: i32,
     magic_power: i32,
-    vamp: i32,
+    magic_resistance_penetration: usize,
 }
 
-impl Default for HextechGunblade {
+impl Default for VoidStaff {
     fn default() -> Self {
         Self {
             price: 1500,
-            attack: 50,
-            magic_power: 100,
-            vamp: 10,
+            magic_power: 95,
+            magic_resistance_penetration: 25,
         }
     }
 }
 
-impl HextechGunblade {
+impl VoidStaff {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            vamp: cfg.vamp.unwrap_or(d.vamp),
+            magic_resistance_penetration: cfg
+                .magic_resistance_penetration
+                .unwrap_or(d.magic_resistance_penetration),
         }
     }
 }
 
-impl ModItemInfo for HextechGunblade {
+impl ModItemInfo for VoidStaff {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "hextech_gunblade"
+        "void_staff"
     }
 
     fn icon(&self) -> &str {
-        "hextech_gunblade"
+        "void_staff"
     }
 
     fn price(&self) -> usize {
@@ -57,24 +53,23 @@ impl ModItemInfo for HextechGunblade {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["ruinous_blade".to_string(), "spirit_crystal".to_string()]
+        vec!["needlessly_large_rod".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_hextech_gunblade".to_string()]
+        vec!["radiant_void_staff".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
             magic_power: self.magic_power,
-            vamp: self.vamp,
+            magic_resistance_penetration: self.magic_resistance_penetration,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::Vamp]
+        vec![ItemTag::AP]
     }
 
     fn category(&self) -> ItemCategory {
@@ -83,47 +78,46 @@ impl ModItemInfo for HextechGunblade {
 }
 
 #[derive(Clone, Debug)]
-pub struct RadiantHextechGunblade {
+pub struct RadiantVoidStaff {
     price: usize,
-    attack: i32,
     magic_power: i32,
-    vamp: i32,
+    magic_resistance_penetration: usize,
 }
 
-impl Default for RadiantHextechGunblade {
+impl Default for RadiantVoidStaff {
     fn default() -> Self {
         Self {
-            price: 2100,
-            attack: 85,
-            magic_power: 150,
-            vamp: 15,
+            price: 2200,
+            magic_power: 160,
+            magic_resistance_penetration: 40,
         }
     }
 }
 
-impl RadiantHextechGunblade {
+impl RadiantVoidStaff {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            vamp: cfg.vamp.unwrap_or(d.vamp),
+            magic_resistance_penetration: cfg
+                .magic_resistance_penetration
+                .unwrap_or(d.magic_resistance_penetration),
         }
     }
 }
 
-impl ModItemInfo for RadiantHextechGunblade {
+impl ModItemInfo for RadiantVoidStaff {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_hextech_gunblade"
+        "radiant_void_staff"
     }
 
     fn icon(&self) -> &str {
-        "radiant_hextech_gunblade"
+        "radiant_void_staff"
     }
 
     fn price(&self) -> usize {
@@ -135,20 +129,19 @@ impl ModItemInfo for RadiantHextechGunblade {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hextech_gunblade".to_string()]
+        vec!["void_staff".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
             magic_power: self.magic_power,
-            vamp: self.vamp,
+            magic_resistance_penetration: self.magic_resistance_penetration,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::Vamp]
+        vec![ItemTag::AP]
     }
 
     fn category(&self) -> ItemCategory {

@@ -1,5 +1,5 @@
-use mod_api::*;
 use crate::config::ItemConfig;
+use mod_api::*;
 
 #[derive(Clone, Debug)]
 pub struct RabadonsDeathcap {
@@ -10,7 +10,11 @@ pub struct RabadonsDeathcap {
 
 impl Default for RabadonsDeathcap {
     fn default() -> Self {
-        Self { price: 1500, magic_power: 165, magic_power_mult: 20 }
+        Self {
+            price: 1500,
+            magic_power: 165,
+            magic_power_mult: 20,
+        }
     }
 }
 
@@ -80,7 +84,11 @@ pub struct RadiantRabadonsDeathcap {
 
 impl Default for RadiantRabadonsDeathcap {
     fn default() -> Self {
-        Self { price: 2200, magic_power: 220, magic_power_mult: 35 }
+        Self {
+            price: 2300,
+            magic_power: 230,
+            magic_power_mult: 35,
+        }
     }
 }
 

@@ -74,7 +74,7 @@ impl ModItemInfo for JakshoTheProtean {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["gatekeepers_armor".to_string(), "night_hood".to_string()]
+        vec!["aegis_of_the_legion".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

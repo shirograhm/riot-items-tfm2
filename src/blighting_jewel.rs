@@ -2,41 +2,46 @@ use crate::config::ItemConfig;
 use mod_api::*;
 
 #[derive(Clone, Debug)]
-pub struct BFSword {
+pub struct BlightingJewel {
     price: usize,
-    attack: i32,
+    magic_power: i32,
+    magic_resistance_penetration: usize,
 }
 
-impl Default for BFSword {
+impl Default for BlightingJewel {
     fn default() -> Self {
         Self {
-            price: 850,
-            attack: 65,
+            price: 800,
+            magic_power: 80,
+            magic_resistance_penetration: 10,
         }
     }
 }
 
-impl BFSword {
+impl BlightingJewel {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
+            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
+            magic_resistance_penetration: cfg
+                .magic_resistance_penetration
+                .unwrap_or(d.magic_resistance_penetration),
         }
     }
 }
 
-impl ModItemInfo for BFSword {
+impl ModItemInfo for BlightingJewel {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "bf_sword"
+        "blighting_jewel"
     }
 
     fn icon(&self) -> &str {
-        "bf_sword"
+        "blighting_jewel"
     }
 
     fn price(&self) -> usize {
@@ -48,25 +53,26 @@ impl ModItemInfo for BFSword {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["soldiers_longsword".to_string()]
+        vec!["spirit_crystal".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["infinity_edge".to_string(), "deathblade".to_string()]
+        vec!["void_staff".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
+            magic_power: self.magic_power,
+            magic_resistance_penetration: self.magic_resistance_penetration,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
+        vec![ItemTag::AP, ItemTag::MRPenetration]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+        ItemCategory::Magic
     }
 }
