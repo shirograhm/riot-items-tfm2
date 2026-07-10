@@ -481,11 +481,11 @@
         },
         "zekes_herald": {
             "name": "Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "Aura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>, including yourself."
         },
         "radiant_zekes_herald": {
             "name": "Radiant Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>, including yourself."
         },
         "liandrys_torment": {
             "name": "Liandry's Torment",

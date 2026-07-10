@@ -131,6 +131,7 @@ impl ModItemInfo for EchoesOfHelia {
             };
 
             if ctx.distance_sq(caster_champion_id, id) < nearest_dist
+                && id != caster_champion_id
                 && entity_ref.team() == caster_team
                 && entity_ref.is_alive()
             {
@@ -289,6 +290,7 @@ impl ModItemInfo for RadiantEchoesOfHelia {
             };
 
             if ctx.distance_sq(caster_champion_id, id) < nearest_dist
+                && id != caster_champion_id
                 && entity_ref.team() == caster_team
                 && entity_ref.is_alive()
             {
