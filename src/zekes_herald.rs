@@ -38,7 +38,7 @@ impl Default for ZekesHerald {
             magic_power: 30,
             skill_cooldown_mult: 10,
             effect_adaptive_force: 30,
-            effect_vamp: 8,
+            effect_vamp: 6,
             effect_max_distance: 80,
             refresh_cooldown: 0,
         }
@@ -202,7 +202,7 @@ impl Default for RadiantZekesHerald {
             magic_power: 50,
             skill_cooldown_mult: 15,
             effect_adaptive_force: 50,
-            effect_vamp: 12,
+            effect_vamp: 10,
             effect_max_distance: 80,
             refresh_cooldown: 0,
         }
