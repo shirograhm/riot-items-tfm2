@@ -518,6 +518,14 @@
         "radiant_void_staff": {
             "name": "Radiant Void Staff",
             "option": ""
+        },
+        "echoes_of_helia": {
+            "name": "Echoes of Helia",
+            "option": "Soul Siphon: Store <#e8a800ff>30%<> of your damage dealt, up to <#d8c9b3ff>120<> - <#d8c9b3ff>450<>, scaling with <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>player level<>. Landing an Ability on an enemy champion expends your stored damage, <#60e84dff>healing your nearest ally<> for the expended amount."
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Radiant Echoes of Helia",
+            "option": "Soul Siphon: Store <#e8a800ff>30%<> of your damage dealt, up to <#d8c9b3ff>120<> - <#d8c9b3ff>450<>, scaling with <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>player level<>. Landing an Ability on an enemy champion expends your stored damage, <#60e84dff>healing your nearest ally<> for the expended amount."
         }
     },
     "vi": {
@@ -1038,6 +1046,14 @@
         },
         "radiant_void_staff": {
             "name": "Trượng Hư Vô Ánh Sáng",
+            "option": ""
+        },
+        "echoes_of_helia": {
+            "name": "Vọng Âm Helia",
+            "option": ""
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Vọng Âm Helia Ánh Sáng",
             "option": ""
         }
     },
@@ -1560,6 +1576,14 @@
         "radiant_void_staff": {
             "name": "光明版虚空之杖",
             "option": ""
+        },
+        "echoes_of_helia": {
+            "name": "海力亚的回响",
+            "option": ""
+        },
+        "radiant_echoes_of_helia": {
+            "name": "光明版海力亚的回响",
+            "option": ""
         }
     },
     "pt-BR": {
@@ -2081,6 +2105,14 @@
         "radiant_void_staff": {
             "name": "Cajado do Vazio Radiante",
             "option": ""
+        },
+        "echoes_of_helia": {
+            "name": "Ecos de Helia",
+            "option": ""
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Ecos de Helia Radiante",
+            "option": ""
         }
     },
     "ru": {
@@ -2601,6 +2633,14 @@
         },
         "radiant_void_staff": {
             "name": "Лучезарный Посох Бездны",
+            "option": ""
+        },
+        "echoes_of_helia": {
+            "name": "Эхо Гелии",
+            "option": ""
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Лучезарное Эхо Гелии",
             "option": ""
         }
     }

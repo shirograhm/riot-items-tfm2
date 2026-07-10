@@ -39,7 +39,7 @@ $CHAMPIONS = @(
 )
 $ITEMS = @(
   'black_cleaver', 'blackfire_torch', 'blade_of_the_ruined_king', 'bloodletters_curse', 'bloodthirster', 'collector',
-  'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'experimental_hexplate', 'frozen_mallet',
+  'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'echoes_of_helia', 'experimental_hexplate', 'frozen_mallet',
   'guinsoos_rageblade', 'heartsteel', 'hextech_gunblade', 'infinity_edge', 'jaksho_the_protean',
   'liandrys_torment', 'ludens_tempest', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
   'night_harvester', 'overlords_bloodmail', 'phantom_dancer',

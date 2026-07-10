@@ -650,5 +650,19 @@
     "price": 2200,
     "magic_power": 160,
     "magic_resistance_penetration": 40
+  },
+  "echoes_of_helia": {
+    "price": 1100,
+    "hp": 250,
+    "hp_regen": 4,
+    "magic_power": 45,
+    "skill_cooldown_mult": 15
+  },
+  "radiant_echoes_of_helia": {
+    "price": 1500,
+    "hp": 450,
+    "hp_regen": 6,
+    "magic_power": 65,
+    "skill_cooldown_mult": 20
   }
 }

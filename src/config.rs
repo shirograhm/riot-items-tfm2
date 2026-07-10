@@ -48,6 +48,7 @@ pub struct ItemConfig {
     pub effect_stack_defence_mult: Option<i32>,
     pub effect_stack_magic_power: Option<i32>,
     pub effect_stack_magic_resistance_mult: Option<i32>,
+    pub effect_min_stacks: Option<usize>,
     pub effect_max_stacks: Option<usize>,
     pub effect_bonus_flat_hp: Option<i32>,
     pub effect_hp_percent_boost: Option<f64>,

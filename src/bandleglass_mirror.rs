@@ -61,7 +61,7 @@ impl ModItemInfo for BandleglassMirror {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["zekes_herald".to_string()]
+        vec!["zekes_herald".to_string(), "echoes_of_helia".to_string()]
     }
 
     fn stat(&self) -> BuffState {

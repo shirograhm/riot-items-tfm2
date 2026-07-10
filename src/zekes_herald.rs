@@ -1,3 +1,4 @@
+use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
@@ -96,7 +97,7 @@ impl ZekesHerald {
 
         for (id, prefers_ap) in targets {
             let mut buff = BuffState {
-                name: "zekes_herald_aura".try_into().unwrap(),
+                name: ArrayString::try_from("zekes_herald_aura").unwrap(),
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },
@@ -256,7 +257,7 @@ impl RadiantZekesHerald {
 
         for (id, prefers_ap) in targets {
             let mut buff = BuffState {
-                name: "radiant_zekes_herald_aura".try_into().unwrap(),
+                name: ArrayString::try_from("radiant_zekes_herald_aura").unwrap(),
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },
