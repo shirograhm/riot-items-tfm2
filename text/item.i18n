@@ -481,11 +481,11 @@
         },
         "zekes_herald": {
             "name": "Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>, including yourself."
+            "option": "Aura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>, including yourself."
         },
         "radiant_zekes_herald": {
             "name": "Radiant Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>, including yourself."
+            "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>, including yourself."
         },
         "liandrys_torment": {
             "name": "Liandry's Torment",
@@ -802,11 +802,11 @@
         },
         "frozen_mallet": {
             "name": "Búa Băng",
-            "option": "Băng kết: Khi tấn công, gây <#d94c49ff>25% kiệt sức <> trong <#e8a800ff>2 giây<>."
+            "option": "Băng kết: Khi tấn công, gây <#d94c49ff>15% kiệt sức <> trong <#e8a800ff>2 giây<>."
         },
         "radiant_frozen_mallet": {
             "name": "Búa Băng Ánh Sáng",
-            "option": "Băng kết: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>20<> + <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân và gây <#d94c49ff>25% kiệt sức <> trong <#e8a800ff>2 giây<>."
+            "option": "Băng kết: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>20<> + <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân và gây <#d94c49ff>15% kiệt sức <> trong <#e8a800ff>2 giây<>."
         },
         "riftmaker": {
             "name": "Quyền Trượng Ác Thần",
@@ -1010,11 +1010,11 @@
         },
         "zekes_herald": {
             "name": "Sứ Giả Của Zeke",
-            "option": "Hào Quang: Cấp <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>, bao gồm cả bản thân."
+            "option": "Hào Quang: Cấp <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>, bao gồm cả bản thân."
         },
         "radiant_zekes_herald": {
             "name": "Sứ Giả Của Zeke Ánh Sáng",
-            "option": "Hào Quang: Cấp <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>, bao gồm cả bản thân."
+            "option": "Hào Quang: Cấp <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>, bao gồm cả bản thân."
         },
         "scouts_slingshot": {
             "name": "Ná Cao Su Trinh Sát",
@@ -1339,11 +1339,11 @@
         },
         "frozen_mallet": {
             "name": "冰霜之锤",
-            "option": "冰寒：普通攻击会施加 <#d94c49ff>25%减速<>，持续 <#e8a800ff>2秒<>。"
+            "option": "冰寒：普通攻击会施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
         },
         "radiant_frozen_mallet": {
             "name": "光明版冰霜之锤",
-            "option": "冰寒：普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>20<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>3%<>，并施加 <#d94c49ff>25%减速<>，持续 <#e8a800ff>2秒<>。"
+            "option": "冰寒：普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>20<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>3%<>，并施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
         },
         "riftmaker": {
             "name": "裂隙制造者",
@@ -1547,11 +1547,11 @@
         },
         "zekes_herald": {
             "name": "泽克的先驱",
-            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，包括你自己。"
+            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，包括你自己。"
         },
         "radiant_zekes_herald": {
             "name": "光明版泽克的先驱",
-            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，包括你自己。"
+            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，包括你自己。"
         },
         "scouts_slingshot": {
             "name": "斥候弹弓",
@@ -1876,11 +1876,11 @@
         },
         "frozen_mallet": {
             "name": "Malho Congelado",
-            "option": "Congelante: Seus ataques aplicam <#d94c49ff>25% de lentidão<> por <#e8a800ff>2 segundos<>."
+            "option": "Congelante: Seus ataques aplicam <#d94c49ff>15% de lentidão<> por <#e8a800ff>2 segundos<>."
         },
         "radiant_frozen_mallet": {
             "name": "Malho Congelado Radiante",
-            "option": "Congelante: Seus ataques causam <#ff9028ff>dano físico<> igual a <#ff9028ff>20<> + <#60e84dff>3%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> e aplicam <#d94c49ff>25% de lentidão<> por <#e8a800ff>2 segundos<>."
+            "option": "Congelante: Seus ataques causam <#ff9028ff>dano físico<> igual a <#ff9028ff>20<> + <#60e84dff>3%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> e aplicam <#d94c49ff>15% de lentidão<> por <#e8a800ff>2 segundos<>."
         },
         "riftmaker": {
             "name": "Criafendas",
@@ -2084,11 +2084,11 @@
         },
         "zekes_herald": {
             "name": "Arauto de Zeke",
-            "option": "Aura: Concede <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>, incluindo você mesmo."
+            "option": "Aura: Concede <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>, incluindo você mesmo."
         },
         "radiant_zekes_herald": {
             "name": "Arauto de Zeke Radiante",
-            "option": "Aura: Concede <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>, incluindo você mesmo."
+            "option": "Aura: Concede <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>, incluindo você mesmo."
         },
         "scouts_slingshot": {
             "name": "Estilingue do Patrulheiro",
@@ -2413,11 +2413,11 @@
         },
         "frozen_mallet": {
             "name": "Замёрзший Молот",
-            "option": "Обледенение: При атаке накладывает <#d94c49ff>замедление на 25%<> на <#e8a800ff>2 секунды<>."
+            "option": "Обледенение: При атаке накладывает <#d94c49ff>замедление на 15%<> на <#e8a800ff>2 секунды<>."
         },
         "radiant_frozen_mallet": {
             "name": "Лучезарный Замёрзший Молот",
-            "option": "Обледенение: При атаке наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>20<> + <#60e84dff>3%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> и накладывает <#d94c49ff>замедление на 25%<> на <#e8a800ff>2 секунды<>."
+            "option": "Обледенение: При атаке наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>20<> + <#60e84dff>3%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> и накладывает <#d94c49ff>замедление на 15%<> на <#e8a800ff>2 секунды<>."
         },
         "riftmaker": {
             "name": "Творец Разломов",
@@ -2621,11 +2621,11 @@
         },
         "zekes_herald": {
             "name": "Вестник Зика",
-            "option": "Аура: Даёт <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>, включая вас самих."
+            "option": "Аура: Даёт <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>, включая вас самих."
         },
         "radiant_zekes_herald": {
             "name": "Лучезарный Вестник Зика",
-            "option": "Аура: Даёт <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>, включая вас самих."
+            "option": "Аура: Даёт <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>, включая вас самих."
         },
         "scouts_slingshot": {
             "name": "Рогатка скаута",
