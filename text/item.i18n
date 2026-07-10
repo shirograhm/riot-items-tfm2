@@ -529,11 +529,11 @@
         },
         "sundered_sky": {
             "name": "Sundered Sky",
-            "option": "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<#d45656ff> for <#e8a800ff>60% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your missing health (<#e8a800ff>10 second<> cooldown per target)."
+            "option": "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>60% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your missing health (<#e8a800ff>10 second<> cooldown per target)."
         },
         "radiant_sundered_sky": {
             "name": "Radiant Sundered Sky",
-            "option": "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<#d45656ff> for <#e8a800ff>60% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your missing health (<#e8a800ff>10 second<> cooldown per target)."
+            "option": "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>60% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your missing health (<#e8a800ff>10 second<> cooldown per target)."
         }
     },
     "vi": {
@@ -1066,11 +1066,11 @@
         },
         "sundered_sky": {
             "name": "Bầu Trời Vỡ Nát",
-            "option": "Đòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<#d45656ff>, gây <#e8a800ff>60% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> máu đã mất (<#e8a800ff>10 giây<> hồi chiêu mỗi mục tiêu)."
+            "option": "Đòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> máu đã mất (<#e8a800ff>10 giây<> hồi chiêu mỗi mục tiêu)."
         },
         "radiant_sundered_sky": {
             "name": "Bầu Trời Vỡ Nát Ánh Sáng",
-            "option": "Đòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<#d45656ff>, gây <#e8a800ff>60% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> máu đã mất (<#e8a800ff>10 giây<> hồi chiêu mỗi mục tiêu)."
+            "option": "Đòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> máu đã mất (<#e8a800ff>10 giây<> hồi chiêu mỗi mục tiêu)."
         }
     },
     "zh-hans": {
@@ -1603,11 +1603,11 @@
         },
         "sundered_sky": {
             "name": "破碎苍穹",
-            "option": "光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<#d45656ff>，造成 <#e8a800ff>60% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>10秒<>）。"
+            "option": "光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>10秒<>）。"
         },
         "radiant_sundered_sky": {
             "name": "光明版破碎苍穹",
-            "option": "光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<#d45656ff>，造成 <#e8a800ff>60% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>10秒<>）。"
+            "option": "光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>10秒<>）。"
         }
     },
     "pt-BR": {
@@ -2140,11 +2140,11 @@
         },
         "sundered_sky": {
             "name": "Céu Dilacerado",
-            "option": "Golpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<#d45656ff>, causando <#e8a800ff>60% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua vida perdida (recarga de <#e8a800ff>10 segundos<> por alvo)."
+            "option": "Golpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>60% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua vida perdida (recarga de <#e8a800ff>10 segundos<> por alvo)."
         },
         "radiant_sundered_sky": {
             "name": "Céu Dilacerado Radiante",
-            "option": "Golpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<#d45656ff>, causando <#e8a800ff>60% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua vida perdida (recarga de <#e8a800ff>10 segundos<> por alvo)."
+            "option": "Golpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>60% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua vida perdida (recarga de <#e8a800ff>10 segundos<> por alvo)."
         }
     },
     "ru": {
@@ -2677,11 +2677,11 @@
         },
         "sundered_sky": {
             "name": "Расколотые Небеса",
-            "option": "Удар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<#d45656ff> с <#e8a800ff>60% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего потерянного здоровья (перезарядка <#e8a800ff>10 секунд<> на каждую цель)."
+            "option": "Удар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>60% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего потерянного здоровья (перезарядка <#e8a800ff>10 секунд<> на каждую цель)."
         },
         "radiant_sundered_sky": {
             "name": "Лучезарные Расколотые Небеса",
-            "option": "Удар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<#d45656ff> с <#e8a800ff>60% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего потерянного здоровья (перезарядка <#e8a800ff>10 секунд<> на каждую цель)."
+            "option": "Удар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>60% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего потерянного здоровья (перезарядка <#e8a800ff>10 секунд<> на каждую цель)."
         }
     }
 }
