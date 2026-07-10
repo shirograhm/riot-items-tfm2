@@ -24,8 +24,8 @@ impl Default for EchoesOfHelia {
             hp_regen: 4,
             magic_power: 45,
             skill_cooldown_mult: 15,
-            effect_min_stacks: 120,
-            effect_max_stacks: 450,
+            effect_min_stacks: 130,
+            effect_max_stacks: 350,
             charge_stored: 0,
         }
     }
@@ -43,6 +43,18 @@ impl EchoesOfHelia {
             effect_min_stacks: cfg.effect_min_stacks.unwrap_or(d.effect_min_stacks),
             effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
             charge_stored: 0,
+        }
+    }
+
+    pub fn save_charges(&mut self, level: usize, damage: f64) {
+        let stack_gain = (damage * 0.3) as usize;
+        let limit_per_level = (self.effect_max_stacks - self.effect_min_stacks) as f64 / 11.0;
+        let max_limit = self.effect_min_stacks + (level - 1) * limit_per_level.round() as usize;
+
+        if self.charge_stored + stack_gain > max_limit {
+            self.charge_stored = max_limit;
+        } else {
+            self.charge_stored += stack_gain;
         }
     }
 }
@@ -86,6 +98,20 @@ impl ModItemInfo for EchoesOfHelia {
         }
     }
 
+    fn on_damaged(
+        &mut self,
+        ctx: &mut GameCtx,
+        _player: usize,
+        entity: usize,
+        _attacker: usize,
+        damage: usize,
+    ) {
+        let Some(entity_ref) = ctx.get_entity(entity) else {
+            return;
+        };
+        self.save_charges(entity_ref.level(), damage as f64);
+    }
+
     fn on_attack(
         &mut self,
         ctx: &mut GameCtx,
@@ -94,27 +120,14 @@ impl ModItemInfo for EchoesOfHelia {
         damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let Some(caster_ref) = ctx.get_player(caster) else {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-
-        let stack_gain = (*damage as f64 * 0.3) as usize;
-        let limit_per_level = (self.effect_max_stacks - self.effect_min_stacks) as f64 / 11.0;
-        let max_limit =
-            self.effect_min_stacks + (caster_ref.level() - 1) * limit_per_level.round() as usize;
-
-        if self.charge_stored + stack_gain > max_limit {
-            self.charge_stored = max_limit;
-        } else {
-            self.charge_stored += stack_gain;
-        }
+        self.save_charges(caster_ref.level(), *damage as f64);
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
-        let Some(caster_ref) = ctx.get_player(caster) else {
-            return;
-        };
-        let Some(champion_ref) = caster_ref.champion() else {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
 
@@ -126,7 +139,10 @@ impl ModItemInfo for EchoesOfHelia {
         }
 
         let caster_team = caster_ref.team();
-        let caster_champion_id = champion_ref.id();
+        // In `on_skill_hit`, `caster` is the caster's entity id directly. Resolve
+        // it with `get_entity` like every other skill-hit item; `get_player`
+        // returned None here, so the heal never ran.
+        let caster_champion_id = caster;
 
         let mut nearest_id = usize::MAX;
         let mut nearest_dist = u64::MAX;
@@ -194,8 +210,8 @@ impl Default for RadiantEchoesOfHelia {
             hp_regen: 6,
             magic_power: 65,
             skill_cooldown_mult: 20,
-            effect_min_stacks: 120,
-            effect_max_stacks: 450,
+            effect_min_stacks: 130,
+            effect_max_stacks: 350,
             charge_stored: 0,
         }
     }
@@ -213,6 +229,18 @@ impl RadiantEchoesOfHelia {
             effect_min_stacks: cfg.effect_min_stacks.unwrap_or(d.effect_min_stacks),
             effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
             charge_stored: 0,
+        }
+    }
+
+    pub fn save_charges(&mut self, level: usize, damage: f64) {
+        let stack_gain = (damage * 0.3) as usize;
+        let limit_per_level = (self.effect_max_stacks - self.effect_min_stacks) as f64 / 11.0;
+        let max_limit = self.effect_min_stacks + (level - 1) * limit_per_level.round() as usize;
+
+        if self.charge_stored + stack_gain > max_limit {
+            self.charge_stored = max_limit;
+        } else {
+            self.charge_stored += stack_gain;
         }
     }
 }
@@ -252,6 +280,20 @@ impl ModItemInfo for RadiantEchoesOfHelia {
         }
     }
 
+    fn on_damaged(
+        &mut self,
+        ctx: &mut GameCtx,
+        _player: usize,
+        entity: usize,
+        _attacker: usize,
+        damage: usize,
+    ) {
+        let Some(entity_ref) = ctx.get_entity(entity) else {
+            return;
+        };
+        self.save_charges(entity_ref.level(), damage as f64);
+    }
+
     fn on_attack(
         &mut self,
         ctx: &mut GameCtx,
@@ -260,27 +302,14 @@ impl ModItemInfo for RadiantEchoesOfHelia {
         damage: &mut usize,
         _damage_type: DamageType,
     ) {
-        let Some(caster_ref) = ctx.get_player(caster) else {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-
-        let stack_gain = (*damage as f64 * 0.3) as usize;
-        let limit_per_level = (self.effect_max_stacks - self.effect_min_stacks) as f64 / 11.0;
-        let max_limit =
-            self.effect_min_stacks + (caster_ref.level() - 1) * limit_per_level.round() as usize;
-
-        if self.charge_stored + stack_gain > max_limit {
-            self.charge_stored = max_limit;
-        } else {
-            self.charge_stored += stack_gain;
-        }
+        self.save_charges(caster_ref.level(), *damage as f64);
     }
 
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
-        let Some(caster_ref) = ctx.get_player(caster) else {
-            return;
-        };
-        let Some(champion_ref) = caster_ref.champion() else {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
 
@@ -292,7 +321,10 @@ impl ModItemInfo for RadiantEchoesOfHelia {
         }
 
         let caster_team = caster_ref.team();
-        let caster_champion_id = champion_ref.id();
+        // In `on_skill_hit`, `caster` is the caster's entity id directly. Resolve
+        // it with `get_entity` like every other skill-hit item; `get_player`
+        // returned None here, so the heal never ran.
+        let caster_champion_id = caster;
 
         let mut nearest_id = usize::MAX;
         let mut nearest_dist = u64::MAX;
