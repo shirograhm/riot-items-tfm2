@@ -11,6 +11,7 @@ pub struct EchoesOfHelia {
     hp_regen: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
+    effect_damage_conversion: f64,
     effect_min_stacks: usize,
     effect_max_stacks: usize,
     charge_stored: usize,
@@ -24,6 +25,7 @@ impl Default for EchoesOfHelia {
             hp_regen: 4,
             magic_power: 45,
             skill_cooldown_mult: 15,
+            effect_damage_conversion: 30.0,
             effect_min_stacks: 130,
             effect_max_stacks: 350,
             charge_stored: 0,
@@ -40,6 +42,9 @@ impl EchoesOfHelia {
             hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
             skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            effect_damage_conversion: cfg
+                .effect_damage_conversion
+                .unwrap_or(d.effect_damage_conversion),
             effect_min_stacks: cfg.effect_min_stacks.unwrap_or(d.effect_min_stacks),
             effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
             charge_stored: 0,
@@ -47,7 +52,7 @@ impl EchoesOfHelia {
     }
 
     pub fn save_charges(&mut self, level: usize, damage: f64) {
-        let stack_gain = (damage * 0.3) as usize;
+        let stack_gain = (damage * (self.effect_damage_conversion / 100.0)) as usize;
         let limit_per_level = (self.effect_max_stacks - self.effect_min_stacks) as f64 / 11.0;
         let max_limit = self.effect_min_stacks + (level - 1) * limit_per_level.round() as usize;
 
@@ -197,6 +202,7 @@ pub struct RadiantEchoesOfHelia {
     hp_regen: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
+    effect_damage_conversion: f64,
     effect_min_stacks: usize,
     effect_max_stacks: usize,
     charge_stored: usize,
@@ -210,6 +216,7 @@ impl Default for RadiantEchoesOfHelia {
             hp_regen: 6,
             magic_power: 65,
             skill_cooldown_mult: 20,
+            effect_damage_conversion: 30.0,
             effect_min_stacks: 130,
             effect_max_stacks: 350,
             charge_stored: 0,
@@ -226,6 +233,9 @@ impl RadiantEchoesOfHelia {
             hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
             skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            effect_damage_conversion: cfg
+                .effect_damage_conversion
+                .unwrap_or(d.effect_damage_conversion),
             effect_min_stacks: cfg.effect_min_stacks.unwrap_or(d.effect_min_stacks),
             effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
             charge_stored: 0,
@@ -233,7 +243,7 @@ impl RadiantEchoesOfHelia {
     }
 
     pub fn save_charges(&mut self, level: usize, damage: f64) {
-        let stack_gain = (damage * 0.3) as usize;
+        let stack_gain = (damage * (self.effect_damage_conversion / 100.0)) as usize;
         let limit_per_level = (self.effect_max_stacks - self.effect_min_stacks) as f64 / 11.0;
         let max_limit = self.effect_min_stacks + (level - 1) * limit_per_level.round() as usize;
 
