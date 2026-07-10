@@ -526,6 +526,14 @@
         "radiant_echoes_of_helia": {
             "name": "Radiant Echoes of Helia",
             "option": "Soul Siphon: Store <#e8a800ff>30%<> of your damage dealt as <#92dc7bff>Soul Charges<>, up to <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<> (scaling with <#d8c9b3ff>level<>). Landing an Ability on an enemy champion consumes all <#92dc7bff>Soul Charges<>, <#60e84dff>healing your nearest ally<> for the consumed amount."
+        },
+        "sundered_sky": {
+            "name": "Sundered Sky",
+            "option": "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<#d45656ff> for <#e8a800ff>60% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your missing health (<#e8a800ff>10 second<> cooldown per target)."
+        },
+        "radiant_sundered_sky": {
+            "name": "Radiant Sundered Sky",
+            "option": "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<#d45656ff> for <#e8a800ff>60% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your missing health (<#e8a800ff>10 second<> cooldown per target)."
         }
     },
     "vi": {
