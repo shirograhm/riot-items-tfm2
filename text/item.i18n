@@ -1058,11 +1058,19 @@
         },
         "echoes_of_helia": {
             "name": "Vọng Âm Helia",
-            "option": ""
+            "option": "Hút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<> (tăng theo <#d8c9b3ff>cấp độ<>). Kĩ năng trúng tướng địch sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho đồng minh gần nhất<> một lượng bằng số đã tiêu."
         },
         "radiant_echoes_of_helia": {
             "name": "Vọng Âm Helia Ánh Sáng",
-            "option": ""
+            "option": "Hút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<> (tăng theo <#d8c9b3ff>cấp độ<>). Kĩ năng trúng tướng địch sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho đồng minh gần nhất<> một lượng bằng số đã tiêu."
+        },
+        "sundered_sky": {
+            "name": "Bầu Trời Vỡ Nát",
+            "option": "Đòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<#d45656ff>, gây <#e8a800ff>60% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> máu đã mất (<#e8a800ff>10 giây<> hồi chiêu mỗi mục tiêu)."
+        },
+        "radiant_sundered_sky": {
+            "name": "Bầu Trời Vỡ Nát Ánh Sáng",
+            "option": "Đòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<#d45656ff>, gây <#e8a800ff>60% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> máu đã mất (<#e8a800ff>10 giây<> hồi chiêu mỗi mục tiêu)."
         }
     },
     "zh-hans": {
@@ -1587,11 +1595,19 @@
         },
         "echoes_of_helia": {
             "name": "海力亚的回响",
-            "option": ""
+            "option": "灵魂虹吸：将你造成伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<>（随<#d8c9b3ff>等级<>提升）。技能命中敌方英雄时，消耗全部 <#92dc7bff>灵魂充能<>，为你<#60e84dff>最近的友军回复<>等量的生命值。"
         },
         "radiant_echoes_of_helia": {
             "name": "光明版海力亚的回响",
-            "option": ""
+            "option": "灵魂虹吸：将你造成伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<>（随<#d8c9b3ff>等级<>提升）。技能命中敌方英雄时，消耗全部 <#92dc7bff>灵魂充能<>，为你<#60e84dff>最近的友军回复<>等量的生命值。"
+        },
+        "sundered_sky": {
+            "name": "破碎苍穹",
+            "option": "光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<#d45656ff>，造成 <#e8a800ff>60% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>10秒<>）。"
+        },
+        "radiant_sundered_sky": {
+            "name": "光明版破碎苍穹",
+            "option": "光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<#d45656ff>，造成 <#e8a800ff>60% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>10秒<>）。"
         }
     },
     "pt-BR": {
@@ -2116,11 +2132,19 @@
         },
         "echoes_of_helia": {
             "name": "Ecos de Helia",
-            "option": ""
+            "option": "Sifão de Almas: Armazena <#e8a800ff>30%<> do dano causado como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<> (escalando com o <#d8c9b3ff>nível<>). Acertar uma Habilidade em um campeão inimigo consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando o aliado mais próximo<> na quantidade consumida."
         },
         "radiant_echoes_of_helia": {
             "name": "Ecos de Helia Radiante",
-            "option": ""
+            "option": "Sifão de Almas: Armazena <#e8a800ff>30%<> do dano causado como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<> (escalando com o <#d8c9b3ff>nível<>). Acertar uma Habilidade em um campeão inimigo consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando o aliado mais próximo<> na quantidade consumida."
+        },
+        "sundered_sky": {
+            "name": "Céu Dilacerado",
+            "option": "Golpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<#d45656ff>, causando <#e8a800ff>60% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua vida perdida (recarga de <#e8a800ff>10 segundos<> por alvo)."
+        },
+        "radiant_sundered_sky": {
+            "name": "Céu Dilacerado Radiante",
+            "option": "Golpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<#d45656ff>, causando <#e8a800ff>60% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua vida perdida (recarga de <#e8a800ff>10 segundos<> por alvo)."
         }
     },
     "ru": {
@@ -2645,11 +2669,19 @@
         },
         "echoes_of_helia": {
             "name": "Эхо Гелии",
-            "option": ""
+            "option": "Похищение душ: Накапливает <#e8a800ff>30%<> нанесённого вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<> (в зависимости от <#d8c9b3ff>уровня<>). Попадание умением по вражескому чемпиону расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая здоровье ближайшему союзнику<> на израсходованное количество."
         },
         "radiant_echoes_of_helia": {
             "name": "Лучезарное Эхо Гелии",
-            "option": ""
+            "option": "Похищение душ: Накапливает <#e8a800ff>30%<> нанесённого вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<> (в зависимости от <#d8c9b3ff>уровня<>). Попадание умением по вражескому чемпиону расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая здоровье ближайшему союзнику<> на израсходованное количество."
+        },
+        "sundered_sky": {
+            "name": "Расколотые Небеса",
+            "option": "Удар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<#d45656ff> с <#e8a800ff>60% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего потерянного здоровья (перезарядка <#e8a800ff>10 секунд<> на каждую цель)."
+        },
+        "radiant_sundered_sky": {
+            "name": "Лучезарные Расколотые Небеса",
+            "option": "Удар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<#d45656ff> с <#e8a800ff>60% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего потерянного здоровья (перезарядка <#e8a800ff>10 секунд<> на каждую цель)."
         }
     }
 }

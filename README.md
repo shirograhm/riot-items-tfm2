@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 88 new items (50 base + 38 Radiant) to the game.
+Reskins the 30 existing items and also adds 90 new items (51 base + 39 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -67,6 +67,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Spear of Shojin** | 1400G | +350 HP<br>+35 AD<br>+10% CDR | Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Increase all healing received by 20%. |
 | **Stormrazor** | 1550G | +65 AD<br>+20% AS<br>+20% Crit Chance | Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.<br>Bolt: At 100 stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants 35% movement speed for 1.5 seconds. |
+| **Sundered Sky** | 1400G | +400 HP<br>+30 AD<br>+10% CDR | Lightshield Strike: Your next instance of physical damage against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 6% of your missing health (10 second cooldown per target). |
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Landing an Ability on an enemy champion heals you for 10 + 1% of your maximum health. |
 | **Void Staff** | 1500G | +95 AP<br>+25% Magic Pen | — |
@@ -110,6 +111,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD<br>+20% CDR | Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Increase all healing received by 20%. |
 | **Radiant Stormrazor** | 2200G | +100 AD<br>+40% AS<br>+25% Crit Chance | Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.<br>Bolt: At 100 stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants 35% movement speed for 1.5 seconds. |
+| **Radiant Sundered Sky** | 2000G | +550 HP<br>+65 AD<br>+20% CDR | Lightshield Strike: Your next instance of physical damage against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 6% of your missing health (10 second cooldown per target). |
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Landing an Ability on an enemy champion heals you for 25 + 3% of your maximum health. |
 | **Radiant Void Staff** | 2200G | +160 AP<br>+40% Magic Pen | — |
