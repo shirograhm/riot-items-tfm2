@@ -167,15 +167,7 @@ impl ModItemInfo for EchoesOfHelia {
                 nearest_dist = ctx.distance_sq(caster_champion_id, id)
             }
         }
-        let buff = BuffState {
-            name: ArrayString::try_from("echoes_of_helia_healing").unwrap(),
-            duration: BuffType::Time {
-                tick: BUFF_REFRESH_DURATION_TICKS,
-            },
-            hp_regen: self.charge_stored as i32,
-            ..Default::default()
-        };
-        ctx.add_buff(nearest_id, buff);
+        ctx.heal(caster, nearest_id, self.charge_stored);
 
         self.charge_stored = 0;
     }
@@ -354,15 +346,7 @@ impl ModItemInfo for RadiantEchoesOfHelia {
                 nearest_dist = ctx.distance_sq(caster_champion_id, id)
             }
         }
-        let buff = BuffState {
-            name: ArrayString::try_from("echoes_of_helia_healing").unwrap(),
-            duration: BuffType::Time {
-                tick: BUFF_REFRESH_DURATION_TICKS,
-            },
-            hp_regen: self.charge_stored as i32,
-            ..Default::default()
-        };
-        ctx.add_buff(nearest_id, buff);
+        ctx.heal(caster, nearest_id, self.charge_stored);
 
         self.charge_stored = 0;
     }

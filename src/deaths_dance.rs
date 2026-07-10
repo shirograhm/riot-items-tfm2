@@ -164,24 +164,22 @@ impl ModItemInfo for DeathsDance {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let missing_hp = entity_ref.hp().max.saturating_sub(entity_ref.hp().current);
-        let entity = entity_ref.id();
+        let missing_hp = champion_ref
+            .hp()
+            .max
+            .saturating_sub(champion_ref.hp().current);
+
         let heal_amount = percent_of(missing_hp, self.effect_kill_heal_missing_percent);
         if heal_amount == 0 {
             return;
         }
-        ctx.add_buff(
-            entity,
-            BuffState {
-                duration: BuffType::Time { tick: 60 },
-                hp_regen: heal_amount as i32,
-                ..Default::default()
-            },
-        );
+
+        let champion_id = champion_ref.id();
+        ctx.heal(champion_id, champion_id, heal_amount);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -349,24 +347,21 @@ impl ModItemInfo for RadiantDeathsDance {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let missing_hp = entity_ref.hp().max.saturating_sub(entity_ref.hp().current);
-        let entity = entity_ref.id();
+        let missing_hp = champion_ref
+            .hp()
+            .max
+            .saturating_sub(champion_ref.hp().current);
         let heal_amount = percent_of(missing_hp, self.effect_kill_heal_missing_percent);
         if heal_amount == 0 {
             return;
         }
-        ctx.add_buff(
-            entity,
-            BuffState {
-                duration: BuffType::Time { tick: 60 },
-                hp_regen: heal_amount as i32,
-                ..Default::default()
-            },
-        );
+
+        let champion_id = champion_ref.id();
+        ctx.heal(champion_id, champion_id, heal_amount);
     }
 
     fn tags(&self) -> Vec<ItemTag> {

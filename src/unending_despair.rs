@@ -84,14 +84,8 @@ impl ModItemInfo for UnendingDespair {
         };
         let heal_amount = self.effect_bonus_flat_heal as usize
             + percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_heal);
-        ctx.add_buff(
-            caster,
-            BuffState {
-                duration: BuffType::Time { tick: 60 },
-                hp_regen: heal_amount as i32,
-                ..Default::default()
-            },
-        );
+
+        ctx.heal(caster, caster, heal_amount);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -180,14 +174,8 @@ impl ModItemInfo for RadiantUnendingDespair {
         };
         let heal_amount = self.effect_bonus_flat_heal as usize
             + percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_heal);
-        ctx.add_buff(
-            caster,
-            BuffState {
-                duration: BuffType::Time { tick: 60 },
-                hp_regen: heal_amount as i32,
-                ..Default::default()
-            },
-        );
+
+        ctx.heal(caster, caster, heal_amount);
     }
 
     fn tags(&self) -> Vec<ItemTag> {

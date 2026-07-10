@@ -126,14 +126,7 @@ impl ModItemInfo for SunderedSky {
         let ratio = 1.0 + (self.effect_percent_bonus_damage / 100.0);
         *damage = (*damage as f64 * ratio) as usize;
 
-        ctx.add_buff(
-            caster,
-            BuffState {
-                duration: BuffType::Time { tick: 60 },
-                hp_regen: heal_amount,
-                ..Default::default()
-            },
-        );
+        ctx.heal(caster, caster, heal_amount as usize);
         ctx.add_buff(
             target,
             BuffState {
@@ -274,14 +267,7 @@ impl ModItemInfo for RadiantSunderedSky {
         let ratio = 1.0 + (self.effect_percent_bonus_damage / 100.0);
         *damage = (*damage as f64 * ratio) as usize;
 
-        ctx.add_buff(
-            caster,
-            BuffState {
-                duration: BuffType::Time { tick: 60 },
-                hp_regen: heal_amount,
-                ..Default::default()
-            },
-        );
+        ctx.heal(caster, caster, heal_amount as usize);
         ctx.add_buff(
             target,
             BuffState {

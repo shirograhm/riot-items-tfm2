@@ -14,7 +14,7 @@ pub(crate) const ADAPTIVE_FORCE_AD_RATIO: f64 = 0.6;
 /// lasts, so a fresh buff is always in place before the old one expires (no
 /// single-tick gap where the bonus would flicker off). This is that buff's
 /// duration: 1 second. Recompute the amount each cycle. Used by protectors_vow,
-/// overlords_bloodmail, and zekes_herald.
+/// overlords_bloodmail, zekes_herald, and warmogs_armor.
 pub(crate) const BUFF_REFRESH_DURATION_TICKS: usize = 60;
 
 /// Re-apply period for `BUFF_REFRESH_DURATION_TICKS` buffs: ~2 ticks shorter than

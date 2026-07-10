@@ -136,14 +136,8 @@ impl ModItemInfo for ProtoplasmHarness {
                     ..Default::default()
                 },
             );
-            ctx.add_buff(
-                entity,
-                BuffState {
-                    duration: BuffType::Time { tick: 60 },
-                    hp_regen: percent_of_i32(bonus_max_hp, 50.0),
-                    ..Default::default()
-                },
-            );
+
+            ctx.heal(entity, entity, percent_of_i32(bonus_max_hp, 50.0) as usize);
             ctx.add_buff(
                 entity,
                 BuffState {
@@ -286,14 +280,8 @@ impl ModItemInfo for RadiantProtoplasmHarness {
                     ..Default::default()
                 },
             );
-            ctx.add_buff(
-                entity,
-                BuffState {
-                    duration: BuffType::Time { tick: 60 },
-                    hp_regen: percent_of_i32(bonus_max_hp, 50.0),
-                    ..Default::default()
-                },
-            );
+
+            ctx.heal(entity, entity, percent_of_i32(bonus_max_hp, 50.0) as usize);
             ctx.add_buff(
                 entity,
                 BuffState {

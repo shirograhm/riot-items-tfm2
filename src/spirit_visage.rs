@@ -76,14 +76,7 @@ impl ModItemInfo for SpiritVisage {
             return;
         };
         let bonus_heal = percent_of(heal, self.effect_heal_mult);
-        ctx.add_buff(
-            entity,
-            BuffState {
-                duration: BuffType::Time { tick: 60 },
-                hp_regen: bonus_heal as i32,
-                ..Default::default()
-            },
-        );
+        ctx.heal(entity, entity, bonus_heal);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -164,14 +157,7 @@ impl ModItemInfo for RadiantSpiritVisage {
             return;
         };
         let bonus_heal = percent_of(heal, self.effect_heal_mult);
-        ctx.add_buff(
-            entity,
-            BuffState {
-                duration: BuffType::Time { tick: 60 },
-                hp_regen: bonus_heal as i32,
-                ..Default::default()
-            },
-        );
+        ctx.heal(entity, entity, bonus_heal);
     }
 
     fn tags(&self) -> Vec<ItemTag> {

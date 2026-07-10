@@ -3,13 +3,9 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
+use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
-// Regen pulses every 1s; each pulse is an `hp_regen` buff spread over a 1-second
-// (tick: 60) window, matching the other healing items in this mod.
 const REGEN_PERIOD_TICKS: usize = 60;
-// The move-speed buff is short and re-applied while it is absent, so it stays up
-// continuously while active and falls off shortly after the passive is suppressed.
-const MOVE_SPEED_REFRESH_TICKS: usize = 30;
 
 #[derive(Clone, Debug)]
 pub struct WarmogsArmor {
@@ -20,6 +16,7 @@ pub struct WarmogsArmor {
     effect_move_speed_mult: i32,
     effect_duration_seconds: f64,
     regen_cooldown: usize,
+    move_speed_cooldown: usize,
 }
 
 impl Default for WarmogsArmor {
@@ -32,6 +29,7 @@ impl Default for WarmogsArmor {
             effect_move_speed_mult: 4,
             effect_duration_seconds: 6.0,
             regen_cooldown: 0,
+            move_speed_cooldown: 0,
         }
     }
 }
@@ -53,11 +51,12 @@ impl WarmogsArmor {
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
             regen_cooldown: d.regen_cooldown,
+            move_speed_cooldown: d.move_speed_cooldown,
         }
     }
 
     fn apply_passive(&mut self, ctx: &mut GameCtx, player: usize) {
-        let (entity, max_hp, has_move_speed, recently_damaged) = {
+        let (entity, max_hp, recently_damaged) = {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
             };
@@ -66,14 +65,7 @@ impl WarmogsArmor {
             };
             let recently_damaged = (0..entity_ref.buff_count())
                 .any(|i| entity_ref.buff_at(i).name.as_str() == "warmogs_armor_recently_damaged");
-            let has_move_speed = (0..entity_ref.buff_count())
-                .any(|i| entity_ref.buff_at(i).name.as_str() == "warmogs_armor_move_speed");
-            (
-                entity_ref.id(),
-                entity_ref.hp().max,
-                has_move_speed,
-                recently_damaged,
-            )
+            (entity_ref.id(), entity_ref.hp().max, recently_damaged)
         };
 
         // Warmog's Heart is suppressed while the holder has taken damage recently.
@@ -99,19 +91,22 @@ impl WarmogsArmor {
             self.regen_cooldown -= 1;
         }
 
-        // ...and grant movement speed while it is not already active.
-        if !has_move_speed {
+        // ...and grant movement speed as a fixed-duration buff.
+        if self.move_speed_cooldown == 0 {
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: MOVE_SPEED_REFRESH_TICKS,
+                        tick: BUFF_REFRESH_DURATION_TICKS,
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("warmogs_armor_move_speed").unwrap(),
                     ..Default::default()
                 },
             );
+            self.move_speed_cooldown = BUFF_REFRESH_PERIOD_TICKS;
+        } else {
+            self.move_speed_cooldown -= 1;
         }
     }
 }
@@ -155,6 +150,7 @@ impl ModItemInfo for WarmogsArmor {
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
         self.regen_cooldown = 0;
+        self.move_speed_cooldown = 0;
         self.apply_passive(ctx, player);
     }
 
@@ -203,6 +199,7 @@ pub struct RadiantWarmogsArmor {
     effect_move_speed_mult: i32,
     effect_duration_seconds: f64,
     regen_cooldown: usize,
+    move_speed_cooldown: usize,
 }
 
 impl Default for RadiantWarmogsArmor {
@@ -215,6 +212,7 @@ impl Default for RadiantWarmogsArmor {
             effect_move_speed_mult: 4,
             effect_duration_seconds: 6.0,
             regen_cooldown: 0,
+            move_speed_cooldown: 0,
         }
     }
 }
@@ -236,11 +234,12 @@ impl RadiantWarmogsArmor {
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
             regen_cooldown: d.regen_cooldown,
+            move_speed_cooldown: d.move_speed_cooldown,
         }
     }
 
     fn apply_passive(&mut self, ctx: &mut GameCtx, player: usize) {
-        let (entity, max_hp, has_move_speed, recently_damaged) = {
+        let (entity, max_hp, recently_damaged) = {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
             };
@@ -250,14 +249,7 @@ impl RadiantWarmogsArmor {
             let recently_damaged = (0..entity_ref.buff_count()).any(|i| {
                 entity_ref.buff_at(i).name.as_str() == "radiant_warmogs_armor_recently_damaged"
             });
-            let has_move_speed = (0..entity_ref.buff_count())
-                .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_warmogs_armor_move_speed");
-            (
-                entity_ref.id(),
-                entity_ref.hp().max,
-                has_move_speed,
-                recently_damaged,
-            )
+            (entity_ref.id(), entity_ref.hp().max, recently_damaged)
         };
 
         // Warmog's Heart is suppressed while the holder has taken damage recently.
@@ -283,19 +275,22 @@ impl RadiantWarmogsArmor {
             self.regen_cooldown -= 1;
         }
 
-        // ...and grant movement speed while it is not already active.
-        if !has_move_speed {
+        // ...and grant movement speed as a fixed-duration buff.
+        if self.move_speed_cooldown == 0 {
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: MOVE_SPEED_REFRESH_TICKS,
+                        tick: BUFF_REFRESH_DURATION_TICKS,
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("radiant_warmogs_armor_move_speed").unwrap(),
                     ..Default::default()
                 },
             );
+            self.move_speed_cooldown = BUFF_REFRESH_PERIOD_TICKS;
+        } else {
+            self.move_speed_cooldown -= 1;
         }
     }
 }
