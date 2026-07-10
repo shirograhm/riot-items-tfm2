@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 80 new items (44 base + 36 Radiant) to the game.
+Reskins the 30 existing items and also adds 86 new items (49 base + 37 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -21,12 +21,16 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 3
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
+| **Aegis of the Legion** | 950G | +150 HP<br>+40 Armor<br>+60 MR | — |
 | **B.F. Sword** | 800G | +65 Attack Damage | — |
 | **Bandleglass Mirror** | 650G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
+| **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |
 | **Haunting Guise** | 850G | +200 HP<br>+60 AP | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
+| **Noonquiver** | 800G | +45 AD<br>+10% Crit Chance | — |
 | **Phage** | 850G | +200 HP<br>+30 AD | — |
 | **Scout's Slingshot** | 800G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
+| **Steel Sigil** | 950G | +30 AD<br>+50 Armor | — |
 
 #### Tier 4
 | Item | Cost | Stats | Passive |
@@ -64,6 +68,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Stormrazor** | 1550G | +65 AD<br>+20% AS<br>+20% Crit Chance | Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.<br>Bolt: At 100 stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants 35% movement speed for 1.5 seconds. |
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Landing an Ability on an enemy champion heals you for 10 + 1% of your maximum health. |
+| **Void Staff** | 1500G | +95 AP<br>+25% Magic Pen | — |
 | **Warmog's Armor** | 1400G | +550 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
 | **Zeke's Herald** | 1050G | +300 HP<br>+3 HP Regen<br>+30 AP<br>+10% CDR | Aura: Grant 30 Adaptive Force to all allied champions within 80 range. |
@@ -105,6 +110,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Stormrazor** | 2200G | +100 AD<br>+40% AS<br>+25% Crit Chance | Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.<br>Bolt: At 100 stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants 35% movement speed for 1.5 seconds. |
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Landing an Ability on an enemy champion heals you for 25 + 3% of your maximum health. |
+| **Radiant Void Staff** | 2200G | +160 AP<br>+40% Magic Pen | — |
 | **Radiant Warmog's Armor** | 2000G | +900 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
 | **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+50 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force to all allied champions within 80 range. |

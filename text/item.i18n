@@ -516,7 +516,7 @@
             "option": ""
         },
         "radiant_void_staff": {
-            "name": "Void Staff",
+            "name": "Radiant Void Staff",
             "option": ""
         }
     },
@@ -1015,6 +1015,30 @@
         "radiant_liandrys_torment": {
             "name": "Mặt Nạ Đọa Đày Liandry Ánh Sáng",
             "option": "Thống Khổ: Khi gây sát thương kĩ năng, thiêu đốt kẻ địch, khiến chúng chịu <#d94c49ff>6% máu tối đa của mục tiêu<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>3 giây<>. Tối đa <#a974ffff>40 sát thương phép<> mỗi nhịp lên lính và quái vật."
+        },
+        "steel_sigil": {
+            "name": "Ấn Thép",
+            "option": ""
+        },
+        "aegis_of_the_legion": {
+            "name": "Lá Chắn Quân Đoàn",
+            "option": ""
+        },
+        "blighting_jewel": {
+            "name": "Đá Hắc Hóa",
+            "option": ""
+        },
+        "noonquiver": {
+            "name": "Bó Tên Ánh Sáng",
+            "option": ""
+        },
+        "void_staff": {
+            "name": "Trượng Hư Vô",
+            "option": ""
+        },
+        "radiant_void_staff": {
+            "name": "Trượng Hư Vô Ánh Sáng",
+            "option": ""
         }
     },
     "zh-hans": {
@@ -1512,6 +1536,30 @@
         "radiant_liandrys_torment": {
             "name": "光明版兰德里的折磨",
             "option": "苦难：造成技能伤害时点燃敌人，使其在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>目标6%最大生命值<>的<#a974ffff>魔法伤害<>。对小兵和野怪每跳最多造成 <#a974ffff>40点魔法伤害<>。"
+        },
+        "steel_sigil": {
+            "name": "钢铁印章",
+            "option": ""
+        },
+        "aegis_of_the_legion": {
+            "name": "军团圣盾",
+            "option": ""
+        },
+        "blighting_jewel": {
+            "name": "枯萎珠宝",
+            "option": ""
+        },
+        "noonquiver": {
+            "name": "正午箭袋",
+            "option": ""
+        },
+        "void_staff": {
+            "name": "虚空之杖",
+            "option": ""
+        },
+        "radiant_void_staff": {
+            "name": "光明版虚空之杖",
+            "option": ""
         }
     },
     "pt-BR": {
@@ -2009,6 +2057,30 @@
         "radiant_liandrys_torment": {
             "name": "Tormento de Liandry Radiante",
             "option": "Sofrimento: Causar dano de habilidade queima os inimigos, fazendo-os sofrer <#d94c49ff>6% da Vida Máxima do alvo<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Máximo de <#a974ffff>40 de dano mágico<> por tique contra tropas e monstros."
+        },
+        "steel_sigil": {
+            "name": "Sigilo de Aço",
+            "option": ""
+        },
+        "aegis_of_the_legion": {
+            "name": "Égide da Legião",
+            "option": ""
+        },
+        "blighting_jewel": {
+            "name": "Joia da Ruína",
+            "option": ""
+        },
+        "noonquiver": {
+            "name": "Aljava Vespertina",
+            "option": ""
+        },
+        "void_staff": {
+            "name": "Cajado do Vazio",
+            "option": ""
+        },
+        "radiant_void_staff": {
+            "name": "Cajado do Vazio Radiante",
+            "option": ""
         }
     },
     "ru": {
@@ -2506,6 +2578,30 @@
         "radiant_liandrys_torment": {
             "name": "Лучезарные Мучения Лиандри",
             "option": "Страдание: Нанесение урона умением поджигает врагов, заставляя их получить <#d94c49ff>6% максимального здоровья цели<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>3 секунд<>. Наносит максимум <#a974ffff>40 магического урона<> за тик по миньонам и монстрам."
+        },
+        "steel_sigil": {
+            "name": "Стальной знак",
+            "option": ""
+        },
+        "aegis_of_the_legion": {
+            "name": "Эгида Легиона",
+            "option": ""
+        },
+        "blighting_jewel": {
+            "name": "Вредоносный самоцвет",
+            "option": ""
+        },
+        "noonquiver": {
+            "name": "Полуденный колчан",
+            "option": ""
+        },
+        "void_staff": {
+            "name": "Посох Бездны",
+            "option": ""
+        },
+        "radiant_void_staff": {
+            "name": "Лучезарный Посох Бездны",
+            "option": ""
         }
     }
 }

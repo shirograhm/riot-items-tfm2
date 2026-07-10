@@ -619,5 +619,36 @@
     "effect_hp_percent_damage": 6.0,
     "effect_minion_damage_cap": 40,
     "effect_duration_seconds": 3
+  },
+  "steel_sigil": {
+    "price": 950,
+    "attack": 30,
+    "defence": 50
+  },
+  "aegis_of_the_legion": {
+    "price": 950,
+    "hp": 150,
+    "defence": 40,
+    "magic_resistance": 60
+  },
+  "blighting_jewel": {
+    "price": 800,
+    "magic_power": 80,
+    "magic_resistance_penetration": 10
+  },
+  "noonquiver": {
+    "price": 800,
+    "attack": 45,
+    "crit_chance": 10
+  },
+  "void_staff": {
+    "price": 1500,
+    "magic_power": 95,
+    "magic_resistance_penetration": 25
+  },
+  "radiant_void_staff": {
+    "price": 2200,
+    "magic_power": 160,
+    "magic_resistance_penetration": 40
   }
 }
