@@ -265,11 +265,11 @@
         },
         "frozen_mallet": {
             "name": "Frozen Mallet",
-            "option": "Icy: On attack, apply a <#d94c49ff>25% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "Icy: On attack, apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "radiant_frozen_mallet": {
             "name": "Radiant Frozen Mallet",
-            "option": "Icy: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>20<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> and apply a <#d94c49ff>25% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "Icy: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>20<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> and apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "riftmaker": {
             "name": "Riftmaker",
