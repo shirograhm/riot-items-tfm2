@@ -110,13 +110,20 @@ impl ModItemInfo for EchoesOfHelia {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
         let Some(caster_ref) = ctx.get_player(caster) else {
             return;
         };
         let Some(champion_ref) = caster_ref.champion() else {
             return;
         };
+
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if !target_ref.is_champion() {
+            return;
+        }
 
         let caster_team = caster_ref.team();
         let caster_champion_id = champion_ref.id();
@@ -269,13 +276,20 @@ impl ModItemInfo for RadiantEchoesOfHelia {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
         let Some(caster_ref) = ctx.get_player(caster) else {
             return;
         };
         let Some(champion_ref) = caster_ref.champion() else {
             return;
         };
+
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if !target_ref.is_champion() {
+            return;
+        }
 
         let caster_team = caster_ref.team();
         let caster_champion_id = champion_ref.id();

@@ -73,7 +73,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Void Staff** | 1500G | +95 AP<br>+25% Magic Pen | — |
 | **Warmog's Armor** | 1400G | +550 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
-| **Zeke's Herald** | 1050G | +300 HP<br>+3 HP Regen<br>+30 AP<br>+10% CDR | Aura: Grant 30 Adaptive Force to all allied champions within 80 range. |
+| **Zeke's Herald** | 1050G | +300 HP<br>+3 HP Regen<br>+30 AP<br>+10% CDR | Aura: Grant 30 Adaptive Force to all allied champions within 80 range, including yourself. |
 
 
 #### Tier 5  
@@ -117,7 +117,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Void Staff** | 2200G | +160 AP<br>+40% Magic Pen | — |
 | **Radiant Warmog's Armor** | 2000G | +900 HP | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
-| **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+50 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force to all allied champions within 80 range. |
+| **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+50 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force to all allied champions within 80 range, including yourself. |
 
 
 ### Base Item Reskins
