@@ -521,11 +521,11 @@
         },
         "echoes_of_helia": {
             "name": "Echoes of Helia",
-            "option": "Soul Siphon: Store <#e8a800ff>30%<> of your damage dealt, up to <#d8c9b3ff>120<> - <#d8c9b3ff>450<>, scaling with <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>player level<>. Landing an Ability on an enemy champion expends your stored damage, <#60e84dff>healing your nearest ally<> for the expended amount."
+            "option": "Soul Siphon: Store <#e8a800ff>30%<> of your damage dealt as <#92dc7bff>Soul Charges<>, up to <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<> (scaling with <#d8c9b3ff>level<>). Landing an Ability on an enemy champion consumes all <#92dc7bff>Soul Charges<>, <#60e84dff>healing your nearest ally<> for the consumed amount."
         },
         "radiant_echoes_of_helia": {
             "name": "Radiant Echoes of Helia",
-            "option": "Soul Siphon: Store <#e8a800ff>30%<> of your damage dealt, up to <#d8c9b3ff>120<> - <#d8c9b3ff>450<>, scaling with <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>player level<>. Landing an Ability on an enemy champion expends your stored damage, <#60e84dff>healing your nearest ally<> for the expended amount."
+            "option": "Soul Siphon: Store <#e8a800ff>30%<> of your damage dealt as <#92dc7bff>Soul Charges<>, up to <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>120<> - <#d8c9b3ff>450<> (scaling with <#d8c9b3ff>level<>). Landing an Ability on an enemy champion consumes all <#92dc7bff>Soul Charges<>, <#60e84dff>healing your nearest ally<> for the consumed amount."
         }
     },
     "vi": {
