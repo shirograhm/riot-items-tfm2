@@ -1,5 +1,6 @@
 use mod_api::*;
 
+mod aegis_of_the_legion;
 mod bandleglass_mirror;
 mod bf_sword;
 mod black_cleaver;
@@ -44,6 +45,7 @@ mod scouts_slingshot;
 mod shadowflame;
 mod spear_of_shojin;
 mod spirit_visage;
+mod steel_sigil;
 mod stormrazor;
 mod terminus;
 mod unending_despair;
@@ -52,6 +54,7 @@ mod warmogs_armor;
 mod yun_tal_wildarrows;
 mod zekes_herald;
 
+use aegis_of_the_legion::*;
 use bandleglass_mirror::*;
 use bf_sword::*;
 use black_cleaver::*;
@@ -92,6 +95,7 @@ use scouts_slingshot::*;
 use shadowflame::*;
 use spear_of_shojin::*;
 use spirit_visage::*;
+use steel_sigil::*;
 use stormrazor::*;
 use terminus::*;
 use unending_despair::*;
@@ -182,6 +186,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
 
     // Tier 3
+    reg.add_item(configured!("aegis_of_the_legion" => AegisOfTheLegion));
     reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
@@ -190,6 +195,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("noonquiver" => Noonquiver));
     reg.add_item(configured!("phage" => Phage));
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
+    reg.add_item(configured!("steel_sigil" => SteelSigil));
 
     // Tier 4
     reg.add_item(configured!("black_cleaver" => BlackCleaver));

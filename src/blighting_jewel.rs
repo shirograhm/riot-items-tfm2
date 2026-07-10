@@ -2,50 +2,46 @@ use crate::config::ItemConfig;
 use mod_api::*;
 
 #[derive(Clone, Debug)]
-pub struct BandleglassMirror {
+pub struct BlightingJewel {
     price: usize,
-    hp: i32,
-    hp_regen: i32,
     magic_power: i32,
-    skill_cooldown_mult: i32,
+    magic_resistance_penetration: usize,
 }
 
-impl Default for BandleglassMirror {
+impl Default for BlightingJewel {
     fn default() -> Self {
         Self {
-            price: 650,
-            hp: 250,
-            hp_regen: 2,
-            magic_power: 20,
-            skill_cooldown_mult: 5,
+            price: 800,
+            magic_power: 80,
+            magic_resistance_penetration: 10,
         }
     }
 }
 
-impl BandleglassMirror {
+impl BlightingJewel {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            magic_resistance_penetration: cfg
+                .magic_resistance_penetration
+                .unwrap_or(d.magic_resistance_penetration),
         }
     }
 }
 
-impl ModItemInfo for BandleglassMirror {
+impl ModItemInfo for BlightingJewel {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "bandleglass_mirror"
+        "blighting_jewel"
     }
 
     fn icon(&self) -> &str {
-        "bandleglass_mirror"
+        "blighting_jewel"
     }
 
     fn price(&self) -> usize {
@@ -57,28 +53,26 @@ impl ModItemInfo for BandleglassMirror {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hardened_heart".to_string()]
+        vec!["spirit_crystal".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["zekes_herald".to_string()]
+        vec!["void_staff".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: self.hp,
-            hp_regen: self.hp_regen,
             magic_power: self.magic_power,
-            skill_cooldown_mult: self.skill_cooldown_mult,
+            magic_resistance_penetration: self.magic_resistance_penetration,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::HPRegen, ItemTag::AP]
+        vec![ItemTag::AP, ItemTag::MRPenetration]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+        ItemCategory::Magic
     }
 }

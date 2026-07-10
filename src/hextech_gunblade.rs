@@ -57,10 +57,7 @@ impl ModItemInfo for HextechGunblade {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "soldiers_longsword".to_string(),
-            "spirit_crystal".to_string(),
-        ]
+        vec!["ruinous_blade".to_string(), "spirit_crystal".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

@@ -2,44 +2,44 @@ use crate::config::ItemConfig;
 use mod_api::*;
 
 #[derive(Clone, Debug)]
-pub struct Phage {
+pub struct SteelSigil {
     price: usize,
-    hp: i32,
     attack: i32,
+    defence: i32,
 }
 
-impl Default for Phage {
+impl Default for SteelSigil {
     fn default() -> Self {
         Self {
             price: 950,
-            hp: 200,
             attack: 30,
+            defence: 50,
         }
     }
 }
 
-impl Phage {
+impl SteelSigil {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
             attack: cfg.attack.unwrap_or(d.attack),
+            defence: cfg.defence.unwrap_or(d.defence),
         }
     }
 }
 
-impl ModItemInfo for Phage {
+impl ModItemInfo for SteelSigil {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "phage"
+        "steel_sigil"
     }
 
     fn icon(&self) -> &str {
-        "phage"
+        "steel_sigil"
     }
 
     fn price(&self) -> usize {
@@ -51,24 +51,17 @@ impl ModItemInfo for Phage {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "hardened_heart".to_string(),
-            "soldiers_longsword".to_string(),
-        ]
+        vec!["soldiers_longsword".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec![
-            "frozen_mallet".to_string(),
-            "overlords_bloodmail".to_string(),
-            "black_cleaver".to_string(),
-        ]
+        vec!["deaths_dance".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            hp: self.hp,
             attack: self.attack,
+            defence: self.defence,
             ..Default::default()
         }
     }

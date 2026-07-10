@@ -104,10 +104,7 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "soldiers_longsword".to_string(),
-            "hardened_heart".to_string(),
-        ]
+        vec!["phage".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

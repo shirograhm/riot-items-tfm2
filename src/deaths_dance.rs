@@ -78,10 +78,7 @@ impl ModItemInfo for DeathsDance {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "soldiers_longsword".to_string(),
-            "gatekeepers_armor".to_string(),
-        ]
+        vec!["steel_sigil".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

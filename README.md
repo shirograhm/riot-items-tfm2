@@ -22,7 +22,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **B.F. Sword** | 800G | +65 Attack Damage | — |
-| **Bandleglass Mirror** | 800G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
+| **Bandleglass Mirror** | 650G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
 | **Haunting Guise** | 850G | +200 HP<br>+60 AP | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
 | **Phage** | 850G | +200 HP<br>+30 AD | — |
