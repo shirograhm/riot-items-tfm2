@@ -24,6 +24,7 @@ pub struct ZekesHerald {
     magic_power: i32,
     skill_cooldown_mult: i32,
     effect_adaptive_force: i32,
+    effect_vamp: i32,
     effect_max_distance: usize,
     refresh_cooldown: usize,
 }
@@ -37,6 +38,7 @@ impl Default for ZekesHerald {
             magic_power: 30,
             skill_cooldown_mult: 10,
             effect_adaptive_force: 30,
+            effect_vamp: 8,
             effect_max_distance: 80,
             refresh_cooldown: 0,
         }
@@ -53,6 +55,7 @@ impl ZekesHerald {
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
             skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
             effect_adaptive_force: cfg.effect_adaptive_force.unwrap_or(d.effect_adaptive_force),
+            effect_vamp: cfg.effect_vamp.unwrap_or(d.effect_vamp),
             effect_max_distance: cfg.effect_max_distance.unwrap_or(d.effect_max_distance),
             refresh_cooldown: 0,
         }
@@ -76,9 +79,6 @@ impl ZekesHerald {
         let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
         let range_sq = range * range;
 
-        // Collect targets first: `get_entity` borrows `ctx` immutably, while
-        // `add_buff` below needs it mutably. `prefers_ap` is decided per ally so
-        // each recipient gets the adaptive stat it actually favors.
         let mut targets: Vec<(usize, bool)> = Vec::new();
         for index in 0..ctx.champion_count() {
             let id = ctx.champion_id_at(index);
@@ -101,6 +101,7 @@ impl ZekesHerald {
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },
+                vamp: self.effect_vamp,
                 ..Default::default()
             };
             if prefers_ap {
@@ -187,6 +188,7 @@ pub struct RadiantZekesHerald {
     magic_power: i32,
     skill_cooldown_mult: i32,
     effect_adaptive_force: i32,
+    effect_vamp: i32,
     effect_max_distance: usize,
     refresh_cooldown: usize,
 }
@@ -200,6 +202,7 @@ impl Default for RadiantZekesHerald {
             magic_power: 50,
             skill_cooldown_mult: 15,
             effect_adaptive_force: 50,
+            effect_vamp: 12,
             effect_max_distance: 80,
             refresh_cooldown: 0,
         }
@@ -216,6 +219,7 @@ impl RadiantZekesHerald {
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
             skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
             effect_adaptive_force: cfg.effect_adaptive_force.unwrap_or(d.effect_adaptive_force),
+            effect_vamp: cfg.effect_vamp.unwrap_or(d.effect_vamp),
             effect_max_distance: cfg.effect_max_distance.unwrap_or(d.effect_max_distance),
             refresh_cooldown: 0,
         }
@@ -261,6 +265,7 @@ impl RadiantZekesHerald {
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },
+                vamp: self.effect_vamp,
                 ..Default::default()
             };
             if prefers_ap {
