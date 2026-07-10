@@ -731,3 +731,5 @@ Write-Host "  Black Cleaver:               -${bcShred}% armor / ${bcDur}s / ${bc
 Write-Host "  Radiant Black Cleaver:       -${rbcShred}% armor / ${rbcDur}s / ${rbcStacks} stacks"
 Write-Host "  Bloodletter's Curse:         -${blcShred}% MR / ${blcDur}s / ${blcStacks} stacks"
 Write-Host "  Radiant Bloodletter's Curse: -${rblcShred}% MR / ${rblcDur}s / ${rblcStacks} stacks"
+Write-Host "  Sundered Sky:                ${ssDamage}% first hit damage bonus / ${ssFlatHeal} + ${ssPercentHeal}% missing HP heal / (${ssOnHitCD} CD per target)"
+Write-Host "  Sundered Sky:                ${rssDamage}% first hit damage bonus / ${rssFlatHeal} + ${rssPercentHeal}% missing HP heal / (${rssOnHitCD} CD per target)"
