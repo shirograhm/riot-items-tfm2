@@ -69,7 +69,7 @@ impl ModItemInfo for Morellonomicon {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["oblivion_orb".to_string(), "hardened_heart".to_string()]
+        vec!["oblivion_orb".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
