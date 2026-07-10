@@ -15,7 +15,7 @@ impl Default for AegisOfTheLegion {
             price: 950,
             hp: 150,
             defence: 40,
-            magic_resistance: 40,
+            magic_resistance: 60,
         }
     }
 }
@@ -58,7 +58,7 @@ impl ModItemInfo for AegisOfTheLegion {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["deaths_dance".to_string()]
+        vec!["jaksho_the_protean".to_string()]
     }
 
     fn stat(&self) -> BuffState {
