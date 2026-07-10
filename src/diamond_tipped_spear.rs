@@ -19,7 +19,7 @@ impl Default for DiamondTippedSpear {
         Self {
             price: 1500,
             attack_speed_mult: 35,
-            adaptive_force: 75,
+            adaptive_force: 60,
             skill_cooldown_mult: 10,
             effect_max_percent_bonus: 30.0,
             effect_max_distance: 100,
@@ -145,7 +145,7 @@ impl Default for RadiantDiamondTippedSpear {
         Self {
             price: 2250,
             attack_speed_mult: 60,
-            adaptive_force: 120,
+            adaptive_force: 100,
             skill_cooldown_mult: 10,
             effect_max_percent_bonus: 30.0,
             effect_max_distance: 100,

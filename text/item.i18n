@@ -465,11 +465,11 @@
         },
         "diamond_tipped_spear": {
             "name": "Diamond Tipped Spear",
-            "option": "Pierce: Gain <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nSweet Spot: Deal up to <#e8a800ff>30% bonus damage<> to enemy champions based on distance (maximum effect at <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
+            "option": "Pierce: Gain <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nSweet Spot: Deal up to <#e8a800ff>30% bonus damage<> to enemy champions based on distance (maximum effect at <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
         },
         "radiant_diamond_tipped_spear": {
             "name": "Radiant Diamond Tipped Spear",
-            "option": "Pierce: Gain <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nSweet Spot: Deal up to <#e8a800ff>30% bonus damage<> to enemy champions based on distance (maximum effect at <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
+            "option": "Pierce: Gain <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nSweet Spot: Deal up to <#e8a800ff>30% bonus damage<> to enemy champions based on distance (maximum effect at <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
         },
         "scouts_slingshot": {
             "name": "Scout's Slingshot",
@@ -1002,11 +1002,11 @@
         },
         "diamond_tipped_spear": {
             "name": "Mũi Giáo Kim Cương",
-            "option": "Xuyên Thấu: Nhận <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nĐiểm Lý Tưởng: Gây tối đa <#e8a800ff>30% sát thương cộng thêm<> lên tướng địch dựa trên khoảng cách (hiệu quả tối đa ở <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
+            "option": "Xuyên Thấu: Nhận <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nĐiểm Lý Tưởng: Gây tối đa <#e8a800ff>30% sát thương cộng thêm<> lên tướng địch dựa trên khoảng cách (hiệu quả tối đa ở <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
         },
         "radiant_diamond_tipped_spear": {
             "name": "Mũi Giáo Kim Cương Ánh Sáng",
-            "option": "Xuyên Thấu: Nhận <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nĐiểm Lý Tưởng: Gây tối đa <#e8a800ff>30% sát thương cộng thêm<> lên tướng địch dựa trên khoảng cách (hiệu quả tối đa ở <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
+            "option": "Xuyên Thấu: Nhận <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<>. Với mỗi <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.\n\nĐiểm Lý Tưởng: Gây tối đa <#e8a800ff>30% sát thương cộng thêm<> lên tướng địch dựa trên khoảng cách (hiệu quả tối đa ở <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
         },
         "zekes_herald": {
             "name": "Sứ Giả Của Zeke",
@@ -1539,11 +1539,11 @@
         },
         "diamond_tipped_spear": {
             "name": "钻头长矛",
-            "option": "穿刺：获得 <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。每点 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。\n\n最佳距离：根据距离对敌方英雄造成最多 <#e8a800ff>30% 额外伤害<>（在 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>时效果最大）。"
+            "option": "穿刺：获得 <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。每点 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。\n\n最佳距离：根据距离对敌方英雄造成最多 <#e8a800ff>30% 额外伤害<>（在 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>时效果最大）。"
         },
         "radiant_diamond_tipped_spear": {
             "name": "光明版钻头长矛",
-            "option": "穿刺：获得 <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。每点 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。\n\n最佳距离：根据距离对敌方英雄造成最多 <#e8a800ff>30% 额外伤害<>（在 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>时效果最大）。"
+            "option": "穿刺：获得 <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。每点 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。\n\n最佳距离：根据距离对敌方英雄造成最多 <#e8a800ff>30% 额外伤害<>（在 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>时效果最大）。"
         },
         "zekes_herald": {
             "name": "泽克的先驱",
@@ -2076,11 +2076,11 @@
         },
         "diamond_tipped_spear": {
             "name": "Lança de Diamante",
-            "option": "Perfuração: Ganha <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nPonto Ideal: Causa até <#e8a800ff>30% de dano bônus<> a campeões inimigos com base na distância (efeito máximo em <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
+            "option": "Perfuração: Ganha <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nPonto Ideal: Causa até <#e8a800ff>30% de dano bônus<> a campeões inimigos com base na distância (efeito máximo em <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
         },
         "radiant_diamond_tipped_spear": {
             "name": "Lança de Diamante Radiante",
-            "option": "Perfuração: Ganha <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nPonto Ideal: Causa até <#e8a800ff>30% de dano bônus<> a campeões inimigos com base na distância (efeito máximo em <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
+            "option": "Perfuração: Ganha <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nPonto Ideal: Causa até <#e8a800ff>30% de dano bônus<> a campeões inimigos com base na distância (efeito máximo em <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
         },
         "zekes_herald": {
             "name": "Arauto de Zeke",
@@ -2613,11 +2613,11 @@
         },
         "diamond_tipped_spear": {
             "name": "Алмазное копье",
-            "option": "Пронзание: Даёт <#d48294ff>75<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nИдеальная дистанция: Наносит до <#e8a800ff>30% дополнительного урона<> вражеским чемпионам в зависимости от расстояния (максимальный эффект на <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
+            "option": "Пронзание: Даёт <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nИдеальная дистанция: Наносит до <#e8a800ff>30% дополнительного урона<> вражеским чемпионам в зависимости от расстояния (максимальный эффект на <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
         },
         "radiant_diamond_tipped_spear": {
             "name": "Лучезарное алмазное копье",
-            "option": "Пронзание: Даёт <#d48294ff>120<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nИдеальная дистанция: Наносит до <#e8a800ff>30% дополнительного урона<> вражеским чемпионам в зависимости от расстояния (максимальный эффект на <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
+            "option": "Пронзание: Даёт <#d48294ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<>. Каждая единица <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы умений<>, в зависимости от того, что выше.\n\nИдеальная дистанция: Наносит до <#e8a800ff>30% дополнительного урона<> вражеским чемпионам в зависимости от расстояния (максимальный эффект на <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
         },
         "zekes_herald": {
             "name": "Вестник Зика",
