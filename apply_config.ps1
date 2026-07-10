@@ -219,6 +219,14 @@ $blcStacks = [int]$config.bloodletters_curse.effect_max_stacks
 $rblcShred = [int]$config.radiant_bloodletters_curse.effect_percent_mr_shred
 $rblcDur = [int]$config.radiant_bloodletters_curse.effect_duration_seconds
 $rblcStacks = [int]$config.radiant_bloodletters_curse.effect_max_stacks
+$ssDamage = [double]$config.sundered_sky.effect_percent_bonus_damage
+$ssFlatHeal = [double]$config.sundered_sky.effect_bonus_flat_heal
+$ssPercentHeal = [double]$config.sundered_sky.effect_caster_hp_percent_heal
+$ssOnHitCD = [double]$config.sundered_sky.on_hit_cooldown_seconds
+$rssDamage = [double]$config.radiant_sundered_sky.effect_percent_bonus_damage
+$rssFlatHeal = [double]$config.radiant_sundered_sky.effect_bonus_flat_heal
+$rssPercentHeal = [double]$config.radiant_sundered_sky.effect_caster_hp_percent_heal
+$rssOnHitCD = [double]$config.radiant_sundered_sky.on_hit_cooldown_seconds
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -317,6 +325,8 @@ $i18n.en.black_cleaver.option = "Carve: Dealing <#ff9028ff>physical damage<> to 
 $i18n.en.radiant_black_cleaver.option = "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <$armorIcon> <#ffdd8eff>Armor<> by ${rbcShred}%<> for <#e8a800ff>${rbcDur} seconds<> (max ${rbcStacks} stacks)."
 $i18n.en.bloodletters_curse.option = "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <$mrIcon> <#88ccffff>Magic Resistance<> by ${blcShred}%<> for <#e8a800ff>${blcDur} seconds<> (max ${blcStacks} stacks)."
 $i18n.en.radiant_bloodletters_curse.option = "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <$mrIcon> <#88ccffff>Magic Resistance<> by ${rblcShred}%<> for <#e8a800ff>${rblcDur} seconds<> (max ${rblcStacks} stacks)."
+$i18n.en.sundered_sky.option = "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <$critIcon> <#d45656ff>critically strikes<> for <#e8a800ff>${ssDamage}% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>${ssFlatHeal}<> + <#60e84dff>${ssPercentHeal}%<> of your missing health (<#e8a800ff>${ssOnHitCD} second<> cooldown per target)."
+$i18n.en.radiant_sundered_sky.option = "Lightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <$critIcon> <#d45656ff>critically strikes<> for <#e8a800ff>${rssDamage}% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>${rssFlatHeal}<> + <#60e84dff>${rssPercentHeal}%<> of your missing health (<#e8a800ff>${rssOnHitCD} second<> cooldown per target)."
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -399,6 +409,8 @@ $i18n.vi.black_cleaver.option = "Xẻ Thịt: Gây <#ff9028ff>sát thương vậ
 $i18n.vi.radiant_black_cleaver.option = "Xẻ Thịt: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm <$armorIcon> <#ffdd8eff>giáp<> của chúng ${rbcShred}%<> trong <#e8a800ff>${rbcDur} giây<> (tối đa ${rbcStacks} cộng dồn)."
 $i18n.vi.bloodletters_curse.option = "Phân Rã: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm <$mrIcon> <#88ccffff>kháng phép<> của chúng ${blcShred}%<> trong <#e8a800ff>${blcDur} giây<> (tối đa ${blcStacks} cộng dồn)."
 $i18n.vi.radiant_bloodletters_curse.option = "Phân Rã: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm <$mrIcon> <#88ccffff>kháng phép<> của chúng ${rblcShred}%<> trong <#e8a800ff>${rblcDur} giây<> (tối đa ${rblcStacks} cộng dồn)."
+$i18n.vi.sundered_sky.option = "Đòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <$critIcon> <#d45656ff>chí mạng<>, gây <#e8a800ff>${ssDamage}% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>${ssFlatHeal}<> + <#60e84dff>${ssPercentHeal}%<> máu đã mất (<#e8a800ff>${ssOnHitCD} giây<> hồi chiêu mỗi mục tiêu)."
+$i18n.vi.radiant_sundered_sky.option = "Đòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <$critIcon> <#d45656ff>chí mạng<>, gây <#e8a800ff>${rssDamage}% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>${rssFlatHeal}<> + <#60e84dff>${rssPercentHeal}%<> máu đã mất (<#e8a800ff>${rssOnHitCD} giây<> hồi chiêu mỗi mục tiêu)."
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -481,6 +493,8 @@ $i18n.'zh-hans'.black_cleaver.option = "碎裂：对敌方英雄造成<#ff9028ff
 $i18n.'zh-hans'.radiant_black_cleaver.option = "碎裂：对敌方英雄造成<#ff9028ff>物理伤害<>会<#d94c49ff>使其 <$armorIcon> <#ffdd8eff>护甲<> 降低${rbcShred}%<>，持续 <#e8a800ff>${rbcDur}秒<>（最多叠加${rbcStacks}层）。"
 $i18n.'zh-hans'.bloodletters_curse.option = "腐蚀：对敌方英雄造成<#a974ffff>魔法伤害<>会<#d94c49ff>使其 <$mrIcon> <#88ccffff>魔法抗性<> 降低${blcShred}%<>，持续 <#e8a800ff>${blcDur}秒<>（最多叠加${blcStacks}层）。"
 $i18n.'zh-hans'.radiant_bloodletters_curse.option = "腐蚀：对敌方英雄造成<#a974ffff>魔法伤害<>会<#d94c49ff>使其 <$mrIcon> <#88ccffff>魔法抗性<> 降低${rblcShred}%<>，持续 <#e8a800ff>${rblcDur}秒<>（最多叠加${rblcStacks}层）。"
+$i18n.'zh-hans'.sundered_sky.option = "光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <$critIcon> <#d45656ff>暴击<>，造成 <#e8a800ff>${ssDamage}% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>${ssFlatHeal}<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>${ssPercentHeal}%<>（每个目标冷却 <#e8a800ff>${ssOnHitCD}秒<>）。"
+$i18n.'zh-hans'.radiant_sundered_sky.option = "光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <$critIcon> <#d45656ff>暴击<>，造成 <#e8a800ff>${rssDamage}% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>${rssFlatHeal}<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>${rssPercentHeal}%<>（每个目标冷却 <#e8a800ff>${rssOnHitCD}秒<>）。"
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -563,6 +577,8 @@ $i18n.'pt-BR'.black_cleaver.option = "Retalhar: Causar <#ff9028ff>dano físico<>
 $i18n.'pt-BR'.radiant_black_cleaver.option = "Retalhar: Causar <#ff9028ff>dano físico<> a campeões inimigos <#d94c49ff>reduz a <$armorIcon> <#ffdd8eff>Armadura<> deles em ${rbcShred}%<> por <#e8a800ff>${rbcDur} segundos<> (acumula ${rbcStacks}x)."
 $i18n.'pt-BR'.bloodletters_curse.option = "Decaimento: Causar <#a974ffff>dano mágico<> a campeões inimigos <#d94c49ff>reduz a <$mrIcon> <#88ccffff>Resistência Mágica<> deles em ${blcShred}%<> por <#e8a800ff>${blcDur} segundos<> (acumula ${blcStacks}x)."
 $i18n.'pt-BR'.radiant_bloodletters_curse.option = "Decaimento: Causar <#a974ffff>dano mágico<> a campeões inimigos <#d94c49ff>reduz a <$mrIcon> <#88ccffff>Resistência Mágica<> deles em ${rblcShred}%<> por <#e8a800ff>${rblcDur} segundos<> (acumula ${rblcStacks}x)."
+$i18n.'pt-BR'.sundered_sky.option = "Golpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <$critIcon> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>${ssDamage}% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>${ssFlatHeal}<> + <#60e84dff>${ssPercentHeal}%<> da sua vida perdida (recarga de <#e8a800ff>${ssOnHitCD} segundos<> por alvo)."
+$i18n.'pt-BR'.radiant_sundered_sky.option = "Golpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <$critIcon> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>${rssDamage}% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>${rssFlatHeal}<> + <#60e84dff>${rssPercentHeal}%<> da sua vida perdida (recarga de <#e8a800ff>${rssOnHitCD} segundos<> por alvo)."
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -645,6 +661,8 @@ $i18n.ru.black_cleaver.option = "Рассечение: Нанесение <#ff90
 $i18n.ru.radiant_black_cleaver.option = "Рассечение: Нанесение <#ff9028ff>физического урона<> вражеским чемпионам <#d94c49ff>снижает их <$armorIcon> <#ffdd8eff>броню<> на ${rbcShred}%<> на <#e8a800ff>${rbcDur} секунд<> (макс. ${rbcStacks} стаков)."
 $i18n.ru.bloodletters_curse.option = "Распад: Нанесение <#a974ffff>магического урона<> вражеским чемпионам <#d94c49ff>снижает их <$mrIcon> <#88ccffff>сопротивление магии<> на ${blcShred}%<> на <#e8a800ff>${blcDur} секунд<> (макс. ${blcStacks} стаков)."
 $i18n.ru.radiant_bloodletters_curse.option = "Распад: Нанесение <#a974ffff>магического урона<> вражеским чемпионам <#d94c49ff>снижает их <$mrIcon> <#88ccffff>сопротивление магии<> на ${rblcShred}%<> на <#e8a800ff>${rblcDur} секунд<> (макс. ${rblcStacks} стаков)."
+$i18n.ru.sundered_sky.option = "Удар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <$critIcon> <#d45656ff>наносит критический удар<> с <#e8a800ff>${ssDamage}% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>${ssFlatHeal}<> + <#60e84dff>${ssPercentHeal}%<> от вашего потерянного здоровья (перезарядка <#e8a800ff>${ssOnHitCD} секунд<> на каждую цель)."
+$i18n.ru.radiant_sundered_sky.option = "Удар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <$critIcon> <#d45656ff>наносит критический удар<> с <#e8a800ff>${rssDamage}% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>${rssFlatHeal}<> + <#60e84dff>${rssPercentHeal}%<> от вашего потерянного здоровья (перезарядка <#e8a800ff>${rssOnHitCD} секунд<> на каждую цель)."
 
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
