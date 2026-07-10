@@ -53,7 +53,7 @@ impl ModItemInfo for VoidStaff {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["needlessly_large_rod".to_string()]
+        vec!["blighting_jewel".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
