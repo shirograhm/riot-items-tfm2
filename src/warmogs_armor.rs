@@ -60,12 +60,12 @@ impl WarmogsArmor {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
             };
-            let Some(entity_ref) = player_ref.champion() else {
+            let Some(champion_ref) = player_ref.champion() else {
                 return;
             };
-            let recently_damaged = (0..entity_ref.buff_count())
-                .any(|i| entity_ref.buff_at(i).name.as_str() == "warmogs_armor_recently_damaged");
-            (entity_ref.id(), entity_ref.hp().max, recently_damaged)
+            let recently_damaged = (0..champion_ref.buff_count())
+                .any(|i| champion_ref.buff_at(i).name.as_str() == "warmogs_armor_recently_damaged");
+            (champion_ref.id(), champion_ref.hp().max, recently_damaged)
         };
 
         // Warmog's Heart is suppressed while the holder has taken damage recently.
@@ -243,13 +243,13 @@ impl RadiantWarmogsArmor {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
             };
-            let Some(entity_ref) = player_ref.champion() else {
+            let Some(champion_ref) = player_ref.champion() else {
                 return;
             };
-            let recently_damaged = (0..entity_ref.buff_count()).any(|i| {
-                entity_ref.buff_at(i).name.as_str() == "radiant_warmogs_armor_recently_damaged"
+            let recently_damaged = (0..champion_ref.buff_count()).any(|i| {
+                champion_ref.buff_at(i).name.as_str() == "radiant_warmogs_armor_recently_damaged"
             });
-            (entity_ref.id(), entity_ref.hp().max, recently_damaged)
+            (champion_ref.id(), champion_ref.hp().max, recently_damaged)
         };
 
         // Warmog's Heart is suppressed while the holder has taken damage recently.

@@ -104,11 +104,11 @@ impl ModItemInfo for YunTalWildarrows {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
         ctx.add_buff(
-            entity_ref.id(),
+            champion_ref.id(),
             BuffState {
                 duration: BuffType::Permanent,
                 crit_chance: self.accumulated_stacks as i32 * self.effect_stack_crit_chance,
@@ -275,11 +275,11 @@ impl ModItemInfo for RadiantYunTalWildarrows {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
         ctx.add_buff(
-            entity_ref.id(),
+            champion_ref.id(),
             BuffState {
                 duration: BuffType::Permanent,
                 crit_chance: self.accumulated_stacks as i32 * self.effect_stack_crit_chance,

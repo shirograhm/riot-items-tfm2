@@ -61,20 +61,20 @@ impl ProtectorsVow {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
         let target = self.effect_bonus_flat_hp
             + percent_of(
-                entity_ref.stat().defence,
+                champion_ref.stat().defence,
                 self.effect_caster_defence_percent_hp,
             ) as i32;
         if target <= 0 {
             return;
         }
 
-        let entity_id = entity_ref.id();
+        let entity_id = champion_ref.id();
         ctx.add_buff(
             entity_id,
             BuffState {
@@ -198,20 +198,20 @@ impl RadiantProtectorsVow {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
         let target = self.effect_bonus_flat_hp
             + percent_of(
-                entity_ref.stat().defence,
+                champion_ref.stat().defence,
                 self.effect_caster_defence_percent_hp,
             ) as i32;
         if target <= 0 {
             return;
         }
 
-        let entity_id = entity_ref.id();
+        let entity_id = champion_ref.id();
         ctx.add_buff(
             entity_id,
             BuffState {

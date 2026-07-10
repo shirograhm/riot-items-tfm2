@@ -57,16 +57,16 @@ impl OverlordsBloodmail {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let target = percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
+        let target = percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
         if target <= 0 {
             return;
         }
 
-        let entity_id = entity_ref.id();
+        let entity_id = champion_ref.id();
         ctx.add_buff(
             entity_id,
             BuffState {
@@ -181,16 +181,16 @@ impl RadiantOverlordsBloodmail {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let target = percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
+        let target = percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
         if target <= 0 {
             return;
         }
 
-        let entity_id = entity_ref.id();
+        let entity_id = champion_ref.id();
         ctx.add_buff(
             entity_id,
             BuffState {

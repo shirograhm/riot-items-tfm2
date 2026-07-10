@@ -122,17 +122,17 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
     let Some(player_ref) = ctx.get_player(player) else {
         return;
     };
-    let Some(entity_ref) = player_ref.champion() else {
+    let Some(champion_ref) = player_ref.champion() else {
         return;
     };
 
     let is_buff_applied =
-        (0..entity_ref.buff_count()).any(|i| entity_ref.buff_at(i).name.as_str() == buff_name);
+        (0..champion_ref.buff_count()).any(|i| champion_ref.buff_at(i).name.as_str() == buff_name);
 
     if !is_buff_applied {
-        if entity_ref.stat().magic_power > entity_ref.stat().attack {
+        if champion_ref.stat().magic_power > champion_ref.stat().attack {
             ctx.add_buff(
-                entity_ref.id(),
+                champion_ref.id(),
                 BuffState {
                     duration: BuffType::Permanent,
                     magic_power: adaptive_force,
@@ -142,7 +142,7 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
             )
         } else {
             ctx.add_buff(
-                entity_ref.id(),
+                champion_ref.id(),
                 BuffState {
                     duration: BuffType::Permanent,
                     attack: (adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32,
