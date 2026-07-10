@@ -24,7 +24,7 @@ impl Default for SunderedSky {
             skill_cooldown_mult: 10,
             effect_percent_bonus_damage: 20.0,
             effect_bonus_flat_heal: 60,
-            effect_caster_hp_percent_heal: 6.0,
+            effect_caster_hp_percent_heal: 10.0,
             on_hit_cooldown_seconds: 20.0,
         }
     }
@@ -176,7 +176,7 @@ impl Default for RadiantSunderedSky {
             skill_cooldown_mult: 20,
             effect_percent_bonus_damage: 20.0,
             effect_bonus_flat_heal: 60,
-            effect_caster_hp_percent_heal: 6.0,
+            effect_caster_hp_percent_heal: 10.0,
             on_hit_cooldown_seconds: 20.0,
         }
     }
