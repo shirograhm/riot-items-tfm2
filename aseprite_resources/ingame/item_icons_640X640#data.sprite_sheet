@@ -672,32 +672,38 @@
             "w": 0.05,
             "h": 0.05
         },
-        "lord_dominiks_regards": {
+        "void_staff": {
             "x": 0.6,
             "y": 0.25,
             "w": 0.05,
             "h": 0.05
         },
-        "radiant_lord_dominiks_regards": {
+        "radiant_void_staff": {
             "x": 0.65,
             "y": 0.25,
             "w": 0.05,
             "h": 0.05
         },
-        "moonstone_renewer": {
+        "echoes_of_helia": {
             "x": 0.7,
             "y": 0.25,
             "w": 0.05,
             "h": 0.05
         },
-        "radiant_moonstone_renewer": {
+        "radiant_echoes_of_helia": {
             "x": 0.75,
             "y": 0.25,
             "w": 0.05,
             "h": 0.05
         },
-        "last_whisper": {
+        "noonquiver": {
             "x": 0.8,
+            "y": 0.25,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "blighting_jewel": {
+            "x": 0.85,
             "y": 0.25,
             "w": 0.05,
             "h": 0.05

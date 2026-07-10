@@ -30,6 +30,7 @@ mod mortal_reminder;
 mod nashors_tooth;
 mod needlessly_large_rod;
 mod night_harvester;
+mod noonquiver;
 mod oblivion_orb;
 mod overlords_bloodmail;
 mod phage;
@@ -45,6 +46,7 @@ mod spirit_visage;
 mod stormrazor;
 mod terminus;
 mod unending_despair;
+mod void_staff;
 mod warmogs_armor;
 mod yun_tal_wildarrows;
 mod zekes_herald;
@@ -75,6 +77,7 @@ use mortal_reminder::*;
 use nashors_tooth::*;
 use needlessly_large_rod::*;
 use night_harvester::*;
+use noonquiver::*;
 use oblivion_orb::*;
 use overlords_bloodmail::*;
 use phage::*;
@@ -90,6 +93,7 @@ use spirit_visage::*;
 use stormrazor::*;
 use terminus::*;
 use unending_despair::*;
+use void_staff::*;
 use warmogs_armor::*;
 use yun_tal_wildarrows::*;
 use zekes_herald::*;
@@ -176,12 +180,13 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
 
     // Tier 3
+    reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
     reg.add_item(configured!("bf_sword" => BFSword));
-    reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
+    reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
+    reg.add_item(configured!("noonquiver" => Noonquiver));
     reg.add_item(configured!("phage" => Phage));
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
-    reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
 
     // Tier 4
     reg.add_item(configured!("black_cleaver" => BlackCleaver));
@@ -217,6 +222,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
+    reg.add_item(configured!("void_staff" => VoidStaff));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
@@ -255,6 +261,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_stormrazor" => RadiantStormrazor));
     reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
+    reg.add_item(configured!("radiant_void_staff" => RadiantVoidStaff));
     reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
     reg.add_item(configured!("radiant_yun_tal_wildarrows" => RadiantYunTalWildarrows));
     reg.add_item(configured!("radiant_zekes_herald" => RadiantZekesHerald));

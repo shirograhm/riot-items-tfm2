@@ -81,7 +81,7 @@ impl ModItemInfo for YunTalWildarrows {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["bf_sword".to_string()]
+        vec!["noonquiver".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

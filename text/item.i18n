@@ -494,6 +494,14 @@
         "radiant_liandrys_torment": {
             "name": "Radiant Liandry's Torment",
             "option": "Suffering: Dealing Ability damage burns enemies, causing them to take <#d94c49ff>6% of the target's maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>3 seconds<>. Deals a maximum of <#a974ffff>40 magic damage<> per tick against minions and monsters."
+        },
+        "void_staff": {
+            "name": "Void Staff",
+            "option": ""
+        },
+        "radiant_void_staff": {
+            "name": "Void Staff",
+            "option": ""
         }
     },
     "vi": {
