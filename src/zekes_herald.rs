@@ -7,15 +7,6 @@ use crate::{
     DISTANCE_UNITS_PER_RANGE,
 };
 
-// The aura grants Adaptive Force to every allied champion in range as a
-// fixed-duration buff, re-applied on a slightly shorter cycle than it lasts so a
-// fresh buff is always in place before the previous one expires (same pattern as
-// protectors_vow's Awe). An ally who leaves range simply stops being refreshed
-// and the buff expires ~1s later; during the ~2-tick overlap the bonus is briefly
-// doubled, which is harmless for a flat combat stat. Same-name buffs stack and
-// there is no removal API, so this cyclic refresh is the only way to make an aura
-// that tracks position up AND down.
-
 #[derive(Clone, Debug)]
 pub struct ZekesHerald {
     price: usize,
@@ -85,7 +76,7 @@ impl ZekesHerald {
             let Some(entity_ref) = ctx.get_entity(id) else {
                 continue;
             };
-            if !entity_ref.is_alive() || entity_ref.team() != caster_team {
+            if !entity_ref.is_alive() || entity_ref.team() != caster_team || id == caster_id {
                 continue;
             }
             if ctx.distance_sq(caster_id, id) > range_sq {
@@ -249,7 +240,7 @@ impl RadiantZekesHerald {
             let Some(entity_ref) = ctx.get_entity(id) else {
                 continue;
             };
-            if !entity_ref.is_alive() || entity_ref.team() != caster_team {
+            if !entity_ref.is_alive() || entity_ref.team() != caster_team || id == caster_id {
                 continue;
             }
             if ctx.distance_sq(caster_id, id) > range_sq {
