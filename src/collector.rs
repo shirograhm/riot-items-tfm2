@@ -61,7 +61,7 @@ impl ModItemInfo for Collector {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["soldiers_longsword".to_string()]
+        vec!["noonquiver".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

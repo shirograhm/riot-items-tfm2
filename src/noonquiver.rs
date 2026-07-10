@@ -55,7 +55,11 @@ impl ModItemInfo for Noonquiver {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["stormrazor".to_string(), "yun_tal_wildarrows".to_string()]
+        vec![
+            "stormrazor".to_string(),
+            "yun_tal_wildarrows".to_string(),
+            "collector".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffState {

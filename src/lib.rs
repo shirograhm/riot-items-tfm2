@@ -5,6 +5,7 @@ mod bf_sword;
 mod black_cleaver;
 mod blackfire_torch;
 mod blade_of_the_ruined_king;
+mod blighting_jewel;
 mod bloodletters_curse;
 mod build_config;
 mod collector;
@@ -56,6 +57,7 @@ use bf_sword::*;
 use black_cleaver::*;
 use blackfire_torch::*;
 use blade_of_the_ruined_king::*;
+use blighting_jewel::*;
 use bloodletters_curse::*;
 use collector::*;
 use deathblade::*;
@@ -182,6 +184,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 3
     reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
     reg.add_item(configured!("bf_sword" => BFSword));
+    reg.add_item(configured!("blighting_jewel" => BlightingJewel));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("noonquiver" => Noonquiver));
