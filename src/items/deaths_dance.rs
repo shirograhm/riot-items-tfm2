@@ -102,19 +102,19 @@ impl ModItemInfo for DeathsDance {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let is_burn_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "deaths_dance_burn");
+        let is_burn_applied = (0..champion_ref.buff_count())
+            .any(|i| champion_ref.buff_at(i).name.as_str() == "deaths_dance_burn");
         if is_burn_applied {
             return;
         }
 
-        let entity = entity_ref.id();
+        let entity = champion_ref.id();
         let per_second_cap =
-            percent_of(entity_ref.hp().max, self.effect_burn_hp_percent_cap / 5.0) as i32;
+            percent_of(champion_ref.hp().max, self.effect_burn_hp_percent_cap / 5.0) as i32;
 
         let tick_damage = self.accumulated_damage.min(per_second_cap);
         if tick_damage <= 0 {
@@ -285,19 +285,19 @@ impl ModItemInfo for RadiantDeathsDance {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let is_burn_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_deaths_dance_burn");
+        let is_burn_applied = (0..champion_ref.buff_count())
+            .any(|i| champion_ref.buff_at(i).name.as_str() == "radiant_deaths_dance_burn");
         if is_burn_applied {
             return;
         }
 
-        let entity = entity_ref.id();
+        let entity = champion_ref.id();
         let per_second_cap =
-            percent_of(entity_ref.hp().max, self.effect_burn_hp_percent_cap / 5.0) as i32;
+            percent_of(champion_ref.hp().max, self.effect_burn_hp_percent_cap / 5.0) as i32;
 
         let tick_damage = self.accumulated_damage.min(per_second_cap);
         if tick_damage <= 0 {

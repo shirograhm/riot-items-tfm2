@@ -172,12 +172,13 @@ impl RadiantDiamondTippedSpear {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let is_prior_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "diamond_tipped_spear_adaptive_force");
+        let is_prior_buff_applied = (0..champion_ref.buff_count()).any(|i| {
+            champion_ref.buff_at(i).name.as_str() == "diamond_tipped_spear_adaptive_force"
+        });
         let force_to_apply = if is_prior_buff_applied {
             self.adaptive_force - DiamondTippedSpear::default().adaptive_force
         } else {

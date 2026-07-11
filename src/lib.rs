@@ -1,112 +1,12 @@
 use mod_api::*;
 
-mod aegis_of_the_legion;
-mod bandleglass_mirror;
-mod bf_sword;
-mod black_cleaver;
-mod blackfire_torch;
-mod blade_of_the_ruined_king;
-mod blighting_jewel;
-mod bloodletters_curse;
 mod build_config;
-mod collector;
 mod config;
 mod constants;
-mod deathblade;
-mod deaths_dance;
-mod diamond_tipped_spear;
-mod echoes_of_helia;
-mod executioners_calling;
-mod experimental_hexplate;
-mod frozen_mallet;
-mod guinsoos_rageblade;
-mod haunting_guise;
-mod heartsteel;
-mod hextech_gunblade;
 mod hook;
-mod infinity_edge;
-mod jaksho_the_protean;
-mod liandrys_torment;
-mod mirage_blade;
-mod morellonomicon;
-mod mortal_reminder;
-mod nashors_tooth;
-mod needlessly_large_rod;
-mod night_harvester;
-mod noonquiver;
-mod oblivion_orb;
-mod overlords_bloodmail;
-mod phage;
-mod protectors_vow;
-mod protoplasm_harness;
-mod rabadons_deathcap;
-mod riftmaker;
-mod rylais_crystal_scepter;
-mod scouts_slingshot;
-mod shadowflame;
-mod spear_of_shojin;
-mod spirit_visage;
-mod steel_sigil;
-mod stormrazor;
-mod sundered_sky;
-mod terminus;
-mod unending_despair;
-mod void_staff;
-mod warmogs_armor;
-mod yun_tal_wildarrows;
-mod zekes_herald;
+mod items;
 
-use aegis_of_the_legion::*;
-use bandleglass_mirror::*;
-use bf_sword::*;
-use black_cleaver::*;
-use blackfire_torch::*;
-use blade_of_the_ruined_king::*;
-use blighting_jewel::*;
-use bloodletters_curse::*;
-use collector::*;
-use deathblade::*;
-use deaths_dance::*;
-use diamond_tipped_spear::*;
-use echoes_of_helia::*;
-use executioners_calling::*;
-use experimental_hexplate::*;
-use frozen_mallet::*;
-use guinsoos_rageblade::*;
-use haunting_guise::*;
-use heartsteel::*;
-use hextech_gunblade::*;
-use infinity_edge::*;
-use jaksho_the_protean::*;
-use liandrys_torment::*;
-use mirage_blade::*;
-use morellonomicon::*;
-use mortal_reminder::*;
-use nashors_tooth::*;
-use needlessly_large_rod::*;
-use night_harvester::*;
-use noonquiver::*;
-use oblivion_orb::*;
-use overlords_bloodmail::*;
-use phage::*;
-use protectors_vow::*;
-use protoplasm_harness::*;
-use rabadons_deathcap::*;
-use riftmaker::*;
-use rylais_crystal_scepter::*;
-use scouts_slingshot::*;
-use shadowflame::*;
-use spear_of_shojin::*;
-use spirit_visage::*;
-use steel_sigil::*;
-use stormrazor::*;
-use sundered_sky::*;
-use terminus::*;
-use unending_despair::*;
-use void_staff::*;
-use warmogs_armor::*;
-use yun_tal_wildarrows::*;
-use zekes_herald::*;
+use items::*;
 
 pub(crate) use constants::*;
 
@@ -122,17 +22,17 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
     let Some(player_ref) = ctx.get_player(player) else {
         return;
     };
-    let Some(entity_ref) = player_ref.champion() else {
+    let Some(champion_ref) = player_ref.champion() else {
         return;
     };
 
     let is_buff_applied =
-        (0..entity_ref.buff_count()).any(|i| entity_ref.buff_at(i).name.as_str() == buff_name);
+        (0..champion_ref.buff_count()).any(|i| champion_ref.buff_at(i).name.as_str() == buff_name);
 
     if !is_buff_applied {
-        if entity_ref.stat().magic_power > entity_ref.stat().attack {
+        if champion_ref.stat().magic_power > champion_ref.stat().attack {
             ctx.add_buff(
-                entity_ref.id(),
+                champion_ref.id(),
                 BuffState {
                     duration: BuffType::Permanent,
                     magic_power: adaptive_force,
@@ -142,7 +42,7 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
             )
         } else {
             ctx.add_buff(
-                entity_ref.id(),
+                champion_ref.id(),
                 BuffState {
                     duration: BuffType::Permanent,
                     attack: (adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32,

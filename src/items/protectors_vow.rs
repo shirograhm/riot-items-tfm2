@@ -5,50 +5,45 @@ use crate::config::ItemConfig;
 use crate::percent_of;
 use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
-// The Tyranny bonus attack is granted as a fixed-duration buff that is
-// re-applied on a slightly shorter cycle than it lasts, so a fresh buff is
-// always in place before the previous one expires -- no single-tick gap where
-// the bonus would flicker off. Recomputing the amount each cycle lets it track
-// the holder's current max HP, rising or falling with it, instead of only
-// ratcheting upward. During the brief overlap both buffs are live, so the bonus
-// is momentarily doubled -- harmless, since it only ever overshoots.
-
 #[derive(Clone, Debug)]
-pub struct OverlordsBloodmail {
+pub struct ProtectorsVow {
     price: usize,
-    attack: i32,
     hp: i32,
-    effect_caster_hp_percent_attack: f64,
+    defence: i32,
+    effect_bonus_flat_hp: i32,
+    effect_caster_defence_percent_hp: f64,
     refresh_cooldown: usize,
 }
 
-impl Default for OverlordsBloodmail {
+impl Default for ProtectorsVow {
     fn default() -> Self {
         Self {
-            price: 1400,
-            attack: 25,
-            hp: 400,
-            effect_caster_hp_percent_attack: 2.5,
+            price: 1300,
+            hp: 350,
+            defence: 50,
+            effect_bonus_flat_hp: 50,
+            effect_caster_defence_percent_hp: 80.0,
             refresh_cooldown: 0,
         }
     }
 }
 
-impl OverlordsBloodmail {
+impl ProtectorsVow {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
             hp: cfg.hp.unwrap_or(d.hp),
-            effect_caster_hp_percent_attack: cfg
-                .effect_caster_hp_percent_attack
-                .unwrap_or(d.effect_caster_hp_percent_attack),
+            defence: cfg.defence.unwrap_or(d.defence),
+            effect_bonus_flat_hp: cfg.effect_bonus_flat_hp.unwrap_or(d.effect_bonus_flat_hp),
+            effect_caster_defence_percent_hp: cfg
+                .effect_caster_defence_percent_hp
+                .unwrap_or(d.effect_caster_defence_percent_hp),
             refresh_cooldown: 0,
         }
     }
 
-    fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn apply_awe(&mut self, ctx: &mut GameCtx, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
             return;
@@ -57,24 +52,28 @@ impl OverlordsBloodmail {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let target = percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
+        let target = self.effect_bonus_flat_hp
+            + percent_of(
+                champion_ref.stat().defence,
+                self.effect_caster_defence_percent_hp,
+            ) as i32;
         if target <= 0 {
             return;
         }
 
-        let entity_id = entity_ref.id();
+        let entity_id = champion_ref.id();
         ctx.add_buff(
             entity_id,
             BuffState {
-                name: ArrayString::try_from("overlords_bloodmail_tyranny").unwrap(),
+                name: ArrayString::try_from("protectors_vow_awe").unwrap(),
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },
-                attack: target,
+                hp: target,
                 ..Default::default()
             },
         );
@@ -82,17 +81,17 @@ impl OverlordsBloodmail {
     }
 }
 
-impl ModItemInfo for OverlordsBloodmail {
+impl ModItemInfo for ProtectorsVow {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "overlords_bloodmail"
+        "protectors_vow"
     }
 
     fn icon(&self) -> &str {
-        "overlords_bloodmail"
+        "protectors_vow"
     }
 
     fn price(&self) -> usize {
@@ -104,75 +103,84 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["phage".to_string()]
+        vec![
+            "ring_of_reincarnation".to_string(),
+            "gatekeepers_armor".to_string(),
+        ]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_overlords_bloodmail".to_string()]
+        vec!["radiant_protectors_vow".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
             hp: self.hp,
+            defence: self.defence,
             ..Default::default()
         }
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
         self.refresh_cooldown = 0;
-        self.apply_tyranny(ctx, player);
+        self.apply_awe(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        self.apply_tyranny(ctx, player);
+        self.apply_awe(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::HP]
+        vec![ItemTag::HP, ItemTag::Defense]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+        ItemCategory::Defense
     }
 }
 
 #[derive(Clone, Debug)]
-pub struct RadiantOverlordsBloodmail {
+pub struct RadiantProtectorsVow {
     price: usize,
-    attack: i32,
     hp: i32,
-    effect_caster_hp_percent_attack: f64,
+    defence: i32,
+    skill_cooldown_mult: i32,
+    effect_bonus_flat_hp: i32,
+    effect_caster_defence_percent_hp: f64,
     refresh_cooldown: usize,
 }
 
-impl Default for RadiantOverlordsBloodmail {
+impl Default for RadiantProtectorsVow {
     fn default() -> Self {
         Self {
-            price: 2000,
-            attack: 40,
-            hp: 650,
-            effect_caster_hp_percent_attack: 2.5,
+            price: 1800,
+            hp: 550,
+            defence: 75,
+            skill_cooldown_mult: 15,
+            effect_bonus_flat_hp: 50,
+            effect_caster_defence_percent_hp: 80.0,
             refresh_cooldown: 0,
         }
     }
 }
 
-impl RadiantOverlordsBloodmail {
+impl RadiantProtectorsVow {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
             hp: cfg.hp.unwrap_or(d.hp),
-            effect_caster_hp_percent_attack: cfg
-                .effect_caster_hp_percent_attack
-                .unwrap_or(d.effect_caster_hp_percent_attack),
+            defence: cfg.defence.unwrap_or(d.defence),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            effect_bonus_flat_hp: cfg.effect_bonus_flat_hp.unwrap_or(d.effect_bonus_flat_hp),
+            effect_caster_defence_percent_hp: cfg
+                .effect_caster_defence_percent_hp
+                .unwrap_or(d.effect_caster_defence_percent_hp),
             refresh_cooldown: 0,
         }
     }
 
-    fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn apply_awe(&mut self, ctx: &mut GameCtx, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
             return;
@@ -181,24 +189,28 @@ impl RadiantOverlordsBloodmail {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let target = percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
+        let target = self.effect_bonus_flat_hp
+            + percent_of(
+                champion_ref.stat().defence,
+                self.effect_caster_defence_percent_hp,
+            ) as i32;
         if target <= 0 {
             return;
         }
 
-        let entity_id = entity_ref.id();
+        let entity_id = champion_ref.id();
         ctx.add_buff(
             entity_id,
             BuffState {
-                name: ArrayString::try_from("radiant_overlords_bloodmail_tyranny").unwrap(),
+                name: ArrayString::try_from("radiant_protectors_vow_awe").unwrap(),
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },
-                attack: target,
+                hp: target,
                 ..Default::default()
             },
         );
@@ -206,17 +218,17 @@ impl RadiantOverlordsBloodmail {
     }
 }
 
-impl ModItemInfo for RadiantOverlordsBloodmail {
+impl ModItemInfo for RadiantProtectorsVow {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_overlords_bloodmail"
+        "radiant_protectors_vow"
     }
 
     fn icon(&self) -> &str {
-        "radiant_overlords_bloodmail"
+        "radiant_protectors_vow"
     }
 
     fn price(&self) -> usize {
@@ -228,31 +240,32 @@ impl ModItemInfo for RadiantOverlordsBloodmail {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["overlords_bloodmail".to_string()]
+        vec!["protectors_vow".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
             hp: self.hp,
+            defence: self.defence,
+            skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
     fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
         self.refresh_cooldown = 0;
-        self.apply_tyranny(ctx, player);
+        self.apply_awe(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        self.apply_tyranny(ctx, player);
+        self.apply_awe(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::HP]
+        vec![ItemTag::HP, ItemTag::Defense, ItemTag::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+        ItemCategory::Defense
     }
 }

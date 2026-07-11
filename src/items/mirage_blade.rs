@@ -104,16 +104,16 @@ impl ModItemInfo for MirageBlade {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let is_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
+        let is_buff_applied = (0..champion_ref.buff_count())
+            .any(|i| champion_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
 
         if !is_buff_applied {
             ctx.add_buff(
-                entity_ref.id(),
+                champion_ref.id(),
                 BuffState {
                     duration: BuffType::Time {
                         tick: (self.effect_duration_seconds * 60.0) as usize,
@@ -179,12 +179,12 @@ impl RadiantMirageBlade {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let is_prior_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_adaptive_force");
+        let is_prior_buff_applied = (0..champion_ref.buff_count())
+            .any(|i| champion_ref.buff_at(i).name.as_str() == "mirage_blade_adaptive_force");
         let force_to_apply = if is_prior_buff_applied {
             self.adaptive_force - MirageBlade::default().adaptive_force
         } else {
@@ -245,16 +245,16 @@ impl ModItemInfo for RadiantMirageBlade {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(entity_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
 
-        let is_buff_applied = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
+        let is_buff_applied = (0..champion_ref.buff_count())
+            .any(|i| champion_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
 
         if !is_buff_applied {
             ctx.add_buff(
-                entity_ref.id(),
+                champion_ref.id(),
                 BuffState {
                     duration: BuffType::Time {
                         tick: (self.effect_duration_seconds * 60.0) as usize,
