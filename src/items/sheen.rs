@@ -114,7 +114,7 @@ impl ModItemInfo for Sheen {
             return;
         };
         let on_cooldown = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "sheen_spellblade_cooldown");
+            .any(|i| caster_ref.buff_at(i).name.as_str() == "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
         }
@@ -144,7 +144,7 @@ impl ModItemInfo for Sheen {
                 duration: BuffType::Time {
                     tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
                 },
-                name: ArrayString::try_from("sheen_spellblade_cooldown").unwrap(),
+                name: ArrayString::try_from("spellblade_cooldown").unwrap(),
                 ..Default::default()
             },
         );

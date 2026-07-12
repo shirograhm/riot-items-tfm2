@@ -111,7 +111,7 @@ impl ModItemInfo for TrinityForce {
             return;
         };
         let on_cooldown = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "trinity_force_spellblade_cooldown");
+            .any(|i| caster_ref.buff_at(i).name.as_str() == "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
         }
@@ -142,7 +142,7 @@ impl ModItemInfo for TrinityForce {
                 duration: BuffType::Time {
                     tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
                 },
-                name: ArrayString::try_from("trinity_force_spellblade_cooldown").unwrap(),
+                name: ArrayString::try_from("spellblade_cooldown").unwrap(),
                 ..Default::default()
             },
         );
@@ -258,9 +258,8 @@ impl ModItemInfo for RadiantTrinityForce {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let on_cooldown = (0..caster_ref.buff_count()).any(|i| {
-            caster_ref.buff_at(i).name.as_str() == "radiant_trinity_force_spellblade_cooldown"
-        });
+        let on_cooldown = (0..caster_ref.buff_count())
+            .any(|i| caster_ref.buff_at(i).name.as_str() == "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
         }
@@ -291,7 +290,7 @@ impl ModItemInfo for RadiantTrinityForce {
                 duration: BuffType::Time {
                     tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
                 },
-                name: ArrayString::try_from("radiant_trinity_force_spellblade_cooldown").unwrap(),
+                name: ArrayString::try_from("spellblade_cooldown").unwrap(),
                 ..Default::default()
             },
         );
