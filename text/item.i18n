@@ -537,7 +537,7 @@
         },
         "sheen": {
             "name": "Sheen",
-            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#ff9028ff>bonus physical damage<> equal to <#d8c9b3ff>30<> - <#d8c9b3ff>85<>, based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<> (<#e8a800ff>1.5 second<> cooldown)."
+            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "trinity_force": {
             "name": "Trinity Force",
