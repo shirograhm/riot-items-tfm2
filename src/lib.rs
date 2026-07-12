@@ -5,6 +5,7 @@ mod config;
 mod constants;
 mod hook;
 mod items;
+mod stats;
 
 use items::*;
 
@@ -16,6 +17,23 @@ fn percent_of(value: usize, percent: f64) -> usize {
 
 fn percent_of_i32(value: i32, percent: f64) -> i32 {
     (value as f64 * percent / 100.0).round() as i32
+}
+
+/// Damage multiplier that simulates `lethality` flat armor penetration against a
+/// target with `armor`. The game mitigates physical damage by `100 / (100 + armor)`
+/// (verified: `mitigated = floor(raw * 100 / (100 + armor))`), so scaling the
+/// outgoing damage by this factor makes the post-mitigation result match what the
+/// target would take at `armor - lethality` (floored at 0):
+/// `(100 + armor) / (100 + max(0, armor - lethality))`. The bump is largest against
+/// low-armor targets, like real lethality. Returns `1.0` when there is nothing to
+/// penetrate (non-positive armor or lethality).
+#[allow(dead_code)]
+fn lethality_multiplier(armor: i32, lethality: i32) -> f64 {
+    if armor <= 0 || lethality <= 0 {
+        return 1.0;
+    }
+    let effective_armor = (armor - lethality).max(0);
+    (100 + armor) as f64 / (100 + effective_armor) as f64
 }
 
 fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, buff_name: &str) {
