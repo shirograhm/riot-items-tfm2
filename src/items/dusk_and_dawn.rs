@@ -4,12 +4,6 @@ use mod_api::*;
 use crate::config::ItemConfig;
 use crate::percent_of;
 
-// Spellblade: after landing an Ability on an enemy champion, the next basic
-// attack deals bonus magic damage (flat + % of Ability Power) and heals the
-// wielder (% of Ability Power + % of maximum health), gated by a self
-// cooldown-buff. `spellblade_ready` is charged in `on_skill_hit` and consumed
-// in `on_attack` (self state, since buffs cannot be removed to spend).
-
 #[derive(Clone, Debug)]
 pub struct DuskAndDawn {
     price: usize,
