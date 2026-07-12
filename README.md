@@ -54,7 +54,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | — |
 | **Jak’Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
-| **Liandry's Torment** | 1400G | +350 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of the target's maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
+| **Liandry's Torment** | 1400G | +350 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
 | **Mirage Blade** | 1500G | +40% AS<br>+10% MS | Gain 60 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
 | **Morellonomicon** | 1300G | +200 HP<br>+120 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |
 | **Mortal Reminder** | 1400G | +55 AD<br>+20% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
@@ -101,7 +101,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | — |
 | **Radiant Jak’Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | When you take damage from an enemy champion, gain +10% armor and +10% magic resistance for 4 seconds (max 4 stacks). |
-| **Radiant Liandry's Torment** | 2000G | +550 HP<br>+150 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of the target's maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
+| **Radiant Liandry's Torment** | 2000G | +550 HP<br>+150 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
 | **Radiant Mortal Reminder** | 2000G | +70 AD<br>+30% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
 | **Radiant Mirage Blade** | 2100G | +65% AS<br>+15% MS | Gain 100 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
 | **Radiant Morellonomicon** | 1850G | +350 HP<br>+190 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |
