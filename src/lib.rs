@@ -107,6 +107,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
+    reg.add_item(configured!("bloodsong" => Bloodsong));
     reg.add_item(configured!("collector" => Collector));
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
@@ -150,6 +151,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
     reg.add_item(configured!("radiant_blade_of_the_ruined_king" => RadiantBladeOfTheRuinedKing));
     reg.add_item(configured!("radiant_bloodletters_curse" => RadiantBloodlettersCurse));
+    reg.add_item(configured!("radiant_bloodsong" => RadiantBloodsong));
     reg.add_item(configured!("radiant_collector" => RadiantCollector));
     reg.add_item(configured!("radiant_deathblade" => RadiantDeathBlade));
     reg.add_item(configured!("radiant_deaths_dance" => RadiantDeathsDance));

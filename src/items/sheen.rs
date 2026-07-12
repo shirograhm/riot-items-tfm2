@@ -88,7 +88,11 @@ impl ModItemInfo for Sheen {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["trinity_force".to_string(), "dusk_and_dawn".to_string()]
+        vec![
+            "trinity_force".to_string(),
+            "dusk_and_dawn".to_string(),
+            "bloodsong".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffState {

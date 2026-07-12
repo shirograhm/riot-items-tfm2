@@ -743,5 +743,31 @@
     "effect_caster_ap_percent_heal": 10.0,
     "effect_caster_hp_percent_heal": 2.5,
     "effect_cooldown_seconds": 3.5
+  },
+  "bloodsong": {
+    "price": 1050,
+    "attack_speed_mult": 15,
+    "hp": 250,
+    "hp_regen": 2,
+    "magic_power": 20,
+    "skill_cooldown_mult": 10,
+    "effect_min_bonus_damage": 70,
+    "effect_max_bonus_damage": 125,
+    "effect_cooldown_seconds": 3.5,
+    "effect_damaged_amplify": 8,
+    "effect_duration_seconds": 4
+  },
+  "radiant_bloodsong": {
+    "price": 1500,
+    "attack_speed_mult": 15,
+    "hp": 450,
+    "hp_regen": 4,
+    "magic_power": 40,
+    "skill_cooldown_mult": 20,
+    "effect_min_bonus_damage": 70,
+    "effect_max_bonus_damage": 125,
+    "effect_cooldown_seconds": 3.5,
+    "effect_damaged_amplify": 8,
+    "effect_duration_seconds": 4
   }
 }

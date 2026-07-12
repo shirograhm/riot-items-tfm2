@@ -23,6 +23,7 @@ items! {
     blade_of_the_ruined_king,
     blighting_jewel,
     bloodletters_curse,
+    bloodsong,
     collector,
     deathblade,
     deaths_dance,
