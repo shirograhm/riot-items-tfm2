@@ -549,11 +549,11 @@
         },
         "dusk_and_dawn": {
             "name": "Dusk and Dawn",
-            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>heals you<> for <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>AP<> <#60e84dff>(+2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> maximum health)<> (<#e8a800ff>2.5 second<> cooldown)."
+            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>heals you<> for <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> <#60e84dff>(+2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>) (<#e8a800ff>1.5 second<> cooldown)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Radiant Dusk and Dawn",
-            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>heals you<> for <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>AP<> <#60e84dff>(+2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> maximum health)<> (<#e8a800ff>2.5 second<> cooldown)."
+            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>heals you<> for <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> <#60e84dff>(+2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>) (<#e8a800ff>1.5 second<> cooldown)."
         }
     },
     "vi": {
