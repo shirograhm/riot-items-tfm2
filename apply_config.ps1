@@ -356,13 +356,13 @@ $i18n.en.radiant_sundered_sky.option = "Lightshield Strike: Your next instance o
 $i18n.en.echoes_of_helia.option = "Soul Siphon: Store <#e8a800ff>${eohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (based on <$levelIcon> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
 $i18n.en.radiant_echoes_of_helia.option = "Soul Siphon: Store <#e8a800ff>${reohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (based on <$levelIcon> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
 
-$i18n.en.sheen.option = "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> <#ff9028ff>bonus physical damage<>, scaling with <$levelIcon> <#d8c9b3ff>level<> (<#e8a800ff>${sheenCd} second<> cooldown)."
+$i18n.en.sheen.option = "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#ff9028ff>bonus physical damage<> equal to <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<>, based on <$levelIcon> <#d8c9b3ff>level<> (<#e8a800ff>${sheenCd} second<> cooldown)."
 
 $tfTemplate = "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> of your <$adIcon> <#60e84dff>Attack Damage<> (<#e8a800ff>{2} second<> cooldown)."
 $i18n.en.trinity_force.option = $tfTemplate -f $tfFlat, $tfAdPct, $tfCd
 $i18n.en.radiant_trinity_force.option = $tfTemplate -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$dndTemplate = "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>heals you<> for <#a974ffff>{2}%<> <$apIcon> <#a974ffff>AP<> <#60e84dff>(+{3}%<> of your <$hpIcon> maximum health)<> (<#e8a800ff>{4} second<> cooldown)."
+$dndTemplate = "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>heals you<> for <#a974ffff>{2}%<> <$apIcon> <#a974ffff>Ability Power<> <#60e84dff>(+{3}%<> of your <$hpIcon> <#60e84dff>maximum health<>) (<#e8a800ff>{4} second<> cooldown)."
 $i18n.en.dusk_and_dawn.option = $dndTemplate -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.en.radiant_dusk_and_dawn.option = $dndTemplate -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
