@@ -356,13 +356,13 @@ $i18n.en.radiant_sundered_sky.option = "Lightshield Strike: Your next instance o
 $i18n.en.echoes_of_helia.option = "Soul Siphon: Store <#e8a800ff>${eohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (based on <$levelIcon> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
 $i18n.en.radiant_echoes_of_helia.option = "Soul Siphon: Store <#e8a800ff>${reohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (based on <$levelIcon> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
 
-$i18n.en.sheen.option = "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> (<#e8a800ff>${sheenCd} second<> cooldown)."
+$i18n.en.sheen.option = "Spellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> (based on <$levelIcon> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>${sheenCd} second<> cooldown)."
 
-$tfTemplate = "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> of your <$adIcon> <#60e84dff>Attack Damage<> (<#e8a800ff>{2} second<> cooldown)."
+$tfTemplate = "Spellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>{2} second<> cooldown)."
 $i18n.en.trinity_force.option = $tfTemplate -f $tfFlat, $tfAdPct, $tfCd
 $i18n.en.radiant_trinity_force.option = $tfTemplate -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$dndTemplate = "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>heals you<> for <#a974ffff>{2}%<> <$apIcon> <#a974ffff>Ability Power<> <#60e84dff>(+{3}%<> of your <$hpIcon> <#60e84dff>maximum health<>) (<#e8a800ff>{4} second<> cooldown)."
+$dndTemplate = "Spellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>{2}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>{3}%<> of your <$hpIcon><#60e84dff>maximum health<> (<#e8a800ff>{4} second<> cooldown)."
 $i18n.en.dusk_and_dawn.option = $dndTemplate -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.en.radiant_dusk_and_dawn.option = $dndTemplate -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
@@ -452,13 +452,13 @@ $i18n.vi.radiant_sundered_sky.option = "Đòn Khiên Sáng: Đòn <#ff9028ff>sá
 $i18n.vi.echoes_of_helia.option = "Hút Hồn: Tích trữ <#e8a800ff>${eohConversion}%<> sát thương bạn gây ra dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (tăng theo <#d8c9b3ff>cấp độ<>). Kĩ năng trúng tướng địch sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho đồng minh gần nhất<> một lượng bằng số đã tiêu."
 $i18n.vi.radiant_echoes_of_helia.option = "Hút Hồn: Tích trữ <#e8a800ff>${reohConversion}%<> sát thương bạn gây ra dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (tăng theo <#d8c9b3ff>cấp độ<>). Kĩ năng trúng tướng địch sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho đồng minh gần nhất<> một lượng bằng số đã tiêu."
 
-$i18n.vi.sheen.option = "Kiếm Phép: Sau khi Kĩ năng trúng tướng địch, đòn đánh tiếp theo của bạn gây <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> <#ff9028ff>sát thương vật lí cộng thêm<>, tăng theo <$levelIcon> <#d8c9b3ff>cấp độ<> (hồi chiêu <#e8a800ff>${sheenCd} giây<>)."
+$i18n.vi.sheen.option = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>${sheenCd} giây<>)."
 
-$tfTemplateVi = "Kiếm Phép: Sau khi Kĩ năng trúng tướng địch, đòn đánh tiếp theo của bạn gây <#ff9028ff>thêm sát thương vật lí<> tương ứng <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> <$adIcon> <#60e84dff>SMCK<> (hồi chiêu <#e8a800ff>{2} giây<>)."
+$tfTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>)."
 $i18n.vi.trinity_force.option = $tfTemplateVi -f $tfFlat, $tfAdPct, $tfCd
 $i18n.vi.radiant_trinity_force.option = $tfTemplateVi -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$dndTemplateVi = "Kiếm Phép: Sau khi Kĩ năng trúng tướng địch, đòn đánh tiếp theo của bạn gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> và <#60e84dff>hồi máu cho bạn<> <#a974ffff>{2}%<> <$apIcon> <#a974ffff>SMPT<> <#60e84dff>(+{3}%<> <$hpIcon> máu tối đa)<> (hồi chiêu <#e8a800ff>{4} giây<>)."
+$dndTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <#60e84dff>hồi máu cho bạn<> <#a974ffff>{2}%<> <$apIcon> <#a974ffff>SMPT<> và <#60e84dff>{3}%<> <$hpIcon><#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>{4} giây<>)."
 $i18n.vi.dusk_and_dawn.option = $dndTemplateVi -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.vi.radiant_dusk_and_dawn.option = $dndTemplateVi -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
@@ -548,13 +548,13 @@ $i18n.'zh-hans'.radiant_sundered_sky.option = "光盾打击：你对敌方英雄
 $i18n.'zh-hans'.echoes_of_helia.option = "灵魂虹吸：将你造成伤害的 <#e8a800ff>${eohConversion}%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<>（随<#d8c9b3ff>等级<>提升）。技能命中敌方英雄时，消耗全部 <#92dc7bff>灵魂充能<>，为你<#60e84dff>最近的友军回复<>等量的生命值。"
 $i18n.'zh-hans'.radiant_echoes_of_helia.option = "灵魂虹吸：将你造成伤害的 <#e8a800ff>${reohConversion}%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<>（随<#d8c9b3ff>等级<>提升）。技能命中敌方英雄时，消耗全部 <#92dc7bff>灵魂充能<>，为你<#60e84dff>最近的友军回复<>等量的生命值。"
 
-$i18n.'zh-hans'.sheen.option = "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成随<$levelIcon> <#d8c9b3ff>等级<>提升的 <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> <#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>${sheenCd}秒<>）。"
+$i18n.'zh-hans'.sheen.option = "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>${sheenCd}秒<>）。"
 
-$tfTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#ff9028ff>{0}<> + <$adIcon> <#60e84dff>攻击力<>的 <#ff9028ff>{1}%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>{2}秒<>）。"
+$tfTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#ff9028ff>{0}<> + <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{1}%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>{2}秒<>）。"
 $i18n.'zh-hans'.trinity_force.option = $tfTemplateZh -f $tfFlat, $tfAdPct, $tfCd
 $i18n.'zh-hans'.radiant_trinity_force.option = $tfTemplateZh -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$dndTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>，并<#60e84dff>为你回复<>相当于<$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{2}%<> <#60e84dff>(+<$hpIcon> 最大生命值的{3}%)<>的生命值（冷却 <#e8a800ff>{4}秒<>）。"
+$dndTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>，并<#60e84dff>为你回复<>相当于<$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{2}%<> 与<$hpIcon><#60e84dff>最大生命值<>的 <#60e84dff>{3}%<> 的生命值（冷却 <#e8a800ff>{4}秒<>）。"
 $i18n.'zh-hans'.dusk_and_dawn.option = $dndTemplateZh -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.'zh-hans'.radiant_dusk_and_dawn.option = $dndTemplateZh -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
@@ -644,13 +644,13 @@ $i18n.'pt-BR'.radiant_sundered_sky.option = "Golpe do Escudo de Luz: Sua próxim
 $i18n.'pt-BR'.echoes_of_helia.option = "Sifão de Almas: Armazena <#e8a800ff>${eohConversion}%<> do dano causado como <#92dc7bff>Cargas de Alma<>, até <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (escalando com o <#d8c9b3ff>nível<>). Acertar uma Habilidade em um campeão inimigo consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando o aliado mais próximo<> na quantidade consumida."
 $i18n.'pt-BR'.radiant_echoes_of_helia.option = "Sifão de Almas: Armazena <#e8a800ff>${reohConversion}%<> do dano causado como <#92dc7bff>Cargas de Alma<>, até <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (escalando com o <#d8c9b3ff>nível<>). Acertar uma Habilidade em um campeão inimigo consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando o aliado mais próximo<> na quantidade consumida."
 
-$i18n.'pt-BR'.sheen.option = "Lâmina Arcana: Após acertar uma Habilidade em um campeão inimigo, seu próximo ataque causa <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> de <#ff9028ff>dano físico bônus<>, escalando com o <$levelIcon> <#d8c9b3ff>nível<> (recarga de <#e8a800ff>${sheenCd} segundos<>)."
+$i18n.'pt-BR'.sheen.option = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>${sheenCd} segundos<>)."
 
-$tfTemplatePt = "Lâmina Arcana: Após acertar uma Habilidade em um campeão inimigo, seu próximo ataque causa <#ff9028ff>dano físico bônus<> igual a <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> do seu <$adIcon> <#60e84dff>Dano de Ataque<> (recarga de <#e8a800ff>{2} segundos<>)."
+$tfTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>{2} segundos<>)."
 $i18n.'pt-BR'.trinity_force.option = $tfTemplatePt -f $tfFlat, $tfAdPct, $tfCd
 $i18n.'pt-BR'.radiant_trinity_force.option = $tfTemplatePt -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$dndTemplatePt = "Lâmina Arcana: Após acertar uma Habilidade em um campeão inimigo, seu próximo ataque causa <#a974ffff>dano mágico bônus<> igual a <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> e <#60e84dff>cura você<> em <#a974ffff>{2}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> <#60e84dff>(+{3}%<> da sua <$hpIcon> Vida Máxima)<> (recarga de <#e8a800ff>{4} segundos<>)."
+$dndTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <#60e84dff>curar você<> em <#a974ffff>{2}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> e <#60e84dff>{3}%<> da sua <$hpIcon><#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>{4} segundos<>)."
 $i18n.'pt-BR'.dusk_and_dawn.option = $dndTemplatePt -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.'pt-BR'.radiant_dusk_and_dawn.option = $dndTemplatePt -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
@@ -740,13 +740,13 @@ $i18n.ru.radiant_sundered_sky.option = "Удар Светового Щита: В
 $i18n.ru.echoes_of_helia.option = "Похищение душ: Накапливает <#e8a800ff>${eohConversion}%<> нанесённого вами урона как <#92dc7bff>Заряды Души<>, до <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (в зависимости от <#d8c9b3ff>уровня<>). Попадание умением по вражескому чемпиону расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая здоровье ближайшему союзнику<> на израсходованное количество."
 $i18n.ru.radiant_echoes_of_helia.option = "Похищение душ: Накапливает <#e8a800ff>${reohConversion}%<> нанесённого вами урона как <#92dc7bff>Заряды Души<>, до <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (в зависимости от <#d8c9b3ff>уровня<>). Попадание умением по вражескому чемпиону расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая здоровье ближайшему союзнику<> на израсходованное количество."
 
-$i18n.ru.sheen.option = "Чародейский клинок: После попадания умением по вражескому чемпиону ваша следующая атака наносит <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> <#ff9028ff>дополнительного физического урона<>, в зависимости от <$levelIcon> <#d8c9b3ff>уровня<> (перезарядка <#e8a800ff>${sheenCd} секунд<>)."
+$i18n.ru.sheen.option = "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>${sheenMin}<> - <#d8c9b3ff>${sheenMax}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>${sheenCd} секунд<>)."
 
-$tfTemplateRu = "Чародейский клинок: После попадания умением по вражескому чемпиону ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> от вашей <$adIcon> <#60e84dff>силы атаки<> (перезарядка <#e8a800ff>{2} секунд<>)."
+$tfTemplateRu = "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>{2} секунд<>)."
 $i18n.ru.trinity_force.option = $tfTemplateRu -f $tfFlat, $tfAdPct, $tfCd
 $i18n.ru.radiant_trinity_force.option = $tfTemplateRu -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$dndTemplateRu = "Чародейский клинок: После попадания умением по вражескому чемпиону ваша следующая атака наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>{0}<> + <#a974ffff>{1}%<> от вашей <$apIcon> <#a974ffff>силы умений<> и <#60e84dff>восстанавливает вам<> <#a974ffff>{2}%<> <$apIcon> <#a974ffff>силы умений<> <#60e84dff>(+{3}%<> от вашего <$hpIcon> максимального здоровья)<> (перезарядка <#e8a800ff>{4} секунд<>)."
+$dndTemplateRu = "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <#60e84dff>восстановить вам<> <#a974ffff>{2}%<> вашей <$apIcon> <#a974ffff>силы умений<> и <#60e84dff>{3}%<> вашего <$hpIcon><#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>{4} секунд<>)."
 $i18n.ru.dusk_and_dawn.option = $dndTemplateRu -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ru.radiant_dusk_and_dawn.option = $dndTemplateRu -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
