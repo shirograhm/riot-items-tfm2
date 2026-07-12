@@ -3,15 +3,6 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 
-// Spellblade: after landing an Ability on an enemy champion, the next basic
-// attack deals level-scaling bonus physical damage (same as Sheen), gated by a
-// self cooldown-buff. `spellblade_ready` is charged in `on_skill_hit` and
-// consumed in `on_attack` (self state, since buffs cannot be removed to spend).
-// In addition, if the empowered attack lands on an enemy champion, it applies a
-// `damaged_amplify` debuff to that target, increasing the damage it takes. The
-// debuff is only (re-)applied when the target does not already carry it, so the
-// amplification never stacks above its configured value.
-
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
     price: usize,
@@ -23,7 +14,7 @@ pub struct Bloodsong {
     effect_min_bonus_damage: usize,
     effect_max_bonus_damage: usize,
     effect_cooldown_seconds: f64,
-    effect_damaged_amplify: i32,
+    effect_damaged_amplify: usize,
     effect_duration_seconds: f64,
     spellblade_ready: bool,
 }
@@ -227,7 +218,7 @@ pub struct RadiantBloodsong {
     effect_min_bonus_damage: usize,
     effect_max_bonus_damage: usize,
     effect_cooldown_seconds: f64,
-    effect_damaged_amplify: i32,
+    effect_damaged_amplify: usize,
     effect_duration_seconds: f64,
     spellblade_ready: bool,
 }

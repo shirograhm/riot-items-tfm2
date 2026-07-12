@@ -45,7 +45,7 @@ pub struct ItemConfig {
     pub effect_armor_pen_per_stack: Option<usize>,
     pub effect_magic_pen_per_stack: Option<usize>,
     pub effect_slow_amount: Option<i32>,
-    pub effect_damaged_amplify: Option<i32>,
+    pub effect_damaged_amplify: Option<usize>,
     pub effect_stack_attack_mult: Option<i32>,
     pub effect_stack_attack_speed_mult: Option<i32>,
     pub effect_stack_crit_chance: Option<i32>,
