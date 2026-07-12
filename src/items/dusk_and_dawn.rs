@@ -37,7 +37,7 @@ impl Default for DuskAndDawn {
             effect_ap_percent_damage: 15.0,
             effect_caster_ap_percent_heal: 10.0,
             effect_caster_hp_percent_heal: 2.0,
-            effect_cooldown_seconds: 2.5,
+            effect_cooldown_seconds: 1.5,
             spellblade_ready: false,
         }
     }
@@ -148,8 +148,10 @@ impl ModItemInfo for DuskAndDawn {
         };
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
-        let heal_amount = percent_of(caster_ref.stat().magic_power, self.effect_caster_ap_percent_heal)
-            + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_heal);
+        let heal_amount = percent_of(
+            caster_ref.stat().magic_power,
+            self.effect_caster_ap_percent_heal,
+        ) + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_heal);
         self.spellblade_ready = false;
 
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
@@ -207,7 +209,7 @@ impl Default for RadiantDuskAndDawn {
             effect_ap_percent_damage: 15.0,
             effect_caster_ap_percent_heal: 10.0,
             effect_caster_hp_percent_heal: 2.0,
-            effect_cooldown_seconds: 2.5,
+            effect_cooldown_seconds: 1.5,
             spellblade_ready: false,
         }
     }
@@ -315,8 +317,10 @@ impl ModItemInfo for RadiantDuskAndDawn {
         };
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
-        let heal_amount = percent_of(caster_ref.stat().magic_power, self.effect_caster_ap_percent_heal)
-            + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_heal);
+        let heal_amount = percent_of(
+            caster_ref.stat().magic_power,
+            self.effect_caster_ap_percent_heal,
+        ) + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_heal);
         self.spellblade_ready = false;
 
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);

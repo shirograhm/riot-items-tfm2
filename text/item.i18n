@@ -521,11 +521,11 @@
         },
         "echoes_of_helia": {
             "name": "Echoes of Helia",
-            "option": "Soul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
+            "option": "Soul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<>, based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>. Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
         },
         "radiant_echoes_of_helia": {
             "name": "Radiant Echoes of Helia",
-            "option": "Soul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
+            "option": "Soul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<>, based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>. Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
         },
         "sundered_sky": {
             "name": "Sundered Sky",
@@ -537,15 +537,15 @@
         },
         "sheen": {
             "name": "Sheen",
-            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#d8c9b3ff>30<> - <#d8c9b3ff>85<> <#ff9028ff>bonus physical damage<>, scaling with <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<> (<#e8a800ff>4 second<> cooldown)."
+            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#ff9028ff>bonus physical damage<> equal to <#d8c9b3ff>30<> - <#d8c9b3ff>85<>, based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "trinity_force": {
             "name": "Trinity Force",
-            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#60e84dff>Attack Damage<> (<#e8a800ff>2.5 second<> cooldown)."
+            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#60e84dff>Attack Damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "radiant_trinity_force": {
             "name": "Radiant Trinity Force",
-            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#60e84dff>Attack Damage<> (<#e8a800ff>2.5 second<> cooldown)."
+            "option": "Spellblade: After landing an Ability on an enemy champion, your next Attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#60e84dff>Attack Damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "dusk_and_dawn": {
             "name": "Dusk and Dawn",

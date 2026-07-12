@@ -699,7 +699,7 @@
     "skill_cooldown_mult": 10,
     "effect_min_bonus_damage": 30,
     "effect_max_bonus_damage": 85,
-    "effect_cooldown_seconds": 4
+    "effect_cooldown_seconds": 1.5
   },
   "trinity_force": {
     "price": 1400,
@@ -708,7 +708,7 @@
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 33,
     "effect_ad_percent_damage": 33.0,
-    "effect_cooldown_seconds": 2.5
+    "effect_cooldown_seconds": 1.5
   },
   "radiant_trinity_force": {
     "price": 2000,
@@ -718,7 +718,7 @@
     "skill_cooldown_mult": 20,
     "effect_bonus_flat_damage": 33,
     "effect_ad_percent_damage": 33.0,
-    "effect_cooldown_seconds": 2.5
+    "effect_cooldown_seconds": 1.5
   },
   "dusk_and_dawn": {
     "price": 1400,
@@ -730,7 +730,7 @@
     "effect_ap_percent_damage": 15.0,
     "effect_caster_ap_percent_heal": 10.0,
     "effect_caster_hp_percent_heal": 2.0,
-    "effect_cooldown_seconds": 2.5
+    "effect_cooldown_seconds": 1.5
   },
   "radiant_dusk_and_dawn": {
     "price": 2000,
@@ -742,6 +742,6 @@
     "effect_ap_percent_damage": 15.0,
     "effect_caster_ap_percent_heal": 10.0,
     "effect_caster_hp_percent_heal": 2.0,
-    "effect_cooldown_seconds": 2.5
+    "effect_cooldown_seconds": 1.5
   }
 }

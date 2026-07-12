@@ -30,7 +30,7 @@ impl Default for TrinityForce {
             skill_cooldown_mult: 10,
             effect_bonus_flat_damage: 33,
             effect_ad_percent_damage: 33.0,
-            effect_cooldown_seconds: 2.5,
+            effect_cooldown_seconds: 1.5,
             spellblade_ready: false,
         }
     }
@@ -180,7 +180,7 @@ impl Default for RadiantTrinityForce {
             skill_cooldown_mult: 20,
             effect_bonus_flat_damage: 33,
             effect_ad_percent_damage: 33.0,
-            effect_cooldown_seconds: 2.5,
+            effect_cooldown_seconds: 1.5,
             spellblade_ready: false,
         }
     }

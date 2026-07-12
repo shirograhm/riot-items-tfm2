@@ -27,7 +27,7 @@ impl Default for Sheen {
             skill_cooldown_mult: 10,
             effect_min_bonus_damage: 30,
             effect_max_bonus_damage: 85,
-            effect_cooldown_seconds: 4.0,
+            effect_cooldown_seconds: 1.5,
             spellblade_ready: false,
         }
     }
@@ -55,9 +55,9 @@ impl Sheen {
 
     // Bonus damage scales linearly from min (level 1) to max (level 12).
     fn spellblade_damage(&self, level: usize) -> usize {
-        let per_level =
-            ((self.effect_max_bonus_damage - self.effect_min_bonus_damage) as f64 / 11.0).round()
-                as usize;
+        let per_level = ((self.effect_max_bonus_damage - self.effect_min_bonus_damage) as f64
+            / 11.0)
+            .round() as usize;
         self.effect_min_bonus_damage + level.saturating_sub(1) * per_level
     }
 }
@@ -88,10 +88,7 @@ impl ModItemInfo for Sheen {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec![
-            "trinity_force".to_string(),
-            "dusk_and_dawn".to_string(),
-        ]
+        vec!["trinity_force".to_string(), "dusk_and_dawn".to_string()]
     }
 
     fn stat(&self) -> BuffState {
