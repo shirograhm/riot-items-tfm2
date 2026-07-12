@@ -36,8 +36,8 @@ impl Default for DuskAndDawn {
             effect_bonus_flat_damage: 85,
             effect_ap_percent_damage: 15.0,
             effect_caster_ap_percent_heal: 10.0,
-            effect_caster_hp_percent_heal: 2.0,
-            effect_cooldown_seconds: 1.5,
+            effect_caster_hp_percent_heal: 2.5,
+            effect_cooldown_seconds: 3.5,
             spellblade_ready: false,
         }
     }
@@ -208,8 +208,8 @@ impl Default for RadiantDuskAndDawn {
             effect_bonus_flat_damage: 85,
             effect_ap_percent_damage: 15.0,
             effect_caster_ap_percent_heal: 10.0,
-            effect_caster_hp_percent_heal: 2.0,
-            effect_cooldown_seconds: 1.5,
+            effect_caster_hp_percent_heal: 2.5,
+            effect_cooldown_seconds: 3.5,
             spellblade_ready: false,
         }
     }
