@@ -154,7 +154,7 @@ impl ModItemInfo for Bloodsong {
         let bonus_damage = self.spellblade_damage(caster_ref.level());
         self.spellblade_ready = false;
 
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
         ctx.add_buff(
             caster,
             BuffState {
@@ -354,7 +354,7 @@ impl ModItemInfo for RadiantBloodsong {
         let bonus_damage = self.spellblade_damage(caster_ref.level());
         self.spellblade_ready = false;
 
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
         ctx.add_buff(
             caster,
             BuffState {
