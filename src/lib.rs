@@ -88,6 +88,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
+    reg.add_item(configured!("sheen" => Sheen));
 
     // Tier 3
     reg.add_item(configured!("aegis_of_the_legion" => AegisOfTheLegion));
@@ -110,6 +111,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
     reg.add_item(configured!("diamond_tipped_spear" => DiamondTippedSpear));
+    reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
@@ -136,6 +138,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("sundered_sky" => SunderedSky));
     reg.add_item(configured!("terminus" => Terminus));
+    reg.add_item(configured!("trinity_force" => TrinityForce));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("void_staff" => VoidStaff));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
@@ -151,6 +154,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_deathblade" => RadiantDeathBlade));
     reg.add_item(configured!("radiant_deaths_dance" => RadiantDeathsDance));
     reg.add_item(configured!("radiant_diamond_tipped_spear" => RadiantDiamondTippedSpear));
+    reg.add_item(configured!("radiant_dusk_and_dawn" => RadiantDuskAndDawn));
     reg.add_item(configured!("radiant_echoes_of_helia" => RadiantEchoesOfHelia));
     reg.add_item(configured!("radiant_experimental_hexplate" => RadiantExperimentalHexplate));
     reg.add_item(configured!("radiant_frozen_mallet" => RadiantFrozenMallet));
@@ -177,6 +181,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_stormrazor" => RadiantStormrazor));
     reg.add_item(configured!("radiant_sundered_sky" => RadiantSunderedSky));
     reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
+    reg.add_item(configured!("radiant_trinity_force" => RadiantTrinityForce));
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
     reg.add_item(configured!("radiant_void_staff" => RadiantVoidStaff));
     reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
