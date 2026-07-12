@@ -83,7 +83,12 @@ impl ZekesHerald {
                 continue;
             }
             let prefers_ap = entity_ref.stat().magic_power > entity_ref.stat().attack;
-            targets.push((id, prefers_ap));
+
+            let is_already_affected: bool = (0..entity_ref.buff_count())
+                .any(|i| entity_ref.buff_at(i).name.as_str() == "zekes_herald_aura");
+            if !is_already_affected {
+                targets.push((id, prefers_ap));
+            }
         }
 
         for (id, prefers_ap) in targets {
@@ -247,7 +252,12 @@ impl RadiantZekesHerald {
                 continue;
             }
             let prefers_ap = entity_ref.stat().magic_power > entity_ref.stat().attack;
-            targets.push((id, prefers_ap));
+
+            let is_already_affected: bool = (0..entity_ref.buff_count())
+                .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_zekes_herald_aura");
+            if !is_already_affected {
+                targets.push((id, prefers_ap));
+            }
         }
 
         for (id, prefers_ap) in targets {

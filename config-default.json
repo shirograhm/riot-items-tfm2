@@ -252,7 +252,7 @@
     "price": 1450,
     "hp": 450,
     "defence": 30,
-    "effect_bonus_flat_heal": 10,
+    "effect_bonus_flat_heal": 35,
     "effect_caster_hp_percent_heal": 1.0
   },
   "night_harvester": {
@@ -501,8 +501,8 @@
     "price": 2100,
     "hp": 700,
     "defence": 50,
-    "effect_bonus_flat_heal": 25,
-    "effect_caster_hp_percent_heal": 3.0
+    "effect_bonus_flat_heal": 50,
+    "effect_caster_hp_percent_heal": 2.5
   },
   "radiant_night_harvester": {
     "price": 2000,
@@ -692,5 +692,82 @@
     "effect_bonus_flat_heal": 60,
     "effect_caster_hp_percent_heal": 10.0,
     "on_hit_cooldown_seconds": 20
+  },
+  "sheen": {
+    "price": 500,
+    "attack_speed_mult": 15,
+    "skill_cooldown_mult": 10,
+    "effect_min_bonus_damage": 30,
+    "effect_max_bonus_damage": 85,
+    "effect_cooldown_seconds": 3.5
+  },
+  "trinity_force": {
+    "price": 1400,
+    "hp": 333,
+    "attack": 33,
+    "skill_cooldown_mult": 10,
+    "effect_bonus_flat_damage": 33,
+    "effect_ad_percent_damage": 33.0,
+    "effect_cooldown_seconds": 3.5
+  },
+  "radiant_trinity_force": {
+    "price": 2000,
+    "hp": 333,
+    "attack": 33,
+    "attack_speed_mult": 33,
+    "skill_cooldown_mult": 20,
+    "effect_bonus_flat_damage": 33,
+    "effect_ad_percent_damage": 33.0,
+    "effect_cooldown_seconds": 3.5
+  },
+  "dusk_and_dawn": {
+    "price": 1400,
+    "hp": 200,
+    "magic_power": 60,
+    "attack_speed_mult": 15,
+    "skill_cooldown_mult": 10,
+    "effect_bonus_flat_damage": 85,
+    "effect_ap_percent_damage": 15.0,
+    "effect_caster_ap_percent_heal": 10.0,
+    "effect_caster_hp_percent_heal": 2.5,
+    "effect_cooldown_seconds": 3.5
+  },
+  "radiant_dusk_and_dawn": {
+    "price": 2000,
+    "hp": 300,
+    "magic_power": 100,
+    "attack_speed_mult": 25,
+    "skill_cooldown_mult": 20,
+    "effect_bonus_flat_damage": 85,
+    "effect_ap_percent_damage": 15.0,
+    "effect_caster_ap_percent_heal": 10.0,
+    "effect_caster_hp_percent_heal": 2.5,
+    "effect_cooldown_seconds": 3.5
+  },
+  "bloodsong": {
+    "price": 1050,
+    "attack_speed_mult": 15,
+    "hp": 250,
+    "hp_regen": 2,
+    "magic_power": 20,
+    "skill_cooldown_mult": 10,
+    "effect_min_bonus_damage": 70,
+    "effect_max_bonus_damage": 125,
+    "effect_cooldown_seconds": 3.5,
+    "effect_damaged_amplify": 8,
+    "effect_duration_seconds": 4
+  },
+  "radiant_bloodsong": {
+    "price": 1500,
+    "attack_speed_mult": 15,
+    "hp": 450,
+    "hp_regen": 4,
+    "magic_power": 40,
+    "skill_cooldown_mult": 20,
+    "effect_min_bonus_damage": 70,
+    "effect_max_bonus_damage": 125,
+    "effect_cooldown_seconds": 3.5,
+    "effect_damaged_amplify": 8,
+    "effect_duration_seconds": 4
   }
 }

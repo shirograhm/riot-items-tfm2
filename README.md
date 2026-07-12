@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 90 new items (51 base + 39 Radiant) to the game.
+Reskins the 30 existing items and also adds 97 new items (55 base + 42 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -16,6 +16,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | --- | --- | --- | --- |
 | **Executioner's Calling** | 500G | +25 Attack Damage | Dealing physical damage to an enemy champion reduces the target's healing by 25% for 2 seconds. |
 | **Oblivion Orb** | 500G | +50 Ability Power | Dealing magic damage to an enemy champion reduces the target's healing by 25% for 2 seconds. |
+| **Sheen** | 500G | +15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
 
 
 #### Tier 3
@@ -39,10 +40,12 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Landing an Ability on an enemy champion grants +10 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Dealing magic damage to an enemy champion reduces the target's Magic Resistance by 6% for 6 seconds (max 5 stacks). |
+| **Bloodsong** | 1050G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
 | **Collector** | 1450G | +55 AD<br>+20% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 6% max health executes them. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 1450G | +50 AD<br>+50 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: On kill, the stored damage is cleared and you heal for 15% of your missing health. |
 | **Diamond Tipped Spear** | 1500G | +35% AS<br>+10% CDR | Pierce: Gain 60 Adaptive Force.<br>Sweet Spot: Deal up to 30% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
+| **Dusk and Dawn** | 1400G | +200 HP<br>+60 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2% of your maximum health (1.5 second cooldown). |
 | **Echoes of Helia** | 1100G | +250 HP<br>+4 HP Regen<br>+45 AP<br>+15% CDR | — |
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
 | **Frozen Mallet** | 1400G | +400 HP<br>+40 AD | On attack, apply a 15% slow for 2 seconds. |
@@ -69,6 +72,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Stormrazor** | 1550G | +65 AD<br>+20% AS<br>+20% Crit Chance | Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.<br>Bolt: At 100 stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants 35% movement speed for 1.5 seconds. |
 | **Sundered Sky** | 1400G | +400 HP<br>+30 AD<br>+10% CDR | Lightshield Strike: Your next instance of physical damage against an enemy champion critically strikes for 20% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
+| **Trinity Force** | 1400G | +333 HP<br>+33 AD<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 33 + 33% of your Attack Damage as bonus physical damage (1.5 second cooldown). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Landing an Ability on an enemy champion heals you for 10 + 1% of your maximum health. |
 | **Void Staff** | 1500G | +95 AP<br>+25% Magic Pen | — |
 | **Warmog's Armor** | 1450G | +600 HP<br>+6 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
@@ -83,10 +87,12 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Landing an Ability on an enemy champion grants +30 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's Magic Resistance by 6% for 6 seconds (max 5 stacks). |
+| **Radiant Bloodsong** | 1500G | +450 HP<br>+4 HP Regen<br>+40 AP<br>+15% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
 | **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 6% max health executes them. |
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
 | **Radiant Death's Dance** | 2100G | +85 AD<br>+85 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: On kill, the stored damage is cleared and you heal for 15% of your missing health. |
 | **Radiant Diamond Tipped Spear** | 2250G | +60% AS<br>+10% CDR | Pierce: Gain 100 Adaptive Force.<br>Sweet Spot: Deal up to 30% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
+| **Radiant Dusk and Dawn** | 2000G | +300 HP<br>+100 AP<br>+25% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2% of your maximum health (1.5 second cooldown). |
 | **Radiant Echoes of Helia** | 1500G | +450 HP<br>+6 HP Regen<br>+65 AP<br>+20% CDR | — |
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Reduce the cooldown of your ultimate ability by 25%. |
 | **Radiant Frozen Mallet** | 2000G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
@@ -113,6 +119,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Stormrazor** | 2200G | +100 AD<br>+40% AS<br>+25% Crit Chance | Energized: Gain 1 stack of Energize every second and 3 stacks whenever you deal physical damage, up to 100.<br>Bolt: At 100 stacks, your next instance of physical damage consumes all stacks to deal 100 bonus magic damage and grants 35% movement speed for 1.5 seconds. |
 | **Radiant Sundered Sky** | 2000G | +550 HP<br>+65 AD<br>+20% CDR | Lightshield Strike: Your next instance of physical damage against an enemy champion critically strikes for 20% bonus damage and heals you for 60 + 10% of your missing health (20 second cooldown per target). |
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | On attack, gain either +4% armor penetration or +4% magic resistance penetration, alternating with each hit (max 4 stacks). |
+| **Radiant Trinity Force** | 2000G | +333 HP<br>+33 AD<br>+33% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 33 + 33% of your Attack Damage as bonus physical damage (1.5 second cooldown). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Landing an Ability on an enemy champion heals you for 25 + 3% of your maximum health. |
 | **Radiant Void Staff** | 2200G | +160 AP<br>+40% Magic Pen | — |
 | **Radiant Warmog's Armor** | 2100G | +1000 HP<br>+10 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |

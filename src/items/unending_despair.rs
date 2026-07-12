@@ -18,7 +18,7 @@ impl Default for UnendingDespair {
             price: 1450,
             hp: 450,
             defence: 30,
-            effect_bonus_flat_heal: 10,
+            effect_bonus_flat_heal: 35,
             effect_caster_hp_percent_heal: 1.0,
         }
     }
@@ -112,8 +112,8 @@ impl Default for RadiantUnendingDespair {
             price: 2100,
             hp: 700,
             defence: 50,
-            effect_bonus_flat_heal: 25,
-            effect_caster_hp_percent_heal: 3.0,
+            effect_bonus_flat_heal: 50,
+            effect_caster_hp_percent_heal: 2.5,
         }
     }
 }
