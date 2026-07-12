@@ -1091,6 +1091,26 @@
         "radiant_sundered_sky": {
             "name": "Bầu Trời Vỡ Nát Ánh Sáng",
             "option": "Đòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0><#d45656ff>chí mạng<>, gây <#e8a800ff>20% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>10%<> <#60e84dff>máu đã mất<> (<#e8a800ff>20 giây<> hồi chiêu mỗi mục tiêu)."
+        },
+        "sheen": {
+            "name": "Thủy Kiếm",
+            "option": "Kiếm Phép: Sau khi Kĩ năng trúng tướng địch, đòn đánh tiếp theo của bạn gây <#d8c9b3ff>30<> - <#d8c9b3ff>85<> <#ff9028ff>sát thương vật lí cộng thêm<>, tăng theo <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>cấp độ<> (hồi chiêu <#e8a800ff>4 giây<>)."
+        },
+        "trinity_force": {
+            "name": "Tam Hợp Kiếm",
+            "option": "Kiếm Phép: Sau khi Kĩ năng trúng tướng địch, đòn đánh tiếp theo của bạn gây <#ff9028ff>thêm sát thương vật lí<> tương ứng <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#60e84dff>SMCK<> (hồi chiêu <#e8a800ff>2.5 giây<>)."
+        },
+        "radiant_trinity_force": {
+            "name": "Tam Hợp Kiếm Ánh Sáng",
+            "option": "Kiếm Phép: Sau khi Kĩ năng trúng tướng địch, đòn đánh tiếp theo của bạn gây <#ff9028ff>thêm sát thương vật lí<> tương ứng <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#60e84dff>SMCK<> (hồi chiêu <#e8a800ff>2.5 giây<>)."
+        },
+        "dusk_and_dawn": {
+            "name": "Hoàng Hôn và Bình Minh",
+            "option": "Kiếm Phép: Sau khi Kĩ năng trúng tướng địch, đòn đánh tiếp theo của bạn gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>SMPT<> và <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>SMPT<> <#60e84dff>(+2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0>máu tối đa)<> (hồi chiêu <#e8a800ff>2.5 giây<>)."
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "Hoàng Hôn và Bình Minh Ánh Sáng",
+            "option": "Kiếm Phép: Sau khi Kĩ năng trúng tướng địch, đòn đánh tiếp theo của bạn gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>SMPT<> và <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>SMPT<> <#60e84dff>(+2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0>máu tối đa)<> (hồi chiêu <#e8a800ff>2.5 giây<>)."
         }
     },
     "zh-hans": {
@@ -1628,6 +1648,26 @@
         "radiant_sundered_sky": {
             "name": "光明版破碎苍穹",
             "option": "光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0><#d45656ff>暴击<>，造成 <#e8a800ff>20% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>10%<>（每个目标冷却 <#e8a800ff>20秒<>）。"
+        },
+        "sheen": {
+            "name": "耀光",
+            "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成随<i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>等级<>提升的 <#d8c9b3ff>30<> - <#d8c9b3ff>85<> <#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>4秒<>）。"
+        },
+        "trinity_force": {
+            "name": "三相之力",
+            "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#60e84dff>攻击力<>的 <#ff9028ff>33%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>2.5秒<>）。"
+        },
+        "radiant_trinity_force": {
+            "name": "光明版三相之力",
+            "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#60e84dff>攻击力<>的 <#ff9028ff>33%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>2.5秒<>）。"
+        },
+        "dusk_and_dawn": {
+            "name": "黄昏与黎明",
+            "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>法术强度<>的 <#a974ffff>15%<> 的<#a974ffff>额外魔法伤害<>，并<#60e84dff>为你回复<>相当于<i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>法术强度<>的 <#a974ffff>10%<> <#60e84dff>(+<i#asset/base/ui/banpick/champion_stat_icon:hp_0>最大生命值的2%)<>的生命值（冷却 <#e8a800ff>2.5秒<>）。"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "光明版黄昏与黎明",
+            "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>法术强度<>的 <#a974ffff>15%<> 的<#a974ffff>额外魔法伤害<>，并<#60e84dff>为你回复<>相当于<i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>法术强度<>的 <#a974ffff>10%<> <#60e84dff>(+<i#asset/base/ui/banpick/champion_stat_icon:hp_0>最大生命值的2%)<>的生命值（冷却 <#e8a800ff>2.5秒<>）。"
         }
     },
     "pt-BR": {
@@ -2165,6 +2205,26 @@
         "radiant_sundered_sky": {
             "name": "Céu Dilacerado Radiante",
             "option": "Golpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0><#d45656ff>causa acerto crítico<>, causando <#e8a800ff>20% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>10%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>20 segundos<> por alvo)."
+        },
+        "sheen": {
+            "name": "Fulgor",
+            "option": "Lâmina Arcana: Após acertar uma Habilidade em um campeão inimigo, seu próximo ataque causa <#d8c9b3ff>30<> - <#d8c9b3ff>85<> de <#ff9028ff>dano físico bônus<>, escalando com o <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>nível<> (recarga de <#e8a800ff>4 segundos<>)."
+        },
+        "trinity_force": {
+            "name": "Força da Trindade",
+            "option": "Lâmina Arcana: Após acertar uma Habilidade em um campeão inimigo, seu próximo ataque causa <#ff9028ff>dano físico bônus<> igual a <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#60e84dff>Dano de Ataque<> (recarga de <#e8a800ff>2.5 segundos<>)."
+        },
+        "radiant_trinity_force": {
+            "name": "Força da Trindade Radiante",
+            "option": "Lâmina Arcana: Após acertar uma Habilidade em um campeão inimigo, seu próximo ataque causa <#ff9028ff>dano físico bônus<> igual a <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#60e84dff>Dano de Ataque<> (recarga de <#e8a800ff>2.5 segundos<>)."
+        },
+        "dusk_and_dawn": {
+            "name": "Crepúsculo e Alvorada",
+            "option": "Lâmina Arcana: Após acertar uma Habilidade em um campeão inimigo, seu próximo ataque causa <#a974ffff>dano mágico bônus<> igual a <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Poder de Habilidade<> e <#60e84dff>cura você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Poder de Habilidade<> <#60e84dff>(+2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0>Vida Máxima)<> (recarga de <#e8a800ff>2.5 segundos<>)."
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "Crepúsculo e Alvorada Radiante",
+            "option": "Lâmina Arcana: Após acertar uma Habilidade em um campeão inimigo, seu próximo ataque causa <#a974ffff>dano mágico bônus<> igual a <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Poder de Habilidade<> e <#60e84dff>cura você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>Poder de Habilidade<> <#60e84dff>(+2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0>Vida Máxima)<> (recarga de <#e8a800ff>2.5 segundos<>)."
         }
     },
     "ru": {
@@ -2702,6 +2762,26 @@
         "radiant_sundered_sky": {
             "name": "Лучезарные Расколотые Небеса",
             "option": "Удар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0><#d45656ff>наносит критический удар<> с <#e8a800ff>20% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>10%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>20 секунд<> на каждую цель)."
+        },
+        "sheen": {
+            "name": "Сияние",
+            "option": "Чародейский клинок: После попадания умением по вражескому чемпиону ваша следующая атака наносит <#d8c9b3ff>30<> - <#d8c9b3ff>85<> <#ff9028ff>дополнительного физического урона<>, в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0><#d8c9b3ff>уровня<> (перезарядка <#e8a800ff>4 секунд<>)."
+        },
+        "trinity_force": {
+            "name": "Тройственный Союз",
+            "option": "Чародейский клинок: После попадания умением по вражескому чемпиону ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>33<> + <#ff9028ff>33%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#60e84dff>силы атаки<> (перезарядка <#e8a800ff>2.5 секунд<>)."
+        },
+        "radiant_trinity_force": {
+            "name": "Лучезарный Тройственный Союз",
+            "option": "Чародейский клинок: После попадания умением по вражескому чемпиону ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>33<> + <#ff9028ff>33%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0><#60e84dff>силы атаки<> (перезарядка <#e8a800ff>2.5 секунд<>)."
+        },
+        "dusk_and_dawn": {
+            "name": "Закат и Рассвет",
+            "option": "Чародейский клинок: После попадания умением по вражескому чемпиону ваша следующая атака наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>85<> + <#a974ffff>15%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>силы умений<> и <#60e84dff>восстанавливает вам<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>силы умений<> <#60e84dff>(+2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0>максимального здоровья)<> (перезарядка <#e8a800ff>2.5 секунд<>)."
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "Лучезарный Закат и Рассвет",
+            "option": "Чародейский клинок: После попадания умением по вражескому чемпиону ваша следующая атака наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>85<> + <#a974ffff>15%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>силы умений<> и <#60e84dff>восстанавливает вам<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0><#a974ffff>силы умений<> <#60e84dff>(+2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0>максимального здоровья)<> (перезарядка <#e8a800ff>2.5 секунд<>)."
         }
     }
 }
