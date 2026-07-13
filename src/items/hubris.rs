@@ -1,4 +1,3 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::apply_lethality;
@@ -129,7 +128,6 @@ impl ModItemInfo for Hubris {
             return;
         };
 
-        self.eminence_stacks += 1;
         ctx.add_buff(
             champion_id,
             BuffState {
@@ -137,10 +135,10 @@ impl ModItemInfo for Hubris {
                     tick: (self.effect_duration_seconds * 60.0).round() as usize,
                 },
                 attack: self.eminence_bonus_ad(),
-                name: ArrayString::try_from("hubris_eminence").unwrap(),
                 ..Default::default()
             },
         );
+        self.eminence_stacks += 1;
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -267,7 +265,6 @@ impl ModItemInfo for RadiantHubris {
             return;
         };
 
-        self.eminence_stacks += 1;
         ctx.add_buff(
             champion_id,
             BuffState {
@@ -275,10 +272,10 @@ impl ModItemInfo for RadiantHubris {
                     tick: (self.effect_duration_seconds * 60.0).round() as usize,
                 },
                 attack: self.eminence_bonus_ad(),
-                name: ArrayString::try_from("radiant_hubris_eminence").unwrap(),
                 ..Default::default()
             },
         );
+        self.eminence_stacks += 1;
     }
 
     fn tags(&self) -> Vec<ItemTag> {
