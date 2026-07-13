@@ -16,7 +16,6 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | --- | --- | --- | --- |
 | **Executioner's Calling** | 500G | +25 Attack Damage | Dealing physical damage to an enemy champion reduces the target's healing by 25% for 2 seconds. |
 | **Oblivion Orb** | 500G | +50 Ability Power | Dealing magic damage to an enemy champion reduces the target's healing by 25% for 2 seconds. |
-| **Serrated Dirk** | 550G | +30 AD | Lethality: Ignore 10 armor when you deal damage to enemies. |
 | **Sheen** | 500G | +15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
 
 
@@ -32,12 +31,13 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Noonquiver** | 800G | +45 AD<br>+10% Crit Chance | — |
 | **Phage** | 950G | +200 HP<br>+30 AD | — |
 | **Scout's Slingshot** | 800G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
+| **Serrated Dirk** | 800G | +45 AD | Lethality: Ignore 10 armor when you deal damage to enemies. |
 | **Steel Sigil** | 950G | +30 AD<br>+50 Armor | — |
 
 #### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Bastionbreaker** | 1400G | +70 AD<br>+15% CDR | Lethality: Ignore 22 armor when you deal damage to enemies.<br>Sabotage: On kill, gain a stack of Sabotage for 90 seconds, empowering your next attack against a turret to deal 150 + 15% of your Attack Damage as bonus physical damage. |
+| **Bastionbreaker** | 1400G | +70 AD<br>+15% CDR | Lethality: Ignore 22 armor when you deal damage to enemies.<br>Sabotage: Killing an enemy champion grants Sabotage for 90 seconds, empowering your next attack against a turret to deal 150 + 15% of your Attack Damage as bonus physical damage. |
 | **Black Cleaver** | 1500G | +45 AD<br>+300 HP<br>+5% CDR | Dealing physical damage to an enemy champion reduces the target's Armor by 6% for 6 seconds (max 5 stacks). |
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Landing an Ability on an enemy champion grants +10 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
@@ -54,7 +54,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
 | **Heartsteel** | 1500G | +500 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 15% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
-| **Hubris** | 1400G | +75 AD<br>+10% CDR | Lethality: Ignore 18 armor when you deal damage to enemies.<br>Eminence: On kill, generate a permanent stack and gain 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
+| **Hubris** | 1250G | +75 AD<br>+10% CDR | Lethality: Ignore 18 armor when you deal damage to enemies.<br>Eminence: Killing an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | — |
 | **Jak’Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
 | **Liandry's Torment** | 1400G | +350 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
@@ -69,7 +69,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
 | **Riftmaker** | 1300G | +400 HP<br>+75 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
 | **Rylai's Crystal Scepter** | 1350G | +250 HP<br>+125 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
-| **Serpent's Fang** | 1200G | +55 AD | Lethality: Ignore 15 armor when you deal damage to enemies.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 50 + 10% of your Attack Damage as bonus physical damage. |
+| **Serpent's Fang** | 1050G | +65 AD | Lethality: Ignore 15 armor when you deal damage to enemies.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 50 + 10% of your Attack Damage as bonus physical damage. |
 | **Shadowflame** | 1350G | +115 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |
 | **Spear of Shojin** | 1400G | +350 HP<br>+35 AD<br>+10% CDR | Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Increase all healing received by 20%. |
@@ -87,7 +87,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Radiant Bastionbreaker** | 2000G | +115 AD<br>+20% CDR | Lethality: Ignore 22 armor when you deal damage to enemies.<br>Sabotage: On kill, gain a stack of Sabotage for 90 seconds, empowering your next attack against a turret to deal 200 + 20% of your Attack Damage as bonus physical damage. |
+| **Radiant Bastionbreaker** | 2000G | +115 AD<br>+20% CDR | Lethality: Ignore 22 armor when you deal damage to enemies.<br>Sabotage: Killing an enemy champion grants Sabotage for 90 seconds, empowering your next attack against a turret to deal 200 + 20% of your Attack Damage as bonus physical damage. |
 | **Radiant Black Cleaver** | 2200G | +70 AD<br>+500 HP<br>+10% CDR | Dealing physical damage to an enemy champion reduces the target's Armor by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Landing an Ability on an enemy champion grants +30 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
@@ -104,7 +104,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Heartsteel** | 2100G | +800 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 15% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
-| **Radiant Hubris** | 2000G | +120 AD<br>+15% CDR | Lethality: Ignore 18 armor when you deal damage to enemies.<br>Eminence: On kill, generate a permanent stack and gain 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
+| **Radiant Hubris** | 1850G | +115 AD<br>+15% CDR | Lethality: Ignore 18 armor when you deal damage to enemies.<br>Eminence: Killing an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | — |
 | **Radiant Jak’Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | When you take damage from an enemy champion, gain +10% armor and +10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Liandry's Torment** | 2000G | +550 HP<br>+150 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
@@ -119,7 +119,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Rabadon’s Deathcap** | 2300G | +230 AP | Increase your total Ability Power by 35%. |
 | **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
 | **Radiant Rylai's Crystal Scepter** | 1900G | +400 HP<br>+200 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
-| **Radiant Serpent's Fang** | 1800G | +95 AD | Lethality: Ignore 15 armor when you deal damage to enemies.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 85 + 15% of your Attack Damage as bonus physical damage. |
+| **Radiant Serpent's Fang** | 1650G | +110 AD | Lethality: Ignore 15 armor when you deal damage to enemies.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 85 + 15% of your Attack Damage as bonus physical damage. |
 | **Radiant Shadowflame** | 1800G | +210 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |
 | **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD<br>+20% CDR | Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Increase all healing received by 20%. |
