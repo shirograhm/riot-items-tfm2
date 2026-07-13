@@ -60,7 +60,7 @@ impl ModItemInfo for SerratedDirk {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["ironsword".to_string()]
+        vec!["soldiers_longsword".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
