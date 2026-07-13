@@ -83,10 +83,7 @@ impl ModItemInfo for Hubris {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "serrated_dirk".to_string(),
-            "soldiers_longsword".to_string(),
-        ]
+        vec!["serrated_dirk".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -116,13 +113,21 @@ impl ModItemInfo for Hubris {
         apply_lethality(ctx, target, self.effect_lethality, damage);
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
+    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, entity: usize) {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
         let Some(champion_ref) = player_ref.champion() else {
             return;
         };
+        // Check if target is a champion
+        let Some(target_ref) = ctx.get_entity(entity) else {
+            return;
+        };
+        if !target_ref.is_champion() {
+            return;
+        };
+
         let champion_id = champion_ref.id();
         self.eminence_stacks += 1;
         ctx.add_buff(
@@ -246,14 +251,22 @@ impl ModItemInfo for RadiantHubris {
         apply_lethality(ctx, target, self.effect_lethality, damage);
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
+    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, entity: usize) {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(champion_ref) = player_ref.champion() else {
+        let Some(player_champion_ref) = player_ref.champion() else {
             return;
         };
-        let champion_id = champion_ref.id();
+        // Check if target is a champion
+        let Some(target_ref) = ctx.get_entity(entity) else {
+            return;
+        };
+        if !target_ref.is_champion() {
+            return;
+        };
+
+        let champion_id = player_champion_ref.id();
         self.eminence_stacks += 1;
         ctx.add_buff(
             champion_id,

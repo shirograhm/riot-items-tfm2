@@ -537,7 +537,7 @@
         },
         "sheen": {
             "name": "Sheen",
-            "option": "Spellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "Spellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "trinity_force": {
             "name": "Trinity Force",
@@ -569,19 +569,19 @@
         },
         "hubris": {
             "name": "Hubris",
-            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nEminence: On kill, generate a permanent stack and gain <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nEminence: Killing an enemy champion generates a permanent stack and grants <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
         },
         "radiant_hubris": {
             "name": "Radiant Hubris",
-            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nEminence: On kill, generate a permanent stack and gain <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nEminence: Killing an enemy champion generates a permanent stack and grants <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
         },
         "bastionbreaker": {
             "name": "Bastionbreaker",
-            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: On kill, gain a stack of <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Killing an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "radiant_bastionbreaker": {
             "name": "Radiant Bastionbreaker",
-            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: On kill, gain a stack of <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Killing an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "serpents_fang": {
             "name": "Serpent's Fang",
@@ -1130,7 +1130,7 @@
         },
         "sheen": {
             "name": "Thủy Kiếm",
-            "option": "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
         },
         "trinity_force": {
             "name": "Tam Hợp Kiếm",
@@ -1162,19 +1162,19 @@
         },
         "hubris": {
             "name": "Kiêu Ngạo",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nUy Danh: Khi hạ gục, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nUy Danh: Khi hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
         },
         "radiant_hubris": {
             "name": "Kiêu Ngạo Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nUy Danh: Khi hạ gục, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nUy Danh: Khi hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
         },
         "bastionbreaker": {
             "name": "Kẻ Phá Thành",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Khi hạ gục, nhận một cộng dồn <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh tiếp theo lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Khi hạ gục một tướng địch, nhận một cộng dồn <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh tiếp theo lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "radiant_bastionbreaker": {
             "name": "Kẻ Phá Thành Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Khi hạ gục, nhận một cộng dồn <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh tiếp theo lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Khi hạ gục một tướng địch, nhận một cộng dồn <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh tiếp theo lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "serpents_fang": {
             "name": "Nanh Rắn Độc",
@@ -1723,7 +1723,7 @@
         },
         "sheen": {
             "name": "耀光",
-            "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>30<> - <#d8c9b3ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>3.5秒<>）。"
+            "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>30<> - <#d8c9b3ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
         },
         "trinity_force": {
             "name": "三相之力",
@@ -1755,19 +1755,19 @@
         },
         "hubris": {
             "name": "傲慢",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：击杀时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
         },
         "radiant_hubris": {
             "name": "光明版傲慢",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：击杀时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
         },
         "bastionbreaker": {
             "name": "破垒者",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：击杀时获得一层<#92dc7bff>破坏<>，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：击杀敌方英雄时获得一层<#92dc7bff>破坏<>，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "radiant_bastionbreaker": {
             "name": "光明版破垒者",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：击杀时获得一层<#92dc7bff>破坏<>，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：击杀敌方英雄时获得一层<#92dc7bff>破坏<>，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "serpents_fang": {
             "name": "毒蛇之牙",
@@ -2316,7 +2316,7 @@
         },
         "sheen": {
             "name": "Fulgor",
-            "option": "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
         },
         "trinity_force": {
             "name": "Força da Trindade",
@@ -2348,19 +2348,19 @@
         },
         "hubris": {
             "name": "Arrogância",
-            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nEminência: Ao abater, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nEminência: Ao abater um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
         },
         "radiant_hubris": {
             "name": "Arrogância Radiante",
-            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nEminência: Ao abater, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nEminência: Ao abater um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
         },
         "bastionbreaker": {
             "name": "Quebra-Bastião",
-            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao abater, ganha um acúmulo de <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao abater um campeão inimigo, ganha um acúmulo de <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "radiant_bastionbreaker": {
             "name": "Quebra-Bastião Radiante",
-            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao abater, ganha um acúmulo de <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao abater um campeão inimigo, ganha um acúmulo de <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "serpents_fang": {
             "name": "Presa da Serpente",
@@ -2909,7 +2909,7 @@
         },
         "sheen": {
             "name": "Сияние",
-            "option": "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
         },
         "trinity_force": {
             "name": "Тройственный Союз",
@@ -2941,19 +2941,19 @@
         },
         "hubris": {
             "name": "Гордыня",
-            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nВозвышение: При убийстве создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nВозвышение: При убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
         },
         "radiant_hubris": {
             "name": "Лучезарная Гордыня",
-            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nВозвышение: При убийстве создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nВозвышение: При убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
         },
         "bastionbreaker": {
             "name": "Разрушитель бастионов",
-            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При убийстве даёт заряд <#92dc7bff>Саботажа<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую атаку по башне: она наносит <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При убийстве вражеского чемпиона даёт заряд <#92dc7bff>Саботажа<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую атаку по башне: она наносит <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "radiant_bastionbreaker": {
             "name": "Лучезарный Разрушитель бастионов",
-            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При убийстве даёт заряд <#92dc7bff>Саботажа<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую атаку по башне: она наносит <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При убийстве вражеского чемпиона даёт заряд <#92dc7bff>Саботажа<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую атаку по башне: она наносит <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "serpents_fang": {
             "name": "Клык змея",

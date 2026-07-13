@@ -116,7 +116,15 @@ impl ModItemInfo for Bastionbreaker {
         self.sabotage_remaining = self.sabotage_remaining.saturating_sub(1);
     }
 
-    fn on_kill(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize, _entity: usize) {
+    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _player: usize, entity: usize) {
+        // Check if target is a champion
+        let Some(target_ref) = ctx.get_entity(entity) else {
+            return;
+        };
+        if !target_ref.is_champion() {
+            return;
+        };
+
         self.sabotage_remaining = self.charge_ticks();
     }
 
@@ -253,7 +261,15 @@ impl ModItemInfo for RadiantBastionbreaker {
         self.sabotage_remaining = self.sabotage_remaining.saturating_sub(1);
     }
 
-    fn on_kill(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize, _entity: usize) {
+    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _player: usize, entity: usize) {
+        // Check if target is a champion
+        let Some(target_ref) = ctx.get_entity(entity) else {
+            return;
+        };
+        if !target_ref.is_champion() {
+            return;
+        };
+
         self.sabotage_remaining = self.charge_ticks();
     }
 
