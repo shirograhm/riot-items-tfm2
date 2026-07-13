@@ -120,6 +120,7 @@ impl ModItemInfo for Hubris {
         let Some(champion_ref) = player_ref.champion() else {
             return;
         };
+        let champion_id = champion_ref.id();
         // Check if target is a champion
         let Some(target_ref) = ctx.get_entity(entity) else {
             return;
@@ -128,7 +129,6 @@ impl ModItemInfo for Hubris {
             return;
         };
 
-        let champion_id = champion_ref.id();
         self.eminence_stacks += 1;
         ctx.add_buff(
             champion_id,
@@ -255,9 +255,10 @@ impl ModItemInfo for RadiantHubris {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
-        let Some(player_champion_ref) = player_ref.champion() else {
+        let Some(champion_ref) = player_ref.champion() else {
             return;
         };
+        let champion_id = champion_ref.id();
         // Check if target is a champion
         let Some(target_ref) = ctx.get_entity(entity) else {
             return;
@@ -266,7 +267,6 @@ impl ModItemInfo for RadiantHubris {
             return;
         };
 
-        let champion_id = player_champion_ref.id();
         self.eminence_stacks += 1;
         ctx.add_buff(
             champion_id,
