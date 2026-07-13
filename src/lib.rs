@@ -5,7 +5,6 @@ mod config;
 mod constants;
 mod hook;
 mod items;
-mod stats;
 
 use items::*;
 
@@ -27,13 +26,25 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
 /// `(100 + armor) / (100 + max(0, armor - lethality))`. The bump is largest against
 /// low-armor targets, like real lethality. Returns `1.0` when there is nothing to
 /// penetrate (non-positive armor or lethality).
-#[allow(dead_code)]
 fn lethality_multiplier(armor: i32, lethality: i32) -> f64 {
     if armor <= 0 || lethality <= 0 {
         return 1.0;
     }
     let effective_armor = (armor - lethality).max(0);
     (100 + armor) as f64 / (100 + effective_armor) as f64
+}
+
+/// Scales a basic attack's `damage` to simulate `lethality` flat armor
+/// penetration against `target` (via [`lethality_multiplier`]). Basic attacks are
+/// the only damage instance a mod can modify — ability damage is dealt by the
+/// game — so lethality items apply this in `on_attack`.
+fn apply_lethality(ctx: &mut GameCtx, target: usize, lethality: usize, damage: &mut usize) {
+    let armor = ctx
+        .get_entity(target)
+        .map(|t| t.stat().defence as i32)
+        .unwrap_or(0);
+    let mult = lethality_multiplier(armor, lethality as i32);
+    *damage = (*damage as f64 * mult).round() as usize;
 }
 
 fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, buff_name: &str) {
@@ -106,6 +117,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
+    reg.add_item(configured!("serrated_dirk" => SerratedDirk));
     reg.add_item(configured!("sheen" => Sheen));
 
     // Tier 3
@@ -121,6 +133,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("steel_sigil" => SteelSigil));
 
     // Tier 4
+    reg.add_item(configured!("bastionbreaker" => Bastionbreaker));
     reg.add_item(configured!("black_cleaver" => BlackCleaver));
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
@@ -137,6 +150,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured!("heartsteel" => Heartsteel));
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
+    reg.add_item(configured!("hubris" => Hubris));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
     reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured!("liandrys_torment" => LiandrysTorment));
@@ -151,6 +165,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured!("riftmaker" => Riftmaker));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
+    reg.add_item(configured!("serpents_fang" => SerpentsFang));
     reg.add_item(configured!("shadowflame" => Shadowflame));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
@@ -165,6 +180,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
 
     // Tier 5
+    reg.add_item(configured!("radiant_bastionbreaker" => RadiantBastionbreaker));
     reg.add_item(configured!("radiant_black_cleaver" => RadiantBlackCleaver));
     reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
     reg.add_item(configured!("radiant_blade_of_the_ruined_king" => RadiantBladeOfTheRuinedKing));
@@ -181,6 +197,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_guinsoos_rageblade" => RadiantGuinsoosRageblade));
     reg.add_item(configured!("radiant_heartsteel" => RadiantHeartsteel));
     reg.add_item(configured!("radiant_hextech_gunblade" => RadiantHextechGunblade));
+    reg.add_item(configured!("radiant_hubris" => RadiantHubris));
     reg.add_item(configured!("radiant_infinity_edge" => RadiantInfinityEdge));
     reg.add_item(configured!("radiant_jaksho_the_protean" => RadiantJakshoTheProtean));
     reg.add_item(configured!("radiant_liandrys_torment" => RadiantLiandrysTorment));
@@ -195,6 +212,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_rabadons_deathcap" => RadiantRabadonsDeathcap));
     reg.add_item(configured!("radiant_riftmaker" => RadiantRiftmaker));
     reg.add_item(configured!("radiant_rylais_crystal_scepter" => RadiantRylaisCrystalScepter));
+    reg.add_item(configured!("radiant_serpents_fang" => RadiantSerpentsFang));
     reg.add_item(configured!("radiant_shadowflame" => RadiantShadowflame));
     reg.add_item(configured!("radiant_spear_of_shojin" => RadiantSpearOfShojin));
     reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));

@@ -262,6 +262,29 @@ $rbsMax = [int]$config.radiant_bloodsong.effect_max_bonus_damage
 $rbsCd = [double]$config.radiant_bloodsong.effect_cooldown_seconds
 $rbsAmp = [int]$config.radiant_bloodsong.effect_damaged_amplify
 $rbsDur = [int]$config.radiant_bloodsong.effect_duration_seconds
+$sdLeth = [int]$config.serrated_dirk.effect_lethality
+$hubLeth = [int]$config.hubris.effect_lethality
+$hubBase = [int]$config.hubris.effect_bonus_flat_attack
+$hubStack = [int]$config.hubris.effect_stack_attack
+$hubDur = [int]$config.hubris.effect_duration_seconds
+$rhubLeth = [int]$config.radiant_hubris.effect_lethality
+$rhubBase = [int]$config.radiant_hubris.effect_bonus_flat_attack
+$rhubStack = [int]$config.radiant_hubris.effect_stack_attack
+$rhubDur = [int]$config.radiant_hubris.effect_duration_seconds
+$bbLeth = [int]$config.bastionbreaker.effect_lethality
+$bbFlat = [int]$config.bastionbreaker.effect_bonus_flat_damage
+$bbPct = [int]$config.bastionbreaker.effect_ad_percent_damage
+$bbDur = [int]$config.bastionbreaker.effect_duration_seconds
+$rbbLeth = [int]$config.radiant_bastionbreaker.effect_lethality
+$rbbFlat = [int]$config.radiant_bastionbreaker.effect_bonus_flat_damage
+$rbbPct = [int]$config.radiant_bastionbreaker.effect_ad_percent_damage
+$rbbDur = [int]$config.radiant_bastionbreaker.effect_duration_seconds
+$spfLeth = [int]$config.serpents_fang.effect_lethality
+$spfFlat = [int]$config.serpents_fang.effect_bonus_flat_damage
+$spfPct = [int]$config.serpents_fang.effect_ad_percent_damage
+$rspfLeth = [int]$config.radiant_serpents_fang.effect_lethality
+$rspfFlat = [int]$config.radiant_serpents_fang.effect_bonus_flat_damage
+$rspfPct = [int]$config.radiant_serpents_fang.effect_ad_percent_damage
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -380,6 +403,18 @@ $bsTemplate = "Spellblade: Landing an Ability on an enemy champion causes your n
 $i18n.en.bloodsong.option = $bsTemplate -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.en.radiant_bloodsong.option = $bsTemplate -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
 
+$lethEn = "Lethality: Ignore <#ffdd8eff>{0} <$armorIcon> armor<> when you deal damage to enemies."
+$i18n.en.serrated_dirk.option = $lethEn -f $sdLeth
+$hubEn = "$lethEn`n`nEminence: On kill, generate a permanent stack and gain <#ff9028ff>{1}<> (+{2} per stack) <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>{3} seconds<>."
+$i18n.en.hubris.option = $hubEn -f $hubLeth, $hubBase, $hubStack, $hubDur
+$i18n.en.radiant_hubris.option = $hubEn -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
+$bbEn = "$lethEn`n`nSabotage: On kill, gain a stack of <#92dc7bff>Sabotage<> for <#e8a800ff>{3} seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+$i18n.en.bastionbreaker.option = $bbEn -f $bbLeth, $bbFlat, $bbPct, $bbDur
+$i18n.en.radiant_bastionbreaker.option = $bbEn -f $rbbLeth, $rbbFlat, $rbbPct, $rbbDur
+$spfEn = "$lethEn`n`nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+$i18n.en.serpents_fang.option = $spfEn -f $spfLeth, $spfFlat, $spfPct
+$i18n.en.radiant_serpents_fang.option = $spfEn -f $rspfLeth, $rspfFlat, $rspfPct
+
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
 
@@ -479,6 +514,18 @@ $i18n.vi.radiant_dusk_and_dawn.option = $dndTemplateVi -f $rdndFlat, $rdndApPct,
 $bsTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>{0}<> - <#d8c9b3ff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>{3}%<> trong <#e8a800ff>{4} giây<>."
 $i18n.vi.bloodsong.option = $bsTemplateVi -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.vi.radiant_bloodsong.option = $bsTemplateVi -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+
+$lethVi = "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>{0} <$armorIcon> giáp<> khi gây sát thương lên kẻ địch."
+$i18n.vi.serrated_dirk.option = $lethVi -f $sdLeth
+$hubVi = "$lethVi`n`nUy Danh: Khi hạ gục, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>{1}<> (+{2} mỗi cộng dồn) <$adIcon> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>{3} giây<>."
+$i18n.vi.hubris.option = $hubVi -f $hubLeth, $hubBase, $hubStack, $hubDur
+$i18n.vi.radiant_hubris.option = $hubVi -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
+$bbVi = "$lethVi`n`nPhá Hoại: Khi hạ gục, nhận một cộng dồn <#92dc7bff>Phá Hoại<> trong <#e8a800ff>{3} giây<>, tăng cường đòn đánh tiếp theo lên trụ để gây <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+$i18n.vi.bastionbreaker.option = $bbVi -f $bbLeth, $bbFlat, $bbPct, $bbDur
+$i18n.vi.radiant_bastionbreaker.option = $bbVi -f $rbbLeth, $rbbFlat, $rbbPct, $rbbDur
+$spfVi = "$lethVi`n`nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+$i18n.vi.serpents_fang.option = $spfVi -f $spfLeth, $spfFlat, $spfPct
+$i18n.vi.radiant_serpents_fang.option = $spfVi -f $rspfLeth, $rspfFlat, $rspfPct
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -580,6 +627,18 @@ $bsTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻
 $i18n.'zh-hans'.bloodsong.option = $bsTemplateZh -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.'zh-hans'.radiant_bloodsong.option = $bsTemplateZh -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
 
+$lethZh = "穿甲：对敌人造成伤害时无视 <#ffdd8eff>{0} 点<$armorIcon> 护甲<>。"
+$i18n.'zh-hans'.serrated_dirk.option = $lethZh -f $sdLeth
+$hubZh = "$lethZh`n`n威望：击杀时生成一层永久印记，并获得 <#ff9028ff>{1}<>（每层+{2}）<#ff9028ff>额外<$adIcon> 攻击力<>，持续 <#e8a800ff>{3}秒<>。"
+$i18n.'zh-hans'.hubris.option = $hubZh -f $hubLeth, $hubBase, $hubStack, $hubDur
+$i18n.'zh-hans'.radiant_hubris.option = $hubZh -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
+$bbZh = "$lethZh`n`n破坏：击杀时获得一层<#92dc7bff>破坏<>，持续 <#e8a800ff>{3}秒<>，强化你对防御塔的下一次攻击，造成 <#ff9028ff>{1}<> + <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{2}%<> 作为<#ff9028ff>额外物理伤害<>。"
+$i18n.'zh-hans'.bastionbreaker.option = $bbZh -f $bbLeth, $bbFlat, $bbPct, $bbDur
+$i18n.'zh-hans'.radiant_bastionbreaker.option = $bbZh -f $rbbLeth, $rbbFlat, $rbbPct, $rbbDur
+$spfZh = "$lethZh`n`n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>{1}<> + <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{2}%<> 作为<#ff9028ff>额外物理伤害<>。"
+$i18n.'zh-hans'.serpents_fang.option = $spfZh -f $spfLeth, $spfFlat, $spfPct
+$i18n.'zh-hans'.radiant_serpents_fang.option = $spfZh -f $rspfLeth, $rspfFlat, $rspfPct
+
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
 
@@ -680,6 +739,18 @@ $bsTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo f
 $i18n.'pt-BR'.bloodsong.option = $bsTemplatePt -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.'pt-BR'.radiant_bloodsong.option = $bsTemplatePt -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
 
+$lethPt = "Letalidade: Ignora <#ffdd8eff>{0} de <$armorIcon> Armadura<> ao causar dano a inimigos."
+$i18n.'pt-BR'.serrated_dirk.option = $lethPt -f $sdLeth
+$hubPt = "$lethPt`n`nEminência: Ao abater, gera um acúmulo permanente e concede <#ff9028ff>{1}<> (+{2} por acúmulo) de <$adIcon> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>{3} segundos<>."
+$i18n.'pt-BR'.hubris.option = $hubPt -f $hubLeth, $hubBase, $hubStack, $hubDur
+$i18n.'pt-BR'.radiant_hubris.option = $hubPt -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
+$bbPt = "$lethPt`n`nSabotagem: Ao abater, ganha um acúmulo de <#92dc7bff>Sabotagem<> por <#e8a800ff>{3} segundos<>, potencializando seu próximo ataque contra uma torre para causar <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+$i18n.'pt-BR'.bastionbreaker.option = $bbPt -f $bbLeth, $bbFlat, $bbPct, $bbDur
+$i18n.'pt-BR'.radiant_bastionbreaker.option = $bbPt -f $rbbLeth, $rbbFlat, $rbbPct, $rbbDur
+$spfPt = "$lethPt`n`nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+$i18n.'pt-BR'.serpents_fang.option = $spfPt -f $spfLeth, $spfFlat, $spfPct
+$i18n.'pt-BR'.radiant_serpents_fang.option = $spfPt -f $rspfLeth, $rspfFlat, $rspfPct
+
 Write-Host "Done."
 Write-Host "Updating Russian text."
 
@@ -779,6 +850,18 @@ $i18n.ru.radiant_dusk_and_dawn.option = $dndTemplateRu -f $rdndFlat, $rdndApPct,
 $bsTemplateRu = "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>{0}<> - <#d8c9b3ff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>{3}%<> на <#e8a800ff>{4} секунды<>."
 $i18n.ru.bloodsong.option = $bsTemplateRu -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.ru.radiant_bloodsong.option = $bsTemplateRu -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+
+$lethRu = "Летальность: Игнорирует <#ffdd8eff>{0} <$armorIcon> брони<> при нанесении урона врагам."
+$i18n.ru.serrated_dirk.option = $lethRu -f $sdLeth
+$hubRu = "$lethRu`n`nВозвышение: При убийстве создаёт постоянный заряд и даёт <#ff9028ff>{1}<> (+{2} за заряд) <#ff9028ff>дополнительной<> <$adIcon> <#ff9028ff>Силы Атаки<> на <#e8a800ff>{3} секунд<>."
+$i18n.ru.hubris.option = $hubRu -f $hubLeth, $hubBase, $hubStack, $hubDur
+$i18n.ru.radiant_hubris.option = $hubRu -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
+$bbRu = "$lethRu`n`nСаботаж: При убийстве даёт заряд <#92dc7bff>Саботажа<> на <#e8a800ff>{3} секунд<>, усиливая вашу следующую атаку по башне: она наносит <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> вашей <$adIcon> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+$i18n.ru.bastionbreaker.option = $bbRu -f $bbLeth, $bbFlat, $bbPct, $bbDur
+$i18n.ru.radiant_bastionbreaker.option = $bbRu -f $rbbLeth, $rbbFlat, $rbbPct, $rbbDur
+$spfRu = "$lethRu`n`nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> вашей <$adIcon> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+$i18n.ru.serpents_fang.option = $spfRu -f $spfLeth, $spfFlat, $spfPct
+$i18n.ru.radiant_serpents_fang.option = $spfRu -f $rspfLeth, $rspfFlat, $rspfPct
 
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
