@@ -19,8 +19,8 @@ pub struct SerpentsFang {
 impl Default for SerpentsFang {
     fn default() -> Self {
         Self {
-            price: 1200,
-            attack: 55,
+            price: 1050,
+            attack: 65,
             effect_lethality: 15,
             effect_bonus_flat_damage: 50,
             effect_ad_percent_damage: 10.0,
@@ -47,13 +47,7 @@ impl SerpentsFang {
 
 // Shared Shield Reaver: on a basic attack against a shielded enemy champion, deal
 // bonus physical damage (flat + % of the caster's Attack Damage).
-fn shield_reaver(
-    ctx: &mut GameCtx,
-    caster: usize,
-    target: usize,
-    flat: usize,
-    ad_percent: f64,
-) {
+fn shield_reaver(ctx: &mut GameCtx, caster: usize, target: usize, flat: usize, ad_percent: f64) {
     let shielded_champion = ctx
         .get_entity(target)
         .map(|t| t.is_champion() && t.shield() > 0)
@@ -141,8 +135,8 @@ pub struct RadiantSerpentsFang {
 impl Default for RadiantSerpentsFang {
     fn default() -> Self {
         Self {
-            price: 1800,
-            attack: 95,
+            price: 1650,
+            attack: 110,
             effect_lethality: 15,
             effect_bonus_flat_damage: 85,
             effect_ad_percent_damage: 15.0,

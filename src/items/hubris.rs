@@ -25,7 +25,7 @@ pub struct Hubris {
 impl Default for Hubris {
     fn default() -> Self {
         Self {
-            price: 1400,
+            price: 1250,
             attack: 75,
             skill_cooldown_mult: 10,
             effect_lethality: 18,
@@ -83,7 +83,10 @@ impl ModItemInfo for Hubris {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["serrated_dirk".to_string(), "soldiers_longsword".to_string()]
+        vec![
+            "serrated_dirk".to_string(),
+            "soldiers_longsword".to_string(),
+        ]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -159,8 +162,8 @@ pub struct RadiantHubris {
 impl Default for RadiantHubris {
     fn default() -> Self {
         Self {
-            price: 2000,
-            attack: 120,
+            price: 1850,
+            attack: 115,
             skill_cooldown_mult: 15,
             effect_lethality: 18,
             effect_bonus_flat_attack: 12,

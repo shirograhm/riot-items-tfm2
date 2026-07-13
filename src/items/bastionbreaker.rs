@@ -33,8 +33,8 @@ pub struct Bastionbreaker {
 impl Default for Bastionbreaker {
     fn default() -> Self {
         Self {
-            price: 1400,
-            attack: 70,
+            price: 1250,
+            attack: 65,
             skill_cooldown_mult: 15,
             effect_lethality: 22,
             effect_bonus_flat_damage: 150,
@@ -133,7 +133,10 @@ impl ModItemInfo for Bastionbreaker {
         if self.sabotage_remaining == 0 {
             return;
         }
-        let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(false);
+        let is_tower = ctx
+            .get_entity(target)
+            .map(|t| t.is_tower())
+            .unwrap_or(false);
         if !is_tower {
             return;
         }
@@ -171,8 +174,8 @@ pub struct RadiantBastionbreaker {
 impl Default for RadiantBastionbreaker {
     fn default() -> Self {
         Self {
-            price: 2000,
-            attack: 115,
+            price: 1850,
+            attack: 110,
             skill_cooldown_mult: 20,
             effect_lethality: 22,
             effect_bonus_flat_damage: 200,
@@ -267,7 +270,10 @@ impl ModItemInfo for RadiantBastionbreaker {
         if self.sabotage_remaining == 0 {
             return;
         }
-        let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(false);
+        let is_tower = ctx
+            .get_entity(target)
+            .map(|t| t.is_tower())
+            .unwrap_or(false);
         if !is_tower {
             return;
         }

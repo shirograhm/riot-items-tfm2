@@ -20,8 +20,8 @@ pub struct SerratedDirk {
 impl Default for SerratedDirk {
     fn default() -> Self {
         Self {
-            price: 550,
-            attack: 30,
+            price: 800,
+            attack: 45,
             effect_lethality: 10,
         }
     }
@@ -56,7 +56,7 @@ impl ModItemInfo for SerratedDirk {
     }
 
     fn tier(&self) -> usize {
-        1
+        2
     }
 
     fn previous_tier(&self) -> Vec<String> {
