@@ -1,13 +1,7 @@
 use mod_api::*;
 
-use crate::apply_lethality;
 use crate::config::ItemConfig;
-
-// Lethality (see serrated_dirk) plus Eminence: each kill adds a permanent stack
-// and grants bonus Attack Damage that scales with the stack count for a while.
-// The AD is granted as a fixed-duration Time buff on kill; because same-name
-// buffs stack, a kill streak accumulates AD that each decays after its window,
-// while the permanent `eminence_stacks` count keeps growing the per-kill payout.
+use crate::{apply_lethality, count_takedowns, mark_enemy_champion};
 
 #[derive(Clone, Debug)]
 pub struct Hubris {
@@ -19,6 +13,8 @@ pub struct Hubris {
     effect_stack_attack: i32,
     effect_duration_seconds: f64,
     eminence_stacks: usize,
+    // Enemy champions recently damaged: (entity id, remaining window ticks).
+    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl Default for Hubris {
@@ -32,6 +28,7 @@ impl Default for Hubris {
             effect_stack_attack: 3,
             effect_duration_seconds: 90.0,
             eminence_stacks: 0,
+            takedown_marks: Vec::new(),
         }
     }
 }
@@ -52,11 +49,41 @@ impl Hubris {
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
             eminence_stacks: 0,
+            takedown_marks: Vec::new(),
         }
     }
 
     fn eminence_bonus_ad(&self) -> i32 {
         self.effect_bonus_flat_attack + self.effect_stack_attack * self.eminence_stacks as i32
+    }
+
+    // Grants `count` Eminence stacks to the wielder (a growing, decaying AD buff per
+    // stack), matching the "12 (+3 per stack)" payout using the pre-increment count.
+    fn grant_eminence(&mut self, ctx: &mut GameCtx, player: usize, count: usize) {
+        if count == 0 {
+            return;
+        }
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(champion_ref) = player_ref.champion() else {
+            return;
+        };
+        let champion_id = champion_ref.id();
+        for _ in 0..count {
+            let ad = self.eminence_bonus_ad();
+            ctx.add_buff(
+                champion_id,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: (self.effect_duration_seconds * 60.0).round() as usize,
+                    },
+                    attack: ad,
+                    ..Default::default()
+                },
+            );
+            self.eminence_stacks += 1;
+        }
     }
 }
 
@@ -99,46 +126,28 @@ impl ModItemInfo for Hubris {
 
     fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
         self.eminence_stacks = 0;
+        self.takedown_marks.clear();
+    }
+
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+        let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
+        self.grant_eminence(ctx, player, takedowns);
     }
 
     fn on_attack(
         &mut self,
         ctx: &mut GameCtx,
-        _caster: usize,
+        caster: usize,
         target: usize,
         damage: &mut usize,
         _damage_type: DamageType,
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, entity: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-        let champion_id = champion_ref.id();
-        // Check if target is a champion
-        let Some(target_ref) = ctx.get_entity(entity) else {
-            return;
-        };
-        if !target_ref.is_champion() {
-            return;
-        };
-
-        ctx.add_buff(
-            champion_id,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: (self.effect_duration_seconds * 60.0).round() as usize,
-                },
-                attack: self.eminence_bonus_ad(),
-                ..Default::default()
-            },
-        );
-        self.eminence_stacks += 1;
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -160,6 +169,7 @@ pub struct RadiantHubris {
     effect_stack_attack: i32,
     effect_duration_seconds: f64,
     eminence_stacks: usize,
+    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl Default for RadiantHubris {
@@ -173,6 +183,7 @@ impl Default for RadiantHubris {
             effect_stack_attack: 3,
             effect_duration_seconds: 90.0,
             eminence_stacks: 0,
+            takedown_marks: Vec::new(),
         }
     }
 }
@@ -193,11 +204,39 @@ impl RadiantHubris {
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
             eminence_stacks: 0,
+            takedown_marks: Vec::new(),
         }
     }
 
     fn eminence_bonus_ad(&self) -> i32 {
         self.effect_bonus_flat_attack + self.effect_stack_attack * self.eminence_stacks as i32
+    }
+
+    fn grant_eminence(&mut self, ctx: &mut GameCtx, player: usize, count: usize) {
+        if count == 0 {
+            return;
+        }
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(champion_ref) = player_ref.champion() else {
+            return;
+        };
+        let champion_id = champion_ref.id();
+        for _ in 0..count {
+            let ad = self.eminence_bonus_ad();
+            ctx.add_buff(
+                champion_id,
+                BuffState {
+                    duration: BuffType::Time {
+                        tick: (self.effect_duration_seconds * 60.0).round() as usize,
+                    },
+                    attack: ad,
+                    ..Default::default()
+                },
+            );
+            self.eminence_stacks += 1;
+        }
     }
 }
 
@@ -236,46 +275,28 @@ impl ModItemInfo for RadiantHubris {
 
     fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
         self.eminence_stacks = 0;
+        self.takedown_marks.clear();
+    }
+
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+        let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
+        self.grant_eminence(ctx, player, takedowns);
     }
 
     fn on_attack(
         &mut self,
         ctx: &mut GameCtx,
-        _caster: usize,
+        caster: usize,
         target: usize,
         damage: &mut usize,
         _damage_type: DamageType,
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, entity: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-        let champion_id = champion_ref.id();
-        // Check if target is a champion
-        let Some(target_ref) = ctx.get_entity(entity) else {
-            return;
-        };
-        if !target_ref.is_champion() {
-            return;
-        };
-
-        ctx.add_buff(
-            champion_id,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: (self.effect_duration_seconds * 60.0).round() as usize,
-                },
-                attack: self.eminence_bonus_ad(),
-                ..Default::default()
-            },
-        );
-        self.eminence_stacks += 1;
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
     fn tags(&self) -> Vec<ItemTag> {

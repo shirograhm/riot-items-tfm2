@@ -47,6 +47,102 @@ fn apply_lethality(ctx: &mut GameCtx, target: usize, lethality: usize, damage: &
     *damage = (*damage as f64 * mult).round() as usize;
 }
 
+/// How long (in ticks) an enemy champion stays "marked" as recently damaged, so a
+/// death within the window counts as a takedown (kill or assist). 3s at 60/s.
+const TAKEDOWN_WINDOW_TICKS: usize = 180;
+
+/// Marks `target` as recently damaged, if it is an enemy champion of `caster`, so
+/// that a death within `TAKEDOWN_WINDOW_TICKS` counts as a takedown. Refreshes an
+/// existing mark. Shared by items whose passives trigger on takedowns (which the
+/// `on_kill` hook can't identify — its `entity` arg always looks like a champion).
+fn mark_enemy_champion(
+    marks: &mut Vec<(usize, usize)>,
+    ctx: &mut GameCtx,
+    caster: usize,
+    target: usize,
+) {
+    let Some(caster_ref) = ctx.get_entity(caster) else {
+        return;
+    };
+    let caster_team = caster_ref.team();
+    let Some(target_ref) = ctx.get_entity(target) else {
+        return;
+    };
+    if !target_ref.is_champion() || target_ref.team() == caster_team {
+        return;
+    }
+    if let Some(mark) = marks.iter_mut().find(|(id, _)| *id == target) {
+        mark.1 = TAKEDOWN_WINDOW_TICKS;
+        takedown_log(&format!("mark refreshed target={target} caster={caster}"));
+    } else {
+        marks.push((target, TAKEDOWN_WINDOW_TICKS));
+        takedown_log(&format!("mark created target={target} caster={caster}"));
+    }
+}
+
+/// TEMP DEBUG: appends `msg` (with a millisecond timestamp) to `takedown_debug.log`
+/// next to the mod DLL — same directory as `config.json` — falling back to the cwd.
+/// Used to diagnose takedown detection; remove once verified.
+fn takedown_log(msg: &str) {
+    use std::io::Write;
+    let path = config::dll_dir()
+        .map(|d| d.join("takedown_debug.log"))
+        .unwrap_or_else(|| std::path::PathBuf::from("takedown_debug.log"));
+    let ts = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_millis())
+        .unwrap_or(0);
+    if let Ok(mut f) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(&path)
+    {
+        let _ = writeln!(f, "{ts} {msg}");
+    }
+}
+
+/// Ages `marks` by one tick and returns how many marked champions died this tick
+/// (each a takedown). Marks are dropped on death (counted once) or when the window
+/// lapses without a death. Call once per `update`.
+fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize {
+    if marks.is_empty() {
+        return 0;
+    }
+    let mut takedowns = 0;
+    let mut kept = Vec::with_capacity(marks.len());
+    for (id, ticks) in std::mem::take(marks) {
+        // TEMP DEBUG: capture what the game reports for this marked entity so we
+        // can see whether a killed champion is queryable and `!is_alive()`, gone
+        // (`get_entity` -> None), or still alive.
+        let (present, alive, champion) = match ctx.get_entity(id) {
+            Some(e) => (true, Some(e.is_alive()), Some(e.is_champion())),
+            None => (false, None, None),
+        };
+        // A marked champion counts as a takedown once the game stops reporting it
+        // as alive: either it's gone from the entity table (`present == false`,
+        // which is how TFM2 removes a champion killed this round) or it's still
+        // queryable but flagged not-alive. We only mark enemy champions we damaged
+        // within the last few seconds, so a disappearance here is a death.
+        let is_dead = !present || alive == Some(false);
+        takedown_log(&format!(
+            "count_takedowns id={id} ticks={ticks} present={present} alive={alive:?} champion={champion:?} -> dead={is_dead}"
+        ));
+        if is_dead {
+            takedowns += 1;
+            continue;
+        }
+        let remaining = ticks.saturating_sub(1);
+        if remaining > 0 {
+            kept.push((id, remaining));
+        }
+    }
+    *marks = kept;
+    if takedowns > 0 {
+        takedown_log(&format!("count_takedowns => takedowns={takedowns}"));
+    }
+    takedowns
+}
+
 fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, buff_name: &str) {
     let Some(player_ref) = ctx.get_player(player) else {
         return;

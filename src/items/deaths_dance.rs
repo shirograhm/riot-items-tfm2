@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{count_takedowns, mark_enemy_champion, percent_of};
 
 #[derive(Clone, Debug)]
 pub struct DeathsDance {
@@ -12,23 +12,27 @@ pub struct DeathsDance {
     skill_cooldown_mult: i32,
     effect_delayed_damage_percent: f64,
     effect_burn_hp_percent_cap: f64,
+    effect_bonus_flat_heal: i32,
     effect_kill_heal_missing_percent: f64,
     accumulated_damage: i32,
     last_damaged_by: usize,
+    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl Default for DeathsDance {
     fn default() -> Self {
         Self {
             price: 1450,
-            attack: 50,
-            defence: 50,
+            attack: 45,
+            defence: 45,
             skill_cooldown_mult: 10,
             effect_delayed_damage_percent: 25.0,
             effect_burn_hp_percent_cap: 5.0,
+            effect_bonus_flat_heal: 45,
             effect_kill_heal_missing_percent: 15.0,
             accumulated_damage: 0,
             last_damaged_by: 0,
+            takedown_marks: Vec::new(),
         }
     }
 }
@@ -47,11 +51,42 @@ impl DeathsDance {
             effect_burn_hp_percent_cap: cfg
                 .effect_burn_hp_percent_cap
                 .unwrap_or(d.effect_burn_hp_percent_cap),
+            effect_bonus_flat_heal: cfg
+                .effect_bonus_flat_heal
+                .unwrap_or(d.effect_bonus_flat_heal),
             effect_kill_heal_missing_percent: cfg
                 .effect_kill_heal_missing_percent
                 .unwrap_or(d.effect_kill_heal_missing_percent),
-            accumulated_damage: d.accumulated_damage,
-            last_damaged_by: d.last_damaged_by,
+            accumulated_damage: 0,
+            last_damaged_by: 0,
+            takedown_marks: Vec::new(),
+        }
+    }
+
+    // On a champion takedown: cleanse the stored damage and heal the wielder for a
+    // flat amount plus a share of missing health, once per takedown.
+    fn defy(&mut self, ctx: &mut GameCtx, player: usize, takedowns: usize) {
+        if takedowns == 0 {
+            return;
+        }
+        self.accumulated_damage = 0;
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(champion_ref) = player_ref.champion() else {
+            return;
+        };
+        let hp_max = champion_ref.hp().max;
+        let hp_current = champion_ref.hp().current;
+        let champion_id = champion_ref.id();
+        let missing_hp = hp_max.saturating_sub(hp_current);
+        let heal = self.effect_bonus_flat_heal as usize
+            + percent_of(missing_hp, self.effect_kill_heal_missing_percent);
+        if heal == 0 {
+            return;
+        }
+        for _ in 0..takedowns {
+            ctx.heal(champion_id, champion_id, heal);
         }
     }
 }
@@ -95,7 +130,18 @@ impl ModItemInfo for DeathsDance {
         }
     }
 
+    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+        self.accumulated_damage = 0;
+        self.last_damaged_by = 0;
+        self.takedown_marks.clear();
+    }
+
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+        // Defy: heal + cleanse on champion takedowns.
+        let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
+        self.defy(ctx, player, takedowns);
+
+        // Ignore Pain: bleed the stored damage back over time.
         if self.accumulated_damage <= 0 {
             return;
         }
@@ -158,28 +204,19 @@ impl ModItemInfo for DeathsDance {
         self.last_damaged_by = attacker
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
-        self.accumulated_damage = 0;
+    fn on_attack(
+        &mut self,
+        ctx: &mut GameCtx,
+        caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageType,
+    ) {
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
+    }
 
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-
-        let missing_hp = champion_ref
-            .hp()
-            .max
-            .saturating_sub(champion_ref.hp().current);
-
-        let heal_amount = percent_of(missing_hp, self.effect_kill_heal_missing_percent);
-        if heal_amount == 0 {
-            return;
-        }
-
-        let champion_id = champion_ref.id();
-        ctx.heal(champion_id, champion_id, heal_amount);
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -199,23 +236,27 @@ pub struct RadiantDeathsDance {
     skill_cooldown_mult: i32,
     effect_delayed_damage_percent: f64,
     effect_burn_hp_percent_cap: f64,
+    effect_bonus_flat_heal: i32,
     effect_kill_heal_missing_percent: f64,
     accumulated_damage: i32,
     last_damaged_by: usize,
+    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl Default for RadiantDeathsDance {
     fn default() -> Self {
         Self {
             price: 2100,
-            attack: 85,
-            defence: 85,
+            attack: 75,
+            defence: 75,
             skill_cooldown_mult: 10,
             effect_delayed_damage_percent: 25.0,
             effect_burn_hp_percent_cap: 5.0,
-            effect_kill_heal_missing_percent: 15.0,
+            effect_bonus_flat_heal: 75,
+            effect_kill_heal_missing_percent: 25.0,
             accumulated_damage: 0,
             last_damaged_by: 0,
+            takedown_marks: Vec::new(),
         }
     }
 }
@@ -234,11 +275,40 @@ impl RadiantDeathsDance {
             effect_burn_hp_percent_cap: cfg
                 .effect_burn_hp_percent_cap
                 .unwrap_or(d.effect_burn_hp_percent_cap),
+            effect_bonus_flat_heal: cfg
+                .effect_bonus_flat_heal
+                .unwrap_or(d.effect_bonus_flat_heal),
             effect_kill_heal_missing_percent: cfg
                 .effect_kill_heal_missing_percent
                 .unwrap_or(d.effect_kill_heal_missing_percent),
-            accumulated_damage: d.accumulated_damage,
-            last_damaged_by: d.last_damaged_by,
+            accumulated_damage: 0,
+            last_damaged_by: 0,
+            takedown_marks: Vec::new(),
+        }
+    }
+
+    fn defy(&mut self, ctx: &mut GameCtx, player: usize, takedowns: usize) {
+        if takedowns == 0 {
+            return;
+        }
+        self.accumulated_damage = 0;
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(champion_ref) = player_ref.champion() else {
+            return;
+        };
+        let hp_max = champion_ref.hp().max;
+        let hp_current = champion_ref.hp().current;
+        let champion_id = champion_ref.id();
+        let missing_hp = hp_max.saturating_sub(hp_current);
+        let heal = self.effect_bonus_flat_heal as usize
+            + percent_of(missing_hp, self.effect_kill_heal_missing_percent);
+        if heal == 0 {
+            return;
+        }
+        for _ in 0..takedowns {
+            ctx.heal(champion_id, champion_id, heal);
         }
     }
 }
@@ -278,7 +348,16 @@ impl ModItemInfo for RadiantDeathsDance {
         }
     }
 
+    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+        self.accumulated_damage = 0;
+        self.last_damaged_by = 0;
+        self.takedown_marks.clear();
+    }
+
     fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+        let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
+        self.defy(ctx, player, takedowns);
+
         if self.accumulated_damage <= 0 {
             return;
         }
@@ -341,27 +420,19 @@ impl ModItemInfo for RadiantDeathsDance {
         self.last_damaged_by = attacker
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
-        self.accumulated_damage = 0;
+    fn on_attack(
+        &mut self,
+        ctx: &mut GameCtx,
+        caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageType,
+    ) {
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
+    }
 
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-
-        let missing_hp = champion_ref
-            .hp()
-            .max
-            .saturating_sub(champion_ref.hp().current);
-        let heal_amount = percent_of(missing_hp, self.effect_kill_heal_missing_percent);
-        if heal_amount == 0 {
-            return;
-        }
-
-        let champion_id = champion_ref.id();
-        ctx.heal(champion_id, champion_id, heal_amount);
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
