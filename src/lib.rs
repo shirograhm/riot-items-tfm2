@@ -73,31 +73,8 @@ fn mark_enemy_champion(
     }
     if let Some(mark) = marks.iter_mut().find(|(id, _)| *id == target) {
         mark.1 = TAKEDOWN_WINDOW_TICKS;
-        takedown_log(&format!("mark refreshed target={target} caster={caster}"));
     } else {
         marks.push((target, TAKEDOWN_WINDOW_TICKS));
-        takedown_log(&format!("mark created target={target} caster={caster}"));
-    }
-}
-
-/// TEMP DEBUG: appends `msg` (with a millisecond timestamp) to `takedown_debug.log`
-/// next to the mod DLL — same directory as `config.json` — falling back to the cwd.
-/// Used to diagnose takedown detection; remove once verified.
-fn takedown_log(msg: &str) {
-    use std::io::Write;
-    let path = config::dll_dir()
-        .map(|d| d.join("takedown_debug.log"))
-        .unwrap_or_else(|| std::path::PathBuf::from("takedown_debug.log"));
-    let ts = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_millis())
-        .unwrap_or(0);
-    if let Ok(mut f) = std::fs::OpenOptions::new()
-        .create(true)
-        .append(true)
-        .open(&path)
-    {
-        let _ = writeln!(f, "{ts} {msg}");
     }
 }
 
@@ -111,22 +88,12 @@ fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize 
     let mut takedowns = 0;
     let mut kept = Vec::with_capacity(marks.len());
     for (id, ticks) in std::mem::take(marks) {
-        // TEMP DEBUG: capture what the game reports for this marked entity so we
-        // can see whether a killed champion is queryable and `!is_alive()`, gone
-        // (`get_entity` -> None), or still alive.
-        let (present, alive, champion) = match ctx.get_entity(id) {
-            Some(e) => (true, Some(e.is_alive()), Some(e.is_champion())),
-            None => (false, None, None),
-        };
-        // A marked champion counts as a takedown once the game stops reporting it
-        // as alive: either it's gone from the entity table (`present == false`,
-        // which is how TFM2 removes a champion killed this round) or it's still
-        // queryable but flagged not-alive. We only mark enemy champions we damaged
-        // within the last few seconds, so a disappearance here is a death.
-        let is_dead = !present || alive == Some(false);
-        takedown_log(&format!(
-            "count_takedowns id={id} ticks={ticks} present={present} alive={alive:?} champion={champion:?} -> dead={is_dead}"
-        ));
+        // A marked champion counts as a takedown once the game stops reporting it as
+        // alive: either it's gone from the entity table (`get_entity` -> None, which
+        // is how TFM2 removes a champion killed this round) or it's still queryable
+        // but flagged not-alive. We only mark enemy champions we damaged within the
+        // last few seconds, so a disappearance here is a death.
+        let is_dead = ctx.get_entity(id).map(|e| !e.is_alive()).unwrap_or(true);
         if is_dead {
             takedowns += 1;
             continue;
@@ -137,9 +104,6 @@ fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize 
         }
     }
     *marks = kept;
-    if takedowns > 0 {
-        takedown_log(&format!("count_takedowns => takedowns={takedowns}"));
-    }
     takedowns
 }
 

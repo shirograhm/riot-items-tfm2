@@ -3,14 +3,6 @@ use mod_api::*;
 use crate::config::ItemConfig;
 use crate::{apply_lethality, count_takedowns, mark_enemy_champion, percent_of};
 
-// Lethality (see serrated_dirk) plus Sabotage: scoring a takedown on an enemy
-// champion grants a Sabotage charge lasting `effect_duration_seconds`. While the
-// charge is active, the wielder's next basic attack against a turret spends it to
-// deal bonus physical damage (flat + % of Attack Damage). Takedowns are detected
-// via the shared damage-mark system (see `mark_enemy_champion`/`count_takedowns`).
-// The charge is tracked per-item as a tick countdown (0 = no charge) since the
-// engine has no removable buff to model a consumable, expiring charge.
-
 fn sabotage_bonus(ctx: &mut GameCtx, caster: usize, flat: usize, ad_percent: f64) -> usize {
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
     flat + percent_of(caster_ad, ad_percent)
@@ -138,7 +130,10 @@ impl ModItemInfo for Bastionbreaker {
         if self.sabotage_charge == 0 {
             return;
         }
-        let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(false);
+        let is_tower = ctx
+            .get_entity(target)
+            .map(|t| t.is_tower())
+            .unwrap_or(false);
         if !is_tower {
             return;
         }
@@ -280,7 +275,10 @@ impl ModItemInfo for RadiantBastionbreaker {
         if self.sabotage_charge == 0 {
             return;
         }
-        let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(false);
+        let is_tower = ctx
+            .get_entity(target)
+            .map(|t| t.is_tower())
+            .unwrap_or(false);
         if !is_tower {
             return;
         }
