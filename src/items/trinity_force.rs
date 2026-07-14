@@ -9,6 +9,7 @@ pub struct TrinityForce {
     price: usize,
     hp: i32,
     attack: i32,
+    attack_speed_mult: i32,
     skill_cooldown_mult: i32,
     effect_bonus_flat_damage: usize,
     effect_ad_percent_damage: f64,
@@ -20,8 +21,9 @@ impl Default for TrinityForce {
     fn default() -> Self {
         Self {
             price: 1400,
-            hp: 333,
-            attack: 33,
+            hp: 200,
+            attack: 30,
+            attack_speed_mult: 15,
             skill_cooldown_mult: 10,
             effect_bonus_flat_damage: 33,
             effect_ad_percent_damage: 33.0,
@@ -38,6 +40,7 @@ impl TrinityForce {
             price: cfg.price.unwrap_or(d.price),
             hp: cfg.hp.unwrap_or(d.hp),
             attack: cfg.attack.unwrap_or(d.attack),
+            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
             skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
             effect_bonus_flat_damage: cfg
                 .effect_bonus_flat_damage
@@ -86,6 +89,7 @@ impl ModItemInfo for TrinityForce {
         BuffState {
             hp: self.hp,
             attack: self.attack,
+            attack_speed_mult: self.attack_speed_mult,
             skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }

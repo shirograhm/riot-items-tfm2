@@ -229,11 +229,11 @@
         },
         "deaths_dance": {
             "name": "Death's Dance",
-            "option": "Ignore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, cleanse leftover stored damage and <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+            "option": "Ignore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <#60e84dff>heals you<> for <#60e84dff>45<> + <#60e84dff>15%<> of your <#60e84dff>missing health<>."
         },
         "radiant_deaths_dance": {
             "name": "Radiant Death's Dance",
-            "option": "Ignore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: On kill, cleanse leftover stored damage and <#60e84dff>heal<> for <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+            "option": "Ignore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <#60e84dff>heals you<> for <#60e84dff>75<> + <#60e84dff>25%<> of your <#60e84dff>missing health<>."
         },
         "needlessly_large_rod": {
             "name": "Needlessly Large Rod",
@@ -297,11 +297,11 @@
         },
         "unending_despair": {
             "name": "Unending Despair",
-            "option": "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+            "option": "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>35<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "radiant_unending_despair": {
             "name": "Radiant Unending Despair",
-            "option": "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>25<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+            "option": "Anguish: Landing an Ability on an enemy champion heals you for <#60e84dff>50<> + <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Blade of the Ruined King",
@@ -489,11 +489,11 @@
         },
         "liandrys_torment": {
             "name": "Liandry's Torment",
-            "option": "Suffering: Dealing Ability damage burns enemies, causing them to take <#d94c49ff>6% of the target's maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>3 seconds<>. Deals a maximum of <#a974ffff>40 magic damage<> per tick against minions and monsters."
+            "option": "Suffering: Dealing Ability damage burns enemies, causing them to take <#d94c49ff>6% of their maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>3 seconds<>. Deals a maximum of <#a974ffff>40 magic damage<> per tick against minions and monsters."
         },
         "radiant_liandrys_torment": {
             "name": "Radiant Liandry's Torment",
-            "option": "Suffering: Dealing Ability damage burns enemies, causing them to take <#d94c49ff>6% of the target's maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>3 seconds<>. Deals a maximum of <#a974ffff>40 magic damage<> per tick against minions and monsters."
+            "option": "Suffering: Dealing Ability damage burns enemies, causing them to take <#d94c49ff>6% of their maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>3 seconds<>. Deals a maximum of <#a974ffff>40 magic damage<> per tick against minions and monsters."
         },
         "noonquiver": {
             "name": "Noonquiver",
@@ -537,7 +537,7 @@
         },
         "sheen": {
             "name": "Sheen",
-            "option": "Spellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "Spellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "trinity_force": {
             "name": "Trinity Force",
@@ -562,6 +562,34 @@
         "radiant_bloodsong": {
             "name": "Radiant Bloodsong",
             "option": "Spellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
+        },
+        "serrated_dirk": {
+            "name": "Serrated Dirk",
+            "option": "Lethality: Ignore <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies."
+        },
+        "hubris": {
+            "name": "Hubris",
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nEminence: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
+        },
+        "radiant_hubris": {
+            "name": "Radiant Hubris",
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nEminence: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
+        },
+        "bastionbreaker": {
+            "name": "Bastionbreaker",
+            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+        },
+        "radiant_bastionbreaker": {
+            "name": "Radiant Bastionbreaker",
+            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+        },
+        "serpents_fang": {
+            "name": "Serpent's Fang",
+            "option": "Lethality: Ignore <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>50<> + <#ff9028ff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+        },
+        "radiant_serpents_fang": {
+            "name": "Radiant Serpent's Fang",
+            "option": "Lethality: Ignore <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>85<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         }
     },
     "vi": {
@@ -794,11 +822,11 @@
         },
         "deaths_dance": {
             "name": "Vũ Điệu Tử Thần",
-            "option": "Phớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Khi hạ gục, lượng sát thương tích trữ bị xóa và bạn <#60e84dff>hồi<> <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
+            "option": "Phớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <#60e84dff>hồi<> cho bạn <#60e84dff>45<> + <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
         },
         "radiant_deaths_dance": {
             "name": "Vũ Điệu Tử Thần Ánh Sáng",
-            "option": "Phớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Khi hạ gục, lượng sát thương tích trữ bị xóa và bạn <#60e84dff>hồi<> <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
+            "option": "Phớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <#60e84dff>hồi<> cho bạn <#60e84dff>75<> + <#60e84dff>25%<> <#60e84dff>máu đã mất<>."
         },
         "needlessly_large_rod": {
             "name": "Gậy Quá Khổ",
@@ -862,11 +890,11 @@
         },
         "unending_despair": {
             "name": "Áo Choàng Diệt Vong",
-            "option": "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
+            "option": "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>35<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
         },
         "radiant_unending_despair": {
             "name": "Áo Choàng Diệt Vong Ánh Sáng",
-            "option": "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>25<> + <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
+            "option": "Thống khổ: Kĩ năng trúng bạn sẽ hồi máu một lượng tương ứng <#60e84dff>50<> + <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
         },
         "blade_of_the_ruined_king": {
             "name": "Gươm Suy Vong",
@@ -1054,11 +1082,11 @@
         },
         "liandrys_torment": {
             "name": "Mặt Nạ Đọa Đày Liandry",
-            "option": "Thống Khổ: Khi gây sát thương kĩ năng, thiêu đốt kẻ địch, khiến chúng chịu <#d94c49ff>6% máu tối đa của mục tiêu<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>3 giây<>. Tối đa <#a974ffff>40 sát thương phép<> mỗi nhịp lên lính và quái vật."
+            "option": "Thống Khổ: Khi gây sát thương kĩ năng, thiêu đốt kẻ địch, khiến chúng chịu <#d94c49ff>6% máu tối đa của chúng<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>3 giây<>. Tối đa <#a974ffff>40 sát thương phép<> mỗi nhịp lên lính và quái vật."
         },
         "radiant_liandrys_torment": {
             "name": "Mặt Nạ Đọa Đày Liandry Ánh Sáng",
-            "option": "Thống Khổ: Khi gây sát thương kĩ năng, thiêu đốt kẻ địch, khiến chúng chịu <#d94c49ff>6% máu tối đa của mục tiêu<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>3 giây<>. Tối đa <#a974ffff>40 sát thương phép<> mỗi nhịp lên lính và quái vật."
+            "option": "Thống Khổ: Khi gây sát thương kĩ năng, thiêu đốt kẻ địch, khiến chúng chịu <#d94c49ff>6% máu tối đa của chúng<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>3 giây<>. Tối đa <#a974ffff>40 sát thương phép<> mỗi nhịp lên lính và quái vật."
         },
         "steel_sigil": {
             "name": "Ấn Thép",
@@ -1102,7 +1130,7 @@
         },
         "sheen": {
             "name": "Thủy Kiếm",
-            "option": "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
         },
         "trinity_force": {
             "name": "Tam Hợp Kiếm",
@@ -1127,6 +1155,34 @@
         "radiant_bloodsong": {
             "name": "Khúc Ca Máu Ánh Sáng",
             "option": "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>8%<> trong <#e8a800ff>4 giây<>."
+        },
+        "serrated_dirk": {
+            "name": "Dao Găm Răng Cưa",
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch."
+        },
+        "hubris": {
+            "name": "Kiêu Ngạo",
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nUy Danh: Khi tham gia hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
+        },
+        "radiant_hubris": {
+            "name": "Kiêu Ngạo Ánh Sáng",
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nUy Danh: Khi tham gia hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
+        },
+        "bastionbreaker": {
+            "name": "Kẻ Phá Thành",
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn Đánh tiếp theo của bạn lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+        },
+        "radiant_bastionbreaker": {
+            "name": "Kẻ Phá Thành Ánh Sáng",
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn Đánh tiếp theo của bạn lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+        },
+        "serpents_fang": {
+            "name": "Nanh Rắn Độc",
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>50<> + <#ff9028ff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+        },
+        "radiant_serpents_fang": {
+            "name": "Nanh Rắn Độc Ánh Sáng",
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>85<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         }
     },
     "zh-hans": {
@@ -1359,11 +1415,11 @@
         },
         "deaths_dance": {
             "name": "死亡之舞",
-            "option": "无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>5%<>）。\n\n拒止：击杀时，储存的伤害被清除，并为你回复 <#60e84dff>15%<> <#60e84dff>已损失生命值<>。"
+            "option": "无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<#60e84dff>回复<> <#60e84dff>45<> + <#60e84dff>15%<> 的<#60e84dff>已损失生命值<>。"
         },
         "radiant_deaths_dance": {
             "name": "光明版死亡之舞",
-            "option": "无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>5%<>）。\n\n拒止：击杀时，储存的伤害被清除，并为你回复 <#60e84dff>15%<> <#60e84dff>已损失生命值<>。"
+            "option": "无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<#60e84dff>回复<> <#60e84dff>75<> + <#60e84dff>25%<> 的<#60e84dff>已损失生命值<>。"
         },
         "needlessly_large_rod": {
             "name": "无用大棒",
@@ -1427,11 +1483,11 @@
         },
         "unending_despair": {
             "name": "无终恨意",
-            "option": "苦楚：技能命中时，回复 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的生命值。"
+            "option": "苦楚：技能命中时，回复 <#60e84dff>35<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的生命值。"
         },
         "radiant_unending_despair": {
             "name": "光明版无终恨意",
-            "option": "苦楚：技能命中时，回复 <#60e84dff>25<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>3%<> 的生命值。"
+            "option": "苦楚：技能命中时，回复 <#60e84dff>50<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值。"
         },
         "blade_of_the_ruined_king": {
             "name": "破败王者之刃",
@@ -1619,11 +1675,11 @@
         },
         "liandrys_torment": {
             "name": "兰德里的折磨",
-            "option": "苦难：造成技能伤害时点燃敌人，使其在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>目标6%最大生命值<>的<#a974ffff>魔法伤害<>。对小兵和野怪每跳最多造成 <#a974ffff>40点魔法伤害<>。"
+            "option": "苦难：造成技能伤害时点燃敌人，使其在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其6%最大生命值<>的<#a974ffff>魔法伤害<>。对小兵和野怪每跳最多造成 <#a974ffff>40点魔法伤害<>。"
         },
         "radiant_liandrys_torment": {
             "name": "光明版兰德里的折磨",
-            "option": "苦难：造成技能伤害时点燃敌人，使其在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>目标6%最大生命值<>的<#a974ffff>魔法伤害<>。对小兵和野怪每跳最多造成 <#a974ffff>40点魔法伤害<>。"
+            "option": "苦难：造成技能伤害时点燃敌人，使其在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其6%最大生命值<>的<#a974ffff>魔法伤害<>。对小兵和野怪每跳最多造成 <#a974ffff>40点魔法伤害<>。"
         },
         "steel_sigil": {
             "name": "钢铁印章",
@@ -1667,7 +1723,7 @@
         },
         "sheen": {
             "name": "耀光",
-            "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>30<> - <#d8c9b3ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>3.5秒<>）。"
+            "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>30<> - <#d8c9b3ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
         },
         "trinity_force": {
             "name": "三相之力",
@@ -1692,6 +1748,34 @@
         "radiant_bloodsong": {
             "name": "光明版血歌",
             "option": "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>8%<>，持续 <#e8a800ff>4秒<>。"
+        },
+        "serrated_dirk": {
+            "name": "锯齿短匕",
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。"
+        },
+        "hubris": {
+            "name": "傲慢",
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
+        },
+        "radiant_hubris": {
+            "name": "光明版傲慢",
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
+        },
+        "bastionbreaker": {
+            "name": "破垒者",
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你的下一次对防御塔的攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+        },
+        "radiant_bastionbreaker": {
+            "name": "光明版破垒者",
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你的下一次对防御塔的攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
+        },
+        "serpents_fang": {
+            "name": "毒蛇之牙",
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>10%<> 作为<#ff9028ff>额外物理伤害<>。"
+        },
+        "radiant_serpents_fang": {
+            "name": "光明版毒蛇之牙",
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
         }
     },
     "pt-BR": {
@@ -1924,11 +2008,11 @@
         },
         "deaths_dance": {
             "name": "Dança da Morte",
-            "option": "Ignorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Ao abater, o dano armazenado é removido e você se <#60e84dff>cura<> em <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
+            "option": "Ignorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <#60e84dff>cura você<> em <#60e84dff>45<> + <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
         },
         "radiant_deaths_dance": {
             "name": "Dança da Morte Radiante",
-            "option": "Ignorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Ao abater, o dano armazenado é removido e você se <#60e84dff>cura<> em <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
+            "option": "Ignorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <#60e84dff>cura você<> em <#60e84dff>75<> + <#60e84dff>25%<> da sua <#60e84dff>vida perdida<>."
         },
         "needlessly_large_rod": {
             "name": "Bastão Desnecessariamente Grande",
@@ -1992,11 +2076,11 @@
         },
         "unending_despair": {
             "name": "Desespero Eterno",
-            "option": "Angústia: Suas mágias te curam em <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+            "option": "Angústia: Suas mágias te curam em <#60e84dff>35<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
         },
         "radiant_unending_despair": {
             "name": "Desespero Eterno Radiante",
-            "option": "Angústia: Suas mágias te curam em <#60e84dff>25<> + <#60e84dff>3%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+            "option": "Angústia: Suas mágias te curam em <#60e84dff>50<> + <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Espada do Rei Destruído",
@@ -2184,11 +2268,11 @@
         },
         "liandrys_torment": {
             "name": "Tormento de Liandry",
-            "option": "Sofrimento: Causar dano de habilidade queima os inimigos, fazendo-os sofrer <#d94c49ff>6% da Vida Máxima do alvo<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Máximo de <#a974ffff>40 de dano mágico<> por tique contra tropas e monstros."
+            "option": "Sofrimento: Causar dano de habilidade queima os inimigos, fazendo-os sofrer <#d94c49ff>6% da Vida Máxima deles<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Máximo de <#a974ffff>40 de dano mágico<> por tique contra tropas e monstros."
         },
         "radiant_liandrys_torment": {
             "name": "Tormento de Liandry Radiante",
-            "option": "Sofrimento: Causar dano de habilidade queima os inimigos, fazendo-os sofrer <#d94c49ff>6% da Vida Máxima do alvo<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Máximo de <#a974ffff>40 de dano mágico<> por tique contra tropas e monstros."
+            "option": "Sofrimento: Causar dano de habilidade queima os inimigos, fazendo-os sofrer <#d94c49ff>6% da Vida Máxima deles<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Máximo de <#a974ffff>40 de dano mágico<> por tique contra tropas e monstros."
         },
         "steel_sigil": {
             "name": "Sigilo de Aço",
@@ -2232,7 +2316,7 @@
         },
         "sheen": {
             "name": "Fulgor",
-            "option": "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
         },
         "trinity_force": {
             "name": "Força da Trindade",
@@ -2257,6 +2341,34 @@
         "radiant_bloodsong": {
             "name": "Canção de Sangue Radiante",
             "option": "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>8%<> por <#e8a800ff>4 segundos<>."
+        },
+        "serrated_dirk": {
+            "name": "Adaga Serrilhada",
+            "option": "Letalidade: Ignora <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos."
+        },
+        "hubris": {
+            "name": "Arrogância",
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nEminência: Ao participar do abate de um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
+        },
+        "radiant_hubris": {
+            "name": "Arrogância Radiante",
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nEminência: Ao participar do abate de um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
+        },
+        "bastionbreaker": {
+            "name": "Quebra-Bastião",
+            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo Ataque contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+        },
+        "radiant_bastionbreaker": {
+            "name": "Quebra-Bastião Radiante",
+            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo Ataque contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+        },
+        "serpents_fang": {
+            "name": "Presa da Serpente",
+            "option": "Letalidade: Ignora <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>50<> + <#ff9028ff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+        },
+        "radiant_serpents_fang": {
+            "name": "Presa da Serpente Radiante",
+            "option": "Letalidade: Ignora <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>85<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         }
     },
     "ru": {
@@ -2489,11 +2601,11 @@
         },
         "deaths_dance": {
             "name": "Танец Смерти",
-            "option": "Игнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: При убийстве снимает весь накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
+            "option": "Игнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>45<> + <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
         },
         "radiant_deaths_dance": {
             "name": "Лучезарный Танец Смерти",
-            "option": "Игнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: При убийстве снимает весь накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
+            "option": "Игнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>75<> + <#60e84dff>25%<> от вашего <#60e84dff>потерянного здоровья<>."
         },
         "needlessly_large_rod": {
             "name": "Слишком Большой Жезл",
@@ -2557,11 +2669,11 @@
         },
         "unending_despair": {
             "name": "Бесконечное Отчаяние",
-            "option": "Страдание: Попадания умениями восстанавливают вам <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+            "option": "Страдание: Попадания умениями восстанавливают вам <#60e84dff>35<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
         },
         "radiant_unending_despair": {
             "name": "Лучезарное Бесконечное Отчаяние",
-            "option": "Страдание: Попадания умениями восстанавливают вам <#60e84dff>25<> + <#60e84dff>3%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+            "option": "Страдание: Попадания умениями восстанавливают вам <#60e84dff>50<> + <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Клинок падшего короля",
@@ -2749,11 +2861,11 @@
         },
         "liandrys_torment": {
             "name": "Мучения Лиандри",
-            "option": "Страдание: Нанесение урона умением поджигает врагов, заставляя их получить <#d94c49ff>6% максимального здоровья цели<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>3 секунд<>. Наносит максимум <#a974ffff>40 магического урона<> за тик по миньонам и монстрам."
+            "option": "Страдание: Нанесение урона умением поджигает врагов, заставляя их получить <#d94c49ff>6% их максимального здоровья<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>3 секунд<>. Наносит максимум <#a974ffff>40 магического урона<> за тик по миньонам и монстрам."
         },
         "radiant_liandrys_torment": {
             "name": "Лучезарные Мучения Лиандри",
-            "option": "Страдание: Нанесение урона умением поджигает врагов, заставляя их получить <#d94c49ff>6% максимального здоровья цели<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>3 секунд<>. Наносит максимум <#a974ffff>40 магического урона<> за тик по миньонам и монстрам."
+            "option": "Страдание: Нанесение урона умением поджигает врагов, заставляя их получить <#d94c49ff>6% их максимального здоровья<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>3 секунд<>. Наносит максимум <#a974ffff>40 магического урона<> за тик по миньонам и монстрам."
         },
         "steel_sigil": {
             "name": "Стальной знак",
@@ -2797,7 +2909,7 @@
         },
         "sheen": {
             "name": "Сияние",
-            "option": "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
         },
         "trinity_force": {
             "name": "Тройственный Союз",
@@ -2822,6 +2934,34 @@
         "radiant_bloodsong": {
             "name": "Лучезарная Песнь Крови",
             "option": "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>8%<> на <#e8a800ff>4 секунды<>."
+        },
+        "serrated_dirk": {
+            "name": "Зубчатый кинжал",
+            "option": "Летальность: Игнорирует <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам."
+        },
+        "hubris": {
+            "name": "Гордыня",
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nВозвышение: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
+        },
+        "radiant_hubris": {
+            "name": "Лучезарная Гордыня",
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nВозвышение: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
+        },
+        "bastionbreaker": {
+            "name": "Разрушитель бастионов",
+            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую Атаку по башне, чтобы нанести <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+        },
+        "radiant_bastionbreaker": {
+            "name": "Лучезарный Разрушитель бастионов",
+            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую Атаку по башне, чтобы нанести <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+        },
+        "serpents_fang": {
+            "name": "Клык змея",
+            "option": "Летальность: Игнорирует <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>50<> + <#ff9028ff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+        },
+        "radiant_serpents_fang": {
+            "name": "Лучезарный Клык змея",
+            "option": "Летальность: Игнорирует <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>85<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         }
     }
 }
