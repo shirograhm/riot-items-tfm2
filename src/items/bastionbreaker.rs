@@ -1,14 +1,15 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_lethality, percent_of};
+use crate::{apply_lethality, count_takedowns, mark_enemy_champion, percent_of};
 
-// Lethality (see serrated_dirk) plus Sabotage: on a recurring timer, the wielder's
-// next basic attack against a turret deals bonus physical damage (flat + % of
-// Attack Damage). Hitting a turret with the charge spends it and starts a fresh
-// `effect_duration_seconds` recharge; the charge waits (isn't consumed) until a
-// turret is actually struck. Tracked per-item as a tick countdown to readiness
-// (0 = ready) since the engine has no removable buff to model a consumable charge.
+// Lethality (see serrated_dirk) plus Sabotage: scoring a takedown on an enemy
+// champion grants a Sabotage charge lasting `effect_duration_seconds`. While the
+// charge is active, the wielder's next basic attack against a turret spends it to
+// deal bonus physical damage (flat + % of Attack Damage). Takedowns are detected
+// via the shared damage-mark system (see `mark_enemy_champion`/`count_takedowns`).
+// The charge is tracked per-item as a tick countdown (0 = no charge) since the
+// engine has no removable buff to model a consumable, expiring charge.
 
 fn sabotage_bonus(ctx: &mut GameCtx, caster: usize, flat: usize, ad_percent: f64) -> usize {
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
@@ -24,8 +25,10 @@ pub struct Bastionbreaker {
     effect_bonus_flat_damage: usize,
     effect_ad_percent_damage: f64,
     effect_duration_seconds: f64,
-    // Ticks until the next Sabotage charge is ready (0 = ready now).
-    sabotage_cooldown: usize,
+    // Ticks remaining on the held Sabotage charge (0 = no charge held).
+    sabotage_charge: usize,
+    // Enemy champions recently damaged: (entity id, remaining window ticks).
+    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl Default for Bastionbreaker {
@@ -38,7 +41,8 @@ impl Default for Bastionbreaker {
             effect_bonus_flat_damage: 150,
             effect_ad_percent_damage: 15.0,
             effect_duration_seconds: 90.0,
-            sabotage_cooldown: 0,
+            sabotage_charge: 0,
+            takedown_marks: Vec::new(),
         }
     }
 }
@@ -60,11 +64,12 @@ impl Bastionbreaker {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
-            sabotage_cooldown: 0,
+            sabotage_charge: 0,
+            takedown_marks: Vec::new(),
         }
     }
 
-    fn recharge_ticks(&self) -> usize {
+    fn charge_ticks(&self) -> usize {
         (self.effect_duration_seconds * 60.0).round() as usize
     }
 }
@@ -107,11 +112,16 @@ impl ModItemInfo for Bastionbreaker {
     }
 
     fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
-        self.sabotage_cooldown = 0;
+        self.sabotage_charge = 0;
+        self.takedown_marks.clear();
     }
 
-    fn update(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
-        self.sabotage_cooldown = self.sabotage_cooldown.saturating_sub(1);
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
+        // Expire the held charge, then (re)grant a full-duration one on a takedown.
+        self.sabotage_charge = self.sabotage_charge.saturating_sub(1);
+        if count_takedowns(&mut self.takedown_marks, ctx) > 0 {
+            self.sabotage_charge = self.charge_ticks();
+        }
     }
 
     fn on_attack(
@@ -123,8 +133,9 @@ impl ModItemInfo for Bastionbreaker {
         _damage_type: DamageType,
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
 
-        if self.sabotage_cooldown != 0 {
+        if self.sabotage_charge == 0 {
             return;
         }
         let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(false);
@@ -138,7 +149,11 @@ impl ModItemInfo for Bastionbreaker {
             self.effect_ad_percent_damage,
         );
         ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
-        self.sabotage_cooldown = self.recharge_ticks(); // start the recharge
+        self.sabotage_charge = 0; // spend the charge
+    }
+
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -159,7 +174,8 @@ pub struct RadiantBastionbreaker {
     effect_bonus_flat_damage: usize,
     effect_ad_percent_damage: f64,
     effect_duration_seconds: f64,
-    sabotage_cooldown: usize,
+    sabotage_charge: usize,
+    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl Default for RadiantBastionbreaker {
@@ -172,7 +188,8 @@ impl Default for RadiantBastionbreaker {
             effect_bonus_flat_damage: 200,
             effect_ad_percent_damage: 20.0,
             effect_duration_seconds: 90.0,
-            sabotage_cooldown: 0,
+            sabotage_charge: 0,
+            takedown_marks: Vec::new(),
         }
     }
 }
@@ -194,11 +211,12 @@ impl RadiantBastionbreaker {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
-            sabotage_cooldown: 0,
+            sabotage_charge: 0,
+            takedown_marks: Vec::new(),
         }
     }
 
-    fn recharge_ticks(&self) -> usize {
+    fn charge_ticks(&self) -> usize {
         (self.effect_duration_seconds * 60.0).round() as usize
     }
 }
@@ -237,11 +255,15 @@ impl ModItemInfo for RadiantBastionbreaker {
     }
 
     fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
-        self.sabotage_cooldown = 0;
+        self.sabotage_charge = 0;
+        self.takedown_marks.clear();
     }
 
-    fn update(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
-        self.sabotage_cooldown = self.sabotage_cooldown.saturating_sub(1);
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
+        self.sabotage_charge = self.sabotage_charge.saturating_sub(1);
+        if count_takedowns(&mut self.takedown_marks, ctx) > 0 {
+            self.sabotage_charge = self.charge_ticks();
+        }
     }
 
     fn on_attack(
@@ -253,8 +275,9 @@ impl ModItemInfo for RadiantBastionbreaker {
         _damage_type: DamageType,
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
 
-        if self.sabotage_cooldown != 0 {
+        if self.sabotage_charge == 0 {
             return;
         }
         let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(false);
@@ -268,7 +291,11 @@ impl ModItemInfo for RadiantBastionbreaker {
             self.effect_ad_percent_damage,
         );
         ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
-        self.sabotage_cooldown = self.recharge_ticks();
+        self.sabotage_charge = 0; // spend the charge
+    }
+
+    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
     fn tags(&self) -> Vec<ItemTag> {
