@@ -3,7 +3,7 @@
   "author": "shirograhm",
   "version": "0.5.6",
   "description": "Adds items from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.",
-  "last_updated": "2026-07-12",
+  "last_updated": "2026-07-14",
   "dependencies": [
     {
       "mod_id": "base",
