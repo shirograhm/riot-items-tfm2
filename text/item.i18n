@@ -577,11 +577,11 @@
         },
         "bastionbreaker": {
             "name": "Bastionbreaker",
-            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Killing an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Upon damaging a turret, deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>90 second<> cooldown)."
         },
         "radiant_bastionbreaker": {
             "name": "Radiant Bastionbreaker",
-            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Killing an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Upon damaging a turret, deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>90 second<> cooldown)."
         },
         "serpents_fang": {
             "name": "Serpent's Fang",
@@ -1170,11 +1170,11 @@
         },
         "bastionbreaker": {
             "name": "Kẻ Phá Thành",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Khi hạ gục một tướng địch, nhận một cộng dồn <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh tiếp theo lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Khi gây sát thương lên trụ, gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>90 giây<>)."
         },
         "radiant_bastionbreaker": {
             "name": "Kẻ Phá Thành Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Khi hạ gục một tướng địch, nhận một cộng dồn <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh tiếp theo lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Khi gây sát thương lên trụ, gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>90 giây<>)."
         },
         "serpents_fang": {
             "name": "Nanh Rắn Độc",
@@ -1763,11 +1763,11 @@
         },
         "bastionbreaker": {
             "name": "破垒者",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：击杀敌方英雄时获得一层<#92dc7bff>破坏<>，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：对防御塔造成伤害时，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>90秒<>）。"
         },
         "radiant_bastionbreaker": {
             "name": "光明版破垒者",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：击杀敌方英雄时获得一层<#92dc7bff>破坏<>，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：对防御塔造成伤害时，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>90秒<>）。"
         },
         "serpents_fang": {
             "name": "毒蛇之牙",
@@ -2356,11 +2356,11 @@
         },
         "bastionbreaker": {
             "name": "Quebra-Bastião",
-            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao abater um campeão inimigo, ganha um acúmulo de <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao causar dano a uma torre, causa <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>90 segundos<>)."
         },
         "radiant_bastionbreaker": {
             "name": "Quebra-Bastião Radiante",
-            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao abater um campeão inimigo, ganha um acúmulo de <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao causar dano a uma torre, causa <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>90 segundos<>)."
         },
         "serpents_fang": {
             "name": "Presa da Serpente",
@@ -2949,11 +2949,11 @@
         },
         "bastionbreaker": {
             "name": "Разрушитель бастионов",
-            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При убийстве вражеского чемпиона даёт заряд <#92dc7bff>Саботажа<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую атаку по башне: она наносит <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При нанесении урона башне наносит <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<> (перезарядка <#e8a800ff>90 секунд<>)."
         },
         "radiant_bastionbreaker": {
             "name": "Лучезарный Разрушитель бастионов",
-            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При убийстве вражеского чемпиона даёт заряд <#92dc7bff>Саботажа<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую атаку по башне: она наносит <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При нанесении урона башне наносит <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<> (перезарядка <#e8a800ff>90 секунд<>)."
         },
         "serpents_fang": {
             "name": "Клык змея",

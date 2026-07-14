@@ -3,14 +3,12 @@ use mod_api::*;
 use crate::config::ItemConfig;
 use crate::{apply_lethality, percent_of};
 
-// Lethality (see serrated_dirk) plus Sabotage: a kill readies a single Sabotage
-// charge (max one at a time -- a later kill just refreshes it). The charge
-// empowers the wielder's next basic attack against a turret to deal bonus physical
-// damage (flat + % of Attack Damage) and is consumed by that hit, so one kill is
-// one proc and there is no cooldown between kills. The charge lasts
-// `effect_duration_seconds`; if it isn't spent on a turret in that time it lapses.
-// Tracked per-item as a tick countdown (0 = no charge) since the engine has no
-// removable buff to model a consumable charge.
+// Lethality (see serrated_dirk) plus Sabotage: on a recurring timer, the wielder's
+// next basic attack against a turret deals bonus physical damage (flat + % of
+// Attack Damage). Hitting a turret with the charge spends it and starts a fresh
+// `effect_duration_seconds` recharge; the charge waits (isn't consumed) until a
+// turret is actually struck. Tracked per-item as a tick countdown to readiness
+// (0 = ready) since the engine has no removable buff to model a consumable charge.
 
 fn sabotage_bonus(ctx: &mut GameCtx, caster: usize, flat: usize, ad_percent: f64) -> usize {
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
@@ -26,21 +24,21 @@ pub struct Bastionbreaker {
     effect_bonus_flat_damage: usize,
     effect_ad_percent_damage: f64,
     effect_duration_seconds: f64,
-    // Remaining ticks on the current Sabotage charge (0 = no charge).
-    sabotage_remaining: usize,
+    // Ticks until the next Sabotage charge is ready (0 = ready now).
+    sabotage_cooldown: usize,
 }
 
 impl Default for Bastionbreaker {
     fn default() -> Self {
         Self {
-            price: 1250,
-            attack: 65,
+            price: 1400,
+            attack: 70,
             skill_cooldown_mult: 15,
             effect_lethality: 22,
             effect_bonus_flat_damage: 150,
             effect_ad_percent_damage: 15.0,
             effect_duration_seconds: 90.0,
-            sabotage_remaining: 0,
+            sabotage_cooldown: 0,
         }
     }
 }
@@ -62,11 +60,11 @@ impl Bastionbreaker {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
-            sabotage_remaining: 0,
+            sabotage_cooldown: 0,
         }
     }
 
-    fn charge_ticks(&self) -> usize {
+    fn recharge_ticks(&self) -> usize {
         (self.effect_duration_seconds * 60.0).round() as usize
     }
 }
@@ -109,23 +107,11 @@ impl ModItemInfo for Bastionbreaker {
     }
 
     fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
-        self.sabotage_remaining = 0;
+        self.sabotage_cooldown = 0;
     }
 
     fn update(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
-        self.sabotage_remaining = self.sabotage_remaining.saturating_sub(1);
-    }
-
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _player: usize, entity: usize) {
-        // Check if target is a champion
-        let Some(target_ref) = ctx.get_entity(entity) else {
-            return;
-        };
-        if !target_ref.is_champion() {
-            return;
-        };
-
-        self.sabotage_remaining = self.charge_ticks();
+        self.sabotage_cooldown = self.sabotage_cooldown.saturating_sub(1);
     }
 
     fn on_attack(
@@ -138,17 +124,13 @@ impl ModItemInfo for Bastionbreaker {
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
 
-        if self.sabotage_remaining == 0 {
+        if self.sabotage_cooldown != 0 {
             return;
         }
-        let is_tower = ctx
-            .get_entity(target)
-            .map(|t| t.is_tower())
-            .unwrap_or(false);
+        let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(false);
         if !is_tower {
             return;
         }
-        self.sabotage_remaining = 0; // spend one charge on this turret hit
         let bonus = sabotage_bonus(
             ctx,
             caster,
@@ -156,6 +138,7 @@ impl ModItemInfo for Bastionbreaker {
             self.effect_ad_percent_damage,
         );
         ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
+        self.sabotage_cooldown = self.recharge_ticks(); // start the recharge
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -176,20 +159,20 @@ pub struct RadiantBastionbreaker {
     effect_bonus_flat_damage: usize,
     effect_ad_percent_damage: f64,
     effect_duration_seconds: f64,
-    sabotage_remaining: usize,
+    sabotage_cooldown: usize,
 }
 
 impl Default for RadiantBastionbreaker {
     fn default() -> Self {
         Self {
-            price: 1850,
-            attack: 110,
+            price: 2000,
+            attack: 115,
             skill_cooldown_mult: 20,
             effect_lethality: 22,
             effect_bonus_flat_damage: 200,
             effect_ad_percent_damage: 20.0,
             effect_duration_seconds: 90.0,
-            sabotage_remaining: 0,
+            sabotage_cooldown: 0,
         }
     }
 }
@@ -211,11 +194,11 @@ impl RadiantBastionbreaker {
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
-            sabotage_remaining: 0,
+            sabotage_cooldown: 0,
         }
     }
 
-    fn charge_ticks(&self) -> usize {
+    fn recharge_ticks(&self) -> usize {
         (self.effect_duration_seconds * 60.0).round() as usize
     }
 }
@@ -254,23 +237,11 @@ impl ModItemInfo for RadiantBastionbreaker {
     }
 
     fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
-        self.sabotage_remaining = 0;
+        self.sabotage_cooldown = 0;
     }
 
     fn update(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
-        self.sabotage_remaining = self.sabotage_remaining.saturating_sub(1);
-    }
-
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _player: usize, entity: usize) {
-        // Check if target is a champion
-        let Some(target_ref) = ctx.get_entity(entity) else {
-            return;
-        };
-        if !target_ref.is_champion() {
-            return;
-        };
-
-        self.sabotage_remaining = self.charge_ticks();
+        self.sabotage_cooldown = self.sabotage_cooldown.saturating_sub(1);
     }
 
     fn on_attack(
@@ -283,17 +254,13 @@ impl ModItemInfo for RadiantBastionbreaker {
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
 
-        if self.sabotage_remaining == 0 {
+        if self.sabotage_cooldown != 0 {
             return;
         }
-        let is_tower = ctx
-            .get_entity(target)
-            .map(|t| t.is_tower())
-            .unwrap_or(false);
+        let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(false);
         if !is_tower {
             return;
         }
-        self.sabotage_remaining = 0;
         let bonus = sabotage_bonus(
             ctx,
             caster,
@@ -301,6 +268,7 @@ impl ModItemInfo for RadiantBastionbreaker {
             self.effect_ad_percent_damage,
         );
         ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
+        self.sabotage_cooldown = self.recharge_ticks();
     }
 
     fn tags(&self) -> Vec<ItemTag> {

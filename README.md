@@ -37,7 +37,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Bastionbreaker** | 1400G | +70 AD<br>+15% CDR | Lethality: Ignore 22 armor when you deal damage to enemies.<br>Sabotage: Killing an enemy champion grants Sabotage for 90 seconds, empowering your next attack against a turret to deal 150 + 15% of your Attack Damage as bonus physical damage. |
+| **Bastionbreaker** | 1400G | +70 AD<br>+15% CDR | Lethality: Ignore 22 armor when you deal damage to enemies.<br>Sabotage: Upon damaging a turret, deal 150 + 15% of your Attack Damage as bonus physical damage (90 second cooldown). |
 | **Black Cleaver** | 1500G | +45 AD<br>+300 HP<br>+5% CDR | Dealing physical damage to an enemy champion reduces the target's Armor by 6% for 6 seconds (max 5 stacks). |
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Landing an Ability on an enemy champion grants +10 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
@@ -87,7 +87,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Radiant Bastionbreaker** | 2000G | +115 AD<br>+20% CDR | Lethality: Ignore 22 armor when you deal damage to enemies.<br>Sabotage: Killing an enemy champion grants Sabotage for 90 seconds, empowering your next attack against a turret to deal 200 + 20% of your Attack Damage as bonus physical damage. |
+| **Radiant Bastionbreaker** | 2000G | +115 AD<br>+20% CDR | Lethality: Ignore 22 armor when you deal damage to enemies.<br>Sabotage: Upon damaging a turret, deal 200 + 20% of your Attack Damage as bonus physical damage (90 second cooldown). |
 | **Radiant Black Cleaver** | 2200G | +70 AD<br>+500 HP<br>+10% CDR | Dealing physical damage to an enemy champion reduces the target's Armor by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Landing an Ability on an enemy champion grants +30 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
