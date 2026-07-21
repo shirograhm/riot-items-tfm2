@@ -42,7 +42,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Black Cleaver** | 1500G | +45 AD<br>+300 HP<br>+5% CDR | Dealing physical damage to an enemy champion reduces the target's Armor by 6% for 6 seconds (max 5 stacks). |
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Landing an Ability on an enemy champion grants +10 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
-| **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Dealing magic damage to an enemy champion reduces the target's Magic Resistance by 6% for 6 seconds (max 5 stacks). |
+| **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Dealing magic damage to an enemy champion reduces the target's magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Bloodsong** | 1050G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
 | **Collector** | 1450G | +55 AD<br>+20% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 6% max health executes them. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
@@ -95,7 +95,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Black Cleaver** | 2200G | +70 AD<br>+500 HP<br>+10% CDR | Dealing physical damage to an enemy champion reduces the target's Armor by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Landing an Ability on an enemy champion grants +30 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
-| **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's Magic Resistance by 6% for 6 seconds (max 5 stacks). |
+| **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Bloodsong** | 1500G | +450 HP<br>+4 HP Regen<br>+40 AP<br>+15% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
 | **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 6% max health executes them. |
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |

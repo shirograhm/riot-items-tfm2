@@ -213,11 +213,11 @@
         },
         "bloodletters_curse": {
             "name": "Bloodletter's Curse",
-            "option": "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Magic Resistance<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
+            "option": "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "radiant_bloodletters_curse": {
             "name": "Radiant Bloodletter's Curse",
-            "option": "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Magic Resistance<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
+            "option": "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "deathblade": {
             "name": "Deathblade",
