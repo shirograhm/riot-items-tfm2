@@ -379,6 +379,30 @@
             "name": "Radiant Guinsoo's Rageblade",
             "option": "Wrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
         },
+        "wits_end": {
+            "name": "Wit's End",
+            "option": "Fray: Your basic attacks deal <#a974ffff>45 bonus magic damage<>."
+        },
+        "radiant_wits_end": {
+            "name": "Radiant Wit's End",
+            "option": "Fray: Your basic attacks deal <#a974ffff>45 bonus magic damage<>."
+        },
+        "kraken_slayer": {
+            "name": "Kraken Slayer",
+            "option": "Bring It Down: Every third basic attack deals <#ff9028ff>150 bonus physical damage<>, increased by up to <#ff9028ff>75%<> based on the target's <#60e84dff>missing health<> (maximum bonus at <#60e84dff>25%<> target health)."
+        },
+        "radiant_kraken_slayer": {
+            "name": "Radiant Kraken Slayer",
+            "option": "Bring It Down: Every third basic attack deals <#ff9028ff>150 bonus physical damage<>, increased by up to <#ff9028ff>75%<> based on the target's <#60e84dff>missing health<> (maximum bonus at <#60e84dff>25%<> target health)."
+        },
+        "atmas_reckoning": {
+            "name": "Atma's Reckoning",
+            "option": "Big Hands: Gain <#d45656ff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> for every <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> ."
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Radiant Atma's Reckoning",
+            "option": "Big Hands: Gain <#d45656ff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> for every <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> ."
+        },
         "mirage_blade": {
             "name": "Mirage Blade",
             "option": "Illusion: Gain <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher.\n\nBlur: On kill, gain <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
@@ -971,6 +995,30 @@
         "radiant_guinsoos_rageblade": {
             "name": "Cuồng Đao Guinsoo Ánh Sáng",
             "option": "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>30 sát thương phép thuật<>.\n\nDồn dập: Khi tấn công, nhận <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+        },
+        "wits_end": {
+            "name": "Đao Tím",
+            "option": "Xé Toạc: Tấn công thường gây ra thêm <#a974ffff>45 sát thương phép thuật<>."
+        },
+        "radiant_wits_end": {
+            "name": "Đao Tím Ánh Sáng",
+            "option": "Xé Toạc: Tấn công thường gây ra thêm <#a974ffff>45 sát thương phép thuật<>."
+        },
+        "kraken_slayer": {
+            "name": "Móc Diệt Thủy Quái",
+            "option": "Bắn Hạ: Mỗi đòn đánh thường thứ ba gây <#ff9028ff>150 sát thương vật lí cộng thêm<>, tăng thêm tối đa <#ff9028ff>75%<> dựa trên <#60e84dff>máu đã mất<> của mục tiêu (đạt tối đa khi mục tiêu còn <#60e84dff>25%<> máu)."
+        },
+        "radiant_kraken_slayer": {
+            "name": "Móc Diệt Thủy Quái Ánh Sáng",
+            "option": "Bắn Hạ: Mỗi đòn đánh thường thứ ba gây <#ff9028ff>150 sát thương vật lí cộng thêm<>, tăng thêm tối đa <#ff9028ff>75%<> dựa trên <#60e84dff>máu đã mất<> của mục tiêu (đạt tối đa khi mục tiêu còn <#60e84dff>25%<> máu)."
+        },
+        "atmas_reckoning": {
+            "name": "Trường Thương Atma",
+            "option": "Cơ Bắp Cuồn Cuộn: Nhận <#e8a800ff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> cho mỗi <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<>, tối đa <#e8a800ff>25%<>."
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Trường Thương Atma Ánh Sáng",
+            "option": "Cơ Bắp Cuồn Cuộn: Nhận <#e8a800ff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> cho mỗi <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<>, tối đa <#e8a800ff>25%<>."
         },
         "mirage_blade": {
             "name": "Kiếm Chích",
@@ -1565,6 +1613,30 @@
             "name": "光明版鬼索的狂暴之刃",
             "option": "怨怒：普通攻击造成 <#a974ffff>30点额外魔法伤害<>。\n\n沸腾打击：普通攻击时获得 <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>4秒<>（最多叠加4层）。"
         },
+        "wits_end": {
+            "name": "智慧末刃",
+            "option": "喧争：普通攻击造成 <#a974ffff>45点额外魔法伤害<>。"
+        },
+        "radiant_wits_end": {
+            "name": "光明版智慧末刃",
+            "option": "喧争：普通攻击造成 <#a974ffff>45点额外魔法伤害<>。"
+        },
+        "kraken_slayer": {
+            "name": "海妖杀手",
+            "option": "放倒它：每第三次普通攻击造成 <#ff9028ff>150点额外物理伤害<>，并根据目标的<#60e84dff>已损失生命值<>最多提高 <#ff9028ff>75%<>（目标生命值低至 <#60e84dff>25%<> 时达到最大加成）。"
+        },
+        "radiant_kraken_slayer": {
+            "name": "光明版海妖杀手",
+            "option": "放倒它：每第三次普通攻击造成 <#ff9028ff>150点额外物理伤害<>，并根据目标的<#60e84dff>已损失生命值<>最多提高 <#ff9028ff>75%<>（目标生命值低至 <#60e84dff>25%<> 时达到最大加成）。"
+        },
+        "atmas_reckoning": {
+            "name": "阿塔玛的清算",
+            "option": "大手：每拥有 <#60e84dff>1000点<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，便获得 <#e8a800ff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。"
+        },
+        "radiant_atmas_reckoning": {
+            "name": "光明版阿塔玛的清算",
+            "option": "大手：每拥有 <#60e84dff>1000点<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，便获得 <#e8a800ff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。"
+        },
         "mirage_blade": {
             "name": "幻境之刃",
             "option": "幻象：获得 <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>。每点 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。\n\n模糊：击杀时获得 <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>。"
@@ -2158,6 +2230,30 @@
             "name": "Lâmina da Fúria de Guinsoo Radiante",
             "option": "Ira: Ataques causam <#a974ffff>30 de dano mágico adicional<>.\n\nFervendo: Ataques concedem <#ceff99ff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>4 segundos<> (acumula 4x)."
         },
+        "wits_end": {
+            "name": "Limite da Razão",
+            "option": "Duelo: Ataques causam <#a974ffff>45 de dano mágico adicional<>."
+        },
+        "radiant_wits_end": {
+            "name": "Limite da Razão Radiante",
+            "option": "Duelo: Ataques causam <#a974ffff>45 de dano mágico adicional<>."
+        },
+        "kraken_slayer": {
+            "name": "Mata-Cráquens",
+            "option": "Derrubar: A cada terceiro ataque básico, causa <#ff9028ff>150 de dano físico bônus<>, aumentado em até <#ff9028ff>75%<> com base na <#60e84dff>vida perdida<> do alvo (bônus máximo com o alvo a <#60e84dff>25%<> de vida)."
+        },
+        "radiant_kraken_slayer": {
+            "name": "Mata-Cráquens Radiante",
+            "option": "Derrubar: A cada terceiro ataque básico, causa <#ff9028ff>150 de dano físico bônus<>, aumentado em até <#ff9028ff>75%<> com base na <#60e84dff>vida perdida<> do alvo (bônus máximo com o alvo a <#60e84dff>25%<> de vida)."
+        },
+        "atmas_reckoning": {
+            "name": "Acerto de Contas de Atma",
+            "option": "Monumental: Ganha <#e8a800ff>5%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> a cada <#60e84dff>1000<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, até no máximo <#e8a800ff>25%<>."
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Acerto de Contas de Atma Radiante",
+            "option": "Monumental: Ganha <#e8a800ff>5%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> a cada <#60e84dff>1000<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, até no máximo <#e8a800ff>25%<>."
+        },
         "mirage_blade": {
             "name": "Espada da Miragem",
             "option": "Ilusão: Ganha <#d48294ff>60<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<>. Cada <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.\n\nBorrão: Abates concedem <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<>."
@@ -2750,6 +2846,30 @@
         "radiant_guinsoos_rageblade": {
             "name": "Расплата Гинсу",
             "option": "Гнев: Ваши базовые атаки наносят <#a974ffff>30 дополнительного магического урона<>.\n\nЯростный Удар: При атаке даёт <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+        },
+        "wits_end": {
+            "name": "Смерть Разума",
+            "option": "Боевой запал: Ваши базовые атаки наносят <#a974ffff>45 дополнительного магического урона<>."
+        },
+        "radiant_wits_end": {
+            "name": "Лучезарная Смерть Разума",
+            "option": "Боевой запал: Ваши базовые атаки наносят <#a974ffff>45 дополнительного магического урона<>."
+        },
+        "kraken_slayer": {
+            "name": "Убийца кракенов",
+            "option": "Тяжелая артиллерия: Каждая третья базовая атака наносит <#ff9028ff>150 дополнительного физического урона<>, увеличиваясь вплоть до <#ff9028ff>75%<> в зависимости от <#60e84dff>потерянного здоровья<> цели (максимум при <#60e84dff>25%<> здоровья цели)."
+        },
+        "radiant_kraken_slayer": {
+            "name": "Лучезарный Убийца кракенов",
+            "option": "Тяжелая артиллерия: Каждая третья базовая атака наносит <#ff9028ff>150 дополнительного физического урона<>, увеличиваясь вплоть до <#ff9028ff>75%<> в зависимости от <#60e84dff>потерянного здоровья<> цели (максимум при <#60e84dff>25%<> здоровья цели)."
+        },
+        "atmas_reckoning": {
+            "name": "Расплата Атмы",
+            "option": "Большие руки: Даёт <#e8a800ff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<> за каждые <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, вплоть до <#e8a800ff>25%<>."
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Лучезарная Расплата Атмы",
+            "option": "Большие руки: Даёт <#e8a800ff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<> за каждые <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, вплоть до <#e8a800ff>25%<>."
         },
         "mirage_blade": {
             "name": "Призрачный Клинок",

@@ -38,14 +38,14 @@ $CHAMPIONS = @(
   'vampire', 'voodoo_shaman', 'werewolf', 'whip_master', 'white_mage', 'wind_mage'
 )
 $ITEMS = @(
-  'bastionbreaker', 'black_cleaver', 'blackfire_torch', 'blade_of_the_ruined_king', 'bloodletters_curse', 'bloodsong', 'bloodthirster', 'collector',
+  'atmas_reckoning', 'bastionbreaker', 'black_cleaver', 'blackfire_torch', 'blade_of_the_ruined_king', 'bloodletters_curse', 'bloodsong', 'bloodthirster', 'collector',
   'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'dusk_and_dawn', 'echoes_of_helia', 'experimental_hexplate', 'frozen_mallet',
   'guinsoos_rageblade', 'heartsteel', 'hextech_gunblade', 'hubris', 'infinity_edge', 'jaksho_the_protean',
-  'liandrys_torment', 'ludens_tempest', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
+  'kraken_slayer', 'liandrys_torment', 'ludens_tempest', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
   'night_harvester', 'overlords_bloodmail', 'phantom_dancer',
   'protectors_vow', 'protoplasm_harness', 'rabadons_deathcap', 'riftmaker', 'rylais_crystal_scepter', 'serpents_fang', 'shadowflame', 'spear_of_shojin',
   'spirit_visage', 'stormrazor', 'sundered_sky', 'sunfire_cape', 'terminus', 'thornmail', 'trinity_force', 'unending_despair',
-  'void_staff', 'warmogs_armor', 'yun_tal_wildarrows', 'zekes_herald'
+  'void_staff', 'warmogs_armor', 'wits_end', 'yun_tal_wildarrows', 'zekes_herald'
 )
 
 $CHAMP_PLACEHOLDER = '(champion)'

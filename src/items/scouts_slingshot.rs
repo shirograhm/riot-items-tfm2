@@ -68,6 +68,7 @@ impl ModItemInfo for ScoutsSlingshot {
             "diamond_tipped_spear".to_string(),
             "guinsoos_rageblade".to_string(),
             "mirage_blade".to_string(),
+            "kraken_slayer".to_string(),
         ]
     }
 
