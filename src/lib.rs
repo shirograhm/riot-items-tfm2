@@ -186,6 +186,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
+    reg.add_item(configured!("last_whisper" => LastWhisper));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("noonquiver" => Noonquiver));
     reg.add_item(configured!("phage" => Phage));
@@ -216,6 +217,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured!("kraken_slayer" => KrakenSlayer));
     reg.add_item(configured!("liandrys_torment" => LiandrysTorment));
+    reg.add_item(configured!("lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured!("mirage_blade" => MirageBlade));
     reg.add_item(configured!("morellonomicon" => Morellonomicon));
     reg.add_item(configured!("mortal_reminder" => MortalReminder));
@@ -266,6 +268,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_jaksho_the_protean" => RadiantJakshoTheProtean));
     reg.add_item(configured!("radiant_kraken_slayer" => RadiantKrakenSlayer));
     reg.add_item(configured!("radiant_liandrys_torment" => RadiantLiandrysTorment));
+    reg.add_item(configured!("radiant_lord_dominiks_regards" => RadiantLordDominiksRegards));
     reg.add_item(configured!("radiant_mirage_blade" => RadiantMirageBlade));
     reg.add_item(configured!("radiant_morellonomicon" => RadiantMorellonomicon));
     reg.add_item(configured!("radiant_mortal_reminder" => RadiantMortalReminder));

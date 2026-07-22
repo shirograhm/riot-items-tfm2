@@ -331,6 +331,18 @@
             "name": "Radiant Mortal Reminder",
             "option": "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
         },
+        "last_whisper": {
+            "name": "Last Whisper",
+            "option": ""
+        },
+        "lord_dominiks_regards": {
+            "name": "Lord Dominik's Regards",
+            "option": "Giant Slayer: Deal <#ff9028ff>3% bonus damage<> for every <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> the target has, up to <#ff9028ff>15%<>."
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Radiant Lord Dominik's Regards",
+            "option": "Giant Slayer: Deal <#ff9028ff>3% bonus damage<> for every <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> the target has, up to <#ff9028ff>15%<>."
+        },
         "experimental_hexplate": {
             "name": "Experimental Hexplate",
             "option": "Overdrive: Gain <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
@@ -947,6 +959,18 @@
         "radiant_mortal_reminder": {
             "name": "Lời Nhắc Tử Vong Ánh Sáng",
             "option": "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+        },
+        "last_whisper": {
+            "name": "Cung Xanh",
+            "option": ""
+        },
+        "lord_dominiks_regards": {
+            "name": "Nỏ Thần Dominik",
+            "option": "Diệt Khổng Lồ: Gây thêm <#ff9028ff>3% sát thương<> cho mỗi <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của mục tiêu, tối đa <#ff9028ff>15%<>."
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Nỏ Thần Dominik Ánh Sáng",
+            "option": "Diệt Khổng Lồ: Gây thêm <#ff9028ff>3% sát thương<> cho mỗi <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của mục tiêu, tối đa <#ff9028ff>15%<>."
         },
         "experimental_hexplate": {
             "name": "Khiên Hextech Thử Nghiệm",
@@ -1565,6 +1589,18 @@
             "name": "光明版凡性的提醒",
             "option": "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
         },
+        "last_whisper": {
+            "name": "最后的轻语",
+            "option": ""
+        },
+        "lord_dominiks_regards": {
+            "name": "多米尼克领主的致意",
+            "option": "巨人杀手：目标每拥有 <#60e84dff>1000点<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，便造成 <#ff9028ff>3%<> 额外伤害，最多 <#ff9028ff>15%<>。"
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "光明版多米尼克领主的致意",
+            "option": "巨人杀手：目标每拥有 <#60e84dff>1000点<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，便造成 <#ff9028ff>3%<> 额外伤害，最多 <#ff9028ff>15%<>。"
+        },
         "experimental_hexplate": {
             "name": "海克斯注力刚壁",
             "option": "过载：终极技能获得 <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
@@ -2182,6 +2218,18 @@
             "name": "Lembrete Mortal Radiante",
             "option": "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
         },
+        "last_whisper": {
+            "name": "Último Sussurro",
+            "option": ""
+        },
+        "lord_dominiks_regards": {
+            "name": "Lembranças do Lorde Dominik",
+            "option": "Mata-Gigantes: Cause <#ff9028ff>3% de dano bônus<> a cada <#60e84dff>1000<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> do alvo, até <#ff9028ff>15%<>."
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Lembranças do Lorde Dominik Radiante",
+            "option": "Mata-Gigantes: Cause <#ff9028ff>3% de dano bônus<> a cada <#60e84dff>1000<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> do alvo, até <#ff9028ff>15%<>."
+        },
         "experimental_hexplate": {
             "name": "Hexoplaca Experimental",
             "option": "Hexcarregado: Recebe <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
@@ -2798,6 +2846,18 @@
         "radiant_mortal_reminder": {
             "name": "Лучезарный Глашатай Смерти",
             "option": "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+        },
+        "last_whisper": {
+            "name": "Предсмертный шепот",
+            "option": ""
+        },
+        "lord_dominiks_regards": {
+            "name": "Поклон лорда Доминика",
+            "option": "Убийца великанов: Наносит <#ff9028ff>3% дополнительного урона<> за каждые <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> цели, вплоть до <#ff9028ff>15%<>."
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Лучезарный Поклон лорда Доминика",
+            "option": "Убийца великанов: Наносит <#ff9028ff>3% дополнительного урона<> за каждые <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> цели, вплоть до <#ff9028ff>15%<>."
         },
         "experimental_hexplate": {
             "name": "Экспериментальная Хекстековая Броня",

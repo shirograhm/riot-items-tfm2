@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 110 new items (62 base + 48 Radiant) to the game.
+Reskins the 30 existing items and also adds 113 new items (64 base + 49 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -27,6 +27,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Bandleglass Mirror** | 650G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
 | **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |
 | **Haunting Guise** | 950G | +200 HP<br>+60 AP | — |
+| **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
 | **Noonquiver** | 800G | +45 AD<br>+10% Crit Chance | — |
 | **Phage** | 950G | +200 HP<br>+30 AD | — |
@@ -60,9 +61,10 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Jak’Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
 | **Kraken Slayer** | 1400G | +45 AD<br>+25% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Liandry's Torment** | 1400G | +350 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
+| **Lord Dominik's Regards** | 1450G | +45 AD<br>+20% Crit Chance<br>+25% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Mirage Blade** | 1500G | +40% AS<br>+10% MS | Gain 60 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
 | **Morellonomicon** | 1300G | +200 HP<br>+120 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |
-| **Mortal Reminder** | 1400G | +55 AD<br>+20% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
+| **Mortal Reminder** | 1400G | +45 AD<br>+20% Crit Chance<br>+20% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
 | **Nashor's Tooth** | 1450G | +115 AP<br>+25% AS | On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power. |
 | **Night Harvester** | 1400G | +300 HP<br>+100 AP<br>+10% CDR | Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% of your Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Overlord's Bloodmail** | 1400G | +25 AD<br>+400 HP | Gain bonus Attack Damage equal to 2.5% of your maximum health. |
@@ -113,7 +115,8 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Jak’Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | When you take damage from an enemy champion, gain +10% armor and +10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Kraken Slayer** | 2000G | +75 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Radiant Liandry's Torment** | 2000G | +550 HP<br>+150 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
-| **Radiant Mortal Reminder** | 2000G | +70 AD<br>+30% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
+| **Radiant Lord Dominik's Regards** | 2000G | +85 AD<br>+25% Crit Chance<br>+35% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
+| **Radiant Mortal Reminder** | 2000G | +85 AD<br>+25% Crit Chance<br>+30% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
 | **Radiant Mirage Blade** | 2100G | +65% AS<br>+15% MS | Gain 100 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
 | **Radiant Morellonomicon** | 1850G | +350 HP<br>+190 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |
 | **Radiant Nashor's Tooth** | 2050G | +180 AP<br>+40% AS | On attack, deal bonus magic damage equal to 50 + 5% of your Ability Power. |
