@@ -8,6 +8,7 @@ pub struct MortalReminder {
     price: usize,
     attack: i32,
     defence_penetration: usize,
+    crit_chance: i32,
     effect_heal_reduce: usize,
     effect_duration_seconds: f64,
 }
@@ -16,8 +17,9 @@ impl Default for MortalReminder {
     fn default() -> Self {
         Self {
             price: 1400,
-            attack: 55,
+            attack: 45,
             defence_penetration: 20,
+            crit_chance: 20,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2.0,
         }
@@ -31,6 +33,7 @@ impl MortalReminder {
             price: cfg.price.unwrap_or(d.price),
             attack: cfg.attack.unwrap_or(d.attack),
             defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
+            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
             effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
@@ -61,7 +64,10 @@ impl ModItemInfo for MortalReminder {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["executioners_calling".to_string()]
+        vec![
+            "executioners_calling".to_string(),
+            "last_whisper".to_string(),
+        ]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -72,6 +78,7 @@ impl ModItemInfo for MortalReminder {
         BuffState {
             attack: self.attack,
             defence_penetration: self.defence_penetration,
+            crit_chance: self.crit_chance,
             ..Default::default()
         }
     }
@@ -136,9 +143,9 @@ impl Default for RadiantMortalReminder {
     fn default() -> Self {
         Self {
             price: 2000,
-            attack: 70,
+            attack: 85,
             defence_penetration: 30,
-            crit_chance: 0,
+            crit_chance: 25,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2.0,
         }

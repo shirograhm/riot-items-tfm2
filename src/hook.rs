@@ -3,7 +3,7 @@
 //! This locates `LogisticSGDAgent::get_item_builds_list` inside the loaded
 //! Teamfight Manager 2 executable by scanning the `.text` section for a verified
 //! byte signature (captured on game version `0.5.1`), installs a trampoline
-//! detour, and records a probe of each call. It is intentionally fail-closed: if
+//! detour, and overrides the routes it returns. It is intentionally fail-closed: if
 //! the signature is missing, ambiguous, or the prologue does not match, the hook
 //! refuses to patch instead of touching an unknown function.
 //!
@@ -18,10 +18,11 @@
 //! codegen (stack frame size, register allocation) shifted.
 //!
 //! NOTE: This is the pointer-finding / native-hook portion. After calling the
-//! original function and logging a probe, `detour` applies the minimal
-//! config-driven setter in `build_config` (item-key build paths, no lineup
-//! analysis). The richer lineup-aware route rewriting from the source snapshot
-//! is not included.
+//! original function, `detour` applies the config-driven build overrides from
+//! `build_config` (pinned slots + AI-filled blanks), then enforces unique
+//! builds: no champion ever builds duplicate copies of the same item — each
+//! duplicate is swapped for the closest-price final item of the same category
+//! (see `enforce_unique_items`).
 
 use std::ffi::c_void;
 use std::mem;
@@ -218,6 +219,43 @@ unsafe fn patch_target(target: *mut u8) -> Result<Vec<String>, String> {
     Ok(warnings)
 }
 
+/// Rewrites each route so a champion never builds the same item twice. The first
+/// occurrence keeps its slot; each later duplicate is replaced with the final
+/// item (one with no further upgrades — vanilla tier 5s and the mod's radiants)
+/// of the same category that is not already in the build and whose price is
+/// closest to the duplicate's, keeping the swap roughly balance-neutral. A slot
+/// with no viable candidate is left as-is rather than dropped, so route lengths
+/// never change. Categories are compared by discriminant so this does not depend
+/// on `ItemCategory` implementing `PartialEq`.
+fn enforce_unique_items(items: &[Box<dyn ItemInfo>], routes: &mut [Vec<usize>]) {
+    for route in routes.iter_mut() {
+        let mut seen = std::collections::HashSet::new();
+        for slot in route.iter_mut() {
+            if seen.insert(*slot) {
+                continue;
+            }
+            let Some(duplicate) = items.get(*slot) else {
+                continue;
+            };
+            let category = std::mem::discriminant(&duplicate.category());
+            let price = duplicate.price();
+            let replacement = items
+                .iter()
+                .enumerate()
+                .filter(|(index, item)| {
+                    !seen.contains(index)
+                        && item.next_tier().is_empty()
+                        && std::mem::discriminant(&item.category()) == category
+                })
+                .min_by_key(|(_, item)| item.price().abs_diff(price));
+            if let Some((index, _)) = replacement {
+                *slot = index;
+                seen.insert(index);
+            }
+        }
+    }
+}
+
 unsafe fn detour(
     agent: &LogisticSGDAgent,
     items: &Vec<Box<dyn ItemInfo>>,
@@ -255,6 +293,14 @@ unsafe fn detour(
         Ok(_) => {}
         // A malformed config is ignored so the game's routes stay untouched.
         Err(_) => {}
+    }
+
+    // Enforce unique builds after `build_config` so AI routes, category-forced
+    // routes, and configured builds are all covered. Toggled from the item build
+    // editor via `mod-settings.json` (defaults on); read per call, so flipping
+    // the checkbox applies to the next match without restarting the game.
+    if build_config::unique_items_enabled() {
+        enforce_unique_items(items, &mut routes);
     }
 
     routes

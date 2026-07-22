@@ -164,10 +164,34 @@
   },
   "mortal_reminder": {
     "price": 1400,
-    "attack": 55,
+    "attack": 45,
+    "crit_chance": 20,
     "defence_penetration": 20,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
+  },
+  "last_whisper": {
+    "price": 950,
+    "attack": 45,
+    "defence_penetration": 10
+  },
+  "lord_dominiks_regards": {
+    "price": 1450,
+    "attack": 45,
+    "crit_chance": 20,
+    "defence_penetration": 25,
+    "effect_percent_bonus_damage": 3.0,
+    "effect_hp_per_stack": 1000,
+    "effect_max_percent_bonus": 15.0
+  },
+  "radiant_lord_dominiks_regards": {
+    "price": 2000,
+    "attack": 85,
+    "crit_chance": 25,
+    "defence_penetration": 35,
+    "effect_percent_bonus_damage": 3.0,
+    "effect_hp_per_stack": 1000,
+    "effect_max_percent_bonus": 15.0
   },
   "morellonomicon": {
     "price": 1300,
@@ -378,9 +402,9 @@
   },
   "radiant_mortal_reminder": {
     "price": 2000,
-    "attack": 70,
+    "attack": 85,
     "defence_penetration": 30,
-    "crit_chance": 0,
+    "crit_chance": 25,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
   },

@@ -41,7 +41,7 @@ $ITEMS = @(
   'atmas_reckoning', 'bastionbreaker', 'black_cleaver', 'blackfire_torch', 'blade_of_the_ruined_king', 'bloodletters_curse', 'bloodsong', 'bloodthirster', 'collector',
   'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'dusk_and_dawn', 'echoes_of_helia', 'experimental_hexplate', 'frozen_mallet',
   'guinsoos_rageblade', 'heartsteel', 'hextech_gunblade', 'hubris', 'infinity_edge', 'jaksho_the_protean',
-  'kraken_slayer', 'liandrys_torment', 'ludens_tempest', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
+  'kraken_slayer', 'liandrys_torment', 'lord_dominiks_regards', 'ludens_tempest', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
   'night_harvester', 'overlords_bloodmail', 'phantom_dancer',
   'protectors_vow', 'protoplasm_harness', 'rabadons_deathcap', 'riftmaker', 'rylais_crystal_scepter', 'serpents_fang', 'shadowflame', 'spear_of_shojin',
   'spirit_visage', 'stormrazor', 'sundered_sky', 'sunfire_cape', 'terminus', 'thornmail', 'trinity_force', 'unending_despair',
@@ -49,7 +49,11 @@ $ITEMS = @(
 )
 
 $CHAMP_PLACEHOLDER = '(champion)'
-$ITEM_PLACEHOLDER = '(none)'
+# The default item slot: any slot you don't set is left for the game's AI to fill.
+# It is written to item-builds.json as JSON null; the mod keeps your pinned items
+# and lets the AI choose every blank slot.
+$ITEM_PLACEHOLDER = '(AI picks)'
+$AI_SENTINEL = '__AI__'   # internal id for an (AI picks) slot; written as JSON null
 $MODDED_LABEL = '(modded champion)'
 
 function Format-Name($id) {
@@ -65,8 +69,8 @@ $script:ItemDisplay = @($ITEM_PLACEHOLDER) + ($ITEMS      | ForEach-Object { For
 $script:ChampToId = @{ $CHAMP_PLACEHOLDER = '' }
 $script:ChampToDisplay = @{}
 foreach ($c in $CHAMPIONS) { $d = Format-Name $c; $script:ChampToId[$d] = $c; $script:ChampToDisplay[$c] = $d }
-$script:ItemToId = @{ $ITEM_PLACEHOLDER = '' }
-$script:ItemToDisplay = @{}
+$script:ItemToId = @{ $ITEM_PLACEHOLDER = $AI_SENTINEL }
+$script:ItemToDisplay = @{ $AI_SENTINEL = $ITEM_PLACEHOLDER }
 foreach ($it in $ITEMS) { $d = Format-Name $it; $script:ItemToId[$d] = $it; $script:ItemToDisplay[$it] = $d }
 
 # --- colors ----------------------------------------------------------------
@@ -95,6 +99,34 @@ $COL = @{
 # --- target file -----------------------------------------------------------
 $scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
 $script:TargetPath = Join-Path $scriptDir 'item-builds.json'
+$script:SettingsPath = Join-Path $scriptDir 'mod-settings.json'
+
+# Behavior toggles shared with the mod DLL, which re-reads mod-settings.json on
+# every match start - so flipping the checkbox applies to the next match without
+# restarting the game. unique_items: when true (the default, also used when the
+# file is absent) the mod rewrites builds so no champion ever holds duplicate
+# copies of an item; unchecking allows duplicate builds again.
+$script:UniqueEnabled = $true
+if (Test-Path -LiteralPath $script:SettingsPath) {
+  try {
+    $settings = Get-Content -Raw -LiteralPath $script:SettingsPath -Encoding UTF8 | ConvertFrom-Json
+    if ($null -ne $settings.unique_items) { $script:UniqueEnabled = [bool]$settings.unique_items }
+  }
+  catch {}
+}
+
+function Save-Settings {
+  $val = if ($script:UniqueCheck.Checked) { 'true' } else { 'false' }
+  $json = "{`n  `"unique_items`": $val`n}`n"
+  try {
+    [System.IO.File]::WriteAllText($script:SettingsPath, $json, (New-Object System.Text.UTF8Encoding($false)))
+    if ($script:UniqueCheck.Checked) { Set-Status 'Unique item builds enforced - duplicates get replaced with same-category items.' }
+    else { Set-Status 'Unique enforcement off - champions may build duplicate items.' }
+  }
+  catch {
+    Set-Status "Could not save mod-settings.json: $($_.Exception.Message)" $true
+  }
+}
 
 # --- helpers ---------------------------------------------------------------
 function New-Combo($displayList, $left, $width) {
@@ -229,13 +261,18 @@ function New-Row {
   return $row
 }
 
-# '' empty (ignored) | 'ok' complete | 'bad' partial/invalid
+# '' empty (ignored) | 'ok' complete | 'bad' partial/invalid.
+# A row is complete once it has a champion and at least one pinned item; the other
+# slots default to (AI picks) and are filled by the game AI. A row with nothing
+# pinned (every slot on (AI picks)) is a no-op - identical to not listing the
+# champion - so it is ignored rather than flagged, even with a champion selected.
 function Get-RowState($row) {
   $champ = Get-ChampValue $row
-  $items = @($row.Tag.Items | ForEach-Object { Get-ComboId $_ $script:ItemToId } | Where-Object { $_ })
-  if (-not $champ -and $items.Count -eq 0) { return '' }
-  if ($champ -and $items.Count -eq 3) { return 'ok' }
-  return 'bad'
+  $pinned = @($row.Tag.Items | ForEach-Object { Get-ComboId $_ $script:ItemToId } |
+      Where-Object { $_ -and $_ -ne $AI_SENTINEL })
+  if ($pinned.Count -eq 0) { return '' }
+  if ($champ) { return 'ok' }
+  return 'bad'   # items pinned but no champion selected
 }
 
 function Get-Builds {
@@ -243,8 +280,13 @@ function Get-Builds {
   foreach ($row in $script:RowsPanel.Controls) {
     if ((Get-RowState $row) -ne 'ok') { continue }
     $champ = Get-ChampValue $row
-    $items = @($row.Tag.Items | ForEach-Object { Get-ComboId $_ $script:ItemToId } | Where-Object { $_ })
-    $out[$champ] = $items   # later duplicate rows overwrite -> last wins
+    # All slots in order: a pinned item id, or the AI sentinel for (AI picks) slots.
+    # Positions are preserved (no filtering) so blanks become JSON null the mod fills.
+    $slots = @($row.Tag.Items | ForEach-Object {
+        $id = Get-ComboId $_ $script:ItemToId
+        if ($id) { $id } else { $AI_SENTINEL }
+      })
+    $out[$champ] = $slots   # later duplicate rows overwrite -> last wins
   }
   return $out
 }
@@ -259,7 +301,8 @@ function ConvertTo-ItemBuildsJson($ordered) {
     [void]$sb.Append("  `"$k`": [`n")
     for ($j = 0; $j -lt $items.Count; $j++) {
       $tail = if ($j -lt $items.Count - 1) { ',' } else { '' }
-      [void]$sb.Append("    `"$($items[$j])`"$tail`n")
+      $val = if ($items[$j] -eq $AI_SENTINEL) { 'null' } else { "`"$($items[$j])`"" }
+      [void]$sb.Append("    $val$tail`n")
     }
     $tail = if ($i -lt $keys.Count - 1) { ',' } else { '' }
     [void]$sb.Append("  ]$tail`n")
@@ -277,9 +320,12 @@ function Test-Rows {
   # Colors each row by state and returns the incomplete count + duplicate champions.
   $bad = 0; $counts = @{}
   foreach ($row in $script:RowsPanel.Controls) {
-    if ((Get-RowState $row) -eq 'bad') { $bad++; $row.BackColor = $cBadRow } else { $row.BackColor = $cPanel }
+    $state = Get-RowState $row
+    if ($state -eq 'bad') { $bad++; $row.BackColor = $cBadRow } else { $row.BackColor = $cPanel }
     $champ = Get-ChampValue $row
-    if ($champ) { $counts[$champ] = 1 + ([int]$counts[$champ]) }
+    # Only rows that actually contribute a build count toward duplicates; an
+    # ignored all-AI row ('') does not conflict with a real build for that champ.
+    if ($champ -and $state -ne '') { $counts[$champ] = 1 + ([int]$counts[$champ]) }
   }
   return @{
     Bad   = $bad
@@ -289,7 +335,7 @@ function Test-Rows {
 
 function Get-ValidationMessages($v) {
   $msgs = @()
-  if ($v.Bad) { $msgs += "$($v.Bad) build(s) incomplete - select a champion and all 3 items (not saved)." }
+  if ($v.Bad) { $msgs += "$($v.Bad) build(s) incomplete - select a champion (not saved)." }
   if ($v.Dupes.Count) { $msgs += "Duplicate: $($v.Dupes -join ', ') - last row wins." }
   return $msgs
 }
@@ -338,8 +384,12 @@ function Import-Builds($path) {
     }
     if ($data) {
       foreach ($prop in $data.PSObject.Properties) {
-        $items = @($prop.Value)
-        $row = New-Row $prop.Name @("$($items[0])", "$($items[1])", "$($items[2])")
+        $vals = @($prop.Value)
+        # A present JSON null or missing slot -> (AI picks); a real key -> that key.
+        $slots = @(0, 1, 2 | ForEach-Object {
+            if ($_ -lt $vals.Count -and $null -eq $vals[$_]) { $AI_SENTINEL } else { "$($vals[$_])" }
+          })
+        $row = New-Row $prop.Name $slots
         [void]$script:RowsPanel.Controls.Add($row)
       }
     }
@@ -440,7 +490,21 @@ $btnClear.Text = 'Clear'; $btnClear.Left = 495; $btnClear.Top = 8; $btnClear.Wid
 $btnClear.FlatStyle = 'Flat'; $btnClear.BackColor = $cPanel; $btnClear.ForeColor = $cText
 $btnClear.Add_Click({ $script:SearchBox.Text = '' })
 
-$searchBar.Controls.AddRange(@($searchLabel, $script:SearchBox, $btnClear))
+$script:UniqueCheck = New-Object System.Windows.Forms.CheckBox
+# Label and color follow the state: accent-green "Enforcing unique items" while
+# on, normal-text "Enforce unique items" while off.
+$script:UniqueCheck.Text = if ($script:UniqueEnabled) { 'Enforcing unique items' } else { 'Enforce unique items' }
+$script:UniqueCheck.Left = 600; $script:UniqueCheck.Top = 6; $script:UniqueCheck.Width = 470; $script:UniqueCheck.Height = 34
+$script:UniqueCheck.Font = New-Object System.Drawing.Font('Segoe UI', 13)
+$script:UniqueCheck.ForeColor = if ($script:UniqueEnabled) { $cAccent } else { $cText }
+$script:UniqueCheck.Checked = $script:UniqueEnabled
+$script:UniqueCheck.Add_CheckedChanged({
+    $this.Text = if ($this.Checked) { 'Enforcing unique items' } else { 'Enforce unique items' }
+    $this.ForeColor = if ($this.Checked) { $cAccent } else { $cText }
+    Save-Settings
+  })
+
+$searchBar.Controls.AddRange(@($searchLabel, $script:SearchBox, $btnClear, $script:UniqueCheck))
 
 # rows (scrollable)
 $script:RowsPanel = New-Object System.Windows.Forms.FlowLayoutPanel
