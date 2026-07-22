@@ -66,6 +66,7 @@ This mod allows for the user to override the current in-game Item Strategy Scree
 2. Run [b]item-build-editor.bat[/b] to open the editor GUI. Keep the [b]Item Build Editor[/b] GUI open while your game is running.
 3. After draft, while on the Item Strategy Screen, add champions to the GUI and set up your builds.
   a. This also supports modded champions, given you know the champion ID. For Silverbear's mod, use names formatted like [b]"test_mod_vayne"[/b].
+  b. Want to decide only [i]some[/i] of a champion's items? Just set the slots you care about and leave the rest on [b](AI picks)[/b] (the default) - the mod keeps your chosen items and lets the game's AI fill the remaining slots.
 4. Start the simulated match!
 
 [b]NOTE: Custom item builds override all matches at the moment. So your build becomes the meta. It is extremely powerful and can affect both simulated games, soloQ, and even the other team's champions in your match. Please use it with caution![/b]

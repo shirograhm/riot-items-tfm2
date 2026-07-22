@@ -20,15 +20,21 @@ use std::path::PathBuf;
 /// (there is no wrapper object).
 ///
 /// Key = champion id (e.g. the champions logged as `team1=[..]` in the
-/// `item_build_probe` line), value = an ordered list of item keys forming that
-/// champion's build. Each item key is resolved to its `radiant_` (tier 5) variant
+/// `item_build_probe` line), value = an ordered list of build slots. Each slot is
+/// either an item key (a *pinned* item) or JSON `null` (a *blank* slot the game's
+/// AI fills). Pinned keys are resolved to their `radiant_` (tier 5) variant
 /// (`radiant_key`), then to the game's internal key for renamed items
 /// (`alias_key`). A route whose champion has no entry here is left as the game
 /// generated it.
+///
+/// A build with no `null`s behaves exactly as before: the champion builds only
+/// the listed items. Each `null` slot is filled with the next item the AI would
+/// have built that the player did not already pin, so `["kraken_slayer", null,
+/// null]` = Kraken Slayer plus the AI's two best complementary picks.
 #[derive(Deserialize, Default)]
 #[serde(transparent)]
 pub struct BuildConfig {
-    pub by_champion: HashMap<String, Vec<String>>,
+    pub by_champion: HashMap<String, Vec<Option<String>>>,
 }
 
 impl BuildConfig {
@@ -89,20 +95,54 @@ pub fn apply(
             .get(index)
             .and_then(|champion_id| config.by_champion.get(champion_id));
         if let Some(build) = champion_build {
-            *slot = resolve_build(build, &index_by_key);
+            let ai_route = slot.clone();
+            *slot = merge_build(build, &ai_route, &index_by_key);
         }
     }
 }
 
-fn resolve_build(build: &[String], index_by_key: &HashMap<&str, usize>) -> Vec<usize> {
-    build
+/// Resolves one configured item key to a pool index: normalize to its `radiant_`
+/// variant, map any renamed item through `alias_key`, then look it up. Unknown
+/// keys return `None` (skipped rather than aborting the build).
+fn resolve_key(key: &str, index_by_key: &HashMap<&str, usize>) -> Option<usize> {
+    let radiant = radiant_key(key);
+    index_by_key.get(alias_key(radiant.as_ref())).copied()
+}
+
+/// Builds the final route from a configured build and the route the AI generated
+/// for the same champion (`ai_route`). Pinned slots (`Some`) use the player's
+/// item; blank slots (`None`) are filled, in order, with the AI's own picks that
+/// the player did not already pin. Unresolvable pinned keys and exhausted AI
+/// picks simply drop their slot, so one typo or an over-long build never aborts
+/// the rest.
+fn merge_build(
+    build: &[Option<String>],
+    ai_route: &[usize],
+    index_by_key: &HashMap<&str, usize>,
+) -> Vec<usize> {
+    let pinned: std::collections::HashSet<usize> = build
         .iter()
-        .filter_map(|key| {
-            let radiant = radiant_key(key);
-            let resolved = alias_key(radiant.as_ref());
-            index_by_key.get(resolved).copied()
-        })
-        .collect()
+        .flatten()
+        .filter_map(|key| resolve_key(key, index_by_key))
+        .collect();
+    let mut ai_fill = ai_route.iter().copied().filter(|i| !pinned.contains(i));
+
+    let mut route = Vec::with_capacity(build.len());
+    for slot in build {
+        match slot {
+            Some(key) => {
+                if let Some(index) = resolve_key(key, index_by_key) {
+                    route.push(index);
+                }
+            }
+            None => {
+                if let Some(index) = ai_fill.next() {
+                    route.push(index);
+                }
+            }
+        }
+    }
+    route
 }
 
 /// Resolves a configured item key to its `radiant_` (tier 5) variant: keys that

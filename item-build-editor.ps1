@@ -49,7 +49,11 @@ $ITEMS = @(
 )
 
 $CHAMP_PLACEHOLDER = '(champion)'
-$ITEM_PLACEHOLDER = '(none)'
+# The default item slot: any slot you don't set is left for the game's AI to fill.
+# It is written to item-builds.json as JSON null; the mod keeps your pinned items
+# and lets the AI choose every blank slot.
+$ITEM_PLACEHOLDER = '(AI picks)'
+$AI_SENTINEL = '__AI__'   # internal id for an (AI picks) slot; written as JSON null
 $MODDED_LABEL = '(modded champion)'
 
 function Format-Name($id) {
@@ -65,8 +69,8 @@ $script:ItemDisplay = @($ITEM_PLACEHOLDER) + ($ITEMS      | ForEach-Object { For
 $script:ChampToId = @{ $CHAMP_PLACEHOLDER = '' }
 $script:ChampToDisplay = @{}
 foreach ($c in $CHAMPIONS) { $d = Format-Name $c; $script:ChampToId[$d] = $c; $script:ChampToDisplay[$c] = $d }
-$script:ItemToId = @{ $ITEM_PLACEHOLDER = '' }
-$script:ItemToDisplay = @{}
+$script:ItemToId = @{ $ITEM_PLACEHOLDER = $AI_SENTINEL }
+$script:ItemToDisplay = @{ $AI_SENTINEL = $ITEM_PLACEHOLDER }
 foreach ($it in $ITEMS) { $d = Format-Name $it; $script:ItemToId[$d] = $it; $script:ItemToDisplay[$it] = $d }
 
 # --- colors ----------------------------------------------------------------
@@ -229,13 +233,18 @@ function New-Row {
   return $row
 }
 
-# '' empty (ignored) | 'ok' complete | 'bad' partial/invalid
+# '' empty (ignored) | 'ok' complete | 'bad' partial/invalid.
+# A row is complete once it has a champion and at least one pinned item; the other
+# slots default to (AI picks) and are filled by the game AI. A row with nothing
+# pinned (every slot on (AI picks)) is a no-op - identical to not listing the
+# champion - so it is ignored rather than flagged, even with a champion selected.
 function Get-RowState($row) {
   $champ = Get-ChampValue $row
-  $items = @($row.Tag.Items | ForEach-Object { Get-ComboId $_ $script:ItemToId } | Where-Object { $_ })
-  if (-not $champ -and $items.Count -eq 0) { return '' }
-  if ($champ -and $items.Count -eq 3) { return 'ok' }
-  return 'bad'
+  $pinned = @($row.Tag.Items | ForEach-Object { Get-ComboId $_ $script:ItemToId } |
+      Where-Object { $_ -and $_ -ne $AI_SENTINEL })
+  if ($pinned.Count -eq 0) { return '' }
+  if ($champ) { return 'ok' }
+  return 'bad'   # items pinned but no champion selected
 }
 
 function Get-Builds {
@@ -243,8 +252,13 @@ function Get-Builds {
   foreach ($row in $script:RowsPanel.Controls) {
     if ((Get-RowState $row) -ne 'ok') { continue }
     $champ = Get-ChampValue $row
-    $items = @($row.Tag.Items | ForEach-Object { Get-ComboId $_ $script:ItemToId } | Where-Object { $_ })
-    $out[$champ] = $items   # later duplicate rows overwrite -> last wins
+    # All slots in order: a pinned item id, or the AI sentinel for (AI picks) slots.
+    # Positions are preserved (no filtering) so blanks become JSON null the mod fills.
+    $slots = @($row.Tag.Items | ForEach-Object {
+        $id = Get-ComboId $_ $script:ItemToId
+        if ($id) { $id } else { $AI_SENTINEL }
+      })
+    $out[$champ] = $slots   # later duplicate rows overwrite -> last wins
   }
   return $out
 }
@@ -259,7 +273,8 @@ function ConvertTo-ItemBuildsJson($ordered) {
     [void]$sb.Append("  `"$k`": [`n")
     for ($j = 0; $j -lt $items.Count; $j++) {
       $tail = if ($j -lt $items.Count - 1) { ',' } else { '' }
-      [void]$sb.Append("    `"$($items[$j])`"$tail`n")
+      $val = if ($items[$j] -eq $AI_SENTINEL) { 'null' } else { "`"$($items[$j])`"" }
+      [void]$sb.Append("    $val$tail`n")
     }
     $tail = if ($i -lt $keys.Count - 1) { ',' } else { '' }
     [void]$sb.Append("  ]$tail`n")
@@ -277,9 +292,12 @@ function Test-Rows {
   # Colors each row by state and returns the incomplete count + duplicate champions.
   $bad = 0; $counts = @{}
   foreach ($row in $script:RowsPanel.Controls) {
-    if ((Get-RowState $row) -eq 'bad') { $bad++; $row.BackColor = $cBadRow } else { $row.BackColor = $cPanel }
+    $state = Get-RowState $row
+    if ($state -eq 'bad') { $bad++; $row.BackColor = $cBadRow } else { $row.BackColor = $cPanel }
     $champ = Get-ChampValue $row
-    if ($champ) { $counts[$champ] = 1 + ([int]$counts[$champ]) }
+    # Only rows that actually contribute a build count toward duplicates; an
+    # ignored all-AI row ('') does not conflict with a real build for that champ.
+    if ($champ -and $state -ne '') { $counts[$champ] = 1 + ([int]$counts[$champ]) }
   }
   return @{
     Bad   = $bad
@@ -289,7 +307,7 @@ function Test-Rows {
 
 function Get-ValidationMessages($v) {
   $msgs = @()
-  if ($v.Bad) { $msgs += "$($v.Bad) build(s) incomplete - select a champion and all 3 items (not saved)." }
+  if ($v.Bad) { $msgs += "$($v.Bad) build(s) incomplete - select a champion (not saved)." }
   if ($v.Dupes.Count) { $msgs += "Duplicate: $($v.Dupes -join ', ') - last row wins." }
   return $msgs
 }
@@ -338,8 +356,12 @@ function Import-Builds($path) {
     }
     if ($data) {
       foreach ($prop in $data.PSObject.Properties) {
-        $items = @($prop.Value)
-        $row = New-Row $prop.Name @("$($items[0])", "$($items[1])", "$($items[2])")
+        $vals = @($prop.Value)
+        # A present JSON null or missing slot -> (AI picks); a real key -> that key.
+        $slots = @(0, 1, 2 | ForEach-Object {
+            if ($_ -lt $vals.Count -and $null -eq $vals[$_]) { $AI_SENTINEL } else { "$($vals[$_])" }
+          })
+        $row = New-Row $prop.Name $slots
         [void]$script:RowsPanel.Controls.Add($row)
       }
     }
