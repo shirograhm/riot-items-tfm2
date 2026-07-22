@@ -491,11 +491,18 @@ $btnClear.FlatStyle = 'Flat'; $btnClear.BackColor = $cPanel; $btnClear.ForeColor
 $btnClear.Add_Click({ $script:SearchBox.Text = '' })
 
 $script:UniqueCheck = New-Object System.Windows.Forms.CheckBox
-$script:UniqueCheck.Text = 'Enforce unique items (no duplicates)'
-$script:UniqueCheck.Left = 600; $script:UniqueCheck.Top = 10; $script:UniqueCheck.Width = 390; $script:UniqueCheck.Height = 26
-$script:UniqueCheck.ForeColor = $cText
+# Label and color follow the state: accent-green "Enforcing unique items" while
+# on, normal-text "Enforce unique items" while off.
+$script:UniqueCheck.Text = if ($script:UniqueEnabled) { 'Enforcing unique items' } else { 'Enforce unique items' }
+$script:UniqueCheck.Left = 600; $script:UniqueCheck.Top = 6; $script:UniqueCheck.Width = 470; $script:UniqueCheck.Height = 34
+$script:UniqueCheck.Font = New-Object System.Drawing.Font('Segoe UI', 13)
+$script:UniqueCheck.ForeColor = if ($script:UniqueEnabled) { $cAccent } else { $cText }
 $script:UniqueCheck.Checked = $script:UniqueEnabled
-$script:UniqueCheck.Add_CheckedChanged({ Save-Settings })
+$script:UniqueCheck.Add_CheckedChanged({
+    $this.Text = if ($this.Checked) { 'Enforcing unique items' } else { 'Enforce unique items' }
+    $this.ForeColor = if ($this.Checked) { $cAccent } else { $cText }
+    Save-Settings
+  })
 
 $searchBar.Controls.AddRange(@($searchLabel, $script:SearchBox, $btnClear, $script:UniqueCheck))
 
