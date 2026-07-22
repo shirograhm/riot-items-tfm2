@@ -9,7 +9,7 @@
 //! - `apply` keys builds by champion id against the route's lineup (`team1`),
 //!   assuming `routes[i]` is the build for `lineup[i]`. Lineup-aware selection —
 //!   varying a champion's build by the enemy comp — would slot in there, using
-//!   the same `team1`/`team2` data the `item_build_probe` log already captures.
+//!   the same `team1`/`team2` data the hook already passes through.
 
 use serde::Deserialize;
 use std::borrow::Cow;
@@ -19,8 +19,8 @@ use std::path::PathBuf;
 /// Schema of `item-builds.json`: the whole file is a map of champion id -> build
 /// (there is no wrapper object).
 ///
-/// Key = champion id (e.g. the champions logged as `team1=[..]` in the
-/// `item_build_probe` line), value = an ordered list of build slots. Each slot is
+/// Key = champion id (the champions the hook receives as `team1`), value = an
+/// ordered list of build slots. Each slot is
 /// either an item key (a *pinned* item) or JSON `null` (a *blank* slot the game's
 /// AI fills). Pinned keys are resolved to their `radiant_` (tier 5) variant
 /// (`radiant_key`), then to the game's internal key for renamed items

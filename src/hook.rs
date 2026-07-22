@@ -3,7 +3,7 @@
 //! This locates `LogisticSGDAgent::get_item_builds_list` inside the loaded
 //! Teamfight Manager 2 executable by scanning the `.text` section for a verified
 //! byte signature (captured on game version `0.5.1`), installs a trampoline
-//! detour, and records a probe of each call. It is intentionally fail-closed: if
+//! detour, and overrides the routes it returns. It is intentionally fail-closed: if
 //! the signature is missing, ambiguous, or the prologue does not match, the hook
 //! refuses to patch instead of touching an unknown function.
 //!
@@ -219,23 +219,6 @@ unsafe fn patch_target(target: *mut u8) -> Result<Vec<String>, String> {
     Ok(warnings)
 }
 
-/// TEMP VERIFY: appends a line to `item_build_probe.log` next to the mod DLL so
-/// unique-build substitutions can be confirmed in-game. Low volume — it only
-/// fires when a duplicate was actually replaced. Remove once verified.
-fn unique_log(msg: &str) {
-    use std::io::Write;
-    let path = crate::config::dll_dir()
-        .map(|dir| dir.join("item_build_probe.log"))
-        .unwrap_or_else(|| std::path::PathBuf::from("item_build_probe.log"));
-    if let Ok(mut file) = std::fs::OpenOptions::new()
-        .create(true)
-        .append(true)
-        .open(&path)
-    {
-        let _ = writeln!(file, "{msg}");
-    }
-}
-
 /// Rewrites each route so a champion never builds the same item twice. The first
 /// occurrence keeps its slot; each later duplicate is replaced with the final
 /// item (one with no further upgrades — vanilla tier 5s and the mod's radiants)
@@ -317,28 +300,7 @@ unsafe fn detour(
     // editor via `mod-settings.json` (defaults on); read per call, so flipping
     // the checkbox applies to the next match without restarting the game.
     if build_config::unique_items_enabled() {
-        let before_unique = routes.clone();
         enforce_unique_items(items, &mut routes);
-        for (index, (old, new)) in before_unique.iter().zip(routes.iter()).enumerate() {
-            if old != new {
-                let describe = |route: &[usize]| {
-                    route
-                        .iter()
-                        .map(|&item| item_keys.get(item).map(String::as_str).unwrap_or("<oob>"))
-                        .collect::<Vec<_>>()
-                        .join(" > ")
-                };
-                let champion = lineup
-                    .get(index)
-                    .map(String::as_str)
-                    .unwrap_or("<no lineup entry>");
-                unique_log(&format!(
-                    "unique route[{index}] champion={champion} {} => {}",
-                    describe(old),
-                    describe(new)
-                ));
-            }
-        }
     }
 
     routes
