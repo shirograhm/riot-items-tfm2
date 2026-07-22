@@ -193,6 +193,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("steel_sigil" => SteelSigil));
 
     // Tier 4
+    reg.add_item(configured!("atmas_reckoning" => AtmasReckoning));
     reg.add_item(configured!("bastionbreaker" => Bastionbreaker));
     reg.add_item(configured!("black_cleaver" => BlackCleaver));
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
@@ -213,6 +214,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("hubris" => Hubris));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
     reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
+    reg.add_item(configured!("kraken_slayer" => KrakenSlayer));
     reg.add_item(configured!("liandrys_torment" => LiandrysTorment));
     reg.add_item(configured!("mirage_blade" => MirageBlade));
     reg.add_item(configured!("morellonomicon" => Morellonomicon));
@@ -236,10 +238,12 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("void_staff" => VoidStaff));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
+    reg.add_item(configured!("wits_end" => WitsEnd));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
 
     // Tier 5
+    reg.add_item(configured!("radiant_atmas_reckoning" => RadiantAtmasReckoning));
     reg.add_item(configured!("radiant_bastionbreaker" => RadiantBastionbreaker));
     reg.add_item(configured!("radiant_black_cleaver" => RadiantBlackCleaver));
     reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
@@ -260,6 +264,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_hubris" => RadiantHubris));
     reg.add_item(configured!("radiant_infinity_edge" => RadiantInfinityEdge));
     reg.add_item(configured!("radiant_jaksho_the_protean" => RadiantJakshoTheProtean));
+    reg.add_item(configured!("radiant_kraken_slayer" => RadiantKrakenSlayer));
     reg.add_item(configured!("radiant_liandrys_torment" => RadiantLiandrysTorment));
     reg.add_item(configured!("radiant_mirage_blade" => RadiantMirageBlade));
     reg.add_item(configured!("radiant_morellonomicon" => RadiantMorellonomicon));
@@ -283,6 +288,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
     reg.add_item(configured!("radiant_void_staff" => RadiantVoidStaff));
     reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
+    reg.add_item(configured!("radiant_wits_end" => RadiantWitsEnd));
     reg.add_item(configured!("radiant_yun_tal_wildarrows" => RadiantYunTalWildarrows));
     reg.add_item(configured!("radiant_zekes_herald" => RadiantZekesHerald));
 

@@ -16,6 +16,7 @@ macro_rules! items {
 
 items! {
     aegis_of_the_legion,
+    atmas_reckoning,
     bandleglass_mirror,
     bastionbreaker,
     bf_sword,
@@ -41,6 +42,7 @@ items! {
     hubris,
     infinity_edge,
     jaksho_the_protean,
+    kraken_slayer,
     liandrys_torment,
     mirage_blade,
     morellonomicon,
@@ -72,6 +74,7 @@ items! {
     unending_despair,
     void_staff,
     warmogs_armor,
+    wits_end,
     yun_tal_wildarrows,
     zekes_herald,
 }
