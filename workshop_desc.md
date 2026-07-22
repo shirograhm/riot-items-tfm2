@@ -1,4 +1,4 @@
-Adds 104 new items (59 base + 45 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Adds 110 new items (62 base + 48 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
 
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
@@ -23,7 +23,7 @@ The item build override affects all champions in the match. This means you could
 
 Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects are working.  
 
-Some item effects are roughly simulated to the best of my ability using the available mod-sdk.
+Some item effects are roughly simulated to the best of my ability using the available mod-sdk.  
 
 Some AI champions seem to prefer the wrong stats when given deference of item selection. Magic Knight tends to buy AD and AS items instead of AP, for example.  
 
