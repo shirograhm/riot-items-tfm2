@@ -64,6 +64,35 @@ fn config_path() -> Result<PathBuf, String> {
         .ok_or_else(|| "could not resolve mod directory".to_string())
 }
 
+/// Schema of `mod-settings.json`: behavior toggles managed by the item build
+/// editor. An absent file (the common case) means every toggle takes its
+/// default.
+#[derive(Deserialize)]
+struct ModSettings {
+    #[serde(default = "default_true")]
+    unique_items: bool,
+}
+
+fn default_true() -> bool {
+    true
+}
+
+/// Whether unique-build enforcement is enabled: `unique_items` in
+/// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
+/// is absent or malformed, so players opt *out* via the editor checkbox. Read on
+/// every hook call, so toggling the checkbox takes effect on the next match
+/// without restarting the game.
+pub fn unique_items_enabled() -> bool {
+    let Some(path) = crate::config::dll_dir().map(|dir| dir.join("mod-settings.json")) else {
+        return true;
+    };
+    std::fs::read_to_string(path)
+        .ok()
+        .and_then(|text| serde_json::from_str::<ModSettings>(&text).ok())
+        .map(|settings| settings.unique_items)
+        .unwrap_or(true)
+}
+
 /// Overwrites the game's route list with the configured builds.
 ///
 /// `item_keys` is the parallel list of item keys for the `items` slice the game

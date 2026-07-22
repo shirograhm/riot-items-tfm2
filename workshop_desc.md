@@ -5,6 +5,8 @@ Also re-skins the 30 existing items and adds some custom icons for Armor Penetra
 [b]This mod supports custom item values! Now you can be Phreak! See the instructions below.[/b]  
 [b]This mod also supports custom item builds! See the instructions below.[/b]  
 
+[b]Offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for an item of the same category. Prefer duplicate builds? Toggle it off with the checkbox in the Item Build Editor.[/b]  
+
 [h1] Important [/h1]
 
 This mod currently supports English, Vietnamese, Portuguese (BR), Russian, and Chinese (Simplified) locales. You can use it with other languages, but the names and descriptions of the items will be broken.
@@ -75,7 +77,6 @@ This mod allows for the user to override the current in-game Item Strategy Scree
 
 - Support items (Ardent Censer?) and possibly a 7th item category?
 - Ability for the user to select specific items on each champion in the post-draft screen. [i]Currently works with a side-loaded GUI.[/i]
-- Make items unique purchases (one per champion) to prevent effects from stacking.
 - Ability to edit values on the 30 base game items, in addition to the current config.json.
 - Translations for other locales.
 - Various bugfixes.

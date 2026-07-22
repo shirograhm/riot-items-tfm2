@@ -99,6 +99,34 @@ $COL = @{
 # --- target file -----------------------------------------------------------
 $scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
 $script:TargetPath = Join-Path $scriptDir 'item-builds.json'
+$script:SettingsPath = Join-Path $scriptDir 'mod-settings.json'
+
+# Behavior toggles shared with the mod DLL, which re-reads mod-settings.json on
+# every match start - so flipping the checkbox applies to the next match without
+# restarting the game. unique_items: when true (the default, also used when the
+# file is absent) the mod rewrites builds so no champion ever holds duplicate
+# copies of an item; unchecking allows duplicate builds again.
+$script:UniqueEnabled = $true
+if (Test-Path -LiteralPath $script:SettingsPath) {
+  try {
+    $settings = Get-Content -Raw -LiteralPath $script:SettingsPath -Encoding UTF8 | ConvertFrom-Json
+    if ($null -ne $settings.unique_items) { $script:UniqueEnabled = [bool]$settings.unique_items }
+  }
+  catch {}
+}
+
+function Save-Settings {
+  $val = if ($script:UniqueCheck.Checked) { 'true' } else { 'false' }
+  $json = "{`n  `"unique_items`": $val`n}`n"
+  try {
+    [System.IO.File]::WriteAllText($script:SettingsPath, $json, (New-Object System.Text.UTF8Encoding($false)))
+    if ($script:UniqueCheck.Checked) { Set-Status 'Unique item builds enforced - duplicates get replaced with same-category items.' }
+    else { Set-Status 'Unique enforcement off - champions may build duplicate items.' }
+  }
+  catch {
+    Set-Status "Could not save mod-settings.json: $($_.Exception.Message)" $true
+  }
+}
 
 # --- helpers ---------------------------------------------------------------
 function New-Combo($displayList, $left, $width) {
@@ -462,7 +490,14 @@ $btnClear.Text = 'Clear'; $btnClear.Left = 495; $btnClear.Top = 8; $btnClear.Wid
 $btnClear.FlatStyle = 'Flat'; $btnClear.BackColor = $cPanel; $btnClear.ForeColor = $cText
 $btnClear.Add_Click({ $script:SearchBox.Text = '' })
 
-$searchBar.Controls.AddRange(@($searchLabel, $script:SearchBox, $btnClear))
+$script:UniqueCheck = New-Object System.Windows.Forms.CheckBox
+$script:UniqueCheck.Text = 'Enforce unique items (no duplicates)'
+$script:UniqueCheck.Left = 600; $script:UniqueCheck.Top = 10; $script:UniqueCheck.Width = 390; $script:UniqueCheck.Height = 26
+$script:UniqueCheck.ForeColor = $cText
+$script:UniqueCheck.Checked = $script:UniqueEnabled
+$script:UniqueCheck.Add_CheckedChanged({ Save-Settings })
+
+$searchBar.Controls.AddRange(@($searchLabel, $script:SearchBox, $btnClear, $script:UniqueCheck))
 
 # rows (scrollable)
 $script:RowsPanel = New-Object System.Windows.Forms.FlowLayoutPanel
