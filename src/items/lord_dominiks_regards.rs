@@ -2,17 +2,6 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 
-// Giant Slayer: basic attacks deal a percentage of bonus damage that scales with
-// the target's maximum health -- `effect_percent_bonus_damage` per
-// `effect_hp_per_stack` HP, capped at `effect_max_percent_bonus`. Basic attacks
-// are the only damage a mod can modify, so the amp is applied to `*damage` in
-// `on_attack` (like diamond_tipped_spear's distance scaling). Stepwise per full
-// HP bracket, matching the "for every 1000 maximum health" wording (see
-// atmas_reckoning's Big Hands, which scales crit the same way).
-
-/// Scales a basic attack's `damage` by Giant Slayer against `target`: one
-/// `percent_per_step` bracket per `hp_per_step` of the target's maximum health,
-/// capped at `max_percent`. Towers are skipped.
 fn apply_giant_slayer(
     ctx: &mut GameCtx,
     target: usize,
@@ -98,7 +87,7 @@ impl ModItemInfo for LordDominiksRegards {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["last_whisper".to_string()]
+        vec!["last_whisper".to_string(), "noonquiver".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
