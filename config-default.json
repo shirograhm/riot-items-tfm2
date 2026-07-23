@@ -571,7 +571,8 @@
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
     "effect_hp_percent_threshold": 25.0,
-    "effect_attack_interval": 3
+    "effect_attack_interval": 3,
+    "on_hit_cooldown_seconds": 0.5
   },
   "radiant_kraken_slayer": {
     "price": 2000,
@@ -581,7 +582,8 @@
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
     "effect_hp_percent_threshold": 25.0,
-    "effect_attack_interval": 3
+    "effect_attack_interval": 3,
+    "on_hit_cooldown_seconds": 0.5
   },
   "atmas_reckoning": {
     "price": 1450,

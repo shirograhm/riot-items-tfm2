@@ -12,6 +12,7 @@ pub struct KrakenSlayer {
     effect_max_percent_bonus: f64,
     effect_hp_percent_threshold: f64,
     effect_attack_interval: usize,
+    on_hit_cooldown_seconds: f64,
     // Qualifying basic attacks landed since the last proc.
     attack_count: usize,
 }
@@ -27,6 +28,7 @@ impl Default for KrakenSlayer {
             effect_max_percent_bonus: 75.0,
             effect_hp_percent_threshold: 25.0,
             effect_attack_interval: 3,
+            on_hit_cooldown_seconds: 0.5,
             attack_count: 0,
         }
     }
@@ -52,6 +54,9 @@ impl KrakenSlayer {
             effect_attack_interval: cfg
                 .effect_attack_interval
                 .unwrap_or(d.effect_attack_interval),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
             attack_count: 0,
         }
     }
@@ -90,14 +95,32 @@ fn tick_bring_it_down(
     flat: usize,
     max_percent_bonus: f64,
     hp_percent_threshold: f64,
+    cooldown_ticks: usize,
 ) -> usize {
-    let is_tower = ctx
-        .get_entity(target)
-        .map(|t| t.is_tower())
-        .unwrap_or(false);
-    if is_tower {
+    let Some(target_ref) = ctx.get_entity(target) else {
+        return 0;
+    };
+    if target_ref.is_tower() {
         return 0;
     }
+
+    // Same on-hit rate limit as Guinsoo's Rageblade: multi-hit attacks only
+    // count once per cooldown window, tracked by a marker buff on the target.
+    let is_cooldown_ticking = (0..target_ref.buff_count())
+        .any(|i| target_ref.buff_at(i).name.as_str() == "kraken_slayer_on_hit_cooldown");
+    if is_cooldown_ticking {
+        return 0;
+    }
+    ctx.add_buff(
+        target,
+        BuffState {
+            duration: BuffType::Time {
+                tick: cooldown_ticks,
+            },
+            name: "kraken_slayer_on_hit_cooldown".try_into().unwrap(),
+            ..Default::default()
+        },
+    );
 
     *attack_count += 1;
     if *attack_count < interval.max(1) {
@@ -165,6 +188,7 @@ impl ModItemInfo for KrakenSlayer {
             self.effect_bonus_flat_damage,
             self.effect_max_percent_bonus,
             self.effect_hp_percent_threshold,
+            (self.on_hit_cooldown_seconds * 60.0).round() as usize,
         );
         if bonus > 0 {
             ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
@@ -190,6 +214,7 @@ pub struct RadiantKrakenSlayer {
     effect_max_percent_bonus: f64,
     effect_hp_percent_threshold: f64,
     effect_attack_interval: usize,
+    on_hit_cooldown_seconds: f64,
     attack_count: usize,
 }
 
@@ -204,6 +229,7 @@ impl Default for RadiantKrakenSlayer {
             effect_max_percent_bonus: 75.0,
             effect_hp_percent_threshold: 25.0,
             effect_attack_interval: 3,
+            on_hit_cooldown_seconds: 0.5,
             attack_count: 0,
         }
     }
@@ -229,6 +255,9 @@ impl RadiantKrakenSlayer {
             effect_attack_interval: cfg
                 .effect_attack_interval
                 .unwrap_or(d.effect_attack_interval),
+            on_hit_cooldown_seconds: cfg
+                .on_hit_cooldown_seconds
+                .unwrap_or(d.on_hit_cooldown_seconds),
             attack_count: 0,
         }
     }
@@ -288,6 +317,7 @@ impl ModItemInfo for RadiantKrakenSlayer {
             self.effect_bonus_flat_damage,
             self.effect_max_percent_bonus,
             self.effect_hp_percent_threshold,
+            (self.on_hit_cooldown_seconds * 60.0).round() as usize,
         );
         if bonus > 0 {
             ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
