@@ -273,11 +273,11 @@
         },
         "riftmaker": {
             "name": "Riftmaker",
-            "option": "Infusion: Landing an Ability on an enemy champion grants <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+            "option": "Corruption: Landing an Ability on an enemy champion grants <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> for <#e8a800ff>3 seconds<> (max 3 stacks).\n\nInfusion: Gain <#a974ffff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "radiant_riftmaker": {
             "name": "Radiant Riftmaker",
-            "option": "Infusion: Landing an Ability on an enemy champion grants <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>5 seconds<> (max 3 stacks)."
+            "option": "Corruption: Landing an Ability on an enemy champion grants <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> for <#e8a800ff>3 seconds<> (max 3 stacks).\n\nInfusion: Gain <#a974ffff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> equal to <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "shadowflame": {
             "name": "Shadowflame",
@@ -902,11 +902,11 @@
         },
         "riftmaker": {
             "name": "Quyền Trượng Ác Thần",
-            "option": "Dung hòa: Kĩ năng trúng đích sẽ tăng <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> tương ứng <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>5 giây<> (tối đa 3 cộng dồn)."
+            "option": "Tha Hóa: Kĩ năng trúng đích tướng địch cấp <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>3 giây<> (tối đa 3 cộng dồn).\n\nDung Hòa: Nhận <#a974ffff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> tương ứng <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân."
         },
         "radiant_riftmaker": {
             "name": "Quyền Trượng Ác Thần Ánh Sáng",
-            "option": "Dung hòa: Kĩ năng trúng đích sẽ tăng <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> tương ứng <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân trong <#e8a800ff>5 giây<> (tối đa 3 cộng dồn)."
+            "option": "Tha Hóa: Kĩ năng trúng đích tướng địch cấp <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>3 giây<> (tối đa 3 cộng dồn).\n\nDung Hòa: Nhận <#a974ffff>thêm<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> tương ứng <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân."
         },
         "shadowflame": {
             "name": "Ngọn Lửa Hắc Hóa",
@@ -1531,11 +1531,11 @@
         },
         "riftmaker": {
             "name": "裂隙制造者",
-            "option": "虚空灌注：技能命中时，获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，持续 <#e8a800ff>5秒<>（最多叠加3层）。"
+            "option": "腐化：技能命中敌方英雄时，获得 <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，持续 <#e8a800ff>3秒<>（最多叠加3层）。\n\n虚空灌注：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2%<> 的<#a974ffff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。"
         },
         "radiant_riftmaker": {
             "name": "光明版裂隙制造者",
-            "option": "虚空灌注：技能命中时，获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，持续 <#e8a800ff>5秒<>（最多叠加3层）。"
+            "option": "腐化：技能命中敌方英雄时，获得 <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，持续 <#e8a800ff>3秒<>（最多叠加3层）。\n\n虚空灌注：获得相当于你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2%<> 的<#a974ffff>额外<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。"
         },
         "shadowflame": {
             "name": "影焰",
@@ -2160,11 +2160,11 @@
         },
         "riftmaker": {
             "name": "Criafendas",
-            "option": "Corrupção: Suas mágias te dão <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>5 segundos<> (acumula 3x)."
+            "option": "Corrupção: Acertar uma Habilidade em um campeão inimigo concede <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> por <#e8a800ff>3 segundos<> (acumula 3x).\n\nInfusão: Ganha <#a974ffff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
         },
         "radiant_riftmaker": {
             "name": "Criafendas Radiante",
-            "option": "Corrupção: Suas mágias te dão <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>5 segundos<> (acumula 3x)."
+            "option": "Corrupção: Acertar uma Habilidade em um campeão inimigo concede <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> por <#e8a800ff>3 segundos<> (acumula 3x).\n\nInfusão: Ganha <#a974ffff>bônus<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
         },
         "shadowflame": {
             "name": "Chama Sombria",
@@ -2789,11 +2789,11 @@
         },
         "riftmaker": {
             "name": "Творец Разломов",
-            "option": "Наполнение: Попадания умениями дают <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> равную <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> на <#e8a800ff>5 секунд<> (макс. 3 стака)."
+            "option": "Порча: Попадание умением по вражескому чемпиону даёт <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>3 секунд<> (макс. 3 стака).\n\nНаполнение: Даёт <#a974ffff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> равную <#60e84dff>2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
         },
         "radiant_riftmaker": {
             "name": "Лучезарный Творец Разломов",
-            "option": "Наполнение: Попадания умениями дают <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> равную <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> на <#e8a800ff>5 секунд<> (макс. 3 стака)."
+            "option": "Порча: Попадание умением по вражескому чемпиону даёт <#b7462dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>3 секунд<> (макс. 3 стака).\n\nНаполнение: Даёт <#a974ffff>дополнительную<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силу Умений<> равную <#60e84dff>2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
         },
         "shadowflame": {
             "name": "Сумрачное пламя",
@@ -3418,11 +3418,11 @@
         },
         "riftmaker": {
             "name": "균열 생성기",
-            "option": "주입: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 얻습니다. 최대 3회 중첩됩니다."
+            "option": "타락: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 2%<>를 얻습니다. 최대 3회 중첩됩니다.\n\n주입: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>추가 주문력<>을 얻습니다."
         },
         "radiant_riftmaker": {
             "name": "찬란한 균열 생성기",
-            "option": "주입: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 얻습니다. 최대 3회 중첩됩니다."
+            "option": "타락: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 2%<>를 얻습니다. 최대 3회 중첩됩니다.\n\n주입: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>추가 주문력<>을 얻습니다."
         },
         "shadowflame": {
             "name": "그림자불꽃",

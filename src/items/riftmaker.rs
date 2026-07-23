@@ -3,6 +3,7 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::percent_of;
+use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
 #[derive(Clone, Debug)]
 pub struct Riftmaker {
@@ -10,8 +11,10 @@ pub struct Riftmaker {
     hp: i32,
     magic_power: i32,
     effect_caster_hp_percent_power: f64,
+    effect_vamp: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
+    refresh_cooldown: usize,
 }
 
 impl Default for Riftmaker {
@@ -20,9 +23,11 @@ impl Default for Riftmaker {
             price: 1300,
             hp: 400,
             magic_power: 75,
-            effect_caster_hp_percent_power: 1.0,
+            effect_caster_hp_percent_power: 2.0,
+            effect_vamp: 2,
             effect_max_stacks: 3,
-            effect_duration_seconds: 5.0,
+            effect_duration_seconds: 3.0,
+            refresh_cooldown: 0,
         }
     }
 }
@@ -37,11 +42,46 @@ impl Riftmaker {
             effect_caster_hp_percent_power: cfg
                 .effect_caster_hp_percent_power
                 .unwrap_or(d.effect_caster_hp_percent_power),
+            effect_vamp: cfg.effect_vamp.unwrap_or(d.effect_vamp),
             effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
+            refresh_cooldown: 0,
         }
+    }
+
+    fn apply_infusion(&mut self, ctx: &mut GameCtx, player: usize) {
+        if self.refresh_cooldown > 0 {
+            self.refresh_cooldown -= 1;
+            return;
+        }
+
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(champion_ref) = player_ref.champion() else {
+            return;
+        };
+
+        let bonus_power = percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_power) as i32;
+        if bonus_power <= 0 {
+            return;
+        }
+
+        let entity_id = champion_ref.id();
+        ctx.add_buff(
+            entity_id,
+            BuffState {
+                name: ArrayString::try_from("riftmaker_infusion").unwrap(),
+                duration: BuffType::Time {
+                    tick: BUFF_REFRESH_DURATION_TICKS,
+                },
+                magic_power: bonus_power,
+                ..Default::default()
+            },
+        );
+        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
 }
 
@@ -82,16 +122,21 @@ impl ModItemInfo for Riftmaker {
         }
     }
 
+    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        self.refresh_cooldown = 0;
+        self.apply_infusion(ctx, player);
+    }
+
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+        self.apply_infusion(ctx, player);
+    }
+
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_power = percent_of(
-            caster_ref.hp().max,
-            self.effect_caster_hp_percent_power as f64,
-        );
         let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "riftmaker_magic_power_buff")
+            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "riftmaker_corruption")
             .count();
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
@@ -100,8 +145,8 @@ impl ModItemInfo for Riftmaker {
                     duration: BuffType::Time {
                         tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
-                    magic_power: bonus_power as i32,
-                    name: ArrayString::try_from("riftmaker_magic_power_buff").unwrap(),
+                    vamp: self.effect_vamp,
+                    name: ArrayString::try_from("riftmaker_corruption").unwrap(),
                     ..Default::default()
                 },
             );
@@ -109,7 +154,7 @@ impl ModItemInfo for Riftmaker {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP]
+        vec![ItemTag::HP, ItemTag::AP, ItemTag::Vamp]
     }
 
     fn category(&self) -> ItemCategory {
@@ -123,8 +168,10 @@ pub struct RadiantRiftmaker {
     hp: i32,
     magic_power: i32,
     effect_caster_hp_percent_power: f64,
+    effect_vamp: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
+    refresh_cooldown: usize,
 }
 
 impl Default for RadiantRiftmaker {
@@ -133,9 +180,11 @@ impl Default for RadiantRiftmaker {
             price: 1900,
             hp: 600,
             magic_power: 150,
-            effect_caster_hp_percent_power: 1.0,
+            effect_caster_hp_percent_power: 2.0,
+            effect_vamp: 2,
             effect_max_stacks: 3,
-            effect_duration_seconds: 5.0,
+            effect_duration_seconds: 3.0,
+            refresh_cooldown: 0,
         }
     }
 }
@@ -150,11 +199,46 @@ impl RadiantRiftmaker {
             effect_caster_hp_percent_power: cfg
                 .effect_caster_hp_percent_power
                 .unwrap_or(d.effect_caster_hp_percent_power),
+            effect_vamp: cfg.effect_vamp.unwrap_or(d.effect_vamp),
             effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
             effect_duration_seconds: cfg
                 .effect_duration_seconds
                 .unwrap_or(d.effect_duration_seconds),
+            refresh_cooldown: 0,
         }
+    }
+
+    fn apply_infusion(&mut self, ctx: &mut GameCtx, player: usize) {
+        if self.refresh_cooldown > 0 {
+            self.refresh_cooldown -= 1;
+            return;
+        }
+
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(champion_ref) = player_ref.champion() else {
+            return;
+        };
+
+        let bonus_power = percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_power) as i32;
+        if bonus_power <= 0 {
+            return;
+        }
+
+        let entity_id = champion_ref.id();
+        ctx.add_buff(
+            entity_id,
+            BuffState {
+                name: ArrayString::try_from("radiant_riftmaker_infusion").unwrap(),
+                duration: BuffType::Time {
+                    tick: BUFF_REFRESH_DURATION_TICKS,
+                },
+                magic_power: bonus_power,
+                ..Default::default()
+            },
+        );
+        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
 }
 
@@ -191,18 +275,21 @@ impl ModItemInfo for RadiantRiftmaker {
         }
     }
 
+    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+        self.refresh_cooldown = 0;
+        self.apply_infusion(ctx, player);
+    }
+
+    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+        self.apply_infusion(ctx, player);
+    }
+
     fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_power = percent_of(
-            caster_ref.hp().max,
-            self.effect_caster_hp_percent_power as f64,
-        );
         let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| {
-                caster_ref.buff_at(i).name.as_str() == "radiant_riftmaker_magic_power_buff"
-            })
+            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "radiant_riftmaker_corruption")
             .count();
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
@@ -211,8 +298,8 @@ impl ModItemInfo for RadiantRiftmaker {
                     duration: BuffType::Time {
                         tick: (self.effect_duration_seconds * 60.0) as usize,
                     },
-                    magic_power: bonus_power as i32,
-                    name: ArrayString::try_from("radiant_riftmaker_magic_power_buff").unwrap(),
+                    vamp: self.effect_vamp,
+                    name: ArrayString::try_from("radiant_riftmaker_corruption").unwrap(),
                     ..Default::default()
                 },
             );
@@ -220,7 +307,7 @@ impl ModItemInfo for RadiantRiftmaker {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP]
+        vec![ItemTag::HP, ItemTag::AP, ItemTag::Vamp]
     }
 
     fn category(&self) -> ItemCategory {

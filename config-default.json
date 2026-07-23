@@ -205,9 +205,10 @@
     "price": 1300,
     "hp": 400,
     "magic_power": 75,
-    "effect_caster_hp_percent_power": 1.0,
+    "effect_caster_hp_percent_power": 2.0,
+    "effect_vamp": 2,
     "effect_max_stacks": 3,
-    "effect_duration_seconds": 5
+    "effect_duration_seconds": 3
   },
   "shadowflame": {
     "price": 1350,
@@ -483,9 +484,10 @@
     "price": 1900,
     "hp": 600,
     "magic_power": 150,
-    "effect_caster_hp_percent_power": 1.0,
+    "effect_caster_hp_percent_power": 2.0,
+    "effect_vamp": 2,
     "effect_max_stacks": 3,
-    "effect_duration_seconds": 5
+    "effect_duration_seconds": 3
   },
   "radiant_shadowflame": {
     "price": 1800,

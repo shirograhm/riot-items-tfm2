@@ -71,7 +71,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | Gain bonus health equal to 50 + 80% of your Armor. |
 | **Protoplasm Harness** | 1000G | +350 HP<br>+15% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
-| **Riftmaker** | 1300G | +400 HP<br>+75 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
+| **Riftmaker** | 1300G | +400 HP<br>+75 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Rylai's Crystal Scepter** | 1350G | +250 HP<br>+125 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
 | **Serpent's Fang** | 1050G | +65 AD | Lethality: Ignore 15 armor when you deal damage to enemies.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 50 + 10% of your Attack Damage as bonus physical damage. |
 | **Shadowflame** | 1350G | +115 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |
@@ -125,7 +125,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Protector's Vow** | 1800G | +550 HP<br>+75 Armor<br>+15% Skill CDR | Gain bonus health equal to 50 + 80% of your Armor. |
 | **Radiant Protoplasm Harness** | 1600G | +700 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon’s Deathcap** | 2300G | +230 AP | Increase your total Ability Power by 35%. |
-| **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
+| **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Radiant Rylai's Crystal Scepter** | 1900G | +400 HP<br>+200 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
 | **Radiant Serpent's Fang** | 1650G | +110 AD | Lethality: Ignore 15 armor when you deal damage to enemies.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 85 + 15% of your Attack Damage as bonus physical damage. |
 | **Radiant Shadowflame** | 1800G | +210 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |
