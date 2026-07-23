@@ -45,7 +45,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Dealing magic damage to an enemy champion reduces the target's magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Bloodsong** | 1050G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
-| **Collector** | 1450G | +55 AD<br>+20% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 6% max health executes them. |
+| **Collector** | 1450G | +60 AD<br>+20% Crit Chance | Lethality: Ignore 10 armor when you deal damage to enemies.<br>Death: Damaging an enemy champion below 6% max health executes them. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 1450G | +45 AD<br>+45 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the stored damage and heals you for 45 + 15% of your missing health. |
 | **Diamond Tipped Spear** | 1500G | +35% AS<br>+10% CDR | Pierce: Gain 60 Adaptive Force.<br>Sweet Spot: Deal up to 30% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
@@ -71,7 +71,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | Gain bonus health equal to 50 + 80% of your Armor. |
 | **Protoplasm Harness** | 1000G | +350 HP<br>+15% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon’s Deathcap** | 1500G | +165 AP | Increase your total Ability Power by 20%. |
-| **Riftmaker** | 1300G | +400 HP<br>+75 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
+| **Riftmaker** | 1300G | +400 HP<br>+75 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Rylai's Crystal Scepter** | 1350G | +250 HP<br>+125 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
 | **Serpent's Fang** | 1050G | +65 AD | Lethality: Ignore 15 armor when you deal damage to enemies.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 50 + 10% of your Attack Damage as bonus physical damage. |
 | **Shadowflame** | 1350G | +115 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |
@@ -99,7 +99,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | On attack, deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Bloodsong** | 1500G | +450 HP<br>+4 HP Regen<br>+40 AP<br>+15% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
-| **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance<br>+10% Armor Pen | Damaging an enemy champion below 6% max health executes them. |
+| **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance | Lethality: Ignore 10 armor when you deal damage to enemies.<br>Death: Damaging an enemy champion below 6% max health executes them. |
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
 | **Radiant Death's Dance** | 2100G | +75 AD<br>+75 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the stored damage and heals you for 75 + 25% of your missing health. |
 | **Radiant Diamond Tipped Spear** | 2250G | +60% AS<br>+10% CDR | Pierce: Gain 100 Adaptive Force.<br>Sweet Spot: Deal up to 30% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
@@ -125,7 +125,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Protector's Vow** | 1800G | +550 HP<br>+75 Armor<br>+15% Skill CDR | Gain bonus health equal to 50 + 80% of your Armor. |
 | **Radiant Protoplasm Harness** | 1600G | +700 HP<br>+20% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon’s Deathcap** | 2300G | +230 AP | Increase your total Ability Power by 35%. |
-| **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Landing an Ability on an enemy champion grants Ability Power equal to 1% of your maximum health for 5 seconds (max 3 stacks). |
+| **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Radiant Rylai's Crystal Scepter** | 1900G | +400 HP<br>+200 AP | Dealing Ability damage slows units hit by 15% for 2 seconds. |
 | **Radiant Serpent's Fang** | 1650G | +110 AD | Lethality: Ignore 15 armor when you deal damage to enemies.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 85 + 15% of your Attack Damage as bonus physical damage. |
 | **Radiant Shadowflame** | 1800G | +210 AP<br>+15% Magic Pen | Your magic damage is 20% stronger against enemies below 30% maximum health. |

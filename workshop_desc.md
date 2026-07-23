@@ -9,7 +9,7 @@ Lastly, this mod also offers the ability to force unique item builds. Duplicates
 
 [h1] Important [/h1]
 
-This mod currently supports English, Vietnamese, Portuguese (BR), Russian, and Chinese (Simplified) locales. You can use it with other languages, but the names and descriptions of the items will be broken.
+This mod currently supports English, Vietnamese, Portuguese (BR), Russian, Chinese (Simplified), and Korean locales. You can use it with other languages, but the names and descriptions of the items will be broken.
 
 If you would like to provide translations, feel free to shoot me a message on Discord @shirograhm.
 
