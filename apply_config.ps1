@@ -927,6 +927,125 @@ $i18n.ru.radiant_serpents_fang.option = $spfRu -f $rspfLeth, $rspfFlat, $rspfPct
 $i18n.ru.collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${colThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их." -f $colLeth
 $i18n.ru.radiant_collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их." -f $rcolLeth
 
+Write-Host "Done."
+Write-Host "Updating Korean text."
+
+$i18n.ko.executioners_calling.option = "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${execDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${execHeal}% 감소<>합니다."
+$i18n.ko.oblivion_orb.option = "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${ooDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${ooHeal}% 감소<>합니다."
+$i18n.ko.morellonomicon.option = "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${morDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${morHeal}% 감소<>합니다."
+$i18n.ko.radiant_morellonomicon.option = "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${rmorDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${rmorHeal}% 감소<>합니다."
+$i18n.ko.overlords_bloodmail.option = "폭정: <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${obmAtk}%<>만큼 <$adIcon> <#ff9028ff>추가 공격력<>을 얻습니다."
+$i18n.ko.radiant_overlords_bloodmail.option = "폭정: <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${robmAtk}%<>만큼 <$adIcon> <#ff9028ff>추가 공격력<>을 얻습니다."
+$i18n.ko.night_harvester.option = "영혼 찢기: 적 챔피언에게 스킬을 적중시키면 <#a974ffff>${nhFlat}<> + <$apIcon> <#a974ffff>주문력<>의 <#a974ffff>${nhApPct}%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <#e8a800ff>${nhDur}초<> 동안 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>${nhMs}%<> 증가합니다. 대상별 재사용 대기시간은 <#e8a800ff>${nhCd}초<>입니다."
+$i18n.ko.radiant_night_harvester.option = "영혼 찢기: 적 챔피언에게 스킬을 적중시키면 <#a974ffff>${rnhFlat}<> + <$apIcon> <#a974ffff>주문력<>의 <#a974ffff>${rnhApPct}%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <#e8a800ff>${rnhDur}초<> 동안 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>${rnhMs}%<> 증가합니다. 대상별 재사용 대기시간은 <#e8a800ff>${rnhCd}초<>입니다."
+$i18n.ko.protectors_vow.option = "경외: <#60e84dff>${pvFlat}<> + <$armorIcon> <#ffdd8eff>방어력<>의 <#ffdd8eff>${pvArmorPct}%<>만큼 <#60e84dff>추가 체력<>을 얻습니다."
+$i18n.ko.radiant_protectors_vow.option = "경외: <#60e84dff>${rpvFlat}<> + <$armorIcon> <#ffdd8eff>방어력<>의 <#ffdd8eff>${rpvArmorPct}%<>만큼 <#60e84dff>추가 체력<>을 얻습니다."
+$i18n.ko.nashors_tooth.option = "이케시아의 이빨: 기본 공격 시 <#a974ffff>${ntFlat}<> + <$apIcon> <#a974ffff>주문력<>의 <#a974ffff>${ntApPct}%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다."
+$i18n.ko.radiant_nashors_tooth.option = "이케시아의 이빨: 기본 공격 시 <#a974ffff>${rntFlat}<> + <$apIcon> <#a974ffff>주문력<>의 <#a974ffff>${rntApPct}%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다."
+$i18n.ko.riftmaker.option = "주입: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>${rmDur}초<> 동안 <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rmHpPct}%<>만큼 <$apIcon> <#a974ffff>주문력<>을 얻습니다. 최대 ${rmStacks}회 중첩됩니다."
+$i18n.ko.radiant_riftmaker.option = "주입: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>${rrmDur}초<> 동안 <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rrmHpPct}%<>만큼 <$apIcon> <#a974ffff>주문력<>을 얻습니다. 최대 ${rrmStacks}회 중첩됩니다."
+$i18n.ko.shadowflame.option = "잿불꽃: <#d94c49ff>최대 체력이 ${sfThreshold}% 아래인<> 적에게 입히는 <#a974ffff>마법 피해<>가 <#e8a800ff>20% 증가<>합니다."
+$i18n.ko.radiant_shadowflame.option = "잿불꽃: <#d94c49ff>최대 체력이 ${rsfThreshold}% 아래인<> 적에게 입히는 <#a974ffff>마법 피해<>가 <#e8a800ff>20% 증가<>합니다."
+$i18n.ko.yun_tal_wildarrows.option = "치명적인 연습: <#ff9028ff>물리 피해<>를 입힐 때마다 <$critIcon> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>${ytCrit}%<> 증가하며, 최대 <$critIcon> <#d45656ff>${ytMaxCrit}%<>까지 증가합니다.`n`n연타: 기본 공격 시 <#e8a800ff>${ytDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${ytFlurryAS}%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>${ytCd}초<>입니다."
+$i18n.ko.radiant_yun_tal_wildarrows.option = "치명적인 연습: <#ff9028ff>물리 피해<>를 입힐 때마다 <$critIcon> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>${rytCrit}%<> 증가하며, 최대 <$critIcon> <#d45656ff>${rytMaxCrit}%<>까지 증가합니다.`n`n연타: 기본 공격 시 <#e8a800ff>${rytDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${rytFlurryAS}%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>${rytCd}초<>입니다."
+$i18n.ko.mortal_reminder.option = "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${mrDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${mrHeal}% 감소<>합니다."
+$i18n.ko.radiant_mortal_reminder.option = "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${rmrDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${rmrHeal}% 감소<>합니다."
+$i18n.ko.jaksho_the_protean.option = "저항력: 적 챔피언에게 피해를 받으면 <#e8a800ff>${jakDur}초<> 동안 <$armorIcon> <#ffdd8eff>방어력<>과 <$mrIcon> <#88ccffff>마법 저항력<>이 각각 <#ffdd8eff>${jakDefMult}%<> 및 <#88ccffff>${jakMrMult}%<> 증가합니다. 최대 ${jakStacks}회 중첩됩니다."
+$i18n.ko.radiant_jaksho_the_protean.option = "저항력: 적 챔피언에게 피해를 받으면 <#e8a800ff>${rjakDur}초<> 동안 <$armorIcon> <#ffdd8eff>방어력<>과 <$mrIcon> <#88ccffff>마법 저항력<>이 각각 <#ffdd8eff>${rjakDefMult}%<> 및 <#88ccffff>${rjakMrMult}%<> 증가합니다. 최대 ${rjakStacks}회 중첩됩니다."
+$i18n.ko.frozen_mallet.option = "빙결: 기본 공격 시 <#e8a800ff>${fmDur}초<> 동안 <#d94c49ff>${fmSlow}% 둔화<>시킵니다."
+$i18n.ko.radiant_frozen_mallet.option = "빙결: 기본 공격 시 <#ff9028ff>${rfmFlat}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rfmHpPct}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>${rfmDur}초<> 동안 <#d94c49ff>${rfmSlow}% 둔화<>시킵니다."
+$i18n.ko.rylais_crystal_scepter.option = "서리: 스킬 피해를 입히면 <#e8a800ff>${rcsDur}초<> 동안 <#d94c49ff>${rcsSlow}% 둔화<>시킵니다."
+$i18n.ko.radiant_rylais_crystal_scepter.option = "서리: 스킬 피해를 입히면 <#e8a800ff>${rrcsDur}초<> 동안 <#d94c49ff>${rrcsSlow}% 둔화<>시킵니다."
+$i18n.ko.experimental_hexplate.option = "과충전: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>${hexUltCdr}%<> 증가합니다."
+$i18n.ko.radiant_experimental_hexplate.option = "과충전: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>${rhexUltCdr}%<> 증가합니다."
+$i18n.ko.guinsoos_rageblade.option = "분노: 기본 공격이 <#a974ffff>${gbDmg}의 추가 마법 피해<>를 입힙니다.`n`n들끓는 일격: 기본 공격 시 <#e8a800ff>${gbDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${gbSpeed}%<> 증가합니다. 최대 ${gbStacks}회 중첩됩니다."
+$i18n.ko.radiant_guinsoos_rageblade.option = "분노: 기본 공격이 <#a974ffff>${rgbDmg}의 추가 마법 피해<>를 입힙니다.`n`n들끓는 일격: 기본 공격 시 <#e8a800ff>${rgbDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${rgbSpeed}%<> 증가합니다. 최대 ${rgbStacks}회 중첩됩니다."
+$i18n.ko.wits_end.option = "난투: 기본 공격 시 <#a974ffff>${weDmg}의 추가 마법 피해<>를 입힙니다."
+$i18n.ko.radiant_wits_end.option = "난투: 기본 공격 시 <#a974ffff>${rweDmg}의 추가 마법 피해<>를 입힙니다."
+$i18n.ko.kraken_slayer.option = "무너뜨리기: 세 번째 기본 공격마다 <#ff9028ff>${ksDmg}의 추가 물리 피해<>를 입힙니다. 이 피해는 대상이 <#60e84dff>잃은 체력<>에 비례해 최대 <#ff9028ff>${ksBonus}%<>까지 증가하며, 대상의 체력이 <#60e84dff>${ksThresh}%<>일 때 최대치에 도달합니다."
+$i18n.ko.radiant_kraken_slayer.option = "무너뜨리기: 세 번째 기본 공격마다 <#ff9028ff>${rksDmg}의 추가 물리 피해<>를 입힙니다. 이 피해는 대상이 <#60e84dff>잃은 체력<>에 비례해 최대 <#ff9028ff>${rksBonus}%<>까지 증가하며, 대상의 체력이 <#60e84dff>${rksThresh}%<>일 때 최대치에 도달합니다."
+$i18n.ko.atmas_reckoning.option = "큰손: <$hpIcon> <#60e84dff>최대 체력<> <#60e84dff>${arHp}<>마다 <$critIcon> <#d45656ff>치명타 확률 ${arCrit}%<>를 얻으며, 최대 <$critIcon> <#d45656ff>${arCap}%<>까지 증가합니다."
+$i18n.ko.radiant_atmas_reckoning.option = "큰손: <$hpIcon> <#60e84dff>최대 체력<> <#60e84dff>${rarHp}<>마다 <$critIcon> <#d45656ff>치명타 확률 ${rarCrit}%<>를 얻으며, 최대 <$critIcon> <#d45656ff>${rarCap}%<>까지 증가합니다."
+$i18n.ko.lord_dominiks_regards.option = "거인 학살자: 대상이 보유한 <$hpIcon> <#60e84dff>최대 체력 ${ldrHp}<>마다 <#ff9028ff>${ldrPct}%의 추가 피해<>를 입히며, 최대 <#ff9028ff>${ldrMax}%<>까지 증가합니다."
+$i18n.ko.radiant_lord_dominiks_regards.option = "거인 학살자: 대상이 보유한 <$hpIcon> <#60e84dff>최대 체력 ${rldrHp}<>마다 <#ff9028ff>${rldrPct}%의 추가 피해<>를 입히며, 최대 <#ff9028ff>${rldrMax}%<>까지 증가합니다."
+$i18n.ko.blackfire_torch.option = "악의: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>${bftDur}초<> 동안 <$apIcon> <#a974ffff>주문력<>을 <#a974ffff>${bftPower}<> 얻습니다. 최대 ${bftStacks}회 중첩됩니다."
+$i18n.ko.radiant_blackfire_torch.option = "악의: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>${rbftDur}초<> 동안 <$apIcon> <#a974ffff>주문력<>을 <#a974ffff>${rbftPower}<> 얻습니다. 최대 ${rbftStacks}회 중첩됩니다."
+$i18n.ko.blade_of_the_ruined_king.option = "안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 ${borkPct}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>${borkCap}의 물리 피해<>를 입힙니다."
+$i18n.ko.radiant_blade_of_the_ruined_king.option = "안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 ${rborkPct}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>${rborkCap}의 물리 피해<>를 입힙니다."
+$i18n.ko.deathblade.option = "정점: 총 <$adIcon> <#ff9028ff>공격력<>이 <#ff9028ff>${dbMult}%<> 증가합니다."
+$i18n.ko.radiant_deathblade.option = "정점: 총 <$adIcon> <#ff9028ff>공격력<>이 <#ff9028ff>${rdbMult}%<> 증가합니다."
+$i18n.ko.deaths_dance.option = "고통 무시: 받는 피해의 <#e8a800ff>${ddDelay}%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${ddBurnCap}%<>를 넘지 않습니다.`n`n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <#60e84dff>${ddFlatHeal}<> + <#60e84dff>잃은 체력의 ${ddHeal}%<>만큼 체력을 회복합니다."
+$i18n.ko.radiant_deaths_dance.option = "고통 무시: 받는 피해의 <#e8a800ff>${rddDelay}%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rddBurnCap}%<>를 넘지 않습니다.`n`n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <#60e84dff>${rddFlatHeal}<> + <#60e84dff>잃은 체력의 ${rddHeal}%<>만큼 체력을 회복합니다."
+$i18n.ko.rabadons_deathcap.option = "대작: 총 <$apIcon> <#a974ffff>주문력<>이 <#a974ffff>${rabMult}%<> 증가합니다."
+$i18n.ko.radiant_rabadons_deathcap.option = "대작: 총 <$apIcon> <#a974ffff>주문력<>이 <#a974ffff>${radRabMult}%<> 증가합니다."
+
+$mbIllusionKo = "환영: <$forceIcon> <#d48294ff>적응형 능력치<>를 <#d48294ff>{0}<> 얻습니다. <$forceIcon> 적응형 능력치 1당 더 높은 능력치에 따라 <$adIcon> <#ff9028ff>공격력 0.6<> 또는 <$apIcon> <#a974ffff>주문력 1<>을 얻습니다.`n`n잔상: 적을 처치하면 <#e8a800ff>{2}초<> 동안 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>{1}%<> 증가합니다."
+$i18n.ko.mirage_blade.option = $mbIllusionKo -f $mbForce, $mbMoveSpeed, $mbDuration
+$i18n.ko.radiant_mirage_blade.option = $mbIllusionKo -f $rmbForce, $rmbMoveSpeed, $rmbDuration
+$dtsPierceKo = "관통: <$forceIcon> <#d48294ff>적응형 능력치<>를 <#d48294ff>{0}<> 얻습니다. <$forceIcon> 적응형 능력치 1당 더 높은 능력치에 따라 <$adIcon> <#ff9028ff>공격력 0.6<> 또는 <$apIcon> <#a974ffff>주문력 1<>을 얻습니다.`n`n최적 거리: 적 챔피언과의 거리에 따라 최대 <#e8a800ff>{1}%의 추가 피해<>를 입힙니다. <$rangeIcon> <#ff86c2ff>사거리 {2}<>에서 효과가 최대가 됩니다."
+$i18n.ko.diamond_tipped_spear.option = $dtsPierceKo -f $dtsForce, $dtsPct, $dtsDist
+$i18n.ko.radiant_diamond_tipped_spear.option = $dtsPierceKo -f $rdtsForce, $rdtsPct, $rdtsDist
+$zekAuraKo = "오라: <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 모든 아군 챔피언에게 <$forceIcon> <#d48294ff>적응형 능력치 {0}<>과 <$vampIcon> <#b7462dff>모든 피해 흡혈 {2}%<>를 부여합니다."
+$i18n.ko.zekes_herald.option = $zekAuraKo -f $zekForce, $zekDist, $zekVamp
+$i18n.ko.radiant_zekes_herald.option = $zekAuraKo -f $rzekForce, $rzekDist, $rzekVamp
+$ssBullseyeKo = "정조준: 적 챔피언에게 피해를 입히면 <#a974ffff>{0}의 추가 마법 피해<>를 입힙니다. 재사용 대기시간은 <#e8a800ff>{1}초<>입니다."
+$i18n.ko.scouts_slingshot.option = $ssBullseyeKo -f $ssDmg, $ssCd
+$litSufferingKo = "고통: 스킬 피해를 입히면 적을 불태워 <#e8a800ff>{1}초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 {0}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 매 피해마다 최대 <#a974ffff>{2}의 마법 피해<>를 입힙니다."
+$i18n.ko.liandrys_torment.option = $litSufferingKo -f $litHp, $litDur, $litCap
+$i18n.ko.radiant_liandrys_torment.option = $litSufferingKo -f $rlitHp, $rlitDur, $rlitCap
+$i18n.ko.spirit_visage.option = "활력: 받는 모든 <#60e84dff>회복 효과<>가 <#60e84dff>${svHeal}%<> 증가합니다."
+$i18n.ko.radiant_spirit_visage.option = "활력: 받는 모든 <#60e84dff>회복 효과<>가 <#60e84dff>${rsvHeal}%<> 증가합니다."
+$i18n.ko.unending_despair.option = "고뇌: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>${udFlat}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${udHpPct}%<>만큼 체력을 회복합니다."
+$i18n.ko.radiant_unending_despair.option = "고뇌: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>${rudFlat}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rudHpPct}%<>만큼 체력을 회복합니다."
+$i18n.ko.protoplasm_harness.option = "요새화: <#d94c49ff>체력이 ${phThreshold}% 아래로 내려가면<> <#e8a800ff>${phDur}초<> 동안 <#60e84dff>${phFlat}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${phHpPct}%<>만큼 <#60e84dff>추가 체력<>을 얻고, 그 절반만큼 <#60e84dff>체력을 회복<>합니다. 재사용 대기시간은 <#e8a800ff>${phCd}초<>입니다."
+$i18n.ko.radiant_protoplasm_harness.option = "요새화: <#d94c49ff>체력이 ${rphThreshold}% 아래로 내려가면<> <#e8a800ff>${rphDur}초<> 동안 <#60e84dff>${rphFlat}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rphHpPct}%<>만큼 <#60e84dff>추가 체력<>을 얻고, 그 절반만큼 <#60e84dff>체력을 회복<>합니다. 재사용 대기시간은 <#e8a800ff>${rphCd}초<>입니다."
+$i18n.ko.terminus.option = "병치: 기본 공격 시 <#e8a800ff>${tDur}초<> 동안 <$armorPenIcon> <#ffdd8eff>방어구 관통력 ${tArmorPen}%<> 또는 <$magicPenIcon> <#88ccffff>마법 관통력 ${tMagicPen}%<>를 번갈아 얻습니다. 각각 최대 ${tStacks}회 중첩됩니다."
+$i18n.ko.radiant_terminus.option = "병치: 기본 공격 시 <#e8a800ff>${rtDur}초<> 동안 <$armorPenIcon> <#ffdd8eff>방어구 관통력 ${rtArmorPen}%<> 또는 <$magicPenIcon> <#88ccffff>마법 관통력 ${rtMagicPen}%<>를 번갈아 얻습니다. 각각 최대 ${rtStacks}회 중첩됩니다."
+$i18n.ko.heartsteel.option = "강철의 심장: <#e8a800ff>${hsCd}초<>마다 다음 기본 공격이 <#ff9028ff>${hsFlat}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${hsHpPct}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>${hsBonusHpPct}%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다."
+$i18n.ko.radiant_heartsteel.option = "강철의 심장: <#e8a800ff>${rhsCd}초<>마다 다음 기본 공격이 <#ff9028ff>${rhsFlat}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rhsHpPct}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>${rhsBonusHpPct}%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다."
+$i18n.ko.spear_of_shojin.option = "집중된 의지: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>${sosDur}초<> 동안 <$adIcon> <#ff9028ff>공격력<>이 <#ff9028ff>${sosAtkMult}%<> 증가합니다. 최대 ${sosStacks}회 중첩됩니다."
+$i18n.ko.radiant_spear_of_shojin.option = "집중된 의지: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>${rsosDur}초<> 동안 <$adIcon> <#ff9028ff>공격력<>이 <#ff9028ff>${rsosAtkMult}%<> 증가합니다. 최대 ${rsosStacks}회 중첩됩니다."
+$i18n.ko.warmogs_armor.option = "워모그의 심장: 매초 <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${waHeal}%<>를 회복하며, 최근 <#e8a800ff>${waDur}초<> 동안 피해를 받지 않았다면 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>${waMs}%<> 증가합니다."
+$i18n.ko.radiant_warmogs_armor.option = "워모그의 심장: 매초 <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rwaHeal}%<>를 회복하며, 최근 <#e8a800ff>${rwaDur}초<> 동안 피해를 받지 않았다면 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>${rwaMs}%<> 증가합니다."
+$i18n.ko.stormrazor.option = "충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>${srStacks}<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.`n`n벼락: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 <#a974ffff>${srDmg}의 추가 마법 피해<>를 입히고, <#e8a800ff>${srDur}초<> 동안 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>${srMs}%<> 증가합니다."
+$i18n.ko.radiant_stormrazor.option = "충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>${rsrStacks}<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.`n`n벼락: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 <#a974ffff>${rsrDmg}의 추가 마법 피해<>를 입히고, <#e8a800ff>${rsrDur}초<> 동안 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>${rsrMs}%<> 증가합니다."
+$i18n.ko.black_cleaver.option = "깎아내기: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${bcDur}초<> 동안 대상의 <$armorIcon> <#ffdd8eff>방어력<>이 <#d94c49ff>${bcShred}% 감소<>합니다. 최대 ${bcStacks}회 중첩됩니다."
+$i18n.ko.radiant_black_cleaver.option = "깎아내기: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${rbcDur}초<> 동안 대상의 <$armorIcon> <#ffdd8eff>방어력<>이 <#d94c49ff>${rbcShred}% 감소<>합니다. 최대 ${rbcStacks}회 중첩됩니다."
+$i18n.ko.bloodletters_curse.option = "부식: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${blcDur}초<> 동안 대상의 <$mrIcon> <#88ccffff>마법 저항력<>이 <#d94c49ff>${blcShred}% 감소<>합니다. 최대 ${blcStacks}회 중첩됩니다."
+$i18n.ko.radiant_bloodletters_curse.option = "부식: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${rblcDur}초<> 동안 대상의 <$mrIcon> <#88ccffff>마법 저항력<>이 <#d94c49ff>${rblcShred}% 감소<>합니다. 최대 ${rblcStacks}회 중첩됩니다."
+$i18n.ko.sundered_sky.option = "빛의 방패 일격: 적 챔피언에게 가하는 다음 <#ff9028ff>물리 피해<>가 <$critIcon> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>${ssDamage}%의 추가 피해<>를 입히고, <#60e84dff>${ssFlatHeal}<> + <#60e84dff>잃은 체력<>의 <#60e84dff>${ssPercentHeal}%<>만큼 체력을 <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>${ssOnHitCD}초<>입니다."
+$i18n.ko.radiant_sundered_sky.option = "빛의 방패 일격: 적 챔피언에게 가하는 다음 <#ff9028ff>물리 피해<>가 <$critIcon> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>${rssDamage}%의 추가 피해<>를 입히고, <#60e84dff>${rssFlatHeal}<> + <#60e84dff>잃은 체력<>의 <#60e84dff>${rssPercentHeal}%<>만큼 체력을 <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>${rssOnHitCD}초<>입니다."
+$i18n.ko.echoes_of_helia.option = "영혼 착취: 주고받은 피해의 <#e8a800ff>${eohConversion}%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <$levelIcon> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<>까지 저장합니다. 적 챔피언에게 스킬을 적중시키면 모든 <#92dc7bff>영혼 충전량<>을 소모해 가장 가까운 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
+$i18n.ko.radiant_echoes_of_helia.option = "영혼 착취: 주고받은 피해의 <#e8a800ff>${reohConversion}%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <$levelIcon> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<>까지 저장합니다. 적 챔피언에게 스킬을 적중시키면 모든 <#92dc7bff>영혼 충전량<>을 소모해 가장 가까운 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
+
+$i18n.ko.sheen.option = "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>${sheenMin}<>~<#d8c9b3ff>${sheenMax}<>의 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>${sheenCd}초<>)"
+
+$tfTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#ff9028ff>{0}<> + <$adIcon> <#ff9028ff>공격력의 {1}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>)"
+$i18n.ko.trinity_force.option = $tfTemplateKo -f $tfFlat, $tfAdPct, $tfCd
+$i18n.ko.radiant_trinity_force.option = $tfTemplateKo -f $rtfFlat, $rtfAdPct, $rtfCd
+
+$dndTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <$apIcon> <#60e84dff>주문력의 {2}%<>와 <$hpIcon> <#60e84dff>최대 체력의 {3}%<>만큼 <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>{4}초<>)"
+$i18n.ko.dusk_and_dawn.option = $dndTemplateKo -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
+$i18n.ko.radiant_dusk_and_dawn.option = $dndTemplateKo -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
+
+$bsTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>{0}<>~<#d8c9b3ff>{1}<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>) 대상이 챔피언이면 <#e8a800ff>{4}초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>{3}%<> 증가합니다."
+$i18n.ko.bloodsong.option = $bsTemplateKo -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
+$i18n.ko.radiant_bloodsong.option = $bsTemplateKo -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+
+$lethKo = "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>{0} <$armorIcon> 방어력<>을 무시합니다."
+$i18n.ko.serrated_dirk.option = $lethKo -f $sdLeth
+$hubKo = "$lethKo`n`n명성: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>{3}초<> 동안 <#ff9028ff>{1}<> + 중첩당 <#ff9028ff>{2}<>의 <$adIcon> <#ff9028ff>추가 공격력<>을 얻습니다."
+$i18n.ko.hubris.option = $hubKo -f $hubLeth, $hubBase, $hubStack, $hubDur
+$i18n.ko.radiant_hubris.option = $hubKo -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
+$bbKo = "$lethKo`n`n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>{3}초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>{1}<> + <$adIcon> <#ff9028ff>공격력의 {2}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+$i18n.ko.bastionbreaker.option = $bbKo -f $bbLeth, $bbFlat, $bbPct, $bbDur
+$i18n.ko.radiant_bastionbreaker.option = $bbKo -f $rbbLeth, $rbbFlat, $rbbPct, $rbbDur
+$spfKo = "$lethKo`n`n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>{1}<> + <$adIcon> <#ff9028ff>공격력의 {2}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+$i18n.ko.serpents_fang.option = $spfKo -f $spfLeth, $spfFlat, $spfPct
+$i18n.ko.radiant_serpents_fang.option = $spfKo -f $rspfLeth, $rspfFlat, $rspfPct
+$i18n.ko.collector.option = "$lethKo`n`n죽음: <$hpIcon> <#60e84dff>최대 체력<>이 <#60e84dff>${colThreshold}%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다." -f $colLeth
+$i18n.ko.radiant_collector.option = "$lethKo`n`n죽음: <$hpIcon> <#60e84dff>최대 체력<>이 <#60e84dff>${rcolThreshold}%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다." -f $rcolLeth
+
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
 [System.IO.File]::WriteAllText($i18nPath, $i18nJson)

@@ -425,11 +425,11 @@
         },
         "collector": {
             "name": "Collector",
-            "option": "Death: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+            "option": "Lethality: Ignore <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nDeath: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
         },
         "radiant_collector": {
             "name": "Radiant Collector",
-            "option": "Death: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+            "option": "Lethality: Ignore <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nDeath: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
         },
         "heartsteel": {
             "name": "Heartsteel",
@@ -1054,11 +1054,11 @@
         },
         "collector": {
             "name": "Súng Hải Tặc",
-            "option": "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
         },
         "radiant_collector": {
             "name": "Súng Hải Tặc Ánh Sáng",
-            "option": "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
         },
         "heartsteel": {
             "name": "Tâm Thép",
@@ -1683,11 +1683,11 @@
         },
         "collector": {
             "name": "收集者",
-            "option": "死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
         },
         "radiant_collector": {
             "name": "光明版收集者",
-            "option": "死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
+            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
         },
         "heartsteel": {
             "name": "心之钢",
@@ -2312,11 +2312,11 @@
         },
         "collector": {
             "name": "A Coletora",
-            "option": "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
         },
         "radiant_collector": {
             "name": "A Coletora Radiante",
-            "option": "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
         },
         "heartsteel": {
             "name": "Coração de Aço",
@@ -2941,11 +2941,11 @@
         },
         "collector": {
             "name": "Сборщик Долгов",
-            "option": "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
+            "option": "Летальность: Игнорирует <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
         },
         "radiant_collector": {
             "name": "Лучезарный Сборщик Долгов",
-            "option": "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
+            "option": "Летальность: Игнорирует <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
         },
         "heartsteel": {
             "name": "Сердце Стали",
@@ -3142,6 +3142,635 @@
         "radiant_serpents_fang": {
             "name": "Лучезарный Клык змея",
             "option": "Летальность: Игнорирует <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>85<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+        }
+    },
+    "ko": {
+        "category": {
+            "all": "전체",
+            "ad": "공격력",
+            "attack_speed": "공격 속도",
+            "defense": "방어력",
+            "magic_resistance": "마법 저항력",
+            "magic": "주문력",
+            "hp": "체력"
+        },
+        "info": {
+            "tier": "등급",
+            "price": "가격",
+            "stat": "능력치",
+            "option": "효과"
+        },
+        "tier_header": {
+            "1": "1등급",
+            "2": "2등급",
+            "3": "3등급",
+            "4": "4등급",
+            "5": "5등급"
+        },
+        "related": {
+            "sub_items": "조합 재료",
+            "upper_items": "상위 아이템"
+        },
+        "tier": "{Tier}등급",
+        "spec": {
+            "attack": "<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력 {Value}",
+            "magic_power": "<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력 {Value}",
+            "defence": "<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력 {Value}",
+            "hp": "<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 체력 {Value}",
+            "magic_resistance": "<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 마법 저항력 {Value}",
+            "vamp": "<i#asset/base/ui/banpick/champion_stat_icon:vamp_0> 모든 피해 흡혈 {Value}%",
+            "hp_mult": "\n성장: 최대 체력이 총 {Value}% 증가합니다.",
+            "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> 이동 속도 {Value}%",
+            "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> 공격 속도 {Value}%",
+            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 재사용 대기시간 감소 {Value}%",
+            "range": "사거리 +{Value}",
+            "defence_mult": "\n두 번째 피부: 방어력이 총 {Value}% 증가합니다.",
+            "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어구 관통력 {Value}%",
+            "magic_resistance_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> 마법 관통력 {Value}%",
+            "heal_reduce": "회복량 감소 +{Value}%",
+            "shield_break": "\n분쇄: 입힌 피해가 대상의 보호막을 {Value}% 파괴합니다.",
+            "attack_enemy_hp_ratio": "기본 공격 대상 체력 비례 피해 +{Value}%",
+            "skill_enemy_hp_ratio": "스킬 대상 체력 비례 피해 +{Value}%",
+            "attack_my_hp_ratio": "기본 공격 내 체력 비례 피해 +{Value}%",
+            "reflect": "피해 반사 +{Value}%",
+            "dot_amplify": "지속 피해 증폭 +{Value}%",
+            "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 재생 {Value}",
+            "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률 {Value}%",
+            "base_attack_damaged_reduce": "\n판금: 기본 공격으로 받는 피해가 <#e8a800ff>{Value}%<> 감소합니다.",
+            "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> 스킬 피해 감소 {Value}%",
+            "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> 강인함 {Value}%"
+        },
+        "ironsword": {
+            "name": "롱소드",
+            "option": ""
+        },
+        "soldiers_longsword": {
+            "name": "곡괭이",
+            "option": ""
+        },
+        "ruinous_blade": {
+            "name": "흡혈의 낫",
+            "option": ""
+        },
+        "conquerors_greatsword": {
+            "name": "피바라기",
+            "option": ""
+        },
+        "warlords_final_judgement": {
+            "name": "찬란한 피바라기",
+            "option": ""
+        },
+        "dagger": {
+            "name": "단검",
+            "option": ""
+        },
+        "wind_dagger": {
+            "name": "곡궁",
+            "option": ""
+        },
+        "twin_stormblade": {
+            "name": "열정의 검",
+            "option": ""
+        },
+        "thunderclaw": {
+            "name": "유령 무희",
+            "option": ""
+        },
+        "storm_sovereign": {
+            "name": "찬란한 유령 무희",
+            "option": ""
+        },
+        "steel_armor": {
+            "name": "천 갑옷",
+            "option": ""
+        },
+        "gatekeepers_armor": {
+            "name": "쇠사슬 조끼",
+            "option": ""
+        },
+        "black_knights_heavy_plate": {
+            "name": "덤불 조끼",
+            "option": ""
+        },
+        "eternal_iron_plate": {
+            "name": "가시 갑옷",
+            "option": ""
+        },
+        "impregnable_fortress": {
+            "name": "찬란한 가시 갑옷",
+            "option": "가시: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
+        },
+        "mystic_cloak": {
+            "name": "마법무효화의 망토",
+            "option": ""
+        },
+        "night_hood": {
+            "name": "음전자 망토",
+            "option": ""
+        },
+        "dusk_raven": {
+            "name": "망령의 두건",
+            "option": ""
+        },
+        "souls_edge": {
+            "name": "용의 발톱",
+            "option": ""
+        },
+        "veil_of_annihilation": {
+            "name": "찬란한 용의 발톱",
+            "option": ""
+        },
+        "arcane_crystal": {
+            "name": "증폭의 고서",
+            "option": ""
+        },
+        "spirit_crystal": {
+            "name": "방출의 마법봉",
+            "option": ""
+        },
+        "staff_of_rapture": {
+            "name": "사라진 양피지",
+            "option": ""
+        },
+        "angels_fang": {
+            "name": "루덴의 폭풍",
+            "option": ""
+        },
+        "prophet_of_the_abyss": {
+            "name": "찬란한 루덴의 폭풍",
+            "option": ""
+        },
+        "vital_orb": {
+            "name": "루비 수정",
+            "option": ""
+        },
+        "hardened_heart": {
+            "name": "점화석",
+            "option": ""
+        },
+        "ring_of_reincarnation": {
+            "name": "거인의 허리띠",
+            "option": "회복: 매초 <#60e84dff>{Flat}의 체력<>을 회복합니다."
+        },
+        "warmogs_armor": {
+            "name": "워모그의 갑옷",
+            "option": "워모그의 심장: 매초 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>3%<>를 회복하며, 최근 <#e8a800ff>6초<> 동안 피해를 받지 않았다면 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>4%<> 증가합니다."
+        },
+        "radiant_warmogs_armor": {
+            "name": "찬란한 워모그의 갑옷",
+            "option": "워모그의 심장: 매초 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>3%<>를 회복하며, 최근 <#e8a800ff>6초<> 동안 피해를 받지 않았다면 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>4%<> 증가합니다."
+        },
+        "hourglass_of_eternity": {
+            "name": "태양불꽃 망토",
+            "option": "회복: 매초 <#60e84dff>{Flat}의 체력<>을 회복합니다."
+        },
+        "giants_horn_shard": {
+            "name": "찬란한 태양불꽃 망토",
+            "option": "회복: 매초 <#60e84dff>{RegenFlat}의 체력<>을 회복합니다.\n\n경멸: <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>{DmgFlat}<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>{DmgRatio}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+        },
+        "bf_sword": {
+            "name": "B.F. 대검",
+            "option": ""
+        },
+        "phage": {
+            "name": "탐식의 망치",
+            "option": ""
+        },
+        "haunting_guise": {
+            "name": "기괴한 가면",
+            "option": ""
+        },
+        "infinity_edge": {
+            "name": "무한의 대검",
+            "option": ""
+        },
+        "radiant_infinity_edge": {
+            "name": "찬란한 무한의 대검",
+            "option": ""
+        },
+        "black_cleaver": {
+            "name": "칠흑의 양날 도끼",
+            "option": "깎아내기: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>이 <#d94c49ff>6% 감소<>합니다. 최대 5회 중첩됩니다."
+        },
+        "radiant_black_cleaver": {
+            "name": "찬란한 칠흑의 양날 도끼",
+            "option": "깎아내기: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>이 <#d94c49ff>6% 감소<>합니다. 최대 5회 중첩됩니다."
+        },
+        "bloodletters_curse": {
+            "name": "핏빛 저주",
+            "option": "부식: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>이 <#d94c49ff>6% 감소<>합니다. 최대 5회 중첩됩니다."
+        },
+        "radiant_bloodletters_curse": {
+            "name": "찬란한 핏빛 저주",
+            "option": "부식: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>이 <#d94c49ff>6% 감소<>합니다. 최대 5회 중첩됩니다."
+        },
+        "deathblade": {
+            "name": "죽음의 검",
+            "option": "정점: 총 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>이 <#ff9028ff>15%<> 증가합니다."
+        },
+        "radiant_deathblade": {
+            "name": "찬란한 죽음의 검",
+            "option": "정점: 총 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>이 <#ff9028ff>25%<> 증가합니다."
+        },
+        "deaths_dance": {
+            "name": "죽음의 무도",
+            "option": "고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <#60e84dff>45<> + <#60e84dff>잃은 체력의 15%<>만큼 체력을 회복합니다."
+        },
+        "radiant_deaths_dance": {
+            "name": "찬란한 죽음의 무도",
+            "option": "고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <#60e84dff>75<> + <#60e84dff>잃은 체력의 25%<>만큼 체력을 회복합니다."
+        },
+        "needlessly_large_rod": {
+            "name": "쓸데없이 큰 지팡이",
+            "option": ""
+        },
+        "rabadons_deathcap": {
+            "name": "라바돈의 죽음모자",
+            "option": "대작: 총 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>20%<> 증가합니다."
+        },
+        "radiant_rabadons_deathcap": {
+            "name": "찬란한 라바돈의 죽음모자",
+            "option": "대작: 총 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>35%<> 증가합니다."
+        },
+        "protectors_vow": {
+            "name": "수호자의 맹세",
+            "option": "경외: <#60e84dff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>의 <#ffdd8eff>80%<>만큼 <#60e84dff>추가 체력<>을 얻습니다."
+        },
+        "radiant_protectors_vow": {
+            "name": "찬란한 수호자의 맹세",
+            "option": "경외: <#60e84dff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>의 <#ffdd8eff>80%<>만큼 <#60e84dff>추가 체력<>을 얻습니다."
+        },
+        "protoplasm_harness": {
+            "name": "원형질 안전벨트",
+            "option": "요새화: <#d94c49ff>체력이 40% 아래로 내려가면<> <#e8a800ff>6초<> 동안 <#60e84dff>300<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>25%<>만큼 <#60e84dff>추가 체력<>을 얻고, 그 절반만큼 <#60e84dff>체력을 회복<>합니다. 재사용 대기시간은 <#e8a800ff>30초<>입니다."
+        },
+        "radiant_protoplasm_harness": {
+            "name": "찬란한 원형질 안전벨트",
+            "option": "요새화: <#d94c49ff>체력이 40% 아래로 내려가면<> <#e8a800ff>6초<> 동안 <#60e84dff>600<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>25%<>만큼 <#60e84dff>추가 체력<>을 얻고, 그 절반만큼 <#60e84dff>체력을 회복<>합니다. 재사용 대기시간은 <#e8a800ff>30초<>입니다."
+        },
+        "frozen_mallet": {
+            "name": "얼어붙은 망치",
+            "option": "빙결: 기본 공격 시 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
+        },
+        "radiant_frozen_mallet": {
+            "name": "찬란한 얼어붙은 망치",
+            "option": "빙결: 기본 공격 시 <#ff9028ff>20<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>3%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
+        },
+        "riftmaker": {
+            "name": "균열 생성기",
+            "option": "주입: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 얻습니다. 최대 3회 중첩됩니다."
+        },
+        "radiant_riftmaker": {
+            "name": "찬란한 균열 생성기",
+            "option": "주입: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 얻습니다. 최대 3회 중첩됩니다."
+        },
+        "shadowflame": {
+            "name": "그림자불꽃",
+            "option": "잿불꽃: <#d94c49ff>최대 체력이 30% 아래인<> 적에게 입히는 <#a974ffff>마법 피해<>가 <#e8a800ff>20% 증가<>합니다."
+        },
+        "radiant_shadowflame": {
+            "name": "찬란한 그림자불꽃",
+            "option": "잿불꽃: <#d94c49ff>최대 체력이 30% 아래인<> 적에게 입히는 <#a974ffff>마법 피해<>가 <#e8a800ff>20% 증가<>합니다."
+        },
+        "yun_tal_wildarrows": {
+            "name": "윤 탈 야생화살",
+            "option": "치명적인 연습: <#ff9028ff>물리 피해<>를 입힐 때마다 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n연타: 기본 공격 시 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>30%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>15초<>입니다."
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "찬란한 윤 탈 야생화살",
+            "option": "치명적인 연습: <#ff9028ff>물리 피해<>를 입힐 때마다 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n연타: 기본 공격 시 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>30%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>15초<>입니다."
+        },
+        "unending_despair": {
+            "name": "끝없는 절망",
+            "option": "고뇌: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>35<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 체력을 회복합니다."
+        },
+        "radiant_unending_despair": {
+            "name": "찬란한 끝없는 절망",
+            "option": "고뇌: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>만큼 체력을 회복합니다."
+        },
+        "blade_of_the_ruined_king": {
+            "name": "몰락한 왕의 검",
+            "option": "안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 5%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>50의 물리 피해<>를 입힙니다."
+        },
+        "radiant_blade_of_the_ruined_king": {
+            "name": "찬란한 몰락한 왕의 검",
+            "option": "안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 5%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>50의 물리 피해<>를 입힙니다."
+        },
+        "blackfire_torch": {
+            "name": "어둠불꽃 횃불",
+            "option": "악의: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>10<> 얻습니다. 최대 4회 중첩됩니다."
+        },
+        "radiant_blackfire_torch": {
+            "name": "찬란한 어둠불꽃 횃불",
+            "option": "악의: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>30<> 얻습니다. 최대 4회 중첩됩니다."
+        },
+        "executioners_calling": {
+            "name": "처형인의 대검",
+            "option": "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 25% 감소<>합니다."
+        },
+        "mortal_reminder": {
+            "name": "필멸자의 운명",
+            "option": "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
+        },
+        "radiant_mortal_reminder": {
+            "name": "찬란한 필멸자의 운명",
+            "option": "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
+        },
+        "last_whisper": {
+            "name": "최후의 속삭임",
+            "option": ""
+        },
+        "lord_dominiks_regards": {
+            "name": "도미닉 경의 인사",
+            "option": "거인 학살자: 대상이 보유한 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력 1000<>마다 <#ff9028ff>3%의 추가 피해<>를 입히며, 최대 <#ff9028ff>15%<>까지 증가합니다."
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "찬란한 도미닉 경의 인사",
+            "option": "거인 학살자: 대상이 보유한 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력 1000<>마다 <#ff9028ff>3%의 추가 피해<>를 입히며, 최대 <#ff9028ff>15%<>까지 증가합니다."
+        },
+        "experimental_hexplate": {
+            "name": "실험적 마공학판",
+            "option": "과충전: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>15%<> 증가합니다."
+        },
+        "radiant_experimental_hexplate": {
+            "name": "찬란한 실험적 마공학판",
+            "option": "과충전: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>25%<> 증가합니다."
+        },
+        "nashors_tooth": {
+            "name": "내셔의 이빨",
+            "option": "이케시아의 이빨: 기본 공격 시 <#a974ffff>35<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>3%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다."
+        },
+        "radiant_nashors_tooth": {
+            "name": "찬란한 내셔의 이빨",
+            "option": "이케시아의 이빨: 기본 공격 시 <#a974ffff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>5%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다."
+        },
+        "jaksho_the_protean": {
+            "name": "해신 작쇼",
+            "option": "저항력: 적 챔피언에게 피해를 받으면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>과 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>이 각각 <#ffdd8eff>6%<> 및 <#88ccffff>6%<> 증가합니다. 최대 4회 중첩됩니다."
+        },
+        "radiant_jaksho_the_protean": {
+            "name": "찬란한 해신 작쇼",
+            "option": "저항력: 적 챔피언에게 피해를 받으면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>과 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>이 각각 <#ffdd8eff>10%<> 및 <#88ccffff>10%<> 증가합니다. 최대 4회 중첩됩니다."
+        },
+        "terminus": {
+            "name": "경계",
+            "option": "병치: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
+        },
+        "radiant_terminus": {
+            "name": "찬란한 경계",
+            "option": "병치: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
+        },
+        "spirit_visage": {
+            "name": "정령의 형상",
+            "option": "활력: 받는 모든 <#60e84dff>회복 효과<>가 <#60e84dff>20%<> 증가합니다."
+        },
+        "radiant_spirit_visage": {
+            "name": "찬란한 정령의 형상",
+            "option": "활력: 받는 모든 <#60e84dff>회복 효과<>가 <#60e84dff>20%<> 증가합니다."
+        },
+        "guinsoos_rageblade": {
+            "name": "구인수의 격노검",
+            "option": "분노: 기본 공격이 <#a974ffff>30의 추가 마법 피해<>를 입힙니다.\n\n들끓는 일격: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>8%<> 증가합니다. 최대 4회 중첩됩니다."
+        },
+        "radiant_guinsoos_rageblade": {
+            "name": "찬란한 구인수의 격노검",
+            "option": "분노: 기본 공격이 <#a974ffff>30의 추가 마법 피해<>를 입힙니다.\n\n들끓는 일격: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>8%<> 증가합니다. 최대 4회 중첩됩니다."
+        },
+        "wits_end": {
+            "name": "마법사의 최후",
+            "option": "난투: 기본 공격 시 <#a974ffff>45의 추가 마법 피해<>를 입힙니다."
+        },
+        "radiant_wits_end": {
+            "name": "찬란한 마법사의 최후",
+            "option": "난투: 기본 공격 시 <#a974ffff>45의 추가 마법 피해<>를 입힙니다."
+        },
+        "kraken_slayer": {
+            "name": "크라켄 학살자",
+            "option": "무너뜨리기: 세 번째 기본 공격마다 <#ff9028ff>150의 추가 물리 피해<>를 입힙니다. 이 피해는 대상이 <#60e84dff>잃은 체력<>에 비례해 최대 <#ff9028ff>75%<>까지 증가하며, 대상의 체력이 <#60e84dff>25%<>일 때 최대치에 도달합니다."
+        },
+        "radiant_kraken_slayer": {
+            "name": "찬란한 크라켄 학살자",
+            "option": "무너뜨리기: 세 번째 기본 공격마다 <#ff9028ff>150의 추가 물리 피해<>를 입힙니다. 이 피해는 대상이 <#60e84dff>잃은 체력<>에 비례해 최대 <#ff9028ff>75%<>까지 증가하며, 대상의 체력이 <#60e84dff>25%<>일 때 최대치에 도달합니다."
+        },
+        "atmas_reckoning": {
+            "name": "아트마의 심판",
+            "option": "큰손: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<> <#60e84dff>1000<>마다 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률 5%<>를 얻으며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다."
+        },
+        "radiant_atmas_reckoning": {
+            "name": "찬란한 아트마의 심판",
+            "option": "큰손: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<> <#60e84dff>1000<>마다 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률 5%<>를 얻으며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다."
+        },
+        "mirage_blade": {
+            "name": "신기루 검",
+            "option": "환영: <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>60<> 얻습니다. <i#asset/base/ui/banpick/champion_stat_icon:force_0> 적응형 능력치 1당 더 높은 능력치에 따라 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력 0.6<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력 1<>을 얻습니다.\n\n잔상: 적을 처치하면 <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>20%<> 증가합니다."
+        },
+        "radiant_mirage_blade": {
+            "name": "찬란한 신기루 검",
+            "option": "환영: <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>100<> 얻습니다. <i#asset/base/ui/banpick/champion_stat_icon:force_0> 적응형 능력치 1당 더 높은 능력치에 따라 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력 0.6<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력 1<>을 얻습니다.\n\n잔상: 적을 처치하면 <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>20%<> 증가합니다."
+        },
+        "collector": {
+            "name": "징수의 총",
+            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n죽음: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>6%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다."
+        },
+        "radiant_collector": {
+            "name": "찬란한 징수의 총",
+            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n죽음: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>6%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다."
+        },
+        "heartsteel": {
+            "name": "강철심장",
+            "option": "강철의 심장: <#e8a800ff>15초<>마다 다음 기본 공격이 <#ff9028ff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>15%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다."
+        },
+        "radiant_heartsteel": {
+            "name": "찬란한 강철심장",
+            "option": "강철의 심장: <#e8a800ff>15초<>마다 다음 기본 공격이 <#ff9028ff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>15%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다."
+        },
+        "spear_of_shojin": {
+            "name": "쇼진의 창",
+            "option": "집중된 의지: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>이 <#ff9028ff>3%<> 증가합니다. 최대 4회 중첩됩니다."
+        },
+        "radiant_spear_of_shojin": {
+            "name": "찬란한 쇼진의 창",
+            "option": "집중된 의지: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>이 <#ff9028ff>3%<> 증가합니다. 최대 4회 중첩됩니다."
+        },
+        "oblivion_orb": {
+            "name": "망각의 구",
+            "option": "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 25% 감소<>합니다."
+        },
+        "morellonomicon": {
+            "name": "모렐로노미콘",
+            "option": "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
+        },
+        "radiant_morellonomicon": {
+            "name": "찬란한 모렐로노미콘",
+            "option": "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
+        },
+        "overlords_bloodmail": {
+            "name": "지배자의 피갑옷",
+            "option": "폭정: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>추가 공격력<>을 얻습니다."
+        },
+        "radiant_overlords_bloodmail": {
+            "name": "찬란한 지배자의 피갑옷",
+            "option": "폭정: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>추가 공격력<>을 얻습니다."
+        },
+        "night_harvester": {
+            "name": "밤의 수확자",
+            "option": "영혼 찢기: 적 챔피언에게 스킬을 적중시키면 <#a974ffff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>30%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>40%<> 증가합니다. 대상별 재사용 대기시간은 <#e8a800ff>45초<>입니다."
+        },
+        "radiant_night_harvester": {
+            "name": "찬란한 밤의 수확자",
+            "option": "영혼 찢기: 적 챔피언에게 스킬을 적중시키면 <#a974ffff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>30%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>40%<> 증가합니다. 대상별 재사용 대기시간은 <#e8a800ff>45초<>입니다."
+        },
+        "hextech_gunblade": {
+            "name": "마법공학 총검",
+            "option": ""
+        },
+        "radiant_hextech_gunblade": {
+            "name": "찬란한 마법공학 총검",
+            "option": ""
+        },
+        "rylais_crystal_scepter": {
+            "name": "라일라이의 수정홀",
+            "option": "서리: 스킬 피해를 입히면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "찬란한 라일라이의 수정홀",
+            "option": "서리: 스킬 피해를 입히면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
+        },
+        "stormrazor": {
+            "name": "폭풍갈퀴",
+            "option": "충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.\n\n벼락: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 <#a974ffff>100의 추가 마법 피해<>를 입히고, <#e8a800ff>1.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>35%<> 증가합니다."
+        },
+        "radiant_stormrazor": {
+            "name": "찬란한 폭풍갈퀴",
+            "option": "충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.\n\n벼락: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 <#a974ffff>100의 추가 마법 피해<>를 입히고, <#e8a800ff>1.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>35%<> 증가합니다."
+        },
+        "diamond_tipped_spear": {
+            "name": "다이아몬드 창",
+            "option": "관통: <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>60<> 얻습니다. <i#asset/base/ui/banpick/champion_stat_icon:force_0> 적응형 능력치 1당 더 높은 능력치에 따라 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력 0.6<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력 1<>을 얻습니다.\n\n최적 거리: 적 챔피언과의 거리에 따라 최대 <#e8a800ff>30%의 추가 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<>에서 효과가 최대가 됩니다."
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "찬란한 다이아몬드 창",
+            "option": "관통: <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>100<> 얻습니다. <i#asset/base/ui/banpick/champion_stat_icon:force_0> 적응형 능력치 1당 더 높은 능력치에 따라 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력 0.6<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력 1<>을 얻습니다.\n\n최적 거리: 적 챔피언과의 거리에 따라 최대 <#e8a800ff>30%의 추가 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<>에서 효과가 최대가 됩니다."
+        },
+        "scouts_slingshot": {
+            "name": "정찰병의 새총",
+            "option": "정조준: 적 챔피언에게 피해를 입히면 <#a974ffff>40의 추가 마법 피해<>를 입힙니다. 재사용 대기시간은 <#e8a800ff>20초<>입니다."
+        },
+        "bandleglass_mirror": {
+            "name": "밴들유리 거울",
+            "option": ""
+        },
+        "zekes_herald": {
+            "name": "지크의 전령",
+            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 80<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 30<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 6%<>를 부여합니다."
+        },
+        "radiant_zekes_herald": {
+            "name": "찬란한 지크의 전령",
+            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 80<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 50<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 10%<>를 부여합니다."
+        },
+        "liandrys_torment": {
+            "name": "리안드리의 고통",
+            "option": "고통: 스킬 피해를 입히면 적을 불태워 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 6%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 매 피해마다 최대 <#a974ffff>40의 마법 피해<>를 입힙니다."
+        },
+        "radiant_liandrys_torment": {
+            "name": "찬란한 리안드리의 고통",
+            "option": "고통: 스킬 피해를 입히면 적을 불태워 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 6%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 매 피해마다 최대 <#a974ffff>40의 마법 피해<>를 입힙니다."
+        },
+        "noonquiver": {
+            "name": "절정의 화살",
+            "option": ""
+        },
+        "blighting_jewel": {
+            "name": "역병의 보석",
+            "option": ""
+        },
+        "steel_sigil": {
+            "name": "강철 인장",
+            "option": ""
+        },
+        "aegis_of_the_legion": {
+            "name": "군단의 방패",
+            "option": ""
+        },
+        "void_staff": {
+            "name": "공허의 지팡이",
+            "option": ""
+        },
+        "radiant_void_staff": {
+            "name": "찬란한 공허의 지팡이",
+            "option": ""
+        },
+        "echoes_of_helia": {
+            "name": "헬리아의 메아리",
+            "option": "영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 적 챔피언에게 스킬을 적중시키면 모든 <#92dc7bff>영혼 충전량<>을 소모해 가장 가까운 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
+        },
+        "radiant_echoes_of_helia": {
+            "name": "찬란한 헬리아의 메아리",
+            "option": "영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 적 챔피언에게 스킬을 적중시키면 모든 <#92dc7bff>영혼 충전량<>을 소모해 가장 가까운 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
+        },
+        "sundered_sky": {
+            "name": "갈라진 하늘",
+            "option": "빛의 방패 일격: 적 챔피언에게 가하는 다음 <#ff9028ff>물리 피해<>가 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>20%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>6%<>만큼 체력을 <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
+        },
+        "radiant_sundered_sky": {
+            "name": "찬란한 갈라진 하늘",
+            "option": "빛의 방패 일격: 적 챔피언에게 가하는 다음 <#ff9028ff>물리 피해<>가 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>20%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>10%<>만큼 체력을 <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
+        },
+        "sheen": {
+            "name": "광휘의 검",
+            "option": "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>30<>~<#d8c9b3ff>85<>의 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+        },
+        "trinity_force": {
+            "name": "삼위일체",
+            "option": "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 33%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
+        },
+        "radiant_trinity_force": {
+            "name": "찬란한 삼위일체",
+            "option": "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 33%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
+        },
+        "dusk_and_dawn": {
+            "name": "황혼과 새벽",
+            "option": "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 15%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#60e84dff>주문력의 10%<>와 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 2.5%<>만큼 <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "찬란한 황혼과 새벽",
+            "option": "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 15%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#60e84dff>주문력의 10%<>와 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 2.5%<>만큼 <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
+        },
+        "bloodsong": {
+            "name": "피의 노래",
+            "option": "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>8%<> 증가합니다."
+        },
+        "radiant_bloodsong": {
+            "name": "찬란한 피의 노래",
+            "option": "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>8%<> 증가합니다."
+        },
+        "serrated_dirk": {
+            "name": "톱날 단검",
+            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다."
+        },
+        "hubris": {
+            "name": "오만",
+            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n명성: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>90초<> 동안 <#ff9028ff>12<> + 중첩당 <#ff9028ff>3<>의 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>추가 공격력<>을 얻습니다."
+        },
+        "radiant_hubris": {
+            "name": "찬란한 오만",
+            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n명성: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>90초<> 동안 <#ff9028ff>12<> + 중첩당 <#ff9028ff>3<>의 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>추가 공격력<>을 얻습니다."
+        },
+        "bastionbreaker": {
+            "name": "요새파괴자",
+            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+        },
+        "radiant_bastionbreaker": {
+            "name": "찬란한 요새파괴자",
+            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+        },
+        "serpents_fang": {
+            "name": "독사의 송곳니",
+            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+        },
+        "radiant_serpents_fang": {
+            "name": "찬란한 독사의 송곳니",
+            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         }
     }
 }
