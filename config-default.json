@@ -66,9 +66,9 @@
   },
   "collector": {
     "price": 1450,
-    "attack": 55,
+    "attack": 60,
     "crit_chance": 20,
-    "defence_penetration": 10,
+    "effect_lethality": 10,
     "effect_hp_percent_threshold": 6.0
   },
   "experimental_hexplate": {
@@ -429,7 +429,7 @@
     "price": 2100,
     "attack": 105,
     "crit_chance": 25,
-    "defence_penetration": 10,
+    "effect_lethality": 10,
     "effect_hp_percent_threshold": 6.0
   },
   "radiant_jaksho_the_protean": {

@@ -1,14 +1,14 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{apply_lethality, percent_of};
 
 #[derive(Clone, Debug)]
 pub struct Collector {
     price: usize,
     attack: i32,
     crit_chance: i32,
-    defence_penetration: usize,
+    effect_lethality: usize,
     effect_hp_percent_threshold: f64,
 }
 
@@ -16,9 +16,9 @@ impl Default for Collector {
     fn default() -> Self {
         Self {
             price: 1450,
-            attack: 55,
+            attack: 60,
             crit_chance: 20,
-            defence_penetration: 10,
+            effect_lethality: 10,
             effect_hp_percent_threshold: 6.0,
         }
     }
@@ -31,7 +31,7 @@ impl Collector {
             price: cfg.price.unwrap_or(d.price),
             attack: cfg.attack.unwrap_or(d.attack),
             crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
-            defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
+            effect_lethality: cfg.effect_lethality.unwrap_or(d.effect_lethality),
             effect_hp_percent_threshold: cfg
                 .effect_hp_percent_threshold
                 .unwrap_or(d.effect_hp_percent_threshold),
@@ -61,7 +61,7 @@ impl ModItemInfo for Collector {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["noonquiver".to_string()]
+        vec!["serrated_dirk".to_string(), "noonquiver".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -72,7 +72,6 @@ impl ModItemInfo for Collector {
         BuffState {
             attack: self.attack,
             crit_chance: self.crit_chance,
-            defence_penetration: self.defence_penetration,
             ..Default::default()
         }
     }
@@ -85,6 +84,8 @@ impl ModItemInfo for Collector {
         damage: &mut usize,
         _damage_type: DamageType,
     ) {
+        apply_lethality(ctx, target, self.effect_lethality, damage);
+
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
@@ -100,7 +101,7 @@ impl ModItemInfo for Collector {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::DefensePenetration]
+        vec![ItemTag::AD]
     }
 
     fn category(&self) -> ItemCategory {
@@ -113,7 +114,7 @@ pub struct RadiantCollector {
     price: usize,
     attack: i32,
     crit_chance: i32,
-    defence_penetration: usize,
+    effect_lethality: usize,
     effect_hp_percent_threshold: f64,
 }
 
@@ -123,7 +124,7 @@ impl Default for RadiantCollector {
             price: 2100,
             attack: 105,
             crit_chance: 25,
-            defence_penetration: 10,
+            effect_lethality: 10,
             effect_hp_percent_threshold: 6.0,
         }
     }
@@ -136,7 +137,7 @@ impl RadiantCollector {
             price: cfg.price.unwrap_or(d.price),
             attack: cfg.attack.unwrap_or(d.attack),
             crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
-            defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
+            effect_lethality: cfg.effect_lethality.unwrap_or(d.effect_lethality),
             effect_hp_percent_threshold: cfg
                 .effect_hp_percent_threshold
                 .unwrap_or(d.effect_hp_percent_threshold),
@@ -173,7 +174,6 @@ impl ModItemInfo for RadiantCollector {
         BuffState {
             attack: self.attack,
             crit_chance: self.crit_chance,
-            defence_penetration: self.defence_penetration,
             ..Default::default()
         }
     }
@@ -186,6 +186,8 @@ impl ModItemInfo for RadiantCollector {
         damage: &mut usize,
         _damage_type: DamageType,
     ) {
+        apply_lethality(ctx, target, self.effect_lethality, damage);
+
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
@@ -201,7 +203,7 @@ impl ModItemInfo for RadiantCollector {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::DefensePenetration]
+        vec![ItemTag::AD]
     }
 
     fn category(&self) -> ItemCategory {

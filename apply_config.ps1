@@ -187,6 +187,8 @@ $rtDur = [int]$config.radiant_terminus.effect_duration_seconds
 $rtStacks = [int]$config.radiant_terminus.effect_max_stacks
 $colThreshold = [double]$config.collector.effect_hp_percent_threshold
 $rcolThreshold = [double]$config.radiant_collector.effect_hp_percent_threshold
+$colLeth = [int]$config.collector.effect_lethality
+$rcolLeth = [int]$config.radiant_collector.effect_lethality
 $sfThreshold = [double]$config.shadowflame.effect_hp_percent_threshold
 $rsfThreshold = [double]$config.radiant_shadowflame.effect_hp_percent_threshold
 $hsFlat = [int]$config.heartsteel.effect_bonus_flat_damage
@@ -399,8 +401,6 @@ $i18n.en.protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${
 $i18n.en.radiant_protoplasm_harness.option = "Fortification: <#d94c49ff>Falling below ${rphThreshold}% health<> grants <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>${rphDur} seconds<> and <#60e84dff>heals you<> for half that amount (<#e8a800ff>${rphCd} second<> cooldown)."
 $i18n.en.terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${tArmorPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${tMagicPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${tDur} seconds<>, alternating (max ${tStacks} stacks each)."
 $i18n.en.radiant_terminus.option = "Juxtaposition: On attack, gain either <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> armor penetration<> or <#88ccffff>${rtMagicPen}% <$magicPenIcon> magic resistance penetration<> for <#e8a800ff>${rtDur} seconds<>, alternating (max ${rtStacks} stacks each)."
-$i18n.en.collector.option = "Death: Dealing damage to enemy champions below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
-$i18n.en.radiant_collector.option = "Death: Dealing damage to enemy champions below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
 $i18n.en.heartsteel.option = "Ironheart: Every <#e8a800ff>${hsCd} seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>, granting <#60e84dff>${hsBonusHpPct}%<> of that damage as permanent <#60e84dff>bonus health<>."
 $i18n.en.radiant_heartsteel.option = "Ironheart: Every <#e8a800ff>${rhsCd} seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>${rhsFlat}<> + <#60e84dff>${rhsHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<>, granting <#60e84dff>${rhsBonusHpPct}%<> of that damage as permanent <#60e84dff>bonus health<>."
 $i18n.en.spear_of_shojin.option = "Focused Will: Landing an Ability on an enemy champion grants <#ff9028ff>${sosAtkMult}%<> <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>${sosDur} seconds<> (max ${sosStacks} stacks)."
@@ -444,6 +444,8 @@ $i18n.en.radiant_bastionbreaker.option = $bbEn -f $rbbLeth, $rbbFlat, $rbbPct, $
 $spfEn = "$lethEn`n`nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
 $i18n.en.serpents_fang.option = $spfEn -f $spfLeth, $spfFlat, $spfPct
 $i18n.en.radiant_serpents_fang.option = $spfEn -f $rspfLeth, $rspfFlat, $rspfPct
+$i18n.en.collector.option = "$lethEn`n`nDeath: Dealing damage to enemy champions below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them." -f $colLeth
+$i18n.en.radiant_collector.option = "$lethEn`n`nDeath: Dealing damage to enemy champions below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them." -f $rcolLeth
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -519,8 +521,6 @@ $i18n.vi.protoplasm_harness.option = "Vững chãi: Máu rơi xuống dưới <#
 $i18n.vi.radiant_protoplasm_harness.option = "Vững chãi: Máu rơi xuống dưới <#d94c49ff>${rphThreshold}%<> sẽ nhận <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>${rphDur} giây<> và <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong ${rphCd} giây.)."
 $i18n.vi.terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>${tArmorPen}% <$armorPenIcon> xuyên giáp<> hoặc <#88ccffff>${tMagicPen}% <$magicPenIcon> xuyên kháng phép<> trong <#e8a800ff>${tDur} giây<> (tối đa ${tStacks} cộng dồn cho mỗi loại)."
 $i18n.vi.radiant_terminus.option = "Đối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> xuyên giáp<> hoặc <#88ccffff>${rtMagicPen}% <$magicPenIcon> xuyên kháng phép<> trong <#e8a800ff>${rtDur} giây<> (tối đa ${rtStacks} cộng dồn cho mỗi loại)."
-$i18n.vi.collector.option = "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
-$i18n.vi.radiant_collector.option = "Về Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
 $i18n.vi.heartsteel.option = "Trái Tim Sắt Đá: Mỗi <#e8a800ff>${hsCd} giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>${hsBonusHpPct}%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
 $i18n.vi.radiant_heartsteel.option = "Trái Tim Sắt Đá: Mỗi <#e8a800ff>${rhsCd} giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>${rhsFlat}<> + <#60e84dff>${rhsHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>${rhsBonusHpPct}%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
 $i18n.vi.spear_of_shojin.option = "Ý Chí Tập Trung: Kĩ năng trúng tướng địch sẽ tăng <#ff9028ff>${sosAtkMult}%<> <$adIcon> <#ff9028ff>SMCK<> trong <#e8a800ff>${sosDur} giây<> (tối đa ${sosStacks} cộng dồn)."
@@ -564,6 +564,8 @@ $i18n.vi.radiant_bastionbreaker.option = $bbVi -f $rbbLeth, $rbbFlat, $rbbPct, $
 $spfVi = "$lethVi`n`nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
 $i18n.vi.serpents_fang.option = $spfVi -f $spfLeth, $spfFlat, $spfPct
 $i18n.vi.radiant_serpents_fang.option = $spfVi -f $rspfLeth, $rspfFlat, $rspfPct
+$i18n.vi.collector.option = "$lethVi`n`nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng." -f $colLeth
+$i18n.vi.radiant_collector.option = "$lethVi`n`nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng." -f $rcolLeth
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -639,8 +641,6 @@ $i18n.'zh-hans'.protoplasm_harness.option = "筑防：<#d94c49ff>生命值降至
 $i18n.'zh-hans'.radiant_protoplasm_harness.option = "筑防：<#d94c49ff>生命值降至${rphThreshold}%以下<>时，获得 <#60e84dff>${rphFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rphHpPct}%<> 作为<#60e84dff>额外生命值<>，持续 <#e8a800ff>${rphDur}秒<>，并<#60e84dff>回复<>该数值一半的生命值（冷却时间${rphCd}秒）。"
 $i18n.'zh-hans'.terminus.option = "交相：普通攻击会交替获得 <#ffdd8eff>${tArmorPen}% <$armorPenIcon> 穿甲<>或 <#88ccffff>${tMagicPen}% <$magicPenIcon> 法术穿透<>，持续 <#e8a800ff>${tDur}秒<>（每种最多叠加${tStacks}层）。"
 $i18n.'zh-hans'.radiant_terminus.option = "交相：普通攻击会交替获得 <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> 穿甲<>或 <#88ccffff>${rtMagicPen}% <$magicPenIcon> 法术穿透<>，持续 <#e8a800ff>${rtDur}秒<>（每种最多叠加${rtStacks}层）。"
-$i18n.'zh-hans'.collector.option = "死：对生命值低于 <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
-$i18n.'zh-hans'.radiant_collector.option = "死：对生命值低于 <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
 $i18n.'zh-hans'.heartsteel.option = "铁石心肠：每隔 <#e8a800ff>${hsCd}秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>${hsFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${hsHpPct}%<>，并永久获得该伤害 <#60e84dff>${hsBonusHpPct}%<> 作为 <#60e84dff>额外生命值<>。"
 $i18n.'zh-hans'.radiant_heartsteel.option = "铁石心肠：每隔 <#e8a800ff>${rhsCd}秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>${rhsFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rhsHpPct}%<>，并永久获得该伤害 <#60e84dff>${rhsBonusHpPct}%<> 作为 <#60e84dff>额外生命值<>。"
 $i18n.'zh-hans'.spear_of_shojin.option = "专注意志：技能命中敌方英雄时获得 <#ff9028ff>${sosAtkMult}%<> <$adIcon> <#ff9028ff>攻击力<>，持续 <#e8a800ff>${sosDur}秒<>（最多叠加${sosStacks}层）。"
@@ -684,6 +684,8 @@ $i18n.'zh-hans'.radiant_bastionbreaker.option = $bbZh -f $rbbLeth, $rbbFlat, $rb
 $spfZh = "$lethZh`n`n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>{1}<> + <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{2}%<> 作为<#ff9028ff>额外物理伤害<>。"
 $i18n.'zh-hans'.serpents_fang.option = $spfZh -f $spfLeth, $spfFlat, $spfPct
 $i18n.'zh-hans'.radiant_serpents_fang.option = $spfZh -f $rspfLeth, $rspfFlat, $rspfPct
+$i18n.'zh-hans'.collector.option = "$lethZh`n`n死：对生命值低于 <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。" -f $colLeth
+$i18n.'zh-hans'.radiant_collector.option = "$lethZh`n`n死：对生命值低于 <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。" -f $rcolLeth
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -759,8 +761,6 @@ $i18n.'pt-BR'.protoplasm_harness.option = "Fortificação: Ao receber dano sufic
 $i18n.'pt-BR'.radiant_protoplasm_harness.option = "Fortificação: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de ${rphThreshold}%<> você, recebe <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por <#e8a800ff>${rphDur} segundos<>, depois <#60e84dff>cura<> por metade desse valor (${rphCd}s)."
 $i18n.'pt-BR'.terminus.option = "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>${tArmorPen}% <$armorPenIcon> de Penetração de Armadura<> ou <#88ccffff>${tMagicPen}% <$magicPenIcon> Penetração Mágica<> por <#e8a800ff>${tDur} segundos<>. (acumula ${tStacks}x cada)."
 $i18n.'pt-BR'.radiant_terminus.option = "Justaposição: Ataques alternam para conceder entre <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> de Penetração de Armadura<> ou <#88ccffff>${rtMagicPen}% <$magicPenIcon> Penetração Mágica<> por <#e8a800ff>${rtDur} segundos<>. (acumula ${rtStacks}x cada)."
-$i18n.'pt-BR'.collector.option = "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
-$i18n.'pt-BR'.radiant_collector.option = "Morte: Causar dano a campeões inimigos com menos de <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
 $i18n.'pt-BR'.heartsteel.option = "Coração Forjado: A cada <#e8a800ff>${hsCd} segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>${hsBonusHpPct}%<> desse dano como <#60e84dff>vida bônus<>."
 $i18n.'pt-BR'.radiant_heartsteel.option = "Coração Forjado: A cada <#e8a800ff>${rhsCd} segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>${rhsFlat}<> + <#60e84dff>${rhsHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>${rhsBonusHpPct}%<> desse dano como <#60e84dff>vida bônus<>."
 $i18n.'pt-BR'.spear_of_shojin.option = "Vontade Focada: Acertar habilidades em campeões inimigos concede <#ff9028ff>${sosAtkMult}%<> <$adIcon> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>${sosDur} segundos<> (acumula ${sosStacks}x)."
@@ -804,6 +804,8 @@ $i18n.'pt-BR'.radiant_bastionbreaker.option = $bbPt -f $rbbLeth, $rbbFlat, $rbbP
 $spfPt = "$lethPt`n`nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
 $i18n.'pt-BR'.serpents_fang.option = $spfPt -f $spfLeth, $spfFlat, $spfPct
 $i18n.'pt-BR'.radiant_serpents_fang.option = $spfPt -f $rspfLeth, $rspfFlat, $rspfPct
+$i18n.'pt-BR'.collector.option = "$lethPt`n`nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>." -f $colLeth
+$i18n.'pt-BR'.radiant_collector.option = "$lethPt`n`nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>." -f $rcolLeth
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -879,8 +881,6 @@ $i18n.ru.protoplasm_harness.option = "Укрепление: При <#d94c49ff>п
 $i18n.ru.radiant_protoplasm_harness.option = "Укрепление: При <#d94c49ff>падении здоровья ниже ${rphThreshold}%<> даёт <#60e84dff>${rphFlat}<> + <#60e84dff>${rphHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> как <#60e84dff>дополнительное здоровье<> на <#e8a800ff>${rphDur} секунд<> и <#60e84dff>восстанавливает вам<> половину этого количества (перезарядка ${rphCd} секунд)."
 $i18n.ru.terminus.option = "Соприкосновение: При атаке получает либо <#ffdd8eff>${tArmorPen}% <$armorPenIcon> пробивания брони<>, либо <#88ccffff>${tMagicPen}% <$magicPenIcon> пробивания магии<> на <#e8a800ff>${tDur} секунды<>, чередуясь (макс. ${tStacks} стака каждого)."
 $i18n.ru.radiant_terminus.option = "Соприкосновение: При атаке получает либо <#ffdd8eff>${rtArmorPen}% <$armorPenIcon> пробивания брони<>, либо <#88ccffff>${rtMagicPen}% <$magicPenIcon> пробивания магии<> на <#e8a800ff>${rtDur} секунды<>, чередуясь (макс. ${rtStacks} стака каждого)."
-$i18n.ru.collector.option = "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${colThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их."
-$i18n.ru.radiant_collector.option = "Смерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их."
 $i18n.ru.heartsteel.option = "Железное сердце: Каждые <#e8a800ff>${hsCd} секунд<>, ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>${hsFlat}<> + <#60e84dff>${hsHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>${hsBonusHpPct}%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
 $i18n.ru.radiant_heartsteel.option = "Железное сердце: Каждые <#e8a800ff>${rhsCd} секунд<>, ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>${rhsFlat}<> + <#60e84dff>${rhsHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>${rhsBonusHpPct}%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
 $i18n.ru.spear_of_shojin.option = "Концентрация: Попадания способностями по вражеским чемпионам дают <#ff9028ff>${sosAtkMult}%<> <$adIcon> <#ff9028ff>Силы Атаки<> на <#e8a800ff>${sosDur} секунд<> (макс. ${sosStacks} стака)."
@@ -924,6 +924,8 @@ $i18n.ru.radiant_bastionbreaker.option = $bbRu -f $rbbLeth, $rbbFlat, $rbbPct, $
 $spfRu = "$lethRu`n`nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> вашей <$adIcon> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
 $i18n.ru.serpents_fang.option = $spfRu -f $spfLeth, $spfFlat, $spfPct
 $i18n.ru.radiant_serpents_fang.option = $spfRu -f $rspfLeth, $rspfFlat, $rspfPct
+$i18n.ru.collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${colThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их." -f $colLeth
+$i18n.ru.radiant_collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их." -f $rcolLeth
 
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
