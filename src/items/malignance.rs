@@ -6,6 +6,7 @@ pub struct Malignance {
     price: usize,
     magic_power: i32,
     magic_resistance_penetration: usize,
+    skill_cooldown_mult: i32,
     ult_cooldown_mult: i32,
 }
 
@@ -15,6 +16,7 @@ impl Default for Malignance {
             price: 1400,
             magic_power: 120,
             magic_resistance_penetration: 6,
+            skill_cooldown_mult: 12,
             ult_cooldown_mult: 12,
         }
     }
@@ -29,6 +31,7 @@ impl Malignance {
             magic_resistance_penetration: cfg
                 .magic_resistance_penetration
                 .unwrap_or(d.magic_resistance_penetration),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
             ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
         }
     }
@@ -67,6 +70,7 @@ impl ModItemInfo for Malignance {
         BuffState {
             magic_power: self.magic_power,
             magic_resistance_penetration: self.magic_resistance_penetration,
+            skill_cooldown_mult: self.skill_cooldown_mult,
             ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
         }
@@ -86,6 +90,7 @@ pub struct RadiantMalignance {
     price: usize,
     magic_power: i32,
     magic_resistance_penetration: usize,
+    skill_cooldown_mult: i32,
     ult_cooldown_mult: i32,
 }
 
@@ -95,6 +100,7 @@ impl Default for RadiantMalignance {
             price: 2000,
             magic_power: 200,
             magic_resistance_penetration: 10,
+            skill_cooldown_mult: 20,
             ult_cooldown_mult: 20,
         }
     }
@@ -109,6 +115,7 @@ impl RadiantMalignance {
             magic_resistance_penetration: cfg
                 .magic_resistance_penetration
                 .unwrap_or(d.magic_resistance_penetration),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
             ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
         }
     }
@@ -143,6 +150,7 @@ impl ModItemInfo for RadiantMalignance {
         BuffState {
             magic_power: self.magic_power,
             magic_resistance_penetration: self.magic_resistance_penetration,
+            skill_cooldown_mult: self.skill_cooldown_mult,
             ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
         }

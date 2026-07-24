@@ -912,12 +912,14 @@
     "price": 1400,
     "magic_power": 120,
     "magic_resistance_penetration": 6,
+    "skill_cooldown_mult": 12,
     "ult_cooldown_mult": 12
   },
   "radiant_malignance": {
     "price": 2000,
     "magic_power": 200,
     "magic_resistance_penetration": 10,
+    "skill_cooldown_mult": 20,
     "ult_cooldown_mult": 20
   }
 }
