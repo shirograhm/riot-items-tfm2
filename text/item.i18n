@@ -555,6 +555,14 @@
             "name": "Radiant Void Staff",
             "option": ""
         },
+        "malignance": {
+            "name": "Malignance",
+            "option": "Scorn: Gain <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+        },
+        "radiant_malignance": {
+            "name": "Radiant Malignance",
+            "option": "Scorn: Gain <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+        },
         "echoes_of_helia": {
             "name": "Echoes of Helia",
             "option": "Soul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
@@ -1183,6 +1191,14 @@
         "radiant_void_staff": {
             "name": "Trượng Hư Vô Ánh Sáng",
             "option": ""
+        },
+        "malignance": {
+            "name": "Hỏa Khuẩn",
+            "option": "Ai Oán: Nhận <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+        },
+        "radiant_malignance": {
+            "name": "Hỏa Khuẩn Ánh Sáng",
+            "option": "Ai Oán: Nhận <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
         },
         "echoes_of_helia": {
             "name": "Vọng Âm Helia",
@@ -1813,6 +1829,14 @@
             "name": "光明版虚空之杖",
             "option": ""
         },
+        "malignance": {
+            "name": "残疫",
+            "option": "蔑视：终极技能获得 <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+        },
+        "radiant_malignance": {
+            "name": "光明版残疫",
+            "option": "蔑视：终极技能获得 <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+        },
         "echoes_of_helia": {
             "name": "海力亚的回响",
             "option": "灵魂虹吸：将你造成伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。技能命中敌方英雄时，消耗全部 <#92dc7bff>灵魂充能<>，为你<#60e84dff>最近的友军回复<>等量的生命值。"
@@ -2441,6 +2465,14 @@
         "radiant_void_staff": {
             "name": "Cajado do Vazio Radiante",
             "option": ""
+        },
+        "malignance": {
+            "name": "Malevolência",
+            "option": "Escárnio: Recebe <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+        },
+        "radiant_malignance": {
+            "name": "Malevolência Radiante",
+            "option": "Escárnio: Recebe <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
         },
         "echoes_of_helia": {
             "name": "Ecos de Helia",
@@ -3071,6 +3103,14 @@
             "name": "Лучезарный Посох Бездны",
             "option": ""
         },
+        "malignance": {
+            "name": "Пагубность",
+            "option": "Презрение: Даёт <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+        },
+        "radiant_malignance": {
+            "name": "Лучезарная Пагубность",
+            "option": "Презрение: Даёт <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+        },
         "echoes_of_helia": {
             "name": "Эхо Гелии",
             "option": "Похищение душ: Накапливает <#e8a800ff>30%<> нанесённого вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Попадание умением по вражескому чемпиону расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая здоровье ближайшему союзнику<> на израсходованное количество."
@@ -3699,6 +3739,14 @@
         "radiant_void_staff": {
             "name": "찬란한 공허의 지팡이",
             "option": ""
+        },
+        "malignance": {
+            "name": "악의",
+            "option": "경멸: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>12%<> 증가합니다."
+        },
+        "radiant_malignance": {
+            "name": "찬란한 악의",
+            "option": "경멸: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>20%<> 증가합니다."
         },
         "echoes_of_helia": {
             "name": "헬리아의 메아리",

@@ -84,7 +84,7 @@ impl ModItemInfo for Sheen {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["ironsword".to_string()]
+        vec!["dagger".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

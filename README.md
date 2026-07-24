@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 113 new items (64 base + 49 Radiant) to the game.
+Reskins the 30 existing items and also adds 115 new items (65 base + 50 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -62,6 +62,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Kraken Slayer** | 1400G | +45 AD<br>+25% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Liandry's Torment** | 1400G | +350 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
 | **Lord Dominik's Regards** | 1450G | +45 AD<br>+20% Crit Chance<br>+25% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
+| **Malignance** | 1400G | +120 AP<br>+12% CDR<br>+6% Magic Pen | Scorn: Gain 12% cooldown reduction on your ultimate skill. |
 | **Mirage Blade** | 1500G | +40% AS<br>+10% MS | Gain 60 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
 | **Morellonomicon** | 1300G | +200 HP<br>+120 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |
 | **Mortal Reminder** | 1400G | +45 AD<br>+20% Crit Chance<br>+20% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
@@ -116,6 +117,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Kraken Slayer** | 2000G | +75 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Radiant Liandry's Torment** | 2000G | +550 HP<br>+150 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
 | **Radiant Lord Dominik's Regards** | 2000G | +85 AD<br>+25% Crit Chance<br>+35% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
+| **Radiant Malignance** | 2000G | +200 AP<br>+20% CDR<br>+10% Magic Pen | Scorn: Gain 20% cooldown reduction on your ultimate skill. |
 | **Radiant Mortal Reminder** | 2000G | +85 AD<br>+25% Crit Chance<br>+30% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
 | **Radiant Mirage Blade** | 2100G | +65% AS<br>+15% MS | Gain 100 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
 | **Radiant Morellonomicon** | 1850G | +350 HP<br>+190 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |

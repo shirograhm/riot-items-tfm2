@@ -46,6 +46,7 @@ items! {
     last_whisper,
     liandrys_torment,
     lord_dominiks_regards,
+    malignance,
     mirage_blade,
     morellonomicon,
     mortal_reminder,
