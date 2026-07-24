@@ -57,7 +57,7 @@ impl ModItemInfo for BlightingJewel {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["void_staff".to_string()]
+        vec!["void_staff".to_string(), "malignance".to_string()]
     }
 
     fn stat(&self) -> BuffState {
