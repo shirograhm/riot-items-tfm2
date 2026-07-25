@@ -269,7 +269,7 @@ function New-Row {
 function Get-RowState($row) {
   $champ = Get-ChampValue $row
   $pinned = @($row.Tag.Items | ForEach-Object { Get-ComboId $_ $script:ItemToId } |
-      Where-Object { $_ -and $_ -ne $AI_SENTINEL })
+    Where-Object { $_ -and $_ -ne $AI_SENTINEL })
   if ($pinned.Count -eq 0) { return '' }
   if ($champ) { return 'ok' }
   return 'bad'   # items pinned but no champion selected
