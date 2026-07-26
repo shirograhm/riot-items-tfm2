@@ -5,14 +5,6 @@ use crate::config::ItemConfig;
 use crate::percent_of;
 use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
-// The Tyranny bonus attack is granted as a fixed-duration buff that is
-// re-applied on a slightly shorter cycle than it lasts, so a fresh buff is
-// always in place before the previous one expires -- no single-tick gap where
-// the bonus would flicker off. Recomputing the amount each cycle lets it track
-// the holder's current max HP, rising or falling with it, instead of only
-// ratcheting upward. During the brief overlap both buffs are live, so the bonus
-// is momentarily doubled -- harmless, since it only ever overshoots.
-
 #[derive(Clone, Debug)]
 pub struct OverlordsBloodmail {
     price: usize,

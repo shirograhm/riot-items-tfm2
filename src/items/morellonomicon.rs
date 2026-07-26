@@ -3,11 +3,6 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 
-// Grievous Wounds: dealing magic damage to an enemy champion applies a healing
-// reduction (the same heal-cut passive as mortal_reminder.rs, gated on AP damage
-// since this is the magic-damage counterpart / oblivion_orb's upgrade). Shares the
-// `40_percent_heal_cut` buff name with mortal_reminder so the two do not stack.
-
 #[derive(Clone, Debug)]
 pub struct Morellonomicon {
     price: usize,

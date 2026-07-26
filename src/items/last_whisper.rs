@@ -1,10 +1,6 @@
 use crate::config::ItemConfig;
 use mod_api::*;
 
-// Last Whisper: a pure-stat Armor Penetration component (Attack Damage + % Armor
-// Penetration), the build path into Lord Dominik's Regards and Mortal Reminder.
-// No active effect, so there is no `on_attack`/`option` text.
-
 #[derive(Clone, Debug)]
 pub struct LastWhisper {
     price: usize,

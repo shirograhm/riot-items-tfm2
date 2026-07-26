@@ -3,11 +3,6 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 
-// Spellblade: after landing an Ability on an enemy champion, the next basic
-// attack deals bonus damage, gated by a self cooldown-buff. `spellblade_ready`
-// is charged in `on_skill_hit` and consumed in `on_attack` (self state, since
-// buffs cannot be removed to "spend" the charge).
-
 #[derive(Clone, Debug)]
 pub struct Sheen {
     price: usize,

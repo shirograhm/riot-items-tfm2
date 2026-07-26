@@ -2,8 +2,6 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 
-// Stat-only item (AD / AP / Omnivamp). No active effect implemented.
-
 #[derive(Clone, Debug)]
 pub struct HextechGunblade {
     price: usize,

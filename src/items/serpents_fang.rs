@@ -3,10 +3,6 @@ use mod_api::*;
 use crate::config::ItemConfig;
 use crate::{apply_lethality, percent_of};
 
-// Lethality (see serrated_dirk) plus Shield Reaver: basic attacks against an
-// enemy champion that currently has a shield deal bonus physical damage (flat +
-// % of Attack Damage).
-
 #[derive(Clone, Debug)]
 pub struct SerpentsFang {
     price: usize,
