@@ -650,6 +650,15 @@ $form.ClientSize = New-Object System.Drawing.Size(1105, 825)
 $form.BackColor = $cBg; $form.ForeColor = $cText
 $form.Font = New-Object System.Drawing.Font('Segoe UI', 11.25)
 
+# Point to your custom .ico file
+$IconPath = "item-build-editor-icon.ico"
+
+# If the icon file exists, load it and assign it to the form
+if (Test-Path $IconPath) {
+  $Form.Icon = New-Object System.Drawing.Icon($IconPath)
+}
+
+
 # toolbar
 $toolbar = New-Object System.Windows.Forms.Panel
 $toolbar.Dock = 'Top'; $toolbar.Height = 60; $toolbar.BackColor = $cPanel2
