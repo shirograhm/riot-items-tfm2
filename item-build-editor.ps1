@@ -650,14 +650,14 @@ $form.ClientSize = New-Object System.Drawing.Size(1105, 825)
 $form.BackColor = $cBg; $form.ForeColor = $cText
 $form.Font = New-Object System.Drawing.Font('Segoe UI', 11.25)
 
-# Point to your custom .ico file
-$IconPath = "item-build-editor-icon.ico"
-
-# If the icon file exists, load it and assign it to the form
-if (Test-Path $IconPath) {
-  $Form.Icon = New-Object System.Drawing.Icon($IconPath)
+# Extracts the icon embedded inside the running .exe file itself
+try {
+  $CurrentExe = [System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName
+  $form.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($CurrentExe)
 }
-
+catch {
+  # Fallback to default if running as raw .ps1 during testing
+}
 
 # toolbar
 $toolbar = New-Object System.Windows.Forms.Panel
