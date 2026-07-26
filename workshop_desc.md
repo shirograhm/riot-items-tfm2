@@ -65,7 +65,7 @@ Both files (config-default & apply_config.bat) should be located in the mod's wo
 This mod allows for the user to override the current in-game Item Strategy Screen to choose any item in the game. To do so:
 
 1. Navigate to the SteamLibrary workshop folder: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
-2. Run [b]item-build-editor.bat[/b] to open the editor GUI. Keep the [b]Item Build Editor[/b] GUI open while your game is running.
+2. Run [b]item-build-editor.exe[/b] to open the editor GUI. Keep the [b]Item Build Editor[/b] GUI open while your game is running.
 3. After draft, while on the Item Strategy Screen, add champions to the GUI and set up your builds.
   a. This also supports modded champions, given you know the champion ID. For Silverbear's mod, use names formatted like [b]"test_mod_vayne"[/b].
   b. If you only want to decide [i]some[/i] items, set the slots you care about and leave the rest on [b](AI picks)[/b] (the default). The mod will keep your chosen items and let the game's AI fill the remaining slots.
