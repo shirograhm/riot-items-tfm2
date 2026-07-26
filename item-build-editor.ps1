@@ -123,39 +123,78 @@ $script:GroupItems = $true
 
 # Category header rows, in dropdown order: internal category key -> display label.
 $CATEGORY_ORDER = @(
-  @('AD', 'Attack Damage'), @('AttackSpeed', 'Attack Speed'), @('Magic', 'Ability Power'),
-  @('Hp', 'Health'), @('Defense', 'Armor'), @('MagicResistance', 'Magic Resist'),
-  @('Support', 'Support')
+  @('Assassin', 'Assassin'), @('Fighter', 'Fighter'), @('Tank', 'Tank'), 
+  @('Mage', 'Mage'), @('Marksman', 'Marksman'), @('Support', 'Support')
 )
 # Item id -> category key. Keys must match ids in $ITEMS.
 $itemCategory = @{
-  # Attack Damage
-  bastionbreaker = 'AD'; black_cleaver = 'AD'; bloodthirster = 'AD'; collector = 'AD'
-  deathblade = 'AD'; deaths_dance = 'AD'; hubris = 'AD'; infinity_edge = 'AD'
-  lord_dominiks_regards = 'AD'; mortal_reminder = 'AD'; overlords_bloodmail = 'AD'
-  serpents_fang = 'AD'; spear_of_shojin = 'AD'; stormrazor = 'AD'; sundered_sky = 'AD'
-  trinity_force = 'AD'; yun_tal_wildarrows = 'AD'
-  # Attack Speed
-  blade_of_the_ruined_king = 'AttackSpeed'; diamond_tipped_spear = 'AttackSpeed'
-  experimental_hexplate = 'AttackSpeed'; guinsoos_rageblade = 'AttackSpeed'
-  kraken_slayer = 'AttackSpeed'; mirage_blade = 'AttackSpeed'; phantom_dancer = 'AttackSpeed'
-  terminus = 'AttackSpeed'; wits_end = 'AttackSpeed'
-  # Ability Power
-  blackfire_torch = 'Magic'; bloodletters_curse = 'Magic'; dusk_and_dawn = 'Magic'
-  hextech_gunblade = 'Magic'; liandrys_torment = 'Magic'; ludens_tempest = 'Magic'
-  malignance = 'Magic'; morellonomicon = 'Magic'; nashors_tooth = 'Magic'
-  night_harvester = 'Magic'; rabadons_deathcap = 'Magic'; riftmaker = 'Magic'
-  rylais_crystal_scepter = 'Magic'; shadowflame = 'Magic'; void_staff = 'Magic'
-  # Health
-  atmas_reckoning = 'Hp'; frozen_mallet = 'Hp'; heartsteel = 'Hp'; jaksho_the_protean = 'Hp'
-  sunfire_cape = 'Hp'; unending_despair = 'Hp'; warmogs_armor = 'Hp'
-  # Armor
-  protectors_vow = 'Defense'; thornmail = 'Defense'
-  # Magic Resist
-  dragons_claw = 'MagicResistance'; spirit_visage = 'MagicResistance'
+  # Assassin
+  bastionbreaker           = 'Assassin';
+  collector                = 'Assassin';
+  hubris                   = 'Assassin';
+  serpents_fang            = 'Assassin';
+
+  # Fighter
+  black_cleaver            = 'Fighter'; 
+  bloodthirster            = 'Fighter';
+  experimental_hexplate    = 'Fighter';
+  deaths_dance             = 'Fighter'; 
+  frozen_mallet            = 'Fighter';
+  overlords_bloodmail      = 'Fighter';
+  spear_of_shojin          = 'Fighter';
+  sundered_sky             = 'Fighter';
+  trinity_force            = 'Fighter';
+
+  # Marksman
+  blade_of_the_ruined_king = 'Marksman';
+  deathblade               = 'Marksman'; 
+  diamond_tipped_spear     = 'Marksman';
+  guinsoos_rageblade       = 'Marksman'; 
+  infinity_edge            = 'Marksman'; 
+  kraken_slayer            = 'Marksman'; 
+  lord_dominiks_regards    = 'Marksman'; 
+  mirage_blade             = 'Marksman';
+  mortal_reminder          = 'Marksman';
+  phantom_dancer           = 'Marksman'; 
+  stormrazor               = 'Marksman'; 
+  terminus                 = 'Marksman';
+  wits_end                 = 'Marksman';
+  yun_tal_wildarrows       = 'Marksman';
+
+  # Mage
+  blackfire_torch          = 'Mage';
+  bloodletters_curse       = 'Mage';
+  dusk_and_dawn            = 'Mage';
+  hextech_gunblade         = 'Mage';
+  liandrys_torment         = 'Mage';
+  ludens_tempest           = 'Mage';
+  malignance               = 'Mage'; 
+  morellonomicon           = 'Mage';
+  nashors_tooth            = 'Mage';
+  night_harvester          = 'Mage'; 
+  rabadons_deathcap        = 'Mage';
+  riftmaker                = 'Mage';
+  rylais_crystal_scepter   = 'Mage';
+  shadowflame              = 'Mage';
+  void_staff               = 'Mage';
+    
+  # Tank
+  atmas_reckoning          = 'Tank'; 
+  dragons_claw             = 'Tank';
+  heartsteel               = 'Tank';
+  jaksho_the_protean       = 'Tank';
+  protectors_vow           = 'Tank';
+  spirit_visage            = 'Tank';
+  sunfire_cape             = 'Tank';
+  thornmail                = 'Tank';
+  unending_despair         = 'Tank';
+  warmogs_armor            = 'Tank';
+
   # Support
-  bloodsong = 'Support'; echoes_of_helia = 'Support'; protoplasm_harness = 'Support'
-  zekes_herald = 'Support'
+  bloodsong                = 'Support'; 
+  echoes_of_helia          = 'Support'; 
+  protoplasm_harness       = 'Support';
+  zekes_herald             = 'Support';
 }
 
 # Item icons from the packed sprite sheet in aseprite_resources/ingame. The data
@@ -750,4 +789,10 @@ $btnSave.Add_Click({ Save-Builds })
 # initial load from the script folder
 Import-Builds $script:TargetPath
 
+
+[void]$form.ShowDialog()
+[void]$form.ShowDialog()
+[void]$form.ShowDialog()
+[void]$form.ShowDialog()
+[void]$form.ShowDialog()
 [void]$form.ShowDialog()
