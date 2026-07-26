@@ -102,6 +102,18 @@ $scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
 $script:TargetPath = Join-Path $scriptDir 'item-builds.json'
 $script:SettingsPath = Join-Path $scriptDir 'mod-settings.json'
 
+# --- mod version (shown bottom right) --------------------------------------
+# Read from Cargo.toml next to the script. The [package] version comes first;
+# dependency versions are inline ("serde = { version = ... }") and so never
+# match at the line start. Empty when there's no Cargo.toml alongside.
+function Get-ModVersion {
+  $cargo = Join-Path $scriptDir 'Cargo.toml'
+  if (-not (Test-Path -LiteralPath $cargo)) { return '' }
+  $m = [regex]::Match((Get-Content -Raw -LiteralPath $cargo), '(?m)^\s*version\s*=\s*"([^"]+)"')
+  if ($m.Success) { return $m.Groups[1].Value }
+  return ''
+}
+
 # Behavior toggles shared with the mod DLL, which re-reads mod-settings.json on
 # every match start - so flipping the checkbox applies to the next match without
 # restarting the game. unique_items: when true (the default, also used when the
@@ -780,9 +792,26 @@ $script:RowsPanel.Add_DragDrop({
     if ($e.Data.GetDataPresent([System.Windows.Forms.Panel])) { $e.Effect = [System.Windows.Forms.DragDropEffects]::Move }
   })
 
-# add in this order so docked Top bars stack above the Fill panel
+# version bar: a slim footer whose only job is the mod version, bottom right.
+# The label fills the bar and right-aligns its text, so it tracks the window
+# width without any resize handling.
+$versionBar = New-Object System.Windows.Forms.Panel
+$versionBar.Dock = 'Bottom'; $versionBar.Height = 26; $versionBar.BackColor = $cPanel2
+$versionBar.Padding = New-Object System.Windows.Forms.Padding(12, 0, 14, 0)
+
+$versionLabel = New-Object System.Windows.Forms.Label
+$versionLabel.Dock = 'Fill'
+$versionLabel.TextAlign = 'MiddleRight'
+$versionLabel.ForeColor = $cMuted
+$versionLabel.Font = New-Object System.Drawing.Font('Segoe UI', 9)
+$ver = Get-ModVersion
+$versionLabel.Text = if ($ver) { "Riot Items  v$ver" } else { '' }
+$versionBar.Controls.Add($versionLabel)
+
+# add in this order so the docked bars stack around the Fill panel
 # (later-added Top docks sit higher: toolbar, then searchBar, then header)
 $form.Controls.Add($script:RowsPanel)
+$form.Controls.Add($versionBar)
 $form.Controls.Add($header)
 $form.Controls.Add($searchBar)
 $form.Controls.Add($toolbar)
