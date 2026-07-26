@@ -661,7 +661,7 @@ function New-ToolButton($text, $left, $primary) {
 }
 
 $btnSave = New-ToolButton 'Save Item Builds' 15 $true
-$btnSave.Width = 175
+$btnSave.Width = 162
 $btnAdd = New-ToolButton '+ Add Champion' 205 $false
 $btnAdd.Width = 162
 
@@ -789,10 +789,16 @@ $btnSave.Add_Click({ Save-Builds })
 # initial load from the script folder
 Import-Builds $script:TargetPath
 
+$Form.Add_FormClosed({
+    # Stop the current PowerShell process immediately without touching the form object
+    Stop-Process -Id $PID
+  })
+  
+[void]$form.ShowDialog()
+[void]$form.ShowDialog()
+[void]$form.ShowDialog()
+[void]$form.ShowDialog()
+[void]$form.ShowDialog()
+[void]$form.ShowDialog()
 
-[void]$form.ShowDialog()
-[void]$form.ShowDialog()
-[void]$form.ShowDialog()
-[void]$form.ShowDialog()
-[void]$form.ShowDialog()
-[void]$form.ShowDialog()
+exit
