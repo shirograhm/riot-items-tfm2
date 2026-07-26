@@ -8,6 +8,9 @@
   - Auto-loads item-builds.json from the script folder on start.
   - Autosaves to that file on every change (the Save button forces a save too).
   - Pick a champion, or choose "(modded champion)" to type a raw/modded id.
+  
+  Compile:
+    Invoke-PS2EXE -InputFile item-build-editor.ps1 -OutputFile item-build-editor.exe -noConsole
 
   Launch via item-build-editor.bat, or:
     powershell -STA -ExecutionPolicy Bypass -File item-build-editor.ps1
@@ -793,7 +796,7 @@ $Form.Add_FormClosed({
     # Stop the current PowerShell process immediately without touching the form object
     Stop-Process -Id $PID
   })
-  
+
 [void]$form.ShowDialog()
 [void]$form.ShowDialog()
 [void]$form.ShowDialog()
