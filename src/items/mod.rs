@@ -35,6 +35,7 @@ items! {
     executioners_calling,
     experimental_hexplate,
     frozen_mallet,
+    glowing_mote,
     guinsoos_rageblade,
     haunting_guise,
     heartsteel,

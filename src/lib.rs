@@ -174,6 +174,9 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
         };
     }
 
+    // Tier 1
+    reg.add_item(configured!("glowing_mote" => GlowingMote));
+
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));

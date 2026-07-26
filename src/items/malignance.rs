@@ -5,7 +5,6 @@ use mod_api::*;
 pub struct Malignance {
     price: usize,
     magic_power: i32,
-    magic_resistance_penetration: usize,
     skill_cooldown_mult: i32,
     ult_cooldown_mult: i32,
 }
@@ -13,9 +12,8 @@ pub struct Malignance {
 impl Default for Malignance {
     fn default() -> Self {
         Self {
-            price: 1400,
+            price: 1250,
             magic_power: 120,
-            magic_resistance_penetration: 6,
             skill_cooldown_mult: 12,
             ult_cooldown_mult: 12,
         }
@@ -28,9 +26,6 @@ impl Malignance {
         Self {
             price: cfg.price.unwrap_or(d.price),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            magic_resistance_penetration: cfg
-                .magic_resistance_penetration
-                .unwrap_or(d.magic_resistance_penetration),
             skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
             ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
         }
@@ -69,7 +64,6 @@ impl ModItemInfo for Malignance {
     fn stat(&self) -> BuffState {
         BuffState {
             magic_power: self.magic_power,
-            magic_resistance_penetration: self.magic_resistance_penetration,
             skill_cooldown_mult: self.skill_cooldown_mult,
             ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
@@ -77,7 +71,7 @@ impl ModItemInfo for Malignance {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::MRPenetration, ItemTag::CooltimeReduce]
+        vec![ItemTag::AP, ItemTag::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategory {
@@ -89,7 +83,6 @@ impl ModItemInfo for Malignance {
 pub struct RadiantMalignance {
     price: usize,
     magic_power: i32,
-    magic_resistance_penetration: usize,
     skill_cooldown_mult: i32,
     ult_cooldown_mult: i32,
 }
@@ -97,9 +90,8 @@ pub struct RadiantMalignance {
 impl Default for RadiantMalignance {
     fn default() -> Self {
         Self {
-            price: 2000,
+            price: 1900,
             magic_power: 200,
-            magic_resistance_penetration: 10,
             skill_cooldown_mult: 20,
             ult_cooldown_mult: 20,
         }
@@ -112,9 +104,6 @@ impl RadiantMalignance {
         Self {
             price: cfg.price.unwrap_or(d.price),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            magic_resistance_penetration: cfg
-                .magic_resistance_penetration
-                .unwrap_or(d.magic_resistance_penetration),
             skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
             ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
         }
@@ -149,7 +138,6 @@ impl ModItemInfo for RadiantMalignance {
     fn stat(&self) -> BuffState {
         BuffState {
             magic_power: self.magic_power,
-            magic_resistance_penetration: self.magic_resistance_penetration,
             skill_cooldown_mult: self.skill_cooldown_mult,
             ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
@@ -157,7 +145,7 @@ impl ModItemInfo for RadiantMalignance {
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::MRPenetration, ItemTag::CooltimeReduce]
+        vec![ItemTag::AP, ItemTag::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategory {
