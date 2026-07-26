@@ -101,4 +101,4 @@ This is a free fan-made mod. I am not affiliated with Riot Games in any way. Ite
 
 [Code Mod Notice]
 This Workshop item contains native/executable code files. Enabling it allows code to run inside the game process. Use only mods from creators you trust.
-Files: apply_config.bat, apply_config.ps1, item-build-editor.bat, item-build-editor.ps1, riot_items_tfm2.dll
+Files: apply_config.bat, apply_config.ps1, item-build-editor.exe, riot_items_tfm2.dll
