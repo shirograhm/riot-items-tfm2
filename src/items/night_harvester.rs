@@ -4,11 +4,6 @@ use mod_api::*;
 use crate::config::ItemConfig;
 use crate::percent_of;
 
-// Soulrend: dealing ability damage to an enemy champion deals bonus magic damage
-// (flat + % of the wielder's Ability Power) and grants the wielder a burst of
-// movement speed, gated by a per-target cooldown (see nashors_tooth.rs for the
-// same `on_skill_hit` + per-target cooldown-buff pattern).
-
 #[derive(Clone, Debug)]
 pub struct NightHarvester {
     price: usize,

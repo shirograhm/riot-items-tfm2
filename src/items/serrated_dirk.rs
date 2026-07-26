@@ -3,13 +3,6 @@ use mod_api::*;
 use crate::apply_lethality;
 use crate::config::ItemConfig;
 
-// Lethality: the wielder's basic attacks ignore a flat amount of the target's
-// armor. The game mitigates physical damage by `100/(100+armor)`, so
-// `apply_lethality` scales the outgoing attack up so that after the game applies
-// armor the result matches `armor - lethality`. This only affects basic attacks
-// (the one damage instance a mod can modify); ability damage is dealt by the game
-// and can't be scaled here.
-
 #[derive(Clone, Debug)]
 pub struct SerratedDirk {
     price: usize,

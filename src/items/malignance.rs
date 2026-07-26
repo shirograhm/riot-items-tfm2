@@ -1,49 +1,48 @@
+use crate::config::ItemConfig;
 use mod_api::*;
 
-use crate::config::ItemConfig;
-
 #[derive(Clone, Debug)]
-pub struct HextechGunblade {
+pub struct Malignance {
     price: usize,
-    attack: i32,
     magic_power: i32,
-    vamp: i32,
+    skill_cooldown_mult: i32,
+    ult_cooldown_mult: i32,
 }
 
-impl Default for HextechGunblade {
+impl Default for Malignance {
     fn default() -> Self {
         Self {
-            price: 1500,
-            attack: 50,
-            magic_power: 100,
-            vamp: 10,
+            price: 1250,
+            magic_power: 120,
+            skill_cooldown_mult: 12,
+            ult_cooldown_mult: 12,
         }
     }
 }
 
-impl HextechGunblade {
+impl Malignance {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            vamp: cfg.vamp.unwrap_or(d.vamp),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
         }
     }
 }
 
-impl ModItemInfo for HextechGunblade {
+impl ModItemInfo for Malignance {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "hextech_gunblade"
+        "malignance"
     }
 
     fn icon(&self) -> &str {
-        "hextech_gunblade"
+        "malignance"
     }
 
     fn price(&self) -> usize {
@@ -55,24 +54,24 @@ impl ModItemInfo for HextechGunblade {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["ruinous_blade".to_string(), "spirit_crystal".to_string()]
+        vec!["staff_of_rapture".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_hextech_gunblade".to_string()]
+        vec!["radiant_malignance".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
             magic_power: self.magic_power,
-            vamp: self.vamp,
+            skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::Vamp]
+        vec![ItemTag::AP, ItemTag::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategory {
@@ -81,47 +80,47 @@ impl ModItemInfo for HextechGunblade {
 }
 
 #[derive(Clone, Debug)]
-pub struct RadiantHextechGunblade {
+pub struct RadiantMalignance {
     price: usize,
-    attack: i32,
     magic_power: i32,
-    vamp: i32,
+    skill_cooldown_mult: i32,
+    ult_cooldown_mult: i32,
 }
 
-impl Default for RadiantHextechGunblade {
+impl Default for RadiantMalignance {
     fn default() -> Self {
         Self {
-            price: 2100,
-            attack: 85,
-            magic_power: 150,
-            vamp: 15,
+            price: 1900,
+            magic_power: 200,
+            skill_cooldown_mult: 20,
+            ult_cooldown_mult: 20,
         }
     }
 }
 
-impl RadiantHextechGunblade {
+impl RadiantMalignance {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let d = Self::default();
         Self {
             price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
             magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            vamp: cfg.vamp.unwrap_or(d.vamp),
+            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
+            ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
         }
     }
 }
 
-impl ModItemInfo for RadiantHextechGunblade {
+impl ModItemInfo for RadiantMalignance {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_hextech_gunblade"
+        "radiant_malignance"
     }
 
     fn icon(&self) -> &str {
-        "radiant_hextech_gunblade"
+        "radiant_malignance"
     }
 
     fn price(&self) -> usize {
@@ -133,20 +132,20 @@ impl ModItemInfo for RadiantHextechGunblade {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hextech_gunblade".to_string()]
+        vec!["malignance".to_string()]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
-            attack: self.attack,
             magic_power: self.magic_power,
-            vamp: self.vamp,
+            skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::Vamp]
+        vec![ItemTag::AP, ItemTag::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategory {
