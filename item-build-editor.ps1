@@ -63,7 +63,7 @@ function Format-Name($id) {
 
 # display <-> id maps
 $script:ChampDisplay = @($CHAMP_PLACEHOLDER, $MODDED_LABEL) + ($CHAMPIONS | ForEach-Object { Format-Name $_ })
-$script:ItemDisplay = @($ITEM_PLACEHOLDER) + ($ITEMS      | ForEach-Object { Format-Name $_ })
+# $script:ItemDisplay is built later (grouped by item category), once $scriptDir is known.
 $script:ChampToId = @{ $CHAMP_PLACEHOLDER = '' }
 $script:ChampToDisplay = @{}
 foreach ($c in $CHAMPIONS) { $d = Format-Name $c; $script:ChampToId[$d] = $c; $script:ChampToDisplay[$c] = $d }
@@ -113,6 +113,163 @@ if (Test-Path -LiteralPath $script:SettingsPath) {
   catch {}
 }
 
+# --- item category grouping ------------------------------------------------
+# The item dropdowns are grouped under category headers. Categories are a manual
+# map ($itemCategory: item id -> category key) maintained below - edit it to move
+# an item between groups. Any item in $ITEMS not listed there falls under a
+# trailing "Other" header so nothing ever disappears from the picker.
+$script:ItemHeaderIndices = New-Object 'System.Collections.Generic.HashSet[int]'
+$script:GroupItems = $true
+
+# Category header rows, in dropdown order: internal category key -> display label.
+$CATEGORY_ORDER = @(
+  @('AD', 'Attack Damage'), @('AttackSpeed', 'Attack Speed'), @('Magic', 'Ability Power'),
+  @('Hp', 'Health'), @('Defense', 'Armor'), @('MagicResistance', 'Magic Resist'),
+  @('Support', 'Support')
+)
+# Item id -> category key. Keys must match ids in $ITEMS.
+$itemCategory = @{
+  # Attack Damage
+  bastionbreaker = 'AD'; black_cleaver = 'AD'; bloodthirster = 'AD'; collector = 'AD'
+  deathblade = 'AD'; deaths_dance = 'AD'; hubris = 'AD'; infinity_edge = 'AD'
+  lord_dominiks_regards = 'AD'; mortal_reminder = 'AD'; overlords_bloodmail = 'AD'
+  serpents_fang = 'AD'; spear_of_shojin = 'AD'; stormrazor = 'AD'; sundered_sky = 'AD'
+  trinity_force = 'AD'; yun_tal_wildarrows = 'AD'
+  # Attack Speed
+  blade_of_the_ruined_king = 'AttackSpeed'; diamond_tipped_spear = 'AttackSpeed'
+  experimental_hexplate = 'AttackSpeed'; guinsoos_rageblade = 'AttackSpeed'
+  kraken_slayer = 'AttackSpeed'; mirage_blade = 'AttackSpeed'; phantom_dancer = 'AttackSpeed'
+  terminus = 'AttackSpeed'; wits_end = 'AttackSpeed'
+  # Ability Power
+  blackfire_torch = 'Magic'; bloodletters_curse = 'Magic'; dusk_and_dawn = 'Magic'
+  hextech_gunblade = 'Magic'; liandrys_torment = 'Magic'; ludens_tempest = 'Magic'
+  malignance = 'Magic'; morellonomicon = 'Magic'; nashors_tooth = 'Magic'
+  night_harvester = 'Magic'; rabadons_deathcap = 'Magic'; riftmaker = 'Magic'
+  rylais_crystal_scepter = 'Magic'; shadowflame = 'Magic'; void_staff = 'Magic'
+  # Health
+  atmas_reckoning = 'Hp'; frozen_mallet = 'Hp'; heartsteel = 'Hp'; jaksho_the_protean = 'Hp'
+  sunfire_cape = 'Hp'; unending_despair = 'Hp'; warmogs_armor = 'Hp'
+  # Armor
+  protectors_vow = 'Defense'; thornmail = 'Defense'
+  # Magic Resist
+  dragons_claw = 'MagicResistance'; spirit_visage = 'MagicResistance'
+  # Support
+  bloodsong = 'Support'; echoes_of_helia = 'Support'; protoplasm_harness = 'Support'
+  zekes_herald = 'Support'
+}
+
+# Item icons from the packed sprite sheet in aseprite_resources/ingame. The data
+# file maps a frame name -> normalized rect (0..1); frames are named after the
+# item id, so each mod item resolves to a source rectangle in the sheet PNG.
+# Base-game reskins have no frame and just show their name. The PNG is loaded
+# into an in-memory bitmap so the file isn't locked while the editor runs.
+$script:IconSheet = $null
+$script:IconFrames = @{}
+$iconDir = Join-Path $scriptDir 'aseprite_resources\ingame'
+$iconPng = Join-Path $iconDir 'item_icons_640X640#sheet.png'
+$iconData = Join-Path $iconDir 'item_icons_640X640#data.sprite_sheet'
+if ((Test-Path -LiteralPath $iconPng) -and (Test-Path -LiteralPath $iconData)) {
+  try {
+    $bytes = [System.IO.File]::ReadAllBytes($iconPng)
+    $ms = New-Object System.IO.MemoryStream (, $bytes)
+    $img = [System.Drawing.Image]::FromStream($ms)
+    $script:IconSheet = New-Object System.Drawing.Bitmap($img)
+    $img.Dispose(); $ms.Dispose()
+    $sw = $script:IconSheet.Width; $sh = $script:IconSheet.Height
+    $data = Get-Content -Raw -LiteralPath $iconData -Encoding UTF8 | ConvertFrom-Json
+    foreach ($p in $data.images.PSObject.Properties) {
+      $f = $p.Value
+      $script:IconFrames[$p.Name] = New-Object System.Drawing.Rectangle(
+        [int][Math]::Round($f.x * $sw), [int][Math]::Round($f.y * $sh),
+        [int][Math]::Round($f.w * $sw), [int][Math]::Round($f.h * $sh))
+    }
+  }
+  catch { $script:IconSheet = $null }
+}
+
+# Base-game reskins have no id-named frame in the sheet; map them to a specific
+# frame by name. Non-reskin items resolve to the frame named after their id.
+$reskinIcon = @{
+  bloodthirster = 't4_0'; phantom_dancer = 't4_1'; thornmail = 't4_2'
+  dragons_claw = 't4_3'; ludens_tempest = 't4_4'; sunfire_cape = 't4_5'
+}
+function Resolve-ItemIcon($id) {
+  $frame = if ($reskinIcon.ContainsKey($id)) { $reskinIcon[$id] } else { $id }
+  return $script:IconFrames[$frame]
+}
+
+# (AI picks) row first, then each non-empty category's items under a header row.
+# $iconList runs parallel to $displayList: $null for placeholder/header rows, the
+# sheet source rectangle for item rows that have a frame.
+$displayList = [System.Collections.Generic.List[string]]::new()
+$iconList = New-Object 'System.Collections.Generic.List[object]'
+[void]$displayList.Add($ITEM_PLACEHOLDER); [void]$iconList.Add($null)
+foreach ($grp in $CATEGORY_ORDER) {
+  $inCat = @($ITEMS | Where-Object { $itemCategory[$_] -eq $grp[0] } | Sort-Object { Format-Name $_ })
+  if ($inCat.Count -eq 0) { continue }
+  [void]$script:ItemHeaderIndices.Add($displayList.Count)
+  [void]$displayList.Add($grp[1]); [void]$iconList.Add($null)
+  foreach ($it in $inCat) { [void]$displayList.Add((Format-Name $it)); [void]$iconList.Add((Resolve-ItemIcon $it)) }
+}
+# Any item not in $itemCategory still shows up, grouped under a trailing "Other" header.
+$uncategorized = @($ITEMS | Where-Object { -not $itemCategory.ContainsKey($_) } | Sort-Object { Format-Name $_ })
+if ($uncategorized.Count -gt 0) {
+  [void]$script:ItemHeaderIndices.Add($displayList.Count)
+  [void]$displayList.Add('Other'); [void]$iconList.Add($null)
+  foreach ($it in $uncategorized) { [void]$displayList.Add((Format-Name $it)); [void]$iconList.Add((Resolve-ItemIcon $it)) }
+}
+$script:ItemDisplay = $displayList.ToArray()
+$script:ItemIconRect = $iconList.ToArray()
+
+# Owner-draw for the item combos: category header rows render as a muted bold
+# label between two hairlines and are never highlighted; item rows highlight on
+# hover/selection. Headers are identified by index via $ItemHeaderIndices.
+$script:HeaderFont = New-Object System.Drawing.Font('Segoe UI', 9.75, [System.Drawing.FontStyle]::Bold)
+$script:OnItemDraw = {
+  param($sender, $e)
+  if ($e.Index -lt 0) { return }
+  $g = $e.Graphics; $b = $e.Bounds
+  $text = [string]$sender.Items[$e.Index]
+  if ($script:ItemHeaderIndices.Contains($e.Index)) {
+    $g.FillRectangle((New-Object System.Drawing.SolidBrush($cPanel)), $b)
+    $sf = New-Object System.Drawing.StringFormat
+    $sf.Alignment = 'Center'; $sf.LineAlignment = 'Center'
+    $rect = New-Object System.Drawing.RectangleF($b.X, $b.Y, $b.Width, $b.Height)
+    $g.DrawString($text, $script:HeaderFont, (New-Object System.Drawing.SolidBrush($cMuted)), $rect, $sf)
+    $pen = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(70, 72, 86))
+    $midY = $b.Y + [int]($b.Height / 2)
+    $half = [int]($g.MeasureString($text, $script:HeaderFont).Width / 2)
+    $cx = $b.X + [int]($b.Width / 2)
+    $g.DrawLine($pen, ($b.X + 12), $midY, ($cx - $half - 8), $midY)
+    $g.DrawLine($pen, ($cx + $half + 8), $midY, ($b.X + $b.Width - 12), $midY)
+    return
+  }
+  $state = [int]$e.State
+  $isEdit = (($state -band [int][System.Windows.Forms.DrawItemState]::ComboBoxEdit) -ne 0)
+  $selected = (-not $isEdit) -and (($state -band [int][System.Windows.Forms.DrawItemState]::Selected) -ne 0)
+  $bgCol = if ($selected) { $cAccent } else { $cPanel2 }
+  $fgCol = if ($selected) { $cPanel2 } else { $cText }
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush($bgCol)), $b)
+  # Item icon (if the item has a sheet frame) at the left; text starts after it.
+  $textX = $b.X + $(if ($e.Index -eq 0) { 8 } else { 20 })
+  $src = if ($script:IconSheet -and $e.Index -ge 0 -and $e.Index -lt $script:ItemIconRect.Length) { $script:ItemIconRect[$e.Index] } else { $null }
+  if ($null -ne $src) {
+    $sz = [Math]::Min($b.Height - 4, 22)
+    $iy = $b.Y + [int](($b.Height - $sz) / 2)
+    $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+    $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::Half
+    $dest = New-Object System.Drawing.Rectangle(($b.X + 4), $iy, $sz, $sz)
+    $g.DrawImage($script:IconSheet, $dest, $src.X, $src.Y, $src.Width, $src.Height, [System.Drawing.GraphicsUnit]::Pixel)
+    $textX = $dest.Right + 6
+  }
+  $sf = New-Object System.Drawing.StringFormat
+  $sf.LineAlignment = 'Center'
+  $sf.FormatFlags = [System.Drawing.StringFormatFlags]::NoWrap
+  $sf.Trimming = [System.Drawing.StringTrimming]::EllipsisCharacter
+  $rect = New-Object System.Drawing.RectangleF($textX, $b.Y, ($b.X + $b.Width - $textX), $b.Height)
+  $g.DrawString($text, $sender.Font, (New-Object System.Drawing.SolidBrush($fgCol)), $rect, $sf)
+}
+
 function Save-Settings {
   $val = if ($script:UniqueCheck.Checked) { 'true' } else { 'false' }
   $json = "{`n  `"unique_items`": $val`n}`n"
@@ -127,12 +284,19 @@ function Save-Settings {
 }
 
 # --- helpers ---------------------------------------------------------------
-function New-Combo($displayList, $left, $width) {
+function New-Combo($displayList, $left, $width, [switch]$Grouped) {
   $cb = New-Object System.Windows.Forms.ComboBox
   $cb.DropDownStyle = 'DropDownList'
   $cb.FlatStyle = 'Flat'
   $cb.Left = $left; $cb.Top = 4; $cb.Width = $width; $cb.Height = 32
   $cb.BackColor = $cPanel2; $cb.ForeColor = $cText
+  if ($Grouped) {
+    $cb.DrawMode = [System.Windows.Forms.DrawMode]::OwnerDrawFixed
+    $cb.ItemHeight = 24
+    $cb.MaxDropDownItems = 18
+    $cb.DropDownWidth = [Math]::Max($width, 240)
+    $cb.Add_DrawItem($script:OnItemDraw)
+  }
   foreach ($d in $displayList) { [void]$cb.Items.Add($d) }
   $cb.SelectedIndex = 0
   return $cb
@@ -202,9 +366,9 @@ function New-Row {
   $row.BackColor = $cPanel
 
   $cbChamp = New-Combo $script:ChampDisplay $COL.Champ[0] $COL.Champ[1]
-  $cb1 = New-Combo $script:ItemDisplay $COL.I1[0] $COL.I1[1]
-  $cb2 = New-Combo $script:ItemDisplay $COL.I2[0] $COL.I2[1]
-  $cb3 = New-Combo $script:ItemDisplay $COL.I3[0] $COL.I3[1]
+  $cb1 = New-Combo $script:ItemDisplay $COL.I1[0] $COL.I1[1] -Grouped:$script:GroupItems
+  $cb2 = New-Combo $script:ItemDisplay $COL.I2[0] $COL.I2[1] -Grouped:$script:GroupItems
+  $cb3 = New-Combo $script:ItemDisplay $COL.I3[0] $COL.I3[1] -Grouped:$script:GroupItems
 
   # drag handle to reorder this whole champion line up/down. Text is a runtime
   # glyph so the script stays pure ASCII (no BOM needed).
@@ -249,7 +413,25 @@ function New-Row {
 
   # attach AFTER setting values so loading doesn't autosave
   $cbChamp.Add_SelectedIndexChanged({ Update-ChampMode $this.Parent; Save-Builds })
-  foreach ($cb in @($cb1, $cb2, $cb3)) { $cb.Add_SelectedIndexChanged({ Save-Builds }) }
+  foreach ($cb in @($cb1, $cb2, $cb3)) {
+    $cb.Tag = $cb.SelectedIndex   # last real (non-header) pick, for the guard below
+    $cb.Add_SelectedIndexChanged({
+        $i = $this.SelectedIndex
+        if ($i -ge 0 -and $script:ItemHeaderIndices.Contains($i)) {
+          # Category headers aren't selectable: skip to the next real item in the
+          # direction of travel, snapping back if we run off either end.
+          $prev = [int]$this.Tag
+          $dir = if ($i -lt $prev) { -1 } else { 1 }
+          $j = $i + $dir
+          while ($j -ge 0 -and $j -lt $this.Items.Count -and $script:ItemHeaderIndices.Contains($j)) { $j += $dir }
+          if ($j -lt 0 -or $j -ge $this.Items.Count) { $j = $prev }
+          $this.SelectedIndex = $j
+          return
+        }
+        $this.Tag = $i
+        Save-Builds
+      })
+  }
   $tbRaw.Add_Leave({ Save-Builds })
   $del.Add_Click({
       $script:RowsPanel.Controls.Remove($this.Tag)
