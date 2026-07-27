@@ -35,8 +35,8 @@ impl NightHarvester {
             hp: 300,
             magic_power: 100,
             skill_cooldown_mult: 10,
-            effect_bonus_flat_damage: 150,
-            effect_ap_percent_damage: 30.0,
+            effect_bonus_flat_damage: 100,
+            effect_ap_percent_damage: 20.0,
             effect_move_speed_mult: 40,
             effect_duration_seconds: 2.0,
             effect_cooldown_seconds: 45.0,
@@ -51,6 +51,8 @@ impl NightHarvester {
             price: 2000,
             hp: 500,
             magic_power: 160,
+            effect_bonus_flat_damage: 150,
+            effect_ap_percent_damage: 30.0,
             ..Self::base()
         }
     }

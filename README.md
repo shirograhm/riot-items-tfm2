@@ -72,7 +72,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Morellonomicon** | 1300G | +200 HP<br>+120 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's healing by 40% for 2 seconds. |
 | **Mortal Reminder** | 1400G | +45 AD<br>+20% Crit Chance<br>+20% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
 | **Nashor's Tooth** | 1450G | +115 AP<br>+25% AS | On attack, deal bonus magic damage equal to 35 + 3% of your Ability Power. |
-| **Night Harvester** | 1400G | +300 HP<br>+100 AP<br>+10% CDR | Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% of your Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
+| **Night Harvester** | 1400G | +300 HP<br>+100 AP<br>+10% CDR | Landing an Ability on an enemy champion deals bonus magic damage equal to 100 + 20% of your Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Overlord's Bloodmail** | 1400G | +25 AD<br>+400 HP | Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | Gain bonus health equal to 50 + 80% of your Armor. |
 | **Protoplasm Harness** | 1000G | +350 HP<br>+15% Skill CDR<br>+5% MS | Taking damage below 40% max health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
