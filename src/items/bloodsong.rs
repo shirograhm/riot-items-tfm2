@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
@@ -130,8 +131,7 @@ impl ModItemInfo for Bloodsong {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let on_cooldown = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "spellblade_cooldown");
+        let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
         }
@@ -159,7 +159,7 @@ impl ModItemInfo for Bloodsong {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
+                    tick: ticks(self.effect_cooldown_seconds),
                 },
                 name: ArrayString::try_from("spellblade_cooldown").unwrap(),
                 ..Default::default()
@@ -175,14 +175,13 @@ impl ModItemInfo for Bloodsong {
         if !target_ref.is_champion() {
             return;
         }
-        let already_vulnerable = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "bloodsong_vulnerable");
+        let already_vulnerable = has_buff(&target_ref, "bloodsong_vulnerable");
         if !already_vulnerable {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0).round() as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     damaged_amplify: self.effect_damaged_amplify,
                     name: ArrayString::try_from("bloodsong_vulnerable").unwrap(),
@@ -330,8 +329,7 @@ impl ModItemInfo for RadiantBloodsong {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let on_cooldown = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "spellblade_cooldown");
+        let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
         }
@@ -359,7 +357,7 @@ impl ModItemInfo for RadiantBloodsong {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
+                    tick: ticks(self.effect_cooldown_seconds),
                 },
                 name: ArrayString::try_from("spellblade_cooldown").unwrap(),
                 ..Default::default()
@@ -375,14 +373,13 @@ impl ModItemInfo for RadiantBloodsong {
         if !target_ref.is_champion() {
             return;
         }
-        let already_vulnerable = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "radiant_bloodsong_vulnerable");
+        let already_vulnerable = has_buff(&target_ref, "radiant_bloodsong_vulnerable");
         if !already_vulnerable {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0).round() as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     damaged_amplify: self.effect_damaged_amplify,
                     name: ArrayString::try_from("radiant_bloodsong_vulnerable").unwrap(),

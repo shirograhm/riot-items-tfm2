@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ScoutsSlingshot {
@@ -99,15 +100,14 @@ impl ModItemInfo for ScoutsSlingshot {
             return;
         }
 
-        let is_cooldown_ticking = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "scouts_slingshot_cooldown");
+        let is_cooldown_ticking = has_buff(&caster_ref, "scouts_slingshot_cooldown");
 
         if !is_cooldown_ticking {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
+                        tick: ticks(self.effect_cooldown_seconds),
                     },
                     name: ArrayString::try_from("scouts_slingshot_cooldown").unwrap(),
                     ..Default::default()

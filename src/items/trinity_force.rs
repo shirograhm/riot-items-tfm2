@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{has_buff, percent_of, ticks};
 
 #[derive(Clone, Debug)]
 pub struct TrinityForce {
@@ -109,8 +109,7 @@ impl ModItemInfo for TrinityForce {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let on_cooldown = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "spellblade_cooldown");
+        let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
         }
@@ -139,7 +138,7 @@ impl ModItemInfo for TrinityForce {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
+                    tick: ticks(self.effect_cooldown_seconds),
                 },
                 name: ArrayString::try_from("spellblade_cooldown").unwrap(),
                 ..Default::default()
@@ -257,8 +256,7 @@ impl ModItemInfo for RadiantTrinityForce {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let on_cooldown = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "spellblade_cooldown");
+        let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
         }
@@ -287,7 +285,7 @@ impl ModItemInfo for RadiantTrinityForce {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
+                    tick: ticks(self.effect_cooldown_seconds),
                 },
                 name: ArrayString::try_from("spellblade_cooldown").unwrap(),
                 ..Default::default()

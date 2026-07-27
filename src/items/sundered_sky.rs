@@ -1,7 +1,6 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
-use crate::{config::ItemConfig, percent_of_i32};
+use crate::{config::ItemConfig, percent_of_i32, try_proc_on_hit};
 
 #[derive(Clone, Debug)]
 pub struct SunderedSky {
@@ -114,29 +113,22 @@ impl ModItemInfo for SunderedSky {
             return;
         }
 
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "sundered_sky_cooldown");
-        if is_cooldown_ticking {
-            return;
-        }
-
         let missing_health = (caster_ref.hp().max - caster_ref.hp().current) as i32;
         let heal_amount = self.effect_bonus_flat_heal
             + percent_of_i32(missing_health, self.effect_caster_hp_percent_heal);
+
+        if !try_proc_on_hit(
+            ctx,
+            target,
+            "sundered_sky_cooldown",
+            self.on_hit_cooldown_seconds,
+        ) {
+            return;
+        }
+
         let ratio = 1.0 + (self.effect_percent_bonus_damage / 100.0);
         *damage = (*damage as f64 * ratio) as usize;
-
         ctx.heal(caster, caster, heal_amount as usize);
-        ctx.add_buff(
-            target,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: (self.on_hit_cooldown_seconds * 60.0) as usize,
-                },
-                name: ArrayString::try_from("sundered_sky_cooldown").unwrap(),
-                ..Default::default()
-            },
-        );
     }
 
     fn tags(&self) -> Vec<ItemTag> {
@@ -255,29 +247,22 @@ impl ModItemInfo for RadiantSunderedSky {
             return;
         }
 
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "sundered_sky_cooldown");
-        if is_cooldown_ticking {
-            return;
-        }
-
         let missing_health = (caster_ref.hp().max - caster_ref.hp().current) as i32;
         let heal_amount = self.effect_bonus_flat_heal
             + percent_of_i32(missing_health, self.effect_caster_hp_percent_heal);
+
+        if !try_proc_on_hit(
+            ctx,
+            target,
+            "sundered_sky_cooldown",
+            self.on_hit_cooldown_seconds,
+        ) {
+            return;
+        }
+
         let ratio = 1.0 + (self.effect_percent_bonus_damage / 100.0);
         *damage = (*damage as f64 * ratio) as usize;
-
         ctx.heal(caster, caster, heal_amount as usize);
-        ctx.add_buff(
-            target,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: (self.on_hit_cooldown_seconds * 60.0) as usize,
-                },
-                name: ArrayString::try_from("sundered_sky_cooldown").unwrap(),
-                ..Default::default()
-            },
-        );
     }
 
     fn tags(&self) -> Vec<ItemTag> {

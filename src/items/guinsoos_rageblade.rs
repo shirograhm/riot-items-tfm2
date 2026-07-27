@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{buff_stacks, ticks, try_proc_on_hit};
 
 #[derive(Clone, Debug)]
 pub struct GuinsoosRageblade {
@@ -113,23 +114,14 @@ impl ModItemInfo for GuinsoosRageblade {
             return;
         }
 
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_on_hit_cooldown");
-        let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_buff")
-            .count();
+        let stack_count = buff_stacks(&caster_ref, "guinsoos_rageblade_buff");
 
-        if !is_cooldown_ticking {
-            ctx.add_buff(
-                target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                    },
-                    name: ArrayString::try_from("guinsoos_rageblade_on_hit_cooldown").unwrap(),
-                    ..Default::default()
-                },
-            );
+        if try_proc_on_hit(
+            ctx,
+            target,
+            "guinsoos_rageblade_on_hit_cooldown",
+            self.on_hit_cooldown_seconds,
+        ) {
             ctx.deal_damage(
                 caster,
                 target,
@@ -144,7 +136,7 @@ impl ModItemInfo for GuinsoosRageblade {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     attack_speed_mult: self.effect_stack_attack_speed_mult,
                     name: ArrayString::try_from("guinsoos_rageblade_buff").unwrap(),
@@ -269,23 +261,14 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
             return;
         }
 
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "guinsoos_rageblade_on_hit_cooldown");
-        let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "radiant_guinsoos_rageblade_buff")
-            .count();
+        let stack_count = buff_stacks(&caster_ref, "radiant_guinsoos_rageblade_buff");
 
-        if !is_cooldown_ticking {
-            ctx.add_buff(
-                target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                    },
-                    name: ArrayString::try_from("guinsoos_rageblade_on_hit_cooldown").unwrap(),
-                    ..Default::default()
-                },
-            );
+        if try_proc_on_hit(
+            ctx,
+            target,
+            "guinsoos_rageblade_on_hit_cooldown",
+            self.on_hit_cooldown_seconds,
+        ) {
             ctx.deal_damage(
                 caster,
                 target,
@@ -300,7 +283,7 @@ impl ModItemInfo for RadiantGuinsoosRageblade {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     attack_speed_mult: self.effect_stack_attack_speed_mult,
                     name: ArrayString::try_from("radiant_guinsoos_rageblade_buff").unwrap(),

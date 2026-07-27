@@ -1,8 +1,8 @@
 use arrayvec::ArrayString;
 use mod_api::*;
 
-use crate::apply_adaptive_force;
 use crate::config::ItemConfig;
+use crate::{apply_adaptive_force, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct MirageBlade {
@@ -108,15 +108,14 @@ impl ModItemInfo for MirageBlade {
             return;
         };
 
-        let is_buff_applied = (0..champion_ref.buff_count())
-            .any(|i| champion_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
+        let is_buff_applied = has_buff(&champion_ref, "mirage_blade_move_speed");
 
         if !is_buff_applied {
             ctx.add_buff(
                 champion_ref.id(),
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),
@@ -183,8 +182,7 @@ impl RadiantMirageBlade {
             return;
         };
 
-        let is_prior_buff_applied = (0..champion_ref.buff_count())
-            .any(|i| champion_ref.buff_at(i).name.as_str() == "mirage_blade_adaptive_force");
+        let is_prior_buff_applied = has_buff(&champion_ref, "mirage_blade_adaptive_force");
         let force_to_apply = if is_prior_buff_applied {
             self.adaptive_force - MirageBlade::default().adaptive_force
         } else {
@@ -249,15 +247,14 @@ impl ModItemInfo for RadiantMirageBlade {
             return;
         };
 
-        let is_buff_applied = (0..champion_ref.buff_count())
-            .any(|i| champion_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
+        let is_buff_applied = has_buff(&champion_ref, "mirage_blade_move_speed");
 
         if !is_buff_applied {
             ctx.add_buff(
                 champion_ref.id(),
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),

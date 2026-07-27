@@ -2,8 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
-use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
+use crate::{has_buff, percent_of, ticks, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
 const REGEN_PERIOD_TICKS: usize = 60;
 
@@ -63,8 +62,7 @@ impl WarmogsArmor {
             let Some(champion_ref) = player_ref.champion() else {
                 return;
             };
-            let recently_damaged = (0..champion_ref.buff_count())
-                .any(|i| champion_ref.buff_at(i).name.as_str() == "warmogs_armor_recently_damaged");
+            let recently_damaged = has_buff(&champion_ref, "warmogs_armor_recently_damaged");
             (champion_ref.id(), champion_ref.hp().max, recently_damaged)
         };
 
@@ -173,7 +171,7 @@ impl ModItemInfo for WarmogsArmor {
             entity,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_duration_seconds * 60.0) as usize,
+                    tick: ticks(self.effect_duration_seconds),
                 },
                 name: ArrayString::try_from("warmogs_armor_recently_damaged").unwrap(),
                 ..Default::default()
@@ -246,9 +244,8 @@ impl RadiantWarmogsArmor {
             let Some(champion_ref) = player_ref.champion() else {
                 return;
             };
-            let recently_damaged = (0..champion_ref.buff_count()).any(|i| {
-                champion_ref.buff_at(i).name.as_str() == "radiant_warmogs_armor_recently_damaged"
-            });
+            let recently_damaged =
+                has_buff(&champion_ref, "radiant_warmogs_armor_recently_damaged");
             (champion_ref.id(), champion_ref.hp().max, recently_damaged)
         };
 
@@ -352,7 +349,7 @@ impl ModItemInfo for RadiantWarmogsArmor {
             entity,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_duration_seconds * 60.0) as usize,
+                    tick: ticks(self.effect_duration_seconds),
                 },
                 name: ArrayString::try_from("radiant_warmogs_armor_recently_damaged").unwrap(),
                 ..Default::default()

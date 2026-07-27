@@ -1,5 +1,5 @@
-use mod_api::*;
 use crate::config::ItemConfig;
+use mod_api::*;
 
 #[derive(Clone, Debug)]
 pub struct InfinityEdge {
@@ -10,7 +10,11 @@ pub struct InfinityEdge {
 
 impl Default for InfinityEdge {
     fn default() -> Self {
-        Self { price: 1300, attack: 80, crit_chance: 25 }
+        Self {
+            price: 1300,
+            attack: 80,
+            crit_chance: 25,
+        }
     }
 }
 
@@ -80,7 +84,11 @@ pub struct RadiantInfinityEdge {
 
 impl Default for RadiantInfinityEdge {
     fn default() -> Self {
-        Self { price: 1900, attack: 120, crit_chance: 50 }
+        Self {
+            price: 1900,
+            attack: 120,
+            crit_chance: 50,
+        }
     }
 }
 

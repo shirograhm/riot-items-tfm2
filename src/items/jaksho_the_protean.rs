@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{buff_stacks, ticks};
 
 #[derive(Clone, Debug)]
 pub struct JakshoTheProtean {
@@ -107,15 +108,13 @@ impl ModItemInfo for JakshoTheProtean {
         if !attacker_ref.is_champion() {
             return;
         }
-        let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "jaksho_the_protean_stack")
-            .count();
+        let stack_count = buff_stacks(&entity_ref, "jaksho_the_protean_stack");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     defence_mult: self.effect_stack_defence_mult,
                     magic_resistance_mult: self.effect_stack_magic_resistance_mult,
@@ -235,15 +234,13 @@ impl ModItemInfo for RadiantJakshoTheProtean {
         if !attacker_ref.is_champion() {
             return;
         }
-        let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_jaksho_the_protean_stack")
-            .count();
+        let stack_count = buff_stacks(&entity_ref, "radiant_jaksho_the_protean_stack");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     defence_mult: self.effect_stack_defence_mult,
                     magic_resistance_mult: self.effect_stack_magic_resistance_mult,

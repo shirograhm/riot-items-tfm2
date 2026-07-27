@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{has_buff, percent_of, ticks};
 
 const BURN_TICK_RATE: usize = 12;
 
@@ -112,8 +112,7 @@ impl ModItemInfo for LiandrysTorment {
                 continue;
             }
 
-            let is_burning = (0..entity_ref.buff_count())
-                .any(|i| entity_ref.buff_at(i).name.as_str() == "liandrys_torment_burn");
+            let is_burning = has_buff(&entity_ref, "liandrys_torment_burn");
             let amount_to_burn = percent_of(entity_ref.hp().max, self.effect_hp_percent_damage);
             let mut bonus_damage = amount_to_burn as f64
                 / (self.effect_duration_seconds * 60.0 / BURN_TICK_RATE as f64);
@@ -149,8 +148,7 @@ impl ModItemInfo for LiandrysTorment {
             return;
         }
 
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "liandrys_torment_burn");
+        let is_cooldown_ticking = has_buff(&target_ref, "liandrys_torment_burn");
         if is_cooldown_ticking {
             return;
         }
@@ -158,7 +156,7 @@ impl ModItemInfo for LiandrysTorment {
             target,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_duration_seconds * 60.0).round() as usize,
+                    tick: ticks(self.effect_duration_seconds),
                 },
                 name: ArrayString::try_from("liandrys_torment_burn").unwrap(),
                 ..Default::default()
@@ -277,8 +275,7 @@ impl ModItemInfo for RadiantLiandrysTorment {
                 continue;
             }
 
-            let is_burning = (0..entity_ref.buff_count())
-                .any(|i| entity_ref.buff_at(i).name.as_str() == "liandrys_torment_burn");
+            let is_burning = has_buff(&entity_ref, "liandrys_torment_burn");
             let amount_to_burn = percent_of(entity_ref.hp().max, self.effect_hp_percent_damage);
             let mut bonus_damage = amount_to_burn as f64
                 / (self.effect_duration_seconds * 60.0 / BURN_TICK_RATE as f64);
@@ -314,8 +311,7 @@ impl ModItemInfo for RadiantLiandrysTorment {
             return;
         }
 
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "liandrys_torment_burn");
+        let is_cooldown_ticking = has_buff(&target_ref, "liandrys_torment_burn");
         if is_cooldown_ticking {
             return;
         }
@@ -323,7 +319,7 @@ impl ModItemInfo for RadiantLiandrysTorment {
             target,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_duration_seconds * 60.0).round() as usize,
+                    tick: ticks(self.effect_duration_seconds),
                 },
                 name: ArrayString::try_from("liandrys_torment_burn").unwrap(),
                 ..Default::default()

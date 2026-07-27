@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{buff_stacks, ticks};
 
 #[derive(Clone, Debug)]
 pub struct BlackCleaver {
@@ -104,15 +105,13 @@ impl ModItemInfo for BlackCleaver {
             return;
         }
 
-        let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "black_cleaver_armor_shred")
-            .count();
+        let stack_count = buff_stacks(&entity_ref, "black_cleaver_armor_shred");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     defence_mult: -self.effect_percent_armor_shred,
                     name: ArrayString::try_from("black_cleaver_armor_shred").unwrap(),
@@ -228,15 +227,13 @@ impl ModItemInfo for RadiantBlackCleaver {
             return;
         }
 
-        let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "black_cleaver_armor_shred")
-            .count();
+        let stack_count = buff_stacks(&entity_ref, "black_cleaver_armor_shred");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     defence_mult: -self.effect_percent_armor_shred,
                     name: ArrayString::try_from("black_cleaver_armor_shred").unwrap(),

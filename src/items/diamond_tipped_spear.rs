@@ -1,8 +1,7 @@
 use mod_api::*;
 
-use crate::apply_adaptive_force;
 use crate::config::ItemConfig;
-use crate::DISTANCE_UNITS_PER_RANGE;
+use crate::{apply_adaptive_force, has_buff, DISTANCE_UNITS_PER_RANGE};
 
 #[derive(Clone, Debug)]
 pub struct DiamondTippedSpear {
@@ -176,9 +175,7 @@ impl RadiantDiamondTippedSpear {
             return;
         };
 
-        let is_prior_buff_applied = (0..champion_ref.buff_count()).any(|i| {
-            champion_ref.buff_at(i).name.as_str() == "diamond_tipped_spear_adaptive_force"
-        });
+        let is_prior_buff_applied = has_buff(&champion_ref, "diamond_tipped_spear_adaptive_force");
         let force_to_apply = if is_prior_buff_applied {
             self.adaptive_force - DiamondTippedSpear::default().adaptive_force
         } else {

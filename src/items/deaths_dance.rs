@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{count_takedowns, mark_enemy_champion, percent_of};
+use crate::{count_takedowns, has_buff, mark_enemy_champion, percent_of};
 
 #[derive(Clone, Debug)]
 pub struct DeathsDance {
@@ -152,8 +152,7 @@ impl ModItemInfo for DeathsDance {
             return;
         };
 
-        let is_burn_applied = (0..champion_ref.buff_count())
-            .any(|i| champion_ref.buff_at(i).name.as_str() == "deaths_dance_burn");
+        let is_burn_applied = has_buff(&champion_ref, "deaths_dance_burn");
         if is_burn_applied {
             return;
         }
@@ -368,8 +367,7 @@ impl ModItemInfo for RadiantDeathsDance {
             return;
         };
 
-        let is_burn_applied = (0..champion_ref.buff_count())
-            .any(|i| champion_ref.buff_at(i).name.as_str() == "radiant_deaths_dance_burn");
+        let is_burn_applied = has_buff(&champion_ref, "radiant_deaths_dance_burn");
         if is_burn_applied {
             return;
         }

@@ -1,6 +1,7 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::try_proc_on_hit;
 
 #[derive(Clone, Debug)]
 pub struct KrakenSlayer {
@@ -95,32 +96,20 @@ fn tick_bring_it_down(
     flat: usize,
     max_percent_bonus: f64,
     hp_percent_threshold: f64,
-    cooldown_ticks: usize,
+    cooldown_seconds: f64,
 ) -> usize {
-    let Some(target_ref) = ctx.get_entity(target) else {
-        return 0;
-    };
-    if target_ref.is_tower() {
+    let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(true);
+    if is_tower {
         return 0;
     }
-
-    // Same on-hit rate limit as Guinsoo's Rageblade: multi-hit attacks only
-    // count once per cooldown window, tracked by a marker buff on the target.
-    let is_cooldown_ticking = (0..target_ref.buff_count())
-        .any(|i| target_ref.buff_at(i).name.as_str() == "kraken_slayer_on_hit_cooldown");
-    if is_cooldown_ticking {
-        return 0;
-    }
-    ctx.add_buff(
+    if !try_proc_on_hit(
+        ctx,
         target,
-        BuffState {
-            duration: BuffType::Time {
-                tick: cooldown_ticks,
-            },
-            name: "kraken_slayer_on_hit_cooldown".try_into().unwrap(),
-            ..Default::default()
-        },
-    );
+        "kraken_slayer_on_hit_cooldown",
+        cooldown_seconds,
+    ) {
+        return 0;
+    }
 
     *attack_count += 1;
     if *attack_count < interval.max(1) {
@@ -188,7 +177,7 @@ impl ModItemInfo for KrakenSlayer {
             self.effect_bonus_flat_damage,
             self.effect_max_percent_bonus,
             self.effect_hp_percent_threshold,
-            (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+            self.on_hit_cooldown_seconds,
         );
         if bonus > 0 {
             ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
@@ -317,7 +306,7 @@ impl ModItemInfo for RadiantKrakenSlayer {
             self.effect_bonus_flat_damage,
             self.effect_max_percent_bonus,
             self.effect_hp_percent_threshold,
-            (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+            self.on_hit_cooldown_seconds,
         );
         if bonus > 0 {
             ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);

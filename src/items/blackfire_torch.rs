@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{buff_stacks, ticks};
 
 #[derive(Clone, Debug)]
 pub struct BlackfireTorch {
@@ -85,15 +86,13 @@ impl ModItemInfo for BlackfireTorch {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "blackfire_torch_buff")
-            .count();
+        let stack_count = buff_stacks(&entity_ref, "blackfire_torch_buff");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     magic_power: self.effect_stack_magic_power,
                     name: ArrayString::try_from("blackfire_torch_buff").unwrap(),
@@ -190,15 +189,13 @@ impl ModItemInfo for RadiantBlackfireTorch {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let stack_count = (0..entity_ref.buff_count())
-            .filter(|&i| entity_ref.buff_at(i).name.as_str() == "radiant_blackfire_torch_buff")
-            .count();
+        let stack_count = buff_stacks(&entity_ref, "radiant_blackfire_torch_buff");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     magic_power: self.effect_stack_magic_power,
                     name: ArrayString::try_from("radiant_blackfire_torch_buff").unwrap(),

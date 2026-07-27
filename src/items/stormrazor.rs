@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::ticks;
 
 #[derive(Clone, Debug)]
 pub struct Stormrazor {
@@ -128,7 +129,7 @@ impl ModItemInfo for Stormrazor {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("stormrazor_move_speed").unwrap(),
@@ -284,7 +285,7 @@ impl ModItemInfo for RadiantStormrazor {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: self.effect_move_speed_mult,
                     name: ArrayString::try_from("stormrazor_move_speed").unwrap(),

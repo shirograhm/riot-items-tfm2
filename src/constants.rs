@@ -9,6 +9,10 @@ pub(crate) const DISTANCE_UNITS_PER_RANGE: usize = 1000;
 /// Damage, whichever the recipient favors.
 pub(crate) const ADAPTIVE_FORCE_AD_RATIO: f64 = 0.6;
 
+/// The simulation runs at a fixed 60 ticks per second. Buff durations are
+/// expressed in ticks, config durations in seconds; [`crate::ticks`] converts.
+pub(crate) const TICKS_PER_SECOND: f64 = 60.0;
+
 /// A stat bonus that must track a changing value up AND down is granted as a
 /// fixed-duration `Time` buff and re-applied on a slightly shorter cycle than it
 /// lasts, so a fresh buff is always in place before the old one expires.

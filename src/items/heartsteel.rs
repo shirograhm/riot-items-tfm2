@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{has_buff, percent_of, ticks};
 
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
@@ -127,8 +127,7 @@ impl ModItemInfo for Heartsteel {
             return;
         }
 
-        let is_cooldown_ticking = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "heartsteel_cooldown");
+        let is_cooldown_ticking = has_buff(&caster_ref, "heartsteel_cooldown");
         if is_cooldown_ticking {
             return;
         }
@@ -141,7 +140,7 @@ impl ModItemInfo for Heartsteel {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_cooldown_seconds * 60.0) as usize,
+                    tick: ticks(self.effect_cooldown_seconds),
                 },
                 name: ArrayString::try_from("heartsteel_cooldown").unwrap(),
                 ..Default::default()
@@ -288,8 +287,7 @@ impl ModItemInfo for RadiantHeartsteel {
             return;
         }
 
-        let is_cooldown_ticking = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "radiant_heartsteel_cooldown");
+        let is_cooldown_ticking = has_buff(&caster_ref, "radiant_heartsteel_cooldown");
         if is_cooldown_ticking {
             return;
         }
@@ -302,7 +300,7 @@ impl ModItemInfo for RadiantHeartsteel {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_cooldown_seconds * 60.0) as usize,
+                    tick: ticks(self.effect_cooldown_seconds),
                 },
                 name: ArrayString::try_from("radiant_heartsteel_cooldown").unwrap(),
                 ..Default::default()

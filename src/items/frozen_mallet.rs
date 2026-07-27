@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{has_buff, percent_of, ticks, try_proc_on_hit};
 
 #[derive(Clone, Debug)]
 pub struct FrozenMallet {
@@ -91,14 +91,13 @@ impl ModItemInfo for FrozenMallet {
         if target_ref.is_tower() {
             return;
         }
-        let already_slowed = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
+        let already_slowed = has_buff(&target_ref, "frozen_mallet_slow");
         if !already_slowed {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: -self.effect_slow_amount,
                     name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
@@ -227,22 +226,14 @@ impl ModItemInfo for RadiantFrozenMallet {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_damage);
 
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_on_hit_cooldown");
-        let already_slowed = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "frozen_mallet_slow");
+        let already_slowed = has_buff(&target_ref, "frozen_mallet_slow");
 
-        if !is_cooldown_ticking {
-            ctx.add_buff(
-                target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                    },
-                    name: ArrayString::try_from("frozen_mallet_on_hit_cooldown").unwrap(),
-                    ..Default::default()
-                },
-            );
+        if try_proc_on_hit(
+            ctx,
+            target,
+            "frozen_mallet_on_hit_cooldown",
+            self.on_hit_cooldown_seconds,
+        ) {
             ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
         }
 
@@ -251,7 +242,7 @@ impl ModItemInfo for RadiantFrozenMallet {
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: -self.effect_slow_amount,
                     name: ArrayString::try_from("frozen_mallet_slow").unwrap(),

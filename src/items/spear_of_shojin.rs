@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{buff_stacks, ticks};
 
 #[derive(Clone, Debug)]
 pub struct SpearOfShojin {
@@ -59,15 +60,13 @@ impl SpearOfShojin {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "spear_of_shojin_buff")
-            .count();
+        let stack_count = buff_stacks(&caster_ref, "spear_of_shojin_buff");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     attack_mult: self.effect_stack_attack_mult,
                     name: ArrayString::try_from("spear_of_shojin_buff").unwrap(),
@@ -185,15 +184,13 @@ impl RadiantSpearOfShojin {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "radiant_spear_of_shojin_buff")
-            .count();
+        let stack_count = buff_stacks(&caster_ref, "radiant_spear_of_shojin_buff");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     attack_mult: self.effect_stack_attack_mult,
                     name: ArrayString::try_from("radiant_spear_of_shojin_buff").unwrap(),

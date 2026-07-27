@@ -2,8 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
-use crate::percent_of_i32;
+use crate::{has_buff, percent_of, percent_of_i32, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ProtoplasmHarness {
@@ -116,10 +115,8 @@ impl ModItemInfo for ProtoplasmHarness {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
         };
-        let has_harness_buff: bool = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "protoplasm_harness_buff");
-        let has_cooldown_buff: bool = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "protoplasm_harness_cooldown_buff");
+        let has_harness_buff: bool = has_buff(&entity_ref, "protoplasm_harness_buff");
+        let has_cooldown_buff: bool = has_buff(&entity_ref, "protoplasm_harness_cooldown_buff");
         let hp_threshold = percent_of(entity_ref.hp().max, self.effect_hp_percent_threshold);
 
         if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
@@ -129,7 +126,7 @@ impl ModItemInfo for ProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     hp: bonus_max_hp,
                     name: ArrayString::try_from("protoplasm_harness_buff").unwrap(),
@@ -142,7 +139,7 @@ impl ModItemInfo for ProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_cooldown_seconds),
                     },
                     name: ArrayString::try_from("protoplasm_harness_cooldown_buff").unwrap(),
                     ..Default::default()
@@ -259,11 +256,9 @@ impl ModItemInfo for RadiantProtoplasmHarness {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
         };
-        let has_harness_buff: bool = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_protoplasm_harness_buff");
-        let has_cooldown_buff: bool = (0..entity_ref.buff_count()).any(|i| {
-            entity_ref.buff_at(i).name.as_str() == "radiant_protoplasm_harness_cooldown_buff"
-        });
+        let has_harness_buff: bool = has_buff(&entity_ref, "radiant_protoplasm_harness_buff");
+        let has_cooldown_buff: bool =
+            has_buff(&entity_ref, "radiant_protoplasm_harness_cooldown_buff");
         let hp_threshold = percent_of(entity_ref.hp().max, self.effect_hp_percent_threshold);
 
         if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
@@ -273,7 +268,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     hp: bonus_max_hp,
                     name: ArrayString::try_from("radiant_protoplasm_harness_buff").unwrap(),
@@ -286,7 +281,7 @@ impl ModItemInfo for RadiantProtoplasmHarness {
                 entity,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_cooldown_seconds),
                     },
                     name: ArrayString::try_from("radiant_protoplasm_harness_cooldown_buff")
                         .unwrap(),

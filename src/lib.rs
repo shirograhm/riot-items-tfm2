@@ -18,6 +18,58 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
     (value as f64 * percent / 100.0).round() as i32
 }
 
+/// Converts a duration in seconds (how config expresses them) to simulation
+/// ticks (what `BuffType::Time` expects).
+fn ticks(seconds: f64) -> usize {
+    (seconds * TICKS_PER_SECOND).round() as usize
+}
+
+/// Whether `entity` currently carries a buff named `name`. Buffs are stored in a
+/// flat per-entity table with no lookup by name, so this is a linear scan.
+fn has_buff(entity: &EntityRef, name: &str) -> bool {
+    (0..entity.buff_count()).any(|i| entity.buff_at(i).name.as_str() == name)
+}
+
+/// How many buffs named `name` are on `entity`. Same-name buffs stack rather
+/// than refresh, so the number of copies present *is* the stack count.
+fn buff_stacks(entity: &EntityRef, name: &str) -> usize {
+    (0..entity.buff_count())
+        .filter(|&i| entity.buff_at(i).name.as_str() == name)
+        .count()
+}
+
+/// Rate-limits an on-hit effect to once per `cooldown_seconds` per target.
+///
+/// A single basic attack can register as several hits, which would otherwise proc
+/// an on-hit effect once per hit. There is no per-attack identity to key on, so
+/// the window is tracked as a marker buff named `marker` on the target: the proc
+/// is allowed only when the marker is absent, and stamping it blocks the rest of
+/// the burst.
+///
+/// Returns `true` when the caller should fire its effect (the marker is stamped as
+/// a side effect), `false` while the previous proc is still on cooldown or the
+/// target no longer exists.
+fn try_proc_on_hit(ctx: &mut GameCtx, target: usize, marker: &str, cooldown_seconds: f64) -> bool {
+    let is_ready = ctx
+        .get_entity(target)
+        .map(|target_ref| !has_buff(&target_ref, marker))
+        .unwrap_or(false);
+    if !is_ready {
+        return false;
+    }
+    ctx.add_buff(
+        target,
+        BuffState {
+            duration: BuffType::Time {
+                tick: ticks(cooldown_seconds),
+            },
+            name: marker.try_into().unwrap(),
+            ..Default::default()
+        },
+    );
+    true
+}
+
 /// Damage multiplier that simulates `lethality` flat armor penetration against a
 /// target with `armor`. The game mitigates physical damage by `100 / (100 + armor)`
 /// (verified: `mitigated = floor(raw * 100 / (100 + armor))`), so scaling the
@@ -115,10 +167,7 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
         return;
     };
 
-    let is_buff_applied =
-        (0..champion_ref.buff_count()).any(|i| champion_ref.buff_at(i).name.as_str() == buff_name);
-
-    if !is_buff_applied {
+    if !has_buff(&champion_ref, buff_name) {
         if champion_ref.stat().magic_power > champion_ref.stat().attack {
             ctx.add_buff(
                 champion_ref.id(),

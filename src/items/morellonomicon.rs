@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct Morellonomicon {
@@ -96,14 +97,13 @@ impl ModItemInfo for Morellonomicon {
             return;
         }
 
-        let already_reduced = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "40_percent_heal_cut");
+        let already_reduced = has_buff(&entity_ref, "40_percent_heal_cut");
         if !already_reduced {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     heal_reduce: self.effect_heal_reduce,
                     name: ArrayString::try_from("40_percent_heal_cut").unwrap(),
@@ -216,14 +216,13 @@ impl ModItemInfo for RadiantMorellonomicon {
             return;
         }
 
-        let already_reduced = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "40_percent_heal_cut");
+        let already_reduced = has_buff(&entity_ref, "40_percent_heal_cut");
         if !already_reduced {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     heal_reduce: self.effect_heal_reduce,
                     name: ArrayString::try_from("40_percent_heal_cut").unwrap(),

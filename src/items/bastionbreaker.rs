@@ -1,7 +1,7 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_lethality, count_takedowns, mark_enemy_champion, percent_of};
+use crate::{apply_lethality, count_takedowns, mark_enemy_champion, percent_of, ticks};
 
 fn sabotage_bonus(ctx: &mut GameCtx, caster: usize, flat: usize, ad_percent: f64) -> usize {
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
@@ -62,7 +62,7 @@ impl Bastionbreaker {
     }
 
     fn charge_ticks(&self) -> usize {
-        (self.effect_duration_seconds * 60.0).round() as usize
+        ticks(self.effect_duration_seconds)
     }
 }
 
@@ -212,7 +212,7 @@ impl RadiantBastionbreaker {
     }
 
     fn charge_ticks(&self) -> usize {
-        (self.effect_duration_seconds * 60.0).round() as usize
+        ticks(self.effect_duration_seconds)
     }
 }
 

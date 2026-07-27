@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct RylaisCrystalScepter {
@@ -87,14 +88,13 @@ impl ModItemInfo for RylaisCrystalScepter {
             return;
         }
 
-        let already_slowed = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "rylais_crystal_scepter_slow");
+        let already_slowed = has_buff(&target_ref, "rylais_crystal_scepter_slow");
         if !already_slowed {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: -self.effect_slow_amount,
                     name: ArrayString::try_from("rylais_crystal_scepter_slow").unwrap(),
@@ -190,14 +190,13 @@ impl ModItemInfo for RadiantRylaisCrystalScepter {
             return;
         }
 
-        let already_slowed = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "rylais_crystal_scepter_slow");
+        let already_slowed = has_buff(&target_ref, "rylais_crystal_scepter_slow");
         if !already_slowed {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: -self.effect_slow_amount,
                     name: ArrayString::try_from("rylais_crystal_scepter_slow").unwrap(),

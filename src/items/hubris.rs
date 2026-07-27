@@ -1,7 +1,7 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_lethality, count_takedowns, mark_enemy_champion};
+use crate::{apply_lethality, count_takedowns, mark_enemy_champion, ticks};
 
 #[derive(Clone, Debug)]
 pub struct Hubris {
@@ -76,7 +76,7 @@ impl Hubris {
                 champion_id,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0).round() as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     attack: ad,
                     ..Default::default()
@@ -229,7 +229,7 @@ impl RadiantHubris {
                 champion_id,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0).round() as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     attack: ad,
                     ..Default::default()

@@ -2,8 +2,9 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
-use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
+use crate::{
+    buff_stacks, percent_of, ticks, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
+};
 
 #[derive(Clone, Debug)]
 pub struct Riftmaker {
@@ -64,7 +65,8 @@ impl Riftmaker {
             return;
         };
 
-        let bonus_power = percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_power) as i32;
+        let bonus_power =
+            percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_power) as i32;
         if bonus_power <= 0 {
             return;
         }
@@ -135,15 +137,13 @@ impl ModItemInfo for Riftmaker {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "riftmaker_corruption")
-            .count();
+        let stack_count = buff_stacks(&caster_ref, "riftmaker_corruption");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     vamp: self.effect_vamp,
                     name: ArrayString::try_from("riftmaker_corruption").unwrap(),
@@ -221,7 +221,8 @@ impl RadiantRiftmaker {
             return;
         };
 
-        let bonus_power = percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_power) as i32;
+        let bonus_power =
+            percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_power) as i32;
         if bonus_power <= 0 {
             return;
         }
@@ -288,15 +289,13 @@ impl ModItemInfo for RadiantRiftmaker {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "radiant_riftmaker_corruption")
-            .count();
+        let stack_count = buff_stacks(&caster_ref, "radiant_riftmaker_corruption");
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     vamp: self.effect_vamp,
                     name: ArrayString::try_from("radiant_riftmaker_corruption").unwrap(),

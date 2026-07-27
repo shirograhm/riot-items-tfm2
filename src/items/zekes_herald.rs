@@ -3,7 +3,7 @@ use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    ADAPTIVE_FORCE_AD_RATIO, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
+    has_buff, ADAPTIVE_FORCE_AD_RATIO, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
     DISTANCE_UNITS_PER_RANGE,
 };
 
@@ -84,8 +84,7 @@ impl ZekesHerald {
             }
             let prefers_ap = entity_ref.stat().magic_power > entity_ref.stat().attack;
 
-            let is_already_affected: bool = (0..entity_ref.buff_count())
-                .any(|i| entity_ref.buff_at(i).name.as_str() == "zekes_herald_aura");
+            let is_already_affected: bool = has_buff(&entity_ref, "zekes_herald_aura");
             if !is_already_affected {
                 targets.push((id, prefers_ap));
             }
@@ -253,8 +252,7 @@ impl RadiantZekesHerald {
             }
             let prefers_ap = entity_ref.stat().magic_power > entity_ref.stat().attack;
 
-            let is_already_affected: bool = (0..entity_ref.buff_count())
-                .any(|i| entity_ref.buff_at(i).name.as_str() == "radiant_zekes_herald_aura");
+            let is_already_affected: bool = has_buff(&entity_ref, "radiant_zekes_herald_aura");
             if !is_already_affected {
                 targets.push((id, prefers_ap));
             }

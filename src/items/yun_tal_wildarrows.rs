@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct YunTalWildarrows {
@@ -129,8 +130,7 @@ impl ModItemInfo for YunTalWildarrows {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let is_flurry_on_cooldown = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "yun_tal_flurry_cooldown");
+        let is_flurry_on_cooldown = has_buff(&caster_ref, "yun_tal_flurry_cooldown");
 
         // Practice: dealing physical damage grants permanent crit chance, capped.
         if damage_type == DamageType::AD && self.accumulated_stacks < self.effect_max_stacks {
@@ -152,7 +152,7 @@ impl ModItemInfo for YunTalWildarrows {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     attack_speed_mult: self.effect_flurry_attack_speed_mult,
                     name: ArrayString::try_from("yun_tal_flurry").unwrap(),
@@ -163,7 +163,7 @@ impl ModItemInfo for YunTalWildarrows {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_cooldown_seconds),
                     },
                     name: ArrayString::try_from("yun_tal_flurry_cooldown").unwrap(),
                     ..Default::default()
@@ -300,8 +300,7 @@ impl ModItemInfo for RadiantYunTalWildarrows {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let is_flurry_on_cooldown = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "radiant_yun_tal_flurry_cooldown");
+        let is_flurry_on_cooldown = has_buff(&caster_ref, "radiant_yun_tal_flurry_cooldown");
 
         // Practice: dealing physical damage grants permanent crit chance, capped.
         if damage_type == DamageType::AD && self.accumulated_stacks < self.effect_max_stacks {
@@ -323,7 +322,7 @@ impl ModItemInfo for RadiantYunTalWildarrows {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     attack_speed_mult: self.effect_flurry_attack_speed_mult,
                     name: ArrayString::try_from("radiant_yun_tal_flurry").unwrap(),
@@ -334,7 +333,7 @@ impl ModItemInfo for RadiantYunTalWildarrows {
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_cooldown_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_cooldown_seconds),
                     },
                     name: ArrayString::try_from("radiant_yun_tal_flurry_cooldown").unwrap(),
                     ..Default::default()

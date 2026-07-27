@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{percent_of, try_proc_on_hit};
 
 #[derive(Clone, Debug)]
 pub struct BladeOfTheRuinedKing {
@@ -111,23 +110,14 @@ impl ModItemInfo for BladeOfTheRuinedKing {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
-        let is_cooldown_ticking = (0..target_ref.buff_count()).any(|i| {
-            target_ref.buff_at(i).name.as_str() == "blade_of_the_ruined_king_on_hit_cooldown"
-        });
-        if is_cooldown_ticking {
+        if !try_proc_on_hit(
+            ctx,
+            target,
+            "blade_of_the_ruined_king_on_hit_cooldown",
+            self.on_hit_cooldown_seconds,
+        ) {
             return;
         }
-
-        ctx.add_buff(
-            target,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                },
-                name: ArrayString::try_from("blade_of_the_ruined_king_on_hit_cooldown").unwrap(),
-                ..Default::default()
-            },
-        );
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
 
@@ -248,23 +238,14 @@ impl ModItemInfo for RadiantBladeOfTheRuinedKing {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
-        let is_cooldown_ticking = (0..target_ref.buff_count()).any(|i| {
-            target_ref.buff_at(i).name.as_str() == "blade_of_the_ruined_king_on_hit_cooldown"
-        });
-        if is_cooldown_ticking {
+        if !try_proc_on_hit(
+            ctx,
+            target,
+            "blade_of_the_ruined_king_on_hit_cooldown",
+            self.on_hit_cooldown_seconds,
+        ) {
             return;
         }
-
-        ctx.add_buff(
-            target,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                },
-                name: ArrayString::try_from("blade_of_the_ruined_king_on_hit_cooldown").unwrap(),
-                ..Default::default()
-            },
-        );
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
     }
 

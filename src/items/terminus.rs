@@ -2,6 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{buff_stacks, ticks};
 
 #[derive(Clone, Debug)]
 pub struct Terminus {
@@ -108,21 +109,16 @@ impl ModItemInfo for Terminus {
         let Some(caster_entity_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let defenses_stack_count = (0..caster_entity_ref.buff_count())
-            .filter(|&i| caster_entity_ref.buff_at(i).name.as_str() == "terminus_armor_pen_buff")
-            .count();
-        let resistance_stack_count = (0..caster_entity_ref.buff_count())
-            .filter(|&i| {
-                caster_entity_ref.buff_at(i).name.as_str() == "terminus_magic_resistance_pen_buff"
-            })
-            .count();
+        let defenses_stack_count = buff_stacks(&caster_entity_ref, "terminus_armor_pen_buff");
+        let resistance_stack_count =
+            buff_stacks(&caster_entity_ref, "terminus_magic_resistance_pen_buff");
         if self.flip_flop {
             if defenses_stack_count < self.effect_max_stacks {
                 ctx.add_buff(
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: (self.effect_duration_seconds * 60.0) as usize,
+                            tick: ticks(self.effect_duration_seconds),
                         },
                         defence_penetration: self.effect_armor_pen_per_stack,
                         name: ArrayString::try_from("terminus_armor_pen_buff").unwrap(),
@@ -137,7 +133,7 @@ impl ModItemInfo for Terminus {
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: (self.effect_duration_seconds * 60.0) as usize,
+                            tick: ticks(self.effect_duration_seconds),
                         },
                         magic_resistance_penetration: self.effect_magic_pen_per_stack,
                         name: ArrayString::try_from("terminus_magic_resistance_pen_buff").unwrap(),
@@ -259,24 +255,19 @@ impl ModItemInfo for RadiantTerminus {
         let Some(caster_entity_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let defenses_stack_count = (0..caster_entity_ref.buff_count())
-            .filter(|&i| {
-                caster_entity_ref.buff_at(i).name.as_str() == "radiant_terminus_armor_pen_buff"
-            })
-            .count();
-        let resistance_stack_count = (0..caster_entity_ref.buff_count())
-            .filter(|&i| {
-                caster_entity_ref.buff_at(i).name.as_str()
-                    == "radiant_terminus_magic_resistance_pen_buff"
-            })
-            .count();
+        let defenses_stack_count =
+            buff_stacks(&caster_entity_ref, "radiant_terminus_armor_pen_buff");
+        let resistance_stack_count = buff_stacks(
+            &caster_entity_ref,
+            "radiant_terminus_magic_resistance_pen_buff",
+        );
         if self.flip_flop {
             if defenses_stack_count < self.effect_max_stacks {
                 ctx.add_buff(
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: (self.effect_duration_seconds * 60.0) as usize,
+                            tick: ticks(self.effect_duration_seconds),
                         },
                         defence_penetration: self.effect_armor_pen_per_stack,
                         name: ArrayString::try_from("radiant_terminus_armor_pen_buff").unwrap(),
@@ -291,7 +282,7 @@ impl ModItemInfo for RadiantTerminus {
                     caster,
                     BuffState {
                         duration: BuffType::Time {
-                            tick: (self.effect_duration_seconds * 60.0) as usize,
+                            tick: ticks(self.effect_duration_seconds),
                         },
                         magic_resistance_penetration: self.effect_magic_pen_per_stack,
                         name: ArrayString::try_from("radiant_terminus_magic_resistance_pen_buff")

@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{has_buff, percent_of, ticks};
 
 #[derive(Clone, Debug)]
 pub struct NightHarvester {
@@ -115,8 +115,7 @@ impl ModItemInfo for NightHarvester {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
 
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "night_harvester_cooldown");
+        let is_cooldown_ticking = has_buff(&target_ref, "night_harvester_cooldown");
         if is_cooldown_ticking {
             return;
         }
@@ -125,7 +124,7 @@ impl ModItemInfo for NightHarvester {
             target,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_cooldown_seconds * 60.0) as usize,
+                    tick: ticks(self.effect_cooldown_seconds),
                 },
                 name: ArrayString::try_from("night_harvester_cooldown").unwrap(),
                 ..Default::default()
@@ -136,7 +135,7 @@ impl ModItemInfo for NightHarvester {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_duration_seconds * 60.0) as usize,
+                    tick: ticks(self.effect_duration_seconds),
                 },
                 move_speed_mult: self.effect_move_speed_mult,
                 name: ArrayString::try_from("night_harvester_soulrend").unwrap(),
@@ -258,8 +257,7 @@ impl ModItemInfo for RadiantNightHarvester {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
 
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "radiant_night_harvester_cooldown");
+        let is_cooldown_ticking = has_buff(&target_ref, "radiant_night_harvester_cooldown");
         if is_cooldown_ticking {
             return;
         }
@@ -268,7 +266,7 @@ impl ModItemInfo for RadiantNightHarvester {
             target,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_cooldown_seconds * 60.0) as usize,
+                    tick: ticks(self.effect_cooldown_seconds),
                 },
                 name: ArrayString::try_from("radiant_night_harvester_cooldown").unwrap(),
                 ..Default::default()
@@ -279,7 +277,7 @@ impl ModItemInfo for RadiantNightHarvester {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_duration_seconds * 60.0) as usize,
+                    tick: ticks(self.effect_duration_seconds),
                 },
                 move_speed_mult: self.effect_move_speed_mult,
                 name: ArrayString::try_from("radiant_night_harvester_soulrend").unwrap(),

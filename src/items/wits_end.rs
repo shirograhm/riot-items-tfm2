@@ -1,6 +1,7 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::try_proc_on_hit;
 
 #[derive(Clone, Debug)]
 pub struct WitsEnd {
@@ -48,30 +49,16 @@ fn apply_fray(
     caster: usize,
     target: usize,
     magic_damage: usize,
-    cooldown_ticks: usize,
+    cooldown_seconds: f64,
     cooldown_buff: &str,
 ) {
-    let Some(target_ref) = ctx.get_entity(target) else {
-        return;
-    };
-    if target_ref.is_tower() {
+    let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(true);
+    if is_tower {
         return;
     }
-    let is_cooldown_ticking =
-        (0..target_ref.buff_count()).any(|i| target_ref.buff_at(i).name.as_str() == cooldown_buff);
-    if is_cooldown_ticking {
+    if !try_proc_on_hit(ctx, target, cooldown_buff, cooldown_seconds) {
         return;
     }
-    ctx.add_buff(
-        target,
-        BuffState {
-            duration: BuffType::Time {
-                tick: cooldown_ticks,
-            },
-            name: cooldown_buff.try_into().unwrap(),
-            ..Default::default()
-        },
-    );
     ctx.deal_damage(caster, target, 0, magic_damage, AttackType::BaseAttack);
 }
 
@@ -126,7 +113,7 @@ impl ModItemInfo for WitsEnd {
             caster,
             target,
             self.effect_bonus_magic_damage,
-            (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+            self.on_hit_cooldown_seconds,
             "wits_end_on_hit_cooldown",
         );
     }
@@ -228,7 +215,7 @@ impl ModItemInfo for RadiantWitsEnd {
             caster,
             target,
             self.effect_bonus_magic_damage,
-            (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+            self.on_hit_cooldown_seconds,
             "wits_end_on_hit_cooldown",
         );
     }
