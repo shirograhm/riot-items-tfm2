@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, buff_name, has_buff, percent_of, ticks, ItemMeta};
 
 const BURN_TICK_RATE: usize = 12;
 
@@ -183,7 +182,7 @@ impl ModItemInfo for LiandrysTorment {
                 duration: BuffType::Time {
                     tick: ticks(self.effect_duration_seconds),
                 },
-                name: ArrayString::try_from("liandrys_torment_burn").unwrap(),
+                name: buff_name("liandrys_torment_burn"),
                 ..Default::default()
             },
         );

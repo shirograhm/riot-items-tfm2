@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, buff_name, has_buff, percent_of, ticks, try_proc_on_hit, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct FrozenMallet {
@@ -157,7 +156,7 @@ impl ModItemInfo for FrozenMallet {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: -self.effect_slow_amount,
-                    name: ArrayString::try_from("frozen_mallet_slow").unwrap(),
+                    name: buff_name("frozen_mallet_slow"),
                     ..Default::default()
                 },
             );

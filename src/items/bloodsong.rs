@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, ItemMeta};
+use crate::{apply_config, buff_name, has_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
@@ -188,7 +187,7 @@ impl ModItemInfo for Bloodsong {
                 duration: BuffType::Time {
                     tick: ticks(self.effect_cooldown_seconds),
                 },
-                name: ArrayString::try_from("spellblade_cooldown").unwrap(),
+                name: buff_name("spellblade_cooldown"),
                 ..Default::default()
             },
         );
@@ -211,7 +210,7 @@ impl ModItemInfo for Bloodsong {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     damaged_amplify: self.effect_damaged_amplify,
-                    name: ArrayString::try_from(self.vulnerable_buff).unwrap(),
+                    name: buff_name(self.vulnerable_buff),
                     ..Default::default()
                 },
             );

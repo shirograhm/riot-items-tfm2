@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, percent_of_i32, ticks, ItemMeta};
+use crate::{apply_config, buff_name, has_buff, percent_of, percent_of_i32, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct ProtoplasmHarness {
@@ -162,7 +161,7 @@ impl ModItemInfo for ProtoplasmHarness {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     hp: bonus_max_hp,
-                    name: ArrayString::try_from(self.buff_buff).unwrap(),
+                    name: buff_name(self.buff_buff),
                     ..Default::default()
                 },
             );
@@ -174,7 +173,7 @@ impl ModItemInfo for ProtoplasmHarness {
                     duration: BuffType::Time {
                         tick: ticks(self.effect_cooldown_seconds),
                     },
-                    name: ArrayString::try_from(self.cooldown_buff_buff).unwrap(),
+                    name: buff_name(self.cooldown_buff_buff),
                     ..Default::default()
                 },
             );

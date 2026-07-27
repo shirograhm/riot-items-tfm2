@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, ItemMeta};
+use crate::{apply_config, buff_name, has_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct YunTalWildarrows {
@@ -146,7 +145,7 @@ impl ModItemInfo for YunTalWildarrows {
             BuffState {
                 duration: BuffType::Permanent,
                 crit_chance: self.accumulated_stacks as i32 * self.effect_stack_crit_chance,
-                name: ArrayString::try_from(self.yun_tal_practice_buff).unwrap(),
+                name: buff_name(self.yun_tal_practice_buff),
                 ..Default::default()
             },
         );
@@ -172,7 +171,7 @@ impl ModItemInfo for YunTalWildarrows {
                 BuffState {
                     duration: BuffType::Permanent,
                     crit_chance: self.effect_stack_crit_chance,
-                    name: ArrayString::try_from(self.yun_tal_practice_buff).unwrap(),
+                    name: buff_name(self.yun_tal_practice_buff),
                     ..Default::default()
                 },
             );
@@ -188,7 +187,7 @@ impl ModItemInfo for YunTalWildarrows {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     attack_speed_mult: self.effect_flurry_attack_speed_mult,
-                    name: ArrayString::try_from(self.yun_tal_flurry_buff).unwrap(),
+                    name: buff_name(self.yun_tal_flurry_buff),
                     ..Default::default()
                 },
             );
@@ -198,7 +197,7 @@ impl ModItemInfo for YunTalWildarrows {
                     duration: BuffType::Time {
                         tick: ticks(self.effect_cooldown_seconds),
                     },
-                    name: ArrayString::try_from(self.yun_tal_flurry_cooldown_buff).unwrap(),
+                    name: buff_name(self.yun_tal_flurry_cooldown_buff),
                     ..Default::default()
                 },
             );

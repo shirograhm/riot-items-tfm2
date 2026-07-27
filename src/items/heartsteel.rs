@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, buff_name, has_buff, percent_of, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
@@ -133,7 +132,7 @@ impl ModItemInfo for Heartsteel {
             BuffState {
                 duration: BuffType::Permanent,
                 hp: self.accumulated_bonus_hp,
-                name: ArrayString::try_from(self.stack_buff).unwrap(),
+                name: buff_name(self.stack_buff),
                 ..Default::default()
             },
         );
@@ -172,7 +171,7 @@ impl ModItemInfo for Heartsteel {
                 duration: BuffType::Time {
                     tick: ticks(self.effect_cooldown_seconds),
                 },
-                name: ArrayString::try_from(self.cooldown_buff).unwrap(),
+                name: buff_name(self.cooldown_buff),
                 ..Default::default()
             },
         );
@@ -182,7 +181,7 @@ impl ModItemInfo for Heartsteel {
             BuffState {
                 duration: BuffType::Permanent,
                 hp: bonus_hp,
-                name: ArrayString::try_from(self.stack_buff).unwrap(),
+                name: buff_name(self.stack_buff),
                 ..Default::default()
             },
         );

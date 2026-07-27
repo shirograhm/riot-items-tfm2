@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Terminus {
@@ -151,7 +150,7 @@ impl ModItemInfo for Terminus {
                             tick: ticks(self.effect_duration_seconds),
                         },
                         defence_penetration: self.effect_armor_pen_per_stack,
-                        name: ArrayString::try_from(self.armor_pen_buff_buff).unwrap(),
+                        name: buff_name(self.armor_pen_buff_buff),
                         ..Default::default()
                     },
                 );
@@ -166,7 +165,7 @@ impl ModItemInfo for Terminus {
                             tick: ticks(self.effect_duration_seconds),
                         },
                         magic_resistance_penetration: self.effect_magic_pen_per_stack,
-                        name: ArrayString::try_from(self.magic_resistance_pen_buff_buff).unwrap(),
+                        name: buff_name(self.magic_resistance_pen_buff_buff),
                         ..Default::default()
                     },
                 );

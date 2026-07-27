@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, buff_name, has_buff, percent_of, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct NightHarvester {
@@ -153,7 +152,7 @@ impl ModItemInfo for NightHarvester {
                 duration: BuffType::Time {
                     tick: ticks(self.effect_cooldown_seconds),
                 },
-                name: ArrayString::try_from(self.cooldown_buff).unwrap(),
+                name: buff_name(self.cooldown_buff),
                 ..Default::default()
             },
         );
@@ -165,7 +164,7 @@ impl ModItemInfo for NightHarvester {
                     tick: ticks(self.effect_duration_seconds),
                 },
                 move_speed_mult: self.effect_move_speed_mult,
-                name: ArrayString::try_from(self.soulrend_buff).unwrap(),
+                name: buff_name(self.soulrend_buff),
                 ..Default::default()
             },
         );

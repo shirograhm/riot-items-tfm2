@@ -1,3 +1,4 @@
+use arrayvec::ArrayString;
 use mod_api::*;
 
 mod build_config;
@@ -24,6 +25,13 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
 /// ticks (what `BuffType::Time` expects).
 fn ticks(seconds: f64) -> usize {
     (seconds * TICKS_PER_SECOND).round() as usize
+}
+
+/// Converts a buff name to the fixed-capacity inline string that
+/// `BuffState::name` holds. Panics if `name` exceeds that capacity — buff names
+/// are compile-time constants, so that is a typo to fix, not a runtime condition.
+fn buff_name<const CAP: usize>(name: &str) -> ArrayString<CAP> {
+    ArrayString::try_from(name).unwrap()
 }
 
 /// Whether `entity` currently carries a buff named `name`. Buffs are stored in a
@@ -65,7 +73,7 @@ fn try_proc_on_hit(ctx: &mut GameCtx, target: usize, marker: &str, cooldown_seco
             duration: BuffType::Time {
                 tick: ticks(cooldown_seconds),
             },
-            name: marker.try_into().unwrap(),
+            name: buff_name(marker),
             ..Default::default()
         },
     );
@@ -141,7 +149,7 @@ fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize 
     }
     let mut takedowns = 0;
     let mut kept = Vec::with_capacity(marks.len());
-    for (id, ticks) in std::mem::take(marks) {
+    for (id, ticks_left) in std::mem::take(marks) {
         // A marked champion counts as a takedown once the game stops reporting it as
         // alive: either it's gone from the entity table (`get_entity` -> None, which
         // is how TFM2 removes a champion killed this round) or it's still queryable
@@ -152,7 +160,7 @@ fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize 
             takedowns += 1;
             continue;
         }
-        let remaining = ticks.saturating_sub(1);
+        let remaining = ticks_left.saturating_sub(1);
         if remaining > 0 {
             kept.push((id, remaining));
         }
@@ -161,7 +169,7 @@ fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize 
     takedowns
 }
 
-fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, buff_name: &str) {
+fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, name: &str) {
     let Some(player_ref) = ctx.get_player(player) else {
         return;
     };
@@ -169,14 +177,14 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
         return;
     };
 
-    if !has_buff(&champion_ref, buff_name) {
+    if !has_buff(&champion_ref, name) {
         if champion_ref.stat().magic_power > champion_ref.stat().attack {
             ctx.add_buff(
                 champion_ref.id(),
                 BuffState {
                     duration: BuffType::Permanent,
                     magic_power: adaptive_force,
-                    name: buff_name.try_into().unwrap(),
+                    name: buff_name(name),
                     ..Default::default()
                 },
             )
@@ -186,7 +194,7 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
                 BuffState {
                     duration: BuffType::Permanent,
                     attack: (adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32,
-                    name: buff_name.try_into().unwrap(),
+                    name: buff_name(name),
                     ..Default::default()
                 },
             )

@@ -1,8 +1,9 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, count_takedowns, has_buff, mark_enemy_champion, percent_of, ItemMeta};
+use crate::{
+    apply_config, buff_name, count_takedowns, has_buff, mark_enemy_champion, percent_of, ItemMeta,
+};
 
 #[derive(Clone, Debug)]
 pub struct DeathsDance {
@@ -191,7 +192,7 @@ impl ModItemInfo for DeathsDance {
             entity,
             BuffState {
                 duration: BuffType::Time { tick: 12 },
-                name: ArrayString::try_from(self.burn_buff).unwrap(),
+                name: buff_name(self.burn_buff),
                 ..Default::default()
             },
         );

@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct BlackCleaver {
@@ -139,7 +138,7 @@ impl ModItemInfo for BlackCleaver {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     defence_mult: -self.effect_percent_armor_shred,
-                    name: ArrayString::try_from("black_cleaver_armor_shred").unwrap(),
+                    name: buff_name("black_cleaver_armor_shred"),
                     ..Default::default()
                 },
             );

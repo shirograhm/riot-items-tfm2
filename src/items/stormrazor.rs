@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ticks, ItemMeta};
+use crate::{apply_config, buff_name, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Stormrazor {
@@ -153,7 +152,7 @@ impl ModItemInfo for Stormrazor {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: self.effect_move_speed_mult,
-                    name: ArrayString::try_from("stormrazor_move_speed").unwrap(),
+                    name: buff_name("stormrazor_move_speed"),
                     ..Default::default()
                 },
             );

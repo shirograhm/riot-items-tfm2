@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks};
+use crate::{apply_config, buff_name, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ScoutsSlingshot {
@@ -110,7 +109,7 @@ impl ModItemInfo for ScoutsSlingshot {
                     duration: BuffType::Time {
                         tick: ticks(self.effect_cooldown_seconds),
                     },
-                    name: ArrayString::try_from("scouts_slingshot_cooldown").unwrap(),
+                    name: buff_name("scouts_slingshot_cooldown"),
                     ..Default::default()
                 },
             );

@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct JakshoTheProtean {
@@ -151,7 +150,7 @@ impl ModItemInfo for JakshoTheProtean {
                     },
                     defence_mult: self.effect_stack_defence_mult,
                     magic_resistance_mult: self.effect_stack_magic_resistance_mult,
-                    name: ArrayString::try_from(self.stack_buff).unwrap(),
+                    name: buff_name(self.stack_buff),
                     ..Default::default()
                 },
             );

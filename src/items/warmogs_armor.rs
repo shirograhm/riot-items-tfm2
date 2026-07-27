@@ -1,9 +1,8 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, has_buff, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, buff_name, has_buff, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS,
 };
 
@@ -127,7 +126,7 @@ impl WarmogsArmor {
                         tick: BUFF_REFRESH_DURATION_TICKS,
                     },
                     move_speed_mult: self.effect_move_speed_mult,
-                    name: ArrayString::try_from(self.move_speed_buff).unwrap(),
+                    name: buff_name(self.move_speed_buff),
                     ..Default::default()
                 },
             );
@@ -208,7 +207,7 @@ impl ModItemInfo for WarmogsArmor {
                 duration: BuffType::Time {
                     tick: ticks(self.effect_duration_seconds),
                 },
-                name: ArrayString::try_from(self.recently_damaged_buff).unwrap(),
+                name: buff_name(self.recently_damaged_buff),
                 ..Default::default()
             },
         );

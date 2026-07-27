@@ -1,9 +1,9 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
+    apply_config, buff_name, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    BUFF_REFRESH_PERIOD_TICKS,
 };
 
 #[derive(Clone, Debug)]
@@ -104,7 +104,7 @@ impl ProtectorsVow {
         ctx.add_buff(
             entity_id,
             BuffState {
-                name: ArrayString::try_from(self.awe_buff).unwrap(),
+                name: buff_name(self.awe_buff),
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },

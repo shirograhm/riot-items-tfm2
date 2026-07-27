@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct BloodlettersCurse {
@@ -143,7 +142,7 @@ impl ModItemInfo for BloodlettersCurse {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     magic_resistance_mult: -self.effect_percent_mr_shred,
-                    name: ArrayString::try_from("bloodletters_curse_mr_shred").unwrap(),
+                    name: buff_name("bloodletters_curse_mr_shred"),
                     ..Default::default()
                 },
             );

@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks};
+use crate::{apply_config, buff_name, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ExecutionersCalling {
@@ -96,7 +95,7 @@ impl ModItemInfo for ExecutionersCalling {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     heal_reduce: self.effect_heal_reduce,
-                    name: ArrayString::try_from("25_percent_heal_cut").unwrap(),
+                    name: buff_name("25_percent_heal_cut"),
                     ..Default::default()
                 },
             );

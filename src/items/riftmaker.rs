@@ -1,9 +1,8 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_stacks, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, buff_name, buff_stacks, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS,
 };
 
@@ -101,7 +100,7 @@ impl Riftmaker {
         ctx.add_buff(
             entity_id,
             BuffState {
-                name: ArrayString::try_from(self.infusion_buff).unwrap(),
+                name: buff_name(self.infusion_buff),
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },
@@ -178,7 +177,7 @@ impl ModItemInfo for Riftmaker {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     vamp: self.effect_vamp,
-                    name: ArrayString::try_from(self.corruption_buff).unwrap(),
+                    name: buff_name(self.corruption_buff),
                     ..Default::default()
                 },
             );

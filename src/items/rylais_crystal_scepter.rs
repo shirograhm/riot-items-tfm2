@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, ItemMeta};
+use crate::{apply_config, buff_name, has_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct RylaisCrystalScepter {
@@ -127,7 +126,7 @@ impl ModItemInfo for RylaisCrystalScepter {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: -self.effect_slow_amount,
-                    name: ArrayString::try_from("rylais_crystal_scepter_slow").unwrap(),
+                    name: buff_name("rylais_crystal_scepter_slow"),
                     ..Default::default()
                 },
             );

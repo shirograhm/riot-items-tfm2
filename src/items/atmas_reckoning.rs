@@ -1,8 +1,9 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
+use crate::{
+    apply_config, buff_name, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
+};
 
 fn apply_big_hands(
     ctx: &mut GameCtx,
@@ -11,7 +12,7 @@ fn apply_big_hands(
     stack_crit_chance: i32,
     hp_per_stack: usize,
     max_stacks: usize,
-    buff_name: &str,
+    name: &str,
 ) {
     if *refresh_cooldown > 0 {
         *refresh_cooldown -= 1;
@@ -35,7 +36,7 @@ fn apply_big_hands(
     ctx.add_buff(
         entity_id,
         BuffState {
-            name: ArrayString::try_from(buff_name).unwrap(),
+            name: buff_name(name),
             duration: BuffType::Time {
                 tick: BUFF_REFRESH_DURATION_TICKS,
             },

@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct BlackfireTorch {
@@ -129,7 +128,7 @@ impl ModItemInfo for BlackfireTorch {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     magic_power: self.effect_stack_magic_power,
-                    name: ArrayString::try_from(self.stack_buff).unwrap(),
+                    name: buff_name(self.stack_buff),
                     ..Default::default()
                 },
             );

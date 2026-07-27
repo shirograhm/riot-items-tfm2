@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, buff_name, has_buff, percent_of, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct DuskAndDawn {
@@ -178,7 +177,7 @@ impl ModItemInfo for DuskAndDawn {
                 duration: BuffType::Time {
                     tick: ticks(self.effect_cooldown_seconds),
                 },
-                name: ArrayString::try_from("spellblade_cooldown").unwrap(),
+                name: buff_name("spellblade_cooldown"),
                 ..Default::default()
             },
         );

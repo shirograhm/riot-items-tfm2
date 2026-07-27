@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct SpearOfShojin {
@@ -93,7 +92,7 @@ impl SpearOfShojin {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     attack_mult: self.effect_stack_attack_mult,
-                    name: ArrayString::try_from(self.stack_buff).unwrap(),
+                    name: buff_name(self.stack_buff),
                     ..Default::default()
                 },
             );

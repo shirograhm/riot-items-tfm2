@@ -1,10 +1,9 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, has_buff, ItemMeta, ADAPTIVE_FORCE_AD_RATIO, BUFF_REFRESH_DURATION_TICKS,
-    BUFF_REFRESH_PERIOD_TICKS, DISTANCE_UNITS_PER_RANGE,
+    apply_config, buff_name, has_buff, ItemMeta, ADAPTIVE_FORCE_AD_RATIO,
+    BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS, DISTANCE_UNITS_PER_RANGE,
 };
 
 #[derive(Clone, Debug)]
@@ -126,7 +125,7 @@ impl ZekesHerald {
 
         for (id, prefers_ap) in targets {
             let mut buff = BuffState {
-                name: ArrayString::try_from(self.aura_buff).unwrap(),
+                name: buff_name(self.aura_buff),
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },

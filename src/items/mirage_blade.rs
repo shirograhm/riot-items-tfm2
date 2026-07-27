@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_adaptive_force, apply_config, has_buff, ticks, ItemMeta};
+use crate::{apply_adaptive_force, apply_config, buff_name, has_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct MirageBlade {
@@ -163,7 +162,7 @@ impl ModItemInfo for MirageBlade {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: self.effect_move_speed_mult,
-                    name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),
+                    name: buff_name("mirage_blade_move_speed"),
                     ..Default::default()
                 },
             )

@@ -1,8 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks};
+use crate::{apply_config, buff_name, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct Sheen {
@@ -141,7 +140,7 @@ impl ModItemInfo for Sheen {
                 duration: BuffType::Time {
                     tick: ticks(self.effect_cooldown_seconds),
                 },
-                name: ArrayString::try_from("spellblade_cooldown").unwrap(),
+                name: buff_name("spellblade_cooldown"),
                 ..Default::default()
             },
         );
