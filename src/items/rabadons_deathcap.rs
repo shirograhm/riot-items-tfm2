@@ -1,31 +1,56 @@
 use crate::config::ItemConfig;
+use crate::{apply_config, ItemMeta};
 use mod_api::*;
 
 #[derive(Clone, Debug)]
 pub struct RabadonsDeathcap {
+    meta: ItemMeta,
     price: usize,
     magic_power: i32,
     magic_power_mult: i32,
 }
 
-impl Default for RabadonsDeathcap {
-    fn default() -> Self {
+impl RabadonsDeathcap {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base(
+                "rabadons_deathcap",
+                &["needlessly_large_rod"],
+                &["radiant_rabadons_deathcap"],
+            ),
             price: 1500,
             magic_power: 165,
             magic_power_mult: 20,
         }
     }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_rabadons_deathcap", &["rabadons_deathcap"]),
+            price: 2300,
+            magic_power: 230,
+            magic_power_mult: 35,
+            ..Self::base()
+        }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(self, cfg, [price, magic_power, magic_power_mult]);
+        self
+    }
 }
 
-impl RabadonsDeathcap {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            magic_power_mult: cfg.magic_power_mult.unwrap_or(d.magic_power_mult),
-        }
+impl Default for RabadonsDeathcap {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -35,11 +60,11 @@ impl ModItemInfo for RabadonsDeathcap {
     }
 
     fn key(&self) -> &str {
-        "rabadons_deathcap"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "rabadons_deathcap"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -47,85 +72,15 @@ impl ModItemInfo for RabadonsDeathcap {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["needlessly_large_rod".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_rabadons_deathcap".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            magic_power: self.magic_power,
-            magic_power_mult: self.magic_power_mult,
-            ..Default::default()
-        }
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantRabadonsDeathcap {
-    price: usize,
-    magic_power: i32,
-    magic_power_mult: i32,
-}
-
-impl Default for RadiantRabadonsDeathcap {
-    fn default() -> Self {
-        Self {
-            price: 2300,
-            magic_power: 230,
-            magic_power_mult: 35,
-        }
-    }
-}
-
-impl RadiantRabadonsDeathcap {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            magic_power_mult: cfg.magic_power_mult.unwrap_or(d.magic_power_mult),
-        }
-    }
-}
-
-impl ModItemInfo for RadiantRabadonsDeathcap {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_rabadons_deathcap"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_rabadons_deathcap"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["rabadons_deathcap".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {

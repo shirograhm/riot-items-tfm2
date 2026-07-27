@@ -1,48 +1,8 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_lethality, percent_of};
+use crate::{apply_config, apply_lethality, percent_of, ItemMeta};
 
-#[derive(Clone, Debug)]
-pub struct SerpentsFang {
-    price: usize,
-    attack: i32,
-    effect_lethality: usize,
-    effect_bonus_flat_damage: usize,
-    effect_ad_percent_damage: f64,
-}
-
-impl Default for SerpentsFang {
-    fn default() -> Self {
-        Self {
-            price: 1050,
-            attack: 65,
-            effect_lethality: 15,
-            effect_bonus_flat_damage: 50,
-            effect_ad_percent_damage: 10.0,
-        }
-    }
-}
-
-impl SerpentsFang {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            effect_lethality: cfg.effect_lethality.unwrap_or(d.effect_lethality),
-            effect_bonus_flat_damage: cfg
-                .effect_bonus_flat_damage
-                .unwrap_or(d.effect_bonus_flat_damage),
-            effect_ad_percent_damage: cfg
-                .effect_ad_percent_damage
-                .unwrap_or(d.effect_ad_percent_damage),
-        }
-    }
-}
-
-// Shared Shield Reaver: on a basic attack against a shielded enemy champion, deal
-// bonus physical damage (flat + % of the caster's Attack Damage).
 fn shield_reaver(ctx: &mut GameCtx, caster: usize, target: usize, flat: usize, ad_percent: f64) {
     let shielded_champion = ctx
         .get_entity(target)
@@ -56,71 +16,9 @@ fn shield_reaver(ctx: &mut GameCtx, caster: usize, target: usize, flat: usize, a
     ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
 }
 
-impl ModItemInfo for SerpentsFang {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "serpents_fang"
-    }
-
-    fn icon(&self) -> &str {
-        "serpents_fang"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        3
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["serrated_dirk".to_string()]
-    }
-
-    fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_serpents_fang".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            attack: self.attack,
-            ..Default::default()
-        }
-    }
-
-    fn on_attack(
-        &mut self,
-        ctx: &mut GameCtx,
-        caster: usize,
-        target: usize,
-        damage: &mut usize,
-        _damage_type: DamageType,
-    ) {
-        apply_lethality(ctx, target, self.effect_lethality, damage);
-        shield_reaver(
-            ctx,
-            caster,
-            target,
-            self.effect_bonus_flat_damage,
-            self.effect_ad_percent_damage,
-        );
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
-    }
-}
-
 #[derive(Clone, Debug)]
-pub struct RadiantSerpentsFang {
+pub struct SerpentsFang {
+    meta: ItemMeta,
     price: usize,
     attack: i32,
     effect_lethality: usize,
@@ -128,46 +26,74 @@ pub struct RadiantSerpentsFang {
     effect_ad_percent_damage: f64,
 }
 
-impl Default for RadiantSerpentsFang {
-    fn default() -> Self {
+impl SerpentsFang {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base(
+                "serpents_fang",
+                &["serrated_dirk"],
+                &["radiant_serpents_fang"],
+            ),
+            price: 1050,
+            attack: 65,
+            effect_lethality: 15,
+            effect_bonus_flat_damage: 50,
+            effect_ad_percent_damage: 10.0,
+        }
+    }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_serpents_fang", &["serpents_fang"]),
             price: 1650,
             attack: 110,
-            effect_lethality: 15,
             effect_bonus_flat_damage: 85,
             effect_ad_percent_damage: 15.0,
+            ..Self::base()
         }
     }
-}
 
-impl RadiantSerpentsFang {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            effect_lethality: cfg.effect_lethality.unwrap_or(d.effect_lethality),
-            effect_bonus_flat_damage: cfg
-                .effect_bonus_flat_damage
-                .unwrap_or(d.effect_bonus_flat_damage),
-            effect_ad_percent_damage: cfg
-                .effect_ad_percent_damage
-                .unwrap_or(d.effect_ad_percent_damage),
-        }
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [
+                price,
+                attack,
+                effect_lethality,
+                effect_bonus_flat_damage,
+                effect_ad_percent_damage
+            ]
+        );
+        self
     }
 }
 
-impl ModItemInfo for RadiantSerpentsFang {
+impl Default for SerpentsFang {
+    fn default() -> Self {
+        Self::base()
+    }
+}
+
+impl ModItemInfo for SerpentsFang {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_serpents_fang"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "radiant_serpents_fang"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -175,11 +101,15 @@ impl ModItemInfo for RadiantSerpentsFang {
     }
 
     fn tier(&self) -> usize {
-        4
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["serpents_fang".to_string()]
+        self.meta.previous_tier()
+    }
+
+    fn next_tier(&self) -> Vec<String> {
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {

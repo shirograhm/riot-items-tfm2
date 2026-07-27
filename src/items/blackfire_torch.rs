@@ -2,10 +2,14 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{buff_stacks, ticks};
+use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct BlackfireTorch {
+    meta: ItemMeta,
+    // Buff names are namespaced per variant so the base and radiant
+    // items keep independent stacks.
+    stack_buff: &'static str,
     price: usize,
     magic_power: i32,
     skill_cooldown_mult: i32,
@@ -14,9 +18,15 @@ pub struct BlackfireTorch {
     effect_duration_seconds: f64,
 }
 
-impl Default for BlackfireTorch {
-    fn default() -> Self {
+impl BlackfireTorch {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base(
+                "blackfire_torch",
+                &["staff_of_rapture"],
+                &["radiant_blackfire_torch"],
+            ),
+            stack_buff: "blackfire_torch_buff",
             price: 1300,
             magic_power: 130,
             skill_cooldown_mult: 15,
@@ -25,23 +35,47 @@ impl Default for BlackfireTorch {
             effect_duration_seconds: 4.0,
         }
     }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_blackfire_torch", &["blackfire_torch"]),
+            stack_buff: "radiant_blackfire_torch_buff",
+            price: 1900,
+            magic_power: 175,
+            skill_cooldown_mult: 25,
+            effect_stack_magic_power: 30,
+            ..Self::base()
+        }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [
+                price,
+                magic_power,
+                skill_cooldown_mult,
+                effect_stack_magic_power,
+                effect_max_stacks,
+                effect_duration_seconds
+            ]
+        );
+        self
+    }
 }
 
-impl BlackfireTorch {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-            effect_stack_magic_power: cfg
-                .effect_stack_magic_power
-                .unwrap_or(d.effect_stack_magic_power),
-            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
-            effect_duration_seconds: cfg
-                .effect_duration_seconds
-                .unwrap_or(d.effect_duration_seconds),
-        }
+impl Default for BlackfireTorch {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -51,11 +85,11 @@ impl ModItemInfo for BlackfireTorch {
     }
 
     fn key(&self) -> &str {
-        "blackfire_torch"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "blackfire_torch"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -63,15 +97,15 @@ impl ModItemInfo for BlackfireTorch {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["staff_of_rapture".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_blackfire_torch".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {
@@ -86,7 +120,7 @@ impl ModItemInfo for BlackfireTorch {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let stack_count = buff_stacks(&entity_ref, "blackfire_torch_buff");
+        let stack_count = buff_stacks(&entity_ref, self.stack_buff);
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
@@ -95,110 +129,7 @@ impl ModItemInfo for BlackfireTorch {
                         tick: ticks(self.effect_duration_seconds),
                     },
                     magic_power: self.effect_stack_magic_power,
-                    name: ArrayString::try_from("blackfire_torch_buff").unwrap(),
-                    ..Default::default()
-                },
-            );
-        }
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::CooltimeReduce]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantBlackfireTorch {
-    price: usize,
-    magic_power: i32,
-    skill_cooldown_mult: i32,
-    effect_stack_magic_power: i32,
-    effect_max_stacks: usize,
-    effect_duration_seconds: f64,
-}
-
-impl Default for RadiantBlackfireTorch {
-    fn default() -> Self {
-        Self {
-            price: 1900,
-            magic_power: 175,
-            skill_cooldown_mult: 25,
-            effect_stack_magic_power: 30,
-            effect_max_stacks: 4,
-            effect_duration_seconds: 4.0,
-        }
-    }
-}
-
-impl RadiantBlackfireTorch {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-            effect_stack_magic_power: cfg
-                .effect_stack_magic_power
-                .unwrap_or(d.effect_stack_magic_power),
-            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
-            effect_duration_seconds: cfg
-                .effect_duration_seconds
-                .unwrap_or(d.effect_duration_seconds),
-        }
-    }
-}
-
-impl ModItemInfo for RadiantBlackfireTorch {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_blackfire_torch"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_blackfire_torch"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["blackfire_torch".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            magic_power: self.magic_power,
-            skill_cooldown_mult: self.skill_cooldown_mult,
-            ..Default::default()
-        }
-    }
-
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
-        let Some(entity_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let stack_count = buff_stacks(&entity_ref, "radiant_blackfire_torch_buff");
-        if stack_count < self.effect_max_stacks {
-            ctx.add_buff(
-                caster,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
-                    magic_power: self.effect_stack_magic_power,
-                    name: ArrayString::try_from("radiant_blackfire_torch_buff").unwrap(),
+                    name: ArrayString::try_from(self.stack_buff).unwrap(),
                     ..Default::default()
                 },
             );

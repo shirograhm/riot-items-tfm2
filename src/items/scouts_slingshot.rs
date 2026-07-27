@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{has_buff, ticks};
+use crate::{apply_config, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ScoutsSlingshot {
@@ -25,17 +25,18 @@ impl Default for ScoutsSlingshot {
 
 impl ScoutsSlingshot {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            effect_bonus_flat_damage: cfg
-                .effect_bonus_flat_damage
-                .unwrap_or(d.effect_bonus_flat_damage),
-            effect_cooldown_seconds: cfg
-                .effect_cooldown_seconds
-                .unwrap_or(d.effect_cooldown_seconds),
-        }
+        let mut item = Self::default();
+        apply_config!(
+            item,
+            cfg,
+            [
+                price,
+                attack_speed_mult,
+                effect_bonus_flat_damage,
+                effect_cooldown_seconds
+            ]
+        );
+        item
     }
 }
 

@@ -1,3 +1,4 @@
+use crate::apply_config;
 use crate::config::ItemConfig;
 use mod_api::*;
 
@@ -24,14 +25,13 @@ impl Default for BandleglassMirror {
 
 impl BandleglassMirror {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            hp_regen: cfg.hp_regen.unwrap_or(d.hp_regen),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-        }
+        let mut item = Self::default();
+        apply_config!(
+            item,
+            cfg,
+            [price, hp, hp_regen, magic_power, skill_cooldown_mult]
+        );
+        item
     }
 }
 

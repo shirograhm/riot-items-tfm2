@@ -2,49 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
-
-#[derive(Clone, Debug)]
-pub struct AtmasReckoning {
-    price: usize,
-    hp: i32,
-    crit_chance: i32,
-    effect_stack_crit_chance: i32,
-    effect_hp_per_stack: usize,
-    effect_max_stacks: usize,
-    refresh_cooldown: usize,
-}
-
-impl Default for AtmasReckoning {
-    fn default() -> Self {
-        Self {
-            price: 1450,
-            hp: 500,
-            crit_chance: 20,
-            effect_stack_crit_chance: 5,
-            effect_hp_per_stack: 1000,
-            effect_max_stacks: 5,
-            refresh_cooldown: 0,
-        }
-    }
-}
-
-impl AtmasReckoning {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
-            effect_stack_crit_chance: cfg
-                .effect_stack_crit_chance
-                .unwrap_or(d.effect_stack_crit_chance),
-            effect_hp_per_stack: cfg.effect_hp_per_stack.unwrap_or(d.effect_hp_per_stack),
-            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
-            refresh_cooldown: 0,
-        }
-    }
-}
+use crate::{apply_config, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
 fn apply_big_hands(
     ctx: &mut GameCtx,
@@ -88,79 +46,12 @@ fn apply_big_hands(
     *refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
 }
 
-impl ModItemInfo for AtmasReckoning {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "atmas_reckoning"
-    }
-
-    fn icon(&self) -> &str {
-        "atmas_reckoning"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        3
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["ring_of_reincarnation".to_string()]
-    }
-
-    fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_atmas_reckoning".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            hp: self.hp,
-            crit_chance: self.crit_chance,
-            ..Default::default()
-        }
-    }
-
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
-        self.refresh_cooldown = 0;
-        apply_big_hands(
-            ctx,
-            player,
-            &mut self.refresh_cooldown,
-            self.effect_stack_crit_chance,
-            self.effect_hp_per_stack,
-            self.effect_max_stacks,
-            "atmas_reckoning_big_hands",
-        );
-    }
-
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        apply_big_hands(
-            ctx,
-            player,
-            &mut self.refresh_cooldown,
-            self.effect_stack_crit_chance,
-            self.effect_hp_per_stack,
-            self.effect_max_stacks,
-            "atmas_reckoning_big_hands",
-        );
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
-    }
-}
-
 #[derive(Clone, Debug)]
-pub struct RadiantAtmasReckoning {
+pub struct AtmasReckoning {
+    meta: ItemMeta,
+    // Buff names are namespaced per variant so the base and radiant
+    // items keep independent stacks.
+    big_hands_buff: &'static str,
     price: usize,
     hp: i32,
     crit_chance: i32,
@@ -170,48 +61,78 @@ pub struct RadiantAtmasReckoning {
     refresh_cooldown: usize,
 }
 
-impl Default for RadiantAtmasReckoning {
-    fn default() -> Self {
+impl AtmasReckoning {
+    pub fn base() -> Self {
         Self {
-            price: 2050,
-            hp: 850,
-            crit_chance: 25,
+            meta: ItemMeta::base(
+                "atmas_reckoning",
+                &["ring_of_reincarnation"],
+                &["radiant_atmas_reckoning"],
+            ),
+            big_hands_buff: "atmas_reckoning_big_hands",
+            price: 1450,
+            hp: 500,
+            crit_chance: 20,
             effect_stack_crit_chance: 5,
             effect_hp_per_stack: 1000,
             effect_max_stacks: 5,
             refresh_cooldown: 0,
         }
     }
-}
 
-impl RadiantAtmasReckoning {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
+    pub fn radiant() -> Self {
         Self {
-            price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
-            effect_stack_crit_chance: cfg
-                .effect_stack_crit_chance
-                .unwrap_or(d.effect_stack_crit_chance),
-            effect_hp_per_stack: cfg.effect_hp_per_stack.unwrap_or(d.effect_hp_per_stack),
-            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
-            refresh_cooldown: 0,
+            meta: ItemMeta::radiant("radiant_atmas_reckoning", &["atmas_reckoning"]),
+            big_hands_buff: "radiant_atmas_reckoning_big_hands",
+            price: 2050,
+            hp: 850,
+            crit_chance: 25,
+            ..Self::base()
         }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [
+                price,
+                hp,
+                crit_chance,
+                effect_stack_crit_chance,
+                effect_hp_per_stack,
+                effect_max_stacks
+            ]
+        );
+        self
     }
 }
 
-impl ModItemInfo for RadiantAtmasReckoning {
+impl Default for AtmasReckoning {
+    fn default() -> Self {
+        Self::base()
+    }
+}
+
+impl ModItemInfo for AtmasReckoning {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_atmas_reckoning"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "radiant_atmas_reckoning"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -219,11 +140,15 @@ impl ModItemInfo for RadiantAtmasReckoning {
     }
 
     fn tier(&self) -> usize {
-        4
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["atmas_reckoning".to_string()]
+        self.meta.previous_tier()
+    }
+
+    fn next_tier(&self) -> Vec<String> {
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {
@@ -243,7 +168,7 @@ impl ModItemInfo for RadiantAtmasReckoning {
             self.effect_stack_crit_chance,
             self.effect_hp_per_stack,
             self.effect_max_stacks,
-            "radiant_atmas_reckoning_big_hands",
+            self.big_hands_buff,
         );
     }
 
@@ -255,7 +180,7 @@ impl ModItemInfo for RadiantAtmasReckoning {
             self.effect_stack_crit_chance,
             self.effect_hp_per_stack,
             self.effect_max_stacks,
-            "radiant_atmas_reckoning_big_hands",
+            self.big_hands_buff,
         );
     }
 

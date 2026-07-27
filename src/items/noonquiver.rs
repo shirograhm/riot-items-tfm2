@@ -1,3 +1,4 @@
+use crate::apply_config;
 use crate::config::ItemConfig;
 use mod_api::*;
 
@@ -20,12 +21,9 @@ impl Default for Noonquiver {
 
 impl Noonquiver {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
-        }
+        let mut item = Self::default();
+        apply_config!(item, cfg, [price, attack, crit_chance]);
+        item
     }
 }
 

@@ -1,6 +1,7 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{apply_config, ItemMeta};
 
 fn apply_giant_slayer(
     ctx: &mut GameCtx,
@@ -23,6 +24,7 @@ fn apply_giant_slayer(
 
 #[derive(Clone, Debug)]
 pub struct LordDominiksRegards {
+    meta: ItemMeta,
     price: usize,
     attack: i32,
     crit_chance: i32,
@@ -32,9 +34,14 @@ pub struct LordDominiksRegards {
     effect_max_percent_bonus: f64,
 }
 
-impl Default for LordDominiksRegards {
-    fn default() -> Self {
+impl LordDominiksRegards {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base(
+                "lord_dominiks_regards",
+                &["last_whisper", "noonquiver"],
+                &["radiant_lord_dominiks_regards"],
+            ),
             price: 1450,
             attack: 45,
             crit_chance: 20,
@@ -44,24 +51,47 @@ impl Default for LordDominiksRegards {
             effect_max_percent_bonus: 15.0,
         }
     }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_lord_dominiks_regards", &["lord_dominiks_regards"]),
+            price: 2000,
+            attack: 85,
+            crit_chance: 25,
+            defence_penetration: 35,
+            ..Self::base()
+        }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [
+                price,
+                attack,
+                crit_chance,
+                defence_penetration,
+                effect_percent_bonus_damage,
+                effect_hp_per_stack,
+                effect_max_percent_bonus
+            ]
+        );
+        self
+    }
 }
 
-impl LordDominiksRegards {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
-            defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
-            effect_percent_bonus_damage: cfg
-                .effect_percent_bonus_damage
-                .unwrap_or(d.effect_percent_bonus_damage),
-            effect_hp_per_stack: cfg.effect_hp_per_stack.unwrap_or(d.effect_hp_per_stack),
-            effect_max_percent_bonus: cfg
-                .effect_max_percent_bonus
-                .unwrap_or(d.effect_max_percent_bonus),
-        }
+impl Default for LordDominiksRegards {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -71,11 +101,11 @@ impl ModItemInfo for LordDominiksRegards {
     }
 
     fn key(&self) -> &str {
-        "lord_dominiks_regards"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "lord_dominiks_regards"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -83,120 +113,15 @@ impl ModItemInfo for LordDominiksRegards {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["last_whisper".to_string(), "noonquiver".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_lord_dominiks_regards".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            attack: self.attack,
-            crit_chance: self.crit_chance,
-            defence_penetration: self.defence_penetration,
-            ..Default::default()
-        }
-    }
-
-    fn on_attack(
-        &mut self,
-        ctx: &mut GameCtx,
-        _caster: usize,
-        target: usize,
-        damage: &mut usize,
-        _damage_type: DamageType,
-    ) {
-        apply_giant_slayer(
-            ctx,
-            target,
-            damage,
-            self.effect_percent_bonus_damage,
-            self.effect_hp_per_stack,
-            self.effect_max_percent_bonus,
-        );
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::DefensePenetration]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantLordDominiksRegards {
-    price: usize,
-    attack: i32,
-    crit_chance: i32,
-    defence_penetration: usize,
-    effect_percent_bonus_damage: f64,
-    effect_hp_per_stack: usize,
-    effect_max_percent_bonus: f64,
-}
-
-impl Default for RadiantLordDominiksRegards {
-    fn default() -> Self {
-        Self {
-            price: 2000,
-            attack: 85,
-            crit_chance: 25,
-            defence_penetration: 35,
-            effect_percent_bonus_damage: 3.0,
-            effect_hp_per_stack: 1000,
-            effect_max_percent_bonus: 15.0,
-        }
-    }
-}
-
-impl RadiantLordDominiksRegards {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
-            defence_penetration: cfg.defence_penetration.unwrap_or(d.defence_penetration),
-            effect_percent_bonus_damage: cfg
-                .effect_percent_bonus_damage
-                .unwrap_or(d.effect_percent_bonus_damage),
-            effect_hp_per_stack: cfg.effect_hp_per_stack.unwrap_or(d.effect_hp_per_stack),
-            effect_max_percent_bonus: cfg
-                .effect_max_percent_bonus
-                .unwrap_or(d.effect_max_percent_bonus),
-        }
-    }
-}
-
-impl ModItemInfo for RadiantLordDominiksRegards {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_lord_dominiks_regards"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_lord_dominiks_regards"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["lord_dominiks_regards".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {

@@ -1,31 +1,52 @@
 use crate::config::ItemConfig;
+use crate::{apply_config, ItemMeta};
 use mod_api::*;
 
 #[derive(Clone, Debug)]
 pub struct DeathBlade {
+    meta: ItemMeta,
     price: usize,
     attack: i32,
     attack_mult: i32,
 }
 
-impl Default for DeathBlade {
-    fn default() -> Self {
+impl DeathBlade {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base("deathblade", &["bf_sword"], &["radiant_deathblade"]),
             price: 1400,
             attack: 90,
             attack_mult: 15,
         }
     }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_deathblade", &["deathblade"]),
+            price: 2000,
+            attack: 140,
+            attack_mult: 25,
+            ..Self::base()
+        }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(self, cfg, [price, attack, attack_mult]);
+        self
+    }
 }
 
-impl DeathBlade {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            attack_mult: cfg.attack_mult.unwrap_or(d.attack_mult),
-        }
+impl Default for DeathBlade {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -35,11 +56,11 @@ impl ModItemInfo for DeathBlade {
     }
 
     fn key(&self) -> &str {
-        "deathblade"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "deathblade"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -47,85 +68,15 @@ impl ModItemInfo for DeathBlade {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["bf_sword".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_deathblade".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            attack: self.attack,
-            attack_mult: self.attack_mult,
-            ..Default::default()
-        }
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantDeathBlade {
-    price: usize,
-    attack: i32,
-    attack_mult: i32,
-}
-
-impl Default for RadiantDeathBlade {
-    fn default() -> Self {
-        Self {
-            price: 2000,
-            attack: 140,
-            attack_mult: 25,
-        }
-    }
-}
-
-impl RadiantDeathBlade {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            attack_mult: cfg.attack_mult.unwrap_or(d.attack_mult),
-        }
-    }
-}
-
-impl ModItemInfo for RadiantDeathBlade {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_deathblade"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_deathblade"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["deathblade".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {

@@ -1,7 +1,7 @@
 use mod_api::*;
 
-use crate::apply_lethality;
 use crate::config::ItemConfig;
+use crate::{apply_config, apply_lethality};
 
 #[derive(Clone, Debug)]
 pub struct SerratedDirk {
@@ -22,12 +22,9 @@ impl Default for SerratedDirk {
 
 impl SerratedDirk {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            effect_lethality: cfg.effect_lethality.unwrap_or(d.effect_lethality),
-        }
+        let mut item = Self::default();
+        apply_config!(item, cfg, [price, attack, effect_lethality]);
+        item
     }
 }
 

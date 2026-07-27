@@ -1,3 +1,4 @@
+use crate::apply_config;
 use crate::config::ItemConfig;
 use mod_api::*;
 
@@ -20,12 +21,9 @@ impl Default for Phage {
 
 impl Phage {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            attack: cfg.attack.unwrap_or(d.attack),
-        }
+        let mut item = Self::default();
+        apply_config!(item, cfg, [price, hp, attack]);
+        item
     }
 }
 

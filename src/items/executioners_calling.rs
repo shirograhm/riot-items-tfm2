@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{has_buff, ticks};
+use crate::{apply_config, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ExecutionersCalling {
@@ -25,15 +25,13 @@ impl Default for ExecutionersCalling {
 
 impl ExecutionersCalling {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
-            effect_duration_seconds: cfg
-                .effect_duration_seconds
-                .unwrap_or(d.effect_duration_seconds),
-        }
+        let mut item = Self::default();
+        apply_config!(
+            item,
+            cfg,
+            [price, attack, effect_heal_reduce, effect_duration_seconds]
+        );
+        item
     }
 }
 

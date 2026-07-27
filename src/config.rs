@@ -83,6 +83,29 @@ pub struct ItemConfig {
     pub on_hit_cooldown_seconds: Option<f64>,
 }
 
+/// Overwrites the listed fields of an item with whatever the config file set,
+/// leaving the item's built-in default in place for every key the file omits.
+///
+/// The field names are identical on both sides — `ItemConfig` mirrors the item
+/// structs — so the list is just the set of stats a given item exposes to config:
+///
+/// ```ignore
+/// fn configured(mut self, cfg: &ItemConfig) -> Self {
+///     apply_config!(self, cfg, [price, attack, effect_duration_seconds]);
+///     self
+/// }
+/// ```
+#[macro_export]
+macro_rules! apply_config {
+    ($item:ident, $cfg:ident, [$($field:ident),* $(,)?]) => {
+        $(
+            if let Some(value) = $cfg.$field {
+                $item.$field = value;
+            }
+        )*
+    };
+}
+
 pub fn load() -> HashMap<String, ItemConfig> {
     let path = dll_dir()
         .map(|d| d.join("config.json"))

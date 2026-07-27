@@ -1,36 +1,59 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{apply_config, percent_of, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct SpiritVisage {
+    meta: ItemMeta,
     price: usize,
     hp: i32,
     magic_resistance: i32,
     effect_heal_mult: f64,
 }
 
-impl Default for SpiritVisage {
-    fn default() -> Self {
+impl SpiritVisage {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base(
+                "spirit_visage",
+                &["hardened_heart", "dusk_raven"],
+                &["radiant_spirit_visage"],
+            ),
             price: 1400,
             hp: 400,
             magic_resistance: 100,
             effect_heal_mult: 20.0,
         }
     }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_spirit_visage", &["spirit_visage"]),
+            price: 1900,
+            hp: 600,
+            magic_resistance: 150,
+            ..Self::base()
+        }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(self, cfg, [price, hp, magic_resistance, effect_heal_mult]);
+        self
+    }
 }
 
-impl SpiritVisage {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            magic_resistance: cfg.magic_resistance.unwrap_or(d.magic_resistance),
-            effect_heal_mult: cfg.effect_heal_mult.unwrap_or(d.effect_heal_mult),
-        }
+impl Default for SpiritVisage {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -40,11 +63,11 @@ impl ModItemInfo for SpiritVisage {
     }
 
     fn key(&self) -> &str {
-        "spirit_visage"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "spirit_visage"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -52,96 +75,15 @@ impl ModItemInfo for SpiritVisage {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hardened_heart".to_string(), "dusk_raven".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_spirit_visage".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            hp: self.hp,
-            magic_resistance: self.magic_resistance,
-            ..Default::default()
-        }
-    }
-
-    fn on_healed(&mut self, ctx: &mut GameCtx, _caster: Option<usize>, entity: usize, heal: usize) {
-        let Some(_entity_ref) = ctx.get_entity(entity) else {
-            return;
-        };
-        let bonus_heal = percent_of(heal, self.effect_heal_mult);
-        ctx.heal(entity, entity, bonus_heal);
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::MagicResistance]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::MagicResistance
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantSpiritVisage {
-    price: usize,
-    hp: i32,
-    magic_resistance: i32,
-    effect_heal_mult: f64,
-}
-
-impl Default for RadiantSpiritVisage {
-    fn default() -> Self {
-        Self {
-            price: 1900,
-            hp: 600,
-            magic_resistance: 150,
-            effect_heal_mult: 20.0,
-        }
-    }
-}
-
-impl RadiantSpiritVisage {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            magic_resistance: cfg.magic_resistance.unwrap_or(d.magic_resistance),
-            effect_heal_mult: cfg.effect_heal_mult.unwrap_or(d.effect_heal_mult),
-        }
-    }
-}
-
-impl ModItemInfo for RadiantSpiritVisage {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_spirit_visage"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_spirit_visage"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["spirit_visage".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {

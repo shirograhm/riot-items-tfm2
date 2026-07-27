@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{has_buff, ticks};
+use crate::{apply_config, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct Sheen {
@@ -31,22 +31,20 @@ impl Default for Sheen {
 
 impl Sheen {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-            effect_min_bonus_damage: cfg
-                .effect_min_bonus_damage
-                .unwrap_or(d.effect_min_bonus_damage),
-            effect_max_bonus_damage: cfg
-                .effect_max_bonus_damage
-                .unwrap_or(d.effect_max_bonus_damage),
-            effect_cooldown_seconds: cfg
-                .effect_cooldown_seconds
-                .unwrap_or(d.effect_cooldown_seconds),
-            spellblade_ready: false,
-        }
+        let mut item = Self::default();
+        apply_config!(
+            item,
+            cfg,
+            [
+                price,
+                attack_speed_mult,
+                skill_cooldown_mult,
+                effect_min_bonus_damage,
+                effect_max_bonus_damage,
+                effect_cooldown_seconds
+            ]
+        );
+        item
     }
 
     // Bonus damage scales linearly from min (level 1) to max (level 12).

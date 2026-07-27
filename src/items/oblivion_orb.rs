@@ -2,7 +2,7 @@ use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::{has_buff, ticks};
+use crate::{apply_config, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct OblivionOrb {
@@ -25,15 +25,18 @@ impl Default for OblivionOrb {
 
 impl OblivionOrb {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
-            effect_duration_seconds: cfg
-                .effect_duration_seconds
-                .unwrap_or(d.effect_duration_seconds),
-        }
+        let mut item = Self::default();
+        apply_config!(
+            item,
+            cfg,
+            [
+                price,
+                magic_power,
+                effect_heal_reduce,
+                effect_duration_seconds
+            ]
+        );
+        item
     }
 }
 

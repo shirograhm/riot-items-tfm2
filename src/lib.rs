@@ -4,11 +4,13 @@ mod build_config;
 mod config;
 mod constants;
 mod hook;
+mod item_meta;
 mod items;
 
 use items::*;
 
 pub(crate) use constants::*;
+pub(crate) use item_meta::ItemMeta;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -217,9 +219,22 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     let mut reg = ModRegistration::new("riot_items_tfm2");
     let configs = config::load();
 
+    // Builds an item from its `config.json` entry, falling back to the built-in
+    // defaults when the key is absent.
     macro_rules! configured {
         ($key:literal => $T:ty) => {
             configs.get($key).map(<$T>::with_config).unwrap_or_default()
+        };
+    }
+
+    // Same, for the radiant (tier 5) half of an item type that implements both
+    // variants — `$T::radiant()` is its default rather than `$T::default()`.
+    macro_rules! configured_radiant {
+        ($key:literal => $T:ty) => {
+            configs
+                .get($key)
+                .map(<$T>::radiant_with_config)
+                .unwrap_or_else(<$T>::radiant)
         };
     }
 
@@ -298,56 +313,56 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
 
     // Tier 5
-    reg.add_item(configured!("radiant_atmas_reckoning" => RadiantAtmasReckoning));
-    reg.add_item(configured!("radiant_bastionbreaker" => RadiantBastionbreaker));
-    reg.add_item(configured!("radiant_black_cleaver" => RadiantBlackCleaver));
-    reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
-    reg.add_item(configured!("radiant_blade_of_the_ruined_king" => RadiantBladeOfTheRuinedKing));
-    reg.add_item(configured!("radiant_bloodletters_curse" => RadiantBloodlettersCurse));
-    reg.add_item(configured!("radiant_bloodsong" => RadiantBloodsong));
-    reg.add_item(configured!("radiant_collector" => RadiantCollector));
-    reg.add_item(configured!("radiant_deathblade" => RadiantDeathBlade));
-    reg.add_item(configured!("radiant_deaths_dance" => RadiantDeathsDance));
-    reg.add_item(configured!("radiant_diamond_tipped_spear" => RadiantDiamondTippedSpear));
-    reg.add_item(configured!("radiant_dusk_and_dawn" => RadiantDuskAndDawn));
-    reg.add_item(configured!("radiant_echoes_of_helia" => RadiantEchoesOfHelia));
-    reg.add_item(configured!("radiant_experimental_hexplate" => RadiantExperimentalHexplate));
-    reg.add_item(configured!("radiant_frozen_mallet" => RadiantFrozenMallet));
-    reg.add_item(configured!("radiant_guinsoos_rageblade" => RadiantGuinsoosRageblade));
-    reg.add_item(configured!("radiant_heartsteel" => RadiantHeartsteel));
-    reg.add_item(configured!("radiant_hextech_gunblade" => RadiantHextechGunblade));
-    reg.add_item(configured!("radiant_hubris" => RadiantHubris));
-    reg.add_item(configured!("radiant_infinity_edge" => RadiantInfinityEdge));
-    reg.add_item(configured!("radiant_jaksho_the_protean" => RadiantJakshoTheProtean));
-    reg.add_item(configured!("radiant_kraken_slayer" => RadiantKrakenSlayer));
-    reg.add_item(configured!("radiant_liandrys_torment" => RadiantLiandrysTorment));
-    reg.add_item(configured!("radiant_lord_dominiks_regards" => RadiantLordDominiksRegards));
-    reg.add_item(configured!("radiant_malignance" => RadiantMalignance));
-    reg.add_item(configured!("radiant_mirage_blade" => RadiantMirageBlade));
-    reg.add_item(configured!("radiant_morellonomicon" => RadiantMorellonomicon));
-    reg.add_item(configured!("radiant_mortal_reminder" => RadiantMortalReminder));
-    reg.add_item(configured!("radiant_nashors_tooth" => RadiantNashorsTooth));
-    reg.add_item(configured!("radiant_night_harvester" => RadiantNightHarvester));
-    reg.add_item(configured!("radiant_overlords_bloodmail" => RadiantOverlordsBloodmail));
-    reg.add_item(configured!("radiant_protectors_vow" => RadiantProtectorsVow));
-    reg.add_item(configured!("radiant_protoplasm_harness" => RadiantProtoplasmHarness));
-    reg.add_item(configured!("radiant_rabadons_deathcap" => RadiantRabadonsDeathcap));
-    reg.add_item(configured!("radiant_riftmaker" => RadiantRiftmaker));
-    reg.add_item(configured!("radiant_rylais_crystal_scepter" => RadiantRylaisCrystalScepter));
-    reg.add_item(configured!("radiant_serpents_fang" => RadiantSerpentsFang));
-    reg.add_item(configured!("radiant_shadowflame" => RadiantShadowflame));
-    reg.add_item(configured!("radiant_spear_of_shojin" => RadiantSpearOfShojin));
-    reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));
-    reg.add_item(configured!("radiant_stormrazor" => RadiantStormrazor));
-    reg.add_item(configured!("radiant_sundered_sky" => RadiantSunderedSky));
-    reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
-    reg.add_item(configured!("radiant_trinity_force" => RadiantTrinityForce));
-    reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
-    reg.add_item(configured!("radiant_void_staff" => RadiantVoidStaff));
-    reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
-    reg.add_item(configured!("radiant_wits_end" => RadiantWitsEnd));
-    reg.add_item(configured!("radiant_yun_tal_wildarrows" => RadiantYunTalWildarrows));
-    reg.add_item(configured!("radiant_zekes_herald" => RadiantZekesHerald));
+    reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning));
+    reg.add_item(configured_radiant!("radiant_bastionbreaker" => Bastionbreaker));
+    reg.add_item(configured_radiant!("radiant_black_cleaver" => BlackCleaver));
+    reg.add_item(configured_radiant!("radiant_blackfire_torch" => BlackfireTorch));
+    reg.add_item(configured_radiant!("radiant_blade_of_the_ruined_king" => BladeOfTheRuinedKing));
+    reg.add_item(configured_radiant!("radiant_bloodletters_curse" => BloodlettersCurse));
+    reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong));
+    reg.add_item(configured_radiant!("radiant_collector" => Collector));
+    reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
+    reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));
+    reg.add_item(configured_radiant!("radiant_diamond_tipped_spear" => DiamondTippedSpear));
+    reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
+    reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
+    reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
+    reg.add_item(configured_radiant!("radiant_guinsoos_rageblade" => GuinsoosRageblade));
+    reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
+    reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
+    reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
+    reg.add_item(configured_radiant!("radiant_infinity_edge" => InfinityEdge));
+    reg.add_item(configured_radiant!("radiant_jaksho_the_protean" => JakshoTheProtean));
+    reg.add_item(configured_radiant!("radiant_kraken_slayer" => KrakenSlayer));
+    reg.add_item(configured_radiant!("radiant_liandrys_torment" => LiandrysTorment));
+    reg.add_item(configured_radiant!("radiant_lord_dominiks_regards" => LordDominiksRegards));
+    reg.add_item(configured_radiant!("radiant_malignance" => Malignance));
+    reg.add_item(configured_radiant!("radiant_mirage_blade" => MirageBlade));
+    reg.add_item(configured_radiant!("radiant_morellonomicon" => Morellonomicon));
+    reg.add_item(configured_radiant!("radiant_mortal_reminder" => MortalReminder));
+    reg.add_item(configured_radiant!("radiant_nashors_tooth" => NashorsTooth));
+    reg.add_item(configured_radiant!("radiant_night_harvester" => NightHarvester));
+    reg.add_item(configured_radiant!("radiant_overlords_bloodmail" => OverlordsBloodmail));
+    reg.add_item(configured_radiant!("radiant_protectors_vow" => ProtectorsVow));
+    reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));
+    reg.add_item(configured_radiant!("radiant_rabadons_deathcap" => RabadonsDeathcap));
+    reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
+    reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
+    reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
+    reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
+    reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
+    reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
+    reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
+    reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
+    reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
+    reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce));
+    reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
+    reg.add_item(configured_radiant!("radiant_void_staff" => VoidStaff));
+    reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
+    reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
+    reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));
+    reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
 
     reg.set_server_extension(ItemBuildHookExtension);
 
