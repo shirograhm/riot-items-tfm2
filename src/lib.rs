@@ -50,12 +50,6 @@ fn buff_stacks(entity: &EntityRef, name: &str) -> usize {
 
 /// Rate-limits an on-hit effect to once per `cooldown_seconds` per target.
 ///
-/// A single basic attack can register as several hits, which would otherwise proc
-/// an on-hit effect once per hit. There is no per-attack identity to key on, so
-/// the window is tracked as a marker buff named `marker` on the target: the proc
-/// is allowed only when the marker is absent, and stamping it blocks the rest of
-/// the burst.
-///
 /// Returns `true` when the caller should fire its effect (the marker is stamped as
 /// a side effect), `false` while the previous proc is still on cooldown or the
 /// target no longer exists.
@@ -227,16 +221,11 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     let mut reg = ModRegistration::new("riot_items_tfm2");
     let configs = config::load();
 
-    // Builds an item from its `config.json` entry, falling back to the built-in
-    // defaults when the key is absent.
     macro_rules! configured {
         ($key:literal => $T:ty) => {
             configs.get($key).map(<$T>::with_config).unwrap_or_default()
         };
     }
-
-    // Same, for the radiant (tier 5) half of an item type that implements both
-    // variants — `$T::radiant()` is its default rather than `$T::default()`.
     macro_rules! configured_radiant {
         ($key:literal => $T:ty) => {
             configs

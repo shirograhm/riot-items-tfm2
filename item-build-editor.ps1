@@ -9,8 +9,9 @@
   - Autosaves to that file on every change (the Save button forces a save too).
   - Pick a champion, or choose "(modded champion)" to type a raw/modded id.
   
-  Compile:
-    Invoke-PS2EXE -InputFile item-build-editor.ps1 -OutputFile item-build-editor.exe -noConsole
+  Compile (close the running editor first - PS2EXE deletes the old exe, which
+  Windows blocks while it is executing, giving a misleading "Access is denied"):
+    Invoke-PS2EXE -InputFile item-build-editor.ps1 -OutputFile item-build-editor.exe -noConsole -icon item-build-editor-icon.ico
 
   Launch via item-build-editor.bat, or:
     powershell -STA -ExecutionPolicy Bypass -File item-build-editor.ps1
@@ -338,6 +339,26 @@ function Save-Settings {
 }
 
 # --- helpers ---------------------------------------------------------------
+
+# Pixels of rows-list travel per "line" of wheel scroll. Multiplied by the user's
+# Windows lines-per-notch setting, so one notch moves roughly one row.
+$SCROLL_LINE_PX = 18
+
+# Scrolls the rows list by a wheel delta (one notch = 120). Used to re-aim wheel
+# input that landed on a dropdown; see New-Combo.
+function Scroll-RowsBy([int]$delta) {
+  $panel = $script:RowsPanel
+  if (-not $panel) { return }
+  $lines = [System.Windows.Forms.SystemInformation]::MouseWheelScrollLines
+  # -1 means "one page per notch"; treat that as a screenful of rows.
+  if ($lines -lt 0) { $lines = [Math]::Max(1, [int]($panel.ClientSize.Height / $SCROLL_LINE_PX)) }
+  elseif ($lines -eq 0) { return }
+  $step = [int](($delta / 120) * $lines * $SCROLL_LINE_PX)
+  # AutoScrollPosition reads back negative but is assigned positive.
+  $y = [Math]::Max(0, (-$panel.AutoScrollPosition.Y) - $step)
+  $panel.AutoScrollPosition = New-Object System.Drawing.Point(0, $y)
+}
+
 function New-Combo($displayList, $left, $width, [switch]$Grouped) {
   $cb = New-Object System.Windows.Forms.ComboBox
   $cb.DropDownStyle = 'DropDownList'
@@ -351,6 +372,18 @@ function New-Combo($displayList, $left, $width, [switch]$Grouped) {
     $cb.DropDownWidth = [Math]::Max($width, 240)
     $cb.Add_DrawItem($script:OnItemDraw)
   }
+  # A closed ComboBox treats the wheel as "change my selection", so scrolling the
+  # page with the cursor over a dropdown silently rewrites a build - and the row
+  # it edits is whichever one happened to be under the mouse. Swallow the wheel
+  # here (Handled stops ComboBox's own selection change) and scroll the rows list
+  # instead, which is what the gesture was aimed at. An open dropdown is left
+  # alone so its list still wheel-scrolls normally.
+  $cb.Add_MouseWheel({
+      param($sender, $e)
+      if ($sender.DroppedDown) { return }
+      $e.Handled = $true
+      Scroll-RowsBy $e.Delta
+    })
   foreach ($d in $displayList) { [void]$cb.Items.Add($d) }
   $cb.SelectedIndex = 0
   return $cb
