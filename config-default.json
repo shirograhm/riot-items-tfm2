@@ -663,7 +663,7 @@
     "skill_cooldown_mult": 10,
     "effect_adaptive_force": 30,
     "effect_vamp": 6,
-    "effect_max_distance": 80
+    "effect_max_distance": 100
   },
   "radiant_zekes_herald": {
     "price": 1500,
@@ -673,7 +673,7 @@
     "skill_cooldown_mult": 15,
     "effect_adaptive_force": 50,
     "effect_vamp": 10,
-    "effect_max_distance": 80
+    "effect_max_distance": 100
   },
   "scouts_slingshot": {
     "price": 800,
@@ -935,7 +935,7 @@
     "effect_bonus_magic_resistance": 20,
     "effect_bonus_hp_regen": 4,
     "effect_minion_percent": 150.0,
-    "effect_max_distance": 80
+    "effect_max_distance": 100
   },
   "radiant_locket_of_the_iron_solari": {
     "price": 1650,
@@ -947,7 +947,7 @@
     "effect_bonus_magic_resistance": 20,
     "effect_bonus_hp_regen": 4,
     "effect_minion_percent": 150.0,
-    "effect_max_distance": 80
+    "effect_max_distance": 100
   },
   "dead_mans_plate": {
     "price": 1450,
@@ -957,8 +957,8 @@
     "effect_stacks_per_second": 7,
     "effect_max_stacks": 100,
     "effect_move_speed_per_stack": 0.25,
-    "effect_bonus_flat_damage": 60,
-    "effect_stack_damage_percent": 2.0
+    "effect_min_bonus_damage": 0,
+    "effect_max_bonus_damage": 200
   },
   "radiant_dead_mans_plate": {
     "price": 2100,
@@ -968,8 +968,8 @@
     "effect_stacks_per_second": 7,
     "effect_max_stacks": 100,
     "effect_move_speed_per_stack": 0.25,
-    "effect_bonus_flat_damage": 60,
-    "effect_stack_damage_percent": 2.0
+    "effect_min_bonus_damage": 0,
+    "effect_max_bonus_damage": 200
   },
   "malignance": {
     "price": 1250,
@@ -986,5 +986,10 @@
   "glowing_mote": {
     "price": 500,
     "skill_cooldown_mult": 10
+  },
+  "winged_moonplate": {
+    "price": 800,
+    "hp": 200,
+    "move_speed_mult": 4
   }
 }

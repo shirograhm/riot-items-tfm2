@@ -139,81 +139,81 @@ $script:GroupItems = $true
 
 # Category header rows, in dropdown order: internal category key -> display label.
 $CATEGORY_ORDER = @(
-  @('Assassin', 'Assassin'), @('Fighter', 'Fighter'), @('Marksman', 'Marksman'), 
-  @('Mage', 'Mage'), @('Tank', 'Tank'), @('Support', 'Support')
+  @('Assassin', 'Assassin'), @('Tank', 'Tank'), @('Fighter', 'Fighter'), @('Marksman', 'Marksman'), 
+  @('Mage', 'Mage'), @('Support', 'Support')
 )
 # Item id -> category key. Keys must match ids in $ITEMS.
 $itemCategory = @{
   # Assassin
-  bastionbreaker           = 'Assassin';
-  collector                = 'Assassin';
-  hubris                   = 'Assassin';
-  opportunity              = 'Assassin';
-  serpents_fang            = 'Assassin';
+  bastionbreaker            = 'Assassin';
+  collector                 = 'Assassin';
+  hubris                    = 'Assassin';
+  opportunity               = 'Assassin';
+  serpents_fang             = 'Assassin';
 
   # Fighter
-  black_cleaver            = 'Fighter'; 
-  bloodthirster            = 'Fighter';
-  experimental_hexplate    = 'Fighter';
-  deaths_dance             = 'Fighter'; 
-  frozen_mallet            = 'Fighter';
-  overlords_bloodmail      = 'Fighter';
-  spear_of_shojin          = 'Fighter';
-  sundered_sky             = 'Fighter';
-  trinity_force            = 'Fighter';
+  black_cleaver             = 'Fighter'; 
+  bloodthirster             = 'Fighter';
+  experimental_hexplate     = 'Fighter';
+  deaths_dance              = 'Fighter'; 
+  frozen_mallet             = 'Fighter';
+  overlords_bloodmail       = 'Fighter';
+  spear_of_shojin           = 'Fighter';
+  sundered_sky              = 'Fighter';
+  trinity_force             = 'Fighter';
 
   # Marksman
-  blade_of_the_ruined_king = 'Marksman';
-  deathblade               = 'Marksman'; 
-  diamond_tipped_spear     = 'Marksman';
-  guinsoos_rageblade       = 'Marksman'; 
-  infinity_edge            = 'Marksman'; 
-  kraken_slayer            = 'Marksman'; 
-  lord_dominiks_regards    = 'Marksman'; 
-  mirage_blade             = 'Marksman';
-  mortal_reminder          = 'Marksman';
-  phantom_dancer           = 'Marksman'; 
-  stormrazor               = 'Marksman'; 
-  terminus                 = 'Marksman';
-  wits_end                 = 'Marksman';
-  yun_tal_wildarrows       = 'Marksman';
+  blade_of_the_ruined_king  = 'Marksman';
+  deathblade                = 'Marksman'; 
+  diamond_tipped_spear      = 'Marksman';
+  guinsoos_rageblade        = 'Marksman'; 
+  infinity_edge             = 'Marksman'; 
+  kraken_slayer             = 'Marksman'; 
+  lord_dominiks_regards     = 'Marksman'; 
+  mirage_blade              = 'Marksman';
+  mortal_reminder           = 'Marksman';
+  phantom_dancer            = 'Marksman'; 
+  stormrazor                = 'Marksman'; 
+  terminus                  = 'Marksman';
+  wits_end                  = 'Marksman';
+  yun_tal_wildarrows        = 'Marksman';
 
   # Mage
-  blackfire_torch          = 'Mage';
-  bloodletters_curse       = 'Mage';
-  dusk_and_dawn            = 'Mage';
-  hextech_gunblade         = 'Mage';
-  liandrys_torment         = 'Mage';
-  ludens_tempest           = 'Mage';
-  malignance               = 'Mage'; 
-  morellonomicon           = 'Mage';
-  nashors_tooth            = 'Mage';
-  night_harvester          = 'Mage'; 
-  rabadons_deathcap        = 'Mage';
-  riftmaker                = 'Mage';
-  rylais_crystal_scepter   = 'Mage';
-  shadowflame              = 'Mage';
-  void_staff               = 'Mage';
+  blackfire_torch           = 'Mage';
+  bloodletters_curse        = 'Mage';
+  dusk_and_dawn             = 'Mage';
+  hextech_gunblade          = 'Mage';
+  liandrys_torment          = 'Mage';
+  ludens_tempest            = 'Mage';
+  malignance                = 'Mage'; 
+  morellonomicon            = 'Mage';
+  nashors_tooth             = 'Mage';
+  night_harvester           = 'Mage'; 
+  rabadons_deathcap         = 'Mage';
+  riftmaker                 = 'Mage';
+  rylais_crystal_scepter    = 'Mage';
+  shadowflame               = 'Mage';
+  void_staff                = 'Mage';
     
   # Tank
-  atmas_reckoning          = 'Tank';
-  dead_mans_plate          = 'Tank';
-  dragons_claw             = 'Tank';
-  heartsteel               = 'Tank';
-  jaksho_the_protean       = 'Tank';
-  protectors_vow           = 'Tank';
-  spirit_visage            = 'Tank';
-  sunfire_cape             = 'Tank';
-  thornmail                = 'Tank';
-  unending_despair         = 'Tank';
-  warmogs_armor            = 'Tank';
+  atmas_reckoning           = 'Tank';
+  dead_mans_plate           = 'Tank';
+  dragons_claw              = 'Tank';
+  heartsteel                = 'Tank';
+  jaksho_the_protean        = 'Tank';
+  protectors_vow            = 'Tank';
+  spirit_visage             = 'Tank';
+  sunfire_cape              = 'Tank';
+  thornmail                 = 'Tank';
+  unending_despair          = 'Tank';
+  warmogs_armor             = 'Tank';
 
   # Support
-  bloodsong                = 'Support'; 
-  echoes_of_helia          = 'Support';
+  bloodsong                 = 'Support'; 
+  echoes_of_helia           = 'Support';
   locket_of_the_iron_solari = 'Support';
-  protoplasm_harness       = 'Support';
-  zekes_herald             = 'Support';
+  protoplasm_harness        = 'Support';
+  zekes_herald              = 'Support';
 }
 
 # Item icons from the packed sprite sheet in aseprite_resources/ingame. The data

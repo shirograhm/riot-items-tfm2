@@ -43,7 +43,7 @@ impl LocketOfTheIronSolari {
             effect_bonus_magic_resistance: 20,
             effect_bonus_hp_regen: 4,
             effect_minion_percent: 150.0,
-            effect_max_distance: 80,
+            effect_max_distance: 100,
             refresh_cooldown: 0,
         }
     }

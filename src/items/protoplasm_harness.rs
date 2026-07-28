@@ -26,7 +26,7 @@ impl ProtoplasmHarness {
         Self {
             meta: ItemMeta::base(
                 "protoplasm_harness",
-                &["ring_of_reincarnation"],
+                &["winged_moonplate"],
                 &["radiant_protoplasm_harness"],
             ),
             buff_buff: "protoplasm_harness_buff",

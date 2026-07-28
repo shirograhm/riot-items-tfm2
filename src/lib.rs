@@ -262,6 +262,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("phage" => Phage));
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
+    reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4
     reg.add_item(configured!("atmas_reckoning" => AtmasReckoning));

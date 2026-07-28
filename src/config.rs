@@ -55,7 +55,6 @@ pub struct ItemConfig {
     pub effect_minion_percent: Option<f64>,
     pub effect_stacks_per_second: Option<usize>,
     pub effect_move_speed_per_stack: Option<f64>,
-    pub effect_stack_damage_percent: Option<f64>,
     pub effect_out_of_combat_seconds: Option<f64>,
     pub effect_bonus_flat_attack: Option<i32>,
     pub effect_stack_attack: Option<i32>,

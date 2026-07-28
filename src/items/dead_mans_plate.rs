@@ -19,8 +19,8 @@ pub struct DeadMansPlate {
     effect_stacks_per_second: usize,
     effect_max_stacks: usize,
     effect_move_speed_per_stack: f64,
-    effect_bonus_flat_damage: usize,
-    effect_stack_damage_percent: f64,
+    effect_min_bonus_damage: usize,
+    effect_max_bonus_damage: usize,
     /// Momentum currently held. Owned by the item rather than counted from
     /// stacked buffs: at 100 stacks that would be 100 buffs on the champion.
     momentum: usize,
@@ -35,7 +35,7 @@ impl DeadMansPlate {
         Self {
             meta: ItemMeta::base(
                 "dead_mans_plate",
-                &["aegis_of_the_legion"],
+                &["winged_moonplate"],
                 &["radiant_dead_mans_plate"],
             ),
             momentum_buff: "dead_mans_plate_momentum",
@@ -46,8 +46,8 @@ impl DeadMansPlate {
             effect_stacks_per_second: 7,
             effect_max_stacks: 100,
             effect_move_speed_per_stack: 0.25,
-            effect_bonus_flat_damage: 60,
-            effect_stack_damage_percent: 2.0,
+            effect_min_bonus_damage: 0,
+            effect_max_bonus_damage: 200,
             momentum: 0,
             stack_progress: 0,
             refresh_cooldown: 0,
@@ -85,11 +85,24 @@ impl DeadMansPlate {
                 effect_stacks_per_second,
                 effect_max_stacks,
                 effect_move_speed_per_stack,
-                effect_bonus_flat_damage,
-                effect_stack_damage_percent
+                effect_min_bonus_damage,
+                effect_max_bonus_damage
             ]
         );
         self
+    }
+
+    /// Shipwrecker's damage for `consumed` Momentum: a straight line from
+    /// `effect_min_bonus_damage` at no Momentum to `effect_max_bonus_damage` at a
+    /// full bar. The per-stack step is derived rather than configured so the two
+    /// ends of the range stay exactly where they are set, whatever
+    /// `effect_max_stacks` is.
+    fn proc_damage(&self, consumed: usize) -> usize {
+        let full_bar = self.effect_max_stacks.max(1);
+        let span = self
+            .effect_max_bonus_damage
+            .saturating_sub(self.effect_min_bonus_damage);
+        self.effect_min_bonus_damage + span * consumed.min(full_bar) / full_bar
     }
 
     /// Accrues Momentum at `effect_stacks_per_second`, independent of whether the
@@ -210,6 +223,8 @@ impl ModItemInfo for DeadMansPlate {
         _damage: &mut usize,
         damage_type: DamageType,
     ) {
+        // There has to be Momentum to consume: with no stacks there is nothing to
+        // spend, so the proc waits rather than paying out its floor for free.
         if damage_type != DamageType::AD || self.momentum == 0 {
             return;
         }
@@ -221,9 +236,13 @@ impl ModItemInfo for DeadMansPlate {
         self.momentum = 0;
         self.stack_progress = 0;
 
-        let scaling = 1.0 + self.effect_stack_damage_percent / 100.0 * consumed as f64;
-        let damage = (self.effect_bonus_flat_damage as f64 * scaling).round() as usize;
-        ctx.deal_damage(caster, target, damage, 0, AttackType::Item);
+        ctx.deal_damage(
+            caster,
+            target,
+            self.proc_damage(consumed),
+            0,
+            AttackType::Item,
+        );
     }
 
     fn tags(&self) -> Vec<ItemTag> {

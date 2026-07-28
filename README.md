@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 122 new items (69 base + 53 Radiant) to the game.
+Reskins the 30 existing items and also adds 123 new items (70 base + 53 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -39,6 +39,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Scout's Slingshot** | 800G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Serrated Dirk** | 800G | +45 AD | Lethality: Ignore 10 armor when you deal physical damage to enemies. |
 | **Steel Sigil** | 950G | +30 AD<br>+50 Armor | — |
+| **Winged Moonplate** | 800G | +200 HP<br>+4% MS | — |
 
 #### Tier 4
 | Item | Cost | Stats | Passive |
@@ -51,7 +52,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Dealing magic damage to an enemy champion reduces the target's magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Bloodsong** | 1050G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
 | **Collector** | 1450G | +60 AD<br>+20% Crit Chance | Lethality: Ignore 10 armor when you deal physical damage to enemies.<br>Death: Damaging an enemy champion below 6% max health executes them. |
-| **Dead Man's Plate** | 1450G | +300 HP<br>+55 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Dealing physical damage to an enemy champion consumes all remaining Momentum to deal 60 - 180 bonus physical damage, scaling with stacks consumed. |
+| **Dead Man's Plate** | 1450G | +300 HP<br>+55 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Dealing physical damage to an enemy champion consumes all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 1450G | +45 AD<br>+45 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the stored damage and heals you for 45 + 15% of your missing health. |
 | **Diamond Tipped Spear** | 1500G | +35% AS<br>+10% CDR | Pierce: Gain 60 Adaptive Force.<br>Sweet Spot: Deal up to 30% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
@@ -67,7 +68,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Jak’Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
 | **Kraken Slayer** | 1400G | +45 AD<br>+25% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Liandry's Torment** | 1400G | +350 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
-| **Locket of the Iron Solari** | 1100G | +200 HP<br>+40 Armor<br>+60 MR<br>+10% CDR | Legion: Nearby allies gain 10 armor, 20 magic resistance, and 4 health regeneration. Minions gain 150% of this value. |
+| **Locket of the Iron Solari** | 1100G | +200 HP<br>+40 Armor<br>+60 MR<br>+10% CDR | Legion: Grant 10 armor, 20 magic resistance, and 4 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Lord Dominik's Regards** | 1450G | +45 AD<br>+20% Crit Chance<br>+25% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Malignance** | 1250G | +120 AP<br>+12% CDR | Scorn: Gain 12% cooldown reduction on your ultimate skill. |
 | **Mirage Blade** | 1500G | +40% AS<br>+10% MS | Gain 60 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |
@@ -95,7 +96,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Warmog's Armor** | 1450G | +600 HP<br>+6 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Wit's End** | 1400G | +40% AS<br>+80 MR<br>+20% Tenacity | Fray: Your basic attacks deal 45 bonus magic damage. |
 | **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
-| **Zeke's Herald** | 1050G | +300 HP<br>+3 HP Regen<br>+35 AP<br>+10% CDR | Aura: Grant 30 Adaptive Force and 6% Omnivamp to all allied champions within 80 range. |
+| **Zeke's Herald** | 1050G | +300 HP<br>+3 HP Regen<br>+35 AP<br>+10% CDR | Aura: Grant 30 Adaptive Force and 6% Omnivamp to all allied champions within 100 range. |
 
 
 #### Tier 5  
@@ -109,7 +110,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Bloodsong** | 1500G | +450 HP<br>+4 HP Regen<br>+40 AP<br>+15% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
 | **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance | Lethality: Ignore 10 armor when you deal physical damage to enemies.<br>Death: Damaging an enemy champion below 6% max health executes them. |
-| **Radiant Dead Man's Plate** | 2100G | +650 HP<br>+70 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Dealing physical damage to an enemy champion consumes all remaining Momentum to deal 60 - 180 bonus physical damage, scaling with stacks consumed. |
+| **Radiant Dead Man's Plate** | 2100G | +650 HP<br>+70 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Dealing physical damage to an enemy champion consumes all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
 | **Radiant Death's Dance** | 2100G | +75 AD<br>+75 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the stored damage and heals you for 75 + 25% of your missing health. |
 | **Radiant Diamond Tipped Spear** | 2250G | +60% AS<br>+10% CDR | Pierce: Gain 100 Adaptive Force.<br>Sweet Spot: Deal up to 30% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
@@ -125,7 +126,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Jak’Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | When you take damage from an enemy champion, gain +10% armor and +10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Kraken Slayer** | 2000G | +75 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Radiant Liandry's Torment** | 2000G | +550 HP<br>+150 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
-| **Radiant Locket of the Iron Solari** | 1650G | +300 HP<br>+75 Armor<br>+100 MR<br>+15% CDR | Legion: Nearby allies gain 10 armor, 20 magic resistance, and 4 health regeneration. Minions gain 150% of this value. |
+| **Radiant Locket of the Iron Solari** | 1650G | +300 HP<br>+75 Armor<br>+100 MR<br>+15% CDR | Legion: Grant 10 armor, 20 magic resistance, and 4 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Radiant Lord Dominik's Regards** | 2000G | +85 AD<br>+25% Crit Chance<br>+35% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Radiant Malignance** | 1900G | +200 AP<br>+20% CDR | Scorn: Gain 20% cooldown reduction on your ultimate skill. |
 | **Radiant Mortal Reminder** | 2000G | +85 AD<br>+25% Crit Chance<br>+30% Armor Pen | Dealing physical damage to an enemy champion reduces the target’s healing by 40% for 2 seconds. |
@@ -153,7 +154,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Warmog's Armor** | 2100G | +1000 HP<br>+10 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Wit's End** | 2000G | +65% AS<br>+130 MR<br>+30% Tenacity | Fray: Your basic attacks deal 45 bonus magic damage. |
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
-| **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+55 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force and 10% Omnivamp to all allied champions within 80 range. |
+| **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+55 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force and 10% Omnivamp to all allied champions within 100 range. |
 
 
 ### Base Item Reskins

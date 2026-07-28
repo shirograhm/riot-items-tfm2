@@ -81,6 +81,7 @@ items! {
     unending_despair,
     void_staff,
     warmogs_armor,
+    winged_moonplate,
     wits_end,
     yun_tal_wildarrows,
     zekes_herald,

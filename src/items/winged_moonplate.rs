@@ -3,43 +3,41 @@ use crate::config::ItemConfig;
 use mod_api::*;
 
 #[derive(Clone, Debug)]
-pub struct AegisOfTheLegion {
+pub struct WingedMoonplate {
     price: usize,
     hp: i32,
-    defence: i32,
-    magic_resistance: i32,
+    move_speed_mult: i32,
 }
 
-impl Default for AegisOfTheLegion {
+impl Default for WingedMoonplate {
     fn default() -> Self {
         Self {
-            price: 950,
-            hp: 150,
-            defence: 40,
-            magic_resistance: 60,
+            price: 800,
+            hp: 200,
+            move_speed_mult: 4,
         }
     }
 }
 
-impl AegisOfTheLegion {
+impl WingedMoonplate {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let mut item = Self::default();
-        apply_config!(item, cfg, [price, hp, defence, magic_resistance]);
+        apply_config!(item, cfg, [price, hp, move_speed_mult]);
         item
     }
 }
 
-impl ModItemInfo for AegisOfTheLegion {
+impl ModItemInfo for WingedMoonplate {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "aegis_of_the_legion"
+        "winged_moonplate"
     }
 
     fn icon(&self) -> &str {
-        "aegis_of_the_legion"
+        "winged_moonplate"
     }
 
     fn price(&self) -> usize {
@@ -51,27 +49,26 @@ impl ModItemInfo for AegisOfTheLegion {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["gatekeepers_armor".to_string(), "night_hood".to_string()]
+        vec!["hardened_heart".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
         vec![
-            "jaksho_the_protean".to_string(),
-            "locket_of_the_iron_solari".to_string(),
+            "dead_mans_plate".to_string(),
+            "protoplasm_harness".to_string(),
         ]
     }
 
     fn stat(&self) -> BuffState {
         BuffState {
             hp: self.hp,
-            defence: self.defence,
-            magic_resistance: self.magic_resistance,
+            move_speed_mult: self.move_speed_mult,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::Defense, ItemTag::MagicResistance]
+        vec![ItemTag::HP, ItemTag::MoveSpeed]
     }
 
     fn category(&self) -> ItemCategory {

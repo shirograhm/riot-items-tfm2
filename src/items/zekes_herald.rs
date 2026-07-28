@@ -39,7 +39,7 @@ impl ZekesHerald {
             skill_cooldown_mult: 10,
             effect_adaptive_force: 30,
             effect_vamp: 6,
-            effect_max_distance: 80,
+            effect_max_distance: 100,
             refresh_cooldown: 0,
         }
     }

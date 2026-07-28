@@ -517,11 +517,11 @@
         },
         "zekes_herald": {
             "name": "Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "Aura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         },
         "radiant_zekes_herald": {
             "name": "Radiant Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         },
         "liandrys_torment": {
             "name": "Liandry's Torment",
@@ -649,19 +649,23 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Locket of the Iron Solari",
-            "option": "Legion: Nearby allies gain <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<>. Minions gain <#e8a800ff>150%<> of this value."
+            "option": "Legion: Grant <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Radiant Locket of the Iron Solari",
-            "option": "Legion: Nearby allies gain <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<>. Minions gain <#e8a800ff>150%<> of this value."
+            "option": "Legion: Grant <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
         },
         "dead_mans_plate": {
             "name": "Dead Man's Plate",
-            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>60 - 180 bonus physical damage<>, scaling with stacks consumed."
+            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<>, scaling with stacks consumed."
         },
         "radiant_dead_mans_plate": {
             "name": "Radiant Dead Man's Plate",
-            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>60 - 180 bonus physical damage<>, scaling with stacks consumed."
+            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<>, scaling with stacks consumed."
+        },
+        "winged_moonplate": {
+            "name": "Winged Moonplate",
+            "option": ""
         }
     },
     "vi": {
@@ -1174,11 +1178,11 @@
         },
         "zekes_herald": {
             "name": "Sứ Giả Của Zeke",
-            "option": "Hào Quang: Cấp <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+            "option": "Hào Quang: Cấp <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
         },
         "radiant_zekes_herald": {
             "name": "Sứ Giả Của Zeke Ánh Sáng",
-            "option": "Hào Quang: Cấp <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+            "option": "Hào Quang: Cấp <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
         },
         "scouts_slingshot": {
             "name": "Ná Cao Su Trinh Sát",
@@ -1314,19 +1318,23 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Dây Chuyền Iron Solari",
-            "option": "Quân Đoàn: Đồng minh xung quanh nhận thêm <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<>. Lính nhận <#e8a800ff>150%<> giá trị này."
+            "option": "Quân Đoàn: Cấp <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Dây Chuyền Iron Solari Ánh Sáng",
-            "option": "Quân Đoàn: Đồng minh xung quanh nhận thêm <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<>. Lính nhận <#e8a800ff>150%<> giá trị này."
+            "option": "Quân Đoàn: Cấp <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
         },
         "dead_mans_plate": {
             "name": "Giáp Liệt Sĩ",
-            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>60 - 180 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
+            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
         },
         "radiant_dead_mans_plate": {
             "name": "Giáp Liệt Sĩ Ánh Sáng",
-            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>60 - 180 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
+            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
+        },
+        "winged_moonplate": {
+            "name": "Nguyệt Giáp Chắp Cánh",
+            "option": ""
         }
     },
     "zh-hans": {
@@ -1839,11 +1847,11 @@
         },
         "zekes_herald": {
             "name": "泽克的先驱",
-            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。"
+            "option": "光环：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。"
         },
         "radiant_zekes_herald": {
             "name": "光明版泽克的先驱",
-            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。"
+            "option": "光环：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。"
         },
         "scouts_slingshot": {
             "name": "斥候弹弓",
@@ -1979,19 +1987,23 @@
         },
         "locket_of_the_iron_solari": {
             "name": "钢铁烈阳之匣",
-            "option": "军团：附近友军获得 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>20 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>4 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
+            "option": "军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>20 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>4 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "光明版钢铁烈阳之匣",
-            "option": "军团：附近友军获得 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>20 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>4 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
+            "option": "军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>20 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>4 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
         },
         "dead_mans_plate": {
             "name": "亡者板甲",
-            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>60 - 180 点额外物理伤害<>，随消耗的层数提升。"
+            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
         },
         "radiant_dead_mans_plate": {
             "name": "光明版亡者板甲",
-            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>60 - 180 点额外物理伤害<>，随消耗的层数提升。"
+            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
+        },
+        "winged_moonplate": {
+            "name": "翼动月甲",
+            "option": ""
         }
     },
     "pt-BR": {
@@ -2504,11 +2516,11 @@
         },
         "zekes_herald": {
             "name": "Arauto de Zeke",
-            "option": "Aura: Concede <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+            "option": "Aura: Concede <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
         },
         "radiant_zekes_herald": {
             "name": "Arauto de Zeke Radiante",
-            "option": "Aura: Concede <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+            "option": "Aura: Concede <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
         },
         "scouts_slingshot": {
             "name": "Estilingue do Patrulheiro",
@@ -2644,19 +2656,23 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Medalhão dos Solari de Ferro",
-            "option": "Legião: Aliados próximos recebem <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>20 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>4 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<>. Tropas recebem <#e8a800ff>150%<> deste valor."
+            "option": "Legião: Concede <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>20 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>4 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Medalhão dos Solari de Ferro Radiante",
-            "option": "Legião: Aliados próximos recebem <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>20 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>4 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<>. Tropas recebem <#e8a800ff>150%<> deste valor."
+            "option": "Legião: Concede <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>20 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>4 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
         },
         "dead_mans_plate": {
             "name": "Placa do Morto",
-            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>60 - 180 de dano físico bônus<>, conforme as cargas consumidas."
+            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<>, conforme as cargas consumidas."
         },
         "radiant_dead_mans_plate": {
             "name": "Placa do Morto Radiante",
-            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>60 - 180 de dano físico bônus<>, conforme as cargas consumidas."
+            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<>, conforme as cargas consumidas."
+        },
+        "winged_moonplate": {
+            "name": "Placa Lunar Alada",
+            "option": ""
         }
     },
     "ru": {
@@ -3169,11 +3185,11 @@
         },
         "zekes_herald": {
             "name": "Вестник Зика",
-            "option": "Аура: Даёт <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "Аура: Даёт <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "radiant_zekes_herald": {
             "name": "Лучезарный Вестник Зика",
-            "option": "Аура: Даёт <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "Аура: Даёт <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "scouts_slingshot": {
             "name": "Рогатка скаута",
@@ -3309,19 +3325,23 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Медальон Железных Солари",
-            "option": "Легион: Союзники поблизости получают <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
+            "option": "Легион: Даёт <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Лучезарный Медальон Железных Солари",
-            "option": "Легион: Союзники поблизости получают <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
+            "option": "Легион: Даёт <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
         },
         "dead_mans_plate": {
             "name": "Доспехи Мертвеца",
-            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>60 - 180 дополнительного физического урона<> в зависимости от потраченных зарядов."
+            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
         },
         "radiant_dead_mans_plate": {
             "name": "Лучезарные Доспехи Мертвеца",
-            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>60 - 180 дополнительного физического урона<> в зависимости от потраченных зарядов."
+            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
+        },
+        "winged_moonplate": {
+            "name": "Крылатая Лунная Пластина",
+            "option": ""
         }
     },
     "ko": {
@@ -3842,11 +3862,11 @@
         },
         "zekes_herald": {
             "name": "지크의 전령",
-            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 80<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 30<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 6%<>를 부여합니다."
+            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 30<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 6%<>를 부여합니다."
         },
         "radiant_zekes_herald": {
             "name": "찬란한 지크의 전령",
-            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 80<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 50<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 10%<>를 부여합니다."
+            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 50<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 10%<>를 부여합니다."
         },
         "liandrys_torment": {
             "name": "리안드리의 고통",
@@ -3974,19 +3994,23 @@
         },
         "locket_of_the_iron_solari": {
             "name": "강철의 솔라리 펜던트",
-            "option": "군단: 주변 아군이 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 10<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 20<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 4<>를 얻습니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
+            "option": "군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 10<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 20<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 4<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "찬란한 강철의 솔라리 펜던트",
-            "option": "군단: 주변 아군이 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 10<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 20<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 4<>를 얻습니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
+            "option": "군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 10<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 20<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 4<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
         },
         "dead_mans_plate": {
             "name": "망자의 갑옷",
-            "option": "난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>60 - 180의 추가 물리 피해<>를 입힙니다."
+            "option": "난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
         },
         "radiant_dead_mans_plate": {
             "name": "찬란한 망자의 갑옷",
-            "option": "난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>60 - 180의 추가 물리 피해<>를 입힙니다."
+            "option": "난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
+        },
+        "winged_moonplate": {
+            "name": "날개 달린 월갑",
+            "option": ""
         }
     }
 }
