@@ -55,7 +55,10 @@ impl ModItemInfo for AegisOfTheLegion {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["jaksho_the_protean".to_string()]
+        vec![
+            "jaksho_the_protean".to_string(),
+            "locket_of_the_iron_solari".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffState {

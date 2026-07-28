@@ -287,6 +287,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured!("kraken_slayer" => KrakenSlayer));
     reg.add_item(configured!("liandrys_torment" => LiandrysTorment));
+    reg.add_item(configured!("locket_of_the_iron_solari" => LocketOfTheIronSolari));
     reg.add_item(configured!("lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured!("malignance" => Malignance));
     reg.add_item(configured!("mirage_blade" => MirageBlade));
@@ -340,6 +341,9 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured_radiant!("radiant_jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured_radiant!("radiant_kraken_slayer" => KrakenSlayer));
     reg.add_item(configured_radiant!("radiant_liandrys_torment" => LiandrysTorment));
+    reg.add_item(
+        configured_radiant!("radiant_locket_of_the_iron_solari" => LocketOfTheIronSolari),
+    );
     reg.add_item(configured_radiant!("radiant_lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured_radiant!("radiant_malignance" => Malignance));
     reg.add_item(configured_radiant!("radiant_mirage_blade" => MirageBlade));

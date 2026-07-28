@@ -46,6 +46,7 @@ items! {
     kraken_slayer,
     last_whisper,
     liandrys_torment,
+    locket_of_the_iron_solari,
     lord_dominiks_regards,
     malignance,
     mirage_blade,

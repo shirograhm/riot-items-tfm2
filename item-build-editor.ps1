@@ -43,7 +43,7 @@ $ITEMS = @(
   'atmas_reckoning', 'bastionbreaker', 'black_cleaver', 'blackfire_torch', 'blade_of_the_ruined_king', 'bloodletters_curse', 'bloodsong', 'bloodthirster', 'collector',
   'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'dusk_and_dawn', 'echoes_of_helia', 'experimental_hexplate', 'frozen_mallet',
   'guinsoos_rageblade', 'heartsteel', 'hextech_gunblade', 'hubris', 'infinity_edge', 'jaksho_the_protean',
-  'kraken_slayer', 'liandrys_torment', 'lord_dominiks_regards', 'ludens_tempest', 'malignance', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
+  'kraken_slayer', 'liandrys_torment', 'locket_of_the_iron_solari', 'lord_dominiks_regards', 'ludens_tempest', 'malignance', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
   'night_harvester', 'opportunity', 'overlords_bloodmail', 'phantom_dancer',
   'protectors_vow', 'protoplasm_harness', 'rabadons_deathcap', 'riftmaker', 'rylais_crystal_scepter', 'serpents_fang', 'shadowflame', 'spear_of_shojin',
   'spirit_visage', 'stormrazor', 'sundered_sky', 'sunfire_cape', 'terminus', 'thornmail', 'trinity_force', 'unending_despair',
@@ -209,7 +209,8 @@ $itemCategory = @{
 
   # Support
   bloodsong                = 'Support'; 
-  echoes_of_helia          = 'Support'; 
+  echoes_of_helia          = 'Support';
+  locket_of_the_iron_solari = 'Support';
   protoplasm_harness       = 'Support';
   zekes_herald             = 'Support';
 }
