@@ -272,6 +272,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured!("bloodsong" => Bloodsong));
     reg.add_item(configured!("collector" => Collector));
+    reg.add_item(configured!("dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
     reg.add_item(configured!("diamond_tipped_spear" => DiamondTippedSpear));
@@ -326,6 +327,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured_radiant!("radiant_bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong));
     reg.add_item(configured_radiant!("radiant_collector" => Collector));
+    reg.add_item(configured_radiant!("radiant_dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
     reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));
     reg.add_item(configured_radiant!("radiant_diamond_tipped_spear" => DiamondTippedSpear));

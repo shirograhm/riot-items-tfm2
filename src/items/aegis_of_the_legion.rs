@@ -56,6 +56,7 @@ impl ModItemInfo for AegisOfTheLegion {
 
     fn next_tier(&self) -> Vec<String> {
         vec![
+            "dead_mans_plate".to_string(),
             "jaksho_the_protean".to_string(),
             "locket_of_the_iron_solari".to_string(),
         ]

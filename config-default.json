@@ -949,6 +949,28 @@
     "effect_minion_percent": 150.0,
     "effect_max_distance": 80
   },
+  "dead_mans_plate": {
+    "price": 1450,
+    "hp": 300,
+    "defence": 55,
+    "move_speed_mult": 4,
+    "effect_stacks_per_second": 7,
+    "effect_max_stacks": 100,
+    "effect_move_speed_per_stack": 0.25,
+    "effect_bonus_flat_damage": 60,
+    "effect_stack_damage_percent": 2.0
+  },
+  "radiant_dead_mans_plate": {
+    "price": 2100,
+    "hp": 650,
+    "defence": 70,
+    "move_speed_mult": 4,
+    "effect_stacks_per_second": 7,
+    "effect_max_stacks": 100,
+    "effect_move_speed_per_stack": 0.25,
+    "effect_bonus_flat_damage": 60,
+    "effect_stack_damage_percent": 2.0
+  },
   "malignance": {
     "price": 1250,
     "magic_power": 120,

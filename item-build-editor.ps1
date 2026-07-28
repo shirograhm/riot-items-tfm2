@@ -41,7 +41,7 @@ $CHAMPIONS = @(
 )
 $ITEMS = @(
   'atmas_reckoning', 'bastionbreaker', 'black_cleaver', 'blackfire_torch', 'blade_of_the_ruined_king', 'bloodletters_curse', 'bloodsong', 'bloodthirster', 'collector',
-  'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'dusk_and_dawn', 'echoes_of_helia', 'experimental_hexplate', 'frozen_mallet',
+  'dead_mans_plate', 'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'dusk_and_dawn', 'echoes_of_helia', 'experimental_hexplate', 'frozen_mallet',
   'guinsoos_rageblade', 'heartsteel', 'hextech_gunblade', 'hubris', 'infinity_edge', 'jaksho_the_protean',
   'kraken_slayer', 'liandrys_torment', 'locket_of_the_iron_solari', 'lord_dominiks_regards', 'ludens_tempest', 'malignance', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
   'night_harvester', 'opportunity', 'overlords_bloodmail', 'phantom_dancer',
@@ -196,7 +196,8 @@ $itemCategory = @{
   void_staff               = 'Mage';
     
   # Tank
-  atmas_reckoning          = 'Tank'; 
+  atmas_reckoning          = 'Tank';
+  dead_mans_plate          = 'Tank';
   dragons_claw             = 'Tank';
   heartsteel               = 'Tank';
   jaksho_the_protean       = 'Tank';

@@ -27,6 +27,7 @@ items! {
     bloodletters_curse,
     bloodsong,
     collector,
+    dead_mans_plate,
     deathblade,
     deaths_dance,
     diamond_tipped_spear,
