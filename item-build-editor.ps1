@@ -54,7 +54,7 @@ $CHAMP_PLACEHOLDER = '(champion)'
 # The default item slot: any slot you don't set is left for the game's AI to fill.
 # It is written to item-builds.json as JSON null; the mod keeps your pinned items
 # and lets the AI choose every blank slot.
-$ITEM_PLACEHOLDER = '(AI picks)'
+$ITEM_PLACEHOLDER = '-- AI picks --'
 $AI_SENTINEL = '__AI__'   # internal id for an (AI picks) slot; written as JSON null
 $MODDED_LABEL = '(modded champion)'
 
@@ -324,7 +324,10 @@ $script:OnItemDraw = {
   $sf.LineAlignment = 'Center'
   $sf.FormatFlags = [System.Drawing.StringFormatFlags]::NoWrap
   $sf.Trimming = [System.Drawing.StringTrimming]::EllipsisCharacter
-  $rect = New-Object System.Drawing.RectangleF($textX, $b.Y, ($b.X + $b.Width - $textX), $b.Height)
+  # On the closed face, stop short of the clear button overlaid at the right end
+  # so a long name ellipsizes instead of sliding under the X.
+  $textW = $b.X + $b.Width - $textX - $(if ($isEdit) { $script:ClearWidth + $script:ClearPad } else { 0 })
+  $rect = New-Object System.Drawing.RectangleF($textX, $b.Y, $textW, $b.Height)
   $g.DrawString($text, $sender.Font, (New-Object System.Drawing.SolidBrush($fgCol)), $rect, $sf)
 }
 
@@ -412,6 +415,55 @@ function Swap-ItemValues($row, $a, $b) {
   Save-Builds
 }
 
+# Width reserved at the right end of an item dropdown for its clear button. Both
+# the overlay itself and the owner-draw text rect key off this, so the item name
+# ellipsizes before it reaches the X instead of running underneath it.
+$script:ClearWidth = 20
+# Gap held between the X and the drop arrow. The arrow sits inside the combo's
+# flat border, so right-aligning on the raw arrow width alone leaves the X a pixel
+# over it; this clears the border and leaves a little breathing room besides.
+$script:ClearPad = 5
+
+# Small "clear this slot" X, overlaid inside the right end of an item dropdown
+# just left of its arrow. A Label rather than a Button so it never takes focus
+# away from the combo, and so no button chrome shows through the flat face; it is
+# an overlapping sibling, brought to the front in New-Row. Text is a runtime-built
+# glyph so this script can stay pure ASCII (no BOM needed).
+function New-ClearButton($cb) {
+  $arrow = [System.Windows.Forms.SystemInformation]::VerticalScrollBarWidth
+  $x = New-Object System.Windows.Forms.Label
+  $x.Text = [string][char]0x2715   # multiplication X
+  $x.Width = $script:ClearWidth; $x.Height = 22
+  $x.Left = $cb.Left + $cb.Width - $arrow - $script:ClearPad - $x.Width
+  $x.Top = $cb.Top + [int](($cb.Height - $x.Height) / 2)
+  $x.TextAlign = 'MiddleCenter'
+  $x.BackColor = $cPanel2; $x.ForeColor = $cAccent
+  $x.Font = New-Object System.Drawing.Font('Segoe UI', 9)
+  $x.Cursor = [System.Windows.Forms.Cursors]::Hand
+  $x.Tag = $cb
+  $x.Add_MouseEnter({ $this.ForeColor = $cText })
+  $x.Add_MouseLeave({ $this.ForeColor = $cAccent })
+  # Index 0 is (AI picks), i.e. the unpinned state. SelectedIndexChanged already
+  # autosaves, so clearing needs nothing beyond the assignment.
+  $x.Add_Click({ $this.Tag.SelectedIndex = 0 })
+  return $x
+}
+
+# A slot already on (AI picks) has nothing to clear, so its X is hidden. Called
+# once after a row loads its values and again on every item change (including the
+# swap buttons, which move selections through the same event).
+function Update-ClearVisibility($row) {
+  $items = $row.Tag.Items; $clears = $row.Tag.Clears
+  for ($i = 0; $i -lt $items.Count; $i++) {
+    $show = ($items[$i].SelectedIndex -ne 0)
+    # Clicking the X hides it out from under the cursor, and MouseLeave is not
+    # guaranteed to arrive after that - so drop the hover tint here, or the button
+    # comes back white the next time the slot is filled.
+    if (-not $show) { $clears[$i].ForeColor = $cAccent }
+    $clears[$i].Visible = $show
+  }
+}
+
 # Small "swap with the slot to my right" button; $index is the left slot (0 or 1).
 # Text is a runtime-built glyph so this script can stay pure ASCII (no BOM needed).
 function New-SwapButton($left, $index) {
@@ -481,6 +533,11 @@ function New-Row {
   $swap1 = New-SwapButton $COL.Swap1[0] 0
   $swap2 = New-SwapButton $COL.Swap2[0] 1
 
+  # per-slot clear buttons, overlaid on the right end of each item dropdown
+  $clr1 = New-ClearButton $cb1
+  $clr2 = New-ClearButton $cb2
+  $clr3 = New-ClearButton $cb3
+
   # raw-id box shown only when "(modded champion)" is selected
   $tbRaw = New-Object System.Windows.Forms.TextBox
   $tbRaw.Left = $COL.Champ[0]; $tbRaw.Top = 40; $tbRaw.Width = $COL.Champ[1]
@@ -493,13 +550,17 @@ function New-Row {
   $del.FlatStyle = 'Flat'; $del.BackColor = $cPanel; $del.ForeColor = $cMuted
   $del.Tag = $row
 
-  $row.Tag = @{ Champ = $cbChamp; ChampRaw = $tbRaw; Items = @($cb1, $cb2, $cb3) }
-  $row.Controls.AddRange(@($grip, $cbChamp, $tbRaw, $cb1, $swap1, $cb2, $swap2, $cb3, $del))
+  $row.Tag = @{ Champ = $cbChamp; ChampRaw = $tbRaw; Items = @($cb1, $cb2, $cb3); Clears = @($clr1, $clr2, $clr3) }
+  $row.Controls.AddRange(@($grip, $cbChamp, $tbRaw, $cb1, $swap1, $cb2, $swap2, $cb3, $del, $clr1, $clr2, $clr3))
+  # The clears overlap their combos, so pin them to the front of the z-order
+  # explicitly rather than relying on the order they were added in.
+  foreach ($x in @($clr1, $clr2, $clr3)) { $x.BringToFront() }
 
   Set-ChampValue $row $Champ
   Set-ComboId $cb1 $script:ItemToDisplay $Items[0]
   Set-ComboId $cb2 $script:ItemToDisplay $Items[1]
   Set-ComboId $cb3 $script:ItemToDisplay $Items[2]
+  Update-ClearVisibility $row
 
   # attach AFTER setting values so loading doesn't autosave
   $cbChamp.Add_SelectedIndexChanged({ Update-ChampMode $this.Parent; Save-Builds })
@@ -519,6 +580,7 @@ function New-Row {
           return
         }
         $this.Tag = $i
+        Update-ClearVisibility $this.Parent
         Save-Builds
       })
   }
