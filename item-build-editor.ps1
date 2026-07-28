@@ -340,23 +340,23 @@ function Save-Settings {
 
 # --- helpers ---------------------------------------------------------------
 
-# Pixels of rows-list travel per "line" of wheel scroll. Multiplied by the user's
-# Windows lines-per-notch setting, so one notch moves roughly one row.
-$SCROLL_LINE_PX = 18
+# An AutoScroll panel does its own wheel scrolling inside
+# ScrollableControl.OnMouseWheel, so re-aiming wheel input at the rows list is
+# just a matter of handing the panel the same event. Reaching the protected
+# method needs reflection, but it beats re-implementing the scroll: the panel
+# then moves exactly as far, and repaints exactly the same way, as it does when
+# the cursor is over empty background. (Hand-rolled maths here felt sluggish
+# because it moved less than half as far per notch.)
+$script:PanelWheel = [System.Windows.Forms.Control].GetMethod(
+  'OnMouseWheel', [System.Reflection.BindingFlags]'Instance,NonPublic')
 
-# Scrolls the rows list by a wheel delta (one notch = 120). Used to re-aim wheel
-# input that landed on a dropdown; see New-Combo.
-function Scroll-RowsBy([int]$delta) {
+# Re-aims a wheel event that landed on a dropdown at the rows list; see New-Combo.
+# If the method ever fails to resolve, the wheel simply does nothing over a
+# dropdown - still better than it silently editing the build underneath.
+function Scroll-RowsBy($e) {
   $panel = $script:RowsPanel
-  if (-not $panel) { return }
-  $lines = [System.Windows.Forms.SystemInformation]::MouseWheelScrollLines
-  # -1 means "one page per notch"; treat that as a screenful of rows.
-  if ($lines -lt 0) { $lines = [Math]::Max(1, [int]($panel.ClientSize.Height / $SCROLL_LINE_PX)) }
-  elseif ($lines -eq 0) { return }
-  $step = [int](($delta / 120) * $lines * $SCROLL_LINE_PX)
-  # AutoScrollPosition reads back negative but is assigned positive.
-  $y = [Math]::Max(0, (-$panel.AutoScrollPosition.Y) - $step)
-  $panel.AutoScrollPosition = New-Object System.Drawing.Point(0, $y)
+  if (-not $panel -or -not $script:PanelWheel) { return }
+  $script:PanelWheel.Invoke($panel, [object[]]@($e.psobject.BaseObject))
 }
 
 function New-Combo($displayList, $left, $width, [switch]$Grouped) {
@@ -382,7 +382,7 @@ function New-Combo($displayList, $left, $width, [switch]$Grouped) {
       param($sender, $e)
       if ($sender.DroppedDown) { return }
       $e.Handled = $true
-      Scroll-RowsBy $e.Delta
+      Scroll-RowsBy $e
     })
   foreach ($d in $displayList) { [void]$cb.Items.Add($d) }
   $cb.SelectedIndex = 0
