@@ -39,9 +39,9 @@ impl LocketOfTheIronSolari {
             defence: 40,
             magic_resistance: 60,
             skill_cooldown_mult: 10,
-            effect_bonus_defence: 10,
-            effect_bonus_magic_resistance: 20,
-            effect_bonus_hp_regen: 4,
+            effect_bonus_defence: 6,
+            effect_bonus_magic_resistance: 12,
+            effect_bonus_hp_regen: 3,
             effect_minion_percent: 150.0,
             effect_max_distance: 100,
             refresh_cooldown: 0,
@@ -60,6 +60,9 @@ impl LocketOfTheIronSolari {
             defence: 75,
             magic_resistance: 100,
             skill_cooldown_mult: 15,
+            effect_bonus_defence: 10,
+            effect_bonus_magic_resistance: 20,
+            effect_bonus_hp_regen: 4,
             ..Self::base()
         }
     }

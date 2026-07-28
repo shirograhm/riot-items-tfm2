@@ -68,7 +68,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Jak’Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | When you take damage from an enemy champion, gain +6% armor and +6% magic resistance for 4 seconds (max 4 stacks). |
 | **Kraken Slayer** | 1400G | +45 AD<br>+25% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Liandry's Torment** | 1400G | +350 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
-| **Locket of the Iron Solari** | 1100G | +200 HP<br>+40 Armor<br>+60 MR<br>+10% CDR | Legion: Grant 10 armor, 20 magic resistance, and 4 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
+| **Locket of the Iron Solari** | 1100G | +200 HP<br>+40 Armor<br>+60 MR<br>+10% CDR | Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Lord Dominik's Regards** | 1450G | +45 AD<br>+20% Crit Chance<br>+25% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Malignance** | 1250G | +120 AP<br>+12% CDR | Scorn: Gain 12% cooldown reduction on your ultimate skill. |
 | **Mirage Blade** | 1500G | +40% AS<br>+10% MS | Gain 60 Adaptive Force. On kill, grant 20% movement speed for 2 seconds. |

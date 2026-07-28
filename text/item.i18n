@@ -649,7 +649,7 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Locket of the Iron Solari",
-            "option": "Legion: Grant <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
+            "option": "Legion: Grant <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Radiant Locket of the Iron Solari",
@@ -1318,7 +1318,7 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Dây Chuyền Iron Solari",
-            "option": "Quân Đoàn: Cấp <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
+            "option": "Quân Đoàn: Cấp <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Dây Chuyền Iron Solari Ánh Sáng",
@@ -1987,7 +1987,7 @@
         },
         "locket_of_the_iron_solari": {
             "name": "钢铁烈阳之匣",
-            "option": "军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>20 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>4 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
+            "option": "军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>6 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>12 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>3 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "光明版钢铁烈阳之匣",
@@ -2656,7 +2656,7 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Medalhão dos Solari de Ferro",
-            "option": "Legião: Concede <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>20 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>4 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
+            "option": "Legião: Concede <#ffdd8eff>6 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>12 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>3 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Medalhão dos Solari de Ferro Radiante",
@@ -3325,7 +3325,7 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Медальон Железных Солари",
-            "option": "Легион: Даёт <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
+            "option": "Легион: Даёт <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Лучезарный Медальон Железных Солари",
@@ -3994,7 +3994,7 @@
         },
         "locket_of_the_iron_solari": {
             "name": "강철의 솔라리 펜던트",
-            "option": "군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 10<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 20<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 4<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
+            "option": "군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 6<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 12<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 3<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "찬란한 강철의 솔라리 펜던트",
