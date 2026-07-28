@@ -859,8 +859,8 @@
     "effect_lethality": 10
   },
   "hubris": {
-    "price": 1250,
-    "attack": 75,
+    "price": 1300,
+    "attack": 70,
     "skill_cooldown_mult": 10,
     "effect_lethality": 18,
     "effect_bonus_flat_attack": 12,
@@ -868,7 +868,7 @@
     "effect_duration_seconds": 90
   },
   "radiant_hubris": {
-    "price": 1850,
+    "price": 1950,
     "attack": 115,
     "skill_cooldown_mult": 15,
     "effect_lethality": 18,
@@ -877,7 +877,7 @@
     "effect_duration_seconds": 90
   },
   "bastionbreaker": {
-    "price": 1250,
+    "price": 1300,
     "attack": 65,
     "skill_cooldown_mult": 15,
     "effect_lethality": 22,
@@ -886,7 +886,7 @@
     "effect_duration_seconds": 90
   },
   "radiant_bastionbreaker": {
-    "price": 1850,
+    "price": 1950,
     "attack": 110,
     "skill_cooldown_mult": 20,
     "effect_lethality": 22,
@@ -895,18 +895,35 @@
     "effect_duration_seconds": 90
   },
   "serpents_fang": {
-    "price": 1050,
-    "attack": 65,
+    "price": 1200,
+    "attack": 60,
     "effect_lethality": 15,
     "effect_bonus_flat_damage": 50,
     "effect_ad_percent_damage": 10.0
   },
   "radiant_serpents_fang": {
-    "price": 1650,
-    "attack": 110,
+    "price": 1800,
+    "attack": 100,
     "effect_lethality": 15,
     "effect_bonus_flat_damage": 85,
     "effect_ad_percent_damage": 15.0
+  },
+  "opportunity": {
+    "price": 1300,
+    "attack": 70,
+    "effect_lethality": 18,
+    "effect_bonus_lethality": 7,
+    "effect_out_of_combat_seconds": 7.0,
+    "effect_duration_seconds": 3.5
+  },
+  "radiant_opportunity": {
+    "price": 1950,
+    "attack": 100,
+    "move_speed_mult": 5,
+    "effect_lethality": 18,
+    "effect_bonus_lethality": 7,
+    "effect_out_of_combat_seconds": 7.0,
+    "effect_duration_seconds": 3.5
   },
   "malignance": {
     "price": 1250,

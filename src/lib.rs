@@ -107,6 +107,19 @@ fn apply_lethality(ctx: &mut GameCtx, target: usize, lethality: usize, damage: &
 /// death within the window counts as a takedown (kill or assist). 3s at 60/s.
 const TAKEDOWN_WINDOW_TICKS: usize = 180;
 
+/// Whether `target` is a champion on the opposing team from `caster`. Both the
+/// takedown marks and the "in combat with an enemy champion" timers key off this,
+/// and neither should fire on minions, towers, or a friendly hit.
+fn is_enemy_champion(ctx: &mut GameCtx, caster: usize, target: usize) -> bool {
+    let Some(caster_ref) = ctx.get_entity(caster) else {
+        return false;
+    };
+    let caster_team = caster_ref.team();
+    ctx.get_entity(target)
+        .map(|target_ref| target_ref.is_champion() && target_ref.team() != caster_team)
+        .unwrap_or(false)
+}
+
 /// Marks `target` as recently damaged, if it is an enemy champion of `caster`, so
 /// that a death within `TAKEDOWN_WINDOW_TICKS` counts as a takedown. Refreshes an
 /// existing mark. Shared by items whose passives trigger on takedowns (which the
@@ -117,14 +130,7 @@ fn mark_enemy_champion(
     caster: usize,
     target: usize,
 ) {
-    let Some(caster_ref) = ctx.get_entity(caster) else {
-        return;
-    };
-    let caster_team = caster_ref.team();
-    let Some(target_ref) = ctx.get_entity(target) else {
-        return;
-    };
-    if !target_ref.is_champion() || target_ref.team() == caster_team {
+    if !is_enemy_champion(ctx, caster, target) {
         return;
     }
     if let Some(mark) = marks.iter_mut().find(|(id, _)| *id == target) {
@@ -288,6 +294,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("mortal_reminder" => MortalReminder));
     reg.add_item(configured!("nashors_tooth" => NashorsTooth));
     reg.add_item(configured!("night_harvester" => NightHarvester));
+    reg.add_item(configured!("opportunity" => Opportunity));
     reg.add_item(configured!("overlords_bloodmail" => OverlordsBloodmail));
     reg.add_item(configured!("protectors_vow" => ProtectorsVow));
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
@@ -340,6 +347,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured_radiant!("radiant_mortal_reminder" => MortalReminder));
     reg.add_item(configured_radiant!("radiant_nashors_tooth" => NashorsTooth));
     reg.add_item(configured_radiant!("radiant_night_harvester" => NightHarvester));
+    reg.add_item(configured_radiant!("radiant_opportunity" => Opportunity));
     reg.add_item(configured_radiant!("radiant_overlords_bloodmail" => OverlordsBloodmail));
     reg.add_item(configured_radiant!("radiant_protectors_vow" => ProtectorsVow));
     reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));

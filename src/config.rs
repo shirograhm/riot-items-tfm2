@@ -48,6 +48,8 @@ pub struct ItemConfig {
     pub effect_slow_amount: Option<i32>,
     pub effect_damaged_amplify: Option<usize>,
     pub effect_lethality: Option<usize>,
+    pub effect_bonus_lethality: Option<usize>,
+    pub effect_out_of_combat_seconds: Option<f64>,
     pub effect_bonus_flat_attack: Option<i32>,
     pub effect_stack_attack: Option<i32>,
     pub effect_stack_attack_mult: Option<i32>,

@@ -59,6 +59,7 @@ impl ModItemInfo for SerratedDirk {
             "bastionbreaker".to_string(),
             "serpents_fang".to_string(),
             "collector".to_string(),
+            "opportunity".to_string(),
         ]
     }
 

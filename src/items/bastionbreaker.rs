@@ -33,8 +33,8 @@ impl Bastionbreaker {
                 &["serrated_dirk"],
                 &["radiant_bastionbreaker"],
             ),
-            price: 1400,
-            attack: 70,
+            price: 1300,
+            attack: 65,
             skill_cooldown_mult: 15,
             effect_lethality: 22,
             effect_bonus_flat_damage: 150,
@@ -48,8 +48,8 @@ impl Bastionbreaker {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_bastionbreaker", &["bastionbreaker"]),
-            price: 2000,
-            attack: 115,
+            price: 1950,
+            attack: 110,
             skill_cooldown_mult: 20,
             effect_bonus_flat_damage: 200,
             effect_ad_percent_damage: 20.0,

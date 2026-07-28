@@ -21,8 +21,8 @@ impl Hubris {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("hubris", &["serrated_dirk"], &["radiant_hubris"]),
-            price: 1250,
-            attack: 75,
+            price: 1300,
+            attack: 70,
             skill_cooldown_mult: 10,
             effect_lethality: 18,
             effect_bonus_flat_attack: 12,
@@ -36,7 +36,7 @@ impl Hubris {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_hubris", &["hubris"]),
-            price: 1850,
+            price: 1950,
             attack: 115,
             skill_cooldown_mult: 15,
             ..Self::base()

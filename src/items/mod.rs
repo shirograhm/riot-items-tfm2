@@ -56,6 +56,7 @@ items! {
     night_harvester,
     noonquiver,
     oblivion_orb,
+    opportunity,
     overlords_bloodmail,
     phage,
     protectors_vow,

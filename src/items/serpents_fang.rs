@@ -34,8 +34,8 @@ impl SerpentsFang {
                 &["serrated_dirk"],
                 &["radiant_serpents_fang"],
             ),
-            price: 1050,
-            attack: 65,
+            price: 1200,
+            attack: 60,
             effect_lethality: 15,
             effect_bonus_flat_damage: 50,
             effect_ad_percent_damage: 10.0,
@@ -45,8 +45,8 @@ impl SerpentsFang {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_serpents_fang", &["serpents_fang"]),
-            price: 1650,
-            attack: 110,
+            price: 1800,
+            attack: 100,
             effect_bonus_flat_damage: 85,
             effect_ad_percent_damage: 15.0,
             ..Self::base()
