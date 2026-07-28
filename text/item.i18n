@@ -657,11 +657,11 @@
         },
         "dead_mans_plate": {
             "name": "Dead Man's Plate",
-            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of Momentum every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining stacks to deal <#ff9028ff>60 - 180 bonus physical damage<>, scaling with Momentum consumed."
+            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>60 - 180 bonus physical damage<>, scaling with stacks consumed."
         },
         "radiant_dead_mans_plate": {
             "name": "Radiant Dead Man's Plate",
-            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of Momentum every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining stacks to deal <#ff9028ff>60 - 180 bonus physical damage<>, scaling with Momentum consumed."
+            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>60 - 180 bonus physical damage<>, scaling with stacks consumed."
         }
     },
     "vi": {
