@@ -1,66 +1,7 @@
 use mod_api::*;
 
 use crate::config::ItemConfig;
-
-#[derive(Clone, Debug)]
-pub struct KrakenSlayer {
-    price: usize,
-    attack: i32,
-    attack_speed_mult: i32,
-    move_speed_mult: i32,
-    effect_bonus_flat_damage: usize,
-    effect_max_percent_bonus: f64,
-    effect_hp_percent_threshold: f64,
-    effect_attack_interval: usize,
-    on_hit_cooldown_seconds: f64,
-    // Qualifying basic attacks landed since the last proc.
-    attack_count: usize,
-}
-
-impl Default for KrakenSlayer {
-    fn default() -> Self {
-        Self {
-            price: 1400,
-            attack: 45,
-            attack_speed_mult: 25,
-            move_speed_mult: 4,
-            effect_bonus_flat_damage: 150,
-            effect_max_percent_bonus: 75.0,
-            effect_hp_percent_threshold: 25.0,
-            effect_attack_interval: 3,
-            on_hit_cooldown_seconds: 0.5,
-            attack_count: 0,
-        }
-    }
-}
-
-impl KrakenSlayer {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            move_speed_mult: cfg.move_speed_mult.unwrap_or(d.move_speed_mult),
-            effect_bonus_flat_damage: cfg
-                .effect_bonus_flat_damage
-                .unwrap_or(d.effect_bonus_flat_damage),
-            effect_max_percent_bonus: cfg
-                .effect_max_percent_bonus
-                .unwrap_or(d.effect_max_percent_bonus),
-            effect_hp_percent_threshold: cfg
-                .effect_hp_percent_threshold
-                .unwrap_or(d.effect_hp_percent_threshold),
-            effect_attack_interval: cfg
-                .effect_attack_interval
-                .unwrap_or(d.effect_attack_interval),
-            on_hit_cooldown_seconds: cfg
-                .on_hit_cooldown_seconds
-                .unwrap_or(d.on_hit_cooldown_seconds),
-            attack_count: 0,
-        }
-    }
-}
+use crate::{apply_config, try_proc_on_hit, ItemMeta};
 
 fn bring_it_down_damage(
     ctx: &mut GameCtx,
@@ -86,7 +27,6 @@ fn bring_it_down_damage(
     let scaling = 1.0 + (max_percent_bonus / 100.0) * ratio;
     (flat as f64 * scaling).round() as usize
 }
-
 fn tick_bring_it_down(
     ctx: &mut GameCtx,
     target: usize,
@@ -95,32 +35,20 @@ fn tick_bring_it_down(
     flat: usize,
     max_percent_bonus: f64,
     hp_percent_threshold: f64,
-    cooldown_ticks: usize,
+    cooldown_seconds: f64,
 ) -> usize {
-    let Some(target_ref) = ctx.get_entity(target) else {
-        return 0;
-    };
-    if target_ref.is_tower() {
+    let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(true);
+    if is_tower {
         return 0;
     }
-
-    // Same on-hit rate limit as Guinsoo's Rageblade: multi-hit attacks only
-    // count once per cooldown window, tracked by a marker buff on the target.
-    let is_cooldown_ticking = (0..target_ref.buff_count())
-        .any(|i| target_ref.buff_at(i).name.as_str() == "kraken_slayer_on_hit_cooldown");
-    if is_cooldown_ticking {
-        return 0;
-    }
-    ctx.add_buff(
+    if !try_proc_on_hit(
+        ctx,
         target,
-        BuffState {
-            duration: BuffType::Time {
-                tick: cooldown_ticks,
-            },
-            name: "kraken_slayer_on_hit_cooldown".try_into().unwrap(),
-            ..Default::default()
-        },
-    );
+        "kraken_slayer_on_hit_cooldown",
+        cooldown_seconds,
+    ) {
+        return 0;
+    }
 
     *attack_count += 1;
     if *attack_count < interval.max(1) {
@@ -130,82 +58,9 @@ fn tick_bring_it_down(
     bring_it_down_damage(ctx, target, flat, max_percent_bonus, hp_percent_threshold)
 }
 
-impl ModItemInfo for KrakenSlayer {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "kraken_slayer"
-    }
-
-    fn icon(&self) -> &str {
-        "kraken_slayer"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        3
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["scouts_slingshot".to_string()]
-    }
-
-    fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_kraken_slayer".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            attack: self.attack,
-            attack_speed_mult: self.attack_speed_mult,
-            move_speed_mult: self.move_speed_mult,
-            ..Default::default()
-        }
-    }
-
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
-        self.attack_count = 0;
-    }
-
-    fn on_attack(
-        &mut self,
-        ctx: &mut GameCtx,
-        caster: usize,
-        target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageType,
-    ) {
-        let bonus = tick_bring_it_down(
-            ctx,
-            target,
-            &mut self.attack_count,
-            self.effect_attack_interval,
-            self.effect_bonus_flat_damage,
-            self.effect_max_percent_bonus,
-            self.effect_hp_percent_threshold,
-            (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-        );
-        if bonus > 0 {
-            ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
-        }
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::MoveSpeed]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
-    }
-}
-
 #[derive(Clone, Debug)]
-pub struct RadiantKrakenSlayer {
+pub struct KrakenSlayer {
+    meta: ItemMeta,
     price: usize,
     attack: i32,
     attack_speed_mult: i32,
@@ -218,12 +73,17 @@ pub struct RadiantKrakenSlayer {
     attack_count: usize,
 }
 
-impl Default for RadiantKrakenSlayer {
-    fn default() -> Self {
+impl KrakenSlayer {
+    pub fn base() -> Self {
         Self {
-            price: 2000,
-            attack: 75,
-            attack_speed_mult: 45,
+            meta: ItemMeta::base(
+                "kraken_slayer",
+                &["scouts_slingshot"],
+                &["radiant_kraken_slayer"],
+            ),
+            price: 1400,
+            attack: 45,
+            attack_speed_mult: 25,
             move_speed_mult: 4,
             effect_bonus_flat_damage: 150,
             effect_max_percent_bonus: 75.0,
@@ -233,47 +93,62 @@ impl Default for RadiantKrakenSlayer {
             attack_count: 0,
         }
     }
-}
 
-impl RadiantKrakenSlayer {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
+    pub fn radiant() -> Self {
         Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            move_speed_mult: cfg.move_speed_mult.unwrap_or(d.move_speed_mult),
-            effect_bonus_flat_damage: cfg
-                .effect_bonus_flat_damage
-                .unwrap_or(d.effect_bonus_flat_damage),
-            effect_max_percent_bonus: cfg
-                .effect_max_percent_bonus
-                .unwrap_or(d.effect_max_percent_bonus),
-            effect_hp_percent_threshold: cfg
-                .effect_hp_percent_threshold
-                .unwrap_or(d.effect_hp_percent_threshold),
-            effect_attack_interval: cfg
-                .effect_attack_interval
-                .unwrap_or(d.effect_attack_interval),
-            on_hit_cooldown_seconds: cfg
-                .on_hit_cooldown_seconds
-                .unwrap_or(d.on_hit_cooldown_seconds),
-            attack_count: 0,
+            meta: ItemMeta::radiant("radiant_kraken_slayer", &["kraken_slayer"]),
+            price: 2000,
+            attack: 75,
+            attack_speed_mult: 45,
+            ..Self::base()
         }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [
+                price,
+                attack,
+                attack_speed_mult,
+                move_speed_mult,
+                effect_bonus_flat_damage,
+                effect_max_percent_bonus,
+                effect_hp_percent_threshold,
+                effect_attack_interval,
+                on_hit_cooldown_seconds
+            ]
+        );
+        self
     }
 }
 
-impl ModItemInfo for RadiantKrakenSlayer {
+impl Default for KrakenSlayer {
+    fn default() -> Self {
+        Self::base()
+    }
+}
+
+impl ModItemInfo for KrakenSlayer {
     fn clone_box(&self) -> Box<dyn ModItemInfo> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> &str {
-        "radiant_kraken_slayer"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "radiant_kraken_slayer"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -281,11 +156,15 @@ impl ModItemInfo for RadiantKrakenSlayer {
     }
 
     fn tier(&self) -> usize {
-        4
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["kraken_slayer".to_string()]
+        self.meta.previous_tier()
+    }
+
+    fn next_tier(&self) -> Vec<String> {
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {
@@ -317,7 +196,7 @@ impl ModItemInfo for RadiantKrakenSlayer {
             self.effect_bonus_flat_damage,
             self.effect_max_percent_bonus,
             self.effect_hp_percent_threshold,
-            (self.on_hit_cooldown_seconds * 60.0).round() as usize,
+            self.on_hit_cooldown_seconds,
         );
         if bonus > 0 {
             ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);

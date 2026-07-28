@@ -1,11 +1,11 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
+use crate::{apply_config, percent_of, try_proc_on_hit, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct NashorsTooth {
+    meta: ItemMeta,
     price: usize,
     magic_power: i32,
     attack_speed_mult: i32,
@@ -14,9 +14,14 @@ pub struct NashorsTooth {
     on_hit_cooldown_seconds: f64,
 }
 
-impl Default for NashorsTooth {
-    fn default() -> Self {
+impl NashorsTooth {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base(
+                "nashors_tooth",
+                &["needlessly_large_rod", "wind_dagger"],
+                &["radiant_nashors_tooth"],
+            ),
             price: 1450,
             magic_power: 115,
             attack_speed_mult: 25,
@@ -25,25 +30,47 @@ impl Default for NashorsTooth {
             on_hit_cooldown_seconds: 0.5,
         }
     }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_nashors_tooth", &["nashors_tooth"]),
+            price: 2050,
+            magic_power: 180,
+            attack_speed_mult: 40,
+            effect_bonus_flat_damage: 50,
+            effect_ap_percent_damage: 5.0,
+            ..Self::base()
+        }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [
+                price,
+                magic_power,
+                attack_speed_mult,
+                effect_bonus_flat_damage,
+                effect_ap_percent_damage,
+                on_hit_cooldown_seconds
+            ]
+        );
+        self
+    }
 }
 
-impl NashorsTooth {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            effect_bonus_flat_damage: cfg
-                .effect_bonus_flat_damage
-                .unwrap_or(d.effect_bonus_flat_damage),
-            effect_ap_percent_damage: cfg
-                .effect_ap_percent_damage
-                .unwrap_or(d.effect_ap_percent_damage),
-            on_hit_cooldown_seconds: cfg
-                .on_hit_cooldown_seconds
-                .unwrap_or(d.on_hit_cooldown_seconds),
-        }
+impl Default for NashorsTooth {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -53,11 +80,11 @@ impl ModItemInfo for NashorsTooth {
     }
 
     fn key(&self) -> &str {
-        "nashors_tooth"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "nashors_tooth"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -65,18 +92,15 @@ impl ModItemInfo for NashorsTooth {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![
-            "needlessly_large_rod".to_string(),
-            "wind_dagger".to_string(),
-        ]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_nashors_tooth".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {
@@ -107,143 +131,12 @@ impl ModItemInfo for NashorsTooth {
 
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "nashors_tooth_on_hit_cooldown");
-
-        if !is_cooldown_ticking {
-            ctx.add_buff(
-                target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                    },
-                    name: ArrayString::try_from("nashors_tooth_on_hit_cooldown").unwrap(),
-                    ..Default::default()
-                },
-            );
-            ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
-        }
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantNashorsTooth {
-    price: usize,
-    magic_power: i32,
-    attack_speed_mult: i32,
-    effect_bonus_flat_damage: usize,
-    effect_ap_percent_damage: f64,
-    on_hit_cooldown_seconds: f64,
-}
-
-impl Default for RadiantNashorsTooth {
-    fn default() -> Self {
-        Self {
-            price: 2050,
-            magic_power: 180,
-            attack_speed_mult: 40,
-            effect_bonus_flat_damage: 50,
-            effect_ap_percent_damage: 5.0,
-            on_hit_cooldown_seconds: 0.5,
-        }
-    }
-}
-
-impl RadiantNashorsTooth {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            effect_bonus_flat_damage: cfg
-                .effect_bonus_flat_damage
-                .unwrap_or(d.effect_bonus_flat_damage),
-            effect_ap_percent_damage: cfg
-                .effect_ap_percent_damage
-                .unwrap_or(d.effect_ap_percent_damage),
-            on_hit_cooldown_seconds: cfg
-                .on_hit_cooldown_seconds
-                .unwrap_or(d.on_hit_cooldown_seconds),
-        }
-    }
-}
-
-impl ModItemInfo for RadiantNashorsTooth {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_nashors_tooth"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_nashors_tooth"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["nashors_tooth".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            magic_power: self.magic_power,
-            attack_speed_mult: self.attack_speed_mult,
-            ..Default::default()
-        }
-    }
-
-    fn on_attack(
-        &mut self,
-        ctx: &mut GameCtx,
-        caster: usize,
-        target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageType,
-    ) {
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if target_ref.is_tower() {
-            return;
-        }
-
-        let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
-        let is_cooldown_ticking = (0..target_ref.buff_count())
-            .any(|i| target_ref.buff_at(i).name.as_str() == "nashors_tooth_on_hit_cooldown");
-
-        if !is_cooldown_ticking {
-            ctx.add_buff(
-                target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: (self.on_hit_cooldown_seconds * 60.0).round() as usize,
-                    },
-                    name: ArrayString::try_from("nashors_tooth_on_hit_cooldown").unwrap(),
-                    ..Default::default()
-                },
-            );
+        if try_proc_on_hit(
+            ctx,
+            target,
+            "nashors_tooth_on_hit_cooldown",
+            self.on_hit_cooldown_seconds,
+        ) {
             ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
         }
     }

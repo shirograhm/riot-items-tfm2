@@ -1,14 +1,17 @@
+use arrayvec::ArrayString;
 use mod_api::*;
 
 mod build_config;
 mod config;
 mod constants;
 mod hook;
+mod item_meta;
 mod items;
 
 use items::*;
 
 pub(crate) use constants::*;
+pub(crate) use item_meta::ItemMeta;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -16,6 +19,59 @@ fn percent_of(value: usize, percent: f64) -> usize {
 
 fn percent_of_i32(value: i32, percent: f64) -> i32 {
     (value as f64 * percent / 100.0).round() as i32
+}
+
+/// Converts a duration in seconds (how config expresses them) to simulation
+/// ticks (what `BuffType::Time` expects).
+fn ticks(seconds: f64) -> usize {
+    (seconds * TICKS_PER_SECOND).round() as usize
+}
+
+/// Converts a buff name to the fixed-capacity inline string that
+/// `BuffState::name` holds. Panics if `name` exceeds that capacity — buff names
+/// are compile-time constants, so that is a typo to fix, not a runtime condition.
+fn buff_name<const CAP: usize>(name: &str) -> ArrayString<CAP> {
+    ArrayString::try_from(name).unwrap()
+}
+
+/// Whether `entity` currently carries a buff named `name`. Buffs are stored in a
+/// flat per-entity table with no lookup by name, so this is a linear scan.
+fn has_buff(entity: &EntityRef, name: &str) -> bool {
+    (0..entity.buff_count()).any(|i| entity.buff_at(i).name.as_str() == name)
+}
+
+/// How many buffs named `name` are on `entity`. Same-name buffs stack rather
+/// than refresh, so the number of copies present *is* the stack count.
+fn buff_stacks(entity: &EntityRef, name: &str) -> usize {
+    (0..entity.buff_count())
+        .filter(|&i| entity.buff_at(i).name.as_str() == name)
+        .count()
+}
+
+/// Rate-limits an on-hit effect to once per `cooldown_seconds` per target.
+///
+/// Returns `true` when the caller should fire its effect (the marker is stamped as
+/// a side effect), `false` while the previous proc is still on cooldown or the
+/// target no longer exists.
+fn try_proc_on_hit(ctx: &mut GameCtx, target: usize, marker: &str, cooldown_seconds: f64) -> bool {
+    let is_ready = ctx
+        .get_entity(target)
+        .map(|target_ref| !has_buff(&target_ref, marker))
+        .unwrap_or(false);
+    if !is_ready {
+        return false;
+    }
+    ctx.add_buff(
+        target,
+        BuffState {
+            duration: BuffType::Time {
+                tick: ticks(cooldown_seconds),
+            },
+            name: buff_name(marker),
+            ..Default::default()
+        },
+    );
+    true
 }
 
 /// Damage multiplier that simulates `lethality` flat armor penetration against a
@@ -51,6 +107,19 @@ fn apply_lethality(ctx: &mut GameCtx, target: usize, lethality: usize, damage: &
 /// death within the window counts as a takedown (kill or assist). 3s at 60/s.
 const TAKEDOWN_WINDOW_TICKS: usize = 180;
 
+/// Whether `target` is a champion on the opposing team from `caster`. Both the
+/// takedown marks and the "in combat with an enemy champion" timers key off this,
+/// and neither should fire on minions, towers, or a friendly hit.
+fn is_enemy_champion(ctx: &mut GameCtx, caster: usize, target: usize) -> bool {
+    let Some(caster_ref) = ctx.get_entity(caster) else {
+        return false;
+    };
+    let caster_team = caster_ref.team();
+    ctx.get_entity(target)
+        .map(|target_ref| target_ref.is_champion() && target_ref.team() != caster_team)
+        .unwrap_or(false)
+}
+
 /// Marks `target` as recently damaged, if it is an enemy champion of `caster`, so
 /// that a death within `TAKEDOWN_WINDOW_TICKS` counts as a takedown. Refreshes an
 /// existing mark. Shared by items whose passives trigger on takedowns (which the
@@ -61,14 +130,7 @@ fn mark_enemy_champion(
     caster: usize,
     target: usize,
 ) {
-    let Some(caster_ref) = ctx.get_entity(caster) else {
-        return;
-    };
-    let caster_team = caster_ref.team();
-    let Some(target_ref) = ctx.get_entity(target) else {
-        return;
-    };
-    if !target_ref.is_champion() || target_ref.team() == caster_team {
+    if !is_enemy_champion(ctx, caster, target) {
         return;
     }
     if let Some(mark) = marks.iter_mut().find(|(id, _)| *id == target) {
@@ -87,7 +149,7 @@ fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize 
     }
     let mut takedowns = 0;
     let mut kept = Vec::with_capacity(marks.len());
-    for (id, ticks) in std::mem::take(marks) {
+    for (id, ticks_left) in std::mem::take(marks) {
         // A marked champion counts as a takedown once the game stops reporting it as
         // alive: either it's gone from the entity table (`get_entity` -> None, which
         // is how TFM2 removes a champion killed this round) or it's still queryable
@@ -98,7 +160,7 @@ fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize 
             takedowns += 1;
             continue;
         }
-        let remaining = ticks.saturating_sub(1);
+        let remaining = ticks_left.saturating_sub(1);
         if remaining > 0 {
             kept.push((id, remaining));
         }
@@ -107,7 +169,7 @@ fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize 
     takedowns
 }
 
-fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, buff_name: &str) {
+fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, name: &str) {
     let Some(player_ref) = ctx.get_player(player) else {
         return;
     };
@@ -115,17 +177,14 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
         return;
     };
 
-    let is_buff_applied =
-        (0..champion_ref.buff_count()).any(|i| champion_ref.buff_at(i).name.as_str() == buff_name);
-
-    if !is_buff_applied {
+    if !has_buff(&champion_ref, name) {
         if champion_ref.stat().magic_power > champion_ref.stat().attack {
             ctx.add_buff(
                 champion_ref.id(),
                 BuffState {
                     duration: BuffType::Permanent,
                     magic_power: adaptive_force,
-                    name: buff_name.try_into().unwrap(),
+                    name: buff_name(name),
                     ..Default::default()
                 },
             )
@@ -135,7 +194,7 @@ fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, b
                 BuffState {
                     duration: BuffType::Permanent,
                     attack: (adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32,
-                    name: buff_name.try_into().unwrap(),
+                    name: buff_name(name),
                     ..Default::default()
                 },
             )
@@ -173,6 +232,14 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
             configs.get($key).map(<$T>::with_config).unwrap_or_default()
         };
     }
+    macro_rules! configured_radiant {
+        ($key:literal => $T:ty) => {
+            configs
+                .get($key)
+                .map(<$T>::radiant_with_config)
+                .unwrap_or_else(<$T>::radiant)
+        };
+    }
 
     // Tier 1
     reg.add_item(configured!("glowing_mote" => GlowingMote));
@@ -195,6 +262,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("phage" => Phage));
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
+    reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4
     reg.add_item(configured!("atmas_reckoning" => AtmasReckoning));
@@ -205,6 +273,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured!("bloodsong" => Bloodsong));
     reg.add_item(configured!("collector" => Collector));
+    reg.add_item(configured!("dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
     reg.add_item(configured!("diamond_tipped_spear" => DiamondTippedSpear));
@@ -220,6 +289,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured!("kraken_slayer" => KrakenSlayer));
     reg.add_item(configured!("liandrys_torment" => LiandrysTorment));
+    reg.add_item(configured!("locket_of_the_iron_solari" => LocketOfTheIronSolari));
     reg.add_item(configured!("lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured!("malignance" => Malignance));
     reg.add_item(configured!("mirage_blade" => MirageBlade));
@@ -227,6 +297,7 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("mortal_reminder" => MortalReminder));
     reg.add_item(configured!("nashors_tooth" => NashorsTooth));
     reg.add_item(configured!("night_harvester" => NightHarvester));
+    reg.add_item(configured!("opportunity" => Opportunity));
     reg.add_item(configured!("overlords_bloodmail" => OverlordsBloodmail));
     reg.add_item(configured!("protectors_vow" => ProtectorsVow));
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
@@ -249,56 +320,61 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
 
     // Tier 5
-    reg.add_item(configured!("radiant_atmas_reckoning" => RadiantAtmasReckoning));
-    reg.add_item(configured!("radiant_bastionbreaker" => RadiantBastionbreaker));
-    reg.add_item(configured!("radiant_black_cleaver" => RadiantBlackCleaver));
-    reg.add_item(configured!("radiant_blackfire_torch" => RadiantBlackfireTorch));
-    reg.add_item(configured!("radiant_blade_of_the_ruined_king" => RadiantBladeOfTheRuinedKing));
-    reg.add_item(configured!("radiant_bloodletters_curse" => RadiantBloodlettersCurse));
-    reg.add_item(configured!("radiant_bloodsong" => RadiantBloodsong));
-    reg.add_item(configured!("radiant_collector" => RadiantCollector));
-    reg.add_item(configured!("radiant_deathblade" => RadiantDeathBlade));
-    reg.add_item(configured!("radiant_deaths_dance" => RadiantDeathsDance));
-    reg.add_item(configured!("radiant_diamond_tipped_spear" => RadiantDiamondTippedSpear));
-    reg.add_item(configured!("radiant_dusk_and_dawn" => RadiantDuskAndDawn));
-    reg.add_item(configured!("radiant_echoes_of_helia" => RadiantEchoesOfHelia));
-    reg.add_item(configured!("radiant_experimental_hexplate" => RadiantExperimentalHexplate));
-    reg.add_item(configured!("radiant_frozen_mallet" => RadiantFrozenMallet));
-    reg.add_item(configured!("radiant_guinsoos_rageblade" => RadiantGuinsoosRageblade));
-    reg.add_item(configured!("radiant_heartsteel" => RadiantHeartsteel));
-    reg.add_item(configured!("radiant_hextech_gunblade" => RadiantHextechGunblade));
-    reg.add_item(configured!("radiant_hubris" => RadiantHubris));
-    reg.add_item(configured!("radiant_infinity_edge" => RadiantInfinityEdge));
-    reg.add_item(configured!("radiant_jaksho_the_protean" => RadiantJakshoTheProtean));
-    reg.add_item(configured!("radiant_kraken_slayer" => RadiantKrakenSlayer));
-    reg.add_item(configured!("radiant_liandrys_torment" => RadiantLiandrysTorment));
-    reg.add_item(configured!("radiant_lord_dominiks_regards" => RadiantLordDominiksRegards));
-    reg.add_item(configured!("radiant_malignance" => RadiantMalignance));
-    reg.add_item(configured!("radiant_mirage_blade" => RadiantMirageBlade));
-    reg.add_item(configured!("radiant_morellonomicon" => RadiantMorellonomicon));
-    reg.add_item(configured!("radiant_mortal_reminder" => RadiantMortalReminder));
-    reg.add_item(configured!("radiant_nashors_tooth" => RadiantNashorsTooth));
-    reg.add_item(configured!("radiant_night_harvester" => RadiantNightHarvester));
-    reg.add_item(configured!("radiant_overlords_bloodmail" => RadiantOverlordsBloodmail));
-    reg.add_item(configured!("radiant_protectors_vow" => RadiantProtectorsVow));
-    reg.add_item(configured!("radiant_protoplasm_harness" => RadiantProtoplasmHarness));
-    reg.add_item(configured!("radiant_rabadons_deathcap" => RadiantRabadonsDeathcap));
-    reg.add_item(configured!("radiant_riftmaker" => RadiantRiftmaker));
-    reg.add_item(configured!("radiant_rylais_crystal_scepter" => RadiantRylaisCrystalScepter));
-    reg.add_item(configured!("radiant_serpents_fang" => RadiantSerpentsFang));
-    reg.add_item(configured!("radiant_shadowflame" => RadiantShadowflame));
-    reg.add_item(configured!("radiant_spear_of_shojin" => RadiantSpearOfShojin));
-    reg.add_item(configured!("radiant_spirit_visage" => RadiantSpiritVisage));
-    reg.add_item(configured!("radiant_stormrazor" => RadiantStormrazor));
-    reg.add_item(configured!("radiant_sundered_sky" => RadiantSunderedSky));
-    reg.add_item(configured!("radiant_terminus" => RadiantTerminus));
-    reg.add_item(configured!("radiant_trinity_force" => RadiantTrinityForce));
-    reg.add_item(configured!("radiant_unending_despair" => RadiantUnendingDespair));
-    reg.add_item(configured!("radiant_void_staff" => RadiantVoidStaff));
-    reg.add_item(configured!("radiant_warmogs_armor" => RadiantWarmogsArmor));
-    reg.add_item(configured!("radiant_wits_end" => RadiantWitsEnd));
-    reg.add_item(configured!("radiant_yun_tal_wildarrows" => RadiantYunTalWildarrows));
-    reg.add_item(configured!("radiant_zekes_herald" => RadiantZekesHerald));
+    reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning));
+    reg.add_item(configured_radiant!("radiant_bastionbreaker" => Bastionbreaker));
+    reg.add_item(configured_radiant!("radiant_black_cleaver" => BlackCleaver));
+    reg.add_item(configured_radiant!("radiant_blackfire_torch" => BlackfireTorch));
+    reg.add_item(configured_radiant!("radiant_blade_of_the_ruined_king" => BladeOfTheRuinedKing));
+    reg.add_item(configured_radiant!("radiant_bloodletters_curse" => BloodlettersCurse));
+    reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong));
+    reg.add_item(configured_radiant!("radiant_collector" => Collector));
+    reg.add_item(configured_radiant!("radiant_dead_mans_plate" => DeadMansPlate));
+    reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
+    reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));
+    reg.add_item(configured_radiant!("radiant_diamond_tipped_spear" => DiamondTippedSpear));
+    reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
+    reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
+    reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
+    reg.add_item(configured_radiant!("radiant_guinsoos_rageblade" => GuinsoosRageblade));
+    reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
+    reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
+    reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
+    reg.add_item(configured_radiant!("radiant_infinity_edge" => InfinityEdge));
+    reg.add_item(configured_radiant!("radiant_jaksho_the_protean" => JakshoTheProtean));
+    reg.add_item(configured_radiant!("radiant_kraken_slayer" => KrakenSlayer));
+    reg.add_item(configured_radiant!("radiant_liandrys_torment" => LiandrysTorment));
+    reg.add_item(
+        configured_radiant!("radiant_locket_of_the_iron_solari" => LocketOfTheIronSolari),
+    );
+    reg.add_item(configured_radiant!("radiant_lord_dominiks_regards" => LordDominiksRegards));
+    reg.add_item(configured_radiant!("radiant_malignance" => Malignance));
+    reg.add_item(configured_radiant!("radiant_mirage_blade" => MirageBlade));
+    reg.add_item(configured_radiant!("radiant_morellonomicon" => Morellonomicon));
+    reg.add_item(configured_radiant!("radiant_mortal_reminder" => MortalReminder));
+    reg.add_item(configured_radiant!("radiant_nashors_tooth" => NashorsTooth));
+    reg.add_item(configured_radiant!("radiant_night_harvester" => NightHarvester));
+    reg.add_item(configured_radiant!("radiant_opportunity" => Opportunity));
+    reg.add_item(configured_radiant!("radiant_overlords_bloodmail" => OverlordsBloodmail));
+    reg.add_item(configured_radiant!("radiant_protectors_vow" => ProtectorsVow));
+    reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));
+    reg.add_item(configured_radiant!("radiant_rabadons_deathcap" => RabadonsDeathcap));
+    reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
+    reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
+    reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
+    reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
+    reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
+    reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
+    reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
+    reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
+    reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
+    reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce));
+    reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
+    reg.add_item(configured_radiant!("radiant_void_staff" => VoidStaff));
+    reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
+    reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
+    reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));
+    reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
 
     reg.set_server_extension(ItemBuildHookExtension);
 

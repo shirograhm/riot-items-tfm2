@@ -1,7 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{apply_config, buff_name, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ScoutsSlingshot {
@@ -24,17 +24,18 @@ impl Default for ScoutsSlingshot {
 
 impl ScoutsSlingshot {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            effect_bonus_flat_damage: cfg
-                .effect_bonus_flat_damage
-                .unwrap_or(d.effect_bonus_flat_damage),
-            effect_cooldown_seconds: cfg
-                .effect_cooldown_seconds
-                .unwrap_or(d.effect_cooldown_seconds),
-        }
+        let mut item = Self::default();
+        apply_config!(
+            item,
+            cfg,
+            [
+                price,
+                attack_speed_mult,
+                effect_bonus_flat_damage,
+                effect_cooldown_seconds
+            ]
+        );
+        item
     }
 }
 
@@ -99,17 +100,16 @@ impl ModItemInfo for ScoutsSlingshot {
             return;
         }
 
-        let is_cooldown_ticking = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "scouts_slingshot_cooldown");
+        let is_cooldown_ticking = has_buff(&caster_ref, "scouts_slingshot_cooldown");
 
         if !is_cooldown_ticking {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
+                        tick: ticks(self.effect_cooldown_seconds),
                     },
-                    name: ArrayString::try_from("scouts_slingshot_cooldown").unwrap(),
+                    name: buff_name("scouts_slingshot_cooldown"),
                     ..Default::default()
                 },
             );

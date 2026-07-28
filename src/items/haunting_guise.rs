@@ -1,3 +1,4 @@
+use crate::apply_config;
 use crate::config::ItemConfig;
 use mod_api::*;
 
@@ -20,12 +21,9 @@ impl Default for HauntingGuise {
 
 impl HauntingGuise {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            hp: cfg.hp.unwrap_or(d.hp),
-        }
+        let mut item = Self::default();
+        apply_config!(item, cfg, [price, magic_power, hp]);
+        item
     }
 }
 

@@ -1,7 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{apply_config, buff_name, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ExecutionersCalling {
@@ -24,15 +24,13 @@ impl Default for ExecutionersCalling {
 
 impl ExecutionersCalling {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            effect_heal_reduce: cfg.effect_heal_reduce.unwrap_or(d.effect_heal_reduce),
-            effect_duration_seconds: cfg
-                .effect_duration_seconds
-                .unwrap_or(d.effect_duration_seconds),
-        }
+        let mut item = Self::default();
+        apply_config!(
+            item,
+            cfg,
+            [price, attack, effect_heal_reduce, effect_duration_seconds]
+        );
+        item
     }
 }
 
@@ -88,17 +86,16 @@ impl ModItemInfo for ExecutionersCalling {
             return;
         }
 
-        let already_reduced = (0..entity_ref.buff_count())
-            .any(|i| entity_ref.buff_at(i).name.as_str() == "25_percent_heal_cut");
+        let already_reduced = has_buff(&entity_ref, "25_percent_heal_cut");
         if !already_reduced {
             ctx.add_buff(
                 target,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     heal_reduce: self.effect_heal_reduce,
-                    name: ArrayString::try_from("25_percent_heal_cut").unwrap(),
+                    name: buff_name("25_percent_heal_cut"),
                     ..Default::default()
                 },
             );

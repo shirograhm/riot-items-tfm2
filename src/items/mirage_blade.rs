@@ -1,11 +1,17 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
-use crate::apply_adaptive_force;
 use crate::config::ItemConfig;
+use crate::{apply_adaptive_force, apply_config, buff_name, has_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct MirageBlade {
+    meta: ItemMeta,
+    adaptive_force_buff: &'static str,
+    // The previous tier's buff and the Adaptive Force it grants. When the holder
+    // already carries that item, this one only tops up the difference instead of
+    // granting its full amount. `None` on the base variant, which has no earlier
+    // Adaptive Force tier to stack with.
+    upgrades_from: Option<(&'static str, i32)>,
     price: usize,
     attack_speed_mult: i32,
     move_speed_mult: i32,
@@ -14,9 +20,16 @@ pub struct MirageBlade {
     effect_duration_seconds: f64,
 }
 
-impl Default for MirageBlade {
-    fn default() -> Self {
+impl MirageBlade {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base(
+                "mirage_blade",
+                &["scouts_slingshot"],
+                &["radiant_mirage_blade"],
+            ),
+            adaptive_force_buff: "mirage_blade_adaptive_force",
+            upgrades_from: None,
             price: 1500,
             attack_speed_mult: 40,
             move_speed_mult: 10,
@@ -25,23 +38,64 @@ impl Default for MirageBlade {
             effect_duration_seconds: 2.0,
         }
     }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_mirage_blade", &["mirage_blade"]),
+            adaptive_force_buff: "radiant_mirage_blade_adaptive_force",
+            upgrades_from: Some(("mirage_blade_adaptive_force", 60)),
+            price: 2100,
+            attack_speed_mult: 65,
+            move_speed_mult: 15,
+            adaptive_force: 100,
+            ..Self::base()
+        }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [
+                price,
+                attack_speed_mult,
+                move_speed_mult,
+                adaptive_force,
+                effect_move_speed_mult,
+                effect_duration_seconds
+            ]
+        );
+        self
+    }
+
+    fn apply_buff(&self, ctx: &mut GameCtx, player: usize) {
+        let mut force = self.adaptive_force;
+        if let Some((prior_buff, prior_force)) = self.upgrades_from {
+            let Some(player_ref) = ctx.get_player(player) else {
+                return;
+            };
+            let Some(champion_ref) = player_ref.champion() else {
+                return;
+            };
+            if has_buff(&champion_ref, prior_buff) {
+                force = self.adaptive_force - prior_force;
+            }
+        }
+        apply_adaptive_force(ctx, player, force, self.adaptive_force_buff);
+    }
 }
 
-impl MirageBlade {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            move_speed_mult: cfg.move_speed_mult.unwrap_or(d.move_speed_mult),
-            adaptive_force: cfg.adaptive_force.unwrap_or(d.adaptive_force),
-            effect_move_speed_mult: cfg
-                .effect_move_speed_mult
-                .unwrap_or(d.effect_move_speed_mult),
-            effect_duration_seconds: cfg
-                .effect_duration_seconds
-                .unwrap_or(d.effect_duration_seconds),
-        }
+impl Default for MirageBlade {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -51,11 +105,11 @@ impl ModItemInfo for MirageBlade {
     }
 
     fn key(&self) -> &str {
-        "mirage_blade"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "mirage_blade"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -63,166 +117,15 @@ impl ModItemInfo for MirageBlade {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["scouts_slingshot".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_mirage_blade".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            attack_speed_mult: self.attack_speed_mult,
-            move_speed_mult: self.move_speed_mult,
-            ..Default::default()
-        }
-    }
-
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
-        apply_adaptive_force(
-            ctx,
-            player,
-            self.adaptive_force,
-            "mirage_blade_adaptive_force",
-        );
-    }
-
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        apply_adaptive_force(
-            ctx,
-            player,
-            self.adaptive_force,
-            "mirage_blade_adaptive_force",
-        );
-    }
-
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-
-        let is_buff_applied = (0..champion_ref.buff_count())
-            .any(|i| champion_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
-
-        if !is_buff_applied {
-            ctx.add_buff(
-                champion_ref.id(),
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
-                    },
-                    move_speed_mult: self.effect_move_speed_mult,
-                    name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),
-                    ..Default::default()
-                },
-            )
-        }
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::AS, ItemTag::MoveSpeed]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantMirageBlade {
-    price: usize,
-    attack_speed_mult: i32,
-    move_speed_mult: i32,
-    adaptive_force: i32,
-    effect_move_speed_mult: i32,
-    effect_duration_seconds: f64,
-}
-
-impl Default for RadiantMirageBlade {
-    fn default() -> Self {
-        Self {
-            price: 2100,
-            attack_speed_mult: 65,
-            move_speed_mult: 15,
-            adaptive_force: 100,
-            effect_move_speed_mult: 20,
-            effect_duration_seconds: 2.0,
-        }
-    }
-}
-
-impl RadiantMirageBlade {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            move_speed_mult: cfg.move_speed_mult.unwrap_or(d.move_speed_mult),
-            adaptive_force: cfg.adaptive_force.unwrap_or(d.adaptive_force),
-            effect_move_speed_mult: cfg
-                .effect_move_speed_mult
-                .unwrap_or(d.effect_move_speed_mult),
-            effect_duration_seconds: cfg
-                .effect_duration_seconds
-                .unwrap_or(d.effect_duration_seconds),
-        }
-    }
-
-    pub fn apply_buff(&self, ctx: &mut GameCtx, player: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-
-        let is_prior_buff_applied = (0..champion_ref.buff_count())
-            .any(|i| champion_ref.buff_at(i).name.as_str() == "mirage_blade_adaptive_force");
-        let force_to_apply = if is_prior_buff_applied {
-            self.adaptive_force - MirageBlade::default().adaptive_force
-        } else {
-            self.adaptive_force
-        };
-
-        apply_adaptive_force(
-            ctx,
-            player,
-            force_to_apply,
-            "radiant_mirage_blade_adaptive_force",
-        );
-    }
-}
-
-impl ModItemInfo for RadiantMirageBlade {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_mirage_blade"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_mirage_blade"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["mirage_blade".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {
@@ -249,18 +152,17 @@ impl ModItemInfo for RadiantMirageBlade {
             return;
         };
 
-        let is_buff_applied = (0..champion_ref.buff_count())
-            .any(|i| champion_ref.buff_at(i).name.as_str() == "mirage_blade_move_speed");
+        let is_buff_applied = has_buff(&champion_ref, "mirage_blade_move_speed");
 
         if !is_buff_applied {
             ctx.add_buff(
                 champion_ref.id(),
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     move_speed_mult: self.effect_move_speed_mult,
-                    name: ArrayString::try_from("mirage_blade_move_speed").unwrap(),
+                    name: buff_name("mirage_blade_move_speed"),
                     ..Default::default()
                 },
             )

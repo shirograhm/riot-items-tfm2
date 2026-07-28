@@ -1,3 +1,4 @@
+use crate::apply_config;
 use crate::config::ItemConfig;
 use mod_api::*;
 
@@ -20,14 +21,13 @@ impl Default for BlightingJewel {
 
 impl BlightingJewel {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            magic_resistance_penetration: cfg
-                .magic_resistance_penetration
-                .unwrap_or(d.magic_resistance_penetration),
-        }
+        let mut item = Self::default();
+        apply_config!(
+            item,
+            cfg,
+            [price, magic_power, magic_resistance_penetration]
+        );
+        item
     }
 }
 

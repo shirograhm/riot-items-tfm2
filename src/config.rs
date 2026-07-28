@@ -48,6 +48,14 @@ pub struct ItemConfig {
     pub effect_slow_amount: Option<i32>,
     pub effect_damaged_amplify: Option<usize>,
     pub effect_lethality: Option<usize>,
+    pub effect_bonus_lethality: Option<usize>,
+    pub effect_bonus_defence: Option<i32>,
+    pub effect_bonus_magic_resistance: Option<i32>,
+    pub effect_bonus_hp_regen: Option<i32>,
+    pub effect_minion_percent: Option<f64>,
+    pub effect_stacks_per_second: Option<usize>,
+    pub effect_move_speed_per_stack: Option<f64>,
+    pub effect_out_of_combat_seconds: Option<f64>,
     pub effect_bonus_flat_attack: Option<i32>,
     pub effect_stack_attack: Option<i32>,
     pub effect_stack_attack_mult: Option<i32>,
@@ -81,6 +89,29 @@ pub struct ItemConfig {
     pub effect_percent_bonus_damage: Option<f64>,
 
     pub on_hit_cooldown_seconds: Option<f64>,
+}
+
+/// Overwrites the listed fields of an item with whatever the config file set,
+/// leaving the item's built-in default in place for every key the file omits.
+///
+/// The field names are identical on both sides — `ItemConfig` mirrors the item
+/// structs — so the list is just the set of stats a given item exposes to config:
+///
+/// ```ignore
+/// fn configured(mut self, cfg: &ItemConfig) -> Self {
+///     apply_config!(self, cfg, [price, attack, effect_duration_seconds]);
+///     self
+/// }
+/// ```
+#[macro_export]
+macro_rules! apply_config {
+    ($item:ident, $cfg:ident, [$($field:ident),* $(,)?]) => {
+        $(
+            if let Some(value) = $cfg.$field {
+                $item.$field = value;
+            }
+        )*
+    };
 }
 
 pub fn load() -> HashMap<String, ItemConfig> {

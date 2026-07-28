@@ -189,7 +189,7 @@
         },
         "phage": {
             "name": "Phage",
-            "option": ""
+            "option": "Rage: Dealing damage to an enemy champion grants <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
         },
         "haunting_guise": {
             "name": "Haunting Guise",
@@ -205,11 +205,11 @@
         },
         "black_cleaver": {
             "name": "Black Cleaver",
-            "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
+            "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "radiant_black_cleaver": {
             "name": "Radiant Black Cleaver",
-            "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
+            "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "bloodletters_curse": {
             "name": "Bloodletter's Curse",
@@ -249,11 +249,11 @@
         },
         "protectors_vow": {
             "name": "Protector's Vow",
-            "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#ffdd8eff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
+            "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#ffdd8eff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<>."
         },
         "radiant_protectors_vow": {
             "name": "Radiant Protector's Vow",
-            "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#ffdd8eff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<>."
+            "option": "Awe: Gain <#60e84dff>bonus health<> equal to <#60e84dff>50<> + <#ffdd8eff>80%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<>."
         },
         "protoplasm_harness": {
             "name": "Protoplasm Harness",
@@ -425,11 +425,11 @@
         },
         "collector": {
             "name": "Collector",
-            "option": "Lethality: Ignore <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nDeath: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+            "option": "Lethality: Ignore <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nDeath: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
         },
         "radiant_collector": {
             "name": "Radiant Collector",
-            "option": "Lethality: Ignore <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nDeath: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
+            "option": "Lethality: Ignore <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nDeath: Dealing damage to enemy champions below <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> <#d94c49ff>executes<> them."
         },
         "heartsteel": {
             "name": "Heartsteel",
@@ -469,7 +469,7 @@
         },
         "night_harvester": {
             "name": "Night Harvester",
-            "option": "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (<#e8a800ff>45 second<> cooldown per target)."
+            "option": "Soulrend: Landing an Ability on an enemy champion deals <#a974ffff>bonus magic damage<> equal to <#a974ffff>100<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and grants <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (<#e8a800ff>45 second<> cooldown per target)."
         },
         "radiant_night_harvester": {
             "name": "Radiant Night Harvester",
@@ -517,11 +517,11 @@
         },
         "zekes_herald": {
             "name": "Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "Aura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         },
         "radiant_zekes_herald": {
             "name": "Radiant Zeke's Herald",
-            "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "Aura: Grant <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         },
         "liandrys_torment": {
             "name": "Liandry's Torment",
@@ -613,31 +613,59 @@
         },
         "serrated_dirk": {
             "name": "Serrated Dirk",
-            "option": "Lethality: Ignore <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies."
+            "option": "Lethality: Ignore <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies."
         },
         "hubris": {
             "name": "Hubris",
-            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nEminence: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nEminence: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
         },
         "radiant_hubris": {
             "name": "Radiant Hubris",
-            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nEminence: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nEminence: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
         },
         "bastionbreaker": {
             "name": "Bastionbreaker",
-            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "radiant_bastionbreaker": {
             "name": "Radiant Bastionbreaker",
-            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "Lethality: Ignore <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "serpents_fang": {
             "name": "Serpent's Fang",
-            "option": "Lethality: Ignore <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>50<> + <#ff9028ff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "Lethality: Ignore <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>50<> + <#ff9028ff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "radiant_serpents_fang": {
             "name": "Radiant Serpent's Fang",
-            "option": "Lethality: Ignore <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal damage to enemies.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>85<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "Lethality: Ignore <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>85<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+        },
+        "opportunity": {
+            "name": "Opportunity",
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nPreparation: After being out of combat with enemy champions for <#e8a800ff>7 seconds<>, increase Lethality's ignored <#ffdd8eff>armor<> by <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. This bonus remains for <#e8a800ff>3.5 seconds<> after dealing damage to an enemy champion."
+        },
+        "radiant_opportunity": {
+            "name": "Radiant Opportunity",
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nPreparation: After being out of combat with enemy champions for <#e8a800ff>7 seconds<>, increase Lethality's ignored <#ffdd8eff>armor<> by <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. This bonus remains for <#e8a800ff>3.5 seconds<> after dealing damage to an enemy champion."
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Locket of the Iron Solari",
+            "option": "Legion: Grant <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Radiant Locket of the Iron Solari",
+            "option": "Legion: Grant <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
+        },
+        "dead_mans_plate": {
+            "name": "Dead Man's Plate",
+            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<>, scaling with stacks consumed."
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Radiant Dead Man's Plate",
+            "option": "Shipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<>, scaling with stacks consumed."
+        },
+        "winged_moonplate": {
+            "name": "Winged Moonplate",
+            "option": ""
         }
     },
     "vi": {
@@ -830,7 +858,7 @@
         },
         "phage": {
             "name": "Búa Gỗ",
-            "option": ""
+            "option": "Cuồng Nộ: Gây sát thương lên tướng địch sẽ nhận <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<>."
         },
         "haunting_guise": {
             "name": "Mặt Nạ Ám Ảnh",
@@ -1066,11 +1094,11 @@
         },
         "collector": {
             "name": "Súng Hải Tặc",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
         },
         "radiant_collector": {
             "name": "Súng Hải Tặc Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng."
         },
         "heartsteel": {
             "name": "Tâm Thép",
@@ -1110,7 +1138,7 @@
         },
         "night_harvester": {
             "name": "Kẻ Gặt Đêm",
-            "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 45 giây mỗi mục tiêu)."
+            "option": "Cắt Xé Linh Hồn: Gây sát thương lên tướng địch sẽ gây thêm <#a974ffff>100<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và nhận <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu 45 giây mỗi mục tiêu)."
         },
         "radiant_night_harvester": {
             "name": "Kẻ Gặt Đêm Ánh Sáng",
@@ -1150,11 +1178,11 @@
         },
         "zekes_herald": {
             "name": "Sứ Giả Của Zeke",
-            "option": "Hào Quang: Cấp <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+            "option": "Hào Quang: Cấp <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
         },
         "radiant_zekes_herald": {
             "name": "Sứ Giả Của Zeke Ánh Sáng",
-            "option": "Hào Quang: Cấp <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>80<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+            "option": "Hào Quang: Cấp <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
         },
         "scouts_slingshot": {
             "name": "Ná Cao Su Trinh Sát",
@@ -1254,31 +1282,59 @@
         },
         "serrated_dirk": {
             "name": "Dao Găm Răng Cưa",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch."
         },
         "hubris": {
             "name": "Kiêu Ngạo",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nUy Danh: Khi tham gia hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nUy Danh: Khi tham gia hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
         },
         "radiant_hubris": {
             "name": "Kiêu Ngạo Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nUy Danh: Khi tham gia hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nUy Danh: Khi tham gia hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>12<> (+3 mỗi cộng dồn) <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>90 giây<>."
         },
         "bastionbreaker": {
             "name": "Kẻ Phá Thành",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn Đánh tiếp theo của bạn lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn Đánh tiếp theo của bạn lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "radiant_bastionbreaker": {
             "name": "Kẻ Phá Thành Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn Đánh tiếp theo của bạn lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn Đánh tiếp theo của bạn lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "serpents_fang": {
             "name": "Nanh Rắn Độc",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>50<> + <#ff9028ff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>50<> + <#ff9028ff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "radiant_serpents_fang": {
             "name": "Nanh Rắn Độc Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây sát thương lên kẻ địch.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>85<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>85<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+        },
+        "opportunity": {
+            "name": "Gươm Thức Thời",
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, lượng <#ffdd8eff>giáp<> bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
+        },
+        "radiant_opportunity": {
+            "name": "Gươm Thức Thời Ánh Sáng",
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, lượng <#ffdd8eff>giáp<> bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Dây Chuyền Iron Solari",
+            "option": "Quân Đoàn: Cấp <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Dây Chuyền Iron Solari Ánh Sáng",
+            "option": "Quân Đoàn: Cấp <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
+        },
+        "dead_mans_plate": {
+            "name": "Giáp Liệt Sĩ",
+            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Giáp Liệt Sĩ Ánh Sáng",
+            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
+        },
+        "winged_moonplate": {
+            "name": "Nguyệt Giáp Chắp Cánh",
+            "option": ""
         }
     },
     "zh-hans": {
@@ -1471,7 +1527,7 @@
         },
         "phage": {
             "name": "净蚀",
-            "option": ""
+            "option": "狂怒：对敌方英雄造成伤害时，获得 <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>。"
         },
         "haunting_guise": {
             "name": "幽魂面具",
@@ -1707,11 +1763,11 @@
         },
         "collector": {
             "name": "收集者",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
         },
         "radiant_collector": {
             "name": "光明版收集者",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n死：对生命值低于 <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。"
         },
         "heartsteel": {
             "name": "心之钢",
@@ -1751,7 +1807,7 @@
         },
         "night_harvester": {
             "name": "夜幕收割者",
-            "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却45秒）。"
+            "option": "裂魂：对敌方英雄造成伤害时，额外造成 <#a974ffff>100<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>额外魔法伤害<>，并获得 <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（每个目标冷却45秒）。"
         },
         "radiant_night_harvester": {
             "name": "光明版夜幕收割者",
@@ -1791,11 +1847,11 @@
         },
         "zekes_herald": {
             "name": "泽克的先驱",
-            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。"
+            "option": "光环：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。"
         },
         "radiant_zekes_herald": {
             "name": "光明版泽克的先驱",
-            "option": "光环：为 <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。"
+            "option": "光环：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友方英雄提供 <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<> 和 <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。"
         },
         "scouts_slingshot": {
             "name": "斥候弹弓",
@@ -1895,31 +1951,59 @@
         },
         "serrated_dirk": {
             "name": "锯齿短匕",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。"
         },
         "hubris": {
             "name": "傲慢",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
         },
         "radiant_hubris": {
             "name": "光明版傲慢",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n威望：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
         },
         "bastionbreaker": {
             "name": "破垒者",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你的下一次对防御塔的攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你的下一次对防御塔的攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "radiant_bastionbreaker": {
             "name": "光明版破垒者",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你的下一次对防御塔的攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你的下一次对防御塔的攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "serpents_fang": {
             "name": "毒蛇之牙",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>10%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>10%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "radiant_serpents_fang": {
             "name": "光明版毒蛇之牙",
-            "option": "穿甲：对敌人造成伤害时无视 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+        },
+        "opportunity": {
+            "name": "禁忌时机",
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，穿甲无视的<#ffdd8eff>护甲<>提高 <#ffdd8eff>7 点<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
+        },
+        "radiant_opportunity": {
+            "name": "光明版禁忌时机",
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，穿甲无视的<#ffdd8eff>护甲<>提高 <#ffdd8eff>7 点<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
+        },
+        "locket_of_the_iron_solari": {
+            "name": "钢铁烈阳之匣",
+            "option": "军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>6 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>12 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>3 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "光明版钢铁烈阳之匣",
+            "option": "军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>20 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>4 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
+        },
+        "dead_mans_plate": {
+            "name": "亡者板甲",
+            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
+        },
+        "radiant_dead_mans_plate": {
+            "name": "光明版亡者板甲",
+            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
+        },
+        "winged_moonplate": {
+            "name": "翼动月甲",
+            "option": ""
         }
     },
     "pt-BR": {
@@ -2112,7 +2196,7 @@
         },
         "phage": {
             "name": "Fago",
-            "option": ""
+            "option": "Fúria: Causar dano a um campeão inimigo concede <#ffffffff>5%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<>."
         },
         "haunting_guise": {
             "name": "Máscara Assustadora",
@@ -2348,11 +2432,11 @@
         },
         "collector": {
             "name": "A Coletora",
-            "option": "Letalidade: Ignora <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
         },
         "radiant_collector": {
             "name": "A Coletora Radiante",
-            "option": "Letalidade: Ignora <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>."
         },
         "heartsteel": {
             "name": "Coração de Aço",
@@ -2392,7 +2476,7 @@
         },
         "night_harvester": {
             "name": "Ceifador Noturno",
-            "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>150<> + <#a974ffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 45 segundos por alvo)."
+            "option": "Dilacerar Almas: Causar dano a um campeão inimigo causa <#a974ffff>100<> + <#a974ffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e concede <#ffffffff>40%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de 45 segundos por alvo)."
         },
         "radiant_night_harvester": {
             "name": "Ceifador Noturno Radiante",
@@ -2432,11 +2516,11 @@
         },
         "zekes_herald": {
             "name": "Arauto de Zeke",
-            "option": "Aura: Concede <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+            "option": "Aura: Concede <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
         },
         "radiant_zekes_herald": {
             "name": "Arauto de Zeke Radiante",
-            "option": "Aura: Concede <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+            "option": "Aura: Concede <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> e <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
         },
         "scouts_slingshot": {
             "name": "Estilingue do Patrulheiro",
@@ -2536,31 +2620,59 @@
         },
         "serrated_dirk": {
             "name": "Adaga Serrilhada",
-            "option": "Letalidade: Ignora <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos."
+            "option": "Letalidade: Ignora <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos."
         },
         "hubris": {
             "name": "Arrogância",
-            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nEminência: Ao participar do abate de um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nEminência: Ao participar do abate de um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
         },
         "radiant_hubris": {
             "name": "Arrogância Radiante",
-            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nEminência: Ao participar do abate de um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nEminência: Ao participar do abate de um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>12<> (+3 por acúmulo) de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>90 segundos<>."
         },
         "bastionbreaker": {
             "name": "Quebra-Bastião",
-            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo Ataque contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo Ataque contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "radiant_bastionbreaker": {
             "name": "Quebra-Bastião Radiante",
-            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo Ataque contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo Ataque contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "serpents_fang": {
             "name": "Presa da Serpente",
-            "option": "Letalidade: Ignora <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>50<> + <#ff9028ff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>50<> + <#ff9028ff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "radiant_serpents_fang": {
             "name": "Presa da Serpente Radiante",
-            "option": "Letalidade: Ignora <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar dano a inimigos.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>85<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "Letalidade: Ignora <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>85<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+        },
+        "opportunity": {
+            "name": "Oportunidade",
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, a <#ffdd8eff>Armadura<> ignorada pela Letalidade aumenta em <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
+        },
+        "radiant_opportunity": {
+            "name": "Oportunidade Radiante",
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, a <#ffdd8eff>Armadura<> ignorada pela Letalidade aumenta em <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Medalhão dos Solari de Ferro",
+            "option": "Legião: Concede <#ffdd8eff>6 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>12 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>3 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Medalhão dos Solari de Ferro Radiante",
+            "option": "Legião: Concede <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>20 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>4 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
+        },
+        "dead_mans_plate": {
+            "name": "Placa do Morto",
+            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<>, conforme as cargas consumidas."
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Placa do Morto Radiante",
+            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<>, conforme as cargas consumidas."
+        },
+        "winged_moonplate": {
+            "name": "Placa Lunar Alada",
+            "option": ""
         }
     },
     "ru": {
@@ -2753,7 +2865,7 @@
         },
         "phage": {
             "name": "Поглотитель",
-            "option": ""
+            "option": "Ярость: Нанесение урона вражескому чемпиону даёт <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<>."
         },
         "haunting_guise": {
             "name": "Преследующая маска",
@@ -2989,11 +3101,11 @@
         },
         "collector": {
             "name": "Сборщик Долгов",
-            "option": "Летальность: Игнорирует <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
+            "option": "Летальность: Игнорирует <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
         },
         "radiant_collector": {
             "name": "Лучезарный Сборщик Долгов",
-            "option": "Летальность: Игнорирует <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
+            "option": "Летальность: Игнорирует <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d94c49ff>казнит<> их."
         },
         "heartsteel": {
             "name": "Сердце Стали",
@@ -3033,7 +3145,7 @@
         },
         "night_harvester": {
             "name": "Ночной жнец",
-            "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>150<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 45 секунд на каждую цель)."
+            "option": "Разрыв души: Нанесение урона вражескому чемпиону наносит <#a974ffff>100<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>дополнительный магический урон<> и даёт <#ffffffff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка 45 секунд на каждую цель)."
         },
         "radiant_night_harvester": {
             "name": "Лучезарный Ночной жнец",
@@ -3073,11 +3185,11 @@
         },
         "zekes_herald": {
             "name": "Вестник Зика",
-            "option": "Аура: Даёт <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "Аура: Даёт <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "radiant_zekes_herald": {
             "name": "Лучезарный Вестник Зика",
-            "option": "Аура: Даёт <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>80 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "Аура: Даёт <#d48294ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> и <#b7462dff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "scouts_slingshot": {
             "name": "Рогатка скаута",
@@ -3177,31 +3289,59 @@
         },
         "serrated_dirk": {
             "name": "Зубчатый кинжал",
-            "option": "Летальность: Игнорирует <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам."
+            "option": "Летальность: Игнорирует <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам."
         },
         "hubris": {
             "name": "Гордыня",
-            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nВозвышение: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nВозвышение: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
         },
         "radiant_hubris": {
             "name": "Лучезарная Гордыня",
-            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nВозвышение: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nВозвышение: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
         },
         "bastionbreaker": {
             "name": "Разрушитель бастионов",
-            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую Атаку по башне, чтобы нанести <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую Атаку по башне, чтобы нанести <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "radiant_bastionbreaker": {
             "name": "Лучезарный Разрушитель бастионов",
-            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую Атаку по башне, чтобы нанести <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую Атаку по башне, чтобы нанести <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "serpents_fang": {
             "name": "Клык змея",
-            "option": "Летальность: Игнорирует <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>50<> + <#ff9028ff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>50<> + <#ff9028ff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "radiant_serpents_fang": {
             "name": "Лучезарный Клык змея",
-            "option": "Летальность: Игнорирует <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении урона врагам.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>85<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "Летальность: Игнорирует <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>85<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+        },
+        "opportunity": {
+            "name": "Возможность",
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>7 брони<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
+        },
+        "radiant_opportunity": {
+            "name": "Лучезарная Возможность",
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>7 брони<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Медальон Железных Солари",
+            "option": "Легион: Даёт <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Лучезарный Медальон Железных Солари",
+            "option": "Легион: Даёт <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>4 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
+        },
+        "dead_mans_plate": {
+            "name": "Доспехи Мертвеца",
+            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Лучезарные Доспехи Мертвеца",
+            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
+        },
+        "winged_moonplate": {
+            "name": "Крылатая Лунная Пластина",
+            "option": ""
         }
     },
     "ko": {
@@ -3394,7 +3534,7 @@
         },
         "phage": {
             "name": "탐식의 망치",
-            "option": ""
+            "option": "분노: 적 챔피언에게 피해를 입히면 <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>5%<> 증가합니다."
         },
         "haunting_guise": {
             "name": "기괴한 가면",
@@ -3630,11 +3770,11 @@
         },
         "collector": {
             "name": "징수의 총",
-            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n죽음: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>6%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n죽음: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>6%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다."
         },
         "radiant_collector": {
             "name": "찬란한 징수의 총",
-            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n죽음: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>6%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n죽음: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>6%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다."
         },
         "heartsteel": {
             "name": "강철심장",
@@ -3674,7 +3814,7 @@
         },
         "night_harvester": {
             "name": "밤의 수확자",
-            "option": "영혼 찢기: 적 챔피언에게 스킬을 적중시키면 <#a974ffff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>30%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>40%<> 증가합니다. 대상별 재사용 대기시간은 <#e8a800ff>45초<>입니다."
+            "option": "영혼 찢기: 적 챔피언에게 스킬을 적중시키면 <#a974ffff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>20%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>40%<> 증가합니다. 대상별 재사용 대기시간은 <#e8a800ff>45초<>입니다."
         },
         "radiant_night_harvester": {
             "name": "찬란한 밤의 수확자",
@@ -3722,11 +3862,11 @@
         },
         "zekes_herald": {
             "name": "지크의 전령",
-            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 80<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 30<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 6%<>를 부여합니다."
+            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 30<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 6%<>를 부여합니다."
         },
         "radiant_zekes_herald": {
             "name": "찬란한 지크의 전령",
-            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 80<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 50<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 10%<>를 부여합니다."
+            "option": "오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 50<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 10%<>를 부여합니다."
         },
         "liandrys_torment": {
             "name": "리안드리의 고통",
@@ -3818,31 +3958,59 @@
         },
         "serrated_dirk": {
             "name": "톱날 단검",
-            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다."
         },
         "hubris": {
             "name": "오만",
-            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n명성: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>90초<> 동안 <#ff9028ff>12<> + 중첩당 <#ff9028ff>3<>의 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>추가 공격력<>을 얻습니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n명성: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>90초<> 동안 <#ff9028ff>12<> + 중첩당 <#ff9028ff>3<>의 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>추가 공격력<>을 얻습니다."
         },
         "radiant_hubris": {
             "name": "찬란한 오만",
-            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n명성: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>90초<> 동안 <#ff9028ff>12<> + 중첩당 <#ff9028ff>3<>의 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>추가 공격력<>을 얻습니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n명성: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>90초<> 동안 <#ff9028ff>12<> + 중첩당 <#ff9028ff>3<>의 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>추가 공격력<>을 얻습니다."
         },
         "bastionbreaker": {
             "name": "요새파괴자",
-            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "radiant_bastionbreaker": {
             "name": "찬란한 요새파괴자",
-            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "serpents_fang": {
             "name": "독사의 송곳니",
-            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "radiant_serpents_fang": {
             "name": "찬란한 독사의 송곳니",
-            "option": "물리 관통력: 적에게 피해를 입힐 때 <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+        },
+        "opportunity": {
+            "name": "기회",
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 물리 관통력의 <#ffdd8eff>방어력<> 무시량이 <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
+        },
+        "radiant_opportunity": {
+            "name": "찬란한 기회",
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 물리 관통력의 <#ffdd8eff>방어력<> 무시량이 <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
+        },
+        "locket_of_the_iron_solari": {
+            "name": "강철의 솔라리 펜던트",
+            "option": "군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 6<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 12<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 3<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "찬란한 강철의 솔라리 펜던트",
+            "option": "군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 10<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 20<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 4<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
+        },
+        "dead_mans_plate": {
+            "name": "망자의 갑옷",
+            "option": "난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
+        },
+        "radiant_dead_mans_plate": {
+            "name": "찬란한 망자의 갑옷",
+            "option": "난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
+        },
+        "winged_moonplate": {
+            "name": "날개 달린 월갑",
+            "option": ""
         }
     }
 }

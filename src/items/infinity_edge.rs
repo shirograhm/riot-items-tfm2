@@ -1,27 +1,52 @@
 use mod_api::*;
+
 use crate::config::ItemConfig;
+use crate::{apply_config, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct InfinityEdge {
+    meta: ItemMeta,
     price: usize,
     attack: i32,
     crit_chance: i32,
 }
 
-impl Default for InfinityEdge {
-    fn default() -> Self {
-        Self { price: 1300, attack: 80, crit_chance: 25 }
+impl InfinityEdge {
+    pub fn base() -> Self {
+        Self {
+            meta: ItemMeta::base("infinity_edge", &["bf_sword"], &["radiant_infinity_edge"]),
+            price: 1300,
+            attack: 80,
+            crit_chance: 25,
+        }
+    }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_infinity_edge", &["infinity_edge"]),
+            price: 1900,
+            attack: 120,
+            crit_chance: 50,
+        }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(self, cfg, [price, attack, crit_chance]);
+        self
     }
 }
 
-impl InfinityEdge {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
-        }
+impl Default for InfinityEdge {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -31,11 +56,11 @@ impl ModItemInfo for InfinityEdge {
     }
 
     fn key(&self) -> &str {
-        "infinity_edge"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "infinity_edge"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -43,81 +68,15 @@ impl ModItemInfo for InfinityEdge {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["bf_sword".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_infinity_edge".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            attack: self.attack,
-            crit_chance: self.crit_chance,
-            ..Default::default()
-        }
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantInfinityEdge {
-    price: usize,
-    attack: i32,
-    crit_chance: i32,
-}
-
-impl Default for RadiantInfinityEdge {
-    fn default() -> Self {
-        Self { price: 1900, attack: 120, crit_chance: 50 }
-    }
-}
-
-impl RadiantInfinityEdge {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            crit_chance: cfg.crit_chance.unwrap_or(d.crit_chance),
-        }
-    }
-}
-
-impl ModItemInfo for RadiantInfinityEdge {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_infinity_edge"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_infinity_edge"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["infinity_edge".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {

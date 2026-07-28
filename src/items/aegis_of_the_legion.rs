@@ -1,3 +1,4 @@
+use crate::apply_config;
 use crate::config::ItemConfig;
 use mod_api::*;
 
@@ -22,13 +23,9 @@ impl Default for AegisOfTheLegion {
 
 impl AegisOfTheLegion {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            defence: cfg.defence.unwrap_or(d.defence),
-            magic_resistance: cfg.magic_resistance.unwrap_or(d.magic_resistance),
-        }
+        let mut item = Self::default();
+        apply_config!(item, cfg, [price, hp, defence, magic_resistance]);
+        item
     }
 }
 
@@ -58,7 +55,10 @@ impl ModItemInfo for AegisOfTheLegion {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["jaksho_the_protean".to_string()]
+        vec![
+            "jaksho_the_protean".to_string(),
+            "locket_of_the_iron_solari".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffState {

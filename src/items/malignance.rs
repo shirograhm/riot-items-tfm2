@@ -1,34 +1,59 @@
 use crate::config::ItemConfig;
+use crate::{apply_config, ItemMeta};
 use mod_api::*;
 
 #[derive(Clone, Debug)]
 pub struct Malignance {
+    meta: ItemMeta,
     price: usize,
     magic_power: i32,
     skill_cooldown_mult: i32,
     ult_cooldown_mult: i32,
 }
 
-impl Default for Malignance {
-    fn default() -> Self {
+impl Malignance {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base("malignance", &["staff_of_rapture"], &["radiant_malignance"]),
             price: 1250,
             magic_power: 120,
             skill_cooldown_mult: 12,
             ult_cooldown_mult: 12,
         }
     }
+
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_malignance", &["malignance"]),
+            price: 1900,
+            magic_power: 200,
+            skill_cooldown_mult: 20,
+            ult_cooldown_mult: 20,
+            ..Self::base()
+        }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [price, magic_power, skill_cooldown_mult, ult_cooldown_mult]
+        );
+        self
+    }
 }
 
-impl Malignance {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-            ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
-        }
+impl Default for Malignance {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -38,11 +63,11 @@ impl ModItemInfo for Malignance {
     }
 
     fn key(&self) -> &str {
-        "malignance"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "malignance"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -50,89 +75,15 @@ impl ModItemInfo for Malignance {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["staff_of_rapture".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_malignance".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            magic_power: self.magic_power,
-            skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.ult_cooldown_mult,
-            ..Default::default()
-        }
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::CooltimeReduce]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantMalignance {
-    price: usize,
-    magic_power: i32,
-    skill_cooldown_mult: i32,
-    ult_cooldown_mult: i32,
-}
-
-impl Default for RadiantMalignance {
-    fn default() -> Self {
-        Self {
-            price: 1900,
-            magic_power: 200,
-            skill_cooldown_mult: 20,
-            ult_cooldown_mult: 20,
-        }
-    }
-}
-
-impl RadiantMalignance {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            magic_power: cfg.magic_power.unwrap_or(d.magic_power),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-            ult_cooldown_mult: cfg.ult_cooldown_mult.unwrap_or(d.ult_cooldown_mult),
-        }
-    }
-}
-
-impl ModItemInfo for RadiantMalignance {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_malignance"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_malignance"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["malignance".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {

@@ -1,10 +1,14 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct SpearOfShojin {
+    meta: ItemMeta,
+    // Buff names are namespaced per variant so the base and radiant
+    // items keep independent stacks.
+    stack_buff: &'static str,
     price: usize,
     hp: i32,
     attack: i32,
@@ -14,9 +18,11 @@ pub struct SpearOfShojin {
     effect_duration_seconds: f64,
 }
 
-impl Default for SpearOfShojin {
-    fn default() -> Self {
+impl SpearOfShojin {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base("spear_of_shojin", &["phage"], &["radiant_spear_of_shojin"]),
+            stack_buff: "spear_of_shojin_buff",
             price: 1400,
             hp: 350,
             attack: 35,
@@ -26,24 +32,42 @@ impl Default for SpearOfShojin {
             effect_duration_seconds: 5.0,
         }
     }
-}
 
-impl SpearOfShojin {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
+    pub fn radiant() -> Self {
         Self {
-            price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            attack: cfg.attack.unwrap_or(d.attack),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-            effect_stack_attack_mult: cfg
-                .effect_stack_attack_mult
-                .unwrap_or(d.effect_stack_attack_mult),
-            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
-            effect_duration_seconds: cfg
-                .effect_duration_seconds
-                .unwrap_or(d.effect_duration_seconds),
+            meta: ItemMeta::radiant("radiant_spear_of_shojin", &["spear_of_shojin"]),
+            stack_buff: "radiant_spear_of_shojin_buff",
+            price: 2200,
+            hp: 600,
+            attack: 60,
+            skill_cooldown_mult: 20,
+            ..Self::base()
         }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [
+                price,
+                hp,
+                attack,
+                skill_cooldown_mult,
+                effect_stack_attack_mult,
+                effect_max_stacks,
+                effect_duration_seconds
+            ]
+        );
+        self
     }
 
     fn add_attack_stack(&self, ctx: &mut GameCtx, caster: usize, target: usize) {
@@ -59,22 +83,26 @@ impl SpearOfShojin {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "spear_of_shojin_buff")
-            .count();
+        let stack_count = buff_stacks(&caster_ref, self.stack_buff);
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 BuffState {
                     duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
+                        tick: ticks(self.effect_duration_seconds),
                     },
                     attack_mult: self.effect_stack_attack_mult,
-                    name: ArrayString::try_from("spear_of_shojin_buff").unwrap(),
+                    name: buff_name(self.stack_buff),
                     ..Default::default()
                 },
             );
         }
+    }
+}
+
+impl Default for SpearOfShojin {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -84,11 +112,11 @@ impl ModItemInfo for SpearOfShojin {
     }
 
     fn key(&self) -> &str {
-        "spear_of_shojin"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "spear_of_shojin"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -96,137 +124,15 @@ impl ModItemInfo for SpearOfShojin {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["phage".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_spear_of_shojin".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            hp: self.hp,
-            attack: self.attack,
-            skill_cooldown_mult: self.skill_cooldown_mult,
-            ..Default::default()
-        }
-    }
-
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
-        self.add_attack_stack(ctx, caster, target);
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD, ItemTag::CooltimeReduce]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantSpearOfShojin {
-    price: usize,
-    hp: i32,
-    attack: i32,
-    skill_cooldown_mult: i32,
-    effect_stack_attack_mult: i32,
-    effect_max_stacks: usize,
-    effect_duration_seconds: f64,
-}
-
-impl Default for RadiantSpearOfShojin {
-    fn default() -> Self {
-        Self {
-            price: 2200,
-            hp: 600,
-            attack: 60,
-            skill_cooldown_mult: 20,
-            effect_stack_attack_mult: 3,
-            effect_max_stacks: 4,
-            effect_duration_seconds: 5.0,
-        }
-    }
-}
-
-impl RadiantSpearOfShojin {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            hp: cfg.hp.unwrap_or(d.hp),
-            attack: cfg.attack.unwrap_or(d.attack),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-            effect_stack_attack_mult: cfg
-                .effect_stack_attack_mult
-                .unwrap_or(d.effect_stack_attack_mult),
-            effect_max_stacks: cfg.effect_max_stacks.unwrap_or(d.effect_max_stacks),
-            effect_duration_seconds: cfg
-                .effect_duration_seconds
-                .unwrap_or(d.effect_duration_seconds),
-        }
-    }
-
-    fn add_attack_stack(&self, ctx: &mut GameCtx, caster: usize, target: usize) {
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if target_ref.is_tower() {
-            return;
-        }
-        if !target_ref.is_champion() {
-            return;
-        }
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let stack_count = (0..caster_ref.buff_count())
-            .filter(|&i| caster_ref.buff_at(i).name.as_str() == "radiant_spear_of_shojin_buff")
-            .count();
-        if stack_count < self.effect_max_stacks {
-            ctx.add_buff(
-                caster,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: (self.effect_duration_seconds * 60.0) as usize,
-                    },
-                    attack_mult: self.effect_stack_attack_mult,
-                    name: ArrayString::try_from("radiant_spear_of_shojin_buff").unwrap(),
-                    ..Default::default()
-                },
-            );
-        }
-    }
-}
-
-impl ModItemInfo for RadiantSpearOfShojin {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_spear_of_shojin"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_spear_of_shojin"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["spear_of_shojin".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {

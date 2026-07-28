@@ -9,8 +9,9 @@
   - Autosaves to that file on every change (the Save button forces a save too).
   - Pick a champion, or choose "(modded champion)" to type a raw/modded id.
   
-  Compile:
-    Invoke-PS2EXE -InputFile item-build-editor.ps1 -OutputFile item-build-editor.exe -noConsole
+  Compile (close the running editor first - PS2EXE deletes the old exe, which
+  Windows blocks while it is executing, giving a misleading "Access is denied"):
+    Invoke-PS2EXE -InputFile item-build-editor.ps1 -OutputFile item-build-editor.exe -noConsole -icon item-build-editor-icon.ico
 
   Launch via item-build-editor.bat, or:
     powershell -STA -ExecutionPolicy Bypass -File item-build-editor.ps1
@@ -40,10 +41,10 @@ $CHAMPIONS = @(
 )
 $ITEMS = @(
   'atmas_reckoning', 'bastionbreaker', 'black_cleaver', 'blackfire_torch', 'blade_of_the_ruined_king', 'bloodletters_curse', 'bloodsong', 'bloodthirster', 'collector',
-  'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'dusk_and_dawn', 'echoes_of_helia', 'experimental_hexplate', 'frozen_mallet',
+  'dead_mans_plate', 'deathblade', 'deaths_dance', 'diamond_tipped_spear', 'dragons_claw', 'dusk_and_dawn', 'echoes_of_helia', 'experimental_hexplate', 'frozen_mallet',
   'guinsoos_rageblade', 'heartsteel', 'hextech_gunblade', 'hubris', 'infinity_edge', 'jaksho_the_protean',
-  'kraken_slayer', 'liandrys_torment', 'lord_dominiks_regards', 'ludens_tempest', 'malignance', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
-  'night_harvester', 'overlords_bloodmail', 'phantom_dancer',
+  'kraken_slayer', 'liandrys_torment', 'locket_of_the_iron_solari', 'lord_dominiks_regards', 'ludens_tempest', 'malignance', 'mirage_blade', 'morellonomicon', 'mortal_reminder', 'nashors_tooth',
+  'night_harvester', 'opportunity', 'overlords_bloodmail', 'phantom_dancer',
   'protectors_vow', 'protoplasm_harness', 'rabadons_deathcap', 'riftmaker', 'rylais_crystal_scepter', 'serpents_fang', 'shadowflame', 'spear_of_shojin',
   'spirit_visage', 'stormrazor', 'sundered_sky', 'sunfire_cape', 'terminus', 'thornmail', 'trinity_force', 'unending_despair',
   'void_staff', 'warmogs_armor', 'wits_end', 'yun_tal_wildarrows', 'zekes_herald'
@@ -53,7 +54,7 @@ $CHAMP_PLACEHOLDER = '(champion)'
 # The default item slot: any slot you don't set is left for the game's AI to fill.
 # It is written to item-builds.json as JSON null; the mod keeps your pinned items
 # and lets the AI choose every blank slot.
-$ITEM_PLACEHOLDER = '(AI picks)'
+$ITEM_PLACEHOLDER = '-- AI picks --'
 $AI_SENTINEL = '__AI__'   # internal id for an (AI picks) slot; written as JSON null
 $MODDED_LABEL = '(modded champion)'
 
@@ -144,72 +145,75 @@ $CATEGORY_ORDER = @(
 # Item id -> category key. Keys must match ids in $ITEMS.
 $itemCategory = @{
   # Assassin
-  bastionbreaker           = 'Assassin';
-  collector                = 'Assassin';
-  hubris                   = 'Assassin';
-  serpents_fang            = 'Assassin';
+  bastionbreaker            = 'Assassin';
+  collector                 = 'Assassin';
+  hubris                    = 'Assassin';
+  opportunity               = 'Assassin';
+  serpents_fang             = 'Assassin';
 
   # Fighter
-  black_cleaver            = 'Fighter'; 
-  bloodthirster            = 'Fighter';
-  experimental_hexplate    = 'Fighter';
-  deaths_dance             = 'Fighter'; 
-  frozen_mallet            = 'Fighter';
-  overlords_bloodmail      = 'Fighter';
-  spear_of_shojin          = 'Fighter';
-  sundered_sky             = 'Fighter';
-  trinity_force            = 'Fighter';
+  black_cleaver             = 'Fighter'; 
+  bloodthirster             = 'Fighter';
+  experimental_hexplate     = 'Fighter';
+  deaths_dance              = 'Fighter'; 
+  frozen_mallet             = 'Fighter';
+  overlords_bloodmail       = 'Fighter';
+  spear_of_shojin           = 'Fighter';
+  sundered_sky              = 'Fighter';
+  trinity_force             = 'Fighter';
 
   # Marksman
-  blade_of_the_ruined_king = 'Marksman';
-  deathblade               = 'Marksman'; 
-  diamond_tipped_spear     = 'Marksman';
-  guinsoos_rageblade       = 'Marksman'; 
-  infinity_edge            = 'Marksman'; 
-  kraken_slayer            = 'Marksman'; 
-  lord_dominiks_regards    = 'Marksman'; 
-  mirage_blade             = 'Marksman';
-  mortal_reminder          = 'Marksman';
-  phantom_dancer           = 'Marksman'; 
-  stormrazor               = 'Marksman'; 
-  terminus                 = 'Marksman';
-  wits_end                 = 'Marksman';
-  yun_tal_wildarrows       = 'Marksman';
+  blade_of_the_ruined_king  = 'Marksman';
+  deathblade                = 'Marksman'; 
+  diamond_tipped_spear      = 'Marksman';
+  guinsoos_rageblade        = 'Marksman'; 
+  infinity_edge             = 'Marksman'; 
+  kraken_slayer             = 'Marksman'; 
+  lord_dominiks_regards     = 'Marksman'; 
+  mirage_blade              = 'Marksman';
+  mortal_reminder           = 'Marksman';
+  phantom_dancer            = 'Marksman'; 
+  stormrazor                = 'Marksman'; 
+  terminus                  = 'Marksman';
+  wits_end                  = 'Marksman';
+  yun_tal_wildarrows        = 'Marksman';
 
   # Mage
-  blackfire_torch          = 'Mage';
-  bloodletters_curse       = 'Mage';
-  dusk_and_dawn            = 'Mage';
-  hextech_gunblade         = 'Mage';
-  liandrys_torment         = 'Mage';
-  ludens_tempest           = 'Mage';
-  malignance               = 'Mage'; 
-  morellonomicon           = 'Mage';
-  nashors_tooth            = 'Mage';
-  night_harvester          = 'Mage'; 
-  rabadons_deathcap        = 'Mage';
-  riftmaker                = 'Mage';
-  rylais_crystal_scepter   = 'Mage';
-  shadowflame              = 'Mage';
-  void_staff               = 'Mage';
+  blackfire_torch           = 'Mage';
+  bloodletters_curse        = 'Mage';
+  dusk_and_dawn             = 'Mage';
+  hextech_gunblade          = 'Mage';
+  liandrys_torment          = 'Mage';
+  ludens_tempest            = 'Mage';
+  malignance                = 'Mage'; 
+  morellonomicon            = 'Mage';
+  nashors_tooth             = 'Mage';
+  night_harvester           = 'Mage'; 
+  rabadons_deathcap         = 'Mage';
+  riftmaker                 = 'Mage';
+  rylais_crystal_scepter    = 'Mage';
+  shadowflame               = 'Mage';
+  void_staff                = 'Mage';
     
   # Tank
-  atmas_reckoning          = 'Tank'; 
-  dragons_claw             = 'Tank';
-  heartsteel               = 'Tank';
-  jaksho_the_protean       = 'Tank';
-  protectors_vow           = 'Tank';
-  spirit_visage            = 'Tank';
-  sunfire_cape             = 'Tank';
-  thornmail                = 'Tank';
-  unending_despair         = 'Tank';
-  warmogs_armor            = 'Tank';
+  atmas_reckoning           = 'Tank';
+  dead_mans_plate           = 'Tank';
+  dragons_claw              = 'Tank';
+  heartsteel                = 'Tank';
+  jaksho_the_protean        = 'Tank';
+  protectors_vow            = 'Tank';
+  spirit_visage             = 'Tank';
+  sunfire_cape              = 'Tank';
+  thornmail                 = 'Tank';
+  unending_despair          = 'Tank';
+  warmogs_armor             = 'Tank';
 
   # Support
-  bloodsong                = 'Support'; 
-  echoes_of_helia          = 'Support'; 
-  protoplasm_harness       = 'Support';
-  zekes_herald             = 'Support';
+  bloodsong                 = 'Support'; 
+  echoes_of_helia           = 'Support';
+  locket_of_the_iron_solari = 'Support';
+  protoplasm_harness        = 'Support';
+  zekes_herald              = 'Support';
 }
 
 # Item icons from the packed sprite sheet in aseprite_resources/ingame. The data
@@ -320,7 +324,10 @@ $script:OnItemDraw = {
   $sf.LineAlignment = 'Center'
   $sf.FormatFlags = [System.Drawing.StringFormatFlags]::NoWrap
   $sf.Trimming = [System.Drawing.StringTrimming]::EllipsisCharacter
-  $rect = New-Object System.Drawing.RectangleF($textX, $b.Y, ($b.X + $b.Width - $textX), $b.Height)
+  # On the closed face, stop short of the clear button overlaid at the right end
+  # so a long name ellipsizes instead of sliding under the X.
+  $textW = $b.X + $b.Width - $textX - $(if ($isEdit) { $script:ClearWidth + $script:ClearPad } else { 0 })
+  $rect = New-Object System.Drawing.RectangleF($textX, $b.Y, $textW, $b.Height)
   $g.DrawString($text, $sender.Font, (New-Object System.Drawing.SolidBrush($fgCol)), $rect, $sf)
 }
 
@@ -338,6 +345,26 @@ function Save-Settings {
 }
 
 # --- helpers ---------------------------------------------------------------
+
+# An AutoScroll panel does its own wheel scrolling inside
+# ScrollableControl.OnMouseWheel, so re-aiming wheel input at the rows list is
+# just a matter of handing the panel the same event. Reaching the protected
+# method needs reflection, but it beats re-implementing the scroll: the panel
+# then moves exactly as far, and repaints exactly the same way, as it does when
+# the cursor is over empty background. (Hand-rolled maths here felt sluggish
+# because it moved less than half as far per notch.)
+$script:PanelWheel = [System.Windows.Forms.Control].GetMethod(
+  'OnMouseWheel', [System.Reflection.BindingFlags]'Instance,NonPublic')
+
+# Re-aims a wheel event that landed on a dropdown at the rows list; see New-Combo.
+# If the method ever fails to resolve, the wheel simply does nothing over a
+# dropdown - still better than it silently editing the build underneath.
+function Scroll-RowsBy($e) {
+  $panel = $script:RowsPanel
+  if (-not $panel -or -not $script:PanelWheel) { return }
+  $script:PanelWheel.Invoke($panel, [object[]]@($e.psobject.BaseObject))
+}
+
 function New-Combo($displayList, $left, $width, [switch]$Grouped) {
   $cb = New-Object System.Windows.Forms.ComboBox
   $cb.DropDownStyle = 'DropDownList'
@@ -351,6 +378,18 @@ function New-Combo($displayList, $left, $width, [switch]$Grouped) {
     $cb.DropDownWidth = [Math]::Max($width, 240)
     $cb.Add_DrawItem($script:OnItemDraw)
   }
+  # A closed ComboBox treats the wheel as "change my selection", so scrolling the
+  # page with the cursor over a dropdown silently rewrites a build - and the row
+  # it edits is whichever one happened to be under the mouse. Swallow the wheel
+  # here (Handled stops ComboBox's own selection change) and scroll the rows list
+  # instead, which is what the gesture was aimed at. An open dropdown is left
+  # alone so its list still wheel-scrolls normally.
+  $cb.Add_MouseWheel({
+      param($sender, $e)
+      if ($sender.DroppedDown) { return }
+      $e.Handled = $true
+      Scroll-RowsBy $e
+    })
   foreach ($d in $displayList) { [void]$cb.Items.Add($d) }
   $cb.SelectedIndex = 0
   return $cb
@@ -374,6 +413,55 @@ function Swap-ItemValues($row, $a, $b) {
   $items[$a].SelectedItem = $items[$b].SelectedItem
   $items[$b].SelectedItem = $tmp
   Save-Builds
+}
+
+# Width reserved at the right end of an item dropdown for its clear button. Both
+# the overlay itself and the owner-draw text rect key off this, so the item name
+# ellipsizes before it reaches the X instead of running underneath it.
+$script:ClearWidth = 20
+# Gap held between the X and the drop arrow. The arrow sits inside the combo's
+# flat border, so right-aligning on the raw arrow width alone leaves the X a pixel
+# over it; this clears the border and leaves a little breathing room besides.
+$script:ClearPad = 5
+
+# Small "clear this slot" X, overlaid inside the right end of an item dropdown
+# just left of its arrow. A Label rather than a Button so it never takes focus
+# away from the combo, and so no button chrome shows through the flat face; it is
+# an overlapping sibling, brought to the front in New-Row. Text is a runtime-built
+# glyph so this script can stay pure ASCII (no BOM needed).
+function New-ClearButton($cb) {
+  $arrow = [System.Windows.Forms.SystemInformation]::VerticalScrollBarWidth
+  $x = New-Object System.Windows.Forms.Label
+  $x.Text = [string][char]0x2715   # multiplication X
+  $x.Width = $script:ClearWidth; $x.Height = 22
+  $x.Left = $cb.Left + $cb.Width - $arrow - $script:ClearPad - $x.Width
+  $x.Top = $cb.Top + [int](($cb.Height - $x.Height) / 2)
+  $x.TextAlign = 'MiddleCenter'
+  $x.BackColor = $cPanel2; $x.ForeColor = $cAccent
+  $x.Font = New-Object System.Drawing.Font('Segoe UI', 9)
+  $x.Cursor = [System.Windows.Forms.Cursors]::Hand
+  $x.Tag = $cb
+  $x.Add_MouseEnter({ $this.ForeColor = $cText })
+  $x.Add_MouseLeave({ $this.ForeColor = $cAccent })
+  # Index 0 is (AI picks), i.e. the unpinned state. SelectedIndexChanged already
+  # autosaves, so clearing needs nothing beyond the assignment.
+  $x.Add_Click({ $this.Tag.SelectedIndex = 0 })
+  return $x
+}
+
+# A slot already on (AI picks) has nothing to clear, so its X is hidden. Called
+# once after a row loads its values and again on every item change (including the
+# swap buttons, which move selections through the same event).
+function Update-ClearVisibility($row) {
+  $items = $row.Tag.Items; $clears = $row.Tag.Clears
+  for ($i = 0; $i -lt $items.Count; $i++) {
+    $show = ($items[$i].SelectedIndex -ne 0)
+    # Clicking the X hides it out from under the cursor, and MouseLeave is not
+    # guaranteed to arrive after that - so drop the hover tint here, or the button
+    # comes back white the next time the slot is filled.
+    if (-not $show) { $clears[$i].ForeColor = $cAccent }
+    $clears[$i].Visible = $show
+  }
 }
 
 # Small "swap with the slot to my right" button; $index is the left slot (0 or 1).
@@ -441,9 +529,14 @@ function New-Row {
       Save-Builds   # writes the new order; also recolors rows by state
     })
 
-  # swap buttons reorder the 3 items (each swaps with its right-hand neighbour)
+  # swap buttons reorder the 3 items (each swaps with its right-hand neighbor)
   $swap1 = New-SwapButton $COL.Swap1[0] 0
   $swap2 = New-SwapButton $COL.Swap2[0] 1
+
+  # per-slot clear buttons, overlaid on the right end of each item dropdown
+  $clr1 = New-ClearButton $cb1
+  $clr2 = New-ClearButton $cb2
+  $clr3 = New-ClearButton $cb3
 
   # raw-id box shown only when "(modded champion)" is selected
   $tbRaw = New-Object System.Windows.Forms.TextBox
@@ -457,13 +550,17 @@ function New-Row {
   $del.FlatStyle = 'Flat'; $del.BackColor = $cPanel; $del.ForeColor = $cMuted
   $del.Tag = $row
 
-  $row.Tag = @{ Champ = $cbChamp; ChampRaw = $tbRaw; Items = @($cb1, $cb2, $cb3) }
-  $row.Controls.AddRange(@($grip, $cbChamp, $tbRaw, $cb1, $swap1, $cb2, $swap2, $cb3, $del))
+  $row.Tag = @{ Champ = $cbChamp; ChampRaw = $tbRaw; Items = @($cb1, $cb2, $cb3); Clears = @($clr1, $clr2, $clr3) }
+  $row.Controls.AddRange(@($grip, $cbChamp, $tbRaw, $cb1, $swap1, $cb2, $swap2, $cb3, $del, $clr1, $clr2, $clr3))
+  # The clears overlap their combos, so pin them to the front of the z-order
+  # explicitly rather than relying on the order they were added in.
+  foreach ($x in @($clr1, $clr2, $clr3)) { $x.BringToFront() }
 
   Set-ChampValue $row $Champ
   Set-ComboId $cb1 $script:ItemToDisplay $Items[0]
   Set-ComboId $cb2 $script:ItemToDisplay $Items[1]
   Set-ComboId $cb3 $script:ItemToDisplay $Items[2]
+  Update-ClearVisibility $row
 
   # attach AFTER setting values so loading doesn't autosave
   $cbChamp.Add_SelectedIndexChanged({ Update-ChampMode $this.Parent; Save-Builds })
@@ -483,6 +580,7 @@ function New-Row {
           return
         }
         $this.Tag = $i
+        Update-ClearVisibility $this.Parent
         Save-Builds
       })
   }

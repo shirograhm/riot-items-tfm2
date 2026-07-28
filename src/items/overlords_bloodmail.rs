@@ -1,12 +1,17 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
-use crate::percent_of;
-use crate::{BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
+use crate::{
+    apply_config, buff_name, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    BUFF_REFRESH_PERIOD_TICKS,
+};
 
 #[derive(Clone, Debug)]
 pub struct OverlordsBloodmail {
+    meta: ItemMeta,
+    // Buff names are namespaced per variant so the base and radiant
+    // items keep independent stacks.
+    tyranny_buff: &'static str,
     price: usize,
     attack: i32,
     hp: i32,
@@ -14,9 +19,15 @@ pub struct OverlordsBloodmail {
     refresh_cooldown: usize,
 }
 
-impl Default for OverlordsBloodmail {
-    fn default() -> Self {
+impl OverlordsBloodmail {
+    pub fn base() -> Self {
         Self {
+            meta: ItemMeta::base(
+                "overlords_bloodmail",
+                &["phage"],
+                &["radiant_overlords_bloodmail"],
+            ),
+            tyranny_buff: "overlords_bloodmail_tyranny",
             price: 1400,
             attack: 25,
             hp: 400,
@@ -24,20 +35,33 @@ impl Default for OverlordsBloodmail {
             refresh_cooldown: 0,
         }
     }
-}
 
-impl OverlordsBloodmail {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
+    pub fn radiant() -> Self {
         Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            hp: cfg.hp.unwrap_or(d.hp),
-            effect_caster_hp_percent_attack: cfg
-                .effect_caster_hp_percent_attack
-                .unwrap_or(d.effect_caster_hp_percent_attack),
-            refresh_cooldown: 0,
+            meta: ItemMeta::radiant("radiant_overlords_bloodmail", &["overlords_bloodmail"]),
+            tyranny_buff: "radiant_overlords_bloodmail_tyranny",
+            price: 2000,
+            attack: 40,
+            hp: 650,
+            ..Self::base()
         }
+    }
+
+    pub fn with_config(cfg: &ItemConfig) -> Self {
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        apply_config!(
+            self,
+            cfg,
+            [price, attack, hp, effect_caster_hp_percent_attack]
+        );
+        self
     }
 
     fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
@@ -62,7 +86,7 @@ impl OverlordsBloodmail {
         ctx.add_buff(
             entity_id,
             BuffState {
-                name: ArrayString::try_from("overlords_bloodmail_tyranny").unwrap(),
+                name: buff_name(self.tyranny_buff),
                 duration: BuffType::Time {
                     tick: BUFF_REFRESH_DURATION_TICKS,
                 },
@@ -71,6 +95,12 @@ impl OverlordsBloodmail {
             },
         );
         self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
+    }
+}
+
+impl Default for OverlordsBloodmail {
+    fn default() -> Self {
+        Self::base()
     }
 }
 
@@ -80,11 +110,11 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn key(&self) -> &str {
-        "overlords_bloodmail"
+        self.meta.key
     }
 
     fn icon(&self) -> &str {
-        "overlords_bloodmail"
+        self.meta.key
     }
 
     fn price(&self) -> usize {
@@ -92,135 +122,15 @@ impl ModItemInfo for OverlordsBloodmail {
     }
 
     fn tier(&self) -> usize {
-        3
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["phage".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["radiant_overlords_bloodmail".to_string()]
-    }
-
-    fn stat(&self) -> BuffState {
-        BuffState {
-            attack: self.attack,
-            hp: self.hp,
-            ..Default::default()
-        }
-    }
-
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
-        self.refresh_cooldown = 0;
-        self.apply_tyranny(ctx, player);
-    }
-
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
-        self.apply_tyranny(ctx, player);
-    }
-
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::HP]
-    }
-
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct RadiantOverlordsBloodmail {
-    price: usize,
-    attack: i32,
-    hp: i32,
-    effect_caster_hp_percent_attack: f64,
-    refresh_cooldown: usize,
-}
-
-impl Default for RadiantOverlordsBloodmail {
-    fn default() -> Self {
-        Self {
-            price: 2000,
-            attack: 40,
-            hp: 650,
-            effect_caster_hp_percent_attack: 2.5,
-            refresh_cooldown: 0,
-        }
-    }
-}
-
-impl RadiantOverlordsBloodmail {
-    pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack: cfg.attack.unwrap_or(d.attack),
-            hp: cfg.hp.unwrap_or(d.hp),
-            effect_caster_hp_percent_attack: cfg
-                .effect_caster_hp_percent_attack
-                .unwrap_or(d.effect_caster_hp_percent_attack),
-            refresh_cooldown: 0,
-        }
-    }
-
-    fn apply_tyranny(&mut self, ctx: &mut GameCtx, player: usize) {
-        if self.refresh_cooldown > 0 {
-            self.refresh_cooldown -= 1;
-            return;
-        }
-
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-
-        let target = percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_attack) as i32;
-        if target <= 0 {
-            return;
-        }
-
-        let entity_id = champion_ref.id();
-        ctx.add_buff(
-            entity_id,
-            BuffState {
-                name: ArrayString::try_from("radiant_overlords_bloodmail_tyranny").unwrap(),
-                duration: BuffType::Time {
-                    tick: BUFF_REFRESH_DURATION_TICKS,
-                },
-                attack: target,
-                ..Default::default()
-            },
-        );
-        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
-    }
-}
-
-impl ModItemInfo for RadiantOverlordsBloodmail {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
-        Box::new(self.clone())
-    }
-
-    fn key(&self) -> &str {
-        "radiant_overlords_bloodmail"
-    }
-
-    fn icon(&self) -> &str {
-        "radiant_overlords_bloodmail"
-    }
-
-    fn price(&self) -> usize {
-        self.price
-    }
-
-    fn tier(&self) -> usize {
-        4
-    }
-
-    fn previous_tier(&self) -> Vec<String> {
-        vec!["overlords_bloodmail".to_string()]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffState {

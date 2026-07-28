@@ -1,7 +1,7 @@
-use arrayvec::ArrayString;
 use mod_api::*;
 
 use crate::config::ItemConfig;
+use crate::{apply_config, buff_name, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct Sheen {
@@ -30,22 +30,20 @@ impl Default for Sheen {
 
 impl Sheen {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let d = Self::default();
-        Self {
-            price: cfg.price.unwrap_or(d.price),
-            attack_speed_mult: cfg.attack_speed_mult.unwrap_or(d.attack_speed_mult),
-            skill_cooldown_mult: cfg.skill_cooldown_mult.unwrap_or(d.skill_cooldown_mult),
-            effect_min_bonus_damage: cfg
-                .effect_min_bonus_damage
-                .unwrap_or(d.effect_min_bonus_damage),
-            effect_max_bonus_damage: cfg
-                .effect_max_bonus_damage
-                .unwrap_or(d.effect_max_bonus_damage),
-            effect_cooldown_seconds: cfg
-                .effect_cooldown_seconds
-                .unwrap_or(d.effect_cooldown_seconds),
-            spellblade_ready: false,
-        }
+        let mut item = Self::default();
+        apply_config!(
+            item,
+            cfg,
+            [
+                price,
+                attack_speed_mult,
+                skill_cooldown_mult,
+                effect_min_bonus_damage,
+                effect_max_bonus_damage,
+                effect_cooldown_seconds
+            ]
+        );
+        item
     }
 
     // Bonus damage scales linearly from min (level 1) to max (level 12).
@@ -112,8 +110,7 @@ impl ModItemInfo for Sheen {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let on_cooldown = (0..caster_ref.buff_count())
-            .any(|i| caster_ref.buff_at(i).name.as_str() == "spellblade_cooldown");
+        let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
         }
@@ -141,9 +138,9 @@ impl ModItemInfo for Sheen {
             caster,
             BuffState {
                 duration: BuffType::Time {
-                    tick: (self.effect_cooldown_seconds * 60.0).round() as usize,
+                    tick: ticks(self.effect_cooldown_seconds),
                 },
-                name: ArrayString::try_from("spellblade_cooldown").unwrap(),
+                name: buff_name("spellblade_cooldown"),
                 ..Default::default()
             },
         );
