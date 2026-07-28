@@ -39,7 +39,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Scout's Slingshot** | 800G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Serrated Dirk** | 800G | +45 AD | Lethality: Ignore 10 armor when you deal physical damage to enemies. |
 | **Steel Sigil** | 950G | +30 AD<br>+50 Armor | — |
-| **Winged Moonplate** | 800G | +200 HP<br>+4% MS | — |
+| **Winged Moonplate** | 800G | +250 HP<br>+4% MS | — |
 
 #### Tier 4
 | Item | Cost | Stats | Passive |
