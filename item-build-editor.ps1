@@ -477,7 +477,7 @@ function New-Row {
       Save-Builds   # writes the new order; also recolors rows by state
     })
 
-  # swap buttons reorder the 3 items (each swaps with its right-hand neighbour)
+  # swap buttons reorder the 3 items (each swaps with its right-hand neighbor)
   $swap1 = New-SwapButton $COL.Swap1[0] 0
   $swap2 = New-SwapButton $COL.Swap2[0] 1
 
