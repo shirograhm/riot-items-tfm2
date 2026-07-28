@@ -35,7 +35,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
 | **Noonquiver** | 800G | +45 AD<br>+10% Crit Chance | — |
-| **Phage** | 950G | +200 HP<br>+30 AD | — |
+| **Phage** | 950G | +200 HP<br>+30 AD | Rage: Dealing damage to an enemy champion grants 5% movement speed for 2 seconds. |
 | **Scout's Slingshot** | 800G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Serrated Dirk** | 800G | +45 AD | Lethality: Ignore 10 armor when you deal physical damage to enemies. |
 | **Steel Sigil** | 950G | +30 AD<br>+50 Armor | — |

@@ -139,8 +139,8 @@ $script:GroupItems = $true
 
 # Category header rows, in dropdown order: internal category key -> display label.
 $CATEGORY_ORDER = @(
-  @('Assassin', 'Assassin'), @('Tank', 'Tank'), @('Fighter', 'Fighter'), @('Marksman', 'Marksman'), 
-  @('Mage', 'Mage'), @('Support', 'Support')
+  @('Assassin', 'Assassin'), @('Fighter', 'Fighter'), @('Marksman', 'Marksman'), 
+  @('Mage', 'Mage'), @('Tank', 'Tank'), @('Support', 'Support')
 )
 # Item id -> category key. Keys must match ids in $ITEMS.
 $itemCategory = @{

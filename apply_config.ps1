@@ -326,6 +326,8 @@ $rlockDef = [int]$config.radiant_locket_of_the_iron_solari.effect_bonus_defence
 $rlockMr = [int]$config.radiant_locket_of_the_iron_solari.effect_bonus_magic_resistance
 $rlockRegen = [int]$config.radiant_locket_of_the_iron_solari.effect_bonus_hp_regen
 $rlockMinion = [int]$config.radiant_locket_of_the_iron_solari.effect_minion_percent
+$phageMs = [int]$config.phage.effect_move_speed_mult
+$phageDur = [double]$config.phage.effect_duration_seconds
 $lockDist = [int]$config.locket_of_the_iron_solari.effect_max_distance
 $rlockDist = [int]$config.radiant_locket_of_the_iron_solari.effect_max_distance
 $dmpStacks = [int]$config.dead_mans_plate.effect_stacks_per_second
@@ -382,6 +384,7 @@ $i18n.en.shadowflame.option = "Cinderbloom: Your <#a974ffff>magic damage<> is <#
 $i18n.en.radiant_shadowflame.option = "Cinderbloom: Your <#a974ffff>magic damage<> is <#e8a800ff>20% stronger<> against enemies <#d94c49ff>below ${rsfThreshold}% maximum health<>."
 $i18n.en.yun_tal_wildarrows.option = "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>${ytCrit}%<> <$critIcon> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>${ytMaxCrit}%<> <$critIcon> .`n`nFlurry: On attack, gain <#ceff99ff>${ytFlurryAS}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${ytDur} seconds<> (<#e8a800ff>${ytCd} second<> cooldown)."
 $i18n.en.radiant_yun_tal_wildarrows.option = "Practice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>${rytCrit}%<> <$critIcon> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>${rytMaxCrit}%<> <$critIcon> .`n`nFlurry: On attack, gain <#ceff99ff>${rytFlurryAS}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${rytDur} seconds<> (<#e8a800ff>${rytCd} second<> cooldown)."
+$i18n.en.phage.option = "Rage: Dealing damage to an enemy champion grants <#ffffffff>${phageMs}%<> <$speedIcon> <#ffffffff>movement speed<> for <#e8a800ff>${phageDur} seconds<>."
 $i18n.en.mortal_reminder.option = "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${mrHeal}%<> for <#e8a800ff>${mrDur} seconds<>."
 $i18n.en.radiant_mortal_reminder.option = "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rmrHeal}%<> for <#e8a800ff>${rmrDur} seconds<>."
 $i18n.en.jaksho_the_protean.option = "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>${jakDefMult}% <$armorIcon> armor<> and <#88ccffff>${jakMrMult}% <$mrIcon> magic resistance<> for <#e8a800ff>${jakDur} seconds<> (max ${jakStacks} stacks)."
@@ -514,6 +517,7 @@ $i18n.vi.shadowflame.option = "Hạt Tro: <#a974ffff>Sát thương phép<> của
 $i18n.vi.radiant_shadowflame.option = "Hạt Tro: <#a974ffff>Sát thương phép<> của bạn <#e8a800ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới ${rsfThreshold}% máu tối đa<>."
 $i18n.vi.yun_tal_wildarrows.option = "Chí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>${ytCrit}%<> <$critIcon> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>${ytMaxCrit}%<>.`n`nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>${ytFlurryAS}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${ytDur} giây<> (hồi chiêu ${ytCd} giây)."
 $i18n.vi.radiant_yun_tal_wildarrows.option = "Chí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>${rytCrit}%<> <$critIcon> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>${rytMaxCrit}%<>.`n`nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>${rytFlurryAS}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${rytDur} giây<> (hồi chiêu ${rytCd} giây)."
+$i18n.vi.phage.option = "Cuồng Nộ: Gây sát thương lên tướng địch sẽ nhận <#ffffffff>${phageMs}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>${phageDur} giây<>."
 $i18n.vi.mortal_reminder.option = "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${mrHeal}%<> trong <#e8a800ff>${mrDur} giây<>."
 $i18n.vi.radiant_mortal_reminder.option = "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rmrHeal}%<> trong <#e8a800ff>${rmrDur} giây<>."
 $i18n.vi.jaksho_the_protean.option = "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>${jakDefMult}% <$armorIcon> giáp<> và <#88ccffff>${jakMrMult}% <$mrIcon> kháng phép<> trong <#e8a800ff>${jakDur} giây<> (tối đa ${jakStacks} cộng dồn)."
@@ -646,6 +650,7 @@ $i18n.'zh-hans'.shadowflame.option = "余烬绽放：你的<#a974ffff>魔法伤�
 $i18n.'zh-hans'.radiant_shadowflame.option = "余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于${rsfThreshold}%<>的敌人<#e8a800ff>提高20%<>。"
 $i18n.'zh-hans'.yun_tal_wildarrows.option = "熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>${ytCrit}%<> <$critIcon> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>${ytMaxCrit}%<>。`n`n疾风骤雨：普通攻击时，获得 <#ceff99ff>${ytFlurryAS}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${ytDur}秒<>（冷却${ytCd}秒）。"
 $i18n.'zh-hans'.radiant_yun_tal_wildarrows.option = "熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>${rytCrit}%<> <$critIcon> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>${rytMaxCrit}%<>。`n`n疾风骤雨：普通攻击时，获得 <#ceff99ff>${rytFlurryAS}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${rytDur}秒<>（冷却${rytCd}秒）。"
+$i18n.'zh-hans'.phage.option = "狂怒：对敌方英雄造成伤害时，获得 <#ffffffff>${phageMs}%<> <$speedIcon> <#ffffffff>移动速度<>，持续 <#e8a800ff>${phageDur}秒<>。"
 $i18n.'zh-hans'.mortal_reminder.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${mrHeal}%<>，持续 <#e8a800ff>${mrDur}秒<>。"
 $i18n.'zh-hans'.radiant_mortal_reminder.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${rmrHeal}%<>，持续 <#e8a800ff>${rmrDur}秒<>。"
 $i18n.'zh-hans'.jaksho_the_protean.option = "复原力：受到敌方英雄伤害时，获得 <#ffdd8eff>${jakDefMult}% <$armorIcon> 护甲<>和 <#88ccffff>${jakMrMult}% <$mrIcon> 魔法抗性<>，持续 <#e8a800ff>${jakDur}秒<>（最多叠加${jakStacks}层）。"
@@ -778,6 +783,7 @@ $i18n.'pt-BR'.shadowflame.option = "Floregris: Seu <#a974ffff>dano mágico<> é 
 $i18n.'pt-BR'.radiant_shadowflame.option = "Floregris: Seu <#a974ffff>dano mágico<> é <#e8a800ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de ${rsfThreshold}% da Vida Máxima<>."
 $i18n.'pt-BR'.yun_tal_wildarrows.option = "Praticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>${ytCrit}%<> de <$critIcon> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>${ytMaxCrit}%<>.`n`nAgitação: Ao atacar, ganha <#ceff99ff>${ytFlurryAS}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${ytDur} segundos<> (recarga de ${ytCd} segundos)."
 $i18n.'pt-BR'.radiant_yun_tal_wildarrows.option = "Praticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>${rytCrit}%<> de <$critIcon> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>${rytMaxCrit}%<>.`n`nAgitação: Ao atacar, ganha <#ceff99ff>${rytFlurryAS}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${rytDur} segundos<> (recarga de ${rytCd} segundos)."
+$i18n.'pt-BR'.phage.option = "Fúria: Causar dano a um campeão inimigo concede <#ffffffff>${phageMs}%<> de <$speedIcon> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>${phageDur} segundos<>."
 $i18n.'pt-BR'.mortal_reminder.option = "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${mrHeal}%<> por <#e8a800ff>${mrDur} segundos<>."
 $i18n.'pt-BR'.radiant_mortal_reminder.option = "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rmrHeal}%<> por <#e8a800ff>${rmrDur} segundos<>."
 $i18n.'pt-BR'.jaksho_the_protean.option = "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>${jakDefMult}% <$armorIcon> de Armadura<> e <#88ccffff>${jakMrMult}% <$mrIcon> de Resistência Mágica<> por <#e8a800ff>${jakDur} segundos<> (acumula ${jakStacks}x)."
@@ -910,6 +916,7 @@ $i18n.ru.shadowflame.option = "Огненный цветок: Ваш <#a974ffff>
 $i18n.ru.radiant_shadowflame.option = "Огненный цветок: Ваш <#a974ffff>магический урон<> <#e8a800ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже ${rsfThreshold}% от максимального<>."
 $i18n.ru.yun_tal_wildarrows.option = "Убийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>${ytCrit}%<> <$critIcon> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>${ytMaxCrit}%<>.`n`nШквал: При атаке даёт <#ceff99ff>${ytFlurryAS}%<> <$asIcon> <#ceff99ff>скорости атаки<> на <#e8a800ff>${ytDur} секунд<> (перезарядка ${ytCd} секунд)."
 $i18n.ru.radiant_yun_tal_wildarrows.option = "Убийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>${rytCrit}%<> <$critIcon> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>${rytMaxCrit}%<>.`n`nШквал: При атаке даёт <#ceff99ff>${rytFlurryAS}%<> <$asIcon> <#ceff99ff>скорости атаки<> на <#e8a800ff>${rytDur} секунд<> (перезарядка ${rytCd} секунд)."
+$i18n.ru.phage.option = "Ярость: Нанесение урона вражескому чемпиону даёт <#ffffffff>${phageMs}%<> <$speedIcon> <#ffffffff>скорости передвижения<> на <#e8a800ff>${phageDur} секунды<>."
 $i18n.ru.mortal_reminder.option = "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${mrHeal}%<> на <#e8a800ff>${mrDur} секунды<>."
 $i18n.ru.radiant_mortal_reminder.option = "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rmrHeal}%<> на <#e8a800ff>${rmrDur} секунды<>."
 $i18n.ru.jaksho_the_protean.option = "Стойкость: Получение урона от вражеского чемпиона даёт <#ffdd8eff>${jakDefMult}% <$armorIcon> брони<> и <#88ccffff>${jakMrMult}% <$mrIcon> сопротивления магии<> на <#e8a800ff>${jakDur} секунды<> (макс. ${jakStacks} стака)."
@@ -1042,6 +1049,7 @@ $i18n.ko.shadowflame.option = "잿불꽃: <#d94c49ff>최대 체력이 ${sfThresh
 $i18n.ko.radiant_shadowflame.option = "잿불꽃: <#d94c49ff>최대 체력이 ${rsfThreshold}% 아래인<> 적에게 입히는 <#a974ffff>마법 피해<>가 <#e8a800ff>20% 증가<>합니다."
 $i18n.ko.yun_tal_wildarrows.option = "치명적인 연습: <#ff9028ff>물리 피해<>를 입힐 때마다 <$critIcon> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>${ytCrit}%<> 증가하며, 최대 <$critIcon> <#d45656ff>${ytMaxCrit}%<>까지 증가합니다.`n`n연타: 기본 공격 시 <#e8a800ff>${ytDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${ytFlurryAS}%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>${ytCd}초<>입니다."
 $i18n.ko.radiant_yun_tal_wildarrows.option = "치명적인 연습: <#ff9028ff>물리 피해<>를 입힐 때마다 <$critIcon> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>${rytCrit}%<> 증가하며, 최대 <$critIcon> <#d45656ff>${rytMaxCrit}%<>까지 증가합니다.`n`n연타: 기본 공격 시 <#e8a800ff>${rytDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${rytFlurryAS}%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>${rytCd}초<>입니다."
+$i18n.ko.phage.option = "분노: 적 챔피언에게 피해를 입히면 <#e8a800ff>${phageDur}초<> 동안 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>${phageMs}%<> 증가합니다."
 $i18n.ko.mortal_reminder.option = "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${mrDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${mrHeal}% 감소<>합니다."
 $i18n.ko.radiant_mortal_reminder.option = "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${rmrDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${rmrHeal}% 감소<>합니다."
 $i18n.ko.jaksho_the_protean.option = "저항력: 적 챔피언에게 피해를 받으면 <#e8a800ff>${jakDur}초<> 동안 <$armorIcon> <#ffdd8eff>방어력<>과 <$mrIcon> <#88ccffff>마법 저항력<>이 각각 <#ffdd8eff>${jakDefMult}%<> 및 <#88ccffff>${jakMrMult}%<> 증가합니다. 최대 ${jakStacks}회 중첩됩니다."
@@ -1190,6 +1198,7 @@ Write-Host "  Death's Dance:           ${ddDelay}% deferred / ${ddBurnCap}% max 
 Write-Host "  Radiant Death's Dance:   ${rddDelay}% deferred / ${rddBurnCap}% max HP per second / ${rddFlatHeal}+${rddHeal}% missing HP heal on takedown"
 Write-Host "  Rabadon's Deathcap:      ${rabMult}%"
 Write-Host "  Radiant Rabadon's:       ${radRabMult}%"
+Write-Host "  Phage:                   +${phageMs}% MS for ${phageDur}s"
 Write-Host "  Mirage Blade:            ${mbForce} force"
 Write-Host "  Radiant Mirage Blade:    ${rmbForce} force"
 Write-Host "  Spirit Visage:              +${svHeal}% healing"

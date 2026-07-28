@@ -189,7 +189,7 @@
         },
         "phage": {
             "name": "Phage",
-            "option": ""
+            "option": "Rage: Dealing damage to an enemy champion grants <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
         },
         "haunting_guise": {
             "name": "Haunting Guise",
@@ -858,7 +858,7 @@
         },
         "phage": {
             "name": "Búa Gỗ",
-            "option": ""
+            "option": "Cuồng Nộ: Gây sát thương lên tướng địch sẽ nhận <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<>."
         },
         "haunting_guise": {
             "name": "Mặt Nạ Ám Ảnh",
@@ -1527,7 +1527,7 @@
         },
         "phage": {
             "name": "净蚀",
-            "option": ""
+            "option": "狂怒：对敌方英雄造成伤害时，获得 <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>。"
         },
         "haunting_guise": {
             "name": "幽魂面具",
@@ -2196,7 +2196,7 @@
         },
         "phage": {
             "name": "Fago",
-            "option": ""
+            "option": "Fúria: Causar dano a um campeão inimigo concede <#ffffffff>5%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<>."
         },
         "haunting_guise": {
             "name": "Máscara Assustadora",
@@ -2865,7 +2865,7 @@
         },
         "phage": {
             "name": "Поглотитель",
-            "option": ""
+            "option": "Ярость: Нанесение урона вражескому чемпиону даёт <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<>."
         },
         "haunting_guise": {
             "name": "Преследующая маска",
@@ -3534,7 +3534,7 @@
         },
         "phage": {
             "name": "탐식의 망치",
-            "option": ""
+            "option": "분노: 적 챔피언에게 피해를 입히면 <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>5%<> 증가합니다."
         },
         "haunting_guise": {
             "name": "기괴한 가면",

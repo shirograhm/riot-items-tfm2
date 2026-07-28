@@ -21,7 +21,9 @@
   "phage": {
     "price": 950,
     "hp": 200,
-    "attack": 30
+    "attack": 30,
+    "effect_move_speed_mult": 5,
+    "effect_duration_seconds": 2
   },
   "oblivion_orb": {
     "price": 500,
