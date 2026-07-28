@@ -205,7 +205,6 @@
         },
         "black_cleaver": {
             "name": "Black Cleaver",
-            "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
             "option": "Carve: Dealing <#ff9028ff>physical damage<> to enemy champions <#d94c49ff>reduces their <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> by 6%<> for <#e8a800ff>6 seconds<> (max 5 stacks)."
         },
         "radiant_black_cleaver": {
