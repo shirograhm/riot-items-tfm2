@@ -1306,11 +1306,11 @@
         },
         "opportunity": {
             "name": "Gươm Thức Thời",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, lượng giáp bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, lượng <#ffdd8eff>giáp<> bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
         },
         "radiant_opportunity": {
             "name": "Gươm Thức Thời Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, lượng giáp bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, lượng <#ffdd8eff>giáp<> bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
         },
         "locket_of_the_iron_solari": {
             "name": "Dây Chuyền Iron Solari",
@@ -1322,11 +1322,11 @@
         },
         "dead_mans_plate": {
             "name": "Giáp Liệt Sĩ",
-            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> Đà mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết số cộng dồn còn lại để gây <#ff9028ff>60 - 180 sát thương vật lí cộng thêm<>, tăng theo lượng Đà đã tiêu."
+            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>60 - 180 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
         },
         "radiant_dead_mans_plate": {
             "name": "Giáp Liệt Sĩ Ánh Sáng",
-            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> Đà mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết số cộng dồn còn lại để gây <#ff9028ff>60 - 180 sát thương vật lí cộng thêm<>, tăng theo lượng Đà đã tiêu."
+            "option": "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>60 - 180 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
         }
     },
     "zh-hans": {
@@ -1971,11 +1971,11 @@
         },
         "opportunity": {
             "name": "禁忌时机",
-            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，穿甲无视的护甲提高 <#ffdd8eff>7 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，穿甲无视的<#ffdd8eff>护甲<>提高 <#ffdd8eff>7 点<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
         },
         "radiant_opportunity": {
             "name": "光明版禁忌时机",
-            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，穿甲无视的护甲提高 <#ffdd8eff>7 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，穿甲无视的<#ffdd8eff>护甲<>提高 <#ffdd8eff>7 点<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
         },
         "locket_of_the_iron_solari": {
             "name": "钢铁烈阳之匣",
@@ -1987,11 +1987,11 @@
         },
         "dead_mans_plate": {
             "name": "亡者板甲",
-            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<>动量，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余层数，造成 <#ff9028ff>60 - 180 点额外物理伤害<>，随消耗的动量提升。"
+            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>60 - 180 点额外物理伤害<>，随消耗的层数提升。"
         },
         "radiant_dead_mans_plate": {
             "name": "光明版亡者板甲",
-            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<>动量，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余层数，造成 <#ff9028ff>60 - 180 点额外物理伤害<>，随消耗的动量提升。"
+            "option": "碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>60 - 180 点额外物理伤害<>，随消耗的层数提升。"
         }
     },
     "pt-BR": {
@@ -2636,11 +2636,11 @@
         },
         "opportunity": {
             "name": "Oportunidade",
-            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, a Armadura ignorada pela Letalidade aumenta em <#ffdd8eff>7 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, a <#ffdd8eff>Armadura<> ignorada pela Letalidade aumenta em <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
         },
         "radiant_opportunity": {
             "name": "Oportunidade Radiante",
-            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, a Armadura ignorada pela Letalidade aumenta em <#ffdd8eff>7 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, a <#ffdd8eff>Armadura<> ignorada pela Letalidade aumenta em <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
         },
         "locket_of_the_iron_solari": {
             "name": "Medalhão dos Solari de Ferro",
@@ -2652,11 +2652,11 @@
         },
         "dead_mans_plate": {
             "name": "Placa do Morto",
-            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de Ímpeto por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todas as cargas restantes para causar <#ff9028ff>60 - 180 de dano físico bônus<>, conforme o Ímpeto consumido."
+            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>60 - 180 de dano físico bônus<>, conforme as cargas consumidas."
         },
         "radiant_dead_mans_plate": {
             "name": "Placa do Morto Radiante",
-            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de Ímpeto por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todas as cargas restantes para causar <#ff9028ff>60 - 180 de dano físico bônus<>, conforme o Ímpeto consumido."
+            "option": "Naufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>60 - 180 de dano físico bônus<>, conforme as cargas consumidas."
         }
     },
     "ru": {
@@ -3301,11 +3301,11 @@
         },
         "opportunity": {
             "name": "Возможность",
-            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>7 брони<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
         },
         "radiant_opportunity": {
             "name": "Лучезарная Возможность",
-            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>7 брони<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
         },
         "locket_of_the_iron_solari": {
             "name": "Медальон Железных Солари",
@@ -3317,11 +3317,11 @@
         },
         "dead_mans_plate": {
             "name": "Доспехи Мертвеца",
-            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> Инерции в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите все накопленные заряды и наносите <#ff9028ff>60 - 180 дополнительного физического урона<> в зависимости от потраченной Инерции."
+            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>60 - 180 дополнительного физического урона<> в зависимости от потраченных зарядов."
         },
         "radiant_dead_mans_plate": {
             "name": "Лучезарные Доспехи Мертвеца",
-            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> Инерции в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите все накопленные заряды и наносите <#ff9028ff>60 - 180 дополнительного физического урона<> в зависимости от потраченной Инерции."
+            "option": "Крушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>60 - 180 дополнительного физического урона<> в зависимости от потраченных зарядов."
         }
     },
     "ko": {
@@ -3966,11 +3966,11 @@
         },
         "opportunity": {
             "name": "기회",
-            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 물리 관통력의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력 무시량이 <#ffdd8eff>7<> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 물리 관통력의 <#ffdd8eff>방어력<> 무시량이 <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
         },
         "radiant_opportunity": {
             "name": "찬란한 기회",
-            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 물리 관통력의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력 무시량이 <#ffdd8eff>7<> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 물리 관통력의 <#ffdd8eff>방어력<> 무시량이 <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
         },
         "locket_of_the_iron_solari": {
             "name": "강철의 솔라리 펜던트",
@@ -3982,11 +3982,11 @@
         },
         "dead_mans_plate": {
             "name": "망자의 갑옷",
-            "option": "난파선: 이동하는 동안 매초 여세를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 중첩을 모두 소모하여 소모한 여세에 비례해 <#ff9028ff>60 - 180의 추가 물리 피해<>를 입힙니다."
+            "option": "난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>60 - 180의 추가 물리 피해<>를 입힙니다."
         },
         "radiant_dead_mans_plate": {
             "name": "찬란한 망자의 갑옷",
-            "option": "난파선: 이동하는 동안 매초 여세를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 중첩을 모두 소모하여 소모한 여세에 비례해 <#ff9028ff>60 - 180의 추가 물리 피해<>를 입힙니다."
+            "option": "난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>60 - 180의 추가 물리 피해<>를 입힙니다."
         }
     }
 }
