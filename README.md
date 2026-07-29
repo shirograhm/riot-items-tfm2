@@ -61,7 +61,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
 | **Frozen Mallet** | 1400G | +400 HP<br>+40 AD | On attack, apply a 15% slow for 2 seconds. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
-| **Heartsteel** | 1500G | +500 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 15% of that damage as permanent bonus health. |
+| **Heartsteel** | 1500G | +500 HP | Every 20 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 10% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
 | **Hubris** | 1300G | +70 AD<br>+10% CDR | Lethality: Ignore 18 armor when you deal physical damage to enemies.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | — |
@@ -119,7 +119,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Reduce the cooldown of your ultimate ability by 25%. |
 | **Radiant Frozen Mallet** | 2000G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
-| **Radiant Heartsteel** | 2100G | +800 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 15% of that damage as permanent bonus health. |
+| **Radiant Heartsteel** | 2100G | +800 HP | Every 20 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 10% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
 | **Radiant Hubris** | 1950G | +115 AD<br>+15% CDR | Lethality: Ignore 18 armor when you deal physical damage to enemies.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | — |

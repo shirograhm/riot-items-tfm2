@@ -33,8 +33,8 @@ impl Heartsteel {
             hp: 500,
             effect_bonus_flat_damage: 15,
             effect_caster_hp_percent_damage: 6.0,
-            effect_bonus_hp_percent_of_damage: 15.0,
-            effect_cooldown_seconds: 15.0,
+            effect_bonus_hp_percent_of_damage: 10.0,
+            effect_cooldown_seconds: 20.0,
             accumulated_bonus_hp: 0,
         }
     }
