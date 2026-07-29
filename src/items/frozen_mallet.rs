@@ -29,7 +29,7 @@ impl FrozenMallet {
             effect_duration_seconds: 2.0,
             effect_bonus_flat_damage: 0,
             effect_caster_hp_percent_damage: 0.0,
-            on_hit_cooldown_seconds: 0.5,
+            on_hit_cooldown_seconds: 0.75,
         }
     }
 

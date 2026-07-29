@@ -41,17 +41,20 @@ fn tick_bring_it_down(
     if is_tower {
         return 0;
     }
+    let interval = interval.max(1);
+    // Bring It Down only pays out once per `interval` attacks, so the shared
+    // on-hit cooldown is scaled up to cover the whole cycle.
     if !try_proc_on_hit(
         ctx,
         target,
         "kraken_slayer_on_hit_cooldown",
-        cooldown_seconds,
+        cooldown_seconds * interval as f64,
     ) {
         return 0;
     }
 
     *attack_count += 1;
-    if *attack_count < interval.max(1) {
+    if *attack_count < interval {
         return 0;
     }
     *attack_count = 0;
@@ -89,7 +92,7 @@ impl KrakenSlayer {
             effect_max_percent_bonus: 75.0,
             effect_hp_percent_threshold: 25.0,
             effect_attack_interval: 3,
-            on_hit_cooldown_seconds: 0.5,
+            on_hit_cooldown_seconds: 0.75,
             attack_count: 0,
         }
     }

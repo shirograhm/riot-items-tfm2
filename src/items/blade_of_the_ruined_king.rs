@@ -29,7 +29,7 @@ impl BladeOfTheRuinedKing {
             vamp: 5,
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
-            on_hit_cooldown_seconds: 0.5,
+            on_hit_cooldown_seconds: 0.75,
         }
     }
 

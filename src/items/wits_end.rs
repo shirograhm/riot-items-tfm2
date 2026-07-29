@@ -41,7 +41,7 @@ impl WitsEnd {
             magic_resistance: 80,
             toughness: 20,
             effect_bonus_magic_damage: 45,
-            on_hit_cooldown_seconds: 0.5,
+            on_hit_cooldown_seconds: 0.75,
         }
     }
 

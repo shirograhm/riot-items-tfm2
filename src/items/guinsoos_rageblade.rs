@@ -37,7 +37,7 @@ impl GuinsoosRageblade {
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
             effect_duration_seconds: 4.0,
-            on_hit_cooldown_seconds: 0.5,
+            on_hit_cooldown_seconds: 0.75,
         }
     }
 
