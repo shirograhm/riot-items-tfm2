@@ -3,9 +3,13 @@ use mod_api_stable::*;
 mod build_config;
 mod config;
 mod constants;
+mod diag;
 mod hook;
+mod item_catalog;
 mod item_meta;
 mod items;
+mod probe;
+mod strategy_ui;
 
 use items::*;
 
@@ -197,14 +201,26 @@ struct ItemBuildHookExtension;
 
 impl StableServerExtension for ItemBuildHookExtension {
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
+        // Also written to `riot-items.log`: the game runs without a console, so
+        // `eprintln!` alone meant a refused hook — which disables every build
+        // config, the strategy picker included — looked exactly like the hook
+        // working and the configs being ignored.
         match hook::install_hook() {
             Ok(address) => {
                 let message = format!("hook_installed address=0x{address:x}");
                 eprintln!("riot_items_tfm2: {message}");
+                diag::write(&message);
+                // Never count the function already detoured: the two patches
+                // would overwrite each other's jump.
+                probe::install(Some(address));
             }
             Err(error) if error == "hook already installed" => {}
             Err(error) => {
                 eprintln!("riot_items_tfm2: hook_refused error={error}");
+                diag::write(&format!("hook_refused error={error}"));
+                // Still count candidates: with no target resolved, identifying
+                // one is the whole job.
+                probe::install(None);
                 // Resolution failed, so dump the shape-matching functions for
                 // `tools/find_item_build_hook.py` to work from. Diagnostic only —
                 // the hook never picks a candidate itself.
@@ -214,12 +230,15 @@ impl StableServerExtension for ItemBuildHookExtension {
                             "riot_items_tfm2: hook_candidates count={}",
                             candidates.len()
                         );
+                        diag::write(&format!("hook_candidates count={}", candidates.len()));
                         for candidate in candidates {
                             eprintln!("riot_items_tfm2: hook_candidate {candidate}");
+                            diag::write(&format!("hook_candidate {candidate}"));
                         }
                     }
                     Err(error) => {
-                        eprintln!("riot_items_tfm2: hook_candidates_failed error={error}")
+                        eprintln!("riot_items_tfm2: hook_candidates_failed error={error}");
+                        diag::write(&format!("hook_candidates_failed error={error}"));
                     }
                 }
             }
@@ -237,12 +256,17 @@ fn init(host: &StableHost) -> StableMod {
         };
     }
     macro_rules! configured_radiant {
-        ($key:literal => $T:ty) => {
+        ($key:literal => $T:ty) => {{
+            // Radiant items are this mod's final tier, and the in-game build
+            // picker cannot discover them any other way: they are absent from
+            // the game's item settings document and `StableMod` does not expose
+            // what has been registered.
+            strategy_ui::note_final_item($key);
             configs
                 .get($key)
                 .map(<$T>::radiant_with_config)
                 .unwrap_or_else(<$T>::radiant)
-        };
+        }};
     }
 
     // Tier 1
@@ -381,6 +405,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
 
     reg.set_server_extension(ItemBuildHookExtension);
+    // Client-side in-game build picker on the strategy screen. Purely additive:
+    // it no-ops unless the `ui/layout/strategy` asset override is in place.
+    reg.set_extension(strategy_ui::StrategyPicker);
 
     host.log(
         LogLevel::Info,

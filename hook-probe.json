@@ -1,0 +1,19 @@
+{
+  "_comment": "Call-counting probe input for src/probe.rs. Twelve candidates only, not all 56: patching a function entry is a non-atomic 12-byte write, so every extra target is extra crash risk. The 55-candidate run did cause random crashes; this list drops every candidate already shown to be hot per-frame plumbing (0x12b8b40 at 4.7M calls, 0x11d1e70 at 73k, 0x1d98440 at 5.6k) and the disproven 0x10898c0.",
+  "_experiment": "This is a management sim: fast-forwarding simulates matches, so get_item_builds_list should be called about ONCE PER SIMULATED MATCH. Fast-forward through a known number of matches, then compare counts. The candidate whose count tracks the match count is the target; candidates that stay at 0, or that climb with frames rather than matches, are not.",
+  "_disproven": "0x10898c0 - structural score 11 and called exactly 2x in a session, but the detour logged hook_entered and then crashed reading the arguments, so its signature is not (agent, items, champions, champion_ids, team1, team2, mode) -> Vec<Vec<usize>>. The '2 calls' looked like once-per-match only because that session simulated few matches.",
+  "rvas": [
+    "0x1da1350",
+    "0x1aa60d0",
+    "0x11d18b0",
+    "0x16b4340",
+    "0x1a89720",
+    "0x1d848b0",
+    "0x6942e0",
+    "0x1d7fd30",
+    "0x1d85f00",
+    "0x1d857d0",
+    "0x1d850d0",
+    "0x1d7bed0"
+  ]
+}

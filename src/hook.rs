@@ -17,7 +17,15 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], the last signature known to be correct.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.5.3.
+//!
+//! The finder identifies the target by its **argument shape** rather than by
+//! anything in its body: the return type is 24 bytes so it comes back via `sret`
+//! in rcx, which pushes four arguments onto the stack — three `&Vec` (thin
+//! pointers, read as qwords) and a trailing `bool` (read as a byte). Exactly one
+//! function in the executable does that. Every fingerprint taken from emitted
+//! code has broken on a game update; this one is taken from the type signature
+//! the mod already depends on, so it survives them.
 //!
 //! Whatever the source, the candidate is verified against the PE exception table
 //! (`.pdata`) before anything is patched:
@@ -52,7 +60,7 @@
 use std::ffi::c_void;
 use std::mem;
 use std::ptr;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::{Mutex, OnceLock};
 
 extern crate game_core;
@@ -68,14 +76,29 @@ const PROLOGUE_PUSHES: [u8; 12] = [
 const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-/// Last signature verified against a shipping build (game 0.5.1, SDK 0.5.2).
-/// Kept only as a fallback — it does **not** match 0.5.3 or later. Supply a
-/// `hook-target.json` rather than editing this.
-const FALLBACK_SIGNATURE: [u8; 55] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x58,
-    0x01, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x48, 0xC7, 0x85, 0xD0, 0x00,
-    0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0x4D, 0x08, 0x4C, 0x89, 0xC3, 0x48, 0x89, 0x55,
-    0x10, 0x48, 0x89, 0xCF, 0x48, 0x8B, 0xB5,
+/// Signature for game 0.5.3, where the target is `0x2155a90` (size 2179).
+///
+/// 48 bytes, not 40: the first 40 are a prologue idiom shared with four other
+/// functions, so a shorter signature is ambiguous. `tools/find_item_build_hook.py`
+/// grows the signature until it is unique and prints the result — re-run it after
+/// a game update and paste the new bytes here, or ship a `hook-target.json`,
+/// which takes precedence and needs no rebuild.
+///
+/// Decoded, this is the prologue the target has had since 0.5.2, with only the
+/// frame size and an added `xmm6` save changing between versions:
+///
+/// ```text
+///   push rbp,r15,r14,r13,r12,rsi,rdi,rbx
+///   sub  rsp, 0x208
+///   lea  rbp, [rsp+0x80]
+///   movaps [rbp+0x170], xmm6
+///   mov  qword [rbp+0x168], -2
+///   mov  [rbp+0x40], r9
+/// ```
+const FALLBACK_SIGNATURE: [u8; 48] = [
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x08,
+    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x70, 0x01,
+    0x00, 0x00, 0x48, 0xC7, 0x85, 0x68, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0x4D,
 ];
 
 /// Plausible size range for the target in bytes (1869 in SDK 0.5.2). Narrows the
@@ -309,7 +332,10 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
     }
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
-        format!("{error}; the built-in signature predates game 0.5.3 — supply hook-target.json")
+        format!(
+            "{error}; the built-in signature is for game 0.5.3 and this build differs — \
+             re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
+        )
     })?;
     verify(base, functions, target)?;
     Ok(target)
@@ -459,11 +485,47 @@ unsafe fn detour(
     team2: &Vec<(Position, String)>,
     mode: bool,
 ) -> Vec<Vec<usize>> {
+    // Logged BEFORE anything is read, including the arguments. The target was
+    // identified structurally, so if it is the wrong function these references
+    // point at whatever the real signature passes and dereferencing them is
+    // undefined — the crash would happen before any later report could be
+    // written. `hook_entered` with no following `hook_call` therefore means
+    // "reached the detour, died reading the arguments", i.e. wrong function.
+    // Both lines present means the target is right.
+    {
+        static ENTERED: AtomicUsize = AtomicUsize::new(0);
+        if ENTERED.fetch_add(1, Ordering::Relaxed) < 3 {
+            crate::diag::write("hook_entered");
+        }
+    }
+
     let original = ORIGINAL
         .get()
         .copied()
         .expect("item build hook original function missing");
     let mut routes = original(agent, items, champions, champion_ids, team1, team2, mode);
+
+    // Identity check for a hook target derived by structural search rather than
+    // from a symbol (see `tools/find_item_build_hook.py`). The first few calls
+    // report the argument shapes: on the right function these are sane and
+    // stable — one route per team1 entry, a full item pool, the champion roster.
+    // Wildly wrong numbers mean the search picked the wrong function, and the
+    // target should be changed before trusting any build it produces.
+    {
+        static REPORTED: AtomicUsize = AtomicUsize::new(0);
+        if REPORTED.fetch_add(1, Ordering::Relaxed) < 3 {
+            crate::diag::write(&format!(
+                "hook_call routes={} team1={} team2={} items={} champion_ids={} mode={mode} \
+                 route_lens={:?}",
+                routes.len(),
+                team1.len(),
+                team2.len(),
+                items.len(),
+                champion_ids.len(),
+                routes.iter().map(Vec::len).collect::<Vec<_>>()
+            ));
+        }
+    }
 
     let item_keys = items
         .iter()
@@ -488,6 +550,15 @@ unsafe fn detour(
         // A malformed config is ignored so the game's routes stay untouched.
         Err(_) => {}
     }
+
+    // Builds picked on the strategy screen, keyed by route index. Applied after
+    // the champion-keyed file so a choice the player just made for this match
+    // beats their standing per-champion preference.
+    build_config::apply_positions(
+        &build_config::load_position_builds(),
+        &item_keys,
+        &mut routes,
+    );
 
     // Enforce unique builds after `build_config` so AI routes, category-forced
     // routes, and configured builds are all covered. Toggled from the item build

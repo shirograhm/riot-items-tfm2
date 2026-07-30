@@ -64,6 +64,131 @@ fn config_path() -> Result<PathBuf, String> {
         .ok_or_else(|| "could not resolve mod directory".to_string())
 }
 
+/// Number of route slots the in-game picker exposes, matching the three item
+/// columns the strategy screen already shows per player.
+pub const PICKER_SLOTS: usize = 3;
+
+/// Number of rows on the strategy screen's personal tab — one per position, in
+/// position order (Top, Jungle, Mid, Bottom, Support).
+pub const PICKER_ROWS: usize = 5;
+
+/// Builds chosen from the strategy screen, keyed by route index as a decimal
+/// string (`"0"`..`"4"`).
+///
+/// Kept in `item-builds-strategy.json`, separate from `item-builds.json`, for
+/// two reasons: the two are keyed differently (position vs. champion), and the
+/// external item build editor owns the champion file — writing both from two
+/// places would make them fight over it.
+///
+/// Route index is the position order the hook already relies on (Top = 0), which
+/// is exactly the strategy screen's row order, so a row index needs no mapping.
+/// Values follow the same slot convention as [`BuildConfig`]: an item key pins
+/// the slot, `null` leaves it to the AI.
+pub type PositionBuilds = HashMap<String, Vec<Option<String>>>;
+
+fn position_config_path() -> PathBuf {
+    crate::config::mod_dir().join("item-builds-strategy.json")
+}
+
+/// Loads `item-builds-strategy.json`. An absent or malformed file yields an
+/// empty map: the picker is additive, so a bad file must never cost the player
+/// the routes the game (or `item-builds.json`) already produced.
+pub fn load_position_builds() -> PositionBuilds {
+    std::fs::read_to_string(position_config_path())
+        .ok()
+        .and_then(|text| serde_json::from_str(&text).ok())
+        .unwrap_or_default()
+}
+
+/// Writes one slot of one row's build and persists the whole file.
+///
+/// `item_key` of `None` clears the slot back to AI choice. Rows are padded to
+/// [`PICKER_SLOTS`] so a write to slot 2 does not depend on slots 0 and 1 having
+/// been set first. Returns false when the file could not be written.
+pub fn set_position_slot(row: usize, slot: usize, item_key: Option<&str>) -> bool {
+    if row >= PICKER_ROWS || slot >= PICKER_SLOTS {
+        return false;
+    }
+    let path = position_config_path();
+
+    let mut builds = load_position_builds();
+    let build = builds.entry(row.to_string()).or_default();
+    build.resize(PICKER_SLOTS, None);
+    build[slot] = item_key.map(str::to_string);
+
+    // A row that is back to all-AI is dropped rather than stored as a row of
+    // nulls, so the file stays a record of actual player choices.
+    if builds
+        .get(&row.to_string())
+        .is_some_and(|build| build.iter().all(Option::is_none))
+    {
+        builds.remove(&row.to_string());
+    }
+
+    serde_json::to_string_pretty(&builds)
+        .ok()
+        .and_then(|text| std::fs::write(path, text).ok())
+        .is_some()
+}
+
+/// Exchanges two slots of one row's build, for the editor's swap buttons.
+///
+/// Done as one read-modify-write rather than two [`set_position_slot`] calls
+/// because a swap through an intermediate state can leave the row all-`None`,
+/// which that function deletes — losing the build it was asked to reorder.
+pub fn swap_position_slots(row: usize, a: usize, b: usize) -> bool {
+    if row >= PICKER_ROWS || a >= PICKER_SLOTS || b >= PICKER_SLOTS || a == b {
+        return false;
+    }
+
+    let mut builds = load_position_builds();
+    let Some(build) = builds.get_mut(&row.to_string()) else {
+        return true; // an all-AI row has nothing to reorder
+    };
+    build.resize(PICKER_SLOTS, None);
+    build.swap(a, b);
+
+    serde_json::to_string_pretty(&builds)
+        .ok()
+        .and_then(|text| std::fs::write(position_config_path(), text).ok())
+        .is_some()
+}
+
+/// Writes `unique_items` to `mod-settings.json`, the toggle
+/// [`unique_items_enabled`] reads back on every hook call.
+///
+/// The whole file is rewritten from this one field, matching the desktop
+/// editor's `Save-Settings`: the schema has exactly one key, so there is
+/// nothing else in it to preserve.
+pub fn set_unique_items(enabled: bool) -> bool {
+    let path = crate::config::mod_dir().join("mod-settings.json");
+    std::fs::write(path, format!("{{\n  \"unique_items\": {enabled}\n}}\n")).is_ok()
+}
+
+/// Applies the strategy screen's per-row builds on top of `routes`.
+///
+/// Runs after [`apply`] so an explicit in-match pick from the strategy screen
+/// wins over the champion-keyed file, and shares its merge semantics: pinned
+/// slots take the player's item, `null` slots fall back to the AI's own picks.
+/// Rows with no entry are left exactly as they were.
+pub fn apply_positions(builds: &PositionBuilds, item_keys: &[String], routes: &mut [Vec<usize>]) {
+    if builds.is_empty() {
+        return;
+    }
+    let index_by_key: HashMap<&str, usize> = item_keys
+        .iter()
+        .enumerate()
+        .map(|(index, key)| (key.as_str(), index))
+        .collect();
+
+    for (index, slot) in routes.iter_mut().enumerate() {
+        if let Some(build) = builds.get(&index.to_string()) {
+            let ai_route = slot.clone();
+            *slot = merge_build(build, &ai_route, &index_by_key);
+        }
+    }
+}
+
 /// Schema of `mod-settings.json`: behavior toggles managed by the item build
 /// editor. An absent file (the common case) means every toggle takes its
 /// default.
@@ -130,12 +255,25 @@ pub fn apply(
     }
 }
 
-/// Resolves one configured item key to a pool index: normalize to its `radiant_`
-/// variant, map any renamed item through `alias_key`, then look it up. Unknown
-/// keys return `None` (skipped rather than aborting the build).
+/// Resolves one configured item key to a pool index. The key is tried verbatim
+/// first, so a game-internal key (`"warlords_final_judgement"`, or any vanilla
+/// tier 5) resolves as written; only if that misses is it normalized to its
+/// `radiant_` variant and run through `alias_key`, which is what lets builds be
+/// authored with plain LoL names (`"collector"`). Unknown keys return `None`
+/// (skipped rather than aborting the build).
+///
+/// The `radiant_` attempt comes FIRST and the verbatim one is the fallback.
+/// Order matters: `"liandrys_torment"` in an existing `item-builds.json` means
+/// the radiant item, but a base item of that exact key also exists, so trying
+/// verbatim first would silently downgrade every build in that file to its base
+/// tier. The fallback exists only for keys with no radiant variant — the vanilla
+/// tier 5s the in-game picker offers, like `"warlords_final_judgement"`.
 fn resolve_key(key: &str, index_by_key: &HashMap<&str, usize>) -> Option<usize> {
     let radiant = radiant_key(key);
-    index_by_key.get(alias_key(radiant.as_ref())).copied()
+    if let Some(index) = index_by_key.get(alias_key(radiant.as_ref())) {
+        return Some(*index);
+    }
+    index_by_key.get(key).copied()
 }
 
 /// Builds the final route from a configured build and the route the AI generated
@@ -197,6 +335,34 @@ fn radiant_key(key: &str) -> Cow<'_, str> {
 ///
 /// Add a new arm per renamed item in `text/item.i18n` (lines 58-177): key the arm
 /// on the `radiant_` form of the LoL name, value is the i18n object key.
+/// Normalizes any spelling of an item back to the plain LoL slug the item
+/// catalog is keyed by: the inverse of [`alias_key`] followed by dropping the
+/// `radiant_` prefix. `"warlords_final_judgement"`, `"radiant_bloodthirster"`
+/// and `"bloodthirster"` all yield `"bloodthirster"`.
+///
+/// The in-game editor needs this because it reads item keys back out of the
+/// game (where they are internal keys) but groups them with
+/// [`crate::item_catalog`], which is keyed the way a player writes a build.
+pub fn base_slug(key: &str) -> &str {
+    unalias_key(key)
+        .strip_prefix("radiant_")
+        .unwrap_or_else(|| unalias_key(key))
+}
+
+/// Inverse of [`alias_key`]: the game's internal key for a renamed item back to
+/// the `radiant_` form of its LoL name. Keys with no alias pass through.
+fn unalias_key(key: &str) -> &str {
+    match key {
+        "warlords_final_judgement" => "radiant_bloodthirster",
+        "storm_sovereign" => "radiant_phantom_dancer",
+        "impregnable_fortress" => "radiant_thornmail",
+        "veil_of_annihilation" => "radiant_dragons_claw",
+        "prophet_of_the_abyss" => "radiant_ludens_tempest",
+        "giants_horn_shard" => "radiant_sunfire_cape",
+        other => other,
+    }
+}
+
 fn alias_key(key: &str) -> &str {
     match key {
         // Radiant Bloodthirster

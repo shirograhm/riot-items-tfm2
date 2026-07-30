@@ -15,10 +15,3 @@ serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["preserve_order"] }
 
 [workspace]
-
-# Required, not an optimization choice. From 0.5.3 the SDK's engine rlibs ship
-# LLVM bitcode instead of object code, so `link.exe` rejects libgame_core with
-# LNK1136 unless rustc does the codegen itself. Only matters because
-# `src/hook.rs` links game_core; drop it if the hook ever goes away.
-[profile.release]
-lto = "fat"

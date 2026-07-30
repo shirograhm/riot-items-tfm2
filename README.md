@@ -191,3 +191,38 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Ring of Reincarnation | Giant’s Belt |
 | Hourglass of Eternity | Sunfire Cape |
 | Giant’s Horn Shard | Radiant Sunfire Cape |
+
+### In-Game Item Build Editor
+
+The strategy screen's **Personal** tab gains one **Item Build Editor** button, in
+the top right of the column header, plus a build summary on each of the five
+player rows.
+
+The button opens the desktop item build editor's window, rebuilt in-game: one row
+per position, three item slots per row, with the same swap and clear buttons and
+the same category-grouped item list (Assassin / Fighter / Marksman / Mage / Tank
+/ Support, then Other), icons included. Clicking a slot drops its item list
+underneath it; clicking the pinned item again, or the slot's **✕**, hands the
+slot back to the AI. The **Enforcing unique items** toggle is the same setting as
+the desktop editor's checkbox and writes the same `mod-settings.json`.
+
+Every change is written immediately — the Save button only reports what is
+already on disk, exactly as the desktop editor's autosave does.
+
+Picks are saved to `item-builds-strategy.json` next to the DLL, keyed by row
+index — `"0"` is Top, `"4"` is Support, matching the order the game generates
+item routes in. An item key pins that slot; `null` leaves it to the AI:
+
+```json
+{
+  "0": ["radiant_collector", null, null],
+  "3": ["radiant_kraken_slayer", "radiant_infinity_edge", null]
+}
+```
+
+This is separate from `item-builds.json`, which the item build editor owns and
+keys by champion. Both are applied, strategy-screen picks last, so a choice made
+for the current match beats a standing per-champion preference.
+
+The vanilla category dropdowns are untouched — the picker sits beside them, and
+the screen falls back to stock behaviour if the layout override is not loaded.

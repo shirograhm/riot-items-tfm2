@@ -1,0 +1,3731 @@
+main:strategy_ui {
+  #bg:color {
+    width: 100%;
+    height: 100%;
+    color: #07080bff;
+  
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+    #header:color {
+      color: #161721ff;
+      width: 100%;
+      height: 85px;
+
+      #logo:image {
+        width: 60px;
+        height: 60px;
+
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        x: 10px;
+
+        source: "asset/base/aseprite_resources/team_logo";
+        rect_tag: "0_0";
+      }
+
+      #name:label {
+        @"asset/base/style/main#bold_label";
+        x: 83px;
+
+        width: 1419px;
+        height: 85px;
+
+        size: 36;
+
+        align_y: Center;
+        text: "Rapid Storm";
+      }
+
+      #phase:color {
+        width: 100%;
+        height: 2px;
+
+        anchor_y: 1;
+        pivot_y: 1;
+      }
+    }
+  }
+
+  #contents:empty {
+    width: 100%;
+    height: 100%;
+
+    #strategy:color {
+      width: 1864px;
+      height: 856px;
+      x: 27px;
+      y: 107px;
+
+      color: #161721ff;
+      
+      rounding: Uniform {
+        rounding: 12;
+      }
+
+      #header:label {
+        @"asset/base/style/main#bold_label";
+        width: 200px;
+        height: 50px;
+        x: 16px;
+        y: 10px;
+
+        align_y: Center;
+        size: 20;
+
+        text: "#asset/base/text/ui?staff.stat.strategy";
+      }
+
+      #mode_toggle:color {
+        width: 244px;
+        height: 40px;
+        x: 220px;
+        y: 15px;
+
+        padding: {
+          left: 4px;
+          right: 4px;
+          top: 4px;
+          bottom: 4px;
+        }
+
+        color: #4a4c56ff;
+        stroke: 1;
+        back_color: #00000000;
+
+        child_type: LeftToRight {
+          spacing: 0px;
+        }
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+
+        #team:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 118px;
+          height: 32px;
+
+          label: {
+            size: 16;
+          }
+
+          selected_label: {
+            size: 16;
+          }
+
+          text: "#asset/base/text/strategy?personal.mode_team";
+        }
+
+        #personal:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 118px;
+          height: 32px;
+
+          label: {
+            size: 16;
+          }
+
+          selected_label: {
+            size: 16;
+          }
+
+          text: "#asset/base/text/strategy?personal.mode_personal";
+        }
+      }
+
+      #item_info_btn:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        width: 216px;
+        height: 40px;
+
+        x: 480px;
+        y: 15px;
+
+        text: {
+          font: "asset/base/font/set/bold";
+          text: "#asset/base/text/strategy?personal.item_info_btn";
+          align_x: Center;
+          align_y: Center;
+          size: 16;
+        }
+      }
+
+      #bar:color {
+        y: 735px;
+        width: 1824px;
+        height: 1px;
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+
+        color: #4a4c56ff;
+      }
+
+      #desc:label {
+        @"asset/base/style/main#label";
+        y: 749px;
+
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        width: 1824px;
+        height: 181px;
+        size: 18;
+        line_height: 24;
+
+        text: "";
+      }
+
+      #chat_panel:color {
+        width: 44px;
+        height: 44px;
+
+        anchor_x: 1;
+        pivot_x: 1;
+        anchor_y: 1;
+        pivot_y: 1;
+
+        x: -20px;
+        y: -12px;
+
+        visible: false;
+
+        color: #1d1f2cff;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+
+        #chat_btn:button {
+          width: 24px;
+          height: 24px;
+
+          anchor_x: 0.5;
+          pivot_x: 0.5;
+          anchor_y: 0.5;
+          pivot_y: 0.5;
+
+          source: "asset/base/ui/icons/chat";
+          color: #a5a5abff;
+
+          hover: {
+            color: #e8e8e8ff;
+          }
+
+          active: {
+            color: #e8e8e8ff;
+          }
+
+          #chat_red_dot:color {
+            width: 14px;
+            height: 14px;
+
+            anchor_x: 1;
+            pivot_x: 0.5;
+            x: -3px;
+
+            anchor_y: 0;
+            pivot_y: 0.5;
+            y: 3px;
+
+            ignore_event: true;
+            visible: false;
+
+            color: #eb3d4dff;
+
+            rounding: Uniform {
+              rounding: 7;
+            }
+          }
+        }
+      }
+
+      #sub1:color {
+        width: 444px;
+        height: 645px;
+
+        color: #1d1f2cff;
+        y: 75px;
+        x: 20px;
+
+        rounding: Uniform {
+          rounding: 12;
+        }
+
+        padding: {
+          left: 19px;
+          right: 19px;
+          top: 15px;
+          bottom: 15px;
+        }
+
+        child_type: TopToBottom {
+          spacing: 15px;
+        }
+
+        #focused_area:empty {
+          width: 406px;
+          height: 142px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.focused.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 112px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #top:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/top_hover";
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/top_on";
+              }
+
+              icon2: {
+                source: "asset/base/ui/strategy/strategy_icons/mid_hover";
+              }
+
+              selected_icon2: {
+                source: "asset/base/ui/strategy/strategy_icons/mid_on";
+              }
+              text: "#asset/base/text/strategy?team.focused.top.name";
+              hint: "#asset/base/text/strategy?team.focused.top.desc";
+            }
+
+            #bottom:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/mid_hover";
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/mid_on";
+              }
+
+              icon2: {
+                source: "asset/base/ui/strategy/strategy_icons/bottom_hover";
+              }
+
+              selected_icon2: {
+                source: "asset/base/ui/strategy/strategy_icons/bottom_on";
+              }
+              text: "#asset/base/text/strategy?team.focused.bottom.name";
+              hint: "#asset/base/text/strategy?team.focused.bottom.desc";
+            }
+
+            #all:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/all_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/all_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/all_on";
+              }
+              text: "#asset/base/text/strategy?team.focused.all.name";
+              hint: "#asset/base/text/strategy?team.focused.all.desc";
+            }
+          }
+        }
+
+        #early_jungle:empty {
+          width: 406px;
+          height: 142px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.early_jungle.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 112px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #growth_and_cover:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/farming_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/farming_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/farming_on";
+              }
+              text: "#asset/base/text/strategy?team.early_jungle.growth_and_cover.name";
+              hint: "#asset/base/text/strategy?team.early_jungle.growth_and_cover.desc";
+            }
+
+            #ganking:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/gank_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/gank_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/gank_on";
+              }
+              text: "#asset/base/text/strategy?team.early_jungle.ganking.name";
+              hint: "#asset/base/text/strategy?team.early_jungle.ganking.desc";
+            }
+
+            #counter_jungle:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/counter_jungle_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/counter_jungle_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/counter_jungle_on";
+              }
+              text: "#asset/base/text/strategy?team.early_jungle.counter_jungle.name";
+              hint: "#asset/base/text/strategy?team.early_jungle.counter_jungle.desc";
+            }
+          }
+        }
+
+        #early_serpen:empty {
+          width: 406px;
+          height: 142px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.early_serpen.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 112px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #must:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/do_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/do_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/do_on";
+              }
+              text: "#asset/base/text/strategy?team.early_serpen.must.name";
+              hint: "#asset/base/text/strategy?team.early_serpen.must.desc";
+            }
+
+            #flexible:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/flexible_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/flexible_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/flexible_on";
+              }
+              text: "#asset/base/text/strategy?team.early_serpen.flexible.name";
+              hint: "#asset/base/text/strategy?team.early_serpen.flexible.desc";
+            }
+
+            #giveup:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/dont_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/dont_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/dont_on";
+              }
+              text: "#asset/base/text/strategy?team.early_serpen.giveup.name";
+              hint: "#asset/base/text/strategy?team.early_serpen.giveup.desc";
+            }
+          }
+        }
+
+        #early_serpen_top:empty {
+          width: 406px;
+          height: 142px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.early_serpen_top.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 112px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #must:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/do_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/do_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/do_on";
+              }
+              text: "#asset/base/text/strategy?team.early_serpen_top.must.name";
+              hint: "#asset/base/text/strategy?team.early_serpen_top.must.desc";
+            }
+
+            #flexible:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/flexible_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/flexible_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/flexible_on";
+              }
+              text: "#asset/base/text/strategy?team.early_serpen_top.flexible.name";
+              hint: "#asset/base/text/strategy?team.early_serpen_top.flexible.desc";
+            }
+
+            #giveup:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/dont_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/dont_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/dont_on";
+              }
+              text: "#asset/base/text/strategy?team.early_serpen_top.giveup.name";
+              hint: "#asset/base/text/strategy?team.early_serpen_top.giveup.desc";
+            }
+          }
+        }
+      }
+      #sub2:color {
+        width: 444px;
+        height: 645px;
+
+        color: #1d1f2cff;
+        y: 75px;
+        x: 480px;
+
+        rounding: Uniform {
+          rounding: 12;
+        }
+
+        padding: {
+          left: 19px;
+          right: 19px;
+          top: 15px;
+          bottom: 15px;
+        }
+
+        child_type: TopToBottom {
+          spacing: 15px;
+        }
+
+        #minion_wave:empty {
+          width: 406px;
+          height: 106px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.minion_wave.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 76px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #wave_priority:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/finish_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/finish_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/finish_on";
+              }
+              text: "#asset/base/text/strategy?team.minion_wave.wave_priority.name";
+              hint: "#asset/base/text/strategy?team.minion_wave.wave_priority.desc";
+            }
+
+            #join_priority:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/rally_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/rally_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/rally_on";
+              }
+              text: "#asset/base/text/strategy?team.minion_wave.join_priority.name";
+              hint: "#asset/base/text/strategy?team.minion_wave.join_priority.desc";
+            }
+          }
+        }
+
+        #object_buildup:empty {
+          width: 406px;
+          height: 142px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.object_buildup.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 112px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #split:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/split_icon_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/split_icon_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/split_icon_on";
+              }
+              text: "#asset/base/text/strategy?team.object_buildup.split.name";
+              hint: "#asset/base/text/strategy?team.object_buildup.split.desc";
+            }
+
+            #flexible:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/flexible_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/flexible_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/flexible_on";
+              }
+              text: "#asset/base/text/strategy?team.object_buildup.flexible.name";
+              hint: "#asset/base/text/strategy?team.object_buildup.flexible.desc";
+            }
+
+            #gather:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/rally_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/rally_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/rally_on";
+              }
+              text: "#asset/base/text/strategy?team.object_buildup.gather.name";
+              hint: "#asset/base/text/strategy?team.object_buildup.gather.desc";
+            }
+          }
+        }
+
+        #object_buildup_split:color {
+          width: 406px;
+          height: 34px;
+
+          padding: {
+            left: 4px;
+            right: 4px;
+            top: 4px;
+            bottom: 4px;
+          }
+
+          rounding: Uniform {
+            rounding: 8;
+          }
+
+          color: #4a4c56ff;
+          stroke: 1;
+          back_color: #00000000;
+
+          #header:label {
+            @"asset/base/style/main#label";
+            size: 16;
+            width: 150px;
+            height: 20px;
+            x: 6px;
+            y: 1px;
+
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            align_y: Center;
+
+            text: "#asset/base/text/ui?strategy.split";
+          }
+
+          #left:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: -215px;
+
+            anchor_x: 1;
+            pivot_x: 1;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+
+            width: 20px;
+            height: 20px;
+
+            btn: {
+              rounding: Uniform {
+                rounding: 6;
+              }
+            }
+
+            icon: {
+              source: "asset/base/ui/icons/left";
+              rect: {
+                x: 7.47;
+                y: 5.61;
+                w: 5.06;
+                h: 8.78;
+              }
+            }
+          }
+
+          #right:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: -10px;
+            anchor_x: 1;
+            pivot_x: 1;
+
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+
+            width: 20px;
+            height: 20px;
+
+            btn: {
+              rounding: Uniform {
+                rounding: 6;
+              }
+            }
+
+            icon: {
+              source: "asset/base/ui/icons/right";
+              rect: {
+                x: 7.47;
+                y: 5.61;
+                w: 5.06;
+                h: 8.78;
+              }
+            }
+          }
+
+          #name:label {
+            @"asset/base/style/main#label";
+            width: 176px;
+            height: 20px;
+
+            x: 80px;
+            anchor_x: 0.5;
+            pivot_x: 0.5;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+
+            #icon:image {
+              source: "asset/base/ui/icons/top";
+              width: 16px;
+              height: 16px;
+              x: -6px;
+
+              anchor_x: 0;
+              pivot_x: 1;
+              anchor_y: 0.5;
+              pivot_y: 0.5;
+            }
+
+            align_x: Center;
+            align_y: Center;
+            text: "teswftt";
+            size: 16;
+
+            fit_width: true;
+          }
+        }
+
+        #object_battle:empty {
+          width: 406px;
+          height: 106px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.object_battle.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 76px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #poking:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+              icon_size: 18;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/distance_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/distance_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/distance_on";
+              }
+              text: "#asset/base/text/strategy?team.object_battle.poking.name";
+              hint: "#asset/base/text/strategy?team.object_battle.poking.desc";
+            }
+
+            #initiating:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+              icon_size: 18;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/fast_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/fast_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/fast_on";
+              }
+              text: "#asset/base/text/strategy?team.object_battle.initiating.name";
+              hint: "#asset/base/text/strategy?team.object_battle.initiating.desc";
+            }
+          }
+        }
+
+        #object_finish:empty {
+          width: 406px;
+          height: 106px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.object_finish.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 76px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #kill_priority:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/finish_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/finish_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/finish_on";
+              }
+              text: "#asset/base/text/strategy?team.object_finish.kill_priority.name";
+              hint: "#asset/base/text/strategy?team.object_finish.kill_priority.desc";
+            }
+
+            #battle_priority:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/gank_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/gank_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/gank_on";
+              }
+              text: "#asset/base/text/strategy?team.object_finish.battle_priority.name";
+              hint: "#asset/base/text/strategy?team.object_finish.battle_priority.desc";
+            }
+          }
+        }
+      }
+      #sub3:color {
+        width: 444px;
+        height: 645px;
+
+        color: #1d1f2cff;
+        y: 75px;
+        x: 940px;
+
+        rounding: Uniform {
+          rounding: 12;
+        }
+
+        padding: {
+          left: 19px;
+          right: 19px;
+          top: 15px;
+          bottom: 15px;
+        }
+
+        child_type: TopToBottom {
+          spacing: 15px;
+        }
+
+        #morgard_use:empty {
+          width: 406px;
+          height: 142px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.morgard_use.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 112px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #gather:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/rally_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/rally_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/rally_on";
+              }
+              text: "#asset/base/text/strategy?team.morgard_use.gather.name";
+              hint: "#asset/base/text/strategy?team.morgard_use.gather.desc";
+            }
+
+            #split14:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/1-4 split";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/1-4 split";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/1-4 split_on";
+              }
+              text: "#asset/base/text/strategy?team.morgard_use.split14.name";
+              hint: "#asset/base/text/strategy?team.morgard_use.split14.desc";
+            }
+
+            #split131:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/1-3-1 split_hover";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/1-3-1 split_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/1-3-1 split_on";
+              }
+              text: "#asset/base/text/strategy?team.morgard_use.split131.name";
+              hint: "#asset/base/text/strategy?team.morgard_use.split131.desc";
+            }
+          }
+        }
+
+        #morgard_use_split1:color {
+          width: 406px;
+          height: 34px;
+
+          padding: {
+            left: 4px;
+            right: 4px;
+            top: 4px;
+            bottom: 4px;
+          }
+
+          rounding: Uniform {
+            rounding: 8;
+          }
+
+          color: #4a4c56ff;
+          stroke: 1;
+          back_color: #00000000;
+
+          #header:label {
+            @"asset/base/style/main#label";
+            size: 16;
+            width: 150px;
+            height: 20px;
+            x: 6px;
+            y: 1px;
+
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            align_y: Center;
+
+            text: "#asset/base/text/ui?strategy.split";
+          }
+
+          #left:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: -215px;
+
+            anchor_x: 1;
+            pivot_x: 1;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+
+            width: 20px;
+            height: 20px;
+
+            btn: {
+              rounding: Uniform {
+                rounding: 6;
+              }
+            }
+
+            icon: {
+              source: "asset/base/ui/icons/left";
+              rect: {
+                x: 7.47;
+                y: 5.61;
+                w: 5.06;
+                h: 8.78;
+              }
+            }
+          }
+
+          #right:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: -10px;
+            anchor_x: 1;
+            pivot_x: 1;
+
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+
+            width: 20px;
+            height: 20px;
+
+            btn: {
+              rounding: Uniform {
+                rounding: 6;
+              }
+            }
+
+            icon: {
+              source: "asset/base/ui/icons/right";
+              rect: {
+                x: 7.47;
+                y: 5.61;
+                w: 5.06;
+                h: 8.78;
+              }
+            }
+          }
+
+          #name:label {
+            @"asset/base/style/main#label";
+            width: 176px;
+            height: 20px;
+
+            x: 80px;
+            anchor_x: 0.5;
+            pivot_x: 0.5;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+
+            #icon:image {
+              source: "asset/base/ui/icons/top";
+              width: 16px;
+              height: 16px;
+              x: -6px;
+
+              anchor_x: 0;
+              pivot_x: 1;
+              anchor_y: 0.5;
+              pivot_y: 0.5;
+            }
+
+            align_x: Center;
+            align_y: Center;
+            text: "teswftt";
+            size: 16;
+
+            fit_width: true;
+          }
+        }
+
+        #morgard_use_split2:color {
+          width: 406px;
+          height: 34px;
+
+          padding: {
+            left: 4px;
+            right: 4px;
+            top: 4px;
+            bottom: 4px;
+          }
+
+          rounding: Uniform {
+            rounding: 8;
+          }
+
+          color: #4a4c56ff;
+          stroke: 1;
+          back_color: #00000000;
+
+          #header:label {
+            @"asset/base/style/main#label";
+            size: 16;
+            width: 150px;
+            height: 20px;
+            x: 6px;
+            y: 1px;
+
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            align_y: Center;
+
+            text: "#asset/base/text/ui?strategy.split";
+          }
+
+          #left:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: -215px;
+
+            anchor_x: 1;
+            pivot_x: 1;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+
+            width: 20px;
+            height: 20px;
+
+            btn: {
+              rounding: Uniform {
+                rounding: 6;
+              }
+            }
+
+            icon: {
+              source: "asset/base/ui/icons/left";
+              rect: {
+                x: 7.47;
+                y: 5.61;
+                w: 5.06;
+                h: 8.78;
+              }
+            }
+          }
+
+          #right:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: -10px;
+            anchor_x: 1;
+            pivot_x: 1;
+
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+
+            width: 20px;
+            height: 20px;
+
+            btn: {
+              rounding: Uniform {
+                rounding: 6;
+              }
+            }
+
+            icon: {
+              source: "asset/base/ui/icons/right";
+              rect: {
+                x: 7.47;
+                y: 5.61;
+                w: 5.06;
+                h: 8.78;
+              }
+            }
+          }
+
+          #name:label {
+            @"asset/base/style/main#label";
+            width: 176px;
+            height: 20px;
+
+            x: 80px;
+            anchor_x: 0.5;
+            pivot_x: 0.5;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+
+            #icon:image {
+              source: "asset/base/ui/icons/top";
+              width: 16px;
+              height: 16px;
+              x: -6px;
+
+              anchor_x: 0;
+              pivot_x: 1;
+              anchor_y: 0.5;
+              pivot_y: 0.5;
+            }
+
+            align_x: Center;
+            align_y: Center;
+            text: "teswftt";
+            size: 16;
+
+            fit_width: true;
+          }
+        }
+
+        #tower_press:empty {
+          width: 406px;
+          height: 106px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.tower_press.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 76px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #poking:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+              icon_size: 18;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/distance_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/distance_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/distance_on";
+              }
+              text: "#asset/base/text/strategy?team.tower_press.poking.name";
+              hint: "#asset/base/text/strategy?team.tower_press.poking.desc";
+            }
+
+            #dive:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+              icon_size: 18;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/fast_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/fast_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/fast_on";
+              }
+              text: "#asset/base/text/strategy?team.tower_press.dive.name";
+              hint: "#asset/base/text/strategy?team.tower_press.dive.desc";
+            }
+          }
+        }
+
+        #defense:empty {
+          width: 406px;
+          height: 106px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.defense.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 76px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #gather:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/defense_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/defense_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/defense_on";
+              }
+              text: "#asset/base/text/strategy?team.defense.gather.name";
+              hint: "#asset/base/text/strategy?team.defense.gather.desc";
+            }
+
+            #battle:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/gank_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/gank_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/gank_on";
+              }
+              text: "#asset/base/text/strategy?team.defense.battle.name";
+              hint: "#asset/base/text/strategy?team.defense.battle.desc";
+            }
+          }
+        }
+      }
+      #sub4:color {
+        width: 444px;
+        height: 645px;
+
+        color: #1d1f2cff;
+        y: 75px;
+        x: -20px;
+        anchor_x: 1;
+        pivot_x: 1;
+
+        rounding: Uniform {
+          rounding: 12;
+        }
+
+        padding: {
+          left: 19px;
+          right: 19px;
+          top: 15px;
+          bottom: 15px;
+        }
+
+        child_type: TopToBottom {
+          spacing: 15px;
+        }
+
+        #game_finish:empty {
+          width: 406px;
+          height: 142px;
+
+          child_type: TopToBottom {
+            spacing: 10px;
+          }
+
+          #category:label {
+            @"asset/base/style/main#bold_label";
+            width: 406px;
+            height: 20px;
+
+            align_y: Center;
+            size: 18;
+            text: "#asset/base/text/strategy?team.game_finish.name";
+          }
+
+          #bg:color {
+            width: 406px;
+            height: 112px;
+
+            padding: {
+              left: 4px;
+              right: 4px;
+              top: 4px;
+              bottom: 4px;
+            }
+
+            rounding: Uniform {
+              rounding: 8;
+            }
+
+            color: #4a4c56ff;
+            stroke: 1;
+            back_color: #00000000;
+
+            child_type: TopToBottom {
+              spacing: 4px;
+            }
+
+            #stable:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/defense_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/defense_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/defense_on";
+              }
+              text: "#asset/base/text/strategy?team.game_finish.stable.name";
+              hint: "#asset/base/text/strategy?team.game_finish.stable.desc";
+            }
+
+            #flexible:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/flexible_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/flexible_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/flexible_on";
+              }
+              text: "#asset/base/text/strategy?team.game_finish.flexible.name";
+              hint: "#asset/base/text/strategy?team.game_finish.flexible.desc";
+            }
+
+            #aggressive:color_selectable {
+              @"asset/base/style/main#strategy_option";
+              width: 398px;
+              height: 32px;
+              icon_size: 18;
+
+              label: {
+                size: 16;
+              }
+
+              selected_label: {
+                size: 16;
+              }
+
+              icon: {
+                source: "asset/base/ui/strategy/strategy_icons/fast_off";
+                hover: {
+                  source: "asset/base/ui/strategy/strategy_icons/fast_hover";
+                }
+              }
+
+              selected_icon: {
+                source: "asset/base/ui/strategy/strategy_icons/fast_on";
+              }
+              text: "#asset/base/text/strategy?team.game_finish.aggressive.name";
+              hint: "#asset/base/text/strategy?team.game_finish.aggressive.desc";
+            }
+          }
+        }
+
+        #matchup:empty {
+          width: 406px;
+          height: 308px;
+
+          child_type: TopToBottom {
+            spacing: 0px;
+          }
+
+          #header:label {
+            @"asset/base/style/main#bold_label";
+
+            width: 406px;
+            height: 54px;
+            align_y: Center;
+            size: 20;
+
+            text: "#asset/base/text/ui?strategy.matchup";
+          }
+
+          #top:empty {
+            width: 406px;
+            height: 42px;
+
+            #blue:empty {
+              width: 50%;
+              height: 100%;
+                
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/top";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #5b73ffff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+
+            #red:empty {
+              x: 50%;
+              width: 50%;
+              height: 100%;
+
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/top";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #ef6471ff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+          }
+
+          #jungle:empty {
+            y: 11px;
+            width: 406px;
+            height: 42px;
+
+            #blue:empty {
+              width: 50%;
+              height: 100%;
+                
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/jungle";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #5b73ffff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+
+            #red:empty {
+              x: 50%;
+              width: 50%;
+              height: 100%;
+
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/jungle";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #ef6471ff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+          }
+          
+          #mid:empty {
+            y: 11px;
+            width: 406px;
+            height: 42px;
+
+            #blue:empty {
+              width: 50%;
+              height: 100%;
+                
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/mid";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #5b73ffff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+
+            #red:empty {
+              x: 50%;
+              width: 50%;
+              height: 100%;
+
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/mid";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #ef6471ff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+          }
+          
+          #bottom:empty {
+            y: 11px;
+            width: 406px;
+            height: 42px;
+
+            #blue:empty {
+              width: 50%;
+              height: 100%;
+                
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/bottom";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #5b73ffff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+
+            #red:empty {
+              x: 50%;
+              width: 50%;
+              height: 100%;
+
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/bottom";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #ef6471ff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+          }
+          
+          #support:empty {
+            y: 11px;
+            width: 406px;
+            height: 42px;
+
+            #blue:empty {
+              width: 50%;
+              height: 100%;
+                
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/support";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #5b73ffff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+
+            #red:empty {
+              x: 50%;
+              width: 50%;
+              height: 100%;
+
+              child_type: LeftToRight {
+                spacing: 0px;
+              }
+
+              #position:image {
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 32px;
+                height: 32px;
+                x: 2px;
+                
+                source: "asset/base/ui/icons/support";
+              }
+
+              #bar:color {
+                x: 7px;
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                width: 5px;
+                height: 40px;
+
+                color: #ef6471ff;
+              }
+
+              #champion:color {
+                x: 5px;
+                width: 40px;
+                height: 40px;
+
+                rounding: Uniform {
+                  rounding: 8;
+                }
+
+                color: #1d1f2cff;
+
+                anchor_y: 0.5;
+                pivot_y: 0.5;
+
+                #icon:image {
+                  width: 36px;
+                  height: 36px;
+
+                  anchor_x: 0.5;
+                  anchor_y: 0.5;
+                  pivot_x: 0.5;
+                  pivot_y: 0.5;
+                }
+              }
+
+              #name:label {
+                @"asset/base/style/main#label";
+                x: 5px;
+
+                width: 104px;
+                height: 42px;
+
+                align_y: Center;
+                size: 16;
+
+                text: "name";
+                fit_width: true;
+              }
+            }
+          }
+        }
+      }
+      #personal:color {
+        width: 1824px;
+        height: 645px;
+
+        color: #1d1f2cff;
+        y: 75px;
+        x: 20px;
+
+        visible: false;
+
+        rounding: Uniform {
+          rounding: 12;
+        }
+
+        padding: {
+          left: 19px;
+          right: 19px;
+          top: 15px;
+          bottom: 15px;
+        }
+
+        child_type: TopToBottom {
+          spacing: 10px;
+        }
+
+        #personal_header:empty {
+          width: 1786px;
+          height: 30px;
+
+          #col_player:label {
+            @"asset/base/style/main#label";
+            width: 300px;
+            height: 30px;
+            align_y: Center;
+            size: 16;
+            text: "#asset/base/text/strategy?personal.header_player";
+          }
+
+          #col_item1:label {
+            @"asset/base/style/main#label";
+            x: 300px;
+            width: 250px;
+            height: 30px;
+            align_x: Center;
+            align_y: Center;
+            size: 16;
+            text: "#asset/base/text/strategy?personal.header_item1";
+          }
+
+          #col_item2:label {
+            @"asset/base/style/main#label";
+            x: 550px;
+            width: 250px;
+            height: 30px;
+            align_x: Center;
+            align_y: Center;
+            size: 16;
+            text: "#asset/base/text/strategy?personal.header_item2";
+          }
+
+          #col_item3:label {
+            @"asset/base/style/main#label";
+            x: 800px;
+            width: 250px;
+            height: 30px;
+            align_x: Center;
+            align_y: Center;
+            size: 16;
+            text: "#asset/base/text/strategy?personal.header_item3";
+          }
+
+          #build_editor_btn:color_icon_button {
+            @"asset/base/style/main#primary_button";
+            anchor_x: 1;
+            pivot_x: 1;
+            x: 0px;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 220px;
+            height: 30px;
+
+            text: {
+              font: "asset/base/font/set/bold";
+              text: "Item Build Editor";
+              align_x: Center;
+              align_y: Center;
+              size: 15;
+            }
+          }
+        }
+
+        #row0:empty {
+          width: 1786px;
+          height: 50px;
+
+          #position:image {
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 32px;
+            height: 32px;
+            source: "asset/base/ui/icons/top";
+          }
+
+          #bar:color {
+            x: 37px;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 5px;
+            height: 40px;
+            color: #5b73ffff;
+          }
+
+          #champion:color {
+            x: 47px;
+            width: 40px;
+            height: 40px;
+            rounding: Uniform { rounding: 8; }
+            color: #1d1f2cff;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            #icon:image {
+              width: 36px;
+              height: 36px;
+              anchor_x: 0.5;
+              anchor_y: 0.5;
+              pivot_x: 0.5;
+              pivot_y: 0.5;
+            }
+          }
+
+          #name:label {
+            @"asset/base/style/main#label";
+            x: 95px;
+            width: 200px;
+            height: 50px;
+            align_y: Center;
+            size: 16;
+            text: "";
+          }
+
+          #item0:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 315px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item1:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 565px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item2:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 815px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+
+        }
+
+        #row1:empty {
+          width: 1786px;
+          height: 50px;
+
+          #position:image {
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 32px;
+            height: 32px;
+            source: "asset/base/ui/icons/jungle";
+          }
+
+          #bar:color {
+            x: 37px;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 5px;
+            height: 40px;
+            color: #5b73ffff;
+          }
+
+          #champion:color {
+            x: 47px;
+            width: 40px;
+            height: 40px;
+            rounding: Uniform { rounding: 8; }
+            color: #1d1f2cff;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            #icon:image {
+              width: 36px;
+              height: 36px;
+              anchor_x: 0.5;
+              anchor_y: 0.5;
+              pivot_x: 0.5;
+              pivot_y: 0.5;
+            }
+          }
+
+          #name:label {
+            @"asset/base/style/main#label";
+            x: 95px;
+            width: 200px;
+            height: 50px;
+            align_y: Center;
+            size: 16;
+            text: "";
+          }
+
+          #item0:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 315px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item1:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 565px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item2:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 815px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+
+        }
+
+        #row2:empty {
+          width: 1786px;
+          height: 50px;
+
+          #position:image {
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 32px;
+            height: 32px;
+            source: "asset/base/ui/icons/mid";
+          }
+
+          #bar:color {
+            x: 37px;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 5px;
+            height: 40px;
+            color: #5b73ffff;
+          }
+
+          #champion:color {
+            x: 47px;
+            width: 40px;
+            height: 40px;
+            rounding: Uniform { rounding: 8; }
+            color: #1d1f2cff;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            #icon:image {
+              width: 36px;
+              height: 36px;
+              anchor_x: 0.5;
+              anchor_y: 0.5;
+              pivot_x: 0.5;
+              pivot_y: 0.5;
+            }
+          }
+
+          #name:label {
+            @"asset/base/style/main#label";
+            x: 95px;
+            width: 200px;
+            height: 50px;
+            align_y: Center;
+            size: 16;
+            text: "";
+          }
+
+          #item0:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 315px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item1:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 565px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item2:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 815px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+
+        }
+
+        #row3:empty {
+          width: 1786px;
+          height: 50px;
+
+          #position:image {
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 32px;
+            height: 32px;
+            source: "asset/base/ui/icons/bottom";
+          }
+
+          #bar:color {
+            x: 37px;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 5px;
+            height: 40px;
+            color: #5b73ffff;
+          }
+
+          #champion:color {
+            x: 47px;
+            width: 40px;
+            height: 40px;
+            rounding: Uniform { rounding: 8; }
+            color: #1d1f2cff;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            #icon:image {
+              width: 36px;
+              height: 36px;
+              anchor_x: 0.5;
+              anchor_y: 0.5;
+              pivot_x: 0.5;
+              pivot_y: 0.5;
+            }
+          }
+
+          #name:label {
+            @"asset/base/style/main#label";
+            x: 95px;
+            width: 200px;
+            height: 50px;
+            align_y: Center;
+            size: 16;
+            text: "";
+          }
+
+          #item0:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 315px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item1:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 565px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item2:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 815px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+
+        }
+
+        #row4:empty {
+          width: 1786px;
+          height: 50px;
+
+          #position:image {
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 32px;
+            height: 32px;
+            source: "asset/base/ui/icons/support";
+          }
+
+          #bar:color {
+            x: 37px;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            width: 5px;
+            height: 40px;
+            color: #5b73ffff;
+          }
+
+          #champion:color {
+            x: 47px;
+            width: 40px;
+            height: 40px;
+            rounding: Uniform { rounding: 8; }
+            color: #1d1f2cff;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            #icon:image {
+              width: 36px;
+              height: 36px;
+              anchor_x: 0.5;
+              anchor_y: 0.5;
+              pivot_x: 0.5;
+              pivot_y: 0.5;
+            }
+          }
+
+          #name:label {
+            @"asset/base/style/main#label";
+            x: 95px;
+            width: 200px;
+            height: 50px;
+            align_y: Center;
+            size: 16;
+            text: "";
+          }
+
+          #item0:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 315px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item1:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 565px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+          #item2:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 815px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
+
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
+
+        }
+      }
+    }
+
+    #to_coach:color_icon_button {
+      @"asset/base/style/main#tertiary_button";
+      width: 922px;
+      height: 67px;
+
+      anchor_x: 0;
+      pivot_x: 0;
+      x: 27px;
+      y: 984px;
+
+      text: {
+        align_x: Center;
+        align_y: Center;
+        size: 24;
+        text: "#asset/base/text/ui?strategy.coach";
+      }
+    }
+
+    #start:color_icon_button {
+      @"asset/base/style/main#primary_button";
+      width: 922px;
+      height: 67px;
+      x: -27px;
+      y: 984px;
+
+      anchor_x: 1;
+      pivot_x: 1;
+
+      text: {
+        align_x: Center;
+        align_y: Center;
+        size: 24;
+        text: "#asset/base/text/ui?strategy.start";
+      }
+    }
+  }
+}
