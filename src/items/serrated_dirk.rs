@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality};
@@ -28,17 +28,17 @@ impl SerratedDirk {
     }
 }
 
-impl ModItemInfo for SerratedDirk {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for SerratedDirk {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "serrated_dirk"
+    fn key(&self) -> String {
+        "serrated_dirk".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "serrated_dirk"
+    fn icon(&self) -> String {
+        "serrated_dirk".to_string()
     }
 
     fn price(&self) -> usize {
@@ -63,8 +63,8 @@ impl ModItemInfo for SerratedDirk {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             ..Default::default()
         }
@@ -72,20 +72,20 @@ impl ModItemInfo for SerratedDirk {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _caster: usize,
         target: usize,
         damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

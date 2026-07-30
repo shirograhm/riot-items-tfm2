@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct GlowingMote {
@@ -25,17 +25,17 @@ impl GlowingMote {
     }
 }
 
-impl ModItemInfo for GlowingMote {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for GlowingMote {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "glowing_mote"
+    fn key(&self) -> String {
+        "glowing_mote".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "glowing_mote"
+    fn icon(&self) -> String {
+        "glowing_mote".to_string()
     }
 
     fn price(&self) -> usize {
@@ -54,18 +54,18 @@ impl ModItemInfo for GlowingMote {
         vec!["sheen".to_string()]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::CooltimeReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::CooltimeReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

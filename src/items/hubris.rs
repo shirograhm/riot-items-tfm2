@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, count_takedowns, mark_enemy_champion, ticks, ItemMeta};
@@ -75,7 +75,7 @@ impl Hubris {
     // Grants `count` Eminence stacks to the wielder (a growing, decaying AD buff per
     // stack), matching the "12 (+3 per stack)" payout using the pre-increment count.
 
-    fn grant_eminence(&mut self, ctx: &mut GameCtx, player: usize, count: usize) {
+    fn grant_eminence(&mut self, ctx: &mut StableSim<'_>, player: usize, count: usize) {
         if count == 0 {
             return;
         }
@@ -90,12 +90,9 @@ impl Hubris {
             let ad = self.eminence_bonus_ad();
             ctx.add_buff(
                 champion_id,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     attack: ad,
-                    ..Default::default()
+                    ..BuffV1::timed("", ticks(self.effect_duration_seconds))
                 },
             );
             self.eminence_stacks += 1;
@@ -109,17 +106,17 @@ impl Default for Hubris {
     }
 }
 
-impl ModItemInfo for Hubris {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Hubris {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -138,45 +135,45 @@ impl ModItemInfo for Hubris {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.eminence_stacks = 0;
         self.takedown_marks.clear();
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
         self.grant_eminence(ctx, player, takedowns);
     }
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::CooltimeReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::CooltimeReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

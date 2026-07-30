@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, ItemMeta};
@@ -94,17 +94,17 @@ impl Default for EchoesOfHelia {
     }
 }
 
-impl ModItemInfo for EchoesOfHelia {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for EchoesOfHelia {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -123,8 +123,8 @@ impl ModItemInfo for EchoesOfHelia {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             hp_regen: self.hp_regen,
             magic_power: self.magic_power,
@@ -135,7 +135,7 @@ impl ModItemInfo for EchoesOfHelia {
 
     fn on_damaged(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _player: usize,
         entity: usize,
         _attacker: usize,
@@ -149,11 +149,11 @@ impl ModItemInfo for EchoesOfHelia {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         _target: usize,
         damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -161,7 +161,7 @@ impl ModItemInfo for EchoesOfHelia {
         self.save_charges(caster_ref.level(), *damage as f64);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
@@ -202,17 +202,17 @@ impl ModItemInfo for EchoesOfHelia {
         self.charge_stored = 0;
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
+    fn tags(&self) -> Vec<ItemTagV1> {
         vec![
-            ItemTag::HP,
-            ItemTag::HPRegen,
-            ItemTag::AP,
-            ItemTag::CooltimeReduce,
-            ItemTag::Vamp,
+            ItemTagV1::Hp,
+            ItemTagV1::HpRegen,
+            ItemTagV1::Ap,
+            ItemTagV1::CooltimeReduce,
+            ItemTagV1::Vamp,
         ]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

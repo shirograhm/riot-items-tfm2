@@ -1,6 +1,6 @@
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, is_enemy_champion, ticks};
-use mod_api::*;
+use crate::{apply_config, has_buff, is_enemy_champion, ticks};
+use mod_api_stable::*;
 
 const RAGE_BUFF: &str = "phage_rage";
 
@@ -45,7 +45,7 @@ impl Phage {
     /// Rage. Re-applies only once the previous burst has lapsed: same-name buffs
     /// stack rather than refresh, so an unguarded grant would pile movement speed
     /// up with every hit.
-    fn grant_rage(&mut self, ctx: &mut GameCtx, caster: usize, target: usize) {
+    fn grant_rage(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         if !is_enemy_champion(ctx, caster, target) {
             return;
         }
@@ -57,29 +57,25 @@ impl Phage {
         }
         ctx.add_buff(
             caster,
-            BuffState {
-                name: buff_name(RAGE_BUFF),
-                duration: BuffType::Time {
-                    tick: ticks(self.effect_duration_seconds),
-                },
+            &BuffV1 {
                 move_speed_mult: self.effect_move_speed_mult,
-                ..Default::default()
+                ..BuffV1::timed(RAGE_BUFF, ticks(self.effect_duration_seconds))
             },
         );
     }
 }
 
-impl ModItemInfo for Phage {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Phage {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "phage"
+    fn key(&self) -> String {
+        "phage".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "phage"
+    fn icon(&self) -> String {
+        "phage".to_string()
     }
 
     fn price(&self) -> usize {
@@ -106,8 +102,8 @@ impl ModItemInfo for Phage {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             attack: self.attack,
             ..Default::default()
@@ -116,20 +112,20 @@ impl ModItemInfo for Phage {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         self.grant_rage(ctx, caster, target);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::HP, ItemTag::MoveSpeed]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::Hp, ItemTagV1::MoveSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

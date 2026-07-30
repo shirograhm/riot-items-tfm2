@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct BFSword {
@@ -25,17 +25,17 @@ impl BFSword {
     }
 }
 
-impl ModItemInfo for BFSword {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for BFSword {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "bf_sword"
+    fn key(&self) -> String {
+        "bf_sword".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "bf_sword"
+    fn icon(&self) -> String {
+        "bf_sword".to_string()
     }
 
     fn price(&self) -> usize {
@@ -54,18 +54,18 @@ impl ModItemInfo for BFSword {
         vec!["infinity_edge".to_string(), "deathblade".to_string()]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

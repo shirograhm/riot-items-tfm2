@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct JakshoTheProtean {
@@ -85,17 +85,17 @@ impl Default for JakshoTheProtean {
     }
 }
 
-impl ModItemInfo for JakshoTheProtean {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for JakshoTheProtean {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -114,8 +114,8 @@ impl ModItemInfo for JakshoTheProtean {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             defence: self.defence,
             magic_resistance: self.magic_resistance,
@@ -125,7 +125,7 @@ impl ModItemInfo for JakshoTheProtean {
 
     fn on_damaged(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _player: usize,
         entity: usize,
         attacker: usize,
@@ -144,24 +144,20 @@ impl ModItemInfo for JakshoTheProtean {
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 entity,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     defence_mult: self.effect_stack_defence_mult,
                     magic_resistance_mult: self.effect_stack_magic_resistance_mult,
-                    name: buff_name(self.stack_buff),
-                    ..Default::default()
+                    ..BuffV1::timed(self.stack_buff, ticks(self.effect_duration_seconds))
                 },
             );
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::Defense, ItemTag::MagicResistance]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Defense, ItemTagV1::MagicResistance]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

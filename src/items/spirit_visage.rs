@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ItemMeta};
@@ -57,17 +57,17 @@ impl Default for SpiritVisage {
     }
 }
 
-impl ModItemInfo for SpiritVisage {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for SpiritVisage {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -86,15 +86,15 @@ impl ModItemInfo for SpiritVisage {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             magic_resistance: self.magic_resistance,
             ..Default::default()
         }
     }
 
-    fn on_healed(&mut self, ctx: &mut GameCtx, _caster: Option<usize>, entity: usize, heal: usize) {
+    fn on_healed(&mut self, ctx: &mut StableSim<'_>, _caster: Option<usize>, entity: usize, heal: usize) {
         let Some(_entity_ref) = ctx.get_entity(entity) else {
             return;
         };
@@ -102,11 +102,11 @@ impl ModItemInfo for SpiritVisage {
         ctx.heal(entity, entity, bonus_heal);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::MagicResistance]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::MagicResistance]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::MagicResistance
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::MagicResistance
     }
 }

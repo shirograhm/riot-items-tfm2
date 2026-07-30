@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, percent_of, percent_of_i32, ticks, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, percent_of_i32, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct ProtoplasmHarness {
@@ -90,17 +90,17 @@ impl Default for ProtoplasmHarness {
     }
 }
 
-impl ModItemInfo for ProtoplasmHarness {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for ProtoplasmHarness {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -119,8 +119,8 @@ impl ModItemInfo for ProtoplasmHarness {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             skill_cooldown_mult: self.skill_cooldown_mult,
             move_speed_mult: self.move_speed_mult,
@@ -128,17 +128,17 @@ impl ModItemInfo for ProtoplasmHarness {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::CooltimeReduce, ItemTag::MoveSpeed]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::CooltimeReduce, ItemTagV1::MoveSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 
     fn on_damaged(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _player: usize,
         entity: usize,
         _attacker: usize,
@@ -149,33 +149,23 @@ impl ModItemInfo for ProtoplasmHarness {
         };
         let has_harness_buff: bool = has_buff(&entity_ref, self.buff_buff);
         let has_cooldown_buff: bool = has_buff(&entity_ref, self.cooldown_buff_buff);
-        let hp_threshold = percent_of(entity_ref.hp().max, self.effect_hp_percent_threshold);
+        let hp_threshold = percent_of(entity_ref.hp().1, self.effect_hp_percent_threshold);
 
-        if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().current <= hp_threshold) {
+        if !has_harness_buff && !has_cooldown_buff && (entity_ref.hp().0 <= hp_threshold) {
             let bonus_max_hp = self.effect_bonus_flat_hp
-                + percent_of(entity_ref.hp().max, self.effect_hp_percent_boost) as i32;
+                + percent_of(entity_ref.hp().1, self.effect_hp_percent_boost) as i32;
             ctx.add_buff(
                 entity,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     hp: bonus_max_hp,
-                    name: buff_name(self.buff_buff),
-                    ..Default::default()
+                    ..BuffV1::timed(self.buff_buff, ticks(self.effect_duration_seconds))
                 },
             );
 
             ctx.heal(entity, entity, percent_of_i32(bonus_max_hp, 50.0) as usize);
             ctx.add_buff(
                 entity,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_cooldown_seconds),
-                    },
-                    name: buff_name(self.cooldown_buff_buff),
-                    ..Default::default()
-                },
+                &BuffV1::timed(self.cooldown_buff_buff, ticks(self.effect_cooldown_seconds)),
             );
         }
     }

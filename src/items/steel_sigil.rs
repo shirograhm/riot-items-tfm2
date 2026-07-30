@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct SteelSigil {
@@ -27,17 +27,17 @@ impl SteelSigil {
     }
 }
 
-impl ModItemInfo for SteelSigil {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for SteelSigil {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "steel_sigil"
+    fn key(&self) -> String {
+        "steel_sigil".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "steel_sigil"
+    fn icon(&self) -> String {
+        "steel_sigil".to_string()
     }
 
     fn price(&self) -> usize {
@@ -56,19 +56,19 @@ impl ModItemInfo for SteelSigil {
         vec!["deaths_dance".to_string()]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             defence: self.defence,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

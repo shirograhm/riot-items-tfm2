@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct LastWhisper {
@@ -27,17 +27,17 @@ impl LastWhisper {
     }
 }
 
-impl ModItemInfo for LastWhisper {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for LastWhisper {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "last_whisper"
+    fn key(&self) -> String {
+        "last_whisper".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "last_whisper"
+    fn icon(&self) -> String {
+        "last_whisper".to_string()
     }
 
     fn price(&self) -> usize {
@@ -59,19 +59,19 @@ impl ModItemInfo for LastWhisper {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             defence_penetration: self.defence_penetration,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::DefensePenetration]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::DefensePenetration]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

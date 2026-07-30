@@ -1,8 +1,8 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_name, has_buff, ItemMeta, ADAPTIVE_FORCE_AD_RATIO,
+    apply_config, has_buff, ItemMeta, ADAPTIVE_FORCE_AD_RATIO,
     BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS, DISTANCE_UNITS_PER_RANGE,
 };
 
@@ -85,7 +85,7 @@ impl ZekesHerald {
         self
     }
 
-    fn apply_aura(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn apply_aura(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
             return;
@@ -124,13 +124,9 @@ impl ZekesHerald {
         }
 
         for (id, prefers_ap) in targets {
-            let mut buff = BuffState {
-                name: buff_name(self.aura_buff),
-                duration: BuffType::Time {
-                    tick: BUFF_REFRESH_DURATION_TICKS,
-                },
+            let mut buff = BuffV1 {
                 vamp: self.effect_vamp,
-                ..Default::default()
+                ..BuffV1::timed(self.aura_buff, BUFF_REFRESH_DURATION_TICKS)
             };
             if prefers_ap {
                 buff.magic_power = self.effect_adaptive_force;
@@ -138,7 +134,7 @@ impl ZekesHerald {
                 buff.attack =
                     (self.effect_adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32;
             }
-            ctx.add_buff(id, buff);
+            ctx.add_buff(id, &buff);
         }
 
         self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
@@ -151,17 +147,17 @@ impl Default for ZekesHerald {
     }
 }
 
-impl ModItemInfo for ZekesHerald {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for ZekesHerald {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -180,8 +176,8 @@ impl ModItemInfo for ZekesHerald {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             hp_regen: self.hp_regen,
             magic_power: self.magic_power,
@@ -190,26 +186,26 @@ impl ModItemInfo for ZekesHerald {
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.refresh_cooldown = 0;
         self.apply_aura(ctx, player);
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.apply_aura(ctx, player);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
+    fn tags(&self) -> Vec<ItemTagV1> {
         vec![
-            ItemTag::HP,
-            ItemTag::AD,
-            ItemTag::AP,
-            ItemTag::HPRegen,
-            ItemTag::CooltimeReduce,
+            ItemTagV1::Hp,
+            ItemTagV1::Ad,
+            ItemTagV1::Ap,
+            ItemTagV1::HpRegen,
+            ItemTagV1::CooltimeReduce,
         ]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

@@ -37,6 +37,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "88904434abc2901f197fe8cc55f0445e7ded921dba5911dad2e2b39b48e663c4"
 
 [[package]]
+name = "mod-api-stable"
+version = "0.1.0"
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.106"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -56,8 +60,9 @@ dependencies = [
 
 [[package]]
 name = "riot_items_tfm2"
-version = "0.6.4"
+version = "0.6.5"
 dependencies = [
+ "mod-api-stable",
  "serde",
  "serde_json",
 ]

@@ -1,28 +1,53 @@
 //! Experimental native hook for the game's item-build route function.
 //!
-//! This locates `LogisticSGDAgent::get_item_builds_list` inside the loaded
-//! Teamfight Manager 2 executable by scanning the `.text` section for a verified
-//! byte signature (captured on game version `0.5.1`), installs a trampoline
-//! detour, and overrides the routes it returns. It is intentionally fail-closed: if
-//! the signature is missing, ambiguous, or the prologue does not match, the hook
-//! refuses to patch instead of touching an unknown function.
+//! This locates `<LogisticSGDAgent as AbstractItemNetwork>::get_item_builds_list`
+//! inside the loaded Teamfight Manager 2 executable, installs a trampoline
+//! detour, and overrides the routes it returns. It is intentionally fail-closed:
+//! if the target cannot be identified *unambiguously*, the hook refuses to patch
+//! rather than touching an unknown function.
 //!
-//! Re-deriving the signature after a game update: the function is a generic trait
-//! method (`<LogisticSGDAgent as AbstractItemNetwork>::get_item_builds_list`)
-//! monomorphized into the EXE, so it is not a plain symbol there. It *is* compiled
-//! into the SDK's `libgame_view` rlib with symbols (byte-identical to the EXE), so
-//! extract that object, read the function's first ~55 prologue bytes as the new
-//! `FUNCTION_SIGNATURE`, and confirm they appear exactly once in the EXE. The
-//! Win64 arg layout (RVO return ptr in rcx, `&self` in rdx, then items/champions/
-//! …) is unchanged from 0.4.13, so `OriginalFn` did not need updating — only the
-//! codegen (stack frame size, register allocation) shifted.
+//! # How the target is found (0.5.3 onwards)
 //!
-//! NOTE: This is the pointer-finding / native-hook portion. After calling the
-//! original function, `detour` applies the config-driven build overrides from
-//! `build_config` (pinned slots + AI-filled blanks), then enforces unique
-//! builds: no champion ever builds duplicate copies of the same item — each
-//! duplicate is swapped for the closest-price final item of the same category
-//! (see `enforce_unique_items`).
+//! Earlier versions scanned `.text` for a 55-byte signature lifted from the SDK's
+//! `libgame_view` rlib. That route is gone: from SDK 0.5.3 every engine rlib ships
+//! LLVM bitcode instead of object code, so there is no machine code left to read a
+//! prologue from. The signature also broke on every game update by construction.
+//!
+//! The target is therefore **data, not code**. Resolution order:
+//!
+//! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
+//!    a hex `signature`. Update that file after a game patch instead of rebuilding.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], the last signature known to be correct.
+//!
+//! Whatever the source, the candidate is verified against the PE exception table
+//! (`.pdata`) before anything is patched:
+//!
+//! - the address must be the *start* of a real function, per `.pdata`
+//! - its prologue must be exactly [`PROLOGUE_PUSHES`]
+//! - a signature must match in exactly one place
+//!
+//! `.pdata` is what the OS unwinder uses, so it gives exact function boundaries —
+//! strictly better than inferring them from a `.text` window scan.
+//!
+//! When resolution fails, [`candidate_report`] lists every function sharing the
+//! target's shape, which narrows ~130k functions to a few dozen for the finder
+//! tool. It deliberately never picks one: several dozen functions match, and
+//! detouring the wrong one corrupts the simulation.
+//!
+//! # Why 12 stolen bytes
+//!
+//! The eight callee-saved pushes are exactly 12 bytes — the size of an absolute
+//! jump — and are position independent. Stealing precisely those is instruction
+//! aligned *and* independent of the frame size. The old `STOLEN_LEN = 19` also
+//! swallowed `sub rsp, imm32`; when codegen picks the `imm8` encoding that
+//! instruction is four bytes, so 19 would split the following instruction and
+//! corrupt the trampoline.
+//!
+//! After calling the original function, `detour` applies the config-driven build
+//! overrides from `build_config` (pinned slots + AI-filled blanks), then enforces
+//! unique builds: no champion ever builds duplicate copies of the same item — each
+//! duplicate is swapped for the closest-price final item of the same category (see
+//! `enforce_unique_items`).
 
 use std::ffi::c_void;
 use std::mem;
@@ -35,20 +60,27 @@ use game_core::{ChampionInfoSheet, ItemInfo, LogisticSGDAgent, Position};
 
 use crate::build_config;
 
-const STOLEN_LEN: usize = 19;
+/// `push rbp; push r15; push r14; push r13; push r12; push rsi; push rdi; push rbx`
+const PROLOGUE_PUSHES: [u8; 12] = [
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
+];
+
+const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-const FUNCTION_SIGNATURE: [u8; 55] = [
+/// Last signature verified against a shipping build (game 0.5.1, SDK 0.5.2).
+/// Kept only as a fallback — it does **not** match 0.5.3 or later. Supply a
+/// `hook-target.json` rather than editing this.
+const FALLBACK_SIGNATURE: [u8; 55] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x58,
     0x01, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x48, 0xC7, 0x85, 0xD0, 0x00,
     0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0x4D, 0x08, 0x4C, 0x89, 0xC3, 0x48, 0x89, 0x55,
     0x10, 0x48, 0x89, 0xCF, 0x48, 0x8B, 0xB5,
 ];
 
-const EXPECTED_PROLOGUE: [u8; STOLEN_LEN] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x58,
-    0x01, 0x00, 0x00,
-];
+/// Plausible size range for the target in bytes (1869 in SDK 0.5.2). Narrows the
+/// diagnostic candidate list only; never used to choose a target.
+const CANDIDATE_SIZE_RANGE: (u32, u32) = (1200, 2800);
 
 const MEM_COMMIT: u32 = 0x1000;
 const MEM_RESERVE: u32 = 0x2000;
@@ -87,6 +119,55 @@ static ORIGINAL: OnceLock<OriginalFn> = OnceLock::new();
 static INSTALL_LOCK: Mutex<()> = Mutex::new(());
 static INSTALLED: AtomicBool = AtomicBool::new(false);
 
+/// Contents of `hook-target.json`. Both fields are optional; `rva` wins.
+#[derive(serde::Deserialize, Default)]
+struct TargetConfig {
+    /// Function start as a module-relative virtual address, e.g. `"0x10591f0"`.
+    rva: Option<String>,
+    /// Hex byte signature, e.g. `"554157..."`. Must match exactly once.
+    signature: Option<String>,
+}
+
+fn hex(bytes: &[u8]) -> String {
+    bytes.iter().map(|byte| format!("{byte:02x}")).collect()
+}
+
+fn parse_hex_bytes(text: &str) -> Result<Vec<u8>, String> {
+    let cleaned: String = text.chars().filter(|c| !c.is_whitespace()).collect();
+    if cleaned.is_empty() || cleaned.len() % 2 != 0 {
+        return Err("signature must be a non-empty even number of hex digits".to_string());
+    }
+    (0..cleaned.len())
+        .step_by(2)
+        .map(|i| {
+            u8::from_str_radix(&cleaned[i..i + 2], 16)
+                .map_err(|_| format!("signature has a non-hex byte at offset {i}"))
+        })
+        .collect()
+}
+
+fn parse_rva(text: &str) -> Result<usize, String> {
+    let trimmed = text.trim();
+    match trimmed
+        .strip_prefix("0x")
+        .or_else(|| trimmed.strip_prefix("0X"))
+    {
+        Some(digits) => usize::from_str_radix(digits, 16),
+        None => trimmed.parse(),
+    }
+    .map_err(|_| format!("could not parse rva {trimmed:?}"))
+}
+
+fn load_target_config() -> TargetConfig {
+    let Some(path) = crate::config::dll_dir().map(|dir| dir.join("hook-target.json")) else {
+        return TargetConfig::default();
+    };
+    std::fs::read_to_string(&path)
+        .ok()
+        .and_then(|text| serde_json::from_str(&text).ok())
+        .unwrap_or_default()
+}
+
 unsafe fn read_u16(address: *const u8) -> u16 {
     ptr::read_unaligned(address.cast::<u16>())
 }
@@ -95,7 +176,7 @@ unsafe fn read_u32(address: *const u8) -> u32 {
     ptr::read_unaligned(address.cast::<u32>())
 }
 
-unsafe fn text_section() -> Result<(*mut u8, usize), String> {
+unsafe fn module_base() -> Result<*mut u8, String> {
     let base = GetModuleHandleW(ptr::null()).cast::<u8>();
     if base.is_null() {
         return Err("GetModuleHandleW returned null".to_string());
@@ -103,51 +184,164 @@ unsafe fn text_section() -> Result<(*mut u8, usize), String> {
     if read_u16(base) != 0x5A4D {
         return Err("main module has no MZ header".to_string());
     }
-
     let nt = base.add(read_u32(base.add(0x3C)) as usize);
     if read_u32(nt) != 0x0000_4550 {
         return Err("main module has no PE header".to_string());
     }
+    Ok(base)
+}
 
+/// Address and virtual size of a named section in the loaded main module.
+unsafe fn section(base: *mut u8, want: &[u8]) -> Result<(*mut u8, usize), String> {
+    let nt = base.add(read_u32(base.add(0x3C)) as usize);
     let section_count = read_u16(nt.add(6)) as usize;
     let optional_size = read_u16(nt.add(20)) as usize;
-    let section_table = nt.add(24 + optional_size);
+    let table = nt.add(24 + optional_size);
     for index in 0..section_count {
-        let section = section_table.add(index * 40);
-        let name = std::slice::from_raw_parts(section, 8);
-        let name_len = name.iter().position(|byte| *byte == 0).unwrap_or(8);
-        let section_name = &name[..name_len];
-        if section_name == b".text" {
-            let virtual_size = read_u32(section.add(8)) as usize;
-            let virtual_address = read_u32(section.add(12)) as usize;
+        let header = table.add(index * 40);
+        let name = std::slice::from_raw_parts(header, 8);
+        let len = name.iter().position(|byte| *byte == 0).unwrap_or(8);
+        if &name[..len] == want {
+            let virtual_size = read_u32(header.add(8)) as usize;
+            let virtual_address = read_u32(header.add(12)) as usize;
             return Ok((base.add(virtual_address), virtual_size));
         }
     }
-    Err("main module .text section not found".to_string())
+    Err(format!("section {} not found", String::from_utf8_lossy(want)))
 }
 
-unsafe fn locate_target() -> Result<*mut u8, String> {
-    let (text, text_len) = text_section()?;
-    if text_len < FUNCTION_SIGNATURE.len() {
-        return Err(".text section is smaller than function signature".to_string());
+/// Every function in the main module as `(start_rva, end_rva)`, sorted by start,
+/// read from the PE exception table.
+unsafe fn pdata_functions(base: *mut u8) -> Result<Vec<(u32, u32)>, String> {
+    let (pdata, pdata_len) = section(base, b".pdata")?;
+    let mut functions = Vec::with_capacity(pdata_len / 12);
+    for index in 0..pdata_len / 12 {
+        let entry = pdata.add(index * 12);
+        let start = read_u32(entry);
+        let end = read_u32(entry.add(4));
+        if start != 0 && end > start {
+            functions.push((start, end));
+        }
     }
-
-    let bytes = std::slice::from_raw_parts(text, text_len);
-    let matches = bytes
-        .windows(FUNCTION_SIGNATURE.len())
-        .enumerate()
-        .filter_map(|(offset, window)| (window == FUNCTION_SIGNATURE).then_some(offset))
-        .collect::<Vec<_>>();
-    if matches.len() != 1 {
-        return Err(format!("signature match count was {}", matches.len()));
+    if functions.is_empty() {
+        return Err("exception table held no functions".to_string());
     }
+    functions.sort_unstable();
+    Ok(functions)
+}
 
-    let target = text.add(matches[0]);
+/// The `.pdata` entry containing `rva`, if any.
+fn enclosing(functions: &[(u32, u32)], rva: u32) -> Option<(u32, u32)> {
+    let index = functions.partition_point(|(start, _)| *start <= rva);
+    let (start, end) = *functions.get(index.checked_sub(1)?)?;
+    (start <= rva && rva < end).then_some((start, end))
+}
+
+/// Confirms `target` is a function start whose prologue is the expected pushes.
+unsafe fn verify(
+    base: *mut u8,
+    functions: &[(u32, u32)],
+    target: *mut u8,
+) -> Result<(u32, u32), String> {
+    let rva = target.offset_from(base) as u32;
+    let Some((start, end)) = enclosing(functions, rva) else {
+        return Err(format!("rva {rva:#x} is not inside any known function"));
+    };
+    if start != rva {
+        return Err(format!(
+            "rva {rva:#x} is not a function start (enclosing function begins at {start:#x})"
+        ));
+    }
     let prologue = std::slice::from_raw_parts(target, STOLEN_LEN);
-    if prologue != EXPECTED_PROLOGUE {
-        return Err("prologue mismatch".to_string());
+    if prologue != PROLOGUE_PUSHES {
+        return Err(format!(
+            "prologue mismatch at {rva:#x}: found {}",
+            hex(prologue)
+        ));
     }
+    Ok((start, end))
+}
+
+unsafe fn find_signature(base: *mut u8, signature: &[u8]) -> Result<*mut u8, String> {
+    let (text, text_len) = section(base, b".text")?;
+    if text_len < signature.len() {
+        return Err(".text is smaller than the signature".to_string());
+    }
+    let bytes = std::slice::from_raw_parts(text, text_len);
+    let mut first = None;
+    let mut count = 0usize;
+    for (offset, window) in bytes.windows(signature.len()).enumerate() {
+        if window == signature {
+            count += 1;
+            first.get_or_insert(offset);
+            if count > 1 {
+                break;
+            }
+        }
+    }
+    match (first, count) {
+        (Some(offset), 1) => Ok(text.add(offset)),
+        (_, n) => Err(format!("signature matched {n} times, need exactly 1")),
+    }
+}
+
+/// Resolves the function to detour. See the module docs for the order.
+unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut u8, String> {
+    let config = load_target_config();
+
+    if let Some(text) = config.rva.as_deref() {
+        let target = base.add(parse_rva(text)?);
+        verify(base, functions, target)?;
+        return Ok(target);
+    }
+
+    if let Some(text) = config.signature.as_deref() {
+        let signature = parse_hex_bytes(text)?;
+        if signature.len() < STOLEN_LEN {
+            return Err(format!(
+                "configured signature is {} bytes, need at least {STOLEN_LEN}",
+                signature.len()
+            ));
+        }
+        let target = find_signature(base, &signature)?;
+        verify(base, functions, target)?;
+        return Ok(target);
+    }
+
+    let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
+        format!("{error}; the built-in signature predates game 0.5.3 — supply hook-target.json")
+    })?;
+    verify(base, functions, target)?;
     Ok(target)
+}
+
+/// Every function sharing the target's prologue and size range, as
+/// `rva=<start> size=<bytes>`. Diagnostic aid for re-deriving the target after a
+/// game update; see the module docs for why it never selects one.
+pub fn candidate_report() -> Result<Vec<String>, String> {
+    unsafe {
+        let base = module_base()?;
+        let functions = pdata_functions(base)?;
+        let (text, text_len) = section(base, b".text")?;
+        let text_start = text.offset_from(base) as u32;
+        let text_end = text_start + text_len as u32;
+
+        let mut report = Vec::new();
+        for (start, end) in functions {
+            let size = end - start;
+            if size < CANDIDATE_SIZE_RANGE.0 || size > CANDIDATE_SIZE_RANGE.1 {
+                continue;
+            }
+            if start < text_start || end > text_end {
+                continue;
+            }
+            let code = std::slice::from_raw_parts(base.add(start as usize), STOLEN_LEN);
+            if code == PROLOGUE_PUSHES {
+                report.push(format!("rva={start:#x} size={size}"));
+            }
+        }
+        Ok(report)
+    }
 }
 
 unsafe fn write_absolute_jump(destination: *mut u8, target: *const u8, total_len: usize) {
@@ -190,8 +384,8 @@ unsafe fn create_trampoline(target: *mut u8) -> Result<OriginalFn, String> {
 }
 
 unsafe fn patch_target(target: *mut u8) -> Result<Vec<String>, String> {
-    if std::slice::from_raw_parts(target, STOLEN_LEN) != EXPECTED_PROLOGUE {
-        return Err("patch target already contains detour or prologue changed".to_string());
+    if std::slice::from_raw_parts(target, STOLEN_LEN) != PROLOGUE_PUSHES {
+        return Err("patch target already contains a detour or its prologue changed".to_string());
     }
 
     let mut old_protect = 0u32;
@@ -315,7 +509,9 @@ pub fn install_hook() -> Result<usize, String> {
     }
 
     unsafe {
-        let target = locate_target()?;
+        let base = module_base()?;
+        let functions = pdata_functions(base)?;
+        let target = locate_target(base, &functions)?;
         let original = create_trampoline(target)?;
         ORIGINAL
             .set(original)

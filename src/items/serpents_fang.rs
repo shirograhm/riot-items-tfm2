@@ -1,9 +1,9 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, percent_of, ItemMeta};
 
-fn shield_reaver(ctx: &mut GameCtx, caster: usize, target: usize, flat: usize, ad_percent: f64) {
+fn shield_reaver(ctx: &mut StableSim<'_>, caster: usize, target: usize, flat: usize, ad_percent: f64) {
     let shielded_champion = ctx
         .get_entity(target)
         .map(|t| t.is_champion() && t.shield() > 0)
@@ -13,7 +13,7 @@ fn shield_reaver(ctx: &mut GameCtx, caster: usize, target: usize, flat: usize, a
     }
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
     let bonus = flat + percent_of(caster_ad, ad_percent);
-    ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
+    ctx.deal_damage(caster, target, bonus, 0, AttackTypeV1::Item);
 }
 
 #[derive(Clone, Debug)]
@@ -83,17 +83,17 @@ impl Default for SerpentsFang {
     }
 }
 
-impl ModItemInfo for SerpentsFang {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for SerpentsFang {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -112,8 +112,8 @@ impl ModItemInfo for SerpentsFang {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             ..Default::default()
         }
@@ -121,11 +121,11 @@ impl ModItemInfo for SerpentsFang {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
         shield_reaver(
@@ -137,11 +137,11 @@ impl ModItemInfo for SerpentsFang {
         );
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

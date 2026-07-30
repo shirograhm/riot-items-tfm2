@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, percent_of, ticks, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, try_proc_on_hit, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct FrozenMallet {
@@ -78,17 +78,17 @@ impl Default for FrozenMallet {
     }
 }
 
-impl ModItemInfo for FrozenMallet {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for FrozenMallet {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -107,8 +107,8 @@ impl ModItemInfo for FrozenMallet {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             attack: self.attack,
             ..Default::default()
@@ -117,11 +117,11 @@ impl ModItemInfo for FrozenMallet {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -133,7 +133,7 @@ impl ModItemInfo for FrozenMallet {
 
         // Icathia's Curse. `bonus_damage` is 0 on the base variant, which
         // short-circuits before the cooldown marker is ever stamped.
-        let caster_hp_max = ctx.get_entity(caster).map(|c| c.hp().max).unwrap_or(0);
+        let caster_hp_max = ctx.get_entity(caster).map(|c| c.hp().1).unwrap_or(0);
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_hp_max, self.effect_caster_hp_percent_damage);
         if bonus_damage > 0
@@ -144,35 +144,31 @@ impl ModItemInfo for FrozenMallet {
                 self.on_hit_cooldown_seconds,
             )
         {
-            ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+            ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
         }
 
         // Rime, shared by both variants: the slow does not stack with itself.
         if !already_slowed {
             ctx.add_buff(
                 target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     move_speed_mult: -self.effect_slow_amount,
-                    name: buff_name("frozen_mallet_slow"),
-                    ..Default::default()
+                    ..BuffV1::timed("frozen_mallet_slow", ticks(self.effect_duration_seconds))
                 },
             );
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
+    fn tags(&self) -> Vec<ItemTagV1> {
         vec![
-            ItemTag::HP,
-            ItemTag::AD,
-            ItemTag::MyHpPercentDamage,
-            ItemTag::MoveSpeed,
+            ItemTagV1::Hp,
+            ItemTagV1::Ad,
+            ItemTagV1::MyHpPercentDamage,
+            ItemTagV1::MoveSpeed,
         ]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

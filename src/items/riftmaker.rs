@@ -1,8 +1,8 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_name, buff_stacks, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, buff_stacks, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS,
 };
 
@@ -77,7 +77,7 @@ impl Riftmaker {
         self
     }
 
-    fn apply_infusion(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn apply_infusion(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
             return;
@@ -91,7 +91,7 @@ impl Riftmaker {
         };
 
         let bonus_power =
-            percent_of(champion_ref.hp().max, self.effect_caster_hp_percent_power) as i32;
+            percent_of(champion_ref.hp().1, self.effect_caster_hp_percent_power) as i32;
         if bonus_power <= 0 {
             return;
         }
@@ -99,13 +99,9 @@ impl Riftmaker {
         let entity_id = champion_ref.id();
         ctx.add_buff(
             entity_id,
-            BuffState {
-                name: buff_name(self.infusion_buff),
-                duration: BuffType::Time {
-                    tick: BUFF_REFRESH_DURATION_TICKS,
-                },
+            &BuffV1 {
                 magic_power: bonus_power,
-                ..Default::default()
+                ..BuffV1::timed(self.infusion_buff, BUFF_REFRESH_DURATION_TICKS)
             },
         );
         self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
@@ -118,17 +114,17 @@ impl Default for Riftmaker {
     }
 }
 
-impl ModItemInfo for Riftmaker {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Riftmaker {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -147,24 +143,24 @@ impl ModItemInfo for Riftmaker {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             magic_power: self.magic_power,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.refresh_cooldown = 0;
         self.apply_infusion(ctx, player);
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.apply_infusion(ctx, player);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, _target: usize) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
@@ -172,23 +168,19 @@ impl ModItemInfo for Riftmaker {
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     vamp: self.effect_vamp,
-                    name: buff_name(self.corruption_buff),
-                    ..Default::default()
+                    ..BuffV1::timed(self.corruption_buff, ticks(self.effect_duration_seconds))
                 },
             );
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP, ItemTag::Vamp]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Ap, ItemTagV1::Vamp]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ticks, ItemMeta};
@@ -84,12 +84,12 @@ impl LiandrysTorment {
 
     /// Damage for a single instance against `id`, or `None` once the target is dead
     /// or gone — a burn that can no longer land is dropped rather than tracked.
-    fn instance_damage(&self, ctx: &mut GameCtx, id: usize) -> Option<usize> {
+    fn instance_damage(&self, ctx: &mut StableSim<'_>, id: usize) -> Option<usize> {
         let entity_ref = ctx.get_entity(id)?;
         if !entity_ref.is_alive() {
             return None;
         }
-        let total = percent_of(entity_ref.hp().max, self.effect_hp_percent_damage);
+        let total = percent_of(entity_ref.hp().1, self.effect_hp_percent_damage);
         let mut per_instance = total as f64 / self.instance_count() as f64;
         if !entity_ref.is_champion() {
             per_instance = per_instance.min(self.effect_minion_damage_cap as f64);
@@ -111,7 +111,7 @@ impl LiandrysTorment {
 
     /// Ages every burn by one tick, dealing damage to the ones that came due and
     /// dropping those that expired or lost their target.
-    fn tick_burns(&mut self, ctx: &mut GameCtx, caster: usize) {
+    fn tick_burns(&mut self, ctx: &mut StableSim<'_>, caster: usize) {
         let mut kept = Vec::with_capacity(self.burns.len());
         for (id, remaining, until_next) in std::mem::take(&mut self.burns) {
             let remaining = remaining.saturating_sub(1);
@@ -120,7 +120,7 @@ impl LiandrysTorment {
                 let Some(damage) = self.instance_damage(ctx, id) else {
                     continue;
                 };
-                ctx.deal_damage(caster, id, 0, damage, AttackType::Item);
+                ctx.deal_damage(caster, id, 0, damage, AttackTypeV1::Item);
                 until_next = BURN_TICK_RATE;
             }
             if remaining > 0 {
@@ -137,17 +137,17 @@ impl Default for LiandrysTorment {
     }
 }
 
-impl ModItemInfo for LiandrysTorment {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for LiandrysTorment {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -166,19 +166,19 @@ impl ModItemInfo for LiandrysTorment {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             magic_power: self.magic_power,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.burns.clear();
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         if self.burns.is_empty() {
             return;
         }
@@ -196,11 +196,11 @@ impl ModItemInfo for LiandrysTorment {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -212,11 +212,11 @@ impl ModItemInfo for LiandrysTorment {
         self.apply_burn(target);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ap]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_adaptive_force, apply_config, buff_name, has_buff, ticks, ItemMeta};
+use crate::{apply_adaptive_force, apply_config, has_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct MirageBlade {
@@ -76,7 +76,7 @@ impl MirageBlade {
         self
     }
 
-    fn apply_buff(&self, ctx: &mut GameCtx, player: usize) {
+    fn apply_buff(&self, ctx: &mut StableSim<'_>, player: usize) {
         let mut force = self.adaptive_force;
         if let Some((prior_buff, prior_force)) = self.upgrades_from {
             let Some(player_ref) = ctx.get_player(player) else {
@@ -99,17 +99,17 @@ impl Default for MirageBlade {
     }
 }
 
-impl ModItemInfo for MirageBlade {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for MirageBlade {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -128,23 +128,23 @@ impl ModItemInfo for MirageBlade {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack_speed_mult: self.attack_speed_mult,
             move_speed_mult: self.move_speed_mult,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.apply_buff(ctx, player);
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.apply_buff(ctx, player);
     }
 
-    fn on_kill(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize, _entity: usize) {
+    fn on_kill(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize, _entity: usize) {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
@@ -157,23 +157,19 @@ impl ModItemInfo for MirageBlade {
         if !is_buff_applied {
             ctx.add_buff(
                 champion_ref.id(),
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     move_speed_mult: self.effect_move_speed_mult,
-                    name: buff_name("mirage_blade_move_speed"),
-                    ..Default::default()
+                    ..BuffV1::timed("mirage_blade_move_speed", ticks(self.effect_duration_seconds))
                 },
             )
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::AS, ItemTag::MoveSpeed]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::Ap, ItemTagV1::AttackSpeed, ItemTagV1::MoveSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

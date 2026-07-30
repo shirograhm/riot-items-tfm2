@@ -1,8 +1,8 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_name, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS,
 };
 
@@ -78,7 +78,7 @@ impl ProtectorsVow {
         self
     }
 
-    fn apply_awe(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn apply_awe(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
             return;
@@ -103,13 +103,9 @@ impl ProtectorsVow {
         let entity_id = champion_ref.id();
         ctx.add_buff(
             entity_id,
-            BuffState {
-                name: buff_name(self.awe_buff),
-                duration: BuffType::Time {
-                    tick: BUFF_REFRESH_DURATION_TICKS,
-                },
+            &BuffV1 {
                 hp: target,
-                ..Default::default()
+                ..BuffV1::timed(self.awe_buff, BUFF_REFRESH_DURATION_TICKS)
             },
         );
         self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
@@ -122,17 +118,17 @@ impl Default for ProtectorsVow {
     }
 }
 
-impl ModItemInfo for ProtectorsVow {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for ProtectorsVow {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -151,8 +147,8 @@ impl ModItemInfo for ProtectorsVow {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             defence: self.defence,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -160,24 +156,24 @@ impl ModItemInfo for ProtectorsVow {
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.refresh_cooldown = 0;
         self.apply_awe(ctx, player);
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.apply_awe(ctx, player);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        let mut tags = vec![ItemTag::HP, ItemTag::Defense];
+    fn tags(&self) -> Vec<ItemTagV1> {
+        let mut tags = vec![ItemTagV1::Hp, ItemTagV1::Defense];
         if self.skill_cooldown_mult > 0 {
-            tags.push(ItemTag::CooltimeReduce);
+            tags.push(ItemTagV1::CooltimeReduce);
         }
         tags
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Defense
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Defense
     }
 }

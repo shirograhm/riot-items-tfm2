@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct SpearOfShojin {
@@ -70,7 +70,7 @@ impl SpearOfShojin {
         self
     }
 
-    fn add_attack_stack(&self, ctx: &mut GameCtx, caster: usize, target: usize) {
+    fn add_attack_stack(&self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
@@ -87,13 +87,9 @@ impl SpearOfShojin {
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     attack_mult: self.effect_stack_attack_mult,
-                    name: buff_name(self.stack_buff),
-                    ..Default::default()
+                    ..BuffV1::timed(self.stack_buff, ticks(self.effect_duration_seconds))
                 },
             );
         }
@@ -106,17 +102,17 @@ impl Default for SpearOfShojin {
     }
 }
 
-impl ModItemInfo for SpearOfShojin {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for SpearOfShojin {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -135,8 +131,8 @@ impl ModItemInfo for SpearOfShojin {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             attack: self.attack,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -144,15 +140,15 @@ impl ModItemInfo for SpearOfShojin {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         self.add_attack_stack(ctx, caster, target);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD, ItemTag::CooltimeReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Ad, ItemTagV1::CooltimeReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

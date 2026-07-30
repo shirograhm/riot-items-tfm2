@@ -1,0 +1,12 @@
+# Pinned to the compiler the game itself is built with (see
+# SDKs/mod-sdk-<ver>/rust-toolchain.toml and toolchain_version.txt).
+#
+# The stable API does not need this — a stable-only mod builds with any
+# toolchain. `src/hook.rs` does: it detours a game function and reads the
+# `Vec`/`String`/`dyn ItemInfo` values it passes. Those are `repr(Rust)`, whose
+# layout is only guaranteed between binaries produced by the SAME rustc. Build
+# with a different nightly and the hook reads garbage.
+#
+# Bump this only in lockstep with the game's SDK pin.
+[toolchain]
+channel = "nightly-2026-05-24"

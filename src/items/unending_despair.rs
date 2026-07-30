@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ItemMeta};
@@ -71,17 +71,17 @@ impl Default for UnendingDespair {
     }
 }
 
-impl ModItemInfo for UnendingDespair {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for UnendingDespair {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -100,29 +100,29 @@ impl ModItemInfo for UnendingDespair {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             defence: self.defence,
             ..Default::default()
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, _target: usize) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
         let heal_amount = self.effect_bonus_flat_heal as usize
-            + percent_of(entity_ref.hp().max, self.effect_caster_hp_percent_heal);
+            + percent_of(entity_ref.hp().1, self.effect_caster_hp_percent_heal);
 
         ctx.heal(caster, caster, heal_amount);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::Defense, ItemTag::Vamp]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Defense, ItemTagV1::Vamp]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

@@ -1,5 +1,4 @@
-use arrayvec::ArrayString;
-use mod_api::*;
+use mod_api_stable::*;
 
 mod build_config;
 mod config;
@@ -22,29 +21,22 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
 }
 
 /// Converts a duration in seconds (how config expresses them) to simulation
-/// ticks (what `BuffType::Time` expects).
+/// ticks (what a `Time` buff expects).
 fn ticks(seconds: f64) -> usize {
     (seconds * TICKS_PER_SECOND).round() as usize
 }
 
-/// Converts a buff name to the fixed-capacity inline string that
-/// `BuffState::name` holds. Panics if `name` exceeds that capacity — buff names
-/// are compile-time constants, so that is a typo to fix, not a runtime condition.
-fn buff_name<const CAP: usize>(name: &str) -> ArrayString<CAP> {
-    ArrayString::try_from(name).unwrap()
-}
-
 /// Whether `entity` currently carries a buff named `name`. Buffs are stored in a
 /// flat per-entity table with no lookup by name, so this is a linear scan.
-fn has_buff(entity: &EntityRef, name: &str) -> bool {
-    (0..entity.buff_count()).any(|i| entity.buff_at(i).name.as_str() == name)
+fn has_buff(entity: &StableEntity<'_, '_>, name: &str) -> bool {
+    (0..entity.buff_count()).any(|i| entity.buff_at(i).is_some_and(|b| b.name() == name))
 }
 
 /// How many buffs named `name` are on `entity`. Same-name buffs stack rather
 /// than refresh, so the number of copies present *is* the stack count.
-fn buff_stacks(entity: &EntityRef, name: &str) -> usize {
+fn buff_stacks(entity: &StableEntity<'_, '_>, name: &str) -> usize {
     (0..entity.buff_count())
-        .filter(|&i| entity.buff_at(i).name.as_str() == name)
+        .filter(|&i| entity.buff_at(i).is_some_and(|b| b.name() == name))
         .count()
 }
 
@@ -53,7 +45,12 @@ fn buff_stacks(entity: &EntityRef, name: &str) -> usize {
 /// Returns `true` when the caller should fire its effect (the marker is stamped as
 /// a side effect), `false` while the previous proc is still on cooldown or the
 /// target no longer exists.
-fn try_proc_on_hit(ctx: &mut GameCtx, target: usize, marker: &str, cooldown_seconds: f64) -> bool {
+fn try_proc_on_hit(
+    ctx: &mut StableSim<'_>,
+    target: usize,
+    marker: &str,
+    cooldown_seconds: f64,
+) -> bool {
     let is_ready = ctx
         .get_entity(target)
         .map(|target_ref| !has_buff(&target_ref, marker))
@@ -61,16 +58,7 @@ fn try_proc_on_hit(ctx: &mut GameCtx, target: usize, marker: &str, cooldown_seco
     if !is_ready {
         return false;
     }
-    ctx.add_buff(
-        target,
-        BuffState {
-            duration: BuffType::Time {
-                tick: ticks(cooldown_seconds),
-            },
-            name: buff_name(marker),
-            ..Default::default()
-        },
-    );
+    ctx.add_buff(target, &BuffV1::timed(marker, ticks(cooldown_seconds)));
     true
 }
 
@@ -94,7 +82,7 @@ fn lethality_multiplier(armor: i32, lethality: i32) -> f64 {
 /// penetration against `target` (via [`lethality_multiplier`]). Basic attacks are
 /// the only damage instance a mod can modify — ability damage is dealt by the
 /// game — so lethality items apply this in `on_attack`.
-fn apply_lethality(ctx: &mut GameCtx, target: usize, lethality: usize, damage: &mut usize) {
+fn apply_lethality(ctx: &mut StableSim<'_>, target: usize, lethality: usize, damage: &mut usize) {
     let armor = ctx
         .get_entity(target)
         .map(|t| t.stat().defence as i32)
@@ -110,11 +98,10 @@ const TAKEDOWN_WINDOW_TICKS: usize = 180;
 /// Whether `target` is a champion on the opposing team from `caster`. Both the
 /// takedown marks and the "in combat with an enemy champion" timers key off this,
 /// and neither should fire on minions, towers, or a friendly hit.
-fn is_enemy_champion(ctx: &mut GameCtx, caster: usize, target: usize) -> bool {
-    let Some(caster_ref) = ctx.get_entity(caster) else {
+fn is_enemy_champion(ctx: &mut StableSim<'_>, caster: usize, target: usize) -> bool {
+    let Some(caster_team) = ctx.get_entity(caster).map(|c| c.team()) else {
         return false;
     };
-    let caster_team = caster_ref.team();
     ctx.get_entity(target)
         .map(|target_ref| target_ref.is_champion() && target_ref.team() != caster_team)
         .unwrap_or(false)
@@ -126,7 +113,7 @@ fn is_enemy_champion(ctx: &mut GameCtx, caster: usize, target: usize) -> bool {
 /// `on_kill` hook can't identify — its `entity` arg always looks like a champion).
 fn mark_enemy_champion(
     marks: &mut Vec<(usize, usize)>,
-    ctx: &mut GameCtx,
+    ctx: &mut StableSim<'_>,
     caster: usize,
     target: usize,
 ) {
@@ -143,7 +130,7 @@ fn mark_enemy_champion(
 /// Ages `marks` by one tick and returns how many marked champions died this tick
 /// (each a takedown). Marks are dropped on death (counted once) or when the window
 /// lapses without a death. Call once per `update`.
-fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize {
+fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut StableSim<'_>) -> usize {
     if marks.is_empty() {
         return 0;
     }
@@ -169,46 +156,47 @@ fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut GameCtx) -> usize 
     takedowns
 }
 
-fn apply_adaptive_force(ctx: &mut GameCtx, player: usize, adaptive_force: i32, name: &str) {
-    let Some(player_ref) = ctx.get_player(player) else {
-        return;
-    };
-    let Some(champion_ref) = player_ref.champion() else {
+fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: i32, name: &str) {
+    let Some((champion_id, favors_ap, already_applied)) = ctx.get_player(player).and_then(|p| {
+        let champion_ref = p.champion()?;
+        let stat = champion_ref.stat();
+        Some((
+            champion_ref.id(),
+            stat.magic_power > stat.attack,
+            has_buff(&champion_ref, name),
+        ))
+    }) else {
         return;
     };
 
-    if !has_buff(&champion_ref, name) {
-        if champion_ref.stat().magic_power > champion_ref.stat().attack {
-            ctx.add_buff(
-                champion_ref.id(),
-                BuffState {
-                    duration: BuffType::Permanent,
-                    magic_power: adaptive_force,
-                    name: buff_name(name),
-                    ..Default::default()
-                },
-            )
-        } else {
-            ctx.add_buff(
-                champion_ref.id(),
-                BuffState {
-                    duration: BuffType::Permanent,
-                    attack: (adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32,
-                    name: buff_name(name),
-                    ..Default::default()
-                },
-            )
-        }
+    if already_applied {
+        return;
     }
+
+    let buff = if favors_ap {
+        BuffV1 {
+            magic_power: adaptive_force,
+            ..BuffV1::named(name)
+        }
+    } else {
+        BuffV1 {
+            attack: (adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32,
+            ..BuffV1::named(name)
+        }
+    };
+    ctx.add_buff(champion_id, &buff);
 }
 
 // Installs the experimental item-build route hook when the server starts. The
 // hook is fail-closed (see `hook.rs`): on any mismatch it records a refusal and
-// leaves the game function untouched.
+// leaves the game function untouched. It is the one part of this mod that is
+// NOT stable-ABI — it detours the game binary directly, so it needs the pinned
+// toolchain in `rust-toolchain.toml` and the `game_core` rlib in
+// `.cargo/config.toml`, and it must be re-verified after every game update.
 struct ItemBuildHookExtension;
 
-impl ModServerExtension for ItemBuildHookExtension {
-    fn on_server_start(&self, _ctx: &mut ServerModContext<'_>) {
+impl StableServerExtension for ItemBuildHookExtension {
+    fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
         match hook::install_hook() {
             Ok(address) => {
                 let message = format!("hook_installed address=0x{address:x}");
@@ -216,15 +204,31 @@ impl ModServerExtension for ItemBuildHookExtension {
             }
             Err(error) if error == "hook already installed" => {}
             Err(error) => {
-                let message = format!("hook_refused error={error}");
-                eprintln!("riot_items_tfm2: {message}");
+                eprintln!("riot_items_tfm2: hook_refused error={error}");
+                // Resolution failed, so dump the shape-matching functions for
+                // `tools/find_item_build_hook.py` to work from. Diagnostic only —
+                // the hook never picks a candidate itself.
+                match hook::candidate_report() {
+                    Ok(candidates) => {
+                        eprintln!(
+                            "riot_items_tfm2: hook_candidates count={}",
+                            candidates.len()
+                        );
+                        for candidate in candidates {
+                            eprintln!("riot_items_tfm2: hook_candidate {candidate}");
+                        }
+                    }
+                    Err(error) => {
+                        eprintln!("riot_items_tfm2: hook_candidates_failed error={error}")
+                    }
+                }
             }
         }
     }
 }
 
-fn init(_ctx: &GameCtx) -> ModRegistration {
-    let mut reg = ModRegistration::new("riot_items_tfm2");
+fn init(host: &StableHost) -> StableMod {
+    let mut reg = StableMod::new("riot_items_tfm2");
     let configs = config::load();
 
     macro_rules! configured {
@@ -378,7 +382,12 @@ fn init(_ctx: &GameCtx) -> ModRegistration {
 
     reg.set_server_extension(ItemBuildHookExtension);
 
+    host.log(
+        LogLevel::Info,
+        &format!("riot_items_tfm2: registered items, config entries={}", configs.len()),
+    );
+
     reg
 }
 
-declare_mod!(init);
+declare_stable_mod!(init);

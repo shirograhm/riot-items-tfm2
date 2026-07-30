@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, ticks, ItemMeta};
+use crate::{apply_config, has_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct RylaisCrystalScepter {
@@ -72,17 +72,17 @@ impl Default for RylaisCrystalScepter {
     }
 }
 
-impl ModItemInfo for RylaisCrystalScepter {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for RylaisCrystalScepter {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -101,15 +101,15 @@ impl ModItemInfo for RylaisCrystalScepter {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             magic_power: self.magic_power,
             ..Default::default()
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, _caster: usize, target: usize) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
@@ -121,23 +121,19 @@ impl ModItemInfo for RylaisCrystalScepter {
         if !already_slowed {
             ctx.add_buff(
                 target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     move_speed_mult: -self.effect_slow_amount,
-                    name: buff_name("rylais_crystal_scepter_slow"),
-                    ..Default::default()
+                    ..BuffV1::timed("rylais_crystal_scepter_slow", ticks(self.effect_duration_seconds))
                 },
             );
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Ap]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

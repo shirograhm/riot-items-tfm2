@@ -1,8 +1,8 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_name, count_takedowns, has_buff, mark_enemy_champion, percent_of, ItemMeta,
+    apply_config, count_takedowns, has_buff, mark_enemy_champion, percent_of, ItemMeta,
 };
 
 #[derive(Clone, Debug)]
@@ -82,7 +82,7 @@ impl DeathsDance {
         self
     }
 
-    fn defy(&mut self, ctx: &mut GameCtx, player: usize, takedowns: usize) {
+    fn defy(&mut self, ctx: &mut StableSim<'_>, player: usize, takedowns: usize) {
         if takedowns == 0 {
             return;
         }
@@ -93,8 +93,8 @@ impl DeathsDance {
         let Some(champion_ref) = player_ref.champion() else {
             return;
         };
-        let hp_max = champion_ref.hp().max;
-        let hp_current = champion_ref.hp().current;
+        let hp_max = champion_ref.hp().1;
+        let hp_current = champion_ref.hp().0;
         let champion_id = champion_ref.id();
         let missing_hp = hp_max.saturating_sub(hp_current);
         let heal = self.effect_bonus_flat_heal as usize
@@ -114,17 +114,17 @@ impl Default for DeathsDance {
     }
 }
 
-impl ModItemInfo for DeathsDance {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for DeathsDance {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -143,8 +143,8 @@ impl ModItemInfo for DeathsDance {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             defence: self.defence,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -153,13 +153,13 @@ impl ModItemInfo for DeathsDance {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.accumulated_damage = 0;
         self.last_damaged_by = 0;
         self.takedown_marks.clear();
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         // Defy: heal + cleanse on champion takedowns.
         let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
         self.defy(ctx, player, takedowns);
@@ -182,7 +182,7 @@ impl ModItemInfo for DeathsDance {
 
         let entity = champion_ref.id();
         let per_second_cap =
-            percent_of(champion_ref.hp().max, self.effect_burn_hp_percent_cap / 5.0) as i32;
+            percent_of(champion_ref.hp().1, self.effect_burn_hp_percent_cap / 5.0) as i32;
 
         let tick_damage = self.accumulated_damage.min(per_second_cap);
         if tick_damage <= 0 {
@@ -190,25 +190,21 @@ impl ModItemInfo for DeathsDance {
         }
         ctx.add_buff(
             entity,
-            BuffState {
-                duration: BuffType::Time { tick: 12 },
-                name: buff_name(self.burn_buff),
-                ..Default::default()
-            },
+            &BuffV1::timed(self.burn_buff, 12),
         );
         ctx.deal_damage(
             self.last_damaged_by,
             entity,
             tick_damage as usize,
             0,
-            AttackType::Item,
+            AttackTypeV1::Item,
         );
         self.accumulated_damage -= tick_damage;
     }
 
     fn on_damaged(
         &mut self,
-        _ctx: &mut GameCtx,
+        _ctx: &mut StableSim<'_>,
         _player: usize,
         entity: usize,
         attacker: usize,
@@ -228,24 +224,24 @@ impl ModItemInfo for DeathsDance {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::Defense, ItemTag::CooltimeReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::Defense, ItemTagV1::CooltimeReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

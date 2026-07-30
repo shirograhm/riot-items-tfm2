@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, ItemMeta};
@@ -50,17 +50,17 @@ impl Default for InfinityEdge {
     }
 }
 
-impl ModItemInfo for InfinityEdge {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for InfinityEdge {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -79,19 +79,19 @@ impl ModItemInfo for InfinityEdge {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             crit_chance: self.crit_chance,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

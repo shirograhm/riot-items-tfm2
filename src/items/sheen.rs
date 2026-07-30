@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, ticks};
+use crate::{apply_config, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct Sheen {
@@ -55,17 +55,17 @@ impl Sheen {
     }
 }
 
-impl ModItemInfo for Sheen {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Sheen {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "sheen"
+    fn key(&self) -> String {
+        "sheen".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "sheen"
+    fn icon(&self) -> String {
+        "sheen".to_string()
     }
 
     fn price(&self) -> usize {
@@ -88,19 +88,19 @@ impl ModItemInfo for Sheen {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack_speed_mult: self.attack_speed_mult,
             skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade_ready = false;
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
@@ -118,11 +118,11 @@ impl ModItemInfo for Sheen {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         if !self.spellblade_ready {
             return;
@@ -133,24 +133,18 @@ impl ModItemInfo for Sheen {
         let bonus_damage = self.spellblade_damage(caster_ref.level());
         self.spellblade_ready = false;
 
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
         ctx.add_buff(
             caster,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: ticks(self.effect_cooldown_seconds),
-                },
-                name: buff_name("spellblade_cooldown"),
-                ..Default::default()
-            },
+            &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AS, ItemTag::CooltimeReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::AttackSpeed, ItemTagV1::CooltimeReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

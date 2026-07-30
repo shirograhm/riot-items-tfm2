@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct NeedlesslyLargeRod {
@@ -25,17 +25,17 @@ impl NeedlesslyLargeRod {
     }
 }
 
-impl ModItemInfo for NeedlesslyLargeRod {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for NeedlesslyLargeRod {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "needlessly_large_rod"
+    fn key(&self) -> String {
+        "needlessly_large_rod".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "needlessly_large_rod"
+    fn icon(&self) -> String {
+        "needlessly_large_rod".to_string()
     }
 
     fn price(&self) -> usize {
@@ -58,18 +58,18 @@ impl ModItemInfo for NeedlesslyLargeRod {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             magic_power: self.magic_power,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ap]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

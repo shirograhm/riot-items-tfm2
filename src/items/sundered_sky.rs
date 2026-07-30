@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::{apply_config, config::ItemConfig, percent_of_i32, try_proc_on_hit, ItemMeta};
 
@@ -75,17 +75,17 @@ impl Default for SunderedSky {
     }
 }
 
-impl ModItemInfo for SunderedSky {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for SunderedSky {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -104,8 +104,8 @@ impl ModItemInfo for SunderedSky {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             attack: self.attack,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -115,11 +115,11 @@ impl ModItemInfo for SunderedSky {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         damage: &mut usize,
-        damage_type: DamageType,
+        damage_type: DamageTypeV1,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -131,11 +131,11 @@ impl ModItemInfo for SunderedSky {
             return;
         }
 
-        if damage_type != DamageType::AD {
+        if damage_type != DamageTypeV1::Ad {
             return;
         }
 
-        let missing_health = (caster_ref.hp().max - caster_ref.hp().current) as i32;
+        let missing_health = (caster_ref.hp().1 - caster_ref.hp().0) as i32;
         let heal_amount = self.effect_bonus_flat_heal
             + percent_of_i32(missing_health, self.effect_caster_hp_percent_heal);
 
@@ -153,11 +153,11 @@ impl ModItemInfo for SunderedSky {
         ctx.heal(caster, caster, heal_amount as usize);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD, ItemTag::CooltimeReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Ad, ItemTagV1::CooltimeReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, is_enemy_champion, ticks, ItemMeta};
@@ -84,7 +84,7 @@ impl Opportunity {
     /// Restarts the out-of-combat timer when `target` is an enemy champion.
     /// Deliberately leaves `prepared` alone: an already-earned bonus lingers for
     /// `effect_duration_seconds` past this point (see `update`).
-    fn note_combat(&mut self, ctx: &mut GameCtx, caster: usize, target: usize) {
+    fn note_combat(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         if is_enemy_champion(ctx, caster, target) {
             self.idle_ticks = 0;
         }
@@ -97,17 +97,17 @@ impl Default for Opportunity {
     }
 }
 
-impl ModItemInfo for Opportunity {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Opportunity {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -126,20 +126,20 @@ impl ModItemInfo for Opportunity {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             move_speed_mult: self.move_speed_mult,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.idle_ticks = 0;
         self.prepared = false;
     }
 
-    fn update(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
+    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
         self.idle_ticks = self.idle_ticks.saturating_add(1);
         // Two thresholds off the same timer, and the linger window is the shorter
         // of the two: the bonus is earned once the wielder has been out of combat
@@ -154,11 +154,11 @@ impl ModItemInfo for Opportunity {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         // Lethality resolves before the timer resets, so the attack that breaks
         // out-of-combat still lands with Preparation up.
@@ -166,19 +166,19 @@ impl ModItemInfo for Opportunity {
         self.note_combat(ctx, caster, target);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         self.note_combat(ctx, caster, target);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        let mut tags = vec![ItemTag::AD];
+    fn tags(&self) -> Vec<ItemTagV1> {
+        let mut tags = vec![ItemTagV1::Ad];
         if self.move_speed_mult > 0 {
-            tags.push(ItemTag::MoveSpeed);
+            tags.push(ItemTagV1::MoveSpeed);
         }
         tags
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

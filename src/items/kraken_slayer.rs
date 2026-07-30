@@ -1,10 +1,10 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, try_proc_on_hit, ItemMeta};
 
 fn bring_it_down_damage(
-    ctx: &mut GameCtx,
+    ctx: &mut StableSim<'_>,
     target: usize,
     flat: usize,
     max_percent_bonus: f64,
@@ -13,11 +13,11 @@ fn bring_it_down_damage(
     let Some(target_ref) = ctx.get_entity(target) else {
         return 0;
     };
-    let hp = target_ref.hp();
-    if hp.max == 0 {
+    let (hp_current, hp_max) = target_ref.hp();
+    if hp_max == 0 {
         return flat;
     }
-    let hp_ratio = (hp.current as f64 / hp.max as f64).clamp(0.0, 1.0);
+    let hp_ratio = (hp_current as f64 / hp_max as f64).clamp(0.0, 1.0);
     let threshold = (hp_percent_threshold / 100.0).clamp(0.0, 1.0);
     let ratio = if threshold >= 1.0 {
         1.0
@@ -28,7 +28,7 @@ fn bring_it_down_damage(
     (flat as f64 * scaling).round() as usize
 }
 fn tick_bring_it_down(
-    ctx: &mut GameCtx,
+    ctx: &mut StableSim<'_>,
     target: usize,
     attack_count: &mut usize,
     interval: usize,
@@ -141,17 +141,17 @@ impl Default for KrakenSlayer {
     }
 }
 
-impl ModItemInfo for KrakenSlayer {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for KrakenSlayer {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -170,8 +170,8 @@ impl ModItemInfo for KrakenSlayer {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
             move_speed_mult: self.move_speed_mult,
@@ -179,17 +179,17 @@ impl ModItemInfo for KrakenSlayer {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.attack_count = 0;
     }
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let bonus = tick_bring_it_down(
             ctx,
@@ -202,15 +202,15 @@ impl ModItemInfo for KrakenSlayer {
             self.on_hit_cooldown_seconds,
         );
         if bonus > 0 {
-            ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
+            ctx.deal_damage(caster, target, bonus, 0, AttackTypeV1::Item);
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::MoveSpeed]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed, ItemTagV1::MoveSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

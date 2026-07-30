@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, try_proc_on_hit, ItemMeta};
@@ -79,17 +79,17 @@ impl Default for BladeOfTheRuinedKing {
     }
 }
 
-impl ModItemInfo for BladeOfTheRuinedKing {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for BladeOfTheRuinedKing {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -108,8 +108,8 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
             vamp: self.vamp,
@@ -119,11 +119,11 @@ impl ModItemInfo for BladeOfTheRuinedKing {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -133,7 +133,7 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         }
 
         let mut bonus_damage = percent_of(
-            target_ref.hp().current,
+            target_ref.hp().0,
             self.effect_hp_percent_damage as f64,
         );
         if !target_ref.is_champion() {
@@ -148,19 +148,19 @@ impl ModItemInfo for BladeOfTheRuinedKing {
         ) {
             return;
         }
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
+    fn tags(&self) -> Vec<ItemTagV1> {
         vec![
-            ItemTag::AD,
-            ItemTag::AS,
-            ItemTag::Vamp,
-            ItemTag::HpPercentDamage,
+            ItemTagV1::Ad,
+            ItemTagV1::AttackSpeed,
+            ItemTagV1::Vamp,
+            ItemTagV1::HpPercentDamage,
         ]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

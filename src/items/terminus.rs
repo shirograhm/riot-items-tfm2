@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Terminus {
@@ -85,17 +85,17 @@ impl Default for Terminus {
     }
 }
 
-impl ModItemInfo for Terminus {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Terminus {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -114,8 +114,8 @@ impl ModItemInfo for Terminus {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
             crit_chance: self.crit_chance,
@@ -123,17 +123,17 @@ impl ModItemInfo for Terminus {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.flip_flop = true;
     }
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         _target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let Some(caster_entity_ref) = ctx.get_entity(caster) else {
             return;
@@ -145,13 +145,9 @@ impl ModItemInfo for Terminus {
             if defenses_stack_count < self.effect_max_stacks {
                 ctx.add_buff(
                     caster,
-                    BuffState {
-                        duration: BuffType::Time {
-                            tick: ticks(self.effect_duration_seconds),
-                        },
+                    &BuffV1 {
                         defence_penetration: self.effect_armor_pen_per_stack,
-                        name: buff_name(self.armor_pen_buff_buff),
-                        ..Default::default()
+                        ..BuffV1::timed(self.armor_pen_buff_buff, ticks(self.effect_duration_seconds))
                     },
                 );
             }
@@ -160,13 +156,9 @@ impl ModItemInfo for Terminus {
             if resistance_stack_count < self.effect_max_stacks {
                 ctx.add_buff(
                     caster,
-                    BuffState {
-                        duration: BuffType::Time {
-                            tick: ticks(self.effect_duration_seconds),
-                        },
+                    &BuffV1 {
                         magic_resistance_penetration: self.effect_magic_pen_per_stack,
-                        name: buff_name(self.magic_resistance_pen_buff_buff),
-                        ..Default::default()
+                        ..BuffV1::timed(self.magic_resistance_pen_buff_buff, ticks(self.effect_duration_seconds))
                     },
                 );
             }
@@ -174,11 +166,11 @@ impl ModItemInfo for Terminus {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::DefensePenetration]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed, ItemTagV1::DefensePenetration]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

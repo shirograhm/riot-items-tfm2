@@ -1,10 +1,10 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, ItemMeta};
 
 fn apply_giant_slayer(
-    ctx: &mut GameCtx,
+    ctx: &mut StableSim<'_>,
     target: usize,
     damage: &mut usize,
     percent_per_step: f64,
@@ -17,7 +17,7 @@ fn apply_giant_slayer(
     if target_ref.is_tower() {
         return;
     }
-    let steps = (target_ref.hp().max / hp_per_step.max(1)) as f64;
+    let steps = (target_ref.hp().1 / hp_per_step.max(1)) as f64;
     let bonus_percent = (percent_per_step * steps).min(max_percent);
     *damage = (*damage as f64 * (1.0 + bonus_percent / 100.0)).round() as usize;
 }
@@ -95,17 +95,17 @@ impl Default for LordDominiksRegards {
     }
 }
 
-impl ModItemInfo for LordDominiksRegards {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for LordDominiksRegards {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -124,8 +124,8 @@ impl ModItemInfo for LordDominiksRegards {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             crit_chance: self.crit_chance,
             defence_penetration: self.defence_penetration,
@@ -135,11 +135,11 @@ impl ModItemInfo for LordDominiksRegards {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _caster: usize,
         target: usize,
         damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         apply_giant_slayer(
             ctx,
@@ -151,11 +151,11 @@ impl ModItemInfo for LordDominiksRegards {
         );
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::DefensePenetration]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::DefensePenetration]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

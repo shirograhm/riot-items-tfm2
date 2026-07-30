@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct BlackCleaver {
@@ -72,17 +72,17 @@ impl Default for BlackCleaver {
     }
 }
 
-impl ModItemInfo for BlackCleaver {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for BlackCleaver {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -101,8 +101,8 @@ impl ModItemInfo for BlackCleaver {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             hp: self.hp,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -112,11 +112,11 @@ impl ModItemInfo for BlackCleaver {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _caster: usize,
         target: usize,
         _damage: &mut usize,
-        damage_type: DamageType,
+        damage_type: DamageTypeV1,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;
@@ -125,7 +125,7 @@ impl ModItemInfo for BlackCleaver {
             return;
         }
 
-        if damage_type != DamageType::AD {
+        if damage_type != DamageTypeV1::Ad {
             return;
         }
 
@@ -133,23 +133,19 @@ impl ModItemInfo for BlackCleaver {
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     defence_mult: -self.effect_percent_armor_shred,
-                    name: buff_name("black_cleaver_armor_shred"),
-                    ..Default::default()
+                    ..BuffV1::timed("black_cleaver_armor_shred", ticks(self.effect_duration_seconds))
                 },
             );
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Ad]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

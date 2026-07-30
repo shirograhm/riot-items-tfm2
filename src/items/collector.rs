@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, percent_of, ItemMeta};
@@ -69,17 +69,17 @@ impl Default for Collector {
     }
 }
 
-impl ModItemInfo for Collector {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Collector {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -98,8 +98,8 @@ impl ModItemInfo for Collector {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             crit_chance: self.crit_chance,
             ..Default::default()
@@ -108,11 +108,11 @@ impl ModItemInfo for Collector {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
 
@@ -123,18 +123,18 @@ impl ModItemInfo for Collector {
             return;
         }
 
-        let hp_threshold = percent_of(target_ref.hp().max, self.effect_hp_percent_threshold);
-        if target_ref.hp().current - *damage <= hp_threshold {
-            let lethal_damage = target_ref.hp().current;
-            ctx.deal_damage(caster, target, lethal_damage, 0, AttackType::Item);
+        let hp_threshold = percent_of(target_ref.hp().1, self.effect_hp_percent_threshold);
+        if target_ref.hp().0 - *damage <= hp_threshold {
+            let lethal_damage = target_ref.hp().0;
+            ctx.deal_damage(caster, target, lethal_damage, 0, AttackTypeV1::Item);
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

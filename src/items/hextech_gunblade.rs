@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, ItemMeta};
@@ -58,17 +58,17 @@ impl Default for HextechGunblade {
     }
 }
 
-impl ModItemInfo for HextechGunblade {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for HextechGunblade {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -87,8 +87,8 @@ impl ModItemInfo for HextechGunblade {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             magic_power: self.magic_power,
             vamp: self.vamp,
@@ -96,11 +96,11 @@ impl ModItemInfo for HextechGunblade {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::Vamp]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::Ap, ItemTagV1::Vamp]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }
