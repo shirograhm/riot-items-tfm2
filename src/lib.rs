@@ -3,7 +3,6 @@ use mod_api_stable::*;
 mod build_config;
 mod config;
 mod constants;
-mod diag;
 mod hook;
 mod item_catalog;
 mod item_meta;
@@ -200,20 +199,19 @@ struct ItemBuildHookExtension;
 
 impl StableServerExtension for ItemBuildHookExtension {
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
-        // Also written to `riot-items.log`: the game runs without a console, so
-        // `eprintln!` alone meant a refused hook — which disables every build
-        // config, the strategy picker included — looked exactly like the hook
-        // working and the configs being ignored.
+        // Reported by `eprintln!` only, which goes nowhere unless the game is
+        // started with a console attached. A refused hook disables every build
+        // config, the strategy picker included, and looks exactly like the hook
+        // working while the configs are ignored — so if that is ever suspected,
+        // run the game from a console to see these lines.
         match hook::install_hook() {
             Ok(address) => {
                 let message = format!("hook_installed address=0x{address:x}");
                 eprintln!("riot_items_tfm2: {message}");
-                diag::write(&message);
             }
             Err(error) if error == "hook already installed" => {}
             Err(error) => {
                 eprintln!("riot_items_tfm2: hook_refused error={error}");
-                diag::write(&format!("hook_refused error={error}"));
                 // Resolution failed, so dump the shape-matching functions for
                 // `tools/find_item_build_hook.py` to work from. Diagnostic only —
                 // the hook never picks a candidate itself.
@@ -223,15 +221,12 @@ impl StableServerExtension for ItemBuildHookExtension {
                             "riot_items_tfm2: hook_candidates count={}",
                             candidates.len()
                         );
-                        diag::write(&format!("hook_candidates count={}", candidates.len()));
                         for candidate in candidates {
                             eprintln!("riot_items_tfm2: hook_candidate {candidate}");
-                            diag::write(&format!("hook_candidate {candidate}"));
                         }
                     }
                     Err(error) => {
                         eprintln!("riot_items_tfm2: hook_candidates_failed error={error}");
-                        diag::write(&format!("hook_candidates_failed error={error}"));
                     }
                 }
             }

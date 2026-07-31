@@ -277,10 +277,6 @@ const LIST_HEADER_FILL: &str = "#1d1f2cff";
 const ENTRY_HEADER_H: i32 = 26;
 const ENTRY_ITEM_H: i32 = 30;
 
-/// Update ticks between path probes while the screen has not been found. Once a
-/// second is plenty for a diagnostic that only writes when its answer changes.
-const PROBE_INTERVAL: u32 = 60;
-
 /// One pickable item: the key the hook resolves, its display name, and the
 /// grouping the item list sorts and headers it by.
 #[derive(Clone)]
@@ -340,52 +336,16 @@ struct EditorState {
     entries: Vec<ListEntry>,
     /// The champion list. Cached for the same reason.
     champions: Vec<ChampionChoice>,
-    probe_tick: u32,
 }
 
 static STATE: Mutex<Option<EditorState>> = Mutex::new(None);
 
-/// Last line written by [`diag`]. Deliberately a separate lock from [`STATE`]:
-/// `diag` is called from inside functions that also touch the state, and
-/// `Mutex` is not reentrant.
-static LAST_NOTE: Mutex<String> = Mutex::new(String::new());
-
 /// Runs `f` against the editor state, initializing it on first use. Returns
 /// `None` if the lock is poisoned, which disables the editor rather than
 /// panicking across the FFI boundary.
-///
-/// Never call [`diag`] from inside `f`.
 fn with_state<T>(f: impl FnOnce(&mut EditorState) -> T) -> Option<T> {
     let mut guard = STATE.lock().ok()?;
     Some(f(guard.get_or_insert_with(EditorState::default)))
-}
-
-/// Appends a line to the mod log, skipping it when it repeats the previous
-/// line — `post_update` runs every frame, so an undeduplicated note would be
-/// written sixty times a second.
-///
-/// This is the only diagnostic channel available here: `StableHost` (which owns
-/// `log`) is documented as valid only inside the callback that receives it, and
-/// the extension is never handed one.
-fn diag(msg: &str) {
-    let Ok(mut last) = LAST_NOTE.lock() else {
-        return;
-    };
-    if *last == msg {
-        return;
-    }
-    last.clear();
-    last.push_str(msg);
-
-    crate::diag::write(msg);
-}
-
-/// Clears the [`diag`] dedup so the next visit to the screen logs its progress
-/// again instead of being swallowed as a repeat of the last visit's last line.
-fn reset_diag() {
-    if let Ok(mut last) = LAST_NOTE.lock() {
-        last.clear();
-    }
 }
 
 /// Final items the mod registers itself, recorded as they are added in `init`.
@@ -439,7 +399,6 @@ fn register_once(ctx: &mut StableClient<'_>, path: &str) {
         if let Ok(mut set) = REGISTERED.lock() {
             set.remove(path);
         }
-        diag(&format!("event registration refused for {path}"));
     }
 }
 
@@ -699,9 +658,7 @@ fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
     if items == 0 {
         // Not `loaded.is_empty()`: the Clear row is always there, so the list
         // being non-empty says nothing about whether any item was found.
-        diag("item settings unreadable from the client — item list is empty");
     } else {
-        diag(&format!("loaded {items} final items"));
         let _ = with_state(|state| state.entries = loaded.clone());
     }
     loaded
@@ -799,12 +756,7 @@ fn cached_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
     }
     let loaded = load_champions(ctx);
     if loaded.is_empty() {
-        diag(
-            "no champions to offer — champion_names() gave nothing and the hook has \
-             not recorded a roster yet, so no match has simulated this session",
-        );
     } else {
-        diag(&format!("loaded {} champions", loaded.len()));
         let _ = with_state(|state| state.champions = loaded.clone());
     }
     loaded
@@ -943,19 +895,6 @@ fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
     for slot in 0..PICKER_SLOTS {
         refresh_combo(ctx, entries, &rows, row, slot);
     }
-}
-
-/// Records what an action did.
-///
-/// There is no longer a status line to write it to — the label that sat beside
-/// the unique-items toggle is gone — so these go to the mod log. Kept rather
-/// than deleted because several of them report failures (an unwritable
-/// `mod-settings.json`, most of all) that would otherwise happen silently.
-///
-/// Takes `ctx` it does not use so the call sites read unchanged; every one of
-/// them is in a click handler that has one to hand.
-fn note(_ctx: &mut StableClient<'_>, text: &str) {
-    diag(text);
 }
 
 /// Paints the unique-items toggle from the saved setting: accent-green
@@ -1270,7 +1209,6 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     let count = with_state(|state| state.rows.len()).unwrap_or(0);
     for row in 0..count {
         if !ctx.ui_spawn_source(ROWS_PATH, &row_source(row)) {
-            diag(&format!("row {row} source refused under {ROWS_PATH}"));
             break;
         }
         register_once(ctx, &champ_path(row));
@@ -1308,11 +1246,9 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     // Drop any half-built subtree from a previous attempt so this is idempotent.
     ctx.ui_remove_node(EDITOR_PATH);
     if !ctx.ui_spawn_source(EDITOR_PARENT, EDITOR_SOURCE) {
-        diag("ui_spawn_source refused the build_editor layout");
         return false;
     }
     if !ctx.ui_exists(EDITOR_PATH) {
-        diag(&format!("build_editor spawned but {EDITOR_PATH} does not exist"));
         return false;
     }
 
@@ -1322,7 +1258,6 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     let contents = list_contents_path();
     for (index, entry) in entries.iter().enumerate() {
         if !ctx.ui_spawn_source(&contents, &entry_source(index, entry)) {
-            diag(&format!("item list source refused under {contents}"));
             break;
         }
         if !matches!(entry, ListEntry::Header(_)) {
@@ -1335,7 +1270,6 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     let champ_contents = champ_contents_path();
     for (index, choice) in champions.iter().enumerate() {
         if !ctx.ui_spawn_source(&champ_contents, &champ_entry_source(index, choice)) {
-            diag(&format!("champion list source refused under {champ_contents}"));
             break;
         }
         register_once(ctx, &champ_entry_path(index));
@@ -1358,7 +1292,6 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     }
 
     let _ = with_state(|state| state.modal_ready = true);
-    diag("item build editor ready");
     true
 }
 
@@ -1385,7 +1318,6 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     for row in 0..count {
         refresh_row(ctx, entries, row);
     }
-    note(ctx, "Every change saves as you make it.");
     ctx.ui_set_visible(EDITOR_PATH, true);
     let _ = with_state(|state| state.showing = true);
 }
@@ -1441,13 +1373,11 @@ fn close_editor(ctx: &mut StableClient<'_>) {
 /// never normally the one being hovered towards.
 fn paint_tabs(ctx: &mut StableClient<'_>, builds_active: bool) {
     if !ctx.ui_set_properties(BUILDS_TAB, &tab_style("image", "label", builds_active)) {
-        diag("ui_set_properties refused the Builds tab highlight");
     }
     if !ctx.ui_set_properties(
         TEAM_TAB,
         &tab_style("selected_image", "selected_label", !builds_active),
     ) {
-        diag("ui_set_properties refused the Team tab highlight");
     }
 }
 
@@ -1505,7 +1435,6 @@ fn return_to_team(ctx: &mut StableClient<'_>) {
 /// way a fixed row's could.
 fn place_list(ctx: &mut StableClient<'_>, panel: &str, anchor: &str, width: i32) -> (i32, i32) {
     let Some((x, y, _, h)) = ctx.ui_node_rect(anchor).filter(|rect| rect.3 > 0.0) else {
-        diag(&format!("no layout rect for {anchor} — leaving the list where it was"));
         return (0, 0);
     };
     let (x, y, h) = (x.round() as i32, y.round() as i32, h.round() as i32);
@@ -1521,7 +1450,6 @@ fn place_list(ctx: &mut StableClient<'_>, panel: &str, anchor: &str, width: i32)
     let left = x.min(CANVAS_W - width - 8).max(8);
 
     if !ctx.ui_set_properties(panel, &format!("x: {left}px; y: {top}px;")) {
-        diag(&format!("ui_set_properties refused x/y on {panel}"));
     }
     (left, top)
 }
@@ -1630,10 +1558,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     if path == SAVE_PATH {
         // Every edit already wrote the file, so there is nothing here to flush —
         // the button is the panel's "done", and leaving the tab is all of what
-        // it does. The count goes to the log rather than the status line, which
-        // leaving makes unreadable anyway.
-        let saved = snapshot_rows().iter().filter(|row| row.is_complete()).count();
-        diag(&format!("builds tab left with {saved} champion build(s) on disk"));
+        // it does.
         return_to_team(ctx);
         return;
     }
@@ -1642,7 +1567,6 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         let _ = with_state(|state| state.rows.push(ChampionRow::default()));
         close_list(ctx);
         rebuild_rows(ctx, &entries);
-        note(ctx, "Pick a champion for the new row — a row without one is not saved.");
         return;
     }
 
@@ -1650,16 +1574,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         let enabled = !build_config::unique_items_enabled();
         if build_config::set_unique_items(enabled) {
             refresh_unique(ctx);
-            note(
-                ctx,
-                if enabled {
-                    "Unique item builds enforced - duplicates get replaced with same-category items."
-                } else {
-                    "Unique enforcement off - champions may build duplicate items."
-                },
-            );
         } else {
-            note(ctx, "Could not write mod-settings.json.");
         }
         return;
     }
@@ -1683,7 +1598,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     };
 
     if path.ends_with(".delete") {
-        let removed = with_state(|state| {
+        let _ = with_state(|state| {
             (row < state.rows.len()).then(|| state.rows.remove(row).champion)
         })
         .flatten();
@@ -1691,14 +1606,6 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         build_config::save_champion_rows(&rows);
         close_list(ctx);
         rebuild_rows(ctx, &entries);
-        let champions = snapshot_champions();
-        note(
-            ctx,
-            &format!(
-                "Removed the build for {}.",
-                champion_label(&champions, removed.flatten().as_deref())
-            ),
-        );
         return;
     }
 
@@ -1707,7 +1614,6 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             edit_row(row, |entry| entry.slots[slot] = None);
             close_list(ctx);
             refresh_row(ctx, &entries, row);
-            note(ctx, &format!("Item {} left to the AI.", slot + 1));
         }
         return;
     }
@@ -1717,7 +1623,6 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             edit_row(row, |entry| entry.slots.swap(slot, slot + 1));
             close_list(ctx);
             refresh_row(ctx, &entries, row);
-            note(ctx, &format!("Items {} and {} swapped.", slot + 1, slot + 2));
         }
         return;
     }
@@ -1761,19 +1666,10 @@ fn pick_item(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
         }
         _ => return,
     };
-    let name = picked.as_deref().map(|key| name_of(entries, key));
-    let wrote = edit_row(row, |entry| entry.slots[slot] = picked.clone());
+    edit_row(row, |entry| entry.slots[slot] = picked.clone());
 
     close_list(ctx);
     refresh_row(ctx, entries, row);
-    note(
-        ctx,
-        &match (wrote, name) {
-            (false, _) => "Could not write item-builds.json.".to_string(),
-            (true, Some(name)) => format!("Item {} -> {name}", slot + 1),
-            (true, None) => format!("Item {} -> {AI_SLOT_LABEL}", slot + 1),
-        },
-    );
 }
 
 /// Commits a clicked champion row, assigning it to the open row.
@@ -1794,18 +1690,10 @@ fn pick_champion(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize
         .and_then(|entry| entry.champion.clone());
     let already = current.as_deref() == Some(choice.id.as_str());
     let picked = (!already).then(|| choice.id.clone());
-    let wrote = edit_row(row, |entry| entry.champion = picked.clone());
+    edit_row(row, |entry| entry.champion = picked.clone());
 
     close_list(ctx);
     refresh_row(ctx, entries, row);
-    note(
-        ctx,
-        &match (wrote, &picked) {
-            (false, _) => "Could not write item-builds.json.".to_string(),
-            (true, Some(_)) => format!("Build set for {}.", choice.name),
-            (true, None) => "Row has no champion, so it is not saved.".to_string(),
-        },
-    );
 }
 
 pub struct StrategyPicker;
@@ -1815,13 +1703,6 @@ impl StableExtension for StrategyPicker {
         // Proves two things at once when it lands in the log: the client
         // extension is registered and being called, and the log file is
         // writable at the path the DLL resolves.
-        diag("client extension initialised");
-        diag(&format!(
-            "paths: dll_dir={:?} cwd={:?} using={:?}",
-            crate::config::dll_dir(),
-            std::env::current_dir().ok(),
-            crate::config::mod_dir()
-        ));
     }
 
     fn post_update(&self, ctx: &mut StableClient<'_>, _dt_micros: u64) {
@@ -1842,28 +1723,12 @@ impl StableExtension for StrategyPicker {
                 // The screen and everything registered on it is gone, so the
                 // next one has to wire itself from scratch.
                 forget_registrations();
-                reset_diag();
             }
 
-            // Keep probing while the screen has not been found. `diag`
-            // suppresses repeats, so this writes a line only when the answer
-            // changes. Runs after the reset above so `reset_diag` cannot clear
-            // the dedup between two identical results and log the same line
-            // twice.
-            let due = with_state(|state| {
-                state.probe_tick = state.probe_tick.wrapping_add(1);
-                state.probe_tick % PROBE_INTERVAL == 0
-            })
-            .unwrap_or(false);
-            if due {
-                diag("waiting for the patched strategy screen");
-            }
             return;
         }
 
         if !with_state(|state| state.wired).unwrap_or(true) {
-            diag("patched strategy screen detected — wiring the Builds tab");
-
             // Loaded here, in `post_update`, not from a click handler:
             // `setting_get_json` returned None when called inside one, matching
             // the trait's note that only ui/asset calls are live there.

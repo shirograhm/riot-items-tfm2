@@ -495,7 +495,6 @@ unsafe fn detour(
     {
         static ENTERED: AtomicUsize = AtomicUsize::new(0);
         if ENTERED.fetch_add(1, Ordering::Relaxed) < 3 {
-            crate::diag::write("hook_entered");
         }
     }
 
@@ -505,57 +504,11 @@ unsafe fn detour(
         .expect("item build hook original function missing");
     let mut routes = original(agent, items, champions, champion_ids, team1, team2, mode);
 
-    // Identity check for a hook target derived by structural search rather than
-    // from a symbol (see `tools/find_item_build_hook.py`). The first few calls
-    // report the argument shapes: on the right function these are sane and
-    // stable — one route per team1 entry, a full item pool, the champion roster.
-    // Wildly wrong numbers mean the search picked the wrong function, and the
-    // target should be changed before trusting any build it produces.
-    {
-        static REPORTED: AtomicUsize = AtomicUsize::new(0);
-        if REPORTED.fetch_add(1, Ordering::Relaxed) < 3 {
-            crate::diag::write(&format!(
-                "hook_call routes={} team1={} team2={} items={} champion_ids={} mode={mode} \
-                 route_lens={:?}",
-                routes.len(),
-                team1.len(),
-                team2.len(),
-                items.len(),
-                champion_ids.len(),
-                routes.iter().map(Vec::len).collect::<Vec<_>>()
-            ));
-        }
-    }
-
-    // Both lineups, for the first few calls of a session.
-    //
     // `routes` covers `team1` only (5 routes for 5 entries), and the function is
     // called once per team — so a rule keyed by route index fires for the enemy
     // team too, which is why a build pinned to "Top" reached both top laners.
     // Nothing in the arguments says which team is the player's: `mode` was false
-    // on every call observed.
-    //
-    // This prints both lineups so the pairing can be read off the log: if the
-    // same two lineups come back with team1/team2 swapped, the calls are a pair
-    // and only their order could distinguish the player — if the lineups are
-    // unrelated, the calls are independent and no team scoping is possible from
-    // here at all.
-    {
-        static LINEUPS: AtomicUsize = AtomicUsize::new(0);
-        if LINEUPS.fetch_add(1, Ordering::Relaxed) < 6 {
-            let names = |team: &Vec<(Position, String)>| {
-                team.iter()
-                    .map(|(_, champion)| champion.as_str())
-                    .collect::<Vec<_>>()
-                    .join(",")
-            };
-            crate::diag::write(&format!(
-                "hook_lineups team1=[{}] team2=[{}]",
-                names(team1),
-                names(team2)
-            ));
-        }
-    }
+    // on every call observed. This is why builds are keyed by champion.
 
     // Hand the champion roster to the client-side editor, which cannot
     // enumerate champions from inside a UI handler. Same process, so this is a
