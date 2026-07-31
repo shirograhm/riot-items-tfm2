@@ -22,4 +22,5 @@ target/
 
 .cargo/*
 .vscode/*
+tools/*
 hook-target.json
