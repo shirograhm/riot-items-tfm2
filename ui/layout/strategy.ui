@@ -2830,7 +2830,7 @@ main:strategy_ui {
         }
       }
       #personal:color {
-        width: 1824px;
+        width: 1364px;
         height: 645px;
 
         color: #1d1f2cff;
@@ -2855,7 +2855,7 @@ main:strategy_ui {
         }
 
         #personal_header:empty {
-          width: 1786px;
+          width: 1326px;
           height: 30px;
 
           #col_player:label {
@@ -2903,7 +2903,7 @@ main:strategy_ui {
         }
 
         #row0:empty {
-          width: 1786px;
+          width: 1326px;
           height: 50px;
 
           #position:image {
@@ -3057,7 +3057,7 @@ main:strategy_ui {
         }
 
         #row1:empty {
-          width: 1786px;
+          width: 1326px;
           height: 50px;
 
           #position:image {
@@ -3211,7 +3211,7 @@ main:strategy_ui {
         }
 
         #row2:empty {
-          width: 1786px;
+          width: 1326px;
           height: 50px;
 
           #position:image {
@@ -3365,7 +3365,7 @@ main:strategy_ui {
         }
 
         #row3:empty {
-          width: 1786px;
+          width: 1326px;
           height: 50px;
 
           #position:image {
@@ -3519,7 +3519,7 @@ main:strategy_ui {
         }
 
         #row4:empty {
-          width: 1786px;
+          width: 1326px;
           height: 50px;
 
           #position:image {

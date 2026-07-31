@@ -207,6 +207,16 @@ dropdowns set the same thing per athlete that this sets per champion, and the
 game gives a mod no way to act on a per-athlete rule (see below), so keeping
 both would have left a control that looks like it works and does not.
 
+**If builds set here seem to be ignored, check Vanilla Overrides.** The old
+Personal dropdowns write a per-player build category into the save, and the game
+applies it after the mod's hook has run — so a player left on anything but **Let
+Player Decide** (from before this mod was installed, say) builds to that
+category and ignores the build set here. Nothing in the modding API can clear
+that value, so the **Vanilla Overrides** button in the toolbar brings the
+vanilla panel back for as long as it takes to set those dropdowns to **Let
+Player Decide**. The same button returns to the Builds list, and nothing about
+the mode is saved.
+
 The **filter by champion** box in the toolbar narrows the list as you type;
 its **X** clears it. A row whose champion is not yet chosen always stays
 visible, so a row added while a filter is up does not vanish before it can be

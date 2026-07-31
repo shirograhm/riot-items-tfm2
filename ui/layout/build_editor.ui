@@ -97,13 +97,28 @@ build_editor:empty {
         }
       }
 
+      #legacy:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 507px;
+        y: 11px;
+        width: 180px;
+        height: 38px;
+
+        text: {
+          text: "Vanilla Overrides";
+          align_x: Center;
+          align_y: Center;
+          size: 14;
+        }
+      }
+
       #hint:label {
         @"asset/base/style/main#label";
         anchor_x: 1;
         pivot_x: 1;
         x: -15px;
         y: 13px;
-        width: 700px;
+        width: 640px;
         height: 34px;
         align_x: Right;
         align_y: Center;
@@ -246,6 +261,41 @@ build_editor:empty {
           size: 15;
         }
       }
+    }
+  }
+
+  #legacybar:empty {
+    visible: false;
+
+    x: 739px;
+    y: 122px;
+    width: 1132px;
+    height: 40px;
+
+    #back:color_icon_button {
+      @"asset/base/style/main#tertiary_button";
+      width: 200px;
+      height: 40px;
+
+      text: {
+        font: "asset/base/font/set/bold";
+        text: "Back to Item Builds";
+        align_x: Center;
+        align_y: Center;
+        size: 15;
+      }
+    }
+
+    #hint:label {
+      @"asset/base/style/main#label";
+      x: 214px;
+      width: 918px;
+      height: 40px;
+      align_x: Left;
+      align_y: Center;
+      size: 13;
+      color: #a5a5abff;
+      text: "Anything but 'Let Player Decide' here overrides this mod's builds for that player.";
     }
   }
 
