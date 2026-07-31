@@ -43,19 +43,73 @@ build_editor:empty {
         }
       }
 
+      #search:text_edit {
+        @"asset/base/style/main#text_edit";
+        x: 205px;
+        y: 10px;
+        width: 260px;
+        height: 40px;
+        size: 14;
+        align_y: Center;
+        padding: {
+          left: 44px;
+          top: 5px;
+          right: 15px;
+          bottom: 5px;
+        }
+        placeholder: "filter by champion...";
+        max_length: 40;
+
+        #icon:image {
+          ignore_event: true;
+          x: -30px;
+          y: 5px;
+          width: 20px;
+          height: 20px;
+          source: "asset/base/ui/banpick/fi-rr-search";
+          color: #858d9dff;
+        }
+      }
+
+      #searchclear:color_icon_button {
+        visible: false;
+
+        x: 475px;
+        y: 19px;
+        width: 22px;
+        height: 22px;
+
+        btn: { color: #00000000; }
+
+        icon: {
+          source: "asset/base/ui/icons/cross";
+          rect: { x: 6px; y: 6px; w: 10px; h: 10px; }
+        }
+
+        #glyph:image {
+          ignore_event: true;
+          x: 6px;
+          y: 6px;
+          width: 10px;
+          height: 10px;
+          source: "asset/base/ui/icons/cross";
+          color: #60ddc2ff;
+        }
+      }
+
       #hint:label {
         @"asset/base/style/main#label";
         anchor_x: 1;
         pivot_x: 1;
         x: -15px;
         y: 13px;
-        width: 900px;
+        width: 700px;
         height: 34px;
         align_x: Right;
         align_y: Center;
         size: 13;
         color: #a5a5abff;
-        text: "Builds are per champion. A blank slot is filled by the game, in the order the AI would have picked.";
+        text: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.";
       }
     }
 

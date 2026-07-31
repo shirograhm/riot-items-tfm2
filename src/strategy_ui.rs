@@ -96,6 +96,17 @@
 //! is about hit-testing, not drawing, and without it a child swallows the click
 //! meant for the button it sits on.
 //!
+//! # The filter narrows what is spawned, not what is visible
+//!
+//! The toolbar's search box hides rows whose champion does not match. It does
+//! that by spawning only the matching rows, and it keeps naming each node for
+//! the row's index in the saved list rather than its position on screen — so
+//! `…rows.row4` is row 4 of the file whether or not rows 0-3 are showing, and
+//! every path, handler and [`row_from_path`] keeps its meaning with a filter up.
+//! Hiding the non-matching nodes instead would have depended on `TopToBottom`
+//! skipping invisible children when it measures, and left 50px holes in the list
+//! if it does not.
+//!
 //! # Register each path exactly once
 //!
 //! `ui_register_path_events` registers "a handler for EVERY UI event whose path
@@ -328,14 +339,29 @@ struct EditorState {
     /// The rows being edited, in display order. Loaded from `item-builds.json`
     /// when the window is built and written back on every change.
     rows: Vec<ChampionRow>,
-    /// How many row nodes are currently spawned, so a rebuild removes exactly
-    /// those and no others.
-    spawned_rows: usize,
+    /// Which rows currently have a node spawned, so a rebuild removes exactly
+    /// those and no others. Indices into `rows`, not positions on screen: with a
+    /// filter active the two differ, and every path in the editor is built from
+    /// the former.
+    spawned_rows: Vec<usize>,
+    /// The filter box's text, as of the last frame that read it. Rows whose
+    /// champion does not match are left unspawned.
+    filter: String,
     /// The item list, headers included. Cached for the process lifetime — the
     /// item pool cannot change without a restart.
     entries: Vec<ListEntry>,
     /// The champion list. Cached for the same reason.
     champions: Vec<ChampionChoice>,
+    /// Where the vanilla Item Info popup was found on this screen, and how many
+    /// frames have passed since it was last looked for. Both are per screen: the
+    /// path found dies with the screen, and the search is a walk of the node
+    /// tree, so it is throttled rather than run every frame. See
+    /// [`find_info_popup`].
+    info_popup: Option<String>,
+    info_probe_tick: u32,
+    /// Whether that popup was up as of the last frame, so the scroll views are
+    /// only rewritten when it opens or closes.
+    info_showing: bool,
 }
 
 static STATE: Mutex<Option<EditorState>> = Mutex::new(None);
@@ -453,7 +479,27 @@ const SAVE_PATH: &str = "main.contents.build_editor.popup.footer.save";
 /// In the toolbar, above the column headers: adding a row acts on the list
 /// below it.
 const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
+/// The filter box, beside Add. A `text_edit` styled after the ban/pick screen's
+/// own champion search — same `main#text_edit` style, same magnifier child, same
+/// `placeholder`/`max_length` keys — so it reads as one of the game's controls.
+///
+/// No handler is registered for it. `TextEditComplete` fires on commit (Enter or
+/// focus loss), not per keystroke, so a handler alone would give a filter that
+/// only updates when you leave the box; [`sync_filter`] polls its text every
+/// frame instead. Its X *is* a registered control, since a click is exactly the
+/// event a button reports.
+const SEARCH_PATH: &str = "main.contents.build_editor.popup.toolbar.search";
+const SEARCH_CLEAR_PATH: &str = "main.contents.build_editor.popup.toolbar.searchclear";
 const ROWS_PATH: &str = "main.contents.build_editor.popup.rowscroll.rows";
+
+/// The three scroll views in the editor: the row list and the two floating
+/// lists. See [`focus_scroll`] — only one of them may take the wheel at a time.
+const ROWSCROLL_PATH: &str = "main.contents.build_editor.popup.rowscroll";
+const ITEMLIST_SCROLL: &str = "main.contents.build_editor.itemlist.list";
+const CHAMPLIST_SCROLL: &str = "main.contents.build_editor.champlist.list";
+/// Resting `speed` of all three, restored to whichever one is live. Must match
+/// the value the three views are authored with in `build_editor.ui`.
+const SCROLL_SPEED: i32 = 100;
 
 fn editor_row_path(row: usize) -> String {
     format!("{ROWS_PATH}.row{row}")
@@ -730,6 +776,30 @@ fn load_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
     out
 }
 
+/// Prefixes some modded champion ids carry. Cosmetic noise in the dropdown, so
+/// they are dropped from the shown name only — the id itself is what the hook
+/// matches on and is never rewritten.
+const MOD_ID_PREFIXES: [&str; 2] = ["test_mod_", "cf_"];
+
+/// Drops any leading mod prefixes, including stacked ones (`test_mod_cf_x`).
+///
+/// A prefix is only removed when something is left after it, so an id that is
+/// nothing but a prefix still shows as itself rather than as an empty button.
+fn strip_mod_prefixes(id: &str) -> &str {
+    let mut id = id;
+    'outer: loop {
+        for prefix in MOD_ID_PREFIXES {
+            if let Some(rest) = id.strip_prefix(prefix) {
+                if !rest.is_empty() {
+                    id = rest;
+                    continue 'outer;
+                }
+            }
+        }
+        return id;
+    }
+}
+
 /// Readable name for a champion id: `snake_case` -> `Snake Case`.
 ///
 /// Not an i18n lookup, because there is none to do — `champion.i18n` carries
@@ -740,7 +810,8 @@ fn champion_display_name(id: &str) -> String {
         // The one id whose prettified form is not what the game calls it.
         return "Soldier (Sniper)".to_string();
     }
-    id.split('_')
+    strip_mod_prefixes(id)
+        .split('_')
         .map(|word| {
             let mut chars = word.chars();
             match chars.next() {
@@ -1194,23 +1265,25 @@ fn champ_entry_source(index: usize, choice: &ChampionChoice) -> String {
     )
 }
 
-/// Removes the spawned row nodes and spawns one per row in state, registering
-/// every control. Called when the window is built and after any add or delete.
+/// Removes the spawned row nodes and spawns one per row passing the filter,
+/// registering every control. Called when the window is built, after any add or
+/// delete, and whenever the filter text changes.
 ///
 /// Rebuilding wholesale rather than splicing keeps row index and node name in
 /// step: a row's identity is its position in the list, so deleting row 1 has to
 /// renumber everything after it anyway.
 fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
-    let previous = with_state(|state| state.spawned_rows).unwrap_or(0);
-    for row in 0..previous {
+    let previous = with_state(|state| std::mem::take(&mut state.spawned_rows)).unwrap_or_default();
+    for row in previous {
         ctx.ui_remove_node(&editor_row_path(row));
     }
 
-    let count = with_state(|state| state.rows.len()).unwrap_or(0);
-    for row in 0..count {
+    let mut spawned = Vec::new();
+    for row in visible_rows() {
         if !ctx.ui_spawn_source(ROWS_PATH, &row_source(row)) {
             break;
         }
+        spawned.push(row);
         register_once(ctx, &champ_path(row));
         register_once(ctx, &delete_path(row));
         for slot in 0..PICKER_SLOTS {
@@ -1221,7 +1294,8 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
             register_once(ctx, &format!("{}.swap{slot}", editor_row_path(row)));
         }
     }
-    let _ = with_state(|state| state.spawned_rows = count);
+    let count = spawned.len();
+    let _ = with_state(|state| state.spawned_rows = spawned.clone());
 
     // `#rows` is authored `height: auto`, but an auto height measured over a
     // subtree that has not been laid out is zero, and a scroll view whose
@@ -1230,9 +1304,85 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     let height = count as i32 * (ROW_HEIGHT as i32 + ROW_SPACING);
     ctx.ui_set_properties(ROWS_PATH, &format!("height: {height}px;"));
 
-    for row in 0..count {
+    for row in spawned {
         refresh_row(ctx, entries, row);
     }
+}
+
+/// Rows that pass the current filter, as indices into `state.rows`.
+///
+/// Filtering by *not spawning* rather than by hiding is what keeps the rest of
+/// the module unchanged: a row's node is named for its index in `state.rows`
+/// (`…rows.row4`), so every path, every handler and [`row_from_path`] go on
+/// meaning the same thing with a filter up. Hiding would have worked too, but
+/// only if `TopToBottom` skips invisible children when it measures — and a
+/// filtered list with 50px gaps in it is exactly the bug that would cause.
+///
+/// A row with no champion always passes. It is the row that was just added or is
+/// about to be assigned, and having `+ Add Champion` produce a row that is
+/// immediately filtered out of sight is worse than showing one extra line. (The
+/// old external editor solved the same problem by clearing the search box on
+/// add, which loses the filter you were in the middle of using.)
+fn visible_rows() -> Vec<usize> {
+    // Taken before the lock: `with_state` is a plain `Mutex`, so reading the
+    // champion list from inside the closure would deadlock on itself.
+    let champions = snapshot_champions();
+    with_state(|state| {
+        let query = state.filter.trim().to_lowercase();
+        state
+            .rows
+            .iter()
+            .enumerate()
+            .filter(|(_, row)| match &row.champion {
+                None => true,
+                // The id as well as the shown name, so a build authored against
+                // a champion this install does not have — whose label falls back
+                // to the raw id — is still reachable by typing it.
+                Some(id) => {
+                    query.is_empty()
+                        || format!("{} {id}", champion_label(&champions, Some(id)))
+                            .to_lowercase()
+                            .contains(&query)
+                }
+            })
+            .map(|(index, _)| index)
+            .collect()
+    })
+    .unwrap_or_default()
+}
+
+/// Whether a filter is currently narrowing the list.
+fn filter_active() -> bool {
+    with_state(|state| !state.filter.trim().is_empty()).unwrap_or(false)
+}
+
+/// Reads the filter box and rebuilds the rows when its text has changed.
+///
+/// Polled from `post_update` rather than driven by an event: the only text
+/// event the ABI defines is `TextEditComplete`, which fires on commit, so a
+/// handler would leave the list stale until the box lost focus. Reading a string
+/// once a frame is cheap, and the rebuild is gated on the text actually
+/// differing.
+fn sync_filter(ctx: &mut StableClient<'_>) {
+    let Some(text) = ctx.ui_text_edit_text(SEARCH_PATH) else {
+        return;
+    };
+    let changed = with_state(|state| {
+        let changed = state.filter != text;
+        state.filter = text.clone();
+        changed
+    })
+    .unwrap_or(false);
+    if !changed {
+        return;
+    }
+
+    ctx.ui_set_visible(SEARCH_CLEAR_PATH, !text.trim().is_empty());
+    // A floating list is positioned against the row that opened it, and that row
+    // is about to be removed and respawned.
+    close_list(ctx);
+    let entries = snapshot_entries();
+    rebuild_rows(ctx, &entries);
 }
 
 /// Spawns the window, its rows and both dropdown lists, and registers every
@@ -1283,13 +1433,21 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     // while the game sits on this screen is picked up.
     let _ = with_state(|state| {
         state.rows = build_config::load_champion_rows();
-        state.spawned_rows = 0;
+        state.spawned_rows.clear();
+        // The subtree was just spawned, so its filter box is empty whatever the
+        // last screen was left filtered by.
+        state.filter.clear();
     });
     rebuild_rows(ctx, &entries);
 
-    for path in [SAVE_PATH, ADD_PATH, UNIQUE_PATH, LISTCATCH_PATH] {
+    for path in [SAVE_PATH, ADD_PATH, UNIQUE_PATH, LISTCATCH_PATH, SEARCH_CLEAR_PATH] {
         register_once(ctx, path);
     }
+
+    // Both lists start hidden but nothing in the source stops them taking the
+    // wheel, so without this a scroll of the rows also scrolls two panels that
+    // are not on screen — invisible until one is opened and found part-way down.
+    focus_scroll(ctx, ROWSCROLL_PATH);
 
     let _ = with_state(|state| state.modal_ready = true);
     true
@@ -1314,8 +1472,9 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     keep_matchup(ctx);
 
     refresh_unique(ctx);
-    let count = with_state(|state| state.rows.len()).unwrap_or(0);
-    for row in 0..count {
+    // The spawned set, not every row: with a filter up the others have no nodes
+    // to repaint.
+    for row in with_state(|state| state.spawned_rows.clone()).unwrap_or_default() {
         refresh_row(ctx, entries, row);
     }
     ctx.ui_set_visible(EDITOR_PATH, true);
@@ -1512,6 +1671,7 @@ fn open_item_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize,
 
     ctx.ui_set_visible(LISTCATCH_PATH, true);
     ctx.ui_set_visible(ITEMLIST_PATH, true);
+    focus_scroll(ctx, ITEMLIST_SCROLL);
     let _ = with_state(|state| state.open_list = Some(OpenList::Item { row, slot }));
 }
 
@@ -1530,6 +1690,7 @@ fn open_champ_list(ctx: &mut StableClient<'_>, champions: &[ChampionChoice], row
 
     ctx.ui_set_visible(LISTCATCH_PATH, true);
     ctx.ui_set_visible(CHAMPLIST_PATH, true);
+    focus_scroll(ctx, CHAMPLIST_SCROLL);
     let _ = with_state(|state| state.open_list = Some(OpenList::Champion { row }));
 }
 
@@ -1539,7 +1700,136 @@ fn close_list(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(ITEMLIST_PATH, false);
     ctx.ui_set_visible(CHAMPLIST_PATH, false);
     ctx.ui_set_visible(LISTCATCH_PATH, false);
+    focus_scroll(ctx, ROWSCROLL_PATH);
     let _ = with_state(|state| state.open_list = None);
+}
+
+/// Gives the wheel to one scroll view and takes it from the other two.
+///
+/// A floating list is drawn over the row list, but overlapping is not something
+/// the wheel takes account of: with a list open, one scroll moved both it and
+/// the rows underneath it. `#listcatch` does not help — it is a button, and
+/// buttons are about clicks.
+///
+/// Two keys are written, because the obvious one is not enough. `ignore_event`
+/// is in the `scroll_view` runner's property table (beside `speed`, `bar_width`
+/// and the rest) and the write is accepted, but it governs hit-testing — the
+/// same thing it does on the row images, which use it to keep from swallowing a
+/// click meant for the button behind them — and the wheel is read from hover
+/// rather than routed as a click, so a scroll view with it set still scrolled.
+/// `speed` is what scales the movement, and zero of it is none.
+///
+/// Written on all three every time rather than tracked, so there is no state to
+/// get out of step: exactly one is live and it is the one named. Muting
+/// `#rowscroll` while a list is up costs nothing else — the rows behind an open
+/// list are already unclickable, that being `#listcatch`'s entire job — and
+/// [`close_list`] restores it on every dismissal path.
+/// Node name of the vanilla Item Info popup, opened by the button this tab
+/// keeps on screen. Its layout is `strategy_component/item_info_popup`: a
+/// full-screen `z: 200` panel, spawned by game code rather than declared in
+/// `strategy.ui`, which is why its path has to be found rather than written
+/// down.
+const INFO_POPUP_NAME: &str = "item_info_popup";
+
+/// The scroll view that is live when nothing may scroll at all. Not a path
+/// anything has, which is the point: [`focus_scroll`] mutes every view that is
+/// not the one named.
+const SCROLL_NONE: &str = "";
+
+/// Looks for the Item Info popup in the node tree, breadth-first from `main`.
+///
+/// Game code spawns it, so where it lands is not something the mod's own
+/// layouts record — and a guessed path that is wrong fails silently, leaving the
+/// bug in place with nothing to show for it. `ui_child_names` answers the
+/// question directly. Two levels is enough for a full-screen popup (it is a
+/// sibling of the screen, not a part of one) and bounds the walk.
+fn find_info_popup(ctx: &StableClient<'_>) -> Option<String> {
+    let mut level = vec!["main".to_string()];
+    for _ in 0..2 {
+        let mut next = Vec::new();
+        for parent in level {
+            for name in ctx.ui_child_names(&parent) {
+                let path = format!("{parent}.{name}");
+                if name == INFO_POPUP_NAME {
+                    return Some(path);
+                }
+                next.push(path);
+            }
+        }
+        level = next;
+    }
+    None
+}
+
+/// Mutes the editor's scroll views while the Item Info popup is up, and hands
+/// the wheel back when it closes.
+///
+/// The popup covers the editor and scrolls its own list, but it is game code's
+/// node — the mod cannot make it consume the wheel on the way past, only stop
+/// its own views from acting on what gets through. Same overlap as an open
+/// dropdown, one screen further out.
+///
+/// Rewritten only on the transition. Closing hands the wheel to whichever list
+/// is open rather than always to the rows, since the popup can be opened over an
+/// open dropdown.
+fn sync_info_popup(ctx: &mut StableClient<'_>) {
+    // Its own source declares `visible: false`, which says it is spawned with
+    // the screen and toggled — so the first search should find it. The retry is
+    // for the other possibility, that game code spawns it on first use: a single
+    // failed search would then never find it at all. Once a second is often
+    // enough for something opened by hand, and the walk stops being run once it
+    // has an answer.
+    let known = with_state(|state| {
+        let due = state.info_popup.is_none() && state.info_probe_tick % 60 == 0;
+        state.info_probe_tick = state.info_probe_tick.wrapping_add(1);
+        (state.info_popup.clone(), due)
+    })
+    .unwrap_or((None, false));
+    let path = match known {
+        (Some(path), _) => path,
+        (None, false) => return,
+        (None, true) => {
+            let found = find_info_popup(ctx);
+            let _ = with_state(|state| state.info_popup = found.clone());
+            match found {
+                Some(path) => path,
+                None => return,
+            }
+        }
+    };
+
+    let showing = ctx.ui_visible(&path).unwrap_or(false);
+    let changed = with_state(|state| {
+        let changed = state.info_showing != showing;
+        state.info_showing = showing;
+        changed
+    })
+    .unwrap_or(false);
+    if !changed {
+        return;
+    }
+
+    if showing {
+        focus_scroll(ctx, SCROLL_NONE);
+        return;
+    }
+    let active = match with_state(|state| state.open_list).flatten() {
+        Some(OpenList::Item { .. }) => ITEMLIST_SCROLL,
+        Some(OpenList::Champion { .. }) => CHAMPLIST_SCROLL,
+        None => ROWSCROLL_PATH,
+    };
+    focus_scroll(ctx, active);
+}
+
+fn focus_scroll(ctx: &mut StableClient<'_>, active: &str) {
+    for path in [ROWSCROLL_PATH, ITEMLIST_SCROLL, CHAMPLIST_SCROLL] {
+        let (ignore, speed) = if path == active {
+            ("false", SCROLL_SPEED)
+        } else {
+            ("true", 0)
+        };
+        ctx.ui_set_properties(path, &format!("ignore_event: {ignore}; speed: {speed};"));
+    }
 }
 
 /// Row index from an event path (`….rows.row2.slot1` -> `2`).
@@ -1606,6 +1896,15 @@ fn handle_event(ctx: &mut StableClient<'_>) {
 
     if path == ADD_PATH {
         let _ = with_state(|state| state.rows.push(ChampionRow::default()));
+        close_list(ctx);
+        rebuild_rows(ctx, &entries);
+        return;
+    }
+
+    if path == SEARCH_CLEAR_PATH {
+        ctx.ui_set_text_edit_text(SEARCH_PATH, "");
+        ctx.ui_set_visible(SEARCH_CLEAR_PATH, false);
+        let _ = with_state(|state| state.filter.clear());
         close_list(ctx);
         rebuild_rows(ctx, &entries);
         return;
@@ -1735,6 +2034,11 @@ fn pick_champion(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize
 
     close_list(ctx);
     refresh_row(ctx, entries, row);
+    // The row's champion is what the filter tests, so assigning one can take the
+    // row out of (or a clear can bring it back into) the filtered list.
+    if filter_active() {
+        rebuild_rows(ctx, entries);
+    }
 }
 
 pub struct StrategyPicker;
@@ -1754,8 +2058,14 @@ impl StableExtension for StrategyPicker {
                 let stale = state.wired;
                 state.wired = false;
                 state.modal_ready = false;
-                state.spawned_rows = 0;
+                state.spawned_rows.clear();
+                state.filter.clear();
                 state.open_list = None;
+                // The popup found on this screen dies with it, so the next one
+                // searches again rather than writing to a stale path.
+                state.info_popup = None;
+                state.info_probe_tick = 0;
+                state.info_showing = false;
                 state.showing = false;
                 stale
             })
@@ -1793,6 +2103,8 @@ impl StableExtension for StrategyPicker {
         if with_state(|state| state.showing).unwrap_or(false) {
             ctx.ui_set_visible(ITEM_INFO_BTN, true);
             keep_matchup(ctx);
+            sync_filter(ctx);
+            sync_info_popup(ctx);
         }
     }
 }

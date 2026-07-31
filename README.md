@@ -207,6 +207,11 @@ dropdowns set the same thing per athlete that this sets per champion, and the
 game gives a mod no way to act on a per-athlete rule (see below), so keeping
 both would have left a control that looks like it works and does not.
 
+The **filter by champion** box in the toolbar narrows the list as you type;
+its **X** clears it. A row whose champion is not yet chosen always stays
+visible, so a row added while a filter is up does not vanish before it can be
+assigned.
+
 Clicking a slot drops its item list underneath it. Pick **Let Player Decide** at
 the top of that list — or click the pinned item again, or the slot's **X** — to
 hand the slot back to the game's AI. The **Enforcing unique items** toggle writes
