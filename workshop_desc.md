@@ -5,7 +5,7 @@ Also re-skins the 30 existing items and adds some custom icons for Armor Penetra
 [b]This mod supports custom item values! Now you can be Phreak! See the instructions below.[/b]  
 [b]This mod also supports custom item builds! See the instructions below.[/b]  
 
-Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for an item of the same category. Prefer duplicate builds? Toggle it off in the Item Build Editor.  
+Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for an item of the same category. Prefer duplicate builds? Toggle it off in the in-game Build Editor.  
 
 [h1] Important [/h1]
 
@@ -19,10 +19,6 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 [h1] Known Issues [/h1]
 
-Selecting a specific item category on the Item Selection Screen forces the AI to buy the base game item in that category. See the [b]Custom Item Builds[/b] section below if you want to control the items your players build!
-
-The item build override affects all champions in the match. This means you could control the enemy's items. Currently there is no fix without removing the custom item build behavior completely.  
-
 Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects are working.  
 
 Some item effects are roughly simulated to the best of my ability using the available mod-sdk.  
@@ -30,6 +26,8 @@ Some item effects are roughly simulated to the best of my ability using the avai
 Some AI champions seem to prefer the wrong stats when given deference of item selection. Magic Knight tends to buy AD and AS items instead of AP, for example.  
 
 Some AI champions ignore the custom item builds. This is being investigated, but is likely to be instability that occurs in long term builds.  
+
+The in-game item build editor override affects all champions in the game. This means you could control the enemy's items. Currently there is no fix without removing the custom item build behavior completely.  
 
 [h1] Instructions [/h1]
 
@@ -41,7 +39,8 @@ In order for the AI to realize that these items exist, it is best to add this mo
 4. Restart the game.
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
-Currently updated for game version >=0.5.1. Also supports previous versions using an older build of the mod. See below for reference:  
+Currently updated for game version >=0.5.3. Also supports previous versions using an older build of the mod. See below for reference:  
+Mod v0.7.0 - v0.5.3+
 Mod v0.5.7 - v0.5.1+
 Mod v0.5.6 - versions up to 0.5.0
 
@@ -70,7 +69,7 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
   b. If you only want to decide [i]some[/i] items, set the slots you care about and leave the rest on [b]Let Player Decide[/b] (the default). The mod keeps your chosen items and lets the game's AI fill the remaining slots.
 3. Start the simulated match!
 
-Builds are saved to [b]item-builds.json[/b] as you make them, so they carry across sessions.
+Builds are saved to [b]item-builds.json[/b] as you make them, so they carry across sessions.  
 
 [b]NOTE: Custom item builds override all matches at the moment. So your build becomes the meta. It is extremely powerful and can affect both simulated games, soloQ, and even the other team's champions in your match. Please use it with caution![/b]
 
