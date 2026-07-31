@@ -527,6 +527,41 @@ unsafe fn detour(
         }
     }
 
+    // Both lineups, for the first few calls of a session.
+    //
+    // `routes` covers `team1` only (5 routes for 5 entries), and the function is
+    // called once per team — so a rule keyed by route index fires for the enemy
+    // team too, which is why a build pinned to "Top" reached both top laners.
+    // Nothing in the arguments says which team is the player's: `mode` was false
+    // on every call observed.
+    //
+    // This prints both lineups so the pairing can be read off the log: if the
+    // same two lineups come back with team1/team2 swapped, the calls are a pair
+    // and only their order could distinguish the player — if the lineups are
+    // unrelated, the calls are independent and no team scoping is possible from
+    // here at all.
+    {
+        static LINEUPS: AtomicUsize = AtomicUsize::new(0);
+        if LINEUPS.fetch_add(1, Ordering::Relaxed) < 6 {
+            let names = |team: &Vec<(Position, String)>| {
+                team.iter()
+                    .map(|(_, champion)| champion.as_str())
+                    .collect::<Vec<_>>()
+                    .join(",")
+            };
+            crate::diag::write(&format!(
+                "hook_lineups team1=[{}] team2=[{}]",
+                names(team1),
+                names(team2)
+            ));
+        }
+    }
+
+    // Hand the champion roster to the client-side editor, which cannot
+    // enumerate champions from inside a UI handler. Same process, so this is a
+    // static rather than a file (see `build_config::record_champion_roster`).
+    build_config::record_champion_roster(champion_ids);
+
     let item_keys = items
         .iter()
         .map(|item| item.key().to_string())
@@ -551,19 +586,15 @@ unsafe fn detour(
         Err(_) => {}
     }
 
-    // Builds picked on the strategy screen, keyed by route index. Applied after
-    // the champion-keyed file so a choice the player just made for this match
-    // beats their standing per-champion preference.
-    build_config::apply_positions(
-        &build_config::load_position_builds(),
-        &item_keys,
-        &mut routes,
-    );
+    // There is no second, position-keyed pass any more. Builds are keyed by
+    // champion whichever editor wrote them, because this function computes one
+    // team per call and never says which team is the player's — so a rule keyed
+    // by route index applied to the enemy as well.
 
     // Enforce unique builds after `build_config` so AI routes, category-forced
     // routes, and configured builds are all covered. Toggled from the item build
     // editor via `mod-settings.json` (defaults on); read per call, so flipping
-    // the checkbox applies to the next match without restarting the game.
+    // the toggle applies to the next match without restarting the game.
     if build_config::unique_items_enabled() {
         enforce_unique_items(items, &mut routes);
     }

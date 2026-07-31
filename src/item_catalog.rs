@@ -1,18 +1,15 @@
 //! Item grouping for the in-game build editor.
 //!
-//! The desktop editor (`item-build-editor.ps1`) groups its item dropdowns under
-//! class headers, from a hand-kept `item id -> category` map. The in-game editor
-//! shows the same list in the same order, so the map is duplicated here rather
-//! than derived: there is no category field on an item in the game's settings
-//! document to derive it *from*, and inventing one from stat lines would put
-//! items in different groups in the two editors.
+//! The editor groups its item dropdowns under class headers, from a hand-kept
+//! `item id -> category` map. The map is maintained rather than derived because
+//! there is no category field on an item in the game's settings document to
+//! derive it *from*, and inferring one from stat lines would be guesswork that
+//! silently reshuffles the list whenever an item is rebalanced.
 //!
 //! Keys are *base* slugs (`collector`, not `radiant_collector` and not the
 //! internal `warlords_final_judgement`); [`crate::build_config::base_slug`]
 //! normalizes a runtime item key into one. Anything unmapped falls under
 //! [`OTHER_CATEGORY`] so a newly added item is never dropped from the picker.
-//!
-//! Keep in sync with `$itemCategory` in `item-build-editor.ps1`.
 
 /// Category headers, in the order they appear in the item list.
 pub const CATEGORY_ORDER: [&str; 6] = [
@@ -95,8 +92,6 @@ const CATEGORY_OF: &[(&str, &str)] = &[
 /// Sheet frames for the six vanilla finals the mod reskins. Every other mod
 /// item has a frame named after its base slug, but a reskin keeps the vanilla
 /// art's tier-indexed frame name, so those six need naming explicitly.
-///
-/// Keep in sync with `$reskinIcon` in `item-build-editor.ps1`.
 const RESKIN_ICON: &[(&str, &str)] = &[
     ("bloodthirster", "t4_0"),
     ("dragons_claw", "t4_3"),
@@ -111,8 +106,7 @@ const RESKIN_ICON: &[(&str, &str)] = &[
 /// `is_mod_item` says whether the mod registered this item: only those have art
 /// in the sheet. A vanilla final the mod leaves alone has no frame, and naming a
 /// frame that does not exist is not something the engine is documented to
-/// tolerate, so those get `None` and render as name-only rows — the same way
-/// they appear in the desktop editor.
+/// tolerate, so those get `None` and render as name-only rows.
 pub fn icon_frame(slug: &str, is_mod_item: bool) -> Option<&str> {
     if let Ok(index) = RESKIN_ICON.binary_search_by_key(&slug, |(key, _)| key) {
         return Some(RESKIN_ICON[index].1);

@@ -64,129 +64,140 @@ fn config_path() -> Result<PathBuf, String> {
         .ok_or_else(|| "could not resolve mod directory".to_string())
 }
 
-/// Number of route slots the in-game picker exposes, matching the three item
-/// columns the strategy screen already shows per player.
+/// Item slots the editor exposes per champion, matching the three columns the
+/// strategy screen shows.
 pub const PICKER_SLOTS: usize = 3;
 
-/// Number of rows on the strategy screen's personal tab — one per position, in
-/// position order (Top, Jungle, Mid, Bottom, Support).
-pub const PICKER_ROWS: usize = 5;
-
-/// Builds chosen from the strategy screen, keyed by route index as a decimal
-/// string (`"0"`..`"4"`).
+/// One editable row of the in-game editor: a champion and its three slots.
 ///
-/// Kept in `item-builds-strategy.json`, separate from `item-builds.json`, for
-/// two reasons: the two are keyed differently (position vs. champion), and the
-/// external item build editor owns the champion file — writing both from two
-/// places would make them fight over it.
-///
-/// Route index is the position order the hook already relies on (Top = 0), which
-/// is exactly the strategy screen's row order, so a row index needs no mapping.
-/// Values follow the same slot convention as [`BuildConfig`]: an item key pins
-/// the slot, `null` leaves it to the AI.
-pub type PositionBuilds = HashMap<String, Vec<Option<String>>>;
-
-fn position_config_path() -> PathBuf {
-    crate::config::mod_dir().join("item-builds-strategy.json")
+/// The champion is optional because a freshly added row has not been assigned
+/// one yet. Such a row is kept in the editor but never written, since a build
+/// with nothing to key it by is not a build.
+#[derive(Default, Clone, Debug, PartialEq)]
+pub struct ChampionRow {
+    pub champion: Option<String>,
+    pub slots: Vec<Option<String>>,
 }
 
-/// Loads `item-builds-strategy.json`. An absent or malformed file yields an
-/// empty map: the picker is additive, so a bad file must never cost the player
-/// the routes the game (or `item-builds.json`) already produced.
-pub fn load_position_builds() -> PositionBuilds {
-    std::fs::read_to_string(position_config_path())
-        .ok()
-        .and_then(|text| serde_json::from_str(&text).ok())
-        .unwrap_or_default()
+impl ChampionRow {
+    /// Whether the row contributes a build: a champion, and at least one pinned
+    /// item. A row of nothing but AI slots is a no-op, identical to not listing
+    /// the champion at all.
+    pub fn is_complete(&self) -> bool {
+        self.champion.is_some() && self.slots.iter().any(Option::is_some)
+    }
 }
 
-/// Writes one slot of one row's build and persists the whole file.
+/// Reads `item-builds.json` as an ordered row list for the editor.
 ///
-/// `item_key` of `None` clears the slot back to AI choice. Rows are padded to
-/// [`PICKER_SLOTS`] so a write to slot 2 does not depend on slots 0 and 1 having
-/// been set first. Returns false when the file could not be written.
-pub fn set_position_slot(row: usize, slot: usize, item_key: Option<&str>) -> bool {
-    if row >= PICKER_ROWS || slot >= PICKER_SLOTS {
-        return false;
-    }
-    let path = position_config_path();
-
-    let mut builds = load_position_builds();
-    let build = builds.entry(row.to_string()).or_default();
-    build.resize(PICKER_SLOTS, None);
-    build[slot] = item_key.map(str::to_string);
-
-    // A row that is back to all-AI is dropped rather than stored as a row of
-    // nulls, so the file stays a record of actual player choices.
-    if builds
-        .get(&row.to_string())
-        .is_some_and(|build| build.iter().all(Option::is_none))
-    {
-        builds.remove(&row.to_string());
-    }
-
-    serde_json::to_string_pretty(&builds)
-        .ok()
-        .and_then(|text| std::fs::write(path, text).ok())
-        .is_some()
-}
-
-/// Exchanges two slots of one row's build, for the editor's swap buttons.
+/// File order is preserved (serde_json is built with `preserve_order`), so rows
+/// do not shuffle between visits, and a file edited by hand keeps the order it
+/// was written in.
 ///
-/// Done as one read-modify-write rather than two [`set_position_slot`] calls
-/// because a swap through an intermediate state can leave the row all-`None`,
-/// which that function deletes — losing the build it was asked to reorder.
-pub fn swap_position_slots(row: usize, a: usize, b: usize) -> bool {
-    if row >= PICKER_ROWS || a >= PICKER_SLOTS || b >= PICKER_SLOTS || a == b {
-        return false;
-    }
-
-    let mut builds = load_position_builds();
-    let Some(build) = builds.get_mut(&row.to_string()) else {
-        return true; // an all-AI row has nothing to reorder
+/// A missing or malformed file yields no rows rather than an error: the editor
+/// is additive, and a bad file must never cost the player the routes the game
+/// already produced.
+pub fn load_champion_rows() -> Vec<ChampionRow> {
+    let Ok(path) = config_path() else {
+        return Vec::new();
     };
-    build.resize(PICKER_SLOTS, None);
-    build.swap(a, b);
+    let Ok(text) = std::fs::read_to_string(path) else {
+        return Vec::new();
+    };
+    let Ok(map) = serde_json::from_str::<serde_json::Map<String, serde_json::Value>>(&text) else {
+        return Vec::new();
+    };
 
-    serde_json::to_string_pretty(&builds)
+    map.into_iter()
+        .map(|(champion, value)| {
+            let mut slots: Vec<Option<String>> = value
+                .as_array()
+                .map(|items| {
+                    items
+                        .iter()
+                        .map(|item| item.as_str().map(str::to_string))
+                        .collect()
+                })
+                .unwrap_or_default();
+            slots.resize(PICKER_SLOTS, None);
+            ChampionRow {
+                champion: Some(champion),
+                slots,
+            }
+        })
+        .collect()
+}
+
+/// Writes the complete rows back to `item-builds.json`, in row order.
+///
+/// Incomplete rows are skipped and a later row with the same champion wins, so
+/// the file only ever holds builds that mean something. Returns false when it
+/// could not be written.
+pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
+    let Ok(path) = config_path() else {
+        return false;
+    };
+    let mut map = serde_json::Map::new();
+    for row in rows.iter().filter(|row| row.is_complete()) {
+        let Some(champion) = &row.champion else {
+            continue;
+        };
+        let slots: Vec<serde_json::Value> = row
+            .slots
+            .iter()
+            .map(|slot| match slot {
+                Some(key) => serde_json::Value::String(key.clone()),
+                None => serde_json::Value::Null,
+            })
+            .collect();
+        map.insert(champion.clone(), serde_json::Value::Array(slots));
+    }
+
+    serde_json::to_string_pretty(&map)
         .ok()
-        .and_then(|text| std::fs::write(position_config_path(), text).ok())
+        .and_then(|text| std::fs::write(path, text + "\n").ok())
         .is_some()
+}
+
+/// Champion roster the hook was handed, for the editor to offer.
+///
+/// A static, not a file: the detour and the client extension run in the *same
+/// process*, so handing a list from one to the other never needed to touch the
+/// disk. It is only a fallback — the editor asks the client for
+/// `champion_names()` first — and it exists because that call returns nothing
+/// when made from inside a UI event handler, the same restriction that makes
+/// `setting_get_json` return None there.
+///
+/// The hook receives the whole roster as `champion_ids`, and those are exactly
+/// the strings a build is keyed by, so it is the right list by construction
+/// rather than by coincidence. It includes champions added by *other* mods,
+/// which is why the editor must not filter it against the base game's champion
+/// text (see `strategy_ui::load_champions`).
+static CHAMPION_ROSTER: std::sync::Mutex<Vec<String>> = std::sync::Mutex::new(Vec::new());
+
+/// Records the roster from inside the detour. Cheap enough to call per match;
+/// the roster cannot change without a restart.
+pub fn record_champion_roster(ids: &[String]) {
+    if let Ok(mut roster) = CHAMPION_ROSTER.lock() {
+        roster.clear();
+        roster.extend_from_slice(ids);
+    }
+}
+
+/// The recorded roster. Empty until the first match simulates, which happens
+/// before the player can reach their own strategy screen.
+pub fn champion_roster() -> Vec<String> {
+    CHAMPION_ROSTER.lock().map(|roster| roster.clone()).unwrap_or_default()
 }
 
 /// Writes `unique_items` to `mod-settings.json`, the toggle
 /// [`unique_items_enabled`] reads back on every hook call.
 ///
-/// The whole file is rewritten from this one field, matching the desktop
-/// editor's `Save-Settings`: the schema has exactly one key, so there is
-/// nothing else in it to preserve.
+/// The whole file is rewritten from this one field: the schema has exactly one
+/// key, so there is nothing else in it to preserve.
 pub fn set_unique_items(enabled: bool) -> bool {
     let path = crate::config::mod_dir().join("mod-settings.json");
     std::fs::write(path, format!("{{\n  \"unique_items\": {enabled}\n}}\n")).is_ok()
-}
-
-/// Applies the strategy screen's per-row builds on top of `routes`.
-///
-/// Runs after [`apply`] so an explicit in-match pick from the strategy screen
-/// wins over the champion-keyed file, and shares its merge semantics: pinned
-/// slots take the player's item, `null` slots fall back to the AI's own picks.
-/// Rows with no entry are left exactly as they were.
-pub fn apply_positions(builds: &PositionBuilds, item_keys: &[String], routes: &mut [Vec<usize>]) {
-    if builds.is_empty() {
-        return;
-    }
-    let index_by_key: HashMap<&str, usize> = item_keys
-        .iter()
-        .enumerate()
-        .map(|(index, key)| (key.as_str(), index))
-        .collect();
-
-    for (index, slot) in routes.iter_mut().enumerate() {
-        if let Some(build) = builds.get(&index.to_string()) {
-            let ai_route = slot.clone();
-            *slot = merge_build(build, &ai_route, &index_by_key);
-        }
-    }
 }
 
 /// Schema of `mod-settings.json`: behavior toggles managed by the item build
@@ -204,9 +215,9 @@ fn default_true() -> bool {
 
 /// Whether unique-build enforcement is enabled: `unique_items` in
 /// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
-/// is absent or malformed, so players opt *out* via the editor checkbox. Read on
-/// every hook call, so toggling the checkbox takes effect on the next match
-/// without restarting the game.
+/// is absent or malformed, so players opt *out* via the editor toggle. Read on
+/// every hook call, so flipping it applies to the next match without restarting
+/// the game.
 pub fn unique_items_enabled() -> bool {
     let Some(path) = crate::config::dll_dir().map(|dir| dir.join("mod-settings.json")) else {
         return true;

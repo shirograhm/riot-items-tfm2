@@ -195,34 +195,30 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 ### In-Game Item Build Editor
 
 The strategy screen's **Personal** tab gains one **Item Build Editor** button, in
-the top right of the column header, plus a build summary on each of the five
-player rows.
+the top right of the column header. It opens a window with one row per champion:
+three item slots, an **+ Add Champion** button, a per-row delete, swap buttons
+between slots, and a category-grouped item list (Assassin / Fighter / Marksman /
+Mage / Tank / Support, then Other) with icons.
 
-The button opens the desktop item build editor's window, rebuilt in-game: one row
-per position, three item slots per row, with the same swap and clear buttons and
-the same category-grouped item list (Assassin / Fighter / Marksman / Mage / Tank
-/ Support, then Other), icons included. Clicking a slot drops its item list
-underneath it; clicking the pinned item again, or the slot's **✕**, hands the
-slot back to the AI. The **Enforcing unique items** toggle is the same setting as
-the desktop editor's checkbox and writes the same `mod-settings.json`.
+Clicking a slot drops its item list underneath it. Pick **Let Player Decide** at
+the top of that list — or click the pinned item again, or the slot's **X** — to
+hand the slot back to the game's AI. The **Enforcing unique items** toggle writes
+`mod-settings.json` beside the DLL.
 
-Every change is written immediately — the Save button only reports what is
-already on disk, exactly as the desktop editor's autosave does.
+Every change is written immediately to `item-builds.json`; the Save button only
+reports what is already on disk. A row with no champion, or with nothing pinned,
+is kept in the editor but not written — a build with nothing to key it by is not
+a build.
 
-Picks are saved to `item-builds-strategy.json` next to the DLL, keyed by row
-index — `"0"` is Top, `"4"` is Support, matching the order the game generates
-item routes in. An item key pins that slot; `null` leaves it to the AI:
+**Builds are keyed by champion, not by position.** The game computes item builds
+one team at a time and nothing it passes the mod says which team is yours, so
+there is no way to scope a build to a lane without also giving it to the enemy
+player in that lane. Keying by champion is the only thing the game can be told
+apart on. (An enemy who picked the same champion still matches — nothing
+available to a mod separates those two.)
 
-```json
-{
-  "0": ["radiant_collector", null, null],
-  "3": ["radiant_kraken_slayer", "radiant_infinity_edge", null]
-}
-```
-
-This is separate from `item-builds.json`, which the item build editor owns and
-keys by champion. Both are applied, strategy-screen picks last, so a choice made
-for the current match beats a standing per-champion preference.
+The champion list is read from the game at runtime, so champions added by other
+mods can be given builds too.
 
 The vanilla category dropdowns are untouched — the picker sits beside them, and
 the screen falls back to stock behaviour if the layout override is not loaded.

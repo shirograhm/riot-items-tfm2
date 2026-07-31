@@ -15,7 +15,7 @@ build_editor:empty {
 
   #popup:color {
     width: 1360px;
-    height: 600px;
+    height: 760px;
 
     anchor_x: 0.5;
     pivot_x: 0.5;
@@ -99,11 +99,27 @@ build_editor:empty {
         }
       }
 
+      #add:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 205px;
+        y: 11px;
+        width: 180px;
+        height: 38px;
+
+        text: {
+          font: "asset/base/font/set/bold";
+          text: "+ Add Champion";
+          align_x: Center;
+          align_y: Center;
+          size: 15;
+        }
+      }
+
       #status:label {
         @"asset/base/style/main#label";
-        x: 210px;
+        x: 400px;
         y: 11px;
-        width: 1130px;
+        width: 940px;
         height: 38px;
         align_y: Center;
         size: 14;
@@ -146,7 +162,7 @@ build_editor:empty {
         align_y: Center;
         size: 13;
         color: #a5a5abff;
-        text: "Click a slot to pick an item. Click the pinned item again, or the X, to hand the slot back to the AI.";
+        text: "Builds are per champion. A blank slot is filled by the game, in the order the AI would have picked.";
       }
     }
 
@@ -156,21 +172,21 @@ build_editor:empty {
       width: 1330px;
       height: 32px;
 
-      #c_position:label {
+      #c_champion:label {
         @"asset/base/style/main#label";
         x: 8px;
-        width: 290px;
+        width: 280px;
         height: 32px;
         align_y: Center;
         size: 13;
         color: #a5a5abff;
-        text: "POSITION";
+        text: "CHAMPION";
       }
 
       #c_item1:label {
         @"asset/base/style/main#label";
         x: 306px;
-        width: 300px;
+        width: 280px;
         height: 32px;
         align_x: Center;
         align_y: Center;
@@ -181,8 +197,8 @@ build_editor:empty {
 
       #c_item2:label {
         @"asset/base/style/main#label";
-        x: 652px;
-        width: 300px;
+        x: 630px;
+        width: 280px;
         height: 32px;
         align_x: Center;
         align_y: Center;
@@ -193,8 +209,8 @@ build_editor:empty {
 
       #c_item3:label {
         @"asset/base/style/main#label";
-        x: 998px;
-        width: 300px;
+        x: 954px;
+        width: 280px;
         height: 32px;
         align_x: Center;
         align_y: Center;
@@ -204,14 +220,36 @@ build_editor:empty {
       }
     }
 
-    #rows:empty {
+    #rowscroll:scroll_view {
       x: 15px;
       y: 188px;
       width: 1330px;
-      height: 320px;
+      height: 520px;
 
-      child_type: TopToBottom {
-        spacing: 8px;
+      speed: 100;
+
+      bar_width: 4;
+      bar: {
+        source: "asset/base/sprite/white";
+        color: #60ddc2ff;
+
+        hover: {
+          color: #ecfbf8ff;
+        }
+      }
+
+      back: {
+        source: "asset/base/sprite/white";
+        color: #4a4c56ff;
+      }
+
+      #rows:empty {
+        width: 1310px;
+        height: auto;
+
+        child_type: TopToBottom {
+          spacing: 8px;
+        }
       }
     }
 
@@ -241,6 +279,17 @@ build_editor:empty {
         color: #a5a5abff;
         text: "";
       }
+    }
+  }
+
+  #listcatch:color_icon_button {
+    visible: false;
+
+    width: 100%;
+    height: 100%;
+
+    btn: {
+      color: #00000000;
     }
   }
 
@@ -287,6 +336,58 @@ build_editor:empty {
 
       #contents:empty {
         width: 304px;
+        height: auto;
+
+        child_type: TopToBottom {
+          spacing: 0px;
+        }
+      }
+    }
+  }
+
+  #champlist:empty {
+    visible: false;
+
+    width: 260px;
+    height: 430px;
+    z: 400;
+
+    #panel:color {
+      width: 260px;
+      height: 430px;
+
+      color: #0f1016ff;
+
+      rounding: Uniform {
+        rounding: 6;
+      }
+    }
+
+    #list:scroll_view {
+      x: 3px;
+      y: 3px;
+      width: 254px;
+      height: 424px;
+
+      speed: 100;
+
+      bar_width: 4;
+      bar: {
+        source: "asset/base/sprite/white";
+        color: #60ddc2ff;
+
+        hover: {
+          color: #ecfbf8ff;
+        }
+      }
+
+      back: {
+        source: "asset/base/sprite/white";
+        color: #4a4c56ff;
+      }
+
+      #contents:empty {
+        width: 244px;
         height: auto;
 
         child_type: TopToBottom {

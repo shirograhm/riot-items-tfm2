@@ -1,33 +1,36 @@
 //! In-game Item Build Editor, reached from the strategy screen's Personal tab.
 //!
-//! This is the desktop editor (`item-build-editor.ps1` / `.exe`) rebuilt inside
-//! the game: one window, one row per position, three item slots per row, with
-//! the same palette, the same column layout, the same swap and clear buttons and
-//! the same category-grouped item list. It replaces an earlier design that put
-//! an "Edit Build" button on each of the five rows and opened a separate picker
-//! for each.
+//! One row per champion, three item slots per row, a category-grouped item list,
+//! and swap/clear buttons per row. It reads and writes `item-builds.json` next
+//! to the DLL, which is the same file the hook applies — so a build takes effect
+//! on the next match with no restart.
+//!
+//! # Why champions and not positions
+//!
+//! An earlier design gave each of the five *positions* a row. That cannot work:
+//! the hooked `get_item_builds_list` computes **one team per call** and is called
+//! once for each side, with `team1` being whichever team it is building for.
+//! Nothing in its arguments identifies the player's team, and the stable API has
+//! no athlete-to-champion mapping the client could use to work it out — so a rule
+//! keyed by route index fired for the enemy too, and a build pinned to "Top"
+//! reached both top laners. Keying by champion is the only thing the hook can
+//! actually discriminate on.
 //!
 //! Layout lives in two places by necessity:
 //!
 //! - `ui/layout/strategy.ui` is an asset override (see `mod.override_info`). It
 //!   adds the single `#build_editor_btn` to the Personal tab's column header.
-//!   Nothing else on that screen is touched: the build itself is only ever shown
-//!   inside the editor, so the vanilla rows stay exactly as the game drew them.
+//!   Nothing else on that screen is touched.
 //! - `ui/layout/build_editor.ui` is the window chrome, compiled in with
-//!   `include_str!` and spawned under [`UI_ROOT`]. The five rows and the item
-//!   list are spawned from source here, because their contents depend on the
-//!   match and on the loaded item pool.
-//!
-//! Picks are written to `item-builds-strategy.json`, keyed by row index, which
-//! `build_config::apply_positions` folds into the hook's routes. The vanilla
-//! category dropdowns are left alone, so a player who never opens the editor —
-//! or a game update that breaks the override — still gets the stock screen.
+//!   `include_str!` and spawned under [`UI_ROOT`]. The rows and both dropdown
+//!   lists are spawned from source here, because their contents depend on the
+//!   saved builds and on the loaded item pool.
 //!
 //! # Why the window is spawned from source rather than as a template asset
 //!
 //! `ui_spawn_template` resolves a *registered* asset. `strategy.ui` is
 //! registered because `mod.override_info` remaps it over a base asset, but
-//! `override_info` can only remap base→mod — it cannot declare a standalone
+//! `override_info` can only remap base to mod — it cannot declare a standalone
 //! asset — so there is no supported way to make `build_editor` resolvable by
 //! path. `ui_spawn_source` takes the same `.ui` grammar as literal text, so the
 //! layout is compiled into the DLL and the asset system is left out of it.
@@ -37,9 +40,9 @@
 //! A dropdown's option list is populated by game code: no `.ui` property
 //! declares one (the runner parses only styling and layout keys), and the stable
 //! ABI's `state_set_json` accepts `checkbox`, `text_edit`, `slider` and
-//! `selectable` but not `dropdown`. So each item slot is a `color_icon_button`
-//! that opens `#itemlist`, a floating panel of `selectable` rows moved under
-//! whichever slot was clicked — which is what a dropdown looks like anyway.
+//! `selectable` but not `dropdown`. So each combo is a `color_icon_button` that
+//! opens a floating panel of `selectable` rows, moved under whichever control was
+//! clicked — which is what a dropdown looks like anyway.
 //!
 //! # Do not put `z` on anything in here
 //!
@@ -52,14 +55,14 @@
 //! - Moving the fill into a child of a `z: 400` `empty` fixed that but did not
 //!   stop the rows showing through, because the children still sat at 0 while
 //!   the row glyphs were at 220-250.
-//! - `selectable` has no `z` in its property table, so the item rows cannot be
-//!   lifted to match. There is no z value that puts the list above the rows.
+//! - `selectable` has no `z` in its property table, so the list rows cannot be
+//!   lifted to match. There is no z value that puts a list above the rows.
 //!
 //! What does work is tree order at equal `z`: a child draws over its parent, and
 //! a later sibling over an earlier one. Everything here is therefore at the
-//! default `z`, and `#itemlist` wins by being the last child of the window root.
-//! The one remaining `z` is on the root itself, which is an `empty` and draws
-//! nothing — it is there to sit the whole window above the strategy screen.
+//! default `z`, and the floating lists win by being the last children of the
+//! window root. The only nodes still carrying a `z` are `empty` containers,
+//! which draw nothing, so their `z` cannot cover anything.
 //!
 //! `ignore_event: true` on the child images is unrelated and still required: it
 //! is about hit-testing, not drawing, and without it a child swallows the click
@@ -68,29 +71,29 @@
 //! # Handlers leak, boundedly
 //!
 //! `ui_register_path_events` leaks its closure ("handlers live until process
-//! exit") and the strategy screen is rebuilt every match, so the roughly one
-//! hundred handlers this registers — chrome, five rows of eight controls, and
-//! one per item row — accumulate once per appearance of the screen. Each is a
-//! small box and the count per appearance is fixed, so it is a real cost but not
-//! a growing one.
+//! exit") and the strategy screen is rebuilt every match, so the handlers this
+//! registers — chrome, ten per champion row, one per list row — accumulate once
+//! per appearance of the screen, and again whenever a row is added or removed
+//! (which respawns the row list). Each is a small box and the count is bounded
+//! by the number of configured champions, so it is a real cost but not a growing
+//! one.
 
 use std::sync::Mutex;
 
 use mod_api_stable::*;
 
-use crate::build_config::{self, PICKER_ROWS, PICKER_SLOTS};
+use crate::build_config::{self, ChampionRow, PICKER_SLOTS};
 use crate::item_catalog;
 
-/// Row order on the Personal tab, which is also the hook's route order.
-const POSITION_NAMES: [&str; PICKER_ROWS] = ["Top", "Jungle", "Mid", "Bottom", "Support"];
+/// Shown for a slot left to the game's own AI, and on the list row that puts a
+/// slot back into that state. The vanilla strategy screen's own wording for it
+/// (`strategy.i18n`'s `build_auto`), so the editor and the screen behind it call
+/// the same thing by the same name.
+const AI_SLOT_LABEL: &str = "Let Player Decide";
 
-/// Position icons, parallel to [`POSITION_NAMES`]. Same assets the vanilla rows
-/// use, so the editor's rows read as the same five players.
-const POSITION_ICONS: [&str; PICKER_ROWS] = ["top", "jungle", "mid", "bottom", "support"];
-
-/// Shown for a slot the player left to the AI. The desktop editor's placeholder,
-/// verbatim.
-const AI_SLOT_LABEL: &str = "-- AI picks --";
+/// Shown for a row whose champion has not been chosen yet. Such a row is kept in
+/// the editor but never written.
+const NO_CHAMPION_LABEL: &str = "(champion)";
 
 /// Root every runtime UI path hangs off.
 ///
@@ -111,45 +114,30 @@ const EDITOR_PATH: &str = "main.contents.build_editor";
 const EDITOR_SOURCE: &str = include_str!("../ui/layout/build_editor.ui");
 
 /// Sheet the item icons come from. The mod overrides this asset with its own
-/// 640×640 sheet (see `mod.override_info`), so frame names are the mod's.
+/// 640x640 sheet (see `mod.override_info`), so frame names are the mod's.
 const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
 
-// Row geometry, in the same 1330px band `build_editor.ui`'s column headers use.
+// Row geometry, inside the 1310px band `#rows` gives its children. The x offsets
+// match `build_editor.ui`'s column headers.
 const ROW_HEIGHT: u32 = 56;
-const COMBO_X: [u32; PICKER_SLOTS] = [306, 652, 998];
-const COMBO_W: u32 = 300;
-const SWAP_X: [u32; PICKER_SLOTS - 1] = [612, 958];
+const CHAMP_X: u32 = 8;
+const CHAMP_W: u32 = 280;
+const COMBO_X: [u32; PICKER_SLOTS] = [306, 630, 954];
+const COMBO_W: u32 = 280;
+const SWAP_X: [u32; PICKER_SLOTS - 1] = [590, 914];
+const DELETE_X: u32 = 1250;
 
-/// Size of the floating item list, mirroring `#itemlist` in `build_editor.ui`.
-/// Kept here because the open/close code has to decide whether the list fits
-/// below the slot that opened it.
+/// Sizes of the two floating lists, mirroring `build_editor.ui`. Kept here
+/// because the open code has to decide whether a list fits below the control
+/// that opened it.
 const LIST_W: i32 = 320;
 const LIST_H: i32 = 430;
+const CHAMP_LIST_W: i32 = 260;
 
-/// Canvas the layouts are authored against; the clamps that keep the item list
-/// on screen measure against this.
+/// Canvas the layouts are authored against; the clamps that keep a list on
+/// screen measure against this.
 const CANVAS_W: i32 = 1920;
 const CANVAS_H: i32 = 1080;
-
-/// Where the window's own nodes sit, all mirroring `build_editor.ui`.
-///
-/// The item list is placed from these rather than from `ui_node_rect`, which is
-/// the only source of a node's on-screen position and does not say what space it
-/// reports in — the first build placed the list from a rect and the list was
-/// never seen, exactly what a physical-pixel rect written back as design-space
-/// `px` would look like on a display that is not 1920×1080. This arithmetic has
-/// no such ambiguity: `#popup` is centred on the canvas at a fixed size, so
-/// every slot's canvas position is known without asking.
-const POPUP_W: i32 = 1360;
-const POPUP_H: i32 = 600;
-const POPUP_X: i32 = (CANVAS_W - POPUP_W) / 2;
-const POPUP_Y: i32 = (CANVAS_H - POPUP_H) / 2;
-const ROWS_X: i32 = 15;
-const ROWS_Y: i32 = 188;
-/// Row height plus the `#rows` container's `spacing`.
-const ROW_PITCH: i32 = ROW_HEIGHT as i32 + 8;
-const COMBO_Y: i32 = 8;
-const COMBO_H: i32 = 40;
 
 /// Heights of the two kinds of item-list node, shared by [`entry_source`] (which
 /// lays them out) and [`entry_height`] (which adds them up).
@@ -171,12 +159,31 @@ struct ItemChoice {
     category: &'static str,
 }
 
-/// One node in the item list: either a category header (inert) or a pickable
-/// item. Both occupy an index so a click path resolves straight into this list.
+/// One node in the item list. Every variant occupies an index, so a click path
+/// resolves straight into this list without a second mapping.
 #[derive(Clone)]
 enum ListEntry {
+    /// Always first: puts the slot back to the AI's choice. Clicking the pinned
+    /// item again does the same thing, but only if a slot is already pinned and
+    /// only if you know to try it — this is the discoverable way.
+    Clear,
+    /// A category heading. Inert: no handler is registered for it.
     Header(&'static str),
     Item(ItemChoice),
+}
+
+/// One pickable champion.
+#[derive(Clone)]
+struct ChampionChoice {
+    id: String,
+    name: String,
+}
+
+/// Which floating list is open, and what it is editing.
+#[derive(Clone, Copy, PartialEq)]
+enum OpenList {
+    Item { row: usize, slot: usize },
+    Champion { row: usize },
 }
 
 #[derive(Default)]
@@ -185,13 +192,19 @@ struct EditorState {
     wired: bool,
     /// Whether the window subtree is spawned and its controls registered.
     modal_ready: bool,
-    /// Whether the window is showing.
-    open: bool,
-    /// Row and slot whose item list is open, if any.
-    open_slot: Option<(usize, usize)>,
+    /// The floating list currently showing, if any.
+    open_list: Option<OpenList>,
+    /// The rows being edited, in display order. Loaded from `item-builds.json`
+    /// when the window is built and written back on every change.
+    rows: Vec<ChampionRow>,
+    /// How many row nodes are currently spawned, so a rebuild removes exactly
+    /// those and no others.
+    spawned_rows: usize,
     /// The item list, headers included. Cached for the process lifetime — the
     /// item pool cannot change without a restart.
     entries: Vec<ListEntry>,
+    /// The champion list. Cached for the same reason.
+    champions: Vec<ChampionChoice>,
     probe_tick: u32,
 }
 
@@ -266,12 +279,37 @@ fn is_mod_item(key: &str) -> bool {
 
 // -- paths --------------------------------------------------------------
 
-fn row_name_path(row: usize) -> String {
-    format!("{UI_ROOT}.strategy.personal.row{row}.name")
-}
+/// Full-screen transparent button shown only while a floating list is open, so
+/// that a click anywhere other than the list dismisses it.
+///
+/// Declared between `#popup` and the two lists, which at equal `z` puts it above
+/// the window and below them — a click on a list row reaches the row, a click
+/// anywhere else reaches this. Without it a list could only be dismissed by
+/// choosing something or by hitting the backdrop outside the window, which left
+/// clicks on the window itself doing nothing at all.
+const LISTCATCH_PATH: &str = "main.contents.build_editor.listcatch";
+const ITEMLIST_PATH: &str = "main.contents.build_editor.itemlist";
+const CHAMPLIST_PATH: &str = "main.contents.build_editor.champlist";
+const STATUS_PATH: &str = "main.contents.build_editor.popup.toolbar.status";
+const VERSION_PATH: &str = "main.contents.build_editor.popup.footer.version";
+const UNIQUE_PATH: &str = "main.contents.build_editor.popup.optionbar.unique";
+const SAVE_PATH: &str = "main.contents.build_editor.popup.toolbar.save";
+const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
+const FADE_PATH: &str = "main.contents.build_editor.fade";
+const CANCEL_PATH: &str = "main.contents.build_editor.popup.titlebar.cancel";
+const ROWS_PATH: &str = "main.contents.build_editor.popup.rowscroll.rows";
+
+/// The strategy screen itself, hidden while the editor is open. `ui_exists` is
+/// unaffected by visibility, so `post_update` still finds `OPEN_BUTTON` and does
+/// not mistake a hidden screen for having left it.
+const STRATEGY_PATH: &str = "main.contents.strategy";
 
 fn editor_row_path(row: usize) -> String {
-    format!("{EDITOR_PATH}.popup.rows.row{row}")
+    format!("{ROWS_PATH}.row{row}")
+}
+
+fn champ_path(row: usize) -> String {
+    format!("{}.champ", editor_row_path(row))
 }
 
 fn combo_path(row: usize, slot: usize) -> String {
@@ -286,6 +324,10 @@ fn clear_path(row: usize, slot: usize) -> String {
     format!("{}.clear{slot}", editor_row_path(row))
 }
 
+fn delete_path(row: usize) -> String {
+    format!("{}.delete", editor_row_path(row))
+}
+
 fn list_contents_path() -> String {
     format!("{EDITOR_PATH}.itemlist.list.contents")
 }
@@ -294,14 +336,13 @@ fn entry_path(index: usize) -> String {
     format!("{}.e{index}", list_contents_path())
 }
 
-const ITEMLIST_PATH: &str = "main.contents.build_editor.itemlist";
-const STATUS_PATH: &str = "main.contents.build_editor.popup.toolbar.status";
-const VERSION_PATH: &str = "main.contents.build_editor.popup.footer.version";
-const UNIQUE_PATH: &str = "main.contents.build_editor.popup.optionbar.unique";
-const SAVE_PATH: &str = "main.contents.build_editor.popup.toolbar.save";
-const FADE_PATH: &str = "main.contents.build_editor.fade";
-const CANCEL_PATH: &str = "main.contents.build_editor.popup.titlebar.cancel";
-const ROWS_PATH: &str = "main.contents.build_editor.popup.rows";
+fn champ_contents_path() -> String {
+    format!("{EDITOR_PATH}.champlist.list.contents")
+}
+
+fn champ_entry_path(index: usize) -> String {
+    format!("{}.c{index}", champ_contents_path())
+}
 
 /// Strips characters that would end a `.ui` string literal or be read as markup.
 /// Item and player names are plain text, so this only ever guards against a
@@ -315,7 +356,7 @@ fn sanitize(text: &str) -> String {
 // -- item list ----------------------------------------------------------
 
 /// Every final item (one with no further upgrades) the game currently knows,
-/// grouped into the desktop editor's categories and sorted by name within each.
+/// grouped into [`item_catalog`]'s categories and sorted by name within each.
 /// Read from the item settings document rather than a hand-kept list, so items
 /// the mod adds later show up with no extra wiring.
 fn load_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
@@ -329,14 +370,15 @@ fn load_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
     }
     merge_mod_finals(ctx, &mut choices);
 
-    // Category first, then name: exactly the desktop editor's dropdown order.
+    // Category first, then name, so the headers come out in CATEGORY_ORDER.
     choices.sort_by(|a, b| {
         item_catalog::category_rank(a.category)
             .cmp(&item_catalog::category_rank(b.category))
             .then_with(|| a.name.cmp(&b.name))
     });
 
-    let mut entries = Vec::with_capacity(choices.len() + item_catalog::CATEGORY_ORDER.len() + 1);
+    let mut entries = Vec::with_capacity(choices.len() + item_catalog::CATEGORY_ORDER.len() + 2);
+    entries.push(ListEntry::Clear);
     let mut current = "";
     for choice in choices {
         if choice.category != current {
@@ -351,20 +393,43 @@ fn load_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
 /// Builds one [`ItemChoice`] from an item key, resolving its display name and
 /// its place in the catalog.
 fn make_choice(ctx: &StableClient<'_>, key: &str) -> ItemChoice {
-    let name = ctx
-        // The `#` prefix is part of the key: the probe found this spelling
-        // resolves ("Radiant Bloodthirster") while the bare path returns
-        // nothing. Same form the `.ui` text properties use.
-        .i18n(&format!("#asset/base/text/item?{key}.name"))
-        .filter(|name| !name.is_empty())
-        .unwrap_or_else(|| key.to_string());
     let slug = build_config::base_slug(key);
     ItemChoice {
         frame: item_catalog::icon_frame(slug, is_mod_item(key)).map(sanitize),
         category: item_catalog::category_of(slug),
+        name: sanitize(&item_display_name(ctx, key, slug)),
         key: sanitize(key),
-        name: sanitize(&name),
     }
+}
+
+/// Display name for an item, without the "Radiant" tier word.
+///
+/// Every final item in the pool is a radiant one, so the prefix is on every row
+/// and distinguishes nothing — it just costs the width that tells two items
+/// apart. The *base* item's name is used rather than trimming a prefix off the
+/// radiant one, because the prefix is a translated word: trimming "Radiant "
+/// would work in English and leave the tier word in place everywhere else.
+///
+/// Six items have no base tier to read: the vanilla finals the mod reskins are
+/// renames of existing keys, not new items on top of a base (`radiant_
+/// bloodthirster` *is* `warlords_final_judgement`; there is no `bloodthirster`).
+/// For those the radiant name is trimmed instead, which only works in English —
+/// but it is six rows, and the alternative is six rows out of sixty wearing a
+/// prefix none of the others do.
+fn item_display_name(ctx: &StableClient<'_>, key: &str, slug: &str) -> String {
+    // The `#` prefix is part of the key: the probe found this spelling resolves
+    // ("Radiant Bloodthirster") while the bare path returns nothing. Same form
+    // the `.ui` text properties use.
+    let lookup = |name: &str| {
+        ctx.i18n(&format!("#asset/base/text/item?{name}.name"))
+            .filter(|text| !text.is_empty())
+    };
+    if let Some(base) = lookup(slug) {
+        return base;
+    }
+    lookup(key)
+        .map(|name| name.strip_prefix("Radiant ").unwrap_or(&name).to_string())
+        .unwrap_or_else(|| key.to_string())
 }
 
 /// Adds the mod's own final items to `choices`, skipping any the settings
@@ -438,13 +503,15 @@ fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
     }
 
     let loaded = load_entries(ctx);
-    if loaded.is_empty() {
+    let items = loaded
+        .iter()
+        .filter(|entry| matches!(entry, ListEntry::Item(_)))
+        .count();
+    if items == 0 {
+        // Not `loaded.is_empty()`: the Clear row is always there, so the list
+        // being non-empty says nothing about whether any item was found.
         diag("item settings unreadable from the client — item list is empty");
     } else {
-        let items = loaded
-            .iter()
-            .filter(|entry| matches!(entry, ListEntry::Item(_)))
-            .count();
         diag(&format!("loaded {items} final items"));
         let _ = with_state(|state| state.entries = loaded.clone());
     }
@@ -475,30 +542,171 @@ fn choice_of<'a>(entries: &'a [ListEntry], key: &str) -> Option<&'a ItemChoice> 
     })
 }
 
+
+/// Champion list, in display order. Cached on first use.
+///
+/// The ids come from the hook's roster file, because the client cannot
+/// enumerate champions: `champion_names()` returns nothing here (the host does
+/// not answer those vtable slots), and `SettingTargetV1` exposes only
+/// `GameSetting` and `ItemSetting`. It is still tried first, so this starts
+/// working on its own if the host ever answers them.
+///
+/// The roster is taken whole, deliberately. It is not filtered against
+/// `champion.i18n`'s `description` map (which would look like a way to drop
+/// non-champion entries) because that map holds exactly the 64 *base-game*
+/// champions — filtering on it would strip every champion added by another mod,
+/// which is the opposite of what is wanted here. On this install the roster is
+/// 86 ids: 64 base, 21 from a champion mod, and one dummy. Whatever the hook can
+/// be handed in `team1` is a key a build can legitimately use, so the roster is
+/// the authoritative list by definition; a stray dummy id in the dropdown is a
+/// cosmetic wart, a missing modded champion is a broken feature.
+///
+/// It is also why the list is not simply hardcoded from the base game's 64
+/// champions: a hardcoded list cannot see modded champions at all, and would
+/// need a free-text id box to reach them.
+fn load_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
+    let mut ids = ctx.champion_names();
+    if ids.is_empty() {
+        ids = build_config::champion_roster();
+    }
+
+    let mut out: Vec<ChampionChoice> = ids
+        .iter()
+        .map(|id| ChampionChoice {
+            name: sanitize(&champion_display_name(id)),
+            id: sanitize(id),
+        })
+        .collect();
+    out.sort_by(|a, b| a.name.cmp(&b.name));
+    out
+}
+
+/// Readable name for a champion id: `snake_case` -> `Snake Case`.
+///
+/// Not an i18n lookup, because there is none to do — `champion.i18n` carries
+/// `skill_name` and `description` per champion but no display-name map, so the
+/// game derives the shown name from the id the same way.
+fn champion_display_name(id: &str) -> String {
+    if id == "soldier" {
+        // The one id whose prettified form is not what the game calls it.
+        return "Soldier (Sniper)".to_string();
+    }
+    id.split('_')
+        .map(|word| {
+            let mut chars = word.chars();
+            match chars.next() {
+                Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+                None => String::new(),
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+fn cached_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
+    let cached = with_state(|state| state.champions.clone()).unwrap_or_default();
+    if !cached.is_empty() {
+        return cached;
+    }
+    let loaded = load_champions(ctx);
+    if loaded.is_empty() {
+        diag(
+            "no champions to offer — champion_names() gave nothing and the hook has \
+             not recorded a roster yet, so no match has simulated this session",
+        );
+    } else {
+        diag(&format!("loaded {} champions", loaded.len()));
+        let _ = with_state(|state| state.champions = loaded.clone());
+    }
+    loaded
+}
+
+fn snapshot_champions() -> Vec<ChampionChoice> {
+    with_state(|state| state.champions.clone()).unwrap_or_default()
+}
+
+/// Display name for a champion id, falling back to the raw id for one the
+/// roster does not cover.
+fn champion_label(champions: &[ChampionChoice], id: Option<&str>) -> String {
+    let Some(id) = id else {
+        return NO_CHAMPION_LABEL.to_string();
+    };
+    champions
+        .iter()
+        .find(|choice| choice.id == id)
+        .map_or_else(|| id.to_string(), |choice| choice.name.clone())
+}
+
+// -- editing ------------------------------------------------------------
+
+/// Copy of the rows being edited.
+fn snapshot_rows() -> Vec<ChampionRow> {
+    with_state(|state| state.rows.clone()).unwrap_or_default()
+}
+
+/// Applies `edit` to one row and autosaves: the file is written on every change
+/// rather than only on Save.
+///
+/// Returns whether the file was written, so the caller can report a failure
+/// instead of silently looking like it worked.
+fn edit_row(row: usize, edit: impl FnOnce(&mut ChampionRow)) -> bool {
+    let rows = with_state(|state| {
+        if let Some(entry) = state.rows.get_mut(row) {
+            entry.slots.resize(PICKER_SLOTS, None);
+            edit(entry);
+        }
+        state.rows.clone()
+    });
+    match rows {
+        Some(rows) => build_config::save_champion_rows(&rows),
+        None => false,
+    }
+}
+
 // -- painting -----------------------------------------------------------
 
+/// Leading padding for a combo's label.
+///
+/// `color_icon_button` has no property that insets its text — its only keys are
+/// `btn`, `text`, `icon`, `hover`, `active`, `disabled` and the two sounds, and
+/// `text` takes label *styling*, not geometry (the dropdown runner needs a
+/// separate `text_layout` for exactly that reason). Left-aligned text therefore
+/// starts hard against the button's rounded edge, and under the item icon.
+///
+/// Padding the string is the one lever here that needs no property the parser
+/// might reject. [`ICON_PAD`] clears the 24px icon at `x: 8px`; [`PLAIN_PAD`] is
+/// the smaller inset for a combo showing no icon, so both columns start at a
+/// sensible margin.
+const ICON_PAD: &str = "          ";
+const PLAIN_PAD: &str = "  ";
+
 /// The pinned key for one slot, or `None` when the AI owns it.
-fn pinned_key(row: usize, slot: usize) -> Option<String> {
-    build_config::load_position_builds()
-        .get(&row.to_string())
-        .and_then(|build| build.get(slot))
+fn pinned_key(rows: &[ChampionRow], row: usize, slot: usize) -> Option<String> {
+    rows.get(row)
+        .and_then(|entry| entry.slots.get(slot))
         .and_then(Option::as_ref)
         .cloned()
 }
 
 /// Repaints one slot's button: its label, its icon, and whether its clear button
-/// is offered at all — an unpinned slot has nothing to clear, so its X is hidden
-/// exactly as in the desktop editor.
-fn refresh_combo(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize, slot: usize) {
-    let pinned = pinned_key(row, slot);
-    let combo = combo_path(row, slot);
-
+/// is offered at all — an unpinned slot has nothing to clear, so its X is
+/// hidden.
+fn refresh_combo(
+    ctx: &mut StableClient<'_>,
+    entries: &[ListEntry],
+    rows: &[ChampionRow],
+    row: usize,
+    slot: usize,
+) {
+    let pinned = pinned_key(rows, row, slot);
+    // A pinned slot shows an icon and needs the wider inset; an unpinned one has
+    // no icon, so it takes the plain margin.
     let (label, color) = match &pinned {
-        Some(key) => (name_of(entries, key), "#e8e8e8ff"),
-        None => (AI_SLOT_LABEL.to_string(), "#a5a5abff"),
+        Some(key) => (format!("{ICON_PAD}{}", name_of(entries, key)), "#e8e8e8ff"),
+        None => (format!("{PLAIN_PAD}{AI_SLOT_LABEL}"), "#a5a5abff"),
     };
     ctx.ui_set_properties(
-        &combo,
+        &combo_path(row, slot),
         &format!("text: {{ text: \"{}\"; color: {color}; }}", sanitize(&label)),
     );
 
@@ -515,10 +723,36 @@ fn refresh_combo(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize, 
     ctx.ui_set_visible(&clear_path(row, slot), pinned.is_some());
 }
 
-/// Repaints one row's three slot buttons from its saved build.
+/// Repaints one row's champion button. A row with no champion is shown muted,
+/// the same way an unpinned slot reads, because it is not yet a build.
+fn refresh_champ(
+    ctx: &mut StableClient<'_>,
+    champions: &[ChampionChoice],
+    rows: &[ChampionRow],
+    row: usize,
+) {
+    let champion = rows.get(row).and_then(|entry| entry.champion.clone());
+    let color = if champion.is_some() {
+        "#e8e8e8ff"
+    } else {
+        "#a5a5abff"
+    };
+    let label = champion_label(champions, champion.as_deref());
+    ctx.ui_set_properties(
+        &champ_path(row),
+        &format!(
+            "text: {{ text: \"{PLAIN_PAD}{}\"; color: {color}; }}",
+            sanitize(&label)
+        ),
+    );
+}
+
+/// Repaints one row: its champion button and its three slot buttons.
 fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
+    let rows = snapshot_rows();
+    refresh_champ(ctx, &snapshot_champions(), &rows, row);
     for slot in 0..PICKER_SLOTS {
-        refresh_combo(ctx, entries, row, slot);
+        refresh_combo(ctx, entries, &rows, row, slot);
     }
 }
 
@@ -528,61 +762,64 @@ fn set_status(ctx: &mut StableClient<'_>, text: &str) {
 
 /// Paints the unique-items toggle from the saved setting: accent-green
 /// "Enforcing unique items" while on, plain "Enforce unique items" while off —
-/// the desktop editor's checkbox states, in a button.
+/// so the state reads off the button itself.
 fn refresh_unique(ctx: &mut StableClient<'_>) {
     let (text, color) = if build_config::unique_items_enabled() {
         ("Enforcing unique items", "#60ddc2ff")
     } else {
         ("Enforce unique items", "#d7dbe4ff")
     };
-    ctx.ui_set_properties(UNIQUE_PATH, &format!("text: {{ text: \"{text}\"; color: {color}; }}"));
+    ctx.ui_set_properties(
+        UNIQUE_PATH,
+        &format!("text: {{ text: \"{text}\"; color: {color}; }}"),
+    );
 }
 
 // -- spawning -----------------------------------------------------------
 
-/// `.ui` source for one position row. Everything that varies between rows is
-/// substituted here; the column offsets match `build_editor.ui`'s headers.
-fn row_source(row: usize, player: &str) -> String {
-    let position = POSITION_NAMES[row];
-    let icon = POSITION_ICONS[row];
-    let name = if player.is_empty() {
-        position.to_string()
-    } else {
-        format!("{position}  ·  {player}")
-    };
-
+/// `.ui` source for one champion row.
+fn row_source(row: usize) -> String {
     let mut source = format!(
         "row{row}:color {{\n\
-         width: 1330px;\n\
+         width: 1310px;\n\
          height: {ROW_HEIGHT}px;\n\
          color: #1d1f2cff;\n\
          rounding: Uniform {{ rounding: 8; }}\n\
          \n\
-         #position:image {{\n\
-         x: 8px;\n\
-         anchor_y: 0.5;\n\
-         pivot_y: 0.5;\n\
-         width: 26px;\n\
-         height: 26px;\n\
-         source: \"asset/base/ui/icons/{icon}\";\n\
+         #champ:color_icon_button {{\n\
+         @\"asset/base/style/main#tertiary_button\";\n\
+         x: {CHAMP_X}px;\n\
+         y: 8px;\n\
+         width: {CHAMP_W}px;\n\
+         height: 40px;\n\
+         \n\
+         text: {{\n\
+         text: \"{NO_CHAMPION_LABEL}\";\n\
+         align_x: Left;\n\
+         align_y: Center;\n\
+         size: 14;\n\
+         color: #a5a5abff;\n\
          }}\n\
          \n\
-         #name:label {{\n\
-         @\"asset/base/style/main#label\";\n\
-         x: 44px;\n\
-         width: 254px;\n\
-         height: {ROW_HEIGHT}px;\n\
-         align_y: Center;\n\
-         size: 15;\n\
-         color: #e8e8e8ff;\n\
-         text: \"{name}\";\n\
+         #arrow:image {{\n\
+         ignore_event: true;\n\
+         anchor_x: 1;\n\
+         pivot_x: 1;\n\
+         x: -12px;\n\
+         anchor_y: 0.5;\n\
+         pivot_y: 0.5;\n\
+         width: 12px;\n\
+         height: 12px;\n\
+         source: \"asset/base/ui/icons/dropdown\";\n\
+         color: #a5a5abff;\n\
+         }}\n\
          }}\n"
     );
 
     for slot in 0..PICKER_SLOTS {
         let x = COMBO_X[slot];
         // The clear button sits inside the right end of its slot, left of the
-        // drop arrow, the way the desktop editor overlays its X on the combo.
+        // drop arrow, so clearing a slot does not need the list opened first.
         let clear_x = x + COMBO_W - 52;
         source.push_str(&format!(
             "#slot{slot}:color_icon_button {{\n\
@@ -594,7 +831,7 @@ fn row_source(row: usize, player: &str) -> String {
              \n\
              text: {{\n\
              text: \"{AI_SLOT_LABEL}\";\n\
-             align_x: Center;\n\
+             align_x: Left;\n\
              align_y: Center;\n\
              size: 14;\n\
              color: #a5a5abff;\n\
@@ -679,17 +916,43 @@ fn row_source(row: usize, player: &str) -> String {
         ));
     }
 
+    source.push_str(&format!(
+        "#delete:color_icon_button {{\n\
+         x: {DELETE_X}px;\n\
+         y: 17px;\n\
+         width: 22px;\n\
+         height: 22px;\n\
+         \n\
+         btn: {{ color: #00000000; }}\n\
+         \n\
+         icon: {{\n\
+         source: \"asset/base/ui/icons/delete\";\n\
+         rect: {{ x: 4px; y: 4px; w: 14px; h: 14px; }}\n\
+         }}\n\
+         \n\
+         #glyph:image {{\n\
+         ignore_event: true;\n\
+         x: 4px;\n\
+         y: 4px;\n\
+         width: 14px;\n\
+         height: 14px;\n\
+         source: \"asset/base/ui/icons/delete\";\n\
+         color: #e8645aff;\n\
+         }}\n\
+         }}\n"
+    ));
+
     source.push_str("}\n");
     source
 }
 
 /// Height of one item-list node. Paired with [`entry_source`], which lays the
-/// node out at exactly this height; the two are read together to give `#contents`
-/// an explicit height.
+/// node out at exactly this height; the two are read together to give
+/// `#contents` an explicit height.
 fn entry_height(entry: &ListEntry) -> i32 {
     match entry {
         ListEntry::Header(_) => ENTRY_HEADER_H,
-        ListEntry::Item(_) => ENTRY_ITEM_H,
+        ListEntry::Clear | ListEntry::Item(_) => ENTRY_ITEM_H,
     }
 }
 
@@ -698,14 +961,21 @@ fn entry_height(entry: &ListEntry) -> i32 {
 ///
 /// The item node is deliberately the shape the earlier picker used and proved
 /// renders — style ref, size, `label`/`selected_label` overrides, `text` — with
-/// nothing added but the icon child and explicit label colors. An attempt at the
-/// desktop editor's left-aligned rows using `text_offset` is not repeated here:
-/// the whole list came up blank on the build that had it, and while the cause
-/// turned out to be the panel painting over its children, `text_offset` appears
-/// in no shipped layout and is not worth carrying as a second unknown. The style
-/// centres its label, so the name sits centred with the icon at the left edge.
+/// nothing added but the icon child and explicit label colors. `text_offset`
+/// (which would left-align the name past the icon) appears in no shipped layout
+/// and is not worth carrying as an unknown, so the style's centred label stands.
 fn entry_source(index: usize, entry: &ListEntry) -> String {
     match entry {
+        ListEntry::Clear => format!(
+            "e{index}:selectable {{\n\
+             @\"asset/base/style/main#strategy_option\";\n\
+             width: 304px;\n\
+             height: {ENTRY_ITEM_H}px;\n\
+             label: {{ size: 14; align_x: Left; color: #a5a5abff; }}\n\
+             selected_label: {{ size: 14; align_x: Left; color: #0f5b4dff; }}\n\
+             text: \"{PLAIN_PAD}{AI_SLOT_LABEL}\";\n\
+             }}"
+        ),
         ListEntry::Header(name) => format!(
             "e{index}:label {{\n\
              @\"asset/base/style/main#bold_label\";\n\
@@ -734,14 +1004,21 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
                 ),
                 None => String::new(),
             };
+            // Padded for the same reason the row combos are: the style centres
+            // its label, and left-aligning it puts the name under the icon.
+            let pad = if item.frame.is_some() {
+                ICON_PAD
+            } else {
+                PLAIN_PAD
+            };
             format!(
                 "e{index}:selectable {{\n\
                  @\"asset/base/style/main#strategy_option\";\n\
                  width: 304px;\n\
                  height: {ENTRY_ITEM_H}px;\n\
-                 label: {{ size: 14; color: #d7dbe4ff; }}\n\
-                 selected_label: {{ size: 14; color: #0f5b4dff; }}\n\
-                 text: \"{}\";\n\
+                 label: {{ size: 14; align_x: Left; color: #d7dbe4ff; }}\n\
+                 selected_label: {{ size: 14; align_x: Left; color: #0f5b4dff; }}\n\
+                 text: \"{pad}{}\";\n\
                  {icon}\
                  }}",
                 item.name
@@ -750,7 +1027,68 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
     }
 }
 
-/// Spawns the window, its five rows and its item list, and registers every
+/// `.ui` source for one champion-list node. Plain rows, no icons: there is no
+/// champion portrait in a sheet the mod can address by frame name.
+fn champ_entry_source(index: usize, choice: &ChampionChoice) -> String {
+    format!(
+        "c{index}:selectable {{\n\
+         @\"asset/base/style/main#strategy_option\";\n\
+         width: 244px;\n\
+         height: {ENTRY_ITEM_H}px;\n\
+         label: {{ size: 14; align_x: Left; color: #d7dbe4ff; }}\n\
+         selected_label: {{ size: 14; align_x: Left; color: #0f5b4dff; }}\n\
+         text: \"{PLAIN_PAD}{}\";\n\
+         }}",
+        choice.name
+    )
+}
+
+/// Removes the spawned row nodes and spawns one per row in state, registering
+/// every control. Called when the window is built and after any add or delete.
+///
+/// Rebuilding wholesale rather than splicing keeps row index and node name in
+/// step: a row's identity is its position in the list, so deleting row 1 has to
+/// renumber everything after it anyway.
+fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
+    let previous = with_state(|state| state.spawned_rows).unwrap_or(0);
+    for row in 0..previous {
+        ctx.ui_remove_node(&editor_row_path(row));
+    }
+
+    let count = with_state(|state| state.rows.len()).unwrap_or(0);
+    for row in 0..count {
+        if !ctx.ui_spawn_source(ROWS_PATH, &row_source(row)) {
+            diag(&format!("row {row} source refused under {ROWS_PATH}"));
+            break;
+        }
+        ctx.ui_register_path_events(&champ_path(row), handle_event);
+        ctx.ui_register_path_events(&delete_path(row), handle_event);
+        for slot in 0..PICKER_SLOTS {
+            ctx.ui_register_path_events(&combo_path(row, slot), handle_event);
+            ctx.ui_register_path_events(&clear_path(row, slot), handle_event);
+        }
+        for slot in 0..SWAP_X.len() {
+            ctx.ui_register_path_events(
+                &format!("{}.swap{slot}", editor_row_path(row)),
+                handle_event,
+            );
+        }
+    }
+    let _ = with_state(|state| state.spawned_rows = count);
+
+    // `#rows` is authored `height: auto`, but an auto height measured over a
+    // subtree that has not been laid out is zero, and a scroll view whose
+    // contents are zero tall shows nothing however many children it has. The
+    // height is knowable exactly, so it is stated.
+    let height = count as i32 * (ROW_HEIGHT as i32 + 8);
+    ctx.ui_set_properties(ROWS_PATH, &format!("height: {height}px;"));
+
+    for row in 0..count {
+        refresh_row(ctx, entries, row);
+    }
+}
+
+/// Spawns the window, its rows and both dropdown lists, and registers every
 /// control. Deferred until the first click so a failure costs nothing until the
 /// player actually asks for the editor, and is retried on the next click.
 fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
@@ -770,26 +1108,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     }
 
     let entries = cached_entries(ctx);
-
-    for row in 0..PICKER_ROWS {
-        // The vanilla row's name label carries whoever is in that lane this
-        // match; an empty read just leaves the row labelled by position.
-        let player = ctx.ui_text(&row_name_path(row)).unwrap_or_default();
-        if !ctx.ui_spawn_source(ROWS_PATH, &row_source(row, &sanitize(&player))) {
-            diag(&format!("row {row} source refused under {ROWS_PATH}"));
-            return false;
-        }
-        for slot in 0..PICKER_SLOTS {
-            ctx.ui_register_path_events(&combo_path(row, slot), handle_event);
-            ctx.ui_register_path_events(&clear_path(row, slot), handle_event);
-        }
-        for slot in 0..SWAP_X.len() {
-            ctx.ui_register_path_events(
-                &format!("{}.swap{slot}", editor_row_path(row)),
-                handle_event,
-            );
-        }
-    }
+    let champions = cached_champions(ctx);
 
     let contents = list_contents_path();
     for (index, entry) in entries.iter().enumerate() {
@@ -797,20 +1116,35 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
             diag(&format!("item list source refused under {contents}"));
             break;
         }
-        if matches!(entry, ListEntry::Item(_)) {
+        if !matches!(entry, ListEntry::Header(_)) {
             ctx.ui_register_path_events(&entry_path(index), handle_event);
         }
     }
-
-    // `#contents` is authored `height: auto`, but these children are added while
-    // the list is still hidden, and an auto height measured over a subtree that
-    // has never been laid out is zero — a scroll view whose contents are zero
-    // tall shows nothing however many children it has. The height is knowable
-    // exactly, so it is stated rather than inferred.
     let content_height: i32 = entries.iter().map(entry_height).sum();
     ctx.ui_set_properties(&contents, &format!("height: {content_height}px;"));
 
-    for path in [FADE_PATH, CANCEL_PATH, SAVE_PATH, UNIQUE_PATH] {
+    let champ_contents = champ_contents_path();
+    for (index, choice) in champions.iter().enumerate() {
+        if !ctx.ui_spawn_source(&champ_contents, &champ_entry_source(index, choice)) {
+            diag(&format!("champion list source refused under {champ_contents}"));
+            break;
+        }
+        ctx.ui_register_path_events(&champ_entry_path(index), handle_event);
+    }
+    ctx.ui_set_properties(
+        &champ_contents,
+        &format!("height: {}px;", champions.len() as i32 * ENTRY_ITEM_H),
+    );
+
+    // Read from disk here rather than at every open, so a file edited by hand
+    // while the game sits on this screen is picked up.
+    let _ = with_state(|state| {
+        state.rows = build_config::load_champion_rows();
+        state.spawned_rows = 0;
+    });
+    rebuild_rows(ctx, &entries);
+
+    for path in [FADE_PATH, CANCEL_PATH, SAVE_PATH, ADD_PATH, UNIQUE_PATH, LISTCATCH_PATH] {
         ctx.ui_register_path_events(path, handle_event);
     }
 
@@ -828,99 +1162,111 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
 
 fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     refresh_unique(ctx);
-    for row in 0..PICKER_ROWS {
+    let count = with_state(|state| state.rows.len()).unwrap_or(0);
+    for row in 0..count {
         refresh_row(ctx, entries, row);
     }
     set_status(ctx, "Every change saves as you make it.");
+    // Hidden, not just covered. The screen's champion tooltip is spawned by game
+    // code somewhere outside this subtree — `strategy.ui` contains no tooltip
+    // node at all — so it is not something a panel of ours can be drawn over,
+    // and the full-screen `#fade` does not stop the hover that summons it. With
+    // the screen hidden there is nothing left to hover.
+    ctx.ui_set_visible(STRATEGY_PATH, false);
     ctx.ui_set_visible(EDITOR_PATH, true);
-    let _ = with_state(|state| state.open = true);
 }
 
 fn close_editor(ctx: &mut StableClient<'_>) {
     close_list(ctx);
     ctx.ui_set_visible(EDITOR_PATH, false);
-    let _ = with_state(|state| state.open = false);
+    ctx.ui_set_visible(STRATEGY_PATH, true);
 }
 
-/// Reports where the item list was put and what is actually inside it.
+/// Places a floating list under the control that opened it, flipping above when
+/// there is no room below the way a dropdown near the screen edge does.
 ///
-/// Kept after the blank-list hunt as the cheapest way to tell the three failure
-/// modes apart, since they look identical on screen: nodes missing (child count
-/// zero), panel misplaced (its rect nowhere near the computed position), or
-/// nodes present and placed but not drawn — which is what it turned out to be,
-/// the panel's `z` putting its own fill above its children.
-///
-/// It also prints the engine's rect for the clicked slot beside the computed
-/// one. Placement no longer depends on that rect, but the two numbers side by
-/// side are the only evidence available for which space `ui_node_rect` reports
-/// in, and the next thing to need a node's position will want to know.
-fn probe_list(ctx: &StableClient<'_>, row: usize, slot: usize, left: i32, top: i32) {
-    let contents = list_contents_path();
-    let first = entry_path(0);
-    diag(&format!(
-        "item list for row {row} slot {slot}: placed at ({left}, {top}), \
-         engine rect of slot = {:?}, list rect = {:?}, contents children = {:?}, \
-         e0 exists = {}, e0 runner = {:?}, e0 rect = {:?}",
-        ctx.ui_node_rect(&combo_path(row, slot)),
-        ctx.ui_node_rect(ITEMLIST_PATH),
-        ctx.ui_child_count(&contents),
-        ctx.ui_exists(&first),
-        ctx.ui_runner_name(&first),
-        ctx.ui_node_rect(&first),
-    ));
-}
+/// The anchor's position comes from `ui_node_rect`, which the list probe
+/// confirmed reports in the same design space the layouts are authored in. Rows
+/// scroll, so their position cannot be computed from the layout constants the
+/// way a fixed row's could.
+fn place_list(ctx: &mut StableClient<'_>, panel: &str, anchor: &str, width: i32) -> (i32, i32) {
+    let Some((x, y, _, h)) = ctx.ui_node_rect(anchor).filter(|rect| rect.3 > 0.0) else {
+        diag(&format!("no layout rect for {anchor} — leaving the list where it was"));
+        return (0, 0);
+    };
+    let (x, y, h) = (x.round() as i32, y.round() as i32, h.round() as i32);
 
-/// Shows the item list under the slot that was clicked, with the slot's current
-/// pick ticked. Flips above the slot when there is no room below, the way a
-/// dropdown near the bottom of the screen does.
-fn open_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize, slot: usize) {
-    // Canvas position of the clicked slot, from the layout constants rather than
-    // from the engine — see the note on POPUP_X.
-    let x = POPUP_X + ROWS_X + COMBO_X[slot] as i32;
-    let y = POPUP_Y + ROWS_Y + row as i32 * ROW_PITCH + COMBO_Y;
-
-    let below = y + COMBO_H + 4;
+    let below = y + h + 4;
     let top = if below + LIST_H <= CANVAS_H - 8 {
         below
     } else {
         (y - LIST_H - 4).max(8)
     };
-    // Nudged left rather than pinned to the slot's own x, so a slot at the right
+    // Nudged left rather than pinned to the control's own x, so one at the right
     // edge of the window still gets the whole list on screen.
-    let left = x.min(CANVAS_W - LIST_W - 8).max(8);
+    let left = x.min(CANVAS_W - width - 8).max(8);
 
-    if !ctx.ui_set_properties(ITEMLIST_PATH, &format!("x: {left}px; y: {top}px;")) {
-        diag("ui_set_properties refused x/y on the item list");
+    if !ctx.ui_set_properties(panel, &format!("x: {left}px; y: {top}px;")) {
+        diag(&format!("ui_set_properties refused x/y on {panel}"));
     }
-
-    probe_list(ctx, row, slot, left, top);
-
-    let pinned = pinned_key(row, slot);
-    for (index, entry) in entries.iter().enumerate() {
-        if let ListEntry::Item(item) = entry {
-            let selected = pinned.as_deref() == Some(item.key.as_str());
-            ctx.ui_set_selectable_selected(&entry_path(index), selected);
-        }
-    }
-
-    ctx.ui_set_visible(ITEMLIST_PATH, true);
-    let _ = with_state(|state| state.open_slot = Some((row, slot)));
+    (left, top)
 }
 
+/// Shows the item list under the slot that was clicked, with the slot's current
+/// pick ticked.
+fn open_item_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize, slot: usize) {
+    place_list(ctx, ITEMLIST_PATH, &combo_path(row, slot), LIST_W);
+
+    let pinned = pinned_key(&snapshot_rows(), row, slot);
+    for (index, entry) in entries.iter().enumerate() {
+        let selected = match entry {
+            ListEntry::Clear => pinned.is_none(),
+            ListEntry::Item(item) => pinned.as_deref() == Some(item.key.as_str()),
+            ListEntry::Header(_) => continue,
+        };
+        ctx.ui_set_selectable_selected(&entry_path(index), selected);
+    }
+
+    ctx.ui_set_visible(LISTCATCH_PATH, true);
+    ctx.ui_set_visible(ITEMLIST_PATH, true);
+    let _ = with_state(|state| state.open_list = Some(OpenList::Item { row, slot }));
+}
+
+/// Shows the champion list under the row's champion button, with the row's
+/// current champion ticked.
+fn open_champ_list(ctx: &mut StableClient<'_>, champions: &[ChampionChoice], row: usize) {
+    place_list(ctx, CHAMPLIST_PATH, &champ_path(row), CHAMP_LIST_W);
+
+    let current = snapshot_rows()
+        .get(row)
+        .and_then(|entry| entry.champion.clone());
+    for (index, choice) in champions.iter().enumerate() {
+        let selected = current.as_deref() == Some(choice.id.as_str());
+        ctx.ui_set_selectable_selected(&champ_entry_path(index), selected);
+    }
+
+    ctx.ui_set_visible(LISTCATCH_PATH, true);
+    ctx.ui_set_visible(CHAMPLIST_PATH, true);
+    let _ = with_state(|state| state.open_list = Some(OpenList::Champion { row }));
+}
+
+/// Hides whichever floating list is showing. Both are hidden unconditionally:
+/// it costs one call and cannot leave a stale panel behind.
 fn close_list(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(ITEMLIST_PATH, false);
-    let _ = with_state(|state| state.open_slot = None);
+    ctx.ui_set_visible(CHAMPLIST_PATH, false);
+    ctx.ui_set_visible(LISTCATCH_PATH, false);
+    let _ = with_state(|state| state.open_list = None);
 }
 
-/// Row index from an event path (`….rows.row2.slot1` → `2`).
+/// Row index from an event path (`….rows.row2.slot1` -> `2`).
 fn row_from_path(path: &str) -> Option<usize> {
     path.rsplit_once(".row")
         .and_then(|(_, rest)| rest.split('.').next())
         .and_then(|digits| digits.parse::<usize>().ok())
-        .filter(|row| *row < PICKER_ROWS)
 }
 
-/// Trailing index of a `slotN` / `clearN` / `swapN` / `eN` node name.
+/// Trailing index of a `slotN` / `clearN` / `swapN` / `eN` / `cN` node name.
 fn index_after(path: &str, prefix: &str) -> Option<usize> {
     path.rsplit_once(prefix)?.1.parse().ok()
 }
@@ -941,10 +1287,15 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
+    if path == LISTCATCH_PATH {
+        close_list(ctx);
+        return;
+    }
+
     if path == FADE_PATH || path == CANCEL_PATH {
-        // A click on the backdrop while the item list is open dismisses just the
-        // list, so picking is escapable without closing the whole editor.
-        if with_state(|state| state.open_slot).flatten().is_some() && path == FADE_PATH {
+        // A click on the backdrop while a list is open dismisses just the list,
+        // so picking is escapable without closing the whole editor.
+        if with_state(|state| state.open_list).flatten().is_some() && path == FADE_PATH {
             close_list(ctx);
         } else {
             close_editor(ctx);
@@ -955,10 +1306,18 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     let entries = snapshot_entries();
 
     if path == SAVE_PATH {
-        // Every edit already wrote the file; this reports that, which is what
-        // the desktop editor's Save button amounts to as well.
-        let rows = build_config::load_position_builds().len();
-        set_status(ctx, &format!("Saved {rows} position build(s)."));
+        // Every edit already wrote the file; this just reports what is on disk,
+        // for the reassurance of having pressed something.
+        let saved = snapshot_rows().iter().filter(|row| row.is_complete()).count();
+        set_status(ctx, &format!("Saved {saved} champion build(s)."));
+        return;
+    }
+
+    if path == ADD_PATH {
+        let _ = with_state(|state| state.rows.push(ChampionRow::default()));
+        close_list(ctx);
+        rebuild_rows(ctx, &entries);
+        set_status(ctx, "Pick a champion for the new row — a row without one is not saved.");
         return;
     }
 
@@ -981,10 +1340,16 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     }
 
     if path.starts_with(&list_contents_path()) {
-        let Some(index) = index_after(&path, ".e") else {
-            return;
-        };
-        pick_item(ctx, &entries, index);
+        if let Some(index) = index_after(&path, ".e") {
+            pick_item(ctx, &entries, index);
+        }
+        return;
+    }
+
+    if path.starts_with(&champ_contents_path()) {
+        if let Some(index) = index_after(&path, ".c") {
+            pick_champion(ctx, &entries, index);
+        }
         return;
     }
 
@@ -992,22 +1357,52 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     };
 
+    if path.ends_with(".delete") {
+        let removed = with_state(|state| {
+            (row < state.rows.len()).then(|| state.rows.remove(row).champion)
+        })
+        .flatten();
+        let rows = snapshot_rows();
+        build_config::save_champion_rows(&rows);
+        close_list(ctx);
+        rebuild_rows(ctx, &entries);
+        let champions = snapshot_champions();
+        set_status(
+            ctx,
+            &format!(
+                "Removed the build for {}.",
+                champion_label(&champions, removed.flatten().as_deref())
+            ),
+        );
+        return;
+    }
+
     if let Some(slot) = index_after(&path, ".clear") {
         if slot < PICKER_SLOTS {
-            build_config::set_position_slot(row, slot, None);
+            edit_row(row, |entry| entry.slots[slot] = None);
             close_list(ctx);
             refresh_row(ctx, &entries, row);
-            set_status(ctx, &format!("{} item {} left to the AI.", POSITION_NAMES[row], slot + 1));
+            set_status(ctx, &format!("Item {} left to the AI.", slot + 1));
         }
         return;
     }
 
     if let Some(slot) = index_after(&path, ".swap") {
         if slot + 1 < PICKER_SLOTS {
-            build_config::swap_position_slots(row, slot, slot + 1);
+            edit_row(row, |entry| entry.slots.swap(slot, slot + 1));
             close_list(ctx);
             refresh_row(ctx, &entries, row);
-            set_status(ctx, &format!("{} items {} and {} swapped.", POSITION_NAMES[row], slot + 1, slot + 2));
+            set_status(ctx, &format!("Items {} and {} swapped.", slot + 1, slot + 2));
+        }
+        return;
+    }
+
+    if path.ends_with(".champ") {
+        // Clicking the open control again closes its list, so both toggle.
+        if with_state(|state| state.open_list).flatten() == Some(OpenList::Champion { row }) {
+            close_list(ctx);
+        } else {
+            open_champ_list(ctx, &snapshot_champions(), row);
         }
         return;
     }
@@ -1016,11 +1411,10 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         if slot >= PICKER_SLOTS {
             return;
         }
-        // Clicking the open slot again closes its list, so the button toggles.
-        if with_state(|state| state.open_slot) == Some(Some((row, slot))) {
+        if with_state(|state| state.open_list).flatten() == Some(OpenList::Item { row, slot }) {
             close_list(ctx);
         } else {
-            open_list(ctx, &entries, row, slot);
+            open_item_list(ctx, &entries, row, slot);
         }
     }
 }
@@ -1028,27 +1422,64 @@ fn handle_event(ctx: &mut StableClient<'_>) {
 /// Commits a clicked item row: clicking the pinned item again clears the slot,
 /// so a slot can be returned to AI choice without reaching for the X.
 fn pick_item(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
-    let Some(Some((row, slot))) = with_state(|state| state.open_slot) else {
+    let Some(Some(OpenList::Item { row, slot })) = with_state(|state| state.open_list) else {
         return;
     };
-    let Some(ListEntry::Item(item)) = entries.get(index) else {
-        return;
+    // Clicking the pinned item again unpins it, which is the same outcome as
+    // picking the Clear row — kept because it is the quicker gesture once known.
+    let picked = match entries.get(index) {
+        Some(ListEntry::Clear) => None,
+        Some(ListEntry::Item(item)) => {
+            let already =
+                pinned_key(&snapshot_rows(), row, slot).as_deref() == Some(item.key.as_str());
+            (!already).then(|| item.key.clone())
+        }
+        _ => return,
     };
-
-    let already = pinned_key(row, slot).as_deref() == Some(item.key.as_str());
-    let picked = (!already).then_some(item.key.as_str());
-    build_config::set_position_slot(row, slot, picked);
+    let name = picked.as_deref().map(|key| name_of(entries, key));
+    let wrote = edit_row(row, |entry| entry.slots[slot] = picked.clone());
 
     close_list(ctx);
     refresh_row(ctx, entries, row);
     set_status(
         ctx,
-        &format!(
-            "{} item {} -> {}",
-            POSITION_NAMES[row],
-            slot + 1,
-            picked.map_or(AI_SLOT_LABEL, |_| item.name.as_str())
-        ),
+        &match (wrote, name) {
+            (false, _) => "Could not write item-builds.json.".to_string(),
+            (true, Some(name)) => format!("Item {} -> {name}", slot + 1),
+            (true, None) => format!("Item {} -> {AI_SLOT_LABEL}", slot + 1),
+        },
+    );
+}
+
+/// Commits a clicked champion row, assigning it to the open row.
+///
+/// Clicking the champion already assigned clears it, which takes the row out of
+/// the saved file without deleting it from the editor.
+fn pick_champion(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
+    let Some(Some(OpenList::Champion { row })) = with_state(|state| state.open_list) else {
+        return;
+    };
+    let champions = snapshot_champions();
+    let Some(choice) = champions.get(index) else {
+        return;
+    };
+
+    let current = snapshot_rows()
+        .get(row)
+        .and_then(|entry| entry.champion.clone());
+    let already = current.as_deref() == Some(choice.id.as_str());
+    let picked = (!already).then(|| choice.id.clone());
+    let wrote = edit_row(row, |entry| entry.champion = picked.clone());
+
+    close_list(ctx);
+    refresh_row(ctx, entries, row);
+    set_status(
+        ctx,
+        &match (wrote, &picked) {
+            (false, _) => "Could not write item-builds.json.".to_string(),
+            (true, Some(_)) => format!("Build set for {}.", choice.name),
+            (true, None) => "Row has no champion, so it is not saved.".to_string(),
+        },
     );
 }
 
@@ -1081,8 +1512,8 @@ impl StableExtension for StrategyPicker {
                 let stale = state.wired;
                 state.wired = false;
                 state.modal_ready = false;
-                state.open = false;
-                state.open_slot = None;
+                state.spawned_rows = 0;
+                state.open_list = None;
                 stale
             })
             .unwrap_or(false);
@@ -1118,6 +1549,7 @@ impl StableExtension for StrategyPicker {
             // `setting_get_json` returned None when called inside one, matching
             // the trait's note that only ui/asset calls are live there.
             cached_entries(ctx);
+            cached_champions(ctx);
             if !ctx.ui_register_path_events(OPEN_BUTTON, handle_event) {
                 diag(&format!("event registration refused for {OPEN_BUTTON}"));
             }
