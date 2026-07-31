@@ -1107,12 +1107,11 @@ fn entry_height(entry: &ListEntry) -> i32 {
 fn entry_source(index: usize, entry: &ListEntry) -> String {
     match entry {
         ListEntry::Clear => format!(
-            "e{index}:selectable {{\n\
+            "e{index}:color_selectable {{\n\
              @\"asset/base/style/main#strategy_option\";\n\
              width: 304px;\n\
              height: {ENTRY_ITEM_H}px;\n\
-             label: {{ size: 14; align_x: Left; color: #a5a5abff; }}\n\
-             selected_label: {{ size: 14; align_x: Left; color: #0f5b4dff; }}\n\
+             label: {{ size: 14; align_x: Left; color: {LIST_CLEAR_TEXT}; }}\n\
              text: \"{PLAIN_PAD}{AI_SLOT_LABEL}\";\n\
              }}"
         ),
@@ -1166,12 +1165,11 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
                 PLAIN_PAD
             };
             format!(
-                "e{index}:selectable {{\n\
+                "e{index}:color_selectable {{\n\
                  @\"asset/base/style/main#strategy_option\";\n\
                  width: 304px;\n\
                  height: {ENTRY_ITEM_H}px;\n\
-                 label: {{ size: 14; align_x: Left; color: #d7dbe4ff; }}\n\
-                 selected_label: {{ size: 14; align_x: Left; color: #0f5b4dff; }}\n\
+                 label: {{ size: 14; align_x: Left; color: {LIST_ROW_TEXT}; }}\n\
                  text: \"{pad}{}\";\n\
                  {icon}\
                  }}",
@@ -1185,12 +1183,11 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
 /// champion portrait in a sheet the mod can address by frame name.
 fn champ_entry_source(index: usize, choice: &ChampionChoice) -> String {
     format!(
-        "c{index}:selectable {{\n\
+        "c{index}:color_selectable {{\n\
          @\"asset/base/style/main#strategy_option\";\n\
          width: 244px;\n\
          height: {ENTRY_ITEM_H}px;\n\
-         label: {{ size: 14; align_x: Left; color: #d7dbe4ff; }}\n\
-         selected_label: {{ size: 14; align_x: Left; color: #0f5b4dff; }}\n\
+         label: {{ size: 14; align_x: Left; color: {LIST_ROW_TEXT}; }}\n\
          text: \"{PLAIN_PAD}{}\";\n\
          }}",
         choice.name
@@ -1384,6 +1381,43 @@ fn paint_tabs(ctx: &mut StableClient<'_>, builds_active: bool) {
     }
 }
 
+/// Idle label colour of a pickable list row, and of the "Let Player Decide" row
+/// above them, which is greyer because it is the absence of a pick.
+const LIST_ROW_TEXT: &str = "#d7dbe4ff";
+const LIST_CLEAR_TEXT: &str = "#a5a5abff";
+
+/// One list row's appearance, lit the same way the Builds tab is.
+///
+/// The rows are `color_selectable` for the fill, which means their `selected`
+/// flag cannot be written — `state_set_json` takes that key for `selectable` but
+/// not for this kind (see [`paint_tabs`]). So "which row is picked" is painted
+/// here rather than set, and the two list-opening functions repaint every row.
+///
+/// A bare `selectable` was the obvious choice and is what this used before: its
+/// `selected` flag *is* writable, so one call per row did the whole job. But
+/// that runner draws only a label — no vanilla layout uses it, and the
+/// `selected_image` in `strategy_option` went nowhere — so the picked row could
+/// only ever change text colour, never take a fill.
+fn list_entry_style(lit: bool, idle_text: &str) -> String {
+    let (fill, text, stroke) = if lit {
+        (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
+    } else {
+        (TAB_IDLE_FILL, idle_text, 1)
+    };
+    let (hover_line, hover_text) = if lit {
+        (fill, text)
+    } else {
+        (TAB_HOVER_LINE, TAB_HOVER_TEXT)
+    };
+    format!(
+        "image: {{ color: {fill}; back_color: {fill}; stroke: {stroke}; \
+         rounding: Uniform {{ rounding: 4; }} \
+         hover: {{ color: {hover_line}; back_color: {fill}; }} }} \
+         label: {{ size: 14; align_x: Left; color: {text}; \
+         hover: {{ color: {hover_text}; }} }}"
+    )
+}
+
 /// One tab's appearance, through whichever property pair actually renders for
 /// it — `image`/`label` for our never-selected tab, `selected_image`/
 /// `selected_label` for Team, which game code still considers selected.
@@ -1469,7 +1503,11 @@ fn open_item_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize,
             ListEntry::Item(item) => pinned.as_deref() == Some(item.key.as_str()),
             ListEntry::Header(_) => continue,
         };
-        ctx.ui_set_selectable_selected(&entry_path(index), selected);
+        let idle = match entry {
+            ListEntry::Clear => LIST_CLEAR_TEXT,
+            _ => LIST_ROW_TEXT,
+        };
+        ctx.ui_set_properties(&entry_path(index), &list_entry_style(selected, idle));
     }
 
     ctx.ui_set_visible(LISTCATCH_PATH, true);
@@ -1487,7 +1525,7 @@ fn open_champ_list(ctx: &mut StableClient<'_>, champions: &[ChampionChoice], row
         .and_then(|entry| entry.champion.clone());
     for (index, choice) in champions.iter().enumerate() {
         let selected = current.as_deref() == Some(choice.id.as_str());
-        ctx.ui_set_selectable_selected(&champ_entry_path(index), selected);
+        ctx.ui_set_properties(&champ_entry_path(index), &list_entry_style(selected, LIST_ROW_TEXT));
     }
 
     ctx.ui_set_visible(LISTCATCH_PATH, true);
