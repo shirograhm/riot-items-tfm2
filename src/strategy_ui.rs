@@ -337,9 +337,10 @@ const LISTCATCH_PATH: &str = "main.contents.build_editor.listcatch";
 const ITEMLIST_PATH: &str = "main.contents.build_editor.itemlist";
 const CHAMPLIST_PATH: &str = "main.contents.build_editor.champlist";
 const STATUS_PATH: &str = "main.contents.build_editor.popup.toolbar.status";
-const VERSION_PATH: &str = "main.contents.build_editor.popup.footer.version";
 const UNIQUE_PATH: &str = "main.contents.build_editor.popup.optionbar.unique";
-const SAVE_PATH: &str = "main.contents.build_editor.popup.toolbar.save";
+/// In the footer rather than the toolbar: it is the window's "done" button, and
+/// bottom-right is where one is looked for.
+const SAVE_PATH: &str = "main.contents.build_editor.popup.footer.save";
 const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
 const FADE_PATH: &str = "main.contents.build_editor.fade";
 const CANCEL_PATH: &str = "main.contents.build_editor.popup.titlebar.cancel";
@@ -1191,11 +1192,6 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         register_once(ctx, path);
     }
 
-    ctx.ui_set_text(
-        VERSION_PATH,
-        &format!("Riot Items  v{}", env!("CARGO_PKG_VERSION")),
-    );
-
     let _ = with_state(|state| state.modal_ready = true);
     diag("item build editor ready");
     true
@@ -1349,10 +1345,13 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     let entries = snapshot_entries();
 
     if path == SAVE_PATH {
-        // Every edit already wrote the file; this just reports what is on disk,
-        // for the reassurance of having pressed something.
+        // Every edit already wrote the file, so there is nothing here to flush —
+        // the button is the window's "done", and closing is all of what it does.
+        // The count goes to the log rather than the status line, which closing
+        // makes unreadable anyway.
         let saved = snapshot_rows().iter().filter(|row| row.is_complete()).count();
-        set_status(ctx, &format!("Saved {saved} champion build(s)."));
+        diag(&format!("editor closed with {saved} champion build(s) on disk"));
+        close_editor(ctx);
         return;
     }
 

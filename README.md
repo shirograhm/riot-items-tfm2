@@ -205,8 +205,9 @@ the top of that list — or click the pinned item again, or the slot's **X** —
 hand the slot back to the game's AI. The **Enforcing unique items** toggle writes
 `mod-settings.json` beside the DLL.
 
-Every change is written immediately to `item-builds.json`; the Save button only
-reports what is already on disk. A row with no champion, or with nothing pinned,
+Every change is written immediately to `item-builds.json`; **Save Item Builds**,
+in the bottom right, has nothing left to write and simply closes the window. A
+row with no champion, or with nothing pinned,
 is kept in the editor but not written — a build with nothing to key it by is not
 a build.
 

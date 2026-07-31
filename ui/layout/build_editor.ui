@@ -83,25 +83,9 @@ build_editor:empty {
 
       color: #0f1016ff;
 
-      #save:color_icon_button {
-        @"asset/base/style/main#primary_button";
-        x: 15px;
-        y: 11px;
-        width: 180px;
-        height: 38px;
-
-        text: {
-          font: "asset/base/font/set/bold";
-          text: "Save Item Builds";
-          align_x: Center;
-          align_y: Center;
-          size: 15;
-        }
-      }
-
       #add:color_icon_button {
         @"asset/base/style/main#tertiary_button";
-        x: 205px;
+        x: 15px;
         y: 11px;
         width: 180px;
         height: 38px;
@@ -117,9 +101,9 @@ build_editor:empty {
 
       #status:label {
         @"asset/base/style/main#label";
-        x: 400px;
+        x: 210px;
         y: 11px;
-        width: 940px;
+        width: 1130px;
         height: 38px;
         align_y: Center;
         size: 14;
@@ -224,7 +208,7 @@ build_editor:empty {
       x: 15px;
       y: 188px;
       width: 1330px;
-      height: 520px;
+      height: 500px;
 
       speed: 100;
 
@@ -257,7 +241,7 @@ build_editor:empty {
       anchor_y: 1;
       pivot_y: 1;
       width: 1360px;
-      height: 26px;
+      height: 60px;
 
       color: #0f1016ff;
 
@@ -266,18 +250,22 @@ build_editor:empty {
         bottom_right: 12;
       }
 
-      #version:label {
-        @"asset/base/style/main#label";
+      #save:color_icon_button {
+        @"asset/base/style/main#primary_button";
         anchor_x: 1;
         pivot_x: 1;
-        x: -14px;
-        width: 500px;
-        height: 26px;
-        align_x: Right;
-        align_y: Center;
-        size: 12;
-        color: #a5a5abff;
-        text: "";
+        x: -15px;
+        y: 11px;
+        width: 180px;
+        height: 38px;
+
+        text: {
+          font: "asset/base/font/set/bold";
+          text: "Save Item Builds";
+          align_x: Center;
+          align_y: Center;
+          size: 15;
+        }
       }
     }
   }
