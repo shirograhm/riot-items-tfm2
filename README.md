@@ -228,4 +228,4 @@ The champion list is read from the game at runtime, so champions added by other
 mods can be given builds too.
 
 If the layout override is not loaded there is no Builds tab, the mod installs
-nothing, and the screen falls back to stock behaviour — Personal tab included.
+nothing, and the screen falls back to stock behavior — Personal tab included.

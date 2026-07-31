@@ -64,7 +64,7 @@ Both files (config-default & apply_config.bat) should be located in the mod's wo
 
 This mod lets you override the in-game Item Strategy Screen and choose any item in the game. It is all done in-game, no external tools:
 
-1. After draft, on the Item Strategy Screen, click [b]Item Build Editor[/b] in the top right.
+1. After draft, on the Item Strategy Screen, click [b]Builds[/b] at the top.
 2. Press [b]+ Add Champion[/b], pick a champion, then set its item slots.
   a. Modded champions are listed too, so long as their mod is loaded.
   b. If you only want to decide [i]some[/i] items, set the slots you care about and leave the rest on [b]Let Player Decide[/b] (the default). The mod keeps your chosen items and lets the game's AI fill the remaining slots.
@@ -77,7 +77,6 @@ Builds are saved to [b]item-builds.json[/b] as you make them, so they carry acro
 [h1] Planned Features [/h1]
 
 - Support items (Ardent Censer?) and possibly a 7th item category?
-- Ability for the user to select specific items on each champion in the post-draft screen. [i]Currently works with a side-loaded GUI.[/i]
 - Ability to edit values on the 30 base game items, in addition to the current config.json.
 - Translations for other locales.
 - Various bugfixes.
