@@ -1825,11 +1825,6 @@ impl StableExtension for StrategyPicker {
     }
 
     fn post_update(&self, ctx: &mut StableClient<'_>, _dt_micros: u64) {
-        // Reports the call-counting probe (a no-op unless `hook-probe.json`
-        // exists). Runs here because it is the only per-frame client hook the
-        // mod has, and the counts are incremented on the server side.
-        crate::probe::report_changes();
-
         if !ctx.ui_exists(BUILDS_TAB) {
             // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.
@@ -1847,9 +1842,6 @@ impl StableExtension for StrategyPicker {
                 // The screen and everything registered on it is gone, so the
                 // next one has to wire itself from scratch.
                 forget_registrations();
-                // Leaving the strategy screen means the match is about to be
-                // played: this is the closing bracket of the probe measurement.
-                crate::probe::snapshot("after-strategy");
                 reset_diag();
             }
 
@@ -1871,8 +1863,6 @@ impl StableExtension for StrategyPicker {
 
         if !with_state(|state| state.wired).unwrap_or(true) {
             diag("patched strategy screen detected — wiring the Builds tab");
-            // Opening bracket of the probe measurement, before the match runs.
-            crate::probe::snapshot("at-strategy");
 
             // Loaded here, in `post_update`, not from a click handler:
             // `setting_get_json` returned None when called inside one, matching

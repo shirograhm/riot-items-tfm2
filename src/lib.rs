@@ -8,7 +8,6 @@ mod hook;
 mod item_catalog;
 mod item_meta;
 mod items;
-mod probe;
 mod strategy_ui;
 
 use items::*;
@@ -210,17 +209,11 @@ impl StableServerExtension for ItemBuildHookExtension {
                 let message = format!("hook_installed address=0x{address:x}");
                 eprintln!("riot_items_tfm2: {message}");
                 diag::write(&message);
-                // Never count the function already detoured: the two patches
-                // would overwrite each other's jump.
-                probe::install(Some(address));
             }
             Err(error) if error == "hook already installed" => {}
             Err(error) => {
                 eprintln!("riot_items_tfm2: hook_refused error={error}");
                 diag::write(&format!("hook_refused error={error}"));
-                // Still count candidates: with no target resolved, identifying
-                // one is the whole job.
-                probe::install(None);
                 // Resolution failed, so dump the shape-matching functions for
                 // `tools/find_item_build_hook.py` to work from. Diagnostic only —
                 // the hook never picks a candidate itself.
