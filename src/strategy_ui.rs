@@ -110,9 +110,18 @@
 //! removed row 2, then the new row 2 (which had been row 3), and so on to the
 //! end of the list.
 //!
-//! Everything therefore registers through [`register_once`], which keeps the set
-//! of registered paths for the process. Since handlers survive their nodes, the
-//! ones registered on the first visit keep working on every later one.
+//! Everything therefore registers through [`register_once`], which keeps a set
+//! of the paths already registered.
+//!
+//! That set must *not* outlive the screen, which is what this originally got
+//! wrong. The assumption was that a handler surviving its node meant the ones
+//! registered on the first visit kept working on every later one — so the set
+//! was kept for the whole process. In practice the editor worked on the first
+//! strategy screen of a session and was completely inert on every screen after
+//! it: nothing re-registered, because the set said everything already had a
+//! handler. [`forget_registrations`] therefore clears it when the screen goes
+//! away, and only then — while a screen is up, registering a live path twice is
+//! still the double-fire hazard described above.
 
 use std::sync::Mutex;
 
@@ -431,6 +440,27 @@ fn register_once(ctx: &mut StableClient<'_>, path: &str) {
             set.remove(path);
         }
         diag(&format!("event registration refused for {path}"));
+    }
+}
+
+/// Forgets every registration, so the next screen registers from scratch.
+///
+/// Called once when the strategy screen goes away. Every path this module
+/// registers lives under `main.contents` — the tabs inside the screen itself,
+/// and the spawned editor beside them — so all of them die with it, and a
+/// process-lifetime set of "already registered" would keep the second visit's
+/// controls from ever being wired. That is the shape of the bug this fixes: the
+/// editor worked on the first strategy screen of a session and was inert on
+/// every one after, because `register_once` had nothing left to do and the
+/// handlers it was trusting had gone with the nodes.
+///
+/// This is the one thing the process-wide set must not outlive. Registering the
+/// same *live* path twice is still the hazard the set exists to prevent (one
+/// click running a handler twice, which is how deleting row 2 once deleted rows
+/// 2 and 3), so this clears only on teardown, never while a screen is up.
+fn forget_registrations() {
+    if let Ok(mut set) = REGISTERED.lock() {
+        set.clear();
     }
 }
 
@@ -1560,6 +1590,13 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     let Some(event) = ctx.ui_current_event() else {
         return;
     };
+    // `Remove` fires as a node is torn down, and this screen is torn down on
+    // every match start — so the Builds tab's own destruction would otherwise
+    // arrive here as if it had been clicked, spawning the editor into a dying
+    // tree. Only real interactions should reach the dispatch below.
+    if matches!(event.kind, Some(UiEventKindV1::Remove)) {
+        return;
+    }
     let path = event.path.clone();
 
     if path == BUILDS_TAB {
@@ -1807,6 +1844,9 @@ impl StableExtension for StrategyPicker {
             })
             .unwrap_or(false);
             if stale {
+                // The screen and everything registered on it is gone, so the
+                // next one has to wire itself from scratch.
+                forget_registrations();
                 // Leaving the strategy screen means the match is about to be
                 // played: this is the closing bracket of the probe measurement.
                 crate::probe::snapshot("after-strategy");
