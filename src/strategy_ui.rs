@@ -198,6 +198,18 @@ const SUB4_PATH: &str = "main.contents.strategy.sub4";
 const MATCHUP_PATH: &str = "main.contents.strategy.sub4.matchup";
 const GAME_FINISH_PATH: &str = "main.contents.strategy.sub4.game_finish";
 
+// Tab highlight colours, lifted from `strategy_option` in
+// `asset/base/style/main.style` so the painted state matches the vanilla one
+// exactly. See [`paint_tabs`] for why they are painted rather than selected.
+const TAB_SELECTED_FILL: &str = "#ecfbf8ff";
+const TAB_SELECTED_TEXT: &str = "#0f5b4dff";
+const TAB_IDLE_FILL: &str = "#00000000";
+const TAB_IDLE_TEXT: &str = "#a3a9b6ff";
+/// Hover on a dim tab: `image.hover.color` and `label.hover.color` in the style.
+/// Equal to [`TAB_IDLE_TEXT`] by coincidence, not by meaning.
+const TAB_HOVER_LINE: &str = "#a3a9b6ff";
+const TAB_HOVER_TEXT: &str = "#e0e2e7ff";
+
 /// The Team tab's four columns, shown again when the Save button leaves the
 /// Builds tab — the one exit with no vanilla tab click behind it.
 const TEAM_PANELS: [&str; 4] = [
@@ -1303,8 +1315,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
 /// clicked and vice versa, but it has never heard of ours, so the deselecting
 /// in both directions is done here.
 fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
-    ctx.ui_set_selectable_selected(TEAM_TAB, false);
-    ctx.ui_set_selectable_selected(BUILDS_TAB, true);
+    paint_tabs(ctx, true);
 
     for panel in CONTENT_PANELS {
         ctx.ui_set_visible(panel, false);
@@ -1330,7 +1341,7 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
 /// such click behind it and so must do the showing itself.
 fn close_editor(ctx: &mut StableClient<'_>) {
     close_list(ctx);
-    ctx.ui_set_selectable_selected(BUILDS_TAB, false);
+    paint_tabs(ctx, false);
     ctx.ui_set_visible(EDITOR_PATH, false);
     // The one thing put back, because it is the one thing hidden that game code
     // may not restore: "Closing Out" belongs to the Team tab, and if its handler
@@ -1338,6 +1349,71 @@ fn close_editor(ctx: &mut StableClient<'_>) {
     // Writing `true` when game code also does is harmless.
     ctx.ui_set_visible(GAME_FINISH_PATH, true);
     let _ = with_state(|state| state.showing = false);
+}
+
+/// Paints which of the two tabs looks selected.
+///
+/// The selection cannot be *set*. `ui_set_selectable_selected` is
+/// `state_set_json` with `{"selected": …}`, and the host accepts that key only
+/// for the `checkbox`, `text_edit`, `slider` and `selectable` runner kinds —
+/// these tabs are `color_selectable`, a kind not on that list, so the write is
+/// rejected and returns false. The highlight is therefore drawn on directly.
+///
+/// The two tabs are painted through different property pairs because they are in
+/// different states underneath. Ours is never `selected`, so its plain
+/// `image`/`label` are what render. Team *is* selected as far as game code is
+/// concerned — nothing ever told it otherwise — so its `selected_image` and
+/// `selected_label` are what render, and those are the ones that have to be
+/// dulled to make it look inactive.
+///
+/// # `color` is the stroke, `back_color` is the fill
+///
+/// Only while `stroke` is non-zero. `strategy_option`'s `image` block sets
+/// `stroke: 1`, so setting `color` alone there paints a light *outline* around a
+/// still-dark tab rather than filling it — which is what the first version of
+/// this did. Lighting our tab therefore means dropping the stroke to 0 and
+/// setting the fill, and dimming it means putting the stroke back.
+///
+/// `selected_image` sets no stroke at all, which is why Team needs only a
+/// colour and gets no `stroke` key here.
+///
+/// Hover is written on both states rather than left to the style. A lit tab has
+/// nothing to signal, so its hover colours are its resting ones. A dim tab greys
+/// its outline and brightens its text — vanilla's unselected `image`/`label`
+/// behaviour, which `selected_image` does not have because a selected tab is
+/// never normally the one being hovered towards.
+fn paint_tabs(ctx: &mut StableClient<'_>, builds_active: bool) {
+    if !ctx.ui_set_properties(BUILDS_TAB, &tab_style("image", "label", builds_active)) {
+        diag("ui_set_properties refused the Builds tab highlight");
+    }
+    if !ctx.ui_set_properties(
+        TEAM_TAB,
+        &tab_style("selected_image", "selected_label", !builds_active),
+    ) {
+        diag("ui_set_properties refused the Team tab highlight");
+    }
+}
+
+/// One tab's appearance, through whichever property pair actually renders for
+/// it — `image`/`label` for our never-selected tab, `selected_image`/
+/// `selected_label` for Team, which game code still considers selected.
+fn tab_style(image_key: &str, label_key: &str, lit: bool) -> String {
+    let (fill, text, stroke) = if lit {
+        (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
+    } else {
+        (TAB_IDLE_FILL, TAB_IDLE_TEXT, 1)
+    };
+    let (hover_line, hover_text) = if lit {
+        (fill, text)
+    } else {
+        (TAB_HOVER_LINE, TAB_HOVER_TEXT)
+    };
+    format!(
+        "{image_key}: {{ color: {fill}; back_color: {fill}; stroke: {stroke}; \
+         rounding: Uniform {{ rounding: 8; }} \
+         hover: {{ color: {hover_line}; back_color: {fill}; }} }} \
+         {label_key}: {{ color: {text}; hover: {{ color: {hover_text}; }} }}"
+    )
 }
 
 /// Holds the Matchup card on screen and "Closing Out" off it.
@@ -1355,8 +1431,9 @@ fn keep_matchup(ctx: &mut StableClient<'_>) {
 /// behind it, so nothing else would make a panel visible again and the content
 /// area would be left empty.
 fn return_to_team(ctx: &mut StableClient<'_>) {
+    // No tab selection to restore: game code has considered Team selected the
+    // whole time, and `close_editor` has already repainted it to look it.
     close_editor(ctx);
-    ctx.ui_set_selectable_selected(TEAM_TAB, true);
     for panel in TEAM_PANELS {
         ctx.ui_set_visible(panel, true);
     }
