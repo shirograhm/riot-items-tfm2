@@ -262,6 +262,9 @@ const CANVAS_H: i32 = 1080;
 
 /// Heights of the two kinds of item-list node, shared by [`entry_source`] (which
 /// lays them out) and [`entry_height`] (which adds them up).
+/// Fill behind a category header in the item list, one step up from the list
+/// panel's own `#0f1016ff` so the groups read as bands rather than loose text.
+const LIST_HEADER_FILL: &str = "#1d1f2cff";
 const ENTRY_HEADER_H: i32 = 26;
 const ENTRY_ITEM_H: i32 = 30;
 
@@ -451,12 +454,13 @@ fn is_mod_item(key: &str) -> bool {
 const LISTCATCH_PATH: &str = "main.contents.build_editor.listcatch";
 const ITEMLIST_PATH: &str = "main.contents.build_editor.itemlist";
 const CHAMPLIST_PATH: &str = "main.contents.build_editor.champlist";
-const STATUS_PATH: &str = "main.contents.build_editor.popup.toolbar.status";
-const UNIQUE_PATH: &str = "main.contents.build_editor.popup.optionbar.unique";
+const UNIQUE_PATH: &str = "main.contents.build_editor.popup.toolbar.unique";
 /// In the footer rather than the toolbar: it is the panel's "done" button, and
 /// bottom-right is where one is looked for.
 const SAVE_PATH: &str = "main.contents.build_editor.popup.footer.save";
-const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
+/// In the footer beside Save, not the toolbar: the two buttons that end an edit
+/// sit together on the bottom row.
+const ADD_PATH: &str = "main.contents.build_editor.popup.footer.add";
 const ROWS_PATH: &str = "main.contents.build_editor.popup.rowscroll.rows";
 
 fn editor_row_path(row: usize) -> String {
@@ -911,8 +915,17 @@ fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
     }
 }
 
-fn set_status(ctx: &mut StableClient<'_>, text: &str) {
-    ctx.ui_set_text(STATUS_PATH, text);
+/// Records what an action did.
+///
+/// There is no longer a status line to write it to — the label that sat beside
+/// the unique-items toggle is gone — so these go to the mod log. Kept rather
+/// than deleted because several of them report failures (an unwritable
+/// `mod-settings.json`, most of all) that would otherwise happen silently.
+///
+/// Takes `ctx` it does not use so the call sites read unchanged; every one of
+/// them is in a click handler that has one to hand.
+fn note(_ctx: &mut StableClient<'_>, text: &str) {
+    diag(text);
 }
 
 /// Paints the unique-items toggle from the saved setting: accent-green
@@ -1131,8 +1144,20 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
              text: \"{PLAIN_PAD}{AI_SLOT_LABEL}\";\n\
              }}"
         ),
+        // A `color` band with the label as its child rather than a bare label,
+        // because a label has no fill of its own. The child draws over the
+        // parent at equal `z` (tree order), so the text lands on top of the
+        // band. Both ignore events so a click on a header falls through to the
+        // catcher and dismisses the list instead of being swallowed.
         ListEntry::Header(name) => format!(
-            "e{index}:label {{\n\
+            "e{index}:color {{\n\
+             width: 304px;\n\
+             height: {ENTRY_HEADER_H}px;\n\
+             color: {LIST_HEADER_FILL};\n\
+             rounding: Uniform {{ rounding: 4; }}\n\
+             ignore_event: true;\n\
+             \n\
+             #text:label {{\n\
              @\"asset/base/style/main#bold_label\";\n\
              width: 304px;\n\
              height: {ENTRY_HEADER_H}px;\n\
@@ -1140,7 +1165,9 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
              align_y: Center;\n\
              size: 13;\n\
              color: #a5a5abff;\n\
+             ignore_event: true;\n\
              text: \"{name}\";\n\
+             }}\n\
              }}"
         ),
         ListEntry::Item(item) => {
@@ -1328,7 +1355,7 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     for row in 0..count {
         refresh_row(ctx, entries, row);
     }
-    set_status(ctx, "Every change saves as you make it.");
+    note(ctx, "Every change saves as you make it.");
     ctx.ui_set_visible(EDITOR_PATH, true);
     let _ = with_state(|state| state.showing = true);
 }
@@ -1578,7 +1605,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         let _ = with_state(|state| state.rows.push(ChampionRow::default()));
         close_list(ctx);
         rebuild_rows(ctx, &entries);
-        set_status(ctx, "Pick a champion for the new row — a row without one is not saved.");
+        note(ctx, "Pick a champion for the new row — a row without one is not saved.");
         return;
     }
 
@@ -1586,7 +1613,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         let enabled = !build_config::unique_items_enabled();
         if build_config::set_unique_items(enabled) {
             refresh_unique(ctx);
-            set_status(
+            note(
                 ctx,
                 if enabled {
                     "Unique item builds enforced - duplicates get replaced with same-category items."
@@ -1595,7 +1622,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
                 },
             );
         } else {
-            set_status(ctx, "Could not write mod-settings.json.");
+            note(ctx, "Could not write mod-settings.json.");
         }
         return;
     }
@@ -1628,7 +1655,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         close_list(ctx);
         rebuild_rows(ctx, &entries);
         let champions = snapshot_champions();
-        set_status(
+        note(
             ctx,
             &format!(
                 "Removed the build for {}.",
@@ -1643,7 +1670,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             edit_row(row, |entry| entry.slots[slot] = None);
             close_list(ctx);
             refresh_row(ctx, &entries, row);
-            set_status(ctx, &format!("Item {} left to the AI.", slot + 1));
+            note(ctx, &format!("Item {} left to the AI.", slot + 1));
         }
         return;
     }
@@ -1653,7 +1680,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             edit_row(row, |entry| entry.slots.swap(slot, slot + 1));
             close_list(ctx);
             refresh_row(ctx, &entries, row);
-            set_status(ctx, &format!("Items {} and {} swapped.", slot + 1, slot + 2));
+            note(ctx, &format!("Items {} and {} swapped.", slot + 1, slot + 2));
         }
         return;
     }
@@ -1702,7 +1729,7 @@ fn pick_item(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
 
     close_list(ctx);
     refresh_row(ctx, entries, row);
-    set_status(
+    note(
         ctx,
         &match (wrote, name) {
             (false, _) => "Could not write item-builds.json.".to_string(),
@@ -1734,7 +1761,7 @@ fn pick_champion(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize
 
     close_list(ctx);
     refresh_row(ctx, entries, row);
-    set_status(
+    note(
         ctx,
         &match (wrote, &picked) {
             (false, _) => "Could not write item-builds.json.".to_string(),

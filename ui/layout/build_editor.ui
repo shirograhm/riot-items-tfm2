@@ -27,46 +27,10 @@ build_editor:empty {
         top_right: 12;
       }
 
-      #add:color_icon_button {
-        @"asset/base/style/main#tertiary_button";
-        x: 15px;
-        y: 11px;
-        width: 180px;
-        height: 38px;
-
-        text: {
-          font: "asset/base/font/set/bold";
-          text: "+ Add Champion";
-          align_x: Center;
-          align_y: Center;
-          size: 15;
-        }
-      }
-
-      #status:label {
-        @"asset/base/style/main#label";
-        x: 210px;
-        y: 11px;
-        width: 1130px;
-        height: 38px;
-        align_y: Center;
-        size: 14;
-        color: #a5a5abff;
-        text: "";
-      }
-    }
-
-    #optionbar:color {
-      y: 60px;
-      width: 1364px;
-      height: 46px;
-
-      color: #0f1016ff;
-
       #unique:color_icon_button {
         @"asset/base/style/main#tertiary_button";
         x: 15px;
-        y: 6px;
+        y: 13px;
         width: 260px;
         height: 34px;
 
@@ -83,7 +47,7 @@ build_editor:empty {
         anchor_x: 1;
         pivot_x: 1;
         x: -15px;
-        y: 6px;
+        y: 13px;
         width: 900px;
         height: 34px;
         align_x: Right;
@@ -96,7 +60,7 @@ build_editor:empty {
 
     #colheader:empty {
       x: 15px;
-      y: 106px;
+      y: 60px;
       width: 1334px;
       height: 32px;
 
@@ -105,6 +69,7 @@ build_editor:empty {
         x: 8px;
         width: 280px;
         height: 32px;
+        align_x: Left;
         align_y: Center;
         size: 13;
         color: #a5a5abff;
@@ -116,7 +81,7 @@ build_editor:empty {
         x: 306px;
         width: 280px;
         height: 32px;
-        align_x: Center;
+        align_x: Left;
         align_y: Center;
         size: 13;
         color: #a5a5abff;
@@ -128,7 +93,7 @@ build_editor:empty {
         x: 630px;
         width: 280px;
         height: 32px;
-        align_x: Center;
+        align_x: Left;
         align_y: Center;
         size: 13;
         color: #a5a5abff;
@@ -140,7 +105,7 @@ build_editor:empty {
         x: 954px;
         width: 280px;
         height: 32px;
-        align_x: Center;
+        align_x: Left;
         align_y: Center;
         size: 13;
         color: #a5a5abff;
@@ -150,9 +115,9 @@ build_editor:empty {
 
     #rowscroll:scroll_view {
       x: 15px;
-      y: 138px;
+      y: 92px;
       width: 1334px;
-      height: 440px;
+      height: 486px;
 
       speed: 100;
 
@@ -192,6 +157,22 @@ build_editor:empty {
       rounding: Individual {
         bottom_left: 12;
         bottom_right: 12;
+      }
+
+      #add:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 15px;
+        y: 11px;
+        width: 180px;
+        height: 38px;
+
+        text: {
+          font: "asset/base/font/set/bold";
+          text: "+ Add Champion";
+          align_x: Center;
+          align_y: Center;
+          size: 15;
+        }
       }
 
       #save:color_icon_button {
