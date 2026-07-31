@@ -1,9 +1,33 @@
-//! In-game Item Build Editor, reached from the strategy screen's Personal tab.
+//! In-game Item Build Editor: the **Builds** tab on the strategy screen.
 //!
 //! One row per champion, three item slots per row, a category-grouped item list,
 //! and swap/clear buttons per row. It reads and writes `item-builds.json` next
 //! to the DLL, which is the same file the hook applies — so a build takes effect
 //! on the next match with no restart.
+//!
+//! # A tab rather than a window
+//!
+//! The override replaces the game's **Personal** tab with `#builds`, leaving
+//! Team beside it, and the editor panel is laid out at exactly the content band
+//! those tabs switch between (1824x645 at canvas 47,182).
+//!
+//! Removing Personal is deliberate: this editor supersedes it. That tab's five
+//! per-player category dropdowns are the same setting expressed per athlete
+//! instead of per champion, and the hook cannot act on a per-athlete rule
+//! anyway (see below) — so leaving both would have offered a control that looks
+//! like it works and does not. Its `#personal` panel node is still in the
+//! layout, unreachable, because nothing else needs it gone.
+//!
+//! Nothing arbitrates between the two tabs. They are independent
+//! `color_selectable`s and game code has never heard of ours, so [`open_editor`]
+//! and [`close_editor`] do that bookkeeping. Leaving deliberately restores no
+//! panel: the click that leaves is a click on Team, and game code's handler for
+//! it shows the Team columns already.
+//!
+//! The vanilla panels are hidden rather than covered while the tab is up. The
+//! Personal rows' champion portraits have a tooltip drawn by game code *outside*
+//! this subtree, so an opaque panel of ours cannot be drawn over it — only
+//! removed.
 //!
 //! # Why champions and not positions
 //!
@@ -19,9 +43,11 @@
 //! Layout lives in two places by necessity:
 //!
 //! - `ui/layout/strategy.ui` is an asset override (see `mod.override_info`). It
-//!   adds the single `#build_editor_btn` to the Personal tab's column header.
-//!   Nothing else on that screen is touched.
-//! - `ui/layout/build_editor.ui` is the window chrome, compiled in with
+//!   swaps `#personal` for `#builds` inside `#mode_toggle`, which keeps the
+//!   toggle at its vanilla 244px (4px padding either side plus two 118px tabs)
+//!   and leaves `#item_info_btn` at its vanilla x:480. Nothing else on that
+//!   screen is touched.
+//! - `ui/layout/build_editor.ui` is the panel chrome, compiled in with
 //!   `include_str!` and spawned under [`UI_ROOT`]. The rows and both dropdown
 //!   lists are spawned from source here, because their contents depend on the
 //!   saved builds and on the loaded item pool.
@@ -112,9 +138,54 @@ const NO_CHAMPION_LABEL: &str = "(champion)";
 /// reports `contents.*` absent and `main.contents.*` present.
 const UI_ROOT: &str = "main.contents";
 
-/// The one button that opens the editor. Its presence also means the patched
-/// strategy screen is live, so it doubles as the screen probe.
-const OPEN_BUTTON: &str = "main.contents.strategy.personal.personal_header.build_editor_btn";
+/// The Builds tab, added by the `strategy.ui` override beside Team. It exists
+/// only in the patched screen, so its presence doubles as the probe for "our
+/// layout is loaded" — rename it here and in `strategy.ui` together.
+const BUILDS_TAB: &str = "main.contents.strategy.mode_toggle.builds";
+
+/// The game's own remaining tab. The mod does not drive it; it watches it, so
+/// that clicking it puts the editor away. That click also makes game code
+/// restore the Team panels, which is why leaving the Builds tab never has to
+/// un-hide anything itself.
+const TEAM_TAB: &str = "main.contents.strategy.mode_toggle.team";
+
+/// The vanilla Personal panel. Its tab is gone, so nothing can bring it back
+/// on-screen, but it is still hidden on entry: game code decides what is visible
+/// when the screen is first built and may well pick Personal, having no idea its
+/// tab no longer exists.
+const PERSONAL_PATH: &str = "main.contents.strategy.personal";
+
+/// The screen's own "Item Info" button. Game code hides it on the Team tab and
+/// keeps re-asserting that from its own tab state, which never becomes Builds,
+/// so `post_update` re-shows it every frame while the tab is up rather than
+/// once on entry. Leaving does not hide it again: the tab click that leaves is
+/// handled by game code, which sets it to whatever that tab wants.
+const ITEM_INFO_BTN: &str = "main.contents.strategy.item_info_btn";
+
+/// The content panels hidden while the Builds tab is up.
+///
+/// Covering them is not enough. The Personal rows carry champion portraits whose
+/// tooltip is drawn by game code *outside* this subtree — `strategy.ui` has no
+/// tooltip node at all — so an opaque panel of ours cannot be drawn over it and
+/// nothing stops the hover that summons it. With the panel hidden there is
+/// nothing left to hover. `#sub1`-`#sub4` are the Team tab's four columns; they
+/// occupy the same band and would otherwise show through around our edges.
+const CONTENT_PANELS: [&str; 5] = [
+    PERSONAL_PATH,
+    "main.contents.strategy.sub1",
+    "main.contents.strategy.sub2",
+    "main.contents.strategy.sub3",
+    "main.contents.strategy.sub4",
+];
+
+/// The Team tab's four columns, shown again when the Save button leaves the
+/// Builds tab — the one exit with no vanilla tab click behind it.
+const TEAM_PANELS: [&str; 4] = [
+    "main.contents.strategy.sub1",
+    "main.contents.strategy.sub2",
+    "main.contents.strategy.sub3",
+    "main.contents.strategy.sub4",
+];
 
 /// Parent for the spawned window, and its layout source.
 const EDITOR_PARENT: &str = UI_ROOT;
@@ -125,15 +196,24 @@ const EDITOR_SOURCE: &str = include_str!("../ui/layout/build_editor.ui");
 /// 640x640 sheet (see `mod.override_info`), so frame names are the mod's.
 const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
 
-// Row geometry, inside the 1310px band `#rows` gives its children. The x offsets
+// Row geometry, inside the 1774px band `#rows` gives its children. The x offsets
 // match `build_editor.ui`'s column headers.
-const ROW_HEIGHT: u32 = 56;
+const ROW_WIDTH: u32 = 1766;
+/// Row height and gap are the vanilla Personal panel's own (50px rows, 10px
+/// spacing), so the tab reads as one of the game's own rather than a graft.
+const ROW_HEIGHT: u32 = 50;
+const ROW_SPACING: i32 = 10;
+/// Combos are 40px tall like the vanilla dropdowns, centred in the row.
+const COMBO_Y: u32 = 5;
+const COMBO_H: u32 = 40;
+/// Square buttons (clear, swap glyph target, delete), centred in the row.
+const MINI_Y: u32 = 14;
 const CHAMP_X: u32 = 8;
-const CHAMP_W: u32 = 280;
-const COMBO_X: [u32; PICKER_SLOTS] = [306, 630, 954];
-const COMBO_W: u32 = 280;
-const SWAP_X: [u32; PICKER_SLOTS - 1] = [590, 914];
-const DELETE_X: u32 = 1250;
+const CHAMP_W: u32 = 320;
+const COMBO_X: [u32; PICKER_SLOTS] = [340, 806, 1272];
+const COMBO_W: u32 = 420;
+const SWAP_X: [u32; PICKER_SLOTS - 1] = [766, 1232];
+const DELETE_X: u32 = 1712;
 
 /// Sizes of the two floating lists, mirroring `build_editor.ui`. Kept here
 /// because the open code has to decide whether a list fits below the control
@@ -196,10 +276,12 @@ enum OpenList {
 
 #[derive(Default)]
 struct EditorState {
-    /// Whether the open button has been wired for the current screen.
+    /// Whether the three tabs have been wired for the current screen.
     wired: bool,
-    /// Whether the window subtree is spawned and its controls registered.
+    /// Whether the editor subtree is spawned and its controls registered.
     modal_ready: bool,
+    /// Whether the Builds tab is the one currently showing.
+    showing: bool,
     /// The floating list currently showing, if any.
     open_list: Option<OpenList>,
     /// The rows being edited, in display order. Loaded from `item-builds.json`
@@ -338,18 +420,11 @@ const ITEMLIST_PATH: &str = "main.contents.build_editor.itemlist";
 const CHAMPLIST_PATH: &str = "main.contents.build_editor.champlist";
 const STATUS_PATH: &str = "main.contents.build_editor.popup.toolbar.status";
 const UNIQUE_PATH: &str = "main.contents.build_editor.popup.optionbar.unique";
-/// In the footer rather than the toolbar: it is the window's "done" button, and
+/// In the footer rather than the toolbar: it is the panel's "done" button, and
 /// bottom-right is where one is looked for.
 const SAVE_PATH: &str = "main.contents.build_editor.popup.footer.save";
 const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
-const FADE_PATH: &str = "main.contents.build_editor.fade";
-const CANCEL_PATH: &str = "main.contents.build_editor.popup.titlebar.cancel";
 const ROWS_PATH: &str = "main.contents.build_editor.popup.rowscroll.rows";
-
-/// The strategy screen itself, hidden while the editor is open. `ui_exists` is
-/// unaffected by visibility, so `post_update` still finds `OPEN_BUTTON` and does
-/// not mistake a hidden screen for having left it.
-const STRATEGY_PATH: &str = "main.contents.strategy";
 
 fn editor_row_path(row: usize) -> String {
     format!("{ROWS_PATH}.row{row}")
@@ -828,17 +903,17 @@ fn refresh_unique(ctx: &mut StableClient<'_>) {
 fn row_source(row: usize) -> String {
     let mut source = format!(
         "row{row}:color {{\n\
-         width: 1310px;\n\
+         width: {ROW_WIDTH}px;\n\
          height: {ROW_HEIGHT}px;\n\
-         color: #1d1f2cff;\n\
+         color: #161721ff;\n\
          rounding: Uniform {{ rounding: 8; }}\n\
          \n\
          #champ:color_icon_button {{\n\
          @\"asset/base/style/main#tertiary_button\";\n\
          x: {CHAMP_X}px;\n\
-         y: 8px;\n\
+         y: {COMBO_Y}px;\n\
          width: {CHAMP_W}px;\n\
-         height: 40px;\n\
+         height: {COMBO_H}px;\n\
          \n\
          text: {{\n\
          text: \"{NO_CHAMPION_LABEL}\";\n\
@@ -872,9 +947,9 @@ fn row_source(row: usize) -> String {
             "#slot{slot}:color_icon_button {{\n\
              @\"asset/base/style/main#tertiary_button\";\n\
              x: {x}px;\n\
-             y: 8px;\n\
+             y: {COMBO_Y}px;\n\
              width: {COMBO_W}px;\n\
-             height: 40px;\n\
+             height: {COMBO_H}px;\n\
              \n\
              text: {{\n\
              text: \"{AI_SLOT_LABEL}\";\n\
@@ -911,7 +986,7 @@ fn row_source(row: usize) -> String {
              \n\
              #clear{slot}:color_icon_button {{\n\
              x: {clear_x}px;\n\
-             y: 17px;\n\
+             y: {MINI_Y}px;\n\
              width: 22px;\n\
              height: 22px;\n\
              visible: false;\n\
@@ -941,9 +1016,9 @@ fn row_source(row: usize) -> String {
             "#swap{slot}:color_icon_button {{\n\
              @\"asset/base/style/main#tertiary_button\";\n\
              x: {x}px;\n\
-             y: 8px;\n\
+             y: {COMBO_Y}px;\n\
              width: 34px;\n\
-             height: 40px;\n\
+             height: {COMBO_H}px;\n\
              \n\
              icon: {{\n\
              source: \"asset/base/ui/icons/swap\";\n\
@@ -966,7 +1041,7 @@ fn row_source(row: usize) -> String {
     source.push_str(&format!(
         "#delete:color_icon_button {{\n\
          x: {DELETE_X}px;\n\
-         y: 17px;\n\
+         y: {MINI_Y}px;\n\
          width: 22px;\n\
          height: 22px;\n\
          \n\
@@ -1124,7 +1199,7 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     // subtree that has not been laid out is zero, and a scroll view whose
     // contents are zero tall shows nothing however many children it has. The
     // height is knowable exactly, so it is stated.
-    let height = count as i32 * (ROW_HEIGHT as i32 + 8);
+    let height = count as i32 * (ROW_HEIGHT as i32 + ROW_SPACING);
     ctx.ui_set_properties(ROWS_PATH, &format!("height: {height}px;"));
 
     for row in 0..count {
@@ -1188,7 +1263,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     });
     rebuild_rows(ctx, &entries);
 
-    for path in [FADE_PATH, CANCEL_PATH, SAVE_PATH, ADD_PATH, UNIQUE_PATH, LISTCATCH_PATH] {
+    for path in [SAVE_PATH, ADD_PATH, UNIQUE_PATH, LISTCATCH_PATH] {
         register_once(ctx, path);
     }
 
@@ -1199,26 +1274,54 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
 
 // -- interaction --------------------------------------------------------
 
+/// Enters the Builds tab: selects it, hides what the other two tabs show, and
+/// puts the editor in their place.
+///
+/// The three tabs are `color_selectable`s, and each only knows its own state —
+/// nothing arbitrates between them. Game code deselects Personal when Team is
+/// clicked and vice versa, but it has never heard of ours, so the deselecting
+/// in both directions is done here.
 fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
+    ctx.ui_set_selectable_selected(TEAM_TAB, false);
+    ctx.ui_set_selectable_selected(BUILDS_TAB, true);
+
+    for panel in CONTENT_PANELS {
+        ctx.ui_set_visible(panel, false);
+    }
+    ctx.ui_set_visible(ITEM_INFO_BTN, true);
+
     refresh_unique(ctx);
     let count = with_state(|state| state.rows.len()).unwrap_or(0);
     for row in 0..count {
         refresh_row(ctx, entries, row);
     }
     set_status(ctx, "Every change saves as you make it.");
-    // Hidden, not just covered. The screen's champion tooltip is spawned by game
-    // code somewhere outside this subtree — `strategy.ui` contains no tooltip
-    // node at all — so it is not something a panel of ours can be drawn over,
-    // and the full-screen `#fade` does not stop the hover that summons it. With
-    // the screen hidden there is nothing left to hover.
-    ctx.ui_set_visible(STRATEGY_PATH, false);
     ctx.ui_set_visible(EDITOR_PATH, true);
+    let _ = with_state(|state| state.showing = true);
 }
 
+/// Leaves the Builds tab.
+///
+/// Deliberately restores no panel. This runs off a click on Team, and game
+/// code's own handler for that click shows the Team columns — putting them back
+/// here would race that. The only exception is [`return_to_team`], which has no
+/// such click behind it and so must do the showing itself.
 fn close_editor(ctx: &mut StableClient<'_>) {
     close_list(ctx);
+    ctx.ui_set_selectable_selected(BUILDS_TAB, false);
     ctx.ui_set_visible(EDITOR_PATH, false);
-    ctx.ui_set_visible(STRATEGY_PATH, true);
+    let _ = with_state(|state| state.showing = false);
+}
+
+/// Leaves the Builds tab for Team, for the Save button — which has no tab click
+/// behind it, so nothing else would make a panel visible again and the content
+/// area would be left empty.
+fn return_to_team(ctx: &mut StableClient<'_>) {
+    close_editor(ctx);
+    ctx.ui_set_selectable_selected(TEAM_TAB, true);
+    for panel in TEAM_PANELS {
+        ctx.ui_set_visible(panel, true);
+    }
 }
 
 /// Places a floating list under the control that opened it, flipping above when
@@ -1317,7 +1420,9 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     };
     let path = event.path.clone();
 
-    if path.ends_with("build_editor_btn") || event.payload_json.contains("build_editor_btn") {
+    if path == BUILDS_TAB {
+        // Built on first entry rather than up front, so a strategy screen whose
+        // Builds tab is never opened pays nothing for it.
         if !ensure_editor(ctx) {
             return;
         }
@@ -1326,19 +1431,18 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    if path == LISTCATCH_PATH {
-        close_list(ctx);
+    // Every event on the Team tab lands here, hover included, so this must be
+    // idempotent and cheap — it is only allowed to do anything when the Builds
+    // tab is the one currently up.
+    if path == TEAM_TAB {
+        if with_state(|state| state.showing).unwrap_or(false) {
+            close_editor(ctx);
+        }
         return;
     }
 
-    if path == FADE_PATH || path == CANCEL_PATH {
-        // A click on the backdrop while a list is open dismisses just the list,
-        // so picking is escapable without closing the whole editor.
-        if with_state(|state| state.open_list).flatten().is_some() && path == FADE_PATH {
-            close_list(ctx);
-        } else {
-            close_editor(ctx);
-        }
+    if path == LISTCATCH_PATH {
+        close_list(ctx);
         return;
     }
 
@@ -1346,12 +1450,12 @@ fn handle_event(ctx: &mut StableClient<'_>) {
 
     if path == SAVE_PATH {
         // Every edit already wrote the file, so there is nothing here to flush —
-        // the button is the window's "done", and closing is all of what it does.
-        // The count goes to the log rather than the status line, which closing
-        // makes unreadable anyway.
+        // the button is the panel's "done", and leaving the tab is all of what
+        // it does. The count goes to the log rather than the status line, which
+        // leaving makes unreadable anyway.
         let saved = snapshot_rows().iter().filter(|row| row.is_complete()).count();
-        diag(&format!("editor closed with {saved} champion build(s) on disk"));
-        close_editor(ctx);
+        diag(&format!("builds tab left with {saved} champion build(s) on disk"));
+        return_to_team(ctx);
         return;
     }
 
@@ -1547,8 +1651,8 @@ impl StableExtension for StrategyPicker {
         // mod has, and the counts are incremented on the server side.
         crate::probe::report_changes();
 
-        if !ctx.ui_exists(OPEN_BUTTON) {
-            // Not on the (patched) strategy screen: forget the spawned window so
+        if !ctx.ui_exists(BUILDS_TAB) {
+            // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.
             let stale = with_state(|state| {
                 let stale = state.wired;
@@ -1556,6 +1660,7 @@ impl StableExtension for StrategyPicker {
                 state.modal_ready = false;
                 state.spawned_rows = 0;
                 state.open_list = None;
+                state.showing = false;
                 stale
             })
             .unwrap_or(false);
@@ -1583,7 +1688,7 @@ impl StableExtension for StrategyPicker {
         }
 
         if !with_state(|state| state.wired).unwrap_or(true) {
-            diag("patched strategy screen detected — wiring the editor button");
+            diag("patched strategy screen detected — wiring the Builds tab");
             // Opening bracket of the probe measurement, before the match runs.
             crate::probe::snapshot("at-strategy");
 
@@ -1592,8 +1697,23 @@ impl StableExtension for StrategyPicker {
             // the trait's note that only ui/asset calls are live there.
             cached_entries(ctx);
             cached_champions(ctx);
-            register_once(ctx, OPEN_BUTTON);
+            // Team is registered as well as ours: a handler on it is what puts
+            // the editor away when the player switches back, and registering is
+            // observation only — game code's own handling for that path is
+            // untouched.
+            for path in [BUILDS_TAB, TEAM_TAB] {
+                register_once(ctx, path);
+            }
             let _ = with_state(|state| state.wired = true);
+        }
+
+        // Re-asserted every frame rather than once on entry. Game code drives
+        // `#item_info_btn` from its own idea of the current tab, which never
+        // becomes Builds — so on a screen entered from Team it re-hides the
+        // button on its next update and a one-shot show does not survive. This
+        // runs in `post_update`, after that, so ours is the last write.
+        if with_state(|state| state.showing).unwrap_or(false) {
+            ctx.ui_set_visible(ITEM_INFO_BTN, true);
         }
     }
 }

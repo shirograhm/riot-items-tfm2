@@ -119,7 +119,7 @@ main:strategy_ui {
           text: "#asset/base/text/strategy?personal.mode_team";
         }
 
-        #personal:color_selectable {
+        #builds:color_selectable {
           @"asset/base/style/main#strategy_option";
           width: 118px;
           height: 32px;
@@ -132,7 +132,7 @@ main:strategy_ui {
             size: 16;
           }
 
-          text: "#asset/base/text/strategy?personal.mode_personal";
+          text: "Builds";
         }
       }
 
@@ -2900,24 +2900,6 @@ main:strategy_ui {
             text: "#asset/base/text/strategy?personal.header_item3";
           }
 
-          #build_editor_btn:color_icon_button {
-            @"asset/base/style/main#primary_button";
-            anchor_x: 1;
-            pivot_x: 1;
-            x: 0px;
-            anchor_y: 0.5;
-            pivot_y: 0.5;
-            width: 220px;
-            height: 30px;
-
-            text: {
-              font: "asset/base/font/set/bold";
-              text: "Item Build Editor";
-              align_x: Center;
-              align_y: Center;
-              size: 15;
-            }
-          }
         }
 
         #row0:empty {
