@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_adaptive_force, apply_config, has_buff, ItemMeta, DISTANCE_UNITS_PER_RANGE};
@@ -75,7 +75,7 @@ impl DiamondTippedSpear {
         self
     }
 
-    fn apply_buff(&self, ctx: &mut GameCtx, player: usize) {
+    fn apply_buff(&self, ctx: &mut StableSim<'_>, player: usize) {
         let mut force = self.adaptive_force;
         if let Some((prior_buff, prior_force)) = self.upgrades_from {
             let Some(player_ref) = ctx.get_player(player) else {
@@ -98,17 +98,17 @@ impl Default for DiamondTippedSpear {
     }
 }
 
-impl ModItemInfo for DiamondTippedSpear {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for DiamondTippedSpear {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -127,29 +127,29 @@ impl ModItemInfo for DiamondTippedSpear {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack_speed_mult: self.attack_speed_mult,
             skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.apply_buff(ctx, player);
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.apply_buff(ctx, player);
     }
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;
@@ -166,11 +166,11 @@ impl ModItemInfo for DiamondTippedSpear {
         *damage = (*damage as f64 * scaling) as usize;
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::AS]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::Ap, ItemTagV1::AttackSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

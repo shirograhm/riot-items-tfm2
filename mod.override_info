@@ -18,5 +18,9 @@
   "asset/base/ui/banpick/champion_stat_icon#data": {
     "remapping": "asset/riot_items_tfm2/ui/banpick/champion_stat_icon#data",
     "type": "override"
+  },
+  "asset/base/ui/layout/strategy": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/strategy",
+    "type": "override"
   }
 }

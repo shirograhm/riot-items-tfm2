@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ItemMeta};
@@ -65,17 +65,17 @@ impl Default for Shadowflame {
     }
 }
 
-impl ModItemInfo for Shadowflame {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Shadowflame {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -94,8 +94,8 @@ impl ModItemInfo for Shadowflame {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             magic_power: self.magic_power,
             magic_resistance_penetration: self.magic_resistance_penetration,
             ..Default::default()
@@ -104,11 +104,11 @@ impl ModItemInfo for Shadowflame {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _caster: usize,
         target: usize,
         damage: &mut usize,
-        damage_type: DamageType,
+        damage_type: DamageTypeV1,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -117,17 +117,17 @@ impl ModItemInfo for Shadowflame {
             return;
         }
 
-        let hp_threshold = percent_of(target_ref.hp().max, self.effect_hp_percent_threshold);
-        if target_ref.hp().current < hp_threshold && damage_type == DamageType::AP {
+        let hp_threshold = percent_of(target_ref.hp().1, self.effect_hp_percent_threshold);
+        if target_ref.hp().0 < hp_threshold && damage_type == DamageTypeV1::Ap {
             *damage = (*damage as f64 * 1.2) as usize;
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::MRPenetration]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ap, ItemTagV1::MrPenetration]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

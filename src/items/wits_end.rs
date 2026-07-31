@@ -1,10 +1,10 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, try_proc_on_hit, ItemMeta};
 
 fn apply_fray(
-    ctx: &mut GameCtx,
+    ctx: &mut StableSim<'_>,
     caster: usize,
     target: usize,
     magic_damage: usize,
@@ -18,7 +18,7 @@ fn apply_fray(
     if !try_proc_on_hit(ctx, target, cooldown_buff, cooldown_seconds) {
         return;
     }
-    ctx.deal_damage(caster, target, 0, magic_damage, AttackType::BaseAttack);
+    ctx.deal_damage(caster, target, 0, magic_damage, AttackTypeV1::BaseAttack);
 }
 
 #[derive(Clone, Debug)]
@@ -87,17 +87,17 @@ impl Default for WitsEnd {
     }
 }
 
-impl ModItemInfo for WitsEnd {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for WitsEnd {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -116,8 +116,8 @@ impl ModItemInfo for WitsEnd {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack_speed_mult: self.attack_speed_mult,
             magic_resistance: self.magic_resistance,
             toughness: self.toughness,
@@ -127,11 +127,11 @@ impl ModItemInfo for WitsEnd {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         apply_fray(
             ctx,
@@ -143,11 +143,11 @@ impl ModItemInfo for WitsEnd {
         );
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AS, ItemTag::MagicResistance, ItemTag::Toughness]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::AttackSpeed, ItemTagV1::MagicResistance, ItemTagV1::Toughness]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, ticks};
+use crate::{apply_config, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ExecutionersCalling {
@@ -34,17 +34,17 @@ impl ExecutionersCalling {
     }
 }
 
-impl ModItemInfo for ExecutionersCalling {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for ExecutionersCalling {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "executioners_calling"
+    fn key(&self) -> String {
+        "executioners_calling".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "executioners_calling"
+    fn icon(&self) -> String {
+        "executioners_calling".to_string()
     }
 
     fn price(&self) -> usize {
@@ -63,8 +63,8 @@ impl ModItemInfo for ExecutionersCalling {
         vec!["mortal_reminder".to_string()]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             ..Default::default()
         }
@@ -72,17 +72,17 @@ impl ModItemInfo for ExecutionersCalling {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _caster: usize,
         target: usize,
         _damage: &mut usize,
-        damage_type: DamageType,
+        damage_type: DamageTypeV1,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;
         };
 
-        if damage_type != DamageType::AD {
+        if damage_type != DamageTypeV1::Ad {
             return;
         }
 
@@ -90,23 +90,19 @@ impl ModItemInfo for ExecutionersCalling {
         if !already_reduced {
             ctx.add_buff(
                 target,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     heal_reduce: self.effect_heal_reduce,
-                    name: buff_name("25_percent_heal_cut"),
-                    ..Default::default()
+                    ..BuffV1::timed("25_percent_heal_cut", ticks(self.effect_duration_seconds))
                 },
             );
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::HealReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::HealReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

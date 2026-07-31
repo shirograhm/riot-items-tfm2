@@ -1,8 +1,8 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_name, is_enemy_champion, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, is_enemy_champion, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS, TICKS_PER_SECOND,
 };
 
@@ -124,7 +124,7 @@ impl DeadMansPlate {
     /// Re-grants the movement speed Momentum is currently worth. The bonus has to
     /// track a value that moves both ways (it drops to nothing on a proc), so it
     /// is a short `Time` buff refreshed on a slightly shorter cycle.
-    fn apply_move_speed(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn apply_move_speed(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
             return;
@@ -145,13 +145,9 @@ impl DeadMansPlate {
 
         ctx.add_buff(
             entity_id,
-            BuffState {
-                name: buff_name(self.momentum_buff),
-                duration: BuffType::Time {
-                    tick: BUFF_REFRESH_DURATION_TICKS,
-                },
+            &BuffV1 {
                 move_speed_mult: bonus,
-                ..Default::default()
+                ..BuffV1::timed(self.momentum_buff, BUFF_REFRESH_DURATION_TICKS)
             },
         );
         self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
@@ -164,17 +160,17 @@ impl Default for DeadMansPlate {
     }
 }
 
-impl ModItemInfo for DeadMansPlate {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for DeadMansPlate {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -193,8 +189,8 @@ impl ModItemInfo for DeadMansPlate {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             defence: self.defence,
             move_speed_mult: self.move_speed_mult,
@@ -202,13 +198,13 @@ impl ModItemInfo for DeadMansPlate {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.momentum = 0;
         self.stack_progress = 0;
         self.refresh_cooldown = 0;
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.build_momentum();
         self.apply_move_speed(ctx, player);
     }
@@ -217,15 +213,15 @@ impl ModItemInfo for DeadMansPlate {
     /// observe, so the proc rides `on_attack` and ignores ability hits.
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        damage_type: DamageType,
+        damage_type: DamageTypeV1,
     ) {
         // There has to be Momentum to consume: with no stacks there is nothing to
         // spend, so the proc waits rather than paying out its floor for free.
-        if damage_type != DamageType::AD || self.momentum == 0 {
+        if damage_type != DamageTypeV1::Ad || self.momentum == 0 {
             return;
         }
         if !is_enemy_champion(ctx, caster, target) {
@@ -241,15 +237,15 @@ impl ModItemInfo for DeadMansPlate {
             target,
             self.proc_damage(consumed),
             0,
-            AttackType::Item,
+            AttackTypeV1::Item,
         );
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::Defense, ItemTag::MoveSpeed]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Defense, ItemTagV1::MoveSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Defense
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Defense
     }
 }

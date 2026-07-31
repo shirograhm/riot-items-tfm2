@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, buff_stacks, ticks, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, buff_stacks, ticks, try_proc_on_hit, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct GuinsoosRageblade {
@@ -87,17 +87,17 @@ impl Default for GuinsoosRageblade {
     }
 }
 
-impl ModItemInfo for GuinsoosRageblade {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for GuinsoosRageblade {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -116,8 +116,8 @@ impl ModItemInfo for GuinsoosRageblade {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             magic_power: self.magic_power,
             attack_speed_mult: self.attack_speed_mult,
@@ -127,11 +127,11 @@ impl ModItemInfo for GuinsoosRageblade {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -156,30 +156,26 @@ impl ModItemInfo for GuinsoosRageblade {
                 target,
                 0,
                 self.effect_bonus_magic_damage,
-                AttackType::BaseAttack,
+                AttackTypeV1::BaseAttack,
             );
         }
 
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     attack_speed_mult: self.effect_stack_attack_speed_mult,
-                    name: buff_name(self.stack_buff),
-                    ..Default::default()
+                    ..BuffV1::timed(self.stack_buff, ticks(self.effect_duration_seconds))
                 },
             );
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AP, ItemTag::AS]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::Ap, ItemTagV1::AttackSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

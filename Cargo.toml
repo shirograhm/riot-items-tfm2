@@ -1,13 +1,17 @@
 [package]
 name = "riot_items_tfm2"
-version = "0.6.4"
+version = "0.7.0"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib"]
-# Add external crates here. Do not add mod-api here; the SDK/uploader
-# injects the matching prebuilt mod_api crate during the build.
 
+# Stable-ABI mod. Builds with any Rust toolchain and keeps loading across game
+# updates — no pinned nightly and no prebuilt engine rlibs. The SDK crate is
+# plain source; the uploader installs it at ../mod-api-stable if it is missing.
 [dependencies]
+mod-api-stable = { path = "../mod-api-stable" }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["preserve_order"] }
+
+[workspace]

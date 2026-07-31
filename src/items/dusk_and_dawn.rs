@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct DuskAndDawn {
@@ -88,17 +88,17 @@ impl Default for DuskAndDawn {
     }
 }
 
-impl ModItemInfo for DuskAndDawn {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for DuskAndDawn {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -117,8 +117,8 @@ impl ModItemInfo for DuskAndDawn {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             magic_power: self.magic_power,
             attack_speed_mult: self.attack_speed_mult,
@@ -127,11 +127,11 @@ impl ModItemInfo for DuskAndDawn {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade_ready = false;
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
@@ -149,11 +149,11 @@ impl ModItemInfo for DuskAndDawn {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         if !self.spellblade_ready {
             return;
@@ -166,33 +166,27 @@ impl ModItemInfo for DuskAndDawn {
         let heal_amount = percent_of(
             caster_ref.stat().magic_power,
             self.effect_caster_ap_percent_heal,
-        ) + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_heal);
+        ) + percent_of(caster_ref.hp().1, self.effect_caster_hp_percent_heal);
         self.spellblade_ready = false;
 
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+        ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
         ctx.heal(caster, caster, heal_amount);
         ctx.add_buff(
             caster,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: ticks(self.effect_cooldown_seconds),
-                },
-                name: buff_name("spellblade_cooldown"),
-                ..Default::default()
-            },
+            &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
+    fn tags(&self) -> Vec<ItemTagV1> {
         vec![
-            ItemTag::HP,
-            ItemTag::AP,
-            ItemTag::AS,
-            ItemTag::CooltimeReduce,
+            ItemTagV1::Hp,
+            ItemTagV1::Ap,
+            ItemTagV1::AttackSpeed,
+            ItemTagV1::CooltimeReduce,
         ]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

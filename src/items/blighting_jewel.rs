@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct BlightingJewel {
@@ -31,17 +31,17 @@ impl BlightingJewel {
     }
 }
 
-impl ModItemInfo for BlightingJewel {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for BlightingJewel {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "blighting_jewel"
+    fn key(&self) -> String {
+        "blighting_jewel".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "blighting_jewel"
+    fn icon(&self) -> String {
+        "blighting_jewel".to_string()
     }
 
     fn price(&self) -> usize {
@@ -60,19 +60,19 @@ impl ModItemInfo for BlightingJewel {
         vec!["void_staff".to_string()]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             magic_power: self.magic_power,
             magic_resistance_penetration: self.magic_resistance_penetration,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP, ItemTag::MRPenetration]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ap, ItemTagV1::MrPenetration]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

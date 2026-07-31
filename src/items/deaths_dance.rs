@@ -1,9 +1,19 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_name, count_takedowns, has_buff, mark_enemy_champion, percent_of, ItemMeta,
+    apply_config, count_takedowns, has_buff, mark_enemy_champion, percent_of, ticks, ItemMeta,
 };
+
+/// How many times a second Ignore Pain bleeds.
+///
+/// One number drives two things that must agree: the gate buff lasts
+/// `1 / BURN_PROCS_PER_SECOND` seconds, and each proc is allowed
+/// `effect_burn_hp_percent_cap / BURN_PROCS_PER_SECOND` of max HP. Splitting
+/// them into separate literals is how the cap silently stopped meaning "per
+/// second" — `update` runs every tick, so the gate is the only thing setting
+/// the rate.
+const BURN_PROCS_PER_SECOND: f64 = 5.0;
 
 #[derive(Clone, Debug)]
 pub struct DeathsDance {
@@ -20,6 +30,9 @@ pub struct DeathsDance {
     effect_bonus_flat_heal: i32,
     effect_kill_heal_missing_percent: f64,
     accumulated_damage: i32,
+    /// Bleed damage dealt but not yet seen come back through `on_damaged`, so
+    /// the pool does not refill itself. See [`DeathsDance::on_damaged`].
+    self_inflicted_credit: i32,
     last_damaged_by: usize,
     takedown_marks: Vec<(usize, usize)>,
 }
@@ -38,6 +51,7 @@ impl DeathsDance {
             effect_bonus_flat_heal: 45,
             effect_kill_heal_missing_percent: 15.0,
             accumulated_damage: 0,
+            self_inflicted_credit: 0,
             last_damaged_by: 0,
             takedown_marks: Vec::new(),
         }
@@ -82,7 +96,23 @@ impl DeathsDance {
         self
     }
 
-    fn defy(&mut self, ctx: &mut GameCtx, player: usize, takedowns: usize) {
+    /// Ratio between damage this champion *takes* and damage that was *aimed*
+    /// at it.
+    ///
+    /// `stat()` puts `effect_delayed_damage_percent` into `damaged_reduce`, so
+    /// the game shaves that much off every incoming hit before `on_damaged`
+    /// reports it — and off this item's own bleed on the way back out. So it is
+    /// needed twice: to recover the pre-reduction figure when storing, and to
+    /// pre-pay the reduction when bleeding, so the intended amount lands. At the
+    /// default 25% this is 4/3, which is where the bare `4.0 / 3.0` in the
+    /// original came from.
+    fn mitigation_scale(&self) -> f64 {
+        // Reducing 100% of damage would divide by zero, and there is no sensible
+        // bleed for a champion that takes nothing, so leave a sliver through.
+        100.0 / (100.0 - self.effect_delayed_damage_percent).max(1.0)
+    }
+
+    fn defy(&mut self, ctx: &mut StableSim<'_>, player: usize, takedowns: usize) {
         if takedowns == 0 {
             return;
         }
@@ -93,8 +123,8 @@ impl DeathsDance {
         let Some(champion_ref) = player_ref.champion() else {
             return;
         };
-        let hp_max = champion_ref.hp().max;
-        let hp_current = champion_ref.hp().current;
+        let hp_max = champion_ref.hp().1;
+        let hp_current = champion_ref.hp().0;
         let champion_id = champion_ref.id();
         let missing_hp = hp_max.saturating_sub(hp_current);
         let heal = self.effect_bonus_flat_heal as usize
@@ -114,17 +144,17 @@ impl Default for DeathsDance {
     }
 }
 
-impl ModItemInfo for DeathsDance {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for DeathsDance {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -143,8 +173,8 @@ impl ModItemInfo for DeathsDance {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             defence: self.defence,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -153,13 +183,14 @@ impl ModItemInfo for DeathsDance {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.accumulated_damage = 0;
+        self.self_inflicted_credit = 0;
         self.last_damaged_by = 0;
         self.takedown_marks.clear();
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         // Defy: heal + cleanse on champion takedowns.
         let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
         self.defy(ctx, player, takedowns);
@@ -181,34 +212,37 @@ impl ModItemInfo for DeathsDance {
         }
 
         let entity = champion_ref.id();
-        let per_second_cap =
-            percent_of(champion_ref.hp().max, self.effect_burn_hp_percent_cap / 5.0) as i32;
+        // `update` runs every tick, so the gate buff below is what makes this a
+        // rate rather than a per-frame drain: the cap is a per-second figure
+        // split across that many procs.
+        let per_proc_cap = percent_of(
+            champion_ref.hp().1,
+            self.effect_burn_hp_percent_cap / BURN_PROCS_PER_SECOND,
+        ) as i32;
 
-        let tick_damage = self.accumulated_damage.min(per_second_cap);
+        let tick_damage = self.accumulated_damage.min(per_proc_cap);
         if tick_damage <= 0 {
             return;
         }
         ctx.add_buff(
             entity,
-            BuffState {
-                duration: BuffType::Time { tick: 12 },
-                name: buff_name(self.burn_buff),
-                ..Default::default()
-            },
+            &BuffV1::timed(self.burn_buff, ticks(1.0 / BURN_PROCS_PER_SECOND)),
         );
-        ctx.deal_damage(
-            self.last_damaged_by,
-            entity,
-            tick_damage as usize,
-            0,
-            AttackType::Item,
-        );
+        // Grossed up so that `tick_damage` is what actually lands after this
+        // item's own `damaged_reduce` takes its cut. Dealing `tick_damage` flat
+        // is what made the real ceiling 3.75% of max HP a second instead of the
+        // 5% the config asks for.
+        let dealt = (tick_damage as f64 * self.mitigation_scale()).round() as usize;
+        // What lands is reported straight back to `on_damaged`; bank it so that
+        // it is discounted there rather than refilling the pool.
+        self.self_inflicted_credit += tick_damage;
+        ctx.deal_damage(self.last_damaged_by, entity, dealt, 0, AttackTypeV1::Item);
         self.accumulated_damage -= tick_damage;
     }
 
     fn on_damaged(
         &mut self,
-        _ctx: &mut GameCtx,
+        _ctx: &mut StableSim<'_>,
         _player: usize,
         entity: usize,
         attacker: usize,
@@ -218,8 +252,26 @@ impl ModItemInfo for DeathsDance {
             return;
         }
 
+        // Ignore Pain's own bleed arrives here like any other hit: it is dealt
+        // with `last_damaged_by` as the attacker, not the champion itself, so
+        // the guard above never catches it. Left alone it re-stores a share of
+        // itself and the pool feeds off its own drain.
+        //
+        // Discounted against a banked credit rather than a "currently bleeding"
+        // flag, so it holds whether the engine reports this back inside
+        // `deal_damage` or a tick later.
+        let mut damage = damage as i32;
+        if self.self_inflicted_credit > 0 {
+            let discounted = damage.min(self.self_inflicted_credit);
+            self.self_inflicted_credit -= discounted;
+            damage -= discounted;
+        }
+        if damage <= 0 {
+            return;
+        }
+
         self.accumulated_damage += percent_of(
-            (damage as f64 * 4.0 / 3.0).round() as usize,
+            (damage as f64 * self.mitigation_scale()).round() as usize,
             self.effect_delayed_damage_percent,
         ) as i32;
 
@@ -228,24 +280,24 @@ impl ModItemInfo for DeathsDance {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::Defense, ItemTag::CooltimeReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::Defense, ItemTagV1::CooltimeReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

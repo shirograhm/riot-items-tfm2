@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
@@ -33,8 +33,8 @@ impl Heartsteel {
             hp: 500,
             effect_bonus_flat_damage: 15,
             effect_caster_hp_percent_damage: 6.0,
-            effect_bonus_hp_percent_of_damage: 15.0,
-            effect_cooldown_seconds: 15.0,
+            effect_bonus_hp_percent_of_damage: 12.0,
+            effect_cooldown_seconds: 20.0,
             accumulated_bonus_hp: 0,
         }
     }
@@ -81,17 +81,17 @@ impl Default for Heartsteel {
     }
 }
 
-impl ModItemInfo for Heartsteel {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Heartsteel {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -110,14 +110,14 @@ impl ModItemInfo for Heartsteel {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.accumulated_bonus_hp <= 0 {
             return;
         }
@@ -129,22 +129,20 @@ impl ModItemInfo for Heartsteel {
         };
         ctx.add_buff(
             champion_ref.id(),
-            BuffState {
-                duration: BuffType::Permanent,
+            &BuffV1 {
                 hp: self.accumulated_bonus_hp,
-                name: buff_name(self.stack_buff),
-                ..Default::default()
+                ..BuffV1::named(self.stack_buff)
             },
         );
     }
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -162,37 +160,29 @@ impl ModItemInfo for Heartsteel {
         }
 
         let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_ref.hp().max, self.effect_caster_hp_percent_damage);
+            + percent_of(caster_ref.hp().1, self.effect_caster_hp_percent_damage);
         let bonus_hp = percent_of(bonus_damage, self.effect_bonus_hp_percent_of_damage) as i32;
 
         ctx.add_buff(
             caster,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: ticks(self.effect_cooldown_seconds),
-                },
-                name: buff_name(self.cooldown_buff),
-                ..Default::default()
-            },
+            &BuffV1::timed(self.cooldown_buff, ticks(self.effect_cooldown_seconds)),
         );
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackType::Item);
+        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
         ctx.add_buff(
             caster,
-            BuffState {
-                duration: BuffType::Permanent,
+            &BuffV1 {
                 hp: bonus_hp,
-                name: buff_name(self.stack_buff),
-                ..Default::default()
+                ..BuffV1::named(self.stack_buff)
             },
         );
         self.accumulated_bonus_hp += bonus_hp;
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::MyHpPercentDamage]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::MyHpPercentDamage]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

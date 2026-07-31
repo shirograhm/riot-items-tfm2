@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct HauntingGuise {
@@ -27,17 +27,17 @@ impl HauntingGuise {
     }
 }
 
-impl ModItemInfo for HauntingGuise {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for HauntingGuise {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "haunting_guise"
+    fn key(&self) -> String {
+        "haunting_guise".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "haunting_guise"
+    fn icon(&self) -> String {
+        "haunting_guise".to_string()
     }
 
     fn price(&self) -> usize {
@@ -60,19 +60,19 @@ impl ModItemInfo for HauntingGuise {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             magic_power: self.magic_power,
             hp: self.hp,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ap]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

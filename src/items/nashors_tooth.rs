@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, try_proc_on_hit, ItemMeta};
@@ -74,17 +74,17 @@ impl Default for NashorsTooth {
     }
 }
 
-impl ModItemInfo for NashorsTooth {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for NashorsTooth {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -103,8 +103,8 @@ impl ModItemInfo for NashorsTooth {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             magic_power: self.magic_power,
             attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
@@ -113,11 +113,11 @@ impl ModItemInfo for NashorsTooth {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -137,15 +137,15 @@ impl ModItemInfo for NashorsTooth {
             "nashors_tooth_on_hit_cooldown",
             self.on_hit_cooldown_seconds,
         ) {
-            ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+            ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ap]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

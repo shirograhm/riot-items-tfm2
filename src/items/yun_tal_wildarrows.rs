@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, ticks, ItemMeta};
+use crate::{apply_config, has_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct YunTalWildarrows {
@@ -91,17 +91,17 @@ impl Default for YunTalWildarrows {
     }
 }
 
-impl ModItemInfo for YunTalWildarrows {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for YunTalWildarrows {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -120,8 +120,8 @@ impl ModItemInfo for YunTalWildarrows {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
@@ -130,7 +130,7 @@ impl ModItemInfo for YunTalWildarrows {
 
     // Practice: permanent crit chance earned so far is re-applied each spawn.
 
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.accumulated_stacks == 0 {
             return;
         }
@@ -142,22 +142,20 @@ impl ModItemInfo for YunTalWildarrows {
         };
         ctx.add_buff(
             champion_ref.id(),
-            BuffState {
-                duration: BuffType::Permanent,
+            &BuffV1 {
                 crit_chance: self.accumulated_stacks as i32 * self.effect_stack_crit_chance,
-                name: buff_name(self.yun_tal_practice_buff),
-                ..Default::default()
+                ..BuffV1::named(self.yun_tal_practice_buff)
             },
         );
     }
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         _target: usize,
         _damage: &mut usize,
-        damage_type: DamageType,
+        damage_type: DamageTypeV1,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -165,14 +163,12 @@ impl ModItemInfo for YunTalWildarrows {
         let is_flurry_on_cooldown = has_buff(&caster_ref, self.yun_tal_flurry_cooldown_buff);
 
         // Practice: dealing physical damage grants permanent crit chance, capped.
-        if damage_type == DamageType::AD && self.accumulated_stacks < self.effect_max_stacks {
+        if damage_type == DamageTypeV1::Ad && self.accumulated_stacks < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
-                BuffState {
-                    duration: BuffType::Permanent,
+                &BuffV1 {
                     crit_chance: self.effect_stack_crit_chance,
-                    name: buff_name(self.yun_tal_practice_buff),
-                    ..Default::default()
+                    ..BuffV1::named(self.yun_tal_practice_buff)
                 },
             );
             self.accumulated_stacks += 1;
@@ -182,33 +178,23 @@ impl ModItemInfo for YunTalWildarrows {
         if !is_flurry_on_cooldown {
             ctx.add_buff(
                 caster,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     attack_speed_mult: self.effect_flurry_attack_speed_mult,
-                    name: buff_name(self.yun_tal_flurry_buff),
-                    ..Default::default()
+                    ..BuffV1::timed(self.yun_tal_flurry_buff, ticks(self.effect_duration_seconds))
                 },
             );
             ctx.add_buff(
                 caster,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_cooldown_seconds),
-                    },
-                    name: buff_name(self.yun_tal_flurry_cooldown_buff),
-                    ..Default::default()
-                },
+                &BuffV1::timed(self.yun_tal_flurry_cooldown_buff, ticks(self.effect_cooldown_seconds)),
             );
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

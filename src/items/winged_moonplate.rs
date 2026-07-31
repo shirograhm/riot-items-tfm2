@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct WingedMoonplate {
@@ -27,17 +27,17 @@ impl WingedMoonplate {
     }
 }
 
-impl ModItemInfo for WingedMoonplate {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for WingedMoonplate {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "winged_moonplate"
+    fn key(&self) -> String {
+        "winged_moonplate".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "winged_moonplate"
+    fn icon(&self) -> String {
+        "winged_moonplate".to_string()
     }
 
     fn price(&self) -> usize {
@@ -59,19 +59,19 @@ impl ModItemInfo for WingedMoonplate {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             move_speed_mult: self.move_speed_mult,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::MoveSpeed]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::MoveSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Defense
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Defense
     }
 }

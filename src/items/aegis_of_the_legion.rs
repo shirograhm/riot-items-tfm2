@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct AegisOfTheLegion {
@@ -29,17 +29,17 @@ impl AegisOfTheLegion {
     }
 }
 
-impl ModItemInfo for AegisOfTheLegion {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for AegisOfTheLegion {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "aegis_of_the_legion"
+    fn key(&self) -> String {
+        "aegis_of_the_legion".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "aegis_of_the_legion"
+    fn icon(&self) -> String {
+        "aegis_of_the_legion".to_string()
     }
 
     fn price(&self) -> usize {
@@ -61,8 +61,8 @@ impl ModItemInfo for AegisOfTheLegion {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             defence: self.defence,
             magic_resistance: self.magic_resistance,
@@ -70,11 +70,11 @@ impl ModItemInfo for AegisOfTheLegion {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::Defense, ItemTag::MagicResistance]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Defense, ItemTagV1::MagicResistance]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Defense
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Defense
     }
 }

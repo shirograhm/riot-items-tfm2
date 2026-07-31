@@ -1,6 +1,6 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct BandleglassMirror {
@@ -35,17 +35,17 @@ impl BandleglassMirror {
     }
 }
 
-impl ModItemInfo for BandleglassMirror {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for BandleglassMirror {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "bandleglass_mirror"
+    fn key(&self) -> String {
+        "bandleglass_mirror".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "bandleglass_mirror"
+    fn icon(&self) -> String {
+        "bandleglass_mirror".to_string()
     }
 
     fn price(&self) -> usize {
@@ -68,8 +68,8 @@ impl ModItemInfo for BandleglassMirror {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             hp_regen: self.hp_regen,
             magic_power: self.magic_power,
@@ -78,11 +78,11 @@ impl ModItemInfo for BandleglassMirror {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::HPRegen, ItemTag::AP]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::HpRegen, ItemTagV1::Ap]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

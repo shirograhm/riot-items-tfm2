@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, ticks, ItemMeta};
+use crate::{apply_config, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Stormrazor {
@@ -79,17 +79,17 @@ impl Default for Stormrazor {
     }
 }
 
-impl ModItemInfo for Stormrazor {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Stormrazor {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -108,8 +108,8 @@ impl ModItemInfo for Stormrazor {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
             crit_chance: self.crit_chance,
@@ -117,17 +117,17 @@ impl ModItemInfo for Stormrazor {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.energized_stacks = 0;
     }
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        damage_type: DamageType,
+        damage_type: DamageTypeV1,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -143,17 +143,13 @@ impl ModItemInfo for Stormrazor {
                 target,
                 0,
                 self.effect_bonus_flat_damage,
-                AttackType::Item,
+                AttackTypeV1::Item,
             );
             ctx.add_buff(
                 caster,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_duration_seconds),
-                    },
+                &BuffV1 {
                     move_speed_mult: self.effect_move_speed_mult,
-                    name: buff_name("stormrazor_move_speed"),
-                    ..Default::default()
+                    ..BuffV1::timed("stormrazor_move_speed", ticks(self.effect_duration_seconds))
                 },
             );
 
@@ -161,12 +157,12 @@ impl ModItemInfo for Stormrazor {
         }
 
         // Gain 5 energized stacks on attacks, up to the max stacks
-        if damage_type == DamageType::AD {
+        if damage_type == DamageTypeV1::Ad {
             self.energized_stacks += 5;
         }
     }
 
-    fn update(&mut self, _ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
+    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
         // Add 1 energized stack per 0.2 seconds
         if self.energized_update_tick >= 12 {
             self.energized_stacks += 1;
@@ -176,11 +172,11 @@ impl ModItemInfo for Stormrazor {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::AS, ItemTag::MoveSpeed]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed, ItemTagV1::MoveSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

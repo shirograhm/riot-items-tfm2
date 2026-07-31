@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, ticks};
+use crate::{apply_config, has_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ScoutsSlingshot {
@@ -39,17 +39,17 @@ impl ScoutsSlingshot {
     }
 }
 
-impl ModItemInfo for ScoutsSlingshot {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for ScoutsSlingshot {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        "scouts_slingshot"
+    fn key(&self) -> String {
+        "scouts_slingshot".to_string()
     }
 
-    fn icon(&self) -> &str {
-        "scouts_slingshot"
+    fn icon(&self) -> String {
+        "scouts_slingshot".to_string()
     }
 
     fn price(&self) -> usize {
@@ -74,8 +74,8 @@ impl ModItemInfo for ScoutsSlingshot {
         ]
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
         }
@@ -83,11 +83,11 @@ impl ModItemInfo for ScoutsSlingshot {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         // Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown).
         let Some(caster_ref) = ctx.get_entity(caster) else {
@@ -105,29 +105,23 @@ impl ModItemInfo for ScoutsSlingshot {
         if !is_cooldown_ticking {
             ctx.add_buff(
                 caster,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: ticks(self.effect_cooldown_seconds),
-                    },
-                    name: buff_name("scouts_slingshot_cooldown"),
-                    ..Default::default()
-                },
+                &BuffV1::timed("scouts_slingshot_cooldown", ticks(self.effect_cooldown_seconds)),
             );
             ctx.deal_damage(
                 caster,
                 target,
                 0,
                 self.effect_bonus_flat_damage,
-                AttackType::Item,
+                AttackTypeV1::Item,
             );
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AS]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::AttackSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

@@ -61,7 +61,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
 | **Frozen Mallet** | 1400G | +400 HP<br>+40 AD | On attack, apply a 15% slow for 2 seconds. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
-| **Heartsteel** | 1500G | +500 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 15% of that damage as permanent bonus health. |
+| **Heartsteel** | 1500G | +500 HP | Every 20 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
 | **Hubris** | 1300G | +70 AD<br>+10% CDR | Lethality: Ignore 18 armor when you deal physical damage to enemies.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | — |
@@ -119,7 +119,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Reduce the cooldown of your ultimate ability by 25%. |
 | **Radiant Frozen Mallet** | 2000G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
-| **Radiant Heartsteel** | 2100G | +800 HP | Every 15 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 15% of that damage as permanent bonus health. |
+| **Radiant Heartsteel** | 2100G | +800 HP | Every 20 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
 | **Radiant Hubris** | 1950G | +115 AD<br>+15% CDR | Lethality: Ignore 18 armor when you deal physical damage to enemies.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | — |
@@ -191,3 +191,41 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Ring of Reincarnation | Giant’s Belt |
 | Hourglass of Eternity | Sunfire Cape |
 | Giant’s Horn Shard | Radiant Sunfire Cape |
+
+### In-Game Item Build Editor
+
+The strategy screen's **Personal** tab is replaced by a **Builds** tab, beside
+Team. It shows one row per champion: three item slots, an **+ Add Champion**
+button, a per-row delete, swap buttons between slots, and a category-grouped item
+list (Assassin / Fighter / Marksman / Mage / Tank / Support, then Other) with
+icons. The vanilla **Matchup** card stays on screen to the right of it, so the
+lineup is visible while builds are being set. **Team** is untouched — switching
+to it puts the editor away and brings the Team columns back.
+
+The vanilla Personal tab is gone because this replaces it. Its five per-player
+dropdowns set the same thing per athlete that this sets per champion, and the
+game gives a mod no way to act on a per-athlete rule (see below), so keeping
+both would have left a control that looks like it works and does not.
+
+Clicking a slot drops its item list underneath it. Pick **Let Player Decide** at
+the top of that list — or click the pinned item again, or the slot's **X** — to
+hand the slot back to the game's AI. The **Enforcing unique items** toggle writes
+`mod-settings.json` beside the DLL.
+
+Every change is written immediately to `item-builds.json`; **Save Item Builds**,
+in the bottom right, has nothing left to write and simply returns to the **Team**
+tab. A row with no champion, or with nothing pinned, is kept in the editor but
+not written — a build with nothing to key it by is not a build.
+
+**Builds are keyed by champion, not by position.** The game computes item builds
+one team at a time and nothing it passes the mod says which team is yours, so
+there is no way to scope a build to a lane without also giving it to the enemy
+player in that lane. Keying by champion is the only thing the game can be told
+apart on. (An enemy who picked the same champion still matches — nothing
+available to a mod separates those two.)
+
+The champion list is read from the game at runtime, so champions added by other
+mods can be given builds too.
+
+If the layout override is not loaded there is no Builds tab, the mod installs
+nothing, and the screen falls back to stock behavior — Personal tab included.

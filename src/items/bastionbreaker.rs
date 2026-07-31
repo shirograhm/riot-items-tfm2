@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
@@ -6,7 +6,7 @@ use crate::{
     ItemMeta,
 };
 
-fn sabotage_bonus(ctx: &mut GameCtx, caster: usize, flat: usize, ad_percent: f64) -> usize {
+fn sabotage_bonus(ctx: &mut StableSim<'_>, caster: usize, flat: usize, ad_percent: f64) -> usize {
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
     flat + percent_of(caster_ad, ad_percent)
 }
@@ -93,17 +93,17 @@ impl Default for Bastionbreaker {
     }
 }
 
-impl ModItemInfo for Bastionbreaker {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for Bastionbreaker {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -122,20 +122,20 @@ impl ModItemInfo for Bastionbreaker {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             attack: self.attack,
             skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut GameCtx, _player: usize) {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.sabotage_charge = 0;
         self.takedown_marks.clear();
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, _player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
         // Expire the held charge, then (re)grant a full-duration one on a takedown.
         self.sabotage_charge = self.sabotage_charge.saturating_sub(1);
         if count_takedowns(&mut self.takedown_marks, ctx) > 0 {
@@ -145,11 +145,11 @@ impl ModItemInfo for Bastionbreaker {
 
     fn on_attack(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
         damage: &mut usize,
-        _damage_type: DamageType,
+        _damage_type: DamageTypeV1,
     ) {
         apply_lethality(ctx, target, self.effect_lethality, damage);
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
@@ -170,19 +170,19 @@ impl ModItemInfo for Bastionbreaker {
             self.effect_bonus_flat_damage,
             self.effect_ad_percent_damage,
         );
-        ctx.deal_damage(caster, target, bonus, 0, AttackType::Item);
+        ctx.deal_damage(caster, target, bonus, 0, AttackTypeV1::Item);
         self.sabotage_charge = 0; // spend the charge
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AD, ItemTag::CooltimeReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ad, ItemTagV1::CooltimeReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AD
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Ad
     }
 }

@@ -1,8 +1,8 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_name, has_buff, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, has_buff, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS,
 };
 
@@ -82,7 +82,7 @@ impl WarmogsArmor {
         self
     }
 
-    fn apply_passive(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn apply_passive(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         let (entity, max_hp, recently_damaged) = {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
@@ -91,7 +91,7 @@ impl WarmogsArmor {
                 return;
             };
             let recently_damaged = has_buff(&champion_ref, self.recently_damaged_buff);
-            (champion_ref.id(), champion_ref.hp().max, recently_damaged)
+            (champion_ref.id(), champion_ref.hp().1, recently_damaged)
         };
 
         // Warmog's Heart is suppressed while the holder has taken damage recently.
@@ -105,10 +105,9 @@ impl WarmogsArmor {
             if heal > 0 {
                 ctx.add_buff(
                     entity,
-                    BuffState {
-                        duration: BuffType::Time { tick: 60 },
+                    &BuffV1 {
                         hp_regen: heal,
-                        ..Default::default()
+                        ..BuffV1::timed("", 60)
                     },
                 );
             }
@@ -121,13 +120,9 @@ impl WarmogsArmor {
         if self.move_speed_cooldown == 0 {
             ctx.add_buff(
                 entity,
-                BuffState {
-                    duration: BuffType::Time {
-                        tick: BUFF_REFRESH_DURATION_TICKS,
-                    },
+                &BuffV1 {
                     move_speed_mult: self.effect_move_speed_mult,
-                    name: buff_name(self.move_speed_buff),
-                    ..Default::default()
+                    ..BuffV1::timed(self.move_speed_buff, BUFF_REFRESH_DURATION_TICKS)
                 },
             );
             self.move_speed_cooldown = BUFF_REFRESH_PERIOD_TICKS;
@@ -143,17 +138,17 @@ impl Default for WarmogsArmor {
     }
 }
 
-impl ModItemInfo for WarmogsArmor {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for WarmogsArmor {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -172,27 +167,27 @@ impl ModItemInfo for WarmogsArmor {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             hp_regen: self.hp_regen,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.regen_cooldown = 0;
         self.move_speed_cooldown = 0;
         self.apply_passive(ctx, player);
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.apply_passive(ctx, player);
     }
 
     fn on_damaged(
         &mut self,
-        ctx: &mut GameCtx,
+        ctx: &mut StableSim<'_>,
         _player: usize,
         entity: usize,
         attacker: usize,
@@ -203,21 +198,15 @@ impl ModItemInfo for WarmogsArmor {
         }
         ctx.add_buff(
             entity,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: ticks(self.effect_duration_seconds),
-                },
-                name: buff_name(self.recently_damaged_buff),
-                ..Default::default()
-            },
+            &BuffV1::timed(self.recently_damaged_buff, ticks(self.effect_duration_seconds)),
         );
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::HPRegen, ItemTag::MoveSpeed]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::HpRegen, ItemTagV1::MoveSpeed]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

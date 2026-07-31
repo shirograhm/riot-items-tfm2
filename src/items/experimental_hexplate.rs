@@ -1,4 +1,4 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{apply_config, ItemMeta};
@@ -73,17 +73,17 @@ impl Default for ExperimentalHexplate {
     }
 }
 
-impl ModItemInfo for ExperimentalHexplate {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for ExperimentalHexplate {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -102,8 +102,8 @@ impl ModItemInfo for ExperimentalHexplate {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             attack_speed_mult: self.attack_speed_mult,
             move_speed_mult: self.move_speed_mult,
@@ -112,16 +112,16 @@ impl ModItemInfo for ExperimentalHexplate {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        let mut tags = vec![ItemTag::HP, ItemTag::AS];
+    fn tags(&self) -> Vec<ItemTagV1> {
+        let mut tags = vec![ItemTagV1::Hp, ItemTagV1::AttackSpeed];
         if self.move_speed_mult > 0 {
-            tags.push(ItemTag::MoveSpeed);
+            tags.push(ItemTagV1::MoveSpeed);
         }
-        tags.push(ItemTag::CooltimeReduce);
+        tags.push(ItemTagV1::CooltimeReduce);
         tags
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::AttackSpeed
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::AttackSpeed
     }
 }

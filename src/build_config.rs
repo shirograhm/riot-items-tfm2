@@ -64,6 +64,142 @@ fn config_path() -> Result<PathBuf, String> {
         .ok_or_else(|| "could not resolve mod directory".to_string())
 }
 
+/// Item slots the editor exposes per champion, matching the three columns the
+/// strategy screen shows.
+pub const PICKER_SLOTS: usize = 3;
+
+/// One editable row of the in-game editor: a champion and its three slots.
+///
+/// The champion is optional because a freshly added row has not been assigned
+/// one yet. Such a row is kept in the editor but never written, since a build
+/// with nothing to key it by is not a build.
+#[derive(Default, Clone, Debug, PartialEq)]
+pub struct ChampionRow {
+    pub champion: Option<String>,
+    pub slots: Vec<Option<String>>,
+}
+
+impl ChampionRow {
+    /// Whether the row contributes a build: a champion, and at least one pinned
+    /// item. A row of nothing but AI slots is a no-op, identical to not listing
+    /// the champion at all.
+    pub fn is_complete(&self) -> bool {
+        self.champion.is_some() && self.slots.iter().any(Option::is_some)
+    }
+}
+
+/// Reads `item-builds.json` as an ordered row list for the editor.
+///
+/// File order is preserved (serde_json is built with `preserve_order`), so rows
+/// do not shuffle between visits, and a file edited by hand keeps the order it
+/// was written in.
+///
+/// A missing or malformed file yields no rows rather than an error: the editor
+/// is additive, and a bad file must never cost the player the routes the game
+/// already produced.
+pub fn load_champion_rows() -> Vec<ChampionRow> {
+    let Ok(path) = config_path() else {
+        return Vec::new();
+    };
+    let Ok(text) = std::fs::read_to_string(path) else {
+        return Vec::new();
+    };
+    let Ok(map) = serde_json::from_str::<serde_json::Map<String, serde_json::Value>>(&text) else {
+        return Vec::new();
+    };
+
+    map.into_iter()
+        .map(|(champion, value)| {
+            let mut slots: Vec<Option<String>> = value
+                .as_array()
+                .map(|items| {
+                    items
+                        .iter()
+                        .map(|item| item.as_str().map(str::to_string))
+                        .collect()
+                })
+                .unwrap_or_default();
+            slots.resize(PICKER_SLOTS, None);
+            ChampionRow {
+                champion: Some(champion),
+                slots,
+            }
+        })
+        .collect()
+}
+
+/// Writes the complete rows back to `item-builds.json`, in row order.
+///
+/// Incomplete rows are skipped and a later row with the same champion wins, so
+/// the file only ever holds builds that mean something. Returns false when it
+/// could not be written.
+pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
+    let Ok(path) = config_path() else {
+        return false;
+    };
+    let mut map = serde_json::Map::new();
+    for row in rows.iter().filter(|row| row.is_complete()) {
+        let Some(champion) = &row.champion else {
+            continue;
+        };
+        let slots: Vec<serde_json::Value> = row
+            .slots
+            .iter()
+            .map(|slot| match slot {
+                Some(key) => serde_json::Value::String(key.clone()),
+                None => serde_json::Value::Null,
+            })
+            .collect();
+        map.insert(champion.clone(), serde_json::Value::Array(slots));
+    }
+
+    serde_json::to_string_pretty(&map)
+        .ok()
+        .and_then(|text| std::fs::write(path, text + "\n").ok())
+        .is_some()
+}
+
+/// Champion roster the hook was handed, for the editor to offer.
+///
+/// A static, not a file: the detour and the client extension run in the *same
+/// process*, so handing a list from one to the other never needed to touch the
+/// disk. It is only a fallback — the editor asks the client for
+/// `champion_names()` first — and it exists because that call returns nothing
+/// when made from inside a UI event handler, the same restriction that makes
+/// `setting_get_json` return None there.
+///
+/// The hook receives the whole roster as `champion_ids`, and those are exactly
+/// the strings a build is keyed by, so it is the right list by construction
+/// rather than by coincidence. It includes champions added by *other* mods,
+/// which is why the editor must not filter it against the base game's champion
+/// text (see `strategy_ui::load_champions`).
+static CHAMPION_ROSTER: std::sync::Mutex<Vec<String>> = std::sync::Mutex::new(Vec::new());
+
+/// Records the roster from inside the detour. Cheap enough to call per match;
+/// the roster cannot change without a restart.
+pub fn record_champion_roster(ids: &[String]) {
+    if let Ok(mut roster) = CHAMPION_ROSTER.lock() {
+        roster.clear();
+        roster.extend_from_slice(ids);
+    }
+}
+
+/// The recorded roster. Empty until the first match simulates, which happens
+/// before the player can reach their own strategy screen.
+pub fn champion_roster() -> Vec<String> {
+    CHAMPION_ROSTER.lock().map(|roster| roster.clone()).unwrap_or_default()
+}
+
+/// Writes `unique_items` to `mod-settings.json`, the toggle
+/// [`unique_items_enabled`] reads back on every hook call.
+///
+/// The whole file is rewritten from this one field: the schema has exactly one
+/// key, so there is nothing else in it to preserve.
+pub fn set_unique_items(enabled: bool) -> bool {
+    let path = crate::config::mod_dir().join("mod-settings.json");
+    std::fs::write(path, format!("{{\n  \"unique_items\": {enabled}\n}}\n")).is_ok()
+}
+
 /// Schema of `mod-settings.json`: behavior toggles managed by the item build
 /// editor. An absent file (the common case) means every toggle takes its
 /// default.
@@ -79,9 +215,9 @@ fn default_true() -> bool {
 
 /// Whether unique-build enforcement is enabled: `unique_items` in
 /// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
-/// is absent or malformed, so players opt *out* via the editor checkbox. Read on
-/// every hook call, so toggling the checkbox takes effect on the next match
-/// without restarting the game.
+/// is absent or malformed, so players opt *out* via the editor toggle. Read on
+/// every hook call, so flipping it applies to the next match without restarting
+/// the game.
 pub fn unique_items_enabled() -> bool {
     let Some(path) = crate::config::dll_dir().map(|dir| dir.join("mod-settings.json")) else {
         return true;
@@ -130,12 +266,25 @@ pub fn apply(
     }
 }
 
-/// Resolves one configured item key to a pool index: normalize to its `radiant_`
-/// variant, map any renamed item through `alias_key`, then look it up. Unknown
-/// keys return `None` (skipped rather than aborting the build).
+/// Resolves one configured item key to a pool index. The key is tried verbatim
+/// first, so a game-internal key (`"warlords_final_judgement"`, or any vanilla
+/// tier 5) resolves as written; only if that misses is it normalized to its
+/// `radiant_` variant and run through `alias_key`, which is what lets builds be
+/// authored with plain LoL names (`"collector"`). Unknown keys return `None`
+/// (skipped rather than aborting the build).
+///
+/// The `radiant_` attempt comes FIRST and the verbatim one is the fallback.
+/// Order matters: `"liandrys_torment"` in an existing `item-builds.json` means
+/// the radiant item, but a base item of that exact key also exists, so trying
+/// verbatim first would silently downgrade every build in that file to its base
+/// tier. The fallback exists only for keys with no radiant variant — the vanilla
+/// tier 5s the in-game picker offers, like `"warlords_final_judgement"`.
 fn resolve_key(key: &str, index_by_key: &HashMap<&str, usize>) -> Option<usize> {
     let radiant = radiant_key(key);
-    index_by_key.get(alias_key(radiant.as_ref())).copied()
+    if let Some(index) = index_by_key.get(alias_key(radiant.as_ref())) {
+        return Some(*index);
+    }
+    index_by_key.get(key).copied()
 }
 
 /// Builds the final route from a configured build and the route the AI generated
@@ -197,6 +346,34 @@ fn radiant_key(key: &str) -> Cow<'_, str> {
 ///
 /// Add a new arm per renamed item in `text/item.i18n` (lines 58-177): key the arm
 /// on the `radiant_` form of the LoL name, value is the i18n object key.
+/// Normalizes any spelling of an item back to the plain LoL slug the item
+/// catalog is keyed by: the inverse of [`alias_key`] followed by dropping the
+/// `radiant_` prefix. `"warlords_final_judgement"`, `"radiant_bloodthirster"`
+/// and `"bloodthirster"` all yield `"bloodthirster"`.
+///
+/// The in-game editor needs this because it reads item keys back out of the
+/// game (where they are internal keys) but groups them with
+/// [`crate::item_catalog`], which is keyed the way a player writes a build.
+pub fn base_slug(key: &str) -> &str {
+    unalias_key(key)
+        .strip_prefix("radiant_")
+        .unwrap_or_else(|| unalias_key(key))
+}
+
+/// Inverse of [`alias_key`]: the game's internal key for a renamed item back to
+/// the `radiant_` form of its LoL name. Keys with no alias pass through.
+fn unalias_key(key: &str) -> &str {
+    match key {
+        "warlords_final_judgement" => "radiant_bloodthirster",
+        "storm_sovereign" => "radiant_phantom_dancer",
+        "impregnable_fortress" => "radiant_thornmail",
+        "veil_of_annihilation" => "radiant_dragons_claw",
+        "prophet_of_the_abyss" => "radiant_ludens_tempest",
+        "giants_horn_shard" => "radiant_sunfire_cape",
+        other => other,
+    }
+}
+
 fn alias_key(key: &str) -> &str {
     match key {
         // Radiant Bloodthirster

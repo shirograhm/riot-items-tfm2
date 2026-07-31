@@ -1,7 +1,7 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_name, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct NightHarvester {
@@ -91,17 +91,17 @@ impl Default for NightHarvester {
     }
 }
 
-impl ModItemInfo for NightHarvester {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for NightHarvester {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -120,8 +120,8 @@ impl ModItemInfo for NightHarvester {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -129,7 +129,7 @@ impl ModItemInfo for NightHarvester {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut GameCtx, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
@@ -150,33 +150,23 @@ impl ModItemInfo for NightHarvester {
 
         ctx.add_buff(
             target,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: ticks(self.effect_cooldown_seconds),
-                },
-                name: buff_name(self.cooldown_buff),
-                ..Default::default()
-            },
+            &BuffV1::timed(self.cooldown_buff, ticks(self.effect_cooldown_seconds)),
         );
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackType::Item);
+        ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
         ctx.add_buff(
             caster,
-            BuffState {
-                duration: BuffType::Time {
-                    tick: ticks(self.effect_duration_seconds),
-                },
+            &BuffV1 {
                 move_speed_mult: self.effect_move_speed_mult,
-                name: buff_name(self.soulrend_buff),
-                ..Default::default()
+                ..BuffV1::timed(self.soulrend_buff, ticks(self.effect_duration_seconds))
             },
         );
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AP, ItemTag::CooltimeReduce]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Ap, ItemTagV1::CooltimeReduce]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }

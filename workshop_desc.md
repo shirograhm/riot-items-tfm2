@@ -5,7 +5,7 @@ Also re-skins the 30 existing items and adds some custom icons for Armor Penetra
 [b]This mod supports custom item values! Now you can be Phreak! See the instructions below.[/b]  
 [b]This mod also supports custom item builds! See the instructions below.[/b]  
 
-Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for an item of the same category. Prefer duplicate builds? Toggle it off with the checkbox in the Item Build Editor.  
+Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for an item of the same category. Prefer duplicate builds? Toggle it off in the Item Build Editor.  
 
 [h1] Important [/h1]
 
@@ -29,7 +29,7 @@ Some item effects are roughly simulated to the best of my ability using the avai
 
 Some AI champions seem to prefer the wrong stats when given deference of item selection. Magic Knight tends to buy AD and AS items instead of AP, for example.  
 
-Some AI champions ignore the custom item build editor. This is being investigated, but is likely to be instability that occurs in long term builds.  
+Some AI champions ignore the custom item builds. This is being investigated, but is likely to be instability that occurs in long term builds.  
 
 [h1] Instructions [/h1]
 
@@ -62,21 +62,21 @@ Both files (config-default & apply_config.bat) should be located in the mod's wo
 
 [h1] Custom Item Builds [/h1]
 
-This mod allows for the user to override the current in-game Item Strategy Screen to choose any item in the game. To do so:
+This mod lets you override the in-game Item Strategy Screen and choose any item in the game. It is all done in-game, no external tools:
 
-1. Navigate to the SteamLibrary workshop folder: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
-2. Run [b]item-build-editor.exe[/b] to open the editor GUI. Keep the [b]Item Build Editor[/b] GUI open while your game is running.
-3. After draft, while on the Item Strategy Screen, add champions to the GUI and set up your builds.
-  a. This also supports modded champions, given you know the champion ID. For Silverbear's mod, use names formatted like [b]"test_mod_vayne"[/b].
-  b. If you only want to decide [i]some[/i] items, set the slots you care about and leave the rest on [b](AI picks)[/b] (the default). The mod will keep your chosen items and let the game's AI fill the remaining slots.
-4. Start the simulated match!
+1. After draft, on the Item Strategy Screen, click [b]Builds[/b] at the top.
+2. Press [b]+ Add Champion[/b], pick a champion, then set its item slots.
+  a. Modded champions are listed too, so long as their mod is loaded.
+  b. If you only want to decide [i]some[/i] items, set the slots you care about and leave the rest on [b]Let Player Decide[/b] (the default). The mod keeps your chosen items and lets the game's AI fill the remaining slots.
+3. Start the simulated match!
+
+Builds are saved to [b]item-builds.json[/b] as you make them, so they carry across sessions.
 
 [b]NOTE: Custom item builds override all matches at the moment. So your build becomes the meta. It is extremely powerful and can affect both simulated games, soloQ, and even the other team's champions in your match. Please use it with caution![/b]
 
 [h1] Planned Features [/h1]
 
 - Support items (Ardent Censer?) and possibly a 7th item category?
-- Ability for the user to select specific items on each champion in the post-draft screen. [i]Currently works with a side-loaded GUI.[/i]
 - Ability to edit values on the 30 base game items, in addition to the current config.json.
 - Translations for other locales.
 - Various bugfixes.
@@ -101,4 +101,4 @@ This is a free fan-made mod. I am not affiliated with Riot Games in any way. Ite
 
 [Code Mod Notice]
 This Workshop item contains native/executable code files. Enabling it allows code to run inside the game process. Use only mods from creators you trust.
-Files: apply_config.bat, apply_config.ps1, item-build-editor.exe, riot_items_tfm2.dll
+Files: apply_config.bat, apply_config.ps1, riot_items_tfm2.dll

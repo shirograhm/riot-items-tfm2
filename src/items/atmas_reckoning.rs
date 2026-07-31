@@ -1,12 +1,12 @@
-use mod_api::*;
+use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_name, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
+    apply_config, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
 };
 
 fn apply_big_hands(
-    ctx: &mut GameCtx,
+    ctx: &mut StableSim<'_>,
     player: usize,
     refresh_cooldown: &mut usize,
     stack_crit_chance: i32,
@@ -26,7 +26,7 @@ fn apply_big_hands(
         return;
     };
 
-    let stacks = (champion_ref.hp().max / hp_per_stack.max(1)).min(max_stacks);
+    let stacks = (champion_ref.hp().1 / hp_per_stack.max(1)).min(max_stacks);
     let crit = stack_crit_chance * stacks as i32;
     if crit <= 0 {
         return;
@@ -35,13 +35,9 @@ fn apply_big_hands(
     let entity_id = champion_ref.id();
     ctx.add_buff(
         entity_id,
-        BuffState {
-            name: buff_name(name),
-            duration: BuffType::Time {
-                tick: BUFF_REFRESH_DURATION_TICKS,
-            },
+        &BuffV1 {
             crit_chance: crit,
-            ..Default::default()
+            ..BuffV1::timed(name, BUFF_REFRESH_DURATION_TICKS)
         },
     );
     *refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
@@ -123,17 +119,17 @@ impl Default for AtmasReckoning {
     }
 }
 
-impl ModItemInfo for AtmasReckoning {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for AtmasReckoning {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -152,15 +148,15 @@ impl ModItemInfo for AtmasReckoning {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             hp: self.hp,
             crit_chance: self.crit_chance,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut GameCtx, player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.refresh_cooldown = 0;
         apply_big_hands(
             ctx,
@@ -173,7 +169,7 @@ impl ModItemInfo for AtmasReckoning {
         );
     }
 
-    fn update(&mut self, ctx: &mut GameCtx, _rng_seed: u64, player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         apply_big_hands(
             ctx,
             player,
@@ -185,11 +181,11 @@ impl ModItemInfo for AtmasReckoning {
         );
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::HP, ItemTag::AD]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Hp, ItemTagV1::Ad]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Hp
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

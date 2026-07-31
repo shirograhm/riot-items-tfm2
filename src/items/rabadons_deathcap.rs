@@ -1,6 +1,6 @@
 use crate::config::ItemConfig;
 use crate::{apply_config, ItemMeta};
-use mod_api::*;
+use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct RabadonsDeathcap {
@@ -54,17 +54,17 @@ impl Default for RabadonsDeathcap {
     }
 }
 
-impl ModItemInfo for RabadonsDeathcap {
-    fn clone_box(&self) -> Box<dyn ModItemInfo> {
+impl StableItem for RabadonsDeathcap {
+    fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
-    fn key(&self) -> &str {
-        self.meta.key
+    fn key(&self) -> String {
+        self.meta.key.to_string()
     }
 
-    fn icon(&self) -> &str {
-        self.meta.key
+    fn icon(&self) -> String {
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -83,19 +83,19 @@ impl ModItemInfo for RabadonsDeathcap {
         self.meta.next_tier()
     }
 
-    fn stat(&self) -> BuffState {
-        BuffState {
+    fn stat(&self) -> BuffV1 {
+        BuffV1 {
             magic_power: self.magic_power,
             magic_power_mult: self.magic_power_mult,
             ..Default::default()
         }
     }
 
-    fn tags(&self) -> Vec<ItemTag> {
-        vec![ItemTag::AP]
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![ItemTagV1::Ap]
     }
 
-    fn category(&self) -> ItemCategory {
-        ItemCategory::Magic
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Magic
     }
 }
