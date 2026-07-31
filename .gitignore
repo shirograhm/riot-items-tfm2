@@ -21,6 +21,5 @@ target/
 *.xcf
 
 .cargo/*
-.vscode/*hook-probe.json
+.vscode/*
 hook-target.json
-champion-roster.json
