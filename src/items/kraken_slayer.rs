@@ -92,7 +92,7 @@ impl KrakenSlayer {
             effect_max_percent_bonus: 75.0,
             effect_hp_percent_threshold: 25.0,
             effect_attack_interval: 3,
-            on_hit_cooldown_seconds: 0.75,
+            on_hit_cooldown_seconds: 0.5,
             attack_count: 0,
         }
     }
