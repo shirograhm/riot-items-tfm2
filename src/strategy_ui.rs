@@ -68,15 +68,23 @@
 //! is about hit-testing, not drawing, and without it a child swallows the click
 //! meant for the button it sits on.
 //!
-//! # Handlers leak, boundedly
+//! # Register each path exactly once
 //!
-//! `ui_register_path_events` leaks its closure ("handlers live until process
-//! exit") and the strategy screen is rebuilt every match, so the handlers this
-//! registers — chrome, ten per champion row, one per list row — accumulate once
-//! per appearance of the screen, and again whenever a row is added or removed
-//! (which respawns the row list). Each is a small box and the count is bounded
-//! by the number of configured champions, so it is a real cost but not a growing
-//! one.
+//! `ui_register_path_events` registers "a handler for EVERY UI event whose path
+//! equals `path`", and the handler lives until process exit. It is keyed by the
+//! path *string* and is not bound to a node, which means registering the same
+//! path twice makes one click run the handler twice, and a handler outlives the
+//! node it was registered for.
+//!
+//! That is a correctness problem, not just a leak. Row nodes are respawned on
+//! every add and delete, and the whole screen is rebuilt every match, so the
+//! obvious "register when you spawn" ends up stacking handlers: deleting row 2
+//! removed row 2, then the new row 2 (which had been row 3), and so on to the
+//! end of the list.
+//!
+//! Everything therefore registers through [`register_once`], which keeps the set
+//! of registered paths for the process. Since handlers survive their nodes, the
+//! ones registered on the first visit keep working on every later one.
 
 use std::sync::Mutex;
 
@@ -267,6 +275,44 @@ static MOD_FINALS: Mutex<Vec<String>> = Mutex::new(Vec::new());
 pub(crate) fn note_final_item(key: &str) {
     if let Ok(mut finals) = MOD_FINALS.lock() {
         finals.push(key.to_string());
+    }
+}
+
+/// Paths that already have a handler, so none is ever registered twice.
+///
+/// `ui_register_path_events` registers "a handler for EVERY UI event whose path
+/// equals `path`" and the handler lives until process exit — it is keyed by the
+/// path *string*, not bound to a node. Two consequences, and the second one bit:
+///
+/// - Registering the same path twice means one click runs the handler twice.
+///   That is invisible for something idempotent like opening a list, and
+///   destructive for `+ Add Champion` and row delete: deleting row 2 removed
+///   row 2, then the new row 2 (which had been row 3), and so on down the list.
+/// - A handler outlives the node it was registered for and fires again for
+///   whatever is at that path later. Re-registering when the strategy screen is
+///   rebuilt each match is therefore not just wasteful, it is the same bug.
+///
+/// Registering once per path is what both facts ask for, and it also bounds
+/// what used to be an ever-growing pile of leaked closures.
+static REGISTERED: Mutex<std::collections::BTreeSet<String>> =
+    Mutex::new(std::collections::BTreeSet::new());
+
+/// Registers [`handle_event`] for `path`, unless it already has one.
+fn register_once(ctx: &mut StableClient<'_>, path: &str) {
+    let fresh = REGISTERED
+        .lock()
+        .map(|mut set| set.insert(path.to_string()))
+        .unwrap_or(false);
+    if !fresh {
+        return;
+    }
+    if !ctx.ui_register_path_events(path, handle_event) {
+        // Forget it again so a later attempt can retry rather than silently
+        // leaving a dead control behind.
+        if let Ok(mut set) = REGISTERED.lock() {
+            set.remove(path);
+        }
+        diag(&format!("event registration refused for {path}"));
     }
 }
 
@@ -1061,17 +1107,14 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
             diag(&format!("row {row} source refused under {ROWS_PATH}"));
             break;
         }
-        ctx.ui_register_path_events(&champ_path(row), handle_event);
-        ctx.ui_register_path_events(&delete_path(row), handle_event);
+        register_once(ctx, &champ_path(row));
+        register_once(ctx, &delete_path(row));
         for slot in 0..PICKER_SLOTS {
-            ctx.ui_register_path_events(&combo_path(row, slot), handle_event);
-            ctx.ui_register_path_events(&clear_path(row, slot), handle_event);
+            register_once(ctx, &combo_path(row, slot));
+            register_once(ctx, &clear_path(row, slot));
         }
         for slot in 0..SWAP_X.len() {
-            ctx.ui_register_path_events(
-                &format!("{}.swap{slot}", editor_row_path(row)),
-                handle_event,
-            );
+            register_once(ctx, &format!("{}.swap{slot}", editor_row_path(row)));
         }
     }
     let _ = with_state(|state| state.spawned_rows = count);
@@ -1117,7 +1160,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
             break;
         }
         if !matches!(entry, ListEntry::Header(_)) {
-            ctx.ui_register_path_events(&entry_path(index), handle_event);
+            register_once(ctx, &entry_path(index));
         }
     }
     let content_height: i32 = entries.iter().map(entry_height).sum();
@@ -1129,7 +1172,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
             diag(&format!("champion list source refused under {champ_contents}"));
             break;
         }
-        ctx.ui_register_path_events(&champ_entry_path(index), handle_event);
+        register_once(ctx, &champ_entry_path(index));
     }
     ctx.ui_set_properties(
         &champ_contents,
@@ -1145,7 +1188,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     rebuild_rows(ctx, &entries);
 
     for path in [FADE_PATH, CANCEL_PATH, SAVE_PATH, ADD_PATH, UNIQUE_PATH, LISTCATCH_PATH] {
-        ctx.ui_register_path_events(path, handle_event);
+        register_once(ctx, path);
     }
 
     ctx.ui_set_text(
@@ -1550,9 +1593,7 @@ impl StableExtension for StrategyPicker {
             // the trait's note that only ui/asset calls are live there.
             cached_entries(ctx);
             cached_champions(ctx);
-            if !ctx.ui_register_path_events(OPEN_BUTTON, handle_event) {
-                diag(&format!("event registration refused for {OPEN_BUTTON}"));
-            }
+            register_once(ctx, OPEN_BUTTON);
             let _ = with_state(|state| state.wired = true);
         }
     }
