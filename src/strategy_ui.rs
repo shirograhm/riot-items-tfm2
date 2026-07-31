@@ -176,10 +176,10 @@ const BUILDS_TAB: &str = "main.contents.strategy.mode_toggle.builds";
 /// un-hide anything itself.
 const TEAM_TAB: &str = "main.contents.strategy.mode_toggle.team";
 
-/// The vanilla Personal panel. Its tab is gone, so nothing can bring it back
-/// on-screen, but it is still hidden on entry: game code decides what is visible
-/// when the screen is first built and may well pick Personal, having no idea its
-/// tab no longer exists.
+/// The vanilla Personal panel. Its tab is gone and [`set_legacy`] is now the
+/// only thing that shows it, but it is still hidden on entry: game code decides
+/// what is visible when the screen is first built and may well pick Personal,
+/// having no idea its tab no longer exists.
 const PERSONAL_PATH: &str = "main.contents.strategy.personal";
 
 /// The screen's own "Item Info" button. Game code hides it on the Team tab and

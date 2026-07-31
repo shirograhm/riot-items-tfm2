@@ -27,6 +27,8 @@ Some AI champions seem to prefer the wrong stats when given deference of item se
 
 Some AI champions ignore the custom item builds. This is being investigated, but is likely to be instability that occurs in long term builds.  
 
+If a [i]specific player[/i] on your team ignores their build every game, that is the vanilla per-player setting winning, not a bug in the build. See [b]Vanilla Overrides[/b] below.  
+
 The in-game item build editor override affects all champions in the game. This means you could control the enemy's items. Currently there is no fix without removing the custom item build behavior completely.  
 
 [h1] Instructions [/h1]
@@ -70,6 +72,18 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 3. Start the simulated match!
 
 Builds are saved to [b]item-builds.json[/b] as you make them, so they carry across sessions.  
+
+[h2] Vanilla Overrides [/h2]
+
+The [b]Builds[/b] tab replaces the game's own [b]Personal[/b] tab, where each player could be told to build a category (AD, Magic, Defense...) instead of [b]Let Player Decide[/b]. That vanilla setting is saved with your team and is applied [i]after[/i] this mod picks its items, so any player still set to a category will ignore the build you gave their champion. If you used that screen before installing this mod, those settings are still there.
+
+The mod cannot clear them for you — only the game's own dropdowns can write that value — so the old screen is one click away:
+
+1. On the [b]Builds[/b] tab, click [b]Vanilla Overrides[/b] in the toolbar.
+2. Set every player's three slots back to [b]Let Player Decide[/b].
+3. Click [b]Back to Item Builds[/b].
+
+You only need to do this once per champion, and only if you had used the Personal tab. If every player already reads [b]Let Player Decide[/b], there is nothing to fix.
 
 [b]NOTE: Custom item builds override all matches at the moment. So your build becomes the meta. It is extremely powerful and can affect both simulated games, soloQ, and even the other team's champions in your match. Please use it with caution![/b]
 
