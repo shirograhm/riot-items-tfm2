@@ -24,3 +24,4 @@ target/
 .vscode/*
 tools/*
 hook-target.json
+rust-toolchain.toml
