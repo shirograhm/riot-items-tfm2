@@ -443,13 +443,16 @@ fn is_mod_item(key: &str) -> bool {
 const LISTCATCH_PATH: &str = "main.contents.build_editor.listcatch";
 const ITEMLIST_PATH: &str = "main.contents.build_editor.itemlist";
 const CHAMPLIST_PATH: &str = "main.contents.build_editor.champlist";
-const UNIQUE_PATH: &str = "main.contents.build_editor.popup.toolbar.unique";
+/// In the footer beside Save. These paths are matched by exact string, so a
+/// button moved between the two bars in `build_editor.ui` must be moved here
+/// too — a stale path registers nothing and the control goes quietly dead.
+const UNIQUE_PATH: &str = "main.contents.build_editor.popup.footer.unique";
 /// In the footer rather than the toolbar: it is the panel's "done" button, and
 /// bottom-right is where one is looked for.
 const SAVE_PATH: &str = "main.contents.build_editor.popup.footer.save";
-/// In the footer beside Save, not the toolbar: the two buttons that end an edit
-/// sit together on the bottom row.
-const ADD_PATH: &str = "main.contents.build_editor.popup.footer.add";
+/// In the toolbar, above the column headers: adding a row acts on the list
+/// below it.
+const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
 const ROWS_PATH: &str = "main.contents.build_editor.popup.rowscroll.rows";
 
 fn editor_row_path(row: usize) -> String {

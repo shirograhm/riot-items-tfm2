@@ -27,18 +27,19 @@ build_editor:empty {
         top_right: 12;
       }
 
-      #unique:color_icon_button {
+      #add:color_icon_button {
         @"asset/base/style/main#tertiary_button";
         x: 15px;
-        y: 13px;
-        width: 260px;
-        height: 34px;
+        y: 11px;
+        width: 180px;
+        height: 38px;
 
         text: {
-          text: "Enforcing unique items";
+          font: "asset/base/font/set/bold";
+          text: "+ Add Champion";
           align_x: Center;
           align_y: Center;
-          size: 14;
+          size: 15;
         }
       }
 
@@ -159,19 +160,18 @@ build_editor:empty {
         bottom_right: 12;
       }
 
-      #add:color_icon_button {
+      #unique:color_icon_button {
         @"asset/base/style/main#tertiary_button";
         x: 15px;
-        y: 11px;
-        width: 180px;
-        height: 38px;
+        y: 13px;
+        width: 260px;
+        height: 34px;
 
         text: {
-          font: "asset/base/font/set/bold";
-          text: "+ Add Champion";
+          text: "Enforcing unique items";
           align_x: Center;
           align_y: Center;
-          size: 15;
+          size: 14;
         }
       }
 
