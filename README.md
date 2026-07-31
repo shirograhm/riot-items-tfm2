@@ -198,8 +198,9 @@ The strategy screen's **Personal** tab is replaced by a **Builds** tab, beside
 Team. It shows one row per champion: three item slots, an **+ Add Champion**
 button, a per-row delete, swap buttons between slots, and a category-grouped item
 list (Assassin / Fighter / Marksman / Mage / Tank / Support, then Other) with
-icons. **Team** is untouched — switching to it puts the editor away and brings
-the Team columns back.
+icons. The vanilla **Matchup** card stays on screen to the right of it, so the
+lineup is visible while builds are being set. **Team** is untouched — switching
+to it puts the editor away and brings the Team columns back.
 
 The vanilla Personal tab is gone because this replaces it. Its five per-player
 dropdowns set the same thing per athlete that this sets per champion, and the

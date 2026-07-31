@@ -8,8 +8,10 @@
 //! # A tab rather than a window
 //!
 //! The override replaces the game's **Personal** tab with `#builds`, leaving
-//! Team beside it, and the editor panel is laid out at exactly the content band
-//! those tabs switch between (1824x645 at canvas 47,182).
+//! Team beside it. The editor panel sits in the content band those tabs switch
+//! between, at 1364x645 (canvas 47,182) — the band's full 1824px minus the
+//! right-hand column, which is left uncovered so the vanilla Matchup card in
+//! `#sub4` stays on screen beside the editor.
 //!
 //! Removing Personal is deliberate: this editor supersedes it. That tab's five
 //! per-player category dropdowns are the same setting expressed per athlete
@@ -168,15 +170,33 @@ const ITEM_INFO_BTN: &str = "main.contents.strategy.item_info_btn";
 /// tooltip is drawn by game code *outside* this subtree — `strategy.ui` has no
 /// tooltip node at all — so an opaque panel of ours cannot be drawn over it and
 /// nothing stops the hover that summons it. With the panel hidden there is
-/// nothing left to hover. `#sub1`-`#sub4` are the Team tab's four columns; they
-/// occupy the same band and would otherwise show through around our edges.
-const CONTENT_PANELS: [&str; 5] = [
+/// nothing left to hover. `#sub1`-`#sub3` are the Team tab's first three
+/// columns; they occupy the same band and would otherwise show through around
+/// our edges. `#sub4` is deliberately absent — see [`MATCHUP_PATH`].
+const CONTENT_PANELS: [&str; 4] = [
     PERSONAL_PATH,
     "main.contents.strategy.sub1",
     "main.contents.strategy.sub2",
     "main.contents.strategy.sub3",
-    "main.contents.strategy.sub4",
 ];
+
+/// The Team tab's fourth column, left showing while the Builds tab is up so its
+/// Matchup card stays on screen — the editor panel is narrowed to 1364px to
+/// leave exactly this column uncovered.
+///
+/// The card cannot be rebuilt on our side: its portraits and names are written
+/// by game code, and nothing in the stable API maps an athlete to a champion.
+/// Reusing the game's own node is the only way to have one that is populated.
+const SUB4_PATH: &str = "main.contents.strategy.sub4";
+
+/// The Matchup card, and the "Closing Out" block above it. `#sub4` lays its
+/// children out `TopToBottom`, so hiding `#game_finish` floats Matchup to the
+/// top of the column — which is how the vanilla Personal tab showed it too.
+///
+/// Both are re-asserted every frame: game code drives them from its own idea of
+/// the current tab, which never becomes Builds.
+const MATCHUP_PATH: &str = "main.contents.strategy.sub4.matchup";
+const GAME_FINISH_PATH: &str = "main.contents.strategy.sub4.game_finish";
 
 /// The Team tab's four columns, shown again when the Save button leaves the
 /// Builds tab — the one exit with no vanilla tab click behind it.
@@ -196,9 +216,10 @@ const EDITOR_SOURCE: &str = include_str!("../ui/layout/build_editor.ui");
 /// 640x640 sheet (see `mod.override_info`), so frame names are the mod's.
 const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
 
-// Row geometry, inside the 1774px band `#rows` gives its children. The x offsets
-// match `build_editor.ui`'s column headers.
-const ROW_WIDTH: u32 = 1766;
+// Row geometry, inside the 1314px band `#rows` gives its children. The x offsets
+// match `build_editor.ui`'s column headers. The band is the panel minus the
+// right-hand column the vanilla Matchup card is left sitting in.
+const ROW_WIDTH: u32 = 1306;
 /// Row height and gap are the vanilla Personal panel's own (50px rows, 10px
 /// spacing), so the tab reads as one of the game's own rather than a graft.
 const ROW_HEIGHT: u32 = 50;
@@ -209,11 +230,11 @@ const COMBO_H: u32 = 40;
 /// Square buttons (clear, swap glyph target, delete), centred in the row.
 const MINI_Y: u32 = 14;
 const CHAMP_X: u32 = 8;
-const CHAMP_W: u32 = 320;
-const COMBO_X: [u32; PICKER_SLOTS] = [340, 806, 1272];
-const COMBO_W: u32 = 420;
-const SWAP_X: [u32; PICKER_SLOTS - 1] = [766, 1232];
-const DELETE_X: u32 = 1712;
+const CHAMP_W: u32 = 280;
+const COMBO_X: [u32; PICKER_SLOTS] = [306, 630, 954];
+const COMBO_W: u32 = 280;
+const SWAP_X: [u32; PICKER_SLOTS - 1] = [590, 914];
+const DELETE_X: u32 = 1250;
 
 /// Sizes of the two floating lists, mirroring `build_editor.ui`. Kept here
 /// because the open code has to decide whether a list fits below the control
@@ -1289,6 +1310,7 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
         ctx.ui_set_visible(panel, false);
     }
     ctx.ui_set_visible(ITEM_INFO_BTN, true);
+    keep_matchup(ctx);
 
     refresh_unique(ctx);
     let count = with_state(|state| state.rows.len()).unwrap_or(0);
@@ -1310,7 +1332,23 @@ fn close_editor(ctx: &mut StableClient<'_>) {
     close_list(ctx);
     ctx.ui_set_selectable_selected(BUILDS_TAB, false);
     ctx.ui_set_visible(EDITOR_PATH, false);
+    // The one thing put back, because it is the one thing hidden that game code
+    // may not restore: "Closing Out" belongs to the Team tab, and if its handler
+    // does not re-show it the block would stay gone for the rest of the screen.
+    // Writing `true` when game code also does is harmless.
+    ctx.ui_set_visible(GAME_FINISH_PATH, true);
     let _ = with_state(|state| state.showing = false);
+}
+
+/// Holds the Matchup card on screen and "Closing Out" off it.
+///
+/// Called on entry and then every frame from `post_update`: game code re-asserts
+/// both from its own tab state, which never becomes Builds, so a one-shot write
+/// does not survive its next update.
+fn keep_matchup(ctx: &mut StableClient<'_>) {
+    ctx.ui_set_visible(SUB4_PATH, true);
+    ctx.ui_set_visible(GAME_FINISH_PATH, false);
+    ctx.ui_set_visible(MATCHUP_PATH, true);
 }
 
 /// Leaves the Builds tab for Team, for the Save button — which has no tab click
@@ -1708,12 +1746,13 @@ impl StableExtension for StrategyPicker {
         }
 
         // Re-asserted every frame rather than once on entry. Game code drives
-        // `#item_info_btn` from its own idea of the current tab, which never
-        // becomes Builds — so on a screen entered from Team it re-hides the
-        // button on its next update and a one-shot show does not survive. This
-        // runs in `post_update`, after that, so ours is the last write.
+        // these from its own idea of the current tab, which never becomes
+        // Builds — so on a screen entered from Team it undoes them on its next
+        // update and a one-shot write does not survive. This runs in
+        // `post_update`, after that, so ours is the last word.
         if with_state(|state| state.showing).unwrap_or(false) {
             ctx.ui_set_visible(ITEM_INFO_BTN, true);
+            keep_matchup(ctx);
         }
     }
 }
