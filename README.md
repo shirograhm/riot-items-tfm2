@@ -232,15 +232,8 @@ in the bottom right, has nothing left to write and simply returns to the **Team*
 tab. A row with no champion, or with nothing pinned, is kept in the editor but
 not written — a build with nothing to key it by is not a build.
 
-**Builds are keyed by champion, not by position.** The game computes item builds
-one team at a time and nothing it passes the mod says which team is yours, so
-there is no way to scope a build to a lane without also giving it to the enemy
-player in that lane. Keying by champion is the only thing the game can be told
-apart on. (An enemy who picked the same champion still matches — nothing
-available to a mod separates those two.)
-
-The champion list is read from the game at runtime, so champions added by other
-mods can be given builds too.
+**Builds are keyed by champion.** The champion list is read from the game at runtime, 
+so champions added by other mods can be given builds too.
 
 If the layout override is not loaded there is no Builds tab, the mod installs
 nothing, and the screen falls back to stock behavior — Personal tab included.
