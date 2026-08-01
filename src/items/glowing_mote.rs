@@ -57,6 +57,7 @@ impl StableItem for GlowingMote {
     fn stat(&self) -> BuffV1 {
         BuffV1 {
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }

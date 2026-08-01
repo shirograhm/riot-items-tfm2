@@ -123,6 +123,7 @@ impl StableItem for DuskAndDawn {
             magic_power: self.magic_power,
             attack_speed_mult: self.attack_speed_mult,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -131,7 +132,13 @@ impl StableItem for DuskAndDawn {
         self.spellblade_ready = false;
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        target: usize,
+    ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };

@@ -203,6 +203,7 @@ impl StableItem for LocketOfTheIronSolari {
             defence: self.defence,
             magic_resistance: self.magic_resistance,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }

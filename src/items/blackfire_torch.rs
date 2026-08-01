@@ -111,11 +111,18 @@ impl StableItem for BlackfireTorch {
         BuffV1 {
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        _target: usize,
+    ) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };

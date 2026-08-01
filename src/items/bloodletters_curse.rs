@@ -110,6 +110,7 @@ impl StableItem for BloodlettersCurse {
             magic_power: self.magic_power,
             hp: self.hp,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -139,7 +140,10 @@ impl StableItem for BloodlettersCurse {
                 target,
                 &BuffV1 {
                     magic_resistance_mult: -self.effect_percent_mr_shred,
-                    ..BuffV1::timed("bloodletters_curse_mr_shred", ticks(self.effect_duration_seconds))
+                    ..BuffV1::timed(
+                        "bloodletters_curse_mr_shred",
+                        ticks(self.effect_duration_seconds),
+                    )
                 },
             );
         }

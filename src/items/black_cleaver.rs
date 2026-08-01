@@ -106,6 +106,7 @@ impl StableItem for BlackCleaver {
             attack: self.attack,
             hp: self.hp,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -135,7 +136,10 @@ impl StableItem for BlackCleaver {
                 target,
                 &BuffV1 {
                     defence_mult: -self.effect_percent_armor_shred,
-                    ..BuffV1::timed("black_cleaver_armor_shred", ticks(self.effect_duration_seconds))
+                    ..BuffV1::timed(
+                        "black_cleaver_armor_shred",
+                        ticks(self.effect_duration_seconds),
+                    )
                 },
             );
         }

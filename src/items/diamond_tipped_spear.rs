@@ -131,6 +131,7 @@ impl StableItem for DiamondTippedSpear {
         BuffV1 {
             attack_speed_mult: self.attack_speed_mult,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }

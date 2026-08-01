@@ -126,6 +126,7 @@ impl StableItem for Bastionbreaker {
         BuffV1 {
             attack: self.attack,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -174,7 +175,13 @@ impl StableItem for Bastionbreaker {
         self.sabotage_charge = 0; // spend the charge
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        target: usize,
+    ) {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 

@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, has_buff, ItemMeta, ADAPTIVE_FORCE_AD_RATIO,
-    BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS, DISTANCE_UNITS_PER_RANGE,
+    apply_config, has_buff, ItemMeta, ADAPTIVE_FORCE_AD_RATIO, BUFF_REFRESH_DURATION_TICKS,
+    BUFF_REFRESH_PERIOD_TICKS, DISTANCE_UNITS_PER_RANGE,
 };
 
 #[derive(Clone, Debug)]
@@ -182,6 +182,7 @@ impl StableItem for ZekesHerald {
             hp_regen: self.hp_regen,
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
