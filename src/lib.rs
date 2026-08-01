@@ -330,6 +330,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("trinity_force" => TrinityForce));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("void_staff" => VoidStaff));
+    reg.add_item(configured!("voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("wits_end" => WitsEnd));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows));
@@ -387,6 +388,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce));
     reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
     reg.add_item(configured_radiant!("radiant_void_staff" => VoidStaff));
+    reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
     reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));

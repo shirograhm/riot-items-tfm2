@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 123 new items (70 base + 53 Radiant) to the game.
+Reskins the 30 existing items and also adds 125 new items (71 base + 54 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -93,6 +93,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Trinity Force** | 1400G | +333 HP<br>+33 AD<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 33 + 33% of your Attack Damage as bonus physical damage (1.5 second cooldown). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Landing an Ability on an enemy champion heals you for 10 + 1% of your maximum health. |
 | **Void Staff** | 1500G | +95 AP<br>+25% Magic Pen | — |
+| **Voltaic Cyclosword** | 1300G | +60 AD<br>+10% CDR | Lethality: Ignore 12 armor when you deal physical damage to enemies.<br>Energized: Moving and dealing physical damage generates Energize stacks, up to 100.<br>Galvanize: Landing an Ability on an enemy champion triggers Energized effects if they are ready.<br>Firmament: When fully Energized, your next instance of physical damage grants you 6 Lethality for 4 seconds and deals bonus physical damage equal to 6% of the target's current health (maximum 200 against minions and monsters). |
 | **Warmog's Armor** | 1450G | +600 HP<br>+6 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Wit's End** | 1400G | +40% AS<br>+80 MR<br>+20% Tenacity | Fray: Your basic attacks deal 45 bonus magic damage. |
 | **Yun Tal Wildarrows** | 1500G | +65 AD<br>+20% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |
@@ -151,6 +152,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Trinity Force** | 2000G | +333 HP<br>+33 AD<br>+33% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 33 + 33% of your Attack Damage as bonus physical damage (1.5 second cooldown). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Landing an Ability on an enemy champion heals you for 25 + 3% of your maximum health. |
 | **Radiant Void Staff** | 2200G | +160 AP<br>+40% Magic Pen | — |
+| **Radiant Voltaic Cyclosword** | 1950G | +100 AD<br>+15% CDR | Lethality: Ignore 12 armor when you deal physical damage to enemies.<br>Energized: Moving and dealing physical damage generates Energize stacks, up to 100.<br>Galvanize: Landing an Ability on an enemy champion triggers Energized effects if they are ready.<br>Firmament: When fully Energized, your next instance of physical damage grants you 10 Lethality for 4 seconds and deals bonus physical damage equal to 10% of the target's current health (maximum 200 against minions and monsters). |
 | **Radiant Warmog's Armor** | 2100G | +1000 HP<br>+10 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Wit's End** | 2000G | +65% AS<br>+130 MR<br>+30% Tenacity | Fray: Your basic attacks deal 45 bonus magic damage. |
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice: Dealing physical damage grants 1% critical strike chance permanently, up to 25%.<br>Flurry: On attack, gain 30% attack speed for 6 seconds (15 second cooldown). |

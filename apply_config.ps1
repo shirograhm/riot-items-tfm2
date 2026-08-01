@@ -235,6 +235,18 @@ $rsrStacks = [int]$config.radiant_stormrazor.effect_max_stacks
 $rsrMs = [int]$config.radiant_stormrazor.effect_move_speed_mult
 $rsrDmg = [int]$config.radiant_stormrazor.effect_bonus_flat_damage
 $rsrDur = [double]$config.radiant_stormrazor.effect_duration_seconds
+$vcLeth = [int]$config.voltaic_cyclosword.effect_lethality
+$vcBonusLeth = [int]$config.voltaic_cyclosword.effect_bonus_lethality
+$vcPct = [double]$config.voltaic_cyclosword.effect_hp_percent_damage
+$vcCap = [int]$config.voltaic_cyclosword.effect_minion_damage_cap
+$vcStacks = [int]$config.voltaic_cyclosword.effect_max_stacks
+$vcDur = [double]$config.voltaic_cyclosword.effect_duration_seconds
+$rvcLeth = [int]$config.radiant_voltaic_cyclosword.effect_lethality
+$rvcBonusLeth = [int]$config.radiant_voltaic_cyclosword.effect_bonus_lethality
+$rvcPct = [double]$config.radiant_voltaic_cyclosword.effect_hp_percent_damage
+$rvcCap = [int]$config.radiant_voltaic_cyclosword.effect_minion_damage_cap
+$rvcStacks = [int]$config.radiant_voltaic_cyclosword.effect_max_stacks
+$rvcDur = [double]$config.radiant_voltaic_cyclosword.effect_duration_seconds
 $bcShred = [int]$config.black_cleaver.effect_percent_armor_shred
 $bcDur = [int]$config.black_cleaver.effect_duration_seconds
 $bcStacks = [int]$config.black_cleaver.effect_max_stacks
@@ -494,6 +506,9 @@ $i18n.en.dead_mans_plate.option = $dmpEn -f $dmpStacks, $dmpMax, $dmpMs, $dmpMin
 $i18n.en.radiant_dead_mans_plate.option = $dmpEn -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
 $i18n.en.collector.option = "$lethEn`n`nDeath: Dealing damage to enemy champions below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them." -f $colLeth
 $i18n.en.radiant_collector.option = "$lethEn`n`nDeath: Dealing damage to enemy champions below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them." -f $rcolLeth
+$vcEn = "$lethEn`n`nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#e8a800ff>Energize<> stacks, up to <#e8a800ff>{1}<>.`n`nGalvanize: Landing an Ability on an enemy champion triggers <#e8a800ff>Energized<> effects if they are ready.`n`nFirmament: When fully <#e8a800ff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>{2} <$armorPenIcon> Lethality<> for <#e8a800ff>{3} seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>{4}% of the target's current health<>. Deals a maximum of <#ff9028ff>{5} bonus physical damage<> against minions and monsters."
+$i18n.en.voltaic_cyclosword.option = $vcEn -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
+$i18n.en.radiant_voltaic_cyclosword.option = $vcEn -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -627,6 +642,9 @@ $i18n.vi.dead_mans_plate.option = $dmpVi -f $dmpStacks, $dmpMax, $dmpMs, $dmpMin
 $i18n.vi.radiant_dead_mans_plate.option = $dmpVi -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
 $i18n.vi.collector.option = "$lethVi`n`nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng." -f $colLeth
 $i18n.vi.radiant_collector.option = "$lethVi`n`nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng." -f $rcolLeth
+$vcVi = "$lethVi`n`nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>{1}<>.`n`nKích Điện: Gây sát thương lên Tướng địch bằng một kỹ năng sẽ kích hoạt <#e8a800ff>Tích Điện<> nếu hiệu ứng này đã sẵn sàng.`n`nThiên Đường: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>{2} <$armorPenIcon> Xuyên Giáp Trắng<> trong <#e8a800ff>{3} giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>{4}% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>{5} sát thương vật lí cộng thêm<> lên lính và quái vật."
+$i18n.vi.voltaic_cyclosword.option = $vcVi -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
+$i18n.vi.radiant_voltaic_cyclosword.option = $vcVi -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -760,6 +778,9 @@ $i18n.'zh-hans'.dead_mans_plate.option = $dmpZh -f $dmpStacks, $dmpMax, $dmpMs, 
 $i18n.'zh-hans'.radiant_dead_mans_plate.option = $dmpZh -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
 $i18n.'zh-hans'.collector.option = "$lethZh`n`n死：对生命值低于 <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。" -f $colLeth
 $i18n.'zh-hans'.radiant_collector.option = "$lethZh`n`n死：对生命值低于 <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。" -f $rcolLeth
+$vcZh = "$lethZh`n`n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>{1}<> 层。`n`n通电：用技能对敌方英雄造成伤害会触发<#e8a800ff>蓄能<>（若已就绪）。`n`n苍穹：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值{4}%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>{3}秒<> 的 <#ffdd8eff>{2} 点<$armorPenIcon> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>{5}点额外物理伤害<>。"
+$i18n.'zh-hans'.voltaic_cyclosword.option = $vcZh -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
+$i18n.'zh-hans'.radiant_voltaic_cyclosword.option = $vcZh -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -893,6 +914,9 @@ $i18n.'pt-BR'.dead_mans_plate.option = $dmpPt -f $dmpStacks, $dmpMax, $dmpMs, $d
 $i18n.'pt-BR'.radiant_dead_mans_plate.option = $dmpPt -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
 $i18n.'pt-BR'.collector.option = "$lethPt`n`nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>." -f $colLeth
 $i18n.'pt-BR'.radiant_collector.option = "$lethPt`n`nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>." -f $rcolLeth
+$vcPt = "$lethPt`n`nEnergizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#e8a800ff>Energia<>, até <#e8a800ff>{1}<>.`n`nGalvanizar: Causar dano a Campeões inimigos com uma habilidade ativa <#e8a800ff>Energizado<> se o efeito estiver pronto.`n`nFirmamento: Quando totalmente <#e8a800ff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#d94c49ff>{4}% da Vida atual do alvo<> como <#ff9028ff>Dano Físico adicional<> e concede a você <#ffdd8eff>{2} de <$armorPenIcon> Letalidade adicional<> por <#e8a800ff>{3}s<>. (Máximo de <#ff9028ff>{5}<> contra tropas e monstros.)"
+$i18n.'pt-BR'.voltaic_cyclosword.option = $vcPt -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
+$i18n.'pt-BR'.radiant_voltaic_cyclosword.option = $vcPt -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1026,6 +1050,9 @@ $i18n.ru.dead_mans_plate.option = $dmpRu -f $dmpStacks, $dmpMax, $dmpMs, $dmpMin
 $i18n.ru.radiant_dead_mans_plate.option = $dmpRu -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
 $i18n.ru.collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${colThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их." -f $colLeth
 $i18n.ru.radiant_collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их." -f $rcolLeth
+$vcRu = "$lethRu`n`nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>{1}<>.`n`nЭлектризация: При нанесении вражескому чемпиону урона умением срабатывает <#e8a800ff>Заряд<>, если он готов.`n`nНебосклон: При полном <#e8a800ff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>{4}% текущего здоровья цели<> и даёт вам <#ffdd8eff>{2} доп. <$armorPenIcon> летальности<> на <#e8a800ff>{3} сек<>. Наносит максимум <#ff9028ff>{5} дополнительного физического урона<> по миньонам и монстрам."
+$i18n.ru.voltaic_cyclosword.option = $vcRu -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
+$i18n.ru.radiant_voltaic_cyclosword.option = $vcRu -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -1158,6 +1185,9 @@ $i18n.ko.dead_mans_plate.option = $dmpKo -f $dmpStacks, $dmpMax, $dmpMs, $dmpMin
 $i18n.ko.radiant_dead_mans_plate.option = $dmpKo -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
 $i18n.ko.collector.option = "$lethKo`n`n죽음: <$hpIcon> <#60e84dff>최대 체력<>이 <#60e84dff>${colThreshold}%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다." -f $colLeth
 $i18n.ko.radiant_collector.option = "$lethKo`n`n죽음: <$hpIcon> <#60e84dff>최대 체력<>이 <#60e84dff>${rcolThreshold}%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다." -f $rcolLeth
+$vcKo = "$lethKo`n`n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>{1}<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.`n`n전류 자극: 적 챔피언에게 스킬로 피해를 입히면 준비된 <#e8a800ff>충전<> 상태가 발동합니다.`n`n창공: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 {4}%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>{3}초<> 동안 <#ffdd8eff>{2}의 <$armorPenIcon> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>{5}의 추가 물리 피해<>를 입힙니다."
+$i18n.ko.voltaic_cyclosword.option = $vcKo -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
+$i18n.ko.radiant_voltaic_cyclosword.option = $vcKo -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
 
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
@@ -1223,6 +1253,8 @@ Write-Host "  Yun Tal Wildarrows:         +${ytCrit}% crit/hit (cap ${ytMaxCrit}
 Write-Host "  Radiant Yun Tal Wildarrows: +${rytCrit}% crit/hit (cap ${rytMaxCrit}%) / +${rytFlurryAS}% AS ${rytDur}s (${rytCd}s CD)"
 Write-Host "  Stormrazor:              ${srDmg} magic dmg / ${srMs}% MS ${srDur}s / ${srStacks} stacks"
 Write-Host "  Radiant Stormrazor:      ${rsrDmg} magic dmg / ${rsrMs}% MS ${rsrDur}s / ${rsrStacks} stacks"
+Write-Host "  Voltaic Cyclosword:      ${vcLeth} leth / +${vcBonusLeth} leth ${vcDur}s / ${vcPct}% current HP (max ${vcCap})"
+Write-Host "  Radiant Voltaic:         ${rvcLeth} leth / +${rvcBonusLeth} leth ${rvcDur}s / ${rvcPct}% current HP (max ${rvcCap})"
 Write-Host "  Black Cleaver:               -${bcShred}% armor / ${bcDur}s / ${bcStacks} stacks"
 Write-Host "  Radiant Black Cleaver:       -${rbcShred}% armor / ${rbcDur}s / ${rbcStacks} stacks"
 Write-Host "  Bloodletter's Curse:         -${blcShred}% MR / ${blcDur}s / ${blcStacks} stacks"
