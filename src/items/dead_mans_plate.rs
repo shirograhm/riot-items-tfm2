@@ -6,11 +6,11 @@ use crate::{
     BUFF_REFRESH_PERIOD_TICKS, TICKS_PER_SECOND,
 };
 
+const PROC_LOCKOUT_TICKS: usize = BUFF_REFRESH_DURATION_TICKS;
+
 #[derive(Clone, Debug)]
 pub struct DeadMansPlate {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     momentum_buff: &'static str,
     price: usize,
     hp: i32,
@@ -21,13 +21,10 @@ pub struct DeadMansPlate {
     effect_move_speed_per_stack: f64,
     effect_min_bonus_damage: usize,
     effect_max_bonus_damage: usize,
-    /// Momentum currently held. Owned by the item rather than counted from
-    /// stacked buffs: at 100 stacks that would be 100 buffs on the champion.
     momentum: usize,
-    /// Sub-stack carry, in ticks-worth of generation, so `effect_stacks_per_second`
-    /// need not divide evenly into the tick rate.
     stack_progress: usize,
     refresh_cooldown: usize,
+    proc_cooldown: usize,
 }
 
 impl DeadMansPlate {
@@ -51,6 +48,7 @@ impl DeadMansPlate {
             momentum: 0,
             stack_progress: 0,
             refresh_cooldown: 0,
+            proc_cooldown: 0,
         }
     }
 
@@ -92,11 +90,6 @@ impl DeadMansPlate {
         self
     }
 
-    /// Shipwrecker's damage for `consumed` Momentum: a straight line from
-    /// `effect_min_bonus_damage` at no Momentum to `effect_max_bonus_damage` at a
-    /// full bar. The per-stack step is derived rather than configured so the two
-    /// ends of the range stay exactly where they are set, whatever
-    /// `effect_max_stacks` is.
     fn proc_damage(&self, consumed: usize) -> usize {
         let full_bar = self.effect_max_stacks.max(1);
         let span = self
@@ -105,8 +98,6 @@ impl DeadMansPlate {
         self.effect_min_bonus_damage + span * consumed.min(full_bar) / full_bar
     }
 
-    /// Accrues Momentum at `effect_stacks_per_second`, independent of whether the
-    /// champion is actually moving — TFM2 gives no per-entity velocity to gate on.
     fn build_momentum(&mut self) {
         if self.momentum >= self.effect_max_stacks {
             self.momentum = self.effect_max_stacks;
@@ -121,9 +112,6 @@ impl DeadMansPlate {
         }
     }
 
-    /// Re-grants the movement speed Momentum is currently worth. The bonus has to
-    /// track a value that moves both ways (it drops to nothing on a proc), so it
-    /// is a short `Time` buff refreshed on a slightly shorter cycle.
     fn apply_move_speed(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
@@ -202,15 +190,18 @@ impl StableItem for DeadMansPlate {
         self.momentum = 0;
         self.stack_progress = 0;
         self.refresh_cooldown = 0;
+        self.proc_cooldown = 0;
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        if self.proc_cooldown > 0 {
+            self.proc_cooldown -= 1;
+            return;
+        }
         self.build_momentum();
         self.apply_move_speed(ctx, player);
     }
 
-    /// Shipwrecker. Basic attacks are the only physical damage instance a mod can
-    /// observe, so the proc rides `on_attack` and ignores ability hits.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -219,8 +210,6 @@ impl StableItem for DeadMansPlate {
         _damage: &mut usize,
         damage_type: DamageTypeV1,
     ) {
-        // There has to be Momentum to consume: with no stacks there is nothing to
-        // spend, so the proc waits rather than paying out its floor for free.
         if damage_type != DamageTypeV1::Ad || self.momentum == 0 {
             return;
         }
@@ -231,6 +220,8 @@ impl StableItem for DeadMansPlate {
         let consumed = self.momentum;
         self.momentum = 0;
         self.stack_progress = 0;
+        self.proc_cooldown = PROC_LOCKOUT_TICKS;
+        self.refresh_cooldown = 0;
 
         ctx.deal_damage(
             caster,
