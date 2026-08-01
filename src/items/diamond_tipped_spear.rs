@@ -34,7 +34,7 @@ impl DiamondTippedSpear {
             attack_speed_mult: 35,
             adaptive_force: 60,
             skill_cooldown_mult: 10,
-            effect_max_percent_bonus: 30.0,
+            effect_max_percent_bonus: 25.0,
             effect_max_distance: 100,
         }
     }
