@@ -95,8 +95,6 @@ impl VoltaicCyclosword {
         }
     }
 
-    /// Spends a full Energize bar on `target`, if there is one to spend. Shared
-    /// by the attack path and Galvanize's ability path.
     fn try_firmament(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         if self.energized_stacks < self.effect_max_stacks {
             return;
@@ -185,13 +183,6 @@ impl StableItem for VoltaicCyclosword {
         // Gain 5 energized stacks on attacks, up to the max stacks
         if damage_type == DamageTypeV1::Ad {
             self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
-        }
-    }
-
-    /// Galvanize: an ability landing on an enemy champion spends the bar too.
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
-        if is_enemy_champion(ctx, caster, target) {
-            self.try_firmament(ctx, caster, target);
         }
     }
 
