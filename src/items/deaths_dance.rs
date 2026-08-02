@@ -5,21 +5,11 @@ use crate::{
     apply_config, count_takedowns, has_buff, mark_enemy_champion, percent_of, ticks, ItemMeta,
 };
 
-/// How many times a second Ignore Pain bleeds.
-///
-/// One number drives two things that must agree: the gate buff lasts
-/// `1 / BURN_PROCS_PER_SECOND` seconds, and each proc is allowed
-/// `effect_burn_hp_percent_cap / BURN_PROCS_PER_SECOND` of max HP. Splitting
-/// them into separate literals is how the cap silently stopped meaning "per
-/// second" — `update` runs every tick, so the gate is the only thing setting
-/// the rate.
 const BURN_PROCS_PER_SECOND: f64 = 5.0;
 
 #[derive(Clone, Debug)]
 pub struct DeathsDance {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     burn_buff: &'static str,
     price: usize,
     attack: i32,
@@ -30,8 +20,6 @@ pub struct DeathsDance {
     effect_bonus_flat_heal: i32,
     effect_kill_heal_missing_percent: f64,
     accumulated_damage: i32,
-    /// Bleed damage dealt but not yet seen come back through `on_damaged`, so
-    /// the pool does not refill itself. See [`DeathsDance::on_damaged`].
     self_inflicted_credit: i32,
     last_damaged_by: usize,
     takedown_marks: Vec<(usize, usize)>,
@@ -96,16 +84,6 @@ impl DeathsDance {
         self
     }
 
-    /// Ratio between damage this champion *takes* and damage that was *aimed*
-    /// at it.
-    ///
-    /// `stat()` puts `effect_delayed_damage_percent` into `damaged_reduce`, so
-    /// the game shaves that much off every incoming hit before `on_damaged`
-    /// reports it — and off this item's own bleed on the way back out. So it is
-    /// needed twice: to recover the pre-reduction figure when storing, and to
-    /// pre-pay the reduction when bleeding, so the intended amount lands. At the
-    /// default 25% this is 4/3, which is where the bare `4.0 / 3.0` in the
-    /// original came from.
     fn mitigation_scale(&self) -> f64 {
         // Reducing 100% of damage would divide by zero, and there is no sensible
         // bleed for a champion that takes nothing, so leave a sliver through.
@@ -178,6 +156,7 @@ impl StableItem for DeathsDance {
             attack: self.attack,
             defence: self.defence,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             damaged_reduce: self.effect_delayed_damage_percent as usize,
             ..Default::default()
         }
@@ -212,9 +191,6 @@ impl StableItem for DeathsDance {
         }
 
         let entity = champion_ref.id();
-        // `update` runs every tick, so the gate buff below is what makes this a
-        // rate rather than a per-frame drain: the cap is a per-second figure
-        // split across that many procs.
         let per_proc_cap = percent_of(
             champion_ref.hp().1,
             self.effect_burn_hp_percent_cap / BURN_PROCS_PER_SECOND,
@@ -228,13 +204,7 @@ impl StableItem for DeathsDance {
             entity,
             &BuffV1::timed(self.burn_buff, ticks(1.0 / BURN_PROCS_PER_SECOND)),
         );
-        // Grossed up so that `tick_damage` is what actually lands after this
-        // item's own `damaged_reduce` takes its cut. Dealing `tick_damage` flat
-        // is what made the real ceiling 3.75% of max HP a second instead of the
-        // 5% the config asks for.
         let dealt = (tick_damage as f64 * self.mitigation_scale()).round() as usize;
-        // What lands is reported straight back to `on_damaged`; bank it so that
-        // it is discounted there rather than refilling the pool.
         self.self_inflicted_credit += tick_damage;
         ctx.deal_damage(self.last_damaged_by, entity, dealt, 0, AttackTypeV1::Item);
         self.accumulated_damage -= tick_damage;
@@ -252,14 +222,6 @@ impl StableItem for DeathsDance {
             return;
         }
 
-        // Ignore Pain's own bleed arrives here like any other hit: it is dealt
-        // with `last_damaged_by` as the attacker, not the champion itself, so
-        // the guard above never catches it. Left alone it re-stores a share of
-        // itself and the pool feeds off its own drain.
-        //
-        // Discounted against a banked credit rather than a "currently bleeding"
-        // flag, so it holds whether the engine reports this back inside
-        // `deal_damage` or a tick later.
         let mut damage = damage as i32;
         if self.self_inflicted_credit > 0 {
             let discounted = damage.min(self.self_inflicted_credit);
@@ -289,7 +251,13 @@ impl StableItem for DeathsDance {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        target: usize,
+    ) {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 

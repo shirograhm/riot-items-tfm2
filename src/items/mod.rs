@@ -80,6 +80,7 @@ items! {
     trinity_force,
     unending_despair,
     void_staff,
+    voltaic_cyclosword,
     warmogs_armor,
     winged_moonplate,
     wits_end,

@@ -129,6 +129,7 @@ impl StableItem for EchoesOfHelia {
             hp_regen: self.hp_regen,
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -161,7 +162,13 @@ impl StableItem for EchoesOfHelia {
         self.save_charges(caster_ref.level(), *damage as f64);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        target: usize,
+    ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };

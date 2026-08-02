@@ -136,11 +136,18 @@ impl StableItem for SpearOfShojin {
             hp: self.hp,
             attack: self.attack,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        target: usize,
+    ) {
         self.add_attack_stack(ctx, caster, target);
     }
 

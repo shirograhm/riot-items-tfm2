@@ -158,14 +158,14 @@ impl StableItem for Stormrazor {
 
         // Gain 5 energized stacks on attacks, up to the max stacks
         if damage_type == DamageTypeV1::Ad {
-            self.energized_stacks += 5;
+            self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
         }
     }
 
     fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
         // Add 1 energized stack per 0.2 seconds
         if self.energized_update_tick >= 12 {
-            self.energized_stacks += 1;
+            self.energized_stacks = (self.energized_stacks + 1).min(self.effect_max_stacks);
             self.energized_update_tick = 0;
         } else {
             self.energized_update_tick += 1;

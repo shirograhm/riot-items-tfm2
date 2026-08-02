@@ -123,13 +123,18 @@ impl StableItem for ProtoplasmHarness {
         BuffV1 {
             hp: self.hp,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             move_speed_mult: self.move_speed_mult,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Hp, ItemTagV1::CooltimeReduce, ItemTagV1::MoveSpeed]
+        vec![
+            ItemTagV1::Hp,
+            ItemTagV1::CooltimeReduce,
+            ItemTagV1::MoveSpeed,
+        ]
     }
 
     fn category(&self) -> ItemCategoryV1 {

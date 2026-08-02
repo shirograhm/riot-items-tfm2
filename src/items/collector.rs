@@ -11,6 +11,8 @@ pub struct Collector {
     crit_chance: i32,
     effect_lethality: usize,
     effect_hp_percent_threshold: f64,
+    effect_bonus_gold: usize,
+    paid_kills: Option<usize>,
 }
 
 impl Collector {
@@ -26,6 +28,8 @@ impl Collector {
             crit_chance: 20,
             effect_lethality: 10,
             effect_hp_percent_threshold: 6.0,
+            effect_bonus_gold: 25,
+            paid_kills: None,
         }
     }
 
@@ -56,7 +60,8 @@ impl Collector {
                 attack,
                 crit_chance,
                 effect_lethality,
-                effect_hp_percent_threshold
+                effect_hp_percent_threshold,
+                effect_bonus_gold
             ]
         );
         self
@@ -127,6 +132,24 @@ impl StableItem for Collector {
         if target_ref.hp().0 - *damage <= hp_threshold {
             let lethal_damage = target_ref.hp().0;
             ctx.deal_damage(caster, target, lethal_damage, 0, AttackTypeV1::Item);
+        }
+    }
+
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        self.paid_kills = ctx.get_player(player).map(|player_ref| player_ref.kills());
+    }
+
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        let Some(kills) = ctx.get_player(player).map(|player_ref| player_ref.kills()) else {
+            return;
+        };
+
+        let paid = self.paid_kills.unwrap_or(kills);
+        self.paid_kills = Some(kills);
+
+        let earned = kills.saturating_sub(paid);
+        if earned > 0 {
+            ctx.player_add_gold(player, (earned * self.effect_bonus_gold) as i64);
         }
     }
 

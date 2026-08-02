@@ -83,6 +83,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("trinity_force", "Fighter"),
     ("unending_despair", "Tank"),
     ("void_staff", "Mage"),
+    ("voltaic_cyclosword", "Assassin"),
     ("warmogs_armor", "Tank"),
     ("wits_end", "Marksman"),
     ("yun_tal_wildarrows", "Marksman"),

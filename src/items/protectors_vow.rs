@@ -2,8 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
-    BUFF_REFRESH_PERIOD_TICKS,
+    apply_config, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
 };
 
 #[derive(Clone, Debug)]
@@ -152,6 +151,7 @@ impl StableItem for ProtectorsVow {
             hp: self.hp,
             defence: self.defence,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
