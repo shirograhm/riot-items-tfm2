@@ -133,8 +133,6 @@ impl StableItem for Collector {
         }
     }
 
-    /// Taxes: champion takedowns pay out. Minion and monster kills go through
-    /// this hook too, so the entity has to be checked before paying.
     fn on_kill(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize, entity: usize) {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
