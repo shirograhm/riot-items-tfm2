@@ -172,7 +172,7 @@ impl StableItem for VoltaicCyclosword {
         damage_type: DamageTypeV1,
     ) {
         self.try_firmament(ctx, caster, target);
-        apply_lethality(ctx, target, self.active_lethality(), damage);
+        apply_lethality(ctx, caster, target, self.active_lethality(), damage);
 
         // Gain 5 energized stacks on attacks, up to the max stacks
         if damage_type == DamageTypeV1::Ad {

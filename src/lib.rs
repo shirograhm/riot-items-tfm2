@@ -1,4 +1,5 @@
 use mod_api_stable::*;
+use std::cell::Cell;
 
 mod build_config;
 mod config;
@@ -80,17 +81,82 @@ fn lethality_multiplier(armor: i32, lethality: i32) -> f64 {
     (100 + armor) as f64 / (100 + effective_armor) as f64
 }
 
+/// How much armor earlier lethality items already stripped during the attack
+/// currently being resolved, so the next item starts where they stopped.
+#[derive(Clone, Copy)]
+struct Penetration {
+    tick: usize,
+    caster: usize,
+    target: usize,
+    /// Damage after the last item ran. An item continuing the same attack is
+    /// handed exactly this value, which is what distinguishes "next item on this
+    /// attack" from "first item on a fresh attack against the same target".
+    damage: usize,
+    armor: i32,
+}
+
+thread_local! {
+    /// Thread-local because parallel match simulations resolve attacks
+    /// concurrently. The items of a single attack always run consecutively on
+    /// one thread, so this needs no lock.
+    static PENETRATION: Cell<Option<Penetration>> = Cell::new(None);
+}
+
 /// Scales a basic attack's `damage` to simulate `lethality` flat armor
 /// penetration against `target` (via [`lethality_multiplier`]). Basic attacks are
 /// the only damage instance a mod can modify — ability damage is dealt by the
 /// game — so lethality items apply this in `on_attack`.
-fn apply_lethality(ctx: &mut StableSim<'_>, target: usize, lethality: usize, damage: &mut usize) {
+///
+/// Lethality is additive across items, but each item knows only its own value
+/// and the host threads one `damage` through every item in turn. Having each
+/// penetrate the target's *full* armor compounds into more penetration than the
+/// sum — worst against low-armor targets, where every item independently strips
+/// the armor to zero and gets paid for it. So each item instead penetrates from
+/// where the previous one stopped, and the multipliers telescope into a single
+/// reduction by the total:
+///
+/// ```text
+/// (100+A)/(100+A-L1) * (100+A-L1)/(100+A-L1-L2) = (100+A)/(100+A-L1-L2)
+/// ```
+///
+/// A lone lethality item sees `already == 0`, so its result is unchanged.
+fn apply_lethality(
+    ctx: &mut StableSim<'_>,
+    caster: usize,
+    target: usize,
+    lethality: usize,
+    damage: &mut usize,
+) {
     let armor = ctx
         .get_entity(target)
         .map(|t| t.stat().defence as i32)
         .unwrap_or(0);
-    let mult = lethality_multiplier(armor, lethality as i32);
+    let tick = ctx.tick();
+
+    let already = PENETRATION.with(|cell| match cell.get() {
+        Some(prev)
+            if prev.tick == tick
+                && prev.caster == caster
+                && prev.target == target
+                && prev.damage == *damage =>
+        {
+            prev.armor
+        }
+        _ => 0,
+    });
+
+    let mult = lethality_multiplier((armor - already).max(0), lethality as i32);
     *damage = (*damage as f64 * mult).round() as usize;
+
+    PENETRATION.with(|cell| {
+        cell.set(Some(Penetration {
+            tick,
+            caster,
+            target,
+            damage: *damage,
+            armor: already + lethality as i32,
+        }))
+    });
 }
 
 /// How long (in ticks) an enemy champion stays "marked" as recently damaged, so a
