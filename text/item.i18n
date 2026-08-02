@@ -360,11 +360,11 @@
             "option": "Icathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
         },
         "jaksho_the_protean": {
-            "name": "Jak'sho, The Protean",
+            "name": "Jak'Sho, The Protean",
             "option": "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
         },
         "radiant_jaksho_the_protean": {
-            "name": "Radiant Jak'sho, The Protean",
+            "name": "Radiant Jak'Sho, The Protean",
             "option": "Resilience: Taking damage from an enemy champion grants <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
         },
         "terminus": {
@@ -1037,11 +1037,11 @@
             "option": "Vết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
         },
         "jaksho_the_protean": {
-            "name": "Jak'sho Vỏ Bọc Thích Nghi",
+            "name": "Jak'Sho Vỏ Bọc Thích Nghi",
             "option": "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> và <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
         },
         "radiant_jaksho_the_protean": {
-            "name": "Jak'sho Vỏ Bọc Thích Nghi Ánh Sáng",
+            "name": "Jak'Sho Vỏ Bọc Thích Nghi Ánh Sáng",
             "option": "Kiên cường: Nhận sát thương từ tướng địch sẽ nhận thêm <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> và <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
         },
         "terminus": {
@@ -2391,11 +2391,11 @@
             "option": "Mordida Icathiana: Ataques causam <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
         },
         "jaksho_the_protean": {
-            "name": "Jak'sho, O Inconstante",
+            "name": "Jak'Sho, O Inconstante",
             "option": "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>6% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> de Armadura<> e <#88ccffff>6% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> de Resistência Mágica<> por <#e8a800ff>4 segundos<> (acumula 4x)."
         },
         "radiant_jaksho_the_protean": {
-            "name": "Jak'sho, O Inconstante Radiante",
+            "name": "Jak'Sho, O Inconstante Radiante",
             "option": "Resiliência: Receber dano de um campeão inimigo concede <#ffdd8eff>10% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> de Armadura<> e <#88ccffff>10% <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> de Resistência Mágica<> por <#e8a800ff>4 segundos<> (acumula 4x)."
         },
         "terminus": {
