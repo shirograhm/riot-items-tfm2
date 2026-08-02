@@ -649,11 +649,11 @@
         },
         "opportunity": {
             "name": "Opportunity",
-            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nPreparation: After being out of combat with enemy champions for <#e8a800ff>7 seconds<>, increase Lethality's ignored <#ffdd8eff>armor<> by <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>. This bonus remains for <#e8a800ff>3.5 seconds<> after dealing damage to an enemy champion."
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nPreparation: After being out of combat with enemy champions for <#e8a800ff>7 seconds<>, gain <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>. This bonus remains for <#e8a800ff>3.5 seconds<> after dealing damage to an enemy champion."
         },
         "radiant_opportunity": {
             "name": "Radiant Opportunity",
-            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nPreparation: After being out of combat with enemy champions for <#e8a800ff>7 seconds<>, increase Lethality's ignored <#ffdd8eff>armor<> by <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>. This bonus remains for <#e8a800ff>3.5 seconds<> after dealing damage to an enemy champion."
+            "option": "Lethality: Ignore <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor<> when you deal <#ff9028ff>physical damage<> to enemies.\n\nPreparation: After being out of combat with enemy champions for <#e8a800ff>7 seconds<>, gain <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>. This bonus remains for <#e8a800ff>3.5 seconds<> after dealing damage to an enemy champion."
         },
         "locket_of_the_iron_solari": {
             "name": "Locket of the Iron Solari",
