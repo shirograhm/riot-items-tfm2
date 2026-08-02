@@ -1178,11 +1178,11 @@
         },
         "voltaic_cyclosword": {
             "name": "Kiếm Điện Phong",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nThiên Đường: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<> trong <#e8a800ff>4 giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>6% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>200 sát thương vật lí cộng thêm<> lên lính và quái vật."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nThiên Đường: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<> trong <#e8a800ff>4 giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>6% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>200 sát thương vật lí<> lên lính và quái vật."
         },
         "radiant_voltaic_cyclosword": {
             "name": "Kiếm Điện Phong Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nThiên Đường: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<> trong <#e8a800ff>4 giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>10% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>200 sát thương vật lí cộng thêm<> lên lính và quái vật."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nThiên Đường: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<> trong <#e8a800ff>4 giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>10% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>200 sát thương vật lí<> lên lính và quái vật."
         },
         "diamond_tipped_spear": {
             "name": "Mũi Giáo Kim Cương",
@@ -1326,11 +1326,11 @@
         },
         "opportunity": {
             "name": "Gươm Thức Thời",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, lượng <#ffdd8eff>giáp<> bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, nhận thêm <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
         },
         "radiant_opportunity": {
             "name": "Gươm Thức Thời Ánh Sáng",
-            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, lượng <#ffdd8eff>giáp<> bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
+            "option": "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch.\n\nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>7 giây<>, nhận thêm <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>. Hiệu ứng này duy trì thêm <#e8a800ff>3.5 giây<> sau khi gây sát thương lên tướng địch."
         },
         "locket_of_the_iron_solari": {
             "name": "Dây Chuyền Iron Solari",
@@ -1855,11 +1855,11 @@
         },
         "voltaic_cyclosword": {
             "name": "电震涡流剑",
-            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>12 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 护甲<>。\n\n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n苍穹：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值6%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>4秒<> 的 <#ffdd8eff>6 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>200点额外物理伤害<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>12 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 护甲<>。\n\n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n苍穹：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值6%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>4秒<> 的 <#ffdd8eff>6 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>200点物理伤害<>。"
         },
         "radiant_voltaic_cyclosword": {
             "name": "光明版电震涡流剑",
-            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>12 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 护甲<>。\n\n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n苍穹：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值10%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>4秒<> 的 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>200点额外物理伤害<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>12 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 护甲<>。\n\n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n苍穹：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值10%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>4秒<> 的 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>200点物理伤害<>。"
         },
         "diamond_tipped_spear": {
             "name": "钻头长矛",
@@ -2003,11 +2003,11 @@
         },
         "opportunity": {
             "name": "禁忌时机",
-            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，穿甲无视的<#ffdd8eff>护甲<>提高 <#ffdd8eff>7 点<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，获得 <#ffdd8eff>7 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
         },
         "radiant_opportunity": {
             "name": "光明版禁忌时机",
-            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，穿甲无视的<#ffdd8eff>护甲<>提高 <#ffdd8eff>7 点<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
+            "option": "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 护甲<>。\n\n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>7秒<> 后，获得 <#ffdd8eff>7 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>3.5秒<>。"
         },
         "locket_of_the_iron_solari": {
             "name": "钢铁烈阳之匣",
@@ -2680,11 +2680,11 @@
         },
         "opportunity": {
             "name": "Oportunidade",
-            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, a <#ffdd8eff>Armadura<> ignorada pela Letalidade aumenta em <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, ganha <#ffdd8eff>7 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
         },
         "radiant_opportunity": {
             "name": "Oportunidade Radiante",
-            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, a <#ffdd8eff>Armadura<> ignorada pela Letalidade aumenta em <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
+            "option": "Letalidade: Ignora <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos.\n\nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>7 segundos<>, ganha <#ffdd8eff>7 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>. Este bônus permanece por <#e8a800ff>3.5 segundos<> após causar dano a um campeão inimigo."
         },
         "locket_of_the_iron_solari": {
             "name": "Medalhão dos Solari de Ferro",
@@ -3209,11 +3209,11 @@
         },
         "voltaic_cyclosword": {
             "name": "Электрический цикломеч",
-            "option": "Летальность: Игнорирует <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>100<>.\n\nНебосклон: При полном <#e8a800ff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>6% текущего здоровья цели<> и даёт вам <#ffdd8eff>6 доп. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<> на <#e8a800ff>4 сек<>. Наносит максимум <#ff9028ff>200 дополнительного физического урона<> по миньонам и монстрам."
+            "option": "Летальность: Игнорирует <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>100<>.\n\nНебосклон: При полном <#e8a800ff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>6% текущего здоровья цели<> и даёт вам <#ffdd8eff>6 доп. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<> на <#e8a800ff>4 сек<>. Наносит максимум <#ff9028ff>200 физического урона<> по миньонам и монстрам."
         },
         "radiant_voltaic_cyclosword": {
             "name": "Лучезарный Электрический цикломеч",
-            "option": "Летальность: Игнорирует <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>100<>.\n\nНебосклон: При полном <#e8a800ff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>10% текущего здоровья цели<> и даёт вам <#ffdd8eff>10 доп. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<> на <#e8a800ff>4 сек<>. Наносит максимум <#ff9028ff>200 дополнительного физического урона<> по миньонам и монстрам."
+            "option": "Летальность: Игнорирует <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>100<>.\n\nНебосклон: При полном <#e8a800ff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>10% текущего здоровья цели<> и даёт вам <#ffdd8eff>10 доп. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<> на <#e8a800ff>4 сек<>. Наносит максимум <#ff9028ff>200 физического урона<> по миньонам и монстрам."
         },
         "diamond_tipped_spear": {
             "name": "Алмазное копье",
@@ -3357,11 +3357,11 @@
         },
         "opportunity": {
             "name": "Возможность",
-            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>7 брони<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами вы получаете <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
         },
         "radiant_opportunity": {
             "name": "Лучезарная Возможность",
-            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>7 брони<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
+            "option": "Летальность: Игнорирует <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> брони<> при нанесении <#ff9028ff>физического урона<> врагам.\n\nПодготовка: После <#e8a800ff>7 секунд<> вне боя с вражескими чемпионами вы получаете <#ffdd8eff>7 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>. Этот бонус сохраняется <#e8a800ff>3.5 секунд<> после нанесения урона вражескому чемпиону."
         },
         "locket_of_the_iron_solari": {
             "name": "Медальон Железных Солари",
@@ -3886,11 +3886,11 @@
         },
         "voltaic_cyclosword": {
             "name": "벼락폭풍검",
-            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어력<>을 무시합니다.\n\n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.\n\n창공: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 6%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>4초<> 동안 <#ffdd8eff>6의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>200의 추가 물리 피해<>를 입힙니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어력<>을 무시합니다.\n\n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.\n\n창공: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 6%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>4초<> 동안 <#ffdd8eff>6의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>200의 물리 피해<>를 입힙니다."
         },
         "radiant_voltaic_cyclosword": {
             "name": "찬란한 벼락폭풍검",
-            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어력<>을 무시합니다.\n\n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.\n\n창공: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 10%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>4초<> 동안 <#ffdd8eff>10의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>200의 추가 물리 피해<>를 입힙니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어력<>을 무시합니다.\n\n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.\n\n창공: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 10%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>4초<> 동안 <#ffdd8eff>10의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>200의 물리 피해<>를 입힙니다."
         },
         "diamond_tipped_spear": {
             "name": "다이아몬드 창",
@@ -4034,11 +4034,11 @@
         },
         "opportunity": {
             "name": "기회",
-            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 물리 관통력의 <#ffdd8eff>방어력<> 무시량이 <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 <#ffdd8eff>7의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
         },
         "radiant_opportunity": {
             "name": "찬란한 기회",
-            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 물리 관통력의 <#ffdd8eff>방어력<> 무시량이 <#ffdd8eff>7<> <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
+            "option": "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어력<>을 무시합니다.\n\n준비: 적 챔피언과 <#e8a800ff>7초<> 동안 비전투 상태를 유지하면 <#ffdd8eff>7의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>3.5초<> 동안 유지됩니다."
         },
         "locket_of_the_iron_solari": {
             "name": "강철의 솔라리 펜던트",
