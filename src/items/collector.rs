@@ -11,6 +11,7 @@ pub struct Collector {
     crit_chance: i32,
     effect_lethality: usize,
     effect_hp_percent_threshold: f64,
+    effect_bonus_gold: usize,
 }
 
 impl Collector {
@@ -26,6 +27,7 @@ impl Collector {
             crit_chance: 20,
             effect_lethality: 10,
             effect_hp_percent_threshold: 6.0,
+            effect_bonus_gold: 25,
         }
     }
 
@@ -56,7 +58,8 @@ impl Collector {
                 attack,
                 crit_chance,
                 effect_lethality,
-                effect_hp_percent_threshold
+                effect_hp_percent_threshold,
+                effect_bonus_gold
             ]
         );
         self
@@ -128,6 +131,19 @@ impl StableItem for Collector {
             let lethal_damage = target_ref.hp().0;
             ctx.deal_damage(caster, target, lethal_damage, 0, AttackTypeV1::Item);
         }
+    }
+
+    /// Taxes: champion takedowns pay out. Minion and monster kills go through
+    /// this hook too, so the entity has to be checked before paying.
+    fn on_kill(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize, entity: usize) {
+        let Some(entity_ref) = ctx.get_entity(entity) else {
+            return;
+        };
+        if !entity_ref.is_champion() {
+            return;
+        }
+
+        ctx.player_add_gold(player, self.effect_bonus_gold as i64);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

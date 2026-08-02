@@ -71,7 +71,8 @@
     "attack": 60,
     "crit_chance": 20,
     "effect_lethality": 10,
-    "effect_hp_percent_threshold": 6.0
+    "effect_hp_percent_threshold": 6.0,
+    "effect_bonus_gold": 25
   },
   "experimental_hexplate": {
     "price": 1200,
@@ -433,7 +434,8 @@
     "attack": 105,
     "crit_chance": 25,
     "effect_lethality": 10,
-    "effect_hp_percent_threshold": 6.0
+    "effect_hp_percent_threshold": 6.0,
+    "effect_bonus_gold": 25
   },
   "radiant_jaksho_the_protean": {
     "price": 2000,

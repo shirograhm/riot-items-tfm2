@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, is_enemy_champion, percent_of, ticks, ItemMeta};
+use crate::{apply_config, apply_lethality, percent_of, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct VoltaicCyclosword {
@@ -17,9 +17,7 @@ pub struct VoltaicCyclosword {
     effect_duration_seconds: f64,
     energized_stacks: usize,
     energized_update_tick: usize,
-    /// Ticks left on Firmament's bonus lethality. Counted down here rather than
-    /// tracked as a buff because lethality is simulated per-item in `on_attack`
-    /// (see `apply_lethality`), so nothing else needs to see it.
+    /// Ticks left on Firmament's bonus lethality
     firmament_ticks: usize,
 }
 
@@ -85,8 +83,6 @@ impl VoltaicCyclosword {
         self
     }
 
-    /// Lethality to apply right now: the base amount, plus Firmament's bonus
-    /// while it is up.
     fn active_lethality(&self) -> usize {
         if self.firmament_ticks > 0 {
             self.effect_lethality + self.effect_bonus_lethality
@@ -175,8 +171,6 @@ impl StableItem for VoltaicCyclosword {
         damage: &mut usize,
         damage_type: DamageTypeV1,
     ) {
-        // Firmament resolves before the lethality does, so the attack that spends
-        // the bar is already the first one carrying the bonus.
         self.try_firmament(ctx, caster, target);
         apply_lethality(ctx, target, self.active_lethality(), damage);
 

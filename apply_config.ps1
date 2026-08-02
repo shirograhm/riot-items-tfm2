@@ -193,6 +193,8 @@ $colThreshold = [double]$config.collector.effect_hp_percent_threshold
 $rcolThreshold = [double]$config.radiant_collector.effect_hp_percent_threshold
 $colLeth = [int]$config.collector.effect_lethality
 $rcolLeth = [int]$config.radiant_collector.effect_lethality
+$colGold = [int]$config.collector.effect_bonus_gold
+$rcolGold = [int]$config.radiant_collector.effect_bonus_gold
 $sfThreshold = [double]$config.shadowflame.effect_hp_percent_threshold
 $rsfThreshold = [double]$config.radiant_shadowflame.effect_hp_percent_threshold
 $hsFlat = [int]$config.heartsteel.effect_bonus_flat_damage
@@ -374,6 +376,8 @@ $magicPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0"
 $critIcon = "i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0"
 $vampIcon = "i#asset/base/ui/banpick/champion_stat_icon:vamp_0"
 $levelIcon = "i#asset/base/ui/banpick/champion_stat_icon:level_0"
+$goldIcon = "i#asset/base/ui/banpick/champion_stat_icon:gold_0"
+$goldColor = "#e2ba3dff"
 
 Write-Host "Updating English text."
 
@@ -484,7 +488,7 @@ $bsTemplate = "Spellblade: Landing an Ability on an enemy champion causes your n
 $i18n.en.bloodsong.option = $bsTemplate -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.en.radiant_bloodsong.option = $bsTemplate -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
 
-$lethEn = "Lethality: Ignore <#ffdd8eff>{0} <$armorIcon> armor<> when you deal <#ff9028ff>physical damage<> to enemies."
+$lethEn = "Lethality: Ignore <#ffdd8eff>{0} <$armorPenIcon> armor<> when you deal <#ff9028ff>physical damage<> to enemies."
 $i18n.en.serrated_dirk.option = $lethEn -f $sdLeth
 $hubEn = "$lethEn`n`nEminence: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>{1}<> (+{2} per stack) <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>{3} seconds<>."
 $i18n.en.hubris.option = $hubEn -f $hubLeth, $hubBase, $hubStack, $hubDur
@@ -495,7 +499,7 @@ $i18n.en.radiant_bastionbreaker.option = $bbEn -f $rbbLeth, $rbbFlat, $rbbPct, $
 $spfEn = "$lethEn`n`nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
 $i18n.en.serpents_fang.option = $spfEn -f $spfLeth, $spfFlat, $spfPct
 $i18n.en.radiant_serpents_fang.option = $spfEn -f $rspfLeth, $rspfFlat, $rspfPct
-$oppEn = "$lethEn`n`nPreparation: After being out of combat with enemy champions for <#e8a800ff>{1} seconds<>, increase Lethality's ignored <#ffdd8eff>armor<> by <#ffdd8eff>{2}<> <$armorIcon>. This bonus remains for <#e8a800ff>{3} seconds<> after dealing damage to an enemy champion."
+$oppEn = "$lethEn`n`nPreparation: After being out of combat with enemy champions for <#e8a800ff>{1} seconds<>, increase Lethality's ignored <#ffdd8eff>armor<> by <#ffdd8eff>{2}<> <$armorPenIcon>. This bonus remains for <#e8a800ff>{3} seconds<> after dealing damage to an enemy champion."
 $i18n.en.opportunity.option = $oppEn -f $oppLeth, $oppOoc, $oppBonusLeth, $oppDur
 $i18n.en.radiant_opportunity.option = $oppEn -f $roppLeth, $roppOoc, $roppBonusLeth, $roppDur
 $lockEn = "Legion: Grant <#ffdd8eff>{0} <$armorIcon> armor<>, <#88ccffff>{1} <$mrIcon> magic resistance<>, and <#60e84dff>{2} <$hpRegenIcon> health regeneration<> to all allies within <#ff86c2ff>{4} <$rangeIcon> range<>. Minions gain <#e8a800ff>{3}%<> of this value."
@@ -504,8 +508,8 @@ $i18n.en.radiant_locket_of_the_iron_solari.option = $lockEn -f $rlockDef, $rlock
 $dmpEn = "Shipwrecker: While moving, generate <#e8a800ff>{0} stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>{1}<>. Each stack grants <#ffffffff>{2}%<> <$speedIcon> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>{3} - {4} bonus physical damage<>, scaling with stacks consumed."
 $i18n.en.dead_mans_plate.option = $dmpEn -f $dmpStacks, $dmpMax, $dmpMs, $dmpMinDmg, $dmpMaxDmg
 $i18n.en.radiant_dead_mans_plate.option = $dmpEn -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
-$i18n.en.collector.option = "$lethEn`n`nDeath: Dealing damage to enemy champions below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them." -f $colLeth
-$i18n.en.radiant_collector.option = "$lethEn`n`nDeath: Dealing damage to enemy champions below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them." -f $rcolLeth
+$i18n.en.collector.option = "$lethEn`n`nDeath: Dealing damage to enemy champions below <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them.`n`nTaxes: Killing a champion grants you an additional <$goldColor>${colGold} <$goldIcon> gold<>." -f $colLeth
+$i18n.en.radiant_collector.option = "$lethEn`n`nDeath: Dealing damage to enemy champions below <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>maximum health<> <#d94c49ff>executes<> them.`n`nTaxes: Killing a champion grants you an additional <$goldColor>${rcolGold} <$goldIcon> gold<>." -f $rcolLeth
 $vcEn = "$lethEn`n`nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#e8a800ff>Energize<> stacks, up to <#e8a800ff>{1}<>.`n`nFirmament: When fully <#e8a800ff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>{2} <$armorPenIcon> Lethality<> for <#e8a800ff>{3} seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>{4}% of the target's current health<>. Deals a maximum of <#ff9028ff>{5} bonus physical damage<> against minions and monsters."
 $i18n.en.voltaic_cyclosword.option = $vcEn -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.en.radiant_voltaic_cyclosword.option = $vcEn -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
@@ -620,7 +624,7 @@ $bsTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn �
 $i18n.vi.bloodsong.option = $bsTemplateVi -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.vi.radiant_bloodsong.option = $bsTemplateVi -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
 
-$lethVi = "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>{0} <$armorIcon> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch."
+$lethVi = "Xuyên Giáp Trắng: Bỏ qua <#ffdd8eff>{0} <$armorPenIcon> giáp<> khi gây <#ff9028ff>sát thương vật lí<> lên kẻ địch."
 $i18n.vi.serrated_dirk.option = $lethVi -f $sdLeth
 $hubVi = "$lethVi`n`nUy Danh: Khi tham gia hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>{1}<> (+{2} mỗi cộng dồn) <$adIcon> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>{3} giây<>."
 $i18n.vi.hubris.option = $hubVi -f $hubLeth, $hubBase, $hubStack, $hubDur
@@ -631,7 +635,7 @@ $i18n.vi.radiant_bastionbreaker.option = $bbVi -f $rbbLeth, $rbbFlat, $rbbPct, $
 $spfVi = "$lethVi`n`nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
 $i18n.vi.serpents_fang.option = $spfVi -f $spfLeth, $spfFlat, $spfPct
 $i18n.vi.radiant_serpents_fang.option = $spfVi -f $rspfLeth, $rspfFlat, $rspfPct
-$oppVi = "$lethVi`n`nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>{1} giây<>, lượng <#ffdd8eff>giáp<> bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>{2}<> <$armorIcon>. Hiệu ứng này duy trì thêm <#e8a800ff>{3} giây<> sau khi gây sát thương lên tướng địch."
+$oppVi = "$lethVi`n`nChuẩn Bị: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>{1} giây<>, lượng <#ffdd8eff>giáp<> bị bỏ qua của Xuyên Giáp Trắng tăng thêm <#ffdd8eff>{2}<> <$armorPenIcon>. Hiệu ứng này duy trì thêm <#e8a800ff>{3} giây<> sau khi gây sát thương lên tướng địch."
 $i18n.vi.opportunity.option = $oppVi -f $oppLeth, $oppOoc, $oppBonusLeth, $oppDur
 $i18n.vi.radiant_opportunity.option = $oppVi -f $roppLeth, $roppOoc, $roppBonusLeth, $roppDur
 $lockVi = "Quân Đoàn: Cấp <#ffdd8eff>{0} <$armorIcon> giáp<>, <#88ccffff>{1} <$mrIcon> kháng phép<> và <#60e84dff>{2} <$hpRegenIcon> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>{4}<> <$rangeIcon> . Lính nhận <#e8a800ff>{3}%<> giá trị này."
@@ -640,8 +644,8 @@ $i18n.vi.radiant_locket_of_the_iron_solari.option = $lockVi -f $rlockDef, $rlock
 $dmpVi = "Kẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>{0} cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>{1}<>. Mỗi cộng dồn tăng <#ffffffff>{2}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>{3} - {4} sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
 $i18n.vi.dead_mans_plate.option = $dmpVi -f $dmpStacks, $dmpMax, $dmpMs, $dmpMinDmg, $dmpMaxDmg
 $i18n.vi.radiant_dead_mans_plate.option = $dmpVi -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
-$i18n.vi.collector.option = "$lethVi`n`nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng." -f $colLeth
-$i18n.vi.radiant_collector.option = "$lethVi`n`nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng." -f $rcolLeth
+$i18n.vi.collector.option = "$lethVi`n`nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng.`n`nLợi Tức: Hạ gục tướng sẽ cho <$goldColor>${colGold} <$goldIcon> vàng cộng thêm<>." -f $colLeth
+$i18n.vi.radiant_collector.option = "$lethVi`n`nVề Với Cát Bụi: Gây sát thương lên tướng địch dưới <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Máu<> sẽ lập tức <#d94c49ff>kết liễu<> chúng.`n`nLợi Tức: Hạ gục tướng sẽ cho <$goldColor>${rcolGold} <$goldIcon> vàng cộng thêm<>." -f $rcolLeth
 $vcVi = "$lethVi`n`nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#e8a800ff>Tích Điện<>, tối đa <#e8a800ff>{1}<>.`n`nThiên Đường: Khi <#e8a800ff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>{2} <$armorPenIcon> Xuyên Giáp Trắng<> trong <#e8a800ff>{3} giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>{4}% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>{5} sát thương vật lí cộng thêm<> lên lính và quái vật."
 $i18n.vi.voltaic_cyclosword.option = $vcVi -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.vi.radiant_voltaic_cyclosword.option = $vcVi -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
@@ -756,7 +760,7 @@ $bsTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻
 $i18n.'zh-hans'.bloodsong.option = $bsTemplateZh -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.'zh-hans'.radiant_bloodsong.option = $bsTemplateZh -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
 
-$lethZh = "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>{0} 点<$armorIcon> 护甲<>。"
+$lethZh = "穿甲：对敌人造成<#ff9028ff>物理伤害<>时无视 <#ffdd8eff>{0} 点<$armorPenIcon> 护甲<>。"
 $i18n.'zh-hans'.serrated_dirk.option = $lethZh -f $sdLeth
 $hubZh = "$lethZh`n`n威望：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>{1}<>（每层+{2}）<#ff9028ff>额外<$adIcon> 攻击力<>，持续 <#e8a800ff>{3}秒<>。"
 $i18n.'zh-hans'.hubris.option = $hubZh -f $hubLeth, $hubBase, $hubStack, $hubDur
@@ -767,7 +771,7 @@ $i18n.'zh-hans'.radiant_bastionbreaker.option = $bbZh -f $rbbLeth, $rbbFlat, $rb
 $spfZh = "$lethZh`n`n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>{1}<> + <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{2}%<> 作为<#ff9028ff>额外物理伤害<>。"
 $i18n.'zh-hans'.serpents_fang.option = $spfZh -f $spfLeth, $spfFlat, $spfPct
 $i18n.'zh-hans'.radiant_serpents_fang.option = $spfZh -f $rspfLeth, $rspfFlat, $rspfPct
-$oppZh = "$lethZh`n`n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>{1}秒<> 后，穿甲无视的<#ffdd8eff>护甲<>提高 <#ffdd8eff>{2} 点<> <$armorIcon>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>{3}秒<>。"
+$oppZh = "$lethZh`n`n伺机待发：脱离与敌方英雄的战斗达 <#e8a800ff>{1}秒<> 后，穿甲无视的<#ffdd8eff>护甲<>提高 <#ffdd8eff>{2} 点<> <$armorPenIcon>。该加成在对敌方英雄造成伤害后保留 <#e8a800ff>{3}秒<>。"
 $i18n.'zh-hans'.opportunity.option = $oppZh -f $oppLeth, $oppOoc, $oppBonusLeth, $oppDur
 $i18n.'zh-hans'.radiant_opportunity.option = $oppZh -f $roppLeth, $roppOoc, $roppBonusLeth, $roppDur
 $lockZh = "军团：为 <#ff86c2ff>{4} <$rangeIcon> 射程<>范围内的所有友军提供 <#ffdd8eff>{0} 点<$armorIcon> 护甲<>、<#88ccffff>{1} 点<$mrIcon> 魔法抗性<>和 <#60e84dff>{2} 点<$hpRegenIcon> 生命回复<>。小兵获得该数值的 <#e8a800ff>{3}%<>。"
@@ -776,8 +780,8 @@ $i18n.'zh-hans'.radiant_locket_of_the_iron_solari.option = $lockZh -f $rlockDef,
 $dmpZh = "碎船者：移动时每秒获得 <#e8a800ff>{0} 层<><#92dc7bff>动量<>，最多 <#e8a800ff>{1}<> 层。每层提供 <#ffffffff>{2}%<> <$speedIcon> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>{3} - {4} 点额外物理伤害<>，随消耗的层数提升。"
 $i18n.'zh-hans'.dead_mans_plate.option = $dmpZh -f $dmpStacks, $dmpMax, $dmpMs, $dmpMinDmg, $dmpMaxDmg
 $i18n.'zh-hans'.radiant_dead_mans_plate.option = $dmpZh -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
-$i18n.'zh-hans'.collector.option = "$lethZh`n`n死：对生命值低于 <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。" -f $colLeth
-$i18n.'zh-hans'.radiant_collector.option = "$lethZh`n`n死：对生命值低于 <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。" -f $rcolLeth
+$i18n.'zh-hans'.collector.option = "$lethZh`n`n死：对生命值低于 <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。`n`n税：击杀英雄时提供 <$goldColor>${colGold} <$goldIcon> 额外金币<>。" -f $colLeth
+$i18n.'zh-hans'.radiant_collector.option = "$lethZh`n`n死：对生命值低于 <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>最大生命值<> 的敌方英雄造成伤害时，<#d94c49ff>处决<>目标。`n`n税：击杀英雄时提供 <$goldColor>${rcolGold} <$goldIcon> 额外金币<>。" -f $rcolLeth
 $vcZh = "$lethZh`n`n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#e8a800ff>蓄能<>层数，最多 <#e8a800ff>{1}<> 层。`n`n苍穹：<#e8a800ff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值{4}%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>{3}秒<> 的 <#ffdd8eff>{2} 点<$armorPenIcon> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>{5}点额外物理伤害<>。"
 $i18n.'zh-hans'.voltaic_cyclosword.option = $vcZh -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.'zh-hans'.radiant_voltaic_cyclosword.option = $vcZh -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
@@ -892,7 +896,7 @@ $bsTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo f
 $i18n.'pt-BR'.bloodsong.option = $bsTemplatePt -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.'pt-BR'.radiant_bloodsong.option = $bsTemplatePt -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
 
-$lethPt = "Letalidade: Ignora <#ffdd8eff>{0} de <$armorIcon> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos."
+$lethPt = "Letalidade: Ignora <#ffdd8eff>{0} de <$armorPenIcon> Armadura<> ao causar <#ff9028ff>dano físico<> a inimigos."
 $i18n.'pt-BR'.serrated_dirk.option = $lethPt -f $sdLeth
 $hubPt = "$lethPt`n`nEminência: Ao participar do abate de um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>{1}<> (+{2} por acúmulo) de <$adIcon> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>{3} segundos<>."
 $i18n.'pt-BR'.hubris.option = $hubPt -f $hubLeth, $hubBase, $hubStack, $hubDur
@@ -903,7 +907,7 @@ $i18n.'pt-BR'.radiant_bastionbreaker.option = $bbPt -f $rbbLeth, $rbbFlat, $rbbP
 $spfPt = "$lethPt`n`nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
 $i18n.'pt-BR'.serpents_fang.option = $spfPt -f $spfLeth, $spfFlat, $spfPct
 $i18n.'pt-BR'.radiant_serpents_fang.option = $spfPt -f $rspfLeth, $rspfFlat, $rspfPct
-$oppPt = "$lethPt`n`nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>{1} segundos<>, a <#ffdd8eff>Armadura<> ignorada pela Letalidade aumenta em <#ffdd8eff>{2}<> <$armorIcon>. Este bônus permanece por <#e8a800ff>{3} segundos<> após causar dano a um campeão inimigo."
+$oppPt = "$lethPt`n`nPreparação: Após ficar fora de combate com campeões inimigos por <#e8a800ff>{1} segundos<>, a <#ffdd8eff>Armadura<> ignorada pela Letalidade aumenta em <#ffdd8eff>{2}<> <$armorPenIcon>. Este bônus permanece por <#e8a800ff>{3} segundos<> após causar dano a um campeão inimigo."
 $i18n.'pt-BR'.opportunity.option = $oppPt -f $oppLeth, $oppOoc, $oppBonusLeth, $oppDur
 $i18n.'pt-BR'.radiant_opportunity.option = $oppPt -f $roppLeth, $roppOoc, $roppBonusLeth, $roppDur
 $lockPt = "Legião: Concede <#ffdd8eff>{0} de <$armorIcon> Armadura<>, <#88ccffff>{1} de <$mrIcon> Resistência Mágica<> e <#60e84dff>{2} de <$hpRegenIcon> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>{4} <$rangeIcon> alcance<>. Tropas recebem <#e8a800ff>{3}%<> deste valor."
@@ -912,8 +916,8 @@ $i18n.'pt-BR'.radiant_locket_of_the_iron_solari.option = $lockPt -f $rlockDef, $
 $dmpPt = "Naufragador: Ao se mover, gere <#e8a800ff>{0} cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>{1}<>. Cada carga concede <#ffffffff>{2}%<> de <$speedIcon> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>{3} - {4} de dano físico bônus<>, conforme as cargas consumidas."
 $i18n.'pt-BR'.dead_mans_plate.option = $dmpPt -f $dmpStacks, $dmpMax, $dmpMs, $dmpMinDmg, $dmpMaxDmg
 $i18n.'pt-BR'.radiant_dead_mans_plate.option = $dmpPt -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
-$i18n.'pt-BR'.collector.option = "$lethPt`n`nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>." -f $colLeth
-$i18n.'pt-BR'.radiant_collector.option = "$lethPt`n`nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>." -f $rcolLeth
+$i18n.'pt-BR'.collector.option = "$lethPt`n`nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>${colThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>.`n`nAbrupta: Abates de Campeões concedem <$goldColor>${colGold} <$goldIcon> de ouro adicional<>." -f $colLeth
+$i18n.'pt-BR'.radiant_collector.option = "$lethPt`n`nMorte: Causar dano a campeões inimigos com menos de <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#60e84dff>Vida Máxima<> os <#d94c49ff>executa<>.`n`nAbrupta: Abates de Campeões concedem <$goldColor>${rcolGold} <$goldIcon> de ouro adicional<>." -f $rcolLeth
 $vcPt = "$lethPt`n`nEnergizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#e8a800ff>Energia<>, até <#e8a800ff>{1}<>.`n`nFirmamento: Quando totalmente <#e8a800ff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#d94c49ff>{4}% da Vida atual do alvo<> como <#ff9028ff>Dano Físico adicional<> e concede a você <#ffdd8eff>{2} de <$armorPenIcon> Letalidade adicional<> por <#e8a800ff>{3}s<>. (Máximo de <#ff9028ff>{5}<> contra tropas e monstros.)"
 $i18n.'pt-BR'.voltaic_cyclosword.option = $vcPt -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.'pt-BR'.radiant_voltaic_cyclosword.option = $vcPt -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
@@ -1028,7 +1032,7 @@ $bsTemplateRu = "Чародейский клинок: Попадание уме�
 $i18n.ru.bloodsong.option = $bsTemplateRu -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.ru.radiant_bloodsong.option = $bsTemplateRu -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
 
-$lethRu = "Летальность: Игнорирует <#ffdd8eff>{0} <$armorIcon> брони<> при нанесении <#ff9028ff>физического урона<> врагам."
+$lethRu = "Летальность: Игнорирует <#ffdd8eff>{0} <$armorPenIcon> брони<> при нанесении <#ff9028ff>физического урона<> врагам."
 $i18n.ru.serrated_dirk.option = $lethRu -f $sdLeth
 $hubRu = "$lethRu`n`nВозвышение: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>{1}<> (+{2} за заряд) <#ff9028ff>дополнительной<> <$adIcon> <#ff9028ff>Силы Атаки<> на <#e8a800ff>{3} секунд<>."
 $i18n.ru.hubris.option = $hubRu -f $hubLeth, $hubBase, $hubStack, $hubDur
@@ -1039,7 +1043,7 @@ $i18n.ru.radiant_bastionbreaker.option = $bbRu -f $rbbLeth, $rbbFlat, $rbbPct, $
 $spfRu = "$lethRu`n`nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>{1}<> + <#ff9028ff>{2}%<> вашей <$adIcon> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
 $i18n.ru.serpents_fang.option = $spfRu -f $spfLeth, $spfFlat, $spfPct
 $i18n.ru.radiant_serpents_fang.option = $spfRu -f $rspfLeth, $rspfFlat, $rspfPct
-$oppRu = "$lethRu`n`nПодготовка: После <#e8a800ff>{1} секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>{2} брони<> <$armorIcon>. Этот бонус сохраняется <#e8a800ff>{3} секунд<> после нанесения урона вражескому чемпиону."
+$oppRu = "$lethRu`n`nПодготовка: После <#e8a800ff>{1} секунд<> вне боя с вражескими чемпионами Летальность игнорирует дополнительно <#ffdd8eff>{2} брони<> <$armorPenIcon>. Этот бонус сохраняется <#e8a800ff>{3} секунд<> после нанесения урона вражескому чемпиону."
 $i18n.ru.opportunity.option = $oppRu -f $oppLeth, $oppOoc, $oppBonusLeth, $oppDur
 $i18n.ru.radiant_opportunity.option = $oppRu -f $roppLeth, $roppOoc, $roppBonusLeth, $roppDur
 $lockRu = "Легион: Даёт <#ffdd8eff>{0} <$armorIcon> брони<>, <#88ccffff>{1} <$mrIcon> сопротивления магии<> и <#60e84dff>{2} <$hpRegenIcon> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>{4} <$rangeIcon> дальности<>. Миньоны получают <#e8a800ff>{3}%<> от этого значения."
@@ -1048,8 +1052,8 @@ $i18n.ru.radiant_locket_of_the_iron_solari.option = $lockRu -f $rlockDef, $rlock
 $dmpRu = "Крушитель: При движении вы получаете <#e8a800ff>{0} зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>{1}<>. Каждый заряд дает <#ffffffff>{2}%<> <$speedIcon> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>{3} - {4} дополнительного физического урона<> в зависимости от потраченных зарядов."
 $i18n.ru.dead_mans_plate.option = $dmpRu -f $dmpStacks, $dmpMax, $dmpMs, $dmpMinDmg, $dmpMaxDmg
 $i18n.ru.radiant_dead_mans_plate.option = $dmpRu -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
-$i18n.ru.collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${colThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их." -f $colLeth
-$i18n.ru.radiant_collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их." -f $rcolLeth
+$i18n.ru.collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${colThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их.`n`nДолг: Убийства чемпионов дополнительно приносят <$goldColor>${colGold} <$goldIcon> золота<>." -f $colLeth
+$i18n.ru.radiant_collector.option = "$lethRu`n`nСмерть: Нанесение урона вражеским чемпионам с <#60e84dff>максимальным здоровьем<> ниже <#60e84dff>${rcolThreshold}%<> <$hpIcon> <#d94c49ff>казнит<> их.`n`nДолг: Убийства чемпионов дополнительно приносят <$goldColor>${rcolGold} <$goldIcon> золота<>." -f $rcolLeth
 $vcRu = "$lethRu`n`nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#e8a800ff>Энергии<>, до <#e8a800ff>{1}<>.`n`nНебосклон: При полном <#e8a800ff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>{4}% текущего здоровья цели<> и даёт вам <#ffdd8eff>{2} доп. <$armorPenIcon> летальности<> на <#e8a800ff>{3} сек<>. Наносит максимум <#ff9028ff>{5} дополнительного физического урона<> по миньонам и монстрам."
 $i18n.ru.voltaic_cyclosword.option = $vcRu -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.ru.radiant_voltaic_cyclosword.option = $vcRu -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
@@ -1163,7 +1167,7 @@ $bsTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다�
 $i18n.ko.bloodsong.option = $bsTemplateKo -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
 $i18n.ko.radiant_bloodsong.option = $bsTemplateKo -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
 
-$lethKo = "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>{0} <$armorIcon> 방어력<>을 무시합니다."
+$lethKo = "물리 관통력: 적에게 <#ff9028ff>물리 피해<>를 입힐 때 <#ffdd8eff>{0} <$armorPenIcon> 방어력<>을 무시합니다."
 $i18n.ko.serrated_dirk.option = $lethKo -f $sdLeth
 $hubKo = "$lethKo`n`n명성: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>{3}초<> 동안 <#ff9028ff>{1}<> + 중첩당 <#ff9028ff>{2}<>의 <$adIcon> <#ff9028ff>추가 공격력<>을 얻습니다."
 $i18n.ko.hubris.option = $hubKo -f $hubLeth, $hubBase, $hubStack, $hubDur
@@ -1174,7 +1178,7 @@ $i18n.ko.radiant_bastionbreaker.option = $bbKo -f $rbbLeth, $rbbFlat, $rbbPct, $
 $spfKo = "$lethKo`n`n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>{1}<> + <$adIcon> <#ff9028ff>공격력의 {2}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
 $i18n.ko.serpents_fang.option = $spfKo -f $spfLeth, $spfFlat, $spfPct
 $i18n.ko.radiant_serpents_fang.option = $spfKo -f $rspfLeth, $rspfFlat, $rspfPct
-$oppKo = "$lethKo`n`n준비: 적 챔피언과 <#e8a800ff>{1}초<> 동안 비전투 상태를 유지하면 물리 관통력의 <#ffdd8eff>방어력<> 무시량이 <#ffdd8eff>{2}<> <$armorIcon> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>{3}초<> 동안 유지됩니다."
+$oppKo = "$lethKo`n`n준비: 적 챔피언과 <#e8a800ff>{1}초<> 동안 비전투 상태를 유지하면 물리 관통력의 <#ffdd8eff>방어력<> 무시량이 <#ffdd8eff>{2}<> <$armorPenIcon> 증가합니다. 이 효과는 적 챔피언에게 피해를 입힌 후 <#e8a800ff>{3}초<> 동안 유지됩니다."
 $i18n.ko.opportunity.option = $oppKo -f $oppLeth, $oppOoc, $oppBonusLeth, $oppDur
 $i18n.ko.radiant_opportunity.option = $oppKo -f $roppLeth, $roppOoc, $roppBonusLeth, $roppDur
 $lockKo = "군단: <$rangeIcon> <#ff86c2ff>사거리 {4}<> 안의 모든 아군에게 <$armorIcon> <#ffdd8eff>방어력 {0}<>, <$mrIcon> <#88ccffff>마법 저항력 {1}<>, <$hpRegenIcon> <#60e84dff>체력 재생 {2}<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>{3}%<>를 얻습니다."
@@ -1183,8 +1187,8 @@ $i18n.ko.radiant_locket_of_the_iron_solari.option = $lockKo -f $rlockDef, $rlock
 $dmpKo = "난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>{0}중첩<> 얻으며, 최대 <#e8a800ff>{1}중첩<>까지 쌓입니다. 중첩당 <$speedIcon> <#ffffffff>이동 속도 {2}%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>{3} - {4}의 추가 물리 피해<>를 입힙니다."
 $i18n.ko.dead_mans_plate.option = $dmpKo -f $dmpStacks, $dmpMax, $dmpMs, $dmpMinDmg, $dmpMaxDmg
 $i18n.ko.radiant_dead_mans_plate.option = $dmpKo -f $rdmpStacks, $rdmpMax, $rdmpMs, $rdmpMinDmg, $rdmpMaxDmg
-$i18n.ko.collector.option = "$lethKo`n`n죽음: <$hpIcon> <#60e84dff>최대 체력<>이 <#60e84dff>${colThreshold}%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다." -f $colLeth
-$i18n.ko.radiant_collector.option = "$lethKo`n`n죽음: <$hpIcon> <#60e84dff>최대 체력<>이 <#60e84dff>${rcolThreshold}%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다." -f $rcolLeth
+$i18n.ko.collector.option = "$lethKo`n`n죽음: <$hpIcon> <#60e84dff>최대 체력<>이 <#60e84dff>${colThreshold}%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다.`n`n세금: 챔피언 처치 시 <$goldColor>추가로 ${colGold} <$goldIcon> 골드<>를 획득합니다." -f $colLeth
+$i18n.ko.radiant_collector.option = "$lethKo`n`n죽음: <$hpIcon> <#60e84dff>최대 체력<>이 <#60e84dff>${rcolThreshold}%<> 아래인 적 챔피언에게 피해를 입히면 대상을 <#d94c49ff>처형<>합니다.`n`n세금: 챔피언 처치 시 <$goldColor>추가로 ${rcolGold} <$goldIcon> 골드<>를 획득합니다." -f $rcolLeth
 $vcKo = "$lethKo`n`n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>{1}<>까지 <#e8a800ff>충전<> 중첩을 얻습니다.`n`n창공: 완전히 <#e8a800ff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 {4}%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>{3}초<> 동안 <#ffdd8eff>{2}의 <$armorPenIcon> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>{5}의 추가 물리 피해<>를 입힙니다."
 $i18n.ko.voltaic_cyclosword.option = $vcKo -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.ko.radiant_voltaic_cyclosword.option = $vcKo -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
@@ -1239,8 +1243,8 @@ Write-Host "  Protoplasm Harness:         ${phThreshold} max HP Threshold / ${ph
 Write-Host "  Radiant Protoplasm Harness: ${rphThreshold} max HP Threshold / ${rphFlat} + ${rphHpPct}% max HP / ${rphDur}s / ${rphCd}s cooldown"
 Write-Host "  Terminus:               ${tArmorPen}%/${tMagicPen}% pen/stack / ${tDur}s / ${tStacks} stacks"
 Write-Host "  Radiant Terminus:       ${rtArmorPen}%/${rtMagicPen}% pen/stack / ${rtDur}s / ${rtStacks} stacks"
-Write-Host "  Collector:              executes below ${colThreshold}% HP"
-Write-Host "  Radiant Collector:      executes below ${rcolThreshold}% HP"
+Write-Host "  Collector:              executes below ${colThreshold}% HP / ${colGold} bonus gold per champion kill"
+Write-Host "  Radiant Collector:      executes below ${rcolThreshold}% HP / ${rcolGold} bonus gold per champion kill"
 Write-Host "  Heartsteel:             ${hsFlat} + ${hsHpPct}% max HP dmg / ${hsBonusHpPct}% bonus HP / ${hsCd}s cooldown"
 Write-Host "  Radiant Heartsteel:     ${rhsFlat} + ${rhsHpPct}% max HP dmg / ${rhsBonusHpPct}% bonus HP / ${rhsCd}s cooldown"
 Write-Host "  Spear of Shojin:         ${sosAtkMult}% AD/stack / ${sosDur}s / ${sosStacks} stacks"
