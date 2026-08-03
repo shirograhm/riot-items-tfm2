@@ -119,7 +119,7 @@ impl StableItem for Collector {
         damage: &mut usize,
         _damage_type: DamageTypeV1,
     ) {
-        apply_lethality(ctx, target, self.effect_lethality, damage);
+        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
 
         let Some(target_ref) = ctx.get_entity(target) else {
             return;

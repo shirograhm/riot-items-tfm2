@@ -162,7 +162,7 @@ impl StableItem for Opportunity {
     ) {
         // Lethality resolves before the timer resets, so the attack that breaks
         // out-of-combat still lands with Preparation up.
-        apply_lethality(ctx, target, self.active_lethality(), damage);
+        apply_lethality(ctx, caster, target, self.active_lethality(), damage);
         self.note_combat(ctx, caster, target);
     }
 

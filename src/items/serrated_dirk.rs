@@ -74,12 +74,12 @@ impl StableItem for SerratedDirk {
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _caster: usize,
+        caster: usize,
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
     ) {
-        apply_lethality(ctx, target, self.effect_lethality, damage);
+        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

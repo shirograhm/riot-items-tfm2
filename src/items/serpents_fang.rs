@@ -127,7 +127,7 @@ impl StableItem for SerpentsFang {
         damage: &mut usize,
         _damage_type: DamageTypeV1,
     ) {
-        apply_lethality(ctx, target, self.effect_lethality, damage);
+        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
         shield_reaver(
             ctx,
             caster,

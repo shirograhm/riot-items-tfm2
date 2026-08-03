@@ -162,7 +162,7 @@ impl StableItem for Hubris {
         damage: &mut usize,
         _damage_type: DamageTypeV1,
     ) {
-        apply_lethality(ctx, target, self.effect_lethality, damage);
+        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
