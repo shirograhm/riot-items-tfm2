@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 125 new items (71 base + 54 Radiant) to the game.
+Reskins the 30 existing items and also adds 127 new items (72 base + 55 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -59,6 +59,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Dusk and Dawn** | 1400G | +200 HP<br>+60 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Echoes of Helia** | 1100G | +250 HP<br>+4 HP Regen<br>+45 AP<br>+15% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Upon landing an Ability on an enemy champion, consume all Soul Charges and heal the nearest ally equal to the consumed amount. |
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Reduce the cooldown of your ultimate ability by 15%. |
+| **Frozen Heart** | 1300G | +65 Armor<br>+10% CDR<br>+10% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Frozen Mallet** | 1400G | +400 HP<br>+40 AD | On attack, apply a 15% slow for 2 seconds. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
 | **Heartsteel** | 1500G | +500 HP | Every 20 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
@@ -118,6 +119,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Dusk and Dawn** | 2000G | +300 HP<br>+100 AP<br>+25% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Radiant Echoes of Helia** | 1500G | +450 HP<br>+6 HP Regen<br>+65 AP<br>+20% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Upon landing an Ability on an enemy champion, consume all Soul Charges and heal the nearest ally equal to the consumed amount. |
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Reduce the cooldown of your ultimate ability by 25%. |
+| **Radiant Frozen Heart** | 1900G | +110 Armor<br>+15% CDR<br>+15% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Radiant Frozen Mallet** | 2000G | +600 HP<br>+60 AD | On attack, deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Your basic attacks deal 30 bonus magic damage.<br>On attack, gain 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Heartsteel** | 2100G | +800 HP | Every 20 seconds, your next attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |

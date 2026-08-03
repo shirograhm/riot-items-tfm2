@@ -35,6 +35,7 @@ items! {
     echoes_of_helia,
     executioners_calling,
     experimental_hexplate,
+    frozen_heart,
     frozen_mallet,
     glowing_mote,
     guinsoos_rageblade,

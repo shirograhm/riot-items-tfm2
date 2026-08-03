@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/MadManPetr1/tfm2-better-mod-menu/main/better_mod_menu_profile.schema.json",
+  "schema_version": 1,
+  "display_name": "shirograhm",
+  "profile_icon": "profile_icon.jpg",
+  "bio": "I make mods for games I like",
+  "links": {
+    "github": "shirograhm",
+    "discord": "shirograhm"
+  }
+}

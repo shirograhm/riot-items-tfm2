@@ -157,6 +157,10 @@ $zekDist = [int]$config.zekes_herald.effect_max_distance
 $rzekDist = [int]$config.radiant_zekes_herald.effect_max_distance
 $zekVamp = [int]$config.zekes_herald.effect_vamp
 $rzekVamp = [int]$config.radiant_zekes_herald.effect_vamp
+$fhAS = [int]$config.frozen_heart.effect_attack_speed_reduce
+$rfhAS = [int]$config.radiant_frozen_heart.effect_attack_speed_reduce
+$fhDist = [int]$config.frozen_heart.effect_max_distance
+$rfhDist = [int]$config.radiant_frozen_heart.effect_max_distance
 $ssDmg = [int]$config.scouts_slingshot.effect_bonus_flat_damage
 $ssCd = [int]$config.scouts_slingshot.effect_cooldown_seconds
 $litHp = [int]$config.liandrys_torment.effect_hp_percent_damage
@@ -360,6 +364,34 @@ $rspfPct = [int]$config.radiant_serpents_fang.effect_ad_percent_damage
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
+# Effect text renders straight under the stat block with nothing between them,
+# so an item's option starts with a line break. The templates below are written
+# without it - one leading "`n" on three hundred-odd lines is noise, and it is
+# not part of the sentence being translated - so it is restored at write-out
+# from the convention already in the file: an option that came in with a leading
+# break keeps it.
+#
+# Reading it off the input rather than prefixing everything is what keeps the
+# vanilla reskins (Bramble Vest, Thornmail, Radiant Thornmail) intact - their
+# text is hand-written here, has no template below, and has no leading break.
+# It also makes this idempotent: a second run finds the break already present.
+#
+# Consequence for a NEW item: write its stub in item.i18n with the leading "\n"
+# like every other item, or the generated text will run into the stats.
+$leadingBreak = @{}
+foreach ($language in $i18n.PSObject.Properties) {
+    foreach ($entry in $language.Value.PSObject.Properties) {
+        # Item entries are the ones with both a name and an option; this skips
+        # the "info" block, whose "option" is the "Effect" section header.
+        if ($null -eq $entry.Value.PSObject.Properties['name']) { continue }
+        $option = $entry.Value.PSObject.Properties['option']
+        if ($null -eq $option) { continue }
+        if ($option.Value -is [string] -and $option.Value.StartsWith("`n")) {
+            $leadingBreak["$($language.Name)/$($entry.Name)"] = $true
+        }
+    }
+}
+
 $adIcon = "i#asset/base/ui/banpick/champion_stat_icon:ad_0"
 $armorIcon = "i#asset/base/ui/banpick/champion_stat_icon:armor_0"
 $hpIcon = "i#asset/base/ui/banpick/champion_stat_icon:hp_0"
@@ -443,6 +475,9 @@ $i18n.en.radiant_diamond_tipped_spear.option = $dtsPierce -f $rdtsForce, $rdtsPc
 $zekAura = "Aura: Grant <#d48294ff>{0}<> <$forceIcon> <#d48294ff>Adaptive Force<> and <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>{1} <$rangeIcon> range<>."
 $i18n.en.zekes_herald.option = $zekAura -f $zekForce, $zekDist, $zekVamp
 $i18n.en.radiant_zekes_herald.option = $zekAura -f $rzekForce, $rzekDist, $rzekVamp
+$fhAura = "Winter's Caress: Reduce the <$asIcon> <#ceff99ff>attack speed<> of enemy champions within <#ff86c2ff>{1} <$rangeIcon> range<> by <#e8a800ff>{0}%.<>"
+$i18n.en.frozen_heart.option = $fhAura -f $fhAS, $fhDist
+$i18n.en.radiant_frozen_heart.option = $fhAura -f $rfhAS, $rfhDist
 $ssBullseye = "Bullseye: Damaging an enemy champion deals <#a974ffff>{0} bonus magic damage<> (<#e8a800ff>{1} second<> cooldown)."
 $i18n.en.scouts_slingshot.option = $ssBullseye -f $ssDmg, $ssCd
 $litSuffering = "Suffering: Dealing Ability damage burns enemies, causing them to take <#d94c49ff>{0}% of their maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>{1} seconds<>. Deals a maximum of <#a974ffff>{2} magic damage<> per tick against minions and monsters."
@@ -579,6 +614,9 @@ $i18n.vi.radiant_diamond_tipped_spear.option = $dtsPierceVi -f $rdtsForce, $rdts
 $zekAuraVi = "Hào Quang: Cấp <#d48294ff>{0}<> <$forceIcon> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon> ."
 $i18n.vi.zekes_herald.option = $zekAuraVi -f $zekForce, $zekDist, $zekVamp
 $i18n.vi.radiant_zekes_herald.option = $zekAuraVi -f $rzekForce, $rzekDist, $rzekVamp
+$fhAuraVi = "Chiến Binh Mùa Đông: Giảm <$asIcon> <#ceff99ff>tốc độ đánh<> của các tướng địch trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon> đi <#e8a800ff>{0}%.<>"
+$i18n.vi.frozen_heart.option = $fhAuraVi -f $fhAS, $fhDist
+$i18n.vi.radiant_frozen_heart.option = $fhAuraVi -f $rfhAS, $rfhDist
 $ssBullseyeVi = "Hồng Tâm: Khi gây sát thương cho tướng địch, gây <#a974ffff>{0} sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{1} giây<>)."
 $i18n.vi.scouts_slingshot.option = $ssBullseyeVi -f $ssDmg, $ssCd
 $litSufferingVi = "Thống Khổ: Khi gây sát thương kĩ năng, thiêu đốt kẻ địch, khiến chúng chịu <#d94c49ff>{0}% máu tối đa của chúng<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>{1} giây<>. Tối đa <#a974ffff>{2} sát thương phép<> mỗi nhịp lên lính và quái vật."
@@ -715,6 +753,9 @@ $i18n.'zh-hans'.radiant_diamond_tipped_spear.option = $dtsPierceZh -f $rdtsForce
 $zekAuraZh = "光环：为 <#ff86c2ff>{1} <$rangeIcon> 射程<>范围内的所有友方英雄提供 <#d48294ff>{0}<> <$forceIcon> <#d48294ff>自适应之力<> 和 <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>全能吸血<>。"
 $i18n.'zh-hans'.zekes_herald.option = $zekAuraZh -f $zekForce, $zekDist, $zekVamp
 $i18n.'zh-hans'.radiant_zekes_herald.option = $zekAuraZh -f $rzekForce, $rzekDist, $rzekVamp
+$fhAuraZh = "凛冬之抚：使 <#ff86c2ff>{1} <$rangeIcon> 射程<>范围内敌方英雄的 <$asIcon> <#ceff99ff>攻击速度<> 降低 <#e8a800ff>{0}%<>。"
+$i18n.'zh-hans'.frozen_heart.option = $fhAuraZh -f $fhAS, $fhDist
+$i18n.'zh-hans'.radiant_frozen_heart.option = $fhAuraZh -f $rfhAS, $rfhDist
 $ssBullseyeZh = "靶心：对敌方英雄造成伤害时，额外造成 <#a974ffff>{0} 点魔法伤害<>（冷却 <#e8a800ff>{1}秒<>）。"
 $i18n.'zh-hans'.scouts_slingshot.option = $ssBullseyeZh -f $ssDmg, $ssCd
 $litSufferingZh = "苦难：造成技能伤害时点燃敌人，使其在 <#e8a800ff>{1}秒<>内受到相当于<#d94c49ff>其{0}%最大生命值<>的<#a974ffff>魔法伤害<>。对小兵和野怪每跳最多造成 <#a974ffff>{2}点魔法伤害<>。"
@@ -851,6 +892,9 @@ $i18n.'pt-BR'.radiant_diamond_tipped_spear.option = $dtsPiercePt -f $rdtsForce, 
 $zekAuraPt = "Aura: Concede <#d48294ff>{0}<> <$forceIcon> de <#d48294ff>Força Adaptativa<> e <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>{1} <$rangeIcon> alcance<>."
 $i18n.'pt-BR'.zekes_herald.option = $zekAuraPt -f $zekForce, $zekDist, $zekVamp
 $i18n.'pt-BR'.radiant_zekes_herald.option = $zekAuraPt -f $rzekForce, $rzekDist, $rzekVamp
+$fhAuraPt = "Carícia do Inverno: Reduz a <$asIcon> <#ceff99ff>velocidade de ataque<> dos campeões inimigos dentro de <#ff86c2ff>{1} <$rangeIcon> alcance<> em <#e8a800ff>{0}%.<>"
+$i18n.'pt-BR'.frozen_heart.option = $fhAuraPt -f $fhAS, $fhDist
+$i18n.'pt-BR'.radiant_frozen_heart.option = $fhAuraPt -f $rfhAS, $rfhDist
 $ssBullseyePt = "Na Mosca: Causar dano a um campeão inimigo causa <#a974ffff>{0} de dano mágico bônus<> (recarga de <#e8a800ff>{1} segundos<>)."
 $i18n.'pt-BR'.scouts_slingshot.option = $ssBullseyePt -f $ssDmg, $ssCd
 $litSufferingPt = "Sofrimento: Causar dano de habilidade queima os inimigos, fazendo-os sofrer <#d94c49ff>{0}% da Vida Máxima deles<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>{1} segundos<>. Máximo de <#a974ffff>{2} de dano mágico<> por tique contra tropas e monstros."
@@ -987,6 +1031,9 @@ $i18n.ru.radiant_diamond_tipped_spear.option = $dtsPierceRu -f $rdtsForce, $rdts
 $zekAuraRu = "Аура: Даёт <#d48294ff>{0}<> <$forceIcon> <#d48294ff>адаптивной силы<> и <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<>."
 $i18n.ru.zekes_herald.option = $zekAuraRu -f $zekForce, $zekDist, $zekVamp
 $i18n.ru.radiant_zekes_herald.option = $zekAuraRu -f $rzekForce, $rzekDist, $rzekVamp
+$fhAuraRu = "Объятия зимы: Уменьшает <$asIcon> <#ceff99ff>скорость атаки<> вражеских чемпионов в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<> на <#e8a800ff>{0}%.<>"
+$i18n.ru.frozen_heart.option = $fhAuraRu -f $fhAS, $fhDist
+$i18n.ru.radiant_frozen_heart.option = $fhAuraRu -f $rfhAS, $rfhDist
 $ssBullseyeRu = "В яблочко: Нанесение урона вражескому чемпиону наносит <#a974ffff>{0} дополнительного магического урона<> (перезарядка <#e8a800ff>{1} секунд<>)."
 $i18n.ru.scouts_slingshot.option = $ssBullseyeRu -f $ssDmg, $ssCd
 $litSufferingRu = "Страдание: Нанесение урона умением поджигает врагов, заставляя их получить <#d94c49ff>{0}% их максимального здоровья<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>{1} секунд<>. Наносит максимум <#a974ffff>{2} магического урона<> за тик по миньонам и монстрам."
@@ -1123,6 +1170,9 @@ $i18n.ko.radiant_diamond_tipped_spear.option = $dtsPierceKo -f $rdtsForce, $rdts
 $zekAuraKo = "오라: <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 모든 아군 챔피언에게 <$forceIcon> <#d48294ff>적응형 능력치 {0}<>과 <$vampIcon> <#b7462dff>모든 피해 흡혈 {2}%<>를 부여합니다."
 $i18n.ko.zekes_herald.option = $zekAuraKo -f $zekForce, $zekDist, $zekVamp
 $i18n.ko.radiant_zekes_herald.option = $zekAuraKo -f $rzekForce, $rzekDist, $rzekVamp
+$fhAuraKo = "혹한의 포옹: <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 적 챔피언의 <$asIcon> <#ceff99ff>공격 속도<>를 <#e8a800ff>{0}%<> 감소시킵니다."
+$i18n.ko.frozen_heart.option = $fhAuraKo -f $fhAS, $fhDist
+$i18n.ko.radiant_frozen_heart.option = $fhAuraKo -f $rfhAS, $rfhDist
 $ssBullseyeKo = "정조준: 적 챔피언에게 피해를 입히면 <#a974ffff>{0}의 추가 마법 피해<>를 입힙니다. 재사용 대기시간은 <#e8a800ff>{1}초<>입니다."
 $i18n.ko.scouts_slingshot.option = $ssBullseyeKo -f $ssDmg, $ssCd
 $litSufferingKo = "고통: 스킬 피해를 입히면 적을 불태워 <#e8a800ff>{1}초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 {0}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 매 피해마다 최대 <#a974ffff>{2}의 마법 피해<>를 입힙니다."
@@ -1193,6 +1243,16 @@ $vcKo = "$lethKo`n`n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히
 $i18n.ko.voltaic_cyclosword.option = $vcKo -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.ko.radiant_voltaic_cyclosword.option = $vcKo -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
 
+foreach ($language in $i18n.PSObject.Properties) {
+    foreach ($entry in $language.Value.PSObject.Properties) {
+        if (-not $leadingBreak.ContainsKey("$($language.Name)/$($entry.Name)")) { continue }
+        $option = $entry.Value.option
+        if ($option -is [string] -and -not $option.StartsWith("`n")) {
+            $entry.Value.option = "`n" + $option
+        }
+    }
+}
+
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
 [System.IO.File]::WriteAllText($i18nPath, $i18nJson)
@@ -1216,6 +1276,8 @@ Write-Host "  Mortal Reminder:         -${mrHeal}% healing / ${mrDur}s"
 Write-Host "  Radiant Mortal Reminder: -${rmrHeal}% healing / ${rmrDur}s"
 Write-Host "  Jak'Sho:         ${jakDefMult}% armor+MR/stack / ${jakDur}s / ${jakStacks} stacks"
 Write-Host "  Radiant Jak'Sho: ${rjakDefMult}% armor+MR/stack / ${rjakDur}s / ${rjakStacks} stacks"
+Write-Host "  Frozen Heart:          -${fhAS}% enemy AS within ${fhDist} range"
+Write-Host "  Radiant Frozen Heart:  -${rfhAS}% enemy AS within ${rfhDist} range"
 Write-Host "  Frozen Mallet:         ${fmSlow}% slow / ${fmDur}s"
 Write-Host "  Radiant Frozen Mallet: ${rfmFlat} + ${rfmHpPct}% max HP dmg / ${rfmSlow}% slow / ${rfmDur}s"
 Write-Host "  Experimental Hexplate:         ${hexUltCdr}% ult CDR"

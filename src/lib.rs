@@ -362,6 +362,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured!("frozen_heart" => FrozenHeart));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
     reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured!("heartsteel" => Heartsteel));
@@ -418,6 +419,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured_radiant!("radiant_frozen_heart" => FrozenHeart));
     reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
     reg.add_item(configured_radiant!("radiant_guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
