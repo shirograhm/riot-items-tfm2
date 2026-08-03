@@ -2,6 +2,7 @@ use mod_api_stable::*;
 use std::cell::Cell;
 
 mod build_config;
+mod companion;
 mod config;
 mod constants;
 mod hook;
@@ -303,6 +304,12 @@ impl StableServerExtension for ItemBuildHookExtension {
 fn init(host: &StableHost) -> StableMod {
     let mut reg = StableMod::new("riot_items_tfm2");
     let configs = config::load();
+
+    // Recorded here because the companion-mod checks run from UI and hook
+    // paths that never see a host handle. Must happen before anything asks
+    // `companion::item_slots()`, which caches its answer on first call.
+    let version = host.game_version();
+    companion::record_game_version((version.major, version.minor, version.patch));
 
     macro_rules! configured {
         ($key:literal => $T:ty) => {

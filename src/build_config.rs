@@ -64,9 +64,18 @@ fn config_path() -> Result<PathBuf, String> {
         .ok_or_else(|| "could not resolve mod directory".to_string())
 }
 
-/// Item slots the editor exposes per champion, matching the three columns the
-/// strategy screen shows.
-pub const PICKER_SLOTS: usize = 3;
+/// Item slots the editor exposes per champion, matching the columns the
+/// strategy screen shows: the vanilla three, or four when `tfm2_item_tactics`
+/// is installed, enabled and set to four slots.
+///
+/// A build written with four slots and later opened with that mod disabled
+/// keeps its fourth item in `item-builds.json` — [`load_champion_rows`] only
+/// pads short builds, never truncates long ones, so turning the companion mod
+/// back on restores the build intact — but the editor stops showing that item
+/// and [`apply`] stops sending it, because the game has nowhere to put it.
+pub fn picker_slots() -> usize {
+    crate::companion::item_slots()
+}
 
 /// One editable row of the in-game editor: a champion and its three slots.
 ///
@@ -119,7 +128,13 @@ pub fn load_champion_rows() -> Vec<ChampionRow> {
                         .collect()
                 })
                 .unwrap_or_default();
-            slots.resize(PICKER_SLOTS, None);
+            // Pad to the editable width, but never cut a longer build down:
+            // a four-item build read while the fourth slot is unavailable has
+            // to survive the round trip so it is still there when it comes
+            // back. `apply` is where the unusable tail is dropped.
+            if slots.len() < picker_slots() {
+                slots.resize(picker_slots(), None);
+            }
             ChampionRow {
                 champion: Some(champion),
                 slots,
@@ -260,8 +275,13 @@ pub fn apply(
             .get(index)
             .and_then(|champion_id| config.by_champion.get(champion_id));
         if let Some(build) = champion_build {
+            // A build may be longer than the game has slots for — the file
+            // keeps a fourth item while `tfm2_item_tactics` is off, so that
+            // turning it back on restores the build. Sending that item anyway
+            // would hand the game a route it has nowhere to put.
+            let usable = build.len().min(picker_slots());
             let ai_route = slot.clone();
-            *slot = merge_build(build, &ai_route, &index_by_key);
+            *slot = merge_build(&build[..usable], &ai_route, &index_by_key);
         }
     }
 }
