@@ -69,8 +69,23 @@ const VISIT_BUDGET: usize = 512;
 static UI_ROOT: AtomicUsize = AtomicUsize::new(0);
 /// Bounded retries, so a game that never produces a resolvable root does not
 /// pay for a full window scan on every frame forever.
+///
+/// This counts *scans*, and only scans that had something to scan. Counting
+/// calls instead made it a timer rather than a budget: `post_update` ticks from
+/// the title screen, where neither anchor exists yet, so the whole allowance was
+/// spent on frames that returned `None` without looking at anything — and by the
+/// time a match produced a `GAME_VIEW`, every later call returned at the budget
+/// check instead of scanning. Measured on 2026-08-04: `GAME_VIEW` live for
+/// 12,515 frames, root `NOT RESOLVED after 16501 attempts`, window scan run zero
+/// times. Whether the in-match icon worked came down to whether the player
+/// reached a match within ~600 frames of launching, which is why it looked like
+/// "the first restart after editing `4items.cfg` is broken, the second is fine".
 static ATTEMPTS: AtomicUsize = AtomicUsize::new(0);
 const MAX_ATTEMPTS: usize = 600;
+/// The anchor the counted attempts were spent against. A different anchor is a
+/// different object graph, so failures against the old one say nothing about
+/// this one and the budget starts over.
+static LAST_ANCHOR: AtomicUsize = AtomicUsize::new(0);
 /// How the resolved root was found, for the diagnostic report.
 static SOURCE: AtomicUsize = AtomicUsize::new(0);
 
@@ -179,12 +194,27 @@ pub fn resolve() -> Option<usize> {
     if cached != 0 {
         return Some(cached);
     }
+    // Both anchors are published by `cap_game_view`, so before the first UI
+    // frame there is nothing to look at. Returning here — ahead of the budget —
+    // is what keeps menu frames from spending an allowance meant for scans.
+    let tip = super::TIP_ROOT.load(Ordering::Relaxed);
+    let game_view = super::GAME_VIEW.load(Ordering::Relaxed);
+    let has_app = game_view > GAME_VIEW_IN_APP;
+    if tip <= 0x10000 && !has_app {
+        return None;
+    }
+
+    // Spend against the anchor, and reset when it changes: a new `App` means the
+    // previous failures were about a different object graph.
+    let anchor = if has_app { game_view } else { tip };
+    if LAST_ANCHOR.swap(anchor, Ordering::Relaxed) != anchor {
+        ATTEMPTS.store(0, Ordering::Relaxed);
+    }
     if ATTEMPTS.fetch_add(1, Ordering::Relaxed) >= MAX_ATTEMPTS {
         return None;
     }
 
     // 1. TIP_ROOT. Free to test, and the validator — not an assumption — decides.
-    let tip = super::TIP_ROOT.load(Ordering::Relaxed);
     if tip > 0x10000 && unsafe { is_ui_root(tip) } {
         UI_ROOT.store(tip, Ordering::Relaxed);
         SOURCE.store(1, Ordering::Relaxed);
@@ -192,8 +222,7 @@ pub fn resolve() -> Option<usize> {
     }
 
     // 2. Window scan from App.
-    let game_view = super::GAME_VIEW.load(Ordering::Relaxed);
-    if game_view <= GAME_VIEW_IN_APP {
+    if !has_app {
         return None;
     }
     let app = game_view - GAME_VIEW_IN_APP;
@@ -225,9 +254,21 @@ pub fn resolve() -> Option<usize> {
 pub fn report() -> String {
     let root = UI_ROOT.load(Ordering::Relaxed);
     if root == 0 {
+        // `scans` counts real scans now, so 0 with a live anchor means the
+        // budget was exhausted against an *earlier* anchor, and anything else
+        // is a scan that ran and found nothing — two different bugs that the
+        // old single "attempts" number could not tell apart.
+        let scans = ATTEMPTS.load(Ordering::Relaxed);
+        let anchor = LAST_ANCHOR.load(Ordering::Relaxed);
+        let state = if anchor == 0 {
+            "no anchor yet (TIP_ROOT and GAME_VIEW both unpublished)".to_string()
+        } else if scans > MAX_ATTEMPTS {
+            format!("budget exhausted against anchor {anchor:#x}")
+        } else {
+            format!("scanned from anchor {anchor:#x} and found nothing")
+        };
         return format!(
-            "UI root: NOT RESOLVED after {} attempts (in-match 4th slot icon is off)",
-            ATTEMPTS.load(Ordering::Relaxed)
+            "UI root: NOT RESOLVED, {scans} scans, {state} (in-match 4th slot icon is off)"
         );
     }
     let how = match SOURCE.load(Ordering::Relaxed) {

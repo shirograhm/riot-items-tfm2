@@ -64,9 +64,9 @@ compiler the game is built with.
 * `4items.cfg` ships with `slots = 3`, i.e. every four-item behaviour off. This
   combination has never been run.
 
-## Three bugs the merge introduced, and what they taught
+## Four bugs the merge introduced, and what they taught
 
-All three were substitutions that looked equivalent and were not. Recorded
+All four were substitutions that looked equivalent and were not. Recorded
 because each failed *silently*, and the silence was the expensive part.
 
 ### 1. `TIP_ROOT` is not `GameUI.root`
@@ -124,12 +124,37 @@ Finals use upstream's two-pass rule — `next_tier` empty **and** something
 upgrades into it — because "no next tier" alone also accepts a base component
 nothing builds into, which is not a legal build goal.
 
-### The pattern behind all three
+### 4. The root-scan budget was a timer
 
-Every one was a *latching* failure: `MODITEMS_DONE`, `AUTO_CANDS` and `SLOTS` all
-memoize on first call, so a wrong early answer is permanent. When adding a cache
-here, cache only *validated* answers — which is what `ui_root::resolve` and
-`companion::item_slots` now both do.
+Reported as "the 4th item slot is dead on the first launch after editing
+`slots = #`, and the second restart fixes it".
+
+`ui_root::resolve` bounded its window scan with a 600-call allowance, spent at
+the *top* of the function — before the `TIP_ROOT` test and before the
+`GAME_VIEW` check. `post_update` ticks from the title screen, where neither
+anchor is published yet, so those frames returned `None` having spent an
+attempt on nothing. Ten seconds of menus emptied the budget, and every call
+after that returned at the budget check without scanning. `build_ext_diag.txt`
+showed the contradiction outright: `GAME_VIEW` live for 12,515 frames, root
+`NOT RESOLVED after 16501 attempts`, window scan run **zero** times.
+
+Nothing about it was tied to restarts. The 4th item was always bought and its
+stats always applied — only `handle_ingame_slot3` was skipped, so the icon never
+drew and the slot looked empty. What decided it was whether the player reached a
+match within ~600 frames of launching, and the launch right after editing the
+config is the one spent in menus confirming the setting took.
+
+The budget now counts scans that had an anchor to scan from, and resets when the
+anchor changes. `report()` distinguishes "no anchor yet" from "budget exhausted"
+from "scanned and found nothing", because the single "attempts" number could not.
+
+### The pattern behind all four
+
+Every one was a *latching* failure: `MODITEMS_DONE`, `AUTO_CANDS` and `SLOTS`
+memoize on first call, and the root-scan budget latched shut. A wrong or early
+answer is permanent. When adding a cache here, cache only *validated* answers —
+which is what `ui_root::resolve` and `companion::item_slots` now both do — and
+when adding a retry budget, spend it only on attempts that could have succeeded.
 
 ## Status
 

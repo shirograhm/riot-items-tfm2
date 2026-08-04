@@ -2243,7 +2243,7 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
 //   * is the 4th path reached at all, and if it bails, at which step;
 //   * `owned>=4` observed — distinguishes "not bought" from "bought, not drawn";
 //   * hook install state, VEH state, UI root address, mod item source.
-const BUILD_EXT_DIAG: bool = false; // * cause identified (4th purchase works; the icon was solved by reading the view model) -> OFF in production
+const BUILD_EXT_DIAG: bool = true; // * ON 2026-08-04: chasing "the 4th slot is dead on the first launch after editing `slots = #`, alive on the second"
 // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false;
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
@@ -2914,6 +2914,25 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                     },
                 ));
                 if !buy_note.is_empty() { s.push_str(&format!("  buy_item detail: {buy_note}\n")); }
+                // The two halves keep their own slot counts, and only this one
+                // is asked by the Builds editor and by the item-build hook's
+                // `usable = build.len().min(picker_slots())`. If they disagree,
+                // the symptom is a 4-slot layout with nothing ever placed in
+                // the 4th — which is indistinguishable, on screen, from the
+                // purchase path failing. `mode` above is the tactics half's.
+                s.push_str(&format!(
+                    "  host picker slots (companion::item_slots) : {}  [tactics half says {}]\n",
+                    crate::companion::item_slots(),
+                    slot_count()
+                ));
+                // Whether the loader hook ever delivered the 4-slot templates.
+                // These used to arrive through `mod.override_info` as well,
+                // which cannot miss; the hook can, if a template is loaded
+                // before `uinj::install` runs and is then served from cache.
+                let (inst, pi, wide, strat) = uinj::inject_state();
+                s.push_str(&format!(
+                    "  ui_inject: installed={inst} player_info={pi} wide={wide} strategy={strat}\n"
+                ));
                 s.push_str(&format!("  {}\n", ui_root::report()));
                 if let Some(d) = mod_dir() { let _ = fs::write(d.join("build_ext_diag.txt"), s); }
             }

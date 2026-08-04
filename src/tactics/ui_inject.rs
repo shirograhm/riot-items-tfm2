@@ -149,6 +149,24 @@ static LAST_PI: AtomicUsize = AtomicUsize::new(0);
 static LAST_WIDE: AtomicUsize = AtomicUsize::new(0);
 static LAST_STRAT: AtomicUsize = AtomicUsize::new(0);
 
+/// Diagnostic: `(hook installed, player_info replaced, wide replaced, strategy
+/// injected)` so far this session.
+///
+/// Each template is replaced from [`loader_body`], which only sees a template
+/// the game loads *after* [`install`] has run. Before the merge these two
+/// `player_info` templates were also listed in `mod.override_info`, which is
+/// applied at load time and cannot miss — so a miss here was invisible. Now
+/// that the loader hook is the only delivery route, "did it ever fire" is a
+/// question worth being able to answer.
+pub fn inject_state() -> (bool, bool, bool, bool) {
+    (
+        INSTALLED.load(Ordering::Relaxed),
+        LAST_PI.load(Ordering::Relaxed) != 0,
+        LAST_WIDE.load(Ordering::Relaxed) != 0,
+        LAST_STRAT.load(Ordering::Relaxed) != 0,
+    )
+}
+
 pub static DBG: AtomicBool = AtomicBool::new(false);
 static LOGP: std::sync::Mutex<String> = std::sync::Mutex::new(String::new());
 pub fn set_log(p: String) { *LOGP.lock().unwrap_or_else(|e| e.into_inner()) = p; }
