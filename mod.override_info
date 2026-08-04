@@ -22,13 +22,5 @@
   "asset/base/ui/layout/strategy": {
     "remapping": "asset/riot_items_tfm2/ui/layout/strategy",
     "type": "override"
-  },
-  "asset/base/ui/layout/ingame_component/player_info": {
-    "remapping": "asset/riot_items_tfm2/ui/layout/ingame_component/player_info",
-    "type": "override"
-  },
-  "asset/base/ui/layout/ingame_component/wide_player_info": {
-    "remapping": "asset/riot_items_tfm2/ui/layout/ingame_component/wide_player_info",
-    "type": "override"
   }
 }

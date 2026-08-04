@@ -506,6 +506,23 @@ unsafe fn detour(
     // after the first that sticks.
     crate::tactics::driver::record_item_net(agent as *const LogisticSGDAgent as usize);
 
+    // The same half needs to know which items exist and which are final, to
+    // offer a mod item as the 4th build slot. It used to find that by scanning
+    // `Database + 0..0x60000` for something Vec-shaped; this is the list the
+    // game is actually using, so it is handed over directly. Idempotent, and
+    // cheap after the first call that sticks.
+    crate::tactics::driver::record_item_catalog(
+        items
+            .iter()
+            .map(|item| {
+                (
+                    item.key().to_string(),
+                    item.next_tier().iter().map(ToString::to_string).collect(),
+                )
+            })
+            .collect(),
+    );
+
     let original = ORIGINAL
         .get()
         .copied()

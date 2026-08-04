@@ -56,15 +56,6 @@ pub fn record_item_net(agent: usize) {
     }
     super::ITEM_NET_ADDR.store(agent as u64, Ordering::Relaxed);
     DB_ADDR.store(agent - ITEM_NET_DB_OFFSET, Ordering::Relaxed);
-    super::append_log(
-        "4items.txt",
-        &format!(
-            "[{}ms] db={:#x} item_net={:#x} (from riot_items_tfm2 item-build hook)",
-            super::now_ms(),
-            agent - ITEM_NET_DB_OFFSET,
-            agent
-        ),
-    );
 }
 
 /// The `Database` base, or 0 until the host's item-build detour has fired once.
@@ -119,6 +110,19 @@ pub fn before_management_tick() {
 pub fn post_update(client: &mod_api_stable::StableClient<'_>) {
     let in_game = client.is_in_game();
     super::tactics_post_update(client, in_game);
+}
+
+/// Hands over the game's item catalog so the mod-item registry can be built
+/// from it rather than by scanning the `Database`.
+///
+/// Called from `hook::detour`, which receives the catalog as an argument. Like
+/// [`record_item_net`], this is the only route to that data in a stable-ABI mod;
+/// unlike it, the data arrives typed and needs no base address, so it is the
+/// more trustworthy of the two.
+///
+/// Idempotent — every call after the first that sticks is ignored.
+pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
+    super::record_item_catalog(catalog);
 }
 
 /// Item slots this half is configured for: 4, or 3 when `4items.cfg` says so.

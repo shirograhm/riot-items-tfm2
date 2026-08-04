@@ -64,28 +64,84 @@ compiler the game is built with.
 * `4items.cfg` ships with `slots = 3`, i.e. every four-item behaviour off. This
   combination has never been run.
 
-## The UI-root substitution was wrong
+## Three bugs the merge introduced, and what they taught
 
-The first merged build crashed the game on startup in *both* slot modes, with
-the game log stopping at "paragraph paint done" — the first UI frame.
+All three were substitutions that looked equivalent and were not. Recorded
+because each failed *silently*, and the silence was the expensive part.
 
-`TIP_ROOT` is `arg4` of the UI mega-function, captured by `cap_game_view` so it
-can be handed straight back to the game's own tooltip `show` function as its
-node search root. The original mod never treated it as a `Node`. Reinterpreting
-it as `GameUI.root` made `find_node` follow child pointers that are not child
-pointers, which is an access violation — and `catch_unwind` cannot catch one, so
-the process dies rather than degrading.
+### 1. `TIP_ROOT` is not `GameUI.root`
 
-`UI_TREE_WALK_ENABLED` (in `src/tactics/mod.rs`, currently `false`) gates every
-handler that starts from that pointer. Its doc comment lists exactly what is off
-and the two routes to turning it back on. The engine half — byte patches,
-`buy_item` injection, mod-item scan, neural 4th-item pick, and `ui_inject`'s
-loader hook — is unaffected, because none of it touches the live node tree.
+The first merged build crashed on startup in *both* slot modes, with the game log
+stopping at "paragraph paint done" — the first UI frame.
 
-The visible cost is the **in-match 4th item icon and its tooltip**. The 4th item
-is still bought and its stats still apply; it is just not drawn.
+`TIP_ROOT` is `arg4` of the UI mega-function, captured so it can be handed back
+to the game's own tooltip `show` function as its node search root. The original
+mod never treated it as a `Node`. Reinterpreting it as one made `find_node`
+follow child pointers that are not child pointers — an access violation, which
+`catch_unwind` cannot catch, so the process dies rather than degrading.
 
-## Unresolved — read before enabling `slots = 4`
+Fixed by `src/tactics/ui_root.rs`, which *finds and validates* the root instead:
+`TIP_ROOT` first (free to test), then a window scan from `App`
+(`GAME_VIEW - 0x4a50`) testing each slot as both a pointer to a `Node` and an
+inline one. A candidate is accepted only after a `safe_read`-only walk proves it
+has a readable ASCII id and a coherent child vector containing `main`. Field
+offsets come from `offset_of!` on `mod_api`'s `Node`, so they track the type.
+
+**The rule:** the VEH only rewrites faults inside `safe_copy`'s asm block, so a
+bad pointer anywhere else kills the process. Never hand an unvalidated address to
+`find_node`.
+
+### 2. Disabling the UI walk disabled every `safe_read_*`
+
+While the walk was gated off, the 4th item was never bought, and every diagnostic
+read healthy: hooks "installed", counters zero.
+
+`seh_install()` registers the VEH that gates `safe_copy`, which returns `false`
+on entry until it runs. Upstream called it from exactly two places, and the one
+that mattered was inside `handle_tactics_screen` — the VEH was registered as a
+*side effect* of a UI handler running every frame. Gating that off meant
+`install_launcher_hook` returned at its first `safe_read_u64` on all 18,902
+calls (`LIVE_SEED` stayed 0, so no buy was ever classified as live), and
+`is_my_athlete` could not read `athlete+0x810`, so the buy detour exited before
+touching a build.
+
+`seh_install()` now runs first thing in `tactics_init`.
+
+### 3. The `Database` derivation validates itself
+
+`record_item_net` derives `Database = item_network - 0x1558`. Its check —
+`sig_ok(db + 0x1558)` — is true by construction, so a wrong base *passes*.
+`dump_mod_items` scanned from it and found 0 mod items, leaving `auto_cands()`
+as `VANILLA_FINAL` alone: the auto-picked 4th item could only ever be vanilla.
+
+Replaced by `record_item_catalog`, fed from the `&Vec<Box<dyn ItemInfo>>` that
+`src/hook.rs` already receives. That is the list the game is actually using, it
+arrives typed, and it needs no base address. `db_addr()` is still derived and
+still used by `probe_db` for the item network, but nothing depends on the memory
+scan any more.
+
+Finals use upstream's two-pass rule — `next_tier` empty **and** something
+upgrades into it — because "no next tier" alone also accepts a base component
+nothing builds into, which is not a legal build goal.
+
+### The pattern behind all three
+
+Every one was a *latching* failure: `MODITEMS_DONE`, `AUTO_CANDS` and `SLOTS` all
+memoize on first call, so a wrong early answer is permanent. When adding a cache
+here, cache only *validated* answers — which is what `ui_root::resolve` and
+`companion::item_slots` now both do.
+
+## Status
+
+Working in-game as of 2026-08-04 with `slots = 4`: the 4th item is bought, its
+stats apply, and its icon and tooltip render in-match. The auto-picked 4th item
+can be a mod item.
+
+`BUILD_EXT_DIAG` in `src/tactics/mod.rs` is the diagnostic that established all
+of this — off in production, one flip to get `build_ext_diag.txt` back. It is the
+first thing to reach for if any of this regresses.
+
+## Still unresolved
 
 1. **The strategy screen collides.** This mod's `ui/layout/strategy` override
    *replaces the Personal tab with `#builds`* (see the module docs in
@@ -98,24 +154,31 @@ is still bought and its stats still apply; it is just not drawn.
    unaffected. Resolving this means picking one of: restore `#personal` in
    `ui/layout/strategy.ui`, or let this mod's own Builds editor be the
    designation UI and drop the injection.
-2. **`player_info` is now delivered twice.** `mod.override_info` remaps
-   `player_info` and `wide_player_info` to the tactics versions, and
-   `ui_inject.rs` *also* replaces those templates through its loader hook
-   (`IN_MATCH_UI`). Both write the same content, so this should be redundant
-   rather than wrong — but it has not been observed.
-3. **The `Database` derivation is the weakest link.** `record_item_net` assumes
-   the `&LogisticSGDAgent` this mod's item-build detour receives is the same
-   network `tfm2_item_tactics` locates at `Database + 0x1558`. It validates the
-   header (`16384/16384/1`) and the weight pointer before believing it, so a
-   wrong guess fails closed — but "fails closed" here means the mod-item scan
-   and the neural fourth-item pick silently never run. If the fourth item comes
-   out as the vanilla fallback, check this first.
+2. **`player_info` is hand-authored, not generated.** `ui_inject` replaces the
+   root's children wholesale with an embedded `.ui` that is the base file plus a
+   4th slot and tighter spacing. That delta has to be re-applied by hand when the
+   game ships a new base — the same rot an override suffers (see
+   `item_tactics_HOW_IT_WORKS.md` §7.1), just confined to one file nobody else
+   touches. Generating it instead would mean appending a `slot3` node to the
+   existing container at runtime and letting `force_blue_slot_spacing` (which
+   already re-spaces `base + 42*i` for `i in 0..4` every frame) do the layout.
+   That would delete both `.ui` files and survive game updates.
+
+   Note these must **not** be listed in `mod.override_info`. They were during
+   the merge, and because an override is applied before any mod code runs, it
+   cannot be conditional: `slots = 3` still got the 4-slot layout, defeating the
+   `mode4` gate in `loader_body`. Removed 2026-08-04.
+3. **The direct scene read is off.** `LIVE_DB` was the `ClientDatabase` pointer,
+   and `quick_scene_side` reads the live scene's team ids out of it to decide
+   which sim side is the player's. Nothing leaks that pointer to a stable-ABI
+   mod, so `SCENE_SIDE` stays undetermined and the team gate falls back to the
+   roster (`MY_ATHLETES`, published from the stable record API) — which is a
+   supported path, not a break. What is lost is the spawn hook's early side
+   decision, which covered the `owned=0` injection window.
 4. **Two detours, untested together.** This mod hooks the item-build route
    function; the tactics half hooks `buy_item`. Different functions, so they
    should not fight — but the previously recorded risk of the two halves
    disagreeing about a build has never been tested in-game.
-5. **Nothing here has been compiled.** The merge is source-complete; the build
-   is yours to run.
-6. **`tfm2_item_tactics` shipped a `ui/layout/strategy.ui`** that its own
+5. **`tfm2_item_tactics` shipped a `ui/layout/strategy.ui`** that its own
    `mod.override_info` (`{}`) never referenced — it injects at runtime instead.
    This mod's `ui/layout/strategy.ui` was kept and theirs was not copied in.

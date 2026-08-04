@@ -43,7 +43,6 @@ use std::sync::Mutex;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 #[path = "ui_inject.rs"] mod uinj; // 4th-slot UI injection (chained loader hook): item3 dropdown + in-match slot3 display
-#[path = "perf.rs"] mod perf;      // per-hook cost measurement. With perf::PERF_ON=false even the call sites are DCE'd.
 
 pub mod driver;
 mod ui_root;
@@ -78,7 +77,6 @@ const UI_TREE_WALK_ENABLED: bool = true;
 // Confirmed for 0.5.0 (was 0x218a5f0). Validated by the dd_addr_valid() prologue guard (55 56 57 48 83 ec 70) before use.
 const FN_DD_SETOPT_RVA: usize = 0x1bfc80; // 0.5.3 (0.5.2 was 0x242f250). ghidra-re confirmed: 103 direct callers, an exact match with the old exe, plus 4 offset fingerprints (+0x1788 selected / +0x1528,0x1530,0x1538 option Vec / +0x1570,0x1578 callback / element 0xf8 / input stride 0x28) all unchanged. WARNING: the prologue DID change (dd_addr_valid expectation below was updated).
 
-const LOG_ENABLED: bool = false; // OFF in production (gates diagnostic logging / dumps / [slot012] logs). The injection logic sits outside this gate, so it is unaffected.
 // * Production master diagnostic gate (07-11): this session's diagnostics (nn_moditem, timing, liveroster, p6/channel scan, shadow-call catalog name lookup) plus
 //   the older diagnostic flush/hooks (c6new, countprobe, auto4, teamgate) are all OFF. The team gate (is_live/is_player) and SLOT012 injection live outside the gate = unaffected.
 const DIAG_ENABLED: bool = false;
@@ -96,30 +94,30 @@ fn load_mode() -> u64 {
     let mut mode = 4u64;
     let mut diag = String::new();
     match mod_dir() {
-        None => diag.push_str("⚠mod_dir()=None (game_root 도출 실패) → 기본값 4칸 사용
+        None => diag.push_str("! mod_dir()=None (could not resolve the mod directory) -> defaulting to 4 slots
 "),
         Some(d) => {
             let p = d.join("4items.cfg");
             diag.push_str(&format!("mod_dir = {}
-cfg 경로 = {}
-존재 = {}
+cfg path = {}
+exists = {}
 ", d.display(), p.display(), p.exists()));
             match fs::read_to_string(&p) {
-                Err(e) => diag.push_str(&format!("⚠cfg 읽기 실패({}) → 기본값 4칸 사용. 3칸을 원하면 이 경로에 'slots = 3' 파일 필요
+                Err(e) => diag.push_str(&format!("! cfg read failed ({}) -> defaulting to 4 slots. For 3 slots put a 'slots = 3' file at this path
 ", e)),
                 Ok(s) => {
                     let scan = match s.rfind('=') { Some(i) => &s[i + 1..], None => &s[..] };
                     let mut found = false;
                     for c in scan.chars() { if c == '3' { mode = 3; found = true; break; } if c == '4' { mode = 4; found = true; break; } }
-                    diag.push_str(&format!("cfg 읽기 OK ({}B) · 파싱대상={:?} · 숫자발견={}
+                    diag.push_str(&format!("cfg read OK ({}B) - parsed from={:?} - digit found={}
 ", s.len(), scan.trim(), found));
-                    if !found { diag.push_str("⚠'=' 뒤에서 3/4를 못 찾음 → 기본값 4칸 사용
+                    if !found { diag.push_str("! no 3 or 4 after the '=' -> defaulting to 4 slots
 "); }
                 }
             }
         }
     }
-    diag.push_str(&format!("★최종 mode = {} (slot_count={})
+    diag.push_str(&format!("=> final mode = {} (slot_count={})
 ", mode, if mode == 4 { 4 } else { 3 }));
     if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join("4items_mode.txt"), &diag); }
     ITEM_MODE.store(mode, Ordering::Relaxed);
@@ -356,27 +354,6 @@ fn game_root() -> Option<PathBuf> { exe_path()?.parent().map(|p| p.to_path_buf()
 /// mod id. The old expression resolves to a path that simply does not exist for
 /// those users, which silently disabled every file this reads.
 fn mod_dir() -> Option<PathBuf> { crate::config::dll_dir() }
-fn write_log(name: &str, content: &str) {
-    if !LOG_ENABLED { return; }
-    if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join(name), content); }
-}
-fn append_log(name: &str, line: &str) {
-    if !LOG_ENABLED { return; }
-    if let Some(d) = mod_dir() {
-        let _ = fs::create_dir_all(&d);
-        let p = d.join(name);
-        let mut s = fs::read_to_string(&p).unwrap_or_default();
-        s.push_str(line); s.push('\n');
-        let _ = fs::write(p, s);
-    }
-}
-// * Temporary diagnostics (independent of LOG_ENABLED): delegate-integrated SEL/PT/cur dump. Set false once the cause is confirmed.
-// 0.5.0 migration: OFF (diagnostics finished + MR_* replay offsets unconfirmed -> dump_replay_item_counts gated off).
-const DELEGATE_DIAG: bool = false; // OFF in production (gates dbg_write / C6 seam counter file logs).
-fn dbg_write(name: &str, content: &str) {
-    if !DELEGATE_DIAG { return; }
-    if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join(name), content); }
-}
 
 // ===========================================================================
 //  Native dropdown control (ported from scrim)
@@ -468,16 +445,6 @@ unsafe fn read_label(n: &Node) -> Option<String> {
     Some(String::from_utf8_lossy(std::slice::from_raw_parts(ptr, len)).to_string())
 }
 // Dump a node subtree as id + (image source / label text) (diagnostic for locating the champion key).
-unsafe fn dump_subtree(n: &Node, depth: usize, out: &mut String) {
-    let id = n.id.as_str();
-    let mut extra = String::new();
-    if let Some(s) = read_img_source(n) { extra.push_str(&format!("  img='{}'", s)); }
-    if let Some(s) = read_label(n) { extra.push_str(&format!("  label='{}'", s)); }
-    if !id.is_empty() || !extra.is_empty() {
-        out.push_str(&format!("{}{}{}\n", "  ".repeat(depth), if id.is_empty() { "(no-id)" } else { id }, extra));
-    }
-    for c in n.child.iter() { dump_subtree(c, depth + 1, out); }
-}
 // * Diagnostic (design work for filling the slot3 icon): dump the in-match player_info slot icon nodes -
 //   filled slot0/1/2 vs the empty slot3 ImageRunner source + runner base bytes (to pin the layout).
 static SLOTDIAG_CNT: AtomicU64 = AtomicU64::new(0);
@@ -686,7 +653,6 @@ const MODITEM_ACTIVE_OFF: usize = 0x190;
 // One-shot verification dump (key/ID/flag) - written regardless of LOG_ENABLED.
 // * OFF for release (2026-07-22): the rule is settled by a two-way demonstration - with riot **disabled** all 104 had raw=0 (X),
 //   with riot **enabled** all 110 had raw=pointer (O). No remaining chance of misjudgement -> the dump is unnecessary.
-const ACTIVE_DUMP: bool = false;
 
 // The 30 vanilla JSON keys (order = ID 0..29). A fingerprint for validating the in-memory master list.
 const VANILLA_KEYS: [&str; 30] = [
@@ -697,6 +663,78 @@ const VANILLA_KEYS: [&str; 30] = [
     "arcane_crystal","spirit_crystal","staff_of_rapture","angels_fang","prophet_of_the_abyss",
     "vital_orb","hardened_heart","ring_of_reincarnation","hourglass_of_eternity","giants_horn_shard",
 ];
+
+/// Fills `MOD_REGISTRY`/`MOD_FINALS` from the game's own item catalog, which the
+/// host mod's item-build detour is handed as `&Vec<Box<dyn ItemInfo>>`.
+///
+/// This replaces `dump_mod_items` below, which finds the same information by
+/// scanning `Database + 0..0x60000` for something Vec-shaped. That scan needs a
+/// correct `Database` base, and the merged build derives one as
+/// `item_network - 0x1558` — a value whose only self-check is circular
+/// (`sig_ok(db + 0x1558)` is true by construction). It found 0 items, so the
+/// 4th-item candidate list was `VANILLA_FINAL` alone and the auto-picked 4th
+/// item could never be a mod item.
+///
+/// The catalog is strictly better evidence: it is the list the game is actually
+/// using, it arrives typed, and it needs no base address at all.
+///
+/// `catalog` is `(key, next_tier)` per entry, in catalog order.
+///
+/// # Item ids
+///
+/// `item_id_to_key` defines the id space as `0..30` vanilla (`VANILLA_KEYS`) and
+/// `30 + i` for `MOD_REGISTRY[i]`. Those ids stay *inside* this module — the
+/// injection path turns an id into a key and then resolves the key against the
+/// live catalog by name, so all that matters is that ids and `MOD_REGISTRY`
+/// agree with each other. Catalog order is therefore fine even though it is not
+/// the game's mod-item order.
+fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
+    if catalog.is_empty() || MODITEMS_DONE.swap(true, Ordering::Relaxed) {
+        return;
+    }
+
+    // Pass 1: every key that something upgrades into. `next_tier` is read across
+    // the WHOLE catalog, vanilla included — a mod item can be the upgrade target
+    // of a vanilla component.
+    let built_into: std::collections::HashSet<&str> = catalog
+        .iter()
+        .flat_map(|(_, next)| next.iter().map(String::as_str))
+        .collect();
+
+    let is_vanilla = |k: &str| k == "ironsword" || VANILLA_KEYS.contains(&k);
+
+    let mut registry: Vec<String> = Vec::new();
+    let mut finals: Vec<u64> = Vec::new();
+    for (key, next_tier) in catalog.iter() {
+        if is_vanilla(key) {
+            continue;
+        }
+        let id = 30 + registry.len() as u64;
+        // Pass 2: final = nothing to upgrade into, AND something upgrades into
+        // it. Both halves matter — "no next tier" alone also accepts a base
+        // component nothing builds into, which is not a legal build goal.
+        if next_tier.is_empty() && built_into.contains(key.as_str()) {
+            finals.push(id);
+        }
+        registry.push(key.clone());
+    }
+
+    let registry_len = registry.len();
+    let finals_len = finals.len();
+    *MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner()) = registry;
+    *MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()) = finals;
+    // `auto_cands` memoizes on first call and never reconsiders, so a list built
+    // before this ran would pin the 4th item to vanilla for the whole session.
+    *AUTO_CANDS.lock().unwrap_or_else(|e| e.into_inner()) = None;
+
+    *CATALOG_NOTE.lock().unwrap_or_else(|e| e.into_inner()) = format!(
+        "from host item-build hook catalog: {} entries, {registry_len} mod items, {finals_len} finals",
+        catalog.len()
+    );
+}
+
+/// How `MOD_REGISTRY` was populated, for the diagnostic report.
+static CATALOG_NOTE: Mutex<String> = Mutex::new(String::new());
 
 // Scan the Database mod_items Vec in memory -> fill MOD_REGISTRY/MOD_FINALS. (ported from scrim's dump_mod_items)
 unsafe fn dump_mod_items(db: usize) {
@@ -745,8 +783,8 @@ unsafe fn dump_mod_items(db: usize) {
         }
     }
     if found.is_empty() {
-        s.push_str("  ✗ 비바닐라 item-struct 배열 못 찾음 (모드 아이템 미적용?)\n");
-        write_log("item_tactics_moditems.txt", &s); return;
+        s.push_str("  X no non-vanilla item-struct array found (item mods not applied?)\n");
+        return;
     }
     found.sort_by(|x, y| y.1.cmp(&x.1));
     let key_of_elem = |elem: usize| -> Option<String> {
@@ -804,7 +842,7 @@ unsafe fn dump_mod_items(db: usize) {
     //   if a disabled mod's staging array was bigger than the active merged array it picked that one. -> switched the **primary key to
     //   the number of active entries** (the array that actually has active items is the one the game uses). Ties break by larger cnt.
     //   If every candidate has 0 active (= the normal state with no item mods enabled), fall back to the old rule and take #1 by cnt.
-    let mut diag = String::from("  --- 후보 스캔(전부) ---\n");
+    let mut diag = String::from("  --- candidate scan (all) ---\n");
     let mut cands: Vec<(usize, usize, Vec<String>, usize, u32, usize)> = Vec::new();
     for &(fbuf, fcnt, fst, _) in &found {
         let keys = build_keys(fbuf, fst, fcnt);
@@ -812,7 +850,7 @@ unsafe fn dump_mod_items(db: usize) {
         let act = (0..keys.len())
             .filter(|&i| safe_read_u64(fbuf + i * fst + MODITEM_ACTIVE_OFF).map(|v| v != 0).unwrap_or(false))
             .count();
-        diag.push_str(&format!("  buf={:#x} cnt={} stride={:#x} first={:?} nt_off={:#x} votes={} 활성={}\n",
+        diag.push_str(&format!("  buf={:#x} cnt={} stride={:#x} first={:?} nt_off={:#x} votes={} active={}\n",
             fbuf, keys.len(), fst, keys.first(), bo, bv, act));
         if bv >= 3 { cands.push((fbuf, fst, keys, bo, bv, act)); }
     }
@@ -820,9 +858,9 @@ unsafe fn dump_mod_items(db: usize) {
     cands.sort_by(|a, b| b.5.cmp(&a.5));
     let chosen = cands.into_iter().next().map(|(b, st, k, o, v, _)| (b, st, k, o, v));
     let Some((buf, st, keys, best_off, best_votes)) = chosen else {
-        s.push_str("  ✗ 아이템 트리(next_tier) 가진 배열 없음 → 아이템 모드 미로드/미인식 의심\n");
+        s.push_str("  X no array carrying an item tree (next_tier) -> item mod probably not loaded or not recognised\n");
         s.push_str(&diag);
-        write_log("item_tactics_moditems.txt", &s);
+        
         return;
     };
     let cnt = keys.len();
@@ -840,28 +878,14 @@ unsafe fn dump_mod_items(db: usize) {
         .collect();
     let n_act = actives.iter().filter(|&&a| a).count();
     *MOD_ACTIVE.lock().unwrap_or_else(|e| e.into_inner()) = actives.clone();
-    s.push_str(&format!("  [채택] buf={:#x} cnt={} stride={:#x} nt_off={:#x} votes={} 활성={}/{}\n  idx | ID | act | key\n",
+    s.push_str(&format!("  [chosen] buf={:#x} cnt={} stride={:#x} nt_off={:#x} votes={} active={}/{}\n  idx | ID | act | key\n",
         buf, cnt, st, best_off, best_votes, n_act, cnt));
     for (i, k) in keys.iter().enumerate() {
         s.push_str(&format!("  {:>3} | {:>3} | {} | {}\n", i, 30 + i,
             if actives.get(i).copied().unwrap_or(true) { "O" } else { "X" }, k));
     }
-    if ACTIVE_DUMP {
-        // One-shot verification dump regardless of LOG_ENABLED: keep the raw +0x190 value so a misjudged rule can be spotted.
-        let mut d = format!("[{}ms] ModItemEntry +{:#x} 활성판정 덤프  buf={:#x} stride={:#x} cnt={} 활성={}\n",
-            now_ms(), MODITEM_ACTIVE_OFF, buf, st, cnt, n_act);
-        d.push_str("  ID | act | raw(+0x190)        | key\n");
-        for (i, k) in keys.iter().enumerate() {
-            let raw = safe_read_u64(buf + i * st + MODITEM_ACTIVE_OFF);
-            d.push_str(&format!("  {:>3} |  {}  | {:>18} | {}\n", 30 + i,
-                if actives.get(i).copied().unwrap_or(true) { "O" } else { "X" },
-                raw.map(|v| format!("{:#x}", v)).unwrap_or_else(|| "READ-FAIL".into()), k));
-        }
-        d.push_str(&diag); // every candidate array (including active counts) - to diagnose a wrong adoption
-        if let Some(p) = mod_dir() { let _ = fs::write(p.join("item_tactics_active.txt"), &d); }
-    }
     s.push_str(&diag);
-    write_log("item_tactics_moditems.txt", &s);
+    
     // * Pass 1: collect all next_tier targets (built_set) - if anything builds into this item, it is a real final candidate.
     //   (Base components like needlessly_large_rod have an empty next_tier but are not targets either, so they are excluded.)
     let mut built: std::collections::HashSet<String> = std::collections::HashSet::new();
@@ -877,16 +901,16 @@ unsafe fn dump_mod_items(db: usize) {
         //   excluded from finals (the old unwrap_or_default() mistook None for an empty Vec -> wrong final items. It really happened with overrides.)
         match read_nt(elem, best_off) {
             Some(nt) if nt.is_empty() => {
-                if built.contains(&k) { finals.push(30 + i as u64); tree.push_str(&format!("  {:>3} {} ★최종\n", 30 + i, k)); }
-                else { tree.push_str(&format!("  {:>3} {} (베이스컴포넌트-제외)\n", 30 + i, k)); }
+                if built.contains(&k) { finals.push(30 + i as u64); tree.push_str(&format!("  {:>3} {} *FINAL\n", 30 + i, k)); }
+                else { tree.push_str(&format!("  {:>3} {} (base component - excluded)\n", 30 + i, k)); }
             }
-            Some(nt) => { tree.push_str(&format!("  {:>3} {} → {}\n", 30 + i, k, nt.join(", "))); }
-            None => { tree.push_str(&format!("  {:>3} {} (next_tier 판정불가-제외)\n", 30 + i, k)); }
+            Some(nt) => { tree.push_str(&format!("  {:>3} {} -> {}\n", 30 + i, k, nt.join(", "))); }
+            None => { tree.push_str(&format!("  {:>3} {} (next_tier undecidable - excluded)\n", 30 + i, k)); }
         }
     }
-    tree.push_str(&format!("  → 최종템 {}개: {:?}\n", finals.len(), finals));
+    tree.push_str(&format!("  -> {} final items: {:?}\n", finals.len(), finals));
     *MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()) = finals;
-    write_log("item_tactics_itemtree.txt", &tree);
+    
 }
 
 // ===========================================================================
@@ -996,7 +1020,6 @@ static SEL_LOADED: AtomicBool = AtomicBool::new(false);
 // * Snapshot of the game's personal_tactics: champion -> [3 category bytes (0~6)]. Used to restore the vanilla display that our NOP broke.
 //   Refreshed in post_update (InGame, personal screen) from db().team(pid).champion_personal_tactics.
 static PT_SNAPSHOT: Mutex<Option<HashMap<String, [u8; 3]>>> = Mutex::new(None);
-static DIAG_DONE: AtomicBool = AtomicBool::new(false);
 
 // Extract the champion key from the #champion/#icon ImageRunner source
 //   "asset/base/aseprite_resources/champions/{champ}#sheet" → champ
@@ -1225,8 +1248,7 @@ fn apply_recommendations() -> bool {
     });
     if let Some(s) = stamp { let _ = fs::write(s, &hash); }
     update_override_snapshot();
-    dbg_write("item_tactics_reco.txt",
-              &format!("[reco] applied={} rows={} hash={}\n", applied, rows.len(), hash));
+    
     true
 }
 
@@ -1313,7 +1335,6 @@ fn is_champ_designated(champ: &str) -> bool {
         }
     }
 }
-static MH_DIAG_DONE: AtomicBool = AtomicBool::new(false);
 static SETTER_NOPED: AtomicU64 = AtomicU64::new(0); // 0=not attempted, 1=success, 2=failure (RVA mismatch)
 
 // * NOP-patch the `call FUN_14218a230` (RVA 0xf1a74b, 5B `e8 rel32`) inside StrategyUIRunner update (FUN_140f17b40) that
@@ -1340,8 +1361,7 @@ unsafe fn nop_revert_setter() {
     // Safety check: only patch after confirming it is a call rel32 (0xe8) (abort if the RVA is off).
     if !readable(addr, 5) || *(addr as *const u8) != 0xe8 {
         SETTER_NOPED.store(2, Ordering::Relaxed);
-        write_log("item_tactics_nop.txt", &format!("[{}ms] ✗ NOP abort: addr={:#x} byte0={:#04x} (expect 0xe8, RVA mismatch?)\n",
-            now_ms(), addr, if readable(addr, 1) { *(addr as *const u8) } else { 0 }));
+        
         return;
     }
     const RWX: u32 = 0x40;
@@ -1351,7 +1371,7 @@ unsafe fn nop_revert_setter() {
     VirtualProtect(addr, 5, old, &mut old);
     FlushInstructionCache(GetCurrentProcess(), addr, 5);
     SETTER_NOPED.store(1, Ordering::Relaxed);
-    write_log("item_tactics_nop.txt", &format!("[{}ms] ★ revert setter NOP 적용 @ {:#x} (5B)\n", now_ms(), addr));
+    
 }
 // Option label cache computed once per screen entry (avoids per-frame file I/O).
 static OPTS_CACHE: Mutex<Vec<String>> = Mutex::new(Vec::new());
@@ -1407,12 +1427,6 @@ static CTD_SET: AtomicU64 = AtomicU64::new(0);     // it4_slot3 option injection
 // * +0x240 measurement (07-21): the in-source comments contradict each other (L375 "render screen_x" vs L389 "hit-test, no effect")
 //   and it is unconfirmed whether y/w/h continue at +0x244/+0x248/+0x24c. Dump the region on a node whose coordinates we know to pin the layout.
 //   Hitbox updates are to be implemented only after checking this measurement (no guess-implementations).
-const HITBOX_PROBE: bool = false; // * OFF for release (07-22): 0.5.2 data collected (hitbox_probe.txt). Set true when resuming the +0x240 investigation.
-static HITBOX_DONE: AtomicBool = AtomicBool::new(false);
-const STRAT_DUMP: bool = false; // * OFF for release (07-22): role finished once UI injection survival was confirmed on 0.5.2 (user in-game verification).
-static STRAT_DUMP_DONE: AtomicBool = AtomicBool::new(false);
-const CT_DUMP: bool = false; // OFF in production (file dump of the comp-test row subtree)
-static CT_DUMP_N: AtomicU64 = AtomicU64::new(0); // dump count (the first few frames may not be filled in by the game yet, so dump several times)
 // Champion of a training row: the child id is #champion_icon (unlike #icon on the strategy screen) -> dedicated lookup.
 fn ct_row_champ(row: &Node) -> Option<String> {
     let icon = find_node(row, "champion_icon")?;
@@ -1438,27 +1452,6 @@ fn ct_row_champ(row: &Node) -> Option<String> {
 //   are mixed in (= the reason only the 4th looked wider). Result = item_tactics_ctrow.txt.
 // * OFF for release (2026-07-22): job done - the coordinates proved the overlap was comptest_unlock's duplicate ct_i* injection,
 //   and it was resolved by setting ITEM_DD_ENABLED=false in that mod (the ct_i* nodes are gone in the re-check dump).
-const CT_GEOM_DUMP: bool = false;
-static CT_GEOM_DONE: AtomicBool = AtomicBool::new(false);
-unsafe fn dump_ct_row_geom(root: &Node) {
-    if !CT_GEOM_DUMP || CT_GEOM_DONE.swap(true, Ordering::Relaxed) { return; }
-    let mut s = format!("[{}ms] 조합테스트 행 드롭다운 실측 (mode4={}, 기대=우리 4개만)\n\
-        기준: 행 폭 608.5 / 네이티브 item0·1·2 = x146·296·446 폭140\n",
-        now_ms(), ITEM_MODE.load(Ordering::Relaxed));
-    for rid in ["blue0", "red0"].iter() {
-        let Some(row) = find_node(root, rid) else { continue; };
-        s.push_str(&format!("── {} 자식 ──\n", rid));
-        for c in row.child.iter() {
-            let id = c.id.as_str();
-            if id.is_empty() { continue; }
-            let na = c as *const Node as usize;
-            let x = if na > 0x10000 && readable(na + 0x84, 4) { *((na + 0x84) as *const f32) } else { f32::NAN };
-            s.push_str(&format!("  {:<12} x={:>8.1}  visible={}  runner={}\n",
-                id, x, c.visible, c.runner.type_name()));
-        }
-    }
-    if let Some(p) = mod_dir() { let _ = fs::write(p.join("item_tactics_ctrow.txt"), &s); }
-}
 fn hide_comptest_native_dds(root: &mut Node) {
     for rid in CT_ROWS.iter() {
         if let Some(row) = find_mut(root, rid) {
@@ -1699,7 +1692,6 @@ unsafe fn icon_tag_is(n: &Node, tag: &str) -> bool {
 // * Stage 2 preparation diagnostic: dump "player identification clues + the real slot0~2 tags" from the in-match player_info subtree once.
 //   Purpose = decide how to find the 4th item (matching a node's name/champion label against the athlete the mod knows).
 //   Reversing the slot0~2 tags (t{a}_{b} -> idx = b*5 + (a-1)) reveals that player's items[0..2].
-static SLOT3_DUMPED: AtomicBool = AtomicBool::new(false);
 unsafe fn read_icon_tag(n: &Node) -> Option<String> {
     if !n.runner.type_name().contains("ImageRunner") { return None; }
     let base = runner_base(n);
@@ -1708,73 +1700,6 @@ unsafe fn read_icon_tag(n: &Node) -> Option<String> {
     let len = rd_u64(base + IMG_OFF_RECT_TAG + 0x10) as usize;
     if ptr < 0x10000 || len == 0 || len > 64 || !readable(ptr, len) { return None; }
     Some(String::from_utf8_lossy(std::slice::from_raw_parts(ptr as *const u8, len)).into_owned())
-}
-fn dump_slot3_context(ui: &Node) {
-    if SLOT3_DUMPED.load(Ordering::Relaxed) { return; }
-    // WARNING timing: post_update also runs **before** the match screen appears, so unconditionally consuming a one-shot flag
-    //   just dumps an empty tree (the first attempt failed exactly like that). Only dump on a frame where the
-    //   target node actually exists.
-    if find_node(ui, "blue_player").is_none() && find_node(ui, "red_player").is_none() { return; }
-    // WARNING second timing trap: **right after** a match starts nobody owns items, so slot0~2 are all empty
-    //   (the first attempt was taken at kda=0/0/0 and everything was tag=None). The dump has to happen after the game has
-    //   actually filled at least one of slot0~2 to reveal "how the game draws a mod item".
-    let mut armed = false;
-    for side in ["blue_player", "red_player"].iter() {
-        let Some(sp) = find_node(ui, side) else { continue };
-        for k in 0..3 {
-            let Some(sl) = find_node(sp, &format!("slot{}", k)) else { continue };
-            let Some(bg) = find_node(sl, "bg") else { continue };
-            let Some(ic) = find_node(bg, "icon") else { continue };
-            if unsafe { read_icon_tag(ic) }.is_some() || unsafe { read_img_source(ic) }.is_some() { armed = true; }
-        }
-    }
-    if !armed { return; }
-    SLOT3_DUMPED.store(true, Ordering::Relaxed);
-    let mut s = String::from("[slot3 2단계 조사] 경기중 player_info 서브트리\n");
-    for side in ["blue_player", "red_player"].iter() {
-        s.push_str(&format!("\n=== {} ===\n", side));
-        let Some(sp) = find_node(ui, side) else { s.push_str("  (노드 없음)\n"); continue };
-        // Candidate clues for identifying the player: every label
-        for cid in ["name", "champion_icon", "champion", "level", "kda", "gold", "player_name"].iter() {
-            if let Some(n) = find_node(sp, cid) {
-                let lbl = unsafe { read_label(n) };
-                let src = unsafe { read_img_source(n) };
-                let tag = unsafe { read_icon_tag(n) };
-                s.push_str(&format!("  #{:<14} runner={:<22} label={:?} src={:?} tag={:?}\n",
-                    cid, n.runner.type_name(), lbl, src, tag));
-            }
-        }
-        // icon tags of slot0~3 (= currently displayed item) - reverse them to learn items[0..2]
-        for k in 0..4 {
-            let sid = format!("slot{}", k);
-            let Some(sl) = find_node(sp, &sid) else { s.push_str(&format!("  {} : 없음\n", sid)); continue };
-            let icon = find_node(sl, "bg").and_then(|bg| find_node(bg, "icon"));
-            match icon {
-                None => s.push_str(&format!("  {} : bg.icon 없음 (visible={})\n", sid, sl.visible)),
-                Some(ic) => {
-                    let tag = unsafe { read_icon_tag(ic) };
-                    let idx = tag.as_deref().and_then(tag_to_idx);
-                    // * To characterize the mod item case: look at source (sheet path) as well.
-                    //   The game's default sheet has no mod item tags, so this is where we find out whether a slot holding a mod item
-                    //   switches source to a different path (mod-provided asset) or only differs by tag.
-                    let src = unsafe { read_img_source(ic) };
-                    s.push_str(&format!("  {} : visible={} icon.visible={} tag={:?} → idx={:?}\n      src={:?}\n",
-                        sid, sl.visible, ic.visible, tag, idx, src));
-                }
-            }
-        }
-        // Shallow subtree dump (child ids only) - to locate the identification node we failed to find
-        s.push_str("  [직계 자식] ");
-        for c in sp.child.iter() { s.push_str(&format!("{} ", c.id.as_str())); }
-        s.push('\n');
-        // * Searching for a player identification path: the champion subtree (the champion icon source may contain the champion name)
-        //   The first dump had no #name-style label and champion came out as a ColorRunner => we need to go one level deeper.
-        if let Some(ch) = find_node(sp, "champion") {
-            s.push_str("  [champion 서브트리]\n");
-            unsafe { dump_subtree(ch, 4, &mut s); }
-        }
-    }
-    if let Some(d) = mod_dir() { let _ = fs::write(d.join("slot3_probe.txt"), s); }
 }
 // Tag -> catalog index (t{a}_{b} -> b*5 + (a-1))
 fn tag_to_idx(t: &str) -> Option<usize> {
@@ -1788,7 +1713,6 @@ fn tag_to_idx(t: &str) -> Option<usize> {
 static SLOT3_PV_N: AtomicU64 = AtomicU64::new(0); // number of players seen owning a 4th item in the view model
 fn handle_ingame_slot3(ui: &Node) {
     if !SLOT3_ICON_ENABLED || slot_count() != 4 { return; }
-    let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| dump_slot3_context(ui)));
     let gv = GAME_VIEW.load(Ordering::Relaxed);
     if gv < 0x10000 { return; }                    // not captured yet (before entering the match screen)
     // * Read exactly the data the game reads when drawing slot0~2 = no cache, no champion matching, no is_live needed.
@@ -1971,49 +1895,6 @@ fn handle_comptest_screen(ui: &Node) {
         return;
     }
     CT_OPEN.store(true, Ordering::Relaxed);
-    // * One-shot dump: row subtree + champion_icon source measurement -> diagnose why champion resolution fails.
-    if CT_DUMP && CT_DUMP_N.fetch_add(1, Ordering::Relaxed) % 120 == 0 && CT_DUMP_N.load(Ordering::Relaxed) < 700 {
-        let mut s = format!("[{}ms] 조합테스트 행 구조 덤프
-", now_ms());
-        { // * how many nodes with the same id exist in the tree (detecting multiple instances)
-            fn cnt(n: &Node, id: &str, acc: &mut usize) {
-                if n.id.as_str() == id { *acc += 1; }
-                for c in n.child.iter() { cnt(c, id, acc); }
-            }
-            for id in ["blue0", "builds", "training", "personal_plan"].iter() {
-                let mut c = 0usize; cnt(ui, id, &mut c);
-                s.push_str(&format!("  [인스턴스] '{}' = {}개
-", id, c));
-            }
-        }
-        for rid in ["blue0", "blue1", "red0"].iter() {
-            match find_node(ui, rid) {
-                None => s.push_str(&format!("--- {} : 노드없음
-", rid)),
-                Some(row) => {
-                    s.push_str(&format!("--- {} 서브트리 ---
-", rid));
-                    unsafe { dump_subtree(row, 2, &mut s); }
-                    // Dump both icon source and label text -> decide where to get the champion name from
-                    for cid in ["champion_icon", "name", "build", "item0"].iter() {
-                        match find_node(row, cid) {
-                            None => s.push_str(&format!("  #{} : 없음
-", cid)),
-                            Some(n) => {
-                                let src = unsafe { read_img_source(n) };
-                                let lbl = unsafe { read_label(n) };
-                                s.push_str(&format!("  #{} : runner={} source={:?} label={:?} visible={}
-",
-                                    cid, n.runner.type_name(), src, lbl, n.visible));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        // * Write directly with no gate (dbg_write is behind the DELEGATE_DIAG gate, so nothing came out)
-        if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join("comptest_rows.txt"), &s); }
-    }
     // * Option labels are computed once per screen (file I/O cache).
     if !CT_INJECTED.swap(true, Ordering::Relaxed) {
         let o = compute_options();
@@ -2075,8 +1956,8 @@ fn handle_comptest_screen(ui: &Node) {
                     SEL_DIRTY.store(true, Ordering::Relaxed);
                     changed = true;
                     let label = opts.get(cur).cloned().unwrap_or_else(|| format!("idx{}", cur));
-                    let sidetag = if scope == Scope::CtBlue { "블루" } else { "레드" };
-                    append_log("item_tactics.txt", &format!("[{}ms] (조합테스트/{}) {} slot{} → [{}] {}", now_ms(), sidetag, c, si, cur, label));
+                    let sidetag = if scope == Scope::CtBlue { "blue" } else { "red" };
+                    
                 }
             }
         }
@@ -2096,55 +1977,6 @@ fn handle_tactics_screen(ui: &Node) {
     }
     SCREEN_OPEN.store(true, Ordering::Relaxed);
 
-    // * Measuring the +0x240 structure: dump the known (x,y,w,h) of the layout block side by side with the +0x230~+0x260 region.
-    //   Which offset holds an f32 matching the layout values reveals the hitbox structure.
-    if HITBOX_PROBE && !HITBOX_DONE.swap(true, Ordering::Relaxed) {
-        let mut s = format!("[{}ms] +0x240 영역 구조 실측
-", now_ms());
-        for ri in 0..MAX_ROWS.min(2) {
-            let Some(row) = find_node(ui, &format!("row{}", ri)) else { continue; };
-            for id in ["item0m", "item1m", "item2m"].iter() {
-                let Some(n) = find_node(row, id) else { continue; };
-                let na = n as *const Node as usize;
-                unsafe {
-                    let rd = |o: usize| -> f32 { if readable(na + o, 4) { *((na + o) as *const f32) } else { f32::NAN } };
-                    // Authored values of layout block 0 (W+0x00 / H+0x08 / X+0x10 / Y+0x18, value at +4)
-                    s.push_str(&format!("row{} #{}: authored w={} h={} x={} y={}
-",
-                        ri, id, rd(0x70+0x04), rd(0x70+0x0c), rd(0x70+0x14), rd(0x70+0x1c)));
-                    s.push_str("   +0x230..+0x264 (f32): ");
-                    let mut o = 0x230usize;
-                    while o <= 0x264 { s.push_str(&format!("[{:#05x}]={} ", o, rd(o))); o += 4; }
-                    s.push('\n');
-                }
-            }
-        }
-        s.push_str("해석: authored x/y/w/h 와 같은 값이 나타나는 오프셋 = 그 필드의 screen/hit 사본.
-");
-        if let Some(d) = mod_dir() { let _ = fs::write(d.join("hitbox_probe.txt"), &s); }
-    }
-    // * Verification: measure the child ids of a personal tactics row - confirm whether item3 is mixed in while in 3-slot mode.
-    if STRAT_DUMP && !STRAT_DUMP_DONE.swap(true, Ordering::Relaxed) {
-        let mut s = format!("[{}ms] 개인전술 행 자식 덤프 (ITEM_MODE={} slot_count={} MODE4={})
-",
-            now_ms(), ITEM_MODE.load(Ordering::Relaxed), slot_count(), uinj::MODE4.load(Ordering::Relaxed));
-        if let Some(d) = mod_dir() {
-            if let Ok(raw) = fs::read_to_string(d.join("4items.cfg")) { s.push_str(&format!("cfg 원문 tail: {:?}
-", &raw[raw.len().saturating_sub(40)..])); }
-        }
-        for ri in 0..MAX_ROWS {
-            match find_node(ui, &format!("row{}", ri)) {
-                None => s.push_str(&format!("row{}: 없음
-", ri)),
-                Some(row) => {
-                    let ids: Vec<String> = row.child.iter().map(|c| format!("{}{}", c.id.as_str(), if c.visible {""} else {"(hidden)"})).collect();
-                    s.push_str(&format!("row{} 자식({}) = {:?}
-", ri, ids.len(), ids));
-                }
-            }
-        }
-        if let Some(d) = mod_dir() { let _ = fs::write(d.join("strategy_rows.txt"), &s); }
-    }
     // * NOP the personal_tactics -> dropdown revert (setter) once, so mod item (7+) selections persist.
     unsafe { nop_revert_setter(); }
     // * Register the VEH (shared by safe_read/safe_write) - idempotent, once.
@@ -2157,54 +1989,7 @@ fn handle_tactics_screen(ui: &Node) {
             unsafe { set_dd_max_height(row, &slot_dd_id(si), MAX_ITEMS_HEIGHT); }
         }
     }
-    if !MH_DIAG_DONE.swap(true, Ordering::Relaxed) {
-        let mut s = format!("[{}ms] max_height 진단 (row0/item0)\n", now_ms());
-        if let Some(row) = find_node(ui, "row0") {
-            if let Some(rb) = find_rb(row, "item0") {
-                unsafe {
-                    s.push_str(&format!("  runner_base = {:#x}\n", rb));
-                    s.push_str(&format!("  writable(rb+0x1150,8) = {}\n", writable(rb + 0x1150, 8)));
-                    s.push_str(&format!("  [+0x1150](present u32) = {}\n", *((rb + 0x1150) as *const u32)));
-                    s.push_str(&format!("  [+0x1154](height f32) = {}\n", *((rb + 0x1154) as *const f32)));
-                    s.push_str("  region +0x1130..+0x1180 (u32 hex / f32):\n");
-                    let mut off = 0x1130usize;
-                    while off < 0x1180 {
-                        let u = *((rb + off) as *const u32);
-                        let f = *((rb + off) as *const f32);
-                        s.push_str(&format!("    +{:#06x}: {:#010x}  ({})\n", off, u, f));
-                        off += 4;
-                    }
-                }
-            } else { s.push_str("  item0 runner_base 못찾음\n"); }
-        }
-        write_log("item_tactics_maxh.txt", &s);
-    }
 
-    if !DIAG_DONE.swap(true, Ordering::Relaxed) {
-        let mut s = format!("[{}ms] 개인전술 화면 감지\n", now_ms());
-        s.push_str(&format!("  dd_addr_valid = {}\n", unsafe { dd_addr_valid() }));
-        // * Disabled-mod filter diagnostic: check the filter decision against enabled_mods (mods.json) x active_keys.
-        let em = enabled_mods();
-        let ak = active_item_keys();
-        let all = mod_final_opts_all();
-        let act = mod_final_opts();
-        s.push_str(&format!("  enabled_mods(mods.json) = {:?}\n", em));
-        s.push_str(&format!("  active_item_keys = {}개\n", ak.len()));
-        s.push_str(&format!("  mod_final_opts_all(전체) = {}개: {:?}\n", all.len(), all.iter().map(|(_,k)| k.as_str()).collect::<Vec<_>>()));
-        s.push_str(&format!("  mod_final_opts(활성필터후) = {}개: {:?}\n", act.len(), act.iter().map(|(_,k)| k.as_str()).collect::<Vec<_>>()));
-        let filtered_out: Vec<&str> = all.iter().filter(|(_,k)| !act.iter().any(|(_,ak)| ak==k)).map(|(_,k)| k.as_str()).collect();
-        s.push_str(&format!("  ★필터로 제외됨(비활성) = {:?}\n", filtered_out));
-        s.push_str(&format!("  MOD_REGISTRY {}개, MOD_FINALS {}개\n",
-            MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner()).len(),
-            MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()).len()));
-        for ri in 0..MAX_ROWS {
-            if let Some(row) = find_node(ui, &format!("row{}", ri)) {
-                s.push_str(&format!("  --- row{} 서브트리 (챔프키 위치찾기) ---\n", ri));
-                unsafe { dump_subtree(row, 2, &mut s); }
-            }
-        }
-        write_log("item_tactics_diag.txt", &s);
-    }
 
     // Option injection (once per screen entry). Option labels are computed once on entry (file I/O cache).
     //   Initial display per slot = SEL_BY_CHAMP[(that row's champion, slot)] (champion-keyed, persisted). Absent -> 0 (auto).
@@ -2218,7 +2003,8 @@ fn handle_tactics_screen(ui: &Node) {
         let mut last = LAST_SEL.lock().unwrap_or_else(|e| e.into_inner());
         let mut injected = 0;
         let pt_sz = PT_SNAPSHOT.lock().unwrap_or_else(|e| e.into_inner()).as_ref().map(|m| m.len()).unwrap_or(0);
-        let mut diag = format!("[{}ms] 옵션주입(행→챔프 매핑) PT_SNAPSHOT={}개 opts={}종\n", now_ms(), pt_sz, opts.len());
+        let mut diag = format!("[{}ms] option injection (row -> champion mapping) PT_SNAPSHOT={} opts={}
+", now_ms(), pt_sz, opts.len());
         for ri in 0..MAX_ROWS {
             let Some(row) = find_node(ui, &format!("row{}", ri)) else { continue; };
             let champ = row_champ(row);
@@ -2243,10 +2029,6 @@ fn handle_tactics_screen(ui: &Node) {
                 }
             }
         }
-        append_log("item_tactics.txt", &format!("[{}ms] 옵션 주입 {}칸 (옵션 {}종, 모드템 {}개)",
-            now_ms(), injected, refs.len(), refs.len().saturating_sub(7)));
-        write_log("item_tactics_rowchamp.txt", &diag);
-        dbg_write("delegate_diag.txt", &diag); // * temporary: dump regardless of LOG_ENABLED
         update_override_snapshot(); // refresh the injection snapshot on screen entry
         log_override();
     } else {
@@ -2268,9 +2050,9 @@ fn handle_tactics_screen(ui: &Node) {
                         changed = true;
                         let label = opts.get(cur).cloned().unwrap_or_else(|| format!("idx{}", cur));
                         let modtag = if cur >= 7 {
-                            mod_final_opts().get(cur - 7).map(|(id, k)| format!(" [모드템 id={} {}]", id, k)).unwrap_or_default()
+                            mod_final_opts().get(cur - 7).map(|(id, k)| format!(" [mod item id={} {}]", id, k)).unwrap_or_default()
                         } else { String::new() };
-                        append_log("item_tactics.txt", &format!("[{}ms] {} slot{} → [{}] {}{}", now_ms(), champ, si, cur, label, modtag));
+                        
                     }
                 }
             }
@@ -2281,11 +2063,12 @@ fn handle_tactics_screen(ui: &Node) {
 // Log of the current OVERRIDE (injection target) map - for verification.
 fn log_override() {
     let map = build_override_map();
-    let mut s = format!("[{}ms] OVERRIDE (champ,slot)→mod_id  ({}건)\n", now_ms(), map.len());
+    let mut s = format!("[{}ms] OVERRIDE (champ,slot) -> mod_id  ({} entries)
+", now_ms(), map.len());
     let mut v: Vec<_> = map.iter().collect();
     v.sort_by(|a, b| a.0.cmp(b.0));
     for ((c, slot), id) in v { s.push_str(&format!("  {} slot{} → id {}\n", c, slot, id)); }
-    write_log("item_tactics_override.txt", &s);
+    
 }
 
 
@@ -2450,21 +2233,22 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
 //   [0] = reached the 4th-item path [1] = build_len != 3 [2] = build_cap != 3 [3] = ptr/writable failure
 //   [4] = failed to obtain the target index (t4=None) [5] = realloc failure [6] = * success (build[3] written)
 //   Diagnosis = which counter consumed the reach count. Set back to false once the cause is confirmed.
-// TEMPORARY (2026-08-04): re-enabled while diagnosing "players never buy a 4th
-// item" after the merge. Gates the BE_* counters *and* their report, so it has
-// to be on for `build_ext_diag.txt` to say anything. That file is written every
-// 300 frames straight through `fs::write`, independent of `LOG_ENABLED`, and
-// distinguishes the two cases that look identical in game: the 4th path never
-// reached / bailing at a known step, versus reached and written but never
-// bought (`owned>=4` observed = 0). Set back to false once the cause is found.
-const BUILD_EXT_DIAG: bool = true; // * cause identified (4th purchase works; the icon was solved by reading the view model) -> OFF in production
+// OFF in production. Gates the BE_* counters — which live in the `buy_item`
+// detour, i.e. the hottest path in the mod, running for every buy in every
+// parallel background sim — and the `build_ext_diag.txt` report they feed.
+//
+// Flip to `true` to get that file back; it is written every 300 frames through
+// `fs::write`, independent of `LOG_ENABLED`. It was what diagnosed the whole
+// post-merge chain, and it answers questions nothing else can:
+//   * is the 4th path reached at all, and if it bails, at which step;
+//   * `owned>=4` observed — distinguishes "not bought" from "bought, not drawn";
+//   * hook install state, VEH state, UI root address, mod item source.
+const BUILD_EXT_DIAG: bool = false; // * cause identified (4th purchase works; the icon was solved by reading the view model) -> OFF in production
 // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false;
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
 // * Cause identified and fixed (comp-test injection = the missing team gate bypass; all 9 launcher retaddrs confirmed) -> OFF in production.
 //   Set true to re-investigate = the measured list is written to launcher_retaddr.txt (it was decisive in tracking the cause down).
-const LAUNCH_DIAG: bool = false;
-static LD_TICK: AtomicU64 = AtomicU64::new(0); // * purchase order confirmed to match the design (my team builds all 4 targets simultaneously) -> OFF in production
 static BUY_ORDER_SEEN: Mutex<Option<std::collections::HashSet<String>>> = Mutex::new(None);
 static BUY_ORDER_BUF: Mutex<String> = Mutex::new(String::new());
 static BE_CNT: [AtomicU64; 8] = [const { AtomicU64::new(0) }; 8];
@@ -2518,7 +2302,6 @@ const CL_LAUNCHER_PROLOGUE: [u8; 17] = [0x55, 0x41,0x57, 0x41,0x56, 0x41,0x55, 0
 static CLAUNCH_INSTALLED: AtomicU64 = AtomicU64::new(0);
 static LAUNCH_N: AtomicU64 = AtomicU64::new(0);
 static LAUNCH_RENDER_N: AtomicU64 = AtomicU64::new(0);
-static LAUNCH_RVAS: [AtomicU64; 24] = [const { AtomicU64::new(0) }; 24]; // diagnostic: unique caller rvas (no format!/file writes = avoids overflowing the huge frame)
 static LAUNCH_RENDER_RA: AtomicU64 = AtomicU64::new(0); // the retaddr rva judged to be rendering
 // * Is the current match a comp test? Comp test is a sandbox where the user composes both blue and red themselves, so
 //   there is no notion of "my team" -> bypass the team gate and apply to both sides for designated champions.
@@ -2530,12 +2313,11 @@ static LAUNCH_WAIT: AtomicU64 = AtomicU64::new(0);      // frames spent waiting 
 //   The body does raw reads and atomics only (no panic source -> catch_unwind unnecessary).
 unsafe extern "C" fn cap_launcher(saved: *mut u64, _e: usize) -> u64 {
     // WARNING keep the minimal-detour constraint - the probe too uses only rdtsc + global atomics (no rec_tl = TLS lazy-init path).
-    let __lt = perf::tsc();
-    if saved.is_null() { perf::rec(perf::S_LAUNCHER, __lt); return 0; }
+    if saved.is_null() { return 0; }
     let seed = *saved.add(2);      // r8 = arg3 = seed
     let retaddr = *saved.add(10);  // call-site retaddr (above the stub's 10 pushes)
     let base = GetModuleHandleW(core::ptr::null()) as u64;
-    if base == 0 || retaddr < base { perf::rec(perf::S_LAUNCHER, __lt); return 0; }
+    if base == 0 || retaddr < base { return 0; }
     let rva = retaddr - base;
     LAUNCH_N.fetch_add(1, Ordering::Relaxed);
     // * Caller within the client render scene builder range 0x722ca0 -> rendered match seed
@@ -2569,13 +2351,6 @@ unsafe extern "C" fn cap_launcher(saved: *mut u64, _e: usize) -> u64 {
         LAUNCH_RENDER_N.fetch_add(1, Ordering::Relaxed);
         LAUNCH_RENDER_RA.store(rva, Ordering::Relaxed);
     }
-    // Diagnostic: collect unique caller rvas (atomic CAS, 24 slots)
-    for k in 0..24 {
-        let s = LAUNCH_RVAS[k].load(Ordering::Relaxed);
-        if s == rva { break; }
-        if s == 0 && LAUNCH_RVAS[k].compare_exchange(0, rva, Ordering::Relaxed, Ordering::Relaxed).is_ok() { break; }
-    }
-    perf::rec(perf::S_LAUNCHER, __lt);
     0
 }
 // * Hook install path counters (2026-07-22 diagnostic): "hook retry" was measured at 189us per frame = 470k cycles -
@@ -2631,7 +2406,7 @@ fn install_launcher_hook() {
     match r {
         Ok(stub) => { CLAUNCH_STUB.store(stub as u64, Ordering::Relaxed); CLAUNCH_INSTALLED.store(1, Ordering::Relaxed); }
         Err(e) => { CLAUNCH_INSTALLED.store(2, Ordering::Relaxed);
-            if LAUNCH_ERR_N.fetch_add(1, Ordering::Relaxed) < 3 { write_log("4items_hooks.txt", &format!("[{}ms] launcher install FAIL: {}\n", now_ms(), e)); } }
+            if LAUNCH_ERR_N.fetch_add(1, Ordering::Relaxed) < 3 { } }
     }
 }
 
@@ -2664,8 +2439,7 @@ static BUY_WROTE_FIRE: AtomicU64 = AtomicU64::new(0); // successful build[si] wr
 static SEEDCTOR_N: AtomicU64 = AtomicU64::new(0);      // total ctor firings
 static SEEDCTOR_MATCH_N: AtomicU64 = AtomicU64::new(0);// rdx == LIVE_SEED hits (rendered provider captured)
 unsafe extern "C" fn cap_seed_ctor(saved: *mut u64, _e: usize) -> u64 {
-    let __st = perf::tsc();
-    if saved.is_null() { perf::rec(perf::S_SEEDCTOR, __st); return 0; }
+    if saved.is_null() { return 0; }
     let provider = *saved;         // saved+0 = rcx = arg1 = provider(this)
     let seed = *saved.add(1);      // saved+1 = rdx = arg2 = seed(=launcher r8)
     SEEDCTOR_N.fetch_add(1, Ordering::Relaxed);
@@ -2674,7 +2448,6 @@ unsafe extern "C" fn cap_seed_ctor(saved: *mut u64, _e: usize) -> u64 {
         RENDER_PROVIDER.store(provider as u64, Ordering::Relaxed);
         SEEDCTOR_MATCH_N.fetch_add(1, Ordering::Relaxed);
     }
-    perf::rec(perf::S_SEEDCTOR, __st);
     0
 }
 fn install_seed_ctor_hook() {
@@ -2718,7 +2491,6 @@ static SPAWN_PLAYER_N: AtomicU64 = AtomicU64::new(0); // of those, my team (inje
 static SPAWN_WROTE: AtomicU64 = AtomicU64::new(0);    // actual build[] writes
 static SPAWN_NOSIDE: AtomicU64 = AtomicU64::new(0);   // skipped because the side was undecided (= covered by the buy path)
 unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
-    let __spt = perf::tsc();
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
         if !SPAWN_INJECT_ENABLED || saved.is_null() { return; }
         SPAWN_N.fetch_add(1, Ordering::Relaxed);
@@ -2802,7 +2574,6 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             } else { SP4_RANGE.fetch_add(1, Ordering::Relaxed); }
         }
     }));
-    perf::rec(perf::S_SPAWN, __spt);
     0 // the install_detour_generic stub does not use the return value (this is an observe/modify hook)
 }
 fn install_spawn_hook() {
@@ -3044,176 +2815,6 @@ unsafe fn install_detour_r11(rva: usize, orig_len: usize, cap_fn: usize, prologu
 // ===========================================================================
 //  SDK lifecycle
 // ===========================================================================
-// === buy report reset (on entering a new spectated match) - buy_report.txt keeps only "the last match watched" ===
-fn buy_report_reset() {
-    for a in [&BR_TOTAL, &BR_LIVE, &BR_DES, &BR_DES_LIVE, &BR_ISPLAYER, &BR_IDX_OK, &BR_IDX_NONE, &BR_WROTE].iter() {
-        a.store(0, Ordering::Relaxed);
-    }
-    BR_LOG.lock().unwrap_or_else(|e| e.into_inner()).clear();
-    BR_SEEN.lock().unwrap_or_else(|e| e.into_inner()).clear();
-}
-
-// === buy report file flush (every 30 frames) - mods\tfm2_item_tactics\buy_report.txt ===
-fn buy_report_flush() {
-    if !BUY_REPORT { return; }
-    static BR_FRAME: AtomicU64 = AtomicU64::new(0);
-    if BR_FRAME.fetch_add(1, Ordering::Relaxed) % 30 != 0 { return; }
-    let ld = |a: &AtomicU64| a.load(Ordering::Relaxed);
-    let mut s = String::new();
-    s.push_str("=== tfm2_item_tactics — buy 아이템 주입 리포트 (마지막 관전 경기 기준) ===\n");
-    s.push_str(&format!("생성(ms): {}\n\n", now_ms()));
-    s.push_str("[단계별 집계] (위→아래 깔때기 — 어디서 수가 0/급감하는지가 원인)\n");
-    s.push_str(&format!("  1. 전체 buy 콜         : {}\n", ld(&BR_TOTAL)));
-    s.push_str(&format!("  2. is_live(관전 경기)  : {}   =0 이면 관전 라이브 경기를 못 찾음(스폰훅 미발화)\n", ld(&BR_LIVE)));
-    s.push_str(&format!("  3. 지정챔프 buy        : {}   =0 이면 SEL 지정 챔프가 이 경기 로스터에 없음\n", ld(&BR_DES)));
-    s.push_str(&format!("  4. 지정 && is_live     : {}\n", ld(&BR_DES_LIVE)));
-    s.push_str(&format!("  5. is_player(내 팀 확정): {}   =0 이면 팀/side 판정 실패(적·배경만 잡힘)\n", ld(&BR_ISPLAYER)));
-    s.push_str(&format!("  6. 슬롯 목표 idx 구함   : {}\n", ld(&BR_IDX_OK)));
-    s.push_str(&format!("  7. 슬롯 목표 idx 실패   : {}   >0 이면 모드템 카탈로그 스캔 실패(그 아이템이 이 환경에 없음)\n", ld(&BR_IDX_NONE)));
-    s.push_str(&format!("  8. 실제 build write    : {}   <= 최종 주입 성공수. 0이면 위 2~7 중 하나에서 막힌 것\n", ld(&BR_WROTE)));
-
-    // -- Spectate identification diagnostics (v13 provider/seed gate - lean) --
-    s.push_str("\n[관전 식별 진단]  launcher 시드 캡처 + seed-ctor provider 캡처 + r9 대조\n");
-    s.push_str(&format!("  ★launcher: 발화={} 렌더판정={} 렌더RA={:#x} LIVE_SEED={:#x} 설치={}\n",
-        ld(&LAUNCH_N), ld(&LAUNCH_RENDER_N), ld(&LAUNCH_RENDER_RA), ld(&LIVE_SEED), ld(&CLAUNCH_INSTALLED)));
-    { // * Characterizing non-render paths such as comp test: the list of unique launcher caller rvas
-        s.push_str("  ★launcher 고유 콜러 rva:");
-        for k in 0..24 { let v = LAUNCH_RVAS[k].load(Ordering::Relaxed); if v == 0 { break; } s.push_str(&format!(" {:#x}", v)); }
-        s.push_str("   (렌더필터=[0x722ca0,0x740000) — 여기 안 드는 콜러가 조합테스트 경로 후보)
-");
-    }
-    s.push_str(&format!("  ★v13 provider매칭(r9): seed-ctor발화={} 렌더provider캡처={} RENDER_PROVIDER={:#x} | is_live={} seed값대조={} 설치={}\n",
-        ld(&SEEDCTOR_N), ld(&SEEDCTOR_MATCH_N), ld(&RENDER_PROVIDER), ld(&PROV_HIT), ld(&VT_OK), ld(&SEEDCTOR_INSTALLED)));
-    { // * Measuring the UI loader path - confirm whether training.ui goes through the copy we hooked
-        s.push_str(&format!("
-[UI 로더 프로브] 총 로드콜={} · 'training' 포함 경로 관측={}
-",
-            uinj::LOADER_CALLS.load(Ordering::Relaxed), uinj::TRAIN_SEEN.load(Ordering::Relaxed)));
-        let g = uinj::SEEN_PATHS.lock().unwrap_or_else(|e| e.into_inner());
-        s.push_str(&format!("  관측된 distinct 경로 {}개:
-", g.len()));
-        for p in g.iter().take(60) { s.push_str(&format!("    {}
-", p)); }
-        s.push_str(&format!("  ★조합테스트 배선: 핸들러호출={} builds발견={} visible={} blue0발견={} 챔프해석={} 옵션주입={}
-",
-            ld(&CTD_CALL), ld(&CTD_BUILDS), ld(&CTD_VIS), ld(&CTD_ROW), ld(&CTD_CHAMP), ld(&CTD_SET)));
-        s.push_str(&format!("  ★단계: 분기진입={} mode4={} 동일r스킵={} 멱등skip={} 행찾음={} 교체성공={}
-",
-            uinj::TR_BRANCH.load(Ordering::Relaxed), uinj::TR_MODE4.load(Ordering::Relaxed),
-            uinj::TR_SKIP_SAME.load(Ordering::Relaxed), uinj::TR_IDEM.load(Ordering::Relaxed),
-            uinj::TR_ROWS.load(Ordering::Relaxed), uinj::TR_REPL.load(Ordering::Relaxed)));
-        if uinj::TRAIN_SEEN.load(Ordering::Relaxed) == 0 {
-            s.push_str("  ⚠training 경로 미관측 = 제3의 로더 copy를 탐 → 그 RVA 훅 추가 필요
-");
-        }
-    }
-    s.push_str(&format!("  ★★v14 스폰커밋훅(0x2060280): 발화={} 렌더판정={} 내팀={} build write={} side미판정스킵={} 설치={}\n",
-        ld(&SPAWN_N), ld(&SPAWN_LIVE_N), ld(&SPAWN_PLAYER_N), ld(&SPAWN_WROTE), ld(&SPAWN_NOSIDE), ld(&SPAWN_INSTALLED)));
-    { // ** Designated-item reach test (cumulative) - not a snapshot but "was it ever actually owned". Only never-reached counts as failure.
-        let want = REACH_WANT.lock().unwrap_or_else(|e| e.into_inner()).clone();
-        let hit = REACH_HIT.lock().unwrap_or_else(|e| e.into_inner()).clone();
-        s.push_str(&format!("\n[지정템 도달 판정]  도달 {}/{} (누적·경기후반 조합 포함)\n", hit.len(), want.len()));
-        for w in want.iter() {
-            s.push_str(&format!("  {} {}\n", if hit.iter().any(|h| h == w) { "✅도달" } else { "❌미도달" }, w));
-        }
-        if want.is_empty() { s.push_str("  (모드템 지정 없음 — 바닐라 지정만 있거나 지정챔프가 이 경기에 없음)\n"); }
-    }
-    s.push_str(&format!("     v15 팀판정: 내팀로스터={}명 | 스폰aid유효={} aid=0(미기입)={} 샘플=",
-        ld(&MY_ATH_N), ld(&SPAWN_AID_OK), ld(&SPAWN_AID_ZERO)));
-    for k in 0..4 { let v = SPAWN_AID_SAMPLE[k].load(Ordering::Relaxed); if v == 0 { break; } s.push_str(&format!("{} ", v)); }
-    s.push('\n');
-    s.push_str(&format!("     ④주입진단: build무효={} 카탈로그무효={} 인덱스실패={} 범위밖={} | blen샘플={} catlen샘플={}
-",
-        ld(&SP4_NOBUILD), ld(&SP4_NOCAT), ld(&SP4_NOIDX), ld(&SP4_RANGE), ld(&SP4_BLEN), ld(&SP4_CATLEN)));
-    s.push_str("     (aid=0이 대부분이면 스폰시점엔 athlete_id 미기입 = v15 불가 → 다른 시임 필요)\n");
-    s.push_str("     (write>0 = 스폰 1회 주입 성공 → buy 경로 없이도 목표 심김. side미판정스킵>0 = 스폰이 tag9보다 이름 → buy가 커버)\n");
-    { let p = ld(&PLAYER_TEAM_ID); s.push_str(&format!("  player_team_id        : {} (유효경험={})\n",
-        if p == u64::MAX { "미캡처".to_string() } else { p.to_string() }, ld(&PID_EVER_VALID))); }
-    { let sc = ld(&SCENE_SIDE); s.push_str(&format!("  SCENE_SIDE            : {}   (미판정=관전경기 team_id↔내팀 매칭 실패 또는 관전아님)\n",
-        if sc > 1 { "미판정".to_string() } else { sc.to_string() })); }
-    { let lp = ld(&LIVE_PID); s.push_str(&format!("  LIVE_DB / LIVE_PID    : {:#x} / {}\n",
-        ld(&LIVE_DB), if lp == u64::MAX { "미캡처".to_string() } else { lp.to_string() })); }
-
-    // -- * Comp-test scope + background contamination blocking verification (2026-07-30, second fix) ------------
-    s.push_str("\n[★조합테스트 스코프 / 배경오염 차단]  (누적 — 경기별 리셋 안 함)\n");
-    s.push_str(&format!("  COMPTEST_MATCH(현재)      : {}\n", COMPTEST_MATCH.load(Ordering::Relaxed)));
-    s.push_str(&format!("  조합테스트 우회 발동      : {}   (= COMPTEST_MATCH && is_live)\n", ld(&BR_CT_LIVE)));
-    s.push_str(&format!("  ★차단된 sticky buy        : {}   >0 = 수정 전이라면 **배경경기에 주입됐을** 호출 수\n", ld(&BR_CT_STICKY)));
-    s.push_str(&format!("  ★★배경오염(비-내선수)     : {}   ★반드시 0 — >0 이면 남의 팀 선수에 주입 중(결함)\n", ld(&BR_BG_PLAYER)));
-    s.push_str(&format!("  배경 buy·내 선수(정상)    : {}   FIXB 의도된 동작(관전==확정 수렴) — 0 이 아니어도 정상\n", ld(&BR_BG_MINE)));
-    s.push_str(&format!("  진영 판정 분포            : 블루={} 레드={} 판정실패(Plain폴백)={}\n",
-        ld(&BR_SCOPE_B), ld(&BR_SCOPE_R), ld(&BR_SCOPE_NA)));
-    { let (b, r) = (CT_SIDE_B.load(Ordering::Relaxed), CT_SIDE_R.load(Ordering::Relaxed));
-      let f = |v: u64| if v == u64::MAX { "미학습".to_string() } else { v.to_string() };
-      s.push_str(&format!("  side 값 학습 (athlete+0x820): 블루={} 레드={}\n", f(b), f(r))); }
-    { let p = CT_ROSTER.load(Ordering::Acquire);
-      if p.is_null() { s.push_str("  CT_ROSTER: 미게시 (조합테스트 개인전술 탭을 아직 안 열었음 → 진영 판정 불가 = Plain 폴백)\n"); }
-      else { let (bl, rd) = unsafe { &*p };
-        let mut b: Vec<&String> = bl.iter().collect(); b.sort();
-        let mut r: Vec<&String> = rd.iter().collect(); r.sort();
-        s.push_str(&format!("  CT_ROSTER 블루({}): {}\n", b.len(), b.iter().map(|x| x.as_str()).collect::<Vec<_>>().join(" ")));
-        s.push_str(&format!("  CT_ROSTER 레드({}): {}\n", r.len(), r.iter().map(|x| x.as_str()).collect::<Vec<_>>().join(" ")));
-      } }
-    { // The state of scoped keys inside SEL = whether per-side designations really got stored
-      let (mut nb, mut nr, mut na, mut np) = (0usize, 0usize, 0usize, 0usize);
-      with_sel(|m| for ((c, _), &v) in m.iter() {
-          if v == SEL_AUTO { na += 1; }
-          if c.starts_with(CT_PFX_B) { nb += 1; } else if c.starts_with(CT_PFX_R) { nr += 1; } else { np += 1; }
-      });
-      s.push_str(&format!("  SEL 키 현황: 일반={} @b:={} @r:={} (그중 명시auto={})   @b/@r 이 0 이면 조합테스트 드롭다운을 만진 적 없음\n", np, nb, nr, na));
-    }
-
-    // -- * Raw values behind the my-team decision (2026-07-30: to answer "why is this player my team") ---------
-    s.push_str("\n[★내 팀 판정 근거]  is_player(FIXB) = athlete+0x810 ∈ MY_ATHLETES\n");
-    { let p = PLAYER_TEAM_ID.load(Ordering::Relaxed);
-      s.push_str(&format!("  player_team_id(게시)   : {}   (비0 유효 pid 관측={})\n",
-          if p == u64::MAX { "미캡처".to_string() } else { p.to_string() },
-          PID_NONZERO_SEEN.load(Ordering::Relaxed)));
-      s.push_str(&format!("  대상팀 PT 엔트리 수     : {}   (내 팀은 유저 설정으로 수십 개·AI 팀은 몇 개뿐 = pid=0 검증 근거)\n", ld(&MY_PT_N)));
-      s.push_str(&format!("  pid 관측: 0={}회 비0={}회 | 조합테스트컨텍스트 0 무시={}회 | 무관컨텍스트 0={}회(≥600이면 팀0 인정)\n",
-          ld(&PID_OBS_ZERO), ld(&PID_OBS_NONZERO), ld(&PID_SKIP_CT), ld(&PID_ZERO_CLEAN)));
-      s.push_str("     (★조합테스트는 유저 관점 백그라운드 brief-sim 이지만 SDK Scene 은 InGame 이고 그 db 는 pid=0 을 준다)\n");
-      if p == 0 {
-          s.push_str("  ⚠pid=0 = db 가 0 을 보고한 상태. pid 는 **경기 중(InGame)에만** 읽히고 조합테스트도 InGame 이라\n");
-          s.push_str("     조합테스트만 하면 0 이 잡힌다 ⟹ **일반 경기(내 경기/관전)를 한 번 진행**해야 실 팀 id 가 잡힌다.\n");
-      }
-      { let sk = ld(&MY_TRUST_SKIP);
-        if sk > 0 { s.push_str(&format!("  ★MY_ATHLETES 게시 보류  : {}회 (pid=0 + PT 미달 = 내 팀 미확정 → 팀 게이트를 안전측으로 닫음)\n", sk)); } }
-      s.push_str(&format!("  MY_ATHLETES({}명) aid  :", ld(&MY_ATH_N)));
-      let mut zero = false;
-      for k in 0..8 { let v = MY_ATH_IDS[k].load(Ordering::Relaxed); if v == u64::MAX { continue; }
-                      if v == 0 { zero = true; } s.push_str(&format!(" {}", v)); }
-      s.push('\n');
-      if zero { s.push_str("  ⚠★aid=0 이 목록에 있음 — 배경 sim 의 athlete_id 미기입(0)과 매칭돼 **광범위 false positive** 가 된다\n"); }
-      s.push_str("  → 아래 buy 상세의 aid= 와 대조: 일치하면 db 가 실제로 그 선수를 내 팀 선발로 보고한 것,\n");
-      s.push_str("     0 이나 이상값으로 일치하면 판정 결함(팀 게이트 무력화)이다.\n");
-    }
-
-    s.push_str("\n[지정챔프 buy 상세]  champ / owned / aid / live·player 판정 / 슬롯별 목표 / 실제 산 것\n");
-    {
-        let log = BR_LOG.lock().unwrap_or_else(|e| e.into_inner());
-        if log.is_empty() { s.push_str("  (지정챔프 buy 기록 없음 — 위 3번이 0이면 이 경기에 지정챔프가 없는 것)\n"); }
-        // Put the live my-team (player=true) cases first - that is the core of what needs looking at.
-        let mut lines: Vec<&String> = log.iter().collect();
-        lines.sort_by_key(|l| if l.contains("player=true") { 0 } else { 1 });
-        let mut prev_live = true;
-        for l in lines {
-            let is_live_line = l.contains("player=true");
-            if prev_live && !is_live_line { s.push_str("  ---- 아래는 적/배경 sim (참고) ----\n"); }
-            prev_live = is_live_line;
-            s.push_str("  "); s.push_str(l); s.push('\n');
-        }
-    }
-    s.push_str("\n[현재 SEL 지정 내용 (build_override_map)]  champ slot → 주입목표값(1~6=바닐라, 30+=모드템ID)\n");
-    {
-        let m = build_override_map();
-        if m.is_empty() { s.push_str("  (지정 없음 — SEL 파일이 비었거나 미지정)\n"); }
-        let mut v: Vec<_> = m.iter().collect();
-        v.sort_by(|a, b| a.0 .0.cmp(&b.0 .0).then(a.0 .1.cmp(&b.0 .1)));
-        for ((c, slot), val) in v { s.push_str(&format!("  {} slot{} → {}\n", c, slot, val)); }
-    }
-    if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join("buy_report.txt"), s); }
-}
 
 // (Was `impl ModExtension for ItemTacticsExt`. Driven from the host mod's
 // `StableExtension::post_update` — see `driver` and `src/lib.rs`.)
@@ -3227,53 +2828,15 @@ fn buy_report_flush() {
 // `_assets` and `_dt` were unused and are gone.
 fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
     {
-        let __pt = perf::tsc();
         // The hook retry block below is what installs `cap_game_view`, and
         // `cap_game_view` is what publishes `TIP_ROOT` — so the root must be
         // fetched AFTER it, never as an early guard at the top of the function.
         // Guarding first would mean the hook is never installed, the root is
         // never captured, and every frame returns early forever.
-        { let t = perf::tsc();
-          install_launcher_hook(); install_seed_ctor_hook(); install_spawn_hook(); install_game_view_hook();
-          perf::rec(perf::S_HOOK_RETRY, t); }
+        { install_launcher_hook(); install_seed_ctor_hook(); install_spawn_hook(); install_game_view_hook(); }
         // Validated `GameUI.root`, or 0 until the UI exists. NOT `TIP_ROOT` —
         // see `ui_root` for why that pointer crashed the game.
         let ui_root_ptr = ui_root::resolve().unwrap_or(0);
-        perf::sample_self(); // sample the probe's own cost (once per frame)
-        let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(fixdiag_flush)); // verification diagnostic dump (only when FIXDIAG=true)
-        // * Comp-test diagnostic (2026-07-30): the measured launcher retaddr list - to diagnose comp-test injection failure.
-        //   The mod identifies an "on-screen match" by retaddr. The comp-test value (0x1925f12) was an estimate during migration,
-        //   so it may differ from what actually fires => keep the full observed list for comparison.
-        if LAUNCH_DIAG {
-            let n = LD_TICK.fetch_add(1, Ordering::Relaxed);
-            if n % 300 == 0 {
-                let mut s = String::from("[launcher retaddr 실측]
-");
-                s.push_str("  ※조합테스트를 실행한 뒤 이 목록에 새로 추가된 값이 조합테스트 retaddr
-");
-                for k in 0..24 {
-                    let v = LAUNCH_RVAS[k].load(Ordering::Relaxed);
-                    if v == 0 { break; }
-                    let tag = match v {
-                        0x9a3287 => " ← 렌더A(검증됨)",
-                        0x9a7b03 => " ← 렌더B(검증됨)",
-                        0x1925f12 => " ← 조합테스트 본경기(확정)",
-                        0x18f718e => " ← 조합테스트 기록 다시보기(확정)",
-                        0x229ad94 => " ← 리플레이",
-                        _ => "",
-                    };
-                    s.push_str(&format!("  {:#x}{}
-", v, tag));
-                }
-                s.push_str(&format!("
-  launcher 총 발화={} / 화면경기 판정={} / LIVE_SEED={:#x}
-  COMPTEST_MATCH={}
-",
-                    LAUNCH_N.load(Ordering::Relaxed), LAUNCH_RENDER_N.load(Ordering::Relaxed),
-                    LIVE_SEED.load(Ordering::Relaxed), COMPTEST_MATCH.load(Ordering::Relaxed)));
-                if let Some(d) = mod_dir() { let _ = fs::write(d.join("launcher_retaddr.txt"), s); }
-            }
-        }
         // * 0.5.3 regression diagnostic dump (build extension path) - file write every 300 frames (~5s), main thread only.
         if BUILD_EXT_DIAG {
             let n = BE_TICK.fetch_add(1, Ordering::Relaxed);
@@ -3281,27 +2844,27 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                 let c: Vec<u64> = BE_CNT.iter().map(|a| a.load(Ordering::Relaxed)).collect();
                 let last = BE_LAST.load(Ordering::Relaxed);
                 let mut s = format!(
-                    "[build 확장 경로 진단]\n\
-                     도달(4번째 경로 진입) = {}\n\
-                     ├ build_len≠3 로 스킵   = {}\n\
-                     ├ build_cap≠3 로 스킵   = {}\n\
-                     ├ ptr/writable 실패     = {}\n\
-                     ├ 목표 인덱스 획득 실패 = {}\n\
-                     ├ realloc 실패          = {}\n\
-                     └ ★성공(build[3] write) = {}\n\
-                     ★실구매 판정: owned>=4 관측 = {} 회 / 관측된 owned 최댓값 = {}\n\
-                       (owned>=4가 0이면 진짜로 안 사는 것 / 0이 아니면 구매는 되는데 경기중 아이콘만 안 보이는 것)\n\
-                     마지막 관측: build_len={} build_cap={} / 마지막 목표 인덱스={}\n\
-                     [slot3 아이콘] 세팅성공={} 스킵={} / GameView={:#x}(히트{}) 뷰모델 4번째보유={}명\n\
-                     [슬롯 UI 수술] {}\n\
-                     참고: mode(slot_count)={} · MY_ATHLETES={}명 · LIVE_SEED={:#x} · buy write 성공누계={}\n",
+                    "[build extension path diagnostic]\n\
+                     reached (entered the 4th-item path) = {}\n\
+                     |- skipped, build_len != 3    = {}\n\
+                     |- skipped, build_cap != 3    = {}\n\
+                     |- ptr/writable failed        = {}\n\
+                     |- could not get target index = {}\n\
+                     |- realloc failed             = {}\n\
+                     \\- SUCCESS (build[3] write)   = {}\n\
+                     ACTUALLY BOUGHT: owned>=4 observed = {} times / max owned observed = {}\n\
+                       (0 means it really is not bought; non-zero means it IS bought and only the in-match icon is missing)\n\
+                     last observed: build_len={} build_cap={} / last target index={}\n\
+                     [slot3 icon] set OK={} skipped={} / GameView={:#x}(hits {}) view-model owns a 4th={} players\n\
+                     [slot UI surgery] {}\n\
+                     note: mode(slot_count)={} - MY_ATHLETES={} - LIVE_SEED={:#x} - buy write successes={}\n",
                     c[0], c[1], c[2], c[3], c[4], c[5], c[6],
                     c[7], BE_MAX_OWNED.load(Ordering::Relaxed),
                     last >> 32, last & 0xffff_ffff, BE_LAST_T.load(Ordering::Relaxed),
                     SLOT3_ICON_N.load(Ordering::Relaxed), SLOT3_ICON_MISS.load(Ordering::Relaxed),
                     GAME_VIEW.load(Ordering::Relaxed), GV_HITS.load(Ordering::Relaxed),
                     SLOT3_PV_N.load(Ordering::Relaxed),
-                    SLOTUI_MSG.lock().unwrap_or_else(|e| e.into_inner()).clone().unwrap_or_else(|| "(미실행)".into()),
+                    SLOTUI_MSG.lock().unwrap_or_else(|e| e.into_inner()).clone().unwrap_or_else(|| "(not run)".into()),
                     slot_count(), MY_ATH_N.load(Ordering::Relaxed),
                     LIVE_SEED.load(Ordering::Relaxed), BUY_WROTE_FIRE.load(Ordering::Relaxed));
                 // Hook install state. Added while diagnosing "never buys a 4th
@@ -3327,7 +2890,8 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                      VEH registered (gates every safe_read): {}\n  \
                      game_view (TIP_ROOT/GameView)         : {}\n  \
                      launcher install path: calls={} ours={} waited={} real_installs={} throttled={} last_b0={:#04x} last_movabs={:#x}\n  \
-                     Database (from riot item-build hook)  : {:#x}   mod items scanned={}\n",
+                     Database (from riot item-build hook)  : {:#x}   mod items={}  finals={}\n  \
+                     mod item source: {}\n",
                     state(BUY_PROBE_INSTALLED.load(Ordering::Relaxed)),
                     state(CLAUNCH_INSTALLED.load(Ordering::Relaxed)),
                     LAUNCH_N.load(Ordering::Relaxed), LAUNCH_RENDER_N.load(Ordering::Relaxed),
@@ -3343,6 +2907,11 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                     HK_L_B0.load(Ordering::Relaxed), HK_L_TGT.load(Ordering::Relaxed),
                     driver::db_addr(),
                     MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner()).len(),
+                    MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()).len(),
+                    {
+                        let note = CATALOG_NOTE.lock().unwrap_or_else(|e| e.into_inner()).clone();
+                        if note.is_empty() { "NOT POPULATED (4th item can only be vanilla)".to_string() } else { note }
+                    },
                 ));
                 if !buy_note.is_empty() { s.push_str(&format!("  buy_item detail: {buy_note}\n")); }
                 s.push_str(&format!("  {}\n", ui_root::report()));
@@ -3351,17 +2920,8 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
         }
         // (the every-frame hook retry that used to sit here now runs at the top
         //  of the function, because it is what publishes `TIP_ROOT`)
-        if BUY_REPORT {
-            // On the edge into a new spectated match (entering InGame), reset counters/logs -> buy_report.txt holds only the last match watched.
-            if in_game {
-                if !BR_WAS_INGAME.swap(true, Ordering::Relaxed) { buy_report_reset(); }
-            } else {
-                BR_WAS_INGAME.store(false, Ordering::Relaxed);
-            }
-            buy_report_flush();
-        }
         if !in_game { INGAME_NOW.store(false, Ordering::Relaxed); }
-        if UI_INJECT_ENABLED { let t = perf::tsc(); unsafe { let _ = uinj::install(); } perf::rec(perf::S_POST_UINJ, t); } // strategy screen dropdown injection hook (mode 3 = item0m/1m/2m, mode 4 = + item3/slot3). Idempotent.
+        if UI_INJECT_ENABLED { unsafe { let _ = uinj::install(); } } // strategy screen dropdown injection hook (mode 3 = item0m/1m/2m, mode 4 = + item3/slot3). Idempotent.
         // NOTE the UI-root gate is NOT here. It used to be, and that broke the
         // fourth item: the block below publishes `MY_ATHLETES`, which is the
         // team gate's only remaining input now that the `SCENE_SIDE` fast path
@@ -3423,7 +2983,6 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
             // ** v15: publish my team's starting roster (5 athlete_ids) - the material for the spawn hook's scene-free team decision.
             //   Refreshed on the ROSTER_POLL period (transfers and lineup changes are picked up automatically). Once obtained, a low rate is plenty.
             {
-                let __rt = perf::tsc();
                 const ROSTER_POLL: u64 = 120; // frames
                 let n = ROSTER_TICK.fetch_add(1, Ordering::Relaxed);
                 let known = PLAYER_TEAM_ID.load(Ordering::Relaxed);
@@ -3444,7 +3003,6 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                     if !my.is_empty() && trust { publish_my_athletes(my); }
                     else if !trust { MY_TRUST_SKIP.fetch_add(1, Ordering::Relaxed); }
                 }
-                perf::rec(perf::S_POST_ROSTER, __rt);
             }
             // ** lean (07-18): spectate identification = launcher (LIVE_SEED) + seed-ctor (RENDER_PROVIDER) + buy r9 comparison (v13).
             //   The old db scan (v10), P6 probe and link scan are all gone. Only the scene side (my-team decision) and LIVE_DB/PID remain here.
@@ -3476,12 +3034,10 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
             //   WARNING compact (player_info) only - wide_player_info (fullscreen) has no reset and is correct from the .ui (34px spacing, different kda/cs)
             //   Applying it to the whole ui.root would overwrite wide with the compact values (42/242/290) and break it. Restricted to the player_info subtree.
             if ITEM_MODE.load(Ordering::Relaxed) == 4 && UI_TREE_WALK_ENABLED && ui_root_ptr > 0x10000 {
-                let t = perf::tsc();
                 let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| unsafe {
                     let ui: &Node = &*(ui_root_ptr as *const Node);
                     if let Some(pi) = find_node(ui, "player_info") { force_blue_slot_spacing(pi); }
                 }));
-                perf::rec(perf::S_POST_SPACING, t);
             }
             // * Source of the delegate (tfm2.gg auto-selection) baseline = champion_personal_tactics.
             //   Refreshed every frame (lightweight, ~52 entries) -> display/injection always current. Only the log is throttled to every 20 frames.
@@ -3493,71 +3049,32 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
             //   so there is no reason to rebuild it every frame -> every 20 frames (~0.3s). No perceptible difference in display/injection responsiveness.
             static PT_REBUILD: AtomicU64 = AtomicU64::new(0);
             if PT_REBUILD.fetch_add(1, Ordering::Relaxed) % 20 == 0 {
-                {
-                    let __ptt = perf::tsc(); // WARNING `t` here is the team (bound above), so the probe uses a separate variable name
+                { // WARNING `t` here is the team (bound above), so the probe uses a separate variable name
                     // (was `db.team(pid).champion_personal_tactics`, a
                     //  `HashMap<String, [u8; 3]>` read field-by-field)
                     let snap = stable_personal_tactics(client, pid);
-                    if LOG_ENABLED {
-                        let mut s = format!("[{}ms] PT_SNAPSHOT 갱신 pid={} {}개\n", now_ms(), pid, snap.len());
-                        for (k, b) in snap.iter().take(64) { s.push_str(&format!("  {} = [{},{},{}]\n", k, b[0], b[1], b[2])); }
-                        write_log("item_tactics_pt.txt", &s);
-                    }
                     *PT_SNAPSHOT.lock().unwrap_or_else(|e| e.into_inner()) = Some(snap);
                     update_override_snapshot();
-                    perf::rec(perf::S_POST_PT, __ptt);
                 }
             }
         }
         // Everything from here down walks the live UI node tree. This is the
         // only thing `UI_TREE_WALK_ENABLED` is meant to cover — see its doc
         // comment for why it is off and what that costs.
-        if !UI_TREE_WALK_ENABLED || ui_root_ptr <= 0x10000 { perf::rec(perf::S_POST_TOTAL, __pt); return; }
+        if !UI_TREE_WALK_ENABLED || ui_root_ptr <= 0x10000 { return; }
         let ui: &mut Node = unsafe { &mut *(ui_root_ptr as *mut Node) };
-        { let t = perf::tsc();
-          let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| { handle_tactics_screen(ui); }));
-          perf::rec(perf::S_POST_TACTICS, t); }
-        { let t = perf::tsc();
-          let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| { handle_comptest_screen(ui); }));
-          perf::rec(perf::S_POST_COMPTEST, t); }
+        { let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| { handle_tactics_screen(ui); })); }
+        { let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| { handle_comptest_screen(ui); })); }
         // * In-match 4th slot icon (direct node writing - no game code modification)
         let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| { handle_ingame_slot3(ui); }));
         // * Hide native item0/1/2 (the mod-owned item0m/1m/2m overlay replaces them). Only on the personal tactics screen. Common to modes 3 and 4 (the overlay exists in both).
-        { let t = perf::tsc();
-          let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| hide_native_item_dds(ui)));
-          perf::rec(perf::S_POST_HIDE_DD, t); }
+        { let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| hide_native_item_dds(ui))); }
         // * Comp test: mod-owned dropdowns replace them, so hide native item0/1/2 (idempotent - no write if already false).
-        { let t = perf::tsc();
-          let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+        { let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
               if find_node(ui, "builds").map(|n| n.visible).unwrap_or(false) {
-                  unsafe { dump_ct_row_geom(ui); } // one-shot geometry diagnostic
                   hide_comptest_native_dds(ui);
               }
-          }));
-          perf::rec(perf::S_POST_HIDE_CT, t); }
-        perf::rec(perf::S_POST_TOTAL, __pt);
-        // Periodic report (file write on the main thread only).
-        if perf::PERF_ON {
-            static PERF_FRAMES: AtomicU64 = AtomicU64::new(0);
-            let n = PERF_FRAMES.fetch_add(1, Ordering::Relaxed) + 1;
-            if n % perf::REPORT_EVERY == 0 {
-                let mut rep = perf::report(now_ms(), n);
-                // * Hook install path diagnostic: if "real installs" is ~1 per frame, that confirms reinstalling every frame = stub leakage +
-                //   a mutual re-chaining cycle with serpen (as in the draft_overlay hang). Close to 0 means innocent.
-                rep.push_str(&format!(
-                    "\n── 훅 설치 경로 카운터 ──\n  launcher: 호출={} / 내스텁확인={} / serpen대기={} / ★실제install={} / 스로틀skip={}\n  \
-                     마지막 진입부 b0={:#04x} movabs_tgt={:#x} (내스텁={:#x})\n  seed_ctor: ★실제install={}\n  \
-                     → 실제install ÷ 프레임 ≈ {:.3} (1에 가까우면 매프레임 재설치=누수)\n",
-                    HK_L_CALLS.load(Ordering::Relaxed), HK_L_OURS.load(Ordering::Relaxed),
-                    HK_L_WAIT.load(Ordering::Relaxed), HK_L_INSTALL.load(Ordering::Relaxed),
-                    HK_L_SKIP.load(Ordering::Relaxed),
-                    HK_L_B0.load(Ordering::Relaxed), HK_L_TGT.load(Ordering::Relaxed),
-                    CLAUNCH_STUB.load(Ordering::Relaxed),
-                    HK_S_INSTALL.load(Ordering::Relaxed),
-                    HK_L_INSTALL.load(Ordering::Relaxed) as f64 / n.max(1) as f64));
-                if let Some(p) = mod_dir() { let _ = fs::write(p.join("item_tactics_perf.txt"), rep); }
-            }
-        }
+          })); }
     }
 }
 
@@ -3572,9 +3089,6 @@ fn tactics_before_management_tick() {
     PLAYER_SIDE.store(u64::MAX, Ordering::Relaxed);
     SIDE_CACHE.lock().unwrap_or_else(|e| e.into_inner()).clear();
     probe_db(); install_replace_4th(); // resolver = common to modes 3 and 4 (idempotent)
-    // * Measurement only: runs once, and only when a `dump_builds.trigger` file exists (normal cost = one exists() call).
-    //   The management tick does not run during a sim, so the forward shadow-call cannot race with the sim.
-    unsafe { maybe_dump_builds(); }
 }
 static NETSCAN_DONE: AtomicBool = AtomicBool::new(false);
 /// Whether `a` looks like the item recommendation network: header
@@ -3695,7 +3209,7 @@ fn probe_db() {
             }
             if found != 0 {
                 ITEM_NET_ADDR.store(found as u64, Ordering::Relaxed);
-                append_log("4items.txt", &format!("[{}ms] item_net={:#x} (db+{:#x}) ★유효 fwd_valid={}", now_ms(), found, found - db, itemnet_addr_valid()));
+                
             } else {
                 let net = db + 0xda0;
                 // * Diagnostic (regardless of LOG): +0xda0 failed -> scan a wide window from db for the net signature (16384/*/16384/1) to find the real offset.
@@ -3719,12 +3233,14 @@ fn probe_db() {
                         }
                         o += 8;
                     }
-                    if hits == 0 { out.push_str(" (스캔 무결과 — db base 자체 의심 or 시그 변경)\n"); }
+                    if hits == 0 { out.push_str(" (scan found nothing - suspect the db base itself, or a changed signature)
+"); }
                     // forward RVA prologue
                     let fa = exe_base_addr() + ITEMNET_FORWARD_RVA;
                     if readable(fa, 12) {
                         let pb: Vec<String> = (0..12).map(|i| format!("{:02x}", *((fa+i) as *const u8))).collect();
-                        out.push_str(&format!(" fwd RVA={:#x} prologue={} (기대 55415741...)\n", ITEMNET_FORWARD_RVA, pb.join(" ")));
+                        out.push_str(&format!(" fwd RVA={:#x} prologue={} (expected 55415741...)
+", ITEMNET_FORWARD_RVA, pb.join(" ")));
                     } else { out.push_str(" fwd RVA unreadable\n"); }
                     if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join("4items_netscan.txt"), out); }
                 }
@@ -3734,9 +3250,7 @@ fn probe_db() {
     if MODITEMS_DONE.load(Ordering::Relaxed) { return; }
     unsafe { dump_mod_items(db); }
     driver::mark_db_probed();
-    append_log("item_tactics.txt", &format!("[{}ms] probe_db: db={:#x} 모드템 {}개 최종 {}개", now_ms(), db,
-        MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner()).len(),
-        MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()).len()));
+    
 }
 
 // == athlete -> champion mapping probe (scanning buy_item's r8 = athlete) =====================
@@ -3803,20 +3317,17 @@ unsafe fn itemnet_addr_valid() -> bool {
 }
 unsafe fn itemnet_forward(net: usize, ctx: &[u64; 11], build: &[u64]) -> f32 {
     // Only reached from AUTO4 scoring in a spectated match (never a background sim) -> low frequency, so global atomic counters suffice.
-    let __it = perf::tsc();
-    if net == 0 || !itemnet_addr_valid() { perf::rec(perf::S_ITEMNET, __it); return f32::MIN; }
+    if net == 0 || !itemnet_addr_valid() { return f32::MIN; }
     // ** Per-call weight re-validation (07-17, to eliminate crashes): net was sig_ok'd only once at detection, but if the weight ptr inside net (net+0x8)
     //   goes stale on a session switch / background sim reload, forward dereferences that stale ptr internally (at +0x81) -> AV (0xc0000005). Right before every call
     //   we re-check the header (16384/16384/1) + weight ptr readability -> if stale, skip the call (f32::MIN = candidate rejected -> fallback). The shadow-call crash condition is cut off.
     if !(readable(net, 0x20) && rd_u64(net) == 16384 && rd_u64(net + 0x10) == 16384 && rd_u64(net + 0x18) == 1
         && { let w = rd_u64(net + 0x8) as usize; w >= 0x10000 && readable(w, 16384 * 4) }) {
         AUTO4_NET_STALE.fetch_add(1, Ordering::Relaxed);
-        perf::rec(perf::S_ITEMNET, __it);
         return f32::MIN;
     }
     let func: ItemNetFn = core::mem::transmute(exe_base_addr() + ITEMNET_FORWARD_RVA);
-    let out = func(net, ctx.as_ptr() as usize, build.as_ptr(), build.len() as u64, 0);
-    perf::rec(perf::S_ITEMNET, __it); // * includes the real cost of the game-function shadow-CALL (this site *is* that cost)
+    let out = func(net, ctx.as_ptr() as usize, build.as_ptr(), build.len() as u64, 0); // * includes the real cost of the game-function shadow-CALL (this site *is* that cost)
     out
 }
 static AUTO4_NET_STALE: AtomicU64 = AtomicU64::new(0); // * per-call net-stale detections (skips)
@@ -3902,187 +3413,6 @@ fn auto_cands() -> std::sync::Arc<Vec<u64>> {
     arc
 }
 
-// ===========================================================================
-//  Item build dump (measurement only - file triggered - completely inert otherwise)
-// ===========================================================================
-// Purpose = extract exactly which 4-slot build the trained neural network recommends for each champion **right now**.
-//   Unlike aggregating match records (which hides anything with a small sample), this **scores the recommender directly**,
-//   so a single run per season yields a complete ranking. Intended for A/B comparison (a season with the mod OFF vs ON).
-//
-// How to use: create a `dump_builds.trigger` file (any content) in the mod folder and **enter the management screen**
-//   (= one management tick); it runs and then deletes the trigger file. Result = `item_builds_<ms>.csv`.
-//   WARNING run it on the management screen, not during a match (the management tick does not run during a sim = no race).
-//
-// WARNING * Always turn the noise off before running - forward contains exploration noise (U[0,1)*0.2 - 0.1 = +/-0.1), so
-//   scores wobble on every run otherwise. Setting `noise_range = 0` / `noise_offset = 0` in the `tfm2_itemnet_tune` cfg
-//   makes it deterministic.
-//   (The self-check below scores the same build twice and stamps a warning into the CSV header if it wobbles.)
-//
-// WARNING mod champions do not appear - they are absent from CHAMP_SHEET (sheet indices 0~60) so no cid can be built.
-//   (Running forward with a garbage ctx gives everyone the same answer, so they are excluded outright.)
-const DUMP_TRIGGER: &str = "dump_builds.trigger";
-const DUMP_BEAM_WIDTH: usize = 32;
-/// Cap on the total forward calls for exhaustive search. Above it we fall back to beam and **state that fact in the CSV**.
-const DUMP_MAX_EXHAUSTIVE: u64 = 1_500_000;
-static DUMP_RUNNING: AtomicBool = AtomicBool::new(false);
-
-/// Item label. Mod items use their real key; vanilla uses `v<category>_t<tier>` (id = cat*5 + tier).
-fn dump_item_label(id: u64, modmap: &HashMap<u64, String>) -> String {
-    if let Some(n) = modmap.get(&id) { return n.clone(); }
-    if id < 30 { format!("v{}_t{}", id / 5, id % 5) } else { format!("id{}", id) }
-}
-
-/// Insertion sort that keeps only the top 3.
-#[inline]
-fn dump_push_top3(top: &mut Vec<(f32, Vec<u64>)>, s: f32, b: Vec<u64>) {
-    if top.len() == 3 && s <= top[2].0 { return; }
-    let at = top.iter().position(|(t, _)| s > *t).unwrap_or(top.len());
-    top.insert(at, (s, b));
-    top.truncate(3);
-}
-
-/// Compute the top 3 four-slot builds for one (champion, position).
-/// Exhaustive when there are few candidates, beam (depth 4) when there are many. Returns (top3, forward call count).
-unsafe fn dump_top3_for(net: usize, ctx: &[u64; 11], cands: &[u64], exhaustive: bool)
-    -> (Vec<(f32, Vec<u64>)>, u64)
-{
-    let n = cands.len();
-    let mut top: Vec<(f32, Vec<u64>)> = Vec::with_capacity(4);
-    let mut calls = 0u64;
-    if exhaustive {
-        for i in 0..n { for j in (i + 1)..n { for k in (j + 1)..n { for l in (k + 1)..n {
-            let b = vec![cands[i], cands[j], cands[k], cands[l]];
-            let s = itemnet_forward(net, ctx, &b);
-            calls += 1;
-            if s == f32::MIN { continue; } // net stale = skip
-            dump_push_top3(&mut top, s, b);
-        }}}}
-    } else {
-        // beam: start from an empty build and grow one slot at a time (same shape as the game's beam, only depth 4).
-        let mut beam: Vec<Vec<u64>> = vec![Vec::new()];
-        for depth in 0..4 {
-            let mut next: Vec<(f32, Vec<u64>)> = Vec::new();
-            for e in beam.iter() {
-                for &c in cands.iter() {
-                    if e.contains(&c) { continue; }
-                    // Avoid duplicate combinations = only extend in ascending order
-                    if let Some(&last) = e.last() { if c <= last { continue; } }
-                    let mut b = e.clone();
-                    b.push(c);
-                    let s = itemnet_forward(net, ctx, &b);
-                    calls += 1;
-                    if s == f32::MIN { continue; }
-                    next.push((s, b));
-                }
-            }
-            next.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));
-            next.truncate(DUMP_BEAM_WIDTH);
-            if depth == 3 { for (s, b) in next.iter() { dump_push_top3(&mut top, *s, b.clone()); } }
-            beam = next.into_iter().map(|(_, b)| b).collect();
-            if beam.is_empty() { break; }
-        }
-    }
-    (top, calls)
-}
-
-/// Perform the dump once if the trigger file exists. Only call from the management tick (= no sim running).
-unsafe fn maybe_dump_builds() {
-    let dir = match mod_dir() { Some(d) => d, None => return };
-    let trig = dir.join(DUMP_TRIGGER);
-    if !trig.exists() { return; }
-    if DUMP_RUNNING.swap(true, Ordering::SeqCst) { return; } // reentrancy guard
-    let t0 = now_ms();
-
-    let net = ITEM_NET_ADDR.load(Ordering::Relaxed) as usize;
-    let mut out = String::new();
-    let mut header_warn = String::new();
-
-    if net == 0 || !itemnet_addr_valid() {
-        let _ = fs::write(dir.join(format!("item_builds_FAILED_{}.txt", t0)),
-            format!("net 미확보 (net={:#x}, fwd_valid={}) — 경기를 한 번 치른 뒤 다시 시도하세요.\n",
-                    net, itemnet_addr_valid()));
-        let _ = fs::remove_file(&trig);
-        DUMP_RUNNING.store(false, Ordering::SeqCst);
-        return;
-    }
-
-    let cands_arc = auto_cands();
-    let cands: Vec<u64> = cands_arc.iter().copied().collect();
-    let modmap: HashMap<u64, String> = mod_final_opts().into_iter().collect();
-    let n = cands.len();
-    if n < 4 {
-        let _ = fs::write(dir.join(format!("item_builds_FAILED_{}.txt", t0)),
-            format!("최종템 후보가 {}개뿐 — 4칸 빌드를 만들 수 없습니다.\n", n));
-        let _ = fs::remove_file(&trig);
-        DUMP_RUNNING.store(false, Ordering::SeqCst);
-        return;
-    }
-
-    // -- Noise self-check: score the same build twice and see whether the value wobbles --
-    let mut pctx = [0u64; 11];
-    for k in 0..10 { pctx[k] = 9999; }
-    pctx[0] = 0; pctx[10] = 0;
-    let pb = vec![cands[0], cands[1], cands[2], cands[3]];
-    let s1 = itemnet_forward(net, &pctx, &pb);
-    let s2 = itemnet_forward(net, &pctx, &pb);
-    if (s1 - s2).abs() > 1e-6 {
-        header_warn.push_str(&format!(
-            "# ⚠ 탐색 노이즈가 켜져 있습니다(같은 빌드 2회 채점 = {} vs {}). 점수·순위가 흔들립니다.\n\
-             #   tfm2_itemnet_tune cfg 에서 noise_range=0 / noise_offset=0 으로 두고 다시 뽑으세요.\n",
-            s1, s2));
-    }
-
-    // -- Is exhaustive search feasible? --
-    let champs: Vec<usize> = (0..CHAMP_SHEET.len()).filter(|&i| CHAMP_SHEET[i] != "mod_champions").collect();
-    let cells = (champs.len() * 5) as u64;
-    let combos = { // C(n,4)
-        let nn = n as u64;
-        if nn < 4 { 0 } else { nn * (nn - 1) * (nn - 2) * (nn - 3) / 24 }
-    };
-    let exhaustive = combos.saturating_mul(cells) <= DUMP_MAX_EXHAUSTIVE;
-
-    out.push_str(&format!(
-        "# tfm2_item_tactics 아이템 빌드 덤프 (신경망 직접 채점)\n\
-         # 시각(ms)={} / 후보 최종템={}개(바닐라 {} + 모드 {}) / 챔피언={} / 포지션=5\n\
-         # 탐색={} / C(n,4)={} / 셀={}\n\
-         # ctx = 본인 챔프만 배치, 나머지 아군·적군 전부 9999(중립). A/B 비교용 고정 컨텍스트.\n\
-         # ⚠모드 챔피언은 시트 인덱스가 없어 제외됩니다.\n{}\
-         champion,position,rank,score,id0,id1,id2,id3,item0,item1,item2,item3\n",
-        t0, n, VANILLA_FINAL.len(), n - VANILLA_FINAL.len(), champs.len(),
-        if exhaustive { "완전탐색" } else { "beam(폭 32) — 후보가 많아 완전탐색 상한 초과" },
-        combos, cells, header_warn));
-
-    let mut total_calls = 0u64;
-    let mut scored_cells = 0u64;
-    for &ci in champs.iter() {
-        for pos in 0..5usize {
-            let mut ctx = [9999u64; 11];
-            ctx[ci_slot(pos)] = ci as u64; // self = the ally slot for its own position
-            ctx[10] = pos as u64;
-            let (top, calls) = dump_top3_for(net, &ctx, &cands, exhaustive);
-            total_calls += calls;
-            if top.is_empty() { continue; }
-            scored_cells += 1;
-            for (rank, (s, b)) in top.iter().enumerate() {
-                out.push_str(&format!("{},{},{},{:.6},{},{},{},{},{},{},{},{}\n",
-                    CHAMP_SHEET[ci], pos, rank + 1, s,
-                    b[0], b[1], b[2], b[3],
-                    dump_item_label(b[0], &modmap), dump_item_label(b[1], &modmap),
-                    dump_item_label(b[2], &modmap), dump_item_label(b[3], &modmap)));
-            }
-        }
-    }
-    let dt = now_ms().saturating_sub(t0);
-    out.push_str(&format!("# 완료: forward {}회 / 채점된 셀 {}/{} / {}ms\n",
-                          total_calls, scored_cells, cells, dt));
-    let _ = fs::write(dir.join(format!("item_builds_{}.csv", t0)), out);
-    let _ = fs::remove_file(&trig);
-    append_log("4items.txt", &format!("[{}ms] build dump 완료: forward {}회 {}ms", now_ms(), total_calls, dt));
-    DUMP_RUNNING.store(false, Ordering::SeqCst);
-}
-
-/// Which of ctx's 5 ally slots this position uses. (ctx[0..5] = the 5 ally positions, self = ctx[position])
-#[inline] fn ci_slot(pos: usize) -> usize { pos.min(4) }
 
 // -- Restore the match's real lineup ctx from the roster array (SimState+0x840, stride 0x8d0) --
 //   athlete = an array element. team = +0x820 (0/1), champion name = +0x420. Parallel matches use separate arrays, so an
@@ -4191,46 +3521,23 @@ unsafe fn build_lineup_ctx(p: usize) -> Option<([u64; 11], u64)> {
     let vcount = safe_read_u64(base.wrapping_sub(0x840) + 0x848).unwrap_or(0);
     Some((ctx, vcount))
 }
-// * Diagnostic (identifying match id / athlete id signals): deref the view header / match metadata pointers + dump athlete headers and id candidates broadly.
-static DEMO_DUMPED: Mutex<Vec<usize>> = Mutex::new(Vec::new());
-
-// * Diagnostic (regardless of LOG, 07-10): auto4 path counters - to find the real cause of the enemy's 4th item being biased towards attack damage.
-//   [0] = netfail (pointer/prologue) [1] = inputfail (build ptr/value) [2] = heuristic (the vcount==3 demo guard)
-//   [3] = fwd_ok [4] = fwd_flat (all candidates scored the same before forward = suspect ABI/ctx) [5] = fallback (3) (neural returned None -> vanilla fallback)
-static AUTO4_CNT: [AtomicU64; 6] = [AtomicU64::new(0), AtomicU64::new(0), AtomicU64::new(0), AtomicU64::new(0), AtomicU64::new(0), AtomicU64::new(0)];
-static AUTO4_SAMPLES: Mutex<Vec<String>> = Mutex::new(Vec::new());
-fn auto4_sample(s: String) {
-    let mut g = AUTO4_SAMPLES.lock().unwrap_or_else(|e| e.into_inner());
-    if g.len() < 12 { g.push(s); }
-}
-// Called from post_update (main thread): refresh the file whenever the counter sum changes.
-fn auto4_diag_flush() {
-    static LAST: AtomicU64 = AtomicU64::new(0);
-    let c: Vec<u64> = AUTO4_CNT.iter().map(|a| a.load(Ordering::Relaxed)).collect();
-    let sum: u64 = c.iter().sum();
-    if sum == 0 || LAST.swap(sum, Ordering::Relaxed) == sum { return; }
-    let samples = AUTO4_SAMPLES.lock().unwrap_or_else(|e| e.into_inner()).join("\n");
-    if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d);
-        let _ = fs::write(d.join("4items_auto4.txt"), format!(
-            "netfail={} inputfail={} heuristic(vcount3)={} fwd_ok={} fwd_flat={} fallback3={}\n{}\n",
-            c[0], c[1], c[2], c[3], c[4], c[5], samples)); }
-}
 // * AUTO 4th (universal - every player, every match): at buy time (owned==3), score build[0..3] with the neural forward and
 //   append each final-item candidate as the 4th; the highest score = the network's chosen 4th. Independent of c6 firing (covers enemy/background too).
 //   ctx = the match's real lineup restored from the roster array (our 5 + their 5 + pos). Simple fallback on failure.
 unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
     if !AUTO4_FORWARD_SCORE { return None; }
     let net = ITEM_NET_ADDR.load(Ordering::Relaxed) as usize;
-    if net == 0 || !itemnet_addr_valid() { AUTO4_CNT[0].fetch_add(1, Ordering::Relaxed); return None; }
+    if net == 0 || !itemnet_addr_valid() { return None; }
     let ptr = rd_u64(athlete + 0x498) as usize; // 0.5.0 build ptr (was 0x410)
-    if ptr < 0x10000 || !readable(ptr, 24) { AUTO4_CNT[1].fetch_add(1, Ordering::Relaxed); return None; }
+    if ptr < 0x10000 || !readable(ptr, 24) { return None; }
     let b0 = rd_u64(ptr); let b1 = rd_u64(ptr + 8); let b2 = rd_u64(ptr + 16);
-    if b0 >= 0x10000 || b1 >= 0x10000 || b2 >= 0x10000 { AUTO4_CNT[1].fetch_add(1, Ordering::Relaxed); return None; }
+    if b0 >= 0x10000 || b1 >= 0x10000 || b2 >= 0x10000 { return None; }
     // * Mod champions (unknown cid): running forward with a garbage ctx (cid=0, opponents 9999) gives everyone the same answer (fixed at 116) -> skip that and
     //   use the variety fallback (champ-hash spread). A complete fix = the game's champion registry name -> id (follow-up).
     let cid = match champ_id_of(champ) {
         Some(c) => c as u64,
-        None => { auto4_sample(format!("[nocid] champ={} → spread", champ)); return None; }
+        // Mod champion: no cid, so forward would score everyone identically -> variety fallback.
+        None => return None,
     };
     // * Restore the match's real lineup ctx from the roster array (the 5 real opponents = global_counter stays meaningful). Simple fallback on failure.
     let (ctx, real, vcount) = match build_lineup_ctx(athlete) {
@@ -4245,9 +3552,7 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
     // * In a demo/title live sim (view roster count==3) calling the game's forward crashes -> fall back to the heuristic 4th.
     //   In a real sim (background league etc., count != 3) use forward for the neural 4th. (DIAG_FWD_OFF = emergency global heuristic.)
     if DIAG_FWD_OFF || vcount == 3 {
-        AUTO4_CNT[2].fetch_add(1, Ordering::Relaxed);
         let pick = auto_cands().iter().copied().find(|&c| c != b0 && c != b1 && c != b2);
-        auto4_sample(format!("[heur] champ={} vcount={} real={} pick={:?}", champ, vcount, real, pick));
         return pick;
     }
     // * Performance cache lookup: identical (champ, build, lineup) needs no forward sweep recomputation.
@@ -4255,16 +3560,14 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
     {
         let mut g = AUTO4_RESULT.lock().unwrap_or_else(|e| e.into_inner());
         let m = g.get_or_insert_with(HashMap::new);
-        if let Some(&cached) = m.get(&ckey) { AUTO4_CNT[5].fetch_add(1, Ordering::Relaxed); return cached; }
+        if let Some(&cached) = m.get(&ckey) { return cached; }
     }
     let cands = auto_cands();
     let mut best: Option<u64> = None;
     let mut best_s = f32::MIN;
-    let (mut smin, mut smax) = (f32::MAX, f32::MIN);
     for &cand in cands.iter() {
         if cand == b0 || cand == b1 || cand == b2 { continue; } // exclude duplicates
         let s = itemnet_forward(net, &ctx, &[b0, b1, b2, cand]);
-        if s < smin { smin = s; } if s > smax { smax = s; }
         if s > best_s { best_s = s; best = Some(cand); }
     }
     // * Store in the cache (cap 8192; simply cleared when exceeded - allows for many parallel matches)
@@ -4273,17 +3576,6 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
         let m = g.get_or_insert_with(HashMap::new);
         if m.len() >= 8192 { m.clear(); }
         m.insert(ckey.clone(), best);
-    }
-    AUTO4_CNT[3].fetch_add(1, Ordering::Relaxed);
-    if best.is_some() && smax == smin { AUTO4_CNT[4].fetch_add(1, Ordering::Relaxed); } // all candidates tied = suspicious
-    auto4_sample(format!("[fwd] champ={} cid={} real={} vcount={} best={:?} s=[{}..{}]", champ, cid, real, vcount, best, smin, smax));
-    {
-        static D: AtomicBool = AtomicBool::new(false);
-        if !D.swap(true, Ordering::Relaxed) {
-            write_log("4items_fwd.txt", &format!(
-                "[auto4@buy] champ={} champ_id={} real_ctx={} ctx={:?} build=[{},{},{}] cands={} best={:?} best_s={}\n",
-                champ, cid, real, ctx, b0, b1, b2, cands.len(), best, best_s));
-        }
     }
     best
 }
@@ -4350,8 +3642,7 @@ unsafe fn scan_recipe_safe_index(ctx: usize, want: &[u8]) -> Option<u64> {
 // Shared scan core: find the index in the catalog array (element{elem_ptr@0, vtable@8}, stride 0x10) whose name matches and which has a recipe.
 unsafe fn scan_recipe_safe_in(data: usize, len: u64, want: &[u8]) -> Option<u64> {
     if data < 0x10000 || len == 0 || len > 100000 || !readable(data, (len as usize) * 16) { return None; }
-    // * 0.5.1 diagnostic (once): want + a sample of extracted names -> tells whether a scan failure is a vtable slot problem (extraction failed) or a collection problem (no radiant).
-    let do_diag = LOG_ENABLED && !SCAN_DIAG_DONE.swap(true, Ordering::Relaxed);
+    let do_diag = false;
     let mut dbg = if do_diag { format!("[{}ms] scan want='{}' data={:#x} len={}\n", now_ms(), String::from_utf8_lossy(want), data, len) } else { String::new() };
     let mut names_ok = 0u64;
     let mut i = 0u64;
@@ -4385,18 +3676,14 @@ unsafe fn scan_recipe_safe_in(data: usize, len: u64, want: &[u8]) -> Option<u64>
         }
         i += 1;
     }
-    if do_diag { dbg.push_str(&format!("  총 이름추출 성공={}/{} · want 미발견\n", names_ok, len)); append_log("scan_diag.txt", &dbg); }
+    if do_diag { dbg.push_str(&format!("  name extraction succeeded {}/{} - want not found
+", names_ok, len)); }
     None
 }
 
 // * Performance: scan cache (name -> index). Reduces the 96-element shadow-call scan to once per name. Value -1 = not found / no recipe.
 //   * Multi-collection (keyed by coll base): parallel background sims using different ctx collections do not thrash. Collection cap 16.
 static SCAN_CACHE: Mutex<Option<HashMap<usize, HashMap<Vec<u8>, i64>>>> = Mutex::new(None);
-// ** Designated-item reach measurement (07-19): cumulatively record "has this champion ever actually owned its designated item".
-//   Snapshot lines (one per champ|owned combination) miss late-game combines and make it look unreached - this table is cumulative and therefore conclusive.
-//   key = "champ:slot:itemkey" -> true (reached). Printed in the report as reached/not reached.
-static REACH_HIT: Mutex<Vec<String>> = Mutex::new(Vec::new());   // champ:slot:item confirmed to be actually owned
-static REACH_WANT: Mutex<Vec<String>> = Mutex::new(Vec::new());  // champ:slot:item that has a designation (the denominator)
 unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
     if ctx < 0x10000 || !readable(ctx, 0x28) { return None; }
     let coll = rd_u64(ctx + 0x30) as usize; // * 0.5.0: the catalog collection offset moved ctx+0x20 -> +0x30 (RE confirmed, the only change)
@@ -4420,201 +3707,15 @@ const DIAG_SCAN_OFF: bool = false; // * diagnostic #4: realloc proven innocent -
 const DIAG_FWD_OFF: bool = false;  // false = run forward when count != 3 (a real sim). true = emergency global heuristic.
 // * Live injection gate for slots 0/1/2: write the designated index into build[0/1/2] (the same build-Vec target mechanism as slot 3).
 const SLOT012_INJECT_ENABLED: bool = true;
-static SLOT012_LOG: Mutex<Vec<String>> = Mutex::new(Vec::new());
 
-// ═══════════════════════════════════════════════════════════════════════════
-//  buy injection diagnostic report (BUY_REPORT) - pinpoint the cause of item injection failure at buy-time runtime.
-//    (1) did we find the spectate position (is_live) (2) is it my team (is_player) (3) what are we trying to inject (per-slot target idx)
-//    (4) the actual write (5) what the game really bought. -> written to mods\tfm2_item_tactics\buy_report.txt.
-//    Read-only observation (the injection logic is unchanged). WARNING turn this false for production releases (prevents the diagnostic file write).
-// ═══════════════════════════════════════════════════════════════════════════
-const BUY_REPORT: bool = false; // * OFF in production (restored after verification finished 2026-07-30): buy_report.txt writes + all per-buy
-                                // diagnostics sealed. Injection/identification features are outside this gate = unaffected. (Set true to re-verify.)
-// ** Output overwrite (ghidra-re confirmed): force the resolver's output RDX (the index of the item to buy) to our target -> exactly the item we want gets bought.
-//   Works around the root problem that manipulating the build[] input was skipped by the resolver / ignored by RNG. Write saved[1]=RDX and saved[6]=RAX (=1) and return HANDLED.
-const OUTPUT_OVERRIDE: bool = false; // * keep OFF (07-19): planting targets in build[] was confirmed to actually purchase the designated final items (observed in game by the user).
-//   WARNING record of a 07-19 misjudgement - looking at an 11-line sample that only captured own2, we concluded "0 designated items reached" and tried switching this ON,
-//   when in reality only the late-game (own3+) combines had not been recorded. Never conclude non-reach from a snapshot sample
-//   (-> the DESIGNATED_REACH measurement below decides reach conclusively).
-// * Resolver diagnostic (0.5.1): capture the build len and collection index validity right before the slot012 write -> distinguishes a len gate from an index mismatch.
-const RESOLVER_DIAG: bool = false;
-static RESDIAG_N: AtomicU64 = AtomicU64::new(0);
-static RESDIAG_BUF: Mutex<String> = Mutex::new(String::new());
-static BR_TOTAL: AtomicU64 = AtomicU64::new(0);     // all buy calls
-static BR_LIVE: AtomicU64 = AtomicU64::new(0);      // is_live (buys in a spectated live match)
-static BR_DES: AtomicU64 = AtomicU64::new(0);       // buys by a designated champion (SEL)
-static BR_DES_LIVE: AtomicU64 = AtomicU64::new(0);  // designated && is_live
-static BR_ISPLAYER: AtomicU64 = AtomicU64::new(0);  // is_player (confirmed my team)
-static BR_IDX_OK: AtomicU64 = AtomicU64::new(0);    // obtained the slot target idx
-static BR_IDX_NONE: AtomicU64 = AtomicU64::new(0);  // failed to obtain the slot target idx (mod item scan failed)
-static BR_WROTE: AtomicU64 = AtomicU64::new(0);     // build write actually succeeded
-static BR_LOG: Mutex<Vec<String>> = Mutex::new(Vec::new());   // per-event detail
-// * Comp-test scope / background contamination diagnostics (for verifying the 2026-07-30 second fix). Not reset (cumulative - contamination
-//   happens while advancing the schedule between match-entry edges, so per-match resets would destroy the evidence).
-static BR_CT_LIVE: AtomicU64 = AtomicU64::new(0);    // comp-test bypass fired (= COMPTEST_MATCH && is_live)
-static BR_CT_STICKY: AtomicU64 = AtomicU64::new(0);  // * COMPTEST_MATCH=true but is_live=false -> a **blocked** buy
-                                                    //   = the number of calls that would have been injected into background matches before the fix
-static BR_BG_PLAYER: AtomicU64 = AtomicU64::new(0);  // ** the real contamination metric: injected in a background buy but **not one of my players** (must be 0)
-static BR_BG_MINE: AtomicU64 = AtomicU64::new(0);    // background buy for one of my players = the intended FIXB behaviour (spectate == final convergence). Non-zero is normal
-static BR_SCOPE_B: AtomicU64 = AtomicU64::new(0);    // side decided = blue
-static BR_SCOPE_R: AtomicU64 = AtomicU64::new(0);    // side decided = red
-static BR_SCOPE_NA: AtomicU64 = AtomicU64::new(0);   // comp test but the side could not be decided -> Plain fallback
-static BR_SEEN: Mutex<Vec<String>> = Mutex::new(Vec::new());  // dedup key
-static BR_WAS_INGAME: AtomicBool = AtomicBool::new(false);    // detects the edge into InGame (for resetting on each new match)
-
-// === Verification diagnostic (2026-07-26, concept a): do background and spectated sims see the same lineup and SEL-side (the fix's input) for the same match +
-//   are different matches such as comp test separated by seed? Read-only (injection unchanged). Forward walk of World+0x840 (not a +/-9 scan).
-//   false for release. ===
-const FIXDIAG: bool = false; // * detailed diagnostics (my 5 player ids + the 10 participants' ids/match/spectate-vs-background). Verified 2026-07-27 over 10 matches: 10/10 background my5, spectate my5, convergence OK, divergence 0 -> OFF. Only set true to re-verify.
 // ** fix B (2026-07-27): spectate == final. The is_live early exit was removed -> inject in background matches too, with the team scope = is_my_athlete (+0x810).
 //   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
 //   WARNING false = restores the old behaviour (is_live gate, no background injection). Kept for an immediate rollback on trouble.
 const FIXB: bool = true;
-static FIXDIAG_MAP: Mutex<Option<HashMap<u64, (Option<(u64, i8, u32, u32)>, Option<(u64, i8, u32, u32)>, Option<String>)>>> = Mutex::new(None); // seed -> (background, spectate, name). Each = (lineup_fp, sel, pcount, my_hits)
-static FIXDIAG_CTR: AtomicU64 = AtomicU64::new(0);
-static FIXDIAG_LAST: AtomicU64 = AtomicU64::new(0);
-static FIXDIAG_SEED0: AtomicU64 = AtomicU64::new(0); // buys where provider+O_PROVIDER_SEED (0.5.3 = 0xeaf8) == 0 (a provider with no seed = a spectate-sim candidate?)
-static LIVE_ATH: Mutex<Option<HashMap<u64, (String, bool)>>> = Mutex::new(None); // players buying in a spectated match: athlete+0x810 -> (champ, is_my_athlete)
-static MY_BUY: Mutex<Option<HashMap<u64, (String, bool, bool)>>> = Mutex::new(None); // buys by my players (is_player): id -> (champ, seen_spectated, seen_background). seen_background=true confirms background injection.
-// Forward walk of the World+0x840 participants (count +0x848, stride 0x8d0) -> (lineup_fp, sel_side, pcount). VEH reads only.
-unsafe fn roster_scan(world: usize) -> Option<(u64, i8, u32, u32, String)> {
-    let base = safe_read_u64(world + 0x840)? as usize;
-    let count = safe_read_u64(world + 0x848)?;
-    if base < 0x10000 || count == 0 || count > 32 { return None; }
-    let mut pairs: Vec<(u64, u64)> = Vec::with_capacity(count as usize);
-    let (mut c0, mut c1) = (0u32, 0u32);
-    let mut my_hits = 0u32; // * is_my_athlete (+0x810 membership) hits = number of my team's players
-    let mut names = String::new();
-    for i in 0..count as usize {
-        let a = base + i * ATH_STRIDE;
-        let Some(side) = safe_read_u64(a + 0x820) else { continue };
-        if side > 1 { continue; }
-        let aid = safe_read_u64(a + O_ATHLETE_ID).unwrap_or(0); // +0x810 athlete_id
-        let mine = matches!(is_my_athlete(a), Some(true));
-        if mine { my_hits += 1; }
-        let nptr = safe_read_u64(a + 0x420).unwrap_or(0) as usize;
-        let nlen = (safe_read_u64(a + 0x428).unwrap_or(0) as usize).min(48);
-        if nptr < 0x10000 || nlen == 0 { continue; }
-        let mut nb = [0u8; 48];
-        let mut off = 0usize; let mut ok = true;
-        while off < nlen { let Some(w) = safe_read_u64(nptr + off) else { ok = false; break };
-            let n = (nlen - off).min(8); nb[off..off + n].copy_from_slice(&w.to_le_bytes()[..n]); off += 8; }
-        if !ok { continue; }
-        let mut h = 0xcbf29ce484222325u64;
-        for &b in &nb[..nlen] { h = (h ^ b as u64).wrapping_mul(0x100000001b3); }
-        pairs.push((side, h));
-        if let Ok(cs) = std::str::from_utf8(&nb[..nlen]) {
-            let d = is_champ_designated(cs);
-            if d { if side == 0 { c0 += 1; } else { c1 += 1; } }
-            if names.len() < 800 { names.push_str(&format!("{}[s{}]id={:#x}{}{} ", cs, side, aid, if mine { "✓내팀" } else { "" }, if d { "(D)" } else { "" })); }
-        } else if names.len() < 800 { names.push_str(&format!("<bad>[s{}]id={:#x}{} ", side, aid, if mine { "✓내팀" } else { "" })); }
-    }
-    if pairs.is_empty() { return None; }
-    pairs.sort_unstable();
-    let mut fp = 0x9e3779b97f4a7c15u64;
-    for &(s, hh) in &pairs { fp = (fp ^ ((s << 62) | (hh >> 2))).wrapping_mul(0x100000001b3); }
-    let sel = if c0 > c1 { 0i8 } else if c1 > c0 { 1i8 } else { -1i8 };
-    Some((fp, sel, pairs.len() as u32, my_hits, names))
-}
-fn fixdiag_flush() {
-    if !FIXDIAG { return; }
-    // * Snapshot of players buying in a spectated match (bypasses the roster): athlete+0x810 read directly and matched against MY_ATHLETES.
-    let live_rows: Vec<(u64, String, bool)> = {
-        let lg = LIVE_ATH.lock().unwrap_or_else(|e| e.into_inner());
-        match lg.as_ref() {
-            Some(mm) => { let mut v: Vec<(u64, String, bool)> = mm.iter().map(|(k, (c, b))| (*k, c.clone(), *b)).collect(); v.sort_by_key(|x| x.0); v }
-            None => Vec::new(),
-        }
-    };
-    // * Snapshot for detecting background/spectated buys by my players (targeted recording, no sampling).
-    let my_buy: Vec<(u64, String, bool, bool)> = {
-        let mg = MY_BUY.lock().unwrap_or_else(|e| e.into_inner());
-        match mg.as_ref() {
-            Some(mm) => { let mut v: Vec<(u64, String, bool, bool)> = mm.iter().map(|(k, (c, l, b))| (*k, c.clone(), *l, *b)).collect(); v.sort_by_key(|x| x.0); v }
-            None => Vec::new(),
-        }
-    };
-    let mut out = {
-    let g = FIXDIAG_MAP.lock().unwrap_or_else(|e| e.into_inner());
-    let empty: HashMap<u64, (Option<(u64, i8, u32, u32)>, Option<(u64, i8, u32, u32)>, Option<String>)> = HashMap::new();
-    let m = g.as_ref().unwrap_or(&empty);
-    let mb_bg = my_buy.iter().filter(|x| x.3).count() as u64;
-    let mb_live = my_buy.iter().filter(|x| x.2).count() as u64;
-    let sig = (m.len() as u64) ^ ((live_rows.len() as u64) << 40) ^ ((my_buy.len() as u64) << 20) ^ (mb_bg << 30) ^ (mb_live << 50);
-    if FIXDIAG_LAST.swap(sig, Ordering::Relaxed) == sig { return; } // skip if nothing changed
-    let (mut both, mut fp_ok, mut fp_bad, mut sel_ok) = (0u32, 0u32, 0u32, 0u32);
-    let mut fp_seeds: HashMap<u64, u32> = HashMap::new();
-    for (_seed, (bg, spec, _)) in m.iter() {
-        if let (Some(b), Some(s)) = (*bg, *spec) {
-            both += 1;
-            if b.0 == s.0 { fp_ok += 1; } else { fp_bad += 1; }
-            if b.1 == s.1 { sel_ok += 1; }
-        }
-        if let Some(fp) = bg.map(|x| x.0).or_else(|| spec.map(|x| x.0)) { *fp_seeds.entry(fp).or_insert(0) += 1; }
-    }
-    let same_combo = fp_seeds.values().filter(|&&c| c >= 2).count();
-    let my_ids: Vec<String> = {
-        let p = MY_ATHLETES.load(Ordering::Acquire);
-        if p.is_null() { Vec::new() } else { let mut v: Vec<String> = unsafe { (*p).iter().map(|x| format!("{:#x}", x)).collect() }; v.sort(); v }
-    };
-    let cap_live_seed = LIVE_SEED.load(Ordering::Relaxed);
-    let cap_render = RENDER_PROVIDER.load(Ordering::Relaxed);
-    let cap_provhit = PROV_HIT.load(Ordering::Relaxed);
-    let cap_seedctor = SEEDCTOR_N.load(Ordering::Relaxed);
-    let cap_seedmatch = SEEDCTOR_MATCH_N.load(Ordering::Relaxed);
-    let cap_seed0 = FIXDIAG_SEED0.load(Ordering::Relaxed);
-    let mut out = format!(
-        "# item_tactics fix B 상세진단 (내 선수 id + 참가자 id/매치/관전배경)\n\
-         # ★내 선수 5명 ID (MY_ATHLETES, {}명): [{}]\n\
-         # 관측 seed = {}   배경+관전 둘다 잡힌 seed = {}\n\
-         # ★lineup_fp 배경==관전 일치 = {} / 불일치 = {}\n\
-         # my=배경 is_my_athlete 히트(내 경기=5, AI끼리=0). 이름줄의 ✓내팀 = MY_ATHLETES 매치.\n\
-         # 조합 같은 다른 seed 그룹 = {}개\n\
-         # ★관전캡처 상태: LIVE_SEED={:#x} RENDER_PROVIDER={:#x} is_live발화(PROV_HIT)={} | seedctor총={} 렌더캡처={} | seed_r9==0 buy수={}\n\
-         #   (LIVE_SEED·RENDER_PROVIDER 둘다 0 = 관전훅 미발화 → is_live 항상 false. seed0 buy>0 = seed없는 provider 존재)\n\n\
-         [seed(또는 0x8..=provider)]  배경(my)  관전(my)  판정\n  └ 참가자(이름[side]id=..✓내팀(D))\n",
-        my_ids.len(), my_ids.join(", "), m.len(), both, fp_ok, fp_bad, same_combo,
-        cap_live_seed, cap_render, cap_provhit, cap_seedctor, cap_seedmatch, cap_seed0);
-    // * Sort as background+spectate pairs (both) -> rows containing my players -> the rest, and print only the top 30 lines (so the important rows are not cut).
-    let mut rows: Vec<_> = m.iter().filter(|(_, v)| v.2.is_some()).collect();
-    rows.sort_by_key(|(_, v)| {
-        let paired = v.0.is_some() && v.1.is_some();
-        let my = v.0.as_ref().map(|b| b.3).unwrap_or(0).max(v.1.as_ref().map(|s| s.3).unwrap_or(0));
-        (if paired { 0u8 } else { 1u8 }, std::cmp::Reverse(my))
-    });
-    let mut n = 0;
-    for (seed, v) in rows {
-        if n >= 30 { break; }
-        let (bg, spec, names) = (&v.0, &v.1, &v.2);
-        let bgs = bg.as_ref().map(|b| format!("배경(my={})", b.3)).unwrap_or_else(|| "배경(미기록)".into());
-        let sps = spec.as_ref().map(|s| format!("관전(my={})", s.3)).unwrap_or_else(|| "관전(미기록)".into());
-        let conv = match (bg, spec) { (Some(b), Some(s)) => if b.0 == s.0 { "✅수렴" } else { "❌발산" }, _ => "(한쪽만)" };
-        out.push_str(&format!("{:#018x}  {} {}  {}\n  └ {}\n", seed, bgs, sps, conv, names.as_deref().unwrap_or("")));
-        n += 1;
-    }
-    out
-    };
-    // * Players who actually bought items in the spectated match - bypasses the roster scan, reading the buyer's athlete+0x810 directly.
-    out.push_str(&format!("\n[관전 buy 선수 {}명 — roster 우회(구매자 athlete+0x810 직독)]\n\
-        #  ✓매치 = 그 선수 id가 MY_ATHLETES(내 5명)에 있음 → athlete_id 조인이 관전 sim에서 유효.\n", live_rows.len()));
-    for (id, champ, mine) in &live_rows {
-        out.push_str(&format!("  {:>18}  id={:#x}{}\n", champ, id, if *mine { "   ✓MY_ATHLETES매치" } else { "   ✗불일치" }));
-    }
-    // ** Final verdict section: were my players (is_player) detected buying in background and in spectated sims respectively?
-    //   background OK = injection reached my players in the background sim too = spectate == final. background X = no background injection (a problem).
-    out.push_str(&format!("\n[★내 선수 buy 배경/관전 감지 {}명 — 표적기록(샘플링X)]\n\
-        #  배경✓ 이면 그 선수가 배경 sim에서도 is_my_athlete로 잡혀 주입됨(=fix 작동). 관전✓=화면경기서 잡힘.\n", my_buy.len()));
-    for (id, champ, live, bg) in &my_buy {
-        out.push_str(&format!("  {:>18}  id={:#x}   관전{}  배경{}\n", champ, id,
-            if *live { "✓" } else { "·" }, if *bg { "✓" } else { "·" }));
-    }
-    if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join("fixdiag.txt"), out); }
-}
 unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
     // * Hot path (parallel rayon workers) - global atomic counters would make the measurement itself expensive through cache-line contention,
     //   so thread_local accumulation (rec_tl) is used. T_BUY_ALL = the whole detour (including catch_unwind),
     //   T_BUY_EARLY = the background-sim early exit portion (contained in ALL, so it is double counted - subtract when interpreting).
-    let __bt = perf::tsc();
     let r = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| -> u64 {
         if saved.is_null() { return 0; } // * mode=3 passes through here too (slot 0/1/2 designation injection). Only the 4th-item logic is gated on mode=4 below.
         let athlete = *saved.add(2) as usize; // r8
@@ -4639,31 +3740,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let seed_match_r9 = lseed != 0 && seed_r9 == lseed;
         let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
         let is_live = seed_match_r9 || (rp != 0 && provider_now != 0 && provider_now == rp);
-        // * Verification diagnostic (concept a): record lineup and SEL for both background and spectated sims before the is_live gate. Background is sampled 1/128 (to keep the hot path cheap); spectated is always recorded.
-        if FIXDIAG && provider_now >= 0x10000 {
-            if seed_r9 == 0 { FIXDIAG_SEED0.fetch_add(1, Ordering::Relaxed); }
-            // * Force recording of spectate-sim candidates (seed_r9 == 0) too. Key = seed_r9 when present, otherwise the provider pointer (with the top bit marked).
-            let key = if seed_r9 != 0 { seed_r9 } else { (provider_now as u64) | 0x8000_0000_0000_0000 };
-            // * Background sims where one of my players buys are always fully roster-scanned and recorded (bypassing the 1/128) -> my match's background pre-sim is reliably captured as a background (my=N) row.
-            let sample = is_live || seed_r9 == 0 || matches!(is_my_athlete(athlete), Some(true)) || (FIXDIAG_CTR.fetch_add(1, Ordering::Relaxed) & 0x7f) == 0;
-            if sample {
-                let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                    if let Some((fp, sel, pc, my, names)) = roster_scan(provider_now as usize) {
-                        let mut g = FIXDIAG_MAP.lock().unwrap_or_else(|e| e.into_inner());
-                        let mm = g.get_or_insert_with(HashMap::new);
-                        if mm.len() < 4096 {
-                            let e = mm.entry(key).or_insert((None, None, None));
-                            if is_live { e.1 = Some((fp, sel, pc, my)); } else { e.0 = Some((fp, sel, pc, my)); }
-                            if e.2.is_none() { e.2 = Some(names); }
-                        }
-                    }
-                }));
-            }
-        }
         if !is_live && !FIXB {
             // (FIXB=false, old behaviour) background league sim = passthrough with no injection.
-            if BUY_REPORT { BR_TOTAL.fetch_add(1, Ordering::Relaxed); }
-            perf::rec_tl(perf::T_BUY_EARLY, __bt);
             return 0;
         }
         // * fix B: with FIXB=true, background sims are injected too (team scope = is_my_athlete). Only the is_live-specific counters stay gated.
@@ -4673,8 +3751,6 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   This restores the background early exit that 07-22 removed, in a way compatible with the fix (~94% of background buys exit here). None (roster unavailable) =
         //   no injection = early exit (identical to the old behaviour). Spectated matches (is_live) always pass through (they need the by_scene decision).
         if FIXB && !is_live && !matches!(is_my_athlete(athlete), Some(true)) {
-            if BUY_REPORT { BR_TOTAL.fetch_add(1, Ordering::Relaxed); }
-            perf::rec_tl(perf::T_BUY_EARLY, __bt);
             return 0;
         }
         // -- From here on, only spectated-match buys (a small minority) and background buys by my 5 players get through --
@@ -4689,38 +3765,6 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
             if owned >= 4 { BE_CNT[7].fetch_add(1, Ordering::Relaxed); }
             let mx = BE_MAX_OWNED.load(Ordering::Relaxed);
             if owned > mx && owned <= 16 { BE_MAX_OWNED.store(owned, Ordering::Relaxed); }
-        }
-        if LOG_ENABLED && owned <= 8 { let p = MAX_OWNED4.load(Ordering::Relaxed); if owned > p { MAX_OWNED4.store(owned, Ordering::Relaxed); } }
-        // * Diagnostic: trace the tier progression of the 4th (owned[3]) - sequential (t0->t4) or a direct final-item purchase? (Production: behind the LOG_ENABLED gate)
-        if LOG_ENABLED && owned >= 3 && owned <= 8 {
-            let cptr0 = rd_u64(athlete + 0x420) as usize; let clen0 = rd_u64(athlete + 0x428) as usize; // 0.5.0 champ name (was 0x398/0x3a0, derived +0x88)
-            if cptr0 >= 0x10000 && clen0 > 0 && clen0 <= 48 && readable(cptr0, clen0) {
-                let cn = String::from_utf8_lossy(std::slice::from_raw_parts(cptr0 as *const u8, clen0)).into_owned();
-                let optr = rd_u64(athlete + 0x450) as usize; // 0.5.0 item slot array (was 0x3c8)
-                // tier of owned[3] (the 4th), if present
-                let mut t3 = -1i64;
-                if owned >= 4 && optr >= 0x10000 && readable(optr, 4 * 0x10) {
-                    let ep3 = rd_u64(optr + 3 * 0x10) as usize;
-                    if ep3 >= 0x10000 && readable(ep3, 0x190) { t3 = (rd_u64(ep3 + 0x188) & 0xffffffff) as i64; }
-                }
-                let key = format!("{}:o{}:t{}", cn, owned, t3);
-                let mut cl4 = CHAMP_AT4.lock().unwrap_or_else(|e| e.into_inner());
-                if cl4.len() < 80 && !cl4.iter().any(|c| c == &key) {
-                    cl4.push(key); drop(cl4);
-                    let mut items = String::new();
-                    if optr >= 0x10000 && readable(optr, (owned as usize) * 0x10) {
-                        for i in 0..(owned as usize).min(6) {
-                            let ep = rd_u64(optr + i * 0x10) as usize;
-                            if ep >= 0x10000 && readable(ep, 0x190) {
-                                let tier = rd_u64(ep + 0x188) & 0xffffffff;
-                                let price = rd_u64(ep + 0x180) & 0xffffffff;
-                                items.push_str(&format!("[{}:t{}/${}] ", i, tier, price));
-                            } else { items.push_str(&format!("[{}:bad] ", i)); }
-                        }
-                    }
-                    append_log("4items_buy4.txt", &format!("[owned={} 4th_tier={}] champ={} items={}", owned, t3, cn, items));
-                }
-            }
         }
         // * Only handle target (designated) champions - everything else passes through (build untouched).
         let cptr = rd_u64(athlete + 0x420) as usize; // 0.5.0 champ name ptr (was 0x398, derived +0x88)
@@ -4780,163 +3824,6 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   This removes both "the same champion on both sides merges into one designation" and "comp-test designations
         //   leaking into normal matches" at the same time (per-side keys + scoped lookup).
         let scope = if is_comptest_live { ct_scope_for(champ, side) } else { Scope::Plain };
-        if BUY_REPORT {
-            if is_comptest_live {
-                BR_CT_LIVE.fetch_add(1, Ordering::Relaxed);
-                match scope {
-                    Scope::CtBlue => { BR_SCOPE_B.fetch_add(1, Ordering::Relaxed); }
-                    Scope::CtRed  => { BR_SCOPE_R.fetch_add(1, Ordering::Relaxed); }
-                    Scope::Plain  => { BR_SCOPE_NA.fetch_add(1, Ordering::Relaxed); }
-                }
-            } else if COMPTEST_MATCH.load(Ordering::Relaxed) {
-                BR_CT_STICKY.fetch_add(1, Ordering::Relaxed); // * calls that would have been injected into background matches before the fix
-            }
-            // * Metric correction (2026-07-30): the old `is_player && !is_live` also counted **FIXB's intended background injection**
-            //   (my players getting designations in background league matches = spectate == final convergence), reaching 1841,
-            //   and that was misreported as contamination. => split into **a condition that only increments on a real defect**.
-            if is_player && !is_live {
-                if matches!(is_my_athlete(athlete), Some(true)) {
-                    BR_BG_MINE.fetch_add(1, Ordering::Relaxed);    // normal (FIXB intent)
-                } else {
-                    BR_BG_PLAYER.fetch_add(1, Ordering::Relaxed);  // * defect: injected in the background for someone who is not my player
-                }
-            }
-        }
-        // * fixdiag: log spectated-match buyers directly (bypassing roster_scan - a spectate provider's +0x840 is not the roster).
-        //   Check on the spot whether the buyer's athlete+0x810 matches MY_ATHLETES = does the athlete_id join work while spectating?
-        if FIXDIAG && is_live {
-            let aid = safe_read_u64(athlete + O_ATHLETE_ID).unwrap_or(0);
-            let mine = matches!(is_my_athlete(athlete), Some(true));
-            let mut lg = LIVE_ATH.lock().unwrap_or_else(|e| e.into_inner());
-            let mm = lg.get_or_insert_with(HashMap::new);
-            if mm.len() < 64 { mm.entry(aid).or_insert_with(|| (champ.to_string(), mine)); }
-        }
-        // ** fixdiag target: every time one of my players (is_player) buys, record the background/spectate detection flags (no sampling).
-        //   seen_background = true means my player was recognized by is_my_athlete and injected in the background sim too = spectate == final holds.
-        if FIXDIAG && is_player {
-            let aid = safe_read_u64(athlete + O_ATHLETE_ID).unwrap_or(0);
-            let mut mg = MY_BUY.lock().unwrap_or_else(|e| e.into_inner());
-            let mm = mg.get_or_insert_with(HashMap::new);
-            if mm.len() < 32 {
-                let e = mm.entry(aid).or_insert_with(|| (champ.to_string(), false, false));
-                if is_live { e.1 = true; } else { e.2 = true; }
-            }
-        }
-        // === Per-stage buy recording (BUY_REPORT) - read-only, injection logic unchanged ===
-        if BUY_REPORT {
-            BR_TOTAL.fetch_add(1, Ordering::Relaxed);
-            if is_live { BR_LIVE.fetch_add(1, Ordering::Relaxed); }
-            if champ_designated {
-                BR_DES.fetch_add(1, Ordering::Relaxed);
-                if is_live { BR_DES_LIVE.fetch_add(1, Ordering::Relaxed); }
-                if is_player { BR_ISPLAYER.fetch_add(1, Ordering::Relaxed); }
-                // ** Designated-item reach measurement (cumulative, outside the dedupe - no owned limit): catches late-game combines too.
-                //   Walk the owned array and register in REACH_HIT once if the designated item key is actually present.
-                //   (Snapshot lines only captured up to own2 and missed late-game reach, which caused the false "not reached" verdicts.)
-                if is_player && owned > 0 && owned <= 6 {
-                    let optr = rd_u64(athlete + 0x450) as usize;
-                    if optr >= 0x10000 && readable(optr, (owned as usize) * 0x10) {
-                        for si in 0u8..3 {
-                            let Some(want) = slotN_item_key(scope, champ, si) else { continue };
-                            let key = format!("{}:s{}:{}", champ, si, want);
-                            { let mut w = REACH_WANT.lock().unwrap_or_else(|e| e.into_inner());
-                              if w.len() < 64 && !w.iter().any(|k| k == &key) { w.push(key.clone()); } }
-                            { let h = REACH_HIT.lock().unwrap_or_else(|e| e.into_inner());
-                              if h.iter().any(|k| k == &key) { continue; } }
-                            for i in 0..(owned as usize) {
-                                let ep = rd_u64(optr + i * 0x10) as usize;
-                                if ep < 0x10000 || !readable(ep, 0x20) { continue; }
-                                let chars = rd_u64(ep + 8) as usize; let nlen = rd_u64(ep + 0x10) as usize;
-                                if chars >= 0x10000 && nlen > 0 && nlen <= 64 && readable(chars, nlen) {
-                                    let nm = std::slice::from_raw_parts(chars as *const u8, nlen);
-                                    if nm == want.as_bytes() {
-                                        let mut h = REACH_HIT.lock().unwrap_or_else(|e| e.into_inner());
-                                        if h.len() < 64 && !h.iter().any(|k| k == &key) { h.push(key.clone()); }
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                // Per-event detail: once per (champ, side, owned, player) combination, and only owned<=3 (the early buying window).
-                //   player is part of the key -> both live (my team) and background sims are captured.
-                if owned <= 3 {
-                    let key = format!("{}|s{}|o{}|p{}", champ, side, owned, is_player);
-                    let mut seen = BR_SEEN.lock().unwrap_or_else(|e| e.into_inner());
-                    if seen.len() < 500 && !seen.iter().any(|k| k == &key) {
-                        seen.push(key); drop(seen);
-                        let ctx012 = rd_u64(rsp_entry + 0x30) as usize;
-                        // Compute each slot's injection target for diagnostics (the same function as the real write path = what we intend to inject)
-                        let mut slots_s = String::new();
-                        for si in 0u8..3 {
-                            if owned > si as u64 { slots_s.push_str(&format!("s{}=이미삼 ", si)); continue; }
-                            if let Some(vid) = slotN_vanilla_id(scope, champ, si) {
-                                slots_s.push_str(&format!("s{}=바닐라#{} ", si, vid));
-                                BR_IDX_OK.fetch_add(1, Ordering::Relaxed);
-                            } else if let Some(mk) = slotN_item_key(scope, champ, si) {
-                                if ctx012 >= 0x10000 {
-                                    match scan_idx_cached(ctx012, mk.as_bytes()) {
-                                        Some(t) => { slots_s.push_str(&format!("s{}=모드템'{}'#{} ", si, mk, t)); BR_IDX_OK.fetch_add(1, Ordering::Relaxed); }
-                                        None => { slots_s.push_str(&format!("s{}=모드템'{}'*스캔실패 ", si, mk)); BR_IDX_NONE.fetch_add(1, Ordering::Relaxed); }
-                                    }
-                                } else { slots_s.push_str(&format!("s{}=모드템'{}'(ctx무효) ", si, mk)); }
-                            } else {
-                                slots_s.push_str(&format!("s{}=지정없음 ", si));
-                            }
-                        }
-                        // What the game actually bought (the athlete+0x450 array): compare against what we injected
-                        let optr = rd_u64(athlete + 0x450) as usize;
-                        let mut bought = String::new();
-                        if owned > 0 && owned <= 6 && optr >= 0x10000 && readable(optr, (owned as usize) * 0x10) {
-                            for i in 0..(owned as usize) {
-                                let ep = rd_u64(optr + i * 0x10) as usize;
-                                if ep >= 0x10000 && readable(ep, 0x190) {
-                                    let tier = rd_u64(ep + 0x188) & 0xffffffff;
-                                    // * Item name (key String@ep+0x0: chars@+8, len@+0x10) - to confirm the target was reached
-                                    let chars = rd_u64(ep + 8) as usize; let nlen = rd_u64(ep + 0x10) as usize;
-                                    let nm = if chars >= 0x10000 && nlen > 0 && nlen <= 48 && readable(chars, nlen) {
-                                        String::from_utf8_lossy(std::slice::from_raw_parts(chars as *const u8, nlen)).into_owned()
-                                    } else { "?".into() };
-                                    bought.push_str(&format!("[{} t{}]", nm, tier));
-                                }
-                            }
-                        }
-                        let scstr = match scene_ps { Some(sp) => format!("{}", sp), None => "미판정".into() };
-                        let sctag = match scope { Scope::CtBlue => "CT블루", Scope::CtRed => "CT레드", Scope::Plain => "일반" };
-                        // * Include aid (athlete+0x810): makes the basis of the is_player decision (MY_ATHLETES membership) checkable.
-                        let aid_s = match safe_read_u64(athlete + O_ATHLETE_ID) { Some(v) => v.to_string(), None => "읽기실패".into() };
-                        let line = format!("{:>16} s{} own{} aid={} | live={} player={} scope={} scene_side={} | 목표: {}| 실제산것: {}",
-                            champ, side, owned, aid_s, is_live, is_player, sctag, scstr,
-                            slots_s, if bought.is_empty() { "(없음)" } else { &bought });
-                        let mut log = BR_LOG.lock().unwrap_or_else(|e| e.into_inner());
-                        if log.len() < 500 { log.push(line); }
-                    }
-                }
-            }
-        }
-        // ** Output overwrite (ghidra-re confirmed, 0.5.1): if the slot this buy will fill (= owned) is designated, force the resolver's output RDX to the target index.
-        //   saved[1] = the RDX slot = target, saved[6] = the RAX slot = 1 -> the trampoline's HANDLED path returns rdx=target, rax=1 -> the caller buys arr[target] directly.
-        //   Insufficient gold = the caller silently no-ops (retries), no crash. Works around the root problem of the resolver ignoring build manipulation.
-        if OUTPUT_OVERRIDE && is_player && owned < 4 {
-            let si = owned as u8;
-            let ctxo = rd_u64(rsp_entry + 0x30) as usize;
-            let tgt: Option<u64> = if let Some(vid) = slotN_vanilla_id(scope, champ, si) {
-                Some(vid) // vanilla final = the collection index (id == index)
-            } else if let Some(mk) = slotN_item_key(scope, champ, si) {
-                if ctxo >= 0x10000 { scan_idx_cached(ctxo, mk.as_bytes()) } else { None }
-            } else { None };
-            if let Some(t) = tgt {
-                let coll = if ctxo >= 0x10000 && readable(ctxo, 0x38) { rd_u64(ctxo + 0x30) as usize } else { 0 };
-                let cnt = if coll >= 0x10000 && readable(coll, 0x18) { rd_u64(coll + 0x10) } else { 0 };
-                if cnt > 0 && t < cnt { // range check (prevents the caller's range panic at 0x2238429)
-                    *saved.add(1) = t;  // RDX = target collection index
-                    *saved.add(6) = 1;  // RAX = 1 (passes the caller's leaf gate)
-                    if BUY_REPORT { BR_WROTE.fetch_add(1, Ordering::Relaxed); }
-                    return 1;           // HANDLED -> the trampoline moves saved[1]->rdx, saved[6]->rax, ret
-                }
-            }
-        }
         // * Slot 0/1/2 designations (mod or vanilla) -> set the build Vec target to that catalog index (the live buy path, same as slot 3).
         //   Only for slots not yet bought (owned <= si) -> the game builds up naturally towards that index. Vanilla = id, mod items = name scan (with recipe validation).
         if SLOT012_INJECT_ENABLED && is_player {
@@ -4957,47 +3844,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         //   were rewrites of the same value on the same athlete and slot -> a value comparison cut it to about 10 (removing the hot-path cost).
                         if rd_u64(bptr + (si as usize) * 8) == t { continue; }
                         if writable(bptr + (si as usize) * 8, 8) {
-                            // * Resolver diagnostic: right before the write, capture build len, collection count, index t validity and coll[t]'s real name (24 samples).
-                            if RESOLVER_DIAG {
-                                let n = RESDIAG_N.fetch_add(1, Ordering::Relaxed);
-                                if n < 24 {
-                                    let cap = rd_u64(athlete + 0x490);
-                                    let coll = rd_u64(ctx012 + 0x30) as usize;
-                                    let ccount = if readable(coll, 0x18) { rd_u64(coll + 0x10) } else { u64::MAX };
-                                    let nm = catalog_name_at(ctx012, t).unwrap_or_else(|| "?".into());
-                                    let line = format!("{} s{} owned={} blen={} cap={} t={} count={} t<count={} coll[t]='{}'\n",
-                                        champ, si, owned, blen, cap, t, ccount, t < ccount, nm);
-                                    { let mut b = RESDIAG_BUF.lock().unwrap_or_else(|e| e.into_inner()); b.push_str(&line);
-                                      if let Some(d) = mod_dir() { let _ = fs::write(d.join("4items_resolver.txt"), b.clone()); } }
-                                }
-                            }
                             wr_u64(bptr + (si as usize) * 8, t);
-                            D_WROTE.fetch_add(1, Ordering::Relaxed); // * diagnostic: an actual write happened
                             BUY_WROTE_FIRE.fetch_add(1, Ordering::Relaxed);
-                            if BUY_REPORT { BR_WROTE.fetch_add(1, Ordering::Relaxed); }
-                            if LOG_ENABLED {
-                                let key = format!("{}:s{}={}", champ, si, t);
-                                let mut cl = SLOT012_LOG.lock().unwrap_or_else(|e| e.into_inner());
-                                if cl.len() < 100 && !cl.iter().any(|c| c == &key) { cl.push(key); drop(cl);
-                                    append_log("4items_buy4.txt", &format!("[slot012] {} owned={} → build[{}]={}", champ, owned, si, t)); }
-                            }
                         }
                     }
                 }
-            }
-        }
-        // Diagnostic: state of champions that reached owned==3. (Production: behind the LOG_ENABLED gate)
-        if LOG_ENABLED && owned == 3 {
-            let mut cl = CHAMP_AT3.lock().unwrap_or_else(|e| e.into_inner());
-            if cl.len() < 40 && !cl.iter().any(|c| c.as_str() == champ) {
-                let bl = rd_u64(athlete + 0x4a0); // 0.5.0 build len (was 0x418)
-                let manual = slot3_item_key(scope, champ).is_some();
-                let bp = rd_u64(athlete + 0x498) as usize; // 0.5.0 build ptr (was 0x410)
-                let (mut b0, mut b1, mut b2, mut b3) = (0u64, 0u64, 0u64, 0u64);
-                if bp >= 0x10000 && readable(bp, 32) { b0 = rd_u64(bp); b1 = rd_u64(bp + 8); b2 = rd_u64(bp + 16); b3 = rd_u64(bp + 24); }
-                let mx = MAX_OWNED4.load(Ordering::Relaxed);
-                cl.push(champ.to_string()); drop(cl);
-                append_log("4items_buy4.txt", &format!("[owned==3] champ={} build_len={} build=[{},{},{},{}] manual={} MAX_OWNED={}", champ, bl, b0, b1, b2, b3, manual, mx));
             }
         }
         // ** Purchase order diagnostic (2026-07-30, investigating "it buys the 4th first"): record a snapshot of my players' build[] arrays
@@ -5074,7 +3925,6 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   * Attack-damage bias fix: the implementation always scanned from [0] = attack damage (id 4) -> when the network failed, every enemy 4th was attack damage.
                 //   -> the starting point is now spread by an FNV hash of the champion name (deterministic per champion = replay safe, and categories are distributed evenly).
                 let t4 = picked.or_else(|| {
-                    AUTO4_CNT[5].fetch_add(1, Ordering::Relaxed); // diagnostic: how often the network returned None -> vanilla fallback fired
                     let mut h: u64 = 0xcbf29ce484222325;
                     for &b in champ.as_bytes() { h = (h ^ b as u64).wrapping_mul(0x100000001b3); }
                     let start = (h % 6) as usize;
@@ -5090,12 +3940,6 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         wr_u64(athlete + 0x498, np as u64); wr_u64(athlete + 0x490, 4); wr_u64(athlete + 0x4a0, 4); // 0.5.0 build ptr/cap/len
                         build_len = 4;
                         if BUILD_EXT_DIAG { BE_CNT[6].fetch_add(1, Ordering::Relaxed); BE_LAST_T.store(t, Ordering::Relaxed); } // * success: build[3] written
-                        if LOG_ENABLED {
-                            let src = if manual.is_some() && picked.is_some() { "manual" } else if picked.is_some() { "neural" } else { "vanilla" };
-                            let mut cl = BUILD3_AT.lock().unwrap_or_else(|e| e.into_inner());
-                            if cl.len() < 60 && !cl.iter().any(|c| c.as_str() == champ) { cl.push(champ.to_string()); drop(cl);
-                                append_log("4items_buy4.txt", &format!("[build3] champ={} target_idx={} src={} build012=[{},{},{}]", champ, t, src, b0, b1, b2)); }
-                        }
                     }
                 }
             }
@@ -5151,14 +3995,13 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
             i += 1;
         }
         if !BUY4_LOGGED.swap(true, Ordering::Relaxed) {
-            write_log("4items_buy4.txt", &format!("[4th] champ={} want={} coll_len={} found={:?}\n  names: {}\n", champ, want_key, len, found, names_log));
+            
         }
         let Some(rdx) = found else { return 0; };
         *saved.add(1) = rdx;   // rdx = item index
         *saved.add(6) = 1;     // rax = 1 (success)
         1
     }));
-    perf::rec_tl(perf::T_BUY_ALL, __bt);
     r.unwrap_or(0)
 }
 
@@ -5352,7 +4195,7 @@ unsafe fn patch_gate3() -> String {
     *(jbe as *mut u8) = 0xEB;
     VirtualProtect(jbe, 1, old, &mut old);
     FlushInstructionCache(GetCurrentProcess(), jbe, 1);
-    "gate3: patched jbe->jmp (owned>2 게이트 무력화)".into()
+    "gate3: patched jbe->jmp (owned>2 gate neutralised)".into()
 }
 
 // * AI auto-recommended 4th: raise the beam depth limit literal 2 -> 3 (0,1,2,3 = 4 iterations -> beam computes a 4-item build).
@@ -5431,13 +4274,11 @@ const SLOT_BOUNDS: [(usize, [u8; 4]); 4] = [
     (0xa64c16, [0x48,0x83,0xfb,0x30]), // 0.5.3 red (fullscreen)  - 0.5.2 was 0x4e5480 cmp r14
 ];
 unsafe extern "C" fn fill_slots(buf: *mut u64, len: u64) -> *mut u64 {
-    let __ft = perf::tsc();
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
         if buf.is_null() { return; }
         let slots: &[&[u8]; 4] = if len == 11 { &BLUE_SLOTS } else if len == 10 { &RED_SLOTS } else { return; };
         for i in 0..4 { *buf.add(i * 2) = slots[i].as_ptr() as u64; *buf.add(i * 2 + 1) = slots[i].len() as u64; }
     }));
-    perf::rec(perf::S_FILLSLOTS, __ft);
     buf
 }
 unsafe fn install_helper_replace(rva: usize, cap_fn: usize) -> Result<usize, &'static str> {
@@ -5580,7 +4421,7 @@ unsafe fn patch_slot_ui_inner() -> String {
     // -- (1) Pre-validate every site (all-or-nothing) ------------------------------
     // frame imm32
     if !sig_at(base + UI_MEGA_PROLOGUE_IMM, &UI_FRAME_OLD.to_le_bytes()) {
-        return "slot_ui: ABORT(frame imm mismatch) — 미적용".into();
+        return "slot_ui: ABORT(frame imm mismatch) - not applied".into();
     }
     // the 13 references to the 5th argument: `48 8b ?? f0 0f 01 00`
     for &r in UI_ARG5_SITES.iter() {
@@ -5588,24 +4429,24 @@ unsafe fn patch_slot_ui_inner() -> String {
         // REX = 0x48 or 0x4c (targeting r8/r11), opcode 0x8b, disp32 @ +3
         let rex_ok = readable(a, 2) && matches!(*(a as *const u8), 0x48 | 0x4c) && *((a + 1) as *const u8) == 0x8b;
         if !(rex_ok && sig_at(a + 3, &UI_ARG5_OLD.to_le_bytes())) {
-            return format!("slot_ui: ABORT(arg5 {:#x} mismatch) — 미적용", r);
+            return format!("slot_ui: ABORT(arg5 {:#x} mismatch) - not applied", r);
         }
     }
     // the 8 loop-indexing sites: `48 8b <modrm> 1d <disp32>` (rbp+rbx indexing), disp32 @ +4
     for &(r, d) in UI_LOOP_SITES.iter() {
         let a = base + r;
         if !(sig_at(a, &[0x48, 0x8b]) && sig_at(a + 3, &[0x1d]) && sig_at(a + 4, &d.to_le_bytes())) {
-            return format!("slot_ui: ABORT(loop {:#x} mismatch) — 미적용", r);
+            return format!("slot_ui: ABORT(loop {:#x} mismatch) - not applied", r);
         }
     }
     // the 4 loop bounds
     for (r, sig) in SLOT_BOUNDS.iter() {
-        if !sig_at(base + r, sig) { return format!("slot_ui: ABORT(bound {:#x} mismatch) — 미적용", r); }
+        if !sig_at(base + r, sig) { return format!("slot_ui: ABORT(bound {:#x} mismatch) - not applied", r); }
     }
     // the 4 init blocks: is the first instruction `lea rax,[rip+..]` (48 8d 05)?
     for &(r, _l, _b) in UI_INIT_BLOCKS.iter() {
         if !sig_at(base + r, &[0x48, 0x8d, 0x05]) {
-            return format!("slot_ui: ABORT(init {:#x} mismatch) — 미적용", r);
+            return format!("slot_ui: ABORT(init {:#x} mismatch) - not applied", r);
         }
     }
     // Prepare the 4 stubs (abort if any fails - the game's code is still untouched at this point)
@@ -5613,7 +4454,7 @@ unsafe fn patch_slot_ui_inner() -> String {
     for (i, &(r, l, blue)) in UI_INIT_BLOCKS.iter().enumerate() {
         match build_slot_stub(blue, base + r + l) {
             Some(m) => { stubs[i] = m; SLOTUI_STUBS[i].store(m, Ordering::Relaxed); }
-            None => return "slot_ui: ABORT(stub alloc) — 미적용".into(),
+            None => return "slot_ui: ABORT(stub alloc) - not applied".into(),
         }
     }
 
@@ -5642,7 +4483,7 @@ unsafe fn patch_slot_ui_inner() -> String {
     }
     // * The frame extension goes **last** (if it went first, every old-array reference would be wrong from that instant)
     let frame_ok = write_bytes(base + UI_MEGA_PROLOGUE_IMM, &UI_FRAME_NEW.to_le_bytes());
-    format!("slot_ui: 수술 적용 {}/84 사이트 + 프레임확장 {} (base {:#x}→{:#x})",
+    format!("slot_ui: surgery applied to {}/84 sites + frame extension {} (base {:#x} -> {:#x})",
             done, if frame_ok { "OK" } else { "FAIL★" }, UI_SLOT_BASE_OLD, UI_SLOT_BASE_NEW)
 }
 
@@ -5669,9 +4510,9 @@ fn check_game_version() -> bool {
         Some(m) => {
             let sz = m.len();
             if sz == GAME_EXE_SIZE_053 { true }
-            else { why = format!("exe 크기 불일치: {}B (0.5.3 = {}B)", sz, GAME_EXE_SIZE_053); false }
+            else { why = format!("exe size mismatch: {}B (0.5.3 = {}B)", sz, GAME_EXE_SIZE_053); false }
         }
-        None => { why = "exe 경로/메타데이터 실패".into(); false }
+        None => { why = "could not read the exe path or its metadata".into(); false }
     };
     // (2) entry prologues of the key hooks (caught here even if the size matches but the code differs)
     //  WARNING WARNING **a chain-hooking exception is mandatory** (real incident 2026-07-30): for functions like launcher it is **normal** for
@@ -5694,7 +4535,7 @@ fn check_game_version() -> bool {
             for (nm, rva, want) in checks.iter() {
                 let a = base + rva;
                 if !unsafe { readable(a, want.len().max(12)) } {
-                    why = format!("{} 진입부 읽기 실패 @{:#x}", nm, rva); ok = false; break;
+                    why = format!("{}: could not read the entry point @{:#x}", nm, rva); ok = false; break;
                 }
                 // An already-hooked entry (movabs rax,imm64 ; jmp rax) = normal (ours or another mod's) -> check passes
                 let hooked = unsafe {
@@ -5703,15 +4544,15 @@ fn check_game_version() -> bool {
                 };
                 if hooked { continue; }
                 let hit = (0..want.len()).all(|i| unsafe { *((a + i) as *const u8) } == want[i]);
-                if !hit { why = format!("{} 프롤로그 불일치 @{:#x}", nm, rva); ok = false; break; }
+                if !hit { why = format!("{}: prologue mismatch @{:#x}", nm, rva); ok = false; break; }
             }
             ok
         }
     } else { false };
     let ok = size_ok && proto_ok;
     *VERSION_MSG.lock().unwrap_or_else(|e| e.into_inner()) =
-        if ok { "0.5.3 확인 — 정상 활성".to_string() }
-        else { format!("★버전 불일치 → 모드 전체 비활성 ({})", why) };
+        if ok { "0.5.3 confirmed - active".to_string() }
+        else { format!("version mismatch -> this half is fully disabled ({})", why) };
     VERSION_OK.store(ok, Ordering::Relaxed);
     ok
 }
@@ -5762,8 +4603,8 @@ fn tactics_init() -> bool {
             let _ = fs::write(d.join("version_gate.txt"),
                 format!("{}
 
-이 모드는 게임 0.5.3 전용입니다.
-게임이 업데이트되면 모드 업데이트를 기다려 주세요.
+This half of the mod (the 4th item slot) requires game version 0.5.3 exactly.
+If the game has updated, please wait for a mod update. The rest of the mod is unaffected.
 ", msg)); }
         // Register only, attaching **not a single** extension, hook or patch = completely disabled.
         return false;
@@ -5808,9 +4649,5 @@ fn tactics_init() -> bool {
         let _ = fs::write(d.join("4items_patches.txt"), &patch_report);
     }
     // Set the log path for uinj (item3/slot3 UI injection). (MODE4/IN_MATCH_UI come from load_mode and the defaults.)
-    if let Some(d) = mod_dir() {
-        uinj::set_log(d.join("4items_uinj.txt").to_string_lossy().into_owned());
-        uinj::DBG.store(LOG_ENABLED, Ordering::Relaxed);
-    }
     true
 }

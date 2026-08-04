@@ -38,6 +38,13 @@ const PATH_STRAT: &[u8] = b"asset/base/ui/layout/strategy";
 const PATH_TRAIN: &[u8] = b"asset/base/ui/layout/training"; // * comp test (an official new feature), personal tactics tab
 // `../../` rather than `../`: this file moved down one level, from `src/` into
 // `src/tactics/`, when the mod was merged into riot_items_tfm2.
+//
+// These are embedded and delivered through the loader hook below, and
+// deliberately NOT listed in `mod.override_info`. An override is applied by the
+// loader before any of this code runs, so it cannot be conditional — listing
+// them there pinned the 4-slot layout on even with `slots = 3`, where the whole
+// point of the `mode4` gate in `loader_body` is to leave the vanilla template
+// alone. (They were listed during the merge; removed 2026-08-04.)
 const UI_PI: &str   = include_str!("../../ui/layout/ingame_component/player_info.ui");
 const UI_WIDE: &str = include_str!("../../ui/layout/ingame_component/wide_player_info.ui");
 
@@ -99,10 +106,10 @@ unsafe fn inject_training(r: usize) -> bool {
         }
     }
     TR_REPL.fetch_add(n as usize, Ordering::Relaxed);
-    logln(&format!("injected training: {}칸 × 행 = {} (mode4={})", n_slots, n, mode4));
+    logln(&format!("injected training: {} slots x rows = {} (mode4={})", n_slots, n, mode4));
     n > 0
 }
-const COL4: &str = "col_item4:label {\n@\"asset/base/style/main#label\";\nx: 1050px;\nwidth: 250px;\nheight: 30px;\nalign_x: Center;\nalign_y: Center;\nsize: 16;\ntext: \"4번째 아이템\";\n}";
+const COL4: &str = "col_item4:label {\n@\"asset/base/style/main#label\";\nx: 1050px;\nwidth: 250px;\nheight: 30px;\nalign_x: Center;\nalign_y: Center;\nsize: 16;\ntext: \"4th Item\";\n}";
 
 type LoaderFn = extern "win64" fn(usize, *const u8, usize) -> usize;
 type ParserFn = extern "win64" fn(*mut u8, *const u8, usize);
@@ -349,7 +356,7 @@ pub unsafe fn install() -> bool {
     let a = install_one(base, LOADER_RVA, &TRAMP, detour as usize);
     let b = if STRAT_LOADER_RVA != LOADER_RVA {
         install_one(base, STRAT_LOADER_RVA, &TRAMP2, detour2 as usize)
-    } else { logln("STRAT_LOADER == LOADER (0.5.2 copy 병합) → 세컨드 훅 스킵"); false };
+    } else { logln("STRAT_LOADER == LOADER (0.5.2 copies converged) -> second hook skipped"); false };
     if !a && !b { INSTALLED.store(false, Ordering::Relaxed); return false; }
     a || b
 }
