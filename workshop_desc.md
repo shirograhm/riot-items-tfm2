@@ -46,6 +46,10 @@ Mod v0.7.0 - v0.5.3+
 Mod v0.5.7 - v0.5.1+
 Mod v0.5.6 - versions up to 0.5.0
 
+[h1] Soft Dependencies [/h1]
+This mod works with the 4 Item Mode mod located here: https://gall.dcinside.com/mgallery/board/view?id=teamfightmanager&no=18939
+Mod v0.7.4 - 4ItemMod 0.5.3
+
 [h1] Custom Item Values [/h1]
 
 This mod works directly out of the box!  
@@ -104,7 +108,8 @@ Thank you to @Monsoon on discord for the Chinese (Simplified) translations!
 Thank you to @Dushnerd on discord for the Russian translations!
 Thank you to @Flover on discord for the Korean translations!
 
-Special thanks to @Monsoon for helping with the custom item builds functionality!
+Special thanks to @Monsoon for helping with the custom item builds functionality!  
+Special thanks to @blasé for helping playtest the 4 Item Mod compatibility!  
 
 Thank you to the people in the modding discord for their help with the mod-sdk setup, documentation, and general coolness.
 
