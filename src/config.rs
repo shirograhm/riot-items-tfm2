@@ -24,6 +24,7 @@ pub struct ItemConfig {
     pub magic_resistance_penetration: Option<usize>,
     pub skill_cooldown_mult: Option<i32>,
     pub ult_cooldown_mult: Option<i32>,
+    pub skill_damaged_reduce: Option<usize>,
     pub vamp: Option<i32>,
 
     pub effect_adaptive_force: Option<i32>,
@@ -46,6 +47,7 @@ pub struct ItemConfig {
     pub effect_armor_pen_per_stack: Option<usize>,
     pub effect_magic_pen_per_stack: Option<usize>,
     pub effect_slow_amount: Option<i32>,
+    pub effect_attack_speed_reduce: Option<i32>,
     pub effect_damaged_amplify: Option<usize>,
     pub effect_lethality: Option<usize>,
     pub effect_bonus_lethality: Option<usize>,

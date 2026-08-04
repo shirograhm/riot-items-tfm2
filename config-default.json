@@ -1017,5 +1017,21 @@
     "price": 800,
     "hp": 250,
     "move_speed_mult": 4
+  },
+  "frozen_heart": {
+    "price": 1300,
+    "defence": 65,
+    "skill_cooldown_mult": 10,
+    "skill_damaged_reduce": 10,
+    "effect_attack_speed_reduce": 30,
+    "effect_max_distance": 100
+  },
+  "radiant_frozen_heart": {
+    "price": 1900,
+    "defence": 110,
+    "skill_cooldown_mult": 15,
+    "skill_damaged_reduce": 15,
+    "effect_attack_speed_reduce": 30,
+    "effect_max_distance": 100
   }
 }

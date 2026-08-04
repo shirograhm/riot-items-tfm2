@@ -2,6 +2,7 @@ use mod_api_stable::*;
 use std::cell::Cell;
 
 mod build_config;
+mod companion;
 mod config;
 mod constants;
 mod hook;
@@ -304,6 +305,12 @@ fn init(host: &StableHost) -> StableMod {
     let mut reg = StableMod::new("riot_items_tfm2");
     let configs = config::load();
 
+    // Recorded here because the companion-mod checks run from UI and hook
+    // paths that never see a host handle. Must happen before anything asks
+    // `companion::item_slots()`, which caches its answer on first call.
+    let version = host.game_version();
+    companion::record_game_version((version.major, version.minor, version.patch));
+
     macro_rules! configured {
         ($key:literal => $T:ty) => {
             configs.get($key).map(<$T>::with_config).unwrap_or_default()
@@ -362,6 +369,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured!("frozen_heart" => FrozenHeart));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
     reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured!("heartsteel" => Heartsteel));
@@ -418,6 +426,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured_radiant!("radiant_frozen_heart" => FrozenHeart));
     reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
     reg.add_item(configured_radiant!("radiant_guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));

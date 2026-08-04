@@ -603,6 +603,14 @@
             "name": "Radiant Trinity Force",
             "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
         },
+        "frozen_heart": {
+            "name": "Frozen Heart",
+            "option": "\nWinter's Caress: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> of enemy champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> by <#e8a800ff>30%.<>"
+        },
+        "radiant_frozen_heart": {
+            "name": "Radiant Frozen Heart",
+            "option": "\nWinter's Caress: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> of enemy champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> by <#e8a800ff>30%.<>"
+        },
         "dusk_and_dawn": {
             "name": "Dusk and Dawn",
             "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
@@ -1279,6 +1287,14 @@
         "radiant_trinity_force": {
             "name": "Tam Hợp Kiếm Ánh Sáng",
             "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+        },
+        "frozen_heart": {
+            "name": "Tim Băng",
+            "option": "\nChiến Binh Mùa Đông: Giảm <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> của các tướng địch trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#e8a800ff>30%.<>"
+        },
+        "radiant_frozen_heart": {
+            "name": "Tim Băng Ánh Sáng",
+            "option": "\nChiến Binh Mùa Đông: Giảm <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> của các tướng địch trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#e8a800ff>30%.<>"
         },
         "dusk_and_dawn": {
             "name": "Hoàng Hôn và Bình Minh",
@@ -1957,6 +1973,14 @@
             "name": "光明版三相之力",
             "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>33%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>3.5秒<>）。"
         },
+        "frozen_heart": {
+            "name": "冰霜之心",
+            "option": "\n凛冬之抚：使 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<> 降低 <#e8a800ff>30%<>。"
+        },
+        "radiant_frozen_heart": {
+            "name": "光明版冰霜之心",
+            "option": "\n凛冬之抚：使 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<> 降低 <#e8a800ff>30%<>。"
+        },
         "dusk_and_dawn": {
             "name": "黄昏与黎明",
             "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>15%<> 的<#a974ffff>额外魔法伤害<>，并<#60e84dff>为你回复<>相当于<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>10%<> 与<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值（冷却 <#e8a800ff>3.5秒<>）。"
@@ -2633,6 +2657,14 @@
         "radiant_trinity_force": {
             "name": "Força da Trindade Radiante",
             "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
+        },
+        "frozen_heart": {
+            "name": "Coração Congelado",
+            "option": "\nCarícia do Inverno: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocidade de ataque<> dos campeões inimigos dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> em <#e8a800ff>30%.<>"
+        },
+        "radiant_frozen_heart": {
+            "name": "Coração Congelado Radiante",
+            "option": "\nCarícia do Inverno: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocidade de ataque<> dos campeões inimigos dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> em <#e8a800ff>30%.<>"
         },
         "dusk_and_dawn": {
             "name": "Crepúsculo e Alvorada",
@@ -3311,6 +3343,14 @@
             "name": "Лучезарный Тройственный Союз",
             "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#ff9028ff>33<> + <#ff9028ff>33%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
         },
+        "frozen_heart": {
+            "name": "Ледяное сердце",
+            "option": "\nОбъятия зимы: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорость атаки<> вражеских чемпионов в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#e8a800ff>30%.<>"
+        },
+        "radiant_frozen_heart": {
+            "name": "Лучезарное Ледяное сердце",
+            "option": "\nОбъятия зимы: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорость атаки<> вражеских чемпионов в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#e8a800ff>30%.<>"
+        },
         "dusk_and_dawn": {
             "name": "Закат и Рассвет",
             "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#a974ffff>85<> + <#a974ffff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <#60e84dff>восстановить вам<> <#a974ffff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> и <#60e84dff>2.5%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>3.5 секунд<>)."
@@ -3987,6 +4027,14 @@
         "radiant_trinity_force": {
             "name": "찬란한 삼위일체",
             "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 33%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
+        },
+        "frozen_heart": {
+            "name": "얼어붙은 심장",
+            "option": "\n혹한의 포옹: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>를 <#e8a800ff>30%<> 감소시킵니다."
+        },
+        "radiant_frozen_heart": {
+            "name": "찬란한 얼어붙은 심장",
+            "option": "\n혹한의 포옹: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>를 <#e8a800ff>30%<> 감소시킵니다."
         },
         "dusk_and_dawn": {
             "name": "황혼과 새벽",

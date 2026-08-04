@@ -143,7 +143,7 @@ use std::sync::Mutex;
 
 use mod_api_stable::*;
 
-use crate::build_config::{self, ChampionRow, PICKER_SLOTS};
+use crate::build_config::{self, picker_slots, ChampionRow};
 use crate::item_catalog;
 
 /// Shown for a slot left to the game's own AI, and on the list row that puts a
@@ -268,10 +268,33 @@ const COMBO_H: u32 = 40;
 const MINI_Y: u32 = 14;
 const CHAMP_X: u32 = 8;
 const CHAMP_W: u32 = 280;
-const COMBO_X: [u32; PICKER_SLOTS] = [306, 630, 954];
-const COMBO_W: u32 = 280;
-const SWAP_X: [u32; PICKER_SLOTS - 1] = [590, 914];
 const DELETE_X: u32 = 1250;
+
+/// The band the item columns share, between the champion button and the delete
+/// button, and the gap left between two columns for a swap button (34px wide,
+/// plus a few px of air on each side).
+const COLUMNS_LEFT: u32 = 306;
+const COLUMNS_RIGHT: u32 = 1234;
+const COLUMN_GAP: u32 = 44;
+
+/// Width of one item column: the shared band split evenly, gaps removed. Three
+/// slots give the 280px column the layout was authored with; four give 199px.
+fn combo_w() -> u32 {
+    let slots = picker_slots() as u32;
+    (COLUMNS_RIGHT - COLUMNS_LEFT - (slots - 1) * COLUMN_GAP) / slots
+}
+
+/// Left edge of an item column. Three slots reproduce the original 306/630/954
+/// exactly, so nothing moves unless the fourth slot is actually in play.
+fn combo_x(slot: usize) -> u32 {
+    COLUMNS_LEFT + slot as u32 * (combo_w() + COLUMN_GAP)
+}
+
+/// Left edge of the swap button between `slot` and `slot + 1`: tucked into the
+/// gap right after its left-hand column.
+fn swap_x(slot: usize) -> u32 {
+    combo_x(slot) + combo_w() + 4
+}
 
 /// Sizes of the two floating lists, mirroring `build_editor.ui`. Kept here
 /// because the open code has to decide whether a list fits below the control
@@ -563,6 +586,73 @@ fn sanitize(text: &str) -> String {
     text.chars()
         .filter(|c| !matches!(c, '"' | '\\' | '<' | '>' | '{' | '}' | ';'))
         .collect()
+}
+
+/// Approximate width, in canvas px, of one character of the 14px label text the
+/// rows use.
+///
+/// The UI layer exposes no text measurement, so a label that has to be made to
+/// fit is estimated instead. Three buckets — narrow, wide, and everything else —
+/// are enough for the job: item names are ordinary Latin words, and the cost of
+/// being a few px out is one character more or less before the ellipsis.
+///
+/// Calibrated against names measured off a rendered 199px column ("Frozen
+/// Mallet", "Zeke's Herald", "Infinity Edge", "Liandry's Torment"), and rounded
+/// *up* from there on purpose: over-estimating costs a character before the
+/// ellipsis, while under-estimating puts the name back under the clear button,
+/// which is the bug this is here to fix.
+fn char_width(character: char) -> f32 {
+    match character {
+        ' ' | '\'' | '.' | ',' | ':' | ';' | '!' | '|' | 'i' | 'j' | 'l' | 't' | 'f' | 'r' | 'I' => {
+            4.0
+        }
+        'm' | 'w' | 'M' | 'W' | '@' => 12.0,
+        _ => 8.0,
+    }
+}
+
+fn text_width(text: &str) -> f32 {
+    text.chars().map(char_width).sum()
+}
+
+/// Shortens `text` until it fits `max_width`, marking the cut with an ellipsis.
+///
+/// Returns `text` untouched when it already fits, which is every name in the
+/// three-slot layout — the columns only get tight enough to need this once
+/// `tfm2_item_tactics` splits the same band four ways.
+fn fit_text(text: &str, max_width: f32) -> String {
+    const ELLIPSIS: &str = "...";
+    if text_width(text) <= max_width {
+        return text.to_string();
+    }
+
+    let budget = max_width - text_width(ELLIPSIS);
+    let mut fitted = String::new();
+    let mut used = 0.0;
+    for character in text.chars() {
+        let width = char_width(character);
+        if used + width > budget {
+            break;
+        }
+        fitted.push(character);
+        used += width;
+    }
+    // "Locket of ..." reads better than "Locket of ...", so drop the space the
+    // cut landed on rather than spacing the ellipsis off the last word.
+    while fitted.ends_with(' ') {
+        fitted.pop();
+    }
+    fitted.push_str(ELLIPSIS);
+    fitted
+}
+
+/// Width a pinned item's name has inside its slot button.
+///
+/// The name starts after [`ICON_PAD`] clears the icon and has to stop before the
+/// clear button that sits at `combo_w - 52`, with a few px of air so the last
+/// glyph does not touch it.
+fn slot_label_width() -> f32 {
+    combo_w() as f32 - 52.0 - 4.0 - text_width(ICON_PAD)
 }
 
 // -- item list ----------------------------------------------------------
@@ -881,7 +971,12 @@ fn snapshot_rows() -> Vec<ChampionRow> {
 fn edit_row(row: usize, edit: impl FnOnce(&mut ChampionRow)) -> bool {
     let rows = with_state(|state| {
         if let Some(entry) = state.rows.get_mut(row) {
-            entry.slots.resize(PICKER_SLOTS, None);
+            // Grow to the editable width only. Truncating here would drop a
+            // fourth item that is being kept for a `tfm2_item_tactics` that is
+            // currently off, the moment any other slot on the row was touched.
+            if entry.slots.len() < picker_slots() {
+                entry.slots.resize(picker_slots(), None);
+            }
             edit(entry);
         }
         state.rows.clone()
@@ -931,7 +1026,13 @@ fn refresh_combo(
     // A pinned slot shows an icon and needs the wider inset; an unpinned one has
     // no icon, so it takes the plain margin.
     let (label, color) = match &pinned {
-        Some(key) => (format!("{ICON_PAD}{}", name_of(entries, key)), "#e8e8e8ff"),
+        Some(key) => (
+            format!(
+                "{ICON_PAD}{}",
+                fit_text(&name_of(entries, key), slot_label_width())
+            ),
+            "#e8e8e8ff",
+        ),
         None => (format!("{PLAIN_PAD}{AI_SLOT_LABEL}"), "#a5a5abff"),
     };
     ctx.ui_set_properties(
@@ -983,7 +1084,7 @@ fn refresh_champ(
 fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
     let rows = snapshot_rows();
     refresh_champ(ctx, &snapshot_champions(), &rows, row);
-    for slot in 0..PICKER_SLOTS {
+    for slot in 0..picker_slots() {
         refresh_combo(ctx, entries, &rows, row, slot);
     }
 }
@@ -1044,17 +1145,18 @@ fn row_source(row: usize) -> String {
          }}\n"
     );
 
-    for slot in 0..PICKER_SLOTS {
-        let x = COMBO_X[slot];
+    let combo_w = combo_w();
+    for slot in 0..picker_slots() {
+        let x = combo_x(slot);
         // The clear button sits inside the right end of its slot, left of the
         // drop arrow, so clearing a slot does not need the list opened first.
-        let clear_x = x + COMBO_W - 52;
+        let clear_x = x + combo_w - 52;
         source.push_str(&format!(
             "#slot{slot}:color_icon_button {{\n\
              @\"asset/base/style/main#tertiary_button\";\n\
              x: {x}px;\n\
              y: {COMBO_Y}px;\n\
-             width: {COMBO_W}px;\n\
+             width: {combo_w}px;\n\
              height: {COMBO_H}px;\n\
              \n\
              text: {{\n\
@@ -1117,7 +1219,8 @@ fn row_source(row: usize) -> String {
         ));
     }
 
-    for (slot, x) in SWAP_X.iter().enumerate() {
+    for slot in 0..picker_slots().saturating_sub(1) {
+        let x = swap_x(slot);
         source.push_str(&format!(
             "#swap{slot}:color_icon_button {{\n\
              @\"asset/base/style/main#tertiary_button\";\n\
@@ -1303,11 +1406,11 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
         spawned.push(row);
         register_once(ctx, &champ_path(row));
         register_once(ctx, &delete_path(row));
-        for slot in 0..PICKER_SLOTS {
+        for slot in 0..picker_slots() {
             register_once(ctx, &combo_path(row, slot));
             register_once(ctx, &clear_path(row, slot));
         }
-        for slot in 0..SWAP_X.len() {
+        for slot in 0..picker_slots().saturating_sub(1) {
             register_once(ctx, &format!("{}.swap{slot}", editor_row_path(row)));
         }
     }
@@ -1323,6 +1426,53 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
 
     for row in spawned {
         refresh_row(ctx, entries, row);
+    }
+}
+
+/// Path of the column-header strip, whose labels have to track the same
+/// geometry the rows are laid out with.
+const COLHEADER_PATH: &str = "main.contents.build_editor.popup.colheader";
+
+/// `.ui` source for one column header, matching the `#c_item*` labels
+/// `build_editor.ui` authors for the first three.
+fn header_source(slot: usize) -> String {
+    let x = combo_x(slot);
+    let w = combo_w();
+    let number = slot + 1;
+    format!(
+        "c_item{number}:label {{\n\
+         @\"asset/base/style/main#label\";\n\
+         x: {x}px;\n\
+         width: {w}px;\n\
+         height: 32px;\n\
+         align_x: Left;\n\
+         align_y: Center;\n\
+         size: 13;\n\
+         color: #a5a5abff;\n\
+         text: \"ITEM {number}\";\n\
+         }}\n"
+    )
+}
+
+/// Lines the column headers up with the columns.
+///
+/// `build_editor.ui` authors three headers at the three-slot geometry, which is
+/// exactly what [`combo_x`] and [`combo_w`] produce for three slots — so this is
+/// a no-op in the vanilla case and only earns its keep at four, where it
+/// re-places the first three and spawns the fourth. The editor subtree is
+/// rebuilt from source on every [`ensure_editor`], so there is never a stale
+/// fourth header to remove.
+fn sync_column_headers(ctx: &mut StableClient<'_>) {
+    for slot in 0..picker_slots() {
+        let path = format!("{COLHEADER_PATH}.c_item{}", slot + 1);
+        if ctx.ui_exists(&path) {
+            ctx.ui_set_properties(
+                &path,
+                &format!("x: {}px; width: {}px;", combo_x(slot), combo_w()),
+            );
+        } else {
+            ctx.ui_spawn_source(COLHEADER_PATH, &header_source(slot));
+        }
     }
 }
 
@@ -1418,6 +1568,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     if !ctx.ui_exists(EDITOR_PATH) {
         return false;
     }
+    sync_column_headers(ctx);
 
     let entries = cached_entries(ctx);
     let champions = cached_champions(ctx);
@@ -2036,7 +2187,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     }
 
     if let Some(slot) = index_after(&path, ".clear") {
-        if slot < PICKER_SLOTS {
+        if slot < picker_slots() {
             edit_row(row, |entry| entry.slots[slot] = None);
             close_list(ctx);
             refresh_row(ctx, &entries, row);
@@ -2045,7 +2196,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     }
 
     if let Some(slot) = index_after(&path, ".swap") {
-        if slot + 1 < PICKER_SLOTS {
+        if slot + 1 < picker_slots() {
             edit_row(row, |entry| entry.slots.swap(slot, slot + 1));
             close_list(ctx);
             refresh_row(ctx, &entries, row);
@@ -2064,7 +2215,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     }
 
     if let Some(slot) = index_after(&path, ".slot") {
-        if slot >= PICKER_SLOTS {
+        if slot >= picker_slots() {
             return;
         }
         if with_state(|state| state.open_list).flatten() == Some(OpenList::Item { row, slot }) {
