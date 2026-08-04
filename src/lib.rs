@@ -344,6 +344,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
+    reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
     reg.add_item(configured!("last_whisper" => LastWhisper));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));

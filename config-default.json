@@ -1026,6 +1026,11 @@
     "effect_attack_speed_reduce": 30,
     "effect_max_distance": 100
   },
+  "glacial_buckler": {
+    "price": 800,
+    "defence": 50,
+    "skill_cooldown_mult": 5
+  },
   "radiant_frozen_heart": {
     "price": 1900,
     "defence": 110,

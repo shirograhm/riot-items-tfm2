@@ -37,6 +37,7 @@ items! {
     experimental_hexplate,
     frozen_heart,
     frozen_mallet,
+    glacial_buckler,
     glowing_mote,
     guinsoos_rageblade,
     haunting_guise,

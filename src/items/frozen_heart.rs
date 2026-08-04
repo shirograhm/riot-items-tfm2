@@ -25,7 +25,7 @@ impl FrozenHeart {
         Self {
             meta: ItemMeta::base(
                 "frozen_heart",
-                &["gatekeepers_armor"],
+                &["glacial_buckler"],
                 &["radiant_frozen_heart"],
             ),
             aura_buff: "frozen_heart_aura",
@@ -75,23 +75,6 @@ impl FrozenHeart {
         self
     }
 
-    /// Winter's Caress: a short `Time` buff on every enemy champion in range,
-    /// refreshed several times over its own lifetime so it never lapses while
-    /// the target is still standing in the aura.
-    ///
-    /// Each refresh *removes and re-adds* rather than checking whether the buff
-    /// is already there. Skipping targets that still carry it is what made the
-    /// debuff flicker: the buff can then only be replaced after it has expired,
-    /// so a scan landing just before expiry skips the target and leaves it
-    /// undebuffed until the scan after that — a full off-period every cycle.
-    /// Removing first also keeps the buff from stacking with itself (same-name
-    /// buffs stack rather than refresh), including when two allies both carry a
-    /// Frozen Heart: whichever refreshes last keeps the single instance alive.
-    ///
-    /// Nothing removes the buff when a target leaves the aura — it simply stops
-    /// being refreshed and expires on its own, which is what bounds how long an
-    /// enemy keeps the slow after walking out of range (and what drops it when
-    /// the carrier dies).
     fn apply_aura(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
