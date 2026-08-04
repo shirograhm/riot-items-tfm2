@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, has_buff, percent_of_i32, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
-    BUFF_REFRESH_PERIOD_TICKS, DISTANCE_UNITS_PER_RANGE,
+    apply_config, percent_of_i32, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS,
+    DISTANCE_UNITS_PER_RANGE,
 };
 
 #[derive(Clone, Debug)]
@@ -95,9 +95,10 @@ impl LocketOfTheIronSolari {
         self
     }
 
-    /// Grants Legion to every living ally in range that is not already carrying
-    /// it. Minions take the same bonuses scaled by `effect_minion_percent`, so
-    /// the scan walks all entities rather than just the champion table.
+    /// Grants Legion to every living ally in range, refreshing it on the aura
+    /// cycle (see [`AURA_REFRESH_TICKS`]). Minions take the same bonuses scaled
+    /// by `effect_minion_percent`, so the scan walks all entities rather than
+    /// just the champion table.
     fn apply_aura(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
@@ -133,9 +134,6 @@ impl LocketOfTheIronSolari {
             if ctx.distance_sq(caster_id, id) > range_sq {
                 continue;
             }
-            if has_buff(&entity_ref, self.aura_buff) {
-                continue;
-            }
             targets.push((id, is_minion));
         }
 
@@ -147,18 +145,21 @@ impl LocketOfTheIronSolari {
                     value
                 }
             };
+            // Replace rather than skip-if-present, both within this tick, so the
+            // ally never spends a stretch of the cycle without the bonus.
+            ctx.entity_remove_buff(id, self.aura_buff);
             ctx.add_buff(
                 id,
                 &BuffV1 {
                     defence: scale(self.effect_bonus_defence),
                     magic_resistance: scale(self.effect_bonus_magic_resistance),
                     hp_regen: scale(self.effect_bonus_hp_regen),
-                    ..BuffV1::timed(self.aura_buff, BUFF_REFRESH_DURATION_TICKS)
+                    ..BuffV1::timed(self.aura_buff, AURA_DURATION_TICKS)
                 },
             );
         }
 
-        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
+        self.refresh_cooldown = AURA_REFRESH_TICKS;
     }
 }
 

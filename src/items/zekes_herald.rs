@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, has_buff, ItemMeta, ADAPTIVE_FORCE_AD_RATIO, BUFF_REFRESH_DURATION_TICKS,
-    BUFF_REFRESH_PERIOD_TICKS, DISTANCE_UNITS_PER_RANGE,
+    apply_config, ItemMeta, ADAPTIVE_FORCE_AD_RATIO, AURA_DURATION_TICKS, AURA_REFRESH_TICKS,
+    DISTANCE_UNITS_PER_RANGE,
 };
 
 #[derive(Clone, Debug)]
@@ -85,6 +85,8 @@ impl ZekesHerald {
         self
     }
 
+    /// Grants the aura to every living allied champion in range but the
+    /// carrier, refreshing it on the aura cycle (see [`AURA_REFRESH_TICKS`]).
     fn apply_aura(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
@@ -116,17 +118,13 @@ impl ZekesHerald {
                 continue;
             }
             let prefers_ap = entity_ref.stat().magic_power > entity_ref.stat().attack;
-
-            let is_already_affected: bool = has_buff(&entity_ref, self.aura_buff);
-            if !is_already_affected {
-                targets.push((id, prefers_ap));
-            }
+            targets.push((id, prefers_ap));
         }
 
         for (id, prefers_ap) in targets {
             let mut buff = BuffV1 {
                 vamp: self.effect_vamp,
-                ..BuffV1::timed(self.aura_buff, BUFF_REFRESH_DURATION_TICKS)
+                ..BuffV1::timed(self.aura_buff, AURA_DURATION_TICKS)
             };
             if prefers_ap {
                 buff.magic_power = self.effect_adaptive_force;
@@ -134,10 +132,15 @@ impl ZekesHerald {
                 buff.attack =
                     (self.effect_adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32;
             }
+            // Replace rather than skip-if-present: both calls land in the same
+            // tick, so the ally never drops the bonus, and re-reading
+            // `prefers_ap` each cycle lets the adaptive half follow a champion
+            // whose AD/AP balance changed since the last refresh.
+            ctx.entity_remove_buff(id, self.aura_buff);
             ctx.add_buff(id, &buff);
         }
 
-        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
+        self.refresh_cooldown = AURA_REFRESH_TICKS;
     }
 }
 

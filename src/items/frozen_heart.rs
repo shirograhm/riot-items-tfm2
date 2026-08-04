@@ -2,8 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, has_buff, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
-    DISTANCE_UNITS_PER_RANGE,
+    apply_config, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS, DISTANCE_UNITS_PER_RANGE,
 };
 
 #[derive(Clone, Debug)]
@@ -76,10 +75,23 @@ impl FrozenHeart {
         self
     }
 
-    /// Winter's Caress. Same shape as the friendly auras (`zekes_herald`,
-    /// `locket_of_the_iron_solari`) but pointed at the other team: a short
-    /// `Time` buff re-applied on a slightly shorter cycle, so an enemy that
-    /// walks out of range recovers its attack speed within a second.
+    /// Winter's Caress: a short `Time` buff on every enemy champion in range,
+    /// refreshed several times over its own lifetime so it never lapses while
+    /// the target is still standing in the aura.
+    ///
+    /// Each refresh *removes and re-adds* rather than checking whether the buff
+    /// is already there. Skipping targets that still carry it is what made the
+    /// debuff flicker: the buff can then only be replaced after it has expired,
+    /// so a scan landing just before expiry skips the target and leaves it
+    /// undebuffed until the scan after that — a full off-period every cycle.
+    /// Removing first also keeps the buff from stacking with itself (same-name
+    /// buffs stack rather than refresh), including when two allies both carry a
+    /// Frozen Heart: whichever refreshes last keeps the single instance alive.
+    ///
+    /// Nothing removes the buff when a target leaves the aura — it simply stops
+    /// being refreshed and expires on its own, which is what bounds how long an
+    /// enemy keeps the slow after walking out of range (and what drops it when
+    /// the carrier dies).
     fn apply_aura(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
@@ -110,22 +122,23 @@ impl FrozenHeart {
             if ctx.distance_sq(caster_id, id) > range_sq {
                 continue;
             }
-            if !has_buff(&entity_ref, self.aura_buff) {
-                targets.push(id);
-            }
+            targets.push(id);
         }
 
         for id in targets {
+            // Both halves land in the same tick, so the target is never
+            // observed without the buff.
+            ctx.entity_remove_buff(id, self.aura_buff);
             ctx.add_buff(
                 id,
                 &BuffV1 {
                     attack_speed_mult: -self.effect_attack_speed_reduce,
-                    ..BuffV1::timed(self.aura_buff, BUFF_REFRESH_DURATION_TICKS)
+                    ..BuffV1::timed(self.aura_buff, AURA_DURATION_TICKS)
                 },
             );
         }
 
-        self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
+        self.refresh_cooldown = AURA_REFRESH_TICKS;
     }
 }
 
