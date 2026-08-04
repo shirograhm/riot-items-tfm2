@@ -54,6 +54,7 @@ pub fn record_game_version(version: (u32, u32, u32)) {
 /// inside the loop so a torn read is retried too, not just a failed open.
 /// `None` means "could not read it", which callers must not confuse with "read
 /// it and the answer was no".
+///
 /// `attempts` is how many times to try. Only the eager resolution at init asks
 /// for more than one: it owns a thread that is doing nothing else, whereas the
 /// lazy path runs on the frame the UI is drawing and must not sleep on it.
@@ -177,8 +178,143 @@ fn detect_item_slots(attempts: u32) -> (usize, bool) {
 }
 
 /// The mods directory this mod is installed in — the parent of its own folder.
+///
+/// For a hand-installed mod that is `<game>/mods`. For one installed from the
+/// Workshop it is the Steam workshop content directory, which is somewhere else
+/// entirely and is *not* under the game folder. Nothing here may assume which.
 fn mods_dir() -> Option<PathBuf> {
     crate::config::dll_dir()?.parent().map(PathBuf::from)
+}
+
+/// The game's own directory, where `config/game/mods.json` lives.
+///
+/// Resolved from the running executable, not from this DLL's position. The two
+/// agree only for a hand-installed mod: Steam puts a subscribed Workshop mod
+/// under `steamapps/workshop/content/<appid>/<published_file_id>/`, which shares
+/// no useful ancestor with `steamapps/common/<game>/`. Walking up from the DLL
+/// therefore lands outside the game entirely, and every read of a game config
+/// file fails with "not found" — permanently, for everyone who installed this
+/// mod the ordinary way.
+///
+/// The executable is the game, wherever the game is, so it is the reliable
+/// anchor. The old DLL-relative guess is kept as a fallback for the case where
+/// the exe path cannot be read, and both are checked for the file that is
+/// actually wanted rather than trusted blind.
+fn game_root() -> Option<PathBuf> {
+    let has_config =
+        |dir: &Path| dir.join("config").join("game").join("mods.json").is_file();
+
+    let from_exe = std::env::current_exe()
+        .ok()
+        .and_then(|exe| exe.parent().map(PathBuf::from));
+    if let Some(dir) = from_exe.filter(|dir| has_config(dir)) {
+        return Some(dir);
+    }
+
+    mods_dir()
+        .and_then(|dir| dir.parent().map(PathBuf::from))
+        .filter(|dir| has_config(dir))
+}
+
+/// The directory `mod_id` is installed in, or `None` if it cannot be found.
+///
+/// The conventional `<game>/mods/<mod_id>` is tried first, then every root in
+/// [`mod_search_roots`] is scanned. The scan exists because a Workshop install
+/// has none of the properties the conventional path assumes: it lives outside
+/// the game folder, and its directory is named for its published file id rather
+/// than its mod id. So the folder is identified by reading `mod.mod_info` and
+/// comparing the id it declares, which is the same thing the game does.
+///
+/// Either mod may be installed either way, independently — this one from the
+/// Workshop and the companion by hand, or the reverse — so all four
+/// combinations have to resolve, which is why the roots include both this mod's
+/// neighbours and Steam's workshop tree.
+fn companion_dir(mod_id: &str) -> Option<PathBuf> {
+    if let Some(dir) = game_root().map(|root| root.join("mods").join(mod_id)) {
+        if dir.is_dir() {
+            return Some(dir);
+        }
+    }
+    mod_search_roots()
+        .iter()
+        .find_map(|root| find_mod_dir(root, mod_id))
+}
+
+/// Directories that may contain mod folders, in the order worth trying.
+///
+/// `<game>/mods` covers a hand-installed mod. This mod's own parent covers a
+/// Workshop neighbour. Its grandparent covers a Workshop item whose payload sits
+/// one folder deep. The workshop tree is derived from the game root rather than
+/// searched for: Steam lays out `steamapps/common/<game>` beside
+/// `steamapps/workshop/content/<appid>`, so two steps up from the game and back
+/// down finds it without guessing at drive letters or library folders.
+///
+/// Duplicates are dropped so a hand-installed pair does not read the same
+/// directory three times.
+fn mod_search_roots() -> Vec<PathBuf> {
+    let mut roots: Vec<PathBuf> = Vec::new();
+    let mut add = |dir: PathBuf| {
+        if !roots.contains(&dir) {
+            roots.push(dir);
+        }
+    };
+
+    if let Some(root) = game_root() {
+        add(root.join("mods"));
+    }
+    if let Some(dir) = mods_dir() {
+        if let Some(parent) = dir.parent() {
+            add(parent.to_path_buf());
+        }
+        add(dir);
+    }
+    if let Some(steamapps) = game_root()
+        .and_then(|root| root.parent().and_then(Path::parent).map(PathBuf::from))
+    {
+        let content = steamapps.join("workshop").join("content");
+        if let Ok(entries) = std::fs::read_dir(&content) {
+            for entry in entries.flatten().filter(|entry| entry.path().is_dir()) {
+                add(entry.path());
+            }
+        }
+    }
+    roots
+}
+
+/// Finds the directory under `dir` whose `mod.mod_info` declares `mod_id`,
+/// looking at `dir`'s children and then one level below them.
+///
+/// Two levels because that is the rule the game itself applies — its log says a
+/// Workshop item is rejected when it has "no mod.mod_info at the install root or
+/// in one-level child folders" — so a mod packaged with its payload in a
+/// subfolder is loadable by the game and must be findable here too.
+///
+/// Unreadable entries are skipped: this is a search, and a directory that cannot
+/// be read simply is not the answer.
+fn find_mod_dir(dir: &Path, mod_id: &str) -> Option<PathBuf> {
+    let declares = |candidate: &Path| {
+        std::fs::read_to_string(candidate.join("mod.mod_info"))
+            .ok()
+            .and_then(|text| serde_json::from_str::<ModInfo>(&text).ok())
+            .is_some_and(|info| info.mod_id == mod_id)
+    };
+
+    let entries = std::fs::read_dir(dir).ok()?;
+    let children: Vec<PathBuf> = entries
+        .flatten()
+        .map(|entry| entry.path())
+        .filter(|path| path.is_dir())
+        .collect();
+
+    if let Some(hit) = children.iter().find(|child| declares(child)) {
+        return Some(hit.clone());
+    }
+    children.iter().find_map(|child| {
+        std::fs::read_dir(child).ok()?.flatten().find_map(|entry| {
+            let path = entry.path();
+            (path.is_dir() && declares(&path)).then_some(path)
+        })
+    })
 }
 
 /// Whether `mod_id` is in the game's enabled list.
@@ -194,8 +330,7 @@ fn mods_dir() -> Option<PathBuf> {
 /// rewrites this file while it runs and a read can lose that race. Caching
 /// "not enabled" on that basis is the bug this distinction exists to prevent.
 fn is_mod_enabled(mod_id: &str, attempts: u32) -> Option<bool> {
-    let game_root = mods_dir().and_then(|dir| dir.parent().map(PathBuf::from))?;
-    let path = game_root.join("config").join("game").join("mods.json");
+    let path = game_root()?.join("config").join("game").join("mods.json");
     let mods = read_parsed(&path, attempts, |text| {
         serde_json::from_str::<ModsFile>(text).ok()
     })?;
@@ -206,6 +341,10 @@ fn is_mod_enabled(mod_id: &str, attempts: u32) -> Option<bool> {
 /// matters here.
 #[derive(Deserialize)]
 struct ModInfo {
+    /// Read as well as the dependencies because a Workshop mod's folder is named
+    /// for its published file id, so this is the only place its mod id appears.
+    #[serde(default)]
+    mod_id: String,
     #[serde(default)]
     dependencies: Vec<ModDependency>,
 }
@@ -236,7 +375,7 @@ struct ModDependency {
 /// caching a three-slot verdict reached before `init` finished.
 fn supports_this_game_version(mod_id: &str, attempts: u32) -> Option<bool> {
     let &version = GAME_VERSION.get()?;
-    let Some(path) = mods_dir().map(|dir| dir.join(mod_id).join("mod.mod_info")) else {
+    let Some(path) = companion_dir(mod_id).map(|dir| dir.join("mod.mod_info")) else {
         return Some(true);
     };
     let info = read_parsed(&path, attempts, |text| {
@@ -301,7 +440,7 @@ fn parse_version(text: &str) -> Option<(u32, u32, u32)> {
 /// [`VANILLA_SLOTS`]: unconfigured and configured-for-three lead to the same
 /// place, and both are real answers rather than failures to look.
 fn item_tactics_slot_count(attempts: u32) -> Option<usize> {
-    let path = mods_dir()?.join(ITEM_TACTICS_ID).join("4items.cfg");
+    let path = companion_dir(ITEM_TACTICS_ID)?.join("4items.cfg");
     let text = read_parsed(&path, attempts, |text| {
         (!text.trim().is_empty()).then(|| text.to_string())
     })?;
