@@ -310,6 +310,12 @@ fn init(host: &StableHost) -> StableMod {
     // `companion::item_slots()`, which caches its answer on first call.
     let version = host.game_version();
     companion::record_game_version((version.major, version.minor, version.patch));
+    // Settled here and not left to the first caller: the files it reads include
+    // `config/game/mods.json`, which the game rewrites while it runs — and the
+    // first caller would otherwise be the hook or the build editor, both of
+    // which run just after a save is loaded, which is exactly when that rewrite
+    // happens. Mod-load time is a quiet window for the same read.
+    companion::resolve_item_slots();
 
     macro_rules! configured {
         ($key:literal => $T:ty) => {
