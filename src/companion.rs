@@ -114,10 +114,41 @@ const EAGER_READ_ATTEMPTS: u32 = 5;
 /// the one call site that can afford to retry a read properly, since no frame is
 /// waiting on it.
 pub fn resolve_item_slots() {
+    // `tfm2_item_tactics` now ships *inside* this mod (see `src/tactics`), so
+    // the slot count it reports is a first-hand answer, not an observation of
+    // somebody else's files. It settles the question outright: it is the code
+    // that installs the byte patches making a fourth slot exist, so if it says
+    // four there are four, and if it says three there are three no matter what
+    // a separately installed copy claims.
+    //
+    // A separate copy may still be installed and enabled alongside this one.
+    // That is why the detection below is kept rather than deleted — it is the
+    // answer for a user who has not enabled our merged half but has that mod.
+    // `checked_sub(1)` is what removes the bias — `None` means "not active".
+    // Do not re-add it here: storing `slots + 1` put the *encoded* value in
+    // `SLOTS`, so the editor drew four slots for a three-slot game and five for
+    // a four-slot one.
+    if let Some(builtin_slots) = BUILTIN_SLOTS.load(Ordering::Relaxed).checked_sub(1) {
+        SLOTS.store(builtin_slots, Ordering::Relaxed);
+        return;
+    }
+
     let (slots, conclusive) = detect_item_slots(EAGER_READ_ATTEMPTS);
     if conclusive {
         SLOTS.store(slots, Ordering::Relaxed);
     }
+}
+
+/// Slot count reported by the merged `tfm2_item_tactics` half, biased by one so
+/// that 0 means "it is not active" (its version gate failed, so it installed no
+/// patches at all and the game has whatever slots it shipped with).
+static BUILTIN_SLOTS: AtomicUsize = AtomicUsize::new(0);
+
+/// Records what the merged tactics half decided, before [`resolve_item_slots`]
+/// runs. `None` means it is inactive and the question falls back to detecting a
+/// separately installed copy.
+pub fn record_builtin_item_slots(slots: Option<usize>) {
+    BUILTIN_SLOTS.store(slots.map_or(0, |n| n + 1), Ordering::Relaxed);
 }
 
 /// How many item slots a build has: [`VANILLA_SLOTS`], or [`EXTENDED_SLOTS`]

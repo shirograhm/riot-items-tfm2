@@ -1,0 +1,576 @@
+player_info:empty {
+  width: 669px;
+  height: 30px;
+
+  #blue_player:empty {
+    width: 272px;
+    height: 30px;
+
+    #champion:color {
+      x: 242px;
+
+      width: 30px;
+      height: 30px;
+
+
+      color: #263cbfff;
+
+      #icon:image {
+        width: 30px;
+        height: 30px;
+
+        anchor_x: 0.5;
+        anchor_y: 0.5;
+        pivot_x: 0.5;
+        pivot_y: 0.5;
+      }
+    }
+
+    #kda:label {
+      @"asset/base/style/main#light_label";
+      x: 140px;
+      y: 1px;
+
+      width: 68px;
+      height: 28px;
+      size: 18;
+
+      text: "0/0/0";
+
+      align_x: Center;
+      align_y: Center;
+    }
+
+    #cs:color {
+      x: 190px;
+      y: 3px;
+
+      width: 62px;
+      height: 24px;
+
+      color: #00000000;
+      rounding: Uniform {
+        rounding: 5;
+      }
+      ignore_event: true;
+
+      #shine:color {
+        width: 100%;
+        height: 100%;
+        color: #f0a03018;
+        rounding: Uniform {
+          rounding: 5;
+        }
+        visible: false;
+        ignore_event: true;
+      }
+
+      #icon:image {
+        x: 4px;
+        y: 5px;
+        width: 14px;
+        height: 14px;
+        source: "asset/base/ui/icons/gold";
+        color: #f0a030ff;
+        visible: false;
+        ignore_event: true;
+      }
+
+      #value:label {
+        @"asset/base/style/main#light_label";
+        width: 100%;
+        height: 100%;
+        size: 14;
+
+        text: "0";
+
+        align_x: Center;
+        align_y: Center;
+      }
+    }
+
+    #slot0:color {
+      x: 0px;
+      y: -1px;
+
+      width: 32px;
+      height: 32px;
+
+      color: #e8e8e800;
+      hover: {
+        color: #e8e8e8ff;
+      }
+      
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      #bg:color {
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 30px;
+        height: 30px;
+
+        color: #4a4c56ff;
+
+        ignore_event: true;
+
+        #icon:image {
+          width: 30px;
+          height: 30px;
+
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+
+          ignore_event: true;
+        }
+      }
+    }
+
+    #slot1:color {
+      x: 34px;
+      y: -1px;
+
+      width: 32px;
+      height: 32px;
+
+      color: #e8e8e800;
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      #bg:color {
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 30px;
+        height: 30px;
+
+        color: #4a4c56ff;
+
+        ignore_event: true;
+
+        #icon:image {
+          width: 30px;
+          height: 30px;
+
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+
+          ignore_event: true;
+        }
+      }
+    }
+
+    #slot2:color {
+      x: 68px;
+      y: -1px;
+
+      width: 32px;
+      height: 32px;
+
+      color: #e8e8e800;
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      #bg:color {
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 30px;
+        height: 30px;
+
+        color: #4a4c56ff;
+
+        ignore_event: true;
+
+        #icon:image {
+          width: 30px;
+          height: 30px;
+
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+
+          ignore_event: true;
+        }
+      }
+    }
+
+    #slot3:color {
+      x: 102px;
+      y: -1px;
+
+      width: 32px;
+      height: 32px;
+
+      color: #e8e8e800;
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      #bg:color {
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 30px;
+        height: 30px;
+
+        color: #4a4c56ff;
+
+        ignore_event: true;
+
+        #icon:image {
+          width: 30px;
+          height: 30px;
+
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+
+          ignore_event: true;
+        }
+      }
+    }
+  }
+
+  #red_player:empty {
+    width: 272px;
+    height: 30px;
+
+    x: 397px;
+
+    #champion:color {
+      width: 30px;
+      height: 30px;
+
+
+      color: #b02e3aff;
+
+      #icon:image {
+        width: 30px;
+        height: 30px;
+
+        anchor_x: 0.5;
+        anchor_y: 0.5;
+        pivot_x: 0.5;
+        pivot_y: 0.5;
+      }
+    }
+
+    #kda:label {
+      @"asset/base/style/main#light_label";
+      x: 68px;
+      y: 1px;
+
+      width: 70px;
+      height: 28px;
+      size: 18;
+
+      text: "0/0/0";
+
+      align_x: Center;
+      align_y: Center;
+    }
+
+    #cs:color {
+      x: 22px;
+      y: 3px;
+
+      width: 60px;
+      height: 24px;
+
+      color: #00000000;
+      rounding: Uniform {
+        rounding: 5;
+      }
+      ignore_event: true;
+
+      #shine:color {
+        width: 100%;
+        height: 100%;
+        color: #f0a03018;
+        rounding: Uniform {
+          rounding: 5;
+        }
+        visible: false;
+        ignore_event: true;
+      }
+
+      #icon:image {
+        x: 4px;
+        y: 5px;
+        width: 14px;
+        height: 14px;
+        source: "asset/base/ui/icons/gold";
+        color: #f0a030ff;
+        visible: false;
+        ignore_event: true;
+      }
+
+      #value:label {
+        @"asset/base/style/main#light_label";
+        width: 100%;
+        height: 100%;
+        size: 14;
+
+        text: "0";
+
+        align_x: Center;
+        align_y: Center;
+      }
+    }
+
+    #slot0:color {
+      x: 138px;
+      y: -1px;
+
+      width: 32px;
+      height: 32px;
+
+      color: #e8e8e800;
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      #bg:color {
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 30px;
+        height: 30px;
+
+        color: #4a4c56ff;
+
+        ignore_event: true;
+
+        #icon:image {
+          width: 30px;
+          height: 30px;
+
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+
+          ignore_event: true;
+        }
+      }
+    }
+
+    #slot1:color {
+      x: 172px;
+      y: -1px;
+
+      width: 32px;
+      height: 32px;
+
+      color: #e8e8e800;
+      hover: {
+        color:#e8e8e8ff;
+      }
+      
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      #bg:color {
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 30px;
+        height: 30px;
+
+        color: #4a4c56ff;
+
+        ignore_event: true;
+
+        #icon:image {
+          width: 30px;
+          height: 30px;
+
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+
+          ignore_event: true;
+        }
+      }
+    }
+
+    #slot2:color {
+      x: 206px;
+      y: -1px;
+
+      width: 32px;
+      height: 32px;
+
+      color: #e8e8e800;
+      hover: {
+        color: #e8e8e8ff;
+      }
+      
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      #bg:color {
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 30px;
+        height: 30px;
+
+        color: #4a4c56ff;
+
+        ignore_event: true;
+
+        #icon:image {
+          width: 30px;
+          height: 30px;
+
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+
+          ignore_event: true;
+        }
+      }
+    }
+
+    #slot3:color {
+      x: 240px;
+      y: -1px;
+
+      width: 32px;
+      height: 32px;
+
+      color: #e8e8e800;
+      hover: {
+        color: #e8e8e8ff;
+      }
+      
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      #bg:color {
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 30px;
+        height: 30px;
+
+        color: #4a4c56ff;
+
+        ignore_event: true;
+
+        #icon:image {
+          width: 30px;
+          height: 30px;
+
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+
+          ignore_event: true;
+        }
+      }
+    }
+  }
+
+  #diff:empty {
+    anchor_y: 0.5;
+    pivot_y: 0.5;
+    anchor_x: 0.5;
+    pivot_x: 0.5;
+    width: 85px;
+    height: 28px;
+
+    #gold_diff:label {
+      @"asset/base/style/main#light_label";
+      width: 52px;
+      height: 28px;
+
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+
+      size: 18;
+
+      align_x: Center;
+      align_y: Center;
+
+      text: "200";
+
+      #blue_up:image {
+        anchor_x: 0;
+        pivot_x: 1;
+
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 24px;
+        height: 24px;
+
+        source: "asset/base/ui/ingame/blue_up";
+      }
+
+      #red_up:image {
+        anchor_x: 1;
+        pivot_x: 0;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 24px;
+        height: 24px;
+
+        source: "asset/base/ui/ingame/red_up";
+      }
+    }
+  }
+}

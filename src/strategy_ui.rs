@@ -145,6 +145,7 @@ use mod_api_stable::*;
 
 use crate::build_config::{self, picker_slots, ChampionRow};
 use crate::item_catalog;
+use crate::tactics;
 
 /// Shown for a slot left to the game's own AI, and on the list row that puts a
 /// slot back into that state. The vanilla strategy screen's own wording for it
@@ -2288,6 +2289,14 @@ impl StableExtension for StrategyPicker {
     }
 
     fn post_update(&self, ctx: &mut StableClient<'_>, _dt_micros: u64) {
+        // The merged `tfm2_item_tactics` half, which was its own
+        // `ModExtension::post_update` before it moved in here. It has to run
+        // first and unconditionally: this is the only per-frame client hook the
+        // mod owns, and everything below returns early off the strategy screen,
+        // while the tactics half installs and self-heals its hooks (including
+        // the one that captures the UI root) on every frame, everywhere.
+        tactics::driver::post_update(ctx);
+
         if !ctx.ui_exists(BUILDS_TAB) {
             // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.

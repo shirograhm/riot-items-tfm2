@@ -10,6 +10,7 @@ mod item_catalog;
 mod item_meta;
 mod items;
 mod strategy_ui;
+mod tactics;
 
 use items::*;
 
@@ -265,7 +266,22 @@ fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: 
 struct ItemBuildHookExtension;
 
 impl StableServerExtension for ItemBuildHookExtension {
+    fn before_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
+        // Merged `tfm2_item_tactics` half — was its own
+        // `ModServerExtension::before_management_tick`. Idempotent, and the one
+        // place `probe_db` gets to retry: it cannot do anything until the item
+        // build detour below has fired once and settled the `Database` address.
+        tactics::driver::before_management_tick();
+    }
+
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
+        // Merged `tfm2_item_tactics` half — was its own
+        // `ModServerExtension::on_server_start`. Runs before the hook install
+        // below because its own detours (launcher seed, seed-ctor provider,
+        // spawn) are what decide whether a buy is happening in an on-screen
+        // match, and they are cheaper to install early than to self-heal.
+        tactics::driver::on_server_start();
+
         // Reported by `eprintln!` only, which goes nowhere unless the game is
         // started with a console attached. A refused hook disables every build
         // config, the strategy picker included, and looks exactly like the hook
@@ -310,6 +326,18 @@ fn init(host: &StableHost) -> StableMod {
     // `companion::item_slots()`, which caches its answer on first call.
     let version = host.game_version();
     companion::record_game_version((version.major, version.minor, version.patch));
+
+    // Merged `tfm2_item_tactics` half — was its own `init` + `declare_mod!`.
+    // Runs its version gate and, in 4-slot mode, its byte patches. A DLL gets
+    // one entry point, so this is the only place it can happen.
+    //
+    // Deliberately before `resolve_item_slots`: that call asks whether the
+    // *separately installed* companion mod is providing a 4th slot, and caches
+    // the answer on first read. Now that this mod can provide the slot itself,
+    // the two answers have to be reconciled rather than raced — see
+    // `companion::record_builtin_item_slots`.
+    let tactics_active = tactics::driver::on_mod_init();
+    companion::record_builtin_item_slots(tactics_active.then(tactics::driver::slot_count));
     // Settled here and not left to the first caller: the files it reads include
     // `config/game/mods.json`, which the game rewrites while it runs — and the
     // first caller would otherwise be the hook or the build editor, both of

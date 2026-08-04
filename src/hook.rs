@@ -498,6 +498,14 @@ unsafe fn detour(
         }
     }
 
+    // The merged `tfm2_item_tactics` half needs the game's `Database`, which a
+    // stable-ABI mod is never handed. `agent` is the item recommendation network
+    // that lives at a fixed offset inside it, so this argument is the one route
+    // to that address in the whole mod — see `tactics::driver::record_item_net`,
+    // which validates the network before believing it and ignores every call
+    // after the first that sticks.
+    crate::tactics::driver::record_item_net(agent as *const LogisticSGDAgent as usize);
+
     let original = ORIGINAL
         .get()
         .copied()
