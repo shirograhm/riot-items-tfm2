@@ -1,0 +1,107 @@
+{
+  "en": {
+    "builds": {
+      "tab": "Builds",
+      "add_champion": "+ Add Champion",
+      "filter_placeholder": "filter by champion...",
+      "hint": "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.",
+      "col_champion": "CHAMPION",
+      "col_item": "ITEM {n}",
+      "unique_on": "Enforcing unique items",
+      "unique_off": "Enforce unique items",
+      "save": "Save Item Builds",
+      "ai_slot": "Let Player Decide",
+      "no_champion": "(champion)"
+    }
+  },
+  "ko": {
+    "builds": {
+      "tab": "아이템 빌드",
+      "add_champion": "+ 챔피언 추가",
+      "filter_placeholder": "챔피언 검색...",
+      "hint": "빌드는 챔피언별로 적용됩니다. 비워 둔 칸은 AI가 선택한 순서대로 채웁니다.",
+      "col_champion": "챔피언",
+      "col_item": "아이템 {n}",
+      "unique_on": "중복 아이템 제한 중",
+      "unique_off": "중복 아이템 제한",
+      "save": "빌드 저장",
+      "ai_slot": "선수에게 맡기기",
+      "no_champion": "(챔피언)"
+    }
+  },
+  "zh-hans": {
+    "builds": {
+      "tab": "装备构建",
+      "add_champion": "+ 添加英雄",
+      "filter_placeholder": "搜索英雄...",
+      "hint": "构建按英雄生效。留空的格子由游戏按 AI 自己的选择顺序填充。",
+      "col_champion": "英雄",
+      "col_item": "装备 {n}",
+      "unique_on": "已启用装备去重",
+      "unique_off": "启用装备去重",
+      "save": "保存装备构建",
+      "ai_slot": "交给选手决定",
+      "no_champion": "(英雄)"
+    }
+  },
+  "ja": {
+    "builds": {
+      "tab": "アイテムビルド",
+      "add_champion": "+ チャンピオン追加",
+      "filter_placeholder": "チャンピオンを検索...",
+      "hint": "ビルドはチャンピオンごとに適用されます。空欄はAIの選択順にゲームが埋めます。",
+      "col_champion": "チャンピオン",
+      "col_item": "アイテム {n}",
+      "unique_on": "重複アイテム制限中",
+      "unique_off": "重複アイテムを制限",
+      "save": "ビルドを保存",
+      "ai_slot": "選手に任せる",
+      "no_champion": "(チャンピオン)"
+    }
+  },
+  "pt-BR": {
+    "builds": {
+      "tab": "Builds",
+      "add_champion": "+ Adicionar Campeão",
+      "filter_placeholder": "filtrar por campeão...",
+      "hint": "As builds são por campeão. Um espaço vazio é preenchido pelo jogo, na ordem de escolha da IA.",
+      "col_champion": "CAMPEÃO",
+      "col_item": "ITEM {n}",
+      "unique_on": "Impedindo itens repetidos",
+      "unique_off": "Impedir itens repetidos",
+      "save": "Salvar Builds",
+      "ai_slot": "Deixar o Jogador Decidir",
+      "no_champion": "(campeão)"
+    }
+  },
+  "ru": {
+    "builds": {
+      "tab": "Сборки",
+      "add_champion": "+ Добавить чемпиона",
+      "filter_placeholder": "поиск по чемпиону...",
+      "hint": "Сборки задаются для чемпиона. Пустой слот заполняет игра в порядке выбора ИИ.",
+      "col_champion": "ЧЕМПИОН",
+      "col_item": "ПРЕДМЕТ {n}",
+      "unique_on": "Предметы не повторяются",
+      "unique_off": "Запретить повторы предметов",
+      "save": "Сохранить сборки",
+      "ai_slot": "На усмотрение игрока",
+      "no_champion": "(чемпион)"
+    }
+  },
+  "vi": {
+    "builds": {
+      "tab": "Trang Bị",
+      "add_champion": "+ Thêm tướng",
+      "filter_placeholder": "lọc theo tướng...",
+      "hint": "Cách lên đồ áp dụng theo tướng. Ô trống sẽ do trò chơi điền theo thứ tự AI chọn.",
+      "col_champion": "TƯỚNG",
+      "col_item": "TRANG BỊ {n}",
+      "unique_on": "Đang chặn trùng trang bị",
+      "unique_off": "Chặn trùng trang bị",
+      "save": "Lưu cách lên đồ",
+      "ai_slot": "Để tuyển thủ quyết định",
+      "no_champion": "(tướng)"
+    }
+  }
+}

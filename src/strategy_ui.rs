@@ -137,7 +137,7 @@
 //! away, and only then — while a screen is up, registering a live path twice is
 //! still the double-fire hazard described above.
 
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 
 use mod_api_stable::*;
 
@@ -149,11 +149,136 @@ use crate::tactics;
 /// slot back into that state. The vanilla strategy screen's own wording for it
 /// (`strategy.i18n`'s `build_auto`), so the editor and the screen behind it call
 /// the same thing by the same name.
-const AI_SLOT_LABEL: &str = "Let Player Decide";
+/// The editor's own text, in the game's language.
+///
+/// Merged into `asset/base/text/ui` by `mod.override_info`, under `builds.*`, so
+/// a lookup is the same `#asset/…?key` form the item names already use and the
+/// game picks the block matching its locale. `text/ui.i18n` is hand-authored —
+/// unlike `text/item.i18n`, which `apply_config.ps1` generates.
+///
+/// Every field falls back to its English literal, so a missing key, an
+/// unmerged document or a locale the file has no block for costs nothing but
+/// the translation. The struct is resolved once per screen rather than per use:
+/// several of these are baked into `.ui` source for spawned rows, which happens
+/// often enough that a lookup per row would be wasteful.
+#[derive(Clone)]
+struct Strings {
+    tab: String,
+    add: String,
+    filter: String,
+    hint: String,
+    col_champion: String,
+    /// Contains `{n}`, replaced with the 1-based column number. A template
+    /// rather than a concatenation so a translation can put the number first.
+    col_item: String,
+    unique_on: String,
+    unique_off: String,
+    save: String,
+    ai_slot: String,
+    no_champion: String,
+}
+
+impl Default for Strings {
+    fn default() -> Self {
+        Self {
+            tab: "Builds".into(),
+            add: "+ Add Champion".into(),
+            filter: "filter by champion...".into(),
+            hint: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.".into(),
+            col_champion: "CHAMPION".into(),
+            col_item: "ITEM {n}".into(),
+            unique_on: "Enforcing unique items".into(),
+            unique_off: "Enforce unique items".into(),
+            save: "Save Item Builds".into(),
+            ai_slot: AI_SLOT_LABEL_FALLBACK.into(),
+            no_champion: NO_CHAMPION_LABEL_FALLBACK.into(),
+        }
+    }
+}
+
+static STRINGS: Mutex<Option<Arc<Strings>>> = Mutex::new(None);
+
+/// The resolved text, or the English defaults until [`load_strings`] has run.
+fn strings() -> Arc<Strings> {
+    STRINGS
+        .lock()
+        .ok()
+        .and_then(|strings| strings.clone())
+        .unwrap_or_else(|| Arc::new(Strings::default()))
+}
+
+/// Resolves the editor's text for the game's current language.
+fn load_strings(ctx: &StableClient<'_>) {
+    let fallback = Strings::default();
+    let get = |key: &str, fallback: &str| {
+        ctx.i18n(&format!("#asset/base/text/ui?builds.{key}"))
+            // An unmerged document resolves to nothing; some hosts echo the key
+            // back instead, which is worse than the English.
+            .filter(|text| !text.is_empty() && !text.starts_with('#'))
+            .unwrap_or_else(|| fallback.to_string())
+    };
+    let resolved = Strings {
+        tab: get("tab", &fallback.tab),
+        add: get("add_champion", &fallback.add),
+        filter: get("filter_placeholder", &fallback.filter),
+        hint: get("hint", &fallback.hint),
+        col_champion: get("col_champion", &fallback.col_champion),
+        col_item: get("col_item", &fallback.col_item),
+        unique_on: get("unique_on", &fallback.unique_on),
+        unique_off: get("unique_off", &fallback.unique_off),
+        save: get("save", &fallback.save),
+        // The vanilla screen's own wording for this, which is why the English
+        // matches it — so the game's string is the better source, and the mod's
+        // own key is only the fallback for a locale the game somehow lacks.
+        ai_slot: ctx
+            .i18n("#asset/base/text/strategy?personal.build_auto")
+            .filter(|text| !text.is_empty() && !text.starts_with('#'))
+            .unwrap_or_else(|| get("ai_slot", &fallback.ai_slot)),
+        no_champion: get("no_champion", &fallback.no_champion),
+    };
+    if let Ok(mut strings) = STRINGS.lock() {
+        *strings = Some(Arc::new(resolved));
+    }
+}
+
+/// Writes the resolved text onto the nodes that carry it literally in the
+/// layout. The `.ui` keeps the English so the editor reads correctly if this
+/// never runs.
+///
+/// `ui_set_properties` rather than `ui_set_text` for the buttons: their label is
+/// a nested `text` block, which is the form [`refresh_unique`] already drives.
+fn apply_strings(ctx: &mut StableClient<'_>) {
+    let strings = strings();
+    let escape = |text: &str| text.replace('\\', "\\\\").replace('"', "\\\"");
+
+    for (path, text) in [
+        (ADD_PATH, &strings.add),
+        (SAVE_PATH, &strings.save),
+    ] {
+        ctx.ui_set_properties(path, &format!("text: {{ text: \"{}\"; }}", escape(text)));
+    }
+    ctx.ui_set_properties(
+        SEARCH_PATH,
+        &format!("placeholder: \"{}\";", escape(&strings.filter)),
+    );
+    ctx.ui_set_text(HINT_PATH, &strings.hint);
+    ctx.ui_set_text(
+        &format!("{COLHEADER_PATH}.c_champion"),
+        &strings.col_champion,
+    );
+    // The tab carries `text` as a direct property, not a nested block — see
+    // `#builds` in `strategy.ui` — so it takes the plain form.
+    ctx.ui_set_properties(BUILDS_TAB, &format!("text: \"{}\";", escape(&strings.tab)));
+}
+
+/// The toolbar hint, the one label in the editor long enough to matter.
+const HINT_PATH: &str = "main.contents.build_editor.popup.toolbar.hint";
+
+const AI_SLOT_LABEL_FALLBACK: &str = "Let Player Decide";
 
 /// Shown for a row whose champion has not been chosen yet. Such a row is kept in
 /// the editor but never written.
-const NO_CHAMPION_LABEL: &str = "(champion)";
+const NO_CHAMPION_LABEL_FALLBACK: &str = "(champion)";
 
 /// Root every runtime UI path hangs off.
 ///
@@ -863,7 +988,7 @@ fn load_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
     let mut out: Vec<ChampionChoice> = ids
         .iter()
         .map(|id| ChampionChoice {
-            name: sanitize(&champion_display_name(id)),
+            name: sanitize(&champion_display_name(ctx, id)),
             id: sanitize(id),
         })
         .collect();
@@ -895,12 +1020,30 @@ fn strip_mod_prefixes(id: &str) -> &str {
     }
 }
 
-/// Readable name for a champion id: `snake_case` -> `Snake Case`.
+/// Readable name for a champion id, translated where the game has a name to
+/// give and prettified from the id (`snake_case` -> `Snake Case`) where it does
+/// not.
 ///
-/// Not an i18n lookup, because there is none to do — `champion.i18n` carries
-/// `skill_name` and `description` per champion but no display-name map, so the
-/// game derives the shown name from the id the same way.
-fn champion_display_name(id: &str) -> String {
+/// The lookup was long documented here as pointless — `champion.i18n` was found
+/// to carry `skill_name` and `description` per champion but no display-name map,
+/// and the game was assumed to derive the shown name from the id the same way.
+/// It is attempted anyway rather than argued about: two spellings, each accepted
+/// only if it answers, and the prettified id behind them. That costs one miss
+/// per champion on a cached path and settles the question per locale instead of
+/// per comment. A locale whose champions come back in the id's language means
+/// the keys genuinely are not there.
+fn champion_display_name(ctx: &StableClient<'_>, id: &str) -> String {
+    for key in [
+        format!("#asset/base/text/champion?{id}.name"),
+        format!("#asset/base/text/champion?{id}"),
+    ] {
+        if let Some(name) = ctx
+            .i18n(&key)
+            .filter(|name| !name.is_empty() && !name.starts_with('#'))
+        {
+            return name;
+        }
+    }
     if id == "soldier" {
         // The one id whose prettified form is not what the game calls it.
         return "Soldier (Sniper)".to_string();
@@ -939,7 +1082,7 @@ fn snapshot_champions() -> Vec<ChampionChoice> {
 /// roster does not cover.
 fn champion_label(champions: &[ChampionChoice], id: Option<&str>) -> String {
     let Some(id) = id else {
-        return NO_CHAMPION_LABEL.to_string();
+        return strings().no_champion.clone();
     };
     champions
         .iter()
@@ -1024,7 +1167,7 @@ fn refresh_combo(
             ),
             "#e8e8e8ff",
         ),
-        None => (format!("{PLAIN_PAD}{AI_SLOT_LABEL}"), "#a5a5abff"),
+        None => (format!("{PLAIN_PAD}{}", strings().ai_slot), "#a5a5abff"),
     };
     ctx.ui_set_properties(
         &combo_path(row, slot),
@@ -1084,10 +1227,11 @@ fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
 /// "Enforcing unique items" while on, plain "Enforce unique items" while off —
 /// so the state reads off the button itself.
 fn refresh_unique(ctx: &mut StableClient<'_>) {
+    let strings = strings();
     let (text, color) = if build_config::unique_items_enabled() {
-        ("Enforcing unique items", "#60ddc2ff")
+        (&strings.unique_on, "#60ddc2ff")
     } else {
-        ("Enforce unique items", "#d7dbe4ff")
+        (&strings.unique_off, "#d7dbe4ff")
     };
     ctx.ui_set_properties(
         UNIQUE_PATH,
@@ -1099,6 +1243,11 @@ fn refresh_unique(ctx: &mut StableClient<'_>) {
 
 /// `.ui` source for one champion row.
 fn row_source(row: usize) -> String {
+    // Bound once: the spawned `.ui` source carries the text literally, so
+    // this is where the editor's language reaches a freshly built row.
+    let strings = strings();
+    let no_champion = &strings.no_champion;
+    let ai_slot = &strings.ai_slot;
     let mut source = format!(
         "row{row}:color {{\n\
          width: {ROW_WIDTH}px;\n\
@@ -1114,7 +1263,7 @@ fn row_source(row: usize) -> String {
          height: {COMBO_H}px;\n\
          \n\
          text: {{\n\
-         text: \"{NO_CHAMPION_LABEL}\";\n\
+         text: \"{no_champion}\";\n\
          align_x: Left;\n\
          align_y: Center;\n\
          size: 14;\n\
@@ -1151,7 +1300,7 @@ fn row_source(row: usize) -> String {
              height: {COMBO_H}px;\n\
              \n\
              text: {{\n\
-             text: \"{AI_SLOT_LABEL}\";\n\
+             text: \"{ai_slot}\";\n\
              align_x: Left;\n\
              align_y: Center;\n\
              size: 14;\n\
@@ -1287,6 +1436,8 @@ fn entry_height(entry: &ListEntry) -> i32 {
 /// (which would left-align the name past the icon) appears in no shipped layout
 /// and is not worth carrying as an unknown, so the style's centred label stands.
 fn entry_source(index: usize, entry: &ListEntry) -> String {
+    let strings = strings();
+    let ai_slot = &strings.ai_slot;
     match entry {
         ListEntry::Clear => format!(
             "e{index}:color_selectable {{\n\
@@ -1294,7 +1445,7 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
              width: 304px;\n\
              height: {ENTRY_ITEM_H}px;\n\
              label: {{ size: 14; align_x: Left; color: {LIST_CLEAR_TEXT}; }}\n\
-             text: \"{PLAIN_PAD}{AI_SLOT_LABEL}\";\n\
+             text: \"{PLAIN_PAD}{ai_slot}\";\n\
              }}"
         ),
         // A `color` band with the label as its child rather than a bare label,
@@ -1430,6 +1581,7 @@ fn header_source(slot: usize) -> String {
     let x = combo_x(slot);
     let w = combo_w();
     let number = slot + 1;
+    let label = strings().col_item.replace("{n}", &number.to_string());
     format!(
         "c_item{number}:label {{\n\
          @\"asset/base/style/main#label\";\n\
@@ -1440,7 +1592,7 @@ fn header_source(slot: usize) -> String {
          align_y: Center;\n\
          size: 13;\n\
          color: #a5a5abff;\n\
-         text: \"ITEM {number}\";\n\
+         text: \"{label}\";\n\
          }}\n"
     )
 }
@@ -1457,9 +1609,17 @@ fn sync_column_headers(ctx: &mut StableClient<'_>) {
     for slot in 0..picker_slots() {
         let path = format!("{COLHEADER_PATH}.c_item{}", slot + 1);
         if ctx.ui_exists(&path) {
+            // Text as well as geometry: the first three are authored in
+            // `build_editor.ui` with their English labels, so this is the only
+            // thing that translates them.
+            let label = strings().col_item.replace("{n}", &(slot + 1).to_string());
             ctx.ui_set_properties(
                 &path,
-                &format!("x: {}px; width: {}px;", combo_x(slot), combo_w()),
+                &format!(
+                    "x: {}px; width: {}px; text: \"{label}\";",
+                    combo_x(slot),
+                    combo_w()
+                ),
             );
         } else {
             ctx.ui_spawn_source(COLHEADER_PATH, &header_source(slot));
@@ -1559,6 +1719,11 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     if !ctx.ui_exists(EDITOR_PATH) {
         return false;
     }
+    // Before anything reads a label. The subtree was just respawned from source,
+    // so its English literals are back and everything below — the headers, the
+    // rows, the buttons — has to be told the game's language again.
+    load_strings(ctx);
+    apply_strings(ctx);
     sync_column_headers(ctx);
 
     let entries = cached_entries(ctx);
