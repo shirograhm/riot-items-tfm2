@@ -78,7 +78,7 @@ const PROLOGUE_PUSHES: [u8; 12] = [
 const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-/// Signature for game 0.5.3, where the target is `0x2155a90` (size 2179).
+/// Signature for game 0.5.4, where the target is `0x1e76c50` (size 2270).
 ///
 /// 48 bytes, not 40: the first 40 are a prologue idiom shared with four other
 /// functions, so a shorter signature is ambiguous. `tools/find_item_build_hook.py`
@@ -87,20 +87,28 @@ const ABSOLUTE_JUMP_LEN: usize = 12;
 /// which takes precedence and needs no rebuild.
 ///
 /// Decoded, this is the prologue the target has had since 0.5.2, with only the
-/// frame size and an added `xmm6` save changing between versions:
+/// frame size and the displacements that follow from it changing between
+/// versions:
 ///
 /// ```text
 ///   push rbp,r15,r14,r13,r12,rsi,rdi,rbx
-///   sub  rsp, 0x208
+///   sub  rsp, 0x228
 ///   lea  rbp, [rsp+0x80]
-///   movaps [rbp+0x170], xmm6
-///   mov  qword [rbp+0x168], -2
+///   movaps [rbp+0x190], xmm6
+///   mov  qword [rbp+0x188], -2
 ///   mov  [rbp+0x40], r9
 /// ```
+///
+/// 0.5.3 -> 0.5.4 moved it from `0x2155a90` and grew the frame `0x208` -> `0x228`,
+/// with both displacements shifted by exactly that `0x20` (`0x170` -> `0x190`,
+/// `0x168` -> `0x188`). That the shift is uniform is what identifies it as the
+/// same function recompiled rather than a lookalike: on 0.5.4 the argument-shape
+/// filter alone returns *two* candidates, and the other one (`0x2566180`) has a
+/// `0x4d8` frame and saves four xmm registers.
 const FALLBACK_SIGNATURE: [u8; 48] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x08,
-    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x70, 0x01,
-    0x00, 0x00, 0x48, 0xC7, 0x85, 0x68, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0x4D,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x28,
+    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x90, 0x01,
+    0x00, 0x00, 0x48, 0xC7, 0x85, 0x88, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0x4D,
 ];
 
 /// Plausible size range for the target in bytes (1869 in SDK 0.5.2). Narrows the

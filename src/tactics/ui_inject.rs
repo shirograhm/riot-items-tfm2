@@ -21,13 +21,32 @@ use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 //   it is a sibling in the same monomorphic clone family). The tool was first run on 0.5.2 to reproduce the documented answer (0x5ac950) as validation before applying it here.
 //   Measured on 0.5.3: player_info lea@0xa93f3a / wide lea@0xa93f7e / strategy lea@0x200fb1b, 0x201446f /
 //               training leas in 12 places - **all converge on call 0x2e1550** => STRAT_LOADER stays equal to LOADER (second hook skipped).
-const LOADER_RVA: usize = 0x2e1550; // 0.5.3 (0.5.2 was 0x5ac950). The first 24B of the entry are **byte-identical** (8 push + sub 0x98) -> the 12B chained install works unchanged.
-const STRAT_LOADER_RVA: usize = 0x2e1550; // 0.5.3: the same copy as LOADER (same situation as 0.5.2).
-const PARSER_RVA: usize = 0x1a6530; // 0.5.3 (0.5.2 was 0x24b5a00). The 3-argument contract (out, ptr, len), the `:`/`{`/`}` parsing, out[2]=-1 on error and the 0x90 node stride are all confirmed identical => NT_SIZE unchanged.
+// ** 0.5.4 re-derivation (2026-08-04) - `tools/rederive.py loader`, the same canonical string-xref path as 0.5.3,
+//   but run **without the old executable**: Steam overwrites it in place, so the exe2exe masked-signature method
+//   every earlier migration used was unavailable. (Keep a copy of the exe before updating and it comes back.)
+//   Evidence: all 4 hooked asset paths were located in .rdata, every `lea r64,[rip+disp]` pointing at them found,
+//   and the first `call rel32` after each taken -> **16 of 16 sites converge on 0x2e35d0** (a .pdata function start,
+//   size 425). player_info lea@0xb0a86a and wide lea@0xb0a8ae both sit in fn 0xb05640; strategy lea@0x218471b,
+//   0x2189013 in fn 0x21846c0; training's leas span several callers. Zero sites reach any other target.
+//   => the monomorphic copies are still merged, exactly as in 0.5.2/0.5.3, so STRAT_LOADER stays equal to LOADER
+//   and install() keeps skipping the second hook.
+//   Entry is `8 push + sub rsp,0x98` — the same idiom as 0.5.3, and the first 12B are precisely the eight pushes,
+//   so the 12B chained install is unchanged.
+const LOADER_RVA: usize = 0x2e35d0; // 0.5.4 (0.5.3 was 0x2e1550, 0.5.2 0x5ac950).
+const STRAT_LOADER_RVA: usize = 0x2e35d0; // 0.5.4: still the same copy as LOADER (as in 0.5.2/0.5.3).
+// ** 0.5.4 (2026-08-04): exe2exe `match` against the kept 0.5.3 binary - **1 hit at 320 and at 640 bytes**
+//   of masked signature, size 2192. Three first-principles attempts had failed on this one (error-marker
+//   store, 0x90 stride as imul, node-type string xref); with the old exe it took a single command.
+const PARSER_RVA: usize = 0x1a3ce0; // 0.5.4 (0.5.3 was 0x1a6530, 0.5.2 0x24b5a00). The 3-argument contract (out, ptr, len), the `:`/`{`/`}` parsing, out[2]=-1 on error and the 0x90 node stride are all confirmed identical => NT_SIZE unchanged.
 // WARNING in 0.5.3 the 2-argument `__rust_alloc(size, align)` shim **disappeared** (inlined into every call site) => we call the internal heap helper directly.
 //   ~~candidate 0xbb2bd0 (align fixed at 8, aborts on OOM)~~ -> **0x28f7df0 adopted** (instruction-identical to 0.5.2's 0x25d9640, preserves returning 0 on OOM,
 //   and matches the value used by the parallel ai_adjust session = unified across mods). For the contract see the `AllocFn` comment above.
-const ALLOC_RVA: usize  = 0x28f7df0; // 0.5.3 heap alloc helper (corresponds to 0.5.2's 0x25d9640. The old __rust_alloc shim 0x25c4d30 does not exist in 0.5.3).
+// ** 0.5.4 (2026-08-04): reached through `__rust_realloc` (0x29a7640) rather than guessed — its over-aligned path
+//   calls this with `rdx = 0` and `r8 = align + size` and never sets `rcx`, which *is* the documented contract.
+//   The body confirms the rest: GetProcessHeap -> `test rax,rax` -> **`xor eax,eax; ret` on failure** (returns 0,
+//   does not abort, so the null check in `append_child` still means something) -> else HeapAlloc by tail-jmp with
+//   rcx = heap, edx = flags, r8 = size. Still no align argument (see the AllocFn warning below).
+const ALLOC_RVA: usize  = 0x29bb920; // 0.5.4 heap alloc helper (0.5.3 was 0x28f7df0). (corresponds to 0.5.2's 0x25d9640. The old __rust_alloc shim 0x25c4d30 does not exist in 0.5.3).
 const DEALLOC_RVA: usize = 0x1000; // 0.5.3 (0.5.2 was 0x25c4d90). The only `__rust_dealloc(ptr,size,align)`-shaped function. Currently unused.
 const NT_SIZE: usize = 0x90;
 
