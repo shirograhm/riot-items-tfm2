@@ -232,8 +232,7 @@ fn mods_dir() -> Option<PathBuf> {
 /// the exe path cannot be read, and both are checked for the file that is
 /// actually wanted rather than trusted blind.
 fn game_root() -> Option<PathBuf> {
-    let has_config =
-        |dir: &Path| dir.join("config").join("game").join("mods.json").is_file();
+    let has_config = |dir: &Path| dir.join("config").join("game").join("mods.json").is_file();
 
     let from_exe = std::env::current_exe()
         .ok()
@@ -299,8 +298,8 @@ fn mod_search_roots() -> Vec<PathBuf> {
         }
         add(dir);
     }
-    if let Some(steamapps) = game_root()
-        .and_then(|root| root.parent().and_then(Path::parent).map(PathBuf::from))
+    if let Some(steamapps) =
+        game_root().and_then(|root| root.parent().and_then(Path::parent).map(PathBuf::from))
     {
         let content = steamapps.join("workshop").join("content");
         if let Ok(entries) = std::fs::read_dir(&content) {
