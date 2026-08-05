@@ -2,7 +2,7 @@
   "name": "Riot Games Item Expansion Pack",
   "author": "shirograhm",
   "version": "0.8.0",
-  "description": "Adds items from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2. Includes tfm2_item_tactics (by tfm2mods): a fourth item slot, with the fourth item chosen by the game's own recommendation network. The fourth slot needs game 0.5.3 exactly and is off by default — set 'slots = 4' in 4items.cfg to enable it.",
+  "description": "Adds items from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.",
   "last_updated": "2026-08-04",
   "dependencies": [
     {
