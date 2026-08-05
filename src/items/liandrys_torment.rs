@@ -3,8 +3,6 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ticks, ItemMeta};
 
-/// Ticks between burn damage instances. A burn deals its total in
-/// `duration / BURN_TICK_RATE` equal instances.
 const BURN_TICK_RATE: usize = 12;
 
 #[derive(Clone, Debug)]
@@ -16,7 +14,6 @@ pub struct LiandrysTorment {
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
     effect_duration_seconds: f64,
-    /// Active burns, as `(entity_id, ticks_remaining, ticks_until_next_damage)`
     burns: Vec<(usize, usize, usize)>,
 }
 
@@ -72,18 +69,14 @@ impl LiandrysTorment {
         self
     }
 
-    /// How long a burn lasts, in ticks.
     fn duration_ticks(&self) -> usize {
         ticks(self.effect_duration_seconds).max(BURN_TICK_RATE)
     }
 
-    /// How many damage instances one burn is split into.
     fn instance_count(&self) -> usize {
         (self.duration_ticks() / BURN_TICK_RATE).max(1)
     }
 
-    /// Damage for a single instance against `id`, or `None` once the target is dead
-    /// or gone — a burn that can no longer land is dropped rather than tracked.
     fn instance_damage(&self, ctx: &mut StableSim<'_>, id: usize) -> Option<usize> {
         let entity_ref = ctx.get_entity(id)?;
         if !entity_ref.is_alive() {
@@ -97,10 +90,6 @@ impl LiandrysTorment {
         Some(per_instance.round() as usize)
     }
 
-    /// Burns `target` for the full duration, refreshing a burn already running on
-    /// it. A refresh resets only the remaining duration, never the tick cadence:
-    /// re-arming the cadence on every hit would let an attack rate faster than
-    /// `BURN_TICK_RATE` push the next instance out of reach indefinitely.
     fn apply_burn(&mut self, target: usize) {
         let duration = self.duration_ticks();
         match self.burns.iter_mut().find(|(id, _, _)| *id == target) {
@@ -109,8 +98,6 @@ impl LiandrysTorment {
         }
     }
 
-    /// Ages every burn by one tick, dealing damage to the ones that came due and
-    /// dropping those that expired or lost their target.
     fn tick_burns(&mut self, ctx: &mut StableSim<'_>, caster: usize) {
         let mut kept = Vec::with_capacity(self.burns.len());
         for (id, remaining, until_next) in std::mem::take(&mut self.burns) {
