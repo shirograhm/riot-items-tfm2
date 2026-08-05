@@ -81,6 +81,20 @@ const FN_DD_SETOPT_RVA: usize = 0x1bfc80; // 0.5.3 (0.5.2 was 0x242f250). ghidra
 //   the older diagnostic flush/hooks (c6new, countprobe, auto4, teamgate) are all OFF. The team gate (is_live/is_player) and SLOT012 injection live outside the gate = unaffected.
 const DIAG_ENABLED: bool = false;
 
+/// Trace files this half drops in its own folder: `4items_mode.txt` and
+/// `4items_patches.txt` at every init, `version_gate.txt` when the version gate
+/// closes, and `4items_netscan.txt` once if the item-network probe misses.
+///
+/// Off by user request (2026-08-04) — no `.txt` files in the mod folder.
+///
+/// They were unconditional because a config read that silently falls back to 4
+/// slots, a byte patch that silently skips, and a version gate that silently
+/// disables this half all look *exactly* like the feature working. With this
+/// off there is no evidence of any of them, so the diagnostic route is
+/// `BUILD_EXT_DIAG`, which reports the same facts — `mode(slot_count)`, patch
+/// state, hook install state — into `build_ext_diag.txt`.
+const TRACE_FILES: bool = false;
+
 const MAX_ROWS: usize = 5;   // 5 players (#row0..#row4)
 const ITEM_SLOTS: usize = 4; // max slot count (array stride). Actually active slots = slot_count() (3/4 toggle)
 
@@ -119,7 +133,9 @@ exists = {}
     }
     diag.push_str(&format!("=> final mode = {} (slot_count={})
 ", mode, if mode == 4 { 4 } else { 3 }));
-    if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join("4items_mode.txt"), &diag); }
+    if TRACE_FILES {
+        if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join("4items_mode.txt"), &diag); }
+    }
     ITEM_MODE.store(mode, Ordering::Relaxed);
     uinj::MODE4.store(mode == 4, Ordering::Relaxed);
     uinj::IN_MATCH_UI.store(mode == 4, Ordering::Relaxed); // enable the in-match 4th slot UI (together with the patches). mode=3 keeps vanilla 3 slots.
@@ -2243,7 +2259,7 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
 //   * is the 4th path reached at all, and if it bails, at which step;
 //   * `owned>=4` observed — distinguishes "not bought" from "bought, not drawn";
 //   * hook install state, VEH state, UI root address, mod item source.
-const BUILD_EXT_DIAG: bool = true; // * ON 2026-08-04: chasing "the 4th slot is dead on the first launch after editing `slots = #`, alive on the second"
+const BUILD_EXT_DIAG: bool = false; // * OFF again 2026-08-04: it identified the root-scan budget bug (see `ui_root::ATTEMPTS`) and that fix is confirmed in game
 // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false;
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
@@ -3261,7 +3277,9 @@ fn probe_db() {
                         out.push_str(&format!(" fwd RVA={:#x} prologue={} (expected 55415741...)
 ", ITEMNET_FORWARD_RVA, pb.join(" ")));
                     } else { out.push_str(" fwd RVA unreadable\n"); }
-                    if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join("4items_netscan.txt"), out); }
+                    if TRACE_FILES {
+                        if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d); let _ = fs::write(d.join("4items_netscan.txt"), out); }
+                    }
                 }
             }
         }
@@ -4617,14 +4635,19 @@ fn tactics_init() -> bool {
     //   (It depends on hardcoded RVAs, byte patches and struct offsets, so other versions risk misbehaviour.)
     if !check_game_version() {
         let msg = VERSION_MSG.lock().unwrap_or_else(|e| e.into_inner()).clone();
-        // Write it once regardless of LOG_ENABLED (so the user can tell why it is disabled).
-        if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d);
+        // Written once so the user can tell why this half is disabled. Silenced
+        // with the other trace files — after a game update the symptom is "the
+        // 4th item quietly stopped working" with nothing on disk saying why, so
+        // `TRACE_FILES` is the first thing to flip if that ever happens.
+        if TRACE_FILES {
+            if let Some(d) = mod_dir() { let _ = fs::create_dir_all(&d);
             let _ = fs::write(d.join("version_gate.txt"),
                 format!("{}
 
 This half of the mod (the 4th item slot) requires game version 0.5.3 exactly.
 If the game has updated, please wait for a mod update. The rest of the mod is unaffected.
 ", msg)); }
+        }
         // Register only, attaching **not a single** extension, hook or patch = completely disabled.
         return false;
     }
@@ -4663,9 +4686,11 @@ If the game has updated, please wait for a mod update. The rest of the mod is un
     } else {
         patch_report.push_str("(3-slot mode: no byte patches applied)\n");
     }
-    if let Some(d) = mod_dir() {
-        let _ = fs::create_dir_all(&d);
-        let _ = fs::write(d.join("4items_patches.txt"), &patch_report);
+    if TRACE_FILES {
+        if let Some(d) = mod_dir() {
+            let _ = fs::create_dir_all(&d);
+            let _ = fs::write(d.join("4items_patches.txt"), &patch_report);
+        }
     }
     // Set the log path for uinj (item3/slot3 UI injection). (MODE4/IN_MATCH_UI come from load_mode and the defaults.)
     true

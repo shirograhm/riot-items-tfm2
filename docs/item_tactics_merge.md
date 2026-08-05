@@ -148,6 +148,9 @@ The budget now counts scans that had an anchor to scan from, and resets when the
 anchor changes. `report()` distinguishes "no anchor yet" from "budget exhausted"
 from "scanned and found nothing", because the single "attempts" number could not.
 
+Confirmed fixed in game the same day: `UI root: 0x21f11dd3160 via pointer in App
+window, id="main"`, with the icon writer moving from `set OK=0` to `set OK=10`.
+
 ### The pattern behind all four
 
 Every one was a *latching* failure: `MODITEMS_DONE`, `AUTO_CANDS` and `SLOTS`
