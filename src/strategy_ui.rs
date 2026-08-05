@@ -149,18 +149,27 @@ use crate::tactics;
 /// slot back into that state. The vanilla strategy screen's own wording for it
 /// (`strategy.i18n`'s `build_auto`), so the editor and the screen behind it call
 /// the same thing by the same name.
-/// The editor's own text, in the game's language.
+/// The editor's own text, as `#asset/…?key` **references** the game resolves,
+/// not as strings this mod resolves itself.
 ///
-/// Merged into `asset/base/text/ui` by `mod.override_info`, under `builds.*`, so
-/// a lookup is the same `#asset/…?key` form the item names already use and the
-/// game picks the block matching its locale. `text/ui.i18n` is hand-authored —
-/// unlike `text/item.i18n`, which `apply_config.ps1` generates.
+/// That distinction is the whole feature. `ctx.i18n()` returns the `en` value
+/// regardless of the game's language, so resolving here and writing the result
+/// produced an English editor inside a Korean game. Handing the *reference* to
+/// the label instead lets the engine's LabelRunner substitute it at draw time,
+/// against the active locale — the same mechanism `tactics::VANILLA_OPTS` uses
+/// for the personal-tactics dropdown, which is verified working in game.
 ///
-/// Every field falls back to its English literal, so a missing key, an
-/// unmerged document or a locale the file has no block for costs nothing but
-/// the translation. The struct is resolved once per screen rather than per use:
-/// several of these are baked into `.ui` source for spawned rows, which happens
-/// often enough that a lookup per row would be wasteful.
+/// The catch, also recorded there: LabelRunner substitutes **whole-string**
+/// labels only, with no inline composition. So every key here is a complete
+/// label — `col_item1`..`col_item4` rather than one `"ITEM {n}"` template — and
+/// anything this mod concatenates (padded rows, truncated item names) cannot use
+/// this path and stays in `en`.
+///
+/// `ctx.i18n()` is still called once per key, but only to *validate* that the
+/// key resolves at all; a key that does not gets its English literal instead, so
+/// a raw `#asset/…` string can never reach the screen. `text/ui.i18n` is
+/// hand-authored and merged into `asset/base/text/ui` by `mod.override_info` —
+/// LabelRunner reads the base document, so the merge is required.
 #[derive(Clone)]
 struct Strings {
     tab: String,
@@ -168,9 +177,8 @@ struct Strings {
     filter: String,
     hint: String,
     col_champion: String,
-    /// Contains `{n}`, replaced with the 1-based column number. A template
-    /// rather than a concatenation so a translation can put the number first.
-    col_item: String,
+    /// One complete label per column — LabelRunner cannot compose `"ITEM " + n`.
+    col_items: [String; 4],
     unique_on: String,
     unique_off: String,
     save: String,
@@ -186,7 +194,7 @@ impl Default for Strings {
             filter: "filter by champion...".into(),
             hint: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.".into(),
             col_champion: "CHAMPION".into(),
-            col_item: "ITEM {n}".into(),
+            col_items: ["ITEM 1".into(), "ITEM 2".into(), "ITEM 3".into(), "ITEM 4".into()],
             unique_on: "Enforcing unique items".into(),
             unique_off: "Enforce unique items".into(),
             save: "Save Item Builds".into(),
@@ -195,6 +203,11 @@ impl Default for Strings {
         }
     }
 }
+
+/// Where the editor's labels live. `text/ui.i18n` is merged into this base
+/// document by `mod.override_info`; LabelRunner resolves references against the
+/// base documents, so the merge is what makes the references work.
+const UI_TEXT_DOC: &str = "#asset/base/text/ui";
 
 static STRINGS: Mutex<Option<Arc<Strings>>> = Mutex::new(None);
 
@@ -210,34 +223,41 @@ fn strings() -> Arc<Strings> {
 /// Resolves the editor's text for the game's current language.
 fn load_strings(ctx: &StableClient<'_>) {
     let fallback = Strings::default();
-    let get = |key: &str, fallback: &str| {
-        ctx.i18n(&format!("#asset/base/text/ui?builds.{key}"))
-            // An unmerged document resolves to nothing; some hosts echo the key
-            // back instead, which is worse than the English.
+    // A reference the game will resolve — but only once it is known to resolve,
+    // because an unknown key would otherwise be drawn as literal `#asset/...`.
+    // `ctx.i18n` answers in `en` whatever the locale is, which is useless as a
+    // translation and perfect as an existence check.
+    let reference = |key: &str, fallback: &str| {
+        let path = format!("{UI_TEXT_DOC}?builds.{key}");
+        match ctx.i18n(&path) {
+            Some(text) if !text.is_empty() && !text.starts_with('#') => path,
+            _ => fallback.to_string(),
+        }
+    };
+    // For text this mod concatenates: LabelRunner never sees it as a whole
+    // label, so it has to be resolved here and stays `en`.
+    let resolved = |key: &str, fallback: &str| {
+        ctx.i18n(&format!("{UI_TEXT_DOC}?builds.{key}"))
             .filter(|text| !text.is_empty() && !text.starts_with('#'))
             .unwrap_or_else(|| fallback.to_string())
     };
-    let resolved = Strings {
-        tab: get("tab", &fallback.tab),
-        add: get("add_champion", &fallback.add),
-        filter: get("filter_placeholder", &fallback.filter),
-        hint: get("hint", &fallback.hint),
-        col_champion: get("col_champion", &fallback.col_champion),
-        col_item: get("col_item", &fallback.col_item),
-        unique_on: get("unique_on", &fallback.unique_on),
-        unique_off: get("unique_off", &fallback.unique_off),
-        save: get("save", &fallback.save),
-        // The vanilla screen's own wording for this, which is why the English
-        // matches it — so the game's string is the better source, and the mod's
-        // own key is only the fallback for a locale the game somehow lacks.
-        ai_slot: ctx
-            .i18n("#asset/base/text/strategy?personal.build_auto")
-            .filter(|text| !text.is_empty() && !text.starts_with('#'))
-            .unwrap_or_else(|| get("ai_slot", &fallback.ai_slot)),
-        no_champion: get("no_champion", &fallback.no_champion),
+    let resolved_strings = Strings {
+        tab: reference("tab", &fallback.tab),
+        add: reference("add_champion", &fallback.add),
+        hint: reference("hint", &fallback.hint),
+        col_champion: reference("col_champion", &fallback.col_champion),
+        col_items: std::array::from_fn(|i| {
+            reference(&format!("col_item{}", i + 1), &fallback.col_items[i])
+        }),
+        unique_on: reference("unique_on", &fallback.unique_on),
+        unique_off: reference("unique_off", &fallback.unique_off),
+        save: reference("save", &fallback.save),
+        filter: resolved("filter_placeholder", &fallback.filter),
+        ai_slot: resolved("ai_slot", &fallback.ai_slot),
+        no_champion: resolved("no_champion", &fallback.no_champion),
     };
     if let Ok(mut strings) = STRINGS.lock() {
-        *strings = Some(Arc::new(resolved));
+        *strings = Some(Arc::new(resolved_strings));
     }
 }
 
@@ -1581,7 +1601,7 @@ fn header_source(slot: usize) -> String {
     let x = combo_x(slot);
     let w = combo_w();
     let number = slot + 1;
-    let label = strings().col_item.replace("{n}", &number.to_string());
+    let label = strings().col_items[slot.min(3)].clone();
     format!(
         "c_item{number}:label {{\n\
          @\"asset/base/style/main#label\";\n\
@@ -1612,7 +1632,7 @@ fn sync_column_headers(ctx: &mut StableClient<'_>) {
             // Text as well as geometry: the first three are authored in
             // `build_editor.ui` with their English labels, so this is the only
             // thing that translates them.
-            let label = strings().col_item.replace("{n}", &(slot + 1).to_string());
+            let label = strings().col_items[slot.min(3)].clone();
             ctx.ui_set_properties(
                 &path,
                 &format!(

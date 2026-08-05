@@ -2099,7 +2099,6 @@ fn handle_tactics_screen(ui: &Node) {
         *OPTS_CACHE.lock().unwrap_or_else(|e| e.into_inner()) = opts.clone();
         let refs: Vec<&str> = opts.iter().map(|s| s.as_str()).collect();
         let mut last = LAST_SEL.lock().unwrap_or_else(|e| e.into_inner());
-        let mut injected = 0;
         let pt_sz = PT_SNAPSHOT.lock().unwrap_or_else(|e| e.into_inner()).as_ref().map(|m| m.len()).unwrap_or(0);
         let mut diag = format!("[{}ms] option injection (row -> champion mapping) PT_SNAPSHOT={} opts={}
 ", now_ms(), pt_sz, opts.len());
@@ -2121,7 +2120,6 @@ fn handle_tactics_screen(ui: &Node) {
                 diag.push_str(&format!("    slot{}: SEL={:?} PT={:?} → cur={}\n", si, sel_v, pt_v, cur));
                 let cur = (cur as usize).min(opts.len().saturating_sub(1)) as u64;
                 if unsafe { nat_dd_set_options(row, &iid, &refs, cur) } {
-                    injected += 1;
                     last[ri * ITEM_SLOTS + si] = cur as i64;
                     unsafe { set_dd_max_height(row, &iid, MAX_ITEMS_HEIGHT); }
                 }
