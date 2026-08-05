@@ -1039,6 +1039,14 @@ const VANILLA_KEYS: [&str; 30] = [
 /// live catalog by name, so all that matters is that ids and `MOD_REGISTRY`
 /// agree with each other. Catalog order is therefore fine even though it is not
 /// the game's mod-item order.
+/// Whether the mod-item registry has already been built, so a caller can skip
+/// assembling the catalog argument. The registry is built once per process; the
+/// hook that supplies it fires once per team per match, background league
+/// fixtures included, and building that argument is two allocations per item.
+pub(crate) fn item_catalog_recorded() -> bool {
+    MODITEMS_DONE.load(Ordering::Relaxed)
+}
+
 fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
     if catalog.is_empty() || MODITEMS_DONE.swap(true, Ordering::Relaxed) {
         return;

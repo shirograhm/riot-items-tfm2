@@ -125,6 +125,13 @@ pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
     super::record_item_catalog(catalog);
 }
 
+/// Whether a catalog has already been recorded, so `hook::detour` can skip
+/// building the argument for [`record_item_catalog`] — which would otherwise be
+/// two `String` allocations per item, discarded, on every call after the first.
+pub fn item_catalog_recorded() -> bool {
+    super::item_catalog_recorded()
+}
+
 /// Whether this half is applying `item-builds.json` per athlete, behind
 /// `is_my_athlete`.
 ///

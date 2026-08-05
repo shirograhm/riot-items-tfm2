@@ -1,9 +1,20 @@
-//! Minimal config-driven item-build setter (scaffold).
+//! Item-build setter: overwrites the routes the game's `get_item_builds_list`
+//! returns with fixed build paths, keyed by champion id.
 //!
-//! Reads `item-builds.json` from next to the mod DLL and overwrites the routes
-//! that the game's `get_item_builds_list` returns. This is the starting point
-//! for the `feature/item_build_config` work: it sets fixed build paths, keyed by
-//! champion id, and no lineup analysis yet.
+//! # `item-builds.json` is storage, not configuration
+//!
+//! The builds live in `item-builds.json` next to the mod DLL, but that file is
+//! the in-game editor's backing store and nothing else. Editing it by hand is
+//! not supported: the schema below documents what the editor writes so the code
+//! that reads it can be understood, not a format for players to author.
+//!
+//! Two things follow, and both are load-bearing:
+//!
+//! - The file is read from disk **once**, and again only when the editor writes
+//!   it. Nothing polls it for changes — see the cache below for what re-reading
+//!   it per route call did to the ban/pick screen.
+//! - A match's builds are therefore fixed when it starts. Nothing between "click
+//!   play" and the final whistle can reload them.
 //!
 //! Extension seams (intentional TODOs):
 //! - `apply` keys builds by champion id against the route's lineup (`team1`),
@@ -15,7 +26,7 @@ use serde::Deserialize;
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::path::PathBuf;
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, RwLock};
 
 /// Schema of `item-builds.json`: the whole file is a map of champion id -> build
 /// (there is no wrapper object).
@@ -46,9 +57,11 @@ impl BuildConfig {
 
 /// Loads `item-builds.json` from next to the mod DLL.
 ///
-/// Returns `Ok(None)` when the file is absent (the common, non-error case so
-/// the mod ships inert until a user opts in by creating the file).
-pub fn load() -> Result<Option<BuildConfig>, String> {
+/// Returns `Ok(None)` when the file is absent — the common, non-error case: the
+/// mod ships inert and the file appears the first time the editor saves a build.
+///
+/// Callers want [`load_cached`]; this is the one place that touches the disk.
+fn load() -> Result<Option<BuildConfig>, String> {
     let path = config_path()?;
     match std::fs::read_to_string(&path) {
         Ok(text) => serde_json::from_str(&text)
@@ -63,6 +76,89 @@ fn config_path() -> Result<PathBuf, String> {
     crate::config::dll_dir()
         .map(|dir| dir.join("item-builds.json"))
         .ok_or_else(|| "could not resolve mod directory".to_string())
+}
+
+// ---------------------------------------------------------------------------
+//  File caches for the route hook
+// ---------------------------------------------------------------------------
+//
+// `load` and `unique_items_enabled` were called straight off `hook::detour`, on
+// the assumption noted at `PINS` that the route hook "fires a couple of times a
+// match". It does not: the game builds routes as *every* match starts, and a
+// league day's other fixtures sim on parallel rayon workers — so on a save with
+// a developed world the detour runs many times over, concurrently, while the
+// player is still in the ban/pick screen. Two file reads, two JSON parses and a
+// full `HashMap` clone per call, all funnelled through global locks, is what
+// made that phase stall.
+//
+// Both files are therefore read from disk exactly once — on the first read, and
+// again only when the *editor* writes them, which is the only supported way to
+// change either. There is deliberately no revalidation: the files are this mod's
+// private storage for what the editor holds, not a config surface, so an edit
+// made behind the mod's back is not a case to detect. Nothing re-reads them
+// mid-match either, so the builds a match starts with are the builds it
+// finishes with.
+
+static CONFIG_CACHE: RwLock<Option<Arc<BuildConfig>>> = RwLock::new(None);
+static SETTINGS_CACHE: RwLock<Option<bool>> = RwLock::new(None);
+
+/// Drops both file caches, so the next read reloads from disk.
+///
+/// The editor calls this after it writes — the one event that can change either
+/// file — and nothing else has cause to. Do not call it from anywhere a match
+/// could be running: re-reading mid-match is exactly what "the build is fixed
+/// once you click play" rules out.
+pub fn invalidate_caches() {
+    if let Ok(mut cache) = CONFIG_CACHE.write() {
+        *cache = None;
+    }
+    if let Ok(mut cache) = SETTINGS_CACHE.write() {
+        *cache = None;
+    }
+}
+
+/// `item-builds.json`, parsed once and held.
+///
+/// This is what the route hook calls. A malformed file yields an empty config
+/// rather than an error: the hook's only response to one was to ignore it and
+/// leave the game's routes alone, which is what an empty config does.
+///
+/// Loading also publishes [`PINS`], which is why nothing else needs to: the
+/// snapshot the buy detour reads and the config the hook applies come from the
+/// same parse.
+pub fn load_cached() -> Arc<BuildConfig> {
+    if let Ok(cache) = CONFIG_CACHE.read() {
+        if let Some(config) = cache.as_ref() {
+            return config.clone();
+        }
+    }
+
+    let Ok(mut cache) = CONFIG_CACHE.write() else {
+        return Arc::new(BuildConfig::default());
+    };
+    // Another worker may have loaded it while this one waited for the lock.
+    if let Some(config) = cache.as_ref() {
+        return config.clone();
+    }
+
+    let value = Arc::new(match load() {
+        Ok(config) => {
+            let config = config.unwrap_or_default();
+            // Published here rather than from the hook: this is the only place
+            // the file is read now, so it is the only place that can keep the
+            // buy detour's snapshot in step with it. A config the editor emptied
+            // publishes an empty set, which is what stops it applying.
+            publish_pins(&config);
+            config
+        }
+        // Malformed — only reachable if the file was corrupted, since the editor
+        // is the only supported writer. The game's routes are left alone and the
+        // buy detour keeps whatever it last had, rather than a bad file silently
+        // wiping every build.
+        Err(_) => BuildConfig::default(),
+    });
+    *cache = Some(value.clone());
+    value
 }
 
 /// Item slots the editor exposes per champion, matching the columns the
@@ -101,8 +197,9 @@ impl ChampionRow {
 /// Reads `item-builds.json` as an ordered row list for the editor.
 ///
 /// File order is preserved (serde_json is built with `preserve_order`), so rows
-/// do not shuffle between visits, and a file edited by hand keeps the order it
-/// was written in.
+/// do not shuffle between visits. This reads the file directly rather than going
+/// through [`load_cached`] for that reason: the cached form is a `HashMap` and
+/// has already lost the order the editor wrote.
 ///
 /// A missing or malformed file yields no rows rather than an error: the editor
 /// is additive, and a bad file must never cost the player the routes the game
@@ -174,12 +271,15 @@ pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
         .and_then(|text| std::fs::write(path, text + "\n").ok())
         .is_some();
 
-    // The buy detour applies these from a snapshot rather than the file, so an
-    // edit that is not republished would not take effect until the next time the
-    // route hook happened to read the file. The editor writes on every change,
-    // so this keeps "change it and play" working.
+    // Nothing else re-reads the file — not the route hook, not the buy detour,
+    // which works from the `PINS` snapshot — so this write is the only event
+    // that can make either notice a change, and it has to say so. Reloading
+    // eagerly rather than leaving the cache empty keeps the parse on the
+    // editor's thread, where a few hundred microseconds are free, instead of on
+    // whichever sim worker calls the route hook first.
     if written {
-        publish_pins(load().ok().flatten().as_ref());
+        invalidate_caches();
+        let _ = load_cached();
     }
     written
 }
@@ -200,10 +300,17 @@ pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
 /// text (see `strategy_ui::load_champions`).
 static CHAMPION_ROSTER: std::sync::Mutex<Vec<String>> = std::sync::Mutex::new(Vec::new());
 
-/// Records the roster from inside the detour. Cheap enough to call per match;
-/// the roster cannot change without a restart.
+/// Records the roster from inside the detour.
+///
+/// The roster cannot change without a restart, so an unchanged list returns
+/// without allocating: the detour runs once per team per match *including the
+/// league's background fixtures*, on parallel workers, and copying 60-odd
+/// `String`s under a global lock each time is contention for no new information.
 pub fn record_champion_roster(ids: &[String]) {
     if let Ok(mut roster) = CHAMPION_ROSTER.lock() {
+        if roster.as_slice() == ids {
+            return;
+        }
         roster.clear();
         roster.extend_from_slice(ids);
     }
@@ -217,17 +324,21 @@ pub fn champion_roster() -> Vec<String> {
 
 /// `item-builds.json`, as the *simulation* side reads it.
 ///
-/// [`load`] reads the file, which is fine on the route hook — it fires a couple
-/// of times a match. The buy detour that applies these builds per athlete fires
-/// per buy decision, hundreds of thousands of times a match, and must never
-/// touch the disk. So the file is published here whenever it is read or written,
-/// and that side takes a snapshot.
+/// The buy detour that applies these builds per athlete fires per buy decision,
+/// hundreds of thousands of times a match, and must never touch the disk. So the
+/// file is published here when it loads, and that side takes a snapshot.
+///
+/// This used to say the route hook could read the file itself because it "fires
+/// a couple of times a match". It does not — see the cache above — so the load
+/// and the publication are now one event, in [`load_cached`], and the snapshot
+/// changes only when the editor saves.
 static PINS: Mutex<Option<Arc<HashMap<String, Vec<Option<String>>>>>> = Mutex::new(None);
 
-/// Publishes the current builds for the buy detour. `None` publishes an empty
-/// set — a deleted config must stop applying, not keep the last one alive.
-pub fn publish_pins(config: Option<&BuildConfig>) {
-    let builds = config.map(|config| config.by_champion.clone()).unwrap_or_default();
+/// Publishes the current builds for the buy detour. An empty config publishes an
+/// empty set — builds the editor removed must stop applying, not keep the last
+/// ones alive.
+fn publish_pins(config: &BuildConfig) {
+    let builds = config.by_champion.clone();
     if let Ok(mut pins) = PINS.lock() {
         *pins = Some(Arc::new(builds));
     }
@@ -272,7 +383,12 @@ pub fn pinned_key(champion: &str, slot: usize) -> Option<String> {
 /// key, so there is nothing else in it to preserve.
 pub fn set_unique_items(enabled: bool) -> bool {
     let path = crate::config::mod_dir().join("mod-settings.json");
-    std::fs::write(path, format!("{{\n  \"unique_items\": {enabled}\n}}\n")).is_ok()
+    let written =
+        std::fs::write(path, format!("{{\n  \"unique_items\": {enabled}\n}}\n")).is_ok();
+    if written {
+        invalidate_caches();
+    }
+    written
 }
 
 /// Schema of `mod-settings.json`: behavior toggles managed by the item build
@@ -290,18 +406,36 @@ fn default_true() -> bool {
 
 /// Whether unique-build enforcement is enabled: `unique_items` in
 /// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
-/// is absent or malformed, so players opt *out* via the editor toggle. Read on
-/// every hook call, so flipping it applies to the next match without restarting
-/// the game.
+/// is absent or malformed, so players opt *out* via the editor toggle.
+///
+/// Cached like [`load_cached`] — this is read from the route hook, which fires
+/// far more often than the "once per hook call" the toggle was written for.
+/// Flipping it in the editor still applies to the next match: the editor
+/// invalidates the cache when it writes.
 pub fn unique_items_enabled() -> bool {
+    if let Ok(cache) = SETTINGS_CACHE.read() {
+        if let Some(enabled) = *cache {
+            return enabled;
+        }
+    }
+
     let Some(path) = crate::config::dll_dir().map(|dir| dir.join("mod-settings.json")) else {
         return true;
     };
-    std::fs::read_to_string(path)
+    let Ok(mut cache) = SETTINGS_CACHE.write() else {
+        return true;
+    };
+    if let Some(enabled) = *cache {
+        return enabled;
+    }
+
+    let value = std::fs::read_to_string(&path)
         .ok()
         .and_then(|text| serde_json::from_str::<ModSettings>(&text).ok())
         .map(|settings| settings.unique_items)
-        .unwrap_or(true)
+        .unwrap_or(true);
+    *cache = Some(value);
+    value
 }
 
 /// Overwrites the game's route list with the configured builds.

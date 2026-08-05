@@ -143,7 +143,17 @@ pub(crate) fn mod_dir() -> PathBuf {
 
 // Returns the directory containing this DLL by passing a static address within
 // it to GetModuleHandleExW (FROM_ADDRESS flag), then resolving the full path.
+//
+// Resolved once and cached. The DLL cannot move while the process runs, and this
+// sits under every file path the mod builds — including two on the item-build
+// route hook, which fires from parallel sim workers. Each uncached call was two
+// Win32 calls plus a 64 KB stack buffer to zero.
 pub(crate) fn dll_dir() -> Option<PathBuf> {
+    static CACHED: std::sync::OnceLock<Option<PathBuf>> = std::sync::OnceLock::new();
+    CACHED.get_or_init(resolve_dll_dir).clone()
+}
+
+fn resolve_dll_dir() -> Option<PathBuf> {
     extern "system" {
         fn GetModuleHandleExW(flags: u32, name: *const u16, module: *mut *mut c_void) -> i32;
         fn GetModuleFileNameW(module: *mut c_void, filename: *mut u16, size: u32) -> u32;
