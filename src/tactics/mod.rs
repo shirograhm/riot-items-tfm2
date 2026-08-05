@@ -144,6 +144,19 @@ exists = {}
 }
 fn slot_count() -> usize { if ITEM_MODE.load(Ordering::Relaxed) == 4 { 4 } else { 3 } }
 
+/// Whether this half is actually applying `item-builds.json` per athlete.
+///
+/// Every term is a *measured* state rather than an assumption: the version gate
+/// passed, the injection is compiled in, and the `buy_item` detour reported a
+/// successful install (`1` = OK). If any is false nothing here touches a build,
+/// and `hook::detour` has to keep applying builds itself — to both teams, since
+/// its arguments cannot tell them apart.
+pub(crate) fn injects_builds() -> bool {
+    version_ok()
+        && SLOT012_INJECT_ENABLED
+        && BUY_PROBE_INSTALLED.load(Ordering::Relaxed) == 1
+}
+
 // Vanilla 7 option labels (idx 0~6). 1:1 with the game's personal_tactics ItemBuildOverride.
 //   * References the game i18n assets -> the dropdown is localized automatically to the game language (base.json lang),
 //   the same way mod items (vi>=7) are; verified. Single whole-string labels, so LabelRunner substitutes them (only inline composition is unsupported). Hardcoded Korean was dropped.
@@ -1048,7 +1061,18 @@ fn row_champ(row: &Node) -> Option<String> {
     let champ = rest[..end].trim();
     if champ.is_empty() { None } else { Some(champ.to_string()) }
 }
-fn sel_path() -> Option<PathBuf> { Some(mod_dir()?.join("item_tactics_sel.txt")) }
+/// Where the dropdown selections live.
+///
+/// JSON, and named like the mod's other state, because the plain-text original
+/// was the last thing in this half that could put a `.txt` in the mod folder.
+/// Same shape as `item-builds.json` — champion to a slot-indexed list, `null`
+/// for a slot with no selection — since they hold the same kind of thing.
+fn sel_path() -> Option<PathBuf> { Some(mod_dir()?.join("item-tactics-selections.json")) }
+
+/// The pre-JSON file, read once if the JSON is absent so an existing install
+/// keeps its selections. Never written: after the first save the JSON is the
+/// live copy and this is left alone as its own backup.
+fn legacy_sel_path() -> Option<PathBuf> { Some(mod_dir()?.join("item_tactics_sel.txt")) }
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  * Comp-test side scope (added 2026-07-30)
@@ -1131,32 +1155,53 @@ fn opt_index_to_token(idx: u8) -> Option<String> {
     if idx < 7 { return Some(idx.to_string()); }
     mod_final_opts().get(idx as usize - 7).map(|(_, k)| k.clone())
 }
+/// `(champion, slot, token)` rows from the JSON file, or from the legacy text
+/// file when the JSON does not exist yet.
+///
+/// Both formats carry the same three things, so the caller's normalization and
+/// pending handling do not care which one answered.
+fn read_sel_rows() -> Vec<(String, u8, String)> {
+    if let Some(text) = sel_path().and_then(|p| fs::read_to_string(p).ok()) {
+        if let Ok(map) = serde_json::from_str::<serde_json::Map<String, serde_json::Value>>(&text) {
+            let mut rows = Vec::new();
+            for (champ, value) in map {
+                let Some(slots) = value.as_array() else { continue };
+                for (slot, token) in slots.iter().enumerate() {
+                    if slot >= ITEM_SLOTS { break; }
+                    if let Some(token) = token.as_str() {
+                        rows.push((champ.clone(), slot as u8, token.to_string()));
+                    }
+                }
+            }
+            return rows;
+        }
+    }
+    // Pre-JSON format: one `champion slot token` per line.
+    let Some(text) = legacy_sel_path().and_then(|p| fs::read_to_string(p).ok()) else {
+        return Vec::new();
+    };
+    text.lines()
+        .filter_map(|line| {
+            let parts: Vec<&str> = line.split_whitespace().collect();
+            if parts.len() != 3 {
+                return None;
+            }
+            let slot = parts[1].parse::<u8>().ok()?;
+            Some((parts[0].to_string(), slot, parts[2].to_string()))
+        })
+        .collect()
+}
+
 fn load_sel() -> HashMap<(String, u8), u8> {
     let mut m = HashMap::new();
     let mut pend = Vec::new();
-    let mut legacy = false;
-    if let Some(p) = sel_path() {
-        if let Ok(txt) = fs::read_to_string(&p) {
-            for line in txt.lines() {
-                let parts: Vec<&str> = line.split_whitespace().collect();
-                if parts.len() != 3 { continue; }
-                let Ok(slot) = parts[1].parse::<u8>() else { continue; };
-                let tok = parts[2];
-                if tok.parse::<u8>().map(|n| n >= 7).unwrap_or(false) { legacy = true; }
-                let tok = normalize_token(tok); // pin to a key if resolvable, then store
-                match token_to_opt_index(&tok) {
-                    // idx 0 ("leave to the player") is not an override -> fall back to delegate. Not saved/loaded (removes spurious 0s).
-                    Some(idx) if idx >= 1 => { m.insert((parts[0].to_string(), slot), idx); }
-                    Some(_) => {}
-                    None => pend.push((parts[0].to_string(), slot, tok)),
-                }
-            }
-            // On first read of an old-format file, back the original up once (so a bad migration can be undone).
-            if legacy {
-                if let Some(bp) = mod_dir().map(|d| d.join("item_tactics_sel.txt.bak_idxfmt")) {
-                    if !bp.exists() { let _ = fs::write(bp, &txt); }
-                }
-            }
+    for (champ, slot, tok) in read_sel_rows() {
+        let tok = normalize_token(&tok); // pin to a key if resolvable, then store
+        match token_to_opt_index(&tok) {
+            // idx 0 ("leave to the player") is not an override -> fall back to delegate. Not saved/loaded (removes spurious 0s).
+            Some(idx) if idx >= 1 => { m.insert((champ, slot), idx); }
+            Some(_) => {}
+            None => pend.push((champ, slot, tok)),
         }
     }
     SEL_PENDING_ANY.store(!pend.is_empty(), Ordering::Relaxed);
@@ -1186,9 +1231,26 @@ fn save_sel(m: &HashMap<(String, u8), u8>) {
     // Entries that are still unresolved are kept verbatim -> no loss.
     rows.extend(SEL_PENDING.lock().unwrap_or_else(|e| e.into_inner()).iter().cloned());
     rows.sort();
-    let mut s = String::new();
-    for (champ, slot, tok) in rows { s.push_str(&format!("{} {} {}\n", champ, slot, tok)); }
-    if let Some(p) = sel_path() { let _ = fs::write(p, s); }
+
+    // Champion -> one entry per slot, `null` where nothing is selected.
+    // `BTreeMap` so the file keeps a stable order between writes.
+    let mut by_champ: std::collections::BTreeMap<String, Vec<serde_json::Value>> =
+        std::collections::BTreeMap::new();
+    for (champ, slot, tok) in rows {
+        if slot as usize >= ITEM_SLOTS { continue; }
+        let entry = by_champ
+            .entry(champ)
+            .or_insert_with(|| vec![serde_json::Value::Null; ITEM_SLOTS]);
+        entry[slot as usize] = serde_json::Value::String(tok);
+    }
+    let map: serde_json::Map<String, serde_json::Value> = by_champ
+        .into_iter()
+        .map(|(champ, slots)| (champ, serde_json::Value::Array(slots)))
+        .collect();
+
+    if let (Some(p), Ok(text)) = (sel_path(), serde_json::to_string_pretty(&map)) {
+        let _ = fs::write(p, text + "\n");
+    }
 }
 
 // -- One-shot application of dashboard-recommended builds (added 2026-07-22) --------------------
@@ -1337,6 +1399,13 @@ fn designated_set() -> std::collections::HashSet<String> {
     with_sel(|m| m.keys().map(|(c, _)| strip_scope(c).to_string()).collect())
 }
 fn is_champ_designated(champ: &str) -> bool {
+    // A champion the build editor pins is designated even with no `SEL` entry —
+    // this is the early exit the spawn path takes before it ever looks at a
+    // slot, so missing it here would make `item-builds.json` invisible to the
+    // injection no matter what the slot lookups say.
+    if crate::build_config::has_pins(champ) {
+        return true;
+    }
     if SEL_DIRTY.swap(false, Ordering::Relaxed) {
         *DESIGNATED_SNAP.lock().unwrap_or_else(|e| e.into_inner()) = Some(std::sync::Arc::new(designated_set()));
     }
@@ -3620,7 +3689,23 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
 // Designated item key for a champion's 4th slot (SEL slot3). idx 0 = auto (None), 1~6 = vanilla category final items,
 //   7+ = mod items. The returned key is used to scan the clone source collection (96 entries, containing both vanilla and mod names).
 // Manually designated item key for slot si (0~3). 0 = auto (None), 1~6 = vanilla category final items, 7+ = mod items.
+/// The host mod's build editor (`item-builds.json`), which owns item
+/// designation now that the tactics dropdowns offer only stat categories.
+///
+/// Consulted ahead of `SEL` for all four slots. This is the whole point of
+/// routing it through here: everything below is reached from the buy detour,
+/// *after* `is_my_athlete` has said the athlete is the player's, so a build set
+/// in the editor can only ever be applied to the player's own players. The
+/// route hook cannot make that distinction — it is handed one team per call with
+/// nothing to say which (see `hook::detour`).
+fn pinned_key(champ: &str, si: u8) -> Option<String> {
+    crate::build_config::pinned_key(champ, si as usize)
+}
+
 fn slotN_item_key(scope: Scope, champ: &str, si: u8) -> Option<String> {
+    if let Some(key) = pinned_key(champ, si) {
+        return Some(key);
+    }
     let idx = sel_get(scope, champ, si);
     if idx == 0 { return None; }                       // auto -> force nothing
     if idx <= 6 {                                       // vanilla category -> that category's final item name
@@ -3640,6 +3725,19 @@ fn slot3_item_id(scope: Scope, champ: &str) -> Option<u64> {
 // * build[3] index for vanilla designations (idx 1~6) only. For vanilla, id == catalog index, so no scan is needed (works even if the 0.5.0 scan is broken).
 //   Mod items (7+) return None (id != index -> a name scan is required).
 fn slotN_vanilla_id(scope: Scope, champ: &str, si: u8) -> Option<u64> {
+    // A pinned slot answers here or nowhere: returning a `SEL` id for a slot the
+    // editor has pinned would let the old designation win, because the caller
+    // tries this before `slotN_item_key`.
+    if let Some(raw) = crate::build_config::pinned_key_raw(champ, si as usize) {
+        // Vanilla items only, and by the verbatim key: for those the id *is* the
+        // catalog index, so the name scan is not needed. A mod item returns
+        // `None` and goes down the scan path, which is what `slotN_item_key` is
+        // for.
+        return VANILLA_KEYS
+            .iter()
+            .position(|key| *key == raw)
+            .map(|id| id as u64);
+    }
     let idx = sel_get(scope, champ, si);
     if (1..=6).contains(&idx) { Some(VANILLA_FINAL[(idx - 1) as usize]) } else { None }
 }
@@ -3856,6 +3954,15 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             is_live && by_scene
         };
+        // This branch is the only place in the mod that knows a champion belongs
+        // to the player, so it is where the host half's build editor learns the
+        // player's lineup — `hook::detour` cannot tell the teams apart on its
+        // own. Comp test is excluded: it makes `is_player` true for *both*
+        // sides, so noting from there would publish the opponent's champions as
+        // the player's and invert the gate.
+        if is_player && !is_comptest_live {
+            crate::my_team::note_my_champion(champ);
+        }
         // ** Deciding the SEL scope (2026-07-30): in comp test, read the designation under that player's side (blue/red) scope.
         //   Outside comp test it is Scope::Plain = exactly the old lookup => league/spectate/background behaviour unchanged.
         //   This removes both "the same champion on both sides merges into one designation" and "comp-test designations

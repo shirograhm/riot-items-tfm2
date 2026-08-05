@@ -52,7 +52,9 @@
 //! corrupt the trampoline.
 //!
 //! After calling the original function, `detour` applies the config-driven build
-//! overrides from `build_config` (pinned slots + AI-filled blanks), then enforces
+//! overrides from `build_config` (pinned slots + AI-filled blanks) — to the
+//! player's own team only, per `crate::my_team`, which is what tells one team's
+//! call from the other's — then enforces
 //! unique builds: no champion ever builds duplicate copies of the same item — each
 //! duplicate is swapped for the closest-price final item of the same category (see
 //! `enforce_unique_items`).
@@ -532,8 +534,12 @@ unsafe fn detour(
     // `routes` covers `team1` only (5 routes for 5 entries), and the function is
     // called once per team — so a rule keyed by route index fires for the enemy
     // team too, which is why a build pinned to "Top" reached both top laners.
-    // Nothing in the arguments says which team is the player's: `mode` was false
-    // on every call observed. This is why builds are keyed by champion.
+    // Nothing in the *arguments* says which team is the player's: `mode` was
+    // false on every call observed. This is why builds are keyed by champion.
+    //
+    // The team is now identified from outside the arguments instead, by matching
+    // this lineup against the player's own starters (`crate::my_team`), which
+    // the client tick publishes from the stable record API.
 
     // Hand the champion roster to the client-side editor, which cannot
     // enumerate champions from inside a UI handler. Same process, so this is a
@@ -554,20 +560,52 @@ unsafe fn detour(
         .map(|(_, champion)| champion.clone())
         .collect::<Vec<_>>();
 
+    // Confine the overrides to the player's own team. This call computes one
+    // team and never says which, so the lineup is compared against the champions
+    // the player's own athletes have been seen playing — published from the
+    // simulation by `my_team`, the only place that fact exists.
+    //
+    // Both lineups go in first: they identify the match, so a lineup learned in
+    // the previous one is discarded rather than used to gate this one. Unknown
+    // lineup = `true`, so this degrades to the old both-teams behaviour rather
+    // than to no builds at all — see the fail-open note in that module.
+    let opponents = team2
+        .iter()
+        .map(|(_, champion)| champion.clone())
+        .collect::<Vec<_>>();
+    crate::my_team::note_lineups(&lineup, &opponents);
+    let mine = crate::my_team::owns_lineup(&lineup, &opponents);
+
+    // Who applies the builds. The tactics half does it per athlete, from the buy
+    // detour, behind `is_my_athlete` — an exact answer to "is this the player's
+    // player", which nothing available here can match. When that half is live it
+    // owns the job outright and this must not also apply them, or a pinned item
+    // would be set twice by two mechanisms that disagree about scope.
+    //
+    // When it is not live — version gate closed after a game update, or the
+    // `buy_item` detour failed to install — this stays the mechanism, with the
+    // lineup gate as its best effort.
+    let injected = crate::tactics::driver::injects_builds();
     match build_config::load() {
-        Ok(Some(config)) if !config.is_empty() => {
-            build_config::apply(&config, &item_keys, &lineup, &mut routes);
+        Ok(config) => {
+            // Published either way: the buy detour reads a snapshot, never the
+            // disk, and this is the call that already has the file in hand.
+            build_config::publish_pins(config.as_ref());
+            if let Some(config) = config.filter(|config| !config.is_empty()) {
+                if !injected && mine {
+                    build_config::apply(&config, &item_keys, &lineup, &mut routes);
+                }
+            }
         }
-        // No config file, or an empty one: leave the game's routes untouched.
-        Ok(_) => {}
         // A malformed config is ignored so the game's routes stay untouched.
         Err(_) => {}
     }
 
-    // There is no second, position-keyed pass any more. Builds are keyed by
-    // champion whichever editor wrote them, because this function computes one
-    // team per call and never says which team is the player's — so a rule keyed
-    // by route index applied to the enemy as well.
+    // There is no second, position-keyed pass any more. Builds stay keyed by
+    // champion whichever editor wrote them: `my_team` decides *whether* this
+    // team gets the overrides, not which route within it gets which build, and
+    // a rule keyed by route index would still be wrong for any lineup whose
+    // positions the player reorders.
 
     // Enforce unique builds after `build_config` so AI routes, category-forced
     // routes, and configured builds are all covered. Toggled from the item build

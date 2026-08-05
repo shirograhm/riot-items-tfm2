@@ -207,20 +207,24 @@ icons. The vanilla **Matchup** card stays on screen to the right of it, so the
 lineup is visible while builds are being set. **Team** is untouched — switching
 to it puts the editor away and brings the Team columns back.
 
+Builds apply to **your players only**. The game asks the mod for one team's item
+builds at a time without saying whose, so a build keyed to a champion used to
+reach whoever played that champion, the enemy included. Builds are therefore not
+applied to that request at all: all four slots are applied per athlete as each
+one shops, at the point where the mod can check the athlete's id against your
+own starting roster. An enemy playing the same champion is a different athlete
+and gets nothing.
+
+This needs the four-item half to be active, since that is the half that is
+inside the match. If it has disabled itself — after a game update, say — builds
+fall back to being applied per champion to the team being built for, which can
+occasionally reach the enemy, rather than not applying at all. A build that
+quietly does nothing is the worse outcome.
+
 The vanilla Personal tab is gone because this replaces it. Its five per-player
 dropdowns set the same thing per athlete that this sets per champion, and the
 game gives a mod no way to act on a per-athlete rule (see below), so keeping
 both would have left a control that looks like it works and does not.
-
-**If builds set here seem to be ignored, check Vanilla Overrides.** The old
-Personal dropdowns write a per-player build category into the save, and the game
-applies it after the mod's hook has run — so a player left on anything but **Let
-Player Decide** (from before this mod was installed, say) builds to that
-category and ignores the build set here. Nothing in the modding API can clear
-that value, so the **Vanilla Overrides** button in the toolbar brings the
-vanilla panel back for as long as it takes to set those dropdowns to **Let
-Player Decide**. The same button returns to the Builds list, and nothing about
-the mode is saved.
 
 The **filter by champion** box in the toolbar narrows the list as you type;
 its **X** clears it. A row whose champion is not yet chosen always stays

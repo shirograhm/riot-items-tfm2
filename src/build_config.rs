@@ -15,6 +15,7 @@ use serde::Deserialize;
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::path::PathBuf;
+use std::sync::{Arc, Mutex};
 
 /// Schema of `item-builds.json`: the whole file is a map of champion id -> build
 /// (there is no wrapper object).
@@ -168,10 +169,19 @@ pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
         map.insert(champion.clone(), serde_json::Value::Array(slots));
     }
 
-    serde_json::to_string_pretty(&map)
+    let written = serde_json::to_string_pretty(&map)
         .ok()
         .and_then(|text| std::fs::write(path, text + "\n").ok())
-        .is_some()
+        .is_some();
+
+    // The buy detour applies these from a snapshot rather than the file, so an
+    // edit that is not republished would not take effect until the next time the
+    // route hook happened to read the file. The editor writes on every change,
+    // so this keeps "change it and play" working.
+    if written {
+        publish_pins(load().ok().flatten().as_ref());
+    }
+    written
 }
 
 /// Champion roster the hook was handed, for the editor to offer.
@@ -203,6 +213,56 @@ pub fn record_champion_roster(ids: &[String]) {
 /// before the player can reach their own strategy screen.
 pub fn champion_roster() -> Vec<String> {
     CHAMPION_ROSTER.lock().map(|roster| roster.clone()).unwrap_or_default()
+}
+
+/// `item-builds.json`, as the *simulation* side reads it.
+///
+/// [`load`] reads the file, which is fine on the route hook — it fires a couple
+/// of times a match. The buy detour that applies these builds per athlete fires
+/// per buy decision, hundreds of thousands of times a match, and must never
+/// touch the disk. So the file is published here whenever it is read or written,
+/// and that side takes a snapshot.
+static PINS: Mutex<Option<Arc<HashMap<String, Vec<Option<String>>>>>> = Mutex::new(None);
+
+/// Publishes the current builds for the buy detour. `None` publishes an empty
+/// set — a deleted config must stop applying, not keep the last one alive.
+pub fn publish_pins(config: Option<&BuildConfig>) {
+    let builds = config.map(|config| config.by_champion.clone()).unwrap_or_default();
+    if let Ok(mut pins) = PINS.lock() {
+        *pins = Some(Arc::new(builds));
+    }
+}
+
+fn pins() -> Option<Arc<HashMap<String, Vec<Option<String>>>>> {
+    PINS.lock().ok()?.clone()
+}
+
+/// Whether this champion has any pinned item, which is what makes it worth
+/// looking up slot by slot.
+pub fn has_pins(champion: &str) -> bool {
+    pins().is_some_and(|pins| {
+        pins.get(champion)
+            .is_some_and(|build| build.iter().any(Option::is_some))
+    })
+}
+
+/// The pinned item for one slot, exactly as written in the file.
+///
+/// The verbatim key matters on its own: it is what tells a vanilla tier 5
+/// (`"warlords_final_judgement"`, whose id *is* its catalog index) from a mod
+/// item that has to be found by name.
+pub fn pinned_key_raw(champion: &str, slot: usize) -> Option<String> {
+    let pins = pins()?;
+    pins.get(champion)?.get(slot)?.clone()
+}
+
+/// The pinned item for one slot, normalized the way [`resolve_key`] normalizes
+/// it — `radiant_` variant first, then through [`alias_key`] — so a build
+/// authored with a plain LoL name resolves the same here as it does on the
+/// route hook.
+pub fn pinned_key(champion: &str, slot: usize) -> Option<String> {
+    let raw = pinned_key_raw(champion, slot)?;
+    Some(alias_key(radiant_key(&raw).as_ref()).to_string())
 }
 
 /// Writes `unique_items` to `mod-settings.json`, the toggle

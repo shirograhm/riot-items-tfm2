@@ -19,11 +19,9 @@
 //! anyway (see below) — so leaving both would have offered a control that looks
 //! like it works and does not.
 //!
-//! Its `#personal` panel node is still in the layout, and the toolbar's
-//! **Vanilla Overrides** button shows it: those dropdowns write a setting
-//! that is applied after the hook and silently beats it, and the game's own
-//! control is the only thing that can put one back to "Let Player Decide". See
-//! [`set_legacy`].
+//! Its `#personal` panel node is still in the layout and is hidden on entry,
+//! since game code may pick that tab when the screen is built without knowing
+//! its tab is gone. Nothing here shows it any more.
 //!
 //! Nothing arbitrates between the two tabs. They are independent
 //! `color_selectable`s and game code has never heard of ours, so [`open_editor`]
@@ -177,10 +175,10 @@ const BUILDS_TAB: &str = "main.contents.strategy.mode_toggle.builds";
 /// un-hide anything itself.
 const TEAM_TAB: &str = "main.contents.strategy.mode_toggle.team";
 
-/// The vanilla Personal panel. Its tab is gone and [`set_legacy`] is now the
-/// only thing that shows it, but it is still hidden on entry: game code decides
-/// what is visible when the screen is first built and may well pick Personal,
-/// having no idea its tab no longer exists.
+/// The vanilla Personal panel. Its tab is gone and nothing here shows it, but
+/// it is still hidden on entry: game code decides what is visible when the
+/// screen is first built and may well pick Personal, having no idea its tab no
+/// longer exists.
 const PERSONAL_PATH: &str = "main.contents.strategy.personal";
 
 /// The screen's own "Item Info" button. Game code hides it on the Team tab and
@@ -391,8 +389,6 @@ struct EditorState {
     /// Whether that popup was up as of the last frame, so the scroll views are
     /// only rewritten when it opens or closes.
     info_showing: bool,
-    /// Whether the vanilla Personal panel is being shown in the editor's place.
-    legacy: bool,
 }
 
 static STATE: Mutex<Option<EditorState>> = Mutex::new(None);
@@ -521,13 +517,7 @@ const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
 /// event a button reports.
 const SEARCH_PATH: &str = "main.contents.build_editor.popup.toolbar.search";
 const SEARCH_CLEAR_PATH: &str = "main.contents.build_editor.popup.toolbar.searchclear";
-/// Swaps the editor panel for the vanilla Personal one. `#legacybar` is the way
-/// back: a floating strip beside the vanilla Check Item Info button, outside the
-/// band the two panels share. See [`set_legacy`].
-const LEGACY_PATH: &str = "main.contents.build_editor.popup.toolbar.legacy";
-const LEGACY_BAR_PATH: &str = "main.contents.build_editor.legacybar";
-const LEGACY_BACK_PATH: &str = "main.contents.build_editor.legacybar.back";
-/// The editor panel, hidden whole while the vanilla one has the band.
+/// The editor panel.
 const POPUP_PATH: &str = "main.contents.build_editor.popup";
 const ROWS_PATH: &str = "main.contents.build_editor.popup.rowscroll.rows";
 
@@ -1615,8 +1605,6 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         UNIQUE_PATH,
         LISTCATCH_PATH,
         SEARCH_CLEAR_PATH,
-        LEGACY_PATH,
-        LEGACY_BACK_PATH,
     ] {
         register_once(ctx, path);
     }
@@ -1642,8 +1630,9 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
 fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     paint_tabs(ctx, true);
 
-    // Entering the tab always lands on Builds, whatever the last visit left up.
-    set_legacy(ctx, false);
+    // The panel is authored visible and only ever hidden with the editor around
+    // it, so this is belt and braces rather than a mode reset.
+    ctx.ui_set_visible(POPUP_PATH, true);
 
     for panel in CONTENT_PANELS {
         ctx.ui_set_visible(panel, false);
@@ -1661,59 +1650,6 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     let _ = with_state(|state| state.showing = true);
 }
 
-/// Shows the vanilla Personal panel in the editor's place, or puts it away.
-///
-/// # Why this exists at all
-///
-/// The Personal dropdowns write an `ItemBuildOverride` (`Auto`, `AD`, `Magic`,
-/// `AttackSpeed`, `Defense`, `MagicResistance`, `Hp`) into the team's saved
-/// strategy data — the same family of settings as `TowerPressStrategy` and
-/// `GameFinishStrategy`. That value is applied to the match somewhere other than
-/// `get_item_builds_list`, so it lands *after* the hook and quietly beats it: a
-/// player left on, say, `Defense` from before this mod was installed builds to
-/// that, whatever the Builds tab says.
-///
-/// The mod cannot clear it. `setting_get_*` and `record_get_*` have no writing
-/// counterpart, and `state_set_json` refuses `dropdown` nodes, so the one thing
-/// that can put those values back to `Auto` is the game's own control. Hence
-/// this: the panel the tab replaced is still in the layout, and this hands it
-/// back for as long as the player needs it.
-///
-/// # It is the Builds panel's layout, with the vanilla panel in it
-///
-/// The two modes are a straight swap of one panel for the other, and
-/// `#personal` is authored in `strategy.ui` to sit exactly where `#popup` sits:
-/// 1364x645 at `y: 75` inside `#strategy`, the vanilla 1824 narrowed for the
-/// reason the editor is that width in the first place — `#sub4` holds the
-/// Matchup card at x 1427-1871 and this tab keeps it on screen. The panel's six
-/// children are narrowed to match (1786 -> 1326, the width inside its 19px
-/// padding).
-///
-/// Authored rather than written here because writing `width` at runtime did not
-/// take: the call moved the panel and left it 1824 wide, covering everything of
-/// the Matchup card below the panel's own top edge — the card's title survived
-/// only by sitting above it. Nothing but this mode ever shows `#personal`, its
-/// tab having been replaced, so authoring the size it is wanted at cannot
-/// silently fail.
-///
-/// The way back is therefore not in the band at all: `#legacybar` floats in the
-/// strip beside the vanilla **Check Item Info** button, which is empty space and
-/// belongs to no panel.
-///
-/// Only visibility is toggled, so nothing needs restoring on the way out, and
-/// nothing about the mode is saved: the editor always opens on Builds.
-fn set_legacy(ctx: &mut StableClient<'_>, on: bool) {
-    let already = with_state(|state| std::mem::replace(&mut state.legacy, on)).unwrap_or(false);
-    if already == on {
-        return;
-    }
-
-    close_list(ctx);
-    ctx.ui_set_visible(POPUP_PATH, !on);
-    ctx.ui_set_visible(LEGACY_BAR_PATH, on);
-    ctx.ui_set_visible(PERSONAL_PATH, on);
-}
-
 /// Leaves the Builds tab.
 ///
 /// Deliberately restores no panel. This runs off a click on Team, and game
@@ -1722,7 +1658,6 @@ fn set_legacy(ctx: &mut StableClient<'_>, on: bool) {
 /// such click behind it and so must do the showing itself.
 fn close_editor(ctx: &mut StableClient<'_>) {
     close_list(ctx);
-    set_legacy(ctx, false);
     paint_tabs(ctx, false);
     ctx.ui_set_visible(EDITOR_PATH, false);
     // The one thing put back, because it is the one thing hidden that game code
@@ -2135,11 +2070,6 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    if path == LEGACY_PATH || path == LEGACY_BACK_PATH {
-        set_legacy(ctx, path == LEGACY_PATH);
-        return;
-    }
-
     if path == SEARCH_CLEAR_PATH {
         ctx.ui_set_text_edit_text(SEARCH_PATH, "");
         ctx.ui_set_visible(SEARCH_CLEAR_PATH, false);
@@ -2312,9 +2242,6 @@ impl StableExtension for StrategyPicker {
                 state.info_popup = None;
                 state.info_probe_tick = 0;
                 state.info_showing = false;
-                // Nothing to write back: the nodes both modes touch died with
-                // the screen, and the next one is built from source.
-                state.legacy = false;
                 state.showing = false;
                 stale
             })
@@ -2354,13 +2281,6 @@ impl StableExtension for StrategyPicker {
             keep_matchup(ctx);
             sync_filter(ctx);
             sync_info_popup(ctx);
-            // Re-asserted for the same reason the Matchup card is: game code
-            // drives `#personal` from its own idea of the current tab, which is
-            // Team, so it hides it again on its next update and a one-shot write
-            // does not survive. This runs after that.
-            if with_state(|state| state.legacy).unwrap_or(false) {
-                ctx.ui_set_visible(PERSONAL_PATH, true);
-            }
         }
     }
 }

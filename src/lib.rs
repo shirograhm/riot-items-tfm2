@@ -3,6 +3,7 @@ use std::cell::Cell;
 
 mod build_config;
 mod companion;
+mod my_team;
 mod config;
 mod constants;
 mod hook;

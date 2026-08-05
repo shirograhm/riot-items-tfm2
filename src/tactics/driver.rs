@@ -125,6 +125,15 @@ pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
     super::record_item_catalog(catalog);
 }
 
+/// Whether this half is applying `item-builds.json` per athlete, behind
+/// `is_my_athlete`.
+///
+/// `hook::detour` asks before applying those builds itself: exactly one of the
+/// two must, or a champion gets its pinned item twice over.
+pub fn injects_builds() -> bool {
+    super::injects_builds()
+}
+
 /// Item slots this half is configured for: 4, or 3 when `4items.cfg` says so.
 /// Only meaningful once [`on_mod_init`] has returned `true`.
 pub fn slot_count() -> usize {
