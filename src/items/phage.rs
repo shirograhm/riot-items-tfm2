@@ -42,9 +42,6 @@ impl Phage {
         item
     }
 
-    /// Rage. Re-applies only once the previous burst has lapsed: same-name buffs
-    /// stack rather than refresh, so an unguarded grant would pile movement speed
-    /// up with every hit.
     fn grant_rage(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         if !is_enemy_champion(ctx, caster, target) {
             return;

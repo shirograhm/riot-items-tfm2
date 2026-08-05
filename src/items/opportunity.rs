@@ -71,8 +71,6 @@ impl Opportunity {
         self
     }
 
-    /// Lethality to apply right now: the base amount, plus Preparation's bonus
-    /// while it is up.
     fn active_lethality(&self) -> usize {
         if self.prepared {
             self.effect_lethality + self.effect_bonus_lethality
@@ -160,13 +158,17 @@ impl StableItem for Opportunity {
         damage: &mut usize,
         _damage_type: DamageTypeV1,
     ) {
-        // Lethality resolves before the timer resets, so the attack that breaks
-        // out-of-combat still lands with Preparation up.
         apply_lethality(ctx, caster, target, self.active_lethality(), damage);
         self.note_combat(ctx, caster, target);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        target: usize,
+    ) {
         self.note_combat(ctx, caster, target);
     }
 

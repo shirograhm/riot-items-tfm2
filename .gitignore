@@ -23,6 +23,8 @@ target/
 .cargo/*
 .vscode/*
 tools/*
+docs/*
+previews/*
 hook-target.json
 rust-toolchain.toml
 item-builds.json

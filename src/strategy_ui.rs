@@ -19,11 +19,9 @@
 //! anyway (see below) — so leaving both would have offered a control that looks
 //! like it works and does not.
 //!
-//! Its `#personal` panel node is still in the layout, and the toolbar's
-//! **Vanilla Overrides** button shows it: those dropdowns write a setting
-//! that is applied after the hook and silently beats it, and the game's own
-//! control is the only thing that can put one back to "Let Player Decide". See
-//! [`set_legacy`].
+//! Its `#personal` panel node is still in the layout and is hidden on entry,
+//! since game code may pick that tab when the screen is built without knowing
+//! its tab is gone. Nothing here shows it any more.
 //!
 //! Nothing arbitrates between the two tabs. They are independent
 //! `color_selectable`s and game code has never heard of ours, so [`open_editor`]
@@ -139,22 +137,168 @@
 //! away, and only then — while a screen is up, registering a live path twice is
 //! still the double-fire hazard described above.
 
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 
 use mod_api_stable::*;
 
 use crate::build_config::{self, picker_slots, ChampionRow};
 use crate::item_catalog;
+use crate::tactics;
 
 /// Shown for a slot left to the game's own AI, and on the list row that puts a
 /// slot back into that state. The vanilla strategy screen's own wording for it
 /// (`strategy.i18n`'s `build_auto`), so the editor and the screen behind it call
 /// the same thing by the same name.
-const AI_SLOT_LABEL: &str = "Let Player Decide";
+/// The editor's own text, as `#asset/…?key` **references** the game resolves,
+/// not as strings this mod resolves itself.
+///
+/// That distinction is the whole feature. `ctx.i18n()` returns the `en` value
+/// regardless of the game's language, so resolving here and writing the result
+/// produced an English editor inside a Korean game. Handing the *reference* to
+/// the label instead lets the engine's LabelRunner substitute it at draw time,
+/// against the active locale — the same mechanism `tactics::VANILLA_OPTS` uses
+/// for the personal-tactics dropdown, which is verified working in game.
+///
+/// The catch, also recorded there: LabelRunner substitutes **whole-string**
+/// labels only, with no inline composition. So every key here is a complete
+/// label — `col_item1`..`col_item4` rather than one `"ITEM {n}"` template — and
+/// anything this mod concatenates (padded rows, truncated item names) cannot use
+/// this path and stays in `en`.
+///
+/// `ctx.i18n()` is still called once per key, but only to *validate* that the
+/// key resolves at all; a key that does not gets its English literal instead, so
+/// a raw `#asset/…` string can never reach the screen. `text/ui.i18n` is
+/// hand-authored and merged into `asset/base/text/ui` by `mod.override_info` —
+/// LabelRunner reads the base document, so the merge is required.
+#[derive(Clone)]
+struct Strings {
+    tab: String,
+    add: String,
+    filter: String,
+    hint: String,
+    col_champion: String,
+    /// One complete label per column — LabelRunner cannot compose `"ITEM " + n`.
+    col_items: [String; 4],
+    unique_on: String,
+    unique_off: String,
+    save: String,
+    ai_slot: String,
+    no_champion: String,
+}
+
+impl Default for Strings {
+    fn default() -> Self {
+        Self {
+            tab: "Builds".into(),
+            add: "+ Add Champion".into(),
+            filter: "filter by champion...".into(),
+            hint: "Builds are per champion and only apply to your team. A blank slot is filled by the game, in the AI's own pick order.".into(),
+            col_champion: "CHAMPION".into(),
+            col_items: ["ITEM 1".into(), "ITEM 2".into(), "ITEM 3".into(), "ITEM 4".into()],
+            unique_on: "Enforcing unique items".into(),
+            unique_off: "Enforce unique items".into(),
+            save: "Save Item Builds".into(),
+            ai_slot: AI_SLOT_LABEL_FALLBACK.into(),
+            no_champion: NO_CHAMPION_LABEL_FALLBACK.into(),
+        }
+    }
+}
+
+/// Where the editor's labels live. `text/ui.i18n` is merged into this base
+/// document by `mod.override_info`; LabelRunner resolves references against the
+/// base documents, so the merge is what makes the references work.
+const UI_TEXT_DOC: &str = "#asset/base/text/ui";
+
+static STRINGS: Mutex<Option<Arc<Strings>>> = Mutex::new(None);
+
+/// The resolved text, or the English defaults until [`load_strings`] has run.
+fn strings() -> Arc<Strings> {
+    STRINGS
+        .lock()
+        .ok()
+        .and_then(|strings| strings.clone())
+        .unwrap_or_else(|| Arc::new(Strings::default()))
+}
+
+/// Resolves the editor's text for the game's current language.
+fn load_strings(ctx: &StableClient<'_>) {
+    let fallback = Strings::default();
+    // A reference the game will resolve — but only once it is known to resolve,
+    // because an unknown key would otherwise be drawn as literal `#asset/...`.
+    // `ctx.i18n` answers in `en` whatever the locale is, which is useless as a
+    // translation and perfect as an existence check.
+    let reference = |key: &str, fallback: &str| {
+        let path = format!("{UI_TEXT_DOC}?builds.{key}");
+        match ctx.i18n(&path) {
+            Some(text) if !text.is_empty() && !text.starts_with('#') => path,
+            _ => fallback.to_string(),
+        }
+    };
+    // For text this mod concatenates: LabelRunner never sees it as a whole
+    // label, so it has to be resolved here and stays `en`.
+    let resolved = |key: &str, fallback: &str| {
+        ctx.i18n(&format!("{UI_TEXT_DOC}?builds.{key}"))
+            .filter(|text| !text.is_empty() && !text.starts_with('#'))
+            .unwrap_or_else(|| fallback.to_string())
+    };
+    let resolved_strings = Strings {
+        tab: reference("tab", &fallback.tab),
+        add: reference("add_champion", &fallback.add),
+        hint: reference("hint", &fallback.hint),
+        col_champion: reference("col_champion", &fallback.col_champion),
+        col_items: std::array::from_fn(|i| {
+            reference(&format!("col_item{}", i + 1), &fallback.col_items[i])
+        }),
+        unique_on: reference("unique_on", &fallback.unique_on),
+        unique_off: reference("unique_off", &fallback.unique_off),
+        save: reference("save", &fallback.save),
+        // A placeholder is a whole label, so it takes a reference like the rest.
+        // Confirmed against the bundle: all 21 `placeholder:` values the game
+        // ships are `#asset/...` references, so the engine resolves them there.
+        filter: reference("filter_placeholder", &fallback.filter),
+        ai_slot: resolved("ai_slot", &fallback.ai_slot),
+        no_champion: resolved("no_champion", &fallback.no_champion),
+    };
+    if let Ok(mut strings) = STRINGS.lock() {
+        *strings = Some(Arc::new(resolved_strings));
+    }
+}
+
+/// Writes the resolved text onto the nodes that carry it literally in the
+/// layout. The `.ui` keeps the English so the editor reads correctly if this
+/// never runs.
+///
+/// `ui_set_properties` rather than `ui_set_text` for the buttons: their label is
+/// a nested `text` block, which is the form [`refresh_unique`] already drives.
+fn apply_strings(ctx: &mut StableClient<'_>) {
+    let strings = strings();
+    let escape = |text: &str| text.replace('\\', "\\\\").replace('"', "\\\"");
+
+    for (path, text) in [(ADD_PATH, &strings.add), (SAVE_PATH, &strings.save)] {
+        ctx.ui_set_properties(path, &format!("text: {{ text: \"{}\"; }}", escape(text)));
+    }
+    ctx.ui_set_properties(
+        SEARCH_PATH,
+        &format!("placeholder: \"{}\";", escape(&strings.filter)),
+    );
+    ctx.ui_set_text(HINT_PATH, &strings.hint);
+    ctx.ui_set_text(
+        &format!("{COLHEADER_PATH}.c_champion"),
+        &strings.col_champion,
+    );
+    // The tab carries `text` as a direct property, not a nested block — see
+    // `#builds` in `strategy.ui` — so it takes the plain form.
+    ctx.ui_set_properties(BUILDS_TAB, &format!("text: \"{}\";", escape(&strings.tab)));
+}
+
+/// The toolbar hint, the one label in the editor long enough to matter.
+const HINT_PATH: &str = "main.contents.build_editor.popup.toolbar.hint";
+
+const AI_SLOT_LABEL_FALLBACK: &str = "Let Player Decide";
 
 /// Shown for a row whose champion has not been chosen yet. Such a row is kept in
 /// the editor but never written.
-const NO_CHAMPION_LABEL: &str = "(champion)";
+const NO_CHAMPION_LABEL_FALLBACK: &str = "(champion)";
 
 /// Root every runtime UI path hangs off.
 ///
@@ -176,10 +320,10 @@ const BUILDS_TAB: &str = "main.contents.strategy.mode_toggle.builds";
 /// un-hide anything itself.
 const TEAM_TAB: &str = "main.contents.strategy.mode_toggle.team";
 
-/// The vanilla Personal panel. Its tab is gone and [`set_legacy`] is now the
-/// only thing that shows it, but it is still hidden on entry: game code decides
-/// what is visible when the screen is first built and may well pick Personal,
-/// having no idea its tab no longer exists.
+/// The vanilla Personal panel. Its tab is gone and nothing here shows it, but
+/// it is still hidden on entry: game code decides what is visible when the
+/// screen is first built and may well pick Personal, having no idea its tab no
+/// longer exists.
 const PERSONAL_PATH: &str = "main.contents.strategy.personal";
 
 /// The screen's own "Item Info" button. Game code hides it on the Team tab and
@@ -390,8 +534,6 @@ struct EditorState {
     /// Whether that popup was up as of the last frame, so the scroll views are
     /// only rewritten when it opens or closes.
     info_showing: bool,
-    /// Whether the vanilla Personal panel is being shown in the editor's place.
-    legacy: bool,
 }
 
 static STATE: Mutex<Option<EditorState>> = Mutex::new(None);
@@ -520,13 +662,7 @@ const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
 /// event a button reports.
 const SEARCH_PATH: &str = "main.contents.build_editor.popup.toolbar.search";
 const SEARCH_CLEAR_PATH: &str = "main.contents.build_editor.popup.toolbar.searchclear";
-/// Swaps the editor panel for the vanilla Personal one. `#legacybar` is the way
-/// back: a floating strip beside the vanilla Check Item Info button, outside the
-/// band the two panels share. See [`set_legacy`].
-const LEGACY_PATH: &str = "main.contents.build_editor.popup.toolbar.legacy";
-const LEGACY_BAR_PATH: &str = "main.contents.build_editor.legacybar";
-const LEGACY_BACK_PATH: &str = "main.contents.build_editor.legacybar.back";
-/// The editor panel, hidden whole while the vanilla one has the band.
+/// The editor panel.
 const POPUP_PATH: &str = "main.contents.build_editor.popup";
 const ROWS_PATH: &str = "main.contents.build_editor.popup.rowscroll.rows";
 
@@ -603,9 +739,8 @@ fn sanitize(text: &str) -> String {
 /// which is the bug this is here to fix.
 fn char_width(character: char) -> f32 {
     match character {
-        ' ' | '\'' | '.' | ',' | ':' | ';' | '!' | '|' | 'i' | 'j' | 'l' | 't' | 'f' | 'r' | 'I' => {
-            4.0
-        }
+        ' ' | '\'' | '.' | ',' | ':' | ';' | '!' | '|' | 'i' | 'j' | 'l' | 't' | 'f' | 'r'
+        | 'I' => 4.0,
         'm' | 'w' | 'M' | 'W' | '@' => 12.0,
         _ => 8.0,
     }
@@ -872,7 +1007,7 @@ fn load_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
     let mut out: Vec<ChampionChoice> = ids
         .iter()
         .map(|id| ChampionChoice {
-            name: sanitize(&champion_display_name(id)),
+            name: sanitize(&champion_display_name(ctx, id)),
             id: sanitize(id),
         })
         .collect();
@@ -904,12 +1039,30 @@ fn strip_mod_prefixes(id: &str) -> &str {
     }
 }
 
-/// Readable name for a champion id: `snake_case` -> `Snake Case`.
+/// Readable name for a champion id, translated where the game has a name to
+/// give and prettified from the id (`snake_case` -> `Snake Case`) where it does
+/// not.
 ///
-/// Not an i18n lookup, because there is none to do — `champion.i18n` carries
-/// `skill_name` and `description` per champion but no display-name map, so the
-/// game derives the shown name from the id the same way.
-fn champion_display_name(id: &str) -> String {
+/// The lookup was long documented here as pointless — `champion.i18n` was found
+/// to carry `skill_name` and `description` per champion but no display-name map,
+/// and the game was assumed to derive the shown name from the id the same way.
+/// It is attempted anyway rather than argued about: two spellings, each accepted
+/// only if it answers, and the prettified id behind them. That costs one miss
+/// per champion on a cached path and settles the question per locale instead of
+/// per comment. A locale whose champions come back in the id's language means
+/// the keys genuinely are not there.
+fn champion_display_name(ctx: &StableClient<'_>, id: &str) -> String {
+    for key in [
+        format!("#asset/base/text/champion?{id}.name"),
+        format!("#asset/base/text/champion?{id}"),
+    ] {
+        if let Some(name) = ctx
+            .i18n(&key)
+            .filter(|name| !name.is_empty() && !name.starts_with('#'))
+        {
+            return name;
+        }
+    }
     if id == "soldier" {
         // The one id whose prettified form is not what the game calls it.
         return "Soldier (Sniper)".to_string();
@@ -948,7 +1101,7 @@ fn snapshot_champions() -> Vec<ChampionChoice> {
 /// roster does not cover.
 fn champion_label(champions: &[ChampionChoice], id: Option<&str>) -> String {
     let Some(id) = id else {
-        return NO_CHAMPION_LABEL.to_string();
+        return strings().no_champion.clone();
     };
     champions
         .iter()
@@ -1033,7 +1186,7 @@ fn refresh_combo(
             ),
             "#e8e8e8ff",
         ),
-        None => (format!("{PLAIN_PAD}{AI_SLOT_LABEL}"), "#a5a5abff"),
+        None => (format!("{PLAIN_PAD}{}", strings().ai_slot), "#a5a5abff"),
     };
     ctx.ui_set_properties(
         &combo_path(row, slot),
@@ -1093,10 +1246,11 @@ fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
 /// "Enforcing unique items" while on, plain "Enforce unique items" while off —
 /// so the state reads off the button itself.
 fn refresh_unique(ctx: &mut StableClient<'_>) {
+    let strings = strings();
     let (text, color) = if build_config::unique_items_enabled() {
-        ("Enforcing unique items", "#60ddc2ff")
+        (&strings.unique_on, "#60ddc2ff")
     } else {
-        ("Enforce unique items", "#d7dbe4ff")
+        (&strings.unique_off, "#d7dbe4ff")
     };
     ctx.ui_set_properties(
         UNIQUE_PATH,
@@ -1108,6 +1262,11 @@ fn refresh_unique(ctx: &mut StableClient<'_>) {
 
 /// `.ui` source for one champion row.
 fn row_source(row: usize) -> String {
+    // Bound once: the spawned `.ui` source carries the text literally, so
+    // this is where the editor's language reaches a freshly built row.
+    let strings = strings();
+    let no_champion = &strings.no_champion;
+    let ai_slot = &strings.ai_slot;
     let mut source = format!(
         "row{row}:color {{\n\
          width: {ROW_WIDTH}px;\n\
@@ -1123,7 +1282,7 @@ fn row_source(row: usize) -> String {
          height: {COMBO_H}px;\n\
          \n\
          text: {{\n\
-         text: \"{NO_CHAMPION_LABEL}\";\n\
+         text: \"{no_champion}\";\n\
          align_x: Left;\n\
          align_y: Center;\n\
          size: 14;\n\
@@ -1160,7 +1319,7 @@ fn row_source(row: usize) -> String {
              height: {COMBO_H}px;\n\
              \n\
              text: {{\n\
-             text: \"{AI_SLOT_LABEL}\";\n\
+             text: \"{ai_slot}\";\n\
              align_x: Left;\n\
              align_y: Center;\n\
              size: 14;\n\
@@ -1296,6 +1455,8 @@ fn entry_height(entry: &ListEntry) -> i32 {
 /// (which would left-align the name past the icon) appears in no shipped layout
 /// and is not worth carrying as an unknown, so the style's centred label stands.
 fn entry_source(index: usize, entry: &ListEntry) -> String {
+    let strings = strings();
+    let ai_slot = &strings.ai_slot;
     match entry {
         ListEntry::Clear => format!(
             "e{index}:color_selectable {{\n\
@@ -1303,7 +1464,7 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
              width: 304px;\n\
              height: {ENTRY_ITEM_H}px;\n\
              label: {{ size: 14; align_x: Left; color: {LIST_CLEAR_TEXT}; }}\n\
-             text: \"{PLAIN_PAD}{AI_SLOT_LABEL}\";\n\
+             text: \"{PLAIN_PAD}{ai_slot}\";\n\
              }}"
         ),
         // A `color` band with the label as its child rather than a bare label,
@@ -1439,6 +1600,7 @@ fn header_source(slot: usize) -> String {
     let x = combo_x(slot);
     let w = combo_w();
     let number = slot + 1;
+    let label = strings().col_items[slot.min(3)].clone();
     format!(
         "c_item{number}:label {{\n\
          @\"asset/base/style/main#label\";\n\
@@ -1449,7 +1611,7 @@ fn header_source(slot: usize) -> String {
          align_y: Center;\n\
          size: 13;\n\
          color: #a5a5abff;\n\
-         text: \"ITEM {number}\";\n\
+         text: \"{label}\";\n\
          }}\n"
     )
 }
@@ -1466,9 +1628,17 @@ fn sync_column_headers(ctx: &mut StableClient<'_>) {
     for slot in 0..picker_slots() {
         let path = format!("{COLHEADER_PATH}.c_item{}", slot + 1);
         if ctx.ui_exists(&path) {
+            // Text as well as geometry: the first three are authored in
+            // `build_editor.ui` with their English labels, so this is the only
+            // thing that translates them.
+            let label = strings().col_items[slot.min(3)].clone();
             ctx.ui_set_properties(
                 &path,
-                &format!("x: {}px; width: {}px;", combo_x(slot), combo_w()),
+                &format!(
+                    "x: {}px; width: {}px; text: \"{label}\";",
+                    combo_x(slot),
+                    combo_w()
+                ),
             );
         } else {
             ctx.ui_spawn_source(COLHEADER_PATH, &header_source(slot));
@@ -1568,6 +1738,11 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     if !ctx.ui_exists(EDITOR_PATH) {
         return false;
     }
+    // Before anything reads a label. The subtree was just respawned from source,
+    // so its English literals are back and everything below — the headers, the
+    // rows, the buttons — has to be told the game's language again.
+    load_strings(ctx);
+    apply_strings(ctx);
     sync_column_headers(ctx);
 
     let entries = cached_entries(ctx);
@@ -1614,8 +1789,6 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         UNIQUE_PATH,
         LISTCATCH_PATH,
         SEARCH_CLEAR_PATH,
-        LEGACY_PATH,
-        LEGACY_BACK_PATH,
     ] {
         register_once(ctx, path);
     }
@@ -1641,8 +1814,9 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
 fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     paint_tabs(ctx, true);
 
-    // Entering the tab always lands on Builds, whatever the last visit left up.
-    set_legacy(ctx, false);
+    // The panel is authored visible and only ever hidden with the editor around
+    // it, so this is belt and braces rather than a mode reset.
+    ctx.ui_set_visible(POPUP_PATH, true);
 
     for panel in CONTENT_PANELS {
         ctx.ui_set_visible(panel, false);
@@ -1660,59 +1834,6 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     let _ = with_state(|state| state.showing = true);
 }
 
-/// Shows the vanilla Personal panel in the editor's place, or puts it away.
-///
-/// # Why this exists at all
-///
-/// The Personal dropdowns write an `ItemBuildOverride` (`Auto`, `AD`, `Magic`,
-/// `AttackSpeed`, `Defense`, `MagicResistance`, `Hp`) into the team's saved
-/// strategy data — the same family of settings as `TowerPressStrategy` and
-/// `GameFinishStrategy`. That value is applied to the match somewhere other than
-/// `get_item_builds_list`, so it lands *after* the hook and quietly beats it: a
-/// player left on, say, `Defense` from before this mod was installed builds to
-/// that, whatever the Builds tab says.
-///
-/// The mod cannot clear it. `setting_get_*` and `record_get_*` have no writing
-/// counterpart, and `state_set_json` refuses `dropdown` nodes, so the one thing
-/// that can put those values back to `Auto` is the game's own control. Hence
-/// this: the panel the tab replaced is still in the layout, and this hands it
-/// back for as long as the player needs it.
-///
-/// # It is the Builds panel's layout, with the vanilla panel in it
-///
-/// The two modes are a straight swap of one panel for the other, and
-/// `#personal` is authored in `strategy.ui` to sit exactly where `#popup` sits:
-/// 1364x645 at `y: 75` inside `#strategy`, the vanilla 1824 narrowed for the
-/// reason the editor is that width in the first place — `#sub4` holds the
-/// Matchup card at x 1427-1871 and this tab keeps it on screen. The panel's six
-/// children are narrowed to match (1786 -> 1326, the width inside its 19px
-/// padding).
-///
-/// Authored rather than written here because writing `width` at runtime did not
-/// take: the call moved the panel and left it 1824 wide, covering everything of
-/// the Matchup card below the panel's own top edge — the card's title survived
-/// only by sitting above it. Nothing but this mode ever shows `#personal`, its
-/// tab having been replaced, so authoring the size it is wanted at cannot
-/// silently fail.
-///
-/// The way back is therefore not in the band at all: `#legacybar` floats in the
-/// strip beside the vanilla **Check Item Info** button, which is empty space and
-/// belongs to no panel.
-///
-/// Only visibility is toggled, so nothing needs restoring on the way out, and
-/// nothing about the mode is saved: the editor always opens on Builds.
-fn set_legacy(ctx: &mut StableClient<'_>, on: bool) {
-    let already = with_state(|state| std::mem::replace(&mut state.legacy, on)).unwrap_or(false);
-    if already == on {
-        return;
-    }
-
-    close_list(ctx);
-    ctx.ui_set_visible(POPUP_PATH, !on);
-    ctx.ui_set_visible(LEGACY_BAR_PATH, on);
-    ctx.ui_set_visible(PERSONAL_PATH, on);
-}
-
 /// Leaves the Builds tab.
 ///
 /// Deliberately restores no panel. This runs off a click on Team, and game
@@ -1721,7 +1842,6 @@ fn set_legacy(ctx: &mut StableClient<'_>, on: bool) {
 /// such click behind it and so must do the showing itself.
 fn close_editor(ctx: &mut StableClient<'_>) {
     close_list(ctx);
-    set_legacy(ctx, false);
     paint_tabs(ctx, false);
     ctx.ui_set_visible(EDITOR_PATH, false);
     // The one thing put back, because it is the one thing hidden that game code
@@ -2134,11 +2254,6 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    if path == LEGACY_PATH || path == LEGACY_BACK_PATH {
-        set_legacy(ctx, path == LEGACY_PATH);
-        return;
-    }
-
     if path == SEARCH_CLEAR_PATH {
         ctx.ui_set_text_edit_text(SEARCH_PATH, "");
         ctx.ui_set_visible(SEARCH_CLEAR_PATH, false);
@@ -2288,6 +2403,14 @@ impl StableExtension for StrategyPicker {
     }
 
     fn post_update(&self, ctx: &mut StableClient<'_>, _dt_micros: u64) {
+        // The merged `tfm2_item_tactics` half, which was its own
+        // `ModExtension::post_update` before it moved in here. It has to run
+        // first and unconditionally: this is the only per-frame client hook the
+        // mod owns, and everything below returns early off the strategy screen,
+        // while the tactics half installs and self-heals its hooks (including
+        // the one that captures the UI root) on every frame, everywhere.
+        tactics::driver::post_update(ctx);
+
         if !ctx.ui_exists(BUILDS_TAB) {
             // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.
@@ -2303,9 +2426,6 @@ impl StableExtension for StrategyPicker {
                 state.info_popup = None;
                 state.info_probe_tick = 0;
                 state.info_showing = false;
-                // Nothing to write back: the nodes both modes touch died with
-                // the screen, and the next one is built from source.
-                state.legacy = false;
                 state.showing = false;
                 stale
             })
@@ -2345,13 +2465,6 @@ impl StableExtension for StrategyPicker {
             keep_matchup(ctx);
             sync_filter(ctx);
             sync_info_popup(ctx);
-            // Re-asserted for the same reason the Matchup card is: game code
-            // drives `#personal` from its own idea of the current tab, which is
-            // Team, so it hides it again on its next update and a one-shot write
-            // does not survive. This runs after that.
-            if with_state(|state| state.legacy).unwrap_or(false) {
-                ctx.ui_set_visible(PERSONAL_PATH, true);
-            }
         }
     }
 }

@@ -31,9 +31,9 @@ impl ProtoplasmHarness {
             ),
             buff_buff: "protoplasm_harness_buff",
             cooldown_buff_buff: "protoplasm_harness_cooldown_buff",
-            price: 1000,
+            price: 1200,
             hp: 350,
-            skill_cooldown_mult: 15,
+            skill_cooldown_mult: 10,
             move_speed_mult: 5,
             effect_bonus_flat_hp: 300,
             effect_hp_percent_boost: 25.0,
@@ -48,9 +48,8 @@ impl ProtoplasmHarness {
             meta: ItemMeta::radiant("radiant_protoplasm_harness", &["protoplasm_harness"]),
             buff_buff: "radiant_protoplasm_harness_buff",
             cooldown_buff_buff: "radiant_protoplasm_harness_cooldown_buff",
-            price: 1600,
-            hp: 700,
-            skill_cooldown_mult: 20,
+            price: 1650,
+            hp: 650,
             effect_bonus_flat_hp: 600,
             ..Self::base()
         }
