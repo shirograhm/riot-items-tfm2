@@ -252,7 +252,7 @@ fn load_strings(ctx: &StableClient<'_>) {
         unique_on: reference("unique_on", &fallback.unique_on),
         unique_off: reference("unique_off", &fallback.unique_off),
         save: reference("save", &fallback.save),
-        filter: resolved("filter_placeholder", &fallback.filter),
+        filter: reference("filter_placeholder", &fallback.filter),
         ai_slot: resolved("ai_slot", &fallback.ai_slot),
         no_champion: resolved("no_champion", &fallback.no_champion),
     };
