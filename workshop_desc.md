@@ -2,10 +2,9 @@ Adds 128 new items (73 base + 55 Radiant) inspired by Riot Games (LoL/TFT/Arena)
 
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
-[b]This mod supports custom item values! Now you can be Phreak! See the instructions below.[/b]  
-[b]This mod also supports custom item builds! See the instructions below.[/b]  
+[b]This mod supports custom item values, custom item builds, and a way to add another item slot. See instructions below![/b]  
 
-Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for an item of the same category. Prefer duplicate builds? Toggle it off in the in-game Build Editor.  
+Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for an item of the same category. Toggle it in the in-game Build Editor.  
 
 [h1] Important [/h1]
 
@@ -42,13 +41,10 @@ In order for the AI to realize that these items exist, it is best to add this mo
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
 Currently updated for game version >=0.5.3. Also supports previous versions using an older build of the mod. See below for reference:  
-Mod v0.7.0 - v0.5.3+
-Mod v0.5.7 - v0.5.1+
+Mod v0.8.0+ - v0.5.4+
+Mod v0.7.0+ - v0.5.3
+Mod v0.5.7+ - v0.5.1 & v0.5.2
 Mod v0.5.6 - versions up to 0.5.0
-
-[h1] Soft Dependencies [/h1]
-This mod works with the 4 Item Mode mod located here: https://gall.dcinside.com/mgallery/board/view?id=teamfightmanager&no=18939
-Mod v0.7.4 - 4ItemMod 0.5.3
 
 [h1] Custom Item Values [/h1]
 
@@ -76,20 +72,16 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 3. Start the simulated match!
 
 Builds are saved to [b]item-builds.json[/b] as you make them, so they carry across sessions.  
+These builds only affect your players. Other players will continue to build whatever combination has the highest winrates.  
 
-[h2] Vanilla Overrides [/h2]
+[h1] 4 Item Mode [/h1]
 
-The [b]Builds[/b] tab replaces the game's own [b]Personal[/b] tab, where each player could be told to build a category (AD, Magic, Defense...) instead of [b]Let Player Decide[/b]. That vanilla setting is saved with your team and is applied [i]after[/i] this mod picks its items, so any player still set to a category will ignore the build you gave their champion. If you used that screen before installing this mod, those settings are still there.
+This mod can be used with a 4th item slot. To enable this slot:
 
-The mod cannot clear them for you — only the game's own dropdowns can write that value — so the old screen is one click away:
+1. In the mod's folder, locate the file [b]4items.cfg[/b] and open it with your preferred text editor.
+2. Set [b]slots = 4[/b] and save. Then restart your game.
 
-1. On the [b]Builds[/b] tab, click [b]Vanilla Overrides[/b] in the toolbar.
-2. Set every player's three slots back to [b]Let Player Decide[/b].
-3. Click [b]Back to Item Builds[/b].
-
-You only need to do this once per champion, and only if you had used the Personal tab. If every player already reads [b]Let Player Decide[/b], there is nothing to fix.
-
-[b]NOTE: Custom item builds override all matches at the moment. So your build becomes the meta. It is extremely powerful and can affect both simulated games, soloQ, and even the other team's champions in your match. Please use it with caution![/b]
+Next time you play a match, you should notice a 4th item slot both in your Builds editor and in the game sim.  
 
 [h1] Planned Features [/h1]
 
@@ -101,6 +93,8 @@ You only need to do this once per champion, and only if you had used the Persona
 Check the Item/Feature Requests forum in the mod for the most up-to-date information.
 
 [h2] Credits [/h2]
+
+Thank you to @SUB from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one.
 
 Thank you to @Formula Piggy and @Yuuroo on discord for Vietnamese translations!
 Thank you to @GeoStelar on discord for the Portuguese (BR) translations!

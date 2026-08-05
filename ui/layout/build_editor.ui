@@ -109,7 +109,7 @@ build_editor:empty {
         align_y: Center;
         size: 13;
         color: #a5a5abff;
-        text: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.";
+        text: "Builds are per champion and only apply to your team. A blank slot is filled by the game, in the AI's own pick order.";
       }
     }
 

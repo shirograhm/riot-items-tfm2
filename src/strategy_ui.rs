@@ -192,7 +192,7 @@ impl Default for Strings {
             tab: "Builds".into(),
             add: "+ Add Champion".into(),
             filter: "filter by champion...".into(),
-            hint: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.".into(),
+            hint: "Builds are per champion and only apply to your team. A blank slot is filled by the game, in the AI's own pick order.".into(),
             col_champion: "CHAMPION".into(),
             col_items: ["ITEM 1".into(), "ITEM 2".into(), "ITEM 3".into(), "ITEM 4".into()],
             unique_on: "Enforcing unique items".into(),
@@ -252,6 +252,9 @@ fn load_strings(ctx: &StableClient<'_>) {
         unique_on: reference("unique_on", &fallback.unique_on),
         unique_off: reference("unique_off", &fallback.unique_off),
         save: reference("save", &fallback.save),
+        // A placeholder is a whole label, so it takes a reference like the rest.
+        // Confirmed against the bundle: all 21 `placeholder:` values the game
+        // ships are `#asset/...` references, so the engine resolves them there.
         filter: reference("filter_placeholder", &fallback.filter),
         ai_slot: resolved("ai_slot", &fallback.ai_slot),
         no_champion: resolved("no_champion", &fallback.no_champion),
@@ -271,10 +274,7 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
     let strings = strings();
     let escape = |text: &str| text.replace('\\', "\\\\").replace('"', "\\\"");
 
-    for (path, text) in [
-        (ADD_PATH, &strings.add),
-        (SAVE_PATH, &strings.save),
-    ] {
+    for (path, text) in [(ADD_PATH, &strings.add), (SAVE_PATH, &strings.save)] {
         ctx.ui_set_properties(path, &format!("text: {{ text: \"{}\"; }}", escape(text)));
     }
     ctx.ui_set_properties(
@@ -739,9 +739,8 @@ fn sanitize(text: &str) -> String {
 /// which is the bug this is here to fix.
 fn char_width(character: char) -> f32 {
     match character {
-        ' ' | '\'' | '.' | ',' | ':' | ';' | '!' | '|' | 'i' | 'j' | 'l' | 't' | 'f' | 'r' | 'I' => {
-            4.0
-        }
+        ' ' | '\'' | '.' | ',' | ':' | ';' | '!' | '|' | 'i' | 'j' | 'l' | 't' | 'f' | 'r'
+        | 'I' => 4.0,
         'm' | 'w' | 'M' | 'W' | '@' => 12.0,
         _ => 8.0,
     }
