@@ -141,6 +141,9 @@ impl StableItem for EchoesOfHelia {
         entity: usize,
         _attacker: usize,
         damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
@@ -155,6 +158,8 @@ impl StableItem for EchoesOfHelia {
         _target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -168,6 +173,7 @@ impl StableItem for EchoesOfHelia {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        _is_ally: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;

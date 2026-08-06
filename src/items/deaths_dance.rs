@@ -217,6 +217,9 @@ impl StableItem for DeathsDance {
         entity: usize,
         attacker: usize,
         damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         if attacker == entity {
             return;
@@ -247,6 +250,8 @@ impl StableItem for DeathsDance {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
@@ -257,8 +262,11 @@ impl StableItem for DeathsDance {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        is_ally: bool,
     ) {
-        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
+        if !is_ally {
+            mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

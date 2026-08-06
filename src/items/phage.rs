@@ -114,8 +114,12 @@ impl StableItem for Phage {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        self.grant_rage(ctx, caster, target);
+        if attack_type == AttackTypeV1::BaseAttack {
+            self.grant_rage(ctx, caster, target);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

@@ -157,6 +157,8 @@ impl StableItem for Opportunity {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         apply_lethality(ctx, caster, target, self.active_lethality(), damage);
         self.note_combat(ctx, caster, target);
@@ -168,8 +170,11 @@ impl StableItem for Opportunity {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        is_ally: bool,
     ) {
-        self.note_combat(ctx, caster, target);
+        if !is_ally {
+            self.note_combat(ctx, caster, target);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

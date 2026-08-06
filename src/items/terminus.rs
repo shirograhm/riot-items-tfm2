@@ -127,13 +127,12 @@ impl StableItem for Terminus {
         self.flip_flop = true;
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
         caster: usize,
         _target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
     ) {
         let Some(caster_entity_ref) = ctx.get_entity(caster) else {
             return;
@@ -147,7 +146,10 @@ impl StableItem for Terminus {
                     caster,
                     &BuffV1 {
                         defence_penetration: self.effect_armor_pen_per_stack,
-                        ..BuffV1::timed(self.armor_pen_buff_buff, ticks(self.effect_duration_seconds))
+                        ..BuffV1::timed(
+                            self.armor_pen_buff_buff,
+                            ticks(self.effect_duration_seconds),
+                        )
                     },
                 );
             }
@@ -158,7 +160,10 @@ impl StableItem for Terminus {
                     caster,
                     &BuffV1 {
                         magic_resistance_penetration: self.effect_magic_pen_per_stack,
-                        ..BuffV1::timed(self.magic_resistance_pen_buff_buff, ticks(self.effect_duration_seconds))
+                        ..BuffV1::timed(
+                            self.magic_resistance_pen_buff_buff,
+                            ticks(self.effect_duration_seconds),
+                        )
                     },
                 );
             }
@@ -167,7 +172,11 @@ impl StableItem for Terminus {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed, ItemTagV1::DefensePenetration]
+        vec![
+            ItemTagV1::Ad,
+            ItemTagV1::AttackSpeed,
+            ItemTagV1::DefensePenetration,
+        ]
     }
 
     fn category(&self) -> ItemCategoryV1 {

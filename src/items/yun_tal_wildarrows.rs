@@ -156,6 +156,8 @@ impl StableItem for YunTalWildarrows {
         _target: usize,
         _damage: &mut usize,
         damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -180,12 +182,18 @@ impl StableItem for YunTalWildarrows {
                 caster,
                 &BuffV1 {
                     attack_speed_mult: self.effect_flurry_attack_speed_mult,
-                    ..BuffV1::timed(self.yun_tal_flurry_buff, ticks(self.effect_duration_seconds))
+                    ..BuffV1::timed(
+                        self.yun_tal_flurry_buff,
+                        ticks(self.effect_duration_seconds),
+                    )
                 },
             );
             ctx.add_buff(
                 caster,
-                &BuffV1::timed(self.yun_tal_flurry_cooldown_buff, ticks(self.effect_cooldown_seconds)),
+                &BuffV1::timed(
+                    self.yun_tal_flurry_cooldown_buff,
+                    ticks(self.effect_cooldown_seconds),
+                ),
             );
         }
     }

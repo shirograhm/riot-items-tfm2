@@ -130,6 +130,9 @@ impl StableItem for JakshoTheProtean {
         entity: usize,
         attacker: usize,
         _damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
@@ -154,7 +157,11 @@ impl StableItem for JakshoTheProtean {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Hp, ItemTagV1::Defense, ItemTagV1::MagicResistance]
+        vec![
+            ItemTagV1::Hp,
+            ItemTagV1::Defense,
+            ItemTagV1::MagicResistance,
+        ]
     }
 
     fn category(&self) -> ItemCategoryV1 {

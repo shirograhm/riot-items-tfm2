@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, percent_of, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct NashorsTooth {
@@ -118,6 +118,8 @@ impl StableItem for NashorsTooth {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -125,20 +127,14 @@ impl StableItem for NashorsTooth {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
+        // Escape if the target is a tower or if the attack is not a base attack
+        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
 
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
-        if try_proc_on_hit(
-            ctx,
-            target,
-            "nashors_tooth_on_hit_cooldown",
-            self.on_hit_cooldown_seconds,
-        ) {
-            ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
-        }
+        ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

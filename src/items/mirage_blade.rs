@@ -144,7 +144,14 @@ impl StableItem for MirageBlade {
         self.apply_buff(ctx, player);
     }
 
-    fn on_kill(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize, _entity: usize) {
+    fn on_kill(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        player: usize,
+        _entity: usize,
+        _victim: usize,
+    ) {
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
@@ -159,14 +166,22 @@ impl StableItem for MirageBlade {
                 champion_ref.id(),
                 &BuffV1 {
                     move_speed_mult: self.effect_move_speed_mult,
-                    ..BuffV1::timed("mirage_blade_move_speed", ticks(self.effect_duration_seconds))
+                    ..BuffV1::timed(
+                        "mirage_blade_move_speed",
+                        ticks(self.effect_duration_seconds),
+                    )
                 },
             )
         }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Ad, ItemTagV1::Ap, ItemTagV1::AttackSpeed, ItemTagV1::MoveSpeed]
+        vec![
+            ItemTagV1::Ad,
+            ItemTagV1::Ap,
+            ItemTagV1::AttackSpeed,
+            ItemTagV1::MoveSpeed,
+        ]
     }
 
     fn category(&self) -> ItemCategoryV1 {

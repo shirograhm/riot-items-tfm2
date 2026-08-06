@@ -147,6 +147,7 @@ impl StableItem for SpearOfShojin {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        _is_ally: bool,
     ) {
         self.add_attack_stack(ctx, caster, target);
     }

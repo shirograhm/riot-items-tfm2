@@ -1,25 +1,9 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, ItemMeta};
 
-fn apply_fray(
-    ctx: &mut StableSim<'_>,
-    caster: usize,
-    target: usize,
-    magic_damage: usize,
-    cooldown_seconds: f64,
-    cooldown_buff: &str,
-) {
-    let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(true);
-    if is_tower {
-        return;
-    }
-    if !try_proc_on_hit(ctx, target, cooldown_buff, cooldown_seconds) {
-        return;
-    }
-    ctx.deal_damage(caster, target, 0, magic_damage, AttackTypeV1::BaseAttack);
-}
+fn apply_fray(ctx: &mut StableSim<'_>, caster: usize, target: usize, magic_damage: usize) {}
 
 #[derive(Clone, Debug)]
 pub struct WitsEnd {
@@ -125,26 +109,35 @@ impl StableItem for WitsEnd {
         }
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
     ) {
-        apply_fray(
-            ctx,
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if target_ref.is_tower() {
+            return;
+        }
+
+        ctx.deal_damage(
             caster,
             target,
+            0,
             self.effect_bonus_magic_damage,
-            self.on_hit_cooldown_seconds,
-            "wits_end_on_hit_cooldown",
+            AttackTypeV1::BaseAttack,
         );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::AttackSpeed, ItemTagV1::MagicResistance, ItemTagV1::Toughness]
+        vec![
+            ItemTagV1::AttackSpeed,
+            ItemTagV1::MagicResistance,
+            ItemTagV1::Toughness,
+        ]
     }
 
     fn category(&self) -> ItemCategoryV1 {

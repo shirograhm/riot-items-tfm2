@@ -77,6 +77,8 @@ impl StableItem for ExecutionersCalling {
         target: usize,
         _damage: &mut usize,
         damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;

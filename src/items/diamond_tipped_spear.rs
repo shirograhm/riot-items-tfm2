@@ -151,6 +151,8 @@ impl StableItem for DiamondTippedSpear {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;

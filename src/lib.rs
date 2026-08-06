@@ -46,28 +46,6 @@ fn buff_stacks(entity: &StableEntity<'_, '_>, name: &str) -> usize {
         .count()
 }
 
-/// Rate-limits an on-hit effect to once per `cooldown_seconds` per target.
-///
-/// Returns `true` when the caller should fire its effect (the marker is stamped as
-/// a side effect), `false` while the previous proc is still on cooldown or the
-/// target no longer exists.
-fn try_proc_on_hit(
-    ctx: &mut StableSim<'_>,
-    target: usize,
-    marker: &str,
-    cooldown_seconds: f64,
-) -> bool {
-    let is_ready = ctx
-        .get_entity(target)
-        .map(|target_ref| !has_buff(&target_ref, marker))
-        .unwrap_or(false);
-    if !is_ready {
-        return false;
-    }
-    ctx.add_buff(target, &BuffV1::timed(marker, ticks(cooldown_seconds)));
-    true
-}
-
 /// Damage multiplier that simulates `lethality` flat armor penetration against a
 /// target with `armor`. The game mitigates physical damage by `100 / (100 + armor)`
 /// (verified: `mitigated = floor(raw * 100 / (100 + armor))`), so scaling the

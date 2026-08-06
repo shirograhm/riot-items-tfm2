@@ -78,6 +78,8 @@ impl StableItem for SerratedDirk {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         apply_lethality(ctx, caster, target, self.effect_lethality, damage);
     }

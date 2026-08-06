@@ -192,13 +192,19 @@ impl StableItem for WarmogsArmor {
         entity: usize,
         attacker: usize,
         _damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         if attacker == entity {
             return;
         }
         ctx.add_buff(
             entity,
-            &BuffV1::timed(self.recently_damaged_buff, ticks(self.effect_duration_seconds)),
+            &BuffV1::timed(
+                self.recently_damaged_buff,
+                ticks(self.effect_duration_seconds),
+            ),
         );
     }
 

@@ -127,7 +127,9 @@ impl StableItem for Stormrazor {
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        damage_type: DamageTypeV1,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -157,7 +159,7 @@ impl StableItem for Stormrazor {
         }
 
         // Gain 5 energized stacks on attacks, up to the max stacks
-        if damage_type == DamageTypeV1::Ad {
+        if attack_type == AttackTypeV1::BaseAttack {
             self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
         }
     }

@@ -154,6 +154,7 @@ impl StableItem for Bloodsong {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        _is_ally: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -170,13 +171,12 @@ impl StableItem for Bloodsong {
         }
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
     ) {
         if !self.spellblade_ready {
             return;

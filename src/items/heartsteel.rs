@@ -143,6 +143,8 @@ impl StableItem for Heartsteel {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;

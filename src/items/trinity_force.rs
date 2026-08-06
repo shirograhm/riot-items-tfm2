@@ -132,6 +132,7 @@ impl StableItem for TrinityForce {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        _is_ally: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -148,27 +149,26 @@ impl StableItem for TrinityForce {
         }
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        caster: usize,
-        target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        _rng_seed: u64,
+        player: usize,
+        entity: usize,
     ) {
         if !self.spellblade_ready {
             return;
         }
-        let Some(caster_ref) = ctx.get_entity(caster) else {
+        let Some(caster_ref) = ctx.get_entity(player) else {
             return;
         };
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().attack, self.effect_ad_percent_damage);
         self.spellblade_ready = false;
 
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
+        ctx.deal_damage(player, entity, bonus_damage, 0, AttackTypeV1::Item);
         ctx.add_buff(
-            caster,
+            player,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
     }

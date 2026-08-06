@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct GuinsoosRageblade {
@@ -125,13 +125,12 @@ impl StableItem for GuinsoosRageblade {
         }
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -145,21 +144,13 @@ impl StableItem for GuinsoosRageblade {
 
         let stack_count = buff_stacks(&caster_ref, self.stack_buff);
 
-        if try_proc_on_hit(
-            ctx,
+        ctx.deal_damage(
+            caster,
             target,
-            "guinsoos_rageblade_on_hit_cooldown",
-            self.on_hit_cooldown_seconds,
-        ) {
-            ctx.deal_damage(
-                caster,
-                target,
-                0,
-                self.effect_bonus_magic_damage,
-                AttackTypeV1::BaseAttack,
-            );
-        }
-
+            0,
+            self.effect_bonus_magic_damage,
+            AttackTypeV1::Item,
+        );
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,

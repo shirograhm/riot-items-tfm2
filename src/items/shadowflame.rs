@@ -109,6 +109,8 @@ impl StableItem for Shadowflame {
         target: usize,
         damage: &mut usize,
         damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;

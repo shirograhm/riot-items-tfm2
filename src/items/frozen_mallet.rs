@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct FrozenMallet {
@@ -115,13 +115,12 @@ impl StableItem for FrozenMallet {
         }
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -131,23 +130,10 @@ impl StableItem for FrozenMallet {
         }
         let already_slowed = has_buff(&target_ref, "frozen_mallet_slow");
 
-        // Icathia's Curse. `bonus_damage` is 0 on the base variant, which
-        // short-circuits before the cooldown marker is ever stamped.
         let caster_hp_max = ctx.get_entity(caster).map(|c| c.hp().1).unwrap_or(0);
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_hp_max, self.effect_caster_hp_percent_damage);
-        if bonus_damage > 0
-            && try_proc_on_hit(
-                ctx,
-                target,
-                "frozen_mallet_on_hit_cooldown",
-                self.on_hit_cooldown_seconds,
-            )
-        {
-            ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
-        }
 
-        // Rime, shared by both variants: the slow does not stack with itself.
         if !already_slowed {
             ctx.add_buff(
                 target,
@@ -157,6 +143,7 @@ impl StableItem for FrozenMallet {
                 },
             );
         }
+        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

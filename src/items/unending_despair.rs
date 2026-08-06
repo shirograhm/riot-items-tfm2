@@ -108,7 +108,14 @@ impl StableItem for UnendingDespair {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        _target: usize,
+        _is_ally: bool,
+    ) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };

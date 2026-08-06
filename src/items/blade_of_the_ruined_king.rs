@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, percent_of, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct BladeOfTheRuinedKing {
@@ -136,14 +136,6 @@ impl StableItem for BladeOfTheRuinedKing {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
-        if !try_proc_on_hit(
-            ctx,
-            entity,
-            "blade_of_the_ruined_king_on_hit_cooldown",
-            self.on_hit_cooldown_seconds,
-        ) {
-            return;
-        }
         ctx.deal_damage(player, entity, bonus_damage, 0, AttackTypeV1::Item);
     }
 

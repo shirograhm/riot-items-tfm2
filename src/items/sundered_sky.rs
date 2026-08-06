@@ -1,6 +1,6 @@
 use mod_api_stable::*;
 
-use crate::{apply_config, config::ItemConfig, percent_of_i32, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, config::ItemConfig, percent_of_i32, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct SunderedSky {
@@ -120,7 +120,9 @@ impl StableItem for SunderedSky {
         caster: usize,
         target: usize,
         damage: &mut usize,
-        damage_type: DamageTypeV1,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -131,23 +133,14 @@ impl StableItem for SunderedSky {
         if !target_ref.is_champion() {
             return;
         }
-
-        if damage_type != DamageTypeV1::Ad {
+        // Only trigger on base attacks
+        if attack_type != AttackTypeV1::BaseAttack {
             return;
         }
 
         let missing_health = (caster_ref.hp().1 - caster_ref.hp().0) as i32;
         let heal_amount = self.effect_bonus_flat_heal
             + percent_of_i32(missing_health, self.effect_caster_hp_percent_heal);
-
-        if !try_proc_on_hit(
-            ctx,
-            target,
-            "sundered_sky_cooldown",
-            self.on_hit_cooldown_seconds,
-        ) {
-            return;
-        }
 
         let ratio = 1.0 + (self.effect_percent_bonus_damage / 100.0);
         *damage = (*damage as f64 * ratio) as usize;

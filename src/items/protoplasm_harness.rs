@@ -147,6 +147,9 @@ impl StableItem for ProtoplasmHarness {
         entity: usize,
         _attacker: usize,
         _damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;

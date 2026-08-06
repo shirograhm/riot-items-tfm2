@@ -1,65 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, try_proc_on_hit, ItemMeta};
-
-fn bring_it_down_damage(
-    ctx: &mut StableSim<'_>,
-    target: usize,
-    flat: usize,
-    max_percent_bonus: f64,
-    hp_percent_threshold: f64,
-) -> usize {
-    let Some(target_ref) = ctx.get_entity(target) else {
-        return 0;
-    };
-    let (hp_current, hp_max) = target_ref.hp();
-    if hp_max == 0 {
-        return flat;
-    }
-    let hp_ratio = (hp_current as f64 / hp_max as f64).clamp(0.0, 1.0);
-    let threshold = (hp_percent_threshold / 100.0).clamp(0.0, 1.0);
-    let ratio = if threshold >= 1.0 {
-        1.0
-    } else {
-        ((1.0 - hp_ratio) / (1.0 - threshold)).clamp(0.0, 1.0)
-    };
-    let scaling = 1.0 + (max_percent_bonus / 100.0) * ratio;
-    (flat as f64 * scaling).round() as usize
-}
-fn tick_bring_it_down(
-    ctx: &mut StableSim<'_>,
-    target: usize,
-    attack_count: &mut usize,
-    interval: usize,
-    flat: usize,
-    max_percent_bonus: f64,
-    hp_percent_threshold: f64,
-    cooldown_seconds: f64,
-) -> usize {
-    let is_tower = ctx.get_entity(target).map(|t| t.is_tower()).unwrap_or(true);
-    if is_tower {
-        return 0;
-    }
-    let interval = interval.max(1);
-    // Bring It Down only pays out once per `interval` attacks, so the shared
-    // on-hit cooldown is scaled up to cover the whole cycle.
-    if !try_proc_on_hit(
-        ctx,
-        target,
-        "kraken_slayer_on_hit_cooldown",
-        cooldown_seconds * interval as f64,
-    ) {
-        return 0;
-    }
-
-    *attack_count += 1;
-    if *attack_count < interval {
-        return 0;
-    }
-    *attack_count = 0;
-    bring_it_down_damage(ctx, target, flat, max_percent_bonus, hp_percent_threshold)
-}
+use crate::{apply_config, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct KrakenSlayer {
@@ -74,6 +16,35 @@ pub struct KrakenSlayer {
     effect_attack_interval: usize,
     on_hit_cooldown_seconds: f64,
     attack_count: usize,
+}
+
+fn bring_it_down_damage(
+    ctx: &mut StableSim<'_>,
+    target: usize,
+    flat: usize,
+    max_percent_bonus: f64,
+    hp_percent_threshold: f64,
+) -> usize {
+    let Some(target_ref) = ctx.get_entity(target) else {
+        return 0;
+    };
+    if target_ref.is_tower() {
+        return 0;
+    }
+
+    let (hp_current, hp_max) = target_ref.hp();
+    if hp_max == 0 {
+        return flat;
+    }
+    let hp_ratio = (hp_current as f64 / hp_max as f64).clamp(0.0, 1.0);
+    let threshold = (hp_percent_threshold / 100.0).clamp(0.0, 1.0);
+    let ratio = if threshold >= 1.0 {
+        1.0
+    } else {
+        ((1.0 - hp_ratio) / (1.0 - threshold)).clamp(0.0, 1.0)
+    };
+    let scaling = 1.0 + (max_percent_bonus / 100.0) * ratio;
+    (flat as f64 * scaling).round() as usize
 }
 
 impl KrakenSlayer {
@@ -183,26 +154,33 @@ impl StableItem for KrakenSlayer {
         self.attack_count = 0;
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
     ) {
-        let bonus = tick_bring_it_down(
-            ctx,
-            target,
-            &mut self.attack_count,
-            self.effect_attack_interval,
-            self.effect_bonus_flat_damage,
-            self.effect_max_percent_bonus,
-            self.effect_hp_percent_threshold,
-            self.on_hit_cooldown_seconds,
-        );
-        if bonus > 0 {
-            ctx.deal_damage(caster, target, bonus, 0, AttackTypeV1::Item);
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if target_ref.is_tower() {
+            return;
+        }
+
+        if self.attack_count == self.effect_attack_interval - 1 {
+            let final_damage = bring_it_down_damage(
+                ctx,
+                target,
+                self.effect_bonus_flat_damage,
+                self.effect_max_percent_bonus,
+                self.effect_hp_percent_threshold,
+            );
+            ctx.deal_damage(caster, target, final_damage, 0, AttackTypeV1::Item);
+
+            self.attack_count = 0;
+        } else {
+            self.attack_count += 1;
         }
     }
 

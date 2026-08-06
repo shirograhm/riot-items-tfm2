@@ -160,7 +160,14 @@ impl StableItem for Riftmaker {
         self.apply_infusion(ctx, player);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        _target: usize,
+        _is_ally: bool,
+    ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
