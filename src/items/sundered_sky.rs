@@ -1,10 +1,11 @@
 use mod_api_stable::*;
 
-use crate::{apply_config, config::ItemConfig, percent_of_i32, ItemMeta};
+use crate::{apply_config, config::ItemConfig, has_buff, percent_of_i32, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct SunderedSky {
     meta: ItemMeta,
+    cooldown_buff: &'static str,
     price: usize,
     hp: i32,
     attack: i32,
@@ -12,13 +13,14 @@ pub struct SunderedSky {
     effect_percent_bonus_damage: f64,
     effect_bonus_flat_heal: i32,
     effect_caster_hp_percent_heal: f64,
-    on_hit_cooldown_seconds: f64,
+    effect_cooldown_seconds: f64,
 }
 
 impl SunderedSky {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("sundered_sky", &["phage"], &["radiant_sundered_sky"]),
+            cooldown_buff: "sundered_sky_cooldown",
             price: 1400,
             hp: 400,
             attack: 30,
@@ -26,13 +28,14 @@ impl SunderedSky {
             effect_percent_bonus_damage: 20.0,
             effect_bonus_flat_heal: 60,
             effect_caster_hp_percent_heal: 6.0,
-            on_hit_cooldown_seconds: 20.0,
+            effect_cooldown_seconds: 20.0,
         }
     }
 
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_sundered_sky", &["sundered_sky"]),
+            cooldown_buff: "sundered_sky_cooldown",
             price: 2000,
             hp: 550,
             attack: 65,
@@ -62,7 +65,7 @@ impl SunderedSky {
                 effect_percent_bonus_damage,
                 effect_bonus_flat_heal,
                 effect_caster_hp_percent_heal,
-                on_hit_cooldown_seconds
+                effect_cooldown_seconds
             ]
         );
         self
@@ -137,6 +140,11 @@ impl StableItem for SunderedSky {
         if attack_type != AttackTypeV1::BaseAttack {
             return;
         }
+        // Check cooldown buff on target
+        let is_cooldown_ticking = has_buff(&target_ref, self.cooldown_buff);
+        if is_cooldown_ticking {
+            return;
+        }
 
         let missing_health = (caster_ref.hp().1 - caster_ref.hp().0) as i32;
         let heal_amount = self.effect_bonus_flat_heal
@@ -145,6 +153,12 @@ impl StableItem for SunderedSky {
         let ratio = 1.0 + (self.effect_percent_bonus_damage / 100.0);
         *damage = (*damage as f64 * ratio) as usize;
         ctx.heal(caster, caster, heal_amount as usize);
+
+        // Trigger cooldown per target
+        ctx.add_buff(
+            target,
+            &BuffV1::timed(self.cooldown_buff, ticks(self.effect_cooldown_seconds)),
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

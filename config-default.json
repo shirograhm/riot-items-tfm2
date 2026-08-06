@@ -54,8 +54,7 @@
     "attack_speed_mult": 25,
     "vamp": 5,
     "effect_hp_percent_damage": 5.0,
-    "effect_minion_damage_cap": 50,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_minion_damage_cap": 50
   },
   "bloodletters_curse": {
     "price": 1500,
@@ -117,8 +116,7 @@
     "effect_bonus_magic_damage": 30,
     "effect_stack_attack_speed_mult": 8,
     "effect_max_stacks": 4,
-    "effect_duration_seconds": 4,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_duration_seconds": 4
   },
   "heartsteel": {
     "price": 1500,
@@ -162,8 +160,7 @@
     "magic_power": 115,
     "attack_speed_mult": 25,
     "effect_bonus_flat_damage": 35,
-    "effect_ap_percent_damage": 3.0,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_ap_percent_damage": 3.0
   },
   "mortal_reminder": {
     "price": 1400,
@@ -331,8 +328,7 @@
     "attack_speed_mult": 50,
     "vamp": 10,
     "effect_hp_percent_damage": 5.0,
-    "effect_minion_damage_cap": 50,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_minion_damage_cap": 50
   },
   "radiant_frozen_mallet": {
     "price": 2000,
@@ -341,8 +337,7 @@
     "effect_slow_amount": 15,
     "effect_duration_seconds": 2,
     "effect_bonus_flat_damage": 20,
-    "effect_caster_hp_percent_damage": 3.0,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_caster_hp_percent_damage": 3.0
   },
   "radiant_rylais_crystal_scepter": {
     "price": 1900,
@@ -359,8 +354,7 @@
     "effect_bonus_magic_damage": 30,
     "effect_stack_attack_speed_mult": 8,
     "effect_max_stacks": 4,
-    "effect_duration_seconds": 4,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_duration_seconds": 4
   },
   "radiant_heartsteel": {
     "price": 2100,
@@ -401,8 +395,7 @@
     "magic_power": 180,
     "attack_speed_mult": 40,
     "effect_bonus_flat_damage": 50,
-    "effect_ap_percent_damage": 5.0,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_ap_percent_damage": 5.0
   },
   "radiant_mortal_reminder": {
     "price": 2000,
@@ -577,8 +570,7 @@
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
     "effect_hp_percent_threshold": 25.0,
-    "effect_attack_interval": 3,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_attack_interval": 3
   },
   "radiant_kraken_slayer": {
     "price": 2000,
@@ -588,8 +580,7 @@
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
     "effect_hp_percent_threshold": 25.0,
-    "effect_attack_interval": 3,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_attack_interval": 3
   },
   "atmas_reckoning": {
     "price": 1450,
@@ -612,16 +603,14 @@
     "attack_speed_mult": 40,
     "magic_resistance": 80,
     "toughness": 20,
-    "effect_bonus_magic_damage": 45,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_bonus_magic_damage": 45
   },
   "radiant_wits_end": {
     "price": 2000,
     "attack_speed_mult": 65,
     "magic_resistance": 130,
     "toughness": 30,
-    "effect_bonus_magic_damage": 45,
-    "on_hit_cooldown_seconds": 0.5
+    "effect_bonus_magic_damage": 45
   },
   "stormrazor": {
     "price": 1550,
