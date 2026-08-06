@@ -17,7 +17,6 @@ pub struct GuinsoosRageblade {
     effect_stack_attack_speed_mult: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
-    on_hit_cooldown_seconds: f64,
 }
 
 impl GuinsoosRageblade {
@@ -37,7 +36,6 @@ impl GuinsoosRageblade {
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
             effect_duration_seconds: 4.0,
-            on_hit_cooldown_seconds: 0.5,
         }
     }
 
@@ -74,7 +72,6 @@ impl GuinsoosRageblade {
                 effect_stack_attack_speed_mult,
                 effect_max_stacks,
                 effect_duration_seconds,
-                on_hit_cooldown_seconds
             ]
         );
         self

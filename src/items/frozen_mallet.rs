@@ -15,7 +15,6 @@ pub struct FrozenMallet {
     // which skips the effect entirely.
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
-    on_hit_cooldown_seconds: f64,
 }
 
 impl FrozenMallet {
@@ -29,7 +28,6 @@ impl FrozenMallet {
             effect_duration_seconds: 2.0,
             effect_bonus_flat_damage: 0,
             effect_caster_hp_percent_damage: 0.0,
-            on_hit_cooldown_seconds: 0.5,
         }
     }
 
@@ -65,7 +63,6 @@ impl FrozenMallet {
                 effect_duration_seconds,
                 effect_bonus_flat_damage,
                 effect_caster_hp_percent_damage,
-                on_hit_cooldown_seconds
             ]
         );
         self

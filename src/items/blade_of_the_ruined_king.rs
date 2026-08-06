@@ -12,7 +12,6 @@ pub struct BladeOfTheRuinedKing {
     vamp: i32,
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
-    on_hit_cooldown_seconds: f64,
 }
 
 impl BladeOfTheRuinedKing {
@@ -29,7 +28,6 @@ impl BladeOfTheRuinedKing {
             vamp: 5,
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
-            on_hit_cooldown_seconds: 0.5,
         }
     }
 
@@ -66,7 +64,6 @@ impl BladeOfTheRuinedKing {
                 vamp,
                 effect_hp_percent_damage,
                 effect_minion_damage_cap,
-                on_hit_cooldown_seconds
             ]
         );
         self

@@ -778,7 +778,7 @@
     "effect_percent_bonus_damage": 20.0,
     "effect_bonus_flat_heal": 60,
     "effect_caster_hp_percent_heal": 6.0,
-    "on_hit_cooldown_seconds": 20
+    "effect_cooldown_seconds": 20
   },
   "radiant_sundered_sky": {
     "price": 2000,
@@ -788,7 +788,7 @@
     "effect_percent_bonus_damage": 20.0,
     "effect_bonus_flat_heal": 60,
     "effect_caster_hp_percent_heal": 10.0,
-    "on_hit_cooldown_seconds": 20
+    "effect_cooldown_seconds": 20
   },
   "sheen": {
     "price": 500,

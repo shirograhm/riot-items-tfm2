@@ -14,7 +14,6 @@ pub struct KrakenSlayer {
     effect_max_percent_bonus: f64,
     effect_hp_percent_threshold: f64,
     effect_attack_interval: usize,
-    on_hit_cooldown_seconds: f64,
     attack_count: usize,
 }
 
@@ -63,7 +62,6 @@ impl KrakenSlayer {
             effect_max_percent_bonus: 75.0,
             effect_hp_percent_threshold: 25.0,
             effect_attack_interval: 3,
-            on_hit_cooldown_seconds: 0.5,
             attack_count: 0,
         }
     }
@@ -99,7 +97,6 @@ impl KrakenSlayer {
                 effect_max_percent_bonus,
                 effect_hp_percent_threshold,
                 effect_attack_interval,
-                on_hit_cooldown_seconds
             ]
         );
         self

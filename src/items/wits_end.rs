@@ -13,7 +13,6 @@ pub struct WitsEnd {
     magic_resistance: i32,
     toughness: usize,
     effect_bonus_magic_damage: usize,
-    on_hit_cooldown_seconds: f64,
 }
 
 impl WitsEnd {
@@ -25,7 +24,6 @@ impl WitsEnd {
             magic_resistance: 80,
             toughness: 20,
             effect_bonus_magic_damage: 45,
-            on_hit_cooldown_seconds: 0.5,
         }
     }
 
@@ -58,7 +56,6 @@ impl WitsEnd {
                 magic_resistance,
                 toughness,
                 effect_bonus_magic_damage,
-                on_hit_cooldown_seconds
             ]
         );
         self

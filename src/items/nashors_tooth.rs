@@ -11,7 +11,6 @@ pub struct NashorsTooth {
     attack_speed_mult: i32,
     effect_bonus_flat_damage: usize,
     effect_ap_percent_damage: f64,
-    on_hit_cooldown_seconds: f64,
 }
 
 impl NashorsTooth {
@@ -27,7 +26,6 @@ impl NashorsTooth {
             attack_speed_mult: 25,
             effect_bonus_flat_damage: 35,
             effect_ap_percent_damage: 3.0,
-            on_hit_cooldown_seconds: 0.5,
         }
     }
 
@@ -61,7 +59,6 @@ impl NashorsTooth {
                 attack_speed_mult,
                 effect_bonus_flat_damage,
                 effect_ap_percent_damage,
-                on_hit_cooldown_seconds
             ]
         );
         self
