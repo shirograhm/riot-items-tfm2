@@ -1953,6 +1953,13 @@ fn apply_recommendations() -> bool {
     true
 }
 
+/// Entry count of `SEL_BY_CHAMP`, readable without taking its lock.
+///
+/// `usize::MAX` until the map has been loaded, so "not loaded yet" and "loaded
+/// and empty" stay distinguishable — only the second is safe to short-circuit
+/// on. Kept in step inside [`with_sel`], under the same lock as the map.
+static SEL_LEN: AtomicUsize = AtomicUsize::new(usize::MAX);
+
 // SEL_BY_CHAMP access (loads the file once). Manipulated inside the lock via a closure.
 fn with_sel<R>(f: impl FnOnce(&mut HashMap<(String, u8), u8>) -> R) -> R {
     let mut g = SEL_BY_CHAMP.lock().unwrap_or_else(|e| e.into_inner());
@@ -1962,12 +1969,34 @@ fn with_sel<R>(f: impl FnOnce(&mut HashMap<(String, u8), u8>) -> R) -> R {
     }
     let m = g.as_mut().unwrap();
     drain_pending(m); // absorbed here even if the registry becomes ready late
-    f(m)
+    let r = f(m);
+    // After `f`, so a closure that inserted or cleared is accounted for.
+    SEL_LEN.store(m.len(), Ordering::Relaxed);
+    r
 }
 // * The single entry point for SEL lookups (scope-aware). A scoped key wins; otherwise fall back to the plain key.
 //   - `SEL_AUTO` = the user explicitly set that side/slot to Auto => resolve to 0 (no selection) and do NOT fall back.
 //   - Scope::Plain performs exactly the old lookup (plain key only) = league/spectate/background behaviour unchanged.
 fn sel_get(scope: Scope, champ: &str, si: u8) -> u8 {
+    // Hot: the buy detour reaches this up to six times per buy decision for a
+    // player athlete (two lookups per slot, three slots), and every one of them
+    // took the global `SEL_BY_CHAMP` lock and allocated a `String` purely to
+    // build a tuple key to probe with. An empty map — which is the normal state
+    // now that the build editor owns item designation and the dropdowns only
+    // carry stat categories — can answer without doing either.
+    //
+    // `SEL_PENDING_ANY` is part of the condition, not decoration: `with_sel` is
+    // also where `drain_pending` absorbs selections that could not be resolved
+    // until the mod-item registry was ready. Skipping the lock while entries are
+    // still queued would skip the drain that lands them, so the short circuit is
+    // only taken when there is genuinely nothing to do.
+    //
+    // Otherwise safe because the map only gains entries through a dropdown, i.e.
+    // from the strategy screen between matches. The worst case is one stale
+    // lookup if that raced a buy, and the next lookup sees the new value.
+    if SEL_LEN.load(Ordering::Relaxed) == 0 && !SEL_PENDING_ANY.load(Ordering::Relaxed) {
+        return 0;
+    }
     with_sel(|m| {
         if scope != Scope::Plain {
             if let Some(&v) = m.get(&(scoped_key(scope, champ), si)) {
@@ -2138,13 +2167,20 @@ fn compute_options() -> Vec<String> {
 
 // * Mod-owned item dropdown ids. slot0/1/2 = item{N}m (overlaid on native item0/1/2; the click commits straight to +0x1788),
 //   slot3 = item3 (the 4th). Native item0/1/2 commit clicks only into the model, so they cannot hold mod items (ghidra-re) -> replaced by mod-owned ones.
-fn slot_dd_id(si: usize) -> String {
-    if si >= 3 {
-        "item3".to_string()
-    } else {
-        format!("item{}m", si)
-    }
+/// Node id of the mod-owned dropdown for slot `si` on the strategy screen.
+///
+/// `&'static str`, not `String`: the max-height re-apply below calls this for
+/// every row and slot on *every frame* the screen is open, and formatting the
+/// same four constants 20 times a frame was the whole cost. Mirrors
+/// `uinj::CT_DD_IDS`, which is already a static array for the comp-test screen.
+fn slot_dd_id(si: usize) -> &'static str {
+    const IDS: [&str; 4] = ["item0m", "item1m", "item2m", "item3"];
+    IDS[si.min(3)]
 }
+
+/// Row node ids, for the same reason — the per-frame loop below was building
+/// these with `format!`.
+const ROW_IDS: [&str; MAX_ROWS] = ["row0", "row1", "row2", "row3", "row4"];
 
 // * Hide the native item0/1/2 dropdowns (mod-owned item0m/1m/2m replace them). Only while the personal-tactics screen is open.
 //   With only an overlay, the native "leave it to the player" text showed through on the left and looked overlapped -> hide completely with visible=false.
@@ -2186,11 +2222,11 @@ static CT_INJECTED: AtomicBool = AtomicBool::new(false);
 static CT_LAST: Mutex<[i64; 40]> = Mutex::new([-1; 40]); // 10 rows x 4 slots
 static CT_CHAMPS: Mutex<Vec<String>> = Mutex::new(Vec::new()); // last champion observed per row (change detection)
                                                                // * Diagnostics: comp-test wiring, stage by stage (printed in buy_report)
-static CTD_CALL: AtomicU64 = AtomicU64::new(0); // handler calls
-static CTD_BUILDS: AtomicU64 = AtomicU64::new(0); // #builds node found
-static CTD_VIS: AtomicU64 = AtomicU64::new(0); // ...and it was visible
-static CTD_ROW: AtomicU64 = AtomicU64::new(0); // blue0 runtime node found
-static CTD_CHAMP: AtomicU64 = AtomicU64::new(0); // champion name resolved
+// (CTD_CALL / CTD_BUILDS / CTD_VIS / CTD_ROW / CTD_CHAMP removed 2026-08-05:
+//  write-only counters no diagnostic ever read, one of which cost a whole-tree
+//  `find_node` per frame. `CTD_SET` is write-only too, but it is bumped once per
+//  comp-test screen entry rather than per frame, so it costs nothing and is left
+//  for whoever next debugs that injection.)
 static CTD_SET: AtomicU64 = AtomicU64::new(0); // it4_slot3 option injection succeeded
                                                // * +0x240 measurement (07-21): the in-source comments contradict each other (L375 "render screen_x" vs L389 "hit-test, no effect")
                                                //   and it is unconfirmed whether y/w/h continue at +0x244/+0x248/+0x24c. Dump the region on a node whose coordinates we know to pin the layout.
@@ -2861,19 +2897,14 @@ fn handle_comptest_screen(ui: &Node) {
     // * 07-21 switch: we now fully manage comp-test personal tactics in both 3-slot and 4-slot mode (user decision).
     //   In 3-slot mode ui_inject declares 3 at the vanilla coordinates (146/296/446, w140), in 4-slot mode 4 at the
     //   compressed ones (146/258/370/482, w104), and this code wires up the options/selection. The natives are hidden.
-    CTD_CALL.fetch_add(1, Ordering::Relaxed);
+    // The `CTD_*` counters that used to be bumped here are gone. Nothing ever
+    // read them — no diagnostic dump mentions them — and one of them cost a
+    // `find_node(ui, "blue0")`, a full depth-first walk of the entire UI tree,
+    // on every frame the game was running, purely to increment a number no code
+    // could observe. `CTD_CHAMP` below went with them.
     let bnode = find_node(ui, "builds");
-    if bnode.is_some() {
-        CTD_BUILDS.fetch_add(1, Ordering::Relaxed);
-    }
-    if find_node(ui, "blue0").is_some() {
-        CTD_ROW.fetch_add(1, Ordering::Relaxed);
-    }
     // Detecting that the personal tactics tab is active: visibility of the row container (#builds).
     let active = bnode.map(|n| n.visible).unwrap_or(false);
-    if active {
-        CTD_VIS.fetch_add(1, Ordering::Relaxed);
-    }
     if !active {
         if CT_OPEN.swap(false, Ordering::Relaxed) {
             CT_INJECTED.store(false, Ordering::Relaxed);
@@ -2911,7 +2942,6 @@ fn handle_comptest_screen(ui: &Node) {
             champs[ri].clear();
             continue;
         }; // no champion placed = not our business
-        CTD_CHAMP.fetch_add(1, Ordering::Relaxed);
         // * Rows 0~4 = blue / 5~9 = red (the order CT_ROWS is defined in). Selections are read and written with this scope =>
         //   the same champion on both sides is designated independently (previously they merged into one).
         let scope = if ri < 5 { Scope::CtBlue } else { Scope::CtRed };
@@ -3006,13 +3036,13 @@ fn handle_tactics_screen(ui: &Node) {
     seh_install();
 
     // * Re-apply max_items_height every frame (guarantees timing independence) + a one-shot diagnostic (verify the write took + dump the surroundings).
-    for ri in 0..MAX_ROWS {
-        let Some(row) = find_node(ui, &format!("row{}", ri)) else {
+    for rid in ROW_IDS {
+        let Some(row) = find_node(ui, rid) else {
             continue;
         };
         for si in 0..slot_count() {
             unsafe {
-                set_dd_max_height(row, &slot_dd_id(si), MAX_ITEMS_HEIGHT);
+                set_dd_max_height(row, slot_dd_id(si), MAX_ITEMS_HEIGHT);
             }
         }
     }
@@ -3074,10 +3104,10 @@ fn handle_tactics_screen(ui: &Node) {
                     si, sel_v, pt_v, cur
                 ));
                 let cur = (cur as usize).min(opts.len().saturating_sub(1)) as u64;
-                if unsafe { nat_dd_set_options(row, &iid, &refs, cur) } {
+                if unsafe { nat_dd_set_options(row, iid, &refs, cur) } {
                     last[ri * ITEM_SLOTS + si] = cur as i64;
                     unsafe {
-                        set_dd_max_height(row, &iid, MAX_ITEMS_HEIGHT);
+                        set_dd_max_height(row, iid, MAX_ITEMS_HEIGHT);
                     }
                 }
             }
@@ -3097,7 +3127,7 @@ fn handle_tactics_screen(ui: &Node) {
                 continue;
             };
             for si in 0..slot_count() {
-                if let Some(cur) = unsafe { nat_dd_selected(row, &slot_dd_id(si)) } {
+                if let Some(cur) = unsafe { nat_dd_selected(row, slot_dd_id(si)) } {
                     let k = ri * ITEM_SLOTS + si;
                     if cur as i64 != last[k] {
                         last[k] = cur as i64;
@@ -3359,11 +3389,11 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
                                   //   * is the 4th path reached at all, and if it bails, at which step;
                                   //   * `owned>=4` observed — distinguishes "not bought" from "bought, not drawn";
                                   //   * hook install state, VEH state, UI root address, mod item source.
-// ** TEMPORARILY ON (2026-08-05) ** to verify the 4th-item parity fix — `BE_CNT[6]`
-//   (build[3] writes) and "owned>=4 observed" are how you tell "the enemy's build was
-//   extended" from "it was extended and never bought". Main thread, one file write per
-//   ~5s. Turn back off once confirmed.
-const BUILD_EXT_DIAG: bool = true; // * was OFF 2026-08-04: it identified the root-scan budget bug (see `ui_root::ATTEMPTS`) and that fix is confirmed in game
+// * OFF again 2026-08-05: it verified the 4th-item parity fix (enemy builds now extend),
+//   confirmed in game. Flip back on to get `build_ext_diag.txt` — `BE_CNT[6]` (build[3]
+//   writes) and "owned>=4 observed" are what tell "the build was extended" apart from
+//   "extended and never bought". Costs a file write every ~5s on the main thread.
+const BUILD_EXT_DIAG: bool = false; // * was OFF 2026-08-04: it identified the root-scan budget bug (see `ui_root::ATTEMPTS`) and that fix is confirmed in game
                                    // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false;
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
@@ -5708,7 +5738,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let champ_cow =
             String::from_utf8_lossy(std::slice::from_raw_parts(cptr as *const u8, clen));
         let champ: &str = champ_cow.as_ref();
-        let champ_designated = is_champ_designated(champ); // zero-alloc snapshot
+        // (`let champ_designated = is_champ_designated(champ)` used to sit here.
+        //  Nothing read it — it was the safety net described at the `by_scene`
+        //  comment below, and the team gate replaced it — so every buy that got
+        //  this far paid two global mutex acquisitions, and sometimes a rebuild of
+        //  the designated-champion `HashSet`, to compute a value it dropped.
+        //  `is_champ_designated` itself is still used by the spawn path.)
         let side = if readable(athlete + 0x810, 8) {
             rd_u64(athlete + 0x810)
         } else {
