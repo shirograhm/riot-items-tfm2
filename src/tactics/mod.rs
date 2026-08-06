@@ -3359,8 +3359,12 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
                                   //   * is the 4th path reached at all, and if it bails, at which step;
                                   //   * `owned>=4` observed — distinguishes "not bought" from "bought, not drawn";
                                   //   * hook install state, VEH state, UI root address, mod item source.
-const BUILD_EXT_DIAG: bool = false; // * OFF again 2026-08-04: it identified the root-scan budget bug (see `ui_root::ATTEMPTS`) and that fix is confirmed in game
-                                    // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
+// ** TEMPORARILY ON (2026-08-05) ** to verify the 4th-item parity fix — `BE_CNT[6]`
+//   (build[3] writes) and "owned>=4 observed" are how you tell "the enemy's build was
+//   extended" from "it was extended and never bought". Main thread, one file write per
+//   ~5s. Turn back off once confirmed.
+const BUILD_EXT_DIAG: bool = true; // * was OFF 2026-08-04: it identified the root-scan budget bug (see `ui_root::ATTEMPTS`) and that fix is confirmed in game
+                                   // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false;
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
 // * Cause identified and fixed (comp-test injection = the missing team gate bypass; all 9 launcher retaddrs confirmed) -> OFF in production.
@@ -5570,6 +5574,36 @@ const SLOT012_INJECT_ENABLED: bool = true;
 //   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
 //   WARNING false = restores the old behaviour (is_live gate, no background injection). Kept for an immediate rollback on trouble.
 const FIXB: bool = true;
+
+/// Whether this athlete's build `Vec` still has to be grown from 3 to 4.
+///
+/// Read through `safe_read_u64` (the VEH, no syscall) rather than `readable`
+/// (`VirtualQuery`, a kernel call), because this runs on the buy hot path *ahead
+/// of* the background early exit — the one place where a syscall per call was
+/// measured at 75% of the mod's whole cost. Two protected reads of an address
+/// that is about to be read anyway is the budget here.
+///
+/// Answers `false` for everyone in 3-slot mode, and `false` for good once the
+/// extension has run (`len` becomes 4), so no athlete keeps the exit open.
+///
+/// This deliberately mirrors the `build_len == 3 && cap == 3` condition the
+/// extension itself tests further down. If those two ever disagree the symptom is
+/// silent — the gate opens for an athlete the extension then declines — so they
+/// are worth changing together.
+unsafe fn needs_build_extension(athlete: usize) -> bool {
+    if slot_count() != 4 || !BUILD_EXTEND_ENABLED {
+        return false;
+    }
+    // 0.5.4 build Vec: cap@+0x480, ptr@+0x488, len@+0x490.
+    matches!(
+        (
+            safe_read_u64(athlete + 0x480),
+            safe_read_u64(athlete + 0x490)
+        ),
+        (Some(3), Some(3))
+    )
+}
+
 unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
     // * Hot path (parallel rayon workers) - global atomic counters would make the measurement itself expensive through cache-line contention,
     //   so thread_local accumulation (rec_tl) is used. T_BUY_ALL = the whole detour (including catch_unwind),
@@ -5619,7 +5653,30 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   passes through immediately after a cheap VEH read (+0x810) + HashSet lookup, before the expensive readable (= VirtualQuery kernel call).
         //   This restores the background early exit that 07-22 removed, in a way compatible with the fix (~94% of background buys exit here). None (roster unavailable) =
         //   no injection = early exit (identical to the old behaviour). Spectated matches (is_live) always pass through (they need the by_scene decision).
-        if FIXB && !is_live && !matches!(is_my_athlete(athlete), Some(true)) {
+        //
+        // ** 4th-item parity fix (2026-08-05) — `&& !needs_build_extension`.
+        //   The gate above is about *designation* scope: only my players get an item
+        //   pinned, which is right. But the build **extension** (the Vec 3 -> 4 that
+        //   makes a 4th item possible at all) sits below it, so this exit denied it to
+        //   everyone else — and every match except the player's own is a background sim.
+        //   The result was a league where only the player's five athletes ever built a
+        //   4th item, which is the reported "the opposing team never buys a 4th item".
+        //
+        //   Letting an athlete through *only while its build still needs growing* keeps
+        //   the measurement this exit was built for: `needs_build_extension` is two
+        //   VEH reads and no syscall, it is false for everyone in 3-slot mode, and it
+        //   goes false for good once the Vec is 4 — so each athlete passes at most once
+        //   per match and every later buy exits exactly as cheaply as before.
+        //
+        //   Scope is unaffected: `is_player` is still what gates the designation, so a
+        //   non-player athlete reaching the extension takes the network/vanilla fallback
+        //   the code below already had for it, and `note_my_champion` is still only
+        //   called under `is_player`.
+        if FIXB
+            && !is_live
+            && !matches!(is_my_athlete(athlete), Some(true))
+            && !needs_build_extension(athlete)
+        {
             return 0;
         }
         // -- From here on, only spectated-match buys (a small minority) and background buys by my 5 players get through --
