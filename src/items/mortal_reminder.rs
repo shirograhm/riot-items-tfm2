@@ -38,6 +38,8 @@ impl MortalReminder {
             attack: 85,
             defence_penetration: 30,
             crit_chance: 25,
+            effect_heal_reduce: 40,
+            effect_duration_seconds: 2.0,
             ..Self::base()
         }
     }

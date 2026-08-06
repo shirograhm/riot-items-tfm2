@@ -43,6 +43,7 @@ impl Bloodsong {
             effect_cooldown_seconds: 3.5,
             effect_damaged_amplify: 8,
             effect_duration_seconds: 4.0,
+            // Non-vital stats (internals)
             spellblade_ready: false,
         }
     }
@@ -50,12 +51,17 @@ impl Bloodsong {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_bloodsong", &["bloodsong"]),
-            vulnerable_buff: "radiant_bloodsong_vulnerable",
+            vulnerable_buff: "bloodsong_vulnerable",
             price: 1500,
             hp: 450,
             hp_regen: 4,
             magic_power: 40,
             skill_cooldown_mult: 20,
+            effect_min_bonus_damage: 70,
+            effect_max_bonus_damage: 125,
+            effect_cooldown_seconds: 3.5,
+            effect_damaged_amplify: 8,
+            effect_duration_seconds: 4.0,
             ..Self::base()
         }
     }
@@ -193,9 +199,6 @@ impl StableItem for Bloodsong {
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
 
-        // Increase the target's damage taken, but only while it is an enemy
-        // champion and does not already carry the debuff (so it never stacks
-        // past the configured amplification).
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };

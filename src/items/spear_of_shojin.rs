@@ -41,6 +41,9 @@ impl SpearOfShojin {
             hp: 600,
             attack: 60,
             skill_cooldown_mult: 20,
+            effect_stack_attack_mult: 3,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 5.0,
             ..Self::base()
         }
     }

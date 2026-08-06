@@ -42,11 +42,15 @@ impl GuinsoosRageblade {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_guinsoos_rageblade", &["guinsoos_rageblade"]),
-            stack_buff: "radiant_guinsoos_rageblade_buff",
+            stack_buff: "guinsoos_rageblade_buff",
             price: 1900,
             attack: 50,
             magic_power: 50,
             attack_speed_mult: 50,
+            effect_bonus_magic_damage: 30,
+            effect_stack_attack_speed_mult: 8,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4.0,
             ..Self::base()
         }
     }

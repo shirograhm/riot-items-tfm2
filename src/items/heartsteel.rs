@@ -35,6 +35,7 @@ impl Heartsteel {
             effect_caster_hp_percent_damage: 6.0,
             effect_bonus_hp_percent_of_damage: 12.0,
             effect_cooldown_seconds: 20.0,
+            // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
         }
     }
@@ -43,9 +44,13 @@ impl Heartsteel {
         Self {
             meta: ItemMeta::radiant("radiant_heartsteel", &["heartsteel"]),
             stack_buff: "radiant_heartsteel_stack",
-            cooldown_buff: "radiant_heartsteel_cooldown",
+            cooldown_buff: "heartsteel_cooldown",
             price: 2100,
             hp: 800,
+            effect_bonus_flat_damage: 15,
+            effect_caster_hp_percent_damage: 6.0,
+            effect_bonus_hp_percent_of_damage: 12.0,
+            effect_cooldown_seconds: 20.0,
             ..Self::base()
         }
     }

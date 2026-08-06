@@ -6,8 +6,6 @@ use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 #[derive(Clone, Debug)]
 pub struct Terminus {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     armor_pen_buff_buff: &'static str,
     magic_resistance_pen_buff_buff: &'static str,
     price: usize,
@@ -35,6 +33,7 @@ impl Terminus {
             effect_magic_pen_per_stack: 4,
             effect_max_stacks: 4,
             effect_duration_seconds: 4.0,
+            // Non-vital stats (internals)
             flip_flop: false,
         }
     }
@@ -42,12 +41,16 @@ impl Terminus {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_terminus", &["terminus"]),
-            armor_pen_buff_buff: "radiant_terminus_armor_pen_buff",
-            magic_resistance_pen_buff_buff: "radiant_terminus_magic_resistance_pen_buff",
+            armor_pen_buff_buff: "terminus_armor_pen_buff",
+            magic_resistance_pen_buff_buff: "terminus_magic_resistance_pen_buff",
             price: 2000,
             attack: 50,
             attack_speed_mult: 60,
             crit_chance: 25,
+            effect_armor_pen_per_stack: 4,
+            effect_magic_pen_per_stack: 4,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4.0,
             ..Self::base()
         }
     }

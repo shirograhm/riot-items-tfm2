@@ -1,9 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, count_takedowns, has_buff, mark_enemy_champion, percent_of, ticks, ItemMeta,
-};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 
 const BURN_PROCS_PER_SECOND: f64 = 5.0;
 
@@ -22,7 +20,6 @@ pub struct DeathsDance {
     accumulated_damage: i32,
     self_inflicted_credit: i32,
     last_damaged_by: usize,
-    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl DeathsDance {
@@ -38,20 +35,22 @@ impl DeathsDance {
             effect_burn_hp_percent_cap: 5.0,
             effect_bonus_flat_heal: 45,
             effect_kill_heal_missing_percent: 15.0,
+            // Non-vital stats (internals)
             accumulated_damage: 0,
             self_inflicted_credit: 0,
             last_damaged_by: 0,
-            takedown_marks: Vec::new(),
         }
     }
 
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_deaths_dance", &["deaths_dance"]),
-            burn_buff: "radiant_deaths_dance_burn",
+            burn_buff: "deaths_dance_burn",
             price: 2100,
             attack: 75,
             defence: 75,
+            effect_delayed_damage_percent: 25.0,
+            effect_burn_hp_percent_cap: 5.0,
             effect_bonus_flat_heal: 75,
             effect_kill_heal_missing_percent: 25.0,
             ..Self::base()
@@ -90,29 +89,23 @@ impl DeathsDance {
         100.0 / (100.0 - self.effect_delayed_damage_percent).max(1.0)
     }
 
-    fn defy(&mut self, ctx: &mut StableSim<'_>, player: usize, takedowns: usize) {
-        if takedowns == 0 {
+    fn defy(&mut self, ctx: &mut StableSim<'_>, entity: usize) {
+        let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
-        }
+        };
+
         self.accumulated_damage = 0;
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-        let hp_max = champion_ref.hp().1;
-        let hp_current = champion_ref.hp().0;
-        let champion_id = champion_ref.id();
-        let missing_hp = hp_max.saturating_sub(hp_current);
+
+        let (hp_current, hp_max) = entity_ref.hp();
+        let missing_hp = hp_max - hp_current;
+
         let heal = self.effect_bonus_flat_heal as usize
             + percent_of(missing_hp, self.effect_kill_heal_missing_percent);
         if heal == 0 {
             return;
         }
-        for _ in 0..takedowns {
-            ctx.heal(champion_id, champion_id, heal);
-        }
+
+        ctx.heal(entity, entity, heal);
     }
 }
 
@@ -166,14 +159,9 @@ impl StableItem for DeathsDance {
         self.accumulated_damage = 0;
         self.self_inflicted_credit = 0;
         self.last_damaged_by = 0;
-        self.takedown_marks.clear();
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        // Defy: heal + cleanse on champion takedowns.
-        let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
-        self.defy(ctx, player, takedowns);
-
         // Ignore Pain: bleed the stored damage back over time.
         if self.accumulated_damage <= 0 {
             return;
@@ -243,30 +231,19 @@ impl StableItem for DeathsDance {
         self.last_damaged_by = attacker
     }
 
-    fn on_attack(
+    fn on_kill(
         &mut self,
-        ctx: &mut StableSim<'_>,
-        caster: usize,
-        target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
-        _is_crit: bool,
+        sim: &mut StableSim<'_>,
+        _rng_seed: u64,
+        _player: usize,
+        entity: usize,
+        _victim: usize,
     ) {
-        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
+        self.defy(sim, entity);
     }
 
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        caster: usize,
-        target: usize,
-        is_ally: bool,
-    ) {
-        if !is_ally {
-            mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
-        }
+    fn on_assist(&mut self, sim: &mut StableSim<'_>, _player: usize, entity: usize) {
+        self.defy(sim, entity);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

@@ -32,6 +32,8 @@ impl Shadowflame {
             meta: ItemMeta::radiant("radiant_shadowflame", &["shadowflame"]),
             price: 1800,
             magic_power: 210,
+            magic_resistance_penetration: 15,
+            effect_hp_percent_threshold: 30.0,
             ..Self::base()
         }
     }

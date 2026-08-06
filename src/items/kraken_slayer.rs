@@ -62,6 +62,7 @@ impl KrakenSlayer {
             effect_max_percent_bonus: 75.0,
             effect_hp_percent_threshold: 25.0,
             effect_attack_interval: 3,
+            // Non-vital stats (internals)
             attack_count: 0,
         }
     }
@@ -72,6 +73,11 @@ impl KrakenSlayer {
             price: 2000,
             attack: 75,
             attack_speed_mult: 45,
+            move_speed_mult: 4,
+            effect_bonus_flat_damage: 150,
+            effect_max_percent_bonus: 75.0,
+            effect_hp_percent_threshold: 25.0,
+            effect_attack_interval: 3,
             ..Self::base()
         }
     }

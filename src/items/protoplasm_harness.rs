@@ -6,8 +6,6 @@ use crate::{apply_config, has_buff, percent_of, percent_of_i32, ticks, ItemMeta}
 #[derive(Clone, Debug)]
 pub struct ProtoplasmHarness {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     buff_buff: &'static str,
     cooldown_buff_buff: &'static str,
     price: usize,
@@ -47,10 +45,14 @@ impl ProtoplasmHarness {
         Self {
             meta: ItemMeta::radiant("radiant_protoplasm_harness", &["protoplasm_harness"]),
             buff_buff: "radiant_protoplasm_harness_buff",
-            cooldown_buff_buff: "radiant_protoplasm_harness_cooldown_buff",
+            cooldown_buff_buff: "protoplasm_harness_cooldown_buff",
             price: 1650,
             hp: 650,
             effect_bonus_flat_hp: 600,
+            effect_hp_percent_boost: 25.0,
+            effect_hp_percent_threshold: 40.0,
+            effect_duration_seconds: 6.0,
+            effect_cooldown_seconds: 30.0,
             ..Self::base()
         }
     }
@@ -128,18 +130,6 @@ impl StableItem for ProtoplasmHarness {
         }
     }
 
-    fn tags(&self) -> Vec<ItemTagV1> {
-        vec![
-            ItemTagV1::Hp,
-            ItemTagV1::CooltimeReduce,
-            ItemTagV1::MoveSpeed,
-        ]
-    }
-
-    fn category(&self) -> ItemCategoryV1 {
-        ItemCategoryV1::Hp
-    }
-
     fn on_damaged(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -175,5 +165,17 @@ impl StableItem for ProtoplasmHarness {
                 &BuffV1::timed(self.cooldown_buff_buff, ticks(self.effect_cooldown_seconds)),
             );
         }
+    }
+
+    fn tags(&self) -> Vec<ItemTagV1> {
+        vec![
+            ItemTagV1::Hp,
+            ItemTagV1::CooltimeReduce,
+            ItemTagV1::MoveSpeed,
+        ]
+    }
+
+    fn category(&self) -> ItemCategoryV1 {
+        ItemCategoryV1::Hp
     }
 }

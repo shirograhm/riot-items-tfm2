@@ -12,7 +12,6 @@ pub struct Collector {
     effect_lethality: usize,
     effect_hp_percent_threshold: f64,
     effect_bonus_gold: usize,
-    paid_kills: Option<usize>,
 }
 
 impl Collector {
@@ -29,7 +28,6 @@ impl Collector {
             effect_lethality: 10,
             effect_hp_percent_threshold: 6.0,
             effect_bonus_gold: 25,
-            paid_kills: None,
         }
     }
 
@@ -39,6 +37,9 @@ impl Collector {
             price: 2100,
             attack: 105,
             crit_chance: 25,
+            effect_lethality: 10,
+            effect_hp_percent_threshold: 6.0,
+            effect_bonus_gold: 25,
             ..Self::base()
         }
     }
@@ -121,38 +122,37 @@ impl StableItem for Collector {
         _attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
-
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() {
-            return;
+
+        let is_target_tower = target_ref.is_tower();
+        let is_target_champion = target_ref.is_champion();
+        let (target_curr_hp, target_max_hp) = target_ref.hp();
+
+        // Apply lethality to all damage except towers
+        if !is_target_tower {
+            apply_lethality(ctx, caster, target, self.effect_lethality, damage);
         }
 
-        let hp_threshold = percent_of(target_ref.hp().1, self.effect_hp_percent_threshold);
-        if target_ref.hp().0 - *damage <= hp_threshold {
-            let lethal_damage = target_ref.hp().0;
-            ctx.deal_damage(caster, target, lethal_damage, 0, AttackTypeV1::Item);
+        // Apply execute threshold to champions
+        if is_target_champion {
+            let hp_threshold = percent_of(target_max_hp, self.effect_hp_percent_threshold);
+            if target_curr_hp - *damage <= hp_threshold {
+                *damage = target_curr_hp;
+            }
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        self.paid_kills = ctx.get_player(player).map(|player_ref| player_ref.kills());
-    }
-
-    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        let Some(kills) = ctx.get_player(player).map(|player_ref| player_ref.kills()) else {
-            return;
-        };
-
-        let paid = self.paid_kills.unwrap_or(kills);
-        self.paid_kills = Some(kills);
-
-        let earned = kills.saturating_sub(paid);
-        if earned > 0 {
-            ctx.player_add_gold(player, (earned * self.effect_bonus_gold) as i64);
-        }
+    fn on_kill(
+        &mut self,
+        sim: &mut StableSim<'_>,
+        _rng_seed: u64,
+        player: usize,
+        _entity: usize,
+        _victim: usize,
+    ) {
+        sim.player_add_gold(player, self.effect_bonus_gold as i64);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

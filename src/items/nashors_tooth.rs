@@ -108,26 +108,16 @@ impl StableItem for NashorsTooth {
         }
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
-        attack_type: AttackTypeV1,
-        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        // Escape if the target is a tower or if the attack is not a base attack
-        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
-            return;
-        }
 
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);

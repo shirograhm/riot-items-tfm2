@@ -81,7 +81,15 @@ impl StableItem for SerratedDirk {
         _attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+
+        let is_target_tower = target_ref.is_tower();
+
+        if !is_target_tower {
+            apply_lethality(ctx, caster, target, self.effect_lethality, damage);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

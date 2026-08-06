@@ -33,6 +33,7 @@ impl TrinityForce {
             effect_bonus_flat_damage: 33,
             effect_ad_percent_damage: 33.0,
             effect_cooldown_seconds: 3.5,
+            // Non-vital stats (internals)
             spellblade_ready: false,
         }
     }
@@ -45,6 +46,9 @@ impl TrinityForce {
             attack: 33,
             attack_speed_mult: 33,
             skill_cooldown_mult: 20,
+            effect_bonus_flat_damage: 33,
+            effect_ad_percent_damage: 33.0,
+            effect_cooldown_seconds: 3.5,
             ..Self::base()
         }
     }
@@ -164,13 +168,13 @@ impl StableItem for TrinityForce {
         };
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().attack, self.effect_ad_percent_damage);
-        self.spellblade_ready = false;
 
         ctx.deal_damage(player, entity, bonus_damage, 0, AttackTypeV1::Item);
         ctx.add_buff(
             player,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
+        self.spellblade_ready = false;
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

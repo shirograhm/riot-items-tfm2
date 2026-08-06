@@ -1,9 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
-};
+use crate::{apply_config, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
 
 fn apply_big_hands(
     ctx: &mut StableSim<'_>,
@@ -73,6 +71,7 @@ impl AtmasReckoning {
             effect_stack_crit_chance: 5,
             effect_hp_per_stack: 1000,
             effect_max_stacks: 5,
+            // Non-vital stats (internals)
             refresh_cooldown: 0,
         }
     }
@@ -80,10 +79,13 @@ impl AtmasReckoning {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_atmas_reckoning", &["atmas_reckoning"]),
-            big_hands_buff: "radiant_atmas_reckoning_big_hands",
+            big_hands_buff: "atmas_reckoning_big_hands",
             price: 2050,
             hp: 850,
             crit_chance: 25,
+            effect_stack_crit_chance: 5,
+            effect_hp_per_stack: 1000,
+            effect_max_stacks: 5,
             ..Self::base()
         }
     }

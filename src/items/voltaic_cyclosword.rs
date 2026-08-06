@@ -38,6 +38,7 @@ impl VoltaicCyclosword {
             effect_minion_damage_cap: 200,
             effect_max_stacks: 100,
             effect_duration_seconds: 4.0,
+            // Non-vital stats (internals)
             energized_stacks: 0,
             energized_update_tick: 0,
             firmament_ticks: 0,
@@ -50,8 +51,12 @@ impl VoltaicCyclosword {
             price: 1950,
             attack: 100,
             skill_cooldown_mult: 15,
+            effect_lethality: 12,
             effect_bonus_lethality: 10,
             effect_hp_percent_damage: 10.0,
+            effect_minion_damage_cap: 200,
+            effect_max_stacks: 100,
+            effect_duration_seconds: 4.0,
             ..Self::base()
         }
     }
@@ -89,27 +94,6 @@ impl VoltaicCyclosword {
         } else {
             self.effect_lethality
         }
-    }
-
-    fn try_firmament(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
-        if self.energized_stacks < self.effect_max_stacks {
-            return;
-        }
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if target_ref.is_tower() {
-            return;
-        }
-
-        let mut bonus_damage = percent_of(target_ref.hp().0, self.effect_hp_percent_damage);
-        if !target_ref.is_champion() {
-            bonus_damage = bonus_damage.min(self.effect_minion_damage_cap);
-        }
-
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
-        self.firmament_ticks = ticks(self.effect_duration_seconds);
-        self.energized_stacks = 0;
     }
 }
 
@@ -173,10 +157,30 @@ impl StableItem for VoltaicCyclosword {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        self.try_firmament(ctx, caster, target);
-        apply_lethality(ctx, caster, target, self.active_lethality(), damage);
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if target_ref.is_tower() {
+            return;
+        }
 
-        // Gain 5 energized stacks on attacks, up to the max stacks
+        let is_target_tower = target_ref.is_tower();
+
+        if self.energized_stacks >= self.effect_max_stacks {
+            let mut bonus_damage = percent_of(target_ref.hp().0, self.effect_hp_percent_damage);
+            if !target_ref.is_champion() {
+                bonus_damage = bonus_damage.min(self.effect_minion_damage_cap);
+            }
+
+            ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
+            self.firmament_ticks = ticks(self.effect_duration_seconds);
+            self.energized_stacks = 0;
+        }
+
+        if !is_target_tower {
+            apply_lethality(ctx, caster, target, self.active_lethality(), damage);
+        }
+        // Gain 5 energized stacks on base attacks, up to the max stacks
         if attack_type == AttackTypeV1::BaseAttack {
             self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
         }

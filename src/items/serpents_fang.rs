@@ -53,6 +53,7 @@ impl SerpentsFang {
             meta: ItemMeta::radiant("radiant_serpents_fang", &["serpents_fang"]),
             price: 1800,
             attack: 100,
+            effect_lethality: 15,
             effect_bonus_flat_damage: 85,
             effect_ad_percent_damage: 15.0,
             ..Self::base()
@@ -135,7 +136,16 @@ impl StableItem for SerpentsFang {
         _attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+
+        let is_target_tower = target_ref.is_tower();
+
+        if !is_target_tower {
+            apply_lethality(ctx, caster, target, self.effect_lethality, damage);
+        }
+
         shield_reaver(
             ctx,
             caster,

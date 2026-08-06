@@ -9,8 +9,6 @@ use crate::{
 #[derive(Clone, Debug)]
 pub struct ZekesHerald {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     aura_buff: &'static str,
     price: usize,
     hp: i32,
@@ -40,6 +38,7 @@ impl ZekesHerald {
             effect_adaptive_force: 30,
             effect_vamp: 6,
             effect_max_distance: 100,
+            // Non-vital stats (internals)
             refresh_cooldown: 0,
         }
     }
@@ -47,7 +46,7 @@ impl ZekesHerald {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_zekes_herald", &["zekes_herald"]),
-            aura_buff: "radiant_zekes_herald_aura",
+            aura_buff: "zekes_herald_aura",
             price: 1500,
             hp: 500,
             hp_regen: 5,
@@ -55,6 +54,7 @@ impl ZekesHerald {
             skill_cooldown_mult: 15,
             effect_adaptive_force: 50,
             effect_vamp: 10,
+            effect_max_distance: 100,
             ..Self::base()
         }
     }
@@ -85,8 +85,6 @@ impl ZekesHerald {
         self
     }
 
-    /// Grants the aura to every living allied champion in range but the
-    /// carrier, refreshing it on the aura cycle (see [`AURA_REFRESH_TICKS`]).
     fn apply_aura(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;

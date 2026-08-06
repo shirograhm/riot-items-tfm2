@@ -2,15 +2,12 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
-    BUFF_REFRESH_PERIOD_TICKS,
+    apply_config, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
 };
 
 #[derive(Clone, Debug)]
 pub struct OverlordsBloodmail {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     tyranny_buff: &'static str,
     price: usize,
     attack: i32,
@@ -32,6 +29,7 @@ impl OverlordsBloodmail {
             attack: 25,
             hp: 400,
             effect_caster_hp_percent_attack: 2.5,
+            // Non-vital stats (internals)
             refresh_cooldown: 0,
         }
     }
@@ -39,10 +37,11 @@ impl OverlordsBloodmail {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_overlords_bloodmail", &["overlords_bloodmail"]),
-            tyranny_buff: "radiant_overlords_bloodmail_tyranny",
+            tyranny_buff: "overlords_bloodmail_tyranny",
             price: 2000,
             attack: 40,
             hp: 650,
+            effect_caster_hp_percent_attack: 2.5,
             ..Self::base()
         }
     }

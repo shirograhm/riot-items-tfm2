@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, count_takedowns, mark_enemy_champion, ticks, ItemMeta};
+use crate::{apply_config, apply_lethality, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Hubris {
@@ -14,7 +14,6 @@ pub struct Hubris {
     effect_stack_attack: i32,
     effect_duration_seconds: f64,
     eminence_stacks: usize,
-    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl Hubris {
@@ -28,8 +27,8 @@ impl Hubris {
             effect_bonus_flat_attack: 12,
             effect_stack_attack: 3,
             effect_duration_seconds: 90.0,
+            // Non-vital stats (internals)
             eminence_stacks: 0,
-            takedown_marks: Vec::new(),
         }
     }
 
@@ -39,6 +38,10 @@ impl Hubris {
             price: 1950,
             attack: 115,
             skill_cooldown_mult: 15,
+            effect_lethality: 18,
+            effect_bonus_flat_attack: 12,
+            effect_stack_attack: 3,
+            effect_duration_seconds: 90.0,
             ..Self::base()
         }
     }
@@ -72,24 +75,14 @@ impl Hubris {
         self.effect_bonus_flat_attack + self.effect_stack_attack * self.eminence_stacks as i32
     }
 
-    // Grants `count` Eminence stacks to the wielder (a growing, decaying AD buff per
-    // stack), matching the "12 (+3 per stack)" payout using the pre-increment count.
-
-    fn grant_eminence(&mut self, ctx: &mut StableSim<'_>, player: usize, count: usize) {
-        if count == 0 {
+    fn grant_eminence(&mut self, ctx: &mut StableSim<'_>, entity: usize) {
+        if self.eminence_stacks == 0 {
             return;
         }
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-        let champion_id = champion_ref.id();
-        for _ in 0..count {
+        for _ in 0..self.eminence_stacks {
             let ad = self.eminence_bonus_ad();
             ctx.add_buff(
-                champion_id,
+                entity,
                 &BuffV1 {
                     attack: ad,
                     ..BuffV1::timed("", ticks(self.effect_duration_seconds))
@@ -146,11 +139,9 @@ impl StableItem for Hubris {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.eminence_stacks = 0;
-        self.takedown_marks.clear();
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
         self.grant_eminence(ctx, player, takedowns);
     }
 

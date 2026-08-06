@@ -48,6 +48,8 @@ impl JakshoTheProtean {
             defence: 65,
             effect_stack_defence_mult: 10,
             effect_stack_magic_resistance_mult: 10,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4.0,
             ..Self::base()
         }
     }
@@ -143,6 +145,7 @@ impl StableItem for JakshoTheProtean {
         if !attacker_ref.is_champion() {
             return;
         }
+
         let stack_count = buff_stacks(&entity_ref, self.stack_buff);
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(

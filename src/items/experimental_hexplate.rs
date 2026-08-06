@@ -9,8 +9,6 @@ pub struct ExperimentalHexplate {
     price: usize,
     hp: i32,
     attack_speed_mult: i32,
-    // Radiant-only. Zero on the base variant, which contributes no movement speed
-    // and correspondingly does not carry the `MoveSpeed` tag.
     move_speed_mult: i32,
     ult_cooldown_mult: i32,
 }

@@ -33,6 +33,7 @@ impl SpiritVisage {
             price: 1900,
             hp: 600,
             magic_resistance: 150,
+            effect_heal_mult: 20.0,
             ..Self::base()
         }
     }
@@ -94,7 +95,13 @@ impl StableItem for SpiritVisage {
         }
     }
 
-    fn on_healed(&mut self, ctx: &mut StableSim<'_>, _caster: Option<usize>, entity: usize, heal: usize) {
+    fn on_healed(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _caster: Option<usize>,
+        entity: usize,
+        heal: usize,
+    ) {
         let Some(_entity_ref) = ctx.get_entity(entity) else {
             return;
         };

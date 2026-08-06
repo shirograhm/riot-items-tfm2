@@ -38,6 +38,8 @@ impl RylaisCrystalScepter {
             price: 1900,
             hp: 400,
             magic_power: 200,
+            effect_slow_amount: 15,
+            effect_duration_seconds: 2.0,
             ..Self::base()
         }
     }

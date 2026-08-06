@@ -40,7 +40,10 @@ impl SunderedSky {
             hp: 550,
             attack: 65,
             skill_cooldown_mult: 20,
+            effect_percent_bonus_damage: 20.0,
+            effect_bonus_flat_heal: 60,
             effect_caster_hp_percent_heal: 10.0,
+            effect_cooldown_seconds: 20.0,
             ..Self::base()
         }
     }
@@ -136,7 +139,8 @@ impl StableItem for SunderedSky {
         if !target_ref.is_champion() {
             return;
         }
-        // Only trigger on base attacks
+
+        // Only trigger on base attacks, but use on_attack() for the mutable damage param
         if attack_type != AttackTypeV1::BaseAttack {
             return;
         }

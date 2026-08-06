@@ -3,8 +3,6 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, ItemMeta};
 
-fn apply_fray(ctx: &mut StableSim<'_>, caster: usize, target: usize, magic_damage: usize) {}
-
 #[derive(Clone, Debug)]
 pub struct WitsEnd {
     meta: ItemMeta,
@@ -34,6 +32,7 @@ impl WitsEnd {
             attack_speed_mult: 65,
             magic_resistance: 130,
             toughness: 30,
+            effect_bonus_magic_damage: 45,
             ..Self::base()
         }
     }
@@ -125,7 +124,7 @@ impl StableItem for WitsEnd {
             target,
             0,
             self.effect_bonus_magic_damage,
-            AttackTypeV1::BaseAttack,
+            AttackTypeV1::Item,
         );
     }
 

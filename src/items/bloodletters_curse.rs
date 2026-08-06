@@ -40,6 +40,9 @@ impl BloodlettersCurse {
             magic_power: 180,
             hp: 500,
             skill_cooldown_mult: 10,
+            effect_max_stacks: 5,
+            effect_duration_seconds: 6.0,
+            effect_percent_mr_shred: 6,
             ..Self::base()
         }
     }

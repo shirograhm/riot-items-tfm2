@@ -53,6 +53,9 @@ impl NightHarvester {
             magic_power: 160,
             effect_bonus_flat_damage: 150,
             effect_ap_percent_damage: 30.0,
+            effect_move_speed_mult: 40,
+            effect_duration_seconds: 2.0,
+            effect_cooldown_seconds: 45.0,
             ..Self::base()
         }
     }

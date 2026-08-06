@@ -37,6 +37,9 @@ impl Morellonomicon {
             price: 1850,
             hp: 350,
             magic_power: 190,
+            skill_cooldown_mult: 10,
+            effect_heal_reduce: 40,
+            effect_duration_seconds: 2.0,
             ..Self::base()
         }
     }

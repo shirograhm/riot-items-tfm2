@@ -11,8 +11,6 @@ pub struct FrozenMallet {
     attack: i32,
     effect_slow_amount: i32,
     effect_duration_seconds: f64,
-    // Icathia's Curse, the radiant-only on-hit bonus. Zero on the base variant,
-    // which skips the effect entirely.
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
 }
@@ -37,6 +35,8 @@ impl FrozenMallet {
             price: 2000,
             hp: 600,
             attack: 60,
+            effect_slow_amount: 15,
+            effect_duration_seconds: 2.0,
             effect_bonus_flat_damage: 20,
             effect_caster_hp_percent_damage: 3.0,
             ..Self::base()
@@ -119,18 +119,20 @@ impl StableItem for FrozenMallet {
         caster: usize,
         target: usize,
     ) {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
+            return;
+        };
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
         if target_ref.is_tower() {
             return;
         }
-        let already_slowed = has_buff(&target_ref, "frozen_mallet_slow");
 
-        let caster_hp_max = ctx.get_entity(caster).map(|c| c.hp().1).unwrap_or(0);
         let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_hp_max, self.effect_caster_hp_percent_damage);
+            + percent_of(caster_ref.hp().1, self.effect_caster_hp_percent_damage);
 
+        let already_slowed = has_buff(&target_ref, "frozen_mallet_slow");
         if !already_slowed {
             ctx.add_buff(
                 target,

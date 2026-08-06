@@ -37,6 +37,7 @@ impl DuskAndDawn {
             effect_caster_ap_percent_heal: 10.0,
             effect_caster_hp_percent_heal: 2.5,
             effect_cooldown_seconds: 3.5,
+            // Non-vital stats (internals)
             spellblade_ready: false,
         }
     }
@@ -49,6 +50,11 @@ impl DuskAndDawn {
             magic_power: 100,
             attack_speed_mult: 25,
             skill_cooldown_mult: 20,
+            effect_bonus_flat_damage: 85,
+            effect_ap_percent_damage: 15.0,
+            effect_caster_ap_percent_heal: 10.0,
+            effect_caster_hp_percent_heal: 2.5,
+            effect_cooldown_seconds: 3.5,
             ..Self::base()
         }
     }
@@ -168,16 +174,18 @@ impl StableItem for DuskAndDawn {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
+
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
         let heal_amount = percent_of(
             caster_ref.stat().magic_power,
             self.effect_caster_ap_percent_heal,
         ) + percent_of(caster_ref.hp().1, self.effect_caster_hp_percent_heal);
-        self.spellblade_ready = false;
 
         ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
         ctx.heal(caster, caster, heal_amount);
+
+        self.spellblade_ready = false;
         ctx.add_buff(
             caster,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),

@@ -23,6 +23,7 @@ impl Default for Sheen {
             effect_min_bonus_damage: 30,
             effect_max_bonus_damage: 85,
             effect_cooldown_seconds: 1.5,
+            // Non-vital stats (internals)
             spellblade_ready: false,
         }
     }
@@ -138,13 +139,13 @@ impl StableItem for Sheen {
             return;
         };
         let bonus_damage = self.spellblade_damage(caster_ref.level());
-        self.spellblade_ready = false;
 
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
         ctx.add_buff(
             caster,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
+        self.spellblade_ready = false;
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

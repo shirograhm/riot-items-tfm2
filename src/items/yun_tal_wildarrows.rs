@@ -6,8 +6,6 @@ use crate::{apply_config, has_buff, ticks, ItemMeta};
 #[derive(Clone, Debug)]
 pub struct YunTalWildarrows {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     yun_tal_practice_buff: &'static str,
     yun_tal_flurry_cooldown_buff: &'static str,
     yun_tal_flurry_buff: &'static str,
@@ -41,6 +39,7 @@ impl YunTalWildarrows {
             effect_flurry_attack_speed_mult: 30,
             effect_duration_seconds: 6.0,
             effect_cooldown_seconds: 15.0,
+            // Non-vital stats (internals)
             accumulated_stacks: 0,
         }
     }
@@ -48,12 +47,17 @@ impl YunTalWildarrows {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_yun_tal_wildarrows", &["yun_tal_wildarrows"]),
-            yun_tal_practice_buff: "radiant_yun_tal_practice",
-            yun_tal_flurry_cooldown_buff: "radiant_yun_tal_flurry_cooldown",
-            yun_tal_flurry_buff: "radiant_yun_tal_flurry",
+            yun_tal_practice_buff: "yun_tal_practice",
+            yun_tal_flurry_cooldown_buff: "yun_tal_flurry_cooldown",
+            yun_tal_flurry_buff: "yun_tal_flurry",
             price: 2200,
             attack: 80,
             attack_speed_mult: 50,
+            effect_stack_crit_chance: 1,
+            effect_max_stacks: 25,
+            effect_flurry_attack_speed_mult: 30,
+            effect_duration_seconds: 6.0,
+            effect_cooldown_seconds: 15.0,
             ..Self::base()
         }
     }
@@ -129,7 +133,6 @@ impl StableItem for YunTalWildarrows {
     }
 
     // Practice: permanent crit chance earned so far is re-applied each spawn.
-
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.accumulated_stacks == 0 {
             return;
@@ -149,23 +152,20 @@ impl StableItem for YunTalWildarrows {
         );
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
         caster: usize,
         _target: usize,
-        _damage: &mut usize,
-        damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
-        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
         let is_flurry_on_cooldown = has_buff(&caster_ref, self.yun_tal_flurry_cooldown_buff);
 
-        // Practice: dealing physical damage grants permanent crit chance, capped.
-        if damage_type == DamageTypeV1::Ad && self.accumulated_stacks < self.effect_max_stacks {
+        // Practice: base attacks grants permanent crit chance, capped.
+        if self.accumulated_stacks < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
                 &BuffV1 {
