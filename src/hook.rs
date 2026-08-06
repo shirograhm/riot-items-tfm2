@@ -519,19 +519,25 @@ unsafe fn detour(
     // The same half needs to know which items exist and which are final, to
     // offer a mod item as the 4th build slot. It used to find that by scanning
     // `Database + 0..0x60000` for something Vec-shaped; this is the list the
-    // game is actually using, so it is handed over directly. Idempotent, and
-    // cheap after the first call that sticks.
-    crate::tactics::driver::record_item_catalog(
-        items
-            .iter()
-            .map(|item| {
-                (
-                    item.key().to_string(),
-                    item.next_tier().iter().map(ToString::to_string).collect(),
-                )
-            })
-            .collect(),
-    );
+    // game is actually using, so it is handed over directly. Idempotent.
+    //
+    // The guard is not redundant with that idempotence: the argument is built
+    // by the *caller*, so without it every call after the first still allocated
+    // two `String`s per item — for the whole catalog, this mod's additions
+    // included — only for the callee to drop them.
+    if !crate::tactics::driver::item_catalog_recorded() {
+        crate::tactics::driver::record_item_catalog(
+            items
+                .iter()
+                .map(|item| {
+                    (
+                        item.key().to_string(),
+                        item.next_tier().iter().map(ToString::to_string).collect(),
+                    )
+                })
+                .collect(),
+        );
+    }
 
     let original = ORIGINAL
         .get()
@@ -553,11 +559,6 @@ unsafe fn detour(
     // enumerate champions from inside a UI handler. Same process, so this is a
     // static rather than a file (see `build_config::record_champion_roster`).
     build_config::record_champion_roster(champion_ids);
-
-    let item_keys = items
-        .iter()
-        .map(|item| item.key().to_string())
-        .collect::<Vec<_>>();
 
     // Routes are keyed off the lineup the game builds for (`team1`), in route
     // order — NOT the 60-entry `champion_ids` roster. The position-by-index
@@ -594,19 +595,24 @@ unsafe fn detour(
     // `buy_item` detour failed to install — this stays the mechanism, with the
     // lineup gate as its best effort.
     let injected = crate::tactics::driver::injects_builds();
-    match build_config::load() {
-        Ok(config) => {
-            // Published either way: the buy detour reads a snapshot, never the
-            // disk, and this is the call that already has the file in hand.
-            build_config::publish_pins(config.as_ref());
-            if let Some(config) = config.filter(|config| !config.is_empty()) {
-                if !injected && mine {
-                    build_config::apply(&config, &item_keys, &lineup, &mut routes);
-                }
-            }
-        }
-        // A malformed config is ignored so the game's routes stay untouched.
-        Err(_) => {}
+    // Cached rather than read here: this detour runs once per team per match,
+    // and the league's other fixtures sim on parallel workers while the player
+    // is still drafting — so a file read and a JSON parse per call is a stall in
+    // the ban/pick screen on any save with a developed world. The file is read
+    // once and reloaded only when the editor writes it, which is also what
+    // publishes the pins the buy detour snapshots — so nothing publishes them
+    // here any more, and nothing can change a match's builds once it is under
+    // way. A malformed config reads as empty, so the game's routes stay
+    // untouched.
+    let config = build_config::load_cached();
+    if !injected && mine && !config.is_empty() {
+        // Built only on the path that uses it — the overrides reach at most one
+        // of the two teams, and only when a config exists.
+        let item_keys = items
+            .iter()
+            .map(|item| item.key().to_string())
+            .collect::<Vec<_>>();
+        build_config::apply(&config, &item_keys, &lineup, &mut routes);
     }
 
     // There is no second, position-keyed pass any more. Builds stay keyed by
@@ -617,8 +623,9 @@ unsafe fn detour(
 
     // Enforce unique builds after `build_config` so AI routes, category-forced
     // routes, and configured builds are all covered. Toggled from the item build
-    // editor via `mod-settings.json` (defaults on); read per call, so flipping
-    // the toggle applies to the next match without restarting the game.
+    // editor via `mod-settings.json` (defaults on); cached like the config
+    // above, and invalidated when the editor writes, so flipping the toggle
+    // still applies to the next match without restarting the game.
     if build_config::unique_items_enabled() {
         enforce_unique_items(items, &mut routes);
     }
