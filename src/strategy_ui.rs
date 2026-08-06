@@ -753,8 +753,8 @@ fn text_width(text: &str) -> f32 {
 /// Shortens `text` until it fits `max_width`, marking the cut with an ellipsis.
 ///
 /// Returns `text` untouched when it already fits, which is every name in the
-/// three-slot layout — the columns only get tight enough to need this once
-/// `tfm2_item_tactics` splits the same band four ways.
+/// three-slot layout — the columns only get tight enough to need this when
+/// 4-slot mode splits the same band four ways.
 fn fit_text(text: &str, max_width: f32) -> String {
     const ELLIPSIS: &str = "...";
     if text_width(text) <= max_width {
@@ -1125,7 +1125,7 @@ fn edit_row(row: usize, edit: impl FnOnce(&mut ChampionRow)) -> bool {
     let rows = with_state(|state| {
         if let Some(entry) = state.rows.get_mut(row) {
             // Grow to the editable width only. Truncating here would drop a
-            // fourth item that is being kept for a `tfm2_item_tactics` that is
+            // fourth item that is being kept for a 4-slot mode that is
             // currently off, the moment any other slot on the row was touched.
             if entry.slots.len() < picker_slots() {
                 entry.slots.resize(picker_slots(), None);

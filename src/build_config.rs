@@ -162,16 +162,20 @@ pub fn load_cached() -> Arc<BuildConfig> {
 }
 
 /// Item slots the editor exposes per champion, matching the columns the
-/// strategy screen shows: the vanilla three, or four when `tfm2_item_tactics`
-/// is installed, enabled and set to four slots.
+/// strategy screen shows: the vanilla three, or four when the tactics half is
+/// active and `4items.cfg` asks for four.
 ///
-/// A build written with four slots and later opened with that mod disabled
-/// keeps its fourth item in `item-builds.json` — [`load_champion_rows`] only
-/// pads short builds, never truncates long ones, so turning the companion mod
-/// back on restores the build intact — but the editor stops showing that item
-/// and [`apply`] stops sending it, because the game has nowhere to put it.
+/// This is a first-hand answer, not a detection: the tactics half is the code
+/// that installs the byte patches making a fourth slot exist, so if it says
+/// four there are four.
+///
+/// A build written with four slots and later opened in 3-slot mode keeps its
+/// fourth item in `item-builds.json` — [`load_champion_rows`] only pads short
+/// builds, never truncates long ones, so switching back restores the build
+/// intact — but the editor stops showing that item and [`apply`] stops sending
+/// it, because the game has nowhere to put it.
 pub fn picker_slots() -> usize {
-    crate::companion::item_slots()
+    crate::tactics::driver::picker_slots()
 }
 
 /// One editable row of the in-game editor: a champion and its three slots.
@@ -227,9 +231,9 @@ pub fn load_champion_rows() -> Vec<ChampionRow> {
                 })
                 .unwrap_or_default();
             // Pad to the editable width, but never cut a longer build down:
-            // a four-item build read while the fourth slot is unavailable has
-            // to survive the round trip so it is still there when it comes
-            // back. `apply` is where the unusable tail is dropped.
+            // a four-item build read in 3-slot mode has to survive the round
+            // trip so it is still there when four slots come back. `apply` is
+            // where the unusable tail is dropped.
             if slots.len() < picker_slots() {
                 slots.resize(picker_slots(), None);
             }
@@ -319,7 +323,10 @@ pub fn record_champion_roster(ids: &[String]) {
 /// The recorded roster. Empty until the first match simulates, which happens
 /// before the player can reach their own strategy screen.
 pub fn champion_roster() -> Vec<String> {
-    CHAMPION_ROSTER.lock().map(|roster| roster.clone()).unwrap_or_default()
+    CHAMPION_ROSTER
+        .lock()
+        .map(|roster| roster.clone())
+        .unwrap_or_default()
 }
 
 /// `item-builds.json`, as the *simulation* side reads it.
@@ -383,8 +390,7 @@ pub fn pinned_key(champion: &str, slot: usize) -> Option<String> {
 /// key, so there is nothing else in it to preserve.
 pub fn set_unique_items(enabled: bool) -> bool {
     let path = crate::config::mod_dir().join("mod-settings.json");
-    let written =
-        std::fs::write(path, format!("{{\n  \"unique_items\": {enabled}\n}}\n")).is_ok();
+    let written = std::fs::write(path, format!("{{\n  \"unique_items\": {enabled}\n}}\n")).is_ok();
     if written {
         invalidate_caches();
     }
@@ -470,8 +476,8 @@ pub fn apply(
             .and_then(|champion_id| config.by_champion.get(champion_id));
         if let Some(build) = champion_build {
             // A build may be longer than the game has slots for — the file
-            // keeps a fourth item while `tfm2_item_tactics` is off, so that
-            // turning it back on restores the build. Sending that item anyway
+            // keeps a fourth item while 3-slot mode is on, so that switching
+            // back restores the build. Sending that item anyway
             // would hand the game a route it has nowhere to put.
             let usable = build.len().min(picker_slots());
             let ai_route = slot.clone();

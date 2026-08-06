@@ -4356,16 +4356,15 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                 if !buy_note.is_empty() {
                     s.push_str(&format!("  buy_item detail: {buy_note}\n"));
                 }
-                // The two halves keep their own slot counts, and only this one
-                // is asked by the Builds editor and by the item-build hook's
-                // `usable = build.len().min(picker_slots())`. If they disagree,
-                // the symptom is a 4-slot layout with nothing ever placed in
-                // the 4th — which is indistinguishable, on screen, from the
-                // purchase path failing. `mode` above is the tactics half's.
+                // What the Builds editor and the item-build hook's
+                // `usable = build.len().min(picker_slots())` are working from.
+                // `driver::picker_slots` reports 3 unless `tactics_init`
+                // returned true, so this differing from `mode` above means the
+                // version gate failed and no patch is in: the symptom on screen
+                // is a 3-slot layout, not a 4th slot nothing ever fills.
                 s.push_str(&format!(
-                    "  host picker slots (companion::item_slots) : {}  [tactics half says {}]\n",
-                    crate::companion::item_slots(),
-                    slot_count()
+                    "  picker slots: {}\n",
+                    driver::picker_slots()
                 ));
                 // Whether the loader hook ever delivered the 4-slot templates.
                 // These used to arrive through `mod.override_info` as well,

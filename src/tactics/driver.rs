@@ -89,9 +89,31 @@ pub unsafe fn ui_root() -> Option<&'static mut Node> {
 // ---------------------------------------------------------------------------
 
 /// Was `init()` + `declare_mod!`. Runs the version gate and, in 4-slot mode, the
-/// byte patches. Returns whether the tactics half is active at all.
-pub fn on_mod_init() -> bool {
-    super::tactics_init()
+/// byte patches, and records whether this half came up at all — which is what
+/// [`picker_slots`] answers from.
+pub fn on_mod_init() {
+    ACTIVE.store(super::tactics_init(), Ordering::Relaxed);
+}
+
+/// Whether [`on_mod_init`] ran and its version gate passed.
+static ACTIVE: AtomicBool = AtomicBool::new(false);
+
+/// Item slots a build has, for the host half's editor and item-build hook: 4
+/// when this half is active and `4items.cfg` asks for four, otherwise the three
+/// the game ships with.
+///
+/// The active flag is what makes this safe to call at any time. `slot_count`
+/// reads `ITEM_MODE`, which starts at its optimistic default of 4 and is only
+/// corrected once `load_mode` runs — which happens inside [`on_mod_init`], and
+/// not at all when the version gate fails. Asking before then, or on a game
+/// version this half is disabled for, would otherwise offer a fourth slot no
+/// byte patch exists to fill.
+pub fn picker_slots() -> usize {
+    if ACTIVE.load(Ordering::Relaxed) {
+        super::slot_count()
+    } else {
+        3
+    }
 }
 
 /// Was `ModServerExtension::on_server_start`.
@@ -139,12 +161,6 @@ pub fn item_catalog_recorded() -> bool {
 /// two must, or a champion gets its pinned item twice over.
 pub fn injects_builds() -> bool {
     super::injects_builds()
-}
-
-/// Item slots this half is configured for: 4, or 3 when `4items.cfg` says so.
-/// Only meaningful once [`on_mod_init`] has returned `true`.
-pub fn slot_count() -> usize {
-    super::slot_count()
 }
 
 /// Whether `probe_db` has completed against an accepted `Database` base.

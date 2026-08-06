@@ -2,14 +2,13 @@ use mod_api_stable::*;
 use std::cell::Cell;
 
 mod build_config;
-mod companion;
-mod my_team;
 mod config;
 mod constants;
 mod hook;
 mod item_catalog;
 mod item_meta;
 mod items;
+mod my_team;
 mod strategy_ui;
 mod tactics;
 
@@ -246,26 +245,12 @@ struct ItemBuildHookExtension;
 
 impl StableServerExtension for ItemBuildHookExtension {
     fn before_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
-        // Merged `tfm2_item_tactics` half — was its own
-        // `ModServerExtension::before_management_tick`. Idempotent, and the one
-        // place `probe_db` gets to retry: it cannot do anything until the item
-        // build detour below has fired once and settled the `Database` address.
         tactics::driver::before_management_tick();
     }
 
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
-        // Merged `tfm2_item_tactics` half — was its own
-        // `ModServerExtension::on_server_start`. Runs before the hook install
-        // below because its own detours (launcher seed, seed-ctor provider,
-        // spawn) are what decide whether a buy is happening in an on-screen
-        // match, and they are cheaper to install early than to self-heal.
         tactics::driver::on_server_start();
 
-        // Reported by `eprintln!` only, which goes nowhere unless the game is
-        // started with a console attached. A refused hook disables every build
-        // config, the strategy picker included, and looks exactly like the hook
-        // working while the configs are ignored — so if that is ever suspected,
-        // run the game from a console to see these lines.
         match hook::install_hook() {
             Ok(address) => {
                 let message = format!("hook_installed address=0x{address:x}");
@@ -274,9 +259,7 @@ impl StableServerExtension for ItemBuildHookExtension {
             Err(error) if error == "hook already installed" => {}
             Err(error) => {
                 eprintln!("riot_items_tfm2: hook_refused error={error}");
-                // Resolution failed, so dump the shape-matching functions for
-                // `tools/find_item_build_hook.py` to work from. Diagnostic only —
-                // the hook never picks a candidate itself.
+                // Resolution failed diagnostics
                 match hook::candidate_report() {
                     Ok(candidates) => {
                         eprintln!(
@@ -300,29 +283,7 @@ fn init(host: &StableHost) -> StableMod {
     let mut reg = StableMod::new("riot_items_tfm2");
     let configs = config::load();
 
-    // Recorded here because the companion-mod checks run from UI and hook
-    // paths that never see a host handle. Must happen before anything asks
-    // `companion::item_slots()`, which caches its answer on first call.
-    let version = host.game_version();
-    companion::record_game_version((version.major, version.minor, version.patch));
-
-    // Merged `tfm2_item_tactics` half — was its own `init` + `declare_mod!`.
-    // Runs its version gate and, in 4-slot mode, its byte patches. A DLL gets
-    // one entry point, so this is the only place it can happen.
-    //
-    // Deliberately before `resolve_item_slots`: that call asks whether the
-    // *separately installed* companion mod is providing a 4th slot, and caches
-    // the answer on first read. Now that this mod can provide the slot itself,
-    // the two answers have to be reconciled rather than raced — see
-    // `companion::record_builtin_item_slots`.
-    let tactics_active = tactics::driver::on_mod_init();
-    companion::record_builtin_item_slots(tactics_active.then(tactics::driver::slot_count));
-    // Settled here and not left to the first caller: the files it reads include
-    // `config/game/mods.json`, which the game rewrites while it runs — and the
-    // first caller would otherwise be the hook or the build editor, both of
-    // which run just after a save is loaded, which is exactly when that rewrite
-    // happens. Mod-load time is a quiet window for the same read.
-    companion::resolve_item_slots();
+    tactics::driver::on_mod_init();
 
     macro_rules! configured {
         ($key:literal => $T:ty) => {
@@ -331,10 +292,6 @@ fn init(host: &StableHost) -> StableMod {
     }
     macro_rules! configured_radiant {
         ($key:literal => $T:ty) => {{
-            // Radiant items are this mod's final tier, and the in-game build
-            // picker cannot discover them any other way: they are absent from
-            // the game's item settings document and `StableMod` does not expose
-            // what has been registered.
             strategy_ui::note_final_item($key);
             configs
                 .get($key)
@@ -450,9 +407,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured_radiant!("radiant_kraken_slayer" => KrakenSlayer));
     reg.add_item(configured_radiant!("radiant_liandrys_torment" => LiandrysTorment));
-    reg.add_item(
-        configured_radiant!("radiant_locket_of_the_iron_solari" => LocketOfTheIronSolari),
-    );
+    reg.add_item(configured_radiant!("radiant_locket_of_the_iron_solari" => LocketOfTheIronSolari));
     reg.add_item(configured_radiant!("radiant_lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured_radiant!("radiant_malignance" => Malignance));
     reg.add_item(configured_radiant!("radiant_mirage_blade" => MirageBlade));
@@ -490,7 +445,10 @@ fn init(host: &StableHost) -> StableMod {
 
     host.log(
         LogLevel::Info,
-        &format!("riot_items_tfm2: registered items, config entries={}", configs.len()),
+        &format!(
+            "riot_items_tfm2: registered items, config entries={}",
+            configs.len()
+        ),
     );
 
     reg
