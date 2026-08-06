@@ -123,9 +123,6 @@ impl StableItem for Heartsteel {
     }
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        if self.accumulated_bonus_hp <= 0 {
-            return;
-        }
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
