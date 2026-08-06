@@ -122,6 +122,7 @@ impl StableItem for BlackfireTorch {
         _rng_seed: u64,
         caster: usize,
         _target: usize,
+        _is_ally: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
