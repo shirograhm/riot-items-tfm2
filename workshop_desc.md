@@ -17,17 +17,13 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 [h1] Known Issues [/h1]
 
-Some item effects (on-hit damage, healing) may not show the damage numbers. Not sure why that is at this point. However, the effects are working.  
-
 Some item effects are roughly simulated to the best of my ability using the available mod-sdk.  
 
 Some AI champions seem to prefer the wrong stats when given deference of item selection. Magic Knight tends to buy AD and AS items instead of AP, for example.  
 
 Some AI champions ignore the custom item builds. This is being investigated, but is likely to be instability that occurs in long term builds.  
 
-If a [i]specific player[/i] on your team ignores their build every game, that is the vanilla per-player setting winning, not a bug in the build. See [b]Vanilla Overrides[/b] below.  
-
-The in-game item build editor override affects all champions in the game. This means you could control the enemy's items. Currently there is no fix without removing the custom item build behavior completely.  
+This mod can cause your game to crash if you back out to the main menu and then attempt to load the game again. This is being investigated, but please restart the game for now.  
 
 [h1] Instructions [/h1]
 
