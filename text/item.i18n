@@ -645,11 +645,11 @@
         },
         "bastionbreaker": {
             "name": "Bastionbreaker",
-            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "radiant_bastionbreaker": {
             "name": "Radiant Bastionbreaker",
-            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "serpents_fang": {
             "name": "Serpent's Fang",

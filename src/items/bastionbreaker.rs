@@ -151,10 +151,15 @@ impl StableItem for Bastionbreaker {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
         mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
-
+        if attack_type != AttackTypeV1::BaseAttack {
+            return;
+        }
+        // Only process for basic attacks
+        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
         if self.sabotage_charge == 0 {
             return;
         }
@@ -173,16 +178,6 @@ impl StableItem for Bastionbreaker {
         );
         ctx.deal_damage(caster, target, bonus, 0, AttackTypeV1::Item);
         self.sabotage_charge = 0; // spend the charge
-    }
-
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        caster: usize,
-        target: usize,
-    ) {
-        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
