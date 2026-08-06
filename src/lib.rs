@@ -25,20 +25,14 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
     (value as f64 * percent / 100.0).round() as i32
 }
 
-/// Converts a duration in seconds (how config expresses them) to simulation
-/// ticks (what a `Time` buff expects).
 fn ticks(seconds: f64) -> usize {
     (seconds * TICKS_PER_SECOND).round() as usize
 }
 
-/// Whether `entity` currently carries a buff named `name`. Buffs are stored in a
-/// flat per-entity table with no lookup by name, so this is a linear scan.
 fn has_buff(entity: &StableEntity<'_, '_>, name: &str) -> bool {
     (0..entity.buff_count()).any(|i| entity.buff_at(i).is_some_and(|b| b.name() == name))
 }
 
-/// How many buffs named `name` are on `entity`. Same-name buffs stack rather
-/// than refresh, so the number of copies present *is* the stack count.
 fn buff_stacks(entity: &StableEntity<'_, '_>, name: &str) -> usize {
     (0..entity.buff_count())
         .filter(|&i| entity.buff_at(i).is_some_and(|b| b.name() == name))
@@ -139,13 +133,6 @@ fn apply_lethality(
     });
 }
 
-/// How long (in ticks) an enemy champion stays "marked" as recently damaged, so a
-/// death within the window counts as a takedown (kill or assist). 3s at 60/s.
-const TAKEDOWN_WINDOW_TICKS: usize = 180;
-
-/// Whether `target` is a champion on the opposing team from `caster`. Both the
-/// takedown marks and the "in combat with an enemy champion" timers key off this,
-/// and neither should fire on minions, towers, or a friendly hit.
 fn is_enemy_champion(ctx: &mut StableSim<'_>, caster: usize, target: usize) -> bool {
     let Some(caster_team) = ctx.get_entity(caster).map(|c| c.team()) else {
         return false;
@@ -153,55 +140,6 @@ fn is_enemy_champion(ctx: &mut StableSim<'_>, caster: usize, target: usize) -> b
     ctx.get_entity(target)
         .map(|target_ref| target_ref.is_champion() && target_ref.team() != caster_team)
         .unwrap_or(false)
-}
-
-/// Marks `target` as recently damaged, if it is an enemy champion of `caster`, so
-/// that a death within `TAKEDOWN_WINDOW_TICKS` counts as a takedown. Refreshes an
-/// existing mark. Shared by items whose passives trigger on takedowns (which the
-/// `on_kill` hook can't identify — its `entity` arg always looks like a champion).
-fn mark_enemy_champion(
-    marks: &mut Vec<(usize, usize)>,
-    ctx: &mut StableSim<'_>,
-    caster: usize,
-    target: usize,
-) {
-    if !is_enemy_champion(ctx, caster, target) {
-        return;
-    }
-    if let Some(mark) = marks.iter_mut().find(|(id, _)| *id == target) {
-        mark.1 = TAKEDOWN_WINDOW_TICKS;
-    } else {
-        marks.push((target, TAKEDOWN_WINDOW_TICKS));
-    }
-}
-
-/// Ages `marks` by one tick and returns how many marked champions died this tick
-/// (each a takedown). Marks are dropped on death (counted once) or when the window
-/// lapses without a death. Call once per `update`.
-fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut StableSim<'_>) -> usize {
-    if marks.is_empty() {
-        return 0;
-    }
-    let mut takedowns = 0;
-    let mut kept = Vec::with_capacity(marks.len());
-    for (id, ticks_left) in std::mem::take(marks) {
-        // A marked champion counts as a takedown once the game stops reporting it as
-        // alive: either it's gone from the entity table (`get_entity` -> None, which
-        // is how TFM2 removes a champion killed this round) or it's still queryable
-        // but flagged not-alive. We only mark enemy champions we damaged within the
-        // last few seconds, so a disappearance here is a death.
-        let is_dead = ctx.get_entity(id).map(|e| !e.is_alive()).unwrap_or(true);
-        if is_dead {
-            takedowns += 1;
-            continue;
-        }
-        let remaining = ticks_left.saturating_sub(1);
-        if remaining > 0 {
-            kept.push((id, remaining));
-        }
-    }
-    *marks = kept;
-    takedowns
 }
 
 fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: i32, name: &str) {

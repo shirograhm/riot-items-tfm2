@@ -2222,11 +2222,11 @@ static CT_INJECTED: AtomicBool = AtomicBool::new(false);
 static CT_LAST: Mutex<[i64; 40]> = Mutex::new([-1; 40]); // 10 rows x 4 slots
 static CT_CHAMPS: Mutex<Vec<String>> = Mutex::new(Vec::new()); // last champion observed per row (change detection)
                                                                // * Diagnostics: comp-test wiring, stage by stage (printed in buy_report)
-// (CTD_CALL / CTD_BUILDS / CTD_VIS / CTD_ROW / CTD_CHAMP removed 2026-08-05:
-//  write-only counters no diagnostic ever read, one of which cost a whole-tree
-//  `find_node` per frame. `CTD_SET` is write-only too, but it is bumped once per
-//  comp-test screen entry rather than per frame, so it costs nothing and is left
-//  for whoever next debugs that injection.)
+                                                               // (CTD_CALL / CTD_BUILDS / CTD_VIS / CTD_ROW / CTD_CHAMP removed 2026-08-05:
+                                                               //  write-only counters no diagnostic ever read, one of which cost a whole-tree
+                                                               //  `find_node` per frame. `CTD_SET` is write-only too, but it is bumped once per
+                                                               //  comp-test screen entry rather than per frame, so it costs nothing and is left
+                                                               //  for whoever next debugs that injection.)
 static CTD_SET: AtomicU64 = AtomicU64::new(0); // it4_slot3 option injection succeeded
                                                // * +0x240 measurement (07-21): the in-source comments contradict each other (L375 "render screen_x" vs L389 "hit-test, no effect")
                                                //   and it is unconfirmed whether y/w/h continue at +0x244/+0x248/+0x24c. Dump the region on a node whose coordinates we know to pin the layout.
@@ -2942,8 +2942,8 @@ fn handle_comptest_screen(ui: &Node) {
             champs[ri].clear();
             continue;
         }; // no champion placed = not our business
-        // * Rows 0~4 = blue / 5~9 = red (the order CT_ROWS is defined in). Selections are read and written with this scope =>
-        //   the same champion on both sides is designated independently (previously they merged into one).
+           // * Rows 0~4 = blue / 5~9 = red (the order CT_ROWS is defined in). Selections are read and written with this scope =>
+           //   the same champion on both sides is designated independently (previously they merged into one).
         let scope = if ri < 5 { Scope::CtBlue } else { Scope::CtRed };
         if ri < 5 {
             ct_blue.insert(c.clone());
@@ -3389,12 +3389,12 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
                                   //   * is the 4th path reached at all, and if it bails, at which step;
                                   //   * `owned>=4` observed — distinguishes "not bought" from "bought, not drawn";
                                   //   * hook install state, VEH state, UI root address, mod item source.
-// * OFF again 2026-08-05: it verified the 4th-item parity fix (enemy builds now extend),
-//   confirmed in game. Flip back on to get `build_ext_diag.txt` — `BE_CNT[6]` (build[3]
-//   writes) and "owned>=4 observed" are what tell "the build was extended" apart from
-//   "extended and never bought". Costs a file write every ~5s on the main thread.
+                                  // * OFF again 2026-08-05: it verified the 4th-item parity fix (enemy builds now extend),
+                                  //   confirmed in game. Flip back on to get `build_ext_diag.txt` — `BE_CNT[6]` (build[3]
+                                  //   writes) and "owned>=4 observed" are what tell "the build was extended" apart from
+                                  //   "extended and never bought". Costs a file write every ~5s on the main thread.
 const BUILD_EXT_DIAG: bool = false; // * was OFF 2026-08-04: it identified the root-scan budget bug (see `ui_root::ATTEMPTS`) and that fix is confirmed in game
-                                   // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
+                                    // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false;
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
 // * Cause identified and fixed (comp-test injection = the missing team gate bypass; all 9 launcher retaddrs confirmed) -> OFF in production.
@@ -4362,10 +4362,7 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                 // returned true, so this differing from `mode` above means the
                 // version gate failed and no patch is in: the symptom on screen
                 // is a 3-slot layout, not a 4th slot nothing ever fills.
-                s.push_str(&format!(
-                    "  picker slots: {}\n",
-                    driver::picker_slots()
-                ));
+                s.push_str(&format!("  picker slots: {}\n", driver::picker_slots()));
                 // Whether the loader hook ever delivered the 4-slot templates.
                 // These used to arrive through `mod.override_info` as well,
                 // which cannot miss; the hook can, if a template is loaded
