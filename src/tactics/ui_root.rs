@@ -37,7 +37,7 @@
 //! `super::set_img_src` and reused here.
 
 use std::mem::{offset_of, size_of};
-use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 
 use mod_api::Node;
 
@@ -88,6 +88,31 @@ const MAX_ATTEMPTS: usize = 600;
 static LAST_ANCHOR: AtomicUsize = AtomicUsize::new(0);
 /// How the resolved root was found, for the diagnostic report.
 static SOURCE: AtomicUsize = AtomicUsize::new(0);
+
+/// FNV-1a of the root node's id at the moment it was accepted, so a cached root
+/// can be re-checked in one string read. See [`resolve`] for why it has to be.
+static ROOT_ID_HASH: AtomicU64 = AtomicU64::new(0);
+/// Times a cached root failed re-validation and was dropped, for the report.
+static INVALIDATIONS: AtomicUsize = AtomicUsize::new(0);
+
+fn id_hash(id: &str) -> u64 {
+    id.bytes().fold(0xcbf2_9ce4_8422_2325u64, |hash, byte| {
+        (hash ^ byte as u64).wrapping_mul(0x0000_0100_0000_01b3)
+    })
+}
+
+/// Caches a root that [`is_ui_root`] has just accepted, with the fingerprint
+/// [`resolve`] re-checks it against.
+///
+/// # Safety
+/// `addr` must have passed `is_ui_root`, which is what makes reading its id here
+/// sound.
+unsafe fn accept(addr: usize, source: usize) -> Option<usize> {
+    ROOT_ID_HASH.store(node_id(addr).map(|id| id_hash(&id)).unwrap_or(0), Ordering::Relaxed);
+    SOURCE.store(source, Ordering::Relaxed);
+    UI_ROOT.store(addr, Ordering::Relaxed);
+    Some(addr)
+}
 
 /// Reads the engine string at `addr` — `{len@0, ptr@8, cap@16}`, the layout
 /// `set_img_src` documents. Rejects anything that is not a short ASCII
@@ -189,10 +214,41 @@ unsafe fn is_ui_root(addr: usize) -> bool {
 ///
 /// Returns `None` until the UI exists — callers must treat that as "not this
 /// frame", exactly as they already treat a missing `GAME_VIEW`.
+///
+/// # Why the cache is re-checked rather than trusted
+///
+/// The cached address does not outlive the UI tree it was validated against.
+/// Returning to the main menu tears that tree down, and loading a save builds a
+/// new one — so a root resolved during the first save is a dangling pointer for
+/// the second. Handing it back was a crash, not a wrong answer: `find_node`
+/// walks `Node.child` with ordinary Rust reads, and per the module docs above,
+/// the VEH only covers faults inside `safe_copy`. Load a save, go back to the
+/// menu, load one again, and the first UI frame of the second save died in
+/// `handle_tactics_screen`.
+///
+/// So each call re-reads the root's own id and compares it against the
+/// fingerprint taken when it was accepted. That is one string read through the
+/// protected path — freed or reused memory answers `None` or a different id
+/// instead of faulting — and unlike re-running [`is_ui_root`] it does not depend
+/// on the shape of the tree below, which legitimately changes with every screen.
+/// A mismatch drops the cache and re-scans, with the attempt budget reset: a new
+/// tree is a new object graph, and the old failures said nothing about it.
 pub fn resolve() -> Option<usize> {
     let cached = UI_ROOT.load(Ordering::Relaxed);
     if cached != 0 {
-        return Some(cached);
+        let live = unsafe { node_id(cached) }.map(|id| id_hash(&id));
+        if live == Some(ROOT_ID_HASH.load(Ordering::Relaxed)) {
+            return Some(cached);
+        }
+        UI_ROOT.store(0, Ordering::Relaxed);
+        ROOT_ID_HASH.store(0, Ordering::Relaxed);
+        SOURCE.store(0, Ordering::Relaxed);
+        // The anchor may be unchanged across a save reload (`App` outlives the
+        // scene), so the budget cannot be left to `LAST_ANCHOR` to reset here —
+        // without this the rescan would run into an allowance already spent on
+        // the previous save and never resolve again.
+        ATTEMPTS.store(0, Ordering::Relaxed);
+        INVALIDATIONS.fetch_add(1, Ordering::Relaxed);
     }
     // Both anchors are published by `cap_game_view`, so before the first UI
     // frame there is nothing to look at. Returning here — ahead of the budget —
@@ -216,9 +272,7 @@ pub fn resolve() -> Option<usize> {
 
     // 1. TIP_ROOT. Free to test, and the validator — not an assumption — decides.
     if tip > 0x10000 && unsafe { is_ui_root(tip) } {
-        UI_ROOT.store(tip, Ordering::Relaxed);
-        SOURCE.store(1, Ordering::Relaxed);
-        return Some(tip);
+        return unsafe { accept(tip, 1) };
     }
 
     // 2. Window scan from App.
@@ -235,15 +289,11 @@ pub fn resolve() -> Option<usize> {
         if let Some(pointee) = unsafe { safe_read_u64(slot) } {
             let pointee = pointee as usize;
             if unsafe { is_ui_root(pointee) } {
-                UI_ROOT.store(pointee, Ordering::Relaxed);
-                SOURCE.store(2, Ordering::Relaxed);
-                return Some(pointee);
+                return unsafe { accept(pointee, 2) };
             }
         }
         if unsafe { is_ui_root(slot) } {
-            UI_ROOT.store(slot, Ordering::Relaxed);
-            SOURCE.store(3, Ordering::Relaxed);
-            return Some(slot);
+            return unsafe { accept(slot, 3) };
         }
         offset += 8;
     }
@@ -277,5 +327,9 @@ pub fn report() -> String {
         _ => "inline in App window",
     };
     let id = unsafe { node_id(root) }.unwrap_or_else(|| "<unreadable>".into());
-    format!("UI root: {root:#x} via {how}, id={id:?}")
+    // A non-zero invalidation count is the expected trace of a save reload, not
+    // a fault: it says the stale-root re-check fired and the root was found
+    // again. It climbing every frame would mean the fingerprint is unstable.
+    let dropped = INVALIDATIONS.load(Ordering::Relaxed);
+    format!("UI root: {root:#x} via {how}, id={id:?}, stale-root drops={dropped}")
 }
