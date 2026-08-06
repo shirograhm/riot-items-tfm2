@@ -305,11 +305,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Blade of the Ruined King",
-            "option": "\nMist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Radiant Blade of the Ruined King",
-            "option": "\nMist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
         },
         "blackfire_torch": {
             "name": "Blackfire Torch",

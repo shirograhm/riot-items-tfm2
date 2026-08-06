@@ -117,38 +117,34 @@ impl StableItem for BladeOfTheRuinedKing {
         }
     }
 
-    fn on_attack(
+    fn on_base_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        caster: usize,
-        target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        _rng_seed: u64,
+        player: usize,
+        entity: usize,
     ) {
-        let Some(target_ref) = ctx.get_entity(target) else {
+        let Some(target_ref) = ctx.get_entity(entity) else {
             return;
         };
         if target_ref.is_tower() {
             return;
         }
 
-        let mut bonus_damage = percent_of(
-            target_ref.hp().0,
-            self.effect_hp_percent_damage as f64,
-        );
+        let mut bonus_damage = percent_of(target_ref.hp().0, self.effect_hp_percent_damage as f64);
         if !target_ref.is_champion() {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
         if !try_proc_on_hit(
             ctx,
-            target,
+            entity,
             "blade_of_the_ruined_king_on_hit_cooldown",
             self.on_hit_cooldown_seconds,
         ) {
             return;
         }
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
+        ctx.deal_damage(player, entity, bonus_damage, 0, AttackTypeV1::Item);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
