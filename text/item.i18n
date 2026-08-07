@@ -353,11 +353,11 @@
         },
         "nashors_tooth": {
             "name": "Nashor's Tooth",
-            "option": "\nIcathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+            "option": "\nIcathian Bite: Basic attacks deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
         },
         "radiant_nashors_tooth": {
             "name": "Radiant Nashor's Tooth",
-            "option": "\nIcathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+            "option": "\nIcathian Bite: Basic attacks deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
         },
         "jaksho_the_protean": {
             "name": "Jak'Sho, The Protean",
@@ -1042,11 +1042,11 @@
         },
         "nashors_tooth": {
             "name": "Nanh Nashor",
-            "option": "\nVết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
+            "option": "\nVết cắn Icathian: Đòn đánh thường gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
         },
         "radiant_nashors_tooth": {
             "name": "Nanh Nashor Ánh Sáng",
-            "option": "\nVết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
+            "option": "\nVết cắn Icathian: Đòn đánh thường gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
         },
         "jaksho_the_protean": {
             "name": "Jak'Sho Vỏ Bọc Thích Nghi",
@@ -3109,11 +3109,11 @@
         },
         "nashors_tooth": {
             "name": "Зуб Нашора",
-            "option": "\nУкус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
+            "option": "\nУкус Икатии: Базовые атаки наносят <#a974ffff>дополнительный магический урон<> равный <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
         },
         "radiant_nashors_tooth": {
             "name": "Дар Барона",
-            "option": "\nУкус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
+            "option": "\nУкус Икатии: Базовые атаки наносят <#a974ffff>дополнительный магический урон<> равный <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
         },
         "jaksho_the_protean": {
             "name": "Жак'Шо Многоликий",
