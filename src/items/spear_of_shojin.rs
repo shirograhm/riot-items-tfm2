@@ -77,15 +77,13 @@ impl SpearOfShojin {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
-            return;
-        }
-        if !target_ref.is_champion() {
-            return;
-        }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
+        if !target_ref.is_champion() {
+            return;
+        }
+
         let stack_count = buff_stacks(&caster_ref, self.stack_buff);
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
@@ -150,8 +148,12 @@ impl StableItem for SpearOfShojin {
         _rng_seed: u64,
         caster: usize,
         target: usize,
-        _is_ally: bool,
+        is_ally: bool,
     ) {
+        if is_ally {
+            return;
+        }
+
         self.add_attack_stack(ctx, caster, target);
     }
 

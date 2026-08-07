@@ -116,17 +116,20 @@ impl StableItem for BladeOfTheRuinedKing {
         }
     }
 
-    fn on_base_attack(
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        player: usize,
-        entity: usize,
+        caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        let Some(target_ref) = ctx.get_entity(entity) else {
+        let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
+        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
 
@@ -135,7 +138,7 @@ impl StableItem for BladeOfTheRuinedKing {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
-        ctx.deal_damage(player, entity, bonus_damage, 0, AttackTypeV1::Item);
+        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

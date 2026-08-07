@@ -108,13 +108,20 @@ impl StableItem for NashorsTooth {
         }
     }
 
-    fn on_base_attack(
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
         caster: usize,
         target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
+        if attack_type != AttackTypeV1::BaseAttack {
+            return;
+        }
+
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };

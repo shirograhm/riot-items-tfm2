@@ -209,14 +209,17 @@ impl StableItem for DeadMansPlate {
         self.apply_move_speed(ctx, player);
     }
 
-    fn on_base_attack(
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
         caster: usize,
         target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        if self.momentum == 0 {
+        if self.momentum == 0 || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
         if !is_enemy_champion(ctx, caster, target) {

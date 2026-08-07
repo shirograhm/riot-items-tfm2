@@ -153,25 +153,28 @@ impl StableItem for TrinityForce {
         }
     }
 
-    fn on_base_attack(
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        player: usize,
-        entity: usize,
+        caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        if !self.spellblade_ready {
+        if !self.spellblade_ready || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
-        let Some(caster_ref) = ctx.get_entity(player) else {
+        let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().attack, self.effect_ad_percent_damage);
 
-        ctx.deal_damage(player, entity, bonus_damage, 0, AttackTypeV1::Item);
+        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
         ctx.add_buff(
-            player,
+            caster,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
         self.spellblade_ready = false;
