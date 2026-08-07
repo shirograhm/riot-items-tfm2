@@ -2,11 +2,10 @@ use mod_api_stable::*;
 use std::cell::Cell;
 
 mod build_config;
-mod companion;
-mod my_team;
 mod config;
 mod constants;
 mod hook;
+mod item_build_hook;
 mod item_catalog;
 mod item_meta;
 mod items;
@@ -26,46 +25,18 @@ fn percent_of_i32(value: i32, percent: f64) -> i32 {
     (value as f64 * percent / 100.0).round() as i32
 }
 
-/// Converts a duration in seconds (how config expresses them) to simulation
-/// ticks (what a `Time` buff expects).
 fn ticks(seconds: f64) -> usize {
     (seconds * TICKS_PER_SECOND).round() as usize
 }
 
-/// Whether `entity` currently carries a buff named `name`. Buffs are stored in a
-/// flat per-entity table with no lookup by name, so this is a linear scan.
 fn has_buff(entity: &StableEntity<'_, '_>, name: &str) -> bool {
     (0..entity.buff_count()).any(|i| entity.buff_at(i).is_some_and(|b| b.name() == name))
 }
 
-/// How many buffs named `name` are on `entity`. Same-name buffs stack rather
-/// than refresh, so the number of copies present *is* the stack count.
 fn buff_stacks(entity: &StableEntity<'_, '_>, name: &str) -> usize {
     (0..entity.buff_count())
         .filter(|&i| entity.buff_at(i).is_some_and(|b| b.name() == name))
         .count()
-}
-
-/// Rate-limits an on-hit effect to once per `cooldown_seconds` per target.
-///
-/// Returns `true` when the caller should fire its effect (the marker is stamped as
-/// a side effect), `false` while the previous proc is still on cooldown or the
-/// target no longer exists.
-fn try_proc_on_hit(
-    ctx: &mut StableSim<'_>,
-    target: usize,
-    marker: &str,
-    cooldown_seconds: f64,
-) -> bool {
-    let is_ready = ctx
-        .get_entity(target)
-        .map(|target_ref| !has_buff(&target_ref, marker))
-        .unwrap_or(false);
-    if !is_ready {
-        return false;
-    }
-    ctx.add_buff(target, &BuffV1::timed(marker, ticks(cooldown_seconds)));
-    true
 }
 
 /// Damage multiplier that simulates `lethality` flat armor penetration against a
@@ -162,13 +133,6 @@ fn apply_lethality(
     });
 }
 
-/// How long (in ticks) an enemy champion stays "marked" as recently damaged, so a
-/// death within the window counts as a takedown (kill or assist). 3s at 60/s.
-const TAKEDOWN_WINDOW_TICKS: usize = 180;
-
-/// Whether `target` is a champion on the opposing team from `caster`. Both the
-/// takedown marks and the "in combat with an enemy champion" timers key off this,
-/// and neither should fire on minions, towers, or a friendly hit.
 fn is_enemy_champion(ctx: &mut StableSim<'_>, caster: usize, target: usize) -> bool {
     let Some(caster_team) = ctx.get_entity(caster).map(|c| c.team()) else {
         return false;
@@ -176,55 +140,6 @@ fn is_enemy_champion(ctx: &mut StableSim<'_>, caster: usize, target: usize) -> b
     ctx.get_entity(target)
         .map(|target_ref| target_ref.is_champion() && target_ref.team() != caster_team)
         .unwrap_or(false)
-}
-
-/// Marks `target` as recently damaged, if it is an enemy champion of `caster`, so
-/// that a death within `TAKEDOWN_WINDOW_TICKS` counts as a takedown. Refreshes an
-/// existing mark. Shared by items whose passives trigger on takedowns (which the
-/// `on_kill` hook can't identify — its `entity` arg always looks like a champion).
-fn mark_enemy_champion(
-    marks: &mut Vec<(usize, usize)>,
-    ctx: &mut StableSim<'_>,
-    caster: usize,
-    target: usize,
-) {
-    if !is_enemy_champion(ctx, caster, target) {
-        return;
-    }
-    if let Some(mark) = marks.iter_mut().find(|(id, _)| *id == target) {
-        mark.1 = TAKEDOWN_WINDOW_TICKS;
-    } else {
-        marks.push((target, TAKEDOWN_WINDOW_TICKS));
-    }
-}
-
-/// Ages `marks` by one tick and returns how many marked champions died this tick
-/// (each a takedown). Marks are dropped on death (counted once) or when the window
-/// lapses without a death. Call once per `update`.
-fn count_takedowns(marks: &mut Vec<(usize, usize)>, ctx: &mut StableSim<'_>) -> usize {
-    if marks.is_empty() {
-        return 0;
-    }
-    let mut takedowns = 0;
-    let mut kept = Vec::with_capacity(marks.len());
-    for (id, ticks_left) in std::mem::take(marks) {
-        // A marked champion counts as a takedown once the game stops reporting it as
-        // alive: either it's gone from the entity table (`get_entity` -> None, which
-        // is how TFM2 removes a champion killed this round) or it's still queryable
-        // but flagged not-alive. We only mark enemy champions we damaged within the
-        // last few seconds, so a disappearance here is a death.
-        let is_dead = ctx.get_entity(id).map(|e| !e.is_alive()).unwrap_or(true);
-        if is_dead {
-            takedowns += 1;
-            continue;
-        }
-        let remaining = ticks_left.saturating_sub(1);
-        if remaining > 0 {
-            kept.push((id, remaining));
-        }
-    }
-    *marks = kept;
-    takedowns
 }
 
 fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: i32, name: &str) {
@@ -258,36 +173,27 @@ fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: 
     ctx.add_buff(champion_id, &buff);
 }
 
-// Installs the experimental item-build route hook when the server starts. The
-// hook is fail-closed (see `hook.rs`): on any mismatch it records a refusal and
-// leaves the game function untouched. It is the one part of this mod that is
-// NOT stable-ABI — it detours the game binary directly, so it needs the pinned
-// toolchain in `rust-toolchain.toml` and the `game_core` rlib in
+// Installs the native tap on the item-build route function when the server
+// starts. It is fail-closed (see `hook.rs`): on any mismatch it records a
+// refusal and leaves the game function untouched. It is the one part of this
+// mod that is NOT stable-ABI — it detours the game binary directly, so it needs
+// the pinned toolchain in `rust-toolchain.toml` and the `game_core` rlib in
 // `.cargo/config.toml`, and it must be re-verified after every game update.
-struct ItemBuildHookExtension;
+//
+// It no longer decides builds; `item_build_hook::ConfiguredBuilds` does, on the
+// stable API. What it still supplies is the `Database` address and the item
+// catalog the tactics half cannot reach any other way, plus the full champion
+// roster for the editor — so a refusal costs those, not the builds.
+struct NativeTapExtension;
 
-impl StableServerExtension for ItemBuildHookExtension {
+impl StableServerExtension for NativeTapExtension {
     fn before_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
-        // Merged `tfm2_item_tactics` half — was its own
-        // `ModServerExtension::before_management_tick`. Idempotent, and the one
-        // place `probe_db` gets to retry: it cannot do anything until the item
-        // build detour below has fired once and settled the `Database` address.
         tactics::driver::before_management_tick();
     }
 
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
-        // Merged `tfm2_item_tactics` half — was its own
-        // `ModServerExtension::on_server_start`. Runs before the hook install
-        // below because its own detours (launcher seed, seed-ctor provider,
-        // spawn) are what decide whether a buy is happening in an on-screen
-        // match, and they are cheaper to install early than to self-heal.
         tactics::driver::on_server_start();
 
-        // Reported by `eprintln!` only, which goes nowhere unless the game is
-        // started with a console attached. A refused hook disables every build
-        // config, the strategy picker included, and looks exactly like the hook
-        // working while the configs are ignored — so if that is ever suspected,
-        // run the game from a console to see these lines.
         match hook::install_hook() {
             Ok(address) => {
                 let message = format!("hook_installed address=0x{address:x}");
@@ -296,9 +202,7 @@ impl StableServerExtension for ItemBuildHookExtension {
             Err(error) if error == "hook already installed" => {}
             Err(error) => {
                 eprintln!("riot_items_tfm2: hook_refused error={error}");
-                // Resolution failed, so dump the shape-matching functions for
-                // `tools/find_item_build_hook.py` to work from. Diagnostic only —
-                // the hook never picks a candidate itself.
+                // Resolution failed diagnostics
                 match hook::candidate_report() {
                     Ok(candidates) => {
                         eprintln!(
@@ -322,29 +226,7 @@ fn init(host: &StableHost) -> StableMod {
     let mut reg = StableMod::new("riot_items_tfm2");
     let configs = config::load();
 
-    // Recorded here because the companion-mod checks run from UI and hook
-    // paths that never see a host handle. Must happen before anything asks
-    // `companion::item_slots()`, which caches its answer on first call.
-    let version = host.game_version();
-    companion::record_game_version((version.major, version.minor, version.patch));
-
-    // Merged `tfm2_item_tactics` half — was its own `init` + `declare_mod!`.
-    // Runs its version gate and, in 4-slot mode, its byte patches. A DLL gets
-    // one entry point, so this is the only place it can happen.
-    //
-    // Deliberately before `resolve_item_slots`: that call asks whether the
-    // *separately installed* companion mod is providing a 4th slot, and caches
-    // the answer on first read. Now that this mod can provide the slot itself,
-    // the two answers have to be reconciled rather than raced — see
-    // `companion::record_builtin_item_slots`.
-    let tactics_active = tactics::driver::on_mod_init();
-    companion::record_builtin_item_slots(tactics_active.then(tactics::driver::slot_count));
-    // Settled here and not left to the first caller: the files it reads include
-    // `config/game/mods.json`, which the game rewrites while it runs — and the
-    // first caller would otherwise be the hook or the build editor, both of
-    // which run just after a save is loaded, which is exactly when that rewrite
-    // happens. Mod-load time is a quiet window for the same read.
-    companion::resolve_item_slots();
+    tactics::driver::on_mod_init();
 
     macro_rules! configured {
         ($key:literal => $T:ty) => {
@@ -353,10 +235,6 @@ fn init(host: &StableHost) -> StableMod {
     }
     macro_rules! configured_radiant {
         ($key:literal => $T:ty) => {{
-            // Radiant items are this mod's final tier, and the in-game build
-            // picker cannot discover them any other way: they are absent from
-            // the game's item settings document and `StableMod` does not expose
-            // what has been registered.
             strategy_ui::note_final_item($key);
             configs
                 .get($key)
@@ -472,9 +350,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured_radiant!("radiant_kraken_slayer" => KrakenSlayer));
     reg.add_item(configured_radiant!("radiant_liandrys_torment" => LiandrysTorment));
-    reg.add_item(
-        configured_radiant!("radiant_locket_of_the_iron_solari" => LocketOfTheIronSolari),
-    );
+    reg.add_item(configured_radiant!("radiant_locket_of_the_iron_solari" => LocketOfTheIronSolari));
     reg.add_item(configured_radiant!("radiant_lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured_radiant!("radiant_malignance" => Malignance));
     reg.add_item(configured_radiant!("radiant_mirage_blade" => MirageBlade));
@@ -505,14 +381,22 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
 
-    reg.set_server_extension(ItemBuildHookExtension);
+    // What `item-builds.json` reaches the game through. Registered whether or
+    // not a config exists: the hook keeps the engine's build when it has nothing
+    // to say, so an inert install costs one call per player per match.
+    reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
+
+    reg.set_server_extension(NativeTapExtension);
     // Client-side in-game build picker on the strategy screen. Purely additive:
     // it no-ops unless the `ui/layout/strategy` asset override is in place.
     reg.set_extension(strategy_ui::StrategyPicker);
 
     host.log(
         LogLevel::Info,
-        &format!("riot_items_tfm2: registered items, config entries={}", configs.len()),
+        &format!(
+            "riot_items_tfm2: registered items, config entries={}",
+            configs.len()
+        ),
     );
 
     reg

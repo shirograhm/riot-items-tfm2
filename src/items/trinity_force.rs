@@ -33,6 +33,7 @@ impl TrinityForce {
             effect_bonus_flat_damage: 33,
             effect_ad_percent_damage: 33.0,
             effect_cooldown_seconds: 3.5,
+            // Non-vital stats (internals)
             spellblade_ready: false,
         }
     }
@@ -45,6 +46,9 @@ impl TrinityForce {
             attack: 33,
             attack_speed_mult: 33,
             skill_cooldown_mult: 20,
+            effect_bonus_flat_damage: 33,
+            effect_ad_percent_damage: 33.0,
+            effect_cooldown_seconds: 3.5,
             ..Self::base()
         }
     }
@@ -132,11 +136,12 @@ impl StableItem for TrinityForce {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        is_ally: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() {
+        if !target_ref.is_champion() || is_ally {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
@@ -155,8 +160,10 @@ impl StableItem for TrinityForce {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        if !self.spellblade_ready {
+        if !self.spellblade_ready || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
@@ -164,13 +171,13 @@ impl StableItem for TrinityForce {
         };
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().attack, self.effect_ad_percent_damage);
-        self.spellblade_ready = false;
 
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
         ctx.add_buff(
             caster,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
+        self.spellblade_ready = false;
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

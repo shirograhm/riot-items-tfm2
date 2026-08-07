@@ -8,14 +8,10 @@ use crate::{
 #[derive(Clone, Debug)]
 pub struct ProtectorsVow {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant items keep
-    // independent stacks.
     awe_buff: &'static str,
     price: usize,
     hp: i32,
     defence: i32,
-    // Radiant-only. Zero on the base variant, which reduces no cooldowns and
-    // correspondingly does not carry the `CooltimeReduce` tag.
     skill_cooldown_mult: i32,
     effect_bonus_flat_hp: i32,
     effect_caster_defence_percent_hp: f64,
@@ -37,6 +33,7 @@ impl ProtectorsVow {
             skill_cooldown_mult: 0,
             effect_bonus_flat_hp: 50,
             effect_caster_defence_percent_hp: 80.0,
+            // Non-vital stats (internals)
             refresh_cooldown: 0,
         }
     }
@@ -44,11 +41,13 @@ impl ProtectorsVow {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_protectors_vow", &["protectors_vow"]),
-            awe_buff: "radiant_protectors_vow_awe",
+            awe_buff: "protectors_vow_awe",
             price: 1800,
             hp: 550,
             defence: 75,
             skill_cooldown_mult: 15,
+            effect_bonus_flat_hp: 50,
+            effect_caster_defence_percent_hp: 80.0,
             ..Self::base()
         }
     }

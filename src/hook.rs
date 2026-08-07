@@ -1,10 +1,30 @@
-//! Experimental native hook for the game's item-build route function.
+//! Native tap on the game's item-build route function.
 //!
 //! This locates `<LogisticSGDAgent as AbstractItemNetwork>::get_item_builds_list`
-//! inside the loaded Teamfight Manager 2 executable, installs a trampoline
-//! detour, and overrides the routes it returns. It is intentionally fail-closed:
-//! if the target cannot be identified *unambiguously*, the hook refuses to patch
-//! rather than touching an unknown function.
+//! inside the loaded Teamfight Manager 2 executable and installs a trampoline
+//! detour. It is intentionally fail-closed: if the target cannot be identified
+//! *unambiguously*, the hook refuses to patch rather than touching an unknown
+//! function.
+//!
+//! # This no longer decides builds
+//!
+//! It used to rewrite the routes it returned; that job moved to
+//! [`crate::item_build_hook`], a `StableItemBuildHook`, which is told which
+//! champion each build is for instead of inferring it from route order. The
+//! detour returns the game's routes untouched.
+//!
+//! What keeps it here is that it is the only place three things are reachable at
+//! all, none of which cross the stable boundary:
+//!
+//! | taken from the arguments | needed by | why nothing else can |
+//! |---|---|---|
+//! | `&LogisticSGDAgent` | `tactics::driver::record_item_net` | the `Database` base is derived from it; it is the tactics half's only route to the game database, and so to 4-slot mode, per-athlete build injection and the auto-4th pick |
+//! | `&Vec<Box<dyn ItemInfo>>` | `tactics::driver::record_item_catalog` | which items exist and which are final, without scanning the `Database` for something Vec-shaped |
+//! | `&Vec<String>` (`champion_ids`) | `build_config::record_champion_roster` | the whole 60-entry roster, mod champions included; the stable context sees only the ten champions of one match |
+//!
+//! When the detour fails to install, all three degrade on their own: the tactics
+//! half reports 3 slots and stops injecting, and the editor falls back to the
+//! client's champion list. Builds are unaffected — they are on the stable API.
 //!
 //! # How the target is found (0.5.3 onwards)
 //!
@@ -50,14 +70,6 @@
 //! swallowed `sub rsp, imm32`; when codegen picks the `imm8` encoding that
 //! instruction is four bytes, so 19 would split the following instruction and
 //! corrupt the trampoline.
-//!
-//! After calling the original function, `detour` applies the config-driven build
-//! overrides from `build_config` (pinned slots + AI-filled blanks) — to the
-//! player's own team only, per `crate::my_team`, which is what tells one team's
-//! call from the other's — then enforces
-//! unique builds: no champion ever builds duplicate copies of the same item — each
-//! duplicate is swapped for the closest-price final item of the same category (see
-//! `enforce_unique_items`).
 
 use std::ffi::c_void;
 use std::mem;
@@ -449,43 +461,6 @@ unsafe fn patch_target(target: *mut u8) -> Result<Vec<String>, String> {
     Ok(warnings)
 }
 
-/// Rewrites each route so a champion never builds the same item twice. The first
-/// occurrence keeps its slot; each later duplicate is replaced with the final
-/// item (one with no further upgrades — vanilla tier 5s and the mod's radiants)
-/// of the same category that is not already in the build and whose price is
-/// closest to the duplicate's, keeping the swap roughly balance-neutral. A slot
-/// with no viable candidate is left as-is rather than dropped, so route lengths
-/// never change. Categories are compared by discriminant so this does not depend
-/// on `ItemCategory` implementing `PartialEq`.
-fn enforce_unique_items(items: &[Box<dyn ItemInfo>], routes: &mut [Vec<usize>]) {
-    for route in routes.iter_mut() {
-        let mut seen = std::collections::HashSet::new();
-        for slot in route.iter_mut() {
-            if seen.insert(*slot) {
-                continue;
-            }
-            let Some(duplicate) = items.get(*slot) else {
-                continue;
-            };
-            let category = std::mem::discriminant(&duplicate.category());
-            let price = duplicate.price();
-            let replacement = items
-                .iter()
-                .enumerate()
-                .filter(|(index, item)| {
-                    !seen.contains(index)
-                        && item.next_tier().is_empty()
-                        && std::mem::discriminant(&item.category()) == category
-                })
-                .min_by_key(|(_, item)| item.price().abs_diff(price));
-            if let Some((index, _)) = replacement {
-                *slot = index;
-                seen.insert(index);
-            }
-        }
-    }
-}
-
 unsafe fn detour(
     agent: &LogisticSGDAgent,
     items: &Vec<Box<dyn ItemInfo>>,
@@ -539,98 +514,31 @@ unsafe fn detour(
         );
     }
 
-    let original = ORIGINAL
-        .get()
-        .copied()
-        .expect("item build hook original function missing");
-    let mut routes = original(agent, items, champions, champion_ids, team1, team2, mode);
-
-    // `routes` covers `team1` only (5 routes for 5 entries), and the function is
-    // called once per team — so a rule keyed by route index fires for the enemy
-    // team too, which is why a build pinned to "Top" reached both top laners.
-    // Nothing in the *arguments* says which team is the player's: `mode` was
-    // false on every call observed. This is why builds are keyed by champion.
-    //
-    // The team is now identified from outside the arguments instead, by matching
-    // this lineup against the player's own starters (`crate::my_team`), which
-    // the client tick publishes from the stable record API.
-
     // Hand the champion roster to the client-side editor, which cannot
     // enumerate champions from inside a UI handler. Same process, so this is a
     // static rather than a file (see `build_config::record_champion_roster`).
+    //
+    // This is the last thing here that is not for the tactics half, and it is
+    // here because the argument is the whole 60-entry roster — mod champions
+    // included. `StableItemBuildContext` sees ten champions, the two lineups of
+    // one match, so the item-build hook cannot produce this list.
     build_config::record_champion_roster(champion_ids);
 
-    // Routes are keyed off the lineup the game builds for (`team1`), in route
-    // order — NOT the 60-entry `champion_ids` roster. The position-by-index
-    // mapping below relies on `route_count` tracking `team1` size; verified
-    // in-game.
-    let lineup = team1
-        .iter()
-        .map(|(_, champion)| champion.clone())
-        .collect::<Vec<_>>();
-
-    // Confine the overrides to the player's own team. This call computes one
-    // team and never says which, so the lineup is compared against the champions
-    // the player's own athletes have been seen playing — published from the
-    // simulation by `my_team`, the only place that fact exists.
-    //
-    // Both lineups go in first: they identify the match, so a lineup learned in
-    // the previous one is discarded rather than used to gate this one. Unknown
-    // lineup = `true`, so this degrades to the old both-teams behaviour rather
-    // than to no builds at all — see the fail-open note in that module.
-    let opponents = team2
-        .iter()
-        .map(|(_, champion)| champion.clone())
-        .collect::<Vec<_>>();
-    crate::my_team::note_lineups(&lineup, &opponents);
-    let mine = crate::my_team::owns_lineup(&lineup, &opponents);
-
-    // Who applies the builds. The tactics half does it per athlete, from the buy
-    // detour, behind `is_my_athlete` — an exact answer to "is this the player's
-    // player", which nothing available here can match. When that half is live it
-    // owns the job outright and this must not also apply them, or a pinned item
-    // would be set twice by two mechanisms that disagree about scope.
-    //
-    // When it is not live — version gate closed after a game update, or the
-    // `buy_item` detour failed to install — this stays the mechanism, with the
-    // lineup gate as its best effort.
-    let injected = crate::tactics::driver::injects_builds();
-    // Cached rather than read here: this detour runs once per team per match,
-    // and the league's other fixtures sim on parallel workers while the player
-    // is still drafting — so a file read and a JSON parse per call is a stall in
-    // the ban/pick screen on any save with a developed world. The file is read
-    // once and reloaded only when the editor writes it, which is also what
-    // publishes the pins the buy detour snapshots — so nothing publishes them
-    // here any more, and nothing can change a match's builds once it is under
-    // way. A malformed config reads as empty, so the game's routes stay
-    // untouched.
-    let config = build_config::load_cached();
-    if !injected && mine && !config.is_empty() {
-        // Built only on the path that uses it — the overrides reach at most one
-        // of the two teams, and only when a config exists.
-        let item_keys = items
-            .iter()
-            .map(|item| item.key().to_string())
-            .collect::<Vec<_>>();
-        build_config::apply(&config, &item_keys, &lineup, &mut routes);
-    }
-
-    // There is no second, position-keyed pass any more. Builds stay keyed by
-    // champion whichever editor wrote them: `my_team` decides *whether* this
-    // team gets the overrides, not which route within it gets which build, and
-    // a rule keyed by route index would still be wrong for any lineup whose
-    // positions the player reorders.
-
-    // Enforce unique builds after `build_config` so AI routes, category-forced
-    // routes, and configured builds are all covered. Toggled from the item build
-    // editor via `mod-settings.json` (defaults on); cached like the config
-    // above, and invalidated when the editor writes, so flipping the toggle
-    // still applies to the next match without restarting the game.
-    if build_config::unique_items_enabled() {
-        enforce_unique_items(items, &mut routes);
-    }
-
-    routes
+    // The routes are returned exactly as the game made them. Builds are decided
+    // in `crate::item_build_hook` now, on the stable API, where the champion a
+    // build belongs to is stated rather than inferred from route order.
+    ORIGINAL
+        .get()
+        .copied()
+        .expect("item build hook original function missing")(
+        agent,
+        items,
+        champions,
+        champion_ids,
+        team1,
+        team2,
+        mode,
+    )
 }
 
 pub fn install_hook() -> Result<usize, String> {

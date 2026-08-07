@@ -47,6 +47,9 @@ impl DiamondTippedSpear {
             price: 2250,
             attack_speed_mult: 60,
             adaptive_force: 100,
+            skill_cooldown_mult: 10,
+            effect_max_percent_bonus: 25.0,
+            effect_max_distance: 100,
             ..Self::base()
         }
     }
@@ -151,6 +154,8 @@ impl StableItem for DiamondTippedSpear {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;

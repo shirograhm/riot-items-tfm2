@@ -40,6 +40,9 @@ impl BloodlettersCurse {
             magic_power: 180,
             hp: 500,
             skill_cooldown_mult: 10,
+            effect_max_stacks: 5,
+            effect_duration_seconds: 6.0,
+            effect_percent_mr_shred: 6,
             ..Self::base()
         }
     }
@@ -122,6 +125,8 @@ impl StableItem for BloodlettersCurse {
         target: usize,
         _damage: &mut usize,
         damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;

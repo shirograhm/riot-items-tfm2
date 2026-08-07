@@ -19,11 +19,11 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 Some item effects are roughly simulated to the best of my ability using the available mod-sdk.  
 
-Some AI champions seem to prefer the wrong stats when given deference of item selection. Magic Knight tends to buy AD and AS items instead of AP, for example.  
+Some AI champions seem to prefer the wrong stats when given deference of item selection.  
 
-Some AI champions ignore the custom item builds. This is being investigated, but is likely to be instability that occurs in long term builds.  
+Some AI champions ignore the custom item builds. Likely to be instability that occurs in long term builds.  
 
-This mod can cause your game to crash if you back out to the main menu and then attempt to load the game again. This is being investigated, but please restart the game for now.  
+This mod can cause your game to crash if you back out to the main menu and then attempt to load the game again. This is a side-effect of having 4 items mode enabled.  
 
 [h1] Instructions [/h1]
 
@@ -45,7 +45,7 @@ Mod v0.5.6 - versions up to 0.5.0
 
 This mod works directly out of the box!  
 
-However, if any of the modded items feel too strong/weak, this mod supports full customization on all item values. Only modded items can be adjusted. To do so:
+However, if any of the modded items feel too strong/weak, this mod supports full customization on all modded item values. To do so:
 
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
 2. Edit the new [b]config.json[/b] with the custom values that you want.

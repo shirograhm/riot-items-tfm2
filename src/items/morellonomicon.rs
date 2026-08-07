@@ -37,6 +37,9 @@ impl Morellonomicon {
             price: 1850,
             hp: 350,
             magic_power: 190,
+            skill_cooldown_mult: 10,
+            effect_heal_reduce: 40,
+            effect_duration_seconds: 2.0,
             ..Self::base()
         }
     }
@@ -118,6 +121,8 @@ impl StableItem for Morellonomicon {
         target: usize,
         _damage: &mut usize,
         damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;

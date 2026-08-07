@@ -38,6 +38,8 @@ impl RylaisCrystalScepter {
             price: 1900,
             hp: 400,
             magic_power: 200,
+            effect_slow_amount: 15,
+            effect_duration_seconds: 2.0,
             ..Self::base()
         }
     }
@@ -109,11 +111,18 @@ impl StableItem for RylaisCrystalScepter {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, _caster: usize, target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        _caster: usize,
+        target: usize,
+        is_ally: bool,
+    ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
+        if target_ref.is_tower() || is_ally {
             return;
         }
 
@@ -123,7 +132,10 @@ impl StableItem for RylaisCrystalScepter {
                 target,
                 &BuffV1 {
                     move_speed_mult: -self.effect_slow_amount,
-                    ..BuffV1::timed("rylais_crystal_scepter_slow", ticks(self.effect_duration_seconds))
+                    ..BuffV1::timed(
+                        "rylais_crystal_scepter_slow",
+                        ticks(self.effect_duration_seconds),
+                    )
                 },
             );
         }

@@ -108,10 +108,24 @@ impl StableItem for UnendingDespair {
         }
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        target: usize,
+        is_ally: bool,
+    ) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if !target_ref.is_champion() || is_ally {
+            return;
+        }
+
         let heal_amount = self.effect_bonus_flat_heal as usize
             + percent_of(entity_ref.hp().1, self.effect_caster_hp_percent_heal);
 

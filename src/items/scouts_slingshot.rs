@@ -88,6 +88,8 @@ impl StableItem for ScoutsSlingshot {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         // Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown).
         let Some(caster_ref) = ctx.get_entity(caster) else {
@@ -105,7 +107,10 @@ impl StableItem for ScoutsSlingshot {
         if !is_cooldown_ticking {
             ctx.add_buff(
                 caster,
-                &BuffV1::timed("scouts_slingshot_cooldown", ticks(self.effect_cooldown_seconds)),
+                &BuffV1::timed(
+                    "scouts_slingshot_cooldown",
+                    ticks(self.effect_cooldown_seconds),
+                ),
             );
             ctx.deal_damage(
                 caster,

@@ -53,6 +53,9 @@ impl NightHarvester {
             magic_power: 160,
             effect_bonus_flat_damage: 150,
             effect_ap_percent_damage: 30.0,
+            effect_move_speed_mult: 40,
+            effect_duration_seconds: 2.0,
+            effect_cooldown_seconds: 45.0,
             ..Self::base()
         }
     }
@@ -136,6 +139,7 @@ impl StableItem for NightHarvester {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        is_ally: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -143,7 +147,7 @@ impl StableItem for NightHarvester {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() {
+        if !target_ref.is_champion() || is_ally {
             return;
         }
 

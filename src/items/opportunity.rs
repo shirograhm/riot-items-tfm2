@@ -31,6 +31,7 @@ impl Opportunity {
             effect_bonus_lethality: 7,
             effect_out_of_combat_seconds: 7.0,
             effect_duration_seconds: 3.5,
+            // Non-vital stats (internals)
             idle_ticks: 0,
             prepared: false,
         }
@@ -42,6 +43,10 @@ impl Opportunity {
             price: 1950,
             attack: 100,
             move_speed_mult: 5,
+            effect_lethality: 18,
+            effect_bonus_lethality: 7,
+            effect_out_of_combat_seconds: 7.0,
+            effect_duration_seconds: 3.5,
             ..Self::base()
         }
     }
@@ -139,10 +144,7 @@ impl StableItem for Opportunity {
 
     fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
         self.idle_ticks = self.idle_ticks.saturating_add(1);
-        // Two thresholds off the same timer, and the linger window is the shorter
-        // of the two: the bonus is earned once the wielder has been out of combat
-        // for the full ramp, and is only lost once combat has held it below that
-        // ramp for longer than the linger window.
+
         if self.idle_ticks >= ticks(self.effect_out_of_combat_seconds) {
             self.prepared = true;
         } else if self.idle_ticks > ticks(self.effect_duration_seconds) {
@@ -157,8 +159,19 @@ impl StableItem for Opportunity {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        apply_lethality(ctx, caster, target, self.active_lethality(), damage);
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        let is_target_tower = target_ref.is_tower();
+
+        // Apply lethality for all damage except towers
+        if !is_target_tower {
+            apply_lethality(ctx, caster, target, self.active_lethality(), damage);
+        }
+
         self.note_combat(ctx, caster, target);
     }
 
@@ -168,8 +181,11 @@ impl StableItem for Opportunity {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        is_ally: bool,
     ) {
-        self.note_combat(ctx, caster, target);
+        if !is_ally {
+            self.note_combat(ctx, caster, target);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

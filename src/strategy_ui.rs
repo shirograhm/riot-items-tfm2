@@ -137,7 +137,7 @@
 //! away, and only then — while a screen is up, registering a live path twice is
 //! still the double-fire hazard described above.
 
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, OnceLock};
 
 use mod_api_stable::*;
 
@@ -628,6 +628,29 @@ fn is_mod_item(key: &str) -> bool {
         .unwrap_or(false)
 }
 
+/// [`MOD_FINALS`] as a set, built once.
+///
+/// `MOD_FINALS` is written during `init` and never again, so a snapshot cannot
+/// go stale — and the item-build hook asks this question for every selectable
+/// final item of every player of every match, on parallel sim workers, where a
+/// global mutex and a linear scan per candidate is contention for an answer that
+/// cannot change.
+static MOD_FINAL_SET: OnceLock<std::collections::HashSet<String>> = OnceLock::new();
+
+/// [`is_mod_item`] for the simulation side. Reads empty — so promotes nothing —
+/// if it were ever called before registration, which cannot happen: items are
+/// registered in `init`, matches run later.
+pub(crate) fn is_mod_final_item(key: &str) -> bool {
+    MOD_FINAL_SET
+        .get_or_init(|| {
+            MOD_FINALS
+                .lock()
+                .map(|finals| finals.iter().cloned().collect())
+                .unwrap_or_default()
+        })
+        .contains(key)
+}
+
 // -- paths --------------------------------------------------------------
 
 /// Full-screen transparent button shown only while a floating list is open, so
@@ -753,8 +776,8 @@ fn text_width(text: &str) -> f32 {
 /// Shortens `text` until it fits `max_width`, marking the cut with an ellipsis.
 ///
 /// Returns `text` untouched when it already fits, which is every name in the
-/// three-slot layout — the columns only get tight enough to need this once
-/// `tfm2_item_tactics` splits the same band four ways.
+/// three-slot layout — the columns only get tight enough to need this when
+/// 4-slot mode splits the same band four ways.
 fn fit_text(text: &str, max_width: f32) -> String {
     const ELLIPSIS: &str = "...";
     if text_width(text) <= max_width {
@@ -917,8 +940,10 @@ fn collect_items(
             }
             continue;
         }
-        // `next_tier` empty means nothing upgrades from this item — the same
-        // "is this a final item" test the hook's `enforce_unique_items` uses.
+        // `next_tier` empty means nothing upgrades from this item. The
+        // item-build hook cannot make this test — `next_tier` does not cross the
+        // stable boundary — so it works from tier instead; this side reads the
+        // catalog JSON and can still ask the question directly.
         let is_final = value
             .get("next_tier")
             .and_then(|next| next.as_array())
@@ -1125,7 +1150,7 @@ fn edit_row(row: usize, edit: impl FnOnce(&mut ChampionRow)) -> bool {
     let rows = with_state(|state| {
         if let Some(entry) = state.rows.get_mut(row) {
             // Grow to the editable width only. Truncating here would drop a
-            // fourth item that is being kept for a `tfm2_item_tactics` that is
+            // fourth item that is being kept for a 4-slot mode that is
             // currently off, the moment any other slot on the row was touched.
             if entry.slots.len() < picker_slots() {
                 entry.slots.resize(picker_slots(), None);

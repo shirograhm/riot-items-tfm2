@@ -17,6 +17,7 @@ fn apply_giant_slayer(
     if target_ref.is_tower() {
         return;
     }
+
     let steps = (target_ref.hp().1 / hp_per_step.max(1)) as f64;
     let bonus_percent = (percent_per_step * steps).min(max_percent);
     *damage = (*damage as f64 * (1.0 + bonus_percent / 100.0)).round() as usize;
@@ -59,6 +60,9 @@ impl LordDominiksRegards {
             attack: 85,
             crit_chance: 25,
             defence_penetration: 35,
+            effect_percent_bonus_damage: 3.0,
+            effect_hp_per_stack: 1000,
+            effect_max_percent_bonus: 15.0,
             ..Self::base()
         }
     }
@@ -140,6 +144,8 @@ impl StableItem for LordDominiksRegards {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         apply_giant_slayer(
             ctx,

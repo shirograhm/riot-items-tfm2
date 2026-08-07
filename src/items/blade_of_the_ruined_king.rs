@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, percent_of, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct BladeOfTheRuinedKing {
@@ -12,7 +12,6 @@ pub struct BladeOfTheRuinedKing {
     vamp: i32,
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
-    on_hit_cooldown_seconds: f64,
 }
 
 impl BladeOfTheRuinedKing {
@@ -29,7 +28,6 @@ impl BladeOfTheRuinedKing {
             vamp: 5,
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
-            on_hit_cooldown_seconds: 0.5,
         }
     }
 
@@ -43,6 +41,8 @@ impl BladeOfTheRuinedKing {
             attack: 60,
             attack_speed_mult: 50,
             vamp: 10,
+            effect_hp_percent_damage: 5.0,
+            effect_minion_damage_cap: 50,
             ..Self::base()
         }
     }
@@ -66,7 +66,6 @@ impl BladeOfTheRuinedKing {
                 vamp,
                 effect_hp_percent_damage,
                 effect_minion_damage_cap,
-                on_hit_cooldown_seconds
             ]
         );
         self
@@ -124,30 +123,21 @@ impl StableItem for BladeOfTheRuinedKing {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
+        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
 
-        let mut bonus_damage = percent_of(
-            target_ref.hp().0,
-            self.effect_hp_percent_damage as f64,
-        );
+        let mut bonus_damage = percent_of(target_ref.hp().0, self.effect_hp_percent_damage as f64);
         if !target_ref.is_champion() {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
-        if !try_proc_on_hit(
-            ctx,
-            target,
-            "blade_of_the_ruined_king_on_hit_cooldown",
-            self.on_hit_cooldown_seconds,
-        ) {
-            return;
-        }
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
     }
 

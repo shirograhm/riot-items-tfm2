@@ -91,7 +91,6 @@ pub struct ItemConfig {
     pub effect_max_percent_bonus: Option<f64>,
     pub effect_percent_bonus_damage: Option<f64>,
 
-    pub on_hit_cooldown_seconds: Option<f64>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,

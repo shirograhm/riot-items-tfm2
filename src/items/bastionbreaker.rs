@@ -1,19 +1,20 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, apply_lethality, count_takedowns, mark_enemy_champion, percent_of, ticks,
-    ItemMeta,
-};
+use crate::{apply_config, apply_lethality, has_buff, percent_of, ticks, ItemMeta};
 
 fn sabotage_bonus(ctx: &mut StableSim<'_>, caster: usize, flat: usize, ad_percent: f64) -> usize {
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
     flat + percent_of(caster_ad, ad_percent)
 }
 
+// Gain 22 Lethality.
+// Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack
+// against a turret to deal 150 + 15% AD as bonus physical damage.
 #[derive(Clone, Debug)]
 pub struct Bastionbreaker {
     meta: ItemMeta,
+    sabotage_buff: &'static str,
     price: usize,
     attack: i32,
     skill_cooldown_mult: i32,
@@ -21,8 +22,6 @@ pub struct Bastionbreaker {
     effect_bonus_flat_damage: usize,
     effect_ad_percent_damage: f64,
     effect_duration_seconds: f64,
-    sabotage_charge: usize,
-    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl Bastionbreaker {
@@ -33,6 +32,7 @@ impl Bastionbreaker {
                 &["serrated_dirk"],
                 &["radiant_bastionbreaker"],
             ),
+            sabotage_buff: "sabotage_charge",
             price: 1300,
             attack: 65,
             skill_cooldown_mult: 15,
@@ -40,8 +40,6 @@ impl Bastionbreaker {
             effect_bonus_flat_damage: 150,
             effect_ad_percent_damage: 15.0,
             effect_duration_seconds: 90.0,
-            sabotage_charge: 0,
-            takedown_marks: Vec::new(),
         }
     }
 
@@ -51,8 +49,10 @@ impl Bastionbreaker {
             price: 1950,
             attack: 110,
             skill_cooldown_mult: 20,
+            effect_lethality: 22,
             effect_bonus_flat_damage: 200,
             effect_ad_percent_damage: 20.0,
+            effect_duration_seconds: 90.0,
             ..Self::base()
         }
     }
@@ -80,10 +80,6 @@ impl Bastionbreaker {
             ]
         );
         self
-    }
-
-    fn charge_ticks(&self) -> usize {
-        ticks(self.effect_duration_seconds)
     }
 }
 
@@ -131,17 +127,15 @@ impl StableItem for Bastionbreaker {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.sabotage_charge = 0;
-        self.takedown_marks.clear();
-    }
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(player_entity) = player_ref.champion() else {
+            return;
+        };
 
-    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
-        // Expire the held charge, then (re)grant a full-duration one on a takedown.
-        self.sabotage_charge = self.sabotage_charge.saturating_sub(1);
-        if count_takedowns(&mut self.takedown_marks, ctx) > 0 {
-            self.sabotage_charge = self.charge_ticks();
-        }
+        ctx.entity_remove_buff(player_entity.id(), self.sabotage_buff);
     }
 
     fn on_attack(
@@ -151,38 +145,56 @@ impl StableItem for Bastionbreaker {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
-        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
+        let Some(caster_ref) = ctx.get_entity(caster) else {
+            return;
+        };
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
 
-        if self.sabotage_charge == 0 {
-            return;
+        let is_target_tower = target_ref.is_tower();
+        let has_sabotage_charged = has_buff(&caster_ref, self.sabotage_buff);
+
+        // Apply lethality for all damage except towers
+        if !is_target_tower {
+            apply_lethality(ctx, caster, target, self.effect_lethality, damage);
         }
-        let is_tower = ctx
-            .get_entity(target)
-            .map(|t| t.is_tower())
-            .unwrap_or(false);
-        if !is_tower {
-            return;
+
+        // Only process on-hit for basic attacks on tower
+        if attack_type == AttackTypeV1::BaseAttack && is_target_tower && has_sabotage_charged {
+            let bonus = sabotage_bonus(
+                ctx,
+                caster,
+                self.effect_bonus_flat_damage,
+                self.effect_ad_percent_damage,
+            );
+            ctx.deal_damage(caster, target, bonus, 0, AttackTypeV1::Item);
+            ctx.entity_remove_buff(caster, self.sabotage_buff);
         }
-        let bonus = sabotage_bonus(
-            ctx,
-            caster,
-            self.effect_bonus_flat_damage,
-            self.effect_ad_percent_damage,
-        );
-        ctx.deal_damage(caster, target, bonus, 0, AttackTypeV1::Item);
-        self.sabotage_charge = 0; // spend the charge
     }
 
-    fn on_skill_hit(
+    fn on_kill(
         &mut self,
-        ctx: &mut StableSim<'_>,
+        sim: &mut StableSim<'_>,
         _rng_seed: u64,
-        caster: usize,
-        target: usize,
+        _player: usize,
+        entity: usize,
+        _victim: usize,
     ) {
-        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
+        sim.add_buff(
+            entity,
+            &BuffV1::timed(self.sabotage_buff, ticks(self.effect_duration_seconds)),
+        );
+    }
+
+    fn on_assist(&mut self, sim: &mut StableSim<'_>, _player: usize, entity: usize) {
+        sim.add_buff(
+            entity,
+            &BuffV1::timed(self.sabotage_buff, ticks(self.effect_duration_seconds)),
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

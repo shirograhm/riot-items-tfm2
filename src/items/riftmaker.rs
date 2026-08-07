@@ -9,8 +9,6 @@ use crate::{
 #[derive(Clone, Debug)]
 pub struct Riftmaker {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so a champion holding both the base
-    // and the radiant item accumulates two independent stacks of each.
     infusion_buff: &'static str,
     corruption_buff: &'static str,
     price: usize,
@@ -36,6 +34,7 @@ impl Riftmaker {
             effect_vamp: 2,
             effect_max_stacks: 3,
             effect_duration_seconds: 3.0,
+            // Non-vital stats (internals)
             refresh_cooldown: 0,
         }
     }
@@ -43,11 +42,15 @@ impl Riftmaker {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_riftmaker", &["riftmaker"]),
-            infusion_buff: "radiant_riftmaker_infusion",
-            corruption_buff: "radiant_riftmaker_corruption",
+            infusion_buff: "riftmaker_infusion",
+            corruption_buff: "riftmaker_corruption",
             price: 1900,
             hp: 600,
             magic_power: 150,
+            effect_caster_hp_percent_power: 2.0,
+            effect_vamp: 2,
+            effect_max_stacks: 3,
+            effect_duration_seconds: 3.0,
             ..Self::base()
         }
     }
@@ -160,10 +163,22 @@ impl StableItem for Riftmaker {
         self.apply_infusion(ctx, player);
     }
 
-    fn on_skill_hit(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, caster: usize, _target: usize) {
+    fn on_skill_hit(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        caster: usize,
+        _target: usize,
+        is_ally: bool,
+    ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
+
+        if is_ally {
+            return;
+        }
+
         let stack_count = buff_stacks(&caster_ref, self.corruption_buff);
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(

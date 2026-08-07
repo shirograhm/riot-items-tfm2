@@ -41,6 +41,9 @@ impl SpearOfShojin {
             hp: 600,
             attack: 60,
             skill_cooldown_mult: 20,
+            effect_stack_attack_mult: 3,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 5.0,
             ..Self::base()
         }
     }
@@ -74,15 +77,13 @@ impl SpearOfShojin {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
-            return;
-        }
-        if !target_ref.is_champion() {
-            return;
-        }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
+        if !target_ref.is_champion() {
+            return;
+        }
+
         let stack_count = buff_stacks(&caster_ref, self.stack_buff);
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
@@ -147,7 +148,12 @@ impl StableItem for SpearOfShojin {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        is_ally: bool,
     ) {
+        if is_ally {
+            return;
+        }
+
         self.add_attack_stack(ctx, caster, target);
     }
 

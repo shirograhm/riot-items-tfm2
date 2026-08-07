@@ -23,6 +23,7 @@ impl Default for Sheen {
             effect_min_bonus_damage: 30,
             effect_max_bonus_damage: 85,
             effect_cooldown_seconds: 1.5,
+            // Non-vital stats (internals)
             spellblade_ready: false,
         }
     }
@@ -107,11 +108,12 @@ impl StableItem for Sheen {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        is_ally: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() {
+        if !target_ref.is_champion() || is_ally {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
@@ -130,21 +132,23 @@ impl StableItem for Sheen {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        if !self.spellblade_ready {
+        if !self.spellblade_ready || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
         let bonus_damage = self.spellblade_damage(caster_ref.level());
-        self.spellblade_ready = false;
 
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
         ctx.add_buff(
             caster,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
+        self.spellblade_ready = false;
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

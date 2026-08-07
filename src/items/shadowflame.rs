@@ -10,6 +10,7 @@ pub struct Shadowflame {
     magic_power: i32,
     magic_resistance_penetration: usize,
     effect_hp_percent_threshold: f64,
+    effect_bonus_damage_when_low: f64,
 }
 
 impl Shadowflame {
@@ -24,6 +25,7 @@ impl Shadowflame {
             magic_power: 115,
             magic_resistance_penetration: 15,
             effect_hp_percent_threshold: 30.0,
+            effect_bonus_damage_when_low: 20.0,
         }
     }
 
@@ -32,6 +34,9 @@ impl Shadowflame {
             meta: ItemMeta::radiant("radiant_shadowflame", &["shadowflame"]),
             price: 1800,
             magic_power: 210,
+            magic_resistance_penetration: 15,
+            effect_hp_percent_threshold: 30.0,
+            effect_bonus_damage_when_low: 20.0,
             ..Self::base()
         }
     }
@@ -109,6 +114,8 @@ impl StableItem for Shadowflame {
         target: usize,
         damage: &mut usize,
         damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -119,7 +126,7 @@ impl StableItem for Shadowflame {
 
         let hp_threshold = percent_of(target_ref.hp().1, self.effect_hp_percent_threshold);
         if target_ref.hp().0 < hp_threshold && damage_type == DamageTypeV1::Ap {
-            *damage = (*damage as f64 * 1.2) as usize;
+            *damage += *damage * (self.effect_bonus_damage_when_low / 100.0) as usize;
         }
     }
 

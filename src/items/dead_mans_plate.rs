@@ -45,6 +45,7 @@ impl DeadMansPlate {
             effect_move_speed_per_stack: 0.25,
             effect_min_bonus_damage: 0,
             effect_max_bonus_damage: 200,
+            // Non-vital stats (internals)
             momentum: 0,
             stack_progress: 0,
             refresh_cooldown: 0,
@@ -59,6 +60,12 @@ impl DeadMansPlate {
             price: 2100,
             hp: 650,
             defence: 70,
+            move_speed_mult: 4,
+            effect_stacks_per_second: 7,
+            effect_max_stacks: 100,
+            effect_move_speed_per_stack: 0.25,
+            effect_min_bonus_damage: 0,
+            effect_max_bonus_damage: 200,
             ..Self::base()
         }
     }
@@ -208,12 +215,11 @@ impl StableItem for DeadMansPlate {
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        damage_type: DamageTypeV1,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        if damage_type != DamageTypeV1::Ad || self.momentum == 0 {
-            return;
-        }
-        if !is_enemy_champion(ctx, caster, target) {
+        if self.momentum == 0 || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
 

@@ -53,7 +53,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Dealing magic damage to an enemy champion reduces the target's magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Bloodsong** | 1050G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
 | **Collector** | 1450G | +60 AD<br>+20% Crit Chance | Gain 10 Lethality.<br>Death: Damaging an enemy champion below 6% max health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
-| **Dead Man's Plate** | 1450G | +300 HP<br>+55 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Dealing physical damage to an enemy champion consumes all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
+| **Dead Man's Plate** | 1450G | +300 HP<br>+55 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Deathblade** | 1400G | +90 AD | Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 1450G | +45 AD<br>+45 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the stored damage and heals you for 45 + 15% of your missing health. |
 | **Diamond Tipped Spear** | 1500G | +35% AS<br>+10% CDR | Pierce: Gain 60 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
@@ -113,7 +113,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Dealing magic damage to an enemy champion reduces the target's magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Bloodsong** | 1500G | +450 HP<br>+4 HP Regen<br>+40 AP<br>+15% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
 | **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance | Gain 10 Lethality.<br>Death: Damaging an enemy champion below 6% max health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
-| **Radiant Dead Man's Plate** | 2100G | +650 HP<br>+70 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Dealing physical damage to an enemy champion consumes all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
+| **Radiant Dead Man's Plate** | 2100G | +650 HP<br>+70 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Radiant Deathblade** | 2000G | +140 AD | Increase your total Attack Damage by 25%. |
 | **Radiant Death's Dance** | 2100G | +75 AD<br>+75 Armor<br>+10% CDR | Ignore Pain: 25% of damage taken is stored and dealt back to you over time as bonus physical damage (up to 5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the stored damage and heals you for 75 + 25% of your missing health. |
 | **Radiant Diamond Tipped Spear** | 2250G | +60% AS<br>+10% CDR | Pierce: Gain 100 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
@@ -207,19 +207,17 @@ icons. The vanilla **Matchup** card stays on screen to the right of it, so the
 lineup is visible while builds are being set. **Team** is untouched — switching
 to it puts the editor away and brings the Team columns back.
 
-Builds apply to **your players only**. The game asks the mod for one team's item
-builds at a time without saying whose, so a build keyed to a champion used to
-reach whoever played that champion, the enemy included. Builds are therefore not
-applied to that request at all: all four slots are applied per athlete as each
-one shops, at the point where the mod can check the athlete's id against your
-own starting roster. An enemy playing the same champion is a different athlete
-and gets nothing.
+**Builds apply to both teams.** They are keyed by champion, and every champion
+that has one gets it whoever is playing it — your team, the opponent, and the
+league's background fixtures alike. Setting a build is a statement about how that
+champion should be played, not a private instruction to your own five.
 
-This needs the four-item half to be active, since that is the half that is
-inside the match. If it has disabled itself — after a game update, say — builds
-fall back to being applied per champion to the team being built for, which can
-occasionally reach the enemy, rather than not applying at all. A build that
-quietly does nothing is the worse outcome.
+Two mechanisms deliver them, and they agree because they read the same file. The
+game's item-build hook sets the target build for every player as a match's builds
+are picked; the four-item half additionally pins the same items per athlete as
+each one shops, which is what makes a fourth slot possible. If that half has
+disabled itself — after a game update, say — builds still apply through the
+first, minus the fourth item.
 
 The vanilla Personal tab is gone because this replaces it. Its five per-player
 dropdowns set the same thing per athlete that this sets per champion, and the

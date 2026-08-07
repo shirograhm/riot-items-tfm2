@@ -41,6 +41,9 @@ impl LiandrysTorment {
             price: 2000,
             hp: 550,
             magic_power: 150,
+            effect_hp_percent_damage: 6.0,
+            effect_minion_damage_cap: 40,
+            effect_duration_seconds: 3.0,
             ..Self::base()
         }
     }
@@ -188,6 +191,8 @@ impl StableItem for LiandrysTorment {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;

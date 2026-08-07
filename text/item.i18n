@@ -189,7 +189,7 @@
         },
         "phage": {
             "name": "Phage",
-            "option": "\nRage: Dealing damage to an enemy champion grants <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
+            "option": "\nRage: Basic attacks against enemy champions grant <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
         },
         "haunting_guise": {
             "name": "Haunting Guise",
@@ -197,11 +197,11 @@
         },
         "infinity_edge": {
             "name": "Infinity Edge",
-            "option": ""
+            "option": "Gain <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> critical strike damage<>."
         },
         "radiant_infinity_edge": {
             "name": "Radiant Infinity Edge",
-            "option": ""
+            "option": "Gain <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> critical strike damage<>."
         },
         "black_cleaver": {
             "name": "Black Cleaver",
@@ -229,11 +229,11 @@
         },
         "deaths_dance": {
             "name": "Death's Dance",
-            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <#60e84dff>heals you<> for <#60e84dff>45<> + <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <#60e84dff>heals you<> for <#60e84dff>45<> + <#60e84dff>15%<> of your <#60e84dff>missing health<>."
         },
         "radiant_deaths_dance": {
             "name": "Radiant Death's Dance",
-            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <#60e84dff>heals you<> for <#60e84dff>75<> + <#60e84dff>25%<> of your <#60e84dff>missing health<>."
+            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <#60e84dff>heals you<> for <#60e84dff>75<> + <#60e84dff>25%<> of your <#60e84dff>missing health<>."
         },
         "needlessly_large_rod": {
             "name": "Needlessly Large Rod",
@@ -265,11 +265,11 @@
         },
         "frozen_mallet": {
             "name": "Frozen Mallet",
-            "option": "\nIcy: On attack, apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\nIcy: Basic attacks apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "radiant_frozen_mallet": {
             "name": "Radiant Frozen Mallet",
-            "option": "\nIcy: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>20<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> and apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\nIcy: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>20<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> and apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "riftmaker": {
             "name": "Riftmaker",
@@ -289,11 +289,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Yun Tal Wildarrows",
-            "option": "\nPractice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> .\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (<#e8a800ff>15 second<> cooldown)."
+            "option": "\nPractice Makes Lethal: Basic attacks grant <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: Every <#e8a800ff>15 seconds<>, your next basic attack grants <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Radiant Yun Tal Wildarrows",
-            "option": "\nPractice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> .\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (<#e8a800ff>15 second<> cooldown)."
+            "option": "\nPractice Makes Lethal: Basic attacks grant <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: Every <#e8a800ff>15 seconds<>, your next basic attack grants <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
         },
         "unending_despair": {
             "name": "Unending Despair",
@@ -305,11 +305,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Blade of the Ruined King",
-            "option": "\nMist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Radiant Blade of the Ruined King",
-            "option": "\nMist's Edge: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
         },
         "blackfire_torch": {
             "name": "Blackfire Torch",
@@ -353,11 +353,11 @@
         },
         "nashors_tooth": {
             "name": "Nashor's Tooth",
-            "option": "\nIcathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+            "option": "\nIcathian Bite: Basic attacks deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
         },
         "radiant_nashors_tooth": {
             "name": "Radiant Nashor's Tooth",
-            "option": "\nIcathian Bite: On attack, deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
+            "option": "\nIcathian Bite: Basic attacks deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>."
         },
         "jaksho_the_protean": {
             "name": "Jak'Sho, The Protean",
@@ -369,11 +369,11 @@
         },
         "terminus": {
             "name": "Terminus",
-            "option": "\nJuxtaposition: On attack, gain either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+            "option": "\nJuxtaposition: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
         },
         "radiant_terminus": {
             "name": "Radiant Terminus",
-            "option": "\nJuxtaposition: On attack, gain either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+            "option": "\nJuxtaposition: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
         },
         "spirit_visage": {
             "name": "Spirit Visage",
@@ -385,19 +385,19 @@
         },
         "guinsoos_rageblade": {
             "name": "Guinsoo's Rageblade",
-            "option": "\nWrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+            "option": "\nWrath: Basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: Basic attacks grant <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
         },
         "radiant_guinsoos_rageblade": {
             "name": "Radiant Guinsoo's Rageblade",
-            "option": "\nWrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+            "option": "\nWrath: Basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: Basic attacks grant <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
         },
         "wits_end": {
             "name": "Wit's End",
-            "option": "\nFray: Your basic attacks deal <#a974ffff>45 bonus magic damage<>."
+            "option": "\nFray: Basic attacks deal <#a974ffff>45 bonus magic damage<>."
         },
         "radiant_wits_end": {
             "name": "Radiant Wit's End",
-            "option": "\nFray: Your basic attacks deal <#a974ffff>45 bonus magic damage<>."
+            "option": "\nFray: Basic attacks deal <#a974ffff>45 bonus magic damage<>."
         },
         "kraken_slayer": {
             "name": "Kraken Slayer",
@@ -433,11 +433,11 @@
         },
         "heartsteel": {
             "name": "Heartsteel",
-            "option": "\nIronheart: Every <#e8a800ff>20 seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
+            "option": "\nIronheart: Every <#e8a800ff>20 seconds<>, your next basic attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
         },
         "radiant_heartsteel": {
             "name": "Radiant Heartsteel",
-            "option": "\nIronheart: Every <#e8a800ff>20 seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
+            "option": "\nIronheart: Every <#e8a800ff>20 seconds<>, your next basic attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
         },
         "spear_of_shojin": {
             "name": "Spear of Shojin",
@@ -485,27 +485,27 @@
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
-            "option": "\nRimefrost: Dealing Ability damage applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\nRimefrost: Landing an Ability on an enemy applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Radiant Rylai's Crystal Scepter",
-            "option": "\nRimefrost: Dealing Ability damage applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\nRimefrost: Landing an Ability on an enemy applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "stormrazor": {
             "name": "Stormrazor",
-            "option": "\nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
+            "option": "\nEnergized: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#92dc7bff>Energized<>, your next basic attack deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
         },
         "radiant_stormrazor": {
             "name": "Radiant Stormrazor",
-            "option": "\nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
+            "option": "\nEnergized: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#92dc7bff>Energized<>, your next basic attack deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
         },
         "voltaic_cyclosword": {
             "name": "Voltaic Cyclosword",
-            "option": "\nGain <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nFirmament: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<> for <#e8a800ff>4 seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>6% of the target's current health<>. Deals a maximum of <#ff9028ff>200 physical damage<> against minions and monsters."
+            "option": "\nGain <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nEnergized: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nFirmament: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<> for <#e8a800ff>4 seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>6% of the target's current health<>. Deals a maximum of <#ff9028ff>200 physical damage<> against minions and monsters."
         },
         "radiant_voltaic_cyclosword": {
             "name": "Radiant Voltaic Cyclosword",
-            "option": "\nGain <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nFirmament: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<> for <#e8a800ff>4 seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>10% of the target's current health<>. Deals a maximum of <#ff9028ff>200 physical damage<> against minions and monsters."
+            "option": "\nGain <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nEnergized: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nFirmament: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<> for <#e8a800ff>4 seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>10% of the target's current health<>. Deals a maximum of <#ff9028ff>200 physical damage<> against minions and monsters."
         },
         "diamond_tipped_spear": {
             "name": "Diamond Tipped Spear",
@@ -577,31 +577,31 @@
         },
         "echoes_of_helia": {
             "name": "Echoes of Helia",
-            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
+            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <#60e84dff>heals them<> equal to the consumed amount."
         },
         "radiant_echoes_of_helia": {
             "name": "Radiant Echoes of Helia",
-            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
+            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <#60e84dff>heals them<> equal to the consumed amount."
         },
         "sundered_sky": {
             "name": "Sundered Sky",
-            "option": "\nLightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
+            "option": "\nLightshield Strike: Your next basic attack against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<> and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
         },
         "radiant_sundered_sky": {
             "name": "Radiant Sundered Sky",
-            "option": "\nLightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>10%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
+            "option": "\nLightshield Strike: Your next basic attack against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<> and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>10%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
         },
         "sheen": {
             "name": "Sheen",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "trinity_force": {
             "name": "Trinity Force",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "radiant_trinity_force": {
             "name": "Radiant Trinity Force",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "frozen_heart": {
             "name": "Frozen Heart",
@@ -617,19 +617,19 @@
         },
         "dusk_and_dawn": {
             "name": "Dusk and Dawn",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Radiant Dusk and Dawn",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "bloodsong": {
             "name": "Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
         },
         "radiant_bloodsong": {
             "name": "Radiant Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
         },
         "serrated_dirk": {
             "name": "Serrated Dirk",
@@ -645,11 +645,11 @@
         },
         "bastionbreaker": {
             "name": "Bastionbreaker",
-            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "radiant_bastionbreaker": {
             "name": "Radiant Bastionbreaker",
-            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next Attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "serpents_fang": {
             "name": "Serpent's Fang",
@@ -677,11 +677,11 @@
         },
         "dead_mans_plate": {
             "name": "Dead Man's Plate",
-            "option": "\nShipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<>, scaling with stacks consumed."
+            "option": "\nShipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Basic attacks consume all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<>, scaling with stacks consumed."
         },
         "radiant_dead_mans_plate": {
             "name": "Radiant Dead Man's Plate",
-            "option": "\nShipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Dealing <#ff9028ff>physical damage<> to an enemy champion consumes all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<>, scaling with stacks consumed."
+            "option": "\nShipwrecker: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Basic attacks consume all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<>, scaling with stacks consumed."
         },
         "winged_moonplate": {
             "name": "Winged Moonplate",
@@ -740,7 +740,7 @@
             "dot_amplify": "Sát thương theo Thời gian +{Value}%",
             "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> {Value} Hồi Máu mỗi giây",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Tỷ Lệ Chí Mạng",
-            "base_attack_damaged_reduce": "\n\nGiáp tấm: Giảm <#e8a800ff>{Value}%<> sát thương nhận vào từ các đòn tấn công cơ bản.",
+            "base_attack_damaged_reduce": "\n",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Giảm Sát thương Kỹ năng",
             "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> {Value}% Kháng Hiệu Ứng"
         },
@@ -794,15 +794,15 @@
         },
         "black_knights_heavy_plate": {
             "name": "Áo Choàng Gai",
-            "option": ""
+            "option": "Giáp Cứng: Giảm <#e8a800ff>5%<> sát thương nhận vào từ đòn đánh thường."
         },
         "eternal_iron_plate": {
             "name": "Giáp Gai",
-            "option": ""
+            "option": "Giáp Cứng: Giảm <#e8a800ff>8%<> sát thương nhận vào từ đòn đánh thường."
         },
         "impregnable_fortress": {
             "name": "Giáp Gai Ánh Sáng",
-            "option": "Gai: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}% <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Giáp<> của bạn thành Sát Phương Phép lên kẻ tấn công."
+            "option": "Giáp Cứng: Giảm <#e8a800ff>12%<> sát thương nhận vào từ đòn đánh thường.\n\nGai: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
         },
         "mystic_cloak": {
             "name": "Áo Vải",
@@ -878,7 +878,7 @@
         },
         "phage": {
             "name": "Búa Gỗ",
-            "option": "\nCuồng Nộ: Gây sát thương lên tướng địch sẽ nhận <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<>."
+            "option": "\nCuồng Nộ: Đòn đánh thường lên tướng địch sẽ cấp <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<>."
         },
         "haunting_guise": {
             "name": "Mặt Nạ Ám Ảnh",
@@ -886,11 +886,11 @@
         },
         "infinity_edge": {
             "name": "Vô Cực Kiếm",
-            "option": ""
+            "option": "Nhận <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> sát thương chí mạng<>."
         },
         "radiant_infinity_edge": {
             "name": "Vô Cực Kiếm Ánh Sáng",
-            "option": ""
+            "option": "Nhận <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> sát thương chí mạng<>."
         },
         "black_cleaver": {
             "name": "Rìu Đen",
@@ -918,11 +918,11 @@
         },
         "deaths_dance": {
             "name": "Vũ Điệu Tử Thần",
-            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <#60e84dff>hồi<> cho bạn <#60e84dff>45<> + <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
+            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <#60e84dff>hồi<> cho bạn <#60e84dff>45<> + <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
         },
         "radiant_deaths_dance": {
             "name": "Vũ Điệu Tử Thần Ánh Sáng",
-            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <#60e84dff>hồi<> cho bạn <#60e84dff>75<> + <#60e84dff>25%<> <#60e84dff>máu đã mất<>."
+            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <#60e84dff>hồi<> cho bạn <#60e84dff>75<> + <#60e84dff>25%<> <#60e84dff>máu đã mất<>."
         },
         "needlessly_large_rod": {
             "name": "Gậy Quá Khổ",
@@ -954,11 +954,11 @@
         },
         "frozen_mallet": {
             "name": "Búa Băng",
-            "option": "\nBăng kết: Khi tấn công, gây <#d94c49ff>15% kiệt sức <> trong <#e8a800ff>2 giây<>."
+            "option": "\nBăng kết: Đòn đánh thường gây <#d94c49ff>15% kiệt sức <> trong <#e8a800ff>2 giây<>."
         },
         "radiant_frozen_mallet": {
             "name": "Búa Băng Ánh Sáng",
-            "option": "\nBăng kết: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>20<> + <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân và gây <#d94c49ff>15% kiệt sức <> trong <#e8a800ff>2 giây<>."
+            "option": "\nBăng kết: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>20<> + <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân và gây <#d94c49ff>15% kiệt sức <> trong <#e8a800ff>2 giây<>."
         },
         "riftmaker": {
             "name": "Quyền Trượng Ác Thần",
@@ -978,11 +978,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Mũi Tên Yun Tal",
-            "option": "\nChí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<> (hồi chiêu 15 giây)."
+            "option": "\nChí Mạng Tay Quen: Đòn đánh thường tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\nChuyển Động Liên Hoàn: Mỗi <#e8a800ff>15 giây<>, đòn đánh thường tiếp theo cấp <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<>."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Mũi Tên Yun Tal Ánh Sáng",
-            "option": "\nChí Mạng Tay Quen: Gây <#ff9028ff>sát thương vật lí<> sẽ tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\nChuyển Động Liên Hoàn: Khi tấn công, nhận <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<> (hồi chiêu 15 giây)."
+            "option": "\nChí Mạng Tay Quen: Đòn đánh thường tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\nChuyển Động Liên Hoàn: Mỗi <#e8a800ff>15 giây<>, đòn đánh thường tiếp theo cấp <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<>."
         },
         "unending_despair": {
             "name": "Áo Choàng Diệt Vong",
@@ -994,11 +994,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Gươm Suy Vong",
-            "option": "\nNanh vuốt sương mù: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>5% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>50 sát thương vật lí<> lên lính và quái vật."
+            "option": "\nNanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>5% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>50 sát thương vật lí<> lên lính và quái vật."
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Gươm Suy Vong Ánh Sáng",
-            "option": "\nNanh vuốt sương mù: Khi tấn công, gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>5% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>50 sát thương vật lí<> lên lính và quái vật."
+            "option": "\nNanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>5% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>50 sát thương vật lí<> lên lính và quái vật."
         },
         "blackfire_torch": {
             "name": "Đuốc Lửa Đen",
@@ -1042,11 +1042,11 @@
         },
         "nashors_tooth": {
             "name": "Nanh Nashor",
-            "option": "\nVết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
+            "option": "\nVết cắn Icathian: Đòn đánh thường gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
         },
         "radiant_nashors_tooth": {
             "name": "Nanh Nashor Ánh Sáng",
-            "option": "\nVết cắn Icathian: Khi tấn công, gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
+            "option": "\nVết cắn Icathian: Đòn đánh thường gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
         },
         "jaksho_the_protean": {
             "name": "Jak'Sho Vỏ Bọc Thích Nghi",
@@ -1058,11 +1058,11 @@
         },
         "terminus": {
             "name": "Cung Chạng Vạng",
-            "option": "\nĐối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
+            "option": "\nĐối lập: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
         },
         "radiant_terminus": {
             "name": "Cung Chạng Vạng Ánh Sáng",
-            "option": "\nĐối lập: Khi tấn công, nhận luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
+            "option": "\nĐối lập: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
         },
         "spirit_visage": {
             "name": "Giáp Tâm Linh",
@@ -1074,11 +1074,11 @@
         },
         "guinsoos_rageblade": {
             "name": "Cuồng Đao Guinsoo",
-            "option": "\nThịnh nộ: Tấn công thường gây ra thêm <#a974ffff>30 sát thương phép thuật<>.\n\nDồn dập: Khi tấn công, nhận <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+            "option": "\nThịnh nộ: Tấn công thường gây ra thêm <#a974ffff>30 sát thương phép thuật<>.\n\nDồn dập: Đòn đánh thường cấp <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
         },
         "radiant_guinsoos_rageblade": {
             "name": "Cuồng Đao Guinsoo Ánh Sáng",
-            "option": "\nThịnh nộ: Tấn công thường gây ra thêm <#a974ffff>30 sát thương phép thuật<>.\n\nDồn dập: Khi tấn công, nhận <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+            "option": "\nThịnh nộ: Tấn công thường gây ra thêm <#a974ffff>30 sát thương phép thuật<>.\n\nDồn dập: Đòn đánh thường cấp <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
         },
         "wits_end": {
             "name": "Đao Tím",
@@ -1122,11 +1122,11 @@
         },
         "heartsteel": {
             "name": "Tâm Thép",
-            "option": "\nTrái Tim Sắt Đá: Mỗi <#e8a800ff>20 giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>12%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
+            "option": "\nTrái Tim Sắt Đá: Mỗi <#e8a800ff>20 giây<>, đòn đánh thường tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>12%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
         },
         "radiant_heartsteel": {
             "name": "Tâm Thép Ánh Sáng",
-            "option": "\nTrái Tim Sắt Đá: Mỗi <#e8a800ff>20 giây<>, đòn đánh tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>12%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
+            "option": "\nTrái Tim Sắt Đá: Mỗi <#e8a800ff>20 giây<>, đòn đánh thường tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>12%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
         },
         "spear_of_shojin": {
             "name": "Ngọn Giáo Shojin",
@@ -1174,27 +1174,27 @@
         },
         "rylais_crystal_scepter": {
             "name": "Quyền Trượng Pha Lê Rylai",
-            "option": "\nSương Giá: Khi gây sát thương kĩ năng, gây <#d94c49ff>15% kiệt sức<> cho mục tiêu trúng đòn trong <#e8a800ff>2 giây<>."
+            "option": "\nSương Giá: Kĩ năng trúng kẻ địch sẽ gây <#d94c49ff>15% kiệt sức<> trong <#e8a800ff>2 giây<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Quyền Trượng Pha Lê Rylai Ánh Sáng",
-            "option": "\nSương Giá: Khi gây sát thương kĩ năng, gây <#d94c49ff>15% kiệt sức<> cho mục tiêu trúng đòn trong <#e8a800ff>2 giây<>."
+            "option": "\nSương Giá: Kĩ năng trúng kẻ địch sẽ gây <#d94c49ff>15% kiệt sức<> trong <#e8a800ff>2 giây<>."
         },
         "stormrazor": {
             "name": "Kiếm Bão Tố",
-            "option": "\nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi <#92dc7bff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
+            "option": "\nTích Điện: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi <#92dc7bff>Tích Điện<> đầy, đòn đánh thường tiếp theo gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
         },
         "radiant_stormrazor": {
             "name": "Kiếm Bão Tố Ánh Sáng",
-            "option": "\nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi <#92dc7bff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
+            "option": "\nTích Điện: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nTia Sét: Khi <#92dc7bff>Tích Điện<> đầy, đòn đánh thường tiếp theo gây <#a974ffff>100 sát thương phép cộng thêm<> và tăng <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>1.5 giây<>."
         },
         "voltaic_cyclosword": {
             "name": "Kiếm Điện Phong",
-            "option": "\nNhận <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nThiên Đường: Khi <#92dc7bff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<> trong <#e8a800ff>4 giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>6% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>200 sát thương vật lí<> lên lính và quái vật."
+            "option": "\nNhận <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nTích Điện: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nThiên Đường: Khi <#92dc7bff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<> trong <#e8a800ff>4 giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>6% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>200 sát thương vật lí<> lên lính và quái vật."
         },
         "radiant_voltaic_cyclosword": {
             "name": "Kiếm Điện Phong Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nTích Điện: Di chuyển và gây <#ff9028ff>sát thương vật lí<> tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nThiên Đường: Khi <#92dc7bff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<> trong <#e8a800ff>4 giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>10% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>200 sát thương vật lí<> lên lính và quái vật."
+            "option": "\nNhận <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nTích Điện: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\nThiên Đường: Khi <#92dc7bff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<> trong <#e8a800ff>4 giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>10% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>200 sát thương vật lí<> lên lính và quái vật."
         },
         "diamond_tipped_spear": {
             "name": "Mũi Giáo Kim Cương",
@@ -1266,31 +1266,31 @@
         },
         "echoes_of_helia": {
             "name": "Vọng Âm Helia",
-            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Kĩ năng trúng tướng địch sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho đồng minh gần nhất<> một lượng bằng số đã tiêu."
+            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
         },
         "radiant_echoes_of_helia": {
             "name": "Vọng Âm Helia Ánh Sáng",
-            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Kĩ năng trúng tướng địch sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho đồng minh gần nhất<> một lượng bằng số đã tiêu."
+            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
         },
         "sundered_sky": {
             "name": "Bầu Trời Vỡ Nát",
-            "option": "\nĐòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>20% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> <#60e84dff>máu đã mất<> (<#e8a800ff>20 giây<> hồi chiêu mỗi mục tiêu)."
+            "option": "\nĐòn Khiên Sáng: Đòn đánh thường tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>20% sát thương cộng thêm<> và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> <#60e84dff>máu đã mất<> (<#e8a800ff>20 giây<> hồi chiêu mỗi mục tiêu)."
         },
         "radiant_sundered_sky": {
             "name": "Bầu Trời Vỡ Nát Ánh Sáng",
-            "option": "\nĐòn Khiên Sáng: Đòn <#ff9028ff>sát thương vật lí<> tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>20% sát thương cộng thêm<>, và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>10%<> <#60e84dff>máu đã mất<> (<#e8a800ff>20 giây<> hồi chiêu mỗi mục tiêu)."
+            "option": "\nĐòn Khiên Sáng: Đòn đánh thường tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>20% sát thương cộng thêm<> và <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>10%<> <#60e84dff>máu đã mất<> (<#e8a800ff>20 giây<> hồi chiêu mỗi mục tiêu)."
         },
         "sheen": {
             "name": "Thủy Kiếm",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
         },
         "trinity_force": {
             "name": "Tam Hợp Kiếm",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
         },
         "radiant_trinity_force": {
             "name": "Tam Hợp Kiếm Ánh Sáng",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
         },
         "frozen_heart": {
             "name": "Tim Băng",
@@ -1306,19 +1306,19 @@
         },
         "dusk_and_dawn": {
             "name": "Hoàng Hôn và Bình Minh",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> và <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> và <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Hoàng Hôn và Bình Minh Ánh Sáng",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> và <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> và <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
         },
         "bloodsong": {
             "name": "Khúc Ca Máu",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>8%<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>8%<> trong <#e8a800ff>4 giây<>."
         },
         "radiant_bloodsong": {
             "name": "Khúc Ca Máu Ánh Sáng",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>8%<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>8%<> trong <#e8a800ff>4 giây<>."
         },
         "serrated_dirk": {
             "name": "Dao Găm Răng Cưa",
@@ -1334,11 +1334,11 @@
         },
         "bastionbreaker": {
             "name": "Kẻ Phá Thành",
-            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn Đánh tiếp theo của bạn lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "radiant_bastionbreaker": {
             "name": "Kẻ Phá Thành Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn Đánh tiếp theo của bạn lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "serpents_fang": {
             "name": "Nanh Rắn Độc",
@@ -1366,11 +1366,11 @@
         },
         "dead_mans_plate": {
             "name": "Giáp Liệt Sĩ",
-            "option": "\nKẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
+            "option": "\nKẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Đòn đánh thường tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
         },
         "radiant_dead_mans_plate": {
             "name": "Giáp Liệt Sĩ Ánh Sáng",
-            "option": "\nKẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Gây <#ff9028ff>sát thương vật lí<> lên tướng địch sẽ tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
+            "option": "\nKẻ Đắm Tàu: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Đòn đánh thường tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<>, tăng theo số cộng dồn đã tiêu."
         },
         "winged_moonplate": {
             "name": "Nguyệt Giáp Chắp Cánh",
@@ -1429,7 +1429,7 @@
             "dot_amplify": "+{Value}% 持续伤害增幅",
             "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> {Value} 最大生命值回复",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% 暴击几率",
-            "base_attack_damaged_reduce": "\n\n镀层：受到的普通攻击伤害降低<#e8a800ff>{Value}%<>。",
+            "base_attack_damaged_reduce": "\n",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% 技能伤害减免",
             "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> {Value}% 韧性"
         },
@@ -1483,15 +1483,15 @@
         },
         "black_knights_heavy_plate": {
             "name": "棘刺背心",
-            "option": ""
+            "option": "镀层：受到的普通攻击伤害降低 <#e8a800ff>5%<>。"
         },
         "eternal_iron_plate": {
             "name": "荆棘之甲",
-            "option": ""
+            "option": "镀层：受到的普通攻击伤害降低 <#e8a800ff>8%<>。"
         },
         "impregnable_fortress": {
             "name": "光明版荆棘之甲",
-            "option": "荆棘：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
+            "option": "镀层：受到的普通攻击伤害降低 <#e8a800ff>12%<>。\n\n荆棘：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
         },
         "mystic_cloak": {
             "name": "抗魔斗篷",
@@ -1567,7 +1567,7 @@
         },
         "phage": {
             "name": "净蚀",
-            "option": "\n狂怒：对敌方英雄造成伤害时，获得 <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>。"
+            "option": "\n狂怒：普通攻击敌方英雄时，获得 <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>。"
         },
         "haunting_guise": {
             "name": "幽魂面具",
@@ -1575,11 +1575,11 @@
         },
         "infinity_edge": {
             "name": "无尽之刃",
-            "option": ""
+            "option": "获得 <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> 暴击伤害<>。"
         },
         "radiant_infinity_edge": {
             "name": "光明版无尽之刃",
-            "option": ""
+            "option": "获得 <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> 暴击伤害<>。"
         },
         "black_cleaver": {
             "name": "黑色切割者",
@@ -1607,11 +1607,11 @@
         },
         "deaths_dance": {
             "name": "死亡之舞",
-            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<#60e84dff>回复<> <#60e84dff>45<> + <#60e84dff>15%<> 的<#60e84dff>已损失生命值<>。"
+            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<#60e84dff>回复<> <#60e84dff>45<> + <#60e84dff>15%<> 的<#60e84dff>已损失生命值<>。"
         },
         "radiant_deaths_dance": {
             "name": "光明版死亡之舞",
-            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<#60e84dff>回复<> <#60e84dff>75<> + <#60e84dff>25%<> 的<#60e84dff>已损失生命值<>。"
+            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<#60e84dff>回复<> <#60e84dff>75<> + <#60e84dff>25%<> 的<#60e84dff>已损失生命值<>。"
         },
         "needlessly_large_rod": {
             "name": "无用大棒",
@@ -1667,11 +1667,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "育恩塔尔荒野箭",
-            "option": "\n熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n疾风骤雨：普通攻击时，获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>（冷却15秒）。"
+            "option": "\n熟能生巧：普通攻击永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n疾风骤雨：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>。"
         },
         "radiant_yun_tal_wildarrows": {
             "name": "光明版育恩塔尔荒野箭",
-            "option": "\n熟能生巧：造成<#ff9028ff>物理伤害<>时永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n疾风骤雨：普通攻击时，获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>（冷却15秒）。"
+            "option": "\n熟能生巧：普通攻击永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n疾风骤雨：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>。"
         },
         "unending_despair": {
             "name": "无终恨意",
@@ -1863,27 +1863,27 @@
         },
         "rylais_crystal_scepter": {
             "name": "兰蒂尔的冰晶节杖",
-            "option": "\n凛霜：造成技能伤害时，对命中的单位施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
+            "option": "\n凛霜：技能命中敌人时，对其施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
         },
         "radiant_rylais_crystal_scepter": {
             "name": "光明版兰蒂尔的冰晶节杖",
-            "option": "\n凛霜：造成技能伤害时，对命中的单位施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
+            "option": "\n凛霜：技能命中敌人时，对其施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
         },
         "stormrazor": {
             "name": "风暴利刃",
-            "option": "\n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n雷霆：<#92dc7bff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
+            "option": "\n蓄能：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n雷霆：<#92dc7bff>蓄能<>充满时，你的下一次普通攻击额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
         },
         "radiant_stormrazor": {
             "name": "光明版风暴利刃",
-            "option": "\n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n雷霆：<#92dc7bff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
+            "option": "\n蓄能：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n雷霆：<#92dc7bff>蓄能<>充满时，你的下一次普通攻击额外造成 <#a974ffff>100 点魔法伤害<>，并使你获得 <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>1.5秒<>。"
         },
         "voltaic_cyclosword": {
             "name": "电震涡流剑",
-            "option": "\n获得 <#ffdd8eff>12 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n苍穹：<#92dc7bff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值6%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>4秒<> 的 <#ffdd8eff>6 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>200点物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>12 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n蓄能：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n苍穹：<#92dc7bff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值6%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>4秒<> 的 <#ffdd8eff>6 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>200点物理伤害<>。"
         },
         "radiant_voltaic_cyclosword": {
             "name": "光明版电震涡流剑",
-            "option": "\n获得 <#ffdd8eff>12 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n蓄能：移动和造成 <#ff9028ff>物理伤害<> 会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n苍穹：<#92dc7bff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值10%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>4秒<> 的 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>200点物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>12 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n蓄能：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n苍穹：<#92dc7bff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值10%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>4秒<> 的 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>200点物理伤害<>。"
         },
         "diamond_tipped_spear": {
             "name": "钻头长矛",
@@ -1955,19 +1955,19 @@
         },
         "echoes_of_helia": {
             "name": "海力亚的回响",
-            "option": "\n灵魂虹吸：将你造成伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。技能命中敌方英雄时，消耗全部 <#92dc7bff>灵魂充能<>，为你<#60e84dff>最近的友军回复<>等量的生命值。"
+            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<#60e84dff>回复<>等量的生命值。"
         },
         "radiant_echoes_of_helia": {
             "name": "光明版海力亚的回响",
-            "option": "\n灵魂虹吸：将你造成伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。技能命中敌方英雄时，消耗全部 <#92dc7bff>灵魂充能<>，为你<#60e84dff>最近的友军回复<>等量的生命值。"
+            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<#60e84dff>回复<>等量的生命值。"
         },
         "sundered_sky": {
             "name": "破碎苍穹",
-            "option": "\n光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>20% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>20秒<>）。"
+            "option": "\n光盾打击：你对敌方英雄的下一次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>20% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>20秒<>）。"
         },
         "radiant_sundered_sky": {
             "name": "光明版破碎苍穹",
-            "option": "\n光盾打击：你对敌方英雄造成的下一次 <#ff9028ff>物理伤害<> 会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>20% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>10%<>（每个目标冷却 <#e8a800ff>20秒<>）。"
+            "option": "\n光盾打击：你对敌方英雄的下一次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>20% 额外伤害<>，并<#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>10%<>（每个目标冷却 <#e8a800ff>20秒<>）。"
         },
         "sheen": {
             "name": "耀光",
@@ -2023,11 +2023,11 @@
         },
         "bastionbreaker": {
             "name": "破垒者",
-            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你的下一次对防御塔的攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "radiant_bastionbreaker": {
             "name": "光明版破垒者",
-            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你的下一次对防御塔的攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "serpents_fang": {
             "name": "毒蛇之牙",
@@ -2055,11 +2055,11 @@
         },
         "dead_mans_plate": {
             "name": "亡者板甲",
-            "option": "\n碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
+            "option": "\n碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。普通攻击消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
         },
         "radiant_dead_mans_plate": {
             "name": "光明版亡者板甲",
-            "option": "\n碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。对敌方英雄造成<#ff9028ff>物理伤害<>时消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
+            "option": "\n碎船者：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。普通攻击消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
         },
         "winged_moonplate": {
             "name": "翼动月甲",
@@ -2118,7 +2118,7 @@
             "dot_amplify": "+{Value}% Amplicação de Dano ao Longo do Tempo",
             "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> {Value} Regeneração de Vida Máxima",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Chance de Acerto Crítico",
-            "base_attack_damaged_reduce": "\n\nBarricada: Reduz o dano sofrido de Ataques em <#e8a800ff>{Value}%<>.",
+            "base_attack_damaged_reduce": "\n",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Redução de Dano de Habilidades",
             "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> {Value}% Tenacidade"
         },
@@ -2172,15 +2172,15 @@
         },
         "black_knights_heavy_plate": {
             "name": "Colete Espinhoso",
-            "option": ""
+            "option": "Revestimento: Reduz o dano recebido de ataques básicos em <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
             "name": "Armadura de Espinhos",
-            "option": ""
+            "option": "Revestimento: Reduz o dano recebido de ataques básicos em <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Armadura de Espinhos Radiante",
-            "option": "Espinhos: Ao ser atingido por um Ataque, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
+            "option": "Revestimento: Reduz o dano recebido de ataques básicos em <#e8a800ff>12%<>.\n\nEspinhos: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
         },
         "mystic_cloak": {
             "name": "Manto Anula-Magia",
@@ -2256,7 +2256,7 @@
         },
         "phage": {
             "name": "Fago",
-            "option": "\nFúria: Causar dano a um campeão inimigo concede <#ffffffff>5%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<>."
+            "option": "\nFúria: Ataques contra campeões inimigos concedem <#ffffffff>5%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<>."
         },
         "haunting_guise": {
             "name": "Máscara Assustadora",
@@ -2264,11 +2264,11 @@
         },
         "infinity_edge": {
             "name": "Gume do Infinito",
-            "option": ""
+            "option": "Ganha <#d45656ff>30% de <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> Dano Crítico<>."
         },
         "radiant_infinity_edge": {
             "name": "Gume do Infinito Radiante",
-            "option": ""
+            "option": "Ganha <#d45656ff>30% de <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> Dano Crítico<>."
         },
         "black_cleaver": {
             "name": "Cutelo Negro",
@@ -2296,11 +2296,11 @@
         },
         "deaths_dance": {
             "name": "Dança da Morte",
-            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <#60e84dff>cura você<> em <#60e84dff>45<> + <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
+            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <#60e84dff>cura você<> em <#60e84dff>45<> + <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
         },
         "radiant_deaths_dance": {
             "name": "Dança da Morte Radiante",
-            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <#60e84dff>cura você<> em <#60e84dff>75<> + <#60e84dff>25%<> da sua <#60e84dff>vida perdida<>."
+            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <#60e84dff>cura você<> em <#60e84dff>75<> + <#60e84dff>25%<> da sua <#60e84dff>vida perdida<>."
         },
         "needlessly_large_rod": {
             "name": "Bastão Desnecessariamente Grande",
@@ -2356,11 +2356,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Flechatroz de Yun Tal",
-            "option": "\nPraticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\nAgitação: Ao atacar, ganha <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<> (recarga de 15 segundos)."
+            "option": "\nPraticar e Matar: Ataques básicos concedem <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\nAgitação: A cada <#e8a800ff>15 segundos<>, seu próximo ataque básico concede <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<>."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Flechatroz de Yun Tal Radiante",
-            "option": "\nPraticar e Matar: Causar <#ff9028ff>dano físico<> concede <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\nAgitação: Ao atacar, ganha <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<> (recarga de 15 segundos)."
+            "option": "\nPraticar e Matar: Ataques básicos concedem <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\nAgitação: A cada <#e8a800ff>15 segundos<>, seu próximo ataque básico concede <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<>."
         },
         "unending_despair": {
             "name": "Desespero Eterno",
@@ -2500,11 +2500,11 @@
         },
         "heartsteel": {
             "name": "Coração de Aço",
-            "option": "\nCoração Forjado: A cada <#e8a800ff>20 segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>12%<> desse dano como <#60e84dff>vida bônus<>."
+            "option": "\nCoração Forjado: A cada <#e8a800ff>20 segundos<>, seu próximo ataque básico causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>12%<> desse dano como <#60e84dff>vida bônus<>."
         },
         "radiant_heartsteel": {
             "name": "Coração de Aço Radiante",
-            "option": "\nCoração Forjado: A cada <#e8a800ff>20 segundos<>, seu próximo ataque causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>12%<> desse dano como <#60e84dff>vida bônus<>."
+            "option": "\nCoração Forjado: A cada <#e8a800ff>20 segundos<>, seu próximo ataque básico causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>12%<> desse dano como <#60e84dff>vida bônus<>."
         },
         "spear_of_shojin": {
             "name": "Lança de Shojin",
@@ -2552,27 +2552,27 @@
         },
         "rylais_crystal_scepter": {
             "name": "Cetro de Cristal de Rylai",
-            "option": "\nGélido: Causar dano de habilidade aplica <#d94c49ff>15% de lentidão<> nas unidades atingidas por <#e8a800ff>2 segundos<>."
+            "option": "\nGélido: Acertar uma Habilidade em um inimigo aplica <#d94c49ff>15% de lentidão<> por <#e8a800ff>2 segundos<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Cetro de Cristal de Rylai Radiante",
-            "option": "\nGélido: Causar dano de habilidade aplica <#d94c49ff>15% de lentidão<> nas unidades atingidas por <#e8a800ff>2 segundos<>."
+            "option": "\nGélido: Acertar uma Habilidade em um inimigo aplica <#d94c49ff>15% de lentidão<> por <#e8a800ff>2 segundos<>."
         },
         "stormrazor": {
             "name": "Navalha da Tempestade",
-            "option": "\nEnergizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\nRaio: Quando totalmente <#92dc7bff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
+            "option": "\nEnergizado: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\nRaio: Quando totalmente <#92dc7bff>Energizado<>, seu próximo ataque básico causa <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
         },
         "radiant_stormrazor": {
             "name": "Navalha da Tempestade Radiante",
-            "option": "\nEnergizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\nRaio: Quando totalmente <#92dc7bff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
+            "option": "\nEnergizado: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\nRaio: Quando totalmente <#92dc7bff>Energizado<>, seu próximo ataque básico causa <#a974ffff>100 de dano mágico bônus<> e concede <#ffffffff>35%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>1.5 segundos<>."
         },
         "voltaic_cyclosword": {
             "name": "Cicloespada Voltaica",
-            "option": "\nGanha <#ffdd8eff>12 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nEnergizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\nFirmamento: Quando totalmente <#92dc7bff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#d94c49ff>6% da Vida atual do alvo<> como <#ff9028ff>Dano Físico adicional<> e concede a você <#ffdd8eff>6 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade adicional<> por <#e8a800ff>4s<>. (Máximo de <#ff9028ff>200<> contra tropas e monstros.)"
+            "option": "\nGanha <#ffdd8eff>12 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nEnergizado: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\nFirmamento: Quando totalmente <#92dc7bff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#d94c49ff>6% da Vida atual do alvo<> como <#ff9028ff>Dano Físico adicional<> e concede a você <#ffdd8eff>6 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade adicional<> por <#e8a800ff>4s<>. (Máximo de <#ff9028ff>200<> contra tropas e monstros.)"
         },
         "radiant_voltaic_cyclosword": {
             "name": "Cicloespada Voltaica Radiante",
-            "option": "\nGanha <#ffdd8eff>12 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nEnergizado: Mover-se e causar <#ff9028ff>dano físico<> gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\nFirmamento: Quando totalmente <#92dc7bff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#d94c49ff>10% da Vida atual do alvo<> como <#ff9028ff>Dano Físico adicional<> e concede a você <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade adicional<> por <#e8a800ff>4s<>. (Máximo de <#ff9028ff>200<> contra tropas e monstros.)"
+            "option": "\nGanha <#ffdd8eff>12 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nEnergizado: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\nFirmamento: Quando totalmente <#92dc7bff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#d94c49ff>10% da Vida atual do alvo<> como <#ff9028ff>Dano Físico adicional<> e concede a você <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade adicional<> por <#e8a800ff>4s<>. (Máximo de <#ff9028ff>200<> contra tropas e monstros.)"
         },
         "diamond_tipped_spear": {
             "name": "Lança de Diamante",
@@ -2644,31 +2644,31 @@
         },
         "echoes_of_helia": {
             "name": "Ecos de Helia",
-            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Acertar uma Habilidade em um campeão inimigo consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando o aliado mais próximo<> na quantidade consumida."
+            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando-o<> na quantidade consumida."
         },
         "radiant_echoes_of_helia": {
             "name": "Ecos de Helia Radiante",
-            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Acertar uma Habilidade em um campeão inimigo consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando o aliado mais próximo<> na quantidade consumida."
+            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando-o<> na quantidade consumida."
         },
         "sundered_sky": {
             "name": "Céu Dilacerado",
-            "option": "\nGolpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>20% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>20 segundos<> por alvo)."
+            "option": "\nGolpe do Escudo de Luz: Seu próximo ataque básico contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>20% de dano bônus<> e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>20 segundos<> por alvo)."
         },
         "radiant_sundered_sky": {
             "name": "Céu Dilacerado Radiante",
-            "option": "\nGolpe do Escudo de Luz: Sua próxima instância de <#ff9028ff>dano físico<> contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>20% de dano bônus<>, e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>10%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>20 segundos<> por alvo)."
+            "option": "\nGolpe do Escudo de Luz: Seu próximo ataque básico contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>20% de dano bônus<> e <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>10%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>20 segundos<> por alvo)."
         },
         "sheen": {
             "name": "Fulgor",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
         },
         "trinity_force": {
             "name": "Força da Trindade",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
         },
         "radiant_trinity_force": {
             "name": "Força da Trindade Radiante",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
         },
         "frozen_heart": {
             "name": "Coração Congelado",
@@ -2684,19 +2684,19 @@
         },
         "dusk_and_dawn": {
             "name": "Crepúsculo e Alvorada",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <#60e84dff>curar você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> e <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <#60e84dff>curar você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> e <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>3.5 segundos<>)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Crepúsculo e Alvorada Radiante",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <#60e84dff>curar você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> e <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <#60e84dff>curar você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> e <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>3.5 segundos<>)."
         },
         "bloodsong": {
             "name": "Canção de Sangue",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>8%<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>8%<> por <#e8a800ff>4 segundos<>."
         },
         "radiant_bloodsong": {
             "name": "Canção de Sangue Radiante",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>8%<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>8%<> por <#e8a800ff>4 segundos<>."
         },
         "serrated_dirk": {
             "name": "Adaga Serrilhada",
@@ -2712,11 +2712,11 @@
         },
         "bastionbreaker": {
             "name": "Quebra-Bastião",
-            "option": "\nGanha <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo Ataque contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "\nGanha <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque básico contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "radiant_bastionbreaker": {
             "name": "Quebra-Bastião Radiante",
-            "option": "\nGanha <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo Ataque contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "\nGanha <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque básico contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "serpents_fang": {
             "name": "Presa da Serpente",
@@ -2744,11 +2744,11 @@
         },
         "dead_mans_plate": {
             "name": "Placa do Morto",
-            "option": "\nNaufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<>, conforme as cargas consumidas."
+            "option": "\nNaufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Ataques básicos consomem todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<>, conforme as cargas consumidas."
         },
         "radiant_dead_mans_plate": {
             "name": "Placa do Morto Radiante",
-            "option": "\nNaufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Causar <#ff9028ff>dano físico<> a um campeão inimigo consome todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<>, conforme as cargas consumidas."
+            "option": "\nNaufragador: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Ataques básicos consomem todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<>, conforme as cargas consumidas."
         },
         "winged_moonplate": {
             "name": "Placa Lunar Alada",
@@ -2807,7 +2807,7 @@
             "dot_amplify": "+{Value}% Усиление периодического урона",
             "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> {Value} Восстановление Здоровья",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> {Value}% Шанс Критического Удара",
-            "base_attack_damaged_reduce": "\n\nPlating: Снижает получаемый урон от базовых атак на <#e8a800ff>{Value}%<>.",
+            "base_attack_damaged_reduce": "\n",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> {Value}% Снижение урона от умений",
             "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> {Value}% Стойкость"
         },
@@ -2861,15 +2861,15 @@
         },
         "black_knights_heavy_plate": {
             "name": "Терновый Жилет",
-            "option": ""
+            "option": "Обшивка: Уменьшает получаемый от базовых атак урон на <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
             "name": "Шипованный Доспех",
-            "option": ""
+            "option": "Обшивка: Уменьшает получаемый от базовых атак урон на <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Лучезарный Шипованный Доспех",
-            "option": "Шипы: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>"
+            "option": "Обшивка: Уменьшает получаемый от базовых атак урон на <#e8a800ff>12%<>.\n\nШипы: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
         },
         "mystic_cloak": {
             "name": "Антимагическая Мантия",
@@ -2945,7 +2945,7 @@
         },
         "phage": {
             "name": "Поглотитель",
-            "option": "\nЯрость: Нанесение урона вражескому чемпиону даёт <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<>."
+            "option": "\nЯрость: Базовые атаки по вражеским чемпионам дают <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<>."
         },
         "haunting_guise": {
             "name": "Преследующая маска",
@@ -2953,11 +2953,11 @@
         },
         "infinity_edge": {
             "name": "Грань Бесконечности",
-            "option": ""
+            "option": "Даёт <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> критического урона<>."
         },
         "radiant_infinity_edge": {
             "name": "Грань Зенита",
-            "option": ""
+            "option": "Даёт <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> критического урона<>."
         },
         "black_cleaver": {
             "name": "Черная секира",
@@ -2985,11 +2985,11 @@
         },
         "deaths_dance": {
             "name": "Танец Смерти",
-            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>45<> + <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
+            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>45<> + <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
         },
         "radiant_deaths_dance": {
             "name": "Лучезарный Танец Смерти",
-            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>75<> + <#60e84dff>25%<> от вашего <#60e84dff>потерянного здоровья<>."
+            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <#60e84dff>восстанавливает<> <#60e84dff>75<> + <#60e84dff>25%<> от вашего <#60e84dff>потерянного здоровья<>."
         },
         "needlessly_large_rod": {
             "name": "Слишком Большой Жезл",
@@ -3021,11 +3021,11 @@
         },
         "frozen_mallet": {
             "name": "Замёрзший Молот",
-            "option": "\nОбледенение: При атаке накладывает <#d94c49ff>замедление на 15%<> на <#e8a800ff>2 секунды<>."
+            "option": "\nОбледенение: Базовые атаки накладывают <#d94c49ff>замедление на 15%<> на <#e8a800ff>2 секунды<>."
         },
         "radiant_frozen_mallet": {
             "name": "Лучезарный Замёрзший Молот",
-            "option": "\nОбледенение: При атаке наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>20<> + <#60e84dff>3%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> и накладывает <#d94c49ff>замедление на 15%<> на <#e8a800ff>2 секунды<>."
+            "option": "\nОбледенение: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>20<> + <#60e84dff>3%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> и накладывают <#d94c49ff>замедление на 15%<> на <#e8a800ff>2 секунды<>."
         },
         "riftmaker": {
             "name": "Творец Разломов",
@@ -3045,11 +3045,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Дикие стрелы Юнталь",
-            "option": "\nУбийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\nШквал: При атаке даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<> (перезарядка 15 секунд)."
+            "option": "\nУбийственная практика: Базовые атаки навсегда дают <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\nШквал: Каждые <#e8a800ff>15 секунд<> ваша следующая базовая атака даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<>."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Лучезарные Дикие стрелы Юнталь",
-            "option": "\nУбийственная практика: Нанесение <#ff9028ff>физического урона<> навсегда даёт <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\nШквал: При атаке даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<> (перезарядка 15 секунд)."
+            "option": "\nУбийственная практика: Базовые атаки навсегда дают <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\nШквал: Каждые <#e8a800ff>15 секунд<> ваша следующая базовая атака даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<>."
         },
         "unending_despair": {
             "name": "Бесконечное Отчаяние",
@@ -3061,11 +3061,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Клинок падшего короля",
-            "option": "\nКрай тумана: При атаке наносит <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>5% текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
+            "option": "\nКрай тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>5% текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Лучезарный Клинок падшего короля",
-            "option": "\nКрай тумана: При атаке наносит <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>5% текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
+            "option": "\nКрай тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>5% текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
         },
         "blackfire_torch": {
             "name": "Факел Тёмного Огня",
@@ -3109,11 +3109,11 @@
         },
         "nashors_tooth": {
             "name": "Зуб Нашора",
-            "option": "\nУкус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
+            "option": "\nУкус Икатии: Базовые атаки наносят <#a974ffff>дополнительный магический урон<> равный <#a974ffff>35<> + <#a974ffff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
         },
         "radiant_nashors_tooth": {
             "name": "Дар Барона",
-            "option": "\nУкус Икатии: При атаке наносит <#a974ffff>дополнительный магический урон<> равный <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
+            "option": "\nУкус Икатии: Базовые атаки наносят <#a974ffff>дополнительный магический урон<> равный <#a974ffff>50<> + <#a974ffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
         },
         "jaksho_the_protean": {
             "name": "Жак'Шо Многоликий",
@@ -3125,11 +3125,11 @@
         },
         "terminus": {
             "name": "Светотень",
-            "option": "\nСоприкосновение: При атаке получает либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
+            "option": "\nСоприкосновение: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
         },
         "radiant_terminus": {
             "name": "Лучезарная Светотень",
-            "option": "\nСоприкосновение: При атаке получает либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
+            "option": "\nСоприкосновение: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
         },
         "spirit_visage": {
             "name": "Облачение Духов",
@@ -3141,19 +3141,19 @@
         },
         "guinsoos_rageblade": {
             "name": "Клинок Ярости Гинсу",
-            "option": "\nГнев: Ваши базовые атаки наносят <#a974ffff>30 дополнительного магического урона<>.\n\nЯростный Удар: При атаке даёт <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+            "option": "\nГнев: Базовые атаки наносят <#a974ffff>30 дополнительного магического урона<>.\n\nЯростный Удар: Базовые атаки дают <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
         },
         "radiant_guinsoos_rageblade": {
             "name": "Расплата Гинсу",
-            "option": "\nГнев: Ваши базовые атаки наносят <#a974ffff>30 дополнительного магического урона<>.\n\nЯростный Удар: При атаке даёт <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+            "option": "\nГнев: Базовые атаки наносят <#a974ffff>30 дополнительного магического урона<>.\n\nЯростный Удар: Базовые атаки дают <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
         },
         "wits_end": {
             "name": "Смерть Разума",
-            "option": "\nБоевой запал: Ваши базовые атаки наносят <#a974ffff>45 дополнительного магического урона<>."
+            "option": "\nБоевой запал: Базовые атаки наносят <#a974ffff>45 дополнительного магического урона<>."
         },
         "radiant_wits_end": {
             "name": "Лучезарная Смерть Разума",
-            "option": "\nБоевой запал: Ваши базовые атаки наносят <#a974ffff>45 дополнительного магического урона<>."
+            "option": "\nБоевой запал: Базовые атаки наносят <#a974ffff>45 дополнительного магического урона<>."
         },
         "kraken_slayer": {
             "name": "Убийца кракенов",
@@ -3189,11 +3189,11 @@
         },
         "heartsteel": {
             "name": "Сердце Стали",
-            "option": "\nЖелезное сердце: Каждые <#e8a800ff>20 секунд<>, ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>12%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
+            "option": "\nЖелезное сердце: Каждые <#e8a800ff>20 секунд<>, ваша следующая базовая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>12%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
         },
         "radiant_heartsteel": {
             "name": "Лучезарное Сердце Стали",
-            "option": "\nЖелезное сердце: Каждые <#e8a800ff>20 секунд<>, ваша следующая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>12%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
+            "option": "\nЖелезное сердце: Каждые <#e8a800ff>20 секунд<>, ваша следующая базовая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>12%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
         },
         "spear_of_shojin": {
             "name": "Копье Седзина",
@@ -3241,27 +3241,27 @@
         },
         "rylais_crystal_scepter": {
             "name": "Кристальный Скипетр Райлая",
-            "option": "\nИней: Нанесение урона умением замедляет пораженные цели на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
+            "option": "\nИней: Попадание умением по противнику замедляет его на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Лучезарный Кристальный Скипетр Райлая",
-            "option": "\nИней: Нанесение урона умением замедляет пораженные цели на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
+            "option": "\nИней: Попадание умением по противнику замедляет его на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
         },
         "stormrazor": {
             "name": "Грозовая бритва",
-            "option": "\nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\nМолния: При полном <#92dc7bff>Заряде<>, ваш следующий <#ff9028ff>физический урон<> наносит <#a974ffff>100 дополнительного магического урона<> и даёт <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
+            "option": "\nЗаряд: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\nМолния: При полном <#92dc7bff>Заряде<>, ваша следующая базовая атака наносит <#a974ffff>100 дополнительного магического урона<> и даёт <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
         },
         "radiant_stormrazor": {
             "name": "Лучезарная Грозовая бритва",
-            "option": "\nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\nМолния: При полном <#92dc7bff>Заряде<>, ваш следующий <#ff9028ff>физический урон<> наносит <#a974ffff>100 дополнительного магического урона<> и даёт <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
+            "option": "\nЗаряд: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\nМолния: При полном <#92dc7bff>Заряде<>, ваша следующая базовая атака наносит <#a974ffff>100 дополнительного магического урона<> и даёт <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>1.5 секунды<>."
         },
         "voltaic_cyclosword": {
             "name": "Электрический цикломеч",
-            "option": "\nДаёт <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\nНебосклон: При полном <#92dc7bff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>6% текущего здоровья цели<> и даёт вам <#ffdd8eff>6 доп. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<> на <#e8a800ff>4 сек<>. Наносит максимум <#ff9028ff>200 физического урона<> по миньонам и монстрам."
+            "option": "\nДаёт <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nЗаряд: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\nНебосклон: При полном <#92dc7bff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>6% текущего здоровья цели<> и даёт вам <#ffdd8eff>6 доп. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<> на <#e8a800ff>4 сек<>. Наносит максимум <#ff9028ff>200 физического урона<> по миньонам и монстрам."
         },
         "radiant_voltaic_cyclosword": {
             "name": "Лучезарный Электрический цикломеч",
-            "option": "\nДаёт <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nЗаряд: Движение и нанесение <#ff9028ff>физического урона<> генерирует заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\nНебосклон: При полном <#92dc7bff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>10% текущего здоровья цели<> и даёт вам <#ffdd8eff>10 доп. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<> на <#e8a800ff>4 сек<>. Наносит максимум <#ff9028ff>200 физического урона<> по миньонам и монстрам."
+            "option": "\nДаёт <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nЗаряд: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\nНебосклон: При полном <#92dc7bff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>10% текущего здоровья цели<> и даёт вам <#ffdd8eff>10 доп. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<> на <#e8a800ff>4 сек<>. Наносит максимум <#ff9028ff>200 физического урона<> по миньонам и монстрам."
         },
         "diamond_tipped_spear": {
             "name": "Алмазное копье",
@@ -3333,31 +3333,31 @@
         },
         "echoes_of_helia": {
             "name": "Эхо Гелии",
-            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Попадание умением по вражескому чемпиону расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая здоровье ближайшему союзнику<> на израсходованное количество."
+            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
         },
         "radiant_echoes_of_helia": {
             "name": "Лучезарное Эхо Гелии",
-            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Попадание умением по вражескому чемпиону расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая здоровье ближайшему союзнику<> на израсходованное количество."
+            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
         },
         "sundered_sky": {
             "name": "Расколотые Небеса",
-            "option": "\nУдар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>20% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>20 секунд<> на каждую цель)."
+            "option": "\nУдар Светового Щита: Ваша следующая базовая атака по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>20% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>20 секунд<> на каждую цель)."
         },
         "radiant_sundered_sky": {
             "name": "Лучезарные Расколотые Небеса",
-            "option": "\nУдар Светового Щита: Ваш следующий <#ff9028ff>физический урон<> по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>20% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>10%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>20 секунд<> на каждую цель)."
+            "option": "\nУдар Светового Щита: Ваша следующая базовая атака по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>20% дополнительного урона<> и <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>10%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>20 секунд<> на каждую цель)."
         },
         "sheen": {
             "name": "Сияние",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
         },
         "trinity_force": {
             "name": "Тройственный Союз",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#ff9028ff>33<> + <#ff9028ff>33%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#ff9028ff>33<> + <#ff9028ff>33%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
         },
         "radiant_trinity_force": {
             "name": "Лучезарный Тройственный Союз",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#ff9028ff>33<> + <#ff9028ff>33%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#ff9028ff>33<> + <#ff9028ff>33%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
         },
         "frozen_heart": {
             "name": "Ледяное сердце",
@@ -3373,19 +3373,19 @@
         },
         "dusk_and_dawn": {
             "name": "Закат и Рассвет",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#a974ffff>85<> + <#a974ffff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <#60e84dff>восстановить вам<> <#a974ffff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> и <#60e84dff>2.5%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>85<> + <#a974ffff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <#60e84dff>восстановить вам<> <#a974ffff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> и <#60e84dff>2.5%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>3.5 секунд<>)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Лучезарный Закат и Рассвет",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#a974ffff>85<> + <#a974ffff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <#60e84dff>восстановить вам<> <#a974ffff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> и <#60e84dff>2.5%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>85<> + <#a974ffff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <#60e84dff>восстановить вам<> <#a974ffff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> и <#60e84dff>2.5%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>3.5 секунд<>)."
         },
         "bloodsong": {
             "name": "Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>8%<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>8%<> на <#e8a800ff>4 секунды<>."
         },
         "radiant_bloodsong": {
             "name": "Лучезарная Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>8%<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>8%<> на <#e8a800ff>4 секунды<>."
         },
         "serrated_dirk": {
             "name": "Зубчатый кинжал",
@@ -3401,11 +3401,11 @@
         },
         "bastionbreaker": {
             "name": "Разрушитель бастионов",
-            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую Атаку по башне, чтобы нанести <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "radiant_bastionbreaker": {
             "name": "Лучезарный Разрушитель бастионов",
-            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую Атаку по башне, чтобы нанести <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "serpents_fang": {
             "name": "Клык змея",
@@ -3433,11 +3433,11 @@
         },
         "dead_mans_plate": {
             "name": "Доспехи Мертвеца",
-            "option": "\nКрушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
+            "option": "\nКрушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Автоатаки тратят всю накопленную <#92dc7bff>Инерцию<> и наносят <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
         },
         "radiant_dead_mans_plate": {
             "name": "Лучезарные Доспехи Мертвеца",
-            "option": "\nКрушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Нанося <#ff9028ff>физический урон<> вражескому чемпиону, вы тратите всю накопленную <#92dc7bff>Инерцию<> и наносите <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
+            "option": "\nКрушитель: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Автоатаки тратят всю накопленную <#92dc7bff>Инерцию<> и наносят <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
         },
         "winged_moonplate": {
             "name": "Крылатая Лунная Пластина",
@@ -3496,7 +3496,7 @@
             "dot_amplify": "지속 피해 증폭 +{Value}%",
             "hp_regen": "<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 재생 {Value}",
             "crit_chance": "<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률 {Value}%",
-            "base_attack_damaged_reduce": "\n\n판금: 기본 공격으로 받는 피해가 <#e8a800ff>{Value}%<> 감소합니다.",
+            "base_attack_damaged_reduce": "\n",
             "skill_damaged_reduce": "<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> 스킬 피해 감소 {Value}%",
             "toughness": "<i#asset/base/ui/banpick/champion_stat_icon:tenacity_0> 강인함 {Value}%"
         },
@@ -3550,15 +3550,15 @@
         },
         "black_knights_heavy_plate": {
             "name": "덤불 조끼",
-            "option": ""
+            "option": "장갑: 기본 공격으로 받는 피해가 <#e8a800ff>5%<> 감소합니다."
         },
         "eternal_iron_plate": {
             "name": "가시 갑옷",
-            "option": ""
+            "option": "장갑: 기본 공격으로 받는 피해가 <#e8a800ff>8%<> 감소합니다."
         },
         "impregnable_fortress": {
             "name": "찬란한 가시 갑옷",
-            "option": "가시: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
+            "option": "장갑: 기본 공격으로 받는 피해가 <#e8a800ff>12%<> 감소합니다.\n\n가시: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
         },
         "mystic_cloak": {
             "name": "마법무효화의 망토",
@@ -3634,7 +3634,7 @@
         },
         "phage": {
             "name": "탐식의 망치",
-            "option": "\n분노: 적 챔피언에게 피해를 입히면 <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>5%<> 증가합니다."
+            "option": "\n분노: 적 챔피언에게 기본 공격을 가하면 <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>5%<> 증가합니다."
         },
         "haunting_guise": {
             "name": "기괴한 가면",
@@ -3642,11 +3642,11 @@
         },
         "infinity_edge": {
             "name": "무한의 대검",
-            "option": ""
+            "option": "<i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> <#d45656ff>치명타 피해량<>이 <#d45656ff>30%<> 증가합니다."
         },
         "radiant_infinity_edge": {
             "name": "찬란한 무한의 대검",
-            "option": ""
+            "option": "<i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> <#d45656ff>치명타 피해량<>이 <#d45656ff>30%<> 증가합니다."
         },
         "black_cleaver": {
             "name": "칠흑의 양날 도끼",
@@ -3674,11 +3674,11 @@
         },
         "deaths_dance": {
             "name": "죽음의 무도",
-            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <#60e84dff>45<> + <#60e84dff>잃은 체력의 15%<>만큼 체력을 회복합니다."
+            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <#60e84dff>45<> + <#60e84dff>잃은 체력의 15%<>만큼 체력을 회복합니다."
         },
         "radiant_deaths_dance": {
             "name": "찬란한 죽음의 무도",
-            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <#60e84dff>75<> + <#60e84dff>잃은 체력의 25%<>만큼 체력을 회복합니다."
+            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <#60e84dff>75<> + <#60e84dff>잃은 체력의 25%<>만큼 체력을 회복합니다."
         },
         "needlessly_large_rod": {
             "name": "쓸데없이 큰 지팡이",
@@ -3734,11 +3734,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "윤 탈 야생화살",
-            "option": "\n치명적인 연습: <#ff9028ff>물리 피해<>를 입힐 때마다 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n연타: 기본 공격 시 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>30%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>15초<>입니다."
+            "option": "\n치명적인 연습: 기본 공격 시 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n연타: <#e8a800ff>15초<>마다 다음 기본 공격이 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>를 <#ceff99ff>30%<> 증가시킵니다."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "찬란한 윤 탈 야생화살",
-            "option": "\n치명적인 연습: <#ff9028ff>물리 피해<>를 입힐 때마다 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n연타: 기본 공격 시 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>30%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>15초<>입니다."
+            "option": "\n치명적인 연습: 기본 공격 시 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n연타: <#e8a800ff>15초<>마다 다음 기본 공격이 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>를 <#ceff99ff>30%<> 증가시킵니다."
         },
         "unending_despair": {
             "name": "끝없는 절망",
@@ -3930,27 +3930,27 @@
         },
         "rylais_crystal_scepter": {
             "name": "라일라이의 수정홀",
-            "option": "\n서리: 스킬 피해를 입히면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
+            "option": "\n서리: 적에게 스킬을 적중시키면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "찬란한 라일라이의 수정홀",
-            "option": "\n서리: 스킬 피해를 입히면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
+            "option": "\n서리: 적에게 스킬을 적중시키면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
         },
         "stormrazor": {
             "name": "폭풍갈퀴",
-            "option": "\n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n벼락: 완전히 <#92dc7bff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 <#a974ffff>100의 추가 마법 피해<>를 입히고, <#e8a800ff>1.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>35%<> 증가합니다."
+            "option": "\n충전: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n벼락: 완전히 <#92dc7bff>충전<>되면 다음 기본 공격이 <#a974ffff>100의 추가 마법 피해<>를 입히고, <#e8a800ff>1.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>35%<> 증가합니다."
         },
         "radiant_stormrazor": {
             "name": "찬란한 폭풍갈퀴",
-            "option": "\n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n벼락: 완전히 <#92dc7bff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 <#a974ffff>100의 추가 마법 피해<>를 입히고, <#e8a800ff>1.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>35%<> 증가합니다."
+            "option": "\n충전: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n벼락: 완전히 <#92dc7bff>충전<>되면 다음 기본 공격이 <#a974ffff>100의 추가 마법 피해<>를 입히고, <#e8a800ff>1.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>35%<> 증가합니다."
         },
         "voltaic_cyclosword": {
             "name": "벼락폭풍검",
-            "option": "\n<#ffdd8eff>12의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n창공: 완전히 <#92dc7bff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 6%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>4초<> 동안 <#ffdd8eff>6의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>200의 물리 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>12의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n충전: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n창공: 완전히 <#92dc7bff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 6%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>4초<> 동안 <#ffdd8eff>6의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>200의 물리 피해<>를 입힙니다."
         },
         "radiant_voltaic_cyclosword": {
             "name": "찬란한 벼락폭풍검",
-            "option": "\n<#ffdd8eff>12의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n충전: 이동하거나 <#ff9028ff>물리 피해<>를 입히면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n창공: 완전히 <#92dc7bff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 10%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>4초<> 동안 <#ffdd8eff>10의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>200의 물리 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>12의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n충전: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n창공: 완전히 <#92dc7bff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 10%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>4초<> 동안 <#ffdd8eff>10의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>200의 물리 피해<>를 입힙니다."
         },
         "diamond_tipped_spear": {
             "name": "다이아몬드 창",
@@ -4022,19 +4022,19 @@
         },
         "echoes_of_helia": {
             "name": "헬리아의 메아리",
-            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 적 챔피언에게 스킬을 적중시키면 모든 <#92dc7bff>영혼 충전량<>을 소모해 가장 가까운 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
+            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
         },
         "radiant_echoes_of_helia": {
             "name": "찬란한 헬리아의 메아리",
-            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 적 챔피언에게 스킬을 적중시키면 모든 <#92dc7bff>영혼 충전량<>을 소모해 가장 가까운 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
+            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
         },
         "sundered_sky": {
             "name": "갈라진 하늘",
-            "option": "\n빛의 방패 일격: 적 챔피언에게 가하는 다음 <#ff9028ff>물리 피해<>가 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>20%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>6%<>만큼 체력을 <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
+            "option": "\n빛의 방패 일격: 적 챔피언에게 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>20%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>6%<>만큼 체력을 <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
         },
         "radiant_sundered_sky": {
             "name": "찬란한 갈라진 하늘",
-            "option": "\n빛의 방패 일격: 적 챔피언에게 가하는 다음 <#ff9028ff>물리 피해<>가 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>20%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>10%<>만큼 체력을 <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
+            "option": "\n빛의 방패 일격: 적 챔피언에게 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>20%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>10%<>만큼 체력을 <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
         },
         "sheen": {
             "name": "광휘의 검",
@@ -4122,11 +4122,11 @@
         },
         "dead_mans_plate": {
             "name": "망자의 갑옷",
-            "option": "\n난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
+            "option": "\n난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 기본 공격 시 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
         },
         "radiant_dead_mans_plate": {
             "name": "찬란한 망자의 갑옷",
-            "option": "\n난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
+            "option": "\n난파선: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 기본 공격 시 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
         },
         "winged_moonplate": {
             "name": "날개 달린 월갑",

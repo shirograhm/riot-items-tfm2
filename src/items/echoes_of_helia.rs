@@ -33,6 +33,7 @@ impl EchoesOfHelia {
             effect_damage_conversion: 30.0,
             effect_min_stacks: 130,
             effect_max_stacks: 350,
+            // Non-vital stats (internals)
             charge_stored: 0,
         }
     }
@@ -45,6 +46,9 @@ impl EchoesOfHelia {
             hp_regen: 6,
             magic_power: 65,
             skill_cooldown_mult: 20,
+            effect_damage_conversion: 30.0,
+            effect_min_stacks: 130,
+            effect_max_stacks: 350,
             ..Self::base()
         }
     }
@@ -141,6 +145,9 @@ impl StableItem for EchoesOfHelia {
         entity: usize,
         _attacker: usize,
         damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
@@ -155,6 +162,8 @@ impl StableItem for EchoesOfHelia {
         _target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -168,43 +177,15 @@ impl StableItem for EchoesOfHelia {
         _rng_seed: u64,
         caster: usize,
         target: usize,
+        is_ally: bool,
     ) {
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() {
-            return;
+
+        if is_ally && target != caster && target_ref.is_champion() && target_ref.is_alive() {
+            ctx.heal(caster, target, self.charge_stored);
         }
-
-        let caster_team = caster_ref.team();
-        // In `on_skill_hit`, `caster` is the caster's entity id directly. Resolve
-        // it with `get_entity` like every other skill-hit item; `get_player`
-        // returned None here, so the heal never ran.
-        let caster_champion_id = caster;
-
-        let mut nearest_id = usize::MAX;
-        let mut nearest_dist = u64::MAX;
-
-        for index in 0..ctx.champion_count() {
-            let id = ctx.champion_id_at(index);
-            let Some(entity_ref) = ctx.get_entity(id) else {
-                continue;
-            };
-
-            if ctx.distance_sq(caster_champion_id, id) < nearest_dist
-                && id != caster_champion_id
-                && entity_ref.team() == caster_team
-                && entity_ref.is_alive()
-            {
-                nearest_id = id;
-                nearest_dist = ctx.distance_sq(caster_champion_id, id)
-            }
-        }
-        ctx.heal(caster, nearest_id, self.charge_stored);
 
         self.charge_stored = 0;
     }

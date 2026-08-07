@@ -30,6 +30,7 @@ impl Stormrazor {
             effect_move_speed_mult: 35,
             effect_bonus_flat_damage: 100,
             effect_duration_seconds: 1.5,
+            // Non-vital stats (internals)
             energized_stacks: 0,
             energized_update_tick: 0,
         }
@@ -42,6 +43,10 @@ impl Stormrazor {
             attack: 100,
             attack_speed_mult: 40,
             crit_chance: 25,
+            effect_max_stacks: 100,
+            effect_move_speed_mult: 35,
+            effect_bonus_flat_damage: 100,
+            effect_duration_seconds: 1.5,
             ..Self::base()
         }
     }
@@ -127,17 +132,18 @@ impl StableItem for Stormrazor {
         caster: usize,
         target: usize,
         _damage: &mut usize,
-        damage_type: DamageTypeV1,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
+        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
+            return;
+        }
 
         if self.energized_stacks >= self.effect_max_stacks {
-            if target_ref.is_tower() {
-                return;
-            }
-
             ctx.deal_damage(
                 caster,
                 target,
@@ -156,10 +162,8 @@ impl StableItem for Stormrazor {
             self.energized_stacks = 0;
         }
 
-        // Gain 5 energized stacks on attacks, up to the max stacks
-        if damage_type == DamageTypeV1::Ad {
-            self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
-        }
+        // Gain 5 energized stacks on base attacks
+        self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
     }
 
     fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {

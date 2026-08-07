@@ -95,10 +95,6 @@ impl LocketOfTheIronSolari {
         self
     }
 
-    /// Grants Legion to every living ally in range, refreshing it on the aura
-    /// cycle (see [`AURA_REFRESH_TICKS`]). Minions take the same bonuses scaled
-    /// by `effect_minion_percent`, so the scan walks all entities rather than
-    /// just the champion table.
     fn apply_aura(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;

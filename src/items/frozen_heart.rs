@@ -8,8 +8,6 @@ use crate::{
 #[derive(Clone, Debug)]
 pub struct FrozenHeart {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     aura_buff: &'static str,
     price: usize,
     defence: i32,
@@ -35,6 +33,7 @@ impl FrozenHeart {
             skill_damaged_reduce: 10,
             effect_attack_speed_reduce: 30,
             effect_max_distance: 100,
+            // Non-vital stats (internals)
             refresh_cooldown: 0,
         }
     }
@@ -42,11 +41,13 @@ impl FrozenHeart {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_frozen_heart", &["frozen_heart"]),
-            aura_buff: "radiant_frozen_heart_aura",
+            aura_buff: "frozen_heart_aura",
             price: 1900,
             defence: 110,
             skill_cooldown_mult: 15,
             skill_damaged_reduce: 15,
+            effect_attack_speed_reduce: 30,
+            effect_max_distance: 100,
             ..Self::base()
         }
     }

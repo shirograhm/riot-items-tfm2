@@ -63,6 +63,22 @@ pub fn db_addr() -> usize {
     DB_ADDR.load(Ordering::Relaxed)
 }
 
+/// Forgets the `Database` base so the next `record_item_net` can settle a new
+/// one. Called at the session boundary (`tactics_on_server_start`).
+///
+/// [`record_item_net`] takes the first address that validates and then refuses
+/// to look again — which is right within a session and wrong across one. The
+/// `Database` does not survive a return to the main menu, so without this the
+/// mod spent every session after the first holding the address of a freed
+/// object. It did not crash, because `itemnet_forward` re-checks the weight
+/// pointer on every call, but that check only *skips* the neural 4th-item pick
+/// — so it silently fell back to the champion-hash vanilla choice for the whole
+/// second session, and every session after it.
+pub fn reset_session() {
+    DB_ADDR.store(0, Ordering::Relaxed);
+    DB_PROBED.store(false, Ordering::Relaxed);
+}
+
 /// The game's `Database`, once [`record_item_net`] has settled its address.
 ///
 /// # Safety
@@ -89,9 +105,31 @@ pub unsafe fn ui_root() -> Option<&'static mut Node> {
 // ---------------------------------------------------------------------------
 
 /// Was `init()` + `declare_mod!`. Runs the version gate and, in 4-slot mode, the
-/// byte patches. Returns whether the tactics half is active at all.
-pub fn on_mod_init() -> bool {
-    super::tactics_init()
+/// byte patches, and records whether this half came up at all — which is what
+/// [`picker_slots`] answers from.
+pub fn on_mod_init() {
+    ACTIVE.store(super::tactics_init(), Ordering::Relaxed);
+}
+
+/// Whether [`on_mod_init`] ran and its version gate passed.
+static ACTIVE: AtomicBool = AtomicBool::new(false);
+
+/// Item slots a build has, for the host half's editor and item-build hook: 4
+/// when this half is active and `4items.cfg` asks for four, otherwise the three
+/// the game ships with.
+///
+/// The active flag is what makes this safe to call at any time. `slot_count`
+/// reads `ITEM_MODE`, which starts at its optimistic default of 4 and is only
+/// corrected once `load_mode` runs — which happens inside [`on_mod_init`], and
+/// not at all when the version gate fails. Asking before then, or on a game
+/// version this half is disabled for, would otherwise offer a fourth slot no
+/// byte patch exists to fill.
+pub fn picker_slots() -> usize {
+    if ACTIVE.load(Ordering::Relaxed) {
+        super::slot_count()
+    } else {
+        3
+    }
 }
 
 /// Was `ModServerExtension::on_server_start`.
@@ -130,21 +168,6 @@ pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
 /// two `String` allocations per item, discarded, on every call after the first.
 pub fn item_catalog_recorded() -> bool {
     super::item_catalog_recorded()
-}
-
-/// Whether this half is applying `item-builds.json` per athlete, behind
-/// `is_my_athlete`.
-///
-/// `hook::detour` asks before applying those builds itself: exactly one of the
-/// two must, or a champion gets its pinned item twice over.
-pub fn injects_builds() -> bool {
-    super::injects_builds()
-}
-
-/// Item slots this half is configured for: 4, or 3 when `4items.cfg` says so.
-/// Only meaningful once [`on_mod_init`] has returned `true`.
-pub fn slot_count() -> usize {
-    super::slot_count()
 }
 
 /// Whether `probe_db` has completed against an accepted `Database` base.

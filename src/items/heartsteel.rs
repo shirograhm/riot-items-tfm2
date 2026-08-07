@@ -6,8 +6,6 @@ use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     stack_buff: &'static str,
     cooldown_buff: &'static str,
     price: usize,
@@ -35,6 +33,7 @@ impl Heartsteel {
             effect_caster_hp_percent_damage: 6.0,
             effect_bonus_hp_percent_of_damage: 12.0,
             effect_cooldown_seconds: 20.0,
+            // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
         }
     }
@@ -42,10 +41,14 @@ impl Heartsteel {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_heartsteel", &["heartsteel"]),
-            stack_buff: "radiant_heartsteel_stack",
-            cooldown_buff: "radiant_heartsteel_cooldown",
+            stack_buff: "heartsteel_stack",
+            cooldown_buff: "heartsteel_cooldown",
             price: 2100,
             hp: 800,
+            effect_bonus_flat_damage: 15,
+            effect_caster_hp_percent_damage: 6.0,
+            effect_bonus_hp_percent_of_damage: 12.0,
+            effect_cooldown_seconds: 20.0,
             ..Self::base()
         }
     }
@@ -118,9 +121,6 @@ impl StableItem for Heartsteel {
     }
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        if self.accumulated_bonus_hp <= 0 {
-            return;
-        }
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
@@ -143,6 +143,8 @@ impl StableItem for Heartsteel {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -150,7 +152,7 @@ impl StableItem for Heartsteel {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
+        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
 

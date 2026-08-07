@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, try_proc_on_hit, ItemMeta};
+use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct GuinsoosRageblade {
@@ -17,7 +17,6 @@ pub struct GuinsoosRageblade {
     effect_stack_attack_speed_mult: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
-    on_hit_cooldown_seconds: f64,
 }
 
 impl GuinsoosRageblade {
@@ -37,18 +36,21 @@ impl GuinsoosRageblade {
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
             effect_duration_seconds: 4.0,
-            on_hit_cooldown_seconds: 0.5,
         }
     }
 
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_guinsoos_rageblade", &["guinsoos_rageblade"]),
-            stack_buff: "radiant_guinsoos_rageblade_buff",
+            stack_buff: "guinsoos_rageblade_buff",
             price: 1900,
             attack: 50,
             magic_power: 50,
             attack_speed_mult: 50,
+            effect_bonus_magic_damage: 30,
+            effect_stack_attack_speed_mult: 8,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4.0,
             ..Self::base()
         }
     }
@@ -74,7 +76,6 @@ impl GuinsoosRageblade {
                 effect_stack_attack_speed_mult,
                 effect_max_stacks,
                 effect_duration_seconds,
-                on_hit_cooldown_seconds
             ]
         );
         self
@@ -132,6 +133,8 @@ impl StableItem for GuinsoosRageblade {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
@@ -139,27 +142,19 @@ impl StableItem for GuinsoosRageblade {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
+        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
 
         let stack_count = buff_stacks(&caster_ref, self.stack_buff);
 
-        if try_proc_on_hit(
-            ctx,
+        ctx.deal_damage(
+            caster,
             target,
-            "guinsoos_rageblade_on_hit_cooldown",
-            self.on_hit_cooldown_seconds,
-        ) {
-            ctx.deal_damage(
-                caster,
-                target,
-                0,
-                self.effect_bonus_magic_damage,
-                AttackTypeV1::BaseAttack,
-            );
-        }
-
+            0,
+            self.effect_bonus_magic_damage,
+            AttackTypeV1::Item,
+        );
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,

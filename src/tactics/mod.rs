@@ -51,8 +51,9 @@ mod ui_root;
 const MOD_ID: &str = "tfm2_item_tactics";
 
 /// Kill switch for everything in `tactics_post_update` that walks the live UI
-/// node tree — the strategy and comp-test handlers, the in-match 4th slot icon
-/// and its tooltip, and the compact slot spacing.
+/// node tree — now the in-match 4th slot icon, its tooltip, and the compact
+/// slot spacing. (The strategy and comp-test handlers it also used to cover are
+/// gone; see below.)
 ///
 /// The root itself comes from [`ui_root::resolve`], which *finds and validates*
 /// the address rather than assuming one. That distinction is the whole reason
@@ -67,10 +68,23 @@ const MOD_ID: &str = "tfm2_item_tactics";
 /// *templates* through offsets it owns) all run regardless.
 ///
 /// One caveat if you do turn it off: `seh_install` used to be reached only from
-/// `handle_tactics_screen`, so disabling this silently disabled every
+/// the strategy handler, so disabling this silently disabled every
 /// `safe_read_*` in the module. That call now lives in `tactics_init`, which is
 /// where it belongs, so the two are independent.
 const UI_TREE_WALK_ENABLED: bool = true;
+
+// This half no longer touches the game's native **Personal** tactics tab.
+// `crate::strategy_ui` replaces that tab outright with the mod's own `#builds`
+// editor and hides `#personal` on entry, so the dropdown overlay
+// (`item0m/1m/2m`/`item3`), the selection polling, the `SEL` store behind them
+// and the code that hid the native dropdowns underneath were all driving a panel
+// nobody could see. All of it is deleted, along with the comp-test screen's copy
+// of the same machinery. `item-builds.json` is the single authority on builds.
+//
+// What survived, because none of it is that tab: `handle_ingame_slot3` (the
+// in-match 4th-item icon and its tooltip), `ui_inject`'s
+// `player_info`/`wide_player_info` template edit (the four item slots in the
+// match panel), and everything on the simulation side.
 
 // Native dropdown set-options function (0.4.14 hotfix, same RVA as scrim).
 //   Prologue 55 56 57 48 83 ec 70, options Vec@+0x1528, selected idx@+0x1788.
@@ -80,11 +94,10 @@ const UI_TREE_WALK_ENABLED: bool = true;
 //   the easiest of the set: 9 functions in the whole image touch **all six** documented offsets
 //   (+0x1788 selected / +0x1528,0x1530,0x1538 option Vec / +0x1570,0x1578 callback), and of those exactly one
 //   has **103 direct callers — the same count recorded for 0.5.3**. It also sits in the same region
-//   (0.5.3 was 0x1bfc80) and its prologue is byte-identical, so `dd_addr_valid`'s expectation is unchanged.
-const FN_DD_SETOPT_RVA: usize = 0x1c1ad0; // 0.5.4 (0.5.3 was 0x1bfc80). History for 0.5.3 follows. (0.5.2 was 0x242f250). ghidra-re confirmed: 103 direct callers, an exact match with the old exe, plus 4 offset fingerprints (+0x1788 selected / +0x1528,0x1530,0x1538 option Vec / +0x1570,0x1578 callback / element 0xf8 / input stride 0x28) all unchanged. WARNING: the prologue DID change (dd_addr_valid expectation below was updated).
 
 // * Production master diagnostic gate (07-11): this session's diagnostics (nn_moditem, timing, liveroster, p6/channel scan, shadow-call catalog name lookup) plus
-//   the older diagnostic flush/hooks (c6new, countprobe, auto4, teamgate) are all OFF. The team gate (is_live/is_player) and SLOT012 injection live outside the gate = unaffected.
+//   the older diagnostic flush/hooks (c6new, countprobe, auto4, teamgate) are all OFF. The team gate (is_live/is_player) lives outside the gate = unaffected.
+//   (The SLOT012 injection that used to be named here is gone — slots 0/1/2 are set by `crate::item_build_hook` on the stable API.)
 const DIAG_ENABLED: bool = false;
 
 /// Trace files this half drops in its own folder: `4items_mode.txt` and
@@ -100,9 +113,6 @@ const DIAG_ENABLED: bool = false;
 /// `BUILD_EXT_DIAG`, which reports the same facts — `mode(slot_count)`, patch
 /// state, hook install state — into `build_ext_diag.txt`.
 const TRACE_FILES: bool = false;
-
-const MAX_ROWS: usize = 5; // 5 players (#row0..#row4)
-const ITEM_SLOTS: usize = 4; // max slot count (array stride). Actually active slots = slot_count() (3/4 toggle)
 
 // -- 3/4 item toggle (cfg `4items.cfg`, next to the dll) --
 //   Content '4' = 4 slots (item0/1/2/3) / '3' = 3 slots (vanilla item_tactics behaviour). Missing = default 4. Changing it needs a restart.
@@ -159,7 +169,9 @@ exists = {}
     ITEM_MODE.store(mode, Ordering::Relaxed);
     uinj::MODE4.store(mode == 4, Ordering::Relaxed);
     uinj::IN_MATCH_UI.store(mode == 4, Ordering::Relaxed); // enable the in-match 4th slot UI (together with the patches). mode=3 keeps vanilla 3 slots.
-    uinj::STRAT_INJECT.store(mode == 3 || mode == 4, Ordering::Relaxed); // strategy screen overlay (item0m/1m/2m) = common to modes 3 and 4
+                                                           // (A `STRAT_INJECT` gate was set here too, for the strategy-screen dropdown
+                                                           // overlay. That overlay is gone; `MODE4`/`IN_MATCH_UI` above are the
+                                                           // in-match panel and the byte patches, which are unaffected.)
     mode
 }
 fn slot_count() -> usize {
@@ -168,17 +180,6 @@ fn slot_count() -> usize {
     } else {
         3
     }
-}
-
-/// Whether this half is actually applying `item-builds.json` per athlete.
-///
-/// Every term is a *measured* state rather than an assumption: the version gate
-/// passed, the injection is compiled in, and the `buy_item` detour reported a
-/// successful install (`1` = OK). If any is false nothing here touches a build,
-/// and `hook::detour` has to keep applying builds itself — to both teams, since
-/// its arguments cannot tell them apart.
-pub(crate) fn injects_builds() -> bool {
-    version_ok() && SLOT012_INJECT_ENABLED && BUY_PROBE_INSTALLED.load(Ordering::Relaxed) == 1
 }
 
 // Vanilla 7 option labels (idx 0~6). 1:1 with the game's personal_tactics ItemBuildOverride.
@@ -243,16 +244,6 @@ struct MemBasicInfo {
     _pad1: u32,
 }
 
-// One dropdown option = 0x28 (40 bytes): color 16B + text String 24B (game String = {len, ptr, cap})
-#[repr(C)]
-struct DdOpt {
-    color: u64,   // +0  R@0=1.0, G@4=1.0
-    color2: u32,  // +8  B@8=1.0
-    alpha: f32,   // +12 A=1.0
-    s_len: usize, // +16
-    s_ptr: usize, // +24
-    s_cap: usize, // +32
-}
 
 // ===========================================================================
 //  Memory-safety helpers (ported from scrim)
@@ -520,65 +511,12 @@ fn mod_dir() -> Option<PathBuf> {
     crate::config::dll_dir()
 }
 
-// ===========================================================================
-//  Native dropdown control (ported from scrim)
-// ===========================================================================
-// * Re-enabled for 0.5.1 (07-15): DD_SETOPT (0x2450f40) - ghidra-re confirmed OLD 0x2416070 <-> NEW are line-for-line identical (HIGH confidence, the correct one of 3 siblings; offsets +0x1788/+0x1528/+0x1570, stride 0x28 / 0xf8 all match). Not a misidentification -> ON.
-const DD_ENABLED: bool = true;
-static DD_VALID: AtomicU64 = AtomicU64::new(0);
-unsafe fn prologue_hex(addr: usize, n: usize) -> String {
-    if !readable(addr, n) {
-        return "UNREADABLE".to_string();
-    }
-    (0..n)
-        .map(|i| format!("{:02x}", *((addr + i) as *const u8)))
-        .collect::<Vec<_>>()
-        .join(" ")
-}
-unsafe fn dd_addr_valid() -> bool {
-    if !DD_ENABLED {
-        return false;
-    } // 0.5.1 misidentification mitigation gate
-    match DD_VALID.load(Ordering::Relaxed) {
-        1 => return true,
-        2 => return false,
-        _ => {}
-    }
-    let fa = GetModuleHandleW(core::ptr::null()) as usize + FN_DD_SETOPT_RVA;
-    // 0.5.3: push rbp/r15/r14/rsi/rdi/rbx + sub rsp,0x88 (0.5.2 was 55 56 57 48 83 ec 70).
-    //   Byte-identical on 0.5.4 too (verified at 0x1c1ad0), so only the RVA ever moves.
-    let expect = [
-        0x55u8, 0x41, 0x57, 0x41, 0x56, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0x88,
-    ];
-    let mut ok = readable(fa, 12);
-    if ok {
-        for i in 0..12 {
-            if *((fa + i) as *const u8) != expect[i] {
-                ok = false;
-                break;
-            }
-        }
-    }
-    DD_VALID.store(if ok { 1 } else { 2 }, Ordering::Relaxed);
-    ok
-}
 unsafe fn runner_base(n: &Node) -> usize {
     let any: &dyn std::any::Any = n.runner.as_any();
     let parts: [usize; 2] = std::mem::transmute::<*const dyn std::any::Any, [usize; 2]>(
         any as *const dyn std::any::Any,
     );
     parts[0]
-}
-fn find_rb(n: &Node, t: &str) -> Option<usize> {
-    if n.id.as_str() == t {
-        return Some(unsafe { runner_base(n) });
-    }
-    for c in n.child.iter() {
-        if let Some(b) = find_rb(c, t) {
-            return Some(b);
-        }
-    }
-    None
 }
 fn find_node<'a>(n: &'a Node, t: &str) -> Option<&'a Node> {
     if n.id.as_str() == t {
@@ -591,33 +529,6 @@ fn find_node<'a>(n: &'a Node, t: &str) -> Option<&'a Node> {
     }
     None
 }
-fn type_name_of(root: &Node, id: &str) -> Option<String> {
-    fn rec(n: &Node, id: &str) -> Option<String> {
-        if n.id.as_str() == id {
-            return Some(n.runner.type_name().to_string());
-        }
-        for c in n.child.iter() {
-            if let Some(x) = rec(c, id) {
-                return Some(x);
-            }
-        }
-        None
-    }
-    rec(root, id)
-}
-fn find_mut<'a>(n: &'a mut Node, id: &str) -> Option<&'a mut Node> {
-    if n.id.as_str() == id {
-        return Some(n);
-    }
-    for c in n.child.iter_mut() {
-        if let Some(x) = find_mut(c, id) {
-            return Some(x);
-        }
-    }
-    None
-}
-// Replace an ImageRunner source (asset key) - game String {len@0, ptr@8, cap@16}. Static string, so nothing leaks.
-//   For an empty slot (cap=0) the game does not free it (safe). Layout verified via tfm2_fog set_img_source_ptr.
 unsafe fn set_img_src(n: &Node, s: &'static str) -> bool {
     if !n.runner.type_name().contains("ImageRunner") {
         return false;
@@ -660,21 +571,6 @@ unsafe fn read_img_source(n: &Node) -> Option<String> {
     Some(String::from_utf8_lossy(std::slice::from_raw_parts(ptr, len)).to_string())
 }
 // LabelRunner text (text@+352, len@+352, ptr@+360).
-const TEXT_OFFSET: usize = 352;
-unsafe fn read_label(n: &Node) -> Option<String> {
-    if !n.runner.type_name().contains("LabelRunner") {
-        return None;
-    }
-    let dp = runner_base(n);
-    let len = std::ptr::read_unaligned((dp + TEXT_OFFSET) as *const u64) as usize;
-    let ptr = std::ptr::read_unaligned((dp + TEXT_OFFSET + 8) as *const u64) as *const u8;
-    if ptr.is_null() || len == 0 || len > 512 || !readable(ptr as usize, len) {
-        return None;
-    }
-    Some(String::from_utf8_lossy(std::slice::from_raw_parts(ptr, len)).to_string())
-}
-// Dump a node subtree as id + (image source / label text) (diagnostic for locating the champion key).
-// * Diagnostic (design work for filling the slot3 icon): dump the in-match player_info slot icon nodes -
 //   filled slot0/1/2 vs the empty slot3 ImageRunner source + runner base bytes (to pin the layout).
 static SLOTDIAG_CNT: AtomicU64 = AtomicU64::new(0);
 // * Force 42px spacing on blue slots (0.5.0): the game resets blue slot0/1/2 to vanilla (50px spacing), so we
@@ -731,61 +627,6 @@ unsafe fn force_blue_slot_spacing(n: &Node) {
         force_blue_slot_spacing(c);
     }
 }
-// Set the options on the target node in the root subtree, and select sel.
-unsafe fn nat_dd_set_options(root: &Node, target: &str, items: &[&str], sel: u64) -> bool {
-    if !dd_addr_valid() {
-        return false;
-    }
-    let Some(rb) = find_rb(root, target) else {
-        return false;
-    };
-    let mut opts: Vec<DdOpt> = Vec::with_capacity(items.len());
-    for &it in items {
-        let s = it.to_string();
-        opts.push(DdOpt {
-            color: 0x3f800000_3f800000,
-            color2: 0x3f800000,
-            alpha: 1.0,
-            s_len: s.len(),
-            s_ptr: s.as_ptr() as usize,
-            s_cap: s.capacity(),
-        });
-        std::mem::forget(s);
-    }
-    let param3: [usize; 3] = [0, opts.as_ptr() as usize, opts.len()];
-    let addr = GetModuleHandleW(core::ptr::null()) as usize + FN_DD_SETOPT_RVA;
-    let f: unsafe extern "system" fn(usize, u64, *const [usize; 3]) = std::mem::transmute(addr);
-    f(rb, sel, &param3);
-    std::mem::forget(opts);
-    true
-}
-unsafe fn nat_dd_selected(root: &Node, target: &str) -> Option<usize> {
-    if !dd_addr_valid() {
-        return None;
-    }
-    let rb = find_rb(root, target)?;
-    let v = *((rb + 0x1788) as *const u64);
-    if v == u64::MAX {
-        None
-    } else {
-        Some(v as usize)
-    }
-}
-// Max height of the expanded list (px). If total option height exceeds it, the engine adds scrollbar/clipping automatically.
-//   The proper way is `max_items_height:NNN;` in the .ui, but we cannot edit the native strategy.ui -> runtime write instead.
-//   * 0.4.14 offsets (ghidra-re): present flag@runner+0x1150 (u32=1) + value@runner+0x1154 (f32 px).
-//   (The older 0x1d8 was dropped in 0.4.14 -> it had no effect.) Parser FUN_14218cb20 sets both, and the popup builder
-//   FUN_14218a780 reads +0x1154 on every call -> a runtime write is viable (takes effect on the next expand).
-const MAX_ITEMS_HEIGHT: f32 = 280.0; // measured in game: pause.ui product_dropdown = 280
-unsafe fn set_dd_max_height(root: &Node, target: &str, h: f32) {
-    if let Some(rb) = find_rb(root, target) {
-        if writable(rb + 0x1150, 8) {
-            *((rb + 0x1150) as *mut u32) = 1; // present flag (Option = Some)
-            *((rb + 0x1154) as *mut f32) = h; // max_items_height (px)
-        }
-    }
-}
-
 // ===========================================================================
 //  JSON parser (for mods.json / item.i18n, ported from scrim)
 // ===========================================================================
@@ -1532,761 +1373,6 @@ fn mod_final_opts() -> Vec<(u64, String)> {
         .cloned()
         .collect()
 }
-// Total picker options = auto (1) + 6 categories + dynamic finals
-fn item_opt_count() -> usize {
-    7 + mod_final_opts().len()
-}
-// Picker value v -> label. 0~6 = fixed, 7+ = mod finals (references the game i18n -> localized automatically).
-fn item_opt_label(v: u8) -> String {
-    let vi = v as usize;
-    if vi < 7 {
-        return VANILLA_OPTS[vi].to_string();
-    }
-    match mod_final_opts().get(vi - 7) {
-        Some((_, key)) => format!("#asset/base/text/item?{}.name", key),
-        None => VANILLA_OPTS[0].to_string(),
-    }
-}
-
-// ===========================================================================
-//  Mod state
-// ===========================================================================
-static SCREEN_OPEN: AtomicBool = AtomicBool::new(false);
-static OPTS_INJECTED: AtomicBool = AtomicBool::new(false);
-static LAST_SEL: Mutex<[i64; MAX_ROWS * ITEM_SLOTS]> = Mutex::new([-1i64; MAX_ROWS * ITEM_SLOTS]);
-// * (champion key, slot) -> selected option index. Champion-keyed, so it persists per champion even as the lineup changes each match.
-//   idx 0~6 = vanilla categories, 7+ = mod items (mod_final_opts[idx-7]). Persisted (item_tactics_sel.txt).
-static SEL_BY_CHAMP: Mutex<Option<HashMap<(String, u8), u8>>> = Mutex::new(None);
-static SEL_LOADED: AtomicBool = AtomicBool::new(false);
-// * Snapshot of the game's personal_tactics: champion -> [3 category bytes (0~6)]. Used to restore the vanilla display that our NOP broke.
-//   Refreshed in post_update (InGame, personal screen) from db().team(pid).champion_personal_tactics.
-static PT_SNAPSHOT: Mutex<Option<HashMap<String, [u8; 3]>>> = Mutex::new(None);
-
-// Extract the champion key from the #champion/#icon ImageRunner source
-//   "asset/base/aseprite_resources/champions/{champ}#sheet" → champ
-fn row_champ(row: &Node) -> Option<String> {
-    let icon = find_node(row, "icon")?;
-    let src = unsafe { read_img_source(icon) }?;
-    let a = src.find("champions/")? + "champions/".len();
-    let rest = &src[a..];
-    let end = rest.find('#').unwrap_or(rest.len());
-    let champ = rest[..end].trim();
-    if champ.is_empty() {
-        None
-    } else {
-        Some(champ.to_string())
-    }
-}
-/// Where the dropdown selections live.
-///
-/// JSON, and named like the mod's other state, because the plain-text original
-/// was the last thing in this half that could put a `.txt` in the mod folder.
-/// Same shape as `item-builds.json` — champion to a slot-indexed list, `null`
-/// for a slot with no selection — since they hold the same kind of thing.
-fn sel_path() -> Option<PathBuf> {
-    Some(mod_dir()?.join("item-tactics-selections.json"))
-}
-
-/// The pre-JSON file, read once if the JSON is absent so an existing install
-/// keeps its selections. Never written: after the first save the JSON is the
-/// live copy and this is left alone as its own backup.
-fn legacy_sel_path() -> Option<PathBuf> {
-    Some(mod_dir()?.join("item_tactics_sel.txt"))
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-//  * Comp-test side scope (added 2026-07-30)
-// ═══════════════════════════════════════════════════════════════════════════
-//  Problem: the SEL key was only (champion, slot), so putting **the same champion on both sides in comp test** merged the
-//    two selections into one (whichever was edited last overwrote the other, and a re-seed synced both rows to the same value). Worse,
-//    comp-test selections share the same store, so they **leaked into that champion's league/background matches too.**
-//  Fix: prefix the champ column of the SEL key with a **scope tag**. The HashMap type, the file format (`champ slot token`,
-//    3 space-separated columns) and the SEL_PENDING structure are **all left untouched** - only the key string is extended, so there is no fallout.
-//    - plain (league/spectate/background) = no prefix => **existing files stay valid** (legacy compatible)
-//    - comp test blue = `@b:` / red = `@r:`
-//    champ is an asset key (no spaces, no `@`), so the prefix cannot collide with a name, and an older dll reading this file
-//    simply ignores those lines as "no such champion" (downgrade-safe).
-const CT_PFX_B: &str = "@b:";
-const CT_PFX_R: &str = "@r:";
-#[derive(Copy, Clone, PartialEq, Eq, Debug)]
-enum Scope {
-    Plain,
-    CtBlue,
-    CtRed,
-}
-fn scope_pfx(s: Scope) -> &'static str {
-    match s {
-        Scope::Plain => "",
-        Scope::CtBlue => CT_PFX_B,
-        Scope::CtRed => CT_PFX_R,
-    }
-}
-fn scoped_key(s: Scope, champ: &str) -> String {
-    match s {
-        Scope::Plain => champ.to_string(),
-        _ => format!("{}{}", scope_pfx(s), champ),
-    }
-}
-fn is_scoped(k: &str) -> bool {
-    k.starts_with(CT_PFX_B) || k.starts_with(CT_PFX_R)
-}
-// The bare champion name with the scope prefix stripped (designation checks and side votes must be scope-independent).
-fn strip_scope(k: &str) -> &str {
-    if let Some(r) = k.strip_prefix(CT_PFX_B) {
-        return r;
-    }
-    if let Some(r) = k.strip_prefix(CT_PFX_R) {
-        return r;
-    }
-    k
-}
-// * Explicit Auto sentinel: used only on scoped keys. When a comp-test slot is set back to Auto,
-//   simply deleting the entry would **resurrect the unprefixed (plain) selection as a fallback**, which to the user looks like "nothing changed".
-//   => record "this side, this slot has no selection" explicitly to block the fallback. File token = `auto`.
-const SEL_AUTO: u8 = 255;
-const SEL_AUTO_TOKEN: &str = "auto";
-// * Persistence format = item "key" based (switched 2026-07-22).
-//   The old format stored the dropdown option index (u8) verbatim -> whenever the list composition changed (mod on/off,
-//   introduction of the active filter, ...) every stored selection shifted to a different item. In memory it is still an index,
-//   but the file stores `1`~`6` (vanilla categories) or the mod item key string.
-//   Legacy (numbers >= 7) = an old index -> resolve it to a key against the **unfiltered list** (the same composition
-//   that existed when the selection was made) and then remap to the current index.
-// WARNING: the item registry is only filled after dump_mod_items at server start, but SEL loading is lazy and
-//   can happen first -> unresolvable entries are not discarded but kept verbatim in SEL_PENDING and absorbed once the
-//   registry is ready. On save, pending entries are written back verbatim too = **nothing is ever lost**.
-static SEL_PENDING: Mutex<Vec<(String, u8, String)>> = Mutex::new(Vec::new());
-static SEL_PENDING_ANY: AtomicBool = AtomicBool::new(false);
-fn registry_ready() -> bool {
-    !MOD_REGISTRY
-        .lock()
-        .unwrap_or_else(|e| e.into_inner())
-        .is_empty()
-}
-// key -> option index (7+) within the currently exposed list.
-fn key_to_opt_index(key: &str) -> Option<u8> {
-    mod_final_opts()
-        .iter()
-        .position(|(_, k)| k == key)
-        .map(|i| (i + 7) as u8)
-}
-// * Promote a legacy numeric index (>=7) to a key when possible. If it cannot be promoted, keep it verbatim.
-//   Leaving the number in pending keeps it dependent on "the list composition at that time", so once it is resolved
-//   after the mod set has changed it points at the wrong item -> pin it to a key the moment it becomes resolvable.
-fn normalize_token(tok: &str) -> String {
-    if let Ok(n) = tok.parse::<u8>() {
-        if n >= 7 && registry_ready() {
-            if let Some((_, k)) = mod_final_opts_all().get(n as usize - 7) {
-                return k.clone();
-            }
-        }
-    }
-    tok.to_string()
-}
-// File token -> option index.
-fn token_to_opt_index(tok: &str) -> Option<u8> {
-    if tok == SEL_AUTO_TOKEN {
-        return Some(SEL_AUTO);
-    } // * explicit Auto (scoped keys only) - no registry needed
-    if let Ok(n) = tok.parse::<u8>() {
-        if n == 0 {
-            return None;
-        }
-        if n < 7 {
-            return Some(n);
-        } // vanilla categories 1~6
-        if !registry_ready() {
-            return None;
-        } // legacy index but not resolvable yet
-        let key = mod_final_opts_all()
-            .get(n as usize - 7)
-            .map(|(_, k)| k.clone())?;
-        return key_to_opt_index(&key);
-    }
-    if !registry_ready() {
-        return None;
-    }
-    key_to_opt_index(tok)
-}
-// Option index -> file token.
-fn opt_index_to_token(idx: u8) -> Option<String> {
-    if idx == 0 {
-        return None;
-    }
-    if idx == SEL_AUTO {
-        return Some(SEL_AUTO_TOKEN.to_string());
-    } // * explicit Auto must always be preserved
-    if idx < 7 {
-        return Some(idx.to_string());
-    }
-    mod_final_opts()
-        .get(idx as usize - 7)
-        .map(|(_, k)| k.clone())
-}
-/// `(champion, slot, token)` rows from the JSON file, or from the legacy text
-/// file when the JSON does not exist yet.
-///
-/// Both formats carry the same three things, so the caller's normalization and
-/// pending handling do not care which one answered.
-fn read_sel_rows() -> Vec<(String, u8, String)> {
-    if let Some(text) = sel_path().and_then(|p| fs::read_to_string(p).ok()) {
-        if let Ok(map) = serde_json::from_str::<serde_json::Map<String, serde_json::Value>>(&text) {
-            let mut rows = Vec::new();
-            for (champ, value) in map {
-                let Some(slots) = value.as_array() else {
-                    continue;
-                };
-                for (slot, token) in slots.iter().enumerate() {
-                    if slot >= ITEM_SLOTS {
-                        break;
-                    }
-                    if let Some(token) = token.as_str() {
-                        rows.push((champ.clone(), slot as u8, token.to_string()));
-                    }
-                }
-            }
-            return rows;
-        }
-    }
-    // Pre-JSON format: one `champion slot token` per line.
-    let Some(text) = legacy_sel_path().and_then(|p| fs::read_to_string(p).ok()) else {
-        return Vec::new();
-    };
-    text.lines()
-        .filter_map(|line| {
-            let parts: Vec<&str> = line.split_whitespace().collect();
-            if parts.len() != 3 {
-                return None;
-            }
-            let slot = parts[1].parse::<u8>().ok()?;
-            Some((parts[0].to_string(), slot, parts[2].to_string()))
-        })
-        .collect()
-}
-
-fn load_sel() -> HashMap<(String, u8), u8> {
-    let mut m = HashMap::new();
-    let mut pend = Vec::new();
-    for (champ, slot, tok) in read_sel_rows() {
-        let tok = normalize_token(&tok); // pin to a key if resolvable, then store
-        match token_to_opt_index(&tok) {
-            // idx 0 ("leave to the player") is not an override -> fall back to delegate. Not saved/loaded (removes spurious 0s).
-            Some(idx) if idx >= 1 => {
-                m.insert((champ, slot), idx);
-            }
-            Some(_) => {}
-            None => pend.push((champ, slot, tok)),
-        }
-    }
-    SEL_PENDING_ANY.store(!pend.is_empty(), Ordering::Relaxed);
-    *SEL_PENDING.lock().unwrap_or_else(|e| e.into_inner()) = pend;
-    m
-}
-// Absorb pending entries once the registry is ready. Only called inside with_sel (SEL lock held).
-//   * Hot-path consideration: with_sel is called often, so when pending is empty this reads one atomic and returns
-//   immediately (it does not even take the MOD_REGISTRY lock).
-fn drain_pending(m: &mut HashMap<(String, u8), u8>) {
-    if !SEL_PENDING_ANY.load(Ordering::Relaxed) {
-        return;
-    }
-    if !registry_ready() {
-        return;
-    }
-    let mut pend = SEL_PENDING.lock().unwrap_or_else(|e| e.into_inner());
-    if pend.is_empty() {
-        return;
-    }
-    for e in pend.iter_mut() {
-        e.2 = normalize_token(&e.2);
-    } // registry is ready -> pin numbers to keys
-    pend.retain(|(champ, slot, tok)| match token_to_opt_index(tok) {
-        Some(idx) if idx >= 1 => {
-            m.insert((champ.clone(), *slot), idx);
-            false
-        }
-        Some(_) => false,
-        None => true, // still unresolvable (e.g. that mod is disabled) -> keep verbatim
-    });
-    SEL_PENDING_ANY.store(!pend.is_empty(), Ordering::Relaxed);
-}
-fn save_sel(m: &HashMap<(String, u8), u8>) {
-    let mut rows: Vec<(String, u8, String)> = m
-        .iter()
-        .filter_map(|((champ, slot), &idx)| {
-            opt_index_to_token(idx).map(|t| (champ.clone(), *slot, t))
-        })
-        .collect();
-    // Entries that are still unresolved are kept verbatim -> no loss.
-    rows.extend(
-        SEL_PENDING
-            .lock()
-            .unwrap_or_else(|e| e.into_inner())
-            .iter()
-            .cloned(),
-    );
-    rows.sort();
-
-    // Champion -> one entry per slot, `null` where nothing is selected.
-    // `BTreeMap` so the file keeps a stable order between writes.
-    let mut by_champ: std::collections::BTreeMap<String, Vec<serde_json::Value>> =
-        std::collections::BTreeMap::new();
-    for (champ, slot, tok) in rows {
-        if slot as usize >= ITEM_SLOTS {
-            continue;
-        }
-        let entry = by_champ
-            .entry(champ)
-            .or_insert_with(|| vec![serde_json::Value::Null; ITEM_SLOTS]);
-        entry[slot as usize] = serde_json::Value::String(tok);
-    }
-    let map: serde_json::Map<String, serde_json::Value> = by_champ
-        .into_iter()
-        .map(|(champ, slots)| (champ, serde_json::Value::Array(slots)))
-        .collect();
-
-    if let (Some(p), Ok(text)) = (sel_path(), serde_json::to_string_pretty(&map)) {
-        let _ = fs::write(p, text + "\n");
-    }
-}
-
-// -- One-shot application of dashboard-recommended builds (added 2026-07-22) --------------------
-//  Purpose: push the recommended builds that the TFM2.gg dashboard derived from statistics into the personal-tactics dropdowns as their **initial selection**.
-//  Why a separate file: mixed into the user's selections (item_tactics_sel.txt) it becomes impossible to tell which values were hand-picked.
-//    Recommendations live in item_tactics_recommend.txt, and "already applied" is decided by a content hash (.applied).
-//  Behaviour: when the strategy screen opens, if the recommendation file's hash differs from the last applied one, overwrite SEL **once** at that moment.
-//    - Same hash = do nothing => any value the user changed by hand in the meantime survives.
-//    - Closing the screen resets OPTS_INJECTED, so refreshing the dashboard while the game is running takes effect
-//      as soon as the strategy screen is reopened (no game restart needed).
-//  WARNING: vanilla categories are already handled by delegate via champion_personal_tactics (the PT_SNAPSHOT path).
-//    This file exists for **mod item** selections, which PT cannot hold (though it does accept vanilla tokens 1~6).
-//  Revert: set RECO_ENABLED=false or delete the recommendation file and behaviour returns to normal immediately.
-// WARNING 2026-07-22 OFF: the recommendation formula is unfinished (it aggregates per full build, so a build with a single-match sample ranks #1) ->
-//   it actually overwrote the user's manual selections (sel.txt 74 lines -> 250 lines). Re-enable after switching the formula to per-item shrinkage+lift.
-const RECO_ENABLED: bool = false;
-fn reco_path() -> Option<PathBuf> {
-    Some(mod_dir()?.join("item_tactics_recommend.txt"))
-}
-fn reco_stamp_path() -> Option<PathBuf> {
-    Some(mod_dir()?.join("item_tactics_recommend.applied"))
-}
-
-fn fnv1a64(bytes: &[u8]) -> u64 {
-    let mut h: u64 = 0xcbf2_9ce4_8422_2325;
-    for b in bytes {
-        h ^= *b as u64;
-        h = h.wrapping_mul(0x0000_0100_0000_01b3);
-    }
-    h
-}
-
-// Called when entering the strategy screen. If there is a new recommendation, apply it to SEL and return true.
-fn apply_recommendations() -> bool {
-    if !RECO_ENABLED {
-        return false;
-    }
-    let Some(p) = reco_path() else {
-        return false;
-    };
-    // Missing file = silently skip - that is the normal state for users who do not use the dashboard.
-    let Ok(txt) = fs::read_to_string(&p) else {
-        return false;
-    };
-    let hash = fnv1a64(txt.as_bytes()).to_string();
-    let stamp = reco_stamp_path();
-    let prev = stamp.as_ref().and_then(|s| fs::read_to_string(s).ok());
-    if prev.as_deref().map(str::trim) == Some(hash.as_str()) {
-        return false; // already-applied recommendation -> preserve the user's later manual changes.
-    }
-
-    // Parsing uses the same format as the sel file (`champ slot token`), so the existing parser is reused.
-    let mut rows: Vec<(String, u8, String)> = Vec::new();
-    for line in txt.lines() {
-        let parts: Vec<&str> = line.split_whitespace().collect();
-        if parts.len() != 3 {
-            continue;
-        }
-        let Ok(slot) = parts[1].parse::<u8>() else {
-            continue;
-        };
-        if slot as usize >= ITEM_SLOTS {
-            continue;
-        }
-        rows.push((parts[0].to_string(), slot, normalize_token(parts[2])));
-    }
-    if rows.is_empty() {
-        // An empty recommendation must also be marked "applied", otherwise we retry every frame.
-        if let Some(s) = stamp {
-            let _ = fs::write(s, &hash);
-        }
-        return false;
-    }
-
-    let mut applied = 0usize;
-    with_sel(|m| {
-        for (champ, slot, tok) in rows.iter() {
-            match token_to_opt_index(tok) {
-                // 0 (auto) is not an override, so drop it from SEL and let the delegate (PT) value show.
-                Some(idx) if idx >= 1 => {
-                    m.insert((champ.clone(), *slot), idx);
-                    applied += 1;
-                }
-                Some(_) => {
-                    m.remove(&(champ.clone(), *slot));
-                }
-                // Not resolvable yet (registry not ready / that mod disabled) -> keep verbatim, absorb later.
-                None => {
-                    SEL_PENDING.lock().unwrap_or_else(|e| e.into_inner()).push((
-                        champ.clone(),
-                        *slot,
-                        tok.clone(),
-                    ));
-                    SEL_PENDING_ANY.store(true, Ordering::Relaxed);
-                }
-            }
-        }
-        save_sel(m);
-    });
-    if let Some(s) = stamp {
-        let _ = fs::write(s, &hash);
-    }
-    update_override_snapshot();
-
-    true
-}
-
-/// Entry count of `SEL_BY_CHAMP`, readable without taking its lock.
-///
-/// `usize::MAX` until the map has been loaded, so "not loaded yet" and "loaded
-/// and empty" stay distinguishable — only the second is safe to short-circuit
-/// on. Kept in step inside [`with_sel`], under the same lock as the map.
-static SEL_LEN: AtomicUsize = AtomicUsize::new(usize::MAX);
-
-// SEL_BY_CHAMP access (loads the file once). Manipulated inside the lock via a closure.
-fn with_sel<R>(f: impl FnOnce(&mut HashMap<(String, u8), u8>) -> R) -> R {
-    let mut g = SEL_BY_CHAMP.lock().unwrap_or_else(|e| e.into_inner());
-    if g.is_none() {
-        *g = Some(load_sel());
-        SEL_LOADED.store(true, Ordering::Relaxed);
-    }
-    let m = g.as_mut().unwrap();
-    drain_pending(m); // absorbed here even if the registry becomes ready late
-    let r = f(m);
-    // After `f`, so a closure that inserted or cleared is accounted for.
-    SEL_LEN.store(m.len(), Ordering::Relaxed);
-    r
-}
-// * The single entry point for SEL lookups (scope-aware). A scoped key wins; otherwise fall back to the plain key.
-//   - `SEL_AUTO` = the user explicitly set that side/slot to Auto => resolve to 0 (no selection) and do NOT fall back.
-//   - Scope::Plain performs exactly the old lookup (plain key only) = league/spectate/background behaviour unchanged.
-fn sel_get(scope: Scope, champ: &str, si: u8) -> u8 {
-    // Hot: the buy detour reaches this up to six times per buy decision for a
-    // player athlete (two lookups per slot, three slots), and every one of them
-    // took the global `SEL_BY_CHAMP` lock and allocated a `String` purely to
-    // build a tuple key to probe with. An empty map — which is the normal state
-    // now that the build editor owns item designation and the dropdowns only
-    // carry stat categories — can answer without doing either.
-    //
-    // `SEL_PENDING_ANY` is part of the condition, not decoration: `with_sel` is
-    // also where `drain_pending` absorbs selections that could not be resolved
-    // until the mod-item registry was ready. Skipping the lock while entries are
-    // still queued would skip the drain that lands them, so the short circuit is
-    // only taken when there is genuinely nothing to do.
-    //
-    // Otherwise safe because the map only gains entries through a dropdown, i.e.
-    // from the strategy screen between matches. The worst case is one stale
-    // lookup if that raced a buy, and the next lookup sees the new value.
-    if SEL_LEN.load(Ordering::Relaxed) == 0 && !SEL_PENDING_ANY.load(Ordering::Relaxed) {
-        return 0;
-    }
-    with_sel(|m| {
-        if scope != Scope::Plain {
-            if let Some(&v) = m.get(&(scoped_key(scope, champ), si)) {
-                return if v == SEL_AUTO { 0 } else { v };
-            }
-        }
-        m.get(&(champ.to_string(), si)).copied().unwrap_or(0)
-    })
-}
-// === Comp-test side detection (athlete -> blue/red inside the buy detour) ===
-//  The comp-test UI (handle_comptest_screen) publishes the row composition, and buy decides the side from that snapshot.
-//  (1) If a champion appears on only one side, that side is certain + we learn the athlete+0x820 (side) value observed then.
-//  (2) If the same champion is on both sides, tell them apart using the side value learned in (1).
-//  (3) Before learning, or when undecidable, fall back to Scope::Plain (= previous behaviour) => never a regression.
-//  WARNING: which of the side values (0/1) is blue vs red is **not hardcoded** (not measured). Learning only needs one
-//    non-overlapping champion, so we only fall to (3) in the extreme case where all 10 picked the same champion.
-//  NOTE: the snapshot uses the same leak pattern as OVERRIDE_SNAPSHOT (a parallel detour may be reading it, so never free).
-type CtRoster = (
-    std::collections::HashSet<String>,
-    std::collections::HashSet<String>,
-); // (blue, red)
-static CT_ROSTER: AtomicPtr<CtRoster> = AtomicPtr::new(core::ptr::null_mut());
-static CT_SIDE_B: AtomicU64 = AtomicU64::new(u64::MAX); // athlete+0x820 value learned as blue
-static CT_SIDE_R: AtomicU64 = AtomicU64::new(u64::MAX); // value learned as red
-fn publish_ct_roster(
-    blue: std::collections::HashSet<String>,
-    red: std::collections::HashSet<String>,
-) {
-    let cur = CT_ROSTER.load(Ordering::Acquire);
-    if !cur.is_null() {
-        let c = unsafe { &*cur };
-        if c.0 == blue && c.1 == red {
-            return;
-        } // unchanged -> do not republish (bounded leak)
-    }
-    CT_ROSTER.store(Box::into_raw(Box::new((blue, red))), Ordering::Release);
-}
-fn ct_scope_for(champ: &str, side: u64) -> Scope {
-    let p = CT_ROSTER.load(Ordering::Acquire);
-    if p.is_null() {
-        return Scope::Plain;
-    }
-    let (blue, red) = unsafe { &*p };
-    let (in_b, in_r) = (blue.contains(champ), red.contains(champ));
-    match (in_b, in_r) {
-        (true, false) => {
-            if side != u64::MAX {
-                CT_SIDE_B.store(side, Ordering::Relaxed);
-            }
-            Scope::CtBlue
-        }
-        (false, true) => {
-            if side != u64::MAX {
-                CT_SIDE_R.store(side, Ordering::Relaxed);
-            }
-            Scope::CtRed
-        }
-        (true, true) => {
-            // same champion on both sides -> distinguish only by the learned side value
-            if side != u64::MAX {
-                if side == CT_SIDE_B.load(Ordering::Relaxed) {
-                    return Scope::CtBlue;
-                }
-                if side == CT_SIDE_R.load(Ordering::Relaxed) {
-                    return Scope::CtRed;
-                }
-            }
-            Scope::Plain
-        }
-        (false, false) => Scope::Plain, // champion not in the comp-test composition (= not seen on screen) -> previous behaviour
-    }
-}
-// * Performance (0.5.1): "is this champion designated" = SEL snapshot (zero-alloc contains). Removes a with_sel lock + 4x champ.to_string() allocations per buy.
-//   SEL only changes when a dropdown changes -> invalidated via SEL_DIRTY, and the snapshot is rebuilt only then. Reads = short Arc clone, then contains outside the lock.
-// * The scope prefix is **stripped** before insertion (2026-07-30): a champion that only has comp-test-scoped selections must still be
-//   seen as designated, otherwise buy never enters the lookup path. Storing it with the prefix would ignore that champion forever.
-static DESIGNATED_SNAP: Mutex<Option<std::sync::Arc<std::collections::HashSet<String>>>> =
-    Mutex::new(None);
-static SEL_DIRTY: AtomicBool = AtomicBool::new(true);
-fn designated_set() -> std::collections::HashSet<String> {
-    with_sel(|m| m.keys().map(|(c, _)| strip_scope(c).to_string()).collect())
-}
-fn is_champ_designated(champ: &str) -> bool {
-    // A champion the build editor pins is designated even with no `SEL` entry —
-    // this is the early exit the spawn path takes before it ever looks at a
-    // slot, so missing it here would make `item-builds.json` invisible to the
-    // injection no matter what the slot lookups say.
-    if crate::build_config::has_pins(champ) {
-        return true;
-    }
-    if SEL_DIRTY.swap(false, Ordering::Relaxed) {
-        *DESIGNATED_SNAP.lock().unwrap_or_else(|e| e.into_inner()) =
-            Some(std::sync::Arc::new(designated_set()));
-    }
-    let snap = {
-        DESIGNATED_SNAP
-            .lock()
-            .unwrap_or_else(|e| e.into_inner())
-            .clone()
-    };
-    match snap {
-        Some(s) => s.contains(champ),
-        None => {
-            // first-time race (snapshot not built yet) -> force a build
-            let arc = std::sync::Arc::new(designated_set());
-            let hit = arc.contains(champ);
-            *DESIGNATED_SNAP.lock().unwrap_or_else(|e| e.into_inner()) = Some(arc);
-            hit
-        }
-    }
-}
-static SETTER_NOPED: AtomicU64 = AtomicU64::new(0); // 0=not attempted, 1=success, 2=failure (RVA mismatch)
-
-// * NOP-patch the `call FUN_14218a230` (RVA 0xf1a74b, 5B `e8 rel32`) inside StrategyUIRunner update (FUN_140f17b40) that
-//   force-syncs (reverts) personal_tactics -> dropdown +0x1788 every frame.
-//   -> revert gone -> the user's mod item (7+) click persists in +0x1788 -> polling can capture it.
-//   (ghidra-re 2026-06-30: the dropdown click handler itself does not reject 7+; the revert was the real culprit.)
-//   Side effect: the dropdown's automatic display sync is lost -> the mod keeps it in sync directly via sel when injecting options.
-// * 0.5.0_2 call site confirmed (ghidra-re 2026-07-08): inside StrategyUIRunner update (starts at 0x140da1da0),
-//   the `call FUN_140d98720` (RVA 0xda42ee, e8 2d 44 ff ff) in the 3-iteration item0/1/2 loop. FUN_140d98720 rebuilds
-//   the option list and calls `FUN_142418cf0(runner,index,opts)` -> whose first line `*(runner+0x1788)=index` is the actual revert.
-//   WARNING: migrator candidates 0xf2a899/0xf2aae8 are both wrong (that is the draft UI runner = FUN_140f29840; NOPing it only breaks the draft).
-const SETTER_NOP_RVA: usize = 0xda42ee; // WARNING: STALE for 0.5.2/0.5.3 (not migrated; harmless because SETTER_NOP_ENABLED=false) // WARNING: not migrated for 0.5.0_3 (STALE, mask-sig NONE -> follow-up via ghidra-re). Harmless because SETTER_NOP_ENABLED=false. This is the 0.5.0_2 model->+0x1788 label-sync call inside the StrategyUIRunner update item0/1/2 loop.
-                                        // * 2026-07-08 second ghidra-re confirmation: this NOP is "not" the cause of the slot1/2/3 mod-item commit problem. It is the only
-                                        //   +0x1788 revert-writer in the whole binary, yet even with it NOPed polling never saw item0/1/2 become 7+ = the click itself is
-                                        //   rejected by the native dropdown's validation against its vanilla 7-option vector, so 7+ never commits. Only #item3 (a mod-owned dropdown) works. -> the NOP is useless and costs the label sync, so it went back OFF.
-                                        //   The real fix for slots 0/1/2 mod items = replace item0/1/2 with mod-owned vectors like item3 (separate task).
-const SETTER_NOP_ENABLED: bool = false;
-unsafe fn nop_revert_setter() {
-    if !SETTER_NOP_ENABLED {
-        return;
-    }
-    match SETTER_NOPED.load(Ordering::Relaxed) {
-        1 | 2 => return,
-        _ => {}
-    }
-    let base = GetModuleHandleW(core::ptr::null()) as usize;
-    if base == 0 {
-        return;
-    }
-    let addr = base + SETTER_NOP_RVA;
-    // Safety check: only patch after confirming it is a call rel32 (0xe8) (abort if the RVA is off).
-    if !readable(addr, 5) || *(addr as *const u8) != 0xe8 {
-        SETTER_NOPED.store(2, Ordering::Relaxed);
-
-        return;
-    }
-    const RWX: u32 = 0x40;
-    let mut old: u32 = 0;
-    if VirtualProtect(addr, 5, RWX, &mut old) == 0 {
-        SETTER_NOPED.store(2, Ordering::Relaxed);
-        return;
-    }
-    for i in 0..5 {
-        *((addr + i) as *mut u8) = 0x90;
-    } // 5× NOP
-    VirtualProtect(addr, 5, old, &mut old);
-    FlushInstructionCache(GetCurrentProcess(), addr, 5);
-    SETTER_NOPED.store(1, Ordering::Relaxed);
-}
-// Option label cache computed once per screen entry (avoids per-frame file I/O).
-static OPTS_CACHE: Mutex<Vec<String>> = Mutex::new(Vec::new());
-
-fn compute_options() -> Vec<String> {
-    let n = item_opt_count();
-    (0..n).map(|i| item_opt_label(i as u8)).collect()
-}
-
-// * Mod-owned item dropdown ids. slot0/1/2 = item{N}m (overlaid on native item0/1/2; the click commits straight to +0x1788),
-//   slot3 = item3 (the 4th). Native item0/1/2 commit clicks only into the model, so they cannot hold mod items (ghidra-re) -> replaced by mod-owned ones.
-/// Node id of the mod-owned dropdown for slot `si` on the strategy screen.
-///
-/// `&'static str`, not `String`: the max-height re-apply below calls this for
-/// every row and slot on *every frame* the screen is open, and formatting the
-/// same four constants 20 times a frame was the whole cost. Mirrors
-/// `uinj::CT_DD_IDS`, which is already a static array for the comp-test screen.
-fn slot_dd_id(si: usize) -> &'static str {
-    const IDS: [&str; 4] = ["item0m", "item1m", "item2m", "item3"];
-    IDS[si.min(3)]
-}
-
-/// Row node ids, for the same reason — the per-frame loop below was building
-/// these with `format!`.
-const ROW_IDS: [&str; MAX_ROWS] = ["row0", "row1", "row2", "row3", "row4"];
-
-// * Hide the native item0/1/2 dropdowns (mod-owned item0m/1m/2m replace them). Only while the personal-tactics screen is open.
-//   With only an overlay, the native "leave it to the player" text showed through on the left and looked overlapped -> hide completely with visible=false.
-//   The game may reset visible every frame, so re-apply on every post_update.
-fn hide_native_item_dds(root: &mut Node) {
-    if !find_node(root, "personal")
-        .map(|n| n.visible)
-        .unwrap_or(false)
-    {
-        return;
-    } // do not interfere unless on personal tactics
-    for ri in 0..MAX_ROWS {
-        let rid = format!("row{}", ri);
-        if let Some(row) = find_mut(root, &rid) {
-            for si in 0..3u8 {
-                if let Some(nat) = find_mut(row, &format!("item{}", si)) {
-                    nat.visible = false;
-                }
-            }
-        }
-    }
-}
-
-// ===========================================================================
-//  Personal tactics screen handling (every post_update)
-// ===========================================================================
-// ═══════════════════════════════════════════════════════════════════════════
-//  Comp test (training.ui) personal tactics - designating the 4th slot item
-//    Slots 1~3 (item0/1/2) = the game's own business (and the comp-test restriction-patch mod). We own only item3.
-//    Store = SEL_BY_CHAMP (same as the strategy screen, keyed by champion) => a selection made here applies both to real
-//    matches and to comp-test sims (buy injection is keyed by champion name, so no extra wiring is needed).
-//    Rows = blue0..4 / red0..4 (10 players). Making the UI 4-wide is ui_inject::inject_training's job.
-// ═══════════════════════════════════════════════════════════════════════════
-const CT_ROWS: [&str; 10] = [
-    "blue0", "blue1", "blue2", "blue3", "blue4", "red0", "red1", "red2", "red3", "red4",
-];
-static CT_OPEN: AtomicBool = AtomicBool::new(false);
-static CT_INJECTED: AtomicBool = AtomicBool::new(false);
-static CT_LAST: Mutex<[i64; 40]> = Mutex::new([-1; 40]); // 10 rows x 4 slots
-static CT_CHAMPS: Mutex<Vec<String>> = Mutex::new(Vec::new()); // last champion observed per row (change detection)
-                                                               // * Diagnostics: comp-test wiring, stage by stage (printed in buy_report)
-// (CTD_CALL / CTD_BUILDS / CTD_VIS / CTD_ROW / CTD_CHAMP removed 2026-08-05:
-//  write-only counters no diagnostic ever read, one of which cost a whole-tree
-//  `find_node` per frame. `CTD_SET` is write-only too, but it is bumped once per
-//  comp-test screen entry rather than per frame, so it costs nothing and is left
-//  for whoever next debugs that injection.)
-static CTD_SET: AtomicU64 = AtomicU64::new(0); // it4_slot3 option injection succeeded
-                                               // * +0x240 measurement (07-21): the in-source comments contradict each other (L375 "render screen_x" vs L389 "hit-test, no effect")
-                                               //   and it is unconfirmed whether y/w/h continue at +0x244/+0x248/+0x24c. Dump the region on a node whose coordinates we know to pin the layout.
-                                               //   Hitbox updates are to be implemented only after checking this measurement (no guess-implementations).
-                                               // Champion of a training row: the child id is #champion_icon (unlike #icon on the strategy screen) -> dedicated lookup.
-fn ct_row_champ(row: &Node) -> Option<String> {
-    let icon = find_node(row, "champion_icon")?;
-    let src = unsafe { read_img_source(icon) }?;
-    let a = src.find("champions/")? + "champions/".len();
-    let rest = &src[a..];
-    let end = rest.find('#').unwrap_or(rest.len());
-    let champ = rest[..end].trim();
-    if champ.is_empty() {
-        None
-    } else {
-        Some(champ.to_string())
-    }
-}
-// ** Forcing 4-slot comp-test coordinates (07-21) - runtime adjustment instead of rewriting the template (preserves other mods' nodes).
-//   Vanilla item0/1/2 = x146/296/446, w140 (up to 586) -> shrunk and re-laid-out for 4 slots.
-//   it4_slot3 (which we append) already carries x482/w104 in its fragment, but force it too in case the game resets it.
-//   WARNING: only when MODE4 (4 slots). In 3-slot mode the vanilla coordinates are left alone.
-//   The game may revert it every frame, so re-apply every frame just like force_blue_slot_spacing.
-// * Runtime coordinate forcing dropped (07-21): we declare all 4 comp-test slots ourselves, so there is no reason to move the natives.
-//   The old force_comptest_slot_layout() wrote the native 4-state boxes every frame, and that approach causes
-//   (1) hitboxes not following, so clicks pass through, and (2) jitter from fighting the game's own recalculation (measured with comptest_unlock).
-//   => use only the coordinates declared in the template, and merely hide the natives.
-// Hide the comp-test native item0/1/2 - the mod-owned dropdowns take their place.
-// * One-shot diagnostic (07-22 report "slightly overlapping in 4-slot mode"): dump the **actual** child dropdowns of a comp-test row
-//   as id + authored x (+0x84) + visible. Confirms by coordinates whether leftover natives or another mod's injected nodes
-//   are mixed in (= the reason only the 4th looked wider). Result = item_tactics_ctrow.txt.
-// * OFF for release (2026-07-22): job done - the coordinates proved the overlap was comptest_unlock's duplicate ct_i* injection,
-//   and it was resolved by setting ITEM_DD_ENABLED=false in that mod (the ct_i* nodes are gone in the re-check dump).
-fn hide_comptest_native_dds(root: &mut Node) {
-    for rid in CT_ROWS.iter() {
-        if let Some(row) = find_mut(root, rid) {
-            for si in 0..3u8 {
-                if let Some(nat) = find_mut(row, &format!("item{}", si)) {
-                    if nat.visible {
-                        nat.visible = false;
-                    }
-                }
-            }
-        }
-    }
-}
-// ═══════════════════════════════════════════════════════════════════════════
-//  * In-match 4th slot icon - **direct node writing** approach (2026-07-30, no game code modification)
-// ═══════════════════════════════════════════════════════════════════════════
-//  Surgery on game code (frame extension + array relocation) failed with a freeze on match entry => approach changed.
-//  The game's icon-filling contract, established by ghidra-re measurement (reproducible with zero game function calls):
-//    (1) descend the node path `<side>.slotN.bg.icon` (the game splits on '.' then searches recursively, 0x19f170)
-//    ② `Node.visible`(+0x260) 1/0
-//    (3) on the ImageRunner (4 states, stride 208 = normal/hover/active/disabled),
-//       `source` (+0) = **fixed to the shared item spritesheet path**, `rect_tag` (+0x18) = Some(tag within the sheet)
-//    => items are distinguished by **rect_tag**, not by source (not the old set_img_src "path#tag" scheme).
-//  Icon tag rule (measured against the entire bundled item_setting): vanilla index 0..29 -> `t{idx%5+1}_{idx/5}`.
-//    Mod items (idx>=30) have no tag in this sheet, so **not even the game can render them** -> hidden.
-//  WARNING stage 1 (current): to verify that display works at all we write a **fixed tag**. Real item mapping is deferred to
-//    stage 2 because "which player is on screen" (view-model lookup) is still unsolved.
 const SLOT3_ICON_ENABLED: bool = true; // set false on trouble = immediate return to the previous state (no icon)
                                        // ═══════════════════════════════════════════════════════════════════════════
                                        //  ** Stage 3 = **reading the view model (GameView) directly** (full RE confirmed 2026-07-30) - no game code patching
@@ -2451,7 +1537,14 @@ unsafe extern "C" fn cap_game_view(saved: *mut u64, _e: usize) -> u64 {
     0
 }
 fn install_game_view_hook() {
-    if GV_HOOK_INSTALLED.load(Ordering::Relaxed) == 1 {
+    let state = GV_HOOK_INSTALLED.load(Ordering::Relaxed);
+    if state == 1 {
+        return;
+    }
+    // See `install_retry_due`: a wrong RVA here would otherwise cost a loader
+    // lock and an address-space lock on every frame for the whole session.
+    static RETRY: AtomicU64 = AtomicU64::new(0);
+    if state == 2 && !install_retry_due(&RETRY) {
         return;
     }
     let r = unsafe {
@@ -2893,346 +1986,6 @@ unsafe fn find_player_view(gv: usize, team: u64, pos: u32) -> Option<usize> {
     None
 }
 
-fn handle_comptest_screen(ui: &Node) {
-    // * 07-21 switch: we now fully manage comp-test personal tactics in both 3-slot and 4-slot mode (user decision).
-    //   In 3-slot mode ui_inject declares 3 at the vanilla coordinates (146/296/446, w140), in 4-slot mode 4 at the
-    //   compressed ones (146/258/370/482, w104), and this code wires up the options/selection. The natives are hidden.
-    // The `CTD_*` counters that used to be bumped here are gone. Nothing ever
-    // read them — no diagnostic dump mentions them — and one of them cost a
-    // `find_node(ui, "blue0")`, a full depth-first walk of the entire UI tree,
-    // on every frame the game was running, purely to increment a number no code
-    // could observe. `CTD_CHAMP` below went with them.
-    let bnode = find_node(ui, "builds");
-    // Detecting that the personal tactics tab is active: visibility of the row container (#builds).
-    let active = bnode.map(|n| n.visible).unwrap_or(false);
-    if !active {
-        if CT_OPEN.swap(false, Ordering::Relaxed) {
-            CT_INJECTED.store(false, Ordering::Relaxed);
-        }
-        return;
-    }
-    CT_OPEN.store(true, Ordering::Relaxed);
-    // * Option labels are computed once per screen (file I/O cache).
-    if !CT_INJECTED.swap(true, Ordering::Relaxed) {
-        let o = compute_options();
-        *OPTS_CACHE.lock().unwrap_or_else(|e| e.into_inner()) = o;
-    }
-    let opts = OPTS_CACHE.lock().unwrap_or_else(|e| e.into_inner()).clone();
-    if opts.is_empty() {
-        return;
-    }
-    let refs: Vec<&str> = opts.iter().map(|s| s.as_str()).collect();
-    // ** Timing (measured 07-21): on the first frame after entering the screen the game has not filled the champion in yet (champion_icon=None).
-    //   With a "inject once on entry" approach everything is laid down as Auto and, with no champion readable, nothing is saved.
-    //   -> switched to "re-seed a row whenever its observed champion changes" (covers both first appearance and swaps).
-    let mut champs = CT_CHAMPS.lock().unwrap_or_else(|e| e.into_inner());
-    if champs.len() < 10 {
-        champs.resize(10, String::new());
-    }
-    let mut last = CT_LAST.lock().unwrap_or_else(|e| e.into_inner());
-    let mut changed = false;
-    // * Collect the per-side champion composition and publish it to the buy detour (ct_scope_for decides the side from it).
-    let mut ct_blue: std::collections::HashSet<String> = std::collections::HashSet::new();
-    let mut ct_red: std::collections::HashSet<String> = std::collections::HashSet::new();
-    for (ri, rid) in CT_ROWS.iter().enumerate() {
-        let Some(row) = find_node(ui, rid) else {
-            continue;
-        };
-        let Some(c) = ct_row_champ(row) else {
-            champs[ri].clear();
-            continue;
-        }; // no champion placed = not our business
-        // * Rows 0~4 = blue / 5~9 = red (the order CT_ROWS is defined in). Selections are read and written with this scope =>
-        //   the same champion on both sides is designated independently (previously they merged into one).
-        let scope = if ri < 5 { Scope::CtBlue } else { Scope::CtRed };
-        if ri < 5 {
-            ct_blue.insert(c.clone());
-        } else {
-            ct_red.insert(c.clone());
-        }
-        let ns = slot_count();
-        if champs[ri] != c {
-            // Champion first appeared or was swapped -> re-seed all slots from that champion's stored values. SEL=0 (delegate) shows as Auto.
-            //   Lookup is scope-first -> if absent, fall back to the plain (personal tactics) selection = inherit the existing designation.
-            let mut ok = 0;
-            for si in 0..ns {
-                let sel = sel_get(scope, &c, si as u8);
-                let sel = (sel as usize).min(opts.len().saturating_sub(1)) as u64;
-                if unsafe { nat_dd_set_options(row, uinj::CT_DD_IDS[si], &refs, sel) } {
-                    unsafe {
-                        set_dd_max_height(row, uinj::CT_DD_IDS[si], MAX_ITEMS_HEIGHT);
-                    }
-                    last[ri * ITEM_SLOTS + si] = sel as i64;
-                    ok += 1;
-                }
-            }
-            if ok > 0 {
-                champs[ri] = c;
-                CTD_SET.fetch_add(ok, Ordering::Relaxed);
-            }
-            continue; // skip polling on a re-seeded frame (so our own write is not mistaken for a user selection)
-        }
-        // Poll the selection -> update SEL_BY_CHAMP (all slots)
-        for si in 0..ns {
-            if let Some(cur) = unsafe { nat_dd_selected(row, uinj::CT_DD_IDS[si]) } {
-                let k = ri * ITEM_SLOTS + si;
-                if cur as i64 != last[k] {
-                    last[k] = cur as i64;
-                    // * Store under the scoped key => applies only to this side and never leaks into normal matches.
-                    //   When set back to Auto (0): a value left under the plain key would resurrect via fallback, so
-                    //   record an **explicit Auto (SEL_AUTO)** to cut the fallback (the plain key is left untouched).
-                    with_sel(|m| {
-                        let k = (scoped_key(scope, &c), si as u8);
-                        if cur == 0 {
-                            if m.contains_key(&(c.clone(), si as u8)) {
-                                m.insert(k, SEL_AUTO);
-                            } else {
-                                m.remove(&k);
-                            }
-                        } else {
-                            m.insert(k, cur as u8);
-                        }
-                    });
-                    SEL_DIRTY.store(true, Ordering::Relaxed);
-                    changed = true;
-                    let label = opts
-                        .get(cur)
-                        .cloned()
-                        .unwrap_or_else(|| format!("idx{}", cur));
-                    let sidetag = if scope == Scope::CtBlue {
-                        "blue"
-                    } else {
-                        "red"
-                    };
-                }
-            }
-        }
-    }
-    publish_ct_roster(ct_blue, ct_red);
-    if changed {
-        drop(last);
-        drop(champs);
-        with_sel(|m| save_sel(m));
-        update_override_snapshot();
-    }
-}
-fn handle_tactics_screen(ui: &Node) {
-    let personal = find_node(ui, "personal");
-    let active = personal.map(|n| n.visible).unwrap_or(false);
-
-    if !active {
-        if SCREEN_OPEN.swap(false, Ordering::Relaxed) {
-            OPTS_INJECTED.store(false, Ordering::Relaxed);
-        }
-        return;
-    }
-    SCREEN_OPEN.store(true, Ordering::Relaxed);
-
-    // * NOP the personal_tactics -> dropdown revert (setter) once, so mod item (7+) selections persist.
-    unsafe {
-        nop_revert_setter();
-    }
-    // * Register the VEH (shared by safe_read/safe_write) - idempotent, once.
-    seh_install();
-
-    // * Re-apply max_items_height every frame (guarantees timing independence) + a one-shot diagnostic (verify the write took + dump the surroundings).
-    for rid in ROW_IDS {
-        let Some(row) = find_node(ui, rid) else {
-            continue;
-        };
-        for si in 0..slot_count() {
-            unsafe {
-                set_dd_max_height(row, slot_dd_id(si), MAX_ITEMS_HEIGHT);
-            }
-        }
-    }
-
-    // Option injection (once per screen entry). Option labels are computed once on entry (file I/O cache).
-    //   Initial display per slot = SEL_BY_CHAMP[(that row's champion, slot)] (champion-keyed, persisted). Absent -> 0 (auto).
-    if !OPTS_INJECTED.swap(true, Ordering::Relaxed) {
-        // * Recommendations must be applied before options are computed so the SEL lookups below see the new values (shown on the same frame).
-        //   OPTS_INJECTED is reset whenever the screen closes, so the hash is re-checked on every re-entry.
-        apply_recommendations();
-        let opts = compute_options();
-        *OPTS_CACHE.lock().unwrap_or_else(|e| e.into_inner()) = opts.clone();
-        let refs: Vec<&str> = opts.iter().map(|s| s.as_str()).collect();
-        let mut last = LAST_SEL.lock().unwrap_or_else(|e| e.into_inner());
-        let pt_sz = PT_SNAPSHOT
-            .lock()
-            .unwrap_or_else(|e| e.into_inner())
-            .as_ref()
-            .map(|m| m.len())
-            .unwrap_or(0);
-        let mut diag = format!(
-            "[{}ms] option injection (row -> champion mapping) PT_SNAPSHOT={} opts={}
-",
-            now_ms(),
-            pt_sz,
-            opts.len()
-        );
-        for ri in 0..MAX_ROWS {
-            let Some(row) = find_node(ui, &format!("row{}", ri)) else {
-                continue;
-            };
-            let champ = row_champ(row);
-            diag.push_str(&format!("  row{} champ={:?}\n", ri, champ));
-            for si in 0..slot_count() {
-                let iid = slot_dd_id(si);
-                // Display priority: user selection (SEL_BY_CHAMP) > game personal_tactics (PT_SNAPSHOT vanilla) > Auto.
-                //   -> even the vanilla display our NOP broke is restored exactly from personal_tactics.
-                let (sel_v, pt_v) = if let Some(c) = champ.as_ref() {
-                    (
-                        with_sel(|m| m.get(&(c.clone(), si as u8)).copied()),
-                        PT_SNAPSHOT
-                            .lock()
-                            .unwrap_or_else(|e| e.into_inner())
-                            .as_ref()
-                            .and_then(|m| m.get(c))
-                            .and_then(|b| b.get(si).copied()),
-                    )
-                } else {
-                    (None, None)
-                };
-                // * SEL=0 (delegate/spurious) is not an override -> show the delegate (PT) value. Only SEL>=1 wins as a user pick.
-                //   SEL_AUTO (= comp-test-only explicit Auto) cannot appear under a plain key, but exclude it defensively.
-                let cur = sel_v
-                    .filter(|&v| v >= 1 && v != SEL_AUTO)
-                    .or(pt_v)
-                    .unwrap_or(0);
-                diag.push_str(&format!(
-                    "    slot{}: SEL={:?} PT={:?} → cur={}\n",
-                    si, sel_v, pt_v, cur
-                ));
-                let cur = (cur as usize).min(opts.len().saturating_sub(1)) as u64;
-                if unsafe { nat_dd_set_options(row, iid, &refs, cur) } {
-                    last[ri * ITEM_SLOTS + si] = cur as i64;
-                    unsafe {
-                        set_dd_max_height(row, iid, MAX_ITEMS_HEIGHT);
-                    }
-                }
-            }
-        }
-        update_override_snapshot(); // refresh the injection snapshot on screen entry
-        log_override();
-    } else {
-        // Poll the selection: update SEL_BY_CHAMP (champion-keyed) + persist + log, only for changed slots.
-        let opts = OPTS_CACHE.lock().unwrap_or_else(|e| e.into_inner()).clone();
-        let mut last = LAST_SEL.lock().unwrap_or_else(|e| e.into_inner());
-        let mut changed = false;
-        for ri in 0..MAX_ROWS {
-            let Some(row) = find_node(ui, &format!("row{}", ri)) else {
-                continue;
-            };
-            let Some(champ) = row_champ(row) else {
-                continue;
-            };
-            for si in 0..slot_count() {
-                if let Some(cur) = unsafe { nat_dd_selected(row, slot_dd_id(si)) } {
-                    let k = ri * ITEM_SLOTS + si;
-                    if cur as i64 != last[k] {
-                        last[k] = cur as i64;
-                        // cur 0 (delegate) = remove the entry -> fall back to delegate. >=1 = store the user override.
-                        with_sel(|m| {
-                            if cur == 0 {
-                                m.remove(&(champ.clone(), si as u8));
-                            } else {
-                                m.insert((champ.clone(), si as u8), cur as u8);
-                            }
-                        });
-                        SEL_DIRTY.store(true, Ordering::Relaxed); // * invalidate the designated-champion snapshot (rebuilt on the next buy)
-                        changed = true;
-                        let label = opts
-                            .get(cur)
-                            .cloned()
-                            .unwrap_or_else(|| format!("idx{}", cur));
-                        let modtag = if cur >= 7 {
-                            mod_final_opts()
-                                .get(cur - 7)
-                                .map(|(id, k)| format!(" [mod item id={} {}]", id, k))
-                                .unwrap_or_default()
-                        } else {
-                            String::new()
-                        };
-                    }
-                }
-            }
-        }
-        if changed {
-            with_sel(|m| save_sel(m));
-            update_override_snapshot();
-            log_override();
-        }
-    }
-}
-// Log of the current OVERRIDE (injection target) map - for verification.
-fn log_override() {
-    let map = build_override_map();
-    let mut s = format!(
-        "[{}ms] OVERRIDE (champ,slot) -> mod_id  ({} entries)
-",
-        now_ms(),
-        map.len()
-    );
-    let mut v: Vec<_> = map.iter().collect();
-    v.sort_by(|a, b| a.0.cmp(b.0));
-    for ((c, slot), id) in v {
-        s.push_str(&format!("  {} slot{} → id {}\n", c, slot, id));
-    }
-}
-
-// (champion key, slot) -> injected value. Consumed by the c6 detour.
-//   * 2026-07-04 extension: vanilla picks are included too (there were signs that the game's dropdown -> personal_tactics commit
-//   does not happen in a modded environment -> the mod forces every pick directly).
-//   Value encoding: 0 = delegate (Auto), 1~6 = vanilla category (force the tactics byte -> the game's jump table handles it),
-//              30+ = mod item game ID (write into the build buffer + zero the tactics byte).
-fn build_override_map() -> HashMap<(String, u8), u64> {
-    let finals = mod_final_opts(); // (id, key), order = option idx-7
-    let mut out = HashMap::new();
-    // -- (1) Merge the delegate ("tfm2.gg auto item selection") baseline ------------------------
-    //   Lay down the category directions (1~6) that tfm2_meta_item_delegate wrote into
-    //   champion_personal_tactics (Team+0x348) onto slots 0/1/2. PT_SNAPSHOT = the latest capture of that map.
-    //   The sim c6c430 reads Team+0x348 directly (ghidra-re case a), but we also fold it into the c6 injection so it
-    //   applies regardless of server-side Team copies or timing. Values 1~6 -> c6 converts them to the game's
-    //   representative items (VANILLA_FINAL {4,24,9,14,19,29}) = bit-identical to the game's jump table (idempotent, harmless).
-    //   WARNING: delegate covers only slots 0~2 (3 slots). slot3 (the 4th) stays on compute_auto_4th_id.
-    if let Some(snap) = PT_SNAPSHOT
-        .lock()
-        .unwrap_or_else(|e| e.into_inner())
-        .as_ref()
-    {
-        for (champ, bytes) in snap.iter() {
-            for slot in 0u8..3 {
-                let b = bytes[slot as usize];
-                if (1..=6).contains(&b) {
-                    out.insert((champ.clone(), slot), b as u64);
-                }
-            }
-        }
-    }
-    // -- (2) The user selection (SEL_BY_CHAMP) overrides the delegate baseline -------------------
-    //   idx 0 (delegate) = no explicit override -> fall back to delegate/auto (prevents a spurious polled 0 from clobbering).
-    with_sel(|m| {
-        for ((champ, slot), &idx) in m.iter() {
-            // * Comp-test side-scoped keys (@b:/@r:) are not targets of this map (2026-07-30):
-            //   this override (the c6 / personal_tactics path) is per-champion and cannot express a side, and
-            //   comp-test injection is handled scope-aware by the buy path. Adding them would only pile up entries for nonexistent champions.
-            if is_scoped(champ) {
-                continue;
-            }
-            if idx >= 7 {
-                if let Some((id, _)) = finals.get(idx as usize - 7) {
-                    out.insert((champ.clone(), *slot), *id); // mod item game ID (30+)
-                }
-            } else if idx >= 1 {
-                out.insert((champ.clone(), *slot), idx as u64); // 1~6 = vanilla category
-            }
-            // idx 0 (delegate/Auto) = the user did not explicitly override this slot -> keep the delegate baseline from (1)
-            //   (with no delegate value it is absent from out = c6 does not intervene = the game's network decides freely).
-        }
-    });
-    out
-}
-
 // Vanilla category (1~6) -> final item game ID. Same conversion as the game's c6 jump table (cat1=AD .. cat6=HP).
 //   WARNING churn: may move if the game's item tree changes (currently 0.4.14). Matches the constants in the game's jump table (0x143441cf4 etc.).
 const VANILLA_FINAL: [u64; 6] = [4, 24, 9, 14, 19, 29];
@@ -3240,34 +1993,6 @@ const VANILLA_FINAL: [u64; 6] = [4, 24, 9, 14, 19, 29];
 // ===========================================================================
 //  Phase 2c - live match build injection (mid-function detour in the FUN_140c6c430 candidate loop)
 // ===========================================================================
-// Lock-free snapshot read by the detour: (champ bytes, slot, mod_id). Rebuilt (leaked) and swapped when the selection changes.
-//   The sim is parallel (rayon) -> to avoid locks this is an AtomicPtr snapshot (immutable, never freed = no UAF).
-type OvEntry = (Vec<u8>, u8, u64);
-static OVERRIDE_SNAPSHOT: AtomicPtr<Vec<OvEntry>> = AtomicPtr::new(core::ptr::null_mut());
-static SNAP_SIG: AtomicU64 = AtomicU64::new(u64::MAX); // signature of the previous snapshot (change detection)
-fn update_override_snapshot() {
-    let map = build_override_map();
-    let mut v: Vec<OvEntry> = map
-        .into_iter()
-        .map(|((c, s), id)| (c.into_bytes(), s, id))
-        .collect();
-    v.sort(); // deterministic order -> stable signature
-              // * Safe to call every frame: if the content is unchanged, skip the rebuild/leak (delegate writes every frame but is usually unchanged).
-    let mut sig: u64 = 0xcbf29ce484222325;
-    for (c, s, id) in &v {
-        for &b in c {
-            sig = (sig ^ b as u64).wrapping_mul(0x100000001b3);
-        }
-        sig = (sig ^ *s as u64).wrapping_mul(0x100000001b3);
-        sig = (sig ^ *id).wrapping_mul(0x100000001b3);
-    }
-    if sig == SNAP_SIG.swap(sig, Ordering::Relaxed) {
-        return;
-    }
-    let boxed = Box::into_raw(Box::new(v));
-    // The old snapshot is leaked (a detour on another thread may be reading it -> never free). Only happens on change = bounded.
-    OVERRIDE_SNAPSHOT.store(boxed, Ordering::Release);
-}
 
 const TRAMPOLINE_DEBUG_PASSTHROUGH: bool = false; // * diagnostic: stub = original instructions + return only (no capture/call)
 
@@ -3389,12 +2114,12 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
                                   //   * is the 4th path reached at all, and if it bails, at which step;
                                   //   * `owned>=4` observed — distinguishes "not bought" from "bought, not drawn";
                                   //   * hook install state, VEH state, UI root address, mod item source.
-// * OFF again 2026-08-05: it verified the 4th-item parity fix (enemy builds now extend),
-//   confirmed in game. Flip back on to get `build_ext_diag.txt` — `BE_CNT[6]` (build[3]
-//   writes) and "owned>=4 observed" are what tell "the build was extended" apart from
-//   "extended and never bought". Costs a file write every ~5s on the main thread.
+                                  // * OFF again 2026-08-05: it verified the 4th-item parity fix (enemy builds now extend),
+                                  //   confirmed in game. Flip back on to get `build_ext_diag.txt` — `BE_CNT[6]` (build[3]
+                                  //   writes) and "owned>=4 observed" are what tell "the build was extended" apart from
+                                  //   "extended and never bought". Costs a file write every ~5s on the main thread.
 const BUILD_EXT_DIAG: bool = false; // * was OFF 2026-08-04: it identified the root-scan budget bug (see `ui_root::ATTEMPTS`) and that fix is confirmed in game
-                                   // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
+                                    // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false;
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
 // * Cause identified and fixed (comp-test injection = the missing team gate bypass; all 9 launcher retaddrs confirmed) -> OFF in production.
@@ -3568,7 +2293,11 @@ fn install_launcher_hook() {
     //      The address is already validated at install time and a fault is caught by the VEH, so the double check was unnecessary.
     //   (3) the post-install re-validation (self-heal in case another mod overwrote our hook) has no reason to run every frame ->
     //      **every 60 frames (~1s)**. Self-healing within a second is plenty even if overwritten (this is a match-start event, so there is slack).
-    if CLAUNCH_INSTALLED.load(Ordering::Relaxed) == 1 {
+    //   (4) 2026-08-07: the throttle covered state 1 (installed, re-validating) only, so a
+    //      FAILED install (2) still paid the full cost every frame — the case a game update
+    //      puts every RVA in. Any non-zero state is now throttled; 0 is the untried first
+    //      frame, which still runs immediately.
+    if CLAUNCH_INSTALLED.load(Ordering::Relaxed) != 0 {
         if HK_L_TICK.fetch_add(1, Ordering::Relaxed) % 60 != 0 {
             HK_L_SKIP.fetch_add(1, Ordering::Relaxed);
             return;
@@ -3665,7 +2394,6 @@ static LIVE_SEED: AtomicU64 = AtomicU64::new(0); // * my match's seed (captured 
 static PROV_HIT: AtomicU64 = AtomicU64::new(0); // is_live (v13 provider/seed match) firings
 static VT_OK: AtomicU64 = AtomicU64::new(0); // of those, firings via seed value comparison
 static INGAME_NOW: AtomicBool = AtomicBool::new(false); // "spectating right now" flag set by post_update
-static BUY_WROTE_FIRE: AtomicU64 = AtomicU64::new(0); // successful build[si] writes
 static SEEDCTOR_N: AtomicU64 = AtomicU64::new(0); // total ctor firings
 static SEEDCTOR_MATCH_N: AtomicU64 = AtomicU64::new(0); // rdx == LIVE_SEED hits (rendered provider captured)
 unsafe extern "C" fn cap_seed_ctor(saved: *mut u64, _e: usize) -> u64 {
@@ -3683,9 +2411,16 @@ unsafe extern "C" fn cap_seed_ctor(saved: *mut u64, _e: usize) -> u64 {
     0
 }
 fn install_seed_ctor_hook() {
-    if SEEDCTOR_INSTALLED.load(Ordering::Relaxed) == 1 {
+    let state = SEEDCTOR_INSTALLED.load(Ordering::Relaxed);
+    if state == 1 {
         return;
     } // * skip only on 1 = success (0/2 = retry)
+      // A failed attempt (2) backs off instead of re-running every frame; see
+      // `install_retry_due`. State 0 is the untried first frame and is not delayed.
+    static RETRY: AtomicU64 = AtomicU64::new(0);
+    if state == 2 && !install_retry_due(&RETRY) {
+        return;
+    }
     HK_S_INSTALL.fetch_add(1, Ordering::Relaxed);
     let r = unsafe {
         install_detour_generic(
@@ -3792,7 +2527,9 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         let champ_cow =
             String::from_utf8_lossy(std::slice::from_raw_parts(cptr as *const u8, clen));
         let champ: &str = champ_cow.as_ref();
-        if !is_champ_designated(champ) {
+        // Was `is_champ_designated`, which OR-ed the pin set with the `SEL`
+        // dropdown keys. `SEL` is gone, so the pin set is the whole answer.
+        if !crate::build_config::has_pins(champ) {
             return;
         }
         // -- (3) Is it my team (v15): athlete_id (+0x810) in my starting roster = no scene tag9 needed -> holds at spawn time.
@@ -3846,11 +2583,11 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             if (si as u64) >= blen {
                 break;
             }
-            // * Scope = fixed to Plain: at spawn time there is no comp-test side information (and this hook is
-            //   sealed with SPAWN_INJECT_ENABLED=false anyway). Per-side comp-test designations are handled by the buy path.
-            let idx: Option<u64> = if let Some(vid) = slotN_vanilla_id(Scope::Plain, champ, si) {
+            // (The `Scope::Plain` argument these took is gone with `SEL`; a pin
+            // has no scope, so there is nothing left to disambiguate.)
+            let idx: Option<u64> = if let Some(vid) = slotN_vanilla_id(champ, si) {
                 Some(vid) // vanilla: id == catalog index
-            } else if let Some(mk) = slotN_item_key(Scope::Plain, champ, si) {
+            } else if let Some(mk) = slotN_item_key(champ, si) {
                 scan_catalog_index(cat_base, cat_len, mk.as_bytes()) // mod item: name scan + recipe validation
             } else {
                 continue;
@@ -3875,7 +2612,13 @@ fn install_spawn_hook() {
     if !SPAWN_INJECT_ENABLED {
         return;
     } // * when sealed, do not install the detour at all (a no-op hook = pure risk)
-    if SPAWN_INSTALLED.load(Ordering::Relaxed) == 1 {
+    let state = SPAWN_INSTALLED.load(Ordering::Relaxed);
+    if state == 1 {
+        return;
+    }
+    // See `install_retry_due`.
+    static RETRY: AtomicU64 = AtomicU64::new(0);
+    if state == 2 && !install_retry_due(&RETRY) {
         return;
     }
     // * 0.5.2: a rax-preserving tail is mandatory (the relocated region contains mov eax,0x4d20 -> the chkstk right after uses that value as the frame size).
@@ -4052,13 +2795,37 @@ static CAP_MPID: AtomicU64 = AtomicU64::new(0);
 static CAP_MTID: AtomicU64 = AtomicU64::new(0);
 static INJ_LOG: Mutex<Vec<(Vec<u8>, u8, u64)>> = Mutex::new(Vec::new());
 
+/// Frames between retries of a hook install that has not succeeded.
+const INSTALL_RETRY_FRAMES: u64 = 60;
+
+/// Whether an installer that is not in the success state should try again this
+/// frame.
+///
+/// A *failed* install is not free, and it used to run on every frame forever.
+/// `install_detour_generic` takes the loader lock (module base) and the
+/// address-space lock (`readable`) before it can even look at the prologue —
+/// the same two calls that were measured at >=106us per frame and taken out of
+/// `install_launcher_hook` on 2026-07-22. Only that one installer got the
+/// treatment; the others kept retrying every frame, and their early-out is
+/// `== 1`, so anything that fails pays full price forever.
+///
+/// That is the *expected* state after a game update, not an edge case: every RVA
+/// in this module is version-specific, so one that has not been re-derived yet
+/// fails the prologue check on every frame of every scene, main thread. Which
+/// makes the whole mod feel slow while nothing looks broken.
+fn install_retry_due(tick: &AtomicU64) -> bool {
+    tick.fetch_add(1, Ordering::Relaxed) % INSTALL_RETRY_FRAMES == 0
+}
+
 unsafe fn install_detour_generic(
     rva: usize,
     orig_len: usize,
     cap_fn: usize,
     prologue: &[u8],
 ) -> Result<usize, &'static str> {
-    let base = GetModuleHandleW(core::ptr::null()) as usize;
+    // Cached: the raw `GetModuleHandleW` takes the loader lock, which is half of
+    // what made a retrying install cost 106us a frame.
+    let base = exe_base_addr();
     if base == 0 {
         return Err("module 0");
     }
@@ -4179,7 +2946,8 @@ unsafe fn install_detour_r11(
     cap_fn: usize,
     prologue: &[u8],
 ) -> Result<usize, &'static str> {
-    let base = GetModuleHandleW(core::ptr::null()) as usize;
+    // Cached — see `install_detour_generic`.
+    let base = exe_base_addr();
     if base == 0 {
         return Err("module 0");
     }
@@ -4294,7 +3062,7 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                      last observed: build_len={} build_cap={} / last target index={}\n\
                      [slot3 icon] set OK={} skipped={} / GameView={:#x}(hits {}) view-model owns a 4th={} players\n\
                      [slot UI surgery] {}\n\
-                     note: mode(slot_count)={} - MY_ATHLETES={} - LIVE_SEED={:#x} - buy write successes={}\n",
+                     note: mode(slot_count)={} - MY_ATHLETES={} - LIVE_SEED={:#x}\n",
                     c[0], c[1], c[2], c[3], c[4], c[5], c[6],
                     c[7], BE_MAX_OWNED.load(Ordering::Relaxed),
                     last >> 32, last & 0xffff_ffff, BE_LAST_T.load(Ordering::Relaxed),
@@ -4303,7 +3071,7 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                     SLOT3_PV_N.load(Ordering::Relaxed),
                     SLOTUI_MSG.lock().unwrap_or_else(|e| e.into_inner()).clone().unwrap_or_else(|| "(not run)".into()),
                     slot_count(), MY_ATH_N.load(Ordering::Relaxed),
-                    LIVE_SEED.load(Ordering::Relaxed), BUY_WROTE_FIRE.load(Ordering::Relaxed));
+                    LIVE_SEED.load(Ordering::Relaxed));
                 // Hook install state. Added while diagnosing "never buys a 4th
                 // item": every one of these reports through `append_log`, which
                 // `LOG_ENABLED = false` discards, so a hook that failed to
@@ -4356,24 +3124,20 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                 if !buy_note.is_empty() {
                     s.push_str(&format!("  buy_item detail: {buy_note}\n"));
                 }
-                // The two halves keep their own slot counts, and only this one
-                // is asked by the Builds editor and by the item-build hook's
-                // `usable = build.len().min(picker_slots())`. If they disagree,
-                // the symptom is a 4-slot layout with nothing ever placed in
-                // the 4th — which is indistinguishable, on screen, from the
-                // purchase path failing. `mode` above is the tactics half's.
-                s.push_str(&format!(
-                    "  host picker slots (companion::item_slots) : {}  [tactics half says {}]\n",
-                    crate::companion::item_slots(),
-                    slot_count()
-                ));
+                // What the Builds editor and the item-build hook's
+                // `usable = build.len().min(picker_slots())` are working from.
+                // `driver::picker_slots` reports 3 unless `tactics_init`
+                // returned true, so this differing from `mode` above means the
+                // version gate failed and no patch is in: the symptom on screen
+                // is a 3-slot layout, not a 4th slot nothing ever fills.
+                s.push_str(&format!("  picker slots: {}\n", driver::picker_slots()));
                 // Whether the loader hook ever delivered the 4-slot templates.
                 // These used to arrive through `mod.override_info` as well,
                 // which cannot miss; the hook can, if a template is loaded
                 // before `uinj::install` runs and is then served from cache.
-                let (inst, pi, wide, strat) = uinj::inject_state();
+                let (inst, pi, wide) = uinj::inject_state();
                 s.push_str(&format!(
-                    "  ui_inject: installed={inst} player_info={pi} wide={wide} strategy={strat}\n"
+                    "  ui_inject: installed={inst} player_info={pi} wide={wide}\n"
                 ));
                 s.push_str(&format!("  {}\n", ui_root::report()));
                 if let Some(d) = mod_dir() {
@@ -4434,7 +3198,14 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
             //   fires), so 0 reports from the window **between entering the comp-test screen and the sim starting** leaked through and got published
             //   (measured: of 2416 observations of 0, only 1592 were blocked and the remaining 824 came from that window). => while the comp-test popup
             //   is open (`CT_OPEN`) treat it as the same context and ignore 0 as well.
-            let ct_ctx = in_comptest || CT_OPEN.load(Ordering::Relaxed);
+            // ** `CT_OPEN` went with the comp-test screen handler that set it, so
+            //   the "popup open but sim not started" window is no longer detected
+            //   and those pid=0 observations are treated as clean again. Harmless
+            //   here: a 0 is only *published* when no non-zero pid has ever been
+            //   seen (see the rule below), and this half no longer reads personal
+            //   tactics at all — the pid is used for the starter roster, which a
+            //   comp test does not have.
+            let ct_ctx = in_comptest;
             if pu == 0 {
                 PID_OBS_ZERO.fetch_add(1, Ordering::Relaxed);
                 if ct_ctx {
@@ -4526,25 +3297,12 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                     }
                 }));
             }
-            // * Source of the delegate (tfm2.gg auto-selection) baseline = champion_personal_tactics.
-            //   Refreshed every frame (lightweight, ~52 entries) -> display/injection always current. Only the log is throttled to every 20 frames.
-            //   After refreshing, OVERRIDE_SNAPSHOT is rebuilt (signature guard -> no leak when unchanged) ->
-            //   so the delegate direction reaches the c6 injection even without opening the strategy screen.
-            // * Throttle (2026-07-22 perf measurement): this block cost **at least 174us** every InGame frame - the comment above claiming
-            //   "lightweight, ~52 entries" was wrong (per-champion String clones + HashMap rebuild + update_override_snapshot's
-            //   map build / sort / FNV, every frame). The delegate (champion_personal_tactics) only changes **through user action**,
-            //   so there is no reason to rebuild it every frame -> every 20 frames (~0.3s). No perceptible difference in display/injection responsiveness.
-            static PT_REBUILD: AtomicU64 = AtomicU64::new(0);
-            if PT_REBUILD.fetch_add(1, Ordering::Relaxed) % 20 == 0 {
-                {
-                    // WARNING `t` here is the team (bound above), so the probe uses a separate variable name
-                    // (was `db.team(pid).champion_personal_tactics`, a
-                    //  `HashMap<String, [u8; 3]>` read field-by-field)
-                    let snap = stable_personal_tactics(client, pid);
-                    *PT_SNAPSHOT.lock().unwrap_or_else(|e| e.into_inner()) = Some(snap);
-                    update_override_snapshot();
-                }
-            }
+            // The personal-tactics snapshot rebuild stood here. It fed
+            // `PT_SNAPSHOT` (read only by the dropdown option injection) and
+            // `OVERRIDE_SNAPSHOT` (read only by the c6 injection, which is off —
+            // that snapshot had a store and no load anywhere). Both consumers
+            // are gone, and it cost ~174us per InGame frame and leaked a boxed
+            // `Vec` on every change, so it went with them.
         }
         // Everything from here down walks the live UI node tree. This is the
         // only thing `UI_TREE_WALK_ENABLED` is meant to cover — see its doc
@@ -4552,34 +3310,19 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
         if !UI_TREE_WALK_ENABLED || ui_root_ptr <= 0x10000 {
             return;
         }
-        let ui: &mut Node = unsafe { &mut *(ui_root_ptr as *mut Node) };
-        {
-            let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                handle_tactics_screen(ui);
-            }));
-        }
-        {
-            let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                handle_comptest_screen(ui);
-            }));
-        }
-        // * In-match 4th slot icon (direct node writing - no game code modification)
+        let ui: &Node = unsafe { &*(ui_root_ptr as *const Node) };
+        // The native Personal tab handlers stood here — the dropdown overlay,
+        // the selection polling and the two `hide_*_native_dds` calls. All of it
+        // acted on `#personal`, which `crate::strategy_ui` hides and replaces
+        // with the mod's own `#builds` editor, so it drove a panel nobody could
+        // see. Deleted rather than re-gated: if that tab is ever wanted back it
+        // wants writing against the UI as it is now.
+        //
+        // * In-match 4th slot icon (direct node writing - no game code modification).
+        //   Kept: a different screen entirely, and independent of the tab above.
         let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
             handle_ingame_slot3(ui);
         }));
-        // * Hide native item0/1/2 (the mod-owned item0m/1m/2m overlay replaces them). Only on the personal tactics screen. Common to modes 3 and 4 (the overlay exists in both).
-        {
-            let _ =
-                std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| hide_native_item_dds(ui)));
-        }
-        // * Comp test: mod-owned dropdowns replace them, so hide native item0/1/2 (idempotent - no write if already false).
-        {
-            let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                if find_node(ui, "builds").map(|n| n.visible).unwrap_or(false) {
-                    hide_comptest_native_dds(ui);
-                }
-            }));
-        }
     }
 }
 
@@ -4587,6 +3330,20 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
 // (Was `impl ModServerExtension for ItemTacticsServerExt`. Driven from the host
 // mod's `StableServerExtension` — see `driver` and `src/lib.rs`.)
 fn tactics_on_server_start() {
+    // -- Session boundary. Everything below this line is an address from the
+    //    *previous* save, and none of those objects survive a return to the
+    //    main menu. Dropping them here is what makes load / menu / load work;
+    //    each is re-derived on demand from the new session.
+    //
+    // The UI tree: `resolve` re-proves its cache per call too, but that is a
+    // shallow check, and this is the one point we *know* is a boundary.
+    ui_root::invalidate();
+    // The `Database` base and the item network derived from it. `probe_db`
+    // below re-derives the network once the item-build detour has handed
+    // `record_item_net` a fresh agent address, and it runs again on every
+    // management tick until it does.
+    driver::reset_session();
+    ITEM_NET_ADDR.store(0, Ordering::Relaxed);
     probe_db();
     install_replace_4th();
     install_launcher_hook();
@@ -4597,8 +3354,10 @@ fn tactics_on_server_start() {
 fn tactics_before_management_tick() {
     // * Reset the team gate cache between matches (management screen) -> re-scan the roster next match (in case addresses are reused).
     //   The management tick does not run during a match sim, so there is no race with the sim thread's decisions.
+    //   (`SIDE_CACHE` went with `player_side_for_match`, the SEL-based majority
+    //   vote — it counted champions the user had designated in the dropdowns,
+    //   and with `SEL` gone it had no input left.)
     PLAYER_SIDE.store(u64::MAX, Ordering::Relaxed);
-    SIDE_CACHE.lock().unwrap_or_else(|e| e.into_inner()).clear();
     probe_db();
     install_replace_4th(); // resolver = common to modes 3 and 4 (idempotent)
 }
@@ -5161,75 +3920,6 @@ unsafe fn ath_side_champ(p: usize) -> Option<(u64, String)> {
     }
     Some((side, nm))
 }
-// ** Deterministic team gate (global majority vote abandoned): scan only "the roster array of that match" which this athlete belongs to
-//   and decide the player side (0/1) immediately and deterministically. The side with more user-designated (SEL) or PT champions = player.
-//   If both are 0 (= the player is not in this match) or tied, return None -> no injection (prevents copying onto the enemy / misjudgement).
-//   Per-match arrays are independent (no contamination from parallel background matches, RE confirmed) -> eliminates the startup-gap / contamination / inversion problems of global voting at the root.
-//   Cached by base pointer (avoids re-scanning on every buy). Reset = cleared in before_management_tick.
-static SIDE_CACHE: Mutex<Vec<(usize, i8)>> = Mutex::new(Vec::new()); // (roster_base, side: 0/1, -1=none)
-unsafe fn player_side_for_match(athlete: usize) -> Option<u64> {
-    // base for the cache key (roughly the array start): walk back up to 9 slots. Only for cache hits; counting is done by the fixed window below.
-    let mut base = athlete;
-    for _ in 0..9 {
-        let c = base.wrapping_sub(ATH_STRIDE);
-        if ath_side_champ(c).is_some() {
-            base = c;
-        } else {
-            break;
-        }
-    }
-    // Cache lookup - * only a decided side (0/1) is cached. None is not cached (re-decide = self-heal).
-    {
-        let g = SIDE_CACHE.lock().unwrap_or_else(|e| e.into_inner());
-        if let Some(&(_, s)) = g.iter().find(|&&(b, _)| b == base) {
-            if s >= 0 {
-                return Some(s as u64);
-            }
-        }
-    }
-    // * Count player-designated champions per side over a fixed +/-9 slot window around the athlete (* SEL only).
-    //   A fixed window always covers the whole 10-player roster from any athlete + has no walk truncation.
-    //   WARNING PT_SNAPSHOT is excluded from the vote (07-10): the PT map = the team's whole personal tactics, ~52 champions -> nearly every player on both teams matches
-    //   -> a 5:5 tie -> undecided -> the champ_designated safety net fired on enemy designated champions too = the cause of "the enemy follows my tactics".
-    //   Counting only SEL (champions the user actually designated) sharply reduces ties and prevents misattribution to the enemy side.
-    let (mut c0, mut c1) = (0u32, 0u32);
-    for k in -9i64..=9 {
-        let a = athlete.wrapping_add((k.wrapping_mul(ATH_STRIDE as i64)) as usize);
-        if let Some((team, nm)) = ath_side_champ(a) {
-            // * Match ignoring the scope prefix (2026-07-30): champions with only comp-test designations must be counted too.
-            let is_p = with_sel(|m| m.keys().any(|(c, _)| strip_scope(c) == nm.as_str()));
-            if is_p {
-                if team == 0 {
-                    c0 += 1;
-                } else {
-                    c1 += 1;
-                }
-            }
-        }
-    }
-    let side: i8 = if c0 > c1 {
-        0
-    } else if c1 > c0 {
-        1
-    } else {
-        -1
-    };
-    // * Cache only when decided (bounded). None (not participating / a transient glitch) is not cached -> re-decided on the next buy.
-    if side >= 0 {
-        let mut g = SIDE_CACHE.lock().unwrap_or_else(|e| e.into_inner());
-        if !g.iter().any(|&(b, _)| b == base) {
-            if g.len() >= 64 {
-                g.remove(0);
-            }
-            g.push((base, side));
-        }
-    }
-    if side < 0 {
-        None
-    } else {
-        Some(side as u64)
-    }
-}
 // buy athlete -> (that match's real ctx[11], view roster count@+0x848). Position = athlete+0x8b0.
 //   view = base - 0x840. count==3 marks a demo/title live sim (the context where forward crashes).
 unsafe fn build_lineup_ctx(p: usize) -> Option<([u64; 11], u64)> {
@@ -5359,78 +4049,44 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
 
 // Designated item key for a champion's 4th slot (SEL slot3). idx 0 = auto (None), 1~6 = vanilla category final items,
 //   7+ = mod items. The returned key is used to scan the clone source collection (96 entries, containing both vanilla and mod names).
-// Manually designated item key for slot si (0~3). 0 = auto (None), 1~6 = vanilla category final items, 7+ = mod items.
-/// The host mod's build editor (`item-builds.json`), which owns item
-/// designation now that the tactics dropdowns offer only stat categories.
-///
-/// Consulted ahead of `SEL` for all four slots. This is the whole point of
-/// routing it through here: everything below is reached from the buy detour,
-/// *after* `is_my_athlete` has said the athlete is the player's, so a build set
-/// in the editor can only ever be applied to the player's own players. The
-/// route hook cannot make that distinction — it is handed one team per call with
-/// nothing to say which (see `hook::detour`).
-fn pinned_key(champ: &str, si: u8) -> Option<String> {
+// ---------------------------------------------------------------------------
+//  Build-slot lookups
+// ---------------------------------------------------------------------------
+//
+// `item-builds.json` — written by the host mod's `#builds` editor — is the only
+// source these consult. Each used to try the pin first and fall back to a `SEL`
+// dropdown designation; `SEL` is gone, so the pin is the whole answer and the
+// `scope` argument that disambiguated per-side comp-test selections went with
+// it.
+//
+// Only slot 3 still reaches here in practice. Slots 0/1/2 are set before the
+// match by `crate::item_build_hook` on the stable API; what is left for the
+// native side is the 4th item, which the stable hook cannot deliver because the
+// engine's build `Vec` is three long until this half reallocs it.
+
+/// The pinned item key for one build slot, normalized (radiant + alias) the way
+/// the item catalog is keyed.
+fn slotN_item_key(champ: &str, si: u8) -> Option<String> {
     crate::build_config::pinned_key(champ, si as usize)
 }
+fn slot3_item_key(champ: &str) -> Option<String> {
+    slotN_item_key(champ, 3)
+}
 
-fn slotN_item_key(scope: Scope, champ: &str, si: u8) -> Option<String> {
-    if let Some(key) = pinned_key(champ, si) {
-        return Some(key);
-    }
-    let idx = sel_get(scope, champ, si);
-    if idx == 0 {
-        return None;
-    } // auto -> force nothing
-    if idx <= 6 {
-        // vanilla category -> that category's final item name
-        return VANILLA_KEYS
-            .get(VANILLA_FINAL[(idx - 1) as usize] as usize)
-            .map(|k| k.to_string());
-    }
-    mod_final_opts()
-        .get(idx as usize - 7)
-        .map(|(_, k)| k.clone()) // mod item
+/// Catalog index of a slot's pinned item, when that item is a vanilla one.
+///
+/// Vanilla items only, and by the verbatim key: for those the id *is* the
+/// catalog index, so no name scan is needed. A mod item returns `None` and goes
+/// down the scan path, which is what [`slotN_item_key`] is for.
+fn slotN_vanilla_id(champ: &str, si: u8) -> Option<u64> {
+    let raw = crate::build_config::pinned_key_raw(champ, si as usize)?;
+    VANILLA_KEYS
+        .iter()
+        .position(|key| *key == raw)
+        .map(|id| id as u64)
 }
-fn slot3_item_key(scope: Scope, champ: &str) -> Option<String> {
-    slotN_item_key(scope, champ, 3)
-}
-// Item id of the slot3 manual designation (for the build[3] target). 0 = auto (None), 1~6 = vanilla category finals, 7+ = mod items.
-#[allow(dead_code)]
-fn slot3_item_id(scope: Scope, champ: &str) -> Option<u64> {
-    let idx = sel_get(scope, champ, 3);
-    if idx == 0 {
-        return None;
-    }
-    if idx <= 6 {
-        return Some(VANILLA_FINAL[(idx - 1) as usize]);
-    }
-    mod_final_opts().get(idx as usize - 7).map(|(id, _)| *id)
-}
-// * build[3] index for vanilla designations (idx 1~6) only. For vanilla, id == catalog index, so no scan is needed (works even if the 0.5.0 scan is broken).
-//   Mod items (7+) return None (id != index -> a name scan is required).
-fn slotN_vanilla_id(scope: Scope, champ: &str, si: u8) -> Option<u64> {
-    // A pinned slot answers here or nowhere: returning a `SEL` id for a slot the
-    // editor has pinned would let the old designation win, because the caller
-    // tries this before `slotN_item_key`.
-    if let Some(raw) = crate::build_config::pinned_key_raw(champ, si as usize) {
-        // Vanilla items only, and by the verbatim key: for those the id *is* the
-        // catalog index, so the name scan is not needed. A mod item returns
-        // `None` and goes down the scan path, which is what `slotN_item_key` is
-        // for.
-        return VANILLA_KEYS
-            .iter()
-            .position(|key| *key == raw)
-            .map(|id| id as u64);
-    }
-    let idx = sel_get(scope, champ, si);
-    if (1..=6).contains(&idx) {
-        Some(VANILLA_FINAL[(idx - 1) as usize])
-    } else {
-        None
-    }
-}
-fn slot3_vanilla_id(scope: Scope, champ: &str) -> Option<u64> {
-    slotN_vanilla_id(scope, champ, 3)
+fn slot3_vanilla_id(champ: &str) -> Option<u64> {
+    slotN_vanilla_id(champ, 3)
 }
 // * How the 4th is acquired: true = plant only the target in build[3] and let the game build up naturally from t1 (paying full gold). false = force-inject the final item immediately.
 const AUTO4_NATURAL: bool = true; // * natural build-up (user decision): plant only the target in build[3] and let the game build up from t1 at full price. Higher starting gold is expected to raise the completion rate.
@@ -5597,8 +4253,6 @@ unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
 //   -> the 4th = the mod item. (Anything else / no match = passthrough = the original, normal 3 purchases.)
 const DIAG_SCAN_OFF: bool = false; // * diagnostic #4: realloc proven innocent -> scanning resumed
 const DIAG_FWD_OFF: bool = false; // false = run forward when count != 3 (a real sim). true = emergency global heuristic.
-                                  // * Live injection gate for slots 0/1/2: write the designated index into build[0/1/2] (the same build-Vec target mechanism as slot 3).
-const SLOT012_INJECT_ENABLED: bool = true;
 
 // ** fix B (2026-07-27): spectate == final. The is_live early exit was removed -> inject in background matches too, with the team scope = is_my_athlete (+0x810).
 //   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
@@ -5700,8 +4354,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //
         //   Scope is unaffected: `is_player` is still what gates the designation, so a
         //   non-player athlete reaching the extension takes the network/vanilla fallback
-        //   the code below already had for it, and `note_my_champion` is still only
-        //   called under `is_player`.
+        //   the code below already had for it.
         if FIXB
             && !is_live
             && !matches!(is_my_athlete(athlete), Some(true))
@@ -5766,17 +4419,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
             }
             r
         });
-        let by_scene: bool = if is_live {
-            match scene_ps {
-                Some(ps) => side == ps,
-                None => match player_side_for_match(athlete) {
-                    Some(ps) => side == ps,
-                    None => false,
-                },
-            }
-        } else {
-            false
-        };
+        // The `None` arm used to fall back to `player_side_for_match`, a majority
+        // vote over champions the user had designated in the `SEL` dropdowns.
+        // That went with `SEL`, so an undecided scene side is simply undecided —
+        // which is what it already meant everywhere else, and what `FIXB` makes
+        // moot anyway (`is_player` below takes the `is_my_athlete` branch).
+        let by_scene: bool = is_live && scene_ps.is_some_and(|ps| side == ps);
         // * Comp test: both sides are user-composed, so bypass the scene side gate (apply to any designated champion).
         // ** fix B: team scope = athlete_id membership (is_my_athlete, +0x810). The same decision in background and spectated sims -> convergence.
         //   If MY_ATHLETES is not published yet (before spectating) None = false = network. Only my players are designated; AI vs AI = my 0 = no designation.
@@ -5804,68 +4452,37 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             is_live && by_scene
         };
-        // This branch is the only place in the mod that knows a champion belongs
-        // to the player, so it is where the host half's build editor learns the
-        // player's lineup — `hook::detour` cannot tell the teams apart on its
-        // own. Comp test is excluded: it makes `is_player` true for *both*
-        // sides, so noting from there would publish the opponent's champions as
-        // the player's and invert the gate.
-        if is_player && !is_comptest_live {
-            crate::my_team::note_my_champion(champ);
-        }
-        // ** Deciding the SEL scope (2026-07-30): in comp test, read the designation under that player's side (blue/red) scope.
-        //   Outside comp test it is Scope::Plain = exactly the old lookup => league/spectate/background behaviour unchanged.
-        //   This removes both "the same champion on both sides merges into one designation" and "comp-test designations
-        //   leaking into normal matches" at the same time (per-side keys + scoped lookup).
-        let scope = if is_comptest_live {
-            ct_scope_for(champ, side)
-        } else {
-            Scope::Plain
-        };
-        // * Slot 0/1/2 designations (mod or vanilla) -> set the build Vec target to that catalog index (the live buy path, same as slot 3).
-        //   Only for slots not yet bought (owned <= si) -> the game builds up naturally towards that index. Vanilla = id, mod items = name scan (with recipe validation).
-        if SLOT012_INJECT_ENABLED && is_player {
-            let ctx012 = rd_u64(rsp_entry + 0x30) as usize;
-            let bptr = rd_u64(athlete + 0x488) as usize; // 0.5.0 build ptr
-            let blen = rd_u64(athlete + 0x490); // 0.5.0 build len
-            if ctx012 >= 0x10000
-                && bptr >= 0x10000
-                && blen >= 1
-                && blen <= 8
-                && readable(bptr, (blen as usize) * 8)
-            {
-                for si in 0u8..3 {
-                    if (si as u64) >= blen {
-                        break;
-                    } // build has no such slot
-                    if owned > si as u64 {
-                        continue;
-                    } // slot already purchased -> too late
-                    let idx: Option<u64> = if let Some(vid) = slotN_vanilla_id(scope, champ, si) {
-                        Some(vid) // vanilla: id == catalog index (no scan needed)
-                    } else if let Some(mk) = slotN_item_key(scope, champ, si) {
-                        scan_idx_cached(ctx012, mk.as_bytes()) // mod item: name scan + recipe validation
-                    } else {
-                        None
-                    };
-                    if let Some(t) = idx {
-                        // * Idempotence guard (07-19): skip the write if the target value is already there. Measured, the vast majority of 53,890 writes
-                        //   were rewrites of the same value on the same athlete and slot -> a value comparison cut it to about 10 (removing the hot-path cost).
-                        if rd_u64(bptr + (si as usize) * 8) == t {
-                            continue;
-                        }
-                        if writable(bptr + (si as usize) * 8, 8) {
-                            wr_u64(bptr + (si as usize) * 8, t);
-                            BUY_WROTE_FIRE.fetch_add(1, Ordering::Relaxed);
-                        }
-                    }
-                }
-            }
-        }
+        // This branch used to publish the player's lineup to `crate::my_team`,
+        // which is how the host half guessed whether a set of item-build routes
+        // belonged to the player. That gate is gone — configured builds apply to
+        // whoever plays the champion, both teams — so there is nothing left to
+        // publish it to. `is_player` still gates the designation below.
+        // (A `scope` was computed here — `Scope::CtBlue`/`CtRed` in comp test,
+        // `Plain` otherwise — so that the same champion picked on both sides of a
+        // comp test kept two separate `SEL` designations. Pins have no scope, so
+        // it went with `SEL`.)
+        // Slots 0/1/2 used to be injected here, writing the `item-builds.json`
+        // pin straight into the build Vec — the same mechanism slot 3 still
+        // uses below. It is gone because `crate::item_build_hook::decide_build`
+        // now sets those three slots on the stable API, where the engine is
+        // handed the build before the match instead of having it overwritten
+        // per buy decision.
+        //
+        // That is strictly better, and not only because it is less code: this
+        // path could only ever fire under `is_player`, since a sim athlete
+        // carries no team id and the gate had to be inferred. The stable hook
+        // is told the champion outright, so it applies a build to whoever plays
+        // it — which is what finally made the ENEMY team follow configured
+        // builds. Reinstating an injection here would put the two back in
+        // conflict over the same three slots.
+        //
+        // Slot 3 stays: `decide_build` can only return as many items as the
+        // engine's build Vec holds, and growing that Vec from 3 to 4 is a
+        // native realloc with no stable-API equivalent.
         // ** Purchase order diagnostic (2026-07-30, investigating "it buys the 4th first"): record a snapshot of my players' build[] arrays
         //   once per (champ, owned) combination. What the game really targets is build[0..len], so recording which item each index is
         //   (catalog name) plus the current owned count shows directly **which build slot the game completes first**.
-        //   This point is **after both** the build extension and the slot012 injection, so the final array is visible.
+        //   This point is after the build extension, so the final array is visible. (It used to also sit after the slot 0/1/2 injection, which is gone.)
         if BUY_ORDER_DIAG && is_player {
             let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 let ctx = rd_u64(rsp_entry + 0x30) as usize;
@@ -5946,18 +4563,21 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   (1) and (2) scan the catalog by item "name" for an index + recipe validation (mod item ids != index, so a name scan is mandatory).
                 //   Picks without a recipe (base items) are discarded and fall back (using them panics in FUN_141d5ab40).
                 let ctx = rd_u64(rsp_entry + 0x30) as usize;
-                // (1) manual designation (personal tactics) first -> (2) the network (cached) -> each obtains an index via a (cached) name scan + recipe validation.
-                // * Team gate: manual designations (vanilla/mod) apply to the player's team only. For the enemy, van = manual = None -> the network fallback.
-                let manual = if is_player {
-                    slot3_item_key(scope, champ)
-                } else {
-                    None
-                };
-                let van = if is_player {
-                    slot3_vanilla_id(scope, champ)
-                } else {
-                    None
-                };
+                // (1) manual designation first -> (2) the network (cached) -> each obtains an index via a (cached) name scan + recipe validation.
+                // * No team gate. The `item-builds.json` pin is keyed by champion,
+                //   so it applies to whoever plays that champion — both teams —
+                //   exactly like the slots `crate::item_build_hook` sets on the
+                //   stable API. This used to be `if is_player { .. } else { None }`,
+                //   which is what made the enemy's 4th item wrong while its first
+                //   three were right: both came back `None` for every enemy
+                //   champion and the neural/FNV fallback below picked something
+                //   unrelated to the configured build.
+                // * The `is_player` split that briefly replaced it — pin for
+                //   everyone, `SEL` for the player only — collapsed when `SEL`
+                //   stopped steering builds at all. Both branches are the pin now,
+                //   so there is nothing left to branch on.
+                let manual = slot3_item_key(champ);
+                let van = slot3_vanilla_id(champ);
                 let picked = if let Some(vid) = van {
                     Some(vid) // * vanilla designation: id == catalog index -> no scan needed (robust, 0.5.0)
                 } else if let Some(mk) = manual.as_ref() {
@@ -6016,7 +4636,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         }
         // -- owned==3 confirmed -> decide the 4th item key --
         // Manual designation (vanilla/mod) first. Otherwise AUTO: the best 4th given build[0..3] via the neural forward (universal, everyone).
-        let want_key = match slot3_item_key(scope, champ) {
+        let want_key = match slot3_item_key(champ) {
             Some(k) => k,
             None => match compute_auto_4th_id(athlete, champ).and_then(item_id_to_key) {
                 Some(k) => k,
@@ -6839,6 +5459,12 @@ fn check_game_version() -> bool {
     ok
 }
 /// Whether the gate passed (queried from runtime hook/patch entry points).
+///
+/// Currently unread: its last caller was `injects_builds`, which went with the
+/// slot 0/1/2 injection. Kept as the query point for `VERSION_OK` — the gate
+/// itself still runs and still decides whether `tactics_init` installs anything
+/// — so that a future entry point has something to ask.
+#[allow(dead_code)]
 #[inline]
 fn version_ok() -> bool {
     VERSION_OK.load(Ordering::Relaxed)

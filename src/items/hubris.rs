@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, count_takedowns, mark_enemy_champion, ticks, ItemMeta};
+use crate::{apply_config, apply_lethality, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Hubris {
@@ -14,7 +14,6 @@ pub struct Hubris {
     effect_stack_attack: i32,
     effect_duration_seconds: f64,
     eminence_stacks: usize,
-    takedown_marks: Vec<(usize, usize)>,
 }
 
 impl Hubris {
@@ -28,8 +27,8 @@ impl Hubris {
             effect_bonus_flat_attack: 12,
             effect_stack_attack: 3,
             effect_duration_seconds: 90.0,
+            // Non-vital stats (internals)
             eminence_stacks: 0,
-            takedown_marks: Vec::new(),
         }
     }
 
@@ -39,6 +38,10 @@ impl Hubris {
             price: 1950,
             attack: 115,
             skill_cooldown_mult: 15,
+            effect_lethality: 18,
+            effect_bonus_flat_attack: 12,
+            effect_stack_attack: 3,
+            effect_duration_seconds: 90.0,
             ..Self::base()
         }
     }
@@ -66,37 +69,6 @@ impl Hubris {
             ]
         );
         self
-    }
-
-    fn eminence_bonus_ad(&self) -> i32 {
-        self.effect_bonus_flat_attack + self.effect_stack_attack * self.eminence_stacks as i32
-    }
-
-    // Grants `count` Eminence stacks to the wielder (a growing, decaying AD buff per
-    // stack), matching the "12 (+3 per stack)" payout using the pre-increment count.
-
-    fn grant_eminence(&mut self, ctx: &mut StableSim<'_>, player: usize, count: usize) {
-        if count == 0 {
-            return;
-        }
-        let Some(player_ref) = ctx.get_player(player) else {
-            return;
-        };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-        let champion_id = champion_ref.id();
-        for _ in 0..count {
-            let ad = self.eminence_bonus_ad();
-            ctx.add_buff(
-                champion_id,
-                &BuffV1 {
-                    attack: ad,
-                    ..BuffV1::timed("", ticks(self.effect_duration_seconds))
-                },
-            );
-            self.eminence_stacks += 1;
-        }
     }
 }
 
@@ -144,14 +116,16 @@ impl StableItem for Hubris {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.eminence_stacks = 0;
-        self.takedown_marks.clear();
-    }
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(champion_ref) = player_ref.champion() else {
+            return;
+        };
 
-    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        let takedowns = count_takedowns(&mut self.takedown_marks, ctx);
-        self.grant_eminence(ctx, player, takedowns);
+        ctx.entity_remove_buff(champion_ref.id(), "hubris_bonus");
+        self.eminence_stacks = 0;
     }
 
     fn on_attack(
@@ -161,19 +135,60 @@ impl StableItem for Hubris {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
-        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+
+        let is_target_tower = target_ref.is_tower();
+
+        if !is_target_tower {
+            apply_lethality(ctx, caster, target, self.effect_lethality, damage);
+        }
     }
 
-    fn on_skill_hit(
+    fn on_kill(
         &mut self,
-        ctx: &mut StableSim<'_>,
+        sim: &mut StableSim<'_>,
         _rng_seed: u64,
-        caster: usize,
-        target: usize,
+        _player: usize,
+        entity: usize,
+        victim: usize,
     ) {
-        mark_enemy_champion(&mut self.takedown_marks, ctx, caster, target);
+        let Some(victim_ref) = sim.get_entity(victim) else {
+            return;
+        };
+        if !victim_ref.is_champion() {
+            return;
+        }
+
+        let bonus_ad =
+            self.effect_bonus_flat_attack + self.effect_stack_attack * self.eminence_stacks as i32;
+        self.eminence_stacks += 1;
+
+        sim.add_buff(
+            entity,
+            &BuffV1 {
+                attack: bonus_ad,
+                ..BuffV1::timed("hubris_bonus", ticks(self.effect_duration_seconds))
+            },
+        );
+    }
+
+    fn on_assist(&mut self, sim: &mut StableSim<'_>, _player: usize, entity: usize) {
+        let bonus_ad =
+            self.effect_bonus_flat_attack + self.effect_stack_attack * self.eminence_stacks as i32;
+        self.eminence_stacks += 1;
+
+        sim.add_buff(
+            entity,
+            &BuffV1 {
+                attack: bonus_ad,
+                ..BuffV1::timed("hubris_bonus", ticks(self.effect_duration_seconds))
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

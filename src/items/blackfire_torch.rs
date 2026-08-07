@@ -3,6 +3,7 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 
+// Landing an Ability on an enemy champion grants 10 AP for 4 seconds (max 4 stacks).
 #[derive(Clone, Debug)]
 pub struct BlackfireTorch {
     meta: ItemMeta,
@@ -38,11 +39,13 @@ impl BlackfireTorch {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_blackfire_torch", &["blackfire_torch"]),
-            stack_buff: "radiant_blackfire_torch_buff",
+            stack_buff: "blackfire_torch_buff",
             price: 1900,
             magic_power: 175,
             skill_cooldown_mult: 25,
             effect_stack_magic_power: 30,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4.0,
             ..Self::base()
         }
     }
@@ -122,10 +125,15 @@ impl StableItem for BlackfireTorch {
         _rng_seed: u64,
         caster: usize,
         _target: usize,
+        is_ally: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
+        if is_ally {
+            return;
+        }
+
         let stack_count = buff_stacks(&entity_ref, self.stack_buff);
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(

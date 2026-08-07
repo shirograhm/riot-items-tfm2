@@ -38,6 +38,8 @@ impl MortalReminder {
             attack: 85,
             defence_penetration: 30,
             crit_chance: 25,
+            effect_heal_reduce: 40,
+            effect_duration_seconds: 2.0,
             ..Self::base()
         }
     }
@@ -118,6 +120,8 @@ impl StableItem for MortalReminder {
         target: usize,
         _damage: &mut usize,
         damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(target) else {
             return;

@@ -11,8 +11,6 @@ const REGEN_PERIOD_TICKS: usize = 60;
 #[derive(Clone, Debug)]
 pub struct WarmogsArmor {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant items keep
-    // independent stacks.
     recently_damaged_buff: &'static str,
     move_speed_buff: &'static str,
     price: usize,
@@ -41,6 +39,7 @@ impl WarmogsArmor {
             effect_caster_hp_percent_heal: 3.0,
             effect_move_speed_mult: 4,
             effect_duration_seconds: 6.0,
+            // Non-vital stats (internals)
             regen_cooldown: 0,
             move_speed_cooldown: 0,
         }
@@ -49,11 +48,14 @@ impl WarmogsArmor {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_warmogs_armor", &["warmogs_armor"]),
-            recently_damaged_buff: "radiant_warmogs_armor_recently_damaged",
-            move_speed_buff: "radiant_warmogs_armor_move_speed",
+            recently_damaged_buff: "warmogs_armor_recently_damaged",
+            move_speed_buff: "warmogs_armor_move_speed",
             price: 2100,
             hp: 1000,
             hp_regen: 10,
+            effect_caster_hp_percent_heal: 3.0,
+            effect_move_speed_mult: 4,
+            effect_duration_seconds: 6.0,
             ..Self::base()
         }
     }
@@ -190,15 +192,18 @@ impl StableItem for WarmogsArmor {
         ctx: &mut StableSim<'_>,
         _player: usize,
         entity: usize,
-        attacker: usize,
+        _attacker: usize,
         _damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        if attacker == entity {
-            return;
-        }
         ctx.add_buff(
             entity,
-            &BuffV1::timed(self.recently_damaged_buff, ticks(self.effect_duration_seconds)),
+            &BuffV1::timed(
+                self.recently_damaged_buff,
+                ticks(self.effect_duration_seconds),
+            ),
         );
     }
 

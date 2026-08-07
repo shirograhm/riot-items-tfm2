@@ -3,7 +3,13 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, percent_of, ItemMeta};
 
-fn shield_reaver(ctx: &mut StableSim<'_>, caster: usize, target: usize, flat: usize, ad_percent: f64) {
+fn shield_reaver(
+    ctx: &mut StableSim<'_>,
+    caster: usize,
+    target: usize,
+    flat: usize,
+    ad_percent: f64,
+) {
     let shielded_champion = ctx
         .get_entity(target)
         .map(|t| t.is_champion() && t.shield() > 0)
@@ -47,6 +53,7 @@ impl SerpentsFang {
             meta: ItemMeta::radiant("radiant_serpents_fang", &["serpents_fang"]),
             price: 1800,
             attack: 100,
+            effect_lethality: 15,
             effect_bonus_flat_damage: 85,
             effect_ad_percent_damage: 15.0,
             ..Self::base()
@@ -126,8 +133,19 @@ impl StableItem for SerpentsFang {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        apply_lethality(ctx, caster, target, self.effect_lethality, damage);
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+
+        let is_target_tower = target_ref.is_tower();
+
+        if !is_target_tower {
+            apply_lethality(ctx, caster, target, self.effect_lethality, damage);
+        }
+
         shield_reaver(
             ctx,
             caster,

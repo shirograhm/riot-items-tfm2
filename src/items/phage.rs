@@ -43,14 +43,11 @@ impl Phage {
     }
 
     fn grant_rage(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
-        if !is_enemy_champion(ctx, caster, target) {
-            return;
-        }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
         if has_buff(&caster_ref, RAGE_BUFF) {
-            return;
+            ctx.entity_remove_buff(caster, RAGE_BUFF);
         }
         ctx.add_buff(
             caster,
@@ -114,8 +111,12 @@ impl StableItem for Phage {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        self.grant_rage(ctx, caster, target);
+        if attack_type == AttackTypeV1::BaseAttack && is_enemy_champion(ctx, caster, target) {
+            self.grant_rage(ctx, caster, target);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

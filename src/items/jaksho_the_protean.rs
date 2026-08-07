@@ -42,12 +42,14 @@ impl JakshoTheProtean {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_jaksho_the_protean", &["jaksho_the_protean"]),
-            stack_buff: "radiant_jaksho_the_protean_stack",
+            stack_buff: "jaksho_the_protean_stack",
             price: 2000,
             hp: 550,
             defence: 65,
             effect_stack_defence_mult: 10,
             effect_stack_magic_resistance_mult: 10,
+            effect_max_stacks: 4,
+            effect_duration_seconds: 4.0,
             ..Self::base()
         }
     }
@@ -130,6 +132,9 @@ impl StableItem for JakshoTheProtean {
         entity: usize,
         attacker: usize,
         _damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(entity) else {
             return;
@@ -140,6 +145,7 @@ impl StableItem for JakshoTheProtean {
         if !attacker_ref.is_champion() {
             return;
         }
+
         let stack_count = buff_stacks(&entity_ref, self.stack_buff);
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
@@ -154,7 +160,11 @@ impl StableItem for JakshoTheProtean {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Hp, ItemTagV1::Defense, ItemTagV1::MagicResistance]
+        vec![
+            ItemTagV1::Hp,
+            ItemTagV1::Defense,
+            ItemTagV1::MagicResistance,
+        ]
     }
 
     fn category(&self) -> ItemCategoryV1 {
