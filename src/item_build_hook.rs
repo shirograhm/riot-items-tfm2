@@ -50,10 +50,7 @@ impl StableItemBuildHook for ConfiguredBuilds {
 }
 
 impl ConfiguredBuilds {
-    /// No team gate: a build is keyed by champion and applies to whoever plays
-    /// it, the enemy included. The tactics half still pins the same items per
-    /// athlete for the player's own side, which is now redundant rather than
-    /// conflicting — both read the same `item-builds.json`, so they agree.
+    // No team gate: a build is keyed by champion and applies to whoever plays it, enemy included.
     fn configured_build(&self, ctx: &StableItemBuildContext<'_>) -> Option<Vec<usize>> {
         let config = build_config::load_cached();
         if config.is_empty() {
