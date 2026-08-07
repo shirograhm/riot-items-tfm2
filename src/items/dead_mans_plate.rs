@@ -222,9 +222,6 @@ impl StableItem for DeadMansPlate {
         if self.momentum == 0 || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
-        if !is_enemy_champion(ctx, caster, target) {
-            return;
-        }
 
         let consumed = self.momentum;
         self.momentum = 0;

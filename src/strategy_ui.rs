@@ -137,7 +137,7 @@
 //! away, and only then — while a screen is up, registering a live path twice is
 //! still the double-fire hazard described above.
 
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, OnceLock};
 
 use mod_api_stable::*;
 
@@ -626,6 +626,29 @@ fn is_mod_item(key: &str) -> bool {
         .lock()
         .map(|finals| finals.iter().any(|final_key| final_key == key))
         .unwrap_or(false)
+}
+
+/// [`MOD_FINALS`] as a set, built once.
+///
+/// `MOD_FINALS` is written during `init` and never again, so a snapshot cannot
+/// go stale — and the item-build hook asks this question for every selectable
+/// final item of every player of every match, on parallel sim workers, where a
+/// global mutex and a linear scan per candidate is contention for an answer that
+/// cannot change.
+static MOD_FINAL_SET: OnceLock<std::collections::HashSet<String>> = OnceLock::new();
+
+/// [`is_mod_item`] for the simulation side. Reads empty — so promotes nothing —
+/// if it were ever called before registration, which cannot happen: items are
+/// registered in `init`, matches run later.
+pub(crate) fn is_mod_final_item(key: &str) -> bool {
+    MOD_FINAL_SET
+        .get_or_init(|| {
+            MOD_FINALS
+                .lock()
+                .map(|finals| finals.iter().cloned().collect())
+                .unwrap_or_default()
+        })
+        .contains(key)
 }
 
 // -- paths --------------------------------------------------------------
