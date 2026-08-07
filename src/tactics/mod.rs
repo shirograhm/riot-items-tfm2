@@ -84,7 +84,8 @@ const UI_TREE_WALK_ENABLED: bool = true;
 const FN_DD_SETOPT_RVA: usize = 0x1c1ad0; // 0.5.4 (0.5.3 was 0x1bfc80). History for 0.5.3 follows. (0.5.2 was 0x242f250). ghidra-re confirmed: 103 direct callers, an exact match with the old exe, plus 4 offset fingerprints (+0x1788 selected / +0x1528,0x1530,0x1538 option Vec / +0x1570,0x1578 callback / element 0xf8 / input stride 0x28) all unchanged. WARNING: the prologue DID change (dd_addr_valid expectation below was updated).
 
 // * Production master diagnostic gate (07-11): this session's diagnostics (nn_moditem, timing, liveroster, p6/channel scan, shadow-call catalog name lookup) plus
-//   the older diagnostic flush/hooks (c6new, countprobe, auto4, teamgate) are all OFF. The team gate (is_live/is_player) and SLOT012 injection live outside the gate = unaffected.
+//   the older diagnostic flush/hooks (c6new, countprobe, auto4, teamgate) are all OFF. The team gate (is_live/is_player) lives outside the gate = unaffected.
+//   (The SLOT012 injection that used to be named here is gone — slots 0/1/2 are set by `crate::item_build_hook` on the stable API.)
 const DIAG_ENABLED: bool = false;
 
 /// Trace files this half drops in its own folder: `4items_mode.txt` and
@@ -168,25 +169,6 @@ fn slot_count() -> usize {
     } else {
         3
     }
-}
-
-/// Whether this half is actually applying `item-builds.json` per athlete.
-///
-/// Every term is a *measured* state rather than an assumption: the version gate
-/// passed, the injection is compiled in, and the `buy_item` detour reported a
-/// successful install (`1` = OK).
-///
-/// Nothing calls this any more. It used to arbitrate: the host half asked before
-/// applying builds itself, so that exactly one of the two did. Both now apply
-/// them, to every team, from the same file — see
-/// `crate::item_build_hook::configured_build` — so there is nothing to
-/// arbitrate. Kept because it is the only assembled answer to "is the
-/// per-athlete injection live", which is the first thing worth knowing when
-/// builds are not landing, and because it is the sole reader of the version
-/// gate.
-#[allow(dead_code)]
-pub(crate) fn injects_builds() -> bool {
-    version_ok() && SLOT012_INJECT_ENABLED && BUY_PROBE_INSTALLED.load(Ordering::Relaxed) == 1
 }
 
 // Vanilla 7 option labels (idx 0~6). 1:1 with the game's personal_tactics ItemBuildOverride.
@@ -3684,7 +3666,6 @@ static LIVE_SEED: AtomicU64 = AtomicU64::new(0); // * my match's seed (captured 
 static PROV_HIT: AtomicU64 = AtomicU64::new(0); // is_live (v13 provider/seed match) firings
 static VT_OK: AtomicU64 = AtomicU64::new(0); // of those, firings via seed value comparison
 static INGAME_NOW: AtomicBool = AtomicBool::new(false); // "spectating right now" flag set by post_update
-static BUY_WROTE_FIRE: AtomicU64 = AtomicU64::new(0); // successful build[si] writes
 static SEEDCTOR_N: AtomicU64 = AtomicU64::new(0); // total ctor firings
 static SEEDCTOR_MATCH_N: AtomicU64 = AtomicU64::new(0); // rdx == LIVE_SEED hits (rendered provider captured)
 unsafe extern "C" fn cap_seed_ctor(saved: *mut u64, _e: usize) -> u64 {
@@ -4351,7 +4332,7 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                      last observed: build_len={} build_cap={} / last target index={}\n\
                      [slot3 icon] set OK={} skipped={} / GameView={:#x}(hits {}) view-model owns a 4th={} players\n\
                      [slot UI surgery] {}\n\
-                     note: mode(slot_count)={} - MY_ATHLETES={} - LIVE_SEED={:#x} - buy write successes={}\n",
+                     note: mode(slot_count)={} - MY_ATHLETES={} - LIVE_SEED={:#x}\n",
                     c[0], c[1], c[2], c[3], c[4], c[5], c[6],
                     c[7], BE_MAX_OWNED.load(Ordering::Relaxed),
                     last >> 32, last & 0xffff_ffff, BE_LAST_T.load(Ordering::Relaxed),
@@ -4360,7 +4341,7 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                     SLOT3_PV_N.load(Ordering::Relaxed),
                     SLOTUI_MSG.lock().unwrap_or_else(|e| e.into_inner()).clone().unwrap_or_else(|| "(not run)".into()),
                     slot_count(), MY_ATH_N.load(Ordering::Relaxed),
-                    LIVE_SEED.load(Ordering::Relaxed), BUY_WROTE_FIRE.load(Ordering::Relaxed));
+                    LIVE_SEED.load(Ordering::Relaxed));
                 // Hook install state. Added while diagnosing "never buys a 4th
                 // item": every one of these reports through `append_log`, which
                 // `LOG_ENABLED = false` discards, so a hook that failed to
@@ -5650,18 +5631,6 @@ unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
 //   -> the 4th = the mod item. (Anything else / no match = passthrough = the original, normal 3 purchases.)
 const DIAG_SCAN_OFF: bool = false; // * diagnostic #4: realloc proven innocent -> scanning resumed
 const DIAG_FWD_OFF: bool = false; // false = run forward when count != 3 (a real sim). true = emergency global heuristic.
-                                  // * Live injection gate for slots 0/1/2: write the designated index into build[0/1/2] (the same build-Vec target mechanism as slot 3).
-// ** TEMPORARILY OFF — item-build hook attribution test.
-//   With this false, the buy detour writes no `item-builds.json` pin into
-//   build[0..2] for anyone, so the ONLY thing left that can apply a configured
-//   build is `crate::item_build_hook::decide_build` on the stable API. That is
-//   what makes the run decisive (see `DECIDE_DIAG` there):
-//     * own team follows builds  -> the stable hook IS firing
-//     * own team stops following -> the stable hook is not dispatched at all
-//   and the enemy column then says whether the host team-gates the hook.
-//   Slot 3 is unaffected (still native, still `is_player`) — read slots 1-3.
-//   RESTORE TO true once the question is answered.
-const SLOT012_INJECT_ENABLED: bool = false;
 
 // ** fix B (2026-07-27): spectate == final. The is_live early exit was removed -> inject in background matches too, with the team scope = is_my_athlete (+0x810).
 //   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
@@ -5880,50 +5849,28 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             Scope::Plain
         };
-        // * Slot 0/1/2 designations (mod or vanilla) -> set the build Vec target to that catalog index (the live buy path, same as slot 3).
-        //   Only for slots not yet bought (owned <= si) -> the game builds up naturally towards that index. Vanilla = id, mod items = name scan (with recipe validation).
-        if SLOT012_INJECT_ENABLED && is_player {
-            let ctx012 = rd_u64(rsp_entry + 0x30) as usize;
-            let bptr = rd_u64(athlete + 0x488) as usize; // 0.5.0 build ptr
-            let blen = rd_u64(athlete + 0x490); // 0.5.0 build len
-            if ctx012 >= 0x10000
-                && bptr >= 0x10000
-                && blen >= 1
-                && blen <= 8
-                && readable(bptr, (blen as usize) * 8)
-            {
-                for si in 0u8..3 {
-                    if (si as u64) >= blen {
-                        break;
-                    } // build has no such slot
-                    if owned > si as u64 {
-                        continue;
-                    } // slot already purchased -> too late
-                    let idx: Option<u64> = if let Some(vid) = slotN_vanilla_id(scope, champ, si) {
-                        Some(vid) // vanilla: id == catalog index (no scan needed)
-                    } else if let Some(mk) = slotN_item_key(scope, champ, si) {
-                        scan_idx_cached(ctx012, mk.as_bytes()) // mod item: name scan + recipe validation
-                    } else {
-                        None
-                    };
-                    if let Some(t) = idx {
-                        // * Idempotence guard (07-19): skip the write if the target value is already there. Measured, the vast majority of 53,890 writes
-                        //   were rewrites of the same value on the same athlete and slot -> a value comparison cut it to about 10 (removing the hot-path cost).
-                        if rd_u64(bptr + (si as usize) * 8) == t {
-                            continue;
-                        }
-                        if writable(bptr + (si as usize) * 8, 8) {
-                            wr_u64(bptr + (si as usize) * 8, t);
-                            BUY_WROTE_FIRE.fetch_add(1, Ordering::Relaxed);
-                        }
-                    }
-                }
-            }
-        }
+        // Slots 0/1/2 used to be injected here, writing the `item-builds.json`
+        // pin straight into the build Vec — the same mechanism slot 3 still
+        // uses below. It is gone because `crate::item_build_hook::decide_build`
+        // now sets those three slots on the stable API, where the engine is
+        // handed the build before the match instead of having it overwritten
+        // per buy decision.
+        //
+        // That is strictly better, and not only because it is less code: this
+        // path could only ever fire under `is_player`, since a sim athlete
+        // carries no team id and the gate had to be inferred. The stable hook
+        // is told the champion outright, so it applies a build to whoever plays
+        // it — which is what finally made the ENEMY team follow configured
+        // builds. Reinstating an injection here would put the two back in
+        // conflict over the same three slots.
+        //
+        // Slot 3 stays: `decide_build` can only return as many items as the
+        // engine's build Vec holds, and growing that Vec from 3 to 4 is a
+        // native realloc with no stable-API equivalent.
         // ** Purchase order diagnostic (2026-07-30, investigating "it buys the 4th first"): record a snapshot of my players' build[] arrays
         //   once per (champ, owned) combination. What the game really targets is build[0..len], so recording which item each index is
         //   (catalog name) plus the current owned count shows directly **which build slot the game completes first**.
-        //   This point is **after both** the build extension and the slot012 injection, so the final array is visible.
+        //   This point is after the build extension, so the final array is visible. (It used to also sit after the slot 0/1/2 injection, which is gone.)
         if BUY_ORDER_DIAG && is_player {
             let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 let ctx = rd_u64(rsp_entry + 0x30) as usize;
@@ -6897,6 +6844,12 @@ fn check_game_version() -> bool {
     ok
 }
 /// Whether the gate passed (queried from runtime hook/patch entry points).
+///
+/// Currently unread: its last caller was `injects_builds`, which went with the
+/// slot 0/1/2 injection. Kept as the query point for `VERSION_OK` — the gate
+/// itself still runs and still decides whether `tactics_init` installs anything
+/// — so that a future entry point has something to ask.
+#[allow(dead_code)]
 #[inline]
 fn version_ok() -> bool {
     VERSION_OK.load(Ordering::Relaxed)

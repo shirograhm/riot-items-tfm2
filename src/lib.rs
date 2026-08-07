@@ -189,9 +189,6 @@ struct NativeTapExtension;
 impl StableServerExtension for NativeTapExtension {
     fn before_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
         tactics::driver::before_management_tick();
-        // Main thread: the one safe place to put the item-build hook's
-        // attribution diagnostic on disk (it is filled from sim workers).
-        item_build_hook::flush_diag();
     }
 
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
