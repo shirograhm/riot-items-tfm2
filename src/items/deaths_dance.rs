@@ -32,7 +32,7 @@ impl DeathsDance {
             defence: 45,
             skill_cooldown_mult: 10,
             effect_delayed_damage_percent: 25.0,
-            effect_burn_hp_percent_cap: 5.0,
+            effect_burn_hp_percent_cap: 2.5,
             effect_bonus_flat_heal: 45,
             effect_kill_heal_missing_percent: 15.0,
             // Non-vital stats (internals)
@@ -49,8 +49,9 @@ impl DeathsDance {
             price: 2100,
             attack: 75,
             defence: 75,
+            skill_cooldown_mult: 10,
             effect_delayed_damage_percent: 25.0,
-            effect_burn_hp_percent_cap: 5.0,
+            effect_burn_hp_percent_cap: 2.5,
             effect_bonus_flat_heal: 75,
             effect_kill_heal_missing_percent: 25.0,
             ..Self::base()
