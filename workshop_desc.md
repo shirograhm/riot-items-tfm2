@@ -19,11 +19,11 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 Some item effects are roughly simulated to the best of my ability using the available mod-sdk.  
 
-Some AI champions seem to prefer the wrong stats when given deference of item selection. Magic Knight tends to buy AD and AS items instead of AP, for example.  
+Some AI champions seem to prefer the wrong stats when given deference of item selection.  
 
-Some AI champions ignore the custom item builds. This is being investigated, but is likely to be instability that occurs in long term builds.  
+Some AI champions ignore the custom item builds. Likely to be instability that occurs in long term builds.  
 
-This mod can cause your game to crash if you back out to the main menu and then attempt to load the game again. This is being investigated, but please restart the game for now.  
+This mod can cause your game to crash if you back out to the main menu and then attempt to load the game again. This is a side-effect of having 4 items mode enabled.  
 
 [h1] Instructions [/h1]
 
