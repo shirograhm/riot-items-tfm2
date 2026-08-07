@@ -1,5 +1,5 @@
-//! Item-build setter: overwrites the routes the game's `get_item_builds_list`
-//! returns with fixed build paths, keyed by champion id.
+//! Item-build setter: the fixed build paths, keyed by champion id, that
+//! `crate::item_build_hook` hands the engine through `StableItemBuildHook`.
 //!
 //! # `item-builds.json` is storage, not configuration
 //!
@@ -17,10 +17,10 @@
 //!   play" and the final whistle can reload them.
 //!
 //! Extension seams (intentional TODOs):
-//! - `apply` keys builds by champion id against the route's lineup (`team1`),
-//!   assuming `routes[i]` is the build for `lineup[i]`. Lineup-aware selection —
-//!   varying a champion's build by the enemy comp — would slot in there, using
-//!   the same `team1`/`team2` data the hook already passes through.
+//! - [`build_for_champion`] keys builds by champion id alone. Lineup-aware
+//!   selection — varying a champion's build by the enemy comp — would slot in
+//!   there, using the `ally_champions`/`enemy_champions` the item-build hook
+//!   already has in hand.
 
 use serde::Deserialize;
 use std::borrow::Cow;
@@ -444,53 +444,41 @@ pub fn unique_items_enabled() -> bool {
     value
 }
 
-/// Overwrites the game's route list with the configured builds.
+/// The configured build for one champion, as item indices.
 ///
-/// `item_keys` is the parallel list of item keys for the `items` slice the game
-/// passed to the hook; each build's item keys are resolved to indices into it.
-/// `lineup` is the champion id for each route in route order — the team the game
-/// generates these builds for (`team1`), so `routes[i]` is the build for
-/// `lineup[i]`. This is the lineup, *not* the game's 60-entry `champion_ids`
-/// roster: `route_count` tracks `team1` size, far smaller than
-/// `champion_id_count`.
+/// `resolve` turns an item key into an index in whatever list the caller is
+/// working against — `StableItemBuildContext::item_index` for the item-build
+/// hook. Keeping it a closure is what makes this independent of *how* the caller
+/// sees the item pool, which is the whole difference between the stable hook and
+/// the detour this used to serve.
 ///
-/// Each route slot whose `lineup` champion has a `by_champion` entry is
-/// overwritten with that build; every other slot is left exactly as the game
-/// generated it. Unknown item keys are skipped rather than aborting, so one typo
-/// does not discard the rest of a build. The route count is never changed.
-pub fn apply(
+/// `ai_build` is the build the engine picked for the same champion; it fills the
+/// blank (`null`) slots. Returns `None` when the champion has no entry, which
+/// callers must read as "leave the engine's build alone" — distinct from
+/// `Some(vec![])`, a configured build whose every key failed to resolve.
+///
+/// Unknown item keys are skipped rather than aborting, so one typo does not
+/// discard the rest of a build.
+pub fn build_for_champion(
     config: &BuildConfig,
-    item_keys: &[String],
-    lineup: &[String],
-    routes: &mut [Vec<usize>],
-) {
-    let index_by_key: HashMap<&str, usize> = item_keys
-        .iter()
-        .enumerate()
-        .map(|(index, key)| (key.as_str(), index))
-        .collect();
-
-    for (index, slot) in routes.iter_mut().enumerate() {
-        let champion_build = lineup
-            .get(index)
-            .and_then(|champion_id| config.by_champion.get(champion_id));
-        if let Some(build) = champion_build {
-            // A build may be longer than the game has slots for — the file
-            // keeps a fourth item while 3-slot mode is on, so that switching
-            // back restores the build. Sending that item anyway
-            // would hand the game a route it has nowhere to put.
-            let usable = build.len().min(picker_slots());
-            let ai_route = slot.clone();
-            *slot = merge_build(&build[..usable], &ai_route, &index_by_key);
-        }
-    }
+    champion: &str,
+    resolve: impl Fn(&str) -> Option<usize>,
+    ai_build: &[usize],
+) -> Option<Vec<usize>> {
+    let build = config.by_champion.get(champion)?;
+    // A build may be longer than the game has slots for — the file keeps a
+    // fourth item while 3-slot mode is on, so that switching back restores the
+    // build. Sending that item anyway would hand the game a slot it cannot put
+    // anywhere.
+    let usable = build.len().min(picker_slots());
+    Some(merge_build(&build[..usable], ai_build, &resolve))
 }
 
-/// Resolves one configured item key to a pool index. The key is tried verbatim
-/// first, so a game-internal key (`"warlords_final_judgement"`, or any vanilla
-/// tier 5) resolves as written; only if that misses is it normalized to its
-/// `radiant_` variant and run through `alias_key`, which is what lets builds be
-/// authored with plain LoL names (`"collector"`). Unknown keys return `None`
+/// Resolves one configured item key to a pool index. The key is normalized to
+/// its `radiant_` variant and run through `alias_key` first, which is what lets
+/// builds be authored with plain LoL names (`"collector"`); only if that misses
+/// is it tried verbatim, so a game-internal key (`"warlords_final_judgement"`,
+/// or any vanilla tier 5) still resolves as written. Unknown keys return `None`
 /// (skipped rather than aborting the build).
 ///
 /// The `radiant_` attempt comes FIRST and the verbatim one is the fallback.
@@ -499,12 +487,12 @@ pub fn apply(
 /// verbatim first would silently downgrade every build in that file to its base
 /// tier. The fallback exists only for keys with no radiant variant — the vanilla
 /// tier 5s the in-game picker offers, like `"warlords_final_judgement"`.
-fn resolve_key(key: &str, index_by_key: &HashMap<&str, usize>) -> Option<usize> {
+fn resolve_key(key: &str, resolve: &impl Fn(&str) -> Option<usize>) -> Option<usize> {
     let radiant = radiant_key(key);
-    if let Some(index) = index_by_key.get(alias_key(radiant.as_ref())) {
-        return Some(*index);
+    if let Some(index) = resolve(alias_key(radiant.as_ref())) {
+        return Some(index);
     }
-    index_by_key.get(key).copied()
+    resolve(key)
 }
 
 /// Builds the final route from a configured build and the route the AI generated
@@ -516,12 +504,12 @@ fn resolve_key(key: &str, index_by_key: &HashMap<&str, usize>) -> Option<usize> 
 fn merge_build(
     build: &[Option<String>],
     ai_route: &[usize],
-    index_by_key: &HashMap<&str, usize>,
+    resolve: &impl Fn(&str) -> Option<usize>,
 ) -> Vec<usize> {
     let pinned: std::collections::HashSet<usize> = build
         .iter()
         .flatten()
-        .filter_map(|key| resolve_key(key, index_by_key))
+        .filter_map(|key| resolve_key(key, resolve))
         .collect();
     let mut ai_fill = ai_route.iter().copied().filter(|i| !pinned.contains(i));
 
@@ -529,7 +517,7 @@ fn merge_build(
     for slot in build {
         match slot {
             Some(key) => {
-                if let Some(index) = resolve_key(key, index_by_key) {
+                if let Some(index) = resolve_key(key, resolve) {
                     route.push(index);
                 }
             }

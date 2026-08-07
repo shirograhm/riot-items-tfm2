@@ -207,18 +207,16 @@ icons. The vanilla **Matchup** card stays on screen to the right of it, so the
 lineup is visible while builds are being set. **Team** is untouched — switching
 to it puts the editor away and brings the Team columns back.
 
-Builds apply to **your players only**. The game asks the mod for one team's item
-builds at a time without saying whose, so a build keyed to a champion used to
-reach whoever played that champion, the enemy included. Builds are therefore not
-applied to that request at all: all four slots are applied per athlete as each
-one shops, at the point where the mod can check the athlete's id against your
-own starting roster. An enemy playing the same champion is a different athlete
-and gets nothing.
+Builds apply to **your players only**. All four slots are applied per athlete as
+each one shops, at the point where the mod can check the athlete's id against
+your own starting roster. An enemy playing the same champion is a different
+athlete and gets nothing.
 
 This needs the four-item half to be active, since that is the half that is
 inside the match. If it has disabled itself — after a game update, say — builds
-fall back to being applied per champion to the team being built for, which can
-occasionally reach the enemy, rather than not applying at all. A build that
+fall back to the game's own item-build hook, which names the champion each build
+is for but not whose team it is, so they are matched against your last known
+lineup and can occasionally reach the enemy. That is deliberate: a build that
 quietly does nothing is the worse outcome.
 
 The vanilla Personal tab is gone because this replaces it. Its five per-player

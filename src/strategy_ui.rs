@@ -917,8 +917,10 @@ fn collect_items(
             }
             continue;
         }
-        // `next_tier` empty means nothing upgrades from this item — the same
-        // "is this a final item" test the hook's `enforce_unique_items` uses.
+        // `next_tier` empty means nothing upgrades from this item. The
+        // item-build hook cannot make this test — `next_tier` does not cross the
+        // stable boundary — so it works from tier instead; this side reads the
+        // catalog JSON and can still ask the question directly.
         let is_final = value
             .get("next_tier")
             .and_then(|next| next.as_array())

@@ -5,6 +5,7 @@ mod build_config;
 mod config;
 mod constants;
 mod hook;
+mod item_build_hook;
 mod item_catalog;
 mod item_meta;
 mod items;
@@ -173,15 +174,20 @@ fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: 
     ctx.add_buff(champion_id, &buff);
 }
 
-// Installs the experimental item-build route hook when the server starts. The
-// hook is fail-closed (see `hook.rs`): on any mismatch it records a refusal and
-// leaves the game function untouched. It is the one part of this mod that is
-// NOT stable-ABI — it detours the game binary directly, so it needs the pinned
-// toolchain in `rust-toolchain.toml` and the `game_core` rlib in
+// Installs the native tap on the item-build route function when the server
+// starts. It is fail-closed (see `hook.rs`): on any mismatch it records a
+// refusal and leaves the game function untouched. It is the one part of this
+// mod that is NOT stable-ABI — it detours the game binary directly, so it needs
+// the pinned toolchain in `rust-toolchain.toml` and the `game_core` rlib in
 // `.cargo/config.toml`, and it must be re-verified after every game update.
-struct ItemBuildHookExtension;
+//
+// It no longer decides builds; `item_build_hook::ConfiguredBuilds` does, on the
+// stable API. What it still supplies is the `Database` address and the item
+// catalog the tactics half cannot reach any other way, plus the full champion
+// roster for the editor — so a refusal costs those, not the builds.
+struct NativeTapExtension;
 
-impl StableServerExtension for ItemBuildHookExtension {
+impl StableServerExtension for NativeTapExtension {
     fn before_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
         tactics::driver::before_management_tick();
     }
@@ -376,7 +382,12 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
 
-    reg.set_server_extension(ItemBuildHookExtension);
+    // What `item-builds.json` reaches the game through. Registered whether or
+    // not a config exists: the hook keeps the engine's build when it has nothing
+    // to say, so an inert install costs one call per player per match.
+    reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
+
+    reg.set_server_extension(NativeTapExtension);
     // Client-side in-game build picker on the strategy screen. Purely additive:
     // it no-ops unless the `ui/layout/strategy` asset override is in place.
     reg.set_extension(strategy_ui::StrategyPicker);
