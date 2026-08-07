@@ -63,6 +63,22 @@ pub fn db_addr() -> usize {
     DB_ADDR.load(Ordering::Relaxed)
 }
 
+/// Forgets the `Database` base so the next `record_item_net` can settle a new
+/// one. Called at the session boundary (`tactics_on_server_start`).
+///
+/// [`record_item_net`] takes the first address that validates and then refuses
+/// to look again — which is right within a session and wrong across one. The
+/// `Database` does not survive a return to the main menu, so without this the
+/// mod spent every session after the first holding the address of a freed
+/// object. It did not crash, because `itemnet_forward` re-checks the weight
+/// pointer on every call, but that check only *skips* the neural 4th-item pick
+/// — so it silently fell back to the champion-hash vanilla choice for the whole
+/// second session, and every session after it.
+pub fn reset_session() {
+    DB_ADDR.store(0, Ordering::Relaxed);
+    DB_PROBED.store(false, Ordering::Relaxed);
+}
+
 /// The game's `Database`, once [`record_item_net`] has settled its address.
 ///
 /// # Safety

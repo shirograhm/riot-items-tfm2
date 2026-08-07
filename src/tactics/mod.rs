@@ -3330,6 +3330,20 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
 // (Was `impl ModServerExtension for ItemTacticsServerExt`. Driven from the host
 // mod's `StableServerExtension` — see `driver` and `src/lib.rs`.)
 fn tactics_on_server_start() {
+    // -- Session boundary. Everything below this line is an address from the
+    //    *previous* save, and none of those objects survive a return to the
+    //    main menu. Dropping them here is what makes load / menu / load work;
+    //    each is re-derived on demand from the new session.
+    //
+    // The UI tree: `resolve` re-proves its cache per call too, but that is a
+    // shallow check, and this is the one point we *know* is a boundary.
+    ui_root::invalidate();
+    // The `Database` base and the item network derived from it. `probe_db`
+    // below re-derives the network once the item-build detour has handed
+    // `record_item_net` a fresh agent address, and it runs again on every
+    // management tick until it does.
+    driver::reset_session();
+    ITEM_NET_ADDR.store(0, Ordering::Relaxed);
     probe_db();
     install_replace_4th();
     install_launcher_hook();

@@ -170,6 +170,34 @@ unsafe fn subtree_has_id(addr: usize, target: &str, depth: usize, budget: &mut u
     false
 }
 
+/// Whether the *cached* root still reads as a node.
+///
+/// Deliberately not [`is_ui_root`]: that costs up to [`VISIT_BUDGET`] visits and
+/// allocates a `String` per node, which is fine once per scan and far too much
+/// once per frame. This is five `safe_read_*` and one short allocation — enough
+/// to notice that the tree the pointer named has been freed, which is the whole
+/// job.
+///
+/// It is a filter, not a proof. A freed block reused by something that happens
+/// to read as an id plus a coherent child vector would still pass, which is why
+/// [`invalidate`] is also called at the session boundary rather than relying on
+/// this alone.
+unsafe fn still_a_node(addr: usize) -> bool {
+    node_id(addr).is_some() && node_children(addr).is_some()
+}
+
+/// Drops the resolved root, so the next [`resolve`] has to prove a fresh one.
+///
+/// Called at the session boundary (`tactics_on_server_start`). The UI tree does
+/// not survive a return to the main menu, and the address it lived at says
+/// nothing about the tree the next save builds.
+pub fn invalidate() {
+    UI_ROOT.store(0, Ordering::Relaxed);
+    ATTEMPTS.store(0, Ordering::Relaxed);
+    LAST_ANCHOR.store(0, Ordering::Relaxed);
+    SOURCE.store(0, Ordering::Relaxed);
+}
+
 /// Whether `addr` is a `Node` that roots the tree the handlers expect.
 ///
 /// The id check runs first because it is one read and rejects nearly everything;
@@ -192,7 +220,20 @@ unsafe fn is_ui_root(addr: usize) -> bool {
 pub fn resolve() -> Option<usize> {
     let cached = UI_ROOT.load(Ordering::Relaxed);
     if cached != 0 {
-        return Some(cached);
+        // Re-prove the cached address before handing it out. It was validated
+        // when it was found, and nothing has revalidated it since — so after the
+        // game freed that tree (returning to the main menu does), this returned
+        // a dangling pointer and `tactics_post_update` gave it straight to
+        // `find_node`, which walks with raw reads and cannot fault gracefully.
+        //
+        // That is not hypothetical: it is the load-save / main-menu / load-again
+        // crash. The minidump caught `find_node` recursing into a freed node
+        // whose child `Vec` read as `ptr = 8` (Rust's dangling pointer for an
+        // empty vector) with a non-zero length, then faulting on `[8 + 0x10]`.
+        if unsafe { still_a_node(cached) } {
+            return Some(cached);
+        }
+        invalidate();
     }
     // Both anchors are published by `cap_game_view`, so before the first UI
     // frame there is nothing to look at. Returning here — ahead of the budget —

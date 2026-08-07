@@ -45,7 +45,7 @@ Mod v0.5.6 - versions up to 0.5.0
 
 This mod works directly out of the box!  
 
-However, if any of the modded items feel too strong/weak, this mod supports full customization on all item values. Only modded items can be adjusted. To do so:
+However, if any of the modded items feel too strong/weak, this mod supports full customization on all modded item values. To do so:
 
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
 2. Edit the new [b]config.json[/b] with the custom values that you want.
