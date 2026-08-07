@@ -9,24 +9,27 @@ pub struct InfinityEdge {
     price: usize,
     attack: i32,
     crit_chance: i32,
+    effect_crit_damage_bonus: i32,
 }
 
 impl InfinityEdge {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("infinity_edge", &["bf_sword"], &["radiant_infinity_edge"]),
-            price: 1300,
-            attack: 80,
+            price: 1500,
+            attack: 75,
             crit_chance: 25,
+            effect_crit_damage_bonus: 30,
         }
     }
 
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_infinity_edge", &["infinity_edge"]),
-            price: 1900,
-            attack: 120,
+            price: 2200,
+            attack: 115,
             crit_chance: 50,
+            effect_crit_damage_bonus: 30,
         }
     }
 
@@ -84,6 +87,21 @@ impl StableItem for InfinityEdge {
             attack: self.attack,
             crit_chance: self.crit_chance,
             ..Default::default()
+        }
+    }
+
+    fn on_attack(
+        &mut self,
+        _sim: &mut StableSim<'_>,
+        _caster: usize,
+        _target: usize,
+        damage: &mut usize,
+        _damage_type: mod_api_stable::DamageTypeV1,
+        attack_type: AttackTypeV1,
+        is_crit: bool,
+    ) {
+        if attack_type == AttackTypeV1::BaseAttack && is_crit {
+            *damage += *damage * (self.effect_crit_damage_bonus as f64 / 100.0) as usize
         }
     }
 

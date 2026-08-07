@@ -189,7 +189,7 @@
         },
         "phage": {
             "name": "Phage",
-            "option": "\nRage: Dealing damage to an enemy champion grants <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
+            "option": "\nRage: Basic attacks against enemy champions grant <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
         },
         "haunting_guise": {
             "name": "Haunting Guise",
@@ -197,11 +197,11 @@
         },
         "infinity_edge": {
             "name": "Infinity Edge",
-            "option": ""
+            "option": "Gain <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> critical strike damage<>."
         },
         "radiant_infinity_edge": {
             "name": "Radiant Infinity Edge",
-            "option": ""
+            "option": "Gain <#d45656ff>30% <i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0> critical strike damage<>."
         },
         "black_cleaver": {
             "name": "Black Cleaver",

@@ -192,15 +192,12 @@ impl StableItem for WarmogsArmor {
         ctx: &mut StableSim<'_>,
         _player: usize,
         entity: usize,
-        attacker: usize,
+        _attacker: usize,
         _damage: usize,
         _damage_type: DamageTypeV1,
         _attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if attacker == entity {
-            return;
-        }
         ctx.add_buff(
             entity,
             &BuffV1::timed(
