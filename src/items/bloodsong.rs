@@ -160,12 +160,12 @@ impl StableItem for Bloodsong {
         _rng_seed: u64,
         caster: usize,
         target: usize,
-        _is_ally: bool,
+        is_ally: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() {
+        if !target_ref.is_champion() || is_ally {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {

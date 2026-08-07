@@ -158,21 +158,22 @@ impl StableItem for MirageBlade {
         let Some(champion_ref) = player_ref.champion() else {
             return;
         };
+        let champion_id = champion_ref.id();
 
         let is_buff_applied = has_buff(&champion_ref, "mirage_blade_move_speed");
-
-        if !is_buff_applied {
-            ctx.add_buff(
-                champion_ref.id(),
-                &BuffV1 {
-                    move_speed_mult: self.effect_move_speed_mult,
-                    ..BuffV1::timed(
-                        "mirage_blade_move_speed",
-                        ticks(self.effect_duration_seconds),
-                    )
-                },
-            )
+        if is_buff_applied {
+            ctx.entity_remove_buff(champion_id, "mirage_blade_move_speed");
         }
+        ctx.add_buff(
+            champion_id,
+            &BuffV1 {
+                move_speed_mult: self.effect_move_speed_mult,
+                ..BuffV1::timed(
+                    "mirage_blade_move_speed",
+                    ticks(self.effect_duration_seconds),
+                )
+            },
+        )
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

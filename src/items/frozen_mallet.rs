@@ -145,7 +145,9 @@ impl StableItem for FrozenMallet {
                 },
             );
         }
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
+        if bonus_damage > 0 {
+            ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

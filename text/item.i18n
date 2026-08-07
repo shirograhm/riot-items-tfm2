@@ -265,11 +265,11 @@
         },
         "frozen_mallet": {
             "name": "Frozen Mallet",
-            "option": "\nIcy: On attack, apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\nIcy: Basic attacks apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "radiant_frozen_mallet": {
             "name": "Radiant Frozen Mallet",
-            "option": "\nIcy: On attack, deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>20<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> and apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\nIcy: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>20<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> and apply a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "riftmaker": {
             "name": "Riftmaker",
@@ -289,11 +289,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Yun Tal Wildarrows",
-            "option": "\nPractice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> .\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (<#e8a800ff>15 second<> cooldown)."
+            "option": "\nPractice Makes Lethal: Basic attacks grant <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: Every <#e8a800ff>15 seconds<>, your next basic attack grants <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Radiant Yun Tal Wildarrows",
-            "option": "\nPractice Makes Lethal: Dealing <#ff9028ff>physical damage<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> .\n\nFlurry: On attack, gain <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<> (<#e8a800ff>15 second<> cooldown)."
+            "option": "\nPractice Makes Lethal: Basic attacks grant <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\nFlurry: Every <#e8a800ff>15 seconds<>, your next basic attack grants <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
         },
         "unending_despair": {
             "name": "Unending Despair",
@@ -369,11 +369,11 @@
         },
         "terminus": {
             "name": "Terminus",
-            "option": "\nJuxtaposition: On attack, gain either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+            "option": "\nJuxtaposition: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
         },
         "radiant_terminus": {
             "name": "Radiant Terminus",
-            "option": "\nJuxtaposition: On attack, gain either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+            "option": "\nJuxtaposition: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
         },
         "spirit_visage": {
             "name": "Spirit Visage",
@@ -385,19 +385,19 @@
         },
         "guinsoos_rageblade": {
             "name": "Guinsoo's Rageblade",
-            "option": "\nWrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+            "option": "\nWrath: Basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: Basic attacks grant <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
         },
         "radiant_guinsoos_rageblade": {
             "name": "Radiant Guinsoo's Rageblade",
-            "option": "\nWrath: Your basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: On attack, gain <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+            "option": "\nWrath: Basic attacks deal <#a974ffff>30 bonus magic damage<>.\n\nSeething Strike: Basic attacks grant <#ceff99ff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
         },
         "wits_end": {
             "name": "Wit's End",
-            "option": "\nFray: Your basic attacks deal <#a974ffff>45 bonus magic damage<>."
+            "option": "\nFray: Basic attacks deal <#a974ffff>45 bonus magic damage<>."
         },
         "radiant_wits_end": {
             "name": "Radiant Wit's End",
-            "option": "\nFray: Your basic attacks deal <#a974ffff>45 bonus magic damage<>."
+            "option": "\nFray: Basic attacks deal <#a974ffff>45 bonus magic damage<>."
         },
         "kraken_slayer": {
             "name": "Kraken Slayer",
@@ -433,11 +433,11 @@
         },
         "heartsteel": {
             "name": "Heartsteel",
-            "option": "\nIronheart: Every <#e8a800ff>20 seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
+            "option": "\nIronheart: Every <#e8a800ff>20 seconds<>, your next basic attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
         },
         "radiant_heartsteel": {
             "name": "Radiant Heartsteel",
-            "option": "\nIronheart: Every <#e8a800ff>20 seconds<>, your next attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
+            "option": "\nIronheart: Every <#e8a800ff>20 seconds<>, your next basic attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
         },
         "spear_of_shojin": {
             "name": "Spear of Shojin",
@@ -485,27 +485,27 @@
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
-            "option": "\nRimefrost: Dealing Ability damage applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\nRimefrost: Landing an Ability on an enemy applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Radiant Rylai's Crystal Scepter",
-            "option": "\nRimefrost: Dealing Ability damage applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\nRimefrost: Landing an Ability on an enemy applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "stormrazor": {
             "name": "Stormrazor",
-            "option": "\nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
+            "option": "\nEnergized: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#92dc7bff>Energized<>, your next basic attack deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
         },
         "radiant_stormrazor": {
             "name": "Radiant Stormrazor",
-            "option": "\nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
+            "option": "\nEnergized: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nBolt: When fully <#92dc7bff>Energized<>, your next basic attack deals <#a974ffff>100 bonus magic damage<> and grants you <#ffffffff>35%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>1.5 seconds<>."
         },
         "voltaic_cyclosword": {
             "name": "Voltaic Cyclosword",
-            "option": "\nGain <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nFirmament: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<> for <#e8a800ff>4 seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>6% of the target's current health<>. Deals a maximum of <#ff9028ff>200 physical damage<> against minions and monsters."
+            "option": "\nGain <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nEnergized: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nFirmament: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<> for <#e8a800ff>4 seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>6% of the target's current health<>. Deals a maximum of <#ff9028ff>200 physical damage<> against minions and monsters."
         },
         "radiant_voltaic_cyclosword": {
             "name": "Radiant Voltaic Cyclosword",
-            "option": "\nGain <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nEnergized: Moving and dealing <#ff9028ff>physical damage<> generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nFirmament: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<> for <#e8a800ff>4 seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>10% of the target's current health<>. Deals a maximum of <#ff9028ff>200 physical damage<> against minions and monsters."
+            "option": "\nGain <#ffdd8eff>12 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nEnergized: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\nFirmament: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<> for <#e8a800ff>4 seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>10% of the target's current health<>. Deals a maximum of <#ff9028ff>200 physical damage<> against minions and monsters."
         },
         "diamond_tipped_spear": {
             "name": "Diamond Tipped Spear",
@@ -577,31 +577,31 @@
         },
         "echoes_of_helia": {
             "name": "Echoes of Helia",
-            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
+            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <#60e84dff>heals them<> equal to the consumed amount."
         },
         "radiant_echoes_of_helia": {
             "name": "Radiant Echoes of Helia",
-            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Upon landing an Ability on an enemy champion, consume all <#92dc7bff>Soul Charges<> and <#60e84dff>heal the nearest ally<> equal to the consumed amount."
+            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <#60e84dff>heals them<> equal to the consumed amount."
         },
         "sundered_sky": {
             "name": "Sundered Sky",
-            "option": "\nLightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
+            "option": "\nLightshield Strike: Your next basic attack against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<> and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
         },
         "radiant_sundered_sky": {
             "name": "Radiant Sundered Sky",
-            "option": "\nLightshield Strike: Your next instance of <#ff9028ff>physical damage<> against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<>, and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>10%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
+            "option": "\nLightshield Strike: Your next basic attack against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<> and <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>10%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
         },
         "sheen": {
             "name": "Sheen",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "trinity_force": {
             "name": "Trinity Force",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "radiant_trinity_force": {
             "name": "Radiant Trinity Force",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "frozen_heart": {
             "name": "Frozen Heart",
@@ -617,19 +617,19 @@
         },
         "dusk_and_dawn": {
             "name": "Dusk and Dawn",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Radiant Dusk and Dawn",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "bloodsong": {
             "name": "Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
         },
         "radiant_bloodsong": {
             "name": "Radiant Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next Attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
         },
         "serrated_dirk": {
             "name": "Serrated Dirk",

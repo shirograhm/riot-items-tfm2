@@ -42,7 +42,7 @@ impl JakshoTheProtean {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_jaksho_the_protean", &["jaksho_the_protean"]),
-            stack_buff: "radiant_jaksho_the_protean_stack",
+            stack_buff: "jaksho_the_protean_stack",
             price: 2000,
             hp: 550,
             defence: 65,

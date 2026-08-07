@@ -164,8 +164,6 @@ impl StableItem for VoltaicCyclosword {
             return;
         }
 
-        let is_target_tower = target_ref.is_tower();
-
         if self.energized_stacks >= self.effect_max_stacks {
             let mut bonus_damage = percent_of(target_ref.hp().0, self.effect_hp_percent_damage);
             if !target_ref.is_champion() {
@@ -177,9 +175,8 @@ impl StableItem for VoltaicCyclosword {
             self.energized_stacks = 0;
         }
 
-        if !is_target_tower {
-            apply_lethality(ctx, caster, target, self.active_lethality(), damage);
-        }
+        apply_lethality(ctx, caster, target, self.active_lethality(), damage);
+
         // Gain 5 energized stacks on base attacks, up to the max stacks
         if attack_type == AttackTypeV1::BaseAttack {
             self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);

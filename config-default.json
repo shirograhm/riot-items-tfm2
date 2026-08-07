@@ -135,7 +135,8 @@
   "infinity_edge": {
     "price": 1300,
     "attack": 80,
-    "crit_chance": 25
+    "crit_chance": 25,
+    "effect_crit_damage_bonus": 30
   },
   "jaksho_the_protean": {
     "price": 1400,
@@ -214,7 +215,8 @@
     "price": 1350,
     "magic_power": 115,
     "magic_resistance_penetration": 15,
-    "effect_hp_percent_threshold": 30.0
+    "effect_hp_percent_threshold": 30.0,
+    "effect_bonus_damage_when_low": 20.0
   },
   "yun_tal_wildarrows": {
     "price": 1500,
@@ -388,7 +390,8 @@
   "radiant_infinity_edge": {
     "price": 1900,
     "attack": 120,
-    "crit_chance": 50
+    "crit_chance": 50,
+    "effect_crit_damage_bonus": 30
   },
   "radiant_nashors_tooth": {
     "price": 2050,
@@ -490,7 +493,8 @@
     "price": 1800,
     "magic_power": 210,
     "magic_resistance_penetration": 15,
-    "effect_hp_percent_threshold": 30.0
+    "effect_hp_percent_threshold": 30.0,
+    "effect_bonus_damage_when_low": 20.0
   },
   "radiant_yun_tal_wildarrows": {
     "price": 2200,

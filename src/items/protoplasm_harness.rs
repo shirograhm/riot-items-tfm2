@@ -44,10 +44,12 @@ impl ProtoplasmHarness {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_protoplasm_harness", &["protoplasm_harness"]),
-            buff_buff: "radiant_protoplasm_harness_buff",
+            buff_buff: "protoplasm_harness_buff",
             cooldown_buff_buff: "protoplasm_harness_cooldown_buff",
             price: 1650,
             hp: 650,
+            skill_cooldown_mult: 10,
+            move_speed_mult: 5,
             effect_bonus_flat_hp: 600,
             effect_hp_percent_boost: 25.0,
             effect_hp_percent_threshold: 40.0,
