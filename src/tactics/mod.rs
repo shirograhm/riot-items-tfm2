@@ -174,9 +174,17 @@ fn slot_count() -> usize {
 ///
 /// Every term is a *measured* state rather than an assumption: the version gate
 /// passed, the injection is compiled in, and the `buy_item` detour reported a
-/// successful install (`1` = OK). If any is false nothing here touches a build,
-/// and `hook::detour` has to keep applying builds itself — to both teams, since
-/// its arguments cannot tell them apart.
+/// successful install (`1` = OK).
+///
+/// Nothing calls this any more. It used to arbitrate: the host half asked before
+/// applying builds itself, so that exactly one of the two did. Both now apply
+/// them, to every team, from the same file — see
+/// `crate::item_build_hook::configured_build` — so there is nothing to
+/// arbitrate. Kept because it is the only assembled answer to "is the
+/// per-athlete injection live", which is the first thing worth knowing when
+/// builds are not landing, and because it is the sole reader of the version
+/// gate.
+#[allow(dead_code)]
 pub(crate) fn injects_builds() -> bool {
     version_ok() && SLOT012_INJECT_ENABLED && BUY_PROBE_INSTALLED.load(Ordering::Relaxed) == 1
 }
@@ -5643,7 +5651,17 @@ unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
 const DIAG_SCAN_OFF: bool = false; // * diagnostic #4: realloc proven innocent -> scanning resumed
 const DIAG_FWD_OFF: bool = false; // false = run forward when count != 3 (a real sim). true = emergency global heuristic.
                                   // * Live injection gate for slots 0/1/2: write the designated index into build[0/1/2] (the same build-Vec target mechanism as slot 3).
-const SLOT012_INJECT_ENABLED: bool = true;
+// ** TEMPORARILY OFF — item-build hook attribution test.
+//   With this false, the buy detour writes no `item-builds.json` pin into
+//   build[0..2] for anyone, so the ONLY thing left that can apply a configured
+//   build is `crate::item_build_hook::decide_build` on the stable API. That is
+//   what makes the run decisive (see `DECIDE_DIAG` there):
+//     * own team follows builds  -> the stable hook IS firing
+//     * own team stops following -> the stable hook is not dispatched at all
+//   and the enemy column then says whether the host team-gates the hook.
+//   Slot 3 is unaffected (still native, still `is_player`) — read slots 1-3.
+//   RESTORE TO true once the question is answered.
+const SLOT012_INJECT_ENABLED: bool = false;
 
 // ** fix B (2026-07-27): spectate == final. The is_live early exit was removed -> inject in background matches too, with the team scope = is_my_athlete (+0x810).
 //   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
@@ -5745,8 +5763,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //
         //   Scope is unaffected: `is_player` is still what gates the designation, so a
         //   non-player athlete reaching the extension takes the network/vanilla fallback
-        //   the code below already had for it, and `note_my_champion` is still only
-        //   called under `is_player`.
+        //   the code below already had for it.
         if FIXB
             && !is_live
             && !matches!(is_my_athlete(athlete), Some(true))
@@ -5849,15 +5866,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             is_live && by_scene
         };
-        // This branch is the only place in the mod that knows a champion belongs
-        // to the player, so it is where the host half's build editor learns the
-        // player's lineup — `hook::detour` cannot tell the teams apart on its
-        // own. Comp test is excluded: it makes `is_player` true for *both*
-        // sides, so noting from there would publish the opponent's champions as
-        // the player's and invert the gate.
-        if is_player && !is_comptest_live {
-            crate::my_team::note_my_champion(champ);
-        }
+        // This branch used to publish the player's lineup to `crate::my_team`,
+        // which is how the host half guessed whether a set of item-build routes
+        // belonged to the player. That gate is gone — configured builds apply to
+        // whoever plays the champion, both teams — so there is nothing left to
+        // publish it to. `is_player` still gates the designation below.
         // ** Deciding the SEL scope (2026-07-30): in comp test, read the designation under that player's side (blue/red) scope.
         //   Outside comp test it is Scope::Plain = exactly the old lookup => league/spectate/background behaviour unchanged.
         //   This removes both "the same champion on both sides merges into one designation" and "comp-test designations

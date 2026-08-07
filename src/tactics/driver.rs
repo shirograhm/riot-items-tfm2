@@ -154,15 +154,6 @@ pub fn item_catalog_recorded() -> bool {
     super::item_catalog_recorded()
 }
 
-/// Whether this half is applying `item-builds.json` per athlete, behind
-/// `is_my_athlete`.
-///
-/// `hook::detour` asks before applying those builds itself: exactly one of the
-/// two must, or a champion gets its pinned item twice over.
-pub fn injects_builds() -> bool {
-    super::injects_builds()
-}
-
 /// Whether `probe_db` has completed against an accepted `Database` base.
 pub fn db_probed() -> bool {
     DB_PROBED.load(Ordering::Relaxed)
