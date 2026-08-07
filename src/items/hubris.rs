@@ -14,7 +14,6 @@ pub struct Hubris {
     effect_stack_attack: i32,
     effect_duration_seconds: f64,
     eminence_stacks: usize,
-    accumulated_bonus_ad: usize,
 }
 
 impl Hubris {
@@ -30,7 +29,6 @@ impl Hubris {
             effect_duration_seconds: 90.0,
             // Non-vital stats (internals)
             eminence_stacks: 0,
-            accumulated_bonus_ad: 0,
         }
     }
 
@@ -118,8 +116,15 @@ impl StableItem for Hubris {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.accumulated_bonus_ad = 0;
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(champion_ref) = player_ref.champion() else {
+            return;
+        };
+
+        ctx.entity_remove_buff(champion_ref.id(), "hubris_bonus");
         self.eminence_stacks = 0;
     }
 
@@ -150,18 +155,24 @@ impl StableItem for Hubris {
         _rng_seed: u64,
         _player: usize,
         entity: usize,
-        _victim: usize,
+        victim: usize,
     ) {
+        let Some(victim_ref) = sim.get_entity(victim) else {
+            return;
+        };
+        if !victim_ref.is_champion() {
+            return;
+        }
+
         let bonus_ad =
             self.effect_bonus_flat_attack + self.effect_stack_attack * self.eminence_stacks as i32;
-
         self.eminence_stacks += 1;
 
         sim.add_buff(
             entity,
             &BuffV1 {
                 attack: bonus_ad,
-                ..BuffV1::timed("", ticks(self.effect_duration_seconds))
+                ..BuffV1::timed("hubris_bonus", ticks(self.effect_duration_seconds))
             },
         );
     }
@@ -169,14 +180,13 @@ impl StableItem for Hubris {
     fn on_assist(&mut self, sim: &mut StableSim<'_>, _player: usize, entity: usize) {
         let bonus_ad =
             self.effect_bonus_flat_attack + self.effect_stack_attack * self.eminence_stacks as i32;
-
         self.eminence_stacks += 1;
 
         sim.add_buff(
             entity,
             &BuffV1 {
                 attack: bonus_ad,
-                ..BuffV1::timed("", ticks(self.effect_duration_seconds))
+                ..BuffV1::timed("hubris_bonus", ticks(self.effect_duration_seconds))
             },
         );
     }
