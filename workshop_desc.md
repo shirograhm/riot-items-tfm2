@@ -67,7 +67,8 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 3. Start the simulated match!
 
 Builds are saved to [b]item-builds.json[/b] as you make them, so they carry across sessions.  
-These builds only affect your players. Other players will continue to build whatever combination has the highest winrates.  
+
+[b]NOTE: Custom item builds override all matches at the moment. So your build becomes the meta. It is extremely powerful and can affect both simulated games, soloQ, and even the other team's champions in your match. Please use it with caution![/b]
 
 [h1] 4 Item Mode [/h1]
 
