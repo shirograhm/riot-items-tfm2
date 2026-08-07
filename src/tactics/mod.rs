@@ -2451,7 +2451,14 @@ unsafe extern "C" fn cap_game_view(saved: *mut u64, _e: usize) -> u64 {
     0
 }
 fn install_game_view_hook() {
-    if GV_HOOK_INSTALLED.load(Ordering::Relaxed) == 1 {
+    let state = GV_HOOK_INSTALLED.load(Ordering::Relaxed);
+    if state == 1 {
+        return;
+    }
+    // See `install_retry_due`: a wrong RVA here would otherwise cost a loader
+    // lock and an address-space lock on every frame for the whole session.
+    static RETRY: AtomicU64 = AtomicU64::new(0);
+    if state == 2 && !install_retry_due(&RETRY) {
         return;
     }
     let r = unsafe {
@@ -3568,7 +3575,11 @@ fn install_launcher_hook() {
     //      The address is already validated at install time and a fault is caught by the VEH, so the double check was unnecessary.
     //   (3) the post-install re-validation (self-heal in case another mod overwrote our hook) has no reason to run every frame ->
     //      **every 60 frames (~1s)**. Self-healing within a second is plenty even if overwritten (this is a match-start event, so there is slack).
-    if CLAUNCH_INSTALLED.load(Ordering::Relaxed) == 1 {
+    //   (4) 2026-08-07: the throttle covered state 1 (installed, re-validating) only, so a
+    //      FAILED install (2) still paid the full cost every frame — the case a game update
+    //      puts every RVA in. Any non-zero state is now throttled; 0 is the untried first
+    //      frame, which still runs immediately.
+    if CLAUNCH_INSTALLED.load(Ordering::Relaxed) != 0 {
         if HK_L_TICK.fetch_add(1, Ordering::Relaxed) % 60 != 0 {
             HK_L_SKIP.fetch_add(1, Ordering::Relaxed);
             return;
@@ -3683,9 +3694,16 @@ unsafe extern "C" fn cap_seed_ctor(saved: *mut u64, _e: usize) -> u64 {
     0
 }
 fn install_seed_ctor_hook() {
-    if SEEDCTOR_INSTALLED.load(Ordering::Relaxed) == 1 {
+    let state = SEEDCTOR_INSTALLED.load(Ordering::Relaxed);
+    if state == 1 {
         return;
     } // * skip only on 1 = success (0/2 = retry)
+    // A failed attempt (2) backs off instead of re-running every frame; see
+    // `install_retry_due`. State 0 is the untried first frame and is not delayed.
+    static RETRY: AtomicU64 = AtomicU64::new(0);
+    if state == 2 && !install_retry_due(&RETRY) {
+        return;
+    }
     HK_S_INSTALL.fetch_add(1, Ordering::Relaxed);
     let r = unsafe {
         install_detour_generic(
@@ -3875,7 +3893,13 @@ fn install_spawn_hook() {
     if !SPAWN_INJECT_ENABLED {
         return;
     } // * when sealed, do not install the detour at all (a no-op hook = pure risk)
-    if SPAWN_INSTALLED.load(Ordering::Relaxed) == 1 {
+    let state = SPAWN_INSTALLED.load(Ordering::Relaxed);
+    if state == 1 {
+        return;
+    }
+    // See `install_retry_due`.
+    static RETRY: AtomicU64 = AtomicU64::new(0);
+    if state == 2 && !install_retry_due(&RETRY) {
         return;
     }
     // * 0.5.2: a rax-preserving tail is mandatory (the relocated region contains mov eax,0x4d20 -> the chkstk right after uses that value as the frame size).
@@ -4052,13 +4076,37 @@ static CAP_MPID: AtomicU64 = AtomicU64::new(0);
 static CAP_MTID: AtomicU64 = AtomicU64::new(0);
 static INJ_LOG: Mutex<Vec<(Vec<u8>, u8, u64)>> = Mutex::new(Vec::new());
 
+/// Frames between retries of a hook install that has not succeeded.
+const INSTALL_RETRY_FRAMES: u64 = 60;
+
+/// Whether an installer that is not in the success state should try again this
+/// frame.
+///
+/// A *failed* install is not free, and it used to run on every frame forever.
+/// `install_detour_generic` takes the loader lock (module base) and the
+/// address-space lock (`readable`) before it can even look at the prologue —
+/// the same two calls that were measured at >=106us per frame and taken out of
+/// `install_launcher_hook` on 2026-07-22. Only that one installer got the
+/// treatment; the others kept retrying every frame, and their early-out is
+/// `== 1`, so anything that fails pays full price forever.
+///
+/// That is the *expected* state after a game update, not an edge case: every RVA
+/// in this module is version-specific, so one that has not been re-derived yet
+/// fails the prologue check on every frame of every scene, main thread. Which
+/// makes the whole mod feel slow while nothing looks broken.
+fn install_retry_due(tick: &AtomicU64) -> bool {
+    tick.fetch_add(1, Ordering::Relaxed) % INSTALL_RETRY_FRAMES == 0
+}
+
 unsafe fn install_detour_generic(
     rva: usize,
     orig_len: usize,
     cap_fn: usize,
     prologue: &[u8],
 ) -> Result<usize, &'static str> {
-    let base = GetModuleHandleW(core::ptr::null()) as usize;
+    // Cached: the raw `GetModuleHandleW` takes the loader lock, which is half of
+    // what made a retrying install cost 106us a frame.
+    let base = exe_base_addr();
     if base == 0 {
         return Err("module 0");
     }
@@ -4179,7 +4227,8 @@ unsafe fn install_detour_r11(
     cap_fn: usize,
     prologue: &[u8],
 ) -> Result<usize, &'static str> {
-    let base = GetModuleHandleW(core::ptr::null()) as usize;
+    // Cached — see `install_detour_generic`.
+    let base = exe_base_addr();
     if base == 0 {
         return Err("module 0");
     }
