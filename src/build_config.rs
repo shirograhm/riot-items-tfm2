@@ -26,6 +26,7 @@ use serde::Deserialize;
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::path::PathBuf;
+use std::sync::atomic::{AtomicU8, Ordering};
 use std::sync::{Arc, Mutex, RwLock};
 
 /// Schema of `item-builds.json`: the whole file is a map of champion id -> build
@@ -100,7 +101,19 @@ fn config_path() -> Result<PathBuf, String> {
 // finishes with.
 
 static CONFIG_CACHE: RwLock<Option<Arc<BuildConfig>>> = RwLock::new(None);
-static SETTINGS_CACHE: RwLock<Option<bool>> = RwLock::new(None);
+
+// `mod-settings.json` is cached in two atomics rather than behind the config
+// lock, because one of its readers is the buy detour: `own_team_only_enabled`
+// is asked once per buy decision, on every rayon worker at once, and a
+// `RwLock` read there is contention for a value that changes only when the
+// editor writes. `SETTING_UNSET` means "not read yet"; the first reader parses
+// the file and fills both.
+const SETTING_UNSET: u8 = 0;
+const SETTING_OFF: u8 = 1;
+const SETTING_ON: u8 = 2;
+
+static UNIQUE_ITEMS: AtomicU8 = AtomicU8::new(SETTING_UNSET);
+static OWN_TEAM_ONLY: AtomicU8 = AtomicU8::new(SETTING_UNSET);
 
 /// Drops both file caches, so the next read reloads from disk.
 ///
@@ -112,9 +125,8 @@ pub fn invalidate_caches() {
     if let Ok(mut cache) = CONFIG_CACHE.write() {
         *cache = None;
     }
-    if let Ok(mut cache) = SETTINGS_CACHE.write() {
-        *cache = None;
-    }
+    UNIQUE_ITEMS.store(SETTING_UNSET, Ordering::Relaxed);
+    OWN_TEAM_ONLY.store(SETTING_UNSET, Ordering::Relaxed);
 }
 
 /// `item-builds.json`, parsed once and held.
@@ -383,18 +395,39 @@ pub fn pinned_key(champion: &str, slot: usize) -> Option<String> {
     Some(alias_key(radiant_key(&raw).as_ref()).to_string())
 }
 
-/// Writes `unique_items` to `mod-settings.json`, the toggle
-/// [`unique_items_enabled`] reads back on every hook call.
+/// Writes `mod-settings.json` from the toggles as they stand, with `apply`
+/// changing the one the player just clicked.
 ///
-/// The whole file is rewritten from this one field: the schema has exactly one
-/// key, so there is nothing else in it to preserve.
-pub fn set_unique_items(enabled: bool) -> bool {
+/// The whole file is rewritten every time, so every key has to be written out —
+/// a partial write would silently reset the other toggle to its default.
+fn save_settings(apply: impl FnOnce(&mut ModSettings)) -> bool {
+    let mut settings = ModSettings {
+        unique_items: unique_items_enabled(),
+        own_team_only: own_team_only_enabled(),
+    };
+    apply(&mut settings);
     let path = crate::config::mod_dir().join("mod-settings.json");
-    let written = std::fs::write(path, format!("{{\n  \"unique_items\": {enabled}\n}}\n")).is_ok();
+    let text = format!(
+        "{{\n  \"unique_items\": {},\n  \"own_team_only\": {}\n}}\n",
+        settings.unique_items, settings.own_team_only
+    );
+    let written = std::fs::write(path, text).is_ok();
     if written {
         invalidate_caches();
     }
     written
+}
+
+/// Writes `unique_items` to `mod-settings.json`, the toggle
+/// [`unique_items_enabled`] reads back on every hook call.
+pub fn set_unique_items(enabled: bool) -> bool {
+    save_settings(|settings| settings.unique_items = enabled)
+}
+
+/// Writes `own_team_only` to `mod-settings.json` — see
+/// [`own_team_only_enabled`] for what the two sides of it mean.
+pub fn set_own_team_only(enabled: bool) -> bool {
+    save_settings(|settings| settings.own_team_only = enabled)
 }
 
 /// Schema of `mod-settings.json`: behavior toggles managed by the item build
@@ -404,44 +437,61 @@ pub fn set_unique_items(enabled: bool) -> bool {
 struct ModSettings {
     #[serde(default = "default_true")]
     unique_items: bool,
+    #[serde(default)]
+    own_team_only: bool,
 }
 
 fn default_true() -> bool {
     true
 }
 
+/// Reads one cached toggle out of `mod-settings.json`, parsing the file on the
+/// first read of either.
+///
+/// Cached in an atomic rather than a lock because [`own_team_only_enabled`] is
+/// on the buy detour's path — see the cache declarations. Flipping a toggle in
+/// the editor still applies to the next match: the editor invalidates the cache
+/// when it writes.
+fn setting(cache: &AtomicU8, read: impl Fn(&ModSettings) -> bool, default: bool) -> bool {
+    match cache.load(Ordering::Relaxed) {
+        SETTING_ON => return true,
+        SETTING_OFF => return false,
+        _ => {}
+    }
+
+    let value = crate::config::dll_dir()
+        .map(|dir| dir.join("mod-settings.json"))
+        .and_then(|path| std::fs::read_to_string(path).ok())
+        .and_then(|text| serde_json::from_str::<ModSettings>(&text).ok())
+        .map(|settings| read(&settings))
+        .unwrap_or(default);
+    cache.store(
+        if value { SETTING_ON } else { SETTING_OFF },
+        Ordering::Relaxed,
+    );
+    value
+}
+
 /// Whether unique-build enforcement is enabled: `unique_items` in
 /// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
 /// is absent or malformed, so players opt *out* via the editor toggle.
-///
-/// Cached like [`load_cached`] — this is read from the route hook, which fires
-/// far more often than the "once per hook call" the toggle was written for.
-/// Flipping it in the editor still applies to the next match: the editor
-/// invalidates the cache when it writes.
 pub fn unique_items_enabled() -> bool {
-    if let Ok(cache) = SETTINGS_CACHE.read() {
-        if let Some(enabled) = *cache {
-            return enabled;
-        }
-    }
+    setting(&UNIQUE_ITEMS, |settings| settings.unique_items, true)
+}
 
-    let Some(path) = crate::config::dll_dir().map(|dir| dir.join("mod-settings.json")) else {
-        return true;
-    };
-    let Ok(mut cache) = SETTINGS_CACHE.write() else {
-        return true;
-    };
-    if let Some(enabled) = *cache {
-        return enabled;
-    }
-
-    let value = std::fs::read_to_string(&path)
-        .ok()
-        .and_then(|text| serde_json::from_str::<ModSettings>(&text).ok())
-        .map(|settings| settings.unique_items)
-        .unwrap_or(true);
-    *cache = Some(value);
-    value
+/// Whether configured builds are restricted to the player's own team:
+/// `own_team_only` in `mod-settings.json`. Defaults to off — a build applies to
+/// whoever plays the champion, both teams — which is the behaviour every version
+/// up to now had and the only one the stable item-build hook can express.
+///
+/// Turning it on moves the work to the other half of the mod. The hook is told
+/// the champion but not whose team it is playing for, so it stops setting builds
+/// entirely and the native buy detour pins the same items per athlete instead,
+/// under the athlete-id team gate that already scopes the 4th item
+/// (`tactics::is_my_athlete`). The two must never both be applying builds — see
+/// `item_build_hook::decide_build` and the injection in `tactics`.
+pub fn own_team_only_enabled() -> bool {
+    setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, false)
 }
 
 /// The configured build for one champion, as item indices.

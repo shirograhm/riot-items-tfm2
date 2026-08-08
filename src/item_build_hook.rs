@@ -36,7 +36,18 @@ impl StableItemBuildHook for ConfiguredBuilds {
 
     fn decide_build(&self, ctx: &StableItemBuildContext<'_>) -> Vec<usize> {
         let base = ctx.base_build();
-        let mut build = self.configured_build(ctx).unwrap_or_else(|| base.to_vec());
+        // `own_team_only` hands the configured builds to the native buy detour,
+        // which is the only half of the mod that can tell the player's athletes
+        // from the enemy's. This context names the champion and the two lineups
+        // but never says which side it belongs to, so applying a build here
+        // would apply it to both — exactly what the toggle is off for. Unique
+        // enforcement below still runs: it is about the shape of a build, not
+        // about whose it is, and it applies to the engine's own picks too.
+        let mut build = if build_config::own_team_only_enabled() {
+            base.to_vec()
+        } else {
+            self.configured_build(ctx).unwrap_or_else(|| base.to_vec())
+        };
 
         if build_config::unique_items_enabled() {
             enforce_unique_items(ctx, &mut build);
@@ -50,7 +61,10 @@ impl StableItemBuildHook for ConfiguredBuilds {
 }
 
 impl ConfiguredBuilds {
-    // No team gate: a build is keyed by champion and applies to whoever plays it, enemy included.
+    // No team gate, and there is none to write: a build is keyed by champion and
+    // applies to whoever plays it, enemy included. A player who does not want
+    // that turns on `own_team_only`, which stops `decide_build` calling this at
+    // all — see there.
     fn configured_build(&self, ctx: &StableItemBuildContext<'_>) -> Option<Vec<usize>> {
         let config = build_config::load_cached();
         if config.is_empty() {

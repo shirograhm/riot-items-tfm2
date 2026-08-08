@@ -207,10 +207,11 @@ icons. The vanilla **Matchup** card stays on screen to the right of it, so the
 lineup is visible while builds are being set. **Team** is untouched — switching
 to it puts the editor away and brings the Team columns back.
 
-**Builds apply to both teams.** They are keyed by champion, and every champion
-that has one gets it whoever is playing it — your team, the opponent, and the
-league's background fixtures alike. Setting a build is a statement about how that
-champion should be played, not a private instruction to your own five.
+**Builds apply to both teams by default.** They are keyed by champion, and every
+champion that has one gets it whoever is playing it — your team, the opponent,
+and the league's background fixtures alike. Setting a build is then a statement
+about how that champion should be played, not a private instruction to your own
+five.
 
 Two mechanisms deliver them, and they agree because they read the same file. The
 game's item-build hook sets the target build for every player as a match's builds
@@ -218,6 +219,15 @@ are picked; the four-item half additionally pins the same items per athlete as
 each one shops, which is what makes a fourth slot possible. If that half has
 disabled itself — after a game update, say — builds still apply through the
 first, minus the fourth item.
+
+The footer's **Apply To All Champions / Apply To Your Team** toggle picks
+between them. The two halves are not interchangeable: the game's hook is told the
+champion and never the team, so what it sets necessarily reaches both sides,
+while the four-item half identifies your athletes by id and can therefore scope
+what it pins. So **your team only** turns the first off and leaves the second
+doing all the work — which means it depends on that half being live, and a game
+update that stops it stops configured builds with it until the offsets are
+re-derived. **Both teams** is the setting that keeps working regardless.
 
 The vanilla Personal tab is gone because this replaces it. Its five per-player
 dropdowns set the same thing per athlete that this sets per champion, and the
@@ -231,13 +241,20 @@ assigned.
 
 Clicking a slot drops its item list underneath it. Pick **Let Player Decide** at
 the top of that list — or click the pinned item again, or the slot's **X** — to
-hand the slot back to the game's AI. The **Enforcing unique items** toggle writes
-`mod-settings.json` beside the DLL.
+hand the slot back to the game's AI. The **Unique Items Enforced** and build
+scope toggles both write `mod-settings.json` beside the DLL (`unique_items` and
+`own_team_only`), and both take effect from the next match — a match already
+under way had its builds picked before the click. Neither changes what is pinned:
+a build that repeats an item keeps it, and enforcement happens to the build the
+match uses, not to the config.
 
-Every change is written immediately to `item-builds.json`; **Save Item Builds**,
-in the bottom right, has nothing left to write and simply returns to the **Team**
-tab. A row with no champion, or with nothing pinned, is kept in the editor but
-not written — a build with nothing to key it by is not a build.
+Every change is written immediately to `item-builds.json`, so nothing is ever
+lost by leaving the tab. **Save Item Builds**, in the bottom right, writes the
+whole set again and raises a green tick beside itself when the write succeeds;
+the tick clears as soon as anything is edited, and saving stays on the Builds
+tab rather than interrupting the editing. A row with no champion, or with
+nothing pinned, is kept in the editor but not written — a build with nothing to
+key it by is not a build.
 
 **Builds are keyed by champion.** The champion list is read from the game at runtime, 
 so champions added by other mods can be given builds too.

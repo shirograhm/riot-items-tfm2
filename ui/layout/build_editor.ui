@@ -109,7 +109,7 @@ build_editor:empty {
         align_y: Center;
         size: 13;
         color: #a5a5abff;
-        text: "Builds are per champion and only apply to your team. A blank slot is filled by the game, in the AI's own pick order.";
+        text: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.";
       }
     }
 
@@ -214,19 +214,143 @@ build_editor:empty {
         bottom_right: 12;
       }
 
-      #unique:color_icon_button {
-        @"asset/base/style/main#tertiary_button";
+      #unique:color {
         x: 15px;
-        y: 13px;
-        width: 260px;
-        height: 34px;
+        y: 10px;
+        width: 358px;
+        height: 40px;
 
-        text: {
-          text: "Enforcing unique items";
-          align_x: Center;
-          align_y: Center;
-          size: 14;
+        padding: {
+          left: 4px;
+          right: 4px;
+          top: 4px;
+          bottom: 4px;
         }
+
+        color: #4a4c56ff;
+        stroke: 1;
+        back_color: #00000000;
+
+        child_type: LeftToRight {
+          spacing: 0px;
+        }
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+
+        #on:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 175px;
+          height: 32px;
+
+          label: {
+            size: 13;
+            align_x: Center;
+          }
+
+          selected_label: {
+            size: 13;
+            align_x: Center;
+          }
+
+          text: "Unique Items Enforced";
+        }
+
+        #off:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 175px;
+          height: 32px;
+
+          label: {
+            size: 13;
+            align_x: Center;
+          }
+
+          selected_label: {
+            size: 13;
+            align_x: Center;
+          }
+
+          text: "Duplicates Allowed";
+        }
+      }
+
+      #scope:color {
+        x: 385px;
+        y: 10px;
+        width: 358px;
+        height: 40px;
+
+        padding: {
+          left: 4px;
+          right: 4px;
+          top: 4px;
+          bottom: 4px;
+        }
+
+        color: #4a4c56ff;
+        stroke: 1;
+        back_color: #00000000;
+
+        child_type: LeftToRight {
+          spacing: 0px;
+        }
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+
+        #all:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 175px;
+          height: 32px;
+
+          label: {
+            size: 13;
+            align_x: Center;
+          }
+
+          selected_label: {
+            size: 13;
+            align_x: Center;
+          }
+
+          text: "Apply To All Champions";
+        }
+
+        #own:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 175px;
+          height: 32px;
+
+          label: {
+            size: 13;
+            align_x: Center;
+          }
+
+          selected_label: {
+            size: 13;
+            align_x: Center;
+          }
+
+          text: "Apply To Your Team";
+        }
+      }
+
+      #saved:image {
+        visible: false;
+        ignore_event: true;
+
+        anchor_x: 1;
+        pivot_x: 1;
+        x: -205px;
+        y: 19px;
+        width: 22px;
+        height: 22px;
+
+        source: "asset/base/ui/icons/check";
+        color: #60ddc2ff;
       }
 
       #save:color_icon_button {
