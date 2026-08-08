@@ -25,6 +25,8 @@ Some AI champions ignore the custom item builds. Likely to be instability that o
 
 This mod can cause your game to crash if you back out to the main menu and then attempt to load the game again. This is a side-effect of having 4 items mode enabled.  
 
+Older saves that were using older version of this mod may experience lag spikes during the BP phase and in-game. This is being investigated, for now, current workaround for this is to use a new save.  
+
 [h1] Instructions [/h1]
 
 In order for the AI to realize that these items exist, it is best to add this mod to an existing save instead of creating a new one. Try the following:
