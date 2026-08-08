@@ -1,7 +1,10 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, percent_of, ItemMeta};
+use crate::{apply_config, apply_lethality, percent_of, ticks, ItemMeta};
+
+// How long Taxes waits after a kill before the gold payout
+const PAYOUT_DELAY_SECONDS: f64 = 0.2;
 
 #[derive(Clone, Debug)]
 pub struct Collector {
@@ -12,6 +15,7 @@ pub struct Collector {
     effect_lethality: usize,
     effect_hp_percent_threshold: f64,
     effect_bonus_gold: usize,
+    pending_gold: Vec<(usize, i64)>,
 }
 
 impl Collector {
@@ -28,6 +32,8 @@ impl Collector {
             effect_lethality: 10,
             effect_hp_percent_threshold: 6.0,
             effect_bonus_gold: 25,
+            // Non-vital state (internal)
+            pending_gold: Vec::new(),
         }
     }
 
@@ -148,11 +154,32 @@ impl StableItem for Collector {
         &mut self,
         sim: &mut StableSim<'_>,
         _rng_seed: u64,
-        player: usize,
+        _player: usize,
         _entity: usize,
-        _victim: usize,
+        victim: usize,
     ) {
-        sim.player_add_gold(player, self.effect_bonus_gold as i64);
+        let Some(victim_ref) = sim.get_entity(victim) else {
+            return;
+        };
+
+        if victim_ref.is_champion() {
+            self.pending_gold
+                .push((ticks(PAYOUT_DELAY_SECONDS), self.effect_bonus_gold as i64));
+        }
+    }
+
+    fn update(&mut self, sim: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        if self.pending_gold.is_empty() {
+            return;
+        }
+        self.pending_gold.retain_mut(|(remaining, gold)| {
+            *remaining = remaining.saturating_sub(1);
+            if *remaining > 0 {
+                return true;
+            }
+            sim.player_add_gold(player, *gold);
+            false
+        });
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
