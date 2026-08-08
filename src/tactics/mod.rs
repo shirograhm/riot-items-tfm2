@@ -97,7 +97,8 @@ const UI_TREE_WALK_ENABLED: bool = true;
 
 // * Production master diagnostic gate (07-11): this session's diagnostics (nn_moditem, timing, liveroster, p6/channel scan, shadow-call catalog name lookup) plus
 //   the older diagnostic flush/hooks (c6new, countprobe, auto4, teamgate) are all OFF. The team gate (is_live/is_player) lives outside the gate = unaffected.
-//   (The SLOT012 injection that used to be named here is gone — slots 0/1/2 are set by `crate::item_build_hook` on the stable API.)
+//   (The SLOT012 injection named here has no compile-time gate of its own any more: it runs when the editor's `own_team_only` toggle is on, and
+//    otherwise slots 0/1/2 are set by `crate::item_build_hook` on the stable API.)
 const DIAG_ENABLED: bool = false;
 
 /// Trace files this half drops in its own folder: `4items_mode.txt` and
@@ -4059,10 +4060,11 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
 // `scope` argument that disambiguated per-side comp-test selections went with
 // it.
 //
-// Only slot 3 still reaches here in practice. Slots 0/1/2 are set before the
-// match by `crate::item_build_hook` on the stable API; what is left for the
-// native side is the 4th item, which the stable hook cannot deliver because the
-// engine's build `Vec` is three long until this half reallocs it.
+// Which slots reach here depends on the editor's scope toggle. Slot 3 always
+// does — the stable hook cannot deliver a 4th item, because the engine's build
+// `Vec` is three long until this half reallocs it. Slots 0/1/2 reach here only
+// under `own_team_only`, where the team scoping this side can do is the whole
+// point; otherwise `crate::item_build_hook` sets them before the match.
 
 /// The pinned item key for one build slot, normalized (radiant + alias) the way
 /// the item catalog is keyed.
@@ -4452,37 +4454,83 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             is_live && by_scene
         };
+        // The editor's scope toggle, read once here rather than per slot: it is
+        // an atomic load (see `build_config::own_team_only_enabled`), but this
+        // is a per-buy-decision path and both the slot 0/1/2 injection below and
+        // the slot 3 designation further down need the same answer.
+        let own_team_only = crate::build_config::own_team_only_enabled();
         // This branch used to publish the player's lineup to `crate::my_team`,
         // which is how the host half guessed whether a set of item-build routes
-        // belonged to the player. That gate is gone — configured builds apply to
-        // whoever plays the champion, both teams — so there is nothing left to
-        // publish it to. `is_player` still gates the designation below.
+        // belonged to the player. Nothing consumes that guess any more: the host
+        // half either applies builds to both teams or leaves them entirely to
+        // this one, and `is_player` — the real gate, not a guess — is right here.
         // (A `scope` was computed here — `Scope::CtBlue`/`CtRed` in comp test,
         // `Plain` otherwise — so that the same champion picked on both sides of a
         // comp test kept two separate `SEL` designations. Pins have no scope, so
         // it went with `SEL`.)
-        // Slots 0/1/2 used to be injected here, writing the `item-builds.json`
-        // pin straight into the build Vec — the same mechanism slot 3 still
-        // uses below. It is gone because `crate::item_build_hook::decide_build`
-        // now sets those three slots on the stable API, where the engine is
-        // handed the build before the match instead of having it overwritten
-        // per buy decision.
+        // Slots 0/1/2: the `item-builds.json` pin written straight into the
+        // build Vec, the same mechanism slot 3 uses below.
         //
-        // That is strictly better, and not only because it is less code: this
-        // path could only ever fire under `is_player`, since a sim athlete
-        // carries no team id and the gate had to be inferred. The stable hook
-        // is told the champion outright, so it applies a build to whoever plays
-        // it — which is what finally made the ENEMY team follow configured
-        // builds. Reinstating an injection here would put the two back in
-        // conflict over the same three slots.
+        // This runs ONLY under `own_team_only`, and it is the reason that toggle
+        // can exist. `crate::item_build_hook::decide_build` sets the same three
+        // slots on the stable API, earlier and more cheaply — the engine is
+        // handed the build before the match instead of having it overwritten per
+        // buy decision — but it is told the champion and not the team, so what
+        // it sets reaches BOTH sides. This path is the opposite trade: it costs
+        // a per-buy write and it can only fire under `is_player`, because a sim
+        // athlete carries no team id and the gate has to be inferred from the
+        // athlete-id roster — which is exactly the scoping the toggle asks for.
         //
-        // Slot 3 stays: `decide_build` can only return as many items as the
-        // engine's build Vec holds, and growing that Vec from 3 to 4 is a
-        // native realloc with no stable-API equivalent.
+        // The two must never both apply, or they fight over the same three
+        // slots; `decide_build` returns the engine's own build untouched
+        // whenever this is live, and the toggle is the single thing deciding
+        // which of them runs.
+        //
+        // Slot 3 is not part of that split: `decide_build` can only return as
+        // many items as the engine's build Vec holds, and growing that Vec from
+        // 3 to 4 is a native realloc with no stable-API equivalent, so the 4th
+        // item is always injected here. Its own team gate is below.
+        if own_team_only && is_player {
+            let ctx012 = rd_u64(rsp_entry + 0x30) as usize;
+            let bptr = rd_u64(athlete + 0x488) as usize; // 0.5.0 build ptr
+            let blen = rd_u64(athlete + 0x490); // 0.5.0 build len
+            if ctx012 >= 0x10000
+                && bptr >= 0x10000
+                && blen >= 1
+                && blen <= 8
+                && readable(bptr, (blen as usize) * 8)
+            {
+                for si in 0u8..3 {
+                    if (si as u64) >= blen {
+                        break;
+                    } // build has no such slot
+                    if owned > si as u64 {
+                        continue;
+                    } // slot already purchased -> too late
+                    let idx: Option<u64> = if let Some(vid) = slotN_vanilla_id(champ, si) {
+                        Some(vid) // vanilla: id == catalog index (no scan needed)
+                    } else if let Some(mk) = slotN_item_key(champ, si) {
+                        scan_idx_cached(ctx012, mk.as_bytes()) // mod item: name scan + recipe validation
+                    } else {
+                        None
+                    };
+                    if let Some(t) = idx {
+                        // * Idempotence guard (07-19): skip the write if the target value is already there. Measured, the vast majority of 53,890 writes
+                        //   were rewrites of the same value on the same athlete and slot -> a value comparison cut it to about 10 (removing the hot-path cost).
+                        if rd_u64(bptr + (si as usize) * 8) == t {
+                            continue;
+                        }
+                        if writable(bptr + (si as usize) * 8, 8) {
+                            wr_u64(bptr + (si as usize) * 8, t);
+                        }
+                    }
+                }
+            }
+        }
         // ** Purchase order diagnostic (2026-07-30, investigating "it buys the 4th first"): record a snapshot of my players' build[] arrays
         //   once per (champ, owned) combination. What the game really targets is build[0..len], so recording which item each index is
         //   (catalog name) plus the current owned count shows directly **which build slot the game completes first**.
-        //   This point is after the build extension, so the final array is visible. (It used to also sit after the slot 0/1/2 injection, which is gone.)
+        //   This point is after the slot 0/1/2 injection, so the targets this half plants are visible.
         if BUY_ORDER_DIAG && is_player {
             let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 let ctx = rd_u64(rsp_entry + 0x30) as usize;
@@ -4564,20 +4612,18 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   Picks without a recipe (base items) are discarded and fall back (using them panics in FUN_141d5ab40).
                 let ctx = rd_u64(rsp_entry + 0x30) as usize;
                 // (1) manual designation first -> (2) the network (cached) -> each obtains an index via a (cached) name scan + recipe validation.
-                // * No team gate. The `item-builds.json` pin is keyed by champion,
-                //   so it applies to whoever plays that champion — both teams —
-                //   exactly like the slots `crate::item_build_hook` sets on the
-                //   stable API. This used to be `if is_player { .. } else { None }`,
-                //   which is what made the enemy's 4th item wrong while its first
-                //   three were right: both came back `None` for every enemy
-                //   champion and the neural/FNV fallback below picked something
-                //   unrelated to the configured build.
-                // * The `is_player` split that briefly replaced it — pin for
-                //   everyone, `SEL` for the player only — collapsed when `SEL`
-                //   stopped steering builds at all. Both branches are the pin now,
-                //   so there is nothing left to branch on.
-                let manual = slot3_item_key(champ);
-                let van = slot3_vanilla_id(champ);
+                // * Team gate, and the same one the three slots above take: with
+                //   `own_team_only` off the `item-builds.json` pin is keyed by
+                //   champion and applies to whoever plays it, both teams, matching
+                //   what `crate::item_build_hook` sets on the stable API; with it
+                //   on, only my athletes are designated and everyone else falls
+                //   through to the neural/FNV pick below, exactly as an
+                //   undesignated champion always has.
+                //   Keeping the 4th on the same gate as the first three is what
+                //   stops the enemy building three engine items and one of mine.
+                let designate = !own_team_only || is_player;
+                let manual = designate.then(|| slot3_item_key(champ)).flatten();
+                let van = designate.then(|| slot3_vanilla_id(champ)).flatten();
                 let picked = if let Some(vid) = van {
                     Some(vid) // * vanilla designation: id == catalog index -> no scan needed (robust, 0.5.0)
                 } else if let Some(mk) = manual.as_ref() {
@@ -4588,6 +4634,29 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         .and_then(item_id_to_key)
                         .and_then(|k| scan_idx_cached(ctx, k.as_bytes()))
                 };
+                // * Unique-item enforcement for the 4th slot. `enforce_unique_items`
+                //   in `crate::item_build_hook` only ever sees the three slots the
+                //   engine's build Vec holds, so a build that pins the same item
+                //   four times came out de-duplicated in slots 0/1/2 and duplicated
+                //   in slot 3: the pin was planted here verbatim, having never been
+                //   shown to the rule the player switched on.
+                //
+                //   Dropping a colliding pick rather than substituting one is the
+                //   whole fix, because the fallback below already produces a
+                //   vanilla final distinct from build[0..2] — so this hands slot 3
+                //   to it exactly as an undesignated champion does. That is a
+                //   different replacement from the one the stable hook makes (it
+                //   substitutes within the duplicate's category, which needs item
+                //   categories this side does not have), but both end at the same
+                //   place the toggle asks for: no two slots holding one item.
+                //
+                //   `b0`/`b1`/`b2` are the live build targets, so this compares
+                //   against what slots 0/1/2 *ended up* being — after the stable
+                //   hook's own de-duplication, or after the injection above.
+                let picked = picked.filter(|t4| {
+                    !crate::build_config::unique_items_enabled()
+                        || (*t4 != b0 && *t4 != b1 && *t4 != b2)
+                });
                 // (3) Fallback: a vanilla final item different from build[0..2] (recipe guaranteed; for vanilla, id == index for sure).
                 //   * Attack-damage bias fix: the implementation always scanned from [0] = attack damage (id 4) -> when the network failed, every enemy 4th was attack damage.
                 //   -> the starting point is now spread by an FNV hash of the champion name (deterministic per champion = replay safe, and categories are distributed evenly).
@@ -4636,7 +4705,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         }
         // -- owned==3 confirmed -> decide the 4th item key --
         // Manual designation (vanilla/mod) first. Otherwise AUTO: the best 4th given build[0..3] via the neural forward (universal, everyone).
-        let want_key = match slot3_item_key(champ) {
+        // Same `designate` rule as the build[3] target above — this is the
+        // forced-purchase variant of it (unreachable while `AUTO4_NATURAL`).
+        let want_key = match (!own_team_only || is_player)
+            .then(|| slot3_item_key(champ))
+            .flatten()
+        {
             Some(k) => k,
             None => match compute_auto_4th_id(athlete, champ).and_then(item_id_to_key) {
                 Some(k) => k,

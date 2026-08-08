@@ -181,6 +181,10 @@ struct Strings {
     col_items: [String; 4],
     unique_on: String,
     unique_off: String,
+    /// The two sides of the scope toggle, each a complete sentence about where
+    /// builds land — the button is the only place that state is shown.
+    scope_all: String,
+    scope_own: String,
     save: String,
     ai_slot: String,
     no_champion: String,
@@ -192,11 +196,13 @@ impl Default for Strings {
             tab: "Builds".into(),
             add: "+ Add Champion".into(),
             filter: "filter by champion...".into(),
-            hint: "Builds are per champion and only apply to your team. A blank slot is filled by the game, in the AI's own pick order.".into(),
+            hint: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.".into(),
             col_champion: "CHAMPION".into(),
             col_items: ["ITEM 1".into(), "ITEM 2".into(), "ITEM 3".into(), "ITEM 4".into()],
             unique_on: "Enforcing unique items".into(),
             unique_off: "Enforce unique items".into(),
+            scope_all: "Applies to both teams".into(),
+            scope_own: "Applies to your team only".into(),
             save: "Save Item Builds".into(),
             ai_slot: AI_SLOT_LABEL_FALLBACK.into(),
             no_champion: NO_CHAMPION_LABEL_FALLBACK.into(),
@@ -251,6 +257,8 @@ fn load_strings(ctx: &StableClient<'_>) {
         }),
         unique_on: reference("unique_on", &fallback.unique_on),
         unique_off: reference("unique_off", &fallback.unique_off),
+        scope_all: reference("scope_all", &fallback.scope_all),
+        scope_own: reference("scope_own", &fallback.scope_own),
         save: reference("save", &fallback.save),
         // A placeholder is a whole label, so it takes a reference like the rest.
         // Confirmed against the bundle: all 21 `placeholder:` values the game
@@ -668,6 +676,9 @@ const CHAMPLIST_PATH: &str = "main.contents.build_editor.champlist";
 /// button moved between the two bars in `build_editor.ui` must be moved here
 /// too — a stale path registers nothing and the control goes quietly dead.
 const UNIQUE_PATH: &str = "main.contents.build_editor.popup.footer.unique";
+/// Beside the unique toggle, in the same footer bar: both are match-wide rules
+/// about the builds rather than edits to one, so they read as a pair.
+const SCOPE_PATH: &str = "main.contents.build_editor.popup.footer.scope";
 /// In the footer rather than the toolbar: it is the panel's "done" button, and
 /// bottom-right is where one is looked for.
 const SAVE_PATH: &str = "main.contents.build_editor.popup.footer.save";
@@ -1283,6 +1294,27 @@ fn refresh_unique(ctx: &mut StableClient<'_>) {
     );
 }
 
+/// Paints the build-scope toggle from the saved setting, the same way
+/// [`refresh_unique`] does: accent-green while builds reach both teams, plain
+/// while they are restricted to the player's own.
+///
+/// Green marks the wider reach here, not the narrower rule the unique toggle
+/// marks: this button says how far the builds travel, and lighting it up when
+/// they travel furthest is what makes "my builds are running the league" read at
+/// a glance.
+fn refresh_scope(ctx: &mut StableClient<'_>) {
+    let strings = strings();
+    let (text, color) = if build_config::own_team_only_enabled() {
+        (&strings.scope_own, "#d7dbe4ff")
+    } else {
+        (&strings.scope_all, "#60ddc2ff")
+    };
+    ctx.ui_set_properties(
+        SCOPE_PATH,
+        &format!("text: {{ text: \"{text}\"; color: {color}; }}"),
+    );
+}
+
 // -- spawning -----------------------------------------------------------
 
 /// `.ui` source for one champion row.
@@ -1812,6 +1844,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         SAVE_PATH,
         ADD_PATH,
         UNIQUE_PATH,
+        SCOPE_PATH,
         LISTCATCH_PATH,
         SEARCH_CLEAR_PATH,
     ] {
@@ -1850,6 +1883,7 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     keep_matchup(ctx);
 
     refresh_unique(ctx);
+    refresh_scope(ctx);
     // The spawned set, not every row: with a filter up the others have no nodes
     // to repaint.
     for row in with_state(|state| state.spawned_rows.clone()).unwrap_or_default() {
@@ -2293,6 +2327,14 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         if build_config::set_unique_items(enabled) {
             refresh_unique(ctx);
         } else {
+        }
+        return;
+    }
+
+    if path == SCOPE_PATH {
+        let enabled = !build_config::own_team_only_enabled();
+        if build_config::set_own_team_only(enabled) {
+            refresh_scope(ctx);
         }
         return;
     }

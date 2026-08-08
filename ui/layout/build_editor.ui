@@ -109,7 +109,7 @@ build_editor:empty {
         align_y: Center;
         size: 13;
         color: #a5a5abff;
-        text: "Builds are per champion and only apply to your team. A blank slot is filled by the game, in the AI's own pick order.";
+        text: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.";
       }
     }
 
@@ -223,6 +223,21 @@ build_editor:empty {
 
         text: {
           text: "Enforcing unique items";
+          align_x: Center;
+          align_y: Center;
+          size: 14;
+        }
+      }
+
+      #scope:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 285px;
+        y: 13px;
+        width: 300px;
+        height: 34px;
+
+        text: {
+          text: "Applies to both teams";
           align_x: Center;
           align_y: Center;
           size: 14;
