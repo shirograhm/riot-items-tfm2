@@ -3797,6 +3797,129 @@ fn beam4_set(champ: String, id: u64) {
     }
 }
 // Item game id -> name key (0~29 = vanilla, 30+ = mod items). Used to scan names in the ctx+0x20 collection.
+/// A start offset spread deterministically by champion name, so a rule that
+/// walks a candidate list does not hand every champion the same answer.
+///
+/// FNV-1a over the name: the same champion always gets the same offset, which is
+/// what keeps a replayed match identical to the one that was played.
+fn champ_spread(champ: &str, modulo: usize) -> usize {
+    if modulo == 0 {
+        return 0;
+    }
+    let mut h: u64 = 0xcbf29ce484222325;
+    for &b in champ.as_bytes() {
+        h = (h ^ b as u64).wrapping_mul(0x100000001b3);
+    }
+    (h % modulo as u64) as usize
+}
+
+/// Vanilla items come in six groups of five, one group per engine category, in
+/// `ItemCategoryV1` order — `VANILLA_KEYS[0..5]` are the Ad line ending in
+/// Bloodthirster, `[5..10]` the attack-speed line ending in Phantom Dancer, and
+/// so on to `[25..30]`, the HP line ending in Sunfire Cape. So a vanilla item's
+/// category is just its id divided by the group size.
+const VANILLA_GROUP: usize = 5;
+
+/// The class the build editor's item list groups an item under — `Marksman`,
+/// `Tank`, and so on — or `None` for an item nobody has classified.
+///
+/// This covers vanilla finals too, and not by accident: [`base_slug`] normalizes
+/// the six reskinned ones from their internal keys (`warlords_final_judgement`)
+/// back onto the slug the map is keyed by (`bloodthirster`), and all six are in
+/// it. It is the hand-kept grouping the player sees when picking an item, which
+/// makes it the better of the two answers when it has one.
+///
+/// [`base_slug`]: crate::build_config::base_slug
+fn editor_class(key: &str) -> Option<&'static str> {
+    let class = crate::item_catalog::category_of(crate::build_config::base_slug(key));
+    (class != crate::item_catalog::OTHER_CATEGORY).then_some(class)
+}
+
+/// The engine category of an item, as an `ItemCategoryV1` code — the coarser of
+/// the two groupings, and the one the stable hook's `enforce_unique_items`
+/// substitutes within.
+///
+/// The safety net under [`editor_class`]: an item added to the mod but not yet
+/// written into the editor's map still has a category here, so it still gets a
+/// stand-in of the right kind instead of falling through to the vanilla pick.
+fn engine_category(key: &str) -> Option<u32> {
+    if let Some(id) = VANILLA_KEYS.iter().position(|candidate| *candidate == key) {
+        return Some((id / VANILLA_GROUP) as u32);
+    }
+    crate::strategy_ui::mod_item_category(key)
+}
+
+/// A stand-in for a 4th item that would duplicate one the build already holds,
+/// drawn from the same category as the item it replaces.
+///
+/// Without this the duplicate fell through to the vanilla fallback below, which
+/// only avoids collisions — so enforcing unique items could turn an Ad fourth
+/// item into an HP one. The stable hook has never done that to slots 0/1/2 (it
+/// substitutes within the duplicate's category), and the 4th slot having its own
+/// visibly different rule is the bug.
+///
+/// The candidate pool is `auto_cands`: the six vanilla finals plus every final
+/// the mod registers. A duplicated *vanilla* item therefore gets a mod item of
+/// its class, which is the only place one can come from — its class holds
+/// exactly one vanilla final, and that is the item already in the build.
+///
+/// Two passes, finest first: [`editor_class`] is what the player sees and
+/// curates, so an Assassin item is replaced by another Assassin item where one
+/// is free; [`engine_category`] is the fallback, which still guarantees the
+/// property the stable hook enforces on slots 0/1/2.
+///
+/// `taken` is the live build[0..2]. Returns `None` only when the item has
+/// neither grouping or every item in both is already taken, which leaves the
+/// caller's existing fallback to answer — a cross-category item still beats no
+/// fourth item.
+unsafe fn same_category_swap(ctx: usize, wanted: u64, taken: [u64; 3], champ: &str) -> Option<u64> {
+    let key = catalog_name_at(ctx, wanted)?;
+    if let Some(class) = editor_class(&key) {
+        if let Some(index) = pick_candidate(ctx, wanted, taken, champ, |candidate| {
+            editor_class(candidate) == Some(class)
+        }) {
+            return Some(index);
+        }
+    }
+    let category = engine_category(&key)?;
+    pick_candidate(ctx, wanted, taken, champ, |candidate| {
+        engine_category(candidate) == Some(category)
+    })
+}
+
+/// First free final item that `matches`, starting from a champion-spread offset
+/// so the whole league does not converge on one stand-in.
+///
+/// "Free" is both unclaimed by build[0..2] and actually present in this match's
+/// catalog with a recipe — which is what the scan proves and an id alone does
+/// not.
+unsafe fn pick_candidate(
+    ctx: usize,
+    wanted: u64,
+    taken: [u64; 3],
+    champ: &str,
+    matches: impl Fn(&str) -> bool,
+) -> Option<u64> {
+    let candidates = auto_cands();
+    let start = champ_spread(champ, candidates.len());
+    for step in 0..candidates.len() {
+        let id = candidates[(start + step) % candidates.len()];
+        let Some(key) = item_id_to_key(id) else {
+            continue;
+        };
+        if !matches(&key) {
+            continue;
+        }
+        let Some(index) = scan_idx_cached(ctx, key.as_bytes()) else {
+            continue;
+        };
+        if index != wanted && !taken.contains(&index) {
+            return Some(index);
+        }
+    }
+    None
+}
+
 fn item_id_to_key(id: u64) -> Option<String> {
     if (id as usize) < VANILLA_KEYS.len() {
         return Some(VANILLA_KEYS[id as usize].to_string());
@@ -4641,31 +4764,29 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   in slot 3: the pin was planted here verbatim, having never been
                 //   shown to the rule the player switched on.
                 //
-                //   Dropping a colliding pick rather than substituting one is the
-                //   whole fix, because the fallback below already produces a
-                //   vanilla final distinct from build[0..2] — so this hands slot 3
-                //   to it exactly as an undesignated champion does. That is a
-                //   different replacement from the one the stable hook makes (it
-                //   substitutes within the duplicate's category, which needs item
-                //   categories this side does not have), but both end at the same
-                //   place the toggle asks for: no two slots holding one item.
+                //   A collision is answered the way the stable hook answers one:
+                //   with another final item of the SAME category, so enforcing
+                //   uniqueness never changes what kind of item the 4th slot is.
+                //   Only if that finds nothing does the pick drop and the vanilla
+                //   fallback below answer instead — a cross-category fourth item
+                //   still beats no fourth item.
                 //
                 //   `b0`/`b1`/`b2` are the live build targets, so this compares
                 //   against what slots 0/1/2 *ended up* being — after the stable
                 //   hook's own de-duplication, or after the injection above.
-                let picked = picked.filter(|t4| {
-                    !crate::build_config::unique_items_enabled()
-                        || (*t4 != b0 && *t4 != b1 && *t4 != b2)
+                let picked = picked.and_then(|t4| {
+                    if !crate::build_config::unique_items_enabled()
+                        || (t4 != b0 && t4 != b1 && t4 != b2)
+                    {
+                        return Some(t4);
+                    }
+                    same_category_swap(ctx, t4, [b0, b1, b2], champ)
                 });
                 // (3) Fallback: a vanilla final item different from build[0..2] (recipe guaranteed; for vanilla, id == index for sure).
                 //   * Attack-damage bias fix: the implementation always scanned from [0] = attack damage (id 4) -> when the network failed, every enemy 4th was attack damage.
                 //   -> the starting point is now spread by an FNV hash of the champion name (deterministic per champion = replay safe, and categories are distributed evenly).
                 let t4 = picked.or_else(|| {
-                    let mut h: u64 = 0xcbf29ce484222325;
-                    for &b in champ.as_bytes() {
-                        h = (h ^ b as u64).wrapping_mul(0x100000001b3);
-                    }
-                    let start = (h % 6) as usize;
+                    let start = champ_spread(champ, 6);
                     (0..6)
                         .map(|k| VANILLA_FINAL[(start + k) % 6])
                         .find(|&v| v != b0 && v != b1 && v != b2)

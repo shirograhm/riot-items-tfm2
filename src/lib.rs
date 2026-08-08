@@ -235,11 +235,16 @@ fn init(host: &StableHost) -> StableMod {
     }
     macro_rules! configured_radiant {
         ($key:literal => $T:ty) => {{
-            strategy_ui::note_final_item($key);
-            configs
+            let item = configs
                 .get($key)
                 .map(<$T>::radiant_with_config)
-                .unwrap_or_else(<$T>::radiant)
+                .unwrap_or_else(<$T>::radiant);
+            // The category is taken off the built item rather than written down
+            // beside the key: it is the same value the engine will be told, so
+            // the two cannot drift. `tactics` needs it to find a same-category
+            // stand-in when unique enforcement rejects a 4th item.
+            strategy_ui::note_final_item($key, StableItem::category(&item));
+            item
         }};
     }
 

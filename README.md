@@ -243,12 +243,18 @@ Clicking a slot drops its item list underneath it. Pick **Let Player Decide** at
 the top of that list — or click the pinned item again, or the slot's **X** — to
 hand the slot back to the game's AI. The **Unique Items Enforced** and build
 scope toggles both write `mod-settings.json` beside the DLL (`unique_items` and
-`own_team_only`), and both take effect from the next match.
+`own_team_only`), and both take effect from the next match — a match already
+under way had its builds picked before the click. Neither changes what is pinned:
+a build that repeats an item keeps it, and enforcement happens to the build the
+match uses, not to the config.
 
-Every change is written immediately to `item-builds.json`; **Save Item Builds**,
-in the bottom right, has nothing left to write and simply returns to the **Team**
-tab. A row with no champion, or with nothing pinned, is kept in the editor but
-not written — a build with nothing to key it by is not a build.
+Every change is written immediately to `item-builds.json`, so nothing is ever
+lost by leaving the tab. **Save Item Builds**, in the bottom right, writes the
+whole set again and raises a green tick beside itself when the write succeeds;
+the tick clears as soon as anything is edited, and saving stays on the Builds
+tab rather than interrupting the editing. A row with no champion, or with
+nothing pinned, is kept in the editor but not written — a build with nothing to
+key it by is not a build.
 
 **Builds are keyed by champion.** The champion list is read from the game at runtime, 
 so champions added by other mods can be given builds too.

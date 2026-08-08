@@ -179,10 +179,10 @@ struct Strings {
     col_champion: String,
     /// One complete label per column — LabelRunner cannot compose `"ITEM " + n`.
     col_items: [String; 4],
+    /// The two cells of each footer toggle. Both are on screen at once, so these
+    /// name the choice a cell makes rather than describing the current state.
     unique_on: String,
     unique_off: String,
-    /// The two sides of the scope toggle, each a complete sentence about where
-    /// builds land — the button is the only place that state is shown.
     scope_all: String,
     scope_own: String,
     save: String,
@@ -277,7 +277,7 @@ fn load_strings(ctx: &StableClient<'_>) {
 /// never runs.
 ///
 /// `ui_set_properties` rather than `ui_set_text` for the buttons: their label is
-/// a nested `text` block, which is the form [`refresh_unique`] already drives.
+/// a nested `text` block, which `ui_set_text` does not reach into.
 fn apply_strings(ctx: &mut StableClient<'_>) {
     let strings = strings();
     let escape = |text: &str| text.replace('\\', "\\\\").replace('"', "\\\"");
@@ -294,9 +294,20 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
         &format!("{COLHEADER_PATH}.c_champion"),
         &strings.col_champion,
     );
-    // The tab carries `text` as a direct property, not a nested block — see
-    // `#builds` in `strategy.ui` — so it takes the plain form.
-    ctx.ui_set_properties(BUILDS_TAB, &format!("text: \"{}\";", escape(&strings.tab)));
+    // The tab and the footer toggle cells carry `text` as a direct property, not
+    // a nested block — see `#builds` in `strategy.ui` — so they take the plain
+    // form. The cells are labelled once here rather than on every repaint: in a
+    // segmented control the label of a cell is what it *is*, and only which one
+    // is lit changes with the setting.
+    for (path, text) in [
+        (BUILDS_TAB, &strings.tab),
+        (UNIQUE_ON_PATH, &strings.unique_on),
+        (UNIQUE_OFF_PATH, &strings.unique_off),
+        (SCOPE_ALL_PATH, &strings.scope_all),
+        (SCOPE_OWN_PATH, &strings.scope_own),
+    ] {
+        ctx.ui_set_properties(path, &format!("text: \"{}\";", escape(text)));
+    }
 }
 
 /// The toolbar hint, the one label in the editor long enough to matter.
@@ -386,15 +397,6 @@ const TAB_IDLE_TEXT: &str = "#a3a9b6ff";
 /// Equal to [`TAB_IDLE_TEXT`] by coincidence, not by meaning.
 const TAB_HOVER_LINE: &str = "#a3a9b6ff";
 const TAB_HOVER_TEXT: &str = "#e0e2e7ff";
-
-/// The Team tab's four columns, shown again when the Save button leaves the
-/// Builds tab — the one exit with no vanilla tab click behind it.
-const TEAM_PANELS: [&str; 4] = [
-    "main.contents.strategy.sub1",
-    "main.contents.strategy.sub2",
-    "main.contents.strategy.sub3",
-    "main.contents.strategy.sub4",
-];
 
 /// Parent for the spawned window, and its layout source.
 const EDITOR_PARENT: &str = UI_ROOT;
@@ -563,12 +565,35 @@ fn with_state<T>(f: impl FnOnce(&mut EditorState) -> T) -> Option<T> {
 /// decides whether an item has art in the icon sheet.
 static MOD_FINALS: Mutex<Vec<String>> = Mutex::new(Vec::new());
 
-/// Records one of the mod's final (radiant) items. Called from the registration
-/// macros in `lib.rs`.
-pub(crate) fn note_final_item(key: &str) {
+/// Engine category per entry of [`MOD_FINALS`], as an `ItemCategoryV1` code.
+///
+/// Kept beside the keys rather than in `item_catalog`, whose classes are the
+/// mod's own finer grouping for the picker (`Marksman`, `Mage`, …) and not what
+/// the engine sorts items by. `tactics` needs the engine's answer, because that
+/// is the category the item-build hook de-duplicates within — matching it is
+/// what stops a de-duplicated 4th item changing what kind of item it is.
+static MOD_FINAL_CATEGORIES: Mutex<Vec<(String, u32)>> = Mutex::new(Vec::new());
+
+/// Records one of the mod's final (radiant) items and its engine category.
+/// Called from the registration macros in `lib.rs`.
+pub(crate) fn note_final_item(key: &str, category: ItemCategoryV1) {
     if let Ok(mut finals) = MOD_FINALS.lock() {
         finals.push(key.to_string());
     }
+    if let Ok(mut categories) = MOD_FINAL_CATEGORIES.lock() {
+        categories.push((key.to_string(), category.code()));
+    }
+}
+
+/// The engine category of one of the mod's final items, or `None` for a key the
+/// mod did not register.
+pub(crate) fn mod_item_category(key: &str) -> Option<u32> {
+    MOD_FINAL_CATEGORIES
+        .lock()
+        .ok()?
+        .iter()
+        .find(|(candidate, _)| candidate == key)
+        .map(|(_, category)| *category)
 }
 
 /// Paths that already have a handler, so none is ever registered twice.
@@ -675,13 +700,25 @@ const CHAMPLIST_PATH: &str = "main.contents.build_editor.champlist";
 /// In the footer beside Save. These paths are matched by exact string, so a
 /// button moved between the two bars in `build_editor.ui` must be moved here
 /// too — a stale path registers nothing and the control goes quietly dead.
-const UNIQUE_PATH: &str = "main.contents.build_editor.popup.footer.unique";
+/// The two footer settings are segmented controls, not buttons whose label
+/// changes: each is a bordered box holding one `color_selectable` per choice,
+/// built exactly like the Team/Builds `#mode_toggle` at the top of the screen.
+/// Both options stay on screen, so the alternative is readable without clicking
+/// to find out what it is — which a single relabelling button cannot do.
+///
+/// The container paths themselves are never addressed; only the cells are.
+const UNIQUE_ON_PATH: &str = "main.contents.build_editor.popup.footer.unique.on";
+const UNIQUE_OFF_PATH: &str = "main.contents.build_editor.popup.footer.unique.off";
 /// Beside the unique toggle, in the same footer bar: both are match-wide rules
 /// about the builds rather than edits to one, so they read as a pair.
-const SCOPE_PATH: &str = "main.contents.build_editor.popup.footer.scope";
+const SCOPE_ALL_PATH: &str = "main.contents.build_editor.popup.footer.scope.all";
+const SCOPE_OWN_PATH: &str = "main.contents.build_editor.popup.footer.scope.own";
 /// In the footer rather than the toolbar: it is the panel's "done" button, and
 /// bottom-right is where one is looked for.
 const SAVE_PATH: &str = "main.contents.build_editor.popup.footer.save";
+/// The confirmation tick left of Save. Hidden until a save succeeds; it is the
+/// only thing that reports one now that the button stays on the tab.
+const SAVED_PATH: &str = "main.contents.build_editor.popup.footer.saved";
 /// In the toolbar, above the column headers: adding a row acts on the list
 /// below it.
 const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
@@ -1278,41 +1315,83 @@ fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
     }
 }
 
-/// Paints the unique-items toggle from the saved setting: accent-green
-/// "Unique Items Enforced" while on, plain "Duplicates Allowed" while off —
-/// so the state reads off the button itself.
-fn refresh_unique(ctx: &mut StableClient<'_>) {
-    let strings = strings();
-    let (text, color) = if build_config::unique_items_enabled() {
-        (&strings.unique_on, "#60ddc2ff")
-    } else {
-        (&strings.unique_off, "#d7dbe4ff")
-    };
-    ctx.ui_set_properties(
-        UNIQUE_PATH,
-        &format!("text: {{ text: \"{text}\"; color: {color}; }}"),
-    );
+/// Lights the chosen cell of a two-option footer toggle and dims the other.
+///
+/// The selection is painted, not set, for the reason spelled out at
+/// [`paint_tabs`]: `ui_set_selectable_selected` is rejected for the
+/// `color_selectable` kind. Both property pairs are written with the same
+/// appearance — `image`/`label` and `selected_image`/`selected_label` — so the
+/// cell looks right whichever pair the runner decides to render. The tabs can
+/// afford to pick one pair because their underlying state is known and fixed;
+/// these cells are clicked directly, and paying one extra write beats depending
+/// on a click not flipping a flag we cannot read back.
+fn paint_toggle(ctx: &mut StableClient<'_>, lit_path: &str, dim_path: &str) {
+    ctx.ui_set_properties(lit_path, &toggle_style(true));
+    ctx.ui_set_properties(dim_path, &toggle_style(false));
 }
 
-/// Paints the build-scope toggle from the saved setting, the same way
-/// [`refresh_unique`] does: accent-green while builds reach both teams, plain
-/// while they are restricted to the player's own.
-///
-/// Green marks the wider reach here, not the narrower rule the unique toggle
-/// marks: this button says how far the builds travel, and lighting it up when
-/// they travel furthest is what makes "my builds are running the league" read at
-/// a glance.
-fn refresh_scope(ctx: &mut StableClient<'_>) {
-    let strings = strings();
-    let (text, color) = if build_config::own_team_only_enabled() {
-        (&strings.scope_own, "#d7dbe4ff")
+/// One toggle cell's appearance, in the vanilla `strategy_option` colours the
+/// tabs and list rows already use.
+fn toggle_style(lit: bool) -> String {
+    let (fill, text, stroke) = if lit {
+        (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
     } else {
-        (&strings.scope_all, "#60ddc2ff")
+        (TAB_IDLE_FILL, TAB_IDLE_TEXT, 1)
     };
-    ctx.ui_set_properties(
-        SCOPE_PATH,
-        &format!("text: {{ text: \"{text}\"; color: {color}; }}"),
-    );
+    let (hover_line, hover_text) = if lit {
+        (fill, text)
+    } else {
+        (TAB_HOVER_LINE, TAB_HOVER_TEXT)
+    };
+    // `size` and `align_x` are restated rather than left to the `.ui`, because a
+    // property write replaces the block it names: a `label` carrying only a
+    // colour would drop the centring the layout gives these cells.
+    let pair = |image_key: &str, label_key: &str| {
+        format!(
+            "{image_key}: {{ color: {fill}; back_color: {fill}; stroke: {stroke}; \
+             rounding: Uniform {{ rounding: 6; }} \
+             hover: {{ color: {hover_line}; back_color: {fill}; }} }} \
+             {label_key}: {{ size: 13; align_x: Center; color: {text}; \
+             hover: {{ color: {hover_text}; }} }}"
+        )
+    };
+    format!(
+        "{} {}",
+        pair("image", "label"),
+        pair("selected_image", "selected_label")
+    )
+}
+
+/// Paints which half of the unique-items toggle is the live setting.
+fn refresh_unique(ctx: &mut StableClient<'_>) {
+    if build_config::unique_items_enabled() {
+        paint_toggle(ctx, UNIQUE_ON_PATH, UNIQUE_OFF_PATH);
+    } else {
+        paint_toggle(ctx, UNIQUE_OFF_PATH, UNIQUE_ON_PATH);
+    }
+}
+
+/// Takes the save tick down.
+///
+/// Called from every path that changes a row, and from none that only changes
+/// what is on screen: the filter box and the two footer toggles leave the builds
+/// exactly as the tick found them.
+///
+/// The tick therefore acknowledges *a save*, and stands only while nothing has
+/// been touched since — it is not a claim about the file, which every edit
+/// rewrites anyway. Writing `false` when it is already hidden is what makes the
+/// callers able to say "edited" without first asking whether it was showing.
+fn clear_saved(ctx: &mut StableClient<'_>) {
+    ctx.ui_set_visible(SAVED_PATH, false);
+}
+
+/// Paints which half of the build-scope toggle is the live setting.
+fn refresh_scope(ctx: &mut StableClient<'_>) {
+    if build_config::own_team_only_enabled() {
+        paint_toggle(ctx, SCOPE_OWN_PATH, SCOPE_ALL_PATH);
+    } else {
+        paint_toggle(ctx, SCOPE_ALL_PATH, SCOPE_OWN_PATH);
+    }
 }
 
 // -- spawning -----------------------------------------------------------
@@ -1843,8 +1922,10 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     for path in [
         SAVE_PATH,
         ADD_PATH,
-        UNIQUE_PATH,
-        SCOPE_PATH,
+        UNIQUE_ON_PATH,
+        UNIQUE_OFF_PATH,
+        SCOPE_ALL_PATH,
+        SCOPE_OWN_PATH,
         LISTCATCH_PATH,
         SEARCH_CLEAR_PATH,
     ] {
@@ -1882,6 +1963,11 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     ctx.ui_set_visible(ITEM_INFO_BTN, true);
     keep_matchup(ctx);
 
+    // A tick from a previous visit is not a statement about this one: the
+    // subtree survives closing the panel, and a tick already showing on arrival
+    // acknowledges a click the player has since forgotten making.
+    clear_saved(ctx);
+
     refresh_unique(ctx);
     refresh_scope(ctx);
     // The spawned set, not every row: with a filter up the others have no nodes
@@ -1895,10 +1981,9 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
 
 /// Leaves the Builds tab.
 ///
-/// Deliberately restores no panel. This runs off a click on Team, and game
-/// code's own handler for that click shows the Team columns — putting them back
-/// here would race that. The only exception is [`return_to_team`], which has no
-/// such click behind it and so must do the showing itself.
+/// Deliberately restores no panel. Every exit from the tab is a click on Team,
+/// and game code's own handler for that click shows the Team columns — putting
+/// them back here would race that.
 fn close_editor(ctx: &mut StableClient<'_>) {
     close_list(ctx);
     paint_tabs(ctx, false);
@@ -2018,18 +2103,6 @@ fn keep_matchup(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(SUB4_PATH, true);
     ctx.ui_set_visible(GAME_FINISH_PATH, false);
     ctx.ui_set_visible(MATCHUP_PATH, true);
-}
-
-/// Leaves the Builds tab for Team, for the Save button — which has no tab click
-/// behind it, so nothing else would make a panel visible again and the content
-/// area would be left empty.
-fn return_to_team(ctx: &mut StableClient<'_>) {
-    // No tab selection to restore: game code has considered Team selected the
-    // whole time, and `close_editor` has already repainted it to look it.
-    close_editor(ctx);
-    for panel in TEAM_PANELS {
-        ctx.ui_set_visible(panel, true);
-    }
 }
 
 /// Places a floating list under the control that opened it, flipping above when
@@ -2299,15 +2372,23 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     let entries = snapshot_entries();
 
     if path == SAVE_PATH {
-        // Every edit already wrote the file, so there is nothing here to flush —
-        // the button is the panel's "done", and leaving the tab is all of what
-        // it does.
-        return_to_team(ctx);
+        // Save no longer leaves for the Team tab: the common thing to do after
+        // saving is to keep editing, and being thrown out of the panel to come
+        // back cost more than the exit was worth. So the button has to report
+        // its own result, which is what the tick is for.
+        //
+        // The write is real rather than skipped-because-edits-autosave, so that
+        // a failed one can leave the tick hidden — a tick that appears whatever
+        // happened is not a report. It goes down again on the next edit (see
+        // `clear_saved`), which is what keeps it about *this* state of the rows.
+        let rows = snapshot_rows();
+        ctx.ui_set_visible(SAVED_PATH, build_config::save_champion_rows(&rows));
         return;
     }
 
     if path == ADD_PATH {
         let _ = with_state(|state| state.rows.push(ChampionRow::default()));
+        clear_saved(ctx);
         close_list(ctx);
         rebuild_rows(ctx, &entries);
         return;
@@ -2322,18 +2403,21 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    if path == UNIQUE_PATH {
-        let enabled = !build_config::unique_items_enabled();
-        if build_config::set_unique_items(enabled) {
+    // A segmented control's cells each *assert* a value rather than flipping the
+    // setting: clicking the option that is already lit has to be a no-op, or the
+    // control would contradict what it shows.
+    // The setting is all this writes. It deliberately does not touch the saved
+    // builds: a pinned duplicate is the player's, and enforcement is something
+    // the match does to a build, not something the editor does to the config.
+    if path == UNIQUE_ON_PATH || path == UNIQUE_OFF_PATH {
+        if build_config::set_unique_items(path == UNIQUE_ON_PATH) {
             refresh_unique(ctx);
-        } else {
         }
         return;
     }
 
-    if path == SCOPE_PATH {
-        let enabled = !build_config::own_team_only_enabled();
-        if build_config::set_own_team_only(enabled) {
+    if path == SCOPE_ALL_PATH || path == SCOPE_OWN_PATH {
+        if build_config::set_own_team_only(path == SCOPE_OWN_PATH) {
             refresh_scope(ctx);
         }
         return;
@@ -2363,6 +2447,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
                 .flatten();
         let rows = snapshot_rows();
         build_config::save_champion_rows(&rows);
+        clear_saved(ctx);
         close_list(ctx);
         rebuild_rows(ctx, &entries);
         return;
@@ -2371,6 +2456,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     if let Some(slot) = index_after(&path, ".clear") {
         if slot < picker_slots() {
             edit_row(row, |entry| entry.slots[slot] = None);
+            clear_saved(ctx);
             close_list(ctx);
             refresh_row(ctx, &entries, row);
         }
@@ -2380,6 +2466,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     if let Some(slot) = index_after(&path, ".swap") {
         if slot + 1 < picker_slots() {
             edit_row(row, |entry| entry.slots.swap(slot, slot + 1));
+            clear_saved(ctx);
             close_list(ctx);
             refresh_row(ctx, &entries, row);
         }
@@ -2426,6 +2513,7 @@ fn pick_item(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
         _ => return,
     };
     edit_row(row, |entry| entry.slots[slot] = picked.clone());
+    clear_saved(ctx);
 
     close_list(ctx);
     refresh_row(ctx, entries, row);
@@ -2450,6 +2538,7 @@ fn pick_champion(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize
     let already = current.as_deref() == Some(choice.id.as_str());
     let picked = (!already).then(|| choice.id.clone());
     edit_row(row, |entry| entry.champion = picked.clone());
+    clear_saved(ctx);
 
     close_list(ctx);
     refresh_row(ctx, entries, row);
