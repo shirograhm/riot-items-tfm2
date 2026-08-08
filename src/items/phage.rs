@@ -42,7 +42,7 @@ impl Phage {
         item
     }
 
-    fn grant_rage(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
+    fn grant_rage(&mut self, ctx: &mut StableSim<'_>, caster: usize, _target: usize) {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
