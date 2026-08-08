@@ -316,7 +316,7 @@ build_editor:empty {
             align_x: Center;
           }
 
-          text: "Apply To All Champions";
+          text: "Apply To All Players";
         }
 
         #own:color_selectable {
@@ -334,7 +334,7 @@ build_editor:empty {
             align_x: Center;
           }
 
-          text: "Apply To Your Team";
+          text: "Apply To Your Players Only";
         }
       }
 

@@ -220,7 +220,7 @@ each one shops, which is what makes a fourth slot possible. If that half has
 disabled itself — after a game update, say — builds still apply through the
 first, minus the fourth item.
 
-The footer's **Apply To All Champions / Apply To Your Team** toggle picks
+The footer's **Apply To All Players / Apply To Your Players Only** toggle picks
 between them. The two halves are not interchangeable: the game's hook is told the
 champion and never the team, so what it sets necessarily reaches both sides,
 while the four-item half identifies your athletes by id and can therefore scope
