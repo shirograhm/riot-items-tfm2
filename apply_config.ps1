@@ -361,6 +361,8 @@ $rdmpMaxDmg = [int]$config.radiant_dead_mans_plate.effect_max_bonus_damage
 $rspfLeth = [int]$config.radiant_serpents_fang.effect_lethality
 $rspfFlat = [int]$config.radiant_serpents_fang.effect_bonus_flat_damage
 $rspfPct = [int]$config.radiant_serpents_fang.effect_ad_percent_damage
+$ieCrit = [int]$config.infinity_edge.effect_crit_damage_bonus
+$rieCrit = [int]$config.radiant_infinity_edge.effect_crit_damage_bonus
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -406,6 +408,7 @@ $cdrIcon = "i#asset/base/ui/banpick/champion_stat_icon:cdr_0"
 $armorPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0"
 $magicPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0"
 $critIcon = "i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0"
+$critDamageIcon = "i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0"
 $vampIcon = "i#asset/base/ui/banpick/champion_stat_icon:vamp_0"
 $levelIcon = "i#asset/base/ui/banpick/champion_stat_icon:level_0"
 $goldIcon = "i#asset/base/ui/banpick/champion_stat_icon:gold_0"
@@ -415,6 +418,8 @@ Write-Host "Updating English text."
 
 $i18n.en.executioners_calling.option = "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${execHeal}%<> for <#e8a800ff>${execDur} seconds<>."
 $i18n.en.oblivion_orb.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${ooHeal}%<> for <#e8a800ff>${ooDur} seconds<>."
+$i18n.en.infinity_edge.option = "Excoriate: Gain <#d45656ff>$ieCrit% <$critDamageIcon> critical strike damage<>."
+$i18n.en.radiant_infinity_edge.option = "Excoriate: Gain <#d45656ff>$rieCrit% <$critDamageIcon> critical strike damage<>."
 $i18n.en.morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${morHeal}%<> for <#e8a800ff>${morDur} seconds<>."
 $i18n.en.radiant_morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rmorHeal}%<> for <#e8a800ff>${rmorDur} seconds<>."
 $i18n.en.overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#60e84dff>${obmAtk}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
@@ -554,6 +559,8 @@ Write-Host "Updating Vietnamese text."
 
 $i18n.vi.executioners_calling.option = "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${execHeal}%<> trong <#e8a800ff>${execDur} giây<>."
 $i18n.vi.oblivion_orb.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${ooHeal}%<> trong <#e8a800ff>${ooDur} giây<>."
+$i18n.vi.infinity_edge.option = "Lột Da: Nhận <#d45656ff>$ieCrit% <$critDamageIcon> sát thương chí mạng<>."
+$i18n.vi.radiant_infinity_edge.option = "Lột Da: Nhận <#d45656ff>$rieCrit% <$critDamageIcon> sát thương chí mạng<>."
 $i18n.vi.morellonomicon.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${morHeal}%<> trong <#e8a800ff>${morDur} giây<>."
 $i18n.vi.radiant_morellonomicon.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rmorHeal}%<> trong <#e8a800ff>${rmorDur} giây<>."
 $i18n.vi.overlords_bloodmail.option = "Bạo Ngược: Nhận <#ff9028ff>thêm<> <$adIcon> <#ff9028ff>SMCK<> tương ứng <#60e84dff>${obmAtk}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân."
@@ -693,6 +700,8 @@ Write-Host "Updating Chinese (Simplified) text."
 
 $i18n.'zh-hans'.executioners_calling.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${execHeal}%<>，持续 <#e8a800ff>${execDur}秒<>。"
 $i18n.'zh-hans'.oblivion_orb.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${ooHeal}%<>，持续 <#e8a800ff>${ooDur}秒<>。"
+$i18n.'zh-hans'.infinity_edge.option = "严厉斥责：获得 <#d45656ff>$ieCrit% <$critDamageIcon> 暴击伤害<>。"
+$i18n.'zh-hans'.radiant_infinity_edge.option = "严厉斥责：获得 <#d45656ff>$rieCrit% <$critDamageIcon> 暴击伤害<>。"
 $i18n.'zh-hans'.morellonomicon.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${morHeal}%<>，持续 <#e8a800ff>${morDur}秒<>。"
 $i18n.'zh-hans'.radiant_morellonomicon.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${rmorHeal}%<>，持续 <#e8a800ff>${rmorDur}秒<>。"
 $i18n.'zh-hans'.overlords_bloodmail.option = "暴政：获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${obmAtk}%<> 的<#ff9028ff>额外<> <$adIcon> <#ff9028ff>攻击力<>。"
@@ -832,6 +841,8 @@ Write-Host "Updating Portuguese (Brazil) text."
 
 $i18n.'pt-BR'.executioners_calling.option = "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${execHeal}%<> por <#e8a800ff>${execDur} segundos<>."
 $i18n.'pt-BR'.oblivion_orb.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${ooHeal}%<> por <#e8a800ff>${ooDur} segundos<>."
+$i18n.'pt-BR'.infinity_edge.option = "Trucidar: Ganha <#d45656ff>$ieCrit% de <$critDamageIcon> Dano Crítico<>."
+$i18n.'pt-BR'.radiant_infinity_edge.option = "Trucidar: Ganha <#d45656ff>$rieCrit% de <$critDamageIcon> Dano Crítico<>."
 $i18n.'pt-BR'.morellonomicon.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${morHeal}%<> por <#e8a800ff>${morDur} segundos<>."
 $i18n.'pt-BR'.radiant_morellonomicon.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rmorHeal}%<> por <#e8a800ff>${rmorDur} segundos<>."
 $i18n.'pt-BR'.overlords_bloodmail.option = "Tirania: Ganha <#ff9028ff>bônus<> de <$adIcon> <#ff9028ff>Dano de Ataque<> igual a <#60e84dff>${obmAtk}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>."
@@ -971,6 +982,8 @@ Write-Host "Updating Russian text."
 
 $i18n.ru.executioners_calling.option = "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${execHeal}%<> на <#e8a800ff>${execDur} секунды<>."
 $i18n.ru.oblivion_orb.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${ooHeal}%<> на <#e8a800ff>${ooDur} секунды<>."
+$i18n.ru.infinity_edge.option = "Разнос: Даёт <#d45656ff>$ieCrit% <$critDamageIcon> критического урона<>."
+$i18n.ru.radiant_infinity_edge.option = "Разнос: Даёт <#d45656ff>$rieCrit% <$critDamageIcon> критического урона<>."
 $i18n.ru.morellonomicon.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${morHeal}%<> на <#e8a800ff>${morDur} секунды<>."
 $i18n.ru.radiant_morellonomicon.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rmorHeal}%<> на <#e8a800ff>${rmorDur} секунды<>."
 $i18n.ru.overlords_bloodmail.option = "Тирания: Даёт <#ff9028ff>дополнительную<> <$adIcon> <#ff9028ff>Силу Атаки<> равную <#60e84dff>${obmAtk}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<>."
@@ -1110,6 +1123,8 @@ Write-Host "Updating Korean text."
 
 $i18n.ko.executioners_calling.option = "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${execDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${execHeal}% 감소<>합니다."
 $i18n.ko.oblivion_orb.option = "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${ooDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${ooHeal}% 감소<>합니다."
+$i18n.ko.infinity_edge.option = "찰과상: <$critDamageIcon> <#d45656ff>치명타 피해량<>이 <#d45656ff>$ieCrit%<> 증가합니다."
+$i18n.ko.radiant_infinity_edge.option = "찰과상: <$critDamageIcon> <#d45656ff>치명타 피해량<>이 <#d45656ff>$rieCrit%<> 증가합니다."
 $i18n.ko.morellonomicon.option = "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${morDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${morHeal}% 감소<>합니다."
 $i18n.ko.radiant_morellonomicon.option = "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${rmorDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${rmorHeal}% 감소<>합니다."
 $i18n.ko.overlords_bloodmail.option = "폭정: <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${obmAtk}%<>만큼 <$adIcon> <#ff9028ff>추가 공격력<>을 얻습니다."

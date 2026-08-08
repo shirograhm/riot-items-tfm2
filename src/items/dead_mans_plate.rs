@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, is_enemy_champion, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
-    BUFF_REFRESH_PERIOD_TICKS, TICKS_PER_SECOND,
+    apply_config, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
+    TICKS_PER_SECOND,
 };
 
 const PROC_LOCKOUT_TICKS: usize = BUFF_REFRESH_DURATION_TICKS;

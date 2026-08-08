@@ -6,8 +6,6 @@ use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 #[derive(Clone, Debug)]
 pub struct NightHarvester {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     cooldown_buff: &'static str,
     soulrend_buff: &'static str,
     price: usize,
