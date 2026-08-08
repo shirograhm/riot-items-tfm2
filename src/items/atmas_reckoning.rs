@@ -44,8 +44,6 @@ fn apply_big_hands(
 #[derive(Clone, Debug)]
 pub struct AtmasReckoning {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     big_hands_buff: &'static str,
     price: usize,
     hp: i32,

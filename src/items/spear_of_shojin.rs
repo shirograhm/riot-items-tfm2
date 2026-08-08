@@ -6,8 +6,6 @@ use crate::{apply_config, buff_stacks, ticks, ItemMeta};
 #[derive(Clone, Debug)]
 pub struct SpearOfShojin {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     stack_buff: &'static str,
     price: usize,
     hp: i32,

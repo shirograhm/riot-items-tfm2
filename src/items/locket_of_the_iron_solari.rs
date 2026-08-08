@@ -9,8 +9,6 @@ use crate::{
 #[derive(Clone, Debug)]
 pub struct LocketOfTheIronSolari {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     aura_buff: &'static str,
     price: usize,
     hp: i32,
