@@ -220,7 +220,7 @@ each one shops, which is what makes a fourth slot possible. If that half has
 disabled itself — after a game update, say — builds still apply through the
 first, minus the fourth item.
 
-The footer's **Applies to both teams / Applies to your team only** toggle picks
+The footer's **Apply To All Champions / Apply To Your Team** toggle picks
 between them. The two halves are not interchangeable: the game's hook is told the
 champion and never the team, so what it sets necessarily reaches both sides,
 while the four-item half identifies your athletes by id and can therefore scope
@@ -241,7 +241,7 @@ assigned.
 
 Clicking a slot drops its item list underneath it. Pick **Let Player Decide** at
 the top of that list — or click the pinned item again, or the slot's **X** — to
-hand the slot back to the game's AI. The **Enforcing unique items** and build
+hand the slot back to the game's AI. The **Unique Items Enforced** and build
 scope toggles both write `mod-settings.json` beside the DLL (`unique_items` and
 `own_team_only`), and both take effect from the next match.
 

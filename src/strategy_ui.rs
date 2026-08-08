@@ -199,10 +199,10 @@ impl Default for Strings {
             hint: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.".into(),
             col_champion: "CHAMPION".into(),
             col_items: ["ITEM 1".into(), "ITEM 2".into(), "ITEM 3".into(), "ITEM 4".into()],
-            unique_on: "Enforcing unique items".into(),
-            unique_off: "Enforce unique items".into(),
-            scope_all: "Applies to both teams".into(),
-            scope_own: "Applies to your team only".into(),
+            unique_on: "Unique Items Enforced".into(),
+            unique_off: "Duplicates Allowed".into(),
+            scope_all: "Apply To All Champions".into(),
+            scope_own: "Apply To Your Team".into(),
             save: "Save Item Builds".into(),
             ai_slot: AI_SLOT_LABEL_FALLBACK.into(),
             no_champion: NO_CHAMPION_LABEL_FALLBACK.into(),
@@ -1279,7 +1279,7 @@ fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
 }
 
 /// Paints the unique-items toggle from the saved setting: accent-green
-/// "Enforcing unique items" while on, plain "Enforce unique items" while off —
+/// "Unique Items Enforced" while on, plain "Duplicates Allowed" while off —
 /// so the state reads off the button itself.
 fn refresh_unique(ctx: &mut StableClient<'_>) {
     let strings = strings();

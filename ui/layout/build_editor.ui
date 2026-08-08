@@ -222,7 +222,7 @@ build_editor:empty {
         height: 34px;
 
         text: {
-          text: "Enforcing unique items";
+          text: "Unique Items Enforced";
           align_x: Center;
           align_y: Center;
           size: 14;
@@ -237,7 +237,7 @@ build_editor:empty {
         height: 34px;
 
         text: {
-          text: "Applies to both teams";
+          text: "Apply To All Champions";
           align_x: Center;
           align_y: Center;
           size: 14;
