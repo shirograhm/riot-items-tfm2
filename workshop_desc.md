@@ -3,7 +3,7 @@ Also re-skins the 30 existing items and adds some custom icons for Armor Penetra
 
 [b]This mod supports custom item values, custom item builds, and a way to add another item slot. See instructions below![/b]  
 
-Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for an item of the same category. Toggle it in the in-game Build Editor.  
+Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for another item of the same category, 4th item included. Toggle it in the in-game Build Editor.  
 
 [h1] Important [/h1]
 
@@ -35,7 +35,7 @@ In order for the AI to realize that these items exist, it is best to add this mo
 4. Restart the game.
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
-Currently updated for game version >=0.5.3. Also supports previous versions using an older build of the mod. See below for reference:  
+Currently updated for game version 0.5.4. Also supports previous versions using an older build of the mod. See below for reference:  
 Mod v0.8.0+ - v0.5.4+
 Mod v0.7.0+ - v0.5.3
 Mod v0.5.7+ - v0.5.1 & v0.5.2
@@ -64,11 +64,10 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 2. Press [b]+ Add Champion[/b], pick a champion, then set its item slots.
   a. Modded champions are listed too, so long as their mod is loaded.
   b. If you only want to decide [i]some[/i] items, set the slots you care about and leave the rest on [b]Let Player Decide[/b] (the default). The mod keeps your chosen items and lets the game's AI fill the remaining slots.
+  c. Use the [b]filter by champion[/b] box in the toolbar to find a champion once the list gets long.
 3. Start the simulated match!
 
-Builds are saved to [b]item-builds.json[/b] as you make them, so they carry across sessions.  
-
-[b]NOTE: Custom item builds override all matches at the moment. So your build becomes the meta. It is extremely powerful and can affect both simulated games, soloQ, and even the other team's champions in your match. Please use it with caution![/b]
+Builds are saved automatically when changed to [b]item-builds.json[/b] as you make them, so they carry across sessions. Click [b]Save Item Builds[/b] to run a manual save.  
 
 [h1] 4 Item Mode [/h1]
 
@@ -81,7 +80,7 @@ Next time you play a match, you should notice a 4th item slot both in your Build
 
 [h1] Planned Features [/h1]
 
-- Support items (Ardent Censer?) and possibly a 7th item category?
+- More support items (Ardent Censer?)
 - Ability to edit values on the 30 base game items, in addition to the current config.json.
 - Translations for other locales.
 - Various bugfixes.
