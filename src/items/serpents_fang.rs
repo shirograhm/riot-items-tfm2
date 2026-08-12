@@ -156,7 +156,7 @@ impl StableItem for SerpentsFang {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Ad]
+        vec![ItemTagV1::Ad, ItemTagV1::ShieldBreak]
     }
 
     fn category(&self) -> ItemCategoryV1 {

@@ -126,7 +126,8 @@ impl StableItem for Shadowflame {
 
         let hp_threshold = percent_of(target_ref.hp().1, self.effect_hp_percent_threshold);
         if target_ref.hp().0 < hp_threshold && damage_type == DamageTypeV1::Ap {
-            *damage += *damage * (self.effect_bonus_damage_when_low / 100.0) as usize;
+            *damage +=
+                (*damage as f64 * (self.effect_bonus_damage_when_low / 100.0)).round() as usize;
         }
     }
 

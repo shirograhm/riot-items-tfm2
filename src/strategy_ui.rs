@@ -201,8 +201,8 @@ impl Default for Strings {
             col_items: ["ITEM 1".into(), "ITEM 2".into(), "ITEM 3".into(), "ITEM 4".into()],
             unique_on: "Unique Items Enforced".into(),
             unique_off: "Duplicates Allowed".into(),
-            scope_all: "Apply To All Champions".into(),
-            scope_own: "Apply To Your Team".into(),
+            scope_all: "Apply To All Players".into(),
+            scope_own: "Apply To Your Players Only".into(),
             save: "Save Item Builds".into(),
             ai_slot: AI_SLOT_LABEL_FALLBACK.into(),
             no_champion: NO_CHAMPION_LABEL_FALLBACK.into(),
@@ -900,14 +900,16 @@ fn load_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
 
 /// Builds one [`ItemChoice`] from an item key, resolving its display name and
 /// its place in the catalog.
-fn make_choice(ctx: &StableClient<'_>, key: &str) -> ItemChoice {
+/// `None` for an item with no category, which keeps it out of the list
+/// entirely — there is no catch-all group to put it in.
+fn make_choice(ctx: &StableClient<'_>, key: &str) -> Option<ItemChoice> {
     let slug = build_config::base_slug(key);
-    ItemChoice {
+    Some(ItemChoice {
         frame: item_catalog::icon_frame(slug, is_mod_item(key)).map(sanitize),
-        category: item_catalog::category_of(slug),
+        category: item_catalog::category_of(slug)?,
         name: sanitize(&item_display_name(ctx, key, slug)),
         key: sanitize(key),
-    }
+    })
 }
 
 /// Display name for an item, without the "Radiant" tier word.
@@ -955,7 +957,7 @@ fn merge_mod_finals(ctx: &StableClient<'_>, choices: &mut Vec<ItemChoice>) {
         if choices.iter().any(|choice| choice.key == key) {
             continue;
         }
-        choices.push(make_choice(ctx, &key));
+        choices.extend(make_choice(ctx, &key));
     }
 }
 
@@ -999,7 +1001,7 @@ fn collect_items(
         if !is_final {
             continue;
         }
-        out.push(make_choice(ctx, key));
+        out.extend(make_choice(ctx, key));
     }
 }
 

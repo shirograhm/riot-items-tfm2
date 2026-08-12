@@ -312,6 +312,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured!("riftmaker" => Riftmaker));
+    reg.add_item(configured!("rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
     reg.add_item(configured!("shadowflame" => Shadowflame));
@@ -369,6 +370,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured_radiant!("radiant_rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
+    reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));

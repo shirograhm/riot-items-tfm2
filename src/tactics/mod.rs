@@ -48,8 +48,6 @@ mod uinj; // 4th-slot UI injection (chained loader hook): item3 dropdown + in-ma
 pub mod driver;
 mod ui_root;
 
-const MOD_ID: &str = "tfm2_item_tactics";
-
 /// Kill switch for everything in `tactics_post_update` that walks the live UI
 /// node tree — now the in-match 4th slot icon, its tooltip, and the compact
 /// slot spacing. (The strategy and comp-test handlers it also used to cover are
@@ -71,7 +69,16 @@ const MOD_ID: &str = "tfm2_item_tactics";
 /// the strategy handler, so disabling this silently disabled every
 /// `safe_read_*` in the module. That call now lives in `tactics_init`, which is
 /// where it belongs, so the two are independent.
-const UI_TREE_WALK_ENABLED: bool = true;
+// ** OFF 2026-08-12 (game 0.5.5). Everything this gated now runs over the stable
+//    UI API by path instead — the 4th-slot icon and `force_blue_slot_spacing`,
+//    which were its only remaining consumers. The node route needs a UI root
+//    pointer, and on 0.5.5 the search for one cannot succeed: `build_ext_diag`
+//    showed the scan landing in live UI memory (1167 nodes, real ids) yet never
+//    finding the root, because `subtree_has_id` searches *downward* for `main`
+//    while the nodes it lands on are branches with `main` above them. That is a
+//    direction error, not a tuning problem, so the search was also costing a
+//    160KB sweep per frame for an answer nobody could use.
+const UI_TREE_WALK_ENABLED: bool = false;
 
 // This half no longer touches the game's native **Personal** tactics tab.
 // `crate::strategy_ui` replaces that tab outright with the mod's own `#builds`
@@ -244,7 +251,6 @@ struct MemBasicInfo {
     mtype: u32,
     _pad1: u32,
 }
-
 
 // ===========================================================================
 //  Memory-safety helpers (ported from scrim)
@@ -1396,7 +1402,22 @@ const GV_OFF_ITEMLIST_LEN: usize = 0xb8;
 const GV_OFF_PV_CTRL: usize = 0x1d0; // hashbrown RawTable ctrl
 const GV_OFF_PV_MASK: usize = 0x1d8;
 const GV_OFF_PV_ITEMS: usize = 0x1e8; // element count (0 = not in a match)
-const PV_STRIDE: usize = 0x260; // PlayerViewInfo
+                                      // ** 0.5.5 (2026-08-12): PlayerViewInfo grew 0x260 -> 0x2c0. The simulation-side offsets were migrated and this
+                                      //   one was not, so the (team,pos) probe landed between buckets and found nothing to draw — the 4th item was
+                                      //   bought and then displayed empty.
+                                      //
+                                      //   The stride is not read off a single instruction. `gv_update`'s hashbrown group scan steps sixteen buckets at
+                                      //   a time, `add r13, -0x2600` -> `add r13, -0x2c00`, and 0x2600/16 = 0x260 while 0x2c00/16 = 0x2c0 — the ×16
+                                      //   relationship is what identifies the constant as a bucket stride rather than some unrelated frame offset.
+                                      //
+                                      //   Everything else here was **checked, not assumed**. In 0x2ba350 -> 0x2bafc0 (a clean recompile: 119
+                                      //   instructions, zero mnemonic mismatches) every access is stride-relative, and converting each back to a field
+                                      //   offset gives 0x20, 0x28, 0x38, 0x40, 0x50, **0x58**, 0x68, 0x70 on *both* sides — identical. So the 0x60 of
+                                      //   growth is above 0x70 and every field below it, the items Vec included, keeps its offset. `gv_update` tells
+                                      //   the same story for GameView: across all 1040 instructions the only operands that differ are the three
+                                      //   stride-relative ones, and 0xa8/0xb0/0x1d0/0x1e8 appear at the same instruction offsets through the same
+                                      //   base registers in both builds.
+const PV_STRIDE: usize = 0x2c0; // PlayerViewInfo. 0.5.5 (0.5.4 was 0x260)
 const PV_OFF_TEAM: usize = 0x00; // u64 tag: 0=blue(Team0) 1=red(Team1)
 const PV_OFF_POS: usize = 0x08; // u32: 0 top /1 jungle /2 mid /3 bottom /4 support
 const PV_OFF_ITEMS_PTR: usize = 0x58; // Vec<u64> = {cap@0x50, ptr@0x58, len@0x60}
@@ -1472,7 +1493,7 @@ unsafe fn node_set_xy(n: &Node, x: f32, y: f32) {
 //  OK  +0x58 key(&String) / +0x60 icon(&String) / +0x68 price(u64 **value**) / +0x70 tier(u64 **value**, 0-based)
 //  NO  +0x50 = bool (self+0x190 != 0) - **not name**. Name has no vtable slot; the i18n key is assembled from key.
 //     (Mistaking this for a String pointer and dereferencing it caused a crash. Do not repeat.)
-const RVA_GAME_ALLOC: usize = 0x29bb920; // 0.5.4 (0.5.3 was 0x28f7df0). Same helper `ui_inject::ALLOC_RVA` pins - see the evidence there.  // (rcx = ignored, rdx = flags 0, r8 = size) -> ptr
+const RVA_GAME_ALLOC: usize = 0x2a9bf30; // 0.5.5 (0.5.4 was 0x29bb920, 0.5.3 0x28f7df0). Same helper `ui_inject::ALLOC_RVA` pins - see the evidence there.  // (rcx = ignored, rdx = flags 0, r8 = size) -> ptr
 unsafe fn item_obj_at(gv: usize, idx: u64) -> Option<(usize, usize)> {
     if !readable(gv + GV_OFF_ITEMLIST_CAP, 24) {
         return None;
@@ -1499,7 +1520,8 @@ unsafe fn item_obj_at(gv: usize, idx: u64) -> Option<(usize, usize)> {
 // GameView pointer (read-only capture). rcx of game.rs update (0x960df0) = GameView. The value never changes, so capturing once is enough.
 static GAME_VIEW: AtomicUsize = AtomicUsize::new(0);
 // 0.5.4 (2026-08-04): exe2exe `match`, 1 hit at 320 and 640 bytes, size 4575, 12-push prologue intact.
-const RVA_GV_UPDATE: usize = 0xaa06c0;
+// 0.5.5 (2026-08-11): exe2exe again, 1 hit, size 4575 on both sides, prologue still the same 12 pushes.
+const RVA_GV_UPDATE: usize = 0x964350; // 0.5.5 (0.5.4 was 0xaa06c0).
 const GV_UPDATE_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ];
@@ -1602,14 +1624,33 @@ unsafe fn item_icon_by_index(gv: usize, idx: u64) -> Option<String> {
 unsafe fn collect_slot3_icons(gv: usize) -> HashMap<(u64, u32), String> {
     let mut out = HashMap::new();
     if !readable(gv + GV_OFF_PV_CTRL, 32) {
+        pv_diag(|| "PV: gv+0x1d0 unreadable".to_string());
         return out;
     }
     let ctrl = rd_u64(gv + GV_OFF_PV_CTRL) as usize;
     let mask = rd_u64(gv + GV_OFF_PV_MASK) as usize;
     let nitems = rd_u64(gv + GV_OFF_PV_ITEMS);
     if ctrl < 0x10000 || nitems == 0 || nitems > 64 || mask > 0x1000 {
+        // Report the raw header rather than a verdict. `ctrl` and `items` are
+        // confirmed for 0.5.5 (in gv_update, `mov r15,rcx` then
+        // `mov r14,[r15+0x1e8]` / `mov r13,[r15+0x1d0]` feeding a `movdqa` group
+        // load), so a rejection here means one of the *unconfirmed* reads is
+        // wrong — most likely `mask` at +0x1d8, which no instruction has been
+        // matched to.
+        pv_diag(|| {
+            format!(
+                "PV: header rejected - ctrl={ctrl:#x} mask={mask:#x}({mask}) items={nitems} \
+                 [raw +0x1c8={:#x} +0x1d8={:#x} +0x1e0={:#x} +0x1e8={:#x}]",
+                rd_u64(gv + 0x1c8),
+                rd_u64(gv + 0x1d8),
+                rd_u64(gv + 0x1e0),
+                rd_u64(gv + 0x1e8),
+            )
+        });
         return out;
     }
+    let mut pv_rows: Vec<String> = Vec::new();
+    let mut seen = 0usize;
     for i in 0..=mask {
         if !readable(ctrl + i, 1) {
             break;
@@ -1628,6 +1669,21 @@ unsafe fn collect_slot3_icons(gv: usize) -> HashMap<(u64, u32), String> {
         }
         let it_ptr = rd_u64(e + PV_OFF_ITEMS_PTR) as usize;
         let it_len = rd_u64(e + PV_OFF_ITEMS_LEN);
+        seen += 1;
+        if seen <= 4 {
+            // The per-entry facts. `it_len` is the one that decides whether a
+            // 4th item is drawn, and it is also the number that would expose a
+            // view chain that caps at 3 (which the recorded RE says it does not)
+            // or a stale PV_OFF_ITEMS_* pair.
+            pv_rows.push(format!(
+                "team={team} pos={pos} items_len={it_len} ptr={it_ptr:#x} \
+                 [raw +0x50={:#x} +0x58={:#x} +0x60={:#x} +0x68={:#x}]",
+                rd_u64(e + 0x50),
+                rd_u64(e + 0x58),
+                rd_u64(e + 0x60),
+                rd_u64(e + 0x68),
+            ));
+        }
         if it_len < 4 || it_ptr < 0x10000 || !readable(it_ptr + 3 * 8, 8) {
             continue;
         } // does not own a 4th
@@ -1636,7 +1692,33 @@ unsafe fn collect_slot3_icons(gv: usize) -> HashMap<(u64, u32), String> {
             out.insert((team, pos), tag);
         }
     }
+    pv_diag(|| {
+        format!(
+            "PV: ctrl={ctrl:#x} mask={mask} items={nitems} full_entries={seen} with_4th={}\n      {}",
+            out.len(),
+            if pv_rows.is_empty() {
+                "(no FULL bucket passed the team/pos sanity check)".to_string()
+            } else {
+                pv_rows.join("\n      ")
+            }
+        )
+    });
     out
+}
+
+/// Latest line from the player-view walk, for `build_ext_diag.txt`.
+///
+/// A `String` rather than counters because the useful evidence here is the raw
+/// header and the first few entries — the counters already say "0 players own a
+/// 4th", which is the thing that needs explaining, not more of the same. Only
+/// built while `BUILD_EXT_DIAG` is on: the closure keeps the formatting cost out
+/// of the frame path entirely when it is off.
+static PV_DIAG: Mutex<String> = Mutex::new(String::new());
+fn pv_diag(f: impl FnOnce() -> String) {
+    if !BUILD_EXT_DIAG {
+        return;
+    }
+    *PV_DIAG.lock().unwrap_or_else(|e| e.into_inner()) = f();
 }
 const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
 const IMG_STATE_OFF: [usize; 4] = [0, 208, 416, 624]; // normal/hover/active/disabled
@@ -1718,6 +1800,228 @@ fn tag_to_idx(t: &str) -> Option<usize> {
     Some(b * 5 + (a - 1))
 }
 static SLOT3_PV_N: AtomicU64 = AtomicU64::new(0); // number of players seen owning a 4th item in the view model
+                                                  // ═══ 4th-slot icon over the stable UI API ══════════════════════════════════════════════════════════════════
+                                                  //
+                                                  // `handle_ingame_slot3` below walks the live `Node` tree, which needs a UI root
+                                                  // pointer, which needs a window scan through the `App`. Game 0.5.5 broke that
+                                                  // and `build_ext_diag.txt` showed why it cannot be repaired by widening the
+                                                  // window: the scan *does* land in live UI memory (95 nodes, real ids —
+                                                  // `rank`, `logo`, `team`, `match`, `win`, `lose`) but never finds the root,
+                                                  // because `subtree_has_id` searches **downward** for `main` while the nodes the
+                                                  // scan lands on are branches with `main` above them. Raising the depth cannot
+                                                  // fix a direction error.
+                                                  //
+                                                  // The stable API addresses nodes by path and `ui_child_names("")` starts at the
+                                                  // UI root by definition, so this route needs no root pointer, no
+                                                  // `GAME_VIEW_IN_APP`, and no agreement with the SDK 0.5.2 `Node` layout — the
+                                                  // three things that have broken on successive game updates. The view model is
+                                                  // still read natively, because nothing on the stable side exposes it.
+static SLOT3_PATHS: Mutex<Vec<(String, u64, u32)>> = Mutex::new(Vec::new());
+static SLOT3_PATH_DIAG: Mutex<String> = Mutex::new(String::new());
+/// Per-frame probe of one seat, kept separate from the discovery line above so
+/// the two do not overwrite each other.
+static SLOT3_PROBE_DIAG: Mutex<String> = Mutex::new(String::new());
+/// Last `source`/`rect_tag` pair actually written, for the probe line.
+static SLOT3_LAST_SRC: Mutex<String> = Mutex::new(String::new());
+static SLOT3_PATH_SET: AtomicU64 = AtomicU64::new(0);
+
+/// Depth and expansion budget for the path search. The item panel sits a few
+/// levels down; the budget stops a pathological tree from costing a frame.
+const PATH_DEPTH: usize = 14;
+const PATH_BUDGET: usize = 4000;
+/// Frames between discovery attempts while the cache is unusable. At 60fps this
+/// is one search per second, which is the difference between "notices the match
+/// screen a frame late" and the stutter an unthrottled search causes.
+const DISCOVER_EVERY: u64 = 60;
+static DISCOVER_TICK: AtomicU64 = AtomicU64::new(0);
+static LAST_DISCOVER: AtomicU64 = AtomicU64::new(0);
+
+/// `(team, pos)` implied by a `slot3` path, from the `blue_player`/`red_player`
+/// and lane segments the template nests it under.
+fn team_pos_from_path(path: &str) -> Option<(u64, u32)> {
+    let mut team = None;
+    let mut pos = None;
+    for seg in path.split('.') {
+        match seg {
+            "blue_player" => team = Some(0),
+            "red_player" => team = Some(1),
+            _ => {
+                if let Some(i) = LANES.iter().position(|l| *l == seg) {
+                    pos = Some(i as u32);
+                }
+            }
+        }
+    }
+    Some((team?, pos?))
+}
+
+/// Every `slot3` node currently in the tree, with the seat it belongs to.
+///
+/// Breadth-first from the UI root. `slot3` itself is not descended into — its
+/// only children are the `bg`/`icon` pair this addresses directly.
+fn discover_slot3_paths(client: &StableClient<'_>) -> Vec<(String, u64, u32)> {
+    let mut found = Vec::new();
+    let mut queue = std::collections::VecDeque::new();
+    queue.push_back((String::new(), 0usize));
+    let mut budget = PATH_BUDGET;
+    while let Some((path, depth)) = queue.pop_front() {
+        if budget == 0 {
+            break;
+        }
+        budget -= 1;
+        if depth > PATH_DEPTH {
+            continue;
+        }
+        for name in client.ui_child_names(&path) {
+            let child = if path.is_empty() {
+                name.clone()
+            } else {
+                format!("{path}.{name}")
+            };
+            if name == "slot3" {
+                if let Some((team, pos)) = team_pos_from_path(&child) {
+                    found.push((child, team, pos));
+                }
+                continue;
+            }
+            queue.push_back((child, depth + 1));
+        }
+    }
+    found
+}
+
+/// Paints the 4th slot for every seat, discovering the paths on first use and
+/// whenever the cached ones stop existing (a new match builds a new screen).
+fn drive_slot3_by_path(client: &mut StableClient<'_>, icons: &HashMap<(u64, u32), String>) {
+    let mut cache = SLOT3_PATHS.lock().unwrap_or_else(|e| e.into_inner());
+    // Re-discover when the cache is empty or its first entry has gone: the
+    // screen is rebuilt per match, so yesterday's paths address nothing.
+    //
+    // THROTTLED, and it must stay that way. The search is breadth-first over the
+    // whole UI tree with a 4000-node budget, and the first version ran it on
+    // every frame the cache looked stale — which, off the match screen or with
+    // an unusable path, is *every* frame. That is the hard lag reported on
+    // 2026-08-12: thousands of cross-ABI `ui_child_names` calls per frame. A
+    // failed search must cost no more than one search per second.
+    let stale = cache
+        .first()
+        .map(|(p, _, _)| !client.ui_exists(p))
+        .unwrap_or(true);
+    let tick = DISCOVER_TICK.fetch_add(1, Ordering::Relaxed);
+    let due = tick.saturating_sub(LAST_DISCOVER.load(Ordering::Relaxed)) >= DISCOVER_EVERY;
+    if stale && due {
+        LAST_DISCOVER.store(tick, Ordering::Relaxed);
+        *cache = discover_slot3_paths(client);
+        if BUILD_EXT_DIAG {
+            *SLOT3_PATH_DIAG.lock().unwrap_or_else(|e| e.into_inner()) = format!(
+                "slot3 paths discovered: {} {}",
+                cache.len(),
+                // All of them, not a sample: the compact/wide split has to be
+                // read off these paths, and the spacing fix above keys on it.
+                cache
+                    .iter()
+                    .map(|(p, t, s)| format!("{p}(t{t},p{s})"))
+                    .collect::<Vec<_>>()
+                    .join("\n      ")
+            );
+        }
+    }
+    // Probe the first known seat once per report, whatever the item state.
+    //
+    // The previous version only probed inside the "this seat owns a 4th item"
+    // branch, so a run whose sampled frame had `with_4th=0` produced an empty
+    // probe line and taught us nothing — which is exactly what happened. What
+    // needs answering (does the path resolve, is it an image runner, does a
+    // `main.` prefix behave differently) does not depend on any item existing.
+    if BUILD_EXT_DIAG {
+        if let Some((path, _, _)) = cache.first() {
+            let icon = format!("{path}.bg.icon");
+            // The path, the runner kind and the write are all confirmed good;
+            // what is left is the *value*. `slot0` on the same row is the same
+            // kind of node showing a real item icon, so its runner state is the
+            // format to copy rather than guess at — the mod has two conflicting
+            // precedents (`set_img_src` writes "sheet#tag" into one field,
+            // `set_icon_rect_tag` writes the sheet and the tag into two).
+            // `ui_state_json` was tried here and returns "{}" for image runners
+            // (slot0's working icon included), so it cannot report a source.
+            // What is left worth recording is the value actually written.
+            let sample = SLOT3_LAST_SRC
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .clone();
+            let d = format!(
+                "path='{icon}' exists={} runner={:?} visible={:?}\n      wrote: {}",
+                client.ui_exists(&icon),
+                client.ui_runner_name(&icon),
+                client.ui_visible(&icon),
+                if sample.is_empty() {
+                    "(nothing yet - no seat owned a 4th item)".to_string()
+                } else {
+                    sample
+                },
+            );
+            *SLOT3_PROBE_DIAG.lock().unwrap_or_else(|e| e.into_inner()) = d;
+        }
+    }
+
+    for (path, team, pos) in cache.iter() {
+        let icon = format!("{path}.bg.icon");
+        match icons.get(&(*team, *pos)) {
+            Some(tag) => {
+                // Sheet and tag are **two properties**, not one `sheet#tag`
+                // string. Confirmed against the game's own `.ui` assets in
+                // `bundle.game_data`, where every aseprite image reads
+                //
+                //     source: "asset/base/aseprite_resources/team_logo";
+                //     rect_tag: "0_0";
+                //
+                // and where no `source:` anywhere contains a `#` at all. The `#`
+                // form this used at first comes from `set_img_src`, which writes
+                // the runner's source *field* directly rather than going through
+                // the `.ui` parser — a different interface with different rules.
+                // `set_icon_rect_tag`, the native writer this replaces, always
+                // split them the same way the assets do.
+                let source = format!("source: \"{ICON_SHEET}\"; rect_tag: \"{tag}\";");
+                if BUILD_EXT_DIAG {
+                    *SLOT3_LAST_SRC.lock().unwrap_or_else(|e| e.into_inner()) = source.clone();
+                }
+                if client.ui_set_properties(&icon, &source) {
+                    client.ui_set_visible(&icon, true);
+                    SLOT3_PATH_SET.fetch_add(1, Ordering::Relaxed);
+                }
+            }
+            // No 4th item: match the game's own empty-slot handling.
+            None => {
+                client.ui_set_visible(&icon, false);
+            }
+        }
+
+        // The other casualty of the unresolved UI root, and the reason the slot
+        // row looks wrong rather than merely empty: `force_blue_slot_spacing`
+        // was gated on the node tree too. The game rewrites `blue_player` back
+        // to its vanilla 50px spacing every frame, so with that gate shut the
+        // blue side keeps three-slot geometry while the template defines four.
+        // Same values as the `.ui` and as the node-walk version it replaces:
+        // slots at `base + 42*i` from slot0's authored 59, kda 242, cs 290.
+        //
+        // Compact layout ONLY. `wide_player_info` is authored at 34px with its
+        // own kda/cs, has no reset to fight, and writing the compact numbers
+        // into it is what the node version's warning is about — so the wide
+        // subtree is excluded by path.
+        if *team == 0 && !path.contains("wide") {
+            let Some(bp) = path.strip_suffix(".slot3") else {
+                continue;
+            };
+            for i in 0..4u32 {
+                let x = 59.0 + FORCE_BLUE_SPACING * i as f32;
+                client.ui_set_properties(&format!("{bp}.slot{i}"), &format!("x: {x}px;"));
+            }
+            client.ui_set_properties(&format!("{bp}.kda"), "x: 242px;");
+            client.ui_set_properties(&format!("{bp}.cs"), "x: 290px;");
+        }
+    }
+}
+
 fn handle_ingame_slot3(ui: &Node) {
     if !SLOT3_ICON_ENABLED || slot_count() != 4 {
         return;
@@ -2016,7 +2320,33 @@ static PLAYER_TEAM_ID: AtomicU64 = AtomicU64::new(u64::MAX); // u64::MAX = not c
                                                              //   - build Vec +0x490/0x498/0x4a0 - id +0x810 - team +0x820 - gold +0x888 - position (dword) +0x8b0 - copy size 0x8b8.
                                                              // 0.5.4 = 0x800 (0.5.3 was 0x810). The roster walk that reads it is the SAME function either side
                                                              // (0x1740300 -> 0x17ce980, 286 bytes both) and reads it at the SAME two positions, +0x2d and +0x97.
-const O_ATHLETE_ID: usize = 0x800;
+                                                             // ═══ 0.5.5 athlete layout (2026-08-11) ═════════════════════════════════════════════════════════════════════
+                                                             // The struct moved again, and **not by one uniform amount** — it grew 0x60 twice, in two different places, so
+                                                             // nothing here may be obtained by shifting the 0.5.4 values by a single delta. Fields below 0x518 moved +0x60;
+                                                             // fields from 0x800 up moved +0x120.
+                                                             //
+                                                             //   champ ptr  0x410 -> 0x470     items ptr 0x440 -> 0x4a0     build cap 0x480 -> 0x4e0     id     0x800 -> 0x920
+                                                             //   champ len  0x418 -> 0x478     items len 0x448 -> 0x4a8     build ptr 0x488 -> 0x4e8     team   0x810 -> 0x930
+                                                             //                                                              build len 0x490 -> 0x4f0     gold   0x878 -> 0x998
+                                                             //   read guard 0x8a8 -> 0x9c8     stride    0x8c0 -> 0x9e0
+                                                             //
+                                                             // Every one of these comes from a function established to walk the athlete *by call contract* and then shown to
+                                                             // be a clean recompile — same .pdata size, same instruction count, zero mnemonic mismatches — so the offsets are
+                                                             // read out of a 1:1 correspondence rather than pattern-matched:
+                                                             //
+                                                             //   * `buy_item` (r8 = athlete) and its three callees give items ptr/len, build ptr/len and gold.
+                                                             //   * the 286-byte roster walk (0x17ce980 -> 0x18ab160, identical at every instruction offset) gives id and,
+                                                             //     from its `add rbx,imm`, the stride.
+                                                             //   * two further functions (0xf059a0 -> 0xf16ef0, 0x13bd510 -> 0x14b4d40) read the champ String and the id
+                                                             //     through the *same base register*, which is what makes their 0x410/0x418 the athlete's and not another
+                                                             //     struct's; the second also gives team directly.
+                                                             //   * build cap and the read guard are the only two taken by bracketing, and both are bracketed tightly by
+                                                             //     fields with equal deltas on either side (0x448/0x488 both +0x60; 0x8a0/0x8c0 both +0x120), which offsets
+                                                             //     cannot escape without reordering the struct.
+                                                             //
+                                                             // The trap this avoids is real: four plausible-looking candidates found by scanning for the 0x410/0x418/0x448
+                                                             // displacements turned out to be walking unrelated structs — their offsets did not move at all between builds.
+const O_ATHLETE_ID: usize = 0x920; // 0.5.5 (0.5.4 was 0x800, 0.5.3 0x810)
 static MY_ATHLETES: AtomicPtr<std::collections::HashSet<u64>> =
     AtomicPtr::new(core::ptr::null_mut());
 static MY_ATH_PREV: AtomicPtr<std::collections::HashSet<u64>> =
@@ -2119,7 +2449,25 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
                                   //   confirmed in game. Flip back on to get `build_ext_diag.txt` — `BE_CNT[6]` (build[3]
                                   //   writes) and "owned>=4 observed" are what tell "the build was extended" apart from
                                   //   "extended and never bought". Costs a file write every ~5s on the main thread.
-const BUILD_EXT_DIAG: bool = false; // * was OFF 2026-08-04: it identified the root-scan budget bug (see `ui_root::ATTEMPTS`) and that fix is confirmed in game
+                                  // * ON 2026-08-12, TEMPORARILY: after the 0.5.5 migration the 4th item is
+                                  //   bought but drawn empty. `PV_STRIDE` was wrong (0x260 -> 0x2c0) and is
+                                  //   fixed; whether that was the whole cause is unconfirmed. The remaining
+                                  //   candidates fail identically from outside, and this report separates them
+                                  //   in one match. Read, in order:
+                                  //     "owned>=4 observed"      0 => not actually bought; stop looking at the UI
+                                  //     "mode(slot_count)"       != 4 => handle_ingame_slot3 returns immediately
+                                  //     "GameView=0x0"           => the RVA_GV_UPDATE hook never fired
+                                  //     "view-model owns a 4th=0" with owned>=4 non-zero => GV/PV offsets wrong
+                                  //     "set OK=0 skipped>0"     => nodes resolve, the icon write fails
+                                  //     "set OK=0 skipped=0"     => find_node never reached #slot3/#bg/#icon,
+                                  //                                 i.e. the UI root never resolved
+                                  //   That last line is the one the seesaw history points at: a cached UI root
+                                  //   that is stale after a return to the main menu crashes if walked and draws
+                                  //   nothing if dropped — see `ui_root::resolve`.
+                                  //   Set back to `false` once the cause is known: it writes `build_ext_diag.txt`
+                                  //   into the mod folder every ~5s, and no .txt files there is a standing
+                                  //   preference.
+const BUILD_EXT_DIAG: bool = false; // * OFF again 2026-08-12: the 0.5.5 in-match icon is fixed and confirmed in game. It was this report that found it, in four steps — buy path healthy, UI root never resolving, the path route landing on the right node, and finally the written value being wrong. Turn it back on before guessing at anything in this area again.
                                     // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false;
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
@@ -2137,7 +2485,7 @@ static BE_MAX_OWNED: AtomicU64 = AtomicU64::new(0); // max observed owned (item 
                                                     //   0x29a7640. The body is __rust_realloc outright: `cmp r8,0x11 / jae` splits the over-aligned path, the
                                                     //   align<=16 path tail-jmps to HeapReAlloc(heap, 0, ptr, size), and the over-aligned path allocs (0x29bb920),
                                                     //   memcpys, then frees. Argument contract (rcx=ptr, rdx=old, r8=align, r9=new) is unchanged.
-const RVA_REALLOC: usize = 0x29a7640; // 0.5.4 (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
+const RVA_REALLOC: usize = 0x2a87a70; // 0.5.5 (0.5.4 was 0x29a7640; exe2exe unique, size 174 both sides, body still the __rust_realloc shape). History for 0.5.4 follows. (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
 type ReallocFn = unsafe extern "win64" fn(usize, usize, usize, usize) -> usize;
 static EXE_BASE_CACHE: AtomicUsize = AtomicUsize::new(0);
 fn exe_base_addr() -> usize {
@@ -2207,11 +2555,20 @@ unsafe fn catalog_name_at(ctx: usize, idx: u64) -> Option<String> {
 //   (0x14e16d0) three times, and at 0x13b5598 the call is preceded by `mov rdx,r12` where `mov r12,r8`
 //   at 0x13b5411 is the entry saving the seed => **rdx = the saved r8 = seed**, exactly the recorded contract.
 //   It also calls the confirmed heap allocator 0x29bb920 repeatedly, which cross-checks that derivation too.
-const CL_LAUNCHER_RVA: usize = 0x13b53d0; // 0.5.4 (0.5.3 was 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
+// ** 0.5.5 re-derivation (2026-08-11). exe2exe `match` returns **0 hits** here even with `--loose`, which is
+//   expected and not a warning sign: the frame immediate sits in the first 13 bytes, `match` deliberately keeps
+//   non-address immediates concrete, and the frame moved 0x25168 -> 0x25438. `frames --near 0x25168` puts
+//   0x14ac3e0 first at delta +0x2d0, with the next nearest 0x1770 away — the same isolated-outlier shape as
+//   every previous migration. What actually settles it is the call structure, compared side by side: **60 direct
+//   calls on both sides, in the same order, to callees of the same sizes**, including seedctor three times at
+//   the identical instruction offsets (+0x1c8, +0x29b, +0x372) and the confirmed allocator repeatedly. The
+//   `mov r12,r8` entry save and the `mov rdx,r12` before the seedctor call are both still there, so the
+//   r8=seed contract holds.
+const CL_LAUNCHER_RVA: usize = 0x14ac3e0; // 0.5.5 (0.5.4 was 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
 const CL_LAUNCHER_PROLOGUE: [u8; 17] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0x68, 0x51, 0x02,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0x38, 0x54, 0x02,
     0x00,
-]; // 0.5.4: 8 push + mov eax,0x25168 (0.5.3 was 0x25108, 0.5.2 0x165c8)
+]; // 0.5.5: 8 push + mov eax,0x25438 (0.5.4 was 0x25168, 0.5.3 0x25108, 0.5.2 0x165c8)
 static CLAUNCH_INSTALLED: AtomicU64 = AtomicU64::new(0);
 static LAUNCH_N: AtomicU64 = AtomicU64::new(0);
 static LAUNCH_RENDER_N: AtomicU64 = AtomicU64::new(0);
@@ -2377,14 +2734,26 @@ fn install_launcher_hook() {
 // ** 0.5.4 (2026-08-04): frame 0x11ba8, **0x50 off the 0.5.3 seedctor's 0x11b58 with the next nearest 0x500 away**,
 //   and it is the function the launcher calls with rdx = its saved seed (see CL_LAUNCHER_RVA above). Entry shape
 //   is unchanged: 8 push (12B) + mov eax,frame + call chkstk, so SEEDCTOR_PROLOGUE needs no edit.
-const SEEDCTOR_RVA: usize = 0x14e16d0; // 0.5.4 (0.5.3 was 0x12b9ab0). History for 0.5.3 follows. (0.5.2 was 0x22c1da0). The 12B prologue is completely identical (8 push); the chkstk frame went 0x11b58 -> 0x11b98; confirmed via the call inside launcher (0xeb8810) with rdx = the saved r8 (seed). WARNING: the seed store offset moved from provider+0xeab8 to **+0xeaf8** (measured at 0x12ba92d).
+// ** 0.5.5 (2026-08-11): two independent methods agree. exe2exe `match` gives **1 hit**, and `frames --near
+//   0x11b98` puts the same function first at frame 0x11ba8 (delta +0x10, next nearest 0x4c0 away). Its size grew
+//   4175 -> 4407, which is why the pair relationship matters more than the size: it is the function the launcher
+//   calls three times with `rdx` = its saved seed. Entry shape unchanged (8 push + mov eax,frame + call chkstk),
+//   so SEEDCTOR_PROLOGUE needs no edit.
+const SEEDCTOR_RVA: usize = 0x14c2380; // 0.5.5 (0.5.4 was 0x14e16d0, 0.5.3 0x12b9ab0). History for 0.5.3 follows. (0.5.2 was 0x22c1da0). The 12B prologue is completely identical (8 push); the chkstk frame went 0x11b58 -> 0x11b98; confirmed via the call inside launcher (0xeb8810) with rdx = the saved r8 (seed). WARNING: the seed store offset moved from provider+0xeab8 to **+0xeaf8** (measured at 0x12ba92d).
                                        // * 0.5.3: the seed store offset inside the provider struct moved (0.5.2 +0xeab8 -> 0.5.3 +0xeaf8).
                                        //   Measured = `mov [reg+0xeaf8], rdx` inside seedctor @0x12ba92d (the old exe has 0xeab8 in the same place).
                                        //   WARNING keep it in a single constant - updating only this on each patch carries the whole is_live gate along.
                                        // 0.5.4 = 0xeb28 (0.5.3 was 0xeaf8, 0.5.2 0xeab8). Measured, not guessed: seedctor spills its `rdx` (the seed)
                                        // to [rbp+0x11a48] at entry (0x14e1714), reloads it at 0x14e2596 and stores it to **[rsi+0xeb28]** at 0x14e259d.
                                        // The writes that follow (+0xeb30 = 0, +0xeb58 = 0, +0xeb59 = the bool arg) are the same field cluster.
-const O_PROVIDER_SEED: usize = 0xeb28;
+                                       // 0.5.5 = 0xec90 (0.5.4 was 0xeb28). Measured the same way, and the whole
+                                       // field cluster moved together by a uniform +0x168, which is what makes it
+                                       // the same cluster rather than a lookalike: the seven big-displacement
+                                       // stores in seedctor correspond one for one and in the same order —
+                                       // 0xeb5a->0xecc2, **0xeb28->0xec90 (the `mov [rsi+...],rax` seed store,
+                                       // at 0x14c324d)**, 0xeb30->0xec98, 0xeb58->0xecc0, 0xeb59->0xecc1,
+                                       // 0xeb38->0xeca0, 0xeb48->0xecb0.
+const O_PROVIDER_SEED: usize = 0xec90;
 const SEEDCTOR_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ]; // ghidra-re confirmed: 8 push (12B) + mov eax,0x11b58 + call chkstk (same pattern as launcher)
@@ -2517,11 +2886,11 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             }
         }
         // -- (2) Is this a designated champion? --
-        if !readable(athlete, 0x8a8) {
+        if !readable(athlete, 0x9c8) {
             return;
         }
-        let cptr = rd_u64(athlete + 0x410) as usize;
-        let clen = rd_u64(athlete + 0x418) as usize;
+        let cptr = rd_u64(athlete + 0x470) as usize;
+        let clen = rd_u64(athlete + 0x478) as usize;
         if cptr < 0x10000 || clen == 0 || clen > 48 || !readable(cptr, clen) {
             return;
         }
@@ -2543,8 +2912,8 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             Some(false) => return, // definitely another team = do not inject
             None => {
                 // roster/aid unavailable -> scene fallback (if any)
-                let side = if readable(athlete + 0x810, 8) {
-                    rd_u64(athlete + 0x810)
+                let side = if readable(athlete + 0x930, 8) {
+                    rd_u64(athlete + 0x930)
                 } else {
                     u64::MAX
                 };
@@ -2569,8 +2938,8 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         //   * Ordering guaranteed: Game creation (catalog builder 0x21c0750) precedes spawn (in all 21 wrapper call sites).
         let cat_base = rd_u64(game + 0x1fd0) as usize;
         let cat_len = rd_u64(game + 0x1fd8);
-        let bptr = rd_u64(athlete + 0x488) as usize;
-        let blen = rd_u64(athlete + 0x490);
+        let bptr = rd_u64(athlete + 0x4e8) as usize;
+        let blen = rd_u64(athlete + 0x4f0);
         SP4_BLEN.store(blen, Ordering::Relaxed);
         SP4_CATLEN.store(cat_len, Ordering::Relaxed);
         if bptr < 0x10000 || blen == 0 || blen > 8 || !writable(bptr, (blen as usize) * 8) {
@@ -3027,7 +3396,7 @@ unsafe fn install_detour_r11(
 //     UI mega-function detour. The `ui` binding is now the root node itself, so
 //     the field access that used to reach it is gone from every call below.
 // `_assets` and `_dt` were unused and are gone.
-fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
+fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
     {
         // The hook retry block below is what installs `cap_game_view`, and
         // `cap_game_view` is what publishes `TIP_ROOT` — so the root must be
@@ -3042,7 +3411,17 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
         }
         // Validated `GameUI.root`, or 0 until the UI exists. NOT `TIP_ROOT` —
         // see `ui_root` for why that pointer crashed the game.
-        let ui_root_ptr = ui_root::resolve().unwrap_or(0);
+        // Gated, because `resolve()` is not free when it fails: each attempt
+        // sweeps a 160KB window testing every 8-byte slot, and it re-arms
+        // whenever `GAME_VIEW` changes, which it does repeatedly in a session.
+        // With `UI_TREE_WALK_ENABLED` off there is no consumer for the answer,
+        // so paying for the search is pure per-frame cost — a measurable part of
+        // the lag reported on 2026-08-12.
+        let ui_root_ptr = if UI_TREE_WALK_ENABLED {
+            ui_root::resolve().unwrap_or(0)
+        } else {
+            0
+        };
         // * 0.5.3 regression diagnostic dump (build extension path) - file write every 300 frames (~5s), main thread only.
         if BUILD_EXT_DIAG {
             let n = BE_TICK.fetch_add(1, Ordering::Relaxed);
@@ -3140,7 +3519,38 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                 s.push_str(&format!(
                     "  ui_inject: installed={inst} player_info={pi} wide={wide}\n"
                 ));
+                s.push_str(&format!(
+                    "  slot3 by PATH (stable UI API): set={} / {}\n",
+                    SLOT3_PATH_SET.load(Ordering::Relaxed),
+                    {
+                        let d = SLOT3_PATH_DIAG
+                            .lock()
+                            .unwrap_or_else(|e| e.into_inner())
+                            .clone();
+                        if d.is_empty() {
+                            "(discovery never ran)".to_string()
+                        } else {
+                            d
+                        }
+                    }
+                ));
+                s.push_str(&format!(
+                    "  slot3 probe: {}\n",
+                    SLOT3_PROBE_DIAG
+                        .lock()
+                        .unwrap_or_else(|e| e.into_inner())
+                        .clone()
+                ));
                 s.push_str(&format!("  {}\n", ui_root::report()));
+                s.push_str(&format!(
+                    "  {}\n",
+                    PV_DIAG
+                        .lock()
+                        .unwrap_or_else(|e| e.into_inner())
+                        .clone()
+                        .as_str()
+                        .trim_end()
+                ));
                 if let Some(d) = mod_dir() {
                     let _ = fs::write(d.join("build_ext_diag.txt"), s);
                 }
@@ -3156,25 +3566,40 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                 let _ = uinj::install();
             }
         } // strategy screen dropdown injection hook (mode 3 = item0m/1m/2m, mode 4 = + item3/slot3). Idempotent.
-          // NOTE the UI-root gate is NOT here. It used to be, and that broke the
-          // fourth item: the block below publishes `MY_ATHLETES`, which is the
-          // team gate's only remaining input now that the `SCENE_SIDE` fast path
-          // is off. Gating it made `is_my_athlete` return `None` forever, so the
-          // gate closed on the safe side and nothing was ever injected. This block
-          // needs the `client`, not the node tree — only `force_blue_slot_spacing`
-          // inside it touches the tree, and it is gated individually.
-          // * Capture the player team id (for team scoping) + the personal_tactics snapshot (for restoring the display).
-          //   WARNING the strategy screen may not be InGame, so the #personal visible gate was removed -> fill it in ahead of time on the management screen.
-          //   Throttled to every 20 frames (cuts the cost of walking the HashMap).
-          // (was `if let Scene::InGame { data } = scene`)
-          //
-          // `data.db()` returned `mod_api::ClientDatabase` — the *client* scene's
-          // database, a different object from the `game_core::Database` that
-          // `probe_db` works on, and not something a stable-ABI mod can be handed.
-          // The three things this block read off it are read from the stable
-          // client instead; `stable_team_ids` and `stable_personal_tactics` are
-          // the JSON-record equivalents of `team.last_starting` and
-          // `team.champion_personal_tactics`.
+
+        // * In-match 4th slot icon, over the stable UI API. Deliberately here and
+        //   not in the node-tree block far below: this route needs no UI root, so
+        //   gating it on one would reintroduce the dependency it exists to avoid.
+        //   The view model is still read natively — only the drawing is by path.
+        if SLOT3_ICON_ENABLED && in_game && slot_count() == 4 {
+            let gv = GAME_VIEW.load(Ordering::Relaxed);
+            if gv > 0x10000 {
+                let icons = unsafe { collect_slot3_icons(gv) };
+                SLOT3_PV_N.store(icons.len() as u64, Ordering::Relaxed);
+                let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                    drive_slot3_by_path(client, &icons);
+                }));
+            }
+        }
+        // NOTE the UI-root gate is NOT here. It used to be, and that broke the
+        // fourth item: the block below publishes `MY_ATHLETES`, which is the
+        // team gate's only remaining input now that the `SCENE_SIDE` fast path
+        // is off. Gating it made `is_my_athlete` return `None` forever, so the
+        // gate closed on the safe side and nothing was ever injected. This block
+        // needs the `client`, not the node tree — only `force_blue_slot_spacing`
+        // inside it touches the tree, and it is gated individually.
+        // * Capture the player team id (for team scoping) + the personal_tactics snapshot (for restoring the display).
+        //   WARNING the strategy screen may not be InGame, so the #personal visible gate was removed -> fill it in ahead of time on the management screen.
+        //   Throttled to every 20 frames (cuts the cost of walking the HashMap).
+        // (was `if let Scene::InGame { data } = scene`)
+        //
+        // `data.db()` returned `mod_api::ClientDatabase` — the *client* scene's
+        // database, a different object from the `game_core::Database` that
+        // `probe_db` works on, and not something a stable-ABI mod can be handed.
+        // The three things this block read off it are read from the stable
+        // client instead; `stable_team_ids` and `stable_personal_tactics` are
+        // the JSON-record equivalents of `team.last_starting` and
+        // `team.champion_personal_tactics`.
         if let (true, Some(pid)) = (in_game, client.player_team_id()) {
             // * During a match player_team_id() returns 0/-1 -> store only when in the valid range (1~9999), otherwise keep the last valid value.
             //   My team id is constant during a session, so the value captured on the management/pre-match screen is used during the match too.
@@ -3575,7 +4000,13 @@ fn probe_db() {
 //     shl rax,4; mov rcx,[rsi+rax]; mov rax,[rsi+rax+8] -> the 16B element {elem_ptr@0, vtable@8}
 //     call [rax+0x70]             -> vtable dispatch, same family as the recorded name@0x50 / recipe@0x68
 //   The 19B relocation boundary is unchanged: the instruction after the mov starts at 0xe767f3 = entry+19.
-const RVA_BUY_ITEM: usize = 0xe767e0; // 0.5.4 (0.5.3 was 0xd0c680). History for 0.5.3 follows.(0.5.2 was 0x211e070). **The first 24B of the entry are byte-identical** (a single unique hit in the whole exe) + the body is instruction-for-instruction isomorphic + the argument contract is unchanged (r8=athlete, [rsp_entry+0x30]=Game, Game+0x30=catalog). orig_len=19 is unchanged too (11B < 12B -> the next clean boundary is the 8B mov rax,[rsp+0xa8]). WARNING 0.5.3 change: the call path became a vtable (+0x78) thunk 0xd22340 instead of a direct call, but **since we hook the function entry, every call is still caught**. History for 0.5.2 follows. (0.5.1 was 0x1f01090; exe2exe skeleton UNIQUE, the 24B prologue completely identical = body unchanged, delta +0x21cfe0.) History for 0.5.1 follows: the function was heavily reworked (8 push/sub 0x38 -> 5 push/sub 0x50, with build/name comparison split out into the subfunction 0x1f00920) so mask-sig was NONE, but it was confirmed by the unchanged argument contract (r8=athlete, p6=Game@rsp_entry+0x30, Game+0x30=catalog). Cross-checked against the buy driver FUN_142234430 (successor to the old FUN_1420e76e0) + the vtable slot.
+// ** 0.5.5 re-derivation (2026-08-11). Strict exe2exe gives **0 hits** and `--loose` gives exactly **1**, at a
+//   function start of identical size 230 — which is itself the finding: the only bytes that changed are struct
+//   displacements, i.e. the athlete moved. Disassembled side by side the two are 67 instructions each with zero
+//   mnemonic mismatches and a single differing operand, `cmp qword [r8+0x490],0` -> `cmp qword [r8+0x4f0],0`.
+//   That one instruction is the anchor the whole athlete layout below hangs off, because r8 is the athlete by
+//   the argument contract. The prologue and the 19B relocation boundary are both unchanged.
+const RVA_BUY_ITEM: usize = 0xeb2c40; // 0.5.5 (0.5.4 was 0xe767e0, 0.5.3 0xd0c680). History for 0.5.3 follows.(0.5.2 was 0x211e070). **The first 24B of the entry are byte-identical** (a single unique hit in the whole exe) + the body is instruction-for-instruction isomorphic + the argument contract is unchanged (r8=athlete, [rsp_entry+0x30]=Game, Game+0x30=catalog). orig_len=19 is unchanged too (11B < 12B -> the next clean boundary is the 8B mov rax,[rsp+0xa8]). WARNING 0.5.3 change: the call path became a vtable (+0x78) thunk 0xd22340 instead of a direct call, but **since we hook the function entry, every call is still caught**. History for 0.5.2 follows. (0.5.1 was 0x1f01090; exe2exe skeleton UNIQUE, the 24B prologue completely identical = body unchanged, delta +0x21cfe0.) History for 0.5.1 follows: the function was heavily reworked (8 push/sub 0x38 -> 5 push/sub 0x50, with build/name comparison split out into the subfunction 0x1f00920) so mask-sig was NONE, but it was confirmed by the unchanged argument contract (r8=athlete, p6=Game@rsp_entry+0x30, Game+0x30=catalog). Cross-checked against the buy driver FUN_142234430 (successor to the old FUN_1420e76e0) + the vtable slot.
 const BUY_PROLOGUE: [u8; 12] = [
     0x41, 0x57, 0x41, 0x56, 0x56, 0x57, 0x53, 0x48, 0x83, 0xEC, 0x50, 0x48,
 ]; // first 12B of the new 0.5.1 prologue: push r15/r14/rsi/rdi/rbx; sub rsp,0x50; (11B = a clean boundary) + the first byte of the following mov (0x48...). Trampoline relocation = 19B (next clean boundary = + mov rax,[rsp+0xa8])
@@ -3651,7 +4082,10 @@ unsafe fn wr_u64(p: usize, v: u64) {
 //   forward(net, ctx=&[u64;11], build_ptr, build_len, flag=0) -> f32 sigmoid score.
 //   ctx: [0..5] = our team's champ ids / [5..10] = the opponents' / [10] = position (0~4; forward panics above 4).
 // 0.5.4 (2026-08-04): exe2exe `match`, 1 hit at 320 and 640 bytes, size 1609.
-const ITEMNET_FORWARD_RVA: usize = 0x145a680; // 0.5.4 (0.5.3 was 0x10587e0). History for 0.5.3 follows. (0.5.2 was 0x1b9cce0). The first 24B of the entry are identical + all 5 feature-name strings match (self_item/champ_pos_build/lane_counter/synergy/global_counter) + the net layout is unchanged (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) => the mod's per-call re-validation logic stays valid as-is. History for 0.5.2 follows. (0.5.1 was 0x1bc82e0; exe2exe UNIQUE, identical prologue.) History for 0.5.1 follows: (0.5.0_3 was 0x1b78420, mask-sig UNIQUE PROL-OK push8 554157415641554154565753). WARNING it was OFF via AUTO4_FORWARD_SCORE=false (an AV at +0x44a inside forward on 0.5.1; see the flag comment above). A matching prologue does not imply identical internals.
+// ** 0.5.5 (2026-08-11): exe2exe unique, size 1609 on both sides, and `delta.py` reports no differing struct
+//   displacement anywhere in the body — so the net layout the per-call re-validation checks (net+0x8 weight ptr,
+//   +0x10 bound, +0x18) is untouched and that logic stays valid as-is.
+const ITEMNET_FORWARD_RVA: usize = 0x12624f0; // 0.5.5 (0.5.4 was 0x145a680, 0.5.3 0x10587e0). History for 0.5.3 follows. (0.5.2 was 0x1b9cce0). The first 24B of the entry are identical + all 5 feature-name strings match (self_item/champ_pos_build/lane_counter/synergy/global_counter) + the net layout is unchanged (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) => the mod's per-call re-validation logic stays valid as-is. History for 0.5.2 follows. (0.5.1 was 0x1bc82e0; exe2exe UNIQUE, identical prologue.) History for 0.5.1 follows: (0.5.0_3 was 0x1b78420, mask-sig UNIQUE PROL-OK push8 554157415641554154565753). WARNING it was OFF via AUTO4_FORWARD_SCORE=false (an AV at +0x44a inside forward on 0.5.1; see the flag comment above). A matching prologue does not imply identical internals.
 type ItemNetFn = unsafe extern "C" fn(usize, usize, *const u64, u64, u8) -> f32;
 static ITEM_NET_ADDR: AtomicU64 = AtomicU64::new(0);
 static ITEMNET_VALID: AtomicU64 = AtomicU64::new(0); // 0 = unchecked, 1 = valid, 2 = invalid
@@ -3831,8 +4265,7 @@ const VANILLA_GROUP: usize = 5;
 ///
 /// [`base_slug`]: crate::build_config::base_slug
 fn editor_class(key: &str) -> Option<&'static str> {
-    let class = crate::item_catalog::category_of(crate::build_config::base_slug(key));
-    (class != crate::item_catalog::OTHER_CATEGORY).then_some(class)
+    crate::item_catalog::category_of(crate::build_config::base_slug(key))
 }
 
 /// The engine category of an item, as an `ItemCategoryV1` code — the coarser of
@@ -3985,8 +4418,8 @@ fn auto_cands() -> std::sync::Arc<Vec<u64>> {
 //   athlete = an array element. team = +0x820 (0/1), champion name = +0x420. Parallel matches use separate arrays, so an
 //   athlete pointer belongs to exactly one match = no collisions (no back pointer needed, RE confirmed).
 // 0.5.4 = 0x8c0 (0.5.3 was 0x8d0). `imul r,r,stride`: 15 hits/0 on 0.5.3, 0/16 on 0.5.4.
-const ATH_STRIDE: usize = 0x8c0;
-// Validate an athlete + return (team, champ_id). Strong validation (team in {0,1} + a real champion name) determines the array bounds automatically.
+const ATH_STRIDE: usize = 0x9e0; // 0.5.5 (0.5.4 was 0x8c0, 0.5.3 0x8d0)
+                                 // Validate an athlete + return (team, champ_id). Strong validation (team in {0,1} + a real champion name) determines the array bounds automatically.
 unsafe fn athlete_lineup_at(p: usize) -> Option<(u64, u64)> {
     if p < 0x10000 {
         return None;
@@ -4098,7 +4531,7 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
     if net == 0 || !itemnet_addr_valid() {
         return None;
     }
-    let ptr = rd_u64(athlete + 0x488) as usize; // 0.5.0 build ptr (was 0x410)
+    let ptr = rd_u64(athlete + 0x4e8) as usize; // 0.5.0 build ptr (was 0x410)
     if ptr < 0x10000 || !readable(ptr, 24) {
         return None;
     }
@@ -4406,8 +4839,8 @@ unsafe fn needs_build_extension(athlete: usize) -> bool {
     // 0.5.4 build Vec: cap@+0x480, ptr@+0x488, len@+0x490.
     matches!(
         (
-            safe_read_u64(athlete + 0x480),
-            safe_read_u64(athlete + 0x490)
+            safe_read_u64(athlete + 0x4e0),
+            safe_read_u64(athlete + 0x4f0)
         ),
         (Some(3), Some(3))
     )
@@ -4489,10 +4922,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         }
         // -- From here on, only spectated-match buys (a small minority) and background buys by my 5 players get through --
         // * The athlete validity check (VirtualQuery) happens once, here - see the reordering comment above.
-        if !readable(athlete, 0x498) {
+        if !readable(athlete, 0x4f8) {
             return 0;
         } // 0.5.0: covers build len@+0x4a0+8
-        let owned = rd_u64(athlete + 0x448); // 0.5.0 owned (was 0x3d0)
+        let owned = rd_u64(athlete + 0x4a8); // 0.5.0 owned (was 0x3d0)
                                              // * 0.5.3 regression diagnostic, stage 2: measure "we planted the target" and "it was actually bought" separately.
                                              //   The build[3] injection was confirmed to succeed (31 times) => the remaining question is whether the game ends up owning a 4th.
                                              //   Count the maximum owned (item count) and how often it reaches 4+. If owned>=4 is 0 it really was not bought;
@@ -4507,8 +4940,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
             }
         }
         // * Only handle target (designated) champions - everything else passes through (build untouched).
-        let cptr = rd_u64(athlete + 0x410) as usize; // 0.5.0 champ name ptr (was 0x398, derived +0x88)
-        let clen = rd_u64(athlete + 0x418) as usize; // 0.5.0 champ name len (was 0x3a0)
+        let cptr = rd_u64(athlete + 0x470) as usize; // 0.5.0 champ name ptr (was 0x398, derived +0x88)
+        let clen = rd_u64(athlete + 0x478) as usize; // 0.5.0 champ name len (was 0x3a0)
         if cptr < 0x10000 || clen == 0 || clen > 48 || !readable(cptr, clen) {
             return 0;
         }
@@ -4522,8 +4955,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //  this far paid two global mutex acquisitions, and sometimes a rebuild of
         //  the designated-champion `HashSet`, to compute a value it dropped.
         //  `is_champ_designated` itself is still used by the spawn path.)
-        let side = if readable(athlete + 0x810, 8) {
-            rd_u64(athlete + 0x810)
+        let side = if readable(athlete + 0x930, 8) {
+            rd_u64(athlete + 0x930)
         } else {
             u64::MAX
         };
@@ -4615,8 +5048,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // item is always injected here. Its own team gate is below.
         if own_team_only && is_player {
             let ctx012 = rd_u64(rsp_entry + 0x30) as usize;
-            let bptr = rd_u64(athlete + 0x488) as usize; // 0.5.0 build ptr
-            let blen = rd_u64(athlete + 0x490); // 0.5.0 build len
+            let bptr = rd_u64(athlete + 0x4e8) as usize; // 0.5.0 build ptr
+            let blen = rd_u64(athlete + 0x4f0); // 0.5.0 build len
             if ctx012 >= 0x10000
                 && bptr >= 0x10000
                 && blen >= 1
@@ -4657,8 +5090,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         if BUY_ORDER_DIAG && is_player {
             let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 let ctx = rd_u64(rsp_entry + 0x30) as usize;
-                let bp = rd_u64(athlete + 0x488) as usize;
-                let bl = rd_u64(athlete + 0x490);
+                let bp = rd_u64(athlete + 0x4e8) as usize;
+                let bl = rd_u64(athlete + 0x4f0);
                 if ctx < 0x10000
                     || bp < 0x10000
                     || bl == 0
@@ -4703,12 +5136,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // Realloc the build Vec 3->4 + build[3] = catalog index. At owned==3 the resolver targets build[3] and builds up from t1.
         //   * RE: a build Vec value is a "catalog index" (not an item id). build[0] = a valid index the game itself put there, with a recipe.
         //   Mechanism check: build[3] = a copy of build[0] (guaranteed valid). If that works, owned goes to 4. Then map the real 4th index.
-        let mut build_len = rd_u64(athlete + 0x490); // 0.5.0 build len (was 0x418)
+        let mut build_len = rd_u64(athlete + 0x4f0); // 0.5.0 build len (was 0x418)
                                                      // * 0.5.3 regression diagnostic (2026-07-29): to isolate "only the 4th is not bought". Inside the detour, **counters only** (no file IO -
                                                      //   synchronous IO in a parallel rayon-worker detour = a runaway crash). Actual file output happens in post_update (main thread).
         if BUILD_EXT_DIAG {
             BE_CNT[0].fetch_add(1, Ordering::Relaxed); // reached the 4th-item path
-            let cap_now = rd_u64(athlete + 0x480);
+            let cap_now = rd_u64(athlete + 0x4e0);
             BE_LAST.store(
                 (build_len << 32) | (cap_now & 0xffff_ffff),
                 Ordering::Relaxed,
@@ -4720,15 +5153,15 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 BE_CNT[2].fetch_add(1, Ordering::Relaxed);
             }
         }
-        if build_len == 3 && rd_u64(athlete + 0x480) == 3 {
+        if build_len == 3 && rd_u64(athlete + 0x4e0) == 3 {
             // 0.5.0 build cap (was 0x408)
-            let ptr = rd_u64(athlete + 0x488) as usize; // 0.5.0 build ptr (was 0x410)
-            if !(ptr >= 0x10000 && readable(ptr, 24) && writable(athlete + 0x480, 0x18)) {
+            let ptr = rd_u64(athlete + 0x4e8) as usize; // 0.5.0 build ptr (was 0x410)
+            if !(ptr >= 0x10000 && readable(ptr, 24) && writable(athlete + 0x4e0, 0x18)) {
                 if BUILD_EXT_DIAG {
                     BE_CNT[3].fetch_add(1, Ordering::Relaxed);
                 } // ptr/writable failure
             }
-            if ptr >= 0x10000 && readable(ptr, 24) && writable(athlete + 0x480, 0x18) {
+            if ptr >= 0x10000 && readable(ptr, 24) && writable(athlete + 0x4e0, 0x18) {
                 let (b0, b1, b2) = (rd_u64(ptr), rd_u64(ptr + 8), rd_u64(ptr + 16));
                 // * build[3] = (1) manual personal-tactics designation -> (2) neural recommendation -> (3) a distinct vanilla fallback.
                 //   (1) and (2) scan the catalog by item "name" for an index + recipe validation (mod item ids != index, so a name scan is mandatory).
@@ -4802,9 +5235,9 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     } // realloc failure
                     if np >= 0x10000 && writable(np, 32) {
                         wr_u64(np + 24, t); // * build[3] = the manual/neural index or the vanilla fallback
-                        wr_u64(athlete + 0x488, np as u64);
-                        wr_u64(athlete + 0x480, 4);
-                        wr_u64(athlete + 0x490, 4); // 0.5.0 build ptr/cap/len
+                        wr_u64(athlete + 0x4e8, np as u64);
+                        wr_u64(athlete + 0x4e0, 4);
+                        wr_u64(athlete + 0x4f0, 4); // 0.5.0 build ptr/cap/len
                         build_len = 4;
                         if BUILD_EXT_DIAG {
                             BE_CNT[6].fetch_add(1, Ordering::Relaxed);
@@ -5103,11 +5536,17 @@ unsafe fn patch_owned_cap() -> String {
     //   The disp (struct offset 0x458) and imm (3) are unchanged. The form `cmp qword[reg+0x458],3` occurs exactly once in the whole new exe.
     // 0.5.3 (2026-07-29): the register went back R15 -> **RSI** (49 83 bf -> 48 83 be). disp 0x458 and imm 3 unchanged.
     //   The form `cmp qword[reg+0x458],3` occurs **exactly once** in the whole new exe .text (verified by byte scan) = misidentification impossible.
-    let sig = base + 0x1420b29; // 0.5.4 (0.5.3 was 0xf24a39). (0.5.2 was 0x2341440). Container 0x233e9d0 -> 0xf21fe0.
-    let imm = base + 0x1420b30; // the cmp's imm8 (= sig+7)
+    let sig = base + 0x15206a9; // 0.5.5 (0.5.4 was 0x1420b29, 0.5.3 0xf24a39). (0.5.2 was 0x2341440). Container 0xf21fe0 -> 0x141e000 -> 0x151db50.
+    let imm = base + 0x15206b0; // the cmp's imm8 (= sig+7)
                                 // 0.5.4: the athlete's items-Vec len moved 0x458 -> 0x448, so the disp changed with it. Still RSI, still
                                 //   `cmp qword[rsi+<items len>],3`, and still **exactly one** occurrence in the whole .text (byte-scanned).
-    let expect = [0x48u8, 0x83, 0xbe, 0x48, 0x04, 0x00, 0x00, 0x03];
+                                // 0.5.5 (2026-08-11): items len moved again, 0x448 -> **0x4a8** (derived from buy_item's three callees,
+                                //   which read it as `[r8+0x4a8]` where r8 is the athlete by call contract — not from this site).
+                                //   Still RSI, and the form is still **exactly one** occurrence in the whole .text: byte-scanning
+                                //   `?? 83 ?? a8 04 00 00 03` across .text — every register encoding, not just this one — returns a
+                                //   single hit, so misidentification is impossible. The container was refactored (exe2exe finds no
+                                //   match for it), which is why the site is pinned by that uniqueness rather than by container+offset.
+    let expect = [0x48u8, 0x83, 0xbe, 0xa8, 0x04, 0x00, 0x00, 0x03];
     if !readable(sig, 8) {
         return "owned_cap: unreadable".into();
     }
@@ -5138,9 +5577,15 @@ unsafe fn patch_owned_cap() -> String {
 unsafe fn patch_gate3() -> String {
     let base = exe_base_addr();
     // 0.5.0: jbe @ 0x1e4bd36 (was 0x2052e76). sig start = jbe-9. 76 -> EB (JMP) disables the owned>2 gate.
-    let sig = base + 0xe76b1e; // 0.5.4 (0.5.3 was 0xd0c9be). (0.5.2 was 0x211e428): resolver container 0x211e150 -> **0xd0c770** (called directly by buy 0xd0c680). The spill slot moved rsp+0x78 -> **rsp+0x40**, and the form `cmp qword[rsp+0x40],2; jbe` occurs **exactly once** in the whole new exe (verified by byte scan). History for 0.5.2: (0.5.1 was 0x1f01448): resolver container 0x1f01170 -> 0x211e150 (skeleton UNIQUE, +0x21cfe0), same offset +0x2d8, the 7B signature byte-identical (BYTE-OK). History for 0.5.1: (0.5.0_3 was 0x1fb8cdd, ghidra-re HIGH re-ID). Inside the resolver's successor FUN_141f01170. owned_count spilled to [rsp+0x78] so the sequence was rewritten as 'cmp qword[rsp+0x78],2; jbe' (previously 'mov rsi,[rsp+0x40]; jbe').
-    let jbe = base + 0xe76b24; // the 0.5.4 jbe opcode byte (= sig+6, verified; 0.5.2 was 0x211e42e). owned<=2 -> jump, >2 -> fall through (the extra has_recipe check).
-    let expect = [0x48u8, 0x83, 0x7c, 0x24, 0x40, 0x02, 0x76]; // 0.5.3: cmp qword[rsp+0x40],2 ; jbe (0.5.2 was rsp+0x78)
+    // 0.5.5 (2026-08-11): the container is not guesswork here — it is `buy_item`'s own callee, old 0xe768d0 ->
+    //   **new 0xeb2d30**, reached through the call graph from the confirmed buy entry. It is the one callee of the
+    //   three whose body actually changed (818 -> 871 bytes, +3 instructions), so the spill slot moved with it:
+    //   `cmp qword[rsp+0x40],2` -> **`cmp qword[rsp+0x60],2`**, at container +0x278 (was +0x24e). Byte-scanning the
+    //   form `48 83 7c 24 ?? 02 76` — any spill slot — across the whole .text returns **exactly one** hit, and it
+    //   is inside that container. jbe stays at sig+6.
+    let sig = base + 0xeb2fa8; // 0.5.5 (0.5.4 was 0xe76b1e, 0.5.3 0xd0c9be). (0.5.2 was 0x211e428): resolver container 0x211e150 -> **0xd0c770** (called directly by buy 0xd0c680). The spill slot moved rsp+0x78 -> **rsp+0x40**, and the form `cmp qword[rsp+0x40],2; jbe` occurs **exactly once** in the whole new exe (verified by byte scan). History for 0.5.2: (0.5.1 was 0x1f01448): resolver container 0x1f01170 -> 0x211e150 (skeleton UNIQUE, +0x21cfe0), same offset +0x2d8, the 7B signature byte-identical (BYTE-OK). History for 0.5.1: (0.5.0_3 was 0x1fb8cdd, ghidra-re HIGH re-ID). Inside the resolver's successor FUN_141f01170. owned_count spilled to [rsp+0x78] so the sequence was rewritten as 'cmp qword[rsp+0x78],2; jbe' (previously 'mov rsi,[rsp+0x40]; jbe').
+    let jbe = base + 0xeb2fae; // the 0.5.5 jbe opcode byte (= sig+6, verified; 0.5.4 was 0xe76b24, 0.5.2 0x211e42e). owned<=2 -> jump, >2 -> fall through (the extra has_recipe check).
+    let expect = [0x48u8, 0x83, 0x7c, 0x24, 0x60, 0x02, 0x76]; // 0.5.5: cmp qword[rsp+0x60],2 ; jbe (0.5.3/0.5.4 were rsp+0x40, 0.5.2 rsp+0x78)
     if !readable(sig, 7) {
         return "gate3: unreadable".into();
     }
@@ -5558,33 +6003,33 @@ unsafe fn patch_slot_ui_inner() -> String {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ** Game version gate - 0.5.3 only. On any other version **every feature disables itself automatically**.
+//  ** Game version gate - 0.5.5 only. On any other version **every feature disables itself automatically**.
 // ═══════════════════════════════════════════════════════════════════════════
 //  Why: this mod depends on 12 hardcoded RVAs + 2 byte patches + many struct offsets.
-//  Once the game is patched to 0.5.4 all those addresses are wrong and we would **hook/patch the wrong code**
+//  Once the game is patched past 0.5.5 all those addresses are wrong and we would **hook/patch the wrong code**
 //  (hooks with prologue validation simply fail to install, but the weakly validated places risk crashes and data corruption).
 //  => check the version at init and, on a mismatch, install **not a single** hook or patch.
 //
 //  Two-part decision (both must pass to enable):
-//   (1) exe file size - 0.5.3 = 74,970,624B. It reliably differs per version and costs nothing to read.
+//   (1) exe file size - 0.5.5 = 76,957,696B (0.5.4 was 75,936,256B, 0.5.3 74,970,624B). It reliably differs per version and costs nothing to read.
 //   (2) measured entry prologues of 3 key hooks - catches a repackage that happens to have the same size but different code.
 //  WARNING a loose check (size only) could misbehave on a hotfix, so we look at the prologues too.
-const GAME_EXE_SIZE_054: u64 = 75_936_256;
+const GAME_EXE_SIZE_055: u64 = 76_957_696;
 static VERSION_OK: AtomicBool = AtomicBool::new(false);
 static VERSION_MSG: Mutex<String> = Mutex::new(String::new());
-/// Decide whether this is 0.5.3. Called once from init; the result is stored in VERSION_OK.
+/// Decide whether this is 0.5.5. Called once from init; the result is stored in VERSION_OK.
 fn check_game_version() -> bool {
     let mut why = String::new();
     // (1) exe size
     let size_ok = match exe_path().and_then(|p| fs::metadata(p).ok()) {
         Some(m) => {
             let sz = m.len();
-            if sz == GAME_EXE_SIZE_054 {
+            if sz == GAME_EXE_SIZE_055 {
                 true
             } else {
                 why = format!(
-                    "exe size mismatch: {}B (0.5.4 = {}B)",
-                    sz, GAME_EXE_SIZE_054
+                    "exe size mismatch: {}B (0.5.5 = {}B)",
+                    sz, GAME_EXE_SIZE_055
                 );
                 false
             }
@@ -5646,7 +6091,7 @@ fn check_game_version() -> bool {
     };
     let ok = size_ok && proto_ok;
     *VERSION_MSG.lock().unwrap_or_else(|e| e.into_inner()) = if ok {
-        "0.5.3 confirmed - active".to_string()
+        "0.5.5 confirmed - active".to_string()
     } else {
         format!("version mismatch -> this half is fully disabled ({})", why)
     };

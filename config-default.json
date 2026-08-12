@@ -1002,6 +1002,30 @@
     "skill_cooldown_mult": 20,
     "ult_cooldown_mult": 20
   },
+  "rite_of_ruin": {
+    "price": 1400,
+    "magic_power": 105,
+    "skill_cooldown_mult": 10,
+    "crit_chance": 20,
+    "effect_stack_crit_chance": 5,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 5.0,
+    "effect_shield_seconds": 3.0,
+    "effect_min_shield": 35,
+    "effect_max_shield": 145
+  },
+  "radiant_rite_of_ruin": {
+    "price": 2000,
+    "magic_power": 185,
+    "skill_cooldown_mult": 15,
+    "crit_chance": 25,
+    "effect_stack_crit_chance": 5,
+    "effect_max_stacks": 5,
+    "effect_duration_seconds": 5.0,
+    "effect_shield_seconds": 3.0,
+    "effect_min_shield": 65,
+    "effect_max_shield": 230
+  },
   "glowing_mote": {
     "price": 500,
     "skill_cooldown_mult": 10

@@ -32,11 +32,21 @@ use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 //   and install() keeps skipping the second hook.
 //   Entry is `8 push + sub rsp,0x98` — the same idiom as 0.5.3, and the first 12B are precisely the eight pushes,
 //   so the 12B chained install is unchanged.
-const LOADER_RVA: usize = 0x2e35d0; // 0.5.4 (0.5.3 was 0x2e1550, 0.5.2 0x5ac950).
+// ** 0.5.5 re-derivation (2026-08-11) - `tools/rederive.py loader` again, and it was needed: exe2exe `match`
+//   returns **30 hits** here, all size-425 members of the same monomorphic clone family, so the masked
+//   signature cannot pick between them. The string xref still can, and still converges: **16 of 16 sites on
+//   0x2e42d0** (a .pdata function start, size 425 — the same size as 0.5.3/0.5.4), zero sites on anything else.
+//   player_info lea@0xb0d16a and wide lea@0xb0d1ae both in fn 0xb07f40; strategy lea@0x1f505db, 0x1f54d86 in
+//   fn 0x1f50580. Entry is still the eight pushes, so the 12B chained install is unchanged, and STRAT_LOADER
+//   stays equal to LOADER (second hook still skipped).
+const LOADER_RVA: usize = 0x2e42d0; // 0.5.5 (0.5.4 was 0x2e35d0, 0.5.3 0x2e1550, 0.5.2 0x5ac950).
 // ** 0.5.4 (2026-08-04): exe2exe `match` against the kept 0.5.3 binary - **1 hit at 320 and at 640 bytes**
 //   of masked signature, size 2192. Three first-principles attempts had failed on this one (error-marker
 //   store, 0x90 stride as imul, node-type string xref); with the old exe it took a single command.
-const PARSER_RVA: usize = 0x1a3ce0; // 0.5.4 (0.5.3 was 0x1a6530, 0.5.2 0x24b5a00). The 3-argument contract (out, ptr, len), the `:`/`{`/`}` parsing, out[2]=-1 on error and the 0x90 node stride are all confirmed identical => NT_SIZE unchanged.
+// ** 0.5.5 (2026-08-11): exe2exe `match` against the kept 0.5.4 binary — 1 hit, at a function start, size 2192
+//   on both sides. `delta.py` then found **zero** differing struct displacements across all 2192 bytes, so the
+//   node layout the parser writes is untouched and NT_SIZE stays 0x90.
+const PARSER_RVA: usize = 0x1a3e70; // 0.5.5 (0.5.4 was 0x1a3ce0, 0.5.3 0x1a6530, 0.5.2 0x24b5a00). The 3-argument contract (out, ptr, len), the `:`/`{`/`}` parsing, out[2]=-1 on error and the 0x90 node stride are all confirmed identical => NT_SIZE unchanged.
 // WARNING in 0.5.3 the 2-argument `__rust_alloc(size, align)` shim **disappeared** (inlined into every call site) => we call the internal heap helper directly.
 //   ~~candidate 0xbb2bd0 (align fixed at 8, aborts on OOM)~~ -> **0x28f7df0 adopted** (instruction-identical to 0.5.2's 0x25d9640, preserves returning 0 on OOM,
 //   and matches the value used by the parallel ai_adjust session = unified across mods). For the contract see the `AllocFn` comment above.
@@ -45,7 +55,10 @@ const PARSER_RVA: usize = 0x1a3ce0; // 0.5.4 (0.5.3 was 0x1a6530, 0.5.2 0x24b5a0
 //   The body confirms the rest: GetProcessHeap -> `test rax,rax` -> **`xor eax,eax; ret` on failure** (returns 0,
 //   does not abort, so the null check in `append_child` still means something) -> else HeapAlloc by tail-jmp with
 //   rcx = heap, edx = flags, r8 = size. Still no align argument (see the AllocFn warning below).
-const ALLOC_RVA: usize  = 0x29bb920; // 0.5.4 heap alloc helper (0.5.3 was 0x28f7df0). (corresponds to 0.5.2's 0x25d9640. The old __rust_alloc shim 0x25c4d30 does not exist in 0.5.3).
+// ** 0.5.5 (2026-08-11): exe2exe unique, size 60 both sides, and cross-confirmed twice over — `__rust_realloc`
+//   (0x2a87a70) still reaches it on its over-aligned path, and the launcher (0x14ac3e0) calls it at the same
+//   six instruction offsets it called 0x29bb920 from in 0.5.4.
+const ALLOC_RVA: usize  = 0x2a9bf30; // 0.5.5 heap alloc helper (0.5.4 was 0x29bb920, 0.5.3 0x28f7df0). (corresponds to 0.5.2's 0x25d9640. The old __rust_alloc shim 0x25c4d30 does not exist in 0.5.3).
 const DEALLOC_RVA: usize = 0x1000; // 0.5.3 (0.5.2 was 0x25c4d90). The only `__rust_dealloc(ptr,size,align)`-shaped function. Currently unused.
 const NT_SIZE: usize = 0x90;
 

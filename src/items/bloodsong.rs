@@ -6,8 +6,6 @@ use crate::{apply_config, has_buff, ticks, ItemMeta};
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
     meta: ItemMeta,
-    // Buff names are namespaced per variant so the base and radiant
-    // items keep independent stacks.
     vulnerable_buff: &'static str,
     price: usize,
     attack_speed_mult: i32,

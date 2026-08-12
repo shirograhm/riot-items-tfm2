@@ -89,6 +89,18 @@ $hexUltCdr = [int]$config.experimental_hexplate.ult_cooldown_mult
 $rhexUltCdr = [int]$config.radiant_experimental_hexplate.ult_cooldown_mult
 $malUltCdr = [int]$config.malignance.ult_cooldown_mult
 $rmalUltCdr = [int]$config.radiant_malignance.ult_cooldown_mult
+$rorCrit = [int]$config.rite_of_ruin.effect_stack_crit_chance
+$rorDur = [int]$config.rite_of_ruin.effect_duration_seconds
+$rorStacks = [int]$config.rite_of_ruin.effect_max_stacks
+$rorShDur = [int]$config.rite_of_ruin.effect_shield_seconds
+$rorMin = [int]$config.rite_of_ruin.effect_min_shield
+$rorMax = [int]$config.rite_of_ruin.effect_max_shield
+$rrorCrit = [int]$config.radiant_rite_of_ruin.effect_stack_crit_chance
+$rrorDur = [int]$config.radiant_rite_of_ruin.effect_duration_seconds
+$rrorStacks = [int]$config.radiant_rite_of_ruin.effect_max_stacks
+$rrorShDur = [int]$config.radiant_rite_of_ruin.effect_shield_seconds
+$rrorMin = [int]$config.radiant_rite_of_ruin.effect_min_shield
+$rrorMax = [int]$config.radiant_rite_of_ruin.effect_max_shield
 $gbDmg = [int]$config.guinsoos_rageblade.effect_bonus_magic_damage
 $gbSpeed = [int]$config.guinsoos_rageblade.effect_stack_attack_speed_mult
 $gbDur = [int]$config.guinsoos_rageblade.effect_duration_seconds
@@ -361,6 +373,8 @@ $rdmpMaxDmg = [int]$config.radiant_dead_mans_plate.effect_max_bonus_damage
 $rspfLeth = [int]$config.radiant_serpents_fang.effect_lethality
 $rspfFlat = [int]$config.radiant_serpents_fang.effect_bonus_flat_damage
 $rspfPct = [int]$config.radiant_serpents_fang.effect_ad_percent_damage
+$ieCrit = [int]$config.infinity_edge.effect_crit_damage_bonus
+$rieCrit = [int]$config.radiant_infinity_edge.effect_crit_damage_bonus
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -406,6 +420,7 @@ $cdrIcon = "i#asset/base/ui/banpick/champion_stat_icon:cdr_0"
 $armorPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0"
 $magicPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0"
 $critIcon = "i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0"
+$critDamageIcon = "i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0"
 $vampIcon = "i#asset/base/ui/banpick/champion_stat_icon:vamp_0"
 $levelIcon = "i#asset/base/ui/banpick/champion_stat_icon:level_0"
 $goldIcon = "i#asset/base/ui/banpick/champion_stat_icon:gold_0"
@@ -415,6 +430,8 @@ Write-Host "Updating English text."
 
 $i18n.en.executioners_calling.option = "Grievous Wounds: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${execHeal}%<> for <#e8a800ff>${execDur} seconds<>."
 $i18n.en.oblivion_orb.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${ooHeal}%<> for <#e8a800ff>${ooDur} seconds<>."
+$i18n.en.infinity_edge.option = "Excoriate: Gain <#d45656ff>$ieCrit% <$critDamageIcon> critical strike damage<>."
+$i18n.en.radiant_infinity_edge.option = "Excoriate: Gain <#d45656ff>$rieCrit% <$critDamageIcon> critical strike damage<>."
 $i18n.en.morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${morHeal}%<> for <#e8a800ff>${morDur} seconds<>."
 $i18n.en.radiant_morellonomicon.option = "Grievous Wounds: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rmorHeal}%<> for <#e8a800ff>${rmorDur} seconds<>."
 $i18n.en.overlords_bloodmail.option = "Tyranny: Gain <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> equal to <#60e84dff>${obmAtk}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
@@ -445,6 +462,9 @@ $i18n.en.experimental_hexplate.option = "Overdrive: Gain <#4b7cffff>${hexUltCdr}
 $i18n.en.radiant_experimental_hexplate.option = "Overdrive: Gain <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
 $i18n.en.malignance.option = "Scorn: Gain <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
 $i18n.en.radiant_malignance.option = "Scorn: Gain <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+$rorTemplate = "Wrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>{0}% <$critIcon> critical strike chance<> for <#e8a800ff>{1} seconds<> (max {2} stacks).`n`nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<$critIcon>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>{3} seconds<> that <#cab944ff>absorbs<> <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
+$i18n.en.rite_of_ruin.option = $rorTemplate -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
+$i18n.en.radiant_rite_of_ruin.option = $rorTemplate -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
 $i18n.en.guinsoos_rageblade.option = "Wrath: Basic attacks deal <#a974ffff>${gbDmg} bonus magic damage<>.`n`nSeething Strike: Basic attacks grant <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${gbDur} seconds<> (max ${gbStacks} stacks)."
 $i18n.en.radiant_guinsoos_rageblade.option = "Wrath: Basic attacks deal <#a974ffff>${rgbDmg} bonus magic damage<>.`n`nSeething Strike: Basic attacks grant <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${rgbDur} seconds<> (max ${rgbStacks} stacks)."
 $i18n.en.wits_end.option = "Fray: Basic attacks deal <#a974ffff>${weDmg} bonus magic damage<>."
@@ -554,6 +574,8 @@ Write-Host "Updating Vietnamese text."
 
 $i18n.vi.executioners_calling.option = "Vết thương chí mạng: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${execHeal}%<> trong <#e8a800ff>${execDur} giây<>."
 $i18n.vi.oblivion_orb.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${ooHeal}%<> trong <#e8a800ff>${ooDur} giây<>."
+$i18n.vi.infinity_edge.option = "Lột Da: Nhận <#d45656ff>$ieCrit% <$critDamageIcon> sát thương chí mạng<>."
+$i18n.vi.radiant_infinity_edge.option = "Lột Da: Nhận <#d45656ff>$rieCrit% <$critDamageIcon> sát thương chí mạng<>."
 $i18n.vi.morellonomicon.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${morHeal}%<> trong <#e8a800ff>${morDur} giây<>."
 $i18n.vi.radiant_morellonomicon.option = "Vết thương chí mạng: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rmorHeal}%<> trong <#e8a800ff>${rmorDur} giây<>."
 $i18n.vi.overlords_bloodmail.option = "Bạo Ngược: Nhận <#ff9028ff>thêm<> <$adIcon> <#ff9028ff>SMCK<> tương ứng <#60e84dff>${obmAtk}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân."
@@ -584,6 +606,9 @@ $i18n.vi.experimental_hexplate.option = "Tăng tốc: Nhận <#4b7cffff>${hexUlt
 $i18n.vi.radiant_experimental_hexplate.option = "Tăng tốc: Nhận <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
 $i18n.vi.malignance.option = "Ai Oán: Nhận <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
 $i18n.vi.radiant_malignance.option = "Ai Oán: Nhận <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+$rorTemplateVi = "Thịnh Nộ Và Suy Vong: Kĩ năng trúng tướng địch cấp <#d45656ff>{0}% <$critIcon> tỉ lệ chí mạng<> trong <#e8a800ff>{1} giây<> (tối đa {2} cộng dồn).`n`nCứu Rỗi Trò Tàn: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<$critIcon>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>{3} giây<>, <#cab944ff>hấp thụ<> <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
+$i18n.vi.rite_of_ruin.option = $rorTemplateVi -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
+$i18n.vi.radiant_rite_of_ruin.option = $rorTemplateVi -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
 $i18n.vi.guinsoos_rageblade.option = "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>${gbDmg} sát thương phép thuật<>.`n`nDồn dập: Đòn đánh thường cấp <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${gbDur} giây<> (tối đa ${gbStacks} cộng dồn)."
 $i18n.vi.radiant_guinsoos_rageblade.option = "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>${rgbDmg} sát thương phép thuật<>.`n`nDồn dập: Đòn đánh thường cấp <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${rgbDur} giây<> (tối đa ${rgbStacks} cộng dồn)."
 $i18n.vi.wits_end.option = "Xé Toạc: Tấn công thường gây ra thêm <#a974ffff>${weDmg} sát thương phép thuật<>."
@@ -693,6 +718,8 @@ Write-Host "Updating Chinese (Simplified) text."
 
 $i18n.'zh-hans'.executioners_calling.option = "重伤：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${execHeal}%<>，持续 <#e8a800ff>${execDur}秒<>。"
 $i18n.'zh-hans'.oblivion_orb.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${ooHeal}%<>，持续 <#e8a800ff>${ooDur}秒<>。"
+$i18n.'zh-hans'.infinity_edge.option = "严厉斥责：获得 <#d45656ff>$ieCrit% <$critDamageIcon> 暴击伤害<>。"
+$i18n.'zh-hans'.radiant_infinity_edge.option = "严厉斥责：获得 <#d45656ff>$rieCrit% <$critDamageIcon> 暴击伤害<>。"
 $i18n.'zh-hans'.morellonomicon.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${morHeal}%<>，持续 <#e8a800ff>${morDur}秒<>。"
 $i18n.'zh-hans'.radiant_morellonomicon.option = "重伤：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低${rmorHeal}%<>，持续 <#e8a800ff>${rmorDur}秒<>。"
 $i18n.'zh-hans'.overlords_bloodmail.option = "暴政：获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${obmAtk}%<> 的<#ff9028ff>额外<> <$adIcon> <#ff9028ff>攻击力<>。"
@@ -723,6 +750,9 @@ $i18n.'zh-hans'.experimental_hexplate.option = "过载：终极技能获得 <#4b
 $i18n.'zh-hans'.radiant_experimental_hexplate.option = "过载：终极技能获得 <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
 $i18n.'zh-hans'.malignance.option = "蔑视：终极技能获得 <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
 $i18n.'zh-hans'.radiant_malignance.option = "蔑视：终极技能获得 <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
+$rorTemplateZh = "怒火与破坏：技能命中敌方英雄后获得 <#d45656ff>{0}% <$critIcon> 暴击几率<>，持续 <#e8a800ff>{1}秒<>（最多 {2} 层）。`n`n打捞残骸：技能命中敌方英雄后有<#d45656ff>几率（<$critIcon>）<>为你提供一个持续 <#e8a800ff>{3}秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
+$i18n.'zh-hans'.rite_of_ruin.option = $rorTemplateZh -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
+$i18n.'zh-hans'.radiant_rite_of_ruin.option = $rorTemplateZh -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
 $i18n.'zh-hans'.guinsoos_rageblade.option = "怨怒：普通攻击造成 <#a974ffff>${gbDmg}点额外魔法伤害<>。`n`n沸腾打击：普通攻击时获得 <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${gbDur}秒<>（最多叠加${gbStacks}层）。"
 $i18n.'zh-hans'.radiant_guinsoos_rageblade.option = "怨怒：普通攻击造成 <#a974ffff>${rgbDmg}点额外魔法伤害<>。`n`n沸腾打击：普通攻击时获得 <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${rgbDur}秒<>（最多叠加${rgbStacks}层）。"
 $i18n.'zh-hans'.wits_end.option = "喧争：普通攻击造成 <#a974ffff>${weDmg}点额外魔法伤害<>。"
@@ -832,6 +862,8 @@ Write-Host "Updating Portuguese (Brazil) text."
 
 $i18n.'pt-BR'.executioners_calling.option = "Ferimentos Graves: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${execHeal}%<> por <#e8a800ff>${execDur} segundos<>."
 $i18n.'pt-BR'.oblivion_orb.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${ooHeal}%<> por <#e8a800ff>${ooDur} segundos<>."
+$i18n.'pt-BR'.infinity_edge.option = "Trucidar: Ganha <#d45656ff>$ieCrit% de <$critDamageIcon> Dano Crítico<>."
+$i18n.'pt-BR'.radiant_infinity_edge.option = "Trucidar: Ganha <#d45656ff>$rieCrit% de <$critDamageIcon> Dano Crítico<>."
 $i18n.'pt-BR'.morellonomicon.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${morHeal}%<> por <#e8a800ff>${morDur} segundos<>."
 $i18n.'pt-BR'.radiant_morellonomicon.option = "Ferimentos Graves: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rmorHeal}%<> por <#e8a800ff>${rmorDur} segundos<>."
 $i18n.'pt-BR'.overlords_bloodmail.option = "Tirania: Ganha <#ff9028ff>bônus<> de <$adIcon> <#ff9028ff>Dano de Ataque<> igual a <#60e84dff>${obmAtk}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>."
@@ -862,6 +894,9 @@ $i18n.'pt-BR'.experimental_hexplate.option = "Hexcarregado: Recebe <#4b7cffff>${
 $i18n.'pt-BR'.radiant_experimental_hexplate.option = "Hexcarregado: Recebe <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
 $i18n.'pt-BR'.malignance.option = "Escárnio: Recebe <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
 $i18n.'pt-BR'.radiant_malignance.option = "Escárnio: Recebe <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+$rorTemplatePt = "Ira e Ruína: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>{0}% de <$critIcon> Chance de Acerto Crítico<> por <#e8a800ff>{1} segundos<> (máx. {2} acúmulos).`n`nRecuperando os Destroços: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<$critIcon>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>{3} segundos<> que <#cab944ff>absorve<> <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
+$i18n.'pt-BR'.rite_of_ruin.option = $rorTemplatePt -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
+$i18n.'pt-BR'.radiant_rite_of_ruin.option = $rorTemplatePt -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
 $i18n.'pt-BR'.guinsoos_rageblade.option = "Ira: Ataques causam <#a974ffff>${gbDmg} de dano mágico adicional<>.`n`nFervendo: Ataques concedem <#ceff99ff>${gbSpeed}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${gbDur} segundos<> (acumula ${gbStacks}x)."
 $i18n.'pt-BR'.radiant_guinsoos_rageblade.option = "Ira: Ataques causam <#a974ffff>${rgbDmg} de dano mágico adicional<>.`n`nFervendo: Ataques concedem <#ceff99ff>${rgbSpeed}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${rgbDur} segundos<> (acumula ${rgbStacks}x)."
 $i18n.'pt-BR'.wits_end.option = "Duelo: Ataques causam <#a974ffff>${weDmg} de dano mágico adicional<>."
@@ -971,6 +1006,8 @@ Write-Host "Updating Russian text."
 
 $i18n.ru.executioners_calling.option = "Тяжёлые раны: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${execHeal}%<> на <#e8a800ff>${execDur} секунды<>."
 $i18n.ru.oblivion_orb.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${ooHeal}%<> на <#e8a800ff>${ooDur} секунды<>."
+$i18n.ru.infinity_edge.option = "Разнос: Даёт <#d45656ff>$ieCrit% <$critDamageIcon> критического урона<>."
+$i18n.ru.radiant_infinity_edge.option = "Разнос: Даёт <#d45656ff>$rieCrit% <$critDamageIcon> критического урона<>."
 $i18n.ru.morellonomicon.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${morHeal}%<> на <#e8a800ff>${morDur} секунды<>."
 $i18n.ru.radiant_morellonomicon.option = "Тяжёлые раны: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rmorHeal}%<> на <#e8a800ff>${rmorDur} секунды<>."
 $i18n.ru.overlords_bloodmail.option = "Тирания: Даёт <#ff9028ff>дополнительную<> <$adIcon> <#ff9028ff>Силу Атаки<> равную <#60e84dff>${obmAtk}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<>."
@@ -1001,6 +1038,9 @@ $i18n.ru.experimental_hexplate.option = "Перегрузка: Даёт <#4b7cff
 $i18n.ru.radiant_experimental_hexplate.option = "Перегрузка: Даёт <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
 $i18n.ru.malignance.option = "Презрение: Даёт <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
 $i18n.ru.radiant_malignance.option = "Презрение: Даёт <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+$rorTemplateRu = "Гнев и уничтожение: Попадание умением по вражескому чемпиону даёт <#d45656ff>{0}% <$critIcon> шанса критического удара<> на <#e8a800ff>{1} сек<> (максимум {2} зарядов).`n`nСпасение утопающих: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<$critIcon>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>{3} сек<>, поглощающий <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
+$i18n.ru.rite_of_ruin.option = $rorTemplateRu -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
+$i18n.ru.radiant_rite_of_ruin.option = $rorTemplateRu -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
 $i18n.ru.guinsoos_rageblade.option = "Гнев: Базовые атаки наносят <#a974ffff>${gbDmg} дополнительного магического урона<>.`n`nЯростный Удар: Базовые атаки дают <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>скорости атаки<> на <#e8a800ff>${gbDur} секунды<> (макс. ${gbStacks} стака)."
 $i18n.ru.radiant_guinsoos_rageblade.option = "Гнев: Базовые атаки наносят <#a974ffff>${rgbDmg} дополнительного магического урона<>.`n`nЯростный Удар: Базовые атаки дают <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>скорости атаки<> на <#e8a800ff>${rgbDur} секунды<> (макс. ${rgbStacks} стака)."
 $i18n.ru.wits_end.option = "Боевой запал: Базовые атаки наносят <#a974ffff>${weDmg} дополнительного магического урона<>."
@@ -1110,6 +1150,8 @@ Write-Host "Updating Korean text."
 
 $i18n.ko.executioners_calling.option = "고통스러운 상처: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${execDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${execHeal}% 감소<>합니다."
 $i18n.ko.oblivion_orb.option = "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${ooDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${ooHeal}% 감소<>합니다."
+$i18n.ko.infinity_edge.option = "찰과상: <$critDamageIcon> <#d45656ff>치명타 피해량<>이 <#d45656ff>$ieCrit%<> 증가합니다."
+$i18n.ko.radiant_infinity_edge.option = "찰과상: <$critDamageIcon> <#d45656ff>치명타 피해량<>이 <#d45656ff>$rieCrit%<> 증가합니다."
 $i18n.ko.morellonomicon.option = "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${morDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${morHeal}% 감소<>합니다."
 $i18n.ko.radiant_morellonomicon.option = "고통스러운 상처: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${rmorDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${rmorHeal}% 감소<>합니다."
 $i18n.ko.overlords_bloodmail.option = "폭정: <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${obmAtk}%<>만큼 <$adIcon> <#ff9028ff>추가 공격력<>을 얻습니다."
@@ -1140,6 +1182,9 @@ $i18n.ko.experimental_hexplate.option = "과충전: 궁극기의 <$cdrIcon> <#4b
 $i18n.ko.radiant_experimental_hexplate.option = "과충전: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>${rhexUltCdr}%<> 증가합니다."
 $i18n.ko.malignance.option = "경멸: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>${malUltCdr}%<> 증가합니다."
 $i18n.ko.radiant_malignance.option = "경멸: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>${rmalUltCdr}%<> 증가합니다."
+$rorTemplateKo = "분노와 파멸: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>{1}초<> 동안 <#d45656ff>{0}%의 <$critIcon> 치명타 확률<>을 얻습니다. (최대 {2}중첩)`n`n난파선 인양: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<$critIcon>)<>로 <#e8a800ff>{3}초<> 동안 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>{4}<>~<#d8c9b3ff>{5}<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
+$i18n.ko.rite_of_ruin.option = $rorTemplateKo -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
+$i18n.ko.radiant_rite_of_ruin.option = $rorTemplateKo -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
 $i18n.ko.guinsoos_rageblade.option = "분노: 기본 공격이 <#a974ffff>${gbDmg}의 추가 마법 피해<>를 입힙니다.`n`n들끓는 일격: 기본 공격 시 <#e8a800ff>${gbDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${gbSpeed}%<> 증가합니다. 최대 ${gbStacks}회 중첩됩니다."
 $i18n.ko.radiant_guinsoos_rageblade.option = "분노: 기본 공격이 <#a974ffff>${rgbDmg}의 추가 마법 피해<>를 입힙니다.`n`n들끓는 일격: 기본 공격 시 <#e8a800ff>${rgbDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${rgbSpeed}%<> 증가합니다. 최대 ${rgbStacks}회 중첩됩니다."
 $i18n.ko.wits_end.option = "난투: 기본 공격 시 <#a974ffff>${weDmg}의 추가 마법 피해<>를 입힙니다."
@@ -1329,3 +1374,5 @@ Write-Host "  Sundered Sky:                ${ssDamage}% first hit damage bonus /
 Write-Host "  Sundered Sky:                ${rssDamage}% first hit damage bonus / ${rssFlatHeal} + ${rssPercentHeal}% missing HP heal / (${rssOnHitCD} CD per target)"
 Write-Host "  Bloodsong:                   ${bsMin} - ${bsMax} magic (by level) / ${bsCd}s CD / +${bsAmp}% damage taken ${bsDur}s"
 Write-Host "  Radiant Bloodsong:           ${rbsMin} - ${rbsMax} magic (by level) / ${rbsCd}s CD / +${rbsAmp}% damage taken ${rbsDur}s"
+Write-Host "  Rite of Ruin:                +${rorCrit}% crit/stack (max ${rorStacks}) / ${rorDur}s / ${rorMin} - ${rorMax} shield ${rorShDur}s"
+Write-Host "  Radiant Rite of Ruin:        +${rrorCrit}% crit/stack (max ${rrorStacks}) / ${rrorDur}s / ${rrorMin} - ${rrorMax} shield ${rrorShDur}s"

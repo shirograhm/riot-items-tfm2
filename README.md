@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 128 new items (73 base + 55 Radiant) to the game.
+Reskins the 30 existing items and also adds 130 new items (74 base + 56 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -66,7 +66,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Heartsteel** | 1500G | +500 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
 | **Hubris** | 1300G | +70 AD<br>+10% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
-| **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | Gain 30% critical strike damage. |
+| **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Jak'Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | Resilience: Taking damage from an enemy champion grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks). |
 | **Kraken Slayer** | 1400G | +45 AD<br>+25% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Liandry's Torment** | 1400G | +350 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
@@ -84,6 +84,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Protoplasm Harness** | 1200G | +350 HP<br>+10% CDR<br>+5% MS | Fortification: Falling below 40% health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon's Deathcap** | 1500G | +165 AP | Opus: Increase your total Ability Power by 20%. |
 | **Riftmaker** | 1300G | +400 HP<br>+75 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
+| **Rite of Ruin** | 1400G | +105 AP<br>+10% CDR<br>+20% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
 | **Rylai's Crystal Scepter** | 1350G | +250 HP<br>+125 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |
 | **Serpent's Fang** | 1200G | +60 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 50 + 10% of your Attack Damage as bonus physical damage. |
 | **Shadowflame** | 1350G | +115 AP<br>+15% Magic Pen | Cinderbloom: Your magic damage is 20% stronger against enemies below 30% maximum health. |
@@ -126,7 +127,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Heartsteel** | 2100G | +800 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
 | **Radiant Hubris** | 1950G | +115 AD<br>+15% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
-| **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | Gain 30% critical strike damage. |
+| **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Radiant Jak'Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | Resilience: Taking damage from an enemy champion grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Kraken Slayer** | 2000G | +75 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Radiant Liandry's Torment** | 2000G | +550 HP<br>+150 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
@@ -144,6 +145,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Protoplasm Harness** | 1650G | +650 HP<br>+10% CDR<br>+5% MS | Fortification: Falling below 40% health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon's Deathcap** | 2300G | +230 AP | Opus: Increase your total Ability Power by 35%. |
 | **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
+| **Radiant Rite of Ruin** | 2000G | +185 AP<br>+15% CDR<br>+25% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
 | **Radiant Rylai's Crystal Scepter** | 1900G | +400 HP<br>+200 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |
 | **Radiant Serpent's Fang** | 1800G | +100 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 85 + 15% of your Attack Damage as bonus physical damage. |
 | **Radiant Shadowflame** | 1800G | +210 AP<br>+15% Magic Pen | Cinderbloom: Your magic damage is 20% stronger against enemies below 30% maximum health. |
@@ -220,7 +222,7 @@ each one shops, which is what makes a fourth slot possible. If that half has
 disabled itself — after a game update, say — builds still apply through the
 first, minus the fourth item.
 
-The footer's **Apply To All Champions / Apply To Your Team** toggle picks
+The footer's **Apply To All Players / Apply To Your Players Only** toggle picks
 between them. The two halves are not interchangeable: the game's hook is told the
 champion and never the team, so what it sets necessarily reaches both sides,
 while the four-item half identifies your athletes by id and can therefore scope

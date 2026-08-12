@@ -1,4 +1,4 @@
-Adds 128 new items (73 base + 55 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Adds 130 new items (74 base + 56 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]This mod supports custom item values, custom item builds, and a way to add another item slot. See instructions below![/b]  
@@ -23,7 +23,7 @@ Some AI champions seem to prefer the wrong stats when given deference of item se
 
 Some AI champions ignore the custom item builds. Likely to be instability that occurs in long term builds.  
 
-This mod can cause your game to crash if you back out to the main menu and then attempt to load the game again. This is a side-effect of having 4 items mode enabled.  
+Older saves that were using older version of this mod may experience lag spikes during the BP phase and in-game. This is being investigated, for now, current workaround for this is to use a new save.  
 
 [h1] Instructions [/h1]
 
@@ -35,8 +35,9 @@ In order for the AI to realize that these items exist, it is best to add this mo
 4. Restart the game.
 5. Continue your saved game, and proceed through the mod mismatch popup.
 
-Currently updated for game version 0.5.4. Also supports previous versions using an older build of the mod. See below for reference:  
-Mod v0.8.0+ - v0.5.4+
+Currently updated for game version 0.5.5. Also supports previous versions using an older build of the mod. See below for reference:  
+Mod v0.9.0+ - v0.5.5
+Mod v0.8.0+ - v0.5.4
 Mod v0.7.0+ - v0.5.3
 Mod v0.5.7+ - v0.5.1 & v0.5.2
 Mod v0.5.6 - versions up to 0.5.0

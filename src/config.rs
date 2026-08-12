@@ -77,6 +77,7 @@ pub struct ItemConfig {
     pub effect_hp_percent_threshold: Option<f64>,
     pub effect_bonus_hp_percent_of_damage: Option<f64>,
     pub effect_cooldown_seconds: Option<f64>,
+    pub effect_shield_seconds: Option<f64>,
     pub effect_heal_mult: Option<f64>,
     pub effect_bonus_flat_heal: Option<i32>,
     pub effect_caster_hp_percent_heal: Option<f64>,
@@ -90,7 +91,8 @@ pub struct ItemConfig {
     pub effect_max_distance: Option<usize>,
     pub effect_max_percent_bonus: Option<f64>,
     pub effect_percent_bonus_damage: Option<f64>,
-
+    pub effect_min_shield: Option<usize>,
+    pub effect_max_shield: Option<usize>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,
