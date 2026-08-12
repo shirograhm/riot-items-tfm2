@@ -148,20 +148,23 @@ impl StableItem for RiteOfRuin {
         ctx: &mut StableSim<'_>,
         rng_seed: u64,
         caster: usize,
-        _target: usize,
+        target: usize,
         is_ally: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
-        if is_ally {
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if is_ally || !target_ref.is_champion() {
             return;
         }
 
         let stack_count = buff_stacks(&entity_ref, self.stack_crit_buff);
 
         let mut rng = StdRng::seed_from_u64(rng_seed);
-        let roll: f64 = rng.random();
+        let roll: f64 = rng.random::<f64>();
 
         if roll < (entity_ref.stat().crit_chance as f64 / 100.0) {
             ctx.entity_add_shield(
