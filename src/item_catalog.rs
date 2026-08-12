@@ -71,6 +71,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("protoplasm_harness", "Support"),
     ("rabadons_deathcap", "Mage"),
     ("riftmaker", "Mage"),
+    ("rite_of_ruin", "Mage"),
     ("rylais_crystal_scepter", "Mage"),
     ("serpents_fang", "Assassin"),
     ("shadowflame", "Mage"),

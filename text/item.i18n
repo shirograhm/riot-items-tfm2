@@ -1268,6 +1268,14 @@
             "name": "Hỏa Khuẩn Ánh Sáng",
             "option": "\nAi Oán: Nhận <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
         },
+        "rite_of_ruin": {
+            "name": "Nghi Thức Suy Vong",
+            "option": "\nThịnh Nộ Và Suy Vong: Kĩ năng trúng tướng địch cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\nCứu Rỗi Trò Tàn: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#d8c9b3ff>95<> - <#d8c9b3ff>260<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
+        },
+        "radiant_rite_of_ruin": {
+            "name": "Nghi Thức Suy Vong Ánh Sáng",
+            "option": "\nThịnh Nộ Và Suy Vong: Kĩ năng trúng tướng địch cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\nCứu Rỗi Trò Tàn: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#d8c9b3ff>95<> - <#d8c9b3ff>260<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
+        },
         "glowing_mote": {
             "name": "Bụi Lấp Lánh",
             "option": ""
@@ -1956,6 +1964,14 @@
         "radiant_malignance": {
             "name": "光明版残疫",
             "option": "\n蔑视：终极技能获得 <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+        },
+        "rite_of_ruin": {
+            "name": "毁坏仪式",
+            "option": "\n怒火与破坏：技能命中敌方英雄后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n打捞残骸：技能命中敌方英雄后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#d8c9b3ff>95<> - <#d8c9b3ff>260<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
+        },
+        "radiant_rite_of_ruin": {
+            "name": "光明版毁坏仪式",
+            "option": "\n怒火与破坏：技能命中敌方英雄后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n打捞残骸：技能命中敌方英雄后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#d8c9b3ff>95<> - <#d8c9b3ff>260<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
         },
         "glowing_mote": {
             "name": "荧尘",
@@ -2646,6 +2662,14 @@
             "name": "Malevolência Radiante",
             "option": "\nEscárnio: Recebe <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
         },
+        "rite_of_ruin": {
+            "name": "Ritual da Ruína",
+            "option": "\nIra e Ruína: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\nRecuperando os Destroços: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#d8c9b3ff>95<> - <#d8c9b3ff>260<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
+        },
+        "radiant_rite_of_ruin": {
+            "name": "Ritual da Ruína Radiante",
+            "option": "\nIra e Ruína: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\nRecuperando os Destroços: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#d8c9b3ff>95<> - <#d8c9b3ff>260<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
+        },
         "glowing_mote": {
             "name": "Partícula Brilhante",
             "option": ""
@@ -3335,6 +3359,14 @@
             "name": "Лучезарная Пагубность",
             "option": "\nПрезрение: Даёт <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
         },
+        "rite_of_ruin": {
+            "name": "Ритуал уничтожения",
+            "option": "\nГнев и уничтожение: Попадание умением по вражескому чемпиону даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\nСпасение утопающих: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#d8c9b3ff>95<> - <#d8c9b3ff>260<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
+        },
+        "radiant_rite_of_ruin": {
+            "name": "Лучезарный Ритуал уничтожения",
+            "option": "\nГнев и уничтожение: Попадание умением по вражескому чемпиону даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\nСпасение утопающих: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#d8c9b3ff>95<> - <#d8c9b3ff>260<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
+        },
         "glowing_mote": {
             "name": "Светлячок",
             "option": ""
@@ -4023,6 +4055,14 @@
         "radiant_malignance": {
             "name": "찬란한 악의",
             "option": "\n경멸: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>20%<> 증가합니다."
+        },
+        "rite_of_ruin": {
+            "name": "파멸의식 고서",
+            "option": "\n분노와 파멸: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n난파선 인양: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>95<>~<#d8c9b3ff>260<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
+        },
+        "radiant_rite_of_ruin": {
+            "name": "찬란한 파멸의식 고서",
+            "option": "\n분노와 파멸: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n난파선 인양: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>95<>~<#d8c9b3ff>260<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
         },
         "glowing_mote": {
             "name": "빛나는 티끌",
