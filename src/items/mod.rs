@@ -67,6 +67,7 @@ items! {
     protoplasm_harness,
     rabadons_deathcap,
     riftmaker,
+    rite_of_ruin,
     rylais_crystal_scepter,
     scouts_slingshot,
     serpents_fang,

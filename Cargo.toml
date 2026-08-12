@@ -11,6 +11,7 @@ crate-type = ["cdylib"]
 # plain source; the uploader installs it at ../mod-api-stable if it is missing.
 [dependencies]
 mod-api-stable = { path = "../mod-api-stable" }
+rand = "0.10.2"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["preserve_order"] }
 
