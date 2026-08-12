@@ -48,8 +48,6 @@ mod uinj; // 4th-slot UI injection (chained loader hook): item3 dropdown + in-ma
 pub mod driver;
 mod ui_root;
 
-const MOD_ID: &str = "tfm2_item_tactics";
-
 /// Kill switch for everything in `tactics_post_update` that walks the live UI
 /// node tree — now the in-match 4th slot icon, its tooltip, and the compact
 /// slot spacing. (The strategy and comp-test handlers it also used to cover are
@@ -253,7 +251,6 @@ struct MemBasicInfo {
     mtype: u32,
     _pad1: u32,
 }
-
 
 // ===========================================================================
 //  Memory-safety helpers (ported from scrim)
@@ -1405,21 +1402,21 @@ const GV_OFF_ITEMLIST_LEN: usize = 0xb8;
 const GV_OFF_PV_CTRL: usize = 0x1d0; // hashbrown RawTable ctrl
 const GV_OFF_PV_MASK: usize = 0x1d8;
 const GV_OFF_PV_ITEMS: usize = 0x1e8; // element count (0 = not in a match)
-// ** 0.5.5 (2026-08-12): PlayerViewInfo grew 0x260 -> 0x2c0. The simulation-side offsets were migrated and this
-//   one was not, so the (team,pos) probe landed between buckets and found nothing to draw — the 4th item was
-//   bought and then displayed empty.
-//
-//   The stride is not read off a single instruction. `gv_update`'s hashbrown group scan steps sixteen buckets at
-//   a time, `add r13, -0x2600` -> `add r13, -0x2c00`, and 0x2600/16 = 0x260 while 0x2c00/16 = 0x2c0 — the ×16
-//   relationship is what identifies the constant as a bucket stride rather than some unrelated frame offset.
-//
-//   Everything else here was **checked, not assumed**. In 0x2ba350 -> 0x2bafc0 (a clean recompile: 119
-//   instructions, zero mnemonic mismatches) every access is stride-relative, and converting each back to a field
-//   offset gives 0x20, 0x28, 0x38, 0x40, 0x50, **0x58**, 0x68, 0x70 on *both* sides — identical. So the 0x60 of
-//   growth is above 0x70 and every field below it, the items Vec included, keeps its offset. `gv_update` tells
-//   the same story for GameView: across all 1040 instructions the only operands that differ are the three
-//   stride-relative ones, and 0xa8/0xb0/0x1d0/0x1e8 appear at the same instruction offsets through the same
-//   base registers in both builds.
+                                      // ** 0.5.5 (2026-08-12): PlayerViewInfo grew 0x260 -> 0x2c0. The simulation-side offsets were migrated and this
+                                      //   one was not, so the (team,pos) probe landed between buckets and found nothing to draw — the 4th item was
+                                      //   bought and then displayed empty.
+                                      //
+                                      //   The stride is not read off a single instruction. `gv_update`'s hashbrown group scan steps sixteen buckets at
+                                      //   a time, `add r13, -0x2600` -> `add r13, -0x2c00`, and 0x2600/16 = 0x260 while 0x2c00/16 = 0x2c0 — the ×16
+                                      //   relationship is what identifies the constant as a bucket stride rather than some unrelated frame offset.
+                                      //
+                                      //   Everything else here was **checked, not assumed**. In 0x2ba350 -> 0x2bafc0 (a clean recompile: 119
+                                      //   instructions, zero mnemonic mismatches) every access is stride-relative, and converting each back to a field
+                                      //   offset gives 0x20, 0x28, 0x38, 0x40, 0x50, **0x58**, 0x68, 0x70 on *both* sides — identical. So the 0x60 of
+                                      //   growth is above 0x70 and every field below it, the items Vec included, keeps its offset. `gv_update` tells
+                                      //   the same story for GameView: across all 1040 instructions the only operands that differ are the three
+                                      //   stride-relative ones, and 0xa8/0xb0/0x1d0/0x1e8 appear at the same instruction offsets through the same
+                                      //   base registers in both builds.
 const PV_STRIDE: usize = 0x2c0; // PlayerViewInfo. 0.5.5 (0.5.4 was 0x260)
 const PV_OFF_TEAM: usize = 0x00; // u64 tag: 0=blue(Team0) 1=red(Team1)
 const PV_OFF_POS: usize = 0x08; // u32: 0 top /1 jungle /2 mid /3 bottom /4 support
@@ -1803,22 +1800,22 @@ fn tag_to_idx(t: &str) -> Option<usize> {
     Some(b * 5 + (a - 1))
 }
 static SLOT3_PV_N: AtomicU64 = AtomicU64::new(0); // number of players seen owning a 4th item in the view model
-// ═══ 4th-slot icon over the stable UI API ══════════════════════════════════════════════════════════════════
-//
-// `handle_ingame_slot3` below walks the live `Node` tree, which needs a UI root
-// pointer, which needs a window scan through the `App`. Game 0.5.5 broke that
-// and `build_ext_diag.txt` showed why it cannot be repaired by widening the
-// window: the scan *does* land in live UI memory (95 nodes, real ids —
-// `rank`, `logo`, `team`, `match`, `win`, `lose`) but never finds the root,
-// because `subtree_has_id` searches **downward** for `main` while the nodes the
-// scan lands on are branches with `main` above them. Raising the depth cannot
-// fix a direction error.
-//
-// The stable API addresses nodes by path and `ui_child_names("")` starts at the
-// UI root by definition, so this route needs no root pointer, no
-// `GAME_VIEW_IN_APP`, and no agreement with the SDK 0.5.2 `Node` layout — the
-// three things that have broken on successive game updates. The view model is
-// still read natively, because nothing on the stable side exposes it.
+                                                  // ═══ 4th-slot icon over the stable UI API ══════════════════════════════════════════════════════════════════
+                                                  //
+                                                  // `handle_ingame_slot3` below walks the live `Node` tree, which needs a UI root
+                                                  // pointer, which needs a window scan through the `App`. Game 0.5.5 broke that
+                                                  // and `build_ext_diag.txt` showed why it cannot be repaired by widening the
+                                                  // window: the scan *does* land in live UI memory (95 nodes, real ids —
+                                                  // `rank`, `logo`, `team`, `match`, `win`, `lose`) but never finds the root,
+                                                  // because `subtree_has_id` searches **downward** for `main` while the nodes the
+                                                  // scan lands on are branches with `main` above them. Raising the depth cannot
+                                                  // fix a direction error.
+                                                  //
+                                                  // The stable API addresses nodes by path and `ui_child_names("")` starts at the
+                                                  // UI root by definition, so this route needs no root pointer, no
+                                                  // `GAME_VIEW_IN_APP`, and no agreement with the SDK 0.5.2 `Node` layout — the
+                                                  // three things that have broken on successive game updates. The view model is
+                                                  // still read natively, because nothing on the stable side exposes it.
 static SLOT3_PATHS: Mutex<Vec<(String, u64, u32)>> = Mutex::new(Vec::new());
 static SLOT3_PATH_DIAG: Mutex<String> = Mutex::new(String::new());
 /// Per-frame probe of one seat, kept separate from the discovery line above so
@@ -2323,32 +2320,32 @@ static PLAYER_TEAM_ID: AtomicU64 = AtomicU64::new(u64::MAX); // u64::MAX = not c
                                                              //   - build Vec +0x490/0x498/0x4a0 - id +0x810 - team +0x820 - gold +0x888 - position (dword) +0x8b0 - copy size 0x8b8.
                                                              // 0.5.4 = 0x800 (0.5.3 was 0x810). The roster walk that reads it is the SAME function either side
                                                              // (0x1740300 -> 0x17ce980, 286 bytes both) and reads it at the SAME two positions, +0x2d and +0x97.
-// ═══ 0.5.5 athlete layout (2026-08-11) ═════════════════════════════════════════════════════════════════════
-// The struct moved again, and **not by one uniform amount** — it grew 0x60 twice, in two different places, so
-// nothing here may be obtained by shifting the 0.5.4 values by a single delta. Fields below 0x518 moved +0x60;
-// fields from 0x800 up moved +0x120.
-//
-//   champ ptr  0x410 -> 0x470     items ptr 0x440 -> 0x4a0     build cap 0x480 -> 0x4e0     id     0x800 -> 0x920
-//   champ len  0x418 -> 0x478     items len 0x448 -> 0x4a8     build ptr 0x488 -> 0x4e8     team   0x810 -> 0x930
-//                                                              build len 0x490 -> 0x4f0     gold   0x878 -> 0x998
-//   read guard 0x8a8 -> 0x9c8     stride    0x8c0 -> 0x9e0
-//
-// Every one of these comes from a function established to walk the athlete *by call contract* and then shown to
-// be a clean recompile — same .pdata size, same instruction count, zero mnemonic mismatches — so the offsets are
-// read out of a 1:1 correspondence rather than pattern-matched:
-//
-//   * `buy_item` (r8 = athlete) and its three callees give items ptr/len, build ptr/len and gold.
-//   * the 286-byte roster walk (0x17ce980 -> 0x18ab160, identical at every instruction offset) gives id and,
-//     from its `add rbx,imm`, the stride.
-//   * two further functions (0xf059a0 -> 0xf16ef0, 0x13bd510 -> 0x14b4d40) read the champ String and the id
-//     through the *same base register*, which is what makes their 0x410/0x418 the athlete's and not another
-//     struct's; the second also gives team directly.
-//   * build cap and the read guard are the only two taken by bracketing, and both are bracketed tightly by
-//     fields with equal deltas on either side (0x448/0x488 both +0x60; 0x8a0/0x8c0 both +0x120), which offsets
-//     cannot escape without reordering the struct.
-//
-// The trap this avoids is real: four plausible-looking candidates found by scanning for the 0x410/0x418/0x448
-// displacements turned out to be walking unrelated structs — their offsets did not move at all between builds.
+                                                             // ═══ 0.5.5 athlete layout (2026-08-11) ═════════════════════════════════════════════════════════════════════
+                                                             // The struct moved again, and **not by one uniform amount** — it grew 0x60 twice, in two different places, so
+                                                             // nothing here may be obtained by shifting the 0.5.4 values by a single delta. Fields below 0x518 moved +0x60;
+                                                             // fields from 0x800 up moved +0x120.
+                                                             //
+                                                             //   champ ptr  0x410 -> 0x470     items ptr 0x440 -> 0x4a0     build cap 0x480 -> 0x4e0     id     0x800 -> 0x920
+                                                             //   champ len  0x418 -> 0x478     items len 0x448 -> 0x4a8     build ptr 0x488 -> 0x4e8     team   0x810 -> 0x930
+                                                             //                                                              build len 0x490 -> 0x4f0     gold   0x878 -> 0x998
+                                                             //   read guard 0x8a8 -> 0x9c8     stride    0x8c0 -> 0x9e0
+                                                             //
+                                                             // Every one of these comes from a function established to walk the athlete *by call contract* and then shown to
+                                                             // be a clean recompile — same .pdata size, same instruction count, zero mnemonic mismatches — so the offsets are
+                                                             // read out of a 1:1 correspondence rather than pattern-matched:
+                                                             //
+                                                             //   * `buy_item` (r8 = athlete) and its three callees give items ptr/len, build ptr/len and gold.
+                                                             //   * the 286-byte roster walk (0x17ce980 -> 0x18ab160, identical at every instruction offset) gives id and,
+                                                             //     from its `add rbx,imm`, the stride.
+                                                             //   * two further functions (0xf059a0 -> 0xf16ef0, 0x13bd510 -> 0x14b4d40) read the champ String and the id
+                                                             //     through the *same base register*, which is what makes their 0x410/0x418 the athlete's and not another
+                                                             //     struct's; the second also gives team directly.
+                                                             //   * build cap and the read guard are the only two taken by bracketing, and both are bracketed tightly by
+                                                             //     fields with equal deltas on either side (0x448/0x488 both +0x60; 0x8a0/0x8c0 both +0x120), which offsets
+                                                             //     cannot escape without reordering the struct.
+                                                             //
+                                                             // The trap this avoids is real: four plausible-looking candidates found by scanning for the 0x410/0x418/0x448
+                                                             // displacements turned out to be walking unrelated structs — their offsets did not move at all between builds.
 const O_ATHLETE_ID: usize = 0x920; // 0.5.5 (0.5.4 was 0x800, 0.5.3 0x810)
 static MY_ATHLETES: AtomicPtr<std::collections::HashSet<u64>> =
     AtomicPtr::new(core::ptr::null_mut());
@@ -3584,25 +3581,25 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                 }));
             }
         }
-          // NOTE the UI-root gate is NOT here. It used to be, and that broke the
-          // fourth item: the block below publishes `MY_ATHLETES`, which is the
-          // team gate's only remaining input now that the `SCENE_SIDE` fast path
-          // is off. Gating it made `is_my_athlete` return `None` forever, so the
-          // gate closed on the safe side and nothing was ever injected. This block
-          // needs the `client`, not the node tree — only `force_blue_slot_spacing`
-          // inside it touches the tree, and it is gated individually.
-          // * Capture the player team id (for team scoping) + the personal_tactics snapshot (for restoring the display).
-          //   WARNING the strategy screen may not be InGame, so the #personal visible gate was removed -> fill it in ahead of time on the management screen.
-          //   Throttled to every 20 frames (cuts the cost of walking the HashMap).
-          // (was `if let Scene::InGame { data } = scene`)
-          //
-          // `data.db()` returned `mod_api::ClientDatabase` — the *client* scene's
-          // database, a different object from the `game_core::Database` that
-          // `probe_db` works on, and not something a stable-ABI mod can be handed.
-          // The three things this block read off it are read from the stable
-          // client instead; `stable_team_ids` and `stable_personal_tactics` are
-          // the JSON-record equivalents of `team.last_starting` and
-          // `team.champion_personal_tactics`.
+        // NOTE the UI-root gate is NOT here. It used to be, and that broke the
+        // fourth item: the block below publishes `MY_ATHLETES`, which is the
+        // team gate's only remaining input now that the `SCENE_SIDE` fast path
+        // is off. Gating it made `is_my_athlete` return `None` forever, so the
+        // gate closed on the safe side and nothing was ever injected. This block
+        // needs the `client`, not the node tree — only `force_blue_slot_spacing`
+        // inside it touches the tree, and it is gated individually.
+        // * Capture the player team id (for team scoping) + the personal_tactics snapshot (for restoring the display).
+        //   WARNING the strategy screen may not be InGame, so the #personal visible gate was removed -> fill it in ahead of time on the management screen.
+        //   Throttled to every 20 frames (cuts the cost of walking the HashMap).
+        // (was `if let Scene::InGame { data } = scene`)
+        //
+        // `data.db()` returned `mod_api::ClientDatabase` — the *client* scene's
+        // database, a different object from the `game_core::Database` that
+        // `probe_db` works on, and not something a stable-ABI mod can be handed.
+        // The three things this block read off it are read from the stable
+        // client instead; `stable_team_ids` and `stable_personal_tactics` are
+        // the JSON-record equivalents of `team.last_starting` and
+        // `team.champion_personal_tactics`.
         if let (true, Some(pid)) = (in_game, client.player_team_id()) {
             // * During a match player_team_id() returns 0/-1 -> store only when in the valid range (1~9999), otherwise keep the last valid value.
             //   My team id is constant during a session, so the value captured on the management/pre-match screen is used during the match too.
@@ -4268,8 +4265,7 @@ const VANILLA_GROUP: usize = 5;
 ///
 /// [`base_slug`]: crate::build_config::base_slug
 fn editor_class(key: &str) -> Option<&'static str> {
-    let class = crate::item_catalog::category_of(crate::build_config::base_slug(key));
-    (class != crate::item_catalog::OTHER_CATEGORY).then_some(class)
+    crate::item_catalog::category_of(crate::build_config::base_slug(key))
 }
 
 /// The engine category of an item, as an `ItemCategoryV1` code — the coarser of
@@ -4423,7 +4419,7 @@ fn auto_cands() -> std::sync::Arc<Vec<u64>> {
 //   athlete pointer belongs to exactly one match = no collisions (no back pointer needed, RE confirmed).
 // 0.5.4 = 0x8c0 (0.5.3 was 0x8d0). `imul r,r,stride`: 15 hits/0 on 0.5.3, 0/16 on 0.5.4.
 const ATH_STRIDE: usize = 0x9e0; // 0.5.5 (0.5.4 was 0x8c0, 0.5.3 0x8d0)
-// Validate an athlete + return (team, champ_id). Strong validation (team in {0,1} + a real champion name) determines the array bounds automatically.
+                                 // Validate an athlete + return (team, champ_id). Strong validation (team in {0,1} + a real champion name) determines the array bounds automatically.
 unsafe fn athlete_lineup_at(p: usize) -> Option<(u64, u64)> {
     if p < 0x10000 {
         return None;

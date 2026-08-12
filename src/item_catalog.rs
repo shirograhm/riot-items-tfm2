@@ -1,32 +1,6 @@
-//! Item grouping for the in-game build editor.
-//!
-//! The editor groups its item dropdowns under class headers, from a hand-kept
-//! `item id -> category` map. The map is maintained rather than derived because
-//! there is no category field on an item in the game's settings document to
-//! derive it *from*, and inferring one from stat lines would be guesswork that
-//! silently reshuffles the list whenever an item is rebalanced.
-//!
-//! Keys are *base* slugs (`collector`, not `radiant_collector` and not the
-//! internal `warlords_final_judgement`); [`crate::build_config::base_slug`]
-//! normalizes a runtime item key into one. Anything unmapped falls under
-//! [`OTHER_CATEGORY`] so a newly added item is never dropped from the picker.
+pub const CATEGORY_ORDER: [&str; 6] =
+    ["Assassin", "Fighter", "Marksman", "Mage", "Tank", "Support"];
 
-/// Category headers, in the order they appear in the item list.
-pub const CATEGORY_ORDER: [&str; 6] = [
-    "Assassin",
-    "Fighter",
-    "Marksman",
-    "Mage",
-    "Tank",
-    "Support",
-];
-
-/// Group for items with no entry in [`CATEGORY_OF`]; always sorts last.
-pub const OTHER_CATEGORY: &str = "Other";
-
-/// Base slug -> category. A sorted `&[(&str, &str)]` rather than a `HashMap`:
-/// it is built at compile time, read a few dozen times per modal build, and
-/// binary search over sixty entries is not the cost that matters here.
 const CATEGORY_OF: &[(&str, &str)] = &[
     ("atmas_reckoning", "Tank"),
     ("bastionbreaker", "Assassin"),
@@ -92,9 +66,6 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("zekes_herald", "Support"),
 ];
 
-/// Sheet frames for the six vanilla finals the mod reskins. Every other mod
-/// item has a frame named after its base slug, but a reskin keeps the vanilla
-/// art's tier-indexed frame name, so those six need naming explicitly.
 const RESKIN_ICON: &[(&str, &str)] = &[
     ("bloodthirster", "t4_0"),
     ("dragons_claw", "t4_3"),
@@ -104,12 +75,6 @@ const RESKIN_ICON: &[(&str, &str)] = &[
     ("thornmail", "t4_2"),
 ];
 
-/// Sprite-sheet frame for a base slug, for an `image` node's `rect_tag`.
-///
-/// `is_mod_item` says whether the mod registered this item: only those have art
-/// in the sheet. A vanilla final the mod leaves alone has no frame, and naming a
-/// frame that does not exist is not something the engine is documented to
-/// tolerate, so those get `None` and render as name-only rows.
 pub fn icon_frame(slug: &str, is_mod_item: bool) -> Option<&str> {
     if let Ok(index) = RESKIN_ICON.binary_search_by_key(&slug, |(key, _)| key) {
         return Some(RESKIN_ICON[index].1);
@@ -117,15 +82,17 @@ pub fn icon_frame(slug: &str, is_mod_item: bool) -> Option<&str> {
     is_mod_item.then_some(slug)
 }
 
-/// Category a base slug belongs to, or [`OTHER_CATEGORY`].
-pub fn category_of(slug: &str) -> &'static str {
+/// `None` for a slug with no entry, which the editor hides rather than grouping
+/// under a catch-all header. Not `unwrap`: this runs on every key the game hands
+/// the picker, mod and vanilla alike, so an unmapped one has to be an ordinary
+/// answer and not a panic inside a UI callback.
+pub fn category_of(slug: &str) -> Option<&'static str> {
     CATEGORY_OF
         .binary_search_by_key(&slug, |(key, _)| key)
+        .ok()
         .map(|index| CATEGORY_OF[index].1)
-        .unwrap_or(OTHER_CATEGORY)
 }
 
-/// Sort key putting items in [`CATEGORY_ORDER`] order, with "Other" last.
 pub fn category_rank(category: &str) -> usize {
     CATEGORY_ORDER
         .iter()
@@ -137,16 +104,12 @@ pub fn category_rank(category: &str) -> usize {
 mod tests {
     use super::*;
 
-    /// `category_of` binary-searches, so an out-of-order entry would silently
-    /// mis-group items rather than fail loudly.
     #[test]
     fn tables_are_sorted_by_key() {
         assert!(CATEGORY_OF.windows(2).all(|pair| pair[0].0 < pair[1].0));
         assert!(RESKIN_ICON.windows(2).all(|pair| pair[0].0 < pair[1].0));
     }
 
-    /// Every category used in the table has a header to sit under, or its items
-    /// would sort into the "Other" bucket while claiming a name of their own.
     #[test]
     fn every_category_has_a_header() {
         for (slug, category) in CATEGORY_OF {
