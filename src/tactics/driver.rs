@@ -145,7 +145,7 @@ pub fn before_management_tick() {
 /// Was `ModExtension::post_update`. The client answers what the `Scene::InGame`
 /// payload used to; the UI root is fetched from `TIP_ROOT` rather than passed
 /// in.
-pub fn post_update(client: &mod_api_stable::StableClient<'_>) {
+pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
     let in_game = client.is_in_game();
     super::tactics_post_update(client, in_game);
 }

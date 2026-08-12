@@ -71,7 +71,16 @@ const MOD_ID: &str = "tfm2_item_tactics";
 /// the strategy handler, so disabling this silently disabled every
 /// `safe_read_*` in the module. That call now lives in `tactics_init`, which is
 /// where it belongs, so the two are independent.
-const UI_TREE_WALK_ENABLED: bool = true;
+// ** OFF 2026-08-12 (game 0.5.5). Everything this gated now runs over the stable
+//    UI API by path instead — the 4th-slot icon and `force_blue_slot_spacing`,
+//    which were its only remaining consumers. The node route needs a UI root
+//    pointer, and on 0.5.5 the search for one cannot succeed: `build_ext_diag`
+//    showed the scan landing in live UI memory (1167 nodes, real ids) yet never
+//    finding the root, because `subtree_has_id` searches *downward* for `main`
+//    while the nodes it lands on are branches with `main` above them. That is a
+//    direction error, not a tuning problem, so the search was also costing a
+//    160KB sweep per frame for an answer nobody could use.
+const UI_TREE_WALK_ENABLED: bool = false;
 
 // This half no longer touches the game's native **Personal** tactics tab.
 // `crate::strategy_ui` replaces that tab outright with the mod's own `#builds`
@@ -1396,7 +1405,22 @@ const GV_OFF_ITEMLIST_LEN: usize = 0xb8;
 const GV_OFF_PV_CTRL: usize = 0x1d0; // hashbrown RawTable ctrl
 const GV_OFF_PV_MASK: usize = 0x1d8;
 const GV_OFF_PV_ITEMS: usize = 0x1e8; // element count (0 = not in a match)
-const PV_STRIDE: usize = 0x260; // PlayerViewInfo
+// ** 0.5.5 (2026-08-12): PlayerViewInfo grew 0x260 -> 0x2c0. The simulation-side offsets were migrated and this
+//   one was not, so the (team,pos) probe landed between buckets and found nothing to draw — the 4th item was
+//   bought and then displayed empty.
+//
+//   The stride is not read off a single instruction. `gv_update`'s hashbrown group scan steps sixteen buckets at
+//   a time, `add r13, -0x2600` -> `add r13, -0x2c00`, and 0x2600/16 = 0x260 while 0x2c00/16 = 0x2c0 — the ×16
+//   relationship is what identifies the constant as a bucket stride rather than some unrelated frame offset.
+//
+//   Everything else here was **checked, not assumed**. In 0x2ba350 -> 0x2bafc0 (a clean recompile: 119
+//   instructions, zero mnemonic mismatches) every access is stride-relative, and converting each back to a field
+//   offset gives 0x20, 0x28, 0x38, 0x40, 0x50, **0x58**, 0x68, 0x70 on *both* sides — identical. So the 0x60 of
+//   growth is above 0x70 and every field below it, the items Vec included, keeps its offset. `gv_update` tells
+//   the same story for GameView: across all 1040 instructions the only operands that differ are the three
+//   stride-relative ones, and 0xa8/0xb0/0x1d0/0x1e8 appear at the same instruction offsets through the same
+//   base registers in both builds.
+const PV_STRIDE: usize = 0x2c0; // PlayerViewInfo. 0.5.5 (0.5.4 was 0x260)
 const PV_OFF_TEAM: usize = 0x00; // u64 tag: 0=blue(Team0) 1=red(Team1)
 const PV_OFF_POS: usize = 0x08; // u32: 0 top /1 jungle /2 mid /3 bottom /4 support
 const PV_OFF_ITEMS_PTR: usize = 0x58; // Vec<u64> = {cap@0x50, ptr@0x58, len@0x60}
@@ -1603,14 +1627,33 @@ unsafe fn item_icon_by_index(gv: usize, idx: u64) -> Option<String> {
 unsafe fn collect_slot3_icons(gv: usize) -> HashMap<(u64, u32), String> {
     let mut out = HashMap::new();
     if !readable(gv + GV_OFF_PV_CTRL, 32) {
+        pv_diag(|| "PV: gv+0x1d0 unreadable".to_string());
         return out;
     }
     let ctrl = rd_u64(gv + GV_OFF_PV_CTRL) as usize;
     let mask = rd_u64(gv + GV_OFF_PV_MASK) as usize;
     let nitems = rd_u64(gv + GV_OFF_PV_ITEMS);
     if ctrl < 0x10000 || nitems == 0 || nitems > 64 || mask > 0x1000 {
+        // Report the raw header rather than a verdict. `ctrl` and `items` are
+        // confirmed for 0.5.5 (in gv_update, `mov r15,rcx` then
+        // `mov r14,[r15+0x1e8]` / `mov r13,[r15+0x1d0]` feeding a `movdqa` group
+        // load), so a rejection here means one of the *unconfirmed* reads is
+        // wrong — most likely `mask` at +0x1d8, which no instruction has been
+        // matched to.
+        pv_diag(|| {
+            format!(
+                "PV: header rejected - ctrl={ctrl:#x} mask={mask:#x}({mask}) items={nitems} \
+                 [raw +0x1c8={:#x} +0x1d8={:#x} +0x1e0={:#x} +0x1e8={:#x}]",
+                rd_u64(gv + 0x1c8),
+                rd_u64(gv + 0x1d8),
+                rd_u64(gv + 0x1e0),
+                rd_u64(gv + 0x1e8),
+            )
+        });
         return out;
     }
+    let mut pv_rows: Vec<String> = Vec::new();
+    let mut seen = 0usize;
     for i in 0..=mask {
         if !readable(ctrl + i, 1) {
             break;
@@ -1629,6 +1672,21 @@ unsafe fn collect_slot3_icons(gv: usize) -> HashMap<(u64, u32), String> {
         }
         let it_ptr = rd_u64(e + PV_OFF_ITEMS_PTR) as usize;
         let it_len = rd_u64(e + PV_OFF_ITEMS_LEN);
+        seen += 1;
+        if seen <= 4 {
+            // The per-entry facts. `it_len` is the one that decides whether a
+            // 4th item is drawn, and it is also the number that would expose a
+            // view chain that caps at 3 (which the recorded RE says it does not)
+            // or a stale PV_OFF_ITEMS_* pair.
+            pv_rows.push(format!(
+                "team={team} pos={pos} items_len={it_len} ptr={it_ptr:#x} \
+                 [raw +0x50={:#x} +0x58={:#x} +0x60={:#x} +0x68={:#x}]",
+                rd_u64(e + 0x50),
+                rd_u64(e + 0x58),
+                rd_u64(e + 0x60),
+                rd_u64(e + 0x68),
+            ));
+        }
         if it_len < 4 || it_ptr < 0x10000 || !readable(it_ptr + 3 * 8, 8) {
             continue;
         } // does not own a 4th
@@ -1637,7 +1695,33 @@ unsafe fn collect_slot3_icons(gv: usize) -> HashMap<(u64, u32), String> {
             out.insert((team, pos), tag);
         }
     }
+    pv_diag(|| {
+        format!(
+            "PV: ctrl={ctrl:#x} mask={mask} items={nitems} full_entries={seen} with_4th={}\n      {}",
+            out.len(),
+            if pv_rows.is_empty() {
+                "(no FULL bucket passed the team/pos sanity check)".to_string()
+            } else {
+                pv_rows.join("\n      ")
+            }
+        )
+    });
     out
+}
+
+/// Latest line from the player-view walk, for `build_ext_diag.txt`.
+///
+/// A `String` rather than counters because the useful evidence here is the raw
+/// header and the first few entries — the counters already say "0 players own a
+/// 4th", which is the thing that needs explaining, not more of the same. Only
+/// built while `BUILD_EXT_DIAG` is on: the closure keeps the formatting cost out
+/// of the frame path entirely when it is off.
+static PV_DIAG: Mutex<String> = Mutex::new(String::new());
+fn pv_diag(f: impl FnOnce() -> String) {
+    if !BUILD_EXT_DIAG {
+        return;
+    }
+    *PV_DIAG.lock().unwrap_or_else(|e| e.into_inner()) = f();
 }
 const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
 const IMG_STATE_OFF: [usize; 4] = [0, 208, 416, 624]; // normal/hover/active/disabled
@@ -1719,6 +1803,228 @@ fn tag_to_idx(t: &str) -> Option<usize> {
     Some(b * 5 + (a - 1))
 }
 static SLOT3_PV_N: AtomicU64 = AtomicU64::new(0); // number of players seen owning a 4th item in the view model
+// ═══ 4th-slot icon over the stable UI API ══════════════════════════════════════════════════════════════════
+//
+// `handle_ingame_slot3` below walks the live `Node` tree, which needs a UI root
+// pointer, which needs a window scan through the `App`. Game 0.5.5 broke that
+// and `build_ext_diag.txt` showed why it cannot be repaired by widening the
+// window: the scan *does* land in live UI memory (95 nodes, real ids —
+// `rank`, `logo`, `team`, `match`, `win`, `lose`) but never finds the root,
+// because `subtree_has_id` searches **downward** for `main` while the nodes the
+// scan lands on are branches with `main` above them. Raising the depth cannot
+// fix a direction error.
+//
+// The stable API addresses nodes by path and `ui_child_names("")` starts at the
+// UI root by definition, so this route needs no root pointer, no
+// `GAME_VIEW_IN_APP`, and no agreement with the SDK 0.5.2 `Node` layout — the
+// three things that have broken on successive game updates. The view model is
+// still read natively, because nothing on the stable side exposes it.
+static SLOT3_PATHS: Mutex<Vec<(String, u64, u32)>> = Mutex::new(Vec::new());
+static SLOT3_PATH_DIAG: Mutex<String> = Mutex::new(String::new());
+/// Per-frame probe of one seat, kept separate from the discovery line above so
+/// the two do not overwrite each other.
+static SLOT3_PROBE_DIAG: Mutex<String> = Mutex::new(String::new());
+/// Last `source`/`rect_tag` pair actually written, for the probe line.
+static SLOT3_LAST_SRC: Mutex<String> = Mutex::new(String::new());
+static SLOT3_PATH_SET: AtomicU64 = AtomicU64::new(0);
+
+/// Depth and expansion budget for the path search. The item panel sits a few
+/// levels down; the budget stops a pathological tree from costing a frame.
+const PATH_DEPTH: usize = 14;
+const PATH_BUDGET: usize = 4000;
+/// Frames between discovery attempts while the cache is unusable. At 60fps this
+/// is one search per second, which is the difference between "notices the match
+/// screen a frame late" and the stutter an unthrottled search causes.
+const DISCOVER_EVERY: u64 = 60;
+static DISCOVER_TICK: AtomicU64 = AtomicU64::new(0);
+static LAST_DISCOVER: AtomicU64 = AtomicU64::new(0);
+
+/// `(team, pos)` implied by a `slot3` path, from the `blue_player`/`red_player`
+/// and lane segments the template nests it under.
+fn team_pos_from_path(path: &str) -> Option<(u64, u32)> {
+    let mut team = None;
+    let mut pos = None;
+    for seg in path.split('.') {
+        match seg {
+            "blue_player" => team = Some(0),
+            "red_player" => team = Some(1),
+            _ => {
+                if let Some(i) = LANES.iter().position(|l| *l == seg) {
+                    pos = Some(i as u32);
+                }
+            }
+        }
+    }
+    Some((team?, pos?))
+}
+
+/// Every `slot3` node currently in the tree, with the seat it belongs to.
+///
+/// Breadth-first from the UI root. `slot3` itself is not descended into — its
+/// only children are the `bg`/`icon` pair this addresses directly.
+fn discover_slot3_paths(client: &StableClient<'_>) -> Vec<(String, u64, u32)> {
+    let mut found = Vec::new();
+    let mut queue = std::collections::VecDeque::new();
+    queue.push_back((String::new(), 0usize));
+    let mut budget = PATH_BUDGET;
+    while let Some((path, depth)) = queue.pop_front() {
+        if budget == 0 {
+            break;
+        }
+        budget -= 1;
+        if depth > PATH_DEPTH {
+            continue;
+        }
+        for name in client.ui_child_names(&path) {
+            let child = if path.is_empty() {
+                name.clone()
+            } else {
+                format!("{path}.{name}")
+            };
+            if name == "slot3" {
+                if let Some((team, pos)) = team_pos_from_path(&child) {
+                    found.push((child, team, pos));
+                }
+                continue;
+            }
+            queue.push_back((child, depth + 1));
+        }
+    }
+    found
+}
+
+/// Paints the 4th slot for every seat, discovering the paths on first use and
+/// whenever the cached ones stop existing (a new match builds a new screen).
+fn drive_slot3_by_path(client: &mut StableClient<'_>, icons: &HashMap<(u64, u32), String>) {
+    let mut cache = SLOT3_PATHS.lock().unwrap_or_else(|e| e.into_inner());
+    // Re-discover when the cache is empty or its first entry has gone: the
+    // screen is rebuilt per match, so yesterday's paths address nothing.
+    //
+    // THROTTLED, and it must stay that way. The search is breadth-first over the
+    // whole UI tree with a 4000-node budget, and the first version ran it on
+    // every frame the cache looked stale — which, off the match screen or with
+    // an unusable path, is *every* frame. That is the hard lag reported on
+    // 2026-08-12: thousands of cross-ABI `ui_child_names` calls per frame. A
+    // failed search must cost no more than one search per second.
+    let stale = cache
+        .first()
+        .map(|(p, _, _)| !client.ui_exists(p))
+        .unwrap_or(true);
+    let tick = DISCOVER_TICK.fetch_add(1, Ordering::Relaxed);
+    let due = tick.saturating_sub(LAST_DISCOVER.load(Ordering::Relaxed)) >= DISCOVER_EVERY;
+    if stale && due {
+        LAST_DISCOVER.store(tick, Ordering::Relaxed);
+        *cache = discover_slot3_paths(client);
+        if BUILD_EXT_DIAG {
+            *SLOT3_PATH_DIAG.lock().unwrap_or_else(|e| e.into_inner()) = format!(
+                "slot3 paths discovered: {} {}",
+                cache.len(),
+                // All of them, not a sample: the compact/wide split has to be
+                // read off these paths, and the spacing fix above keys on it.
+                cache
+                    .iter()
+                    .map(|(p, t, s)| format!("{p}(t{t},p{s})"))
+                    .collect::<Vec<_>>()
+                    .join("\n      ")
+            );
+        }
+    }
+    // Probe the first known seat once per report, whatever the item state.
+    //
+    // The previous version only probed inside the "this seat owns a 4th item"
+    // branch, so a run whose sampled frame had `with_4th=0` produced an empty
+    // probe line and taught us nothing — which is exactly what happened. What
+    // needs answering (does the path resolve, is it an image runner, does a
+    // `main.` prefix behave differently) does not depend on any item existing.
+    if BUILD_EXT_DIAG {
+        if let Some((path, _, _)) = cache.first() {
+            let icon = format!("{path}.bg.icon");
+            // The path, the runner kind and the write are all confirmed good;
+            // what is left is the *value*. `slot0` on the same row is the same
+            // kind of node showing a real item icon, so its runner state is the
+            // format to copy rather than guess at — the mod has two conflicting
+            // precedents (`set_img_src` writes "sheet#tag" into one field,
+            // `set_icon_rect_tag` writes the sheet and the tag into two).
+            // `ui_state_json` was tried here and returns "{}" for image runners
+            // (slot0's working icon included), so it cannot report a source.
+            // What is left worth recording is the value actually written.
+            let sample = SLOT3_LAST_SRC
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .clone();
+            let d = format!(
+                "path='{icon}' exists={} runner={:?} visible={:?}\n      wrote: {}",
+                client.ui_exists(&icon),
+                client.ui_runner_name(&icon),
+                client.ui_visible(&icon),
+                if sample.is_empty() {
+                    "(nothing yet - no seat owned a 4th item)".to_string()
+                } else {
+                    sample
+                },
+            );
+            *SLOT3_PROBE_DIAG.lock().unwrap_or_else(|e| e.into_inner()) = d;
+        }
+    }
+
+    for (path, team, pos) in cache.iter() {
+        let icon = format!("{path}.bg.icon");
+        match icons.get(&(*team, *pos)) {
+            Some(tag) => {
+                // Sheet and tag are **two properties**, not one `sheet#tag`
+                // string. Confirmed against the game's own `.ui` assets in
+                // `bundle.game_data`, where every aseprite image reads
+                //
+                //     source: "asset/base/aseprite_resources/team_logo";
+                //     rect_tag: "0_0";
+                //
+                // and where no `source:` anywhere contains a `#` at all. The `#`
+                // form this used at first comes from `set_img_src`, which writes
+                // the runner's source *field* directly rather than going through
+                // the `.ui` parser — a different interface with different rules.
+                // `set_icon_rect_tag`, the native writer this replaces, always
+                // split them the same way the assets do.
+                let source = format!("source: \"{ICON_SHEET}\"; rect_tag: \"{tag}\";");
+                if BUILD_EXT_DIAG {
+                    *SLOT3_LAST_SRC.lock().unwrap_or_else(|e| e.into_inner()) = source.clone();
+                }
+                if client.ui_set_properties(&icon, &source) {
+                    client.ui_set_visible(&icon, true);
+                    SLOT3_PATH_SET.fetch_add(1, Ordering::Relaxed);
+                }
+            }
+            // No 4th item: match the game's own empty-slot handling.
+            None => {
+                client.ui_set_visible(&icon, false);
+            }
+        }
+
+        // The other casualty of the unresolved UI root, and the reason the slot
+        // row looks wrong rather than merely empty: `force_blue_slot_spacing`
+        // was gated on the node tree too. The game rewrites `blue_player` back
+        // to its vanilla 50px spacing every frame, so with that gate shut the
+        // blue side keeps three-slot geometry while the template defines four.
+        // Same values as the `.ui` and as the node-walk version it replaces:
+        // slots at `base + 42*i` from slot0's authored 59, kda 242, cs 290.
+        //
+        // Compact layout ONLY. `wide_player_info` is authored at 34px with its
+        // own kda/cs, has no reset to fight, and writing the compact numbers
+        // into it is what the node version's warning is about — so the wide
+        // subtree is excluded by path.
+        if *team == 0 && !path.contains("wide") {
+            let Some(bp) = path.strip_suffix(".slot3") else {
+                continue;
+            };
+            for i in 0..4u32 {
+                let x = 59.0 + FORCE_BLUE_SPACING * i as f32;
+                client.ui_set_properties(&format!("{bp}.slot{i}"), &format!("x: {x}px;"));
+            }
+            client.ui_set_properties(&format!("{bp}.kda"), "x: 242px;");
+            client.ui_set_properties(&format!("{bp}.cs"), "x: 290px;");
+        }
+    }
+}
+
 fn handle_ingame_slot3(ui: &Node) {
     if !SLOT3_ICON_ENABLED || slot_count() != 4 {
         return;
@@ -2146,7 +2452,25 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
                                   //   confirmed in game. Flip back on to get `build_ext_diag.txt` — `BE_CNT[6]` (build[3]
                                   //   writes) and "owned>=4 observed" are what tell "the build was extended" apart from
                                   //   "extended and never bought". Costs a file write every ~5s on the main thread.
-const BUILD_EXT_DIAG: bool = false; // * was OFF 2026-08-04: it identified the root-scan budget bug (see `ui_root::ATTEMPTS`) and that fix is confirmed in game
+                                  // * ON 2026-08-12, TEMPORARILY: after the 0.5.5 migration the 4th item is
+                                  //   bought but drawn empty. `PV_STRIDE` was wrong (0x260 -> 0x2c0) and is
+                                  //   fixed; whether that was the whole cause is unconfirmed. The remaining
+                                  //   candidates fail identically from outside, and this report separates them
+                                  //   in one match. Read, in order:
+                                  //     "owned>=4 observed"      0 => not actually bought; stop looking at the UI
+                                  //     "mode(slot_count)"       != 4 => handle_ingame_slot3 returns immediately
+                                  //     "GameView=0x0"           => the RVA_GV_UPDATE hook never fired
+                                  //     "view-model owns a 4th=0" with owned>=4 non-zero => GV/PV offsets wrong
+                                  //     "set OK=0 skipped>0"     => nodes resolve, the icon write fails
+                                  //     "set OK=0 skipped=0"     => find_node never reached #slot3/#bg/#icon,
+                                  //                                 i.e. the UI root never resolved
+                                  //   That last line is the one the seesaw history points at: a cached UI root
+                                  //   that is stale after a return to the main menu crashes if walked and draws
+                                  //   nothing if dropped — see `ui_root::resolve`.
+                                  //   Set back to `false` once the cause is known: it writes `build_ext_diag.txt`
+                                  //   into the mod folder every ~5s, and no .txt files there is a standing
+                                  //   preference.
+const BUILD_EXT_DIAG: bool = false; // * OFF again 2026-08-12: the 0.5.5 in-match icon is fixed and confirmed in game. It was this report that found it, in four steps — buy path healthy, UI root never resolving, the path route landing on the right node, and finally the written value being wrong. Turn it back on before guessing at anything in this area again.
                                     // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false;
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
@@ -3075,7 +3399,7 @@ unsafe fn install_detour_r11(
 //     UI mega-function detour. The `ui` binding is now the root node itself, so
 //     the field access that used to reach it is gone from every call below.
 // `_assets` and `_dt` were unused and are gone.
-fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
+fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
     {
         // The hook retry block below is what installs `cap_game_view`, and
         // `cap_game_view` is what publishes `TIP_ROOT` — so the root must be
@@ -3090,7 +3414,17 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
         }
         // Validated `GameUI.root`, or 0 until the UI exists. NOT `TIP_ROOT` —
         // see `ui_root` for why that pointer crashed the game.
-        let ui_root_ptr = ui_root::resolve().unwrap_or(0);
+        // Gated, because `resolve()` is not free when it fails: each attempt
+        // sweeps a 160KB window testing every 8-byte slot, and it re-arms
+        // whenever `GAME_VIEW` changes, which it does repeatedly in a session.
+        // With `UI_TREE_WALK_ENABLED` off there is no consumer for the answer,
+        // so paying for the search is pure per-frame cost — a measurable part of
+        // the lag reported on 2026-08-12.
+        let ui_root_ptr = if UI_TREE_WALK_ENABLED {
+            ui_root::resolve().unwrap_or(0)
+        } else {
+            0
+        };
         // * 0.5.3 regression diagnostic dump (build extension path) - file write every 300 frames (~5s), main thread only.
         if BUILD_EXT_DIAG {
             let n = BE_TICK.fetch_add(1, Ordering::Relaxed);
@@ -3188,7 +3522,38 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                 s.push_str(&format!(
                     "  ui_inject: installed={inst} player_info={pi} wide={wide}\n"
                 ));
+                s.push_str(&format!(
+                    "  slot3 by PATH (stable UI API): set={} / {}\n",
+                    SLOT3_PATH_SET.load(Ordering::Relaxed),
+                    {
+                        let d = SLOT3_PATH_DIAG
+                            .lock()
+                            .unwrap_or_else(|e| e.into_inner())
+                            .clone();
+                        if d.is_empty() {
+                            "(discovery never ran)".to_string()
+                        } else {
+                            d
+                        }
+                    }
+                ));
+                s.push_str(&format!(
+                    "  slot3 probe: {}\n",
+                    SLOT3_PROBE_DIAG
+                        .lock()
+                        .unwrap_or_else(|e| e.into_inner())
+                        .clone()
+                ));
                 s.push_str(&format!("  {}\n", ui_root::report()));
+                s.push_str(&format!(
+                    "  {}\n",
+                    PV_DIAG
+                        .lock()
+                        .unwrap_or_else(|e| e.into_inner())
+                        .clone()
+                        .as_str()
+                        .trim_end()
+                ));
                 if let Some(d) = mod_dir() {
                     let _ = fs::write(d.join("build_ext_diag.txt"), s);
                 }
@@ -3204,6 +3569,21 @@ fn tactics_post_update(client: &StableClient<'_>, in_game: bool) {
                 let _ = uinj::install();
             }
         } // strategy screen dropdown injection hook (mode 3 = item0m/1m/2m, mode 4 = + item3/slot3). Idempotent.
+
+        // * In-match 4th slot icon, over the stable UI API. Deliberately here and
+        //   not in the node-tree block far below: this route needs no UI root, so
+        //   gating it on one would reintroduce the dependency it exists to avoid.
+        //   The view model is still read natively — only the drawing is by path.
+        if SLOT3_ICON_ENABLED && in_game && slot_count() == 4 {
+            let gv = GAME_VIEW.load(Ordering::Relaxed);
+            if gv > 0x10000 {
+                let icons = unsafe { collect_slot3_icons(gv) };
+                SLOT3_PV_N.store(icons.len() as u64, Ordering::Relaxed);
+                let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                    drive_slot3_by_path(client, &icons);
+                }));
+            }
+        }
           // NOTE the UI-root gate is NOT here. It used to be, and that broke the
           // fourth item: the block below publishes `MY_ATHLETES`, which is the
           // team gate's only remaining input now that the `SCENE_SIDE` fast path

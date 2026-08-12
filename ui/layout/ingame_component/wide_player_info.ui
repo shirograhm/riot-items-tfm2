@@ -3,6 +3,7 @@ player_info:empty {
   height: 30px;
 
   #blue_player:empty {
+    source: "asset/base/ui/ingame/blue_player";
     width: 272px;
     height: 30px;
 
