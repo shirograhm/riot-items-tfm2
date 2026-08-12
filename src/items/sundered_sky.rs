@@ -155,7 +155,7 @@ impl StableItem for SunderedSky {
             + percent_of_i32(missing_health, self.effect_caster_hp_percent_heal);
 
         let ratio = 1.0 + (self.effect_percent_bonus_damage / 100.0);
-        *damage = (*damage as f64 * ratio) as usize;
+        *damage = (*damage as f64 * ratio).round() as usize;
         ctx.heal(caster, caster, heal_amount as usize);
 
         // Trigger cooldown per target

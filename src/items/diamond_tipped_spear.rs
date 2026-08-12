@@ -169,7 +169,7 @@ impl StableItem for DiamondTippedSpear {
         let ratio =
             (distance / (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as f64).min(1.0);
         let scaling = 1.0 + (self.effect_max_percent_bonus / 100.0) * ratio;
-        *damage = (*damage as f64 * scaling) as usize;
+        *damage = (*damage as f64 * scaling).round() as usize;
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

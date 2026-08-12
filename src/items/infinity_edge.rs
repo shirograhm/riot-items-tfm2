@@ -101,7 +101,8 @@ impl StableItem for InfinityEdge {
         is_crit: bool,
     ) {
         if attack_type == AttackTypeV1::BaseAttack && is_crit {
-            *damage += *damage * (self.effect_crit_damage_bonus as f64 / 100.0) as usize
+            *damage +=
+                (*damage as f64 * (self.effect_crit_damage_bonus as f64 / 100.0)).round() as usize
         }
     }
 
