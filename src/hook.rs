@@ -37,7 +37,7 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.5.3.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.5.5.
 //!
 //! The finder identifies the target by its **argument shape** rather than by
 //! anything in its body: the return type is 24 bytes so it comes back via `sret`
@@ -90,7 +90,7 @@ const PROLOGUE_PUSHES: [u8; 12] = [
 const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-/// Signature for game 0.5.4, where the target is `0x1e76c50` (size 2270).
+/// Signature for game 0.5.5, where the target is `0x1a347a0` (size 2270).
 ///
 /// 48 bytes, not 40: the first 40 are a prologue idiom shared with four other
 /// functions, so a shorter signature is ambiguous. `tools/find_item_build_hook.py`
@@ -117,6 +117,16 @@ const ABSOLUTE_JUMP_LEN: usize = 12;
 /// same function recompiled rather than a lookalike: on 0.5.4 the argument-shape
 /// filter alone returns *two* candidates, and the other one (`0x2566180`) has a
 /// `0x4d8` frame and saves four xmm registers.
+///
+/// 0.5.4 -> 0.5.5 moved it again, `0x1e76c50` -> `0x1a347a0`, but these 48 bytes
+/// are unchanged: the frame and both displacements are the same, so the constant
+/// below did not have to be touched — only re-confirmed. It is still unique in
+/// `.text` at 48 bytes and still ambiguous at 40. Two independent methods agree
+/// on the new address: the argument-shape filter again returns exactly two
+/// candidates that map 1:1 onto 0.5.4's by size and call counts (2270/14/7 here,
+/// 1489/23/10 for the same decoy, now `0x1ae8b30`), and `rederive.py match` from
+/// the 0.5.4 binary gives a 157-byte masked signature with a single hit, at a
+/// function start, of identical size.
 const FALLBACK_SIGNATURE: [u8; 48] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x28,
     0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x90, 0x01,
@@ -355,7 +365,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.5.3 and this build differs — \
+            "{error}; the built-in signature is for game 0.5.5 and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;
