@@ -72,10 +72,10 @@ Builds are saved automatically when changed to [b]item-builds.json[/b] as you ma
 
 [h1] 4 Item Mode [/h1]
 
-This mod can be used with a 4th item slot. To enable this slot:
+This mod can be used with a 4th item slot. To enable/disable this slot:
 
 1. In the mod's folder, locate the file [b]4items.cfg[/b] and open it with your preferred text editor.
-2. Set [b]slots = 4[/b] and save. Then restart your game.
+2. Set [b]slots = 3[/b] (disable) or [b]slots = 4[/b] (enable) and save. Then restart your game.
 
 Next time you play a match, you should notice a 4th item slot both in your Builds editor and in the game sim.  
 
