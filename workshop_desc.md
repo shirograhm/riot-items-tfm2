@@ -27,13 +27,13 @@ Older saves that were using older version of this mod may experience lag spikes 
 
 [h1] Instructions [/h1]
 
-In order for the AI to realize that these items exist, it is best to add this mod to an existing save instead of creating a new one. Try the following:
+If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
 
-1. Subscribe to this modpack in the Steam workshop.
-2. Launch Teamfight Manager 2 and create a new game with the mod disabled.
-3. Save and exit back to the main menu, then enable the mod.
-4. Restart the game.
-5. Continue your saved game, and proceed through the mod mismatch popup.
+1. Save your current game and go back to the main menu.
+2. Click Load -> Load on the save you just made. It will probably say "No Info" under mods.
+2. Once launched, progress once and save again. Then go back to the main menu.
+3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
+4. Play as you would normally!
 
 Currently updated for game version 0.5.5. Also supports previous versions using an older build of the mod. See below for reference:  
 Mod v0.9.0+ - v0.5.5
