@@ -40,8 +40,8 @@ impl RiteOfRuin {
             effect_max_stacks: 5,
             effect_duration_seconds: 5.0,
             effect_shield_seconds: 3.0,
-            effect_min_shield: 95,
-            effect_max_shield: 260,
+            effect_min_shield: 35,
+            effect_max_shield: 145,
         }
     }
 
@@ -57,8 +57,8 @@ impl RiteOfRuin {
             effect_max_stacks: 5,
             effect_duration_seconds: 5.0,
             effect_shield_seconds: 3.0,
-            effect_min_shield: 95,
-            effect_max_shield: 260,
+            effect_min_shield: 65,
+            effect_max_shield: 230,
             ..Self::base()
         }
     }
