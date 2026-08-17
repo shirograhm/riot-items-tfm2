@@ -2569,6 +2569,11 @@ impl StableExtension for StrategyPicker {
         // the one that captures the UI root) on every frame, everywhere.
         tactics::driver::post_update(ctx);
 
+        // Also unconditional, and for the same reason: the screen it acts on is
+        // not this one, so it cannot live behind the early return below. It is
+        // inert unless `4items.cfg` says three slots.
+        crate::solo_rank_ui::sync(ctx);
+
         if !ctx.ui_exists(BUILDS_TAB) {
             // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.
