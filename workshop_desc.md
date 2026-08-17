@@ -21,9 +21,9 @@ Some item effects are roughly simulated to the best of my ability using the avai
 
 Some AI champions seem to prefer the wrong stats when given deference of item selection.  
 
-Some AI champions ignore the custom item builds. Likely to be instability that occurs in long term builds.  
-
 Older saves that were using older version of this mod may experience lag spikes during the BP phase and in-game. This is being investigated, for now, current workaround for this is to use a new save.  
+
+The SoloQ page may sometimes show incorrect item builds.  
 
 [h1] Instructions [/h1]
 
@@ -110,3 +110,4 @@ This is a free fan-made mod. I am not affiliated with Riot Games in any way. Ite
 [Code Mod Notice]
 This Workshop item contains native/executable code files. Enabling it allows code to run inside the game process. Use only mods from creators you trust.
 Files: apply_config.bat, apply_config.ps1, riot_items_tfm2.dll
+Runs on: Windows
