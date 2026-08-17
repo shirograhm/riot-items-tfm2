@@ -1,0 +1,407 @@
+view_slot:empty {
+  width: 1600px;
+  height: 56px;
+
+  child_type: LeftToRight {
+    spacing: 0px;
+  }
+
+  #result:label {
+    @"asset/base/style/main#label";
+    x: 15px;
+    width: 103px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "#asset/base/text/ui?common.result";
+  }
+
+  #date:label {
+    @"asset/base/style/main#label";
+    width: 118px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "#asset/base/text/ui?common.date";
+  }
+
+  #position:image {
+    x: 10px;
+
+    anchor_y: 0.5;
+    pivot_y: 0.5;
+
+    width: 18px;
+    height: 18px;
+
+    source: "asset/base/ui/icons/sub";
+  }
+
+  #position_label:label {
+    @"asset/base/style/main#label";
+    x: 10px;
+    width: 119px;
+    height: 56px;
+
+    align_x: Left;
+    align_y: Center;
+
+    size: 18;
+    text: "1";
+  }
+
+  #champion_slot:color {
+    width: 40px;
+    height: 40px;
+
+    color: #1d1f2cff;
+
+    anchor_y: 0.5;
+    pivot_y: 0.5;
+
+    ignore_event: true;
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    #icon:image {
+      width: 40px;
+      height: 40px;
+
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+
+      ignore_event: true;
+      rounding: Uniform {
+        rounding: 8;
+      }
+    }
+  }
+
+  #champion_label:label {
+    @"asset/base/style/main#label";
+    x: 6px;
+    width: 111px;
+    height: 56px;
+
+    align_x: Left;
+    align_y: Center;
+
+    size: 18;
+    text: "1";
+  }
+
+  #kill:label {
+    @"asset/base/style/main#label";
+    width: 89px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "#asset/base/text/ui?statistics.kill";
+  }
+
+  #death:label {
+    @"asset/base/style/main#label";
+    width: 89px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "#asset/base/text/ui?statistics.death";
+  }
+
+  #assist:label {
+    @"asset/base/style/main#label";
+    width: 89px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "#asset/base/text/ui?statistics.assist";
+  }
+
+  #kda:label {
+    @"asset/base/style/main#label";
+    width: 70px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "KDA";
+  }
+
+  #deal:label {
+    @"asset/base/style/main#label";
+    width: 114px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "#asset/base/text/ui?statistics.dealing";
+  }
+
+  #tank:label {
+    @"asset/base/style/main#label";
+    width: 114px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "#asset/base/text/ui?statistics.tanking";
+  }
+
+  #heal:label {
+    @"asset/base/style/main#label";
+    width: 90px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "#asset/base/text/ui?statistics.healing";
+  }
+
+  #cs:label {
+    @"asset/base/style/main#label";
+    width: 88px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "cs";
+  }
+
+  #level:label {
+    @"asset/base/style/main#label";
+    width: 100px;
+    height: 56px;
+
+    align_x: Center;
+    align_y: Center;
+    size: 16;
+
+    text: "#asset/base/text/ui?common.level";
+  }
+
+  #item:empty {
+    width: 128px;
+    height: 40px;
+    child_type: LeftToRight {
+      spacing: 4px;
+    }
+
+    anchor_y: 0.5;
+    pivot_y: 0.5;
+
+    #item_slot0:color {
+      width: 29px;
+      height: 29px;
+
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+
+      back_color: #1d1f2cff;
+      color: #00000000;
+
+      stroke: 1;
+
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      rounding: Uniform {
+        rounding: 6;
+      }
+
+      #icon:image {
+        width: 23px;
+        height: 23px;
+
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        ignore_event: true;
+        rounding: Uniform {
+          rounding: 6;
+        }
+      }
+    }
+
+    #item_slot1:color {
+      width: 29px;
+      height: 29px;
+
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+
+      back_color: #1d1f2cff;
+      color: #00000000;
+
+      stroke: 1;
+
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      rounding: Uniform {
+        rounding: 6;
+      }
+
+      #icon:image {
+        width: 23px;
+        height: 23px;
+
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        ignore_event: true;
+        rounding: Uniform {
+          rounding: 6;
+        }
+      }
+    }
+
+    #item_slot2:color {
+      width: 29px;
+      height: 29px;
+
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+
+      back_color: #1d1f2cff;
+      color: #00000000;
+
+      stroke: 1;
+
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      rounding: Uniform {
+        rounding: 6;
+      }
+
+      #icon:image {
+        width: 23px;
+        height: 23px;
+
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        ignore_event: true;
+        rounding: Uniform {
+          rounding: 6;
+        }
+      }
+    }
+
+    #item_slot3:color {
+      width: 29px;
+      height: 29px;
+
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+
+      back_color: #1d1f2cff;
+      color: #00000000;
+
+      stroke: 1;
+
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      rounding: Uniform {
+        rounding: 6;
+      }
+
+      #icon:image {
+        width: 23px;
+        height: 23px;
+
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        ignore_event: true;
+        rounding: Uniform {
+          rounding: 6;
+        }
+      }
+    }
+  }
+
+  #replay_wrap:empty {
+    width: 79px;
+    height: 40px;
+    anchor_y: 0.5;
+    pivot_y: 0.5;
+
+    #replay:color_icon_button {
+      @"asset/base/style/main#tertiary_button";
+
+      width: 40px;
+      height: 40px;
+
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+
+      icon: {
+        source: "asset/base/ui/icons/camera";
+        rect: {
+          x: 10;
+          y: 10;
+          w: 20;
+          h: 20;
+        }
+      }
+    }
+  }
+}
