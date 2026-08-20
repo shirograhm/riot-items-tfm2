@@ -122,6 +122,17 @@ const DIAG_ENABLED: bool = false;
 /// state, hook install state — into `build_ext_diag.txt`.
 const TRACE_FILES: bool = false;
 
+/// **Bisect switch.** `false` makes `tactics_init` install nothing at all — no
+/// detours, no byte patches, no per-frame UI work — exactly as a closed version
+/// gate does, while leaving the rest of the mod (the stable-API item builds via
+/// `crate::item_build_hook`, and `src/hook.rs`'s data tap) untouched.
+///
+/// Added 2026-08-19 to bisect a performance regression on game 0.5.6: days
+/// advance, but very slowly. This half is the only part the 0.5.6 migration
+/// switched back on, so flipping this to `false` answers "is it this half?" in
+/// one rebuild. Leave it `true` in any shipped build.
+const TACTICS_ENABLED: bool = true;
+
 // -- 3/4 item toggle (cfg `4items.cfg`, next to the dll) --
 //   Content '4' = 4 slots (item0/1/2/3) / '3' = 3 slots (vanilla item_tactics behaviour). Missing = default 4. Changing it needs a restart.
 static ITEM_MODE: AtomicU64 = AtomicU64::new(4);
@@ -1493,7 +1504,7 @@ unsafe fn node_set_xy(n: &Node, x: f32, y: f32) {
 //  OK  +0x58 key(&String) / +0x60 icon(&String) / +0x68 price(u64 **value**) / +0x70 tier(u64 **value**, 0-based)
 //  NO  +0x50 = bool (self+0x190 != 0) - **not name**. Name has no vtable slot; the i18n key is assembled from key.
 //     (Mistaking this for a String pointer and dereferencing it caused a crash. Do not repeat.)
-const RVA_GAME_ALLOC: usize = 0x2a9bf30; // 0.5.5 (0.5.4 was 0x29bb920, 0.5.3 0x28f7df0). Same helper `ui_inject::ALLOC_RVA` pins - see the evidence there.  // (rcx = ignored, rdx = flags 0, r8 = size) -> ptr
+const RVA_GAME_ALLOC: usize = 0x2ab1670; // 0.5.6 (0.5.5 was 0x2a9bf30, 0.5.4 0x29bb920, 0.5.3 0x28f7df0). Same helper `ui_inject::ALLOC_RVA` pins - see the evidence there.  // (rcx = ignored, rdx = flags 0, r8 = size) -> ptr
 unsafe fn item_obj_at(gv: usize, idx: u64) -> Option<(usize, usize)> {
     if !readable(gv + GV_OFF_ITEMLIST_CAP, 24) {
         return None;
@@ -1521,7 +1532,7 @@ unsafe fn item_obj_at(gv: usize, idx: u64) -> Option<(usize, usize)> {
 static GAME_VIEW: AtomicUsize = AtomicUsize::new(0);
 // 0.5.4 (2026-08-04): exe2exe `match`, 1 hit at 320 and 640 bytes, size 4575, 12-push prologue intact.
 // 0.5.5 (2026-08-11): exe2exe again, 1 hit, size 4575 on both sides, prologue still the same 12 pushes.
-const RVA_GV_UPDATE: usize = 0x964350; // 0.5.5 (0.5.4 was 0xaa06c0).
+const RVA_GV_UPDATE: usize = 0xb52b80; // 0.5.6 (0.5.5 was 0x964350, 0.5.4 0xaa06c0).
 const GV_UPDATE_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ];
@@ -2485,7 +2496,7 @@ static BE_MAX_OWNED: AtomicU64 = AtomicU64::new(0); // max observed owned (item 
                                                     //   0x29a7640. The body is __rust_realloc outright: `cmp r8,0x11 / jae` splits the over-aligned path, the
                                                     //   align<=16 path tail-jmps to HeapReAlloc(heap, 0, ptr, size), and the over-aligned path allocs (0x29bb920),
                                                     //   memcpys, then frees. Argument contract (rcx=ptr, rdx=old, r8=align, r9=new) is unchanged.
-const RVA_REALLOC: usize = 0x2a87a70; // 0.5.5 (0.5.4 was 0x29a7640; exe2exe unique, size 174 both sides, body still the __rust_realloc shape). History for 0.5.4 follows. (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
+const RVA_REALLOC: usize = 0x2a9d1b0; // 0.5.6 (0.5.5 was 0x2a87a70; exe2exe unique, size 174 both sides, instruction-identical). History for 0.5.5 follows. (0.5.4 was 0x29a7640; exe2exe unique, size 174 both sides, body still the __rust_realloc shape). History for 0.5.4 follows. (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
 type ReallocFn = unsafe extern "win64" fn(usize, usize, usize, usize) -> usize;
 static EXE_BASE_CACHE: AtomicUsize = AtomicUsize::new(0);
 fn exe_base_addr() -> usize {
@@ -2564,7 +2575,7 @@ unsafe fn catalog_name_at(ctx: usize, idx: u64) -> Option<String> {
 //   the identical instruction offsets (+0x1c8, +0x29b, +0x372) and the confirmed allocator repeatedly. The
 //   `mov r12,r8` entry save and the `mov rdx,r12` before the seedctor call are both still there, so the
 //   r8=seed contract holds.
-const CL_LAUNCHER_RVA: usize = 0x14ac3e0; // 0.5.5 (0.5.4 was 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
+const CL_LAUNCHER_RVA: usize = 0x14dda60; // 0.5.6 (0.5.5 was 0x14ac3e0, 0.5.4 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
 const CL_LAUNCHER_PROLOGUE: [u8; 17] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0x38, 0x54, 0x02,
     0x00,
@@ -2739,7 +2750,7 @@ fn install_launcher_hook() {
 //   4175 -> 4407, which is why the pair relationship matters more than the size: it is the function the launcher
 //   calls three times with `rdx` = its saved seed. Entry shape unchanged (8 push + mov eax,frame + call chkstk),
 //   so SEEDCTOR_PROLOGUE needs no edit.
-const SEEDCTOR_RVA: usize = 0x14c2380; // 0.5.5 (0.5.4 was 0x14e16d0, 0.5.3 0x12b9ab0). History for 0.5.3 follows. (0.5.2 was 0x22c1da0). The 12B prologue is completely identical (8 push); the chkstk frame went 0x11b58 -> 0x11b98; confirmed via the call inside launcher (0xeb8810) with rdx = the saved r8 (seed). WARNING: the seed store offset moved from provider+0xeab8 to **+0xeaf8** (measured at 0x12ba92d).
+const SEEDCTOR_RVA: usize = 0x10a3be0; // 0.5.6 (0.5.5 was 0x14c2380, 0.5.4 0x14e16d0, 0.5.3 0x12b9ab0). History for 0.5.3 follows. (0.5.2 was 0x22c1da0). The 12B prologue is completely identical (8 push); the chkstk frame went 0x11b58 -> 0x11b98; confirmed via the call inside launcher (0xeb8810) with rdx = the saved r8 (seed). WARNING: the seed store offset moved from provider+0xeab8 to **+0xeaf8** (measured at 0x12ba92d).
                                        // * 0.5.3: the seed store offset inside the provider struct moved (0.5.2 +0xeab8 -> 0.5.3 +0xeaf8).
                                        //   Measured = `mov [reg+0xeaf8], rdx` inside seedctor @0x12ba92d (the old exe has 0xeab8 in the same place).
                                        //   WARNING keep it in a single constant - updating only this on each patch carries the whole is_live gate along.
@@ -4006,7 +4017,7 @@ fn probe_db() {
 //   mnemonic mismatches and a single differing operand, `cmp qword [r8+0x490],0` -> `cmp qword [r8+0x4f0],0`.
 //   That one instruction is the anchor the whole athlete layout below hangs off, because r8 is the athlete by
 //   the argument contract. The prologue and the 19B relocation boundary are both unchanged.
-const RVA_BUY_ITEM: usize = 0xeb2c40; // 0.5.5 (0.5.4 was 0xe767e0, 0.5.3 0xd0c680). History for 0.5.3 follows.(0.5.2 was 0x211e070). **The first 24B of the entry are byte-identical** (a single unique hit in the whole exe) + the body is instruction-for-instruction isomorphic + the argument contract is unchanged (r8=athlete, [rsp_entry+0x30]=Game, Game+0x30=catalog). orig_len=19 is unchanged too (11B < 12B -> the next clean boundary is the 8B mov rax,[rsp+0xa8]). WARNING 0.5.3 change: the call path became a vtable (+0x78) thunk 0xd22340 instead of a direct call, but **since we hook the function entry, every call is still caught**. History for 0.5.2 follows. (0.5.1 was 0x1f01090; exe2exe skeleton UNIQUE, the 24B prologue completely identical = body unchanged, delta +0x21cfe0.) History for 0.5.1 follows: the function was heavily reworked (8 push/sub 0x38 -> 5 push/sub 0x50, with build/name comparison split out into the subfunction 0x1f00920) so mask-sig was NONE, but it was confirmed by the unchanged argument contract (r8=athlete, p6=Game@rsp_entry+0x30, Game+0x30=catalog). Cross-checked against the buy driver FUN_142234430 (successor to the old FUN_1420e76e0) + the vtable slot.
+const RVA_BUY_ITEM: usize = 0xebca20; // 0.5.6 (0.5.5 was 0xeb2c40, 0.5.4 0xe767e0, 0.5.3 0xd0c680). History for 0.5.3 follows.(0.5.2 was 0x211e070). **The first 24B of the entry are byte-identical** (a single unique hit in the whole exe) + the body is instruction-for-instruction isomorphic + the argument contract is unchanged (r8=athlete, [rsp_entry+0x30]=Game, Game+0x30=catalog). orig_len=19 is unchanged too (11B < 12B -> the next clean boundary is the 8B mov rax,[rsp+0xa8]). WARNING 0.5.3 change: the call path became a vtable (+0x78) thunk 0xd22340 instead of a direct call, but **since we hook the function entry, every call is still caught**. History for 0.5.2 follows. (0.5.1 was 0x1f01090; exe2exe skeleton UNIQUE, the 24B prologue completely identical = body unchanged, delta +0x21cfe0.) History for 0.5.1 follows: the function was heavily reworked (8 push/sub 0x38 -> 5 push/sub 0x50, with build/name comparison split out into the subfunction 0x1f00920) so mask-sig was NONE, but it was confirmed by the unchanged argument contract (r8=athlete, p6=Game@rsp_entry+0x30, Game+0x30=catalog). Cross-checked against the buy driver FUN_142234430 (successor to the old FUN_1420e76e0) + the vtable slot.
 const BUY_PROLOGUE: [u8; 12] = [
     0x41, 0x57, 0x41, 0x56, 0x56, 0x57, 0x53, 0x48, 0x83, 0xEC, 0x50, 0x48,
 ]; // first 12B of the new 0.5.1 prologue: push r15/r14/rsi/rdi/rbx; sub rsp,0x50; (11B = a clean boundary) + the first byte of the following mov (0x48...). Trampoline relocation = 19B (next clean boundary = + mov rax,[rsp+0xa8])
@@ -4085,7 +4096,7 @@ unsafe fn wr_u64(p: usize, v: u64) {
 // ** 0.5.5 (2026-08-11): exe2exe unique, size 1609 on both sides, and `delta.py` reports no differing struct
 //   displacement anywhere in the body — so the net layout the per-call re-validation checks (net+0x8 weight ptr,
 //   +0x10 bound, +0x18) is untouched and that logic stays valid as-is.
-const ITEMNET_FORWARD_RVA: usize = 0x12624f0; // 0.5.5 (0.5.4 was 0x145a680, 0.5.3 0x10587e0). History for 0.5.3 follows. (0.5.2 was 0x1b9cce0). The first 24B of the entry are identical + all 5 feature-name strings match (self_item/champ_pos_build/lane_counter/synergy/global_counter) + the net layout is unchanged (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) => the mod's per-call re-validation logic stays valid as-is. History for 0.5.2 follows. (0.5.1 was 0x1bc82e0; exe2exe UNIQUE, identical prologue.) History for 0.5.1 follows: (0.5.0_3 was 0x1b78420, mask-sig UNIQUE PROL-OK push8 554157415641554154565753). WARNING it was OFF via AUTO4_FORWARD_SCORE=false (an AV at +0x44a inside forward on 0.5.1; see the flag comment above). A matching prologue does not imply identical internals.
+const ITEMNET_FORWARD_RVA: usize = 0xf53de0; // 0.5.6 (0.5.5 was 0x12624f0, 0.5.4 0x145a680, 0.5.3 0x10587e0). History for 0.5.3 follows. (0.5.2 was 0x1b9cce0). The first 24B of the entry are identical + all 5 feature-name strings match (self_item/champ_pos_build/lane_counter/synergy/global_counter) + the net layout is unchanged (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) => the mod's per-call re-validation logic stays valid as-is. History for 0.5.2 follows. (0.5.1 was 0x1bc82e0; exe2exe UNIQUE, identical prologue.) History for 0.5.1 follows: (0.5.0_3 was 0x1b78420, mask-sig UNIQUE PROL-OK push8 554157415641554154565753). WARNING it was OFF via AUTO4_FORWARD_SCORE=false (an AV at +0x44a inside forward on 0.5.1; see the flag comment above). A matching prologue does not imply identical internals.
 type ItemNetFn = unsafe extern "C" fn(usize, usize, *const u64, u64, u8) -> f32;
 static ITEM_NET_ADDR: AtomicU64 = AtomicU64::new(0);
 static ITEMNET_VALID: AtomicU64 = AtomicU64::new(0); // 0 = unchecked, 1 = valid, 2 = invalid
@@ -5536,8 +5547,14 @@ unsafe fn patch_owned_cap() -> String {
     //   The disp (struct offset 0x458) and imm (3) are unchanged. The form `cmp qword[reg+0x458],3` occurs exactly once in the whole new exe.
     // 0.5.3 (2026-07-29): the register went back R15 -> **RSI** (49 83 bf -> 48 83 be). disp 0x458 and imm 3 unchanged.
     //   The form `cmp qword[reg+0x458],3` occurs **exactly once** in the whole new exe .text (verified by byte scan) = misidentification impossible.
-    let sig = base + 0x15206a9; // 0.5.5 (0.5.4 was 0x1420b29, 0.5.3 0xf24a39). (0.5.2 was 0x2341440). Container 0xf21fe0 -> 0x141e000 -> 0x151db50.
-    let imm = base + 0x15206b0; // the cmp's imm8 (= sig+7)
+    let sig = base + 0x154c679; // 0.5.6 (0.5.5 was 0x15206a9, 0.5.4 0x1420b29, 0.5.3 0xf24a39). (0.5.2 was 0x2341440). Container 0xf21fe0 -> 0x141e000 -> 0x151db50.
+    // DERIVED, never pinned: this is the cmp's imm8, which is by definition
+    // sig+7. It used to be a second hardcoded RVA, and in the 0.5.5 -> 0.5.6
+    // migration only `sig` got updated — so the signature validated at the
+    // right place and the write then landed on the *old* build's address,
+    // stamping 0x04 into an unrelated live function. The byte check cannot
+    // catch that, because it checks a different address than it writes.
+    let imm = sig + 7;
                                 // 0.5.4: the athlete's items-Vec len moved 0x458 -> 0x448, so the disp changed with it. Still RSI, still
                                 //   `cmp qword[rsi+<items len>],3`, and still **exactly one** occurrence in the whole .text (byte-scanned).
                                 // 0.5.5 (2026-08-11): items len moved again, 0x448 -> **0x4a8** (derived from buy_item's three callees,
@@ -5583,8 +5600,13 @@ unsafe fn patch_gate3() -> String {
     //   `cmp qword[rsp+0x40],2` -> **`cmp qword[rsp+0x60],2`**, at container +0x278 (was +0x24e). Byte-scanning the
     //   form `48 83 7c 24 ?? 02 76` — any spill slot — across the whole .text returns **exactly one** hit, and it
     //   is inside that container. jbe stays at sig+6.
-    let sig = base + 0xeb2fa8; // 0.5.5 (0.5.4 was 0xe76b1e, 0.5.3 0xd0c9be). (0.5.2 was 0x211e428): resolver container 0x211e150 -> **0xd0c770** (called directly by buy 0xd0c680). The spill slot moved rsp+0x78 -> **rsp+0x40**, and the form `cmp qword[rsp+0x40],2; jbe` occurs **exactly once** in the whole new exe (verified by byte scan). History for 0.5.2: (0.5.1 was 0x1f01448): resolver container 0x1f01170 -> 0x211e150 (skeleton UNIQUE, +0x21cfe0), same offset +0x2d8, the 7B signature byte-identical (BYTE-OK). History for 0.5.1: (0.5.0_3 was 0x1fb8cdd, ghidra-re HIGH re-ID). Inside the resolver's successor FUN_141f01170. owned_count spilled to [rsp+0x78] so the sequence was rewritten as 'cmp qword[rsp+0x78],2; jbe' (previously 'mov rsi,[rsp+0x40]; jbe').
-    let jbe = base + 0xeb2fae; // the 0.5.5 jbe opcode byte (= sig+6, verified; 0.5.4 was 0xe76b24, 0.5.2 0x211e42e). owned<=2 -> jump, >2 -> fall through (the extra has_recipe check).
+    let sig = base + 0xebcd88; // 0.5.6 (0.5.5 was 0xeb2fa8, 0.5.4 0xe76b1e, 0.5.3 0xd0c9be). (0.5.2 was 0x211e428): resolver container 0x211e150 -> **0xd0c770** (called directly by buy 0xd0c680). The spill slot moved rsp+0x78 -> **rsp+0x40**, and the form `cmp qword[rsp+0x40],2; jbe` occurs **exactly once** in the whole new exe (verified by byte scan). History for 0.5.2: (0.5.1 was 0x1f01448): resolver container 0x1f01170 -> 0x211e150 (skeleton UNIQUE, +0x21cfe0), same offset +0x2d8, the 7B signature byte-identical (BYTE-OK). History for 0.5.1: (0.5.0_3 was 0x1fb8cdd, ghidra-re HIGH re-ID). Inside the resolver's successor FUN_141f01170. owned_count spilled to [rsp+0x78] so the sequence was rewritten as 'cmp qword[rsp+0x78],2; jbe' (previously 'mov rsi,[rsp+0x40]; jbe').
+    // DERIVED, never pinned (see patch_owned_cap for the incident): the jbe
+    // opcode byte is by definition sig+6, and the byte check above already
+    // proved 0x76 is there. Pinning it separately let it keep a stale RVA
+    // through a migration and write 0xEB — a jmp — into unrelated code.
+    // owned<=2 -> jump, >2 -> fall through (the extra has_recipe check).
+    let jbe = sig + 6;
     let expect = [0x48u8, 0x83, 0x7c, 0x24, 0x60, 0x02, 0x76]; // 0.5.5: cmp qword[rsp+0x60],2 ; jbe (0.5.3/0.5.4 were rsp+0x40, 0.5.2 rsp+0x78)
     if !readable(sig, 7) {
         return "gate3: unreadable".into();
@@ -6003,33 +6025,33 @@ unsafe fn patch_slot_ui_inner() -> String {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ** Game version gate - 0.5.5 only. On any other version **every feature disables itself automatically**.
+//  ** Game version gate - 0.5.6 only. On any other version **every feature disables itself automatically**.
 // ═══════════════════════════════════════════════════════════════════════════
 //  Why: this mod depends on 12 hardcoded RVAs + 2 byte patches + many struct offsets.
-//  Once the game is patched past 0.5.5 all those addresses are wrong and we would **hook/patch the wrong code**
+//  Once the game is patched past 0.5.6 all those addresses are wrong and we would **hook/patch the wrong code**
 //  (hooks with prologue validation simply fail to install, but the weakly validated places risk crashes and data corruption).
 //  => check the version at init and, on a mismatch, install **not a single** hook or patch.
 //
 //  Two-part decision (both must pass to enable):
-//   (1) exe file size - 0.5.5 = 76,957,696B (0.5.4 was 75,936,256B, 0.5.3 74,970,624B). It reliably differs per version and costs nothing to read.
+//   (1) exe file size - 0.5.6 = 77,101,056B (0.5.5 was 76,957,696B, 0.5.4 75,936,256B, 0.5.3 74,970,624B). It reliably differs per version and costs nothing to read.
 //   (2) measured entry prologues of 3 key hooks - catches a repackage that happens to have the same size but different code.
 //  WARNING a loose check (size only) could misbehave on a hotfix, so we look at the prologues too.
-const GAME_EXE_SIZE_055: u64 = 76_957_696;
+const GAME_EXE_SIZE_056: u64 = 77_101_056;
 static VERSION_OK: AtomicBool = AtomicBool::new(false);
 static VERSION_MSG: Mutex<String> = Mutex::new(String::new());
-/// Decide whether this is 0.5.5. Called once from init; the result is stored in VERSION_OK.
+/// Decide whether this is 0.5.6. Called once from init; the result is stored in VERSION_OK.
 fn check_game_version() -> bool {
     let mut why = String::new();
     // (1) exe size
     let size_ok = match exe_path().and_then(|p| fs::metadata(p).ok()) {
         Some(m) => {
             let sz = m.len();
-            if sz == GAME_EXE_SIZE_055 {
+            if sz == GAME_EXE_SIZE_056 {
                 true
             } else {
                 why = format!(
-                    "exe size mismatch: {}B (0.5.5 = {}B)",
-                    sz, GAME_EXE_SIZE_055
+                    "exe size mismatch: {}B (0.5.6 = {}B)",
+                    sz, GAME_EXE_SIZE_056
                 );
                 false
             }
@@ -6123,6 +6145,10 @@ fn version_ok() -> bool {
 /// exactly 0.5.3 — so the loader will happily attach this DLL on 0.5.4 and this
 /// gate is the only thing standing between that and a corrupted game.
 fn tactics_init() -> bool {
+    // Bisect switch: behave exactly as a closed version gate (see TACTICS_ENABLED).
+    if !TACTICS_ENABLED {
+        return false;
+    }
     // Register the VEH before anything else. `safe_copy` returns `false` on
     // entry while `SEH_INSTALLED` is false, so until this runs EVERY protected
     // read in this module fails — `safe_read_u64`, `safe_read_bytes`, all of it.

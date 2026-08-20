@@ -37,13 +37,25 @@ $Include = @(
     "thumbnail.png"
 )
 
-# State the mod (or the player) writes in the game folder. A deployed copy is
-# kept across the wipe; only when there is none does the repo's copy seed it.
-# Overwriting these would throw away in-game item builds and settings.
+# State the mod, the player, or the uploader writes in the game folder. A
+# deployed copy is kept across the wipe; only when there is none does the repo's
+# copy seed it. Overwriting these would throw away in-game item builds and
+# settings.
+#
+# `mod.workshop_id` is here rather than in $Include because it is an identity,
+# not content: TFM2ModUploader reads it from the deployed folder to decide which
+# Workshop item to update, and writes it there after a first publish. Letting
+# the wipe take it makes the next upload create a DUPLICATE Workshop listing
+# instead of updating this one. Preserving the deployed copy keeps an id the
+# uploader minted, and seeding covers a fresh deploy on a machine that has the
+# repo copy. Note `.gitignore` has `*.workshop_id`, so a fresh clone carries no
+# copy to seed from — on such a machine the file only appears once the uploader
+# writes it, and from then on this preserves it.
 $UserState = @(
     "mod-settings.json",
     "config.json",
-    "4items.cfg"
+    "4items.cfg",
+    "mod.workshop_id"
 )
 
 # Same, but never seeded from the repo: the repo's item-builds.json is a working
