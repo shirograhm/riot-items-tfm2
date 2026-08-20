@@ -15,13 +15,12 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 [h3][i] THIS MOD WILL CHANGE THE BALANCE OF YOUR GAME. USE WITH CAUTION. [/i][/h3]
 
 [h1] Known Issues [/h1]
-Some item effects are roughly simulated to the best of my ability using the available mod-sdk.  
 
 Some AI champions seem to prefer the wrong stats when given deference of item selection.  
 
-Older saves that were using older version of this mod may experience lag spikes during the BP phase and in-game. This is being investigated, for now, current workaround for this is to use a new save.  
-
 The SoloQ page may sometimes show incorrect item builds.  
+
+Older saves that were using older version of this mod may experience lag spikes during the BP phase and in-game. This is being investigated, for now, current workaround for this is to use a new save.  
 
 [h1] Instructions [/h1]
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -34,7 +33,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 
 Currently updated for game version 0.5.6. Also supports previous versions using an older build of the mod. See below for reference:  
 Mod v0.9.2+ - v0.5.6
-Mod v0.9.0 - v0.9.1 - v0.5.5
+Mod v0.9.0-1 - v0.5.5
 Mod v0.8.0+ - v0.5.4
 Mod v0.7.0+ - v0.5.3
 Mod v0.5.7+ - v0.5.1 & v0.5.2

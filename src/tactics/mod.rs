@@ -122,6 +122,17 @@ const DIAG_ENABLED: bool = false;
 /// state, hook install state — into `build_ext_diag.txt`.
 const TRACE_FILES: bool = false;
 
+/// **Bisect switch.** `false` makes `tactics_init` install nothing at all — no
+/// detours, no byte patches, no per-frame UI work — exactly as a closed version
+/// gate does, while leaving the rest of the mod (the stable-API item builds via
+/// `crate::item_build_hook`, and `src/hook.rs`'s data tap) untouched.
+///
+/// Added 2026-08-19 to bisect a performance regression on game 0.5.6: days
+/// advance, but very slowly. This half is the only part the 0.5.6 migration
+/// switched back on, so flipping this to `false` answers "is it this half?" in
+/// one rebuild. Leave it `true` in any shipped build.
+const TACTICS_ENABLED: bool = true;
+
 // -- 3/4 item toggle (cfg `4items.cfg`, next to the dll) --
 //   Content '4' = 4 slots (item0/1/2/3) / '3' = 3 slots (vanilla item_tactics behaviour). Missing = default 4. Changing it needs a restart.
 static ITEM_MODE: AtomicU64 = AtomicU64::new(4);
@@ -5537,7 +5548,13 @@ unsafe fn patch_owned_cap() -> String {
     // 0.5.3 (2026-07-29): the register went back R15 -> **RSI** (49 83 bf -> 48 83 be). disp 0x458 and imm 3 unchanged.
     //   The form `cmp qword[reg+0x458],3` occurs **exactly once** in the whole new exe .text (verified by byte scan) = misidentification impossible.
     let sig = base + 0x154c679; // 0.5.6 (0.5.5 was 0x15206a9, 0.5.4 0x1420b29, 0.5.3 0xf24a39). (0.5.2 was 0x2341440). Container 0xf21fe0 -> 0x141e000 -> 0x151db50.
-    let imm = base + 0x15206b0; // the cmp's imm8 (= sig+7)
+    // DERIVED, never pinned: this is the cmp's imm8, which is by definition
+    // sig+7. It used to be a second hardcoded RVA, and in the 0.5.5 -> 0.5.6
+    // migration only `sig` got updated — so the signature validated at the
+    // right place and the write then landed on the *old* build's address,
+    // stamping 0x04 into an unrelated live function. The byte check cannot
+    // catch that, because it checks a different address than it writes.
+    let imm = sig + 7;
                                 // 0.5.4: the athlete's items-Vec len moved 0x458 -> 0x448, so the disp changed with it. Still RSI, still
                                 //   `cmp qword[rsi+<items len>],3`, and still **exactly one** occurrence in the whole .text (byte-scanned).
                                 // 0.5.5 (2026-08-11): items len moved again, 0x448 -> **0x4a8** (derived from buy_item's three callees,
@@ -5584,7 +5601,12 @@ unsafe fn patch_gate3() -> String {
     //   form `48 83 7c 24 ?? 02 76` — any spill slot — across the whole .text returns **exactly one** hit, and it
     //   is inside that container. jbe stays at sig+6.
     let sig = base + 0xebcd88; // 0.5.6 (0.5.5 was 0xeb2fa8, 0.5.4 0xe76b1e, 0.5.3 0xd0c9be). (0.5.2 was 0x211e428): resolver container 0x211e150 -> **0xd0c770** (called directly by buy 0xd0c680). The spill slot moved rsp+0x78 -> **rsp+0x40**, and the form `cmp qword[rsp+0x40],2; jbe` occurs **exactly once** in the whole new exe (verified by byte scan). History for 0.5.2: (0.5.1 was 0x1f01448): resolver container 0x1f01170 -> 0x211e150 (skeleton UNIQUE, +0x21cfe0), same offset +0x2d8, the 7B signature byte-identical (BYTE-OK). History for 0.5.1: (0.5.0_3 was 0x1fb8cdd, ghidra-re HIGH re-ID). Inside the resolver's successor FUN_141f01170. owned_count spilled to [rsp+0x78] so the sequence was rewritten as 'cmp qword[rsp+0x78],2; jbe' (previously 'mov rsi,[rsp+0x40]; jbe').
-    let jbe = base + 0xeb2fae; // the 0.5.5 jbe opcode byte (= sig+6, verified; 0.5.4 was 0xe76b24, 0.5.2 0x211e42e). owned<=2 -> jump, >2 -> fall through (the extra has_recipe check).
+    // DERIVED, never pinned (see patch_owned_cap for the incident): the jbe
+    // opcode byte is by definition sig+6, and the byte check above already
+    // proved 0x76 is there. Pinning it separately let it keep a stale RVA
+    // through a migration and write 0xEB — a jmp — into unrelated code.
+    // owned<=2 -> jump, >2 -> fall through (the extra has_recipe check).
+    let jbe = sig + 6;
     let expect = [0x48u8, 0x83, 0x7c, 0x24, 0x60, 0x02, 0x76]; // 0.5.5: cmp qword[rsp+0x60],2 ; jbe (0.5.3/0.5.4 were rsp+0x40, 0.5.2 rsp+0x78)
     if !readable(sig, 7) {
         return "gate3: unreadable".into();
@@ -6123,6 +6145,10 @@ fn version_ok() -> bool {
 /// exactly 0.5.3 — so the loader will happily attach this DLL on 0.5.4 and this
 /// gate is the only thing standing between that and a corrupted game.
 fn tactics_init() -> bool {
+    // Bisect switch: behave exactly as a closed version gate (see TACTICS_ENABLED).
+    if !TACTICS_ENABLED {
+        return false;
+    }
     // Register the VEH before anything else. `safe_copy` returns `false` on
     // entry while `SEH_INSTALLED` is false, so until this runs EVERY protected
     // read in this module fails — `safe_read_u64`, `safe_read_bytes`, all of it.
