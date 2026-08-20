@@ -37,7 +37,7 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.5.5.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.5.6.
 //!
 //! The finder identifies the target by its **argument shape** rather than by
 //! anything in its body: the return type is 24 bytes so it comes back via `sret`
@@ -90,7 +90,7 @@ const PROLOGUE_PUSHES: [u8; 12] = [
 const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-/// Signature for game 0.5.5, where the target is `0x1a347a0` (size 2270).
+/// Signature for game 0.5.6, where the target is `0x2598dd0` (size 2270).
 ///
 /// 48 bytes, not 40: the first 40 are a prologue idiom shared with four other
 /// functions, so a shorter signature is ambiguous. `tools/find_item_build_hook.py`
@@ -127,6 +127,16 @@ const ABSOLUTE_JUMP_LEN: usize = 12;
 /// 1489/23/10 for the same decoy, now `0x1ae8b30`), and `rederive.py match` from
 /// the 0.5.4 binary gives a 157-byte masked signature with a single hit, at a
 /// function start, of identical size.
+///
+/// 0.5.5 -> 0.5.6 moved it a long way, `0x1a347a0` -> `0x2598dd0`, and again
+/// **these 48 bytes did not change** — the frame and both displacements are
+/// identical, so this constant was re-confirmed rather than edited, and a mod
+/// already built against 0.5.5 still finds the function without a rebuild. It
+/// is still unique in `.text` at 48 bytes. Confirmed two ways: `rederive.py
+/// match` from the 0.5.5 binary gives a single hit at a function start of
+/// identical size (2270), and `tools/pairdiff.py` shows the two bodies are
+/// instruction-for-instruction isomorphic with zero differing struct
+/// displacements — only relocated call and rip-relative operands differ.
 const FALLBACK_SIGNATURE: [u8; 48] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x28,
     0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x90, 0x01,

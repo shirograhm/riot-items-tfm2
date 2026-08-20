@@ -39,14 +39,14 @@ use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 //   player_info lea@0xb0d16a and wide lea@0xb0d1ae both in fn 0xb07f40; strategy lea@0x1f505db, 0x1f54d86 in
 //   fn 0x1f50580. Entry is still the eight pushes, so the 12B chained install is unchanged, and STRAT_LOADER
 //   stays equal to LOADER (second hook still skipped).
-const LOADER_RVA: usize = 0x2e42d0; // 0.5.5 (0.5.4 was 0x2e35d0, 0.5.3 0x2e1550, 0.5.2 0x5ac950).
+const LOADER_RVA: usize = 0x2e6f60; // 0.5.6 (0.5.5 was 0x2e42d0, 0.5.4 0x2e35d0, 0.5.3 0x2e1550, 0.5.2 0x5ac950).
 // ** 0.5.4 (2026-08-04): exe2exe `match` against the kept 0.5.3 binary - **1 hit at 320 and at 640 bytes**
 //   of masked signature, size 2192. Three first-principles attempts had failed on this one (error-marker
 //   store, 0x90 stride as imul, node-type string xref); with the old exe it took a single command.
 // ** 0.5.5 (2026-08-11): exe2exe `match` against the kept 0.5.4 binary — 1 hit, at a function start, size 2192
 //   on both sides. `delta.py` then found **zero** differing struct displacements across all 2192 bytes, so the
 //   node layout the parser writes is untouched and NT_SIZE stays 0x90.
-const PARSER_RVA: usize = 0x1a3e70; // 0.5.5 (0.5.4 was 0x1a3ce0, 0.5.3 0x1a6530, 0.5.2 0x24b5a00). The 3-argument contract (out, ptr, len), the `:`/`{`/`}` parsing, out[2]=-1 on error and the 0x90 node stride are all confirmed identical => NT_SIZE unchanged.
+const PARSER_RVA: usize = 0x19ab40; // 0.5.6 (0.5.5 was 0x1a3e70, 0.5.4 0x1a3ce0, 0.5.3 0x1a6530, 0.5.2 0x24b5a00). The 3-argument contract (out, ptr, len), the `:`/`{`/`}` parsing, out[2]=-1 on error and the 0x90 node stride are all confirmed identical => NT_SIZE unchanged.
 // WARNING in 0.5.3 the 2-argument `__rust_alloc(size, align)` shim **disappeared** (inlined into every call site) => we call the internal heap helper directly.
 //   ~~candidate 0xbb2bd0 (align fixed at 8, aborts on OOM)~~ -> **0x28f7df0 adopted** (instruction-identical to 0.5.2's 0x25d9640, preserves returning 0 on OOM,
 //   and matches the value used by the parallel ai_adjust session = unified across mods). For the contract see the `AllocFn` comment above.
@@ -58,7 +58,7 @@ const PARSER_RVA: usize = 0x1a3e70; // 0.5.5 (0.5.4 was 0x1a3ce0, 0.5.3 0x1a6530
 // ** 0.5.5 (2026-08-11): exe2exe unique, size 60 both sides, and cross-confirmed twice over — `__rust_realloc`
 //   (0x2a87a70) still reaches it on its over-aligned path, and the launcher (0x14ac3e0) calls it at the same
 //   six instruction offsets it called 0x29bb920 from in 0.5.4.
-const ALLOC_RVA: usize  = 0x2a9bf30; // 0.5.5 heap alloc helper (0.5.4 was 0x29bb920, 0.5.3 0x28f7df0). (corresponds to 0.5.2's 0x25d9640. The old __rust_alloc shim 0x25c4d30 does not exist in 0.5.3).
+const ALLOC_RVA: usize  = 0x2ab1670; // 0.5.6 heap alloc helper (0.5.5 was 0x2a9bf30, 0.5.4 0x29bb920, 0.5.3 0x28f7df0). (corresponds to 0.5.2's 0x25d9640. The old __rust_alloc shim 0x25c4d30 does not exist in 0.5.3).
 const DEALLOC_RVA: usize = 0x1000; // 0.5.3 (0.5.2 was 0x25c4d90). The only `__rust_dealloc(ptr,size,align)`-shaped function. Currently unused.
 const NT_SIZE: usize = 0x90;
 
