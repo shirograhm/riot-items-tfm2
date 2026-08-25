@@ -222,6 +222,6 @@ impl StableItem for LocketOfTheIronSolari {
     }
 
     fn category(&self) -> ItemCategoryV1 {
-        ItemCategoryV1::Defense
+        ItemCategoryV1::Support
     }
 }

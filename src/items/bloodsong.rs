@@ -229,6 +229,6 @@ impl StableItem for Bloodsong {
     }
 
     fn category(&self) -> ItemCategoryV1 {
-        ItemCategoryV1::Hp
+        ItemCategoryV1::Support
     }
 }
