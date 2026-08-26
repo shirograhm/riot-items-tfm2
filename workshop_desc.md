@@ -6,11 +6,11 @@ Also re-skins the 30 existing items and adds some custom icons for Armor Penetra
 Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for another item of the same category, 4th item included. Toggle it in the in-game Build Editor.  
 
 [h1] Important [/h1]
-This mod currently supports English, Vietnamese, Portuguese (BR), Russian, Chinese (Simplified), and Korean locales. You can use it with other languages, but the names and descriptions of the items will be broken.
+This mod currently supports English, Vietnamese, Portuguese (BR), Russian, Chinese (Simplified), and Korean locales. You can use it with other languages, but the names and descriptions of the items will be broken.  
 
-If you would like to provide translations, feel free to shoot me a message on Discord @shirograhm.
+If you would like to provide translations, feel free to shoot me a message on Discord @shirograhm.  
 
-Saves played with this mod enabled will be corrupted if you play the save with this mod disabled. I have had players buy ghost items when this happens.
+Saves played with this mod enabled will be corrupted if you play the save with this mod disabled. I have had players buy ghost items when this happens.  
 
 [h3][i] THIS MOD WILL CHANGE THE BALANCE OF YOUR GAME. USE WITH CAUTION. [/i][/h3]
 
@@ -19,6 +19,8 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 Some AI champions seem to prefer the wrong stats when given deference of item selection.  
 
 The SoloQ page may sometimes show incorrect item builds.  
+
+The item build editor currently only supports EN language for item and champion names.  
 
 Older saves that were using older version of this mod may experience lag spikes during the BP phase and in-game. This is being investigated, for now, current workaround for this is to use a new save.  
 
