@@ -77,6 +77,7 @@ items! {
     spear_of_shojin,
     spirit_visage,
     steel_sigil,
+    steraks_gage,
     stormrazor,
     sundered_sky,
     terminus,

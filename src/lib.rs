@@ -319,6 +319,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("shadowflame" => Shadowflame));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
+    reg.add_item(configured!("steraks_gage" => SteraksGage));
     reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("sundered_sky" => SunderedSky));
     reg.add_item(configured!("terminus" => Terminus));
@@ -377,6 +378,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
+    reg.add_item(configured_radiant!("radiant_steraks_gage" => SteraksGage));
     reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
     reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));

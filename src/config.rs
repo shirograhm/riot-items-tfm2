@@ -78,6 +78,7 @@ pub struct ItemConfig {
     pub effect_bonus_hp_percent_of_damage: Option<f64>,
     pub effect_cooldown_seconds: Option<f64>,
     pub effect_shield_seconds: Option<f64>,
+    pub effect_caster_hp_percent_shield: Option<f64>,
     pub effect_heal_mult: Option<f64>,
     pub effect_bonus_flat_heal: Option<i32>,
     pub effect_caster_hp_percent_heal: Option<f64>,

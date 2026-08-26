@@ -694,6 +694,14 @@
         "winged_moonplate": {
             "name": "Winged Moonplate",
             "option": ""
+        },
+        "steraks_gage": {
+            "name": "Sterak's Gage",
+            "option": "\nLifeline: <#d94c49ff>Taking damage that would reduce you below 30% health<> grants a <#cab944ff>shield<> that <#cab944ff>absorbs damage<> equal to <#d8c9b3ff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>maximum health<> for <#e8a800ff>4 seconds<> (<#e8a800ff>90 second<> cooldown)."
+        },
+        "radiant_steraks_gage": {
+            "name": "Radiant Sterak's Gage",
+            "option": "\nLifeline: <#d94c49ff>Taking damage that would reduce you below 30% health<> grants a <#cab944ff>shield<> that <#cab944ff>absorbs damage<> equal to <#d8c9b3ff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>maximum health<> for <#e8a800ff>4 seconds<> (<#e8a800ff>90 second<> cooldown)."
         }
     },
     "vi": {
@@ -1391,6 +1399,14 @@
         "winged_moonplate": {
             "name": "Nguyệt Giáp Chắp Cánh",
             "option": ""
+        },
+        "steraks_gage": {
+            "name": "Móng Vuốt Sterak",
+            "option": "\nBảo Hiểm Ma Pháp: <#d94c49ff>Nhận sát thương khiến máu giảm xuống dưới 30%<> sẽ tạo cho bạn một <#cab944ff>khiên<> <#cab944ff>hấp thụ sát thương<> bằng <#d8c9b3ff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>máu tối đa<> của bạn trong <#e8a800ff>4 giây<> (<#e8a800ff>90 giây<> hồi chiêu)."
+        },
+        "radiant_steraks_gage": {
+            "name": "Móng Vuốt Sterak Ánh Sáng",
+            "option": "\nBảo Hiểm Ma Pháp: <#d94c49ff>Nhận sát thương khiến máu giảm xuống dưới 30%<> sẽ tạo cho bạn một <#cab944ff>khiên<> <#cab944ff>hấp thụ sát thương<> bằng <#d8c9b3ff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>máu tối đa<> của bạn trong <#e8a800ff>4 giây<> (<#e8a800ff>90 giây<> hồi chiêu)."
         }
     },
     "zh-hans": {
@@ -2088,6 +2104,14 @@
         "winged_moonplate": {
             "name": "翼动月甲",
             "option": ""
+        },
+        "steraks_gage": {
+            "name": "斯特拉克的挑战护手",
+            "option": "\n救主灵刃：<#d94c49ff>受到将使你的生命值跌到30%以下的伤害时<>，获得一个<#cab944ff>护盾<>，<#cab944ff>吸收<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>最大生命值<> 的 <#d8c9b3ff>60%<> 的<#cab944ff>伤害<>，持续 <#e8a800ff>4秒<>（冷却时间90秒）。"
+        },
+        "radiant_steraks_gage": {
+            "name": "光明版斯特拉克的挑战护手",
+            "option": "\n救主灵刃：<#d94c49ff>受到将使你的生命值跌到30%以下的伤害时<>，获得一个<#cab944ff>护盾<>，<#cab944ff>吸收<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>最大生命值<> 的 <#d8c9b3ff>60%<> 的<#cab944ff>伤害<>，持续 <#e8a800ff>4秒<>（冷却时间90秒）。"
         }
     },
     "pt-BR": {
@@ -2785,6 +2809,14 @@
         "winged_moonplate": {
             "name": "Placa Lunar Alada",
             "option": ""
+        },
+        "steraks_gage": {
+            "name": "Sinal de Sterak",
+            "option": "\nSalva-Vidas: Ao sofrer dano que reduziria sua <#d94c49ff>Vida a menos de 30%<>, concede um <#cab944ff>escudo<> que <#cab944ff>absorve dano<> equivalente a <#d8c9b3ff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>Vida Máxima<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>90 segundos<>)."
+        },
+        "radiant_steraks_gage": {
+            "name": "Sinal de Sterak Radiante",
+            "option": "\nSalva-Vidas: Ao sofrer dano que reduziria sua <#d94c49ff>Vida a menos de 30%<>, concede um <#cab944ff>escudo<> que <#cab944ff>absorve dano<> equivalente a <#d8c9b3ff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>Vida Máxima<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>90 segundos<>)."
         }
     },
     "ru": {
@@ -3482,6 +3514,14 @@
         "winged_moonplate": {
             "name": "Крылатая Лунная Пластина",
             "option": ""
+        },
+        "steraks_gage": {
+            "name": "Испытание Стерака",
+            "option": "\nЛиния жизни: При <#d94c49ff>получении урона, снижающего ваше здоровье ниже 30%<>, вы получаете <#cab944ff>щит<>, <#cab944ff>поглощающий урон<> в размере <#d8c9b3ff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>максимального здоровья<>, на <#e8a800ff>4 секунды<> (перезарядка 90 секунд)."
+        },
+        "radiant_steraks_gage": {
+            "name": "Лучезарное Испытание Стерака",
+            "option": "\nЛиния жизни: При <#d94c49ff>получении урона, снижающего ваше здоровье ниже 30%<>, вы получаете <#cab944ff>щит<>, <#cab944ff>поглощающий урон<> в размере <#d8c9b3ff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>максимального здоровья<>, на <#e8a800ff>4 секунды<> (перезарядка 90 секунд)."
         }
     },
     "ko": {
@@ -4179,6 +4219,14 @@
         "winged_moonplate": {
             "name": "날개 달린 월갑",
             "option": ""
+        },
+        "steraks_gage": {
+            "name": "스테락의 도전",
+            "option": "\n생명선: <#d94c49ff>체력이 30% 밑으로 떨어질 만큼 피해를 입으면<> <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>최대 체력<>의 <#d8c9b3ff>60%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다."
+        },
+        "radiant_steraks_gage": {
+            "name": "찬란한 스테락의 도전",
+            "option": "\n생명선: <#d94c49ff>체력이 30% 밑으로 떨어질 만큼 피해를 입으면<> <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>최대 체력<>의 <#d8c9b3ff>60%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다."
         }
     }
 }

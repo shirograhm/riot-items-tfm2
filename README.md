@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 130 new items (74 base + 56 Radiant) to the game.
+Reskins the 30 existing items and also adds 132 new items (75 base + 57 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -90,6 +90,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Shadowflame** | 1350G | +115 AP<br>+15% Magic Pen | Cinderbloom: Your magic damage is 20% stronger against enemies below 30% maximum health. |
 | **Spear of Shojin** | 1400G | +350 HP<br>+35 AD<br>+10% CDR | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Vitality: Increase all healing received by 20%. |
+| **Sterak's Gage** | 1400G | +400 HP<br>+30 AD<br>+15% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Stormrazor** | 1550G | +65 AD<br>+20% AS<br>+20% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Sundered Sky** | 1400G | +400 HP<br>+30 AD<br>+10% CDR | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 20% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
@@ -151,6 +152,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Shadowflame** | 1800G | +210 AP<br>+15% Magic Pen | Cinderbloom: Your magic damage is 20% stronger against enemies below 30% maximum health. |
 | **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD<br>+20% CDR | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Vitality: Increase all healing received by 20%. |
+| **Radiant Sterak's Gage** | 2000G | +650 HP<br>+50 AD<br>+20% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Radiant Stormrazor** | 2200G | +100 AD<br>+40% AS<br>+25% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Radiant Sundered Sky** | 2000G | +550 HP<br>+65 AD<br>+20% CDR | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 20% bonus damage and heals you for 60 + 10% of your missing health (20 second cooldown per target). |
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
