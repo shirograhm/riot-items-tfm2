@@ -697,11 +697,19 @@
         },
         "steraks_gage": {
             "name": "Sterak's Gage",
-            "option": "\nLifeline: <#d94c49ff>Taking damage that would reduce you below 30% health<> grants a <#cab944ff>shield<> that <#cab944ff>absorbs damage<> equal to <#d8c9b3ff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>maximum health<> for <#e8a800ff>4 seconds<> (<#e8a800ff>90 second<> cooldown)."
+            "option": "\nLifeline: <#d94c49ff>Falling below 30% health<> grants a <#cab944ff>shield<> that absorbs damage equal to <#60e84dff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>4 seconds<> (<#e8a800ff>90 second<> cooldown)."
         },
         "radiant_steraks_gage": {
             "name": "Radiant Sterak's Gage",
-            "option": "\nLifeline: <#d94c49ff>Taking damage that would reduce you below 30% health<> grants a <#cab944ff>shield<> that <#cab944ff>absorbs damage<> equal to <#d8c9b3ff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>maximum health<> for <#e8a800ff>4 seconds<> (<#e8a800ff>90 second<> cooldown)."
+            "option": "\nLifeline: <#d94c49ff>Falling below 30% health<> grants a <#cab944ff>shield<> that absorbs damage equal to <#60e84dff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for <#e8a800ff>4 seconds<> (<#e8a800ff>90 second<> cooldown)."
+        },
+        "randuins_omen": {
+            "name": "Randuin's Omen",
+            "option": "\nResilience: <#60e84dff>Heal<> for <#60e84dff>30%<> of the damage taken from <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<>."
+        },
+        "radiant_randuins_omen": {
+            "name": "Radiant Randuin's Omen",
+            "option": "\nResilience: <#60e84dff>Heal<> for <#60e84dff>30%<> of the damage taken from <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<>."
         }
     },
     "vi": {
@@ -1407,6 +1415,14 @@
         "radiant_steraks_gage": {
             "name": "Móng Vuốt Sterak Ánh Sáng",
             "option": "\nBảo Hiểm Ma Pháp: <#d94c49ff>Nhận sát thương khiến máu giảm xuống dưới 30%<> sẽ tạo cho bạn một <#cab944ff>khiên<> <#cab944ff>hấp thụ sát thương<> bằng <#d8c9b3ff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>máu tối đa<> của bạn trong <#e8a800ff>4 giây<> (<#e8a800ff>90 giây<> hồi chiêu)."
+        },
+        "randuins_omen": {
+            "name": "Khiên Băng Randuin",
+            "option": "\nKháng Chí Mạng: <#60e84dff>Hồi<> <#60e84dff>30%<> sát thương nhận phải từ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<>."
+        },
+        "radiant_randuins_omen": {
+            "name": "Khiên Băng Randuin Ánh Sáng",
+            "option": "\nKháng Chí Mạng: <#60e84dff>Hồi<> <#60e84dff>30%<> sát thương nhận phải từ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<>."
         }
     },
     "zh-hans": {
@@ -2112,6 +2128,14 @@
         "radiant_steraks_gage": {
             "name": "光明版斯特拉克的挑战护手",
             "option": "\n救主灵刃：<#d94c49ff>受到将使你的生命值跌到30%以下的伤害时<>，获得一个<#cab944ff>护盾<>，<#cab944ff>吸收<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>最大生命值<> 的 <#d8c9b3ff>60%<> 的<#cab944ff>伤害<>，持续 <#e8a800ff>4秒<>（冷却时间90秒）。"
+        },
+        "randuins_omen": {
+            "name": "兰顿之兆",
+            "option": "\n复原力：<#60e84dff>治疗<>相当于所受 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击伤害<> <#60e84dff>30%<> 的生命值。"
+        },
+        "radiant_randuins_omen": {
+            "name": "光明版兰顿之兆",
+            "option": "\n复原力：<#60e84dff>治疗<>相当于所受 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击伤害<> <#60e84dff>30%<> 的生命值。"
         }
     },
     "pt-BR": {
@@ -2817,6 +2841,14 @@
         "radiant_steraks_gage": {
             "name": "Sinal de Sterak Radiante",
             "option": "\nSalva-Vidas: Ao sofrer dano que reduziria sua <#d94c49ff>Vida a menos de 30%<>, concede um <#cab944ff>escudo<> que <#cab944ff>absorve dano<> equivalente a <#d8c9b3ff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>Vida Máxima<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>90 segundos<>)."
+        },
+        "randuins_omen": {
+            "name": "Presságio de Randuin",
+            "option": "\nResiliência: <#60e84dff>Cura<> <#60e84dff>30%<> do dano sofrido de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<>."
+        },
+        "radiant_randuins_omen": {
+            "name": "Presságio de Randuin Radiante",
+            "option": "\nResiliência: <#60e84dff>Cura<> <#60e84dff>30%<> do dano sofrido de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<>."
         }
     },
     "ru": {
@@ -3522,6 +3554,14 @@
         "radiant_steraks_gage": {
             "name": "Лучезарное Испытание Стерака",
             "option": "\nЛиния жизни: При <#d94c49ff>получении урона, снижающего ваше здоровье ниже 30%<>, вы получаете <#cab944ff>щит<>, <#cab944ff>поглощающий урон<> в размере <#d8c9b3ff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>максимального здоровья<>, на <#e8a800ff>4 секунды<> (перезарядка 90 секунд)."
+        },
+        "randuins_omen": {
+            "name": "Знамение Рандуина",
+            "option": "\nКритическая стойкость: <#60e84dff>Восстанавливает<> <#60e84dff>30%<> урона, полученного от <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критических ударов<>."
+        },
+        "radiant_randuins_omen": {
+            "name": "Лучезарное Знамение Рандуина",
+            "option": "\nКритическая стойкость: <#60e84dff>Восстанавливает<> <#60e84dff>30%<> урона, полученного от <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критических ударов<>."
         }
     },
     "ko": {
@@ -4227,6 +4267,14 @@
         "radiant_steraks_gage": {
             "name": "찬란한 스테락의 도전",
             "option": "\n생명선: <#d94c49ff>체력이 30% 밑으로 떨어질 만큼 피해를 입으면<> <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>최대 체력<>의 <#d8c9b3ff>60%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다."
+        },
+        "randuins_omen": {
+            "name": "란두인의 예언",
+            "option": "\n저항: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 받은 피해량의 <#60e84dff>30%<>만큼 <#60e84dff>체력을 회복<>합니다."
+        },
+        "radiant_randuins_omen": {
+            "name": "찬란한 란두인의 예언",
+            "option": "\n저항: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 받은 피해량의 <#60e84dff>30%<>만큼 <#60e84dff>체력을 회복<>합니다."
         }
     }
 }

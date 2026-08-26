@@ -66,6 +66,7 @@ items! {
     protectors_vow,
     protoplasm_harness,
     rabadons_deathcap,
+    randuins_omen,
     riftmaker,
     rite_of_ruin,
     rylais_crystal_scepter,

@@ -1075,5 +1075,17 @@
     "effect_caster_hp_percent_shield": 60.0,
     "effect_shield_seconds": 4,
     "effect_cooldown_seconds": 90
+  },
+  "randuins_omen": {
+    "price": 1500,
+    "hp": 300,
+    "defence": 70,
+    "effect_crit_damage_percent_heal": 30.0
+  },
+  "radiant_randuins_omen": {
+    "price": 2000,
+    "hp": 550,
+    "defence": 90,
+    "effect_crit_damage_percent_heal": 30.0
   }
 }

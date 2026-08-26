@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 132 new items (75 base + 57 Radiant) to the game.
+Reskins the 30 existing items and also adds 134 new items (76 base + 58 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -83,6 +83,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Protector's Vow** | 1300G | +350 HP<br>+50 Armor | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Protoplasm Harness** | 1200G | +350 HP<br>+10% CDR<br>+5% MS | Fortification: Falling below 40% health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon's Deathcap** | 1500G | +165 AP | Opus: Increase your total Ability Power by 20%. |
+| **Randuin's Omen** | 1500G | +300 HP<br>+70 Armor | Resilience: Heal for 30% of the damage taken from critical strikes. |
 | **Riftmaker** | 1300G | +400 HP<br>+75 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Rite of Ruin** | 1400G | +105 AP<br>+10% CDR<br>+20% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
 | **Rylai's Crystal Scepter** | 1350G | +250 HP<br>+125 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |
@@ -145,6 +146,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Protector's Vow** | 1800G | +550 HP<br>+75 Armor<br>+15% CDR | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Radiant Protoplasm Harness** | 1650G | +650 HP<br>+10% CDR<br>+5% MS | Fortification: Falling below 40% health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon's Deathcap** | 2300G | +230 AP | Opus: Increase your total Ability Power by 35%. |
+| **Radiant Randuin's Omen** | 2000G | +550 HP<br>+90 Armor | Resilience: Heal for 30% of the damage taken from critical strikes. |
 | **Radiant Riftmaker** | 1900G | +600 HP<br>+150 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Radiant Rite of Ruin** | 2000G | +185 AP<br>+15% CDR<br>+25% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
 | **Radiant Rylai's Crystal Scepter** | 1900G | +400 HP<br>+200 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |
