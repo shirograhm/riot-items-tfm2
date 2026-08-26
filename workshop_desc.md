@@ -1,4 +1,4 @@
-Adds 130 new items (74 base + 56 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Adds 134 new items (76 base + 58 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]This mod supports custom item values, custom item builds, and a way to add another item slot. See instructions below![/b]  
@@ -31,8 +31,9 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
 4. Play as you would normally!
 
-Currently updated for game version 0.5.6. Also supports previous versions using an older build of the mod. See below for reference:  
-Mod v0.9.2+ - v0.5.6
+Currently updated for game version 0.5.7. Also supports previous versions using an older build of the mod. See below for reference:  
+Mod v0.9.3+ - v0.5.7
+Mod v0.9.2 - v0.5.6
 Mod v0.9.0-1 - v0.5.5
 Mod v0.8.0+ - v0.5.4
 Mod v0.7.0+ - v0.5.3

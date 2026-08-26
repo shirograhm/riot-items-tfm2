@@ -375,6 +375,16 @@ $rspfFlat = [int]$config.radiant_serpents_fang.effect_bonus_flat_damage
 $rspfPct = [int]$config.radiant_serpents_fang.effect_ad_percent_damage
 $ieCrit = [int]$config.infinity_edge.effect_crit_damage_bonus
 $rieCrit = [int]$config.radiant_infinity_edge.effect_crit_damage_bonus
+$sgThreshold = [double]$config.steraks_gage.effect_hp_percent_threshold
+$sgShieldPct = [double]$config.steraks_gage.effect_caster_hp_percent_shield
+$sgShDur = [int]$config.steraks_gage.effect_shield_seconds
+$sgCd = [int]$config.steraks_gage.effect_cooldown_seconds
+$rsgThreshold = [double]$config.radiant_steraks_gage.effect_hp_percent_threshold
+$rsgShieldPct = [double]$config.radiant_steraks_gage.effect_caster_hp_percent_shield
+$rsgShDur = [int]$config.radiant_steraks_gage.effect_shield_seconds
+$rsgCd = [int]$config.radiant_steraks_gage.effect_cooldown_seconds
+$rndHeal = [double]$config.randuins_omen.effect_crit_damage_percent_heal
+$rrndHeal = [double]$config.radiant_randuins_omen.effect_crit_damage_percent_heal
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -465,6 +475,12 @@ $i18n.en.radiant_malignance.option = "Scorn: Gain <#4b7cffff>${rmalUltCdr}%<> <$
 $rorTemplate = "Wrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>{0}% <$critIcon> critical strike chance<> for <#e8a800ff>{1} seconds<> (max {2} stacks).`n`nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<$critIcon>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>{3} seconds<> that <#cab944ff>absorbs<> <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
 $i18n.en.rite_of_ruin.option = $rorTemplate -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.en.radiant_rite_of_ruin.option = $rorTemplate -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
+$sgTemplate = "Lifeline: <#d94c49ff>Falling below {0}% health<> grants a <#cab944ff>shield<> that absorbs damage equal to <#d8c9b3ff>{1}%<> of your <$hpIcon> <#d8c9b3ff>maximum health<> for <#e8a800ff>{2} seconds<> (<#e8a800ff>{3} second<> cooldown)."
+$i18n.en.steraks_gage.option = $sgTemplate -f $sgThreshold, $sgShieldPct, $sgShDur, $sgCd
+$i18n.en.radiant_steraks_gage.option = $sgTemplate -f $rsgThreshold, $rsgShieldPct, $rsgShDur, $rsgCd
+$rndTemplate = "Resilience: <#60e84dff>Heal<> for <#60e84dff>{0}%<> of the damage taken from <$critIcon> <#d45656ff>critical strikes<>."
+$i18n.en.randuins_omen.option = $rndTemplate -f $rndHeal
+$i18n.en.radiant_randuins_omen.option = $rndTemplate -f $rrndHeal
 $i18n.en.guinsoos_rageblade.option = "Wrath: Basic attacks deal <#a974ffff>${gbDmg} bonus magic damage<>.`n`nSeething Strike: Basic attacks grant <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${gbDur} seconds<> (max ${gbStacks} stacks)."
 $i18n.en.radiant_guinsoos_rageblade.option = "Wrath: Basic attacks deal <#a974ffff>${rgbDmg} bonus magic damage<>.`n`nSeething Strike: Basic attacks grant <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>attack speed<> for <#e8a800ff>${rgbDur} seconds<> (max ${rgbStacks} stacks)."
 $i18n.en.wits_end.option = "Fray: Basic attacks deal <#a974ffff>${weDmg} bonus magic damage<>."
@@ -609,6 +625,12 @@ $i18n.vi.radiant_malignance.option = "Ai Oán: Nhận <#4b7cffff>${rmalUltCdr}%<
 $rorTemplateVi = "Thịnh Nộ Và Suy Vong: Kĩ năng trúng tướng địch cấp <#d45656ff>{0}% <$critIcon> tỉ lệ chí mạng<> trong <#e8a800ff>{1} giây<> (tối đa {2} cộng dồn).`n`nCứu Rỗi Trò Tàn: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<$critIcon>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>{3} giây<>, <#cab944ff>hấp thụ<> <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
 $i18n.vi.rite_of_ruin.option = $rorTemplateVi -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.vi.radiant_rite_of_ruin.option = $rorTemplateVi -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
+$sgTemplateVi = "Bảo Hiểm Ma Pháp: <#d94c49ff>Nhận sát thương khiến máu giảm xuống dưới {0}%<> sẽ tạo cho bạn một <#cab944ff>khiên<> <#cab944ff>hấp thụ sát thương<> bằng <#d8c9b3ff>{1}%<> <$hpIcon> <#d8c9b3ff>máu tối đa<> của bạn trong <#e8a800ff>{2} giây<> (<#e8a800ff>{3} giây<> hồi chiêu)."
+$i18n.vi.steraks_gage.option = $sgTemplateVi -f $sgThreshold, $sgShieldPct, $sgShDur, $sgCd
+$i18n.vi.radiant_steraks_gage.option = $sgTemplateVi -f $rsgThreshold, $rsgShieldPct, $rsgShDur, $rsgCd
+$rndTemplateVi = "Kháng Chí Mạng: <#60e84dff>Hồi<> <#60e84dff>{0}%<> sát thương nhận phải từ <$critIcon> <#d45656ff>Đòn Chí Mạng<>."
+$i18n.vi.randuins_omen.option = $rndTemplateVi -f $rndHeal
+$i18n.vi.radiant_randuins_omen.option = $rndTemplateVi -f $rrndHeal
 $i18n.vi.guinsoos_rageblade.option = "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>${gbDmg} sát thương phép thuật<>.`n`nDồn dập: Đòn đánh thường cấp <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${gbDur} giây<> (tối đa ${gbStacks} cộng dồn)."
 $i18n.vi.radiant_guinsoos_rageblade.option = "Thịnh nộ: Tấn công thường gây ra thêm <#a974ffff>${rgbDmg} sát thương phép thuật<>.`n`nDồn dập: Đòn đánh thường cấp <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>${rgbDur} giây<> (tối đa ${rgbStacks} cộng dồn)."
 $i18n.vi.wits_end.option = "Xé Toạc: Tấn công thường gây ra thêm <#a974ffff>${weDmg} sát thương phép thuật<>."
@@ -753,6 +775,12 @@ $i18n.'zh-hans'.radiant_malignance.option = "蔑视：终极技能获得 <#4b7cf
 $rorTemplateZh = "怒火与破坏：技能命中敌方英雄后获得 <#d45656ff>{0}% <$critIcon> 暴击几率<>，持续 <#e8a800ff>{1}秒<>（最多 {2} 层）。`n`n打捞残骸：技能命中敌方英雄后有<#d45656ff>几率（<$critIcon>）<>为你提供一个持续 <#e8a800ff>{3}秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
 $i18n.'zh-hans'.rite_of_ruin.option = $rorTemplateZh -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.'zh-hans'.radiant_rite_of_ruin.option = $rorTemplateZh -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
+$sgTemplateZh = "救主灵刃：<#d94c49ff>受到将使你的生命值跌到{0}%以下的伤害时<>，获得一个<#cab944ff>护盾<>，<#cab944ff>吸收<>相当于你 <$hpIcon> <#d8c9b3ff>最大生命值<> 的 <#d8c9b3ff>{1}%<> 的<#cab944ff>伤害<>，持续 <#e8a800ff>{2}秒<>（冷却时间{3}秒）。"
+$i18n.'zh-hans'.steraks_gage.option = $sgTemplateZh -f $sgThreshold, $sgShieldPct, $sgShDur, $sgCd
+$i18n.'zh-hans'.radiant_steraks_gage.option = $sgTemplateZh -f $rsgThreshold, $rsgShieldPct, $rsgShDur, $rsgCd
+$rndTemplateZh = "复原力：<#60e84dff>治疗<>相当于所受 <$critIcon> <#d45656ff>暴击伤害<> <#60e84dff>{0}%<> 的生命值。"
+$i18n.'zh-hans'.randuins_omen.option = $rndTemplateZh -f $rndHeal
+$i18n.'zh-hans'.radiant_randuins_omen.option = $rndTemplateZh -f $rrndHeal
 $i18n.'zh-hans'.guinsoos_rageblade.option = "怨怒：普通攻击造成 <#a974ffff>${gbDmg}点额外魔法伤害<>。`n`n沸腾打击：普通攻击时获得 <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${gbDur}秒<>（最多叠加${gbStacks}层）。"
 $i18n.'zh-hans'.radiant_guinsoos_rageblade.option = "怨怒：普通攻击造成 <#a974ffff>${rgbDmg}点额外魔法伤害<>。`n`n沸腾打击：普通攻击时获得 <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>${rgbDur}秒<>（最多叠加${rgbStacks}层）。"
 $i18n.'zh-hans'.wits_end.option = "喧争：普通攻击造成 <#a974ffff>${weDmg}点额外魔法伤害<>。"
@@ -897,6 +925,12 @@ $i18n.'pt-BR'.radiant_malignance.option = "Escárnio: Recebe <#4b7cffff>${rmalUl
 $rorTemplatePt = "Ira e Ruína: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>{0}% de <$critIcon> Chance de Acerto Crítico<> por <#e8a800ff>{1} segundos<> (máx. {2} acúmulos).`n`nRecuperando os Destroços: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<$critIcon>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>{3} segundos<> que <#cab944ff>absorve<> <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
 $i18n.'pt-BR'.rite_of_ruin.option = $rorTemplatePt -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.'pt-BR'.radiant_rite_of_ruin.option = $rorTemplatePt -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
+$sgTemplatePt = "Salva-Vidas: Ao sofrer dano que reduziria sua <#d94c49ff>Vida a menos de {0}%<>, concede um <#cab944ff>escudo<> que <#cab944ff>absorve dano<> equivalente a <#d8c9b3ff>{1}%<> da sua <$hpIcon> <#d8c9b3ff>Vida Máxima<> por <#e8a800ff>{2} segundos<> (recarga de <#e8a800ff>{3} segundos<>)."
+$i18n.'pt-BR'.steraks_gage.option = $sgTemplatePt -f $sgThreshold, $sgShieldPct, $sgShDur, $sgCd
+$i18n.'pt-BR'.radiant_steraks_gage.option = $sgTemplatePt -f $rsgThreshold, $rsgShieldPct, $rsgShDur, $rsgCd
+$rndTemplatePt = "Resiliência: <#60e84dff>Cura<> <#60e84dff>{0}%<> do dano sofrido de <$critIcon> <#d45656ff>Acertos Críticos<>."
+$i18n.'pt-BR'.randuins_omen.option = $rndTemplatePt -f $rndHeal
+$i18n.'pt-BR'.radiant_randuins_omen.option = $rndTemplatePt -f $rrndHeal
 $i18n.'pt-BR'.guinsoos_rageblade.option = "Ira: Ataques causam <#a974ffff>${gbDmg} de dano mágico adicional<>.`n`nFervendo: Ataques concedem <#ceff99ff>${gbSpeed}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${gbDur} segundos<> (acumula ${gbStacks}x)."
 $i18n.'pt-BR'.radiant_guinsoos_rageblade.option = "Ira: Ataques causam <#a974ffff>${rgbDmg} de dano mágico adicional<>.`n`nFervendo: Ataques concedem <#ceff99ff>${rgbSpeed}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>${rgbDur} segundos<> (acumula ${rgbStacks}x)."
 $i18n.'pt-BR'.wits_end.option = "Duelo: Ataques causam <#a974ffff>${weDmg} de dano mágico adicional<>."
@@ -1041,6 +1075,12 @@ $i18n.ru.radiant_malignance.option = "Презрение: Даёт <#4b7cffff>${
 $rorTemplateRu = "Гнев и уничтожение: Попадание умением по вражескому чемпиону даёт <#d45656ff>{0}% <$critIcon> шанса критического удара<> на <#e8a800ff>{1} сек<> (максимум {2} зарядов).`n`nСпасение утопающих: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<$critIcon>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>{3} сек<>, поглощающий <#d8c9b3ff>{4}<> - <#d8c9b3ff>{5}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
 $i18n.ru.rite_of_ruin.option = $rorTemplateRu -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.ru.radiant_rite_of_ruin.option = $rorTemplateRu -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
+$sgTemplateRu = "Линия жизни: При <#d94c49ff>получении урона, снижающего ваше здоровье ниже {0}%<>, вы получаете <#cab944ff>щит<>, <#cab944ff>поглощающий урон<> в размере <#d8c9b3ff>{1}%<> от вашего <$hpIcon> <#d8c9b3ff>максимального здоровья<>, на <#e8a800ff>{2} секунды<> (перезарядка {3} секунд)."
+$i18n.ru.steraks_gage.option = $sgTemplateRu -f $sgThreshold, $sgShieldPct, $sgShDur, $sgCd
+$i18n.ru.radiant_steraks_gage.option = $sgTemplateRu -f $rsgThreshold, $rsgShieldPct, $rsgShDur, $rsgCd
+$rndTemplateRu = "Критическая стойкость: <#60e84dff>Восстанавливает<> <#60e84dff>{0}%<> урона, полученного от <$critIcon> <#d45656ff>критических ударов<>."
+$i18n.ru.randuins_omen.option = $rndTemplateRu -f $rndHeal
+$i18n.ru.radiant_randuins_omen.option = $rndTemplateRu -f $rrndHeal
 $i18n.ru.guinsoos_rageblade.option = "Гнев: Базовые атаки наносят <#a974ffff>${gbDmg} дополнительного магического урона<>.`n`nЯростный Удар: Базовые атаки дают <#ceff99ff>${gbSpeed}%<> <$asIcon> <#ceff99ff>скорости атаки<> на <#e8a800ff>${gbDur} секунды<> (макс. ${gbStacks} стака)."
 $i18n.ru.radiant_guinsoos_rageblade.option = "Гнев: Базовые атаки наносят <#a974ffff>${rgbDmg} дополнительного магического урона<>.`n`nЯростный Удар: Базовые атаки дают <#ceff99ff>${rgbSpeed}%<> <$asIcon> <#ceff99ff>скорости атаки<> на <#e8a800ff>${rgbDur} секунды<> (макс. ${rgbStacks} стака)."
 $i18n.ru.wits_end.option = "Боевой запал: Базовые атаки наносят <#a974ffff>${weDmg} дополнительного магического урона<>."
@@ -1185,6 +1225,12 @@ $i18n.ko.radiant_malignance.option = "경멸: 궁극기의 <$cdrIcon> <#4b7cffff
 $rorTemplateKo = "분노와 파멸: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>{1}초<> 동안 <#d45656ff>{0}%의 <$critIcon> 치명타 확률<>을 얻습니다. (최대 {2}중첩)`n`n난파선 인양: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<$critIcon>)<>로 <#e8a800ff>{3}초<> 동안 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>{4}<>~<#d8c9b3ff>{5}<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
 $i18n.ko.rite_of_ruin.option = $rorTemplateKo -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.ko.radiant_rite_of_ruin.option = $rorTemplateKo -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
+$sgTemplateKo = "생명선: <#d94c49ff>체력이 {0}% 밑으로 떨어질 만큼 피해를 입으면<> <#e8a800ff>{2}초<> 동안 <$hpIcon> <#d8c9b3ff>최대 체력<>의 <#d8c9b3ff>{1}%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>{3}초<>입니다."
+$i18n.ko.steraks_gage.option = $sgTemplateKo -f $sgThreshold, $sgShieldPct, $sgShDur, $sgCd
+$i18n.ko.radiant_steraks_gage.option = $sgTemplateKo -f $rsgThreshold, $rsgShieldPct, $rsgShDur, $rsgCd
+$rndTemplateKo = "저항: <$critIcon> <#d45656ff>치명타<>로 받은 피해량의 <#60e84dff>{0}%<>만큼 <#60e84dff>체력을 회복<>합니다."
+$i18n.ko.randuins_omen.option = $rndTemplateKo -f $rndHeal
+$i18n.ko.radiant_randuins_omen.option = $rndTemplateKo -f $rrndHeal
 $i18n.ko.guinsoos_rageblade.option = "분노: 기본 공격이 <#a974ffff>${gbDmg}의 추가 마법 피해<>를 입힙니다.`n`n들끓는 일격: 기본 공격 시 <#e8a800ff>${gbDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${gbSpeed}%<> 증가합니다. 최대 ${gbStacks}회 중첩됩니다."
 $i18n.ko.radiant_guinsoos_rageblade.option = "분노: 기본 공격이 <#a974ffff>${rgbDmg}의 추가 마법 피해<>를 입힙니다.`n`n들끓는 일격: 기본 공격 시 <#e8a800ff>${rgbDur}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>${rgbSpeed}%<> 증가합니다. 최대 ${rgbStacks}회 중첩됩니다."
 $i18n.ko.wits_end.option = "난투: 기본 공격 시 <#a974ffff>${weDmg}의 추가 마법 피해<>를 입힙니다."
@@ -1376,3 +1422,7 @@ Write-Host "  Bloodsong:                   ${bsMin} - ${bsMax} magic (by level) 
 Write-Host "  Radiant Bloodsong:           ${rbsMin} - ${rbsMax} magic (by level) / ${rbsCd}s CD / +${rbsAmp}% damage taken ${rbsDur}s"
 Write-Host "  Rite of Ruin:                +${rorCrit}% crit/stack (max ${rorStacks}) / ${rorDur}s / ${rorMin} - ${rorMax} shield ${rorShDur}s"
 Write-Host "  Radiant Rite of Ruin:        +${rrorCrit}% crit/stack (max ${rrorStacks}) / ${rrorDur}s / ${rrorMin} - ${rrorMax} shield ${rrorShDur}s"
+Write-Host "  Sterak's Gage:               ${sgShieldPct}% max HP shield ${sgShDur}s below ${sgThreshold}% HP / ${sgCd}s CD"
+Write-Host "  Radiant Sterak's Gage:       ${rsgShieldPct}% max HP shield ${rsgShDur}s below ${rsgThreshold}% HP / ${rsgCd}s CD"
+Write-Host "  Randuin's Omen:              heals ${rndHeal}% of damage taken from critical strikes"
+Write-Host "  Radiant Randuin's Omen:      heals ${rrndHeal}% of damage taken from critical strikes"

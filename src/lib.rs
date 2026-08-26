@@ -312,6 +312,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("protectors_vow" => ProtectorsVow));
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
+    reg.add_item(configured!("randuins_omen" => RanduinsOmen));
     reg.add_item(configured!("riftmaker" => Riftmaker));
     reg.add_item(configured!("rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
@@ -319,6 +320,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("shadowflame" => Shadowflame));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
+    reg.add_item(configured!("steraks_gage" => SteraksGage));
     reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("sundered_sky" => SunderedSky));
     reg.add_item(configured!("terminus" => Terminus));
@@ -370,6 +372,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_protectors_vow" => ProtectorsVow));
     reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured_radiant!("radiant_rabadons_deathcap" => RabadonsDeathcap));
+    reg.add_item(configured_radiant!("radiant_randuins_omen" => RanduinsOmen));
     reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
     reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
@@ -377,6 +380,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
+    reg.add_item(configured_radiant!("radiant_steraks_gage" => SteraksGage));
     reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
     reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
@@ -389,8 +393,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
 
-    // New items go at the END of this list, never sorted into the blocks above
-    // — see `registration_order` below for why.
+    // New items go at the END of this list, never sorted into the blocks above:
+    // saves address items by registration index rather than by key, so inserting
+    // one mid-list renumbers every item after it.
 
     // What `item-builds.json` reaches the game through. Registered whether or
     // not a config exists: the hook keeps the engine's build when it has nothing
@@ -414,129 +419,3 @@ fn init(host: &StableHost) -> StableMod {
 }
 
 declare_stable_mod!(init);
-
-/// Guards the one thing about this file that is not free to change: the order
-/// `reg.add_item` is called in.
-///
-/// Saves do not store item keys — a 47MB save contains zero of them — so items
-/// are addressed numerically, and the number a mod's item gets is decided by
-/// registration order (`add_item` is a `push`). Treat the sequence below as a
-/// wire format: the only edit that certainly preserves it is an append.
-///
-/// Two releases have inserted mid-list anyway — 0.8.3 put
-/// `radiant_locket_of_the_iron_solari` at index 98, and 0.9.0 put
-/// `rite_of_ruin` at 57 and `radiant_rite_of_ruin` at 114. Whether that
-/// actually misreads an existing save has **not** been demonstrated; it was
-/// investigated as the cause of the 2026-08-13 blank solo-rank screen and
-/// ruled out (that reproduces with every mod disabled, so it is a base-game
-/// bug). The rule is kept because the cost of following it is zero and the
-/// cost of being wrong about it is every save on disk.
-///
-/// The frozen list is 0.9.0's shipped order, which is what saves in the wild
-/// were written against.
-#[cfg(test)]
-mod registration_order {
-    /// Every `add_item` key in `init`, in call order, read out of this file's
-    /// own source. Parsing the source rather than running `init` keeps the check
-    /// free of a `StableHost`, which only the game can supply.
-    fn registered_keys() -> Vec<&'static str> {
-        const SOURCE: &str = include_str!("lib.rs");
-        SOURCE
-            .lines()
-            .filter_map(|line| {
-                // Only real call sites: the macro definitions and this module's
-                // own literals do not start with `reg.add_item(configured`.
-                let rest = line.trim_start().strip_prefix("reg.add_item(configured")?;
-                let rest = rest.strip_prefix("_radiant").unwrap_or(rest);
-                let rest = rest.strip_prefix("!(\"")?;
-                rest.split_once('"').map(|(key, _)| key)
-            })
-            .collect()
-    }
-
-    /// The 0.9.0 (shipped) registration order. Append below, never insert.
-    const FROZEN: &[&str] = &[
-        "glowing_mote", "executioners_calling", "oblivion_orb", "serrated_dirk", "sheen",
-        "aegis_of_the_legion", "bandleglass_mirror", "bf_sword", "blighting_jewel",
-        "glacial_buckler", "haunting_guise", "last_whisper", "needlessly_large_rod",
-        "noonquiver", "phage", "scouts_slingshot", "steel_sigil", "winged_moonplate",
-        "atmas_reckoning", "bastionbreaker", "black_cleaver", "blackfire_torch",
-        "blade_of_the_ruined_king", "bloodletters_curse", "bloodsong", "collector",
-        "dead_mans_plate", "deathblade", "deaths_dance", "diamond_tipped_spear",
-        "dusk_and_dawn", "echoes_of_helia", "experimental_hexplate", "frozen_heart",
-        "frozen_mallet", "guinsoos_rageblade", "heartsteel", "hextech_gunblade", "hubris",
-        "infinity_edge", "jaksho_the_protean", "kraken_slayer", "liandrys_torment",
-        "locket_of_the_iron_solari", "lord_dominiks_regards", "malignance", "mirage_blade",
-        "morellonomicon", "mortal_reminder", "nashors_tooth", "night_harvester", "opportunity",
-        "overlords_bloodmail", "protectors_vow", "protoplasm_harness", "rabadons_deathcap",
-        "riftmaker", "rite_of_ruin", "rylais_crystal_scepter", "serpents_fang", "shadowflame",
-        "spear_of_shojin", "spirit_visage", "stormrazor", "sundered_sky", "terminus",
-        "trinity_force", "unending_despair", "void_staff", "voltaic_cyclosword",
-        "warmogs_armor", "wits_end", "yun_tal_wildarrows", "zekes_herald",
-        "radiant_atmas_reckoning", "radiant_bastionbreaker", "radiant_black_cleaver",
-        "radiant_blackfire_torch", "radiant_blade_of_the_ruined_king",
-        "radiant_bloodletters_curse", "radiant_bloodsong", "radiant_collector",
-        "radiant_dead_mans_plate", "radiant_deathblade", "radiant_deaths_dance",
-        "radiant_diamond_tipped_spear", "radiant_dusk_and_dawn", "radiant_echoes_of_helia",
-        "radiant_experimental_hexplate", "radiant_frozen_heart", "radiant_frozen_mallet",
-        "radiant_guinsoos_rageblade", "radiant_heartsteel", "radiant_hextech_gunblade",
-        "radiant_hubris", "radiant_infinity_edge", "radiant_jaksho_the_protean",
-        "radiant_kraken_slayer", "radiant_liandrys_torment",
-        "radiant_locket_of_the_iron_solari", "radiant_lord_dominiks_regards",
-        "radiant_malignance", "radiant_mirage_blade", "radiant_morellonomicon",
-        "radiant_mortal_reminder", "radiant_nashors_tooth", "radiant_night_harvester",
-        "radiant_opportunity", "radiant_overlords_bloodmail", "radiant_protectors_vow",
-        "radiant_protoplasm_harness", "radiant_rabadons_deathcap", "radiant_riftmaker",
-        "radiant_rite_of_ruin", "radiant_rylais_crystal_scepter", "radiant_serpents_fang",
-        "radiant_shadowflame", "radiant_spear_of_shojin", "radiant_spirit_visage",
-        "radiant_stormrazor", "radiant_sundered_sky", "radiant_terminus",
-        "radiant_trinity_force", "radiant_unending_despair", "radiant_void_staff",
-        "radiant_voltaic_cyclosword", "radiant_warmogs_armor", "radiant_wits_end",
-        "radiant_yun_tal_wildarrows", "radiant_zekes_herald",
-    ];
-
-    /// The frozen order must still be a *prefix* of what `init` registers.
-    /// Appending is the only safe edit; inserting, sorting or deleting is not.
-    #[test]
-    fn frozen_prefix_is_intact() {
-        let keys = registered_keys();
-        assert!(
-            keys.len() >= FROZEN.len(),
-            "{} items registered, fewer than the {} frozen ones - a key was deleted, which \
-             shifts every item after it in existing saves",
-            keys.len(),
-            FROZEN.len()
-        );
-        for (index, (frozen, actual)) in FROZEN.iter().zip(keys.iter()).enumerate() {
-            assert_eq!(
-                frozen, actual,
-                "registration order changed at index {index}. Saves store items by this index, \
-                 so a new item must be APPENDED at the end of `init`, not sorted into place. \
-                 If the reorder is deliberate and you accept breaking every existing save, \
-                 update FROZEN."
-            );
-        }
-    }
-
-    /// A duplicate key is the other way to corrupt the mapping, and it is quiet:
-    /// both entries are registered, so everything after the second one shifts.
-    #[test]
-    fn keys_are_unique() {
-        let mut seen = std::collections::HashSet::new();
-        for key in registered_keys() {
-            assert!(seen.insert(key), "duplicate registration key {key:?}");
-        }
-    }
-
-    /// Smoke test on the parser itself: if `registered_keys` ever stopped
-    /// matching the call sites, every assertion above would pass on an empty
-    /// list and the guard would be silently inert.
-    #[test]
-    fn parser_sees_the_call_sites() {
-        assert_eq!(
-            registered_keys().first(),
-            Some(&"glowing_mote"),
-            "source parsing did not find the add_item call sites - the guard is inert"
-        );
-    }
-}

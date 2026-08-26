@@ -1055,5 +1055,37 @@
     "skill_damaged_reduce": 15,
     "effect_attack_speed_reduce": 30,
     "effect_max_distance": 100
+  },
+  "steraks_gage": {
+    "price": 1400,
+    "attack": 30,
+    "hp": 400,
+    "toughness": 15,
+    "effect_hp_percent_threshold": 30.0,
+    "effect_caster_hp_percent_shield": 60.0,
+    "effect_shield_seconds": 4,
+    "effect_cooldown_seconds": 90
+  },
+  "radiant_steraks_gage": {
+    "price": 2000,
+    "attack": 50,
+    "hp": 650,
+    "toughness": 20,
+    "effect_hp_percent_threshold": 30.0,
+    "effect_caster_hp_percent_shield": 60.0,
+    "effect_shield_seconds": 4,
+    "effect_cooldown_seconds": 90
+  },
+  "randuins_omen": {
+    "price": 1500,
+    "hp": 300,
+    "defence": 70,
+    "effect_crit_damage_percent_heal": 30.0
+  },
+  "radiant_randuins_omen": {
+    "price": 2000,
+    "hp": 550,
+    "defence": 90,
+    "effect_crit_damage_percent_heal": 30.0
   }
 }

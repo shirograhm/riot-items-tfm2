@@ -92,6 +92,7 @@ impl StableItem for Phage {
             "frozen_mallet".to_string(),
             "overlords_bloodmail".to_string(),
             "black_cleaver".to_string(),
+            "steraks_gage".to_string(),
             "trinity_force".to_string(),
         ]
     }

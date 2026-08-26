@@ -37,7 +37,7 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.5.6.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.5.7.
 //!
 //! The finder identifies the target by its **argument shape** rather than by
 //! anything in its body: the return type is 24 bytes so it comes back via `sret`
@@ -90,7 +90,15 @@ const PROLOGUE_PUSHES: [u8; 12] = [
 const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-/// Signature for game 0.5.6, where the target is `0x2598dd0` (size 2270).
+/// Signature for game 0.5.7, where the target is `0x1ce9d90` (size 2270).
+///
+/// The bytes below have now survived the 0.5.6 -> 0.5.7 update **unchanged**: they
+/// are address independent, and re-scanning the new executable finds them in
+/// exactly one place, at a `.pdata` function start of the same size 2270. The
+/// old/new pair is instruction-isomorphic with zero differing displacements, so
+/// only the address moved. This is the second update in a row that needed no
+/// edit here — which is the point of fingerprinting the argument shape rather
+/// than the emitted code.
 ///
 /// 48 bytes, not 40: the first 40 are a prologue idiom shared with four other
 /// functions, so a shorter signature is ambiguous. `tools/find_item_build_hook.py`

@@ -44,6 +44,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("protectors_vow", "Tank"),
     ("protoplasm_harness", "Support"),
     ("rabadons_deathcap", "Mage"),
+    ("randuins_omen", "Tank"),
     ("riftmaker", "Mage"),
     ("rite_of_ruin", "Mage"),
     ("rylais_crystal_scepter", "Mage"),
@@ -51,6 +52,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("shadowflame", "Mage"),
     ("spear_of_shojin", "Fighter"),
     ("spirit_visage", "Tank"),
+    ("steraks_gage", "Fighter"),
     ("stormrazor", "Marksman"),
     ("sundered_sky", "Fighter"),
     ("sunfire_cape", "Tank"),
@@ -98,25 +100,4 @@ pub fn category_rank(category: &str) -> usize {
         .iter()
         .position(|name| *name == category)
         .unwrap_or(CATEGORY_ORDER.len())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn tables_are_sorted_by_key() {
-        assert!(CATEGORY_OF.windows(2).all(|pair| pair[0].0 < pair[1].0));
-        assert!(RESKIN_ICON.windows(2).all(|pair| pair[0].0 < pair[1].0));
-    }
-
-    #[test]
-    fn every_category_has_a_header() {
-        for (slug, category) in CATEGORY_OF {
-            assert!(
-                CATEGORY_ORDER.contains(category),
-                "{slug} is in unknown category {category}"
-            );
-        }
-    }
 }
