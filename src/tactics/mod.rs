@@ -4304,6 +4304,61 @@ fn engine_category(key: &str) -> Option<u32> {
     crate::strategy_ui::mod_item_category(key)
 }
 
+/// Keep the auto-picked 4th item in the same engine category (`ItemCategoryV1`)
+/// as the build's **3rd** item.
+///
+/// Off, the 4th slot is whatever scores highest, and the neural net is perfectly
+/// happy to answer an Ad/Ad/Ad build with an HP item — which reads as a bug
+/// rather than a recommendation. On, every path that picks the 4th
+/// (`compute_auto_4th_id`'s neural sweep, its demo-sim shortcut, and the
+/// champion-spread fallback under them) is restricted to the 3rd item's
+/// category, and only widens back out if that category has nothing free.
+///
+/// The anchor is the 3rd item deliberately, not the majority of the build: it is
+/// what the player sees the AI committing to last, and it is the slot the 4th
+/// reads as an extension of. Note it anchors on the build *target* at build[2],
+/// which is the right answer before the item is finished being bought.
+const AUTO4_MATCH_3RD_CATEGORY: bool = true;
+
+/// The engine category of the build's 3rd item, or `None` when the constraint is
+/// off, the build is unreadable, or the item has no category.
+///
+/// Resolved through the catalog rather than from the build slot directly,
+/// because a slot holds a catalog *index* and only vanilla items have
+/// index == id — reading it as an id would silently mis-categorise every mod
+/// item. The pointer guard matches the one the buy path already applies before
+/// touching `build[]`: `rd_u64` is a raw read, not a checked one.
+unsafe fn third_slot_category(athlete: usize, rsp_entry: usize) -> Option<u32> {
+    if !AUTO4_MATCH_3RD_CATEGORY {
+        return None;
+    }
+    let ptr = rd_u64(athlete + 0x518) as usize;
+    if ptr < 0x10000 || !readable(ptr, 24) {
+        return None;
+    }
+    let ctx = rd_u64(rsp_entry + 0x30) as usize;
+    catalog_name_at(ctx, rd_u64(ptr + 16))
+        .as_deref()
+        .and_then(engine_category)
+}
+
+/// Does the candidate `id` sit in `category`? `None` accepts everything, which
+/// is what an unconstrained pick passes.
+///
+/// Works in the **id space** `auto_cands` yields, not the catalog-index space —
+/// `item_id_to_key` is the bridge, and it is also why this cannot simply be
+/// handed a build slot. The caller resolves those through `catalog_name_at`.
+fn id_in_category(id: u64, category: Option<u32>) -> bool {
+    let Some(category) = category else {
+        return true;
+    };
+    item_id_to_key(id)
+        .as_deref()
+        .and_then(engine_category)
+        .map(|candidate| candidate == category)
+        .unwrap_or(false)
+}
+
 /// A stand-in for a 4th item that would duplicate one the build already holds,
 /// drawn from the same category as the item it replaces.
 ///
@@ -4417,8 +4472,9 @@ const DIAG_SLOT_UI_OFF: bool = true; // keep the old byte-patch path sealed (it 
                                      // * Performance cache (0.5.1): the result of compute_auto_4th_id. Key = (champ, build3, lineup ctx). For the same match, champion and build
                                      //   the neural 4th recommendation is always the same -> removes the 51-forward recomputation on repeated owned==3 buys (eases the load spike when gold is low).
                                      //   Since ctx is part of the key there is no "ignores the lineup = wrong answer" concern. Parallel matches have different ctx, so keys do not collide.
-static AUTO4_RESULT: Mutex<Option<HashMap<(String, u64, u64, u64, [u64; 11]), Option<u64>>>> =
-    Mutex::new(None);
+static AUTO4_RESULT: Mutex<
+    Option<HashMap<(String, u64, u64, u64, [u64; 11], Option<u32>), Option<u64>>>,
+> = Mutex::new(None);
 static AUTO_CANDS: Mutex<Option<std::sync::Arc<Vec<u64>>>> = Mutex::new(None);
 fn auto_cands() -> std::sync::Arc<Vec<u64>> {
     {
@@ -4547,7 +4603,14 @@ unsafe fn build_lineup_ctx(p: usize) -> Option<([u64; 11], u64)> {
 // * AUTO 4th (universal - every player, every match): at buy time (owned==3), score build[0..3] with the neural forward and
 //   append each final-item candidate as the 4th; the highest score = the network's chosen 4th. Independent of c6 firing (covers enemy/background too).
 //   ctx = the match's real lineup restored from the roster array (our 5 + their 5 + pos). Simple fallback on failure.
-unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
+/// Best 4th item for this athlete, by neural score.
+///
+/// `category` is the engine category the answer is confined to (see
+/// [`AUTO4_MATCH_3RD_CATEGORY`]); `None` scores the whole candidate pool. When a
+/// category is given and nothing in it is free, the sweep is re-run
+/// unconstrained rather than returning nothing — a cross-category 4th item still
+/// beats no 4th item, which is the same trade `same_category_swap` makes.
+unsafe fn compute_auto_4th_id(athlete: usize, champ: &str, category: Option<u32>) -> Option<u64> {
     if !AUTO4_FORWARD_SCORE {
         return None;
     }
@@ -4588,14 +4651,17 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
     // * In a demo/title live sim (view roster count==3) calling the game's forward crashes -> fall back to the heuristic 4th.
     //   In a real sim (background league etc., count != 3) use forward for the neural 4th. (DIAG_FWD_OFF = emergency global heuristic.)
     if DIAG_FWD_OFF || vcount == 3 {
-        let pick = auto_cands()
+        let free = |c: u64| c != b0 && c != b1 && c != b2;
+        let cands = auto_cands();
+        let pick = cands
             .iter()
             .copied()
-            .find(|&c| c != b0 && c != b1 && c != b2);
+            .find(|&c| free(c) && id_in_category(c, category))
+            .or_else(|| cands.iter().copied().find(|&c| free(c)));
         return pick;
     }
     // * Performance cache lookup: identical (champ, build, lineup) needs no forward sweep recomputation.
-    let ckey = (champ.to_string(), b0, b1, b2, ctx);
+    let ckey = (champ.to_string(), b0, b1, b2, ctx, category);
     {
         let mut g = AUTO4_RESULT.lock().unwrap_or_else(|e| e.into_inner());
         let m = g.get_or_insert_with(HashMap::new);
@@ -4604,17 +4670,30 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str) -> Option<u64> {
         }
     }
     let cands = auto_cands();
-    let mut best: Option<u64> = None;
-    let mut best_s = f32::MIN;
-    for &cand in cands.iter() {
-        if cand == b0 || cand == b1 || cand == b2 {
-            continue;
-        } // exclude duplicates
-        let s = itemnet_forward(net, &ctx, &[b0, b1, b2, cand]);
-        if s > best_s {
-            best_s = s;
-            best = Some(cand);
+    let sweep = |category: Option<u32>| {
+        let mut best: Option<u64> = None;
+        let mut best_s = f32::MIN;
+        for &cand in cands.iter() {
+            if cand == b0 || cand == b1 || cand == b2 {
+                continue;
+            } // exclude duplicates
+            if !id_in_category(cand, category) {
+                continue;
+            }
+            let s = itemnet_forward(net, &ctx, &[b0, b1, b2, cand]);
+            if s > best_s {
+                best_s = s;
+                best = Some(cand);
+            }
         }
+        best
+    };
+    // Best inside the 3rd item's category, keeping the net's ranking *within*
+    // it rather than taking the first match — the constraint narrows the pool,
+    // it does not replace the recommendation.
+    let mut best = sweep(category);
+    if best.is_none() && category.is_some() {
+        best = sweep(None);
     }
     // * Store in the cache (cap 8192; simply cleared when exceeded - allows for many parallel matches)
     {
@@ -5191,6 +5270,13 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   (1) and (2) scan the catalog by item "name" for an index + recipe validation (mod item ids != index, so a name scan is mandatory).
                 //   Picks without a recipe (base items) are discarded and fall back (using them panics in FUN_141d5ab40).
                 let ctx = rd_u64(rsp_entry + 0x30) as usize;
+                // The category every AUTOMATIC path below is confined to (see
+                // `third_slot_category` / `AUTO4_MATCH_3RD_CATEGORY`). A manual
+                // pin is deliberately not filtered by it: an explicit designation
+                // in `item-builds.json` is the player overriding the AI, and
+                // quietly moving it to another category would be the mod arguing
+                // back.
+                let third_category = third_slot_category(athlete, rsp_entry);
                 // (1) manual designation first -> (2) the network (cached) -> each obtains an index via a (cached) name scan + recipe validation.
                 // * Team gate, and the same one the three slots above take: with
                 //   `own_team_only` off the `item-builds.json` pin is keyed by
@@ -5210,7 +5296,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     scan_idx_cached(ctx, mk.as_bytes()) // mod item: name scan (works thanks to the ctx+0x30 fix)
                 } else {
                     // * Enemy team or no designation: a fresh network call (our 5 + their 5 + position ctx). Not cached (ignoring the lineup = wrong answer).
-                    compute_auto_4th_id(athlete, champ)
+                    compute_auto_4th_id(athlete, champ, third_category)
                         .and_then(item_id_to_key)
                         .and_then(|k| scan_idx_cached(ctx, k.as_bytes()))
                 };
@@ -5242,12 +5328,27 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 // (3) Fallback: a vanilla final item different from build[0..2] (recipe guaranteed; for vanilla, id == index for sure).
                 //   * Attack-damage bias fix: the implementation always scanned from [0] = attack damage (id 4) -> when the network failed, every enemy 4th was attack damage.
                 //   -> the starting point is now spread by an FNV hash of the champion name (deterministic per champion = replay safe, and categories are distributed evenly).
-                let t4 = picked.or_else(|| {
-                    let start = champ_spread(champ, 6);
-                    (0..6)
-                        .map(|k| VANILLA_FINAL[(start + k) % 6])
-                        .find(|&v| v != b0 && v != b1 && v != b2)
-                });
+                let t4 = picked
+                    .or_else(|| {
+                        // Same-category first, over the FULL candidate pool rather
+                        // than the six vanilla finals: each engine category holds
+                        // exactly one vanilla final, so if the 3rd item is that one
+                        // the vanilla-only search below can never satisfy the
+                        // constraint. The mod's finals are where a second item of a
+                        // category comes from. `u64::MAX` as `wanted` means "no
+                        // item is being replaced" — unlike the duplicate swap
+                        // above there is nothing to avoid here but build[0..2].
+                        let category = third_category?;
+                        pick_candidate(ctx, u64::MAX, [b0, b1, b2], champ, |candidate| {
+                            engine_category(candidate) == Some(category)
+                        })
+                    })
+                    .or_else(|| {
+                        let start = champ_spread(champ, 6);
+                        (0..6)
+                            .map(|k| VANILLA_FINAL[(start + k) % 6])
+                            .find(|&v| v != b0 && v != b1 && v != b2)
+                    });
                 if t4.is_none() && BUILD_EXT_DIAG {
                     BE_CNT[4].fetch_add(1, Ordering::Relaxed);
                 } // failed to obtain the target index
@@ -5285,12 +5386,15 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // Manual designation (vanilla/mod) first. Otherwise AUTO: the best 4th given build[0..3] via the neural forward (universal, everyone).
         // Same `designate` rule as the build[3] target above — this is the
         // forced-purchase variant of it (unreachable while `AUTO4_NATURAL`).
+        let category = third_slot_category(athlete, rsp_entry);
         let want_key = match (!own_team_only || is_player)
             .then(|| slot3_item_key(champ))
             .flatten()
         {
             Some(k) => k,
-            None => match compute_auto_4th_id(athlete, champ).and_then(item_id_to_key) {
+            None => match compute_auto_4th_id(athlete, champ, category)
+                .and_then(item_id_to_key)
+            {
                 Some(k) => k,
                 None => return 0, // no designation and no neural 4th -> passthrough (the normal 3 purchases)
             },
