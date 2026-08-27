@@ -2,7 +2,8 @@
 //!   (1) Chained install: save the current 12 bytes of the entry point and prepend ourselves -> chain "behind"
 //!      another mod's single-owner hook (ai_adjust/scrim). Installed late, from post_update (after those mods' init), to guarantee ordering.
 //!      Works standalone when ai_adjust is off too (it saves the original prologue). Idempotent across re-init (INSTALLED).
-//!   (2) When the player_info/wide_player_info templates are loaded -> replace the root's children with our edited version (.ui, compressed 4 slots).
+//!   (2) When the player_info/wide_player_info templates are loaded -> replace the root's children with our edited version (.ui, widened #items so the
+//!      game's own populator lays out 4 full-size slots instead of shrinking them - see IN_MATCH_UI).
 //!      (Unlike an asset override this is a loader hook, so it layers on top of other overrides and chains. "Edits" still do not compose between mods,
 //!       but nobody else touches player_info, so it is safe.)
 //!   RVAs (0.4.14 hotfix): LOADER 0x540ad0 / PARSER 0x220e100 / ALLOC 0x231fb70.
@@ -105,8 +106,68 @@ static TRAMP: AtomicUsize = AtomicUsize::new(0);
 static INSTALLED: AtomicBool = AtomicBool::new(false);
 // * 4-item mode gate: when false no UI modification happens (3-slot mode = vanilla). Set by lib.rs from the cfg.
 pub static MODE4: AtomicBool = AtomicBool::new(true);
-// * Gate for replacing the in-match player_info slot UI: turned on once the 4th purchase was wired up (prevents empty slots while unwired). Off by default.
-pub static IN_MATCH_UI: AtomicBool = AtomicBool::new(true); // * ON: inject the #slot3 node (the target the overlay fills). The bounds patch stays off, so there is no OOB crash.
+/// Gate for replacing the in-match `player_info` panel (the item row). Set by
+/// `lib.rs` from the cfg, together with [`MODE4`].
+///
+/// **0.6.0 (2026-08-27): ON again, but the layout it ships means something new.**
+///
+/// Before 0.6.0 this delivered a template that *authored four slots*:
+/// `player_info` carried flat `#slot0..#slot2` and the edited copy added a
+/// `#slot3` for the mod to fill itself.
+///
+/// 0.6.0 took the slots out of the layout. Each side now holds one empty
+/// container
+///
+/// ```text
+/// #items:empty { x: 59px; width: 142px; height: 42px; }   // blue, player_info
+/// ```
+///
+/// which the game populates at runtime, creating `slot0..slotN-1` from
+/// `ingame_component/item_slot` and laying them out itself — and **N is not
+/// three**. It is `max(3, max over players of items-bought)`, so the byte
+/// patches that let a player buy a 4th item are already enough to make the game
+/// build, place, fill and hit-test a 4th slot with no help from this file —
+/// and `patch_slot_count` raises that floor 3 -> 4, so in `slots = 4` the row is
+/// four wide from the first frame rather than only once someone completes a 4th
+/// item. (Evidence, game
+/// 0.6.0_beta1: the count at `0xc389be` is `cmp rax,4 / mov ecx,3 / cmovae
+/// rcx,rax` over `0x8fb640`'s per-player maximum; the fill loop at `0xc3927c`
+/// runs `i < count` and reads `items[i]` behind a real `i < items.len()` bound
+/// at `0xc395ca` before writing `slot{i}.bg.icon`.)
+///
+/// That is why the stale layout broke the panel rather than merely failing to
+/// help: it had no `#items` node at all, so `replace_children` deleted the
+/// container the game fills and blanked the vanilla three, while the `#slot3`
+/// the mod filled by hand still drew. What shipped between then and now was
+/// this gate held OFF, which restored the three but left the fourth to the
+/// game's fallback geometry.
+///
+/// **What the replacement is for now is width.** The populate helper
+/// (`0x219ce00`) sizes the row from the container:
+///
+/// ```text
+/// max_fit = floor((W + gap) / (slot + gap))        gap = 8 compact / 3 wide
+/// count <= max_fit -> authored size, stride = slot + gap
+/// count >  max_fit -> size = floor((W - 2*(count-1)) / count), gap forced to 2
+/// ```
+///
+/// Vanilla `W` is exactly three slots wide (142 = 3*42 + 2*8), so a fourth
+/// overflows and every icon shrinks to 34px. The layouts this ships widen
+/// `#items` to 174 (compact) / 134 (wide) — chosen so the shrink path divides
+/// out to the authored 42px / 32px exactly — and move `#kda`/`#cs` by the
+/// difference. Four full-size icons, 2px apart, which is the spacing the mod
+/// showed before 0.6.0.
+///
+/// With `patch_slot_count` in place the count is always >= 4, so this layout
+/// only ever takes the shrink path and the row never re-spaces mid-match. The
+/// widths still have to be exactly these: at any other `W` the same division
+/// produces a fractional slot size and the icons come out scaled.
+///
+/// Both files are the vanilla layout with fourteen numbers changed, generated
+/// by `tools/rebase_player_info.py`. **Re-run that after a game update rather
+/// than hand-editing them** — everything except those numbers has to stay
+/// identical to base, and drifting from it is precisely the failure above.
+pub static IN_MATCH_UI: AtomicBool = AtomicBool::new(true);
 // Replacement idempotence (avoids re-replacing the same template ptr; a reload = a new ptr = replace again).
 static LAST_PI: AtomicUsize = AtomicUsize::new(0);
 static LAST_WIDE: AtomicUsize = AtomicUsize::new(0);

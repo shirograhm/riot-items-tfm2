@@ -70,8 +70,9 @@ mod ui_root;
 /// `safe_read_*` in the module. That call now lives in `tactics_init`, which is
 /// where it belongs, so the two are independent.
 // ** OFF 2026-08-12 (game 0.5.5). Everything this gated now runs over the stable
-//    UI API by path instead — the 4th-slot icon and `force_blue_slot_spacing`,
-//    which were its only remaining consumers. The node route needs a UI root
+//    UI API by path instead — the 4th-slot icon and the blue-row re-layout,
+//    which were its only remaining consumers. (The re-layout is gone entirely as
+//    of 0.6.0; the game lays the row out itself.) The node route needs a UI root
 //    pointer, and on 0.5.5 the search for one cannot succeed: `build_ext_diag`
 //    showed the scan landing in live UI memory (1167 nodes, real ids) yet never
 //    finding the root, because `subtree_has_id` searches *downward* for `main`
@@ -187,10 +188,13 @@ exists = {}
     }
     ITEM_MODE.store(mode, Ordering::Relaxed);
     uinj::MODE4.store(mode == 4, Ordering::Relaxed);
-    uinj::IN_MATCH_UI.store(mode == 4, Ordering::Relaxed); // enable the in-match 4th slot UI (together with the patches). mode=3 keeps vanilla 3 slots.
-                                                           // (A `STRAT_INJECT` gate was set here too, for the strategy-screen dropdown
-                                                           // overlay. That overlay is gone; `MODE4`/`IN_MATCH_UI` above are the
-                                                           // in-match panel and the byte patches, which are unaffected.)
+    // Widen the in-match item row so the game's own populator lays out four
+    // full-size slots (see `uinj::IN_MATCH_UI`). mode=3 keeps the vanilla panel.
+    //
+    // (A `STRAT_INJECT` gate was set here too, for the strategy-screen dropdown
+    // overlay. That overlay is gone; `MODE4`/`IN_MATCH_UI` above are the
+    // in-match panel and the byte patches, which are unaffected.)
+    uinj::IN_MATCH_UI.store(mode == 4, Ordering::Relaxed);
     mode
 }
 fn slot_count() -> usize {
@@ -591,60 +595,25 @@ unsafe fn read_img_source(n: &Node) -> Option<String> {
 // LabelRunner text (text@+352, len@+352, ptr@+360).
 //   filled slot0/1/2 vs the empty slot3 ImageRunner source + runner base bytes (to pin the layout).
 static SLOTDIAG_CNT: AtomicU64 = AtomicU64::new(0);
-// * Force 42px spacing on blue slots (0.5.0): the game resets blue slot0/1/2 to vanilla (50px spacing), so we
-//   overwrite the authored x that the renderer reads (node+0x84 family) every frame, forcing slot1/2/3 to 42px spacing relative to slot0's real position.
-//   slot0 is left alone and only the trailing 3 are re-laid-out -> independent of base_x and resolution.
-//   WARNING: ~~"the renderer reads +0x240 (screen_x) to draw"~~ -> corrected: the actual working implementation uses the +0x84 family (the function comment below,
-//     "+0x240 turned out to be hit-testing and had no effect", is the after-the-fact correction). **What +0x240 really is, and whether y/w/h are contiguous, is unconfirmed** -
-//     if the hitbox ever needs updating, measure it (struct dump) before touching it.
-const FORCE_BLUE_SPACING: f32 = 42.0;
-// Node authored x = +0x84 (normal). It is duplicated into the hover/press/disabled state blocks at +0x80 stride, so all 4 must be written for
-// the value to survive a game reset / state transition (tfm2-ui-runtime-layout: value = block+0x14, blocks 0x70/0xf0/0x170/0x1f0).
-#[inline]
-unsafe fn set_node_x_all_states(node: &Node, x: f32) {
-    let na = node as *const Node as usize;
-    if na <= 0x10000 {
-        return;
-    }
-    for off in [0x84usize, 0x104, 0x184, 0x204] {
-        if writable(na + off, 4) {
-            *((na + off) as *mut f32) = x;
-        }
-    }
-}
-// The game resets blue_player slot/stat x (+0x84) to vanilla (50px spacing) every frame -> re-force 42px spacing + left alignment in post_update.
-// (Icon rendering uses the authored +0x84. +0x240 turned out to be hit-testing and had no effect.)
-unsafe fn force_blue_slot_spacing(n: &Node) {
-    if n.id.as_str() == "blue_player" {
-        // Use slot0's current x as the (leftmost) baseline - fall back to 59 if absent.
-        let mut base = 59.0f32;
-        if let Some(s0) = find_node(n, "slot0") {
-            let na = s0 as *const Node as usize;
-            if na > 0x10000 && readable(na + 0x84, 4) {
-                let v = *((na + 0x84) as *const f32);
-                if v.is_finite() && v > 1.0 && v < 2000.0 {
-                    base = v;
-                }
-            }
-        }
-        // Slots: base + 42*i (packed tight, same spacing as red)
-        for i in 0..4u32 {
-            if let Some(sl) = find_node(n, &format!("slot{}", i)) {
-                set_node_x_all_states(sl, base + FORCE_BLUE_SPACING * i as f32);
-            }
-        }
-        // kda/cs: shift left (resolves the overlap with champion 372). Force the same target values as the .ui (in case of a reset).
-        if let Some(k) = find_node(n, "kda") {
-            set_node_x_all_states(k, 242.0);
-        }
-        if let Some(c) = find_node(n, "cs") {
-            set_node_x_all_states(c, 290.0);
-        }
-    }
-    for c in n.child.iter() {
-        force_blue_slot_spacing(c);
-    }
-}
+// The blue-row re-layout (`force_blue_slot_spacing` + `set_node_x_all_states`)
+// stood here, with `FORCE_BLUE_SPACING = 42.0`. It walked the live node tree for
+// `blue_player`, wrote `slot{i}.x = base + 42*i` into the +0x84 authored-x family
+// (all four state blocks) and pinned kda 242 / cs 290, every frame, because up to
+// 0.5.7 the game reset that row to 50px spacing on each pass.
+//
+// 0.6.0 removed the thing it was fighting. The item row is no longer authored in
+// `player_info` at all: each side holds an `#items` container that the game fills
+// with `slot0..slotN-1` and lays out itself, sizing them from the container's
+// width. So the reset is gone, and the writes had become actively wrong twice
+// over — `find_node` is recursive, so it still found the slots one level deeper
+// inside `#items`, and stamped container-relative x values that had been computed
+// against `blue_player`.
+//
+// The row's geometry now lives where the game reads it, in
+// `ui/layout/ingame_component/*.ui` (see `uinj::IN_MATCH_UI`). Deleted rather
+// than gated: this was the second copy of the same stale write, and the first one
+// — the by-path version in `drive_slot3_by_path` — is what broke the panel in
+// 0.6.0.
 // ===========================================================================
 //  JSON parser (for mods.json / item.i18n, ported from scrim)
 // ===========================================================================
@@ -2012,29 +1981,22 @@ fn drive_slot3_by_path(client: &mut StableClient<'_>, icons: &HashMap<(u64, u32)
             }
         }
 
-        // The other casualty of the unresolved UI root, and the reason the slot
-        // row looks wrong rather than merely empty: `force_blue_slot_spacing`
-        // was gated on the node tree too. The game rewrites `blue_player` back
-        // to its vanilla 50px spacing every frame, so with that gate shut the
-        // blue side keeps three-slot geometry while the template defines four.
-        // Same values as the `.ui` and as the node-walk version it replaces:
-        // slots at `base + 42*i` from slot0's authored 59, kda 242, cs 290.
+        // A per-frame re-layout of the blue compact row stood here, forcing
+        // `slot{i}.x = 59 + 42*i` plus kda 242 / cs 290, because up to 0.5.7 the
+        // game reset `blue_player` to its vanilla 50px spacing every frame and
+        // the mod's own `#slot3` had to be placed against that.
         //
-        // Compact layout ONLY. `wide_player_info` is authored at 34px with its
-        // own kda/cs, has no reset to fight, and writing the compact numbers
-        // into it is what the node version's warning is about — so the wide
-        // subtree is excluded by path.
-        if *team == 0 && !path.contains("wide") {
-            let Some(bp) = path.strip_suffix(".slot3") else {
-                continue;
-            };
-            for i in 0..4u32 {
-                let x = 59.0 + FORCE_BLUE_SPACING * i as f32;
-                client.ui_set_properties(&format!("{bp}.slot{i}"), &format!("x: {x}px;"));
-            }
-            client.ui_set_properties(&format!("{bp}.kda"), "x: 242px;");
-            client.ui_set_properties(&format!("{bp}.cs"), "x: 290px;");
-        }
+        // **In 0.6.0 it was the bug, not the fix.** The slots moved a level down
+        // — `blue_player.items.slot{i}` — so `x` is now relative to `#items`,
+        // which itself sits at x:59. Writing 59..185 into children of a
+        // container already offset by 59 pushed the whole blue row 59px right,
+        // onto the KDA and past it, while red (never touched here) laid out
+        // correctly. That is the "4th item is off on its own" report.
+        //
+        // Nothing replaces it, deliberately: the game lays the row out itself
+        // now, from the container width, and `ui/layout/ingame_component/*.ui`
+        // sets that width so all four come out full size. Geometry belongs in
+        // the layout, not in a frame loop fighting one.
     }
 }
 
@@ -3649,8 +3611,7 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
         // team gate's only remaining input now that the `SCENE_SIDE` fast path
         // is off. Gating it made `is_my_athlete` return `None` forever, so the
         // gate closed on the safe side and nothing was ever injected. This block
-        // needs the `client`, not the node tree — only `force_blue_slot_spacing`
-        // inside it touches the tree, and it is gated individually.
+        // needs the `client`, not the node tree.
         // * Capture the player team id (for team scoping) + the personal_tactics snapshot (for restoring the display).
         //   WARNING the strategy screen may not be InGame, so the #personal visible gate was removed -> fill it in ahead of time on the management screen.
         //   Throttled to every 20 frames (cuts the cost of walking the HashMap).
@@ -3772,20 +3733,10 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                 // another detour argument, or a fixed offset off the `App` pointer
                 // that `cap_game_view` already captures.
             }
-            // * Force blue slot/stat x (+0x84, 4 states) every frame: the game resets blue_player to vanilla 50px spacing, and we overwrite that with 42px spacing + left alignment.
-            //   WARNING compact (player_info) only - wide_player_info (fullscreen) has no reset and is correct from the .ui (34px spacing, different kda/cs)
-            //   Applying it to the whole ui.root would overwrite wide with the compact values (42/242/290) and break it. Restricted to the player_info subtree.
-            if ITEM_MODE.load(Ordering::Relaxed) == 4
-                && UI_TREE_WALK_ENABLED
-                && ui_root_ptr > 0x10000
-            {
-                let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| unsafe {
-                    let ui: &Node = &*(ui_root_ptr as *const Node);
-                    if let Some(pi) = find_node(ui, "player_info") {
-                        force_blue_slot_spacing(pi);
-                    }
-                }));
-            }
+            // The per-frame `force_blue_slot_spacing(player_info)` call stood
+            // here. The game lays the item row out itself in 0.6.0 and the row's
+            // geometry comes from the layout now — see the note where the
+            // function was, above the JSON parser.
             // The personal-tactics snapshot rebuild stood here. It fed
             // `PT_SNAPSHOT` (read only by the dropdown option injection) and
             // `OVERRIDE_SNAPSHOT` (read only by the c6 injection, which is off —
@@ -5705,6 +5656,76 @@ unsafe fn patch_gate3() -> String {
     "gate3: patched jbe->jmp (owned>2 gate neutralised)".into()
 }
 
+// * In-match row length: raise the game's slot-count floor 3 -> 4 (game 0.6.0+).
+//
+// 0.6.0 builds the item row at runtime instead of authoring it, and takes its
+// length from
+//
+//     count = max(3, max over players of items-bought)
+//
+// where `0x8fb640` produces the per-player maximum and the `max(_, 3)` is the
+// `cmp rax,4 / mov ecx,3 / cmovae rcx,rax` patched here. Left alone, a 4th slot
+// only appears once some player has actually completed a 4th item - and the
+// whole row re-spaces at that moment, because three slots fit the container at
+// the authored 50px stride while four fall into the helper's shrink path at
+// 44px. Raising the floor to 4 makes the row four slots wide from the first
+// frame, which is what `slots = 4` is supposed to mean. `cmp rax,4` is
+// deliberately left alone: the result becomes `max(rax, 4)`, so a 5th item would
+// still widen the row on its own.
+//
+// Nothing else reads that count. The store feeds exactly eight sites - the four
+// `#items` populate calls and the four fill-loop bounds, blue/red x
+// compact/wide - and the fill loop bounds each slot with a real
+// `i < items.len()` before reading `items[i]`, so a slot past what a player owns
+// takes the same empty branch vanilla already used for an unbought 2nd or 3rd.
+//
+// PINNED BY A MASKED FORM, not by the bare cmp/cmov. `48 83 f8 04 b9 03 00 00
+// 00 48 0f 43 c8` is an ordinary `max(x, 3)` idiom with **67 occurrences** in
+// 0.6.0's .text, so validating those bytes alone at an RVA that had gone stale
+// would pass on somebody else's arithmetic and stamp a 4 into it - the
+// `patch_owned_cap` incident wearing a different hat. Including the two
+// `mov r8b, [rbp+disp32]` loads ahead of it, with the displacements masked,
+// makes the form **unique in the whole image**; that uniqueness is what
+// `tools/verify_rvas.py` re-checks, and it is also how to re-find the site after
+// an update. (Second, independent anchor: it is the only one of the 67 that lies
+// inside the ingame mega-function - the one holding the `item_slot` asset path.)
+unsafe fn patch_slot_count() -> String {
+    let base = exe_base_addr();
+    let sig = base + 0xc389b1; // 0.6.0-beta. Inside the ingame mega-function 0xc321b0; the count store lands at sig+0x1a.
+    // (offset, expected byte). The two gaps are the rbp displacements of the
+    // byte loads, which move with the frame layout and mean nothing here.
+    const EXPECT: [(usize, u8); 18] = [
+        (0, 0x8a), (1, 0x9d), //                                       mov bl, [rbp+disp32]
+        (6, 0x44), (7, 0x8a), (8, 0xb5), //                            mov r14b, [rbp+disp32]
+        (13, 0x48), (14, 0x83), (15, 0xf8), (16, 0x04), //             cmp rax, 4
+        (17, 0xb9), (18, 0x03), (19, 0x00), (20, 0x00), (21, 0x00), // mov ecx, 3   <- imm at +18
+        (22, 0x48), (23, 0x0f), (24, 0x43), (25, 0xc8), //             cmovae rcx, rax
+    ];
+    // DERIVED, never pinned - the same rule as `patch_owned_cap`'s imm and
+    // `patch_gate3`'s jbe, for the same reason: a separately pinned write
+    // address can go stale while the signature still validates, and then the
+    // check and the write are looking at two different places.
+    let imm = sig + 18;
+    if !readable(sig, 26) {
+        return "slot_count: unreadable".into();
+    }
+    for &(off, want) in EXPECT.iter() {
+        let got = *((sig + off) as *const u8);
+        if got != want {
+            return format!("slot_count: sig mismatch @+{off} = {got:#04x} (want {want:#04x})");
+        }
+    }
+    const RWX: u32 = 0x40;
+    let mut old = 0u32;
+    if VirtualProtect(imm, 1, RWX, &mut old) == 0 {
+        return "slot_count: VirtualProtect fail".into();
+    }
+    *(imm as *mut u8) = 0x04;
+    VirtualProtect(imm, 1, old, &mut old);
+    FlushInstructionCache(GetCurrentProcess(), imm, 1);
+    "slot_count: patched floor 3->4 (row is 4 slots from match start)".into()
+}
+
 // * AI auto-recommended 4th: raise the beam depth limit literal 2 -> 3 (0,1,2,3 = 4 iterations -> beam computes a 4-item build).
 //   Two sites (entry guard 0x19f14a5, back edge 0x19f1a11), both `cmp r8d,2` (41 83 f8 02) imm8 02 -> 03. Both are required.
 //   (extractor RE: the slot write is only a personal_tactics override, and the 4th stays auto so the beam value is kept -> raising the depth is enough.)
@@ -6289,6 +6310,10 @@ If the game has updated, please wait for a mod update. The rest of the mod is un
         patch_report.push_str(&format!("patch_owned_cap : {r}\n"));
         let rg = unsafe { patch_gate3() }; // * disable the slot-4 natural purchase gate
         patch_report.push_str(&format!("patch_gate3     : {rg}\n"));
+        // * Show the 4th in-match slot from the first frame, not only once
+        //   some player has completed a 4th item (0.6.0+ builds the row itself).
+        let rc4 = unsafe { patch_slot_count() };
+        patch_report.push_str(&format!("patch_slot_count: {rc4}\n"));
         // * Diagnostic (title-return crash bisection): slot UI patches (bound 0x30 -> 0x40 + full replace of helper 0xbbbd60) OFF.
         //   If the crash disappears the UI patch is the cause (-> helper trampoline / context gate). If it persists it is on the sim side.
         if !DIAG_SLOT_UI_OFF {

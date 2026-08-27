@@ -81,7 +81,7 @@ player_info:empty {
         @"asset/base/style/main#light_label";
         width: 100%;
         height: 100%;
-        size: 14;
+        size: 18;
 
         text: "0";
 
@@ -90,177 +90,13 @@ player_info:empty {
       }
     }
 
-    #slot0:color {
+    #items:empty {
       x: 0px;
       y: -1px;
-
-      width: 32px;
+      width: 134px;
       height: 32px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-      
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 30px;
-        height: 30px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 30px;
-          height: 30px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
     }
 
-    #slot1:color {
-      x: 34px;
-      y: -1px;
-
-      width: 32px;
-      height: 32px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 30px;
-        height: 30px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 30px;
-          height: 30px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
-
-    #slot2:color {
-      x: 68px;
-      y: -1px;
-
-      width: 32px;
-      height: 32px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 30px;
-        height: 30px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 30px;
-          height: 30px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
-
-    #slot3:color {
-      x: 102px;
-      y: -1px;
-
-      width: 32px;
-      height: 32px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 30px;
-        height: 30px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 30px;
-          height: 30px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
   }
 
   #red_player:empty {
@@ -341,7 +177,7 @@ player_info:empty {
         @"asset/base/style/main#light_label";
         width: 100%;
         height: 100%;
-        size: 14;
+        size: 18;
 
         text: "0";
 
@@ -350,177 +186,13 @@ player_info:empty {
       }
     }
 
-    #slot0:color {
+    #items:empty {
       x: 138px;
       y: -1px;
-
-      width: 32px;
+      width: 134px;
       height: 32px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 30px;
-        height: 30px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 30px;
-          height: 30px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
     }
 
-    #slot1:color {
-      x: 172px;
-      y: -1px;
-
-      width: 32px;
-      height: 32px;
-
-      color: #e8e8e800;
-      hover: {
-        color:#e8e8e8ff;
-      }
-      
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 30px;
-        height: 30px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 30px;
-          height: 30px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
-
-    #slot2:color {
-      x: 206px;
-      y: -1px;
-
-      width: 32px;
-      height: 32px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-      
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 30px;
-        height: 30px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 30px;
-          height: 30px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
-
-    #slot3:color {
-      x: 240px;
-      y: -1px;
-
-      width: 32px;
-      height: 32px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-      
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 30px;
-        height: 30px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 30px;
-          height: 30px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
   }
 
   #diff:empty {
