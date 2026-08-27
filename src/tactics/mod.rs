@@ -5726,6 +5726,70 @@ unsafe fn patch_slot_count() -> String {
     "slot_count: patched floor 3->4 (row is 4 slots from match start)".into()
 }
 
+// * Match Result screen row length: raise its slot-count floor 3 -> 4 (game 0.6.0+).
+//
+// The post-match screen has its own item row, and its own everything: a separate
+// layout (`match_result_component/{blue,red}_damage_slot`, `#items` 92px = three
+// 28px slots at a 4px gap), a separate populate routine (`0x1d68e70`, which
+// wipes the container's children and rebuilds them as `info.items.item{i}`), and
+// its own fit/shrink sizing with an 18px floor. None of it goes through the
+// in-match helper, so `patch_slot_count` does nothing here.
+//
+// What it shares is the shape of the count. `0x9b02f0` returns the maximum item
+// count over the players in the match, and `0x97aaee` floors it:
+//
+//     cmp rdx,4 / mov ecx,3 / cmovb rdx,rcx / test al,1 / cmove rdx,rcx
+//
+// so the row is 3 wide unless somebody finished a 4th item, and 4 wide for
+// *everyone* when somebody did — the count is one value for all ten rows, taken
+// by reference at `0x97ab7f` and handed to both the row builder and the
+// renderer. Raising the floor to 4 makes it 4 in short games too, which is what
+// `slots = 4` should mean. The `cmp rdx,4` is left alone, so the result is
+// `max(count, 4)` under both guards.
+//
+// WHY THIS IS SAFE, given the count also sizes the data the renderer indexes:
+// the "count exceeds what this player owns" path is not new and is not ours. A
+// 40-minute match where one player finishes a 4th item already gives all ten
+// rows four slots, including a 0/9/14 support on 15 CS who owns nowhere near
+// four — the surplus slots simply draw empty. Forcing the floor to 4 puts every
+// player of a short match into that same, already-exercised state.
+//
+// Pinned by an exact 19-byte form. Unlike `patch_slot_count`'s idiom this one is
+// already unique at 13 bytes (the `cmovb`/`test al,1`/`cmove` trio is
+// distinctive), and the form deliberately stops before the `mov [rbp+0x868],rdx`
+// that follows, so a frame-layout shift does not invalidate the signature.
+unsafe fn patch_result_slot_count() -> String {
+    let base = exe_base_addr();
+    let sig = base + 0x97aaee; // 0.6.0-beta. In the match-result screen builder 0x978670; the count store is at sig+0x13.
+    let expect = [
+        0x48u8, 0x83, 0xfa, 0x04, //             cmp rdx, 4
+        0xb9, 0x03, 0x00, 0x00, 0x00, //         mov ecx, 3   <- imm at +5
+        0x48, 0x0f, 0x42, 0xd1, //               cmovb rdx, rcx
+        0xa8, 0x01, //                           test al, 1
+        0x48, 0x0f, 0x44, 0xd1, //               cmove rdx, rcx
+    ];
+    // DERIVED, never pinned - see `patch_owned_cap`.
+    let imm = sig + 5;
+    if !readable(sig, expect.len()) {
+        return "result_slot_count: unreadable".into();
+    }
+    for (i, want) in expect.iter().enumerate() {
+        let got = *((sig + i) as *const u8);
+        if got != *want {
+            return format!("result_slot_count: sig mismatch @+{i} = {got:#04x} (want {want:#04x})");
+        }
+    }
+    const RWX: u32 = 0x40;
+    let mut old = 0u32;
+    if VirtualProtect(imm, 1, RWX, &mut old) == 0 {
+        return "result_slot_count: VirtualProtect fail".into();
+    }
+    *(imm as *mut u8) = 0x04;
+    VirtualProtect(imm, 1, old, &mut old);
+    FlushInstructionCache(GetCurrentProcess(), imm, 1);
+    "result_slot_count: patched floor 3->4 (match result always 4 slots)".into()
+}
+
 // * AI auto-recommended 4th: raise the beam depth limit literal 2 -> 3 (0,1,2,3 = 4 iterations -> beam computes a 4-item build).
 //   Two sites (entry guard 0x19f14a5, back edge 0x19f1a11), both `cmp r8d,2` (41 83 f8 02) imm8 02 -> 03. Both are required.
 //   (extractor RE: the slot write is only a personal_tactics override, and the 4th stays auto so the beam value is kept -> raising the depth is enough.)
@@ -6314,6 +6378,10 @@ If the game has updated, please wait for a mod update. The rest of the mod is un
         //   some player has completed a 4th item (0.6.0+ builds the row itself).
         let rc4 = unsafe { patch_slot_count() };
         patch_report.push_str(&format!("patch_slot_count: {rc4}\n"));
+        // * ...and the same for the post-match Match Result screen, which has
+        //   its own count with its own floor.
+        let rr4 = unsafe { patch_result_slot_count() };
+        patch_report.push_str(&format!("patch_result_cnt: {rr4}\n"));
         // * Diagnostic (title-return crash bisection): slot UI patches (bound 0x30 -> 0x40 + full replace of helper 0xbbbd60) OFF.
         //   If the crash disappears the UI patch is the cause (-> helper trampoline / context gate). If it persists it is on the sim side.
         if !DIAG_SLOT_UI_OFF {
