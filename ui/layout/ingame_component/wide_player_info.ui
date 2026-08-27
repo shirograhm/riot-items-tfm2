@@ -93,7 +93,7 @@ player_info:empty {
     #items:empty {
       x: 0px;
       y: -1px;
-      width: 134px;
+      width: 137px;
       height: 32px;
     }
 
@@ -187,9 +187,9 @@ player_info:empty {
     }
 
     #items:empty {
-      x: 138px;
+      x: 135px;
       y: -1px;
-      width: 134px;
+      width: 137px;
       height: 32px;
     }
 

@@ -102,7 +102,7 @@ player_info:empty {
 
     #items:empty {
       x: 59px;
-      width: 174px;
+      width: 166px;
       height: 42px;
     }
 
@@ -196,8 +196,8 @@ player_info:empty {
     }
 
     #items:empty {
-      x: 176px;
-      width: 174px;
+      x: 184px;
+      width: 166px;
       height: 42px;
     }
 

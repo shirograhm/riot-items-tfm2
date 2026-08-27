@@ -146,22 +146,39 @@ pub static MODE4: AtomicBool = AtomicBool::new(true);
 /// (`0x219ce00`) sizes the row from the container:
 ///
 /// ```text
-/// max_fit = floor((W + gap) / (slot + gap))        gap = 8 compact / 3 wide
+/// max_fit = roundf((W + gap) / (slot + gap))       gap = 8 compact / 3 wide
 /// count <= max_fit -> authored size, stride = slot + gap
-/// count >  max_fit -> size = floor((W - 2*(count-1)) / count), gap forced to 2
+/// count >  max_fit -> size = floorf((W - 2*(count-1)) / count), gap forced to 2
 /// ```
 ///
-/// Vanilla `W` is exactly three slots wide (142 = 3*42 + 2*8), so a fourth
-/// overflows and every icon shrinks to 34px. The layouts this ships widen
-/// `#items` to 174 (compact) / 134 (wide) — chosen so the shrink path divides
-/// out to the authored 42px / 32px exactly — and move `#kda`/`#cs` by the
-/// difference. Four full-size icons, 2px apart, which is the spacing the mod
-/// showed before 0.6.0.
+/// **`max_fit` rounds, it does not floor** (`0x3495f11` and `0x3495f35` resolve
+/// through the import table to `roundf` and `floorf`). That distinction decides
+/// which regime a width lands in, and getting it backwards is not a rounding
+/// quibble — `W = 174` gives `roundf(3.64) = 4`, so four slots take the *fit*
+/// path at their authored 50px stride and draw a 192px row inside a 174px box,
+/// hanging 18px past the panel. That was the first attempt at these numbers.
 ///
-/// With `patch_slot_count` in place the count is always >= 4, so this layout
-/// only ever takes the shrink path and the row never re-spaces mid-match. The
-/// widths still have to be exactly these: at any other `W` the same division
-/// produces a fractional slot size and the icons come out scaled.
+/// Vanilla `W` is exactly three slots wide (142 = 3*42 + 2*8), so four shrinks
+/// every icon to 34px. Only two widths hold four without overflowing, and the
+/// two layouts take different ones because they have different room to spare:
+///
+/// ```text
+/// compact  W=166  shrink  floorf((166-6)/4) = 40  ->  4 x 40px, 2px gaps, row 166
+/// wide     W=137  fit                             ->  4 x 32px, 3px gaps, row 137
+/// ```
+///
+/// Compact shrinks on purpose. The fit path would need `W = 192`, which does not
+/// fit the red side: `#items` would start at x:159, leaving 119px for `#cs` (76)
+/// and `#kda` (84) ahead of it, whose text centres land 37px apart — close enough
+/// to collide on a 4-digit CS. 166 is the largest `W` that still rounds below
+/// 3.5, and it leaves `#kda`/`#cs` exactly where they are while packing the icons
+/// at the 42px stride the mod used before 0.6.0. Wide has the room, so it keeps
+/// full-size icons at its exact natural width.
+///
+/// With `patch_slot_count` the count is always 4 here, so each layout stays in
+/// one regime for the whole match and the row never re-spaces. Neither width is
+/// free to nudge: move compact past 166 and it flips to the fit path and
+/// overflows; move wide off 137 and it either overflows or starts scaling.
 ///
 /// Both files are the vanilla layout with fourteen numbers changed, generated
 /// by `tools/rebase_player_info.py`. **Re-run that after a game update rather
