@@ -3,6 +3,7 @@
 items! {
     black_cleaver,
     deaths_dance,
+    eclipse,
     experimental_hexplate,
     frozen_mallet,
     overlords_bloodmail,

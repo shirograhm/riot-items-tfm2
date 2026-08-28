@@ -57,6 +57,7 @@ impl StableItem for HauntingGuise {
             "riftmaker".to_string(),
             "bloodletters_curse".to_string(),
             "dusk_and_dawn".to_string(),
+            "liandrys_torment".to_string(),
         ]
     }
 

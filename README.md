@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 134 new items (76 base + 58 Radiant) to the game.
+Reskins the 30 existing items and also adds 136 new items (77 base + 59 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -59,6 +59,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Diamond Tipped Spear** | 1500G | +35% AS<br>+10% CDR | Pierce: Gain 60 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
 | **Dusk and Dawn** | 1400G | +200 HP<br>+60 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Echoes of Helia** | 1100G | +250 HP<br>+4 HP Regen<br>+45 AP<br>+15% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion consumes all Soul Charges and heals them equal to the consumed amount. |
+| **Eclipse** | 1300G | +55 AD<br>+15% CDR | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast. Hitting a champion that is already marked consumes the mark to deal bonus physical damage equal to 6% of their maximum health and grant you a shield of 100 + 15% of your Attack Damage for 2 seconds (6 second cooldown). |
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Overdrive: Gain 15% cooldown reduction on your ultimate skill. |
 | **Frozen Heart** | 1300G | +65 Armor<br>+10% CDR<br>+10% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Frozen Mallet** | 1400G | +400 HP<br>+40 AD | Icy: Basic attacks apply a 15% slow for 2 seconds. |
@@ -122,6 +123,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Diamond Tipped Spear** | 2250G | +60% AS<br>+10% CDR | Pierce: Gain 100 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
 | **Radiant Dusk and Dawn** | 2000G | +300 HP<br>+100 AP<br>+25% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Radiant Echoes of Helia** | 1500G | +450 HP<br>+6 HP Regen<br>+65 AP<br>+20% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion consumes all Soul Charges and heals them equal to the consumed amount. |
+| **Radiant Eclipse** | 1950G | +95 AD<br>+15% CDR | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast. Hitting a champion that is already marked consumes the mark to deal bonus physical damage equal to 10% of their maximum health and grant you a shield of 160 + 20% of your Attack Damage for 2 seconds (6 second cooldown). |
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Overdrive: Gain 25% cooldown reduction on your ultimate skill. |
 | **Radiant Frozen Heart** | 1900G | +110 Armor<br>+15% CDR<br>+15% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Radiant Frozen Mallet** | 2000G | +600 HP<br>+60 AD | Icy: Basic attacks deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |

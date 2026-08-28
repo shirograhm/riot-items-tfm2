@@ -94,6 +94,8 @@ impl StableItem for Phage {
             "black_cleaver".to_string(),
             "steraks_gage".to_string(),
             "trinity_force".to_string(),
+            "spear_of_shojin".to_string(),
+            "sundered_sky".to_string(),
         ]
     }
 

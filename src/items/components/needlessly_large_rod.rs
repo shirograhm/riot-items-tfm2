@@ -55,6 +55,7 @@ impl StableItem for NeedlesslyLargeRod {
             "rabadons_deathcap".to_string(),
             "shadowflame".to_string(),
             "rylais_crystal_scepter".to_string(),
+            "nashors_tooth".to_string(),
         ]
     }
 
