@@ -523,18 +523,6 @@
             "name": "Bandleglass Mirror",
             "option": ""
         },
-        "forbidden_idol": {
-            "name": "Forbidden Idol",
-            "option": ""
-        },
-        "sword_of_blossoming_dawn": {
-            "name": "Sword of Blossoming Dawn",
-            "option": ""
-        },
-        "radiant_sword_of_blossoming_dawn": {
-            "name": "Radiant Sword of Blossoming Dawn",
-            "option": ""
-        },
         "zekes_herald": {
             "name": "Zeke's Herald",
             "option": "\nAura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
@@ -729,11 +717,11 @@
         },
         "eclipse": {
             "name": "Eclipse",
-            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion <#92dc7bff>marks<> them for <#e8a800ff>2 seconds<>, up to once per cast. Hitting a champion that is already <#92dc7bff>marked<> consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>6% of their maximum health<> and grant you a <#cab944ff>shield<> of <#d8c9b3ff>100<> + <#d8c9b3ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
+            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>100<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
         },
         "radiant_eclipse": {
             "name": "Radiant Eclipse",
-            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion <#92dc7bff>marks<> them for <#e8a800ff>2 seconds<>, up to once per cast. Hitting a champion that is already <#92dc7bff>marked<> consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>10% of their maximum health<> and grant you a <#cab944ff>shield<> of <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
+            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>8% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>120<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
         },
         "axiom_arc": {
             "name": "Axiom Arc",
@@ -749,11 +737,23 @@
         },
         "feral_flare": {
             "name": "Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25 (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters.\n\nBounty: Killing monsters grants you 20% additional gold."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
         },
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25 (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+        },
+        "forbidden_idol": {
+            "name": "Forbidden Idol",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Sword of Blossoming Dawn",
+            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<> <#60e84dff>health<>."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Radiant Sword of Blossoming Dawn",
+            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<> <#60e84dff>health<>."
         }
     },
     "vi": {
@@ -1288,18 +1288,6 @@
             "name": "Gương Thần Bandle",
             "option": ""
         },
-        "forbidden_idol": {
-            "name": "Dị Vật Tai Ương",
-            "option": ""
-        },
-        "sword_of_blossoming_dawn": {
-            "name": "Kiếm Bình Minh Nở Rộ",
-            "option": ""
-        },
-        "radiant_sword_of_blossoming_dawn": {
-            "name": "Kiếm Bình Minh Nở Rộ Ánh Sáng",
-            "option": ""
-        },
         "liandrys_torment": {
             "name": "Mặt Nạ Đọa Đày Liandry",
             "option": "\nThống Khổ: Khi gây sát thương kĩ năng, thiêu đốt kẻ địch, khiến chúng chịu <#d94c49ff>6% máu tối đa của chúng<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>3 giây<>. Tối đa <#a974ffff>40 sát thương phép<> mỗi nhịp lên lính và quái vật."
@@ -1486,11 +1474,11 @@
         },
         "eclipse": {
             "name": "Nguyệt Đao",
-            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ <#92dc7bff>đánh dấu<> chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị <#92dc7bff>đánh dấu<> sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>6% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> bằng <#d8c9b3ff>100<> + <#d8c9b3ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
+            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>5% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>100<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
         },
         "radiant_eclipse": {
             "name": "Nguyệt Đao Ánh Sáng",
-            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ <#92dc7bff>đánh dấu<> chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị <#92dc7bff>đánh dấu<> sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>10% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> bằng <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
+            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>8% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>120<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
         },
         "axiom_arc": {
             "name": "Nguyên Tố Luân",
@@ -1506,11 +1494,23 @@
         },
         "feral_flare": {
             "name": "Ngọn Lửa Hoang Dã",
-            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25 <#92dc7bff>(+1 mỗi cộng dồn Hoang Dã)<> sát thương phép cộng thêm<> và hồi <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
         },
         "radiant_feral_flare": {
             "name": "Ngọn Lửa Hoang Dã Ánh Sáng",
-            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25 <#92dc7bff>(+1 mỗi cộng dồn Hoang Dã)<> sát thương phép cộng thêm<> và hồi <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+        },
+        "forbidden_idol": {
+            "name": "Dị Vật Tai Ương",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Kiếm Bình Minh Nở Rộ",
+            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<> <#60e84dff>máu<>."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Kiếm Bình Minh Nở Rộ Ánh Sáng",
+            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<> <#60e84dff>máu<>."
         }
     },
     "zh-hans": {
@@ -2045,18 +2045,6 @@
             "name": "班德尔玻璃镜",
             "option": ""
         },
-        "forbidden_idol": {
-            "name": "禁忌雕像",
-            "option": ""
-        },
-        "sword_of_blossoming_dawn": {
-            "name": "花晓之剑",
-            "option": ""
-        },
-        "radiant_sword_of_blossoming_dawn": {
-            "name": "光明版花晓之剑",
-            "option": ""
-        },
         "liandrys_torment": {
             "name": "兰德里的折磨",
             "option": "\n苦难：造成技能伤害时点燃敌人，使其在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其6%最大生命值<>的<#a974ffff>魔法伤害<>。对小兵和野怪每跳最多造成 <#a974ffff>40点魔法伤害<>。"
@@ -2243,11 +2231,11 @@
         },
         "eclipse": {
             "name": "星蚀",
-            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会<#92dc7bff>标记<>其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被<#92dc7bff>标记<>的英雄会消耗该标记，造成相当于<#d94c49ff>其6%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得相当于 <#d8c9b3ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#d8c9b3ff>15%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
+            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其5%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 15%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
         },
         "radiant_eclipse": {
             "name": "光明版星蚀",
-            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会<#92dc7bff>标记<>其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被<#92dc7bff>标记<>的英雄会消耗该标记，造成相当于<#d94c49ff>其10%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得相当于 <#d8c9b3ff>160<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#d8c9b3ff>20%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
+            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其8%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 20%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
         },
         "axiom_arc": {
             "name": "公理圆弧",
@@ -2263,11 +2251,23 @@
         },
         "feral_flare": {
             "name": "野性之炎",
-            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25 <#92dc7bff>（每层野性+1）<>点魔法伤害<>并回复 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
         },
         "radiant_feral_flare": {
             "name": "光明版野性之炎",
-            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25 <#92dc7bff>（每层野性+1）<>点魔法伤害<>并回复 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+        },
+        "forbidden_idol": {
+            "name": "禁忌雕像",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "花晓之剑",
+            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>点<#60e84dff>生命值<>。"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "光明版花晓之剑",
+            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>点<#60e84dff>生命值<>。"
         }
     },
     "pt-BR": {
@@ -2802,18 +2802,6 @@
             "name": "Espelho de Bandópolis",
             "option": ""
         },
-        "forbidden_idol": {
-            "name": "Ídolo Proibido",
-            "option": ""
-        },
-        "sword_of_blossoming_dawn": {
-            "name": "Espada da Alvorada Florescente",
-            "option": ""
-        },
-        "radiant_sword_of_blossoming_dawn": {
-            "name": "Espada da Alvorada Florescente Radiante",
-            "option": ""
-        },
         "liandrys_torment": {
             "name": "Tormento de Liandry",
             "option": "\nSofrimento: Causar dano de habilidade queima os inimigos, fazendo-os sofrer <#d94c49ff>6% da Vida Máxima deles<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Máximo de <#a974ffff>40 de dano mágico<> por tique contra tropas e monstros."
@@ -3000,11 +2988,11 @@
         },
         "eclipse": {
             "name": "Eclipse",
-            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o <#92dc7bff>marca<> por <#e8a800ff>2 segundos<>, no máximo uma vez por conjuração. Atingir um campeão que já esteja <#92dc7bff>marcado<> consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>6% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> de <#d8c9b3ff>100<> + <#d8c9b3ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
+            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>5% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>100<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
         },
         "radiant_eclipse": {
             "name": "Eclipse Radiante",
-            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o <#92dc7bff>marca<> por <#e8a800ff>2 segundos<>, no máximo uma vez por conjuração. Atingir um campeão que já esteja <#92dc7bff>marcado<> consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>10% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> de <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
+            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>8% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>120<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
         },
         "axiom_arc": {
             "name": "Arco do Axioma",
@@ -3020,11 +3008,23 @@
         },
         "feral_flare": {
             "name": "Chama Feral",
-            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25 <#92dc7bff>(+1 por acúmulo de Feral)<> de dano mágico bônus<> e restauram <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> e restauram <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
         },
         "radiant_feral_flare": {
             "name": "Chama Feral Radiante",
-            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25 <#92dc7bff>(+1 por acúmulo de Feral)<> de dano mágico bônus<> e restauram <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> e restauram <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+        },
+        "forbidden_idol": {
+            "name": "Ídolo Proibido",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Espada da Alvorada Florescente",
+            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<> de <#60e84dff>Vida<>."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Espada da Alvorada Florescente Radiante",
+            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<> de <#60e84dff>Vida<>."
         }
     },
     "ru": {
@@ -3559,18 +3559,6 @@
             "name": "Зеркало йордлов",
             "option": ""
         },
-        "forbidden_idol": {
-            "name": "Запретный идол",
-            "option": ""
-        },
-        "sword_of_blossoming_dawn": {
-            "name": "Меч сияющего рассвета",
-            "option": ""
-        },
-        "radiant_sword_of_blossoming_dawn": {
-            "name": "Лучезарный Меч сияющего рассвета",
-            "option": ""
-        },
         "liandrys_torment": {
             "name": "Мучения Лиандри",
             "option": "\nСтрадание: Нанесение урона умением поджигает врагов, заставляя их получить <#d94c49ff>6% их максимального здоровья<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>3 секунд<>. Наносит максимум <#a974ffff>40 магического урона<> за тик по миньонам и монстрам."
@@ -3757,11 +3745,11 @@
         },
         "eclipse": {
             "name": "Затмение",
-            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону <#92dc7bff>отмечает<> его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по чемпиону, который уже <#92dc7bff>отмечен<>, поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>6% его максимального здоровья<> и давая вам <#cab944ff>щит<> в размере <#d8c9b3ff>100<> + <#d8c9b3ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
+            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>5% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>100<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
         },
         "radiant_eclipse": {
             "name": "Лучезарное Затмение",
-            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону <#92dc7bff>отмечает<> его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по чемпиону, который уже <#92dc7bff>отмечен<>, поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>10% его максимального здоровья<> и давая вам <#cab944ff>щит<> в размере <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
+            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>8% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>120<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
         },
         "axiom_arc": {
             "name": "Шакрам Аксиом",
@@ -3777,11 +3765,23 @@
         },
         "feral_flare": {
             "name": "Дикое пламя",
-            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25 <#92dc7bff>(+1 за заряд Дикости)<> дополнительного магического урона<> и восстанавливают <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
         },
         "radiant_feral_flare": {
             "name": "Лучезарное Дикое пламя",
-            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25 <#92dc7bff>(+1 за заряд Дикости)<> дополнительного магического урона<> и восстанавливают <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+        },
+        "forbidden_idol": {
+            "name": "Запретный идол",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Меч сияющего рассвета",
+            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<> <#60e84dff>здоровья<>."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Лучезарный Меч сияющего рассвета",
+            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<> <#60e84dff>здоровья<>."
         }
     },
     "ko": {
@@ -4308,18 +4308,6 @@
             "name": "밴들유리 거울",
             "option": ""
         },
-        "forbidden_idol": {
-            "name": "금지된 우상",
-            "option": ""
-        },
-        "sword_of_blossoming_dawn": {
-            "name": "꽃피는 새벽의 검",
-            "option": ""
-        },
-        "radiant_sword_of_blossoming_dawn": {
-            "name": "찬란한 꽃피는 새벽의 검",
-            "option": ""
-        },
         "zekes_herald": {
             "name": "지크의 전령",
             "option": "\n오라: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치 30<>과 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 6%<>를 부여합니다."
@@ -4514,11 +4502,11 @@
         },
         "eclipse": {
             "name": "월식",
-            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 <#92dc7bff>표식<> 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 이미 <#92dc7bff>표식<>이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#d8c9b3ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
+            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
         },
         "radiant_eclipse": {
             "name": "찬란한 월식",
-            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 <#92dc7bff>표식<> 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 이미 <#92dc7bff>표식<>이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#d8c9b3ff>160<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
+            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 8%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
         },
         "axiom_arc": {
             "name": "원칙의 원형낫",
@@ -4534,11 +4522,23 @@
         },
         "feral_flare": {
             "name": "야성의 불꽃",
-            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25 <#92dc7bff>(야성 중첩당 +1)<>의 추가 마법 피해<>를 입히고 <#60e84dff>15<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>15<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
         },
         "radiant_feral_flare": {
             "name": "찬란한 야성의 불꽃",
-            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25 <#92dc7bff>(야성 중첩당 +1)<>의 추가 마법 피해<>를 입히고 <#60e84dff>15<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>15<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+        },
+        "forbidden_idol": {
+            "name": "금지된 우상",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "꽃피는 새벽의 검",
+            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "찬란한 꽃피는 새벽의 검",
+            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         }
     }
 }
