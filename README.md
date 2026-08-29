@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 139 new items (79 base + 60 Radiant) to the game.
+Reskins the 30 existing items and also adds 140 new items (80 base + 60 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -34,6 +34,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Caulfield's Warhammer** | 950G | +45 AD<br>+10% CDR | — |
 | **Glacial Buckler** | 800G | +50 Armor<br>+5% CDR | — |
 | **Haunting Guise** | 950G | +200 HP<br>+60 AP | — |
+| **Hearthbound Axe** | 950G | +30 AD<br>+20% AS | — |
 | **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
 | **Noonquiver** | 800G | +45 AD<br>+10% Crit Chance | — |

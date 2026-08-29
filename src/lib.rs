@@ -143,17 +143,6 @@ fn is_enemy_champion(ctx: &mut StableSim<'_>, caster: usize, target: usize) -> b
         .unwrap_or(false)
 }
 
-/// Neutral jungle and epic monsters. The stable API exposes only
-/// `is_champion`, `is_tower` and `is_minion`, so a monster is what is left
-/// once those three are ruled out — the same elimination
-/// `blade_of_the_ruined_king` already relies on for its "minions and
-/// monsters" damage cap. Nothing in the API separates an epic monster from
-/// an ordinary camp, which is why the jungle line stacks on champion
-/// takedowns alone.
-fn is_monster(entity: &StableEntity<'_, '_>) -> bool {
-    !entity.is_champion() && !entity.is_tower() && !entity.is_minion()
-}
-
 fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: i32, name: &str) {
     let Some((champion_id, favors_ap, already_applied)) = ctx.get_player(player).and_then(|p| {
         let champion_ref = p.champion()?;
@@ -411,8 +400,9 @@ fn init(host: &StableHost) -> StableMod {
     // saves address items by registration index rather than by key, so inserting
     // one mid-list renumbers every item after it.
 
-    // Feral Flare has no component: the Hunter's Machete -> Madred's Razors ->
-    // Wriggle's Lantern line it used to complete was removed.
+    // Hearthbound Axe -> Feral Flare -> Radiant Feral Flare. Replaces the
+    // Hunter's Machete -> Madred's Razors -> Wriggle's Lantern line.
+    reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
     reg.add_item(configured!("feral_flare" => FeralFlare));
     reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
 

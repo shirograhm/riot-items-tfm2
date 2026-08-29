@@ -22,7 +22,11 @@ pub struct FeralFlare {
 impl FeralFlare {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("feral_flare", &[], &["radiant_feral_flare"]),
+            meta: ItemMeta::base(
+                "feral_flare",
+                &["hearthbound_axe"],
+                &["radiant_feral_flare"],
+            ),
             price: 1400,
             attack: 27,
             attack_speed_mult: 27,

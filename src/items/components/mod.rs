@@ -10,6 +10,7 @@ items! {
     glacial_buckler,
     glowing_mote,
     haunting_guise,
+    hearthbound_axe,
     last_whisper,
     needlessly_large_rod,
     noonquiver,
