@@ -1044,45 +1044,21 @@
             "w": 0.05,
             "h": 0.05
         },
-        "imperial_mandate": {
+        "forbidden_idol": {
             "x": 0.7,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "radiant_imperial_mandate": {
+        "ardent_censer": {
             "x": 0.75,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "ardent_censer": {
+        "radiant_ardent_censer": {
             "x": 0.8,
             "y": 0.4,
-            "w": 0.05,
-            "h": 0.05
-        },
-        "radiant_ardent_censer": {
-            "x": 0.85,
-            "y": 0.4,
-            "w": 0.05,
-            "h": 0.05
-        },
-        "staff_of_flowing_water": {
-            "x": 0.9,
-            "y": 0.4,
-            "w": 0.05,
-            "h": 0.05
-        },
-        "radiant_staff_of_flowing_water": {
-            "x": 0.95,
-            "y": 0.4,
-            "w": 0.05,
-            "h": 0.05
-        },
-        "forbidden_idol": {
-            "x": 0.0,
-            "y": 0.45,
             "w": 0.05,
             "h": 0.05
         }
