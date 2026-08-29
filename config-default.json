@@ -1192,7 +1192,10 @@
     "hp_regen": 2,
     "magic_power": 45,
     "skill_cooldown_mult": 5,
-    "move_speed_mult": 5
+    "move_speed_mult": 5,
+    "effect_attack_speed_mult": 20,
+    "effect_enemy_max_hp_damage": 2,
+    "effect_duration_seconds": 6
   },
   "radiant_ardent_censer": {
     "price": 1700,
@@ -1200,6 +1203,9 @@
     "hp_regen": 4,
     "magic_power": 90,
     "skill_cooldown_mult": 5,
-    "move_speed_mult": 5
+    "move_speed_mult": 5,
+    "effect_attack_speed_mult": 20,
+    "effect_enemy_max_hp_damage": 2,
+    "effect_duration_seconds": 6
   }
 }

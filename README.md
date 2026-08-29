@@ -48,7 +48,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Ardent Censer** | 1000G | +200 HP<br>+2 HP Regen<br>+45 AP<br>+5% CDR<br>+5% MS | — |
+| **Ardent Censer** | 1000G | +200 HP<br>+2 HP Regen<br>+45 AP<br>+5% CDR<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus magic damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Atma's Reckoning** | 1450G | +500 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Axiom Arc** | 1300G | +70 AD<br>+10% CDR | Gain 18 Lethality.<br>Flux: Gain 10% (+0.2% per 1 Lethality) cooldown reduction on your ultimate skill. |
 | **Bastionbreaker** | 1300G | +65 AD<br>+15% CDR | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus physical damage. |
@@ -101,7 +101,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Sterak's Gage** | 1400G | +400 HP<br>+30 AD<br>+15% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Stormrazor** | 1550G | +65 AD<br>+20% AS<br>+20% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Sundered Sky** | 1400G | +400 HP<br>+30 AD<br>+10% CDR | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 20% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
-| **Sword of Blossoming Dawn** | 1000G | +200 HP<br>+40 AP<br>+20% AS<br>+10% CDR | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP) health. |
+| **Sword of Blossoming Dawn** | 1000G | +200 HP<br>+40 AP<br>+20% AS<br>+10% CDR | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
 | **Trinity Force** | 1400G | +200 HP<br>+30 AD<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Anguish: Landing an Ability on an enemy champion heals you for 35 + 1% of your maximum health. |
@@ -116,7 +116,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Radiant Ardent Censer** | 1700G | +400 HP<br>+4 HP Regen<br>+90 AP<br>+5% CDR<br>+5% MS | — |
+| **Radiant Ardent Censer** | 1700G | +400 HP<br>+4 HP Regen<br>+90 AP<br>+5% CDR<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus magic damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Radiant Atma's Reckoning** | 2050G | +850 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Radiant Axiom Arc** | 1900G | +105 AD<br>+15% CDR | Gain 18 Lethality.<br>Flux: Gain 10% (+0.2% per 1 Lethality) cooldown reduction on your ultimate skill. |
 | **Radiant Bastionbreaker** | 1950G | +110 AD<br>+20% CDR | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus physical damage. |
@@ -169,7 +169,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Sterak's Gage** | 2000G | +650 HP<br>+50 AD<br>+20% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Radiant Stormrazor** | 2200G | +100 AD<br>+40% AS<br>+25% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Radiant Sundered Sky** | 2000G | +550 HP<br>+65 AD<br>+20% CDR | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 20% bonus damage and heals you for 60 + 10% of your missing health (20 second cooldown per target). |
-| **Radiant Sword of Blossoming Dawn** | 1700G | +350 HP<br>+70 AP<br>+35% AS<br>+15% CDR | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP) health. |
+| **Radiant Sword of Blossoming Dawn** | 1700G | +350 HP<br>+70 AP<br>+35% AS<br>+15% CDR | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
 | **Radiant Trinity Force** | 2000G | +333 HP<br>+33 AD<br>+33% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Anguish: Landing an Ability on an enemy champion heals you for 50 + 2.5% of your maximum health. |

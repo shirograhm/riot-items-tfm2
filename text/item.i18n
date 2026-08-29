@@ -749,11 +749,19 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Sword of Blossoming Dawn",
-            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<> <#60e84dff>health<>."
+            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Radiant Sword of Blossoming Dawn",
-            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<> <#60e84dff>health<>."
+            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+        },
+        "ardent_censer": {
+            "name": "Ardent Censer",
+            "option": "\nSanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#a974ffff>bonus magic damage<> on-hit equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
+        },
+        "radiant_ardent_censer": {
+            "name": "Radiant Ardent Censer",
+            "option": "\nSanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#a974ffff>bonus magic damage<> on-hit equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
         }
     },
     "vi": {
@@ -1506,11 +1514,19 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ",
-            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<> <#60e84dff>máu<>."
+            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ Ánh Sáng",
-            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<> <#60e84dff>máu<>."
+            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+        },
+        "ardent_censer": {
+            "name": "Lư Hương Sôi Sục",
+            "option": "\nCầu Nguyện: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#a974ffff>sát thương phép<> khi đánh trúng bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
+        },
+        "radiant_ardent_censer": {
+            "name": "Lư Hương Sôi Sục Ánh Sáng",
+            "option": "\nCầu Nguyện: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#a974ffff>sát thương phép<> khi đánh trúng bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
         }
     },
     "zh-hans": {
@@ -2263,11 +2279,19 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "花晓之剑",
-            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>点<#60e84dff>生命值<>。"
+            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#d8c9b3ff>15<> - <#d8c9b3ff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "光明版花晓之剑",
-            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>点<#60e84dff>生命值<>。"
+            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#d8c9b3ff>15<> - <#d8c9b3ff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
+        },
+        "ardent_censer": {
+            "name": "炽热香炉",
+            "option": "\n圣洁化：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 2%<>的<#a974ffff>额外魔法伤害<>，持续 <#e8a800ff>6秒<>。"
+        },
+        "radiant_ardent_censer": {
+            "name": "光明版炽热香炉",
+            "option": "\n圣洁化：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 2%<>的<#a974ffff>额外魔法伤害<>，持续 <#e8a800ff>6秒<>。"
         }
     },
     "pt-BR": {
@@ -3020,11 +3044,19 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Espada da Alvorada Florescente",
-            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<> de <#60e84dff>Vida<>."
+            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Espada da Alvorada Florescente Radiante",
-            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<> de <#60e84dff>Vida<>."
+            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
+        },
+        "ardent_censer": {
+            "name": "Turíbulo Ardente",
+            "option": "\nSantificar: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#a974ffff>dano mágico bônus<> no acerto equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
+        },
+        "radiant_ardent_censer": {
+            "name": "Turíbulo Ardente Radiante",
+            "option": "\nSantificar: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#a974ffff>dano mágico bônus<> no acerto equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
         }
     },
     "ru": {
@@ -3777,11 +3809,19 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Меч сияющего рассвета",
-            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<> <#60e84dff>здоровья<>."
+            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Лучезарный Меч сияющего рассвета",
-            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<> <#60e84dff>здоровья<>."
+            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
+        },
+        "ardent_censer": {
+            "name": "Пылающая кадильница",
+            "option": "\nОсвящение: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#a974ffff>дополнительный магический урон<> при попадании в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
+        },
+        "radiant_ardent_censer": {
+            "name": "Лучезарная Пылающая кадильница",
+            "option": "\nОсвящение: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#a974ffff>дополнительный магический урон<> при попадании в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
         }
     },
     "ko": {
@@ -4534,11 +4574,19 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "꽃피는 새벽의 검",
-            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#d8c9b3ff>15<>~<#d8c9b3ff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "찬란한 꽃피는 새벽의 검",
-            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#d8c9b3ff>15<>~<#d8c9b3ff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+        },
+        "ardent_censer": {
+            "name": "불타는 향로",
+            "option": "\n축성: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#a974ffff>추가 마법 피해<>를 입힙니다."
+        },
+        "radiant_ardent_censer": {
+            "name": "찬란한 불타는 향로",
+            "option": "\n축성: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#a974ffff>추가 마법 피해<>를 입힙니다."
         }
     }
 }
