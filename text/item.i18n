@@ -633,11 +633,11 @@
         },
         "bloodsong": {
             "name": "Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "radiant_bloodsong": {
             "name": "Radiant Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "serrated_dirk": {
             "name": "Serrated Dirk",
@@ -729,11 +729,11 @@
         },
         "imperial_mandate": {
             "name": "Imperial Mandate",
-            "option": "\nCommand: Landing an Ability on an enemy champion marks them as <#92dc7bff>Vulnerable<> for <#e8a800ff>4 seconds<>, increasing their <#d94c49ff>damage taken<> by <#d94c49ff>7%<>. Subsequent hits against the same target extend the duration."
+            "option": "\nCoordinated Fire: Landing an Ability on an enemy champion marks them for <#e8a800ff>5 seconds<>. Allied champions that damage marked enemies consume the mark, dealing <#d94c49ff>10% of the target's current health<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>9 second<> cooldown per target)."
         },
         "radiant_imperial_mandate": {
             "name": "Radiant Imperial Mandate",
-            "option": "\nCommand: Landing an Ability on an enemy champion marks them as <#92dc7bff>Vulnerable<> for <#e8a800ff>4 seconds<>, increasing their <#d94c49ff>damage taken<> by <#d94c49ff>7%<>. Subsequent hits against the same target extend the duration."
+            "option": "\nCoordinated Fire: Landing an Ability on an enemy champion marks them for <#e8a800ff>5 seconds<>. Allied champions that damage marked enemies consume the mark, dealing <#d94c49ff>10% of the target's current health<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>9 second<> cooldown per target)."
         },
         "radiant_axiom_arc": {
             "name": "Radiant Axiom Arc",
@@ -1386,11 +1386,11 @@
         },
         "bloodsong": {
             "name": "Khúc Ca Máu",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>8%<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "radiant_bloodsong": {
             "name": "Khúc Ca Máu Ánh Sáng",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>8%<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "serrated_dirk": {
             "name": "Dao Găm Răng Cưa",
@@ -2139,11 +2139,11 @@
         },
         "bloodsong": {
             "name": "血歌",
-            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>8%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "radiant_bloodsong": {
             "name": "光明版血歌",
-            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>8%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "serrated_dirk": {
             "name": "锯齿短匕",
@@ -2892,11 +2892,11 @@
         },
         "bloodsong": {
             "name": "Canção de Sangue",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>8%<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "radiant_bloodsong": {
             "name": "Canção de Sangue Radiante",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>8%<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "serrated_dirk": {
             "name": "Adaga Serrilhada",
@@ -3645,11 +3645,11 @@
         },
         "bloodsong": {
             "name": "Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>8%<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "radiant_bloodsong": {
             "name": "Лучезарная Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>8%<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "serrated_dirk": {
             "name": "Зубчатый кинжал",
@@ -4398,11 +4398,11 @@
         },
         "bloodsong": {
             "name": "피의 노래",
-            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>8%<> 증가합니다."
+            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "radiant_bloodsong": {
             "name": "찬란한 피의 노래",
-            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>8%<> 증가합니다."
+            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "serrated_dirk": {
             "name": "톱날 단검",

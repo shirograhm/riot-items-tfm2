@@ -335,8 +335,6 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
-    // Replaces the vanilla Hunter's Machete -> Madred's Razors -> Wriggle's
-    // Lantern line, which this mod drops.
     reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
     reg.add_item(configured!("last_whisper" => LastWhisper));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
@@ -475,14 +473,11 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
 
-    // What `item-builds.json` reaches the game through. Registered whether or
-    // not a config exists: the hook keeps the engine's build when it has nothing
-    // to say, so an inert install costs one call per player per match.
+    // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
-
     reg.set_server_extension(NativeTapExtension);
-    // Client-side in-game build picker on the strategy screen. Purely additive:
-    // it no-ops unless the `ui/layout/strategy` asset override is in place.
+
+    // in-game build picker
     reg.set_extension(strategy_ui::StrategyPicker);
 
     host.log(

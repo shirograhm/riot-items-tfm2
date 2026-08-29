@@ -39,7 +39,7 @@ impl Bloodsong {
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
             effect_cooldown_seconds: 3.5,
-            effect_damaged_amplify: 8,
+            effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
             // Non-vital stats (internals)
             spellblade_ready: false,
@@ -58,7 +58,7 @@ impl Bloodsong {
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
             effect_cooldown_seconds: 3.5,
-            effect_damaged_amplify: 8,
+            effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
             ..Self::base()
         }
