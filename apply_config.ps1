@@ -167,10 +167,12 @@ $rffStack = [int]$config.radiant_feral_flare.effect_stack_magic_damage
 $rffHeal = [int]$config.radiant_feral_flare.effect_bonus_flat_heal
 $rffStacks = [int]$config.radiant_feral_flare.effect_max_stacks
 $rffMinion = [int]$config.radiant_feral_flare.effect_minion_percent
+$aaLeth = [int]$config.axiom_arc.effect_lethality
 $aaUltCdr = [int]$config.axiom_arc.effect_ult_cooldown_mult
-$aaLeth = [double]$config.axiom_arc.effect_ult_cooldown_per_lethality
+$aaPerLeth = [double]$config.axiom_arc.effect_ult_cooldown_per_lethality
+$raaLeth = [int]$config.radiant_axiom_arc.effect_lethality
 $raaUltCdr = [int]$config.radiant_axiom_arc.effect_ult_cooldown_mult
-$raaLeth = [double]$config.radiant_axiom_arc.effect_ult_cooldown_per_lethality
+$raaPerLeth = [double]$config.radiant_axiom_arc.effect_ult_cooldown_per_lethality
 $imAmp = [int]$config.imperial_mandate.effect_damaged_amplify
 $imDur = [int]$config.imperial_mandate.effect_duration_seconds
 $rimAmp = [int]$config.radiant_imperial_mandate.effect_damaged_amplify
@@ -535,9 +537,6 @@ $i18n.en.radiant_rabadons_deathcap.option = "Opus: Increase your total <$apIcon>
 $feralEn = "Maim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>{3}<>. Basic attacks deal <#a974ffff>{0} <#92dc7bff>(+{1} per Feral stack)<> bonus magic damage<> and restore <#60e84dff>{2} <$hpRegenIcon> health<>. This effect is <#e8a800ff>{4}% effective<> against minions and monsters."
 $i18n.en.feral_flare.option = $feralEn -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.en.radiant_feral_flare.option = $feralEn -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$fluxEn = "Flux: Gain <#4b7cffff>{0}%<> <#ffdd8eff>(+{1}% per 1 <$armorPenIcon> Lethality)<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
-$i18n.en.axiom_arc.option = $fluxEn -f $aaUltCdr, $aaLeth
-$i18n.en.radiant_axiom_arc.option = $fluxEn -f $raaUltCdr, $raaLeth
 $cmdEn = "Command: Landing an Ability on an enemy champion marks them as <#92dc7bff>Vulnerable<> for <#e8a800ff>{1} seconds<>, increasing their <#d94c49ff>damage taken<> by <#d94c49ff>{0}%<>. Subsequent hits against the same target extend the duration."
 $i18n.en.imperial_mandate.option = $cmdEn -f $imAmp, $imDur
 $i18n.en.radiant_imperial_mandate.option = $cmdEn -f $rimAmp, $rimDur
@@ -603,6 +602,9 @@ $i18n.en.radiant_bloodsong.option = $bsTemplate -f $rbsMin, $rbsMax, $rbsCd, $rb
 
 $lethEn = "Gain <#ffdd8eff>{0} <$armorPenIcon> Lethality<>."
 $i18n.en.serrated_dirk.option = $lethEn -f $sdLeth
+$fluxEn = "$lethEn`n`nFlux: Gain <#4b7cffff>{1}%<> (<#4b7cffff>+{2}%<> per <#ffdd8eff>1 <$armorPenIcon> Lethality<>) <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+$i18n.en.axiom_arc.option = $fluxEn -f $aaLeth, $aaUltCdr, $aaPerLeth
+$i18n.en.radiant_axiom_arc.option = $fluxEn -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubEn = "$lethEn`n`nEminence: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>{1}<> (+{2} per stack) <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>{3} seconds<>."
 $i18n.en.hubris.option = $hubEn -f $hubLeth, $hubBase, $hubStack, $hubDur
 $i18n.en.radiant_hubris.option = $hubEn -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
@@ -697,9 +699,6 @@ $i18n.vi.radiant_rabadons_deathcap.option = "Hạt nhân: Tăng <$apIcon> <#a974
 $feralVi = "Tàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>{3}<>. Đòn đánh thường gây <#a974ffff>{0} <#92dc7bff>(+{1} mỗi cộng dồn Hoang Dã)<> sát thương phép cộng thêm<> và hồi <#60e84dff>{2} <$hpRegenIcon> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả {4}%<> lên lính và quái."
 $i18n.vi.feral_flare.option = $feralVi -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.vi.radiant_feral_flare.option = $feralVi -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$fluxVi = "Tái Thiết: Nhận <#4b7cffff>{0}%<> <#ffdd8eff>(+{1}% mỗi 1 <$armorPenIcon> Xuyên Giáp Trắng)<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
-$i18n.vi.axiom_arc.option = $fluxVi -f $aaUltCdr, $aaLeth
-$i18n.vi.radiant_axiom_arc.option = $fluxVi -f $raaUltCdr, $raaLeth
 $cmdVi = "Chỉ Huy: Kĩ năng trúng tướng địch đánh dấu chúng <#92dc7bff>Yếu Thế<> trong <#e8a800ff>{1} giây<>, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>{0}%<>. Các đòn đánh tiếp theo lên cùng mục tiêu sẽ kéo dài hiệu ứng này."
 $i18n.vi.imperial_mandate.option = $cmdVi -f $imAmp, $imDur
 $i18n.vi.radiant_imperial_mandate.option = $cmdVi -f $rimAmp, $rimDur
@@ -765,6 +764,9 @@ $i18n.vi.radiant_bloodsong.option = $bsTemplateVi -f $rbsMin, $rbsMax, $rbsCd, $
 
 $lethVi = "Nhận <#ffdd8eff>{0} <$armorPenIcon> Xuyên Giáp Trắng<>."
 $i18n.vi.serrated_dirk.option = $lethVi -f $sdLeth
+$fluxVi = "$lethVi`n`nTái Thiết: Nhận <#4b7cffff>{1}%<> <#ffdd8eff>(+{2}% mỗi 1 <$armorPenIcon> Xuyên Giáp Trắng)<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+$i18n.vi.axiom_arc.option = $fluxVi -f $aaLeth, $aaUltCdr, $aaPerLeth
+$i18n.vi.radiant_axiom_arc.option = $fluxVi -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubVi = "$lethVi`n`nUy Danh: Khi tham gia hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>{1}<> (+{2} mỗi cộng dồn) <$adIcon> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>{3} giây<>."
 $i18n.vi.hubris.option = $hubVi -f $hubLeth, $hubBase, $hubStack, $hubDur
 $i18n.vi.radiant_hubris.option = $hubVi -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
@@ -859,9 +861,6 @@ $i18n.'zh-hans'.radiant_rabadons_deathcap.option = "魔法乐章：你的总 <$a
 $feralZh = "致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>{3}<> 层。普通攻击额外造成 <#a974ffff>{0} <#92dc7bff>（每层野性+{1}）<>点魔法伤害<>并回复 <#60e84dff>{2} 点<$hpRegenIcon> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 {4}%<>。"
 $i18n.'zh-hans'.feral_flare.option = $feralZh -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.'zh-hans'.radiant_feral_flare.option = $feralZh -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$fluxZh = "涌动：终极技能获得 <#4b7cffff>{0}%<> <#ffdd8eff>（每 1 点<$armorPenIcon> 穿甲 +{1}%）<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
-$i18n.'zh-hans'.axiom_arc.option = $fluxZh -f $aaUltCdr, $aaLeth
-$i18n.'zh-hans'.radiant_axiom_arc.option = $fluxZh -f $raaUltCdr, $raaLeth
 $cmdZh = "命令：技能命中敌方英雄后为其标记<#92dc7bff>易伤<>，持续 <#e8a800ff>{1}秒<>，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>{0}%<>。对同一目标的后续命中会延长该效果的持续时间。"
 $i18n.'zh-hans'.imperial_mandate.option = $cmdZh -f $imAmp, $imDur
 $i18n.'zh-hans'.radiant_imperial_mandate.option = $cmdZh -f $rimAmp, $rimDur
@@ -927,6 +926,9 @@ $i18n.'zh-hans'.radiant_bloodsong.option = $bsTemplateZh -f $rbsMin, $rbsMax, $r
 
 $lethZh = "获得 <#ffdd8eff>{0} 点<$armorPenIcon> 穿甲<>。"
 $i18n.'zh-hans'.serrated_dirk.option = $lethZh -f $sdLeth
+$fluxZh = "$lethZh`n`n涌动：终极技能获得 <#4b7cffff>{1}%<> <#ffdd8eff>（每 1 点<$armorPenIcon> 穿甲 +{2}%）<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
+$i18n.'zh-hans'.axiom_arc.option = $fluxZh -f $aaLeth, $aaUltCdr, $aaPerLeth
+$i18n.'zh-hans'.radiant_axiom_arc.option = $fluxZh -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubZh = "$lethZh`n`n威望：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>{1}<>（每层+{2}）<#ff9028ff>额外<$adIcon> 攻击力<>，持续 <#e8a800ff>{3}秒<>。"
 $i18n.'zh-hans'.hubris.option = $hubZh -f $hubLeth, $hubBase, $hubStack, $hubDur
 $i18n.'zh-hans'.radiant_hubris.option = $hubZh -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
@@ -1021,9 +1023,6 @@ $i18n.'pt-BR'.radiant_rabadons_deathcap.option = "Apogeu: Aumenta o <$apIcon> <#
 $feralPt = "Mutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>{3}<>. Ataques básicos causam <#a974ffff>{0} <#92dc7bff>(+{1} por acúmulo de Feral)<> de dano mágico bônus<> e restauram <#60e84dff>{2} de <$hpRegenIcon> vida<>. Este efeito é <#e8a800ff>{4}% efetivo<> contra lacaios e monstros."
 $i18n.'pt-BR'.feral_flare.option = $feralPt -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.'pt-BR'.radiant_feral_flare.option = $feralPt -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$fluxPt = "Fluxo: Recebe <#4b7cffff>{0}%<> <#ffdd8eff>(+{1}% por 1 de <$armorPenIcon> Letalidade)<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
-$i18n.'pt-BR'.axiom_arc.option = $fluxPt -f $aaUltCdr, $aaLeth
-$i18n.'pt-BR'.radiant_axiom_arc.option = $fluxPt -f $raaUltCdr, $raaLeth
 $cmdPt = "Comando: Acertar uma Habilidade em um campeão inimigo o marca como <#92dc7bff>Vulnerável<> por <#e8a800ff>{1} segundos<>, aumentando o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>{0}%<>. Acertos subsequentes no mesmo alvo estendem a duração."
 $i18n.'pt-BR'.imperial_mandate.option = $cmdPt -f $imAmp, $imDur
 $i18n.'pt-BR'.radiant_imperial_mandate.option = $cmdPt -f $rimAmp, $rimDur
@@ -1089,6 +1088,9 @@ $i18n.'pt-BR'.radiant_bloodsong.option = $bsTemplatePt -f $rbsMin, $rbsMax, $rbs
 
 $lethPt = "Ganha <#ffdd8eff>{0} de <$armorPenIcon> Letalidade<>."
 $i18n.'pt-BR'.serrated_dirk.option = $lethPt -f $sdLeth
+$fluxPt = "$lethPt`n`nFluxo: Recebe <#4b7cffff>{1}%<> <#ffdd8eff>(+{2}% por 1 de <$armorPenIcon> Letalidade)<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+$i18n.'pt-BR'.axiom_arc.option = $fluxPt -f $aaLeth, $aaUltCdr, $aaPerLeth
+$i18n.'pt-BR'.radiant_axiom_arc.option = $fluxPt -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubPt = "$lethPt`n`nEminência: Ao participar do abate de um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>{1}<> (+{2} por acúmulo) de <$adIcon> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>{3} segundos<>."
 $i18n.'pt-BR'.hubris.option = $hubPt -f $hubLeth, $hubBase, $hubStack, $hubDur
 $i18n.'pt-BR'.radiant_hubris.option = $hubPt -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
@@ -1183,9 +1185,6 @@ $i18n.ru.radiant_rabadons_deathcap.option = "Опус: Увеличивает в
 $feralRu = "Увечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>{3}<>. Автоатаки наносят <#a974ffff>{0} <#92dc7bff>(+{1} за заряд Дикости)<> дополнительного магического урона<> и восстанавливают <#60e84dff>{2} <$hpRegenIcon> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет {4}%<>."
 $i18n.ru.feral_flare.option = $feralRu -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.ru.radiant_feral_flare.option = $feralRu -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$fluxRu = "Непрерывность: Даёт <#4b7cffff>{0}%<> <#ffdd8eff>(+{1}% за 1 ед. <$armorPenIcon> летальности)<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
-$i18n.ru.axiom_arc.option = $fluxRu -f $aaUltCdr, $aaLeth
-$i18n.ru.radiant_axiom_arc.option = $fluxRu -f $raaUltCdr, $raaLeth
 $cmdRu = "Команда: Попадание умением по вражескому чемпиону помечает его как <#92dc7bff>Уязвимого<> на <#e8a800ff>{1} секунды<>, увеличивая <#d94c49ff>получаемый им урон<> на <#d94c49ff>{0}%<>. Последующие попадания по той же цели продлевают действие эффекта."
 $i18n.ru.imperial_mandate.option = $cmdRu -f $imAmp, $imDur
 $i18n.ru.radiant_imperial_mandate.option = $cmdRu -f $rimAmp, $rimDur
@@ -1251,6 +1250,9 @@ $i18n.ru.radiant_bloodsong.option = $bsTemplateRu -f $rbsMin, $rbsMax, $rbsCd, $
 
 $lethRu = "Даёт <#ffdd8eff>{0} <$armorPenIcon> летальности<>."
 $i18n.ru.serrated_dirk.option = $lethRu -f $sdLeth
+$fluxRu = "$lethRu`n`nНепрерывность: Даёт <#4b7cffff>{1}%<> <#ffdd8eff>(+{2}% за 1 ед. <$armorPenIcon> летальности)<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+$i18n.ru.axiom_arc.option = $fluxRu -f $aaLeth, $aaUltCdr, $aaPerLeth
+$i18n.ru.radiant_axiom_arc.option = $fluxRu -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubRu = "$lethRu`n`nВозвышение: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>{1}<> (+{2} за заряд) <#ff9028ff>дополнительной<> <$adIcon> <#ff9028ff>Силы Атаки<> на <#e8a800ff>{3} секунд<>."
 $i18n.ru.hubris.option = $hubRu -f $hubLeth, $hubBase, $hubStack, $hubDur
 $i18n.ru.radiant_hubris.option = $hubRu -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
@@ -1345,9 +1347,6 @@ $i18n.ko.radiant_rabadons_deathcap.option = "대작: 총 <$apIcon> <#a974ffff>�
 $feralKo = "불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>{3}<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>{0} <#92dc7bff>(야성 중첩당 +{1})<>의 추가 마법 피해<>를 입히고 <#60e84dff>{2}<$hpRegenIcon> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>{4}%로 적용됩니다<>."
 $i18n.ko.feral_flare.option = $feralKo -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.ko.radiant_feral_flare.option = $feralKo -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$fluxKo = "전이 표식: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>{0}%<> <#ffdd8eff>(<$armorPenIcon> 물리 관통력 1당 +{1}%)<> 증가합니다."
-$i18n.ko.axiom_arc.option = $fluxKo -f $aaUltCdr, $aaLeth
-$i18n.ko.radiant_axiom_arc.option = $fluxKo -f $raaUltCdr, $raaLeth
 $cmdKo = "명령: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>{1}초<> 동안 <#92dc7bff>취약<> 상태로 표시하여 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>{0}%<> 증가합니다. 같은 대상을 다시 적중시키면 지속시간이 연장됩니다."
 $i18n.ko.imperial_mandate.option = $cmdKo -f $imAmp, $imDur
 $i18n.ko.radiant_imperial_mandate.option = $cmdKo -f $rimAmp, $rimDur
@@ -1412,6 +1411,9 @@ $i18n.ko.radiant_bloodsong.option = $bsTemplateKo -f $rbsMin, $rbsMax, $rbsCd, $
 
 $lethKo = "<#ffdd8eff>{0}의 <$armorPenIcon> 물리 관통력<>을 획득합니다."
 $i18n.ko.serrated_dirk.option = $lethKo -f $sdLeth
+$fluxKo = "$lethKo`n`n전이 표식: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>{1}%<> <#ffdd8eff>(<$armorPenIcon> 물리 관통력 1당 +{2}%)<> 증가합니다."
+$i18n.ko.axiom_arc.option = $fluxKo -f $aaLeth, $aaUltCdr, $aaPerLeth
+$i18n.ko.radiant_axiom_arc.option = $fluxKo -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubKo = "$lethKo`n`n명성: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>{3}초<> 동안 <#ff9028ff>{1}<> + 중첩당 <#ff9028ff>{2}<>의 <$adIcon> <#ff9028ff>추가 공격력<>을 얻습니다."
 $i18n.ko.hubris.option = $hubKo -f $hubLeth, $hubBase, $hubStack, $hubDur
 $i18n.ko.radiant_hubris.option = $hubKo -f $rhubLeth, $rhubBase, $rhubStack, $rhubDur
@@ -1490,7 +1492,7 @@ Write-Host "  Radiant Rabadon's:       ${radRabMult}%"
 Write-Host "  Phage:                   +${phageMs}% MS for ${phageDur}s"
 Write-Host "  Maim (Machete/Razors/Wriggle's):  ${hmacDmg}/${mrazDmg}/${wrigDmg} magic dmg, ${hmacHeal}/${mrazHeal}/${wrigHeal} heal vs monsters"
 Write-Host "  Feral Flare:                 ${ffDmg} +${ffStack}/stack (max ${ffStacks}) / ${ffHeal} heal / ${ffMinion}% vs minions+monsters"
-Write-Host "  Axiom Arc:                   ${aaUltCdr}% +${aaLeth}%/Lethality ult CDR (Radiant ${raaUltCdr}% +${raaLeth}%)"
+Write-Host "  Axiom Arc:                   ${aaLeth} Lethality, ${aaUltCdr}% +${aaPerLeth}%/Lethality ult CDR (Radiant ${raaLeth}, ${raaUltCdr}% +${raaPerLeth}%)"
 Write-Host "  Imperial Mandate:            +${imAmp}% damage taken for ${imDur}s (Radiant +${rimAmp}% / ${rimDur}s)"
 Write-Host "  Butcher (Talisman/Stone/Grez's): ${htalBonus}/${sstoneBonus}/${gslBonus}% vs monsters, ${htalHeal}/${sstoneHeal}/${gslHeal}% healed"
 Write-Host "  Spirit of the Spectral Wraith: ${sswAp} AP/takedown up to ${sswMaxAp} / ${sswBonus}% vs monsters / ${sswHeal}% healed"

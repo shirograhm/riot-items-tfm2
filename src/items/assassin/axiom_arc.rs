@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, total_lethality, ItemMeta};
+use crate::{apply_config, apply_lethality, has_buff, total_lethality, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct AxiomArc {
@@ -9,6 +9,7 @@ pub struct AxiomArc {
     price: usize,
     attack: i32,
     skill_cooldown_mult: i32,
+    effect_lethality: usize,
     effect_ult_cooldown_mult: i32,
     effect_ult_cooldown_per_lethality: f64,
     /// Name of the buff Flux applies. Distinct per variant so the base and the
@@ -23,6 +24,7 @@ impl AxiomArc {
             price: 1300,
             attack: 70,
             skill_cooldown_mult: 10,
+            effect_lethality: 18,
             effect_ult_cooldown_mult: 10,
             effect_ult_cooldown_per_lethality: 0.2,
             flux_buff: "axiom_arc_flux",
@@ -35,6 +37,9 @@ impl AxiomArc {
             price: 1900,
             attack: 105,
             skill_cooldown_mult: 15,
+            effect_lethality: 18,
+            effect_ult_cooldown_mult: 10,
+            effect_ult_cooldown_per_lethality: 0.2,
             flux_buff: "radiant_axiom_arc_flux",
             ..Self::base()
         }
@@ -56,6 +61,7 @@ impl AxiomArc {
                 price,
                 attack,
                 skill_cooldown_mult,
+                effect_lethality,
                 effect_ult_cooldown_mult,
                 effect_ult_cooldown_per_lethality
             ]
@@ -137,6 +143,27 @@ impl StableItem for AxiomArc {
             ..BuffV1::named(self.flux_buff)
         };
         ctx.add_buff(champion_id, &buff);
+    }
+
+    fn on_attack(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        caster: usize,
+        target: usize,
+        damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
+    ) {
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+
+        let is_target_tower = target_ref.is_tower();
+
+        if !is_target_tower {
+            apply_lethality(ctx, caster, target, self.effect_lethality, damage);
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

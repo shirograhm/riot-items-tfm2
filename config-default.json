@@ -1146,6 +1146,7 @@
     "price": 1300,
     "attack": 70,
     "skill_cooldown_mult": 10,
+    "effect_lethality": 18,
     "effect_ult_cooldown_mult": 10,
     "effect_ult_cooldown_per_lethality": 0.2
   },
@@ -1153,6 +1154,7 @@
     "price": 1900,
     "attack": 105,
     "skill_cooldown_mult": 15,
+    "effect_lethality": 18,
     "effect_ult_cooldown_mult": 10,
     "effect_ult_cooldown_per_lethality": 0.2
   },

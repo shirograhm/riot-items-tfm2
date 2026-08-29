@@ -49,10 +49,12 @@ fn is_monster(entity: &StableEntity<'_, '_>) -> bool {
 /// Radiant variants are listed separately because they are distinct keys, even
 /// where the value matches the base item.
 const LETHALITY_BY_KEY: &[(&str, usize)] = &[
+    ("axiom_arc", 18),
     ("bastionbreaker", 22),
     ("collector", 10),
     ("hubris", 18),
     ("opportunity", 18),
+    ("radiant_axiom_arc", 18),
     ("radiant_bastionbreaker", 22),
     ("radiant_collector", 10),
     ("radiant_hubris", 18),
@@ -323,7 +325,6 @@ fn init(host: &StableHost) -> StableMod {
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
-    reg.add_item(configured!("serrated_dirk" => SerratedDirk));
     reg.add_item(configured!("sheen" => Sheen));
 
     // Tier 3
@@ -334,16 +335,21 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
+    // Replaces the vanilla Hunter's Machete -> Madred's Razors -> Wriggle's
+    // Lantern line, which this mod drops.
+    reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
     reg.add_item(configured!("last_whisper" => LastWhisper));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("noonquiver" => Noonquiver));
     reg.add_item(configured!("phage" => Phage));
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
+    reg.add_item(configured!("serrated_dirk" => SerratedDirk));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
     reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4
     reg.add_item(configured!("atmas_reckoning" => AtmasReckoning));
+    reg.add_item(configured!("axiom_arc" => AxiomArc));
     reg.add_item(configured!("bastionbreaker" => Bastionbreaker));
     reg.add_item(configured!("black_cleaver" => BlackCleaver));
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
@@ -359,12 +365,14 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("eclipse" => Eclipse));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured!("feral_flare" => FeralFlare));
     reg.add_item(configured!("frozen_heart" => FrozenHeart));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
     reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured!("heartsteel" => Heartsteel));
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
     reg.add_item(configured!("hubris" => Hubris));
+    reg.add_item(configured!("imperial_mandate" => ImperialMandate));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
     reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured!("kraken_slayer" => KrakenSlayer));
@@ -405,6 +413,7 @@ fn init(host: &StableHost) -> StableMod {
 
     // Tier 5
     reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning));
+    reg.add_item(configured_radiant!("radiant_axiom_arc" => AxiomArc));
     reg.add_item(configured_radiant!("radiant_bastionbreaker" => Bastionbreaker));
     reg.add_item(configured_radiant!("radiant_black_cleaver" => BlackCleaver));
     reg.add_item(configured_radiant!("radiant_blackfire_torch" => BlackfireTorch));
@@ -420,12 +429,14 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured_radiant!("radiant_eclipse" => Eclipse));
     reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
     reg.add_item(configured_radiant!("radiant_frozen_heart" => FrozenHeart));
     reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
     reg.add_item(configured_radiant!("radiant_guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
     reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
+    reg.add_item(configured_radiant!("radiant_imperial_mandate" => ImperialMandate));
     reg.add_item(configured_radiant!("radiant_infinity_edge" => InfinityEdge));
     reg.add_item(configured_radiant!("radiant_jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured_radiant!("radiant_kraken_slayer" => KrakenSlayer));
@@ -463,27 +474,6 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
-
-    // New items go at the END of this list, never sorted into the blocks above:
-    // saves address items by registration index rather than by key, so inserting
-    // one mid-list renumbers every item after it.
-
-    // Hearthbound Axe -> Feral Flare -> Radiant Feral Flare. Replaces the
-    // Hunter's Machete -> Madred's Razors -> Wriggle's Lantern line.
-    reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
-    reg.add_item(configured!("feral_flare" => FeralFlare));
-    reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
-
-    // Axiom Arc -> Radiant Axiom Arc. Flux reads the rest of the build, so
-    // it needs `LETHALITY_TABLE` to have been filled first.
-    reg.add_item(configured!("axiom_arc" => AxiomArc));
-    reg.add_item(configured_radiant!("radiant_axiom_arc" => AxiomArc));
-
-    // Imperial Mandate -> Radiant Imperial Mandate.
-    reg.add_item(configured!("imperial_mandate" => ImperialMandate));
-    reg.add_item(configured_radiant!(
-        "radiant_imperial_mandate" => ImperialMandate
-    ));
 
     // What `item-builds.json` reaches the game through. Registered whether or
     // not a config exists: the hook keeps the engine's build when it has nothing
