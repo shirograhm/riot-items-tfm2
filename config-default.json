@@ -1120,7 +1120,7 @@
     "defence": 20,
     "effect_bonus_magic_damage": 25,
     "effect_stack_magic_damage": 1,
-    "effect_bonus_flat_heal": 15,
+    "effect_bonus_flat_heal": 10,
     "effect_max_stacks": 50,
     "effect_minion_percent": 150.0
   },
@@ -1131,7 +1131,7 @@
     "defence": 40,
     "effect_bonus_magic_damage": 25,
     "effect_stack_magic_damage": 1,
-    "effect_bonus_flat_heal": 15,
+    "effect_bonus_flat_heal": 10,
     "effect_max_stacks": 50,
     "effect_minion_percent": 150.0
   },

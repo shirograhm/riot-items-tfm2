@@ -737,11 +737,11 @@
         },
         "feral_flare": {
             "name": "Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
         },
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
@@ -1502,11 +1502,11 @@
         },
         "feral_flare": {
             "name": "Ngọn Lửa Hoang Dã",
-            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
         },
         "radiant_feral_flare": {
             "name": "Ngọn Lửa Hoang Dã Ánh Sáng",
-            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
         },
         "forbidden_idol": {
             "name": "Dị Vật Tai Ương",
@@ -2267,11 +2267,11 @@
         },
         "feral_flare": {
             "name": "野性之炎",
-            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
         },
         "radiant_feral_flare": {
             "name": "光明版野性之炎",
-            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
         },
         "forbidden_idol": {
             "name": "禁忌雕像",
@@ -3032,11 +3032,11 @@
         },
         "feral_flare": {
             "name": "Chama Feral",
-            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> e restauram <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
         },
         "radiant_feral_flare": {
             "name": "Chama Feral Radiante",
-            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> e restauram <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
         },
         "forbidden_idol": {
             "name": "Ídolo Proibido",
@@ -3797,11 +3797,11 @@
         },
         "feral_flare": {
             "name": "Дикое пламя",
-            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
         },
         "radiant_feral_flare": {
             "name": "Лучезарное Дикое пламя",
-            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
         },
         "forbidden_idol": {
             "name": "Запретный идол",
@@ -4562,11 +4562,11 @@
         },
         "feral_flare": {
             "name": "야성의 불꽃",
-            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>15<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
         },
         "radiant_feral_flare": {
             "name": "찬란한 야성의 불꽃",
-            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>15<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
         },
         "forbidden_idol": {
             "name": "금지된 우상",
