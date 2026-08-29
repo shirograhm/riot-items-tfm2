@@ -26,7 +26,7 @@ impl SwordOfBlossomingDawn {
             attack_speed_mult: 20,
             hp: 200,
             magic_power: 40,
-            skill_cooldown_mult: 5,
+            skill_cooldown_mult: 10,
         }
     }
 
@@ -40,7 +40,7 @@ impl SwordOfBlossomingDawn {
             attack_speed_mult: 35,
             hp: 350,
             magic_power: 70,
-            skill_cooldown_mult: 10,
+            skill_cooldown_mult: 15,
             ..Self::base()
         }
     }

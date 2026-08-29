@@ -1169,13 +1169,13 @@
     "attack_speed_mult": 20,
     "hp": 200,
     "magic_power": 40,
-    "skill_cooldown_mult": 5
+    "skill_cooldown_mult": 10
   },
   "radiant_sword_of_blossoming_dawn": {
     "price": 1700,
     "attack_speed_mult": 35,
     "hp": 350,
     "magic_power": 70,
-    "skill_cooldown_mult": 10
+    "skill_cooldown_mult": 15
   }
 }
