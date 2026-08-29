@@ -745,11 +745,11 @@
         },
         "feral_flare": {
             "name": "Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25 <#92dc7bff>(+1 per Feral stack)<> bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25 (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters.\n\nBounty: Killing monsters grants you 20% additional gold."
         },
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25 <#92dc7bff>(+1 per Feral stack)<> bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25 (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
         }
     },
     "vi": {
@@ -1482,11 +1482,11 @@
         },
         "imperial_mandate": {
             "name": "Trát Lệnh Đế Vương",
-            "option": "\nChỉ Huy: Kĩ năng trúng tướng địch đánh dấu chúng <#92dc7bff>Yếu Thế<> trong <#e8a800ff>4 giây<>, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<>. Các đòn đánh tiếp theo lên cùng mục tiêu sẽ kéo dài hiệu ứng này."
+            "option": "\nPhối Hợp Ăn Ý: Kĩ năng trúng tướng địch đánh dấu chúng trong <#e8a800ff>5 giây<>. Tướng đồng minh gây sát thương lên mục tiêu bị đánh dấu sẽ kích nổ dấu ấn, gây <#d94c49ff>10% máu hiện tại của mục tiêu<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>9 giây<> mỗi mục tiêu)."
         },
         "radiant_imperial_mandate": {
             "name": "Trát Lệnh Đế Vương Ánh Sáng",
-            "option": "\nChỉ Huy: Kĩ năng trúng tướng địch đánh dấu chúng <#92dc7bff>Yếu Thế<> trong <#e8a800ff>4 giây<>, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<>. Các đòn đánh tiếp theo lên cùng mục tiêu sẽ kéo dài hiệu ứng này."
+            "option": "\nPhối Hợp Ăn Ý: Kĩ năng trúng tướng địch đánh dấu chúng trong <#e8a800ff>5 giây<>. Tướng đồng minh gây sát thương lên mục tiêu bị đánh dấu sẽ kích nổ dấu ấn, gây <#d94c49ff>10% máu hiện tại của mục tiêu<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>9 giây<> mỗi mục tiêu)."
         },
         "radiant_axiom_arc": {
             "name": "Nguyên Tố Luân Ánh Sáng",
@@ -2235,11 +2235,11 @@
         },
         "imperial_mandate": {
             "name": "帝国指令",
-            "option": "\n命令：技能命中敌方英雄后为其标记<#92dc7bff>易伤<>，持续 <#e8a800ff>4秒<>，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>。对同一目标的后续命中会延长该效果的持续时间。"
+            "option": "\n协同开火：技能命中敌方英雄后为其打上标记，持续 <#e8a800ff>5秒<>。友方英雄对被标记的敌人造成伤害时会引爆标记，造成相当于目标<#d94c49ff>当前生命值10%<>的<#a974ffff>额外魔法伤害<>（每个目标冷却 <#e8a800ff>9秒<>）。"
         },
         "radiant_imperial_mandate": {
             "name": "光明版帝国指令",
-            "option": "\n命令：技能命中敌方英雄后为其标记<#92dc7bff>易伤<>，持续 <#e8a800ff>4秒<>，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>。对同一目标的后续命中会延长该效果的持续时间。"
+            "option": "\n协同开火：技能命中敌方英雄后为其打上标记，持续 <#e8a800ff>5秒<>。友方英雄对被标记的敌人造成伤害时会引爆标记，造成相当于目标<#d94c49ff>当前生命值10%<>的<#a974ffff>额外魔法伤害<>（每个目标冷却 <#e8a800ff>9秒<>）。"
         },
         "radiant_axiom_arc": {
             "name": "光明版公理圆弧",
@@ -2988,11 +2988,11 @@
         },
         "imperial_mandate": {
             "name": "Mandato Imperial",
-            "option": "\nComando: Acertar uma Habilidade em um campeão inimigo o marca como <#92dc7bff>Vulnerável<> por <#e8a800ff>4 segundos<>, aumentando o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<>. Acertos subsequentes no mesmo alvo estendem a duração."
+            "option": "\nFogo Coordenado: Acertar uma Habilidade em um campeão inimigo o marca por <#e8a800ff>5 segundos<>. Campeões aliados que causarem dano a inimigos marcados consomem a marca, causando <#d94c49ff>10% da Vida Atual do alvo<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>9 segundos<> por alvo)."
         },
         "radiant_imperial_mandate": {
             "name": "Mandato Imperial Radiante",
-            "option": "\nComando: Acertar uma Habilidade em um campeão inimigo o marca como <#92dc7bff>Vulnerável<> por <#e8a800ff>4 segundos<>, aumentando o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<>. Acertos subsequentes no mesmo alvo estendem a duração."
+            "option": "\nFogo Coordenado: Acertar uma Habilidade em um campeão inimigo o marca por <#e8a800ff>5 segundos<>. Campeões aliados que causarem dano a inimigos marcados consomem a marca, causando <#d94c49ff>10% da Vida Atual do alvo<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>9 segundos<> por alvo)."
         },
         "radiant_axiom_arc": {
             "name": "Arco do Axioma Radiante",
@@ -3741,11 +3741,11 @@
         },
         "imperial_mandate": {
             "name": "Имперский мандат",
-            "option": "\nКоманда: Попадание умением по вражескому чемпиону помечает его как <#92dc7bff>Уязвимого<> на <#e8a800ff>4 секунды<>, увеличивая <#d94c49ff>получаемый им урон<> на <#d94c49ff>7%<>. Последующие попадания по той же цели продлевают действие эффекта."
+            "option": "\nКоординированный огонь: Попадание умением по вражескому чемпиону помечает его на <#e8a800ff>5 секунд<>. Союзные чемпионы, наносящие урон помеченным врагам, снимают метку, нанося <#d94c49ff>10% текущего здоровья цели<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>9 секунд<> для каждой цели)."
         },
         "radiant_imperial_mandate": {
             "name": "Лучезарный Имперский мандат",
-            "option": "\nКоманда: Попадание умением по вражескому чемпиону помечает его как <#92dc7bff>Уязвимого<> на <#e8a800ff>4 секунды<>, увеличивая <#d94c49ff>получаемый им урон<> на <#d94c49ff>7%<>. Последующие попадания по той же цели продлевают действие эффекта."
+            "option": "\nКоординированный огонь: Попадание умением по вражескому чемпиону помечает его на <#e8a800ff>5 секунд<>. Союзные чемпионы, наносящие урон помеченным врагам, снимают метку, нанося <#d94c49ff>10% текущего здоровья цели<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>9 секунд<> для каждой цели)."
         },
         "radiant_axiom_arc": {
             "name": "Лучезарный Шакрам Аксиом",
@@ -4494,11 +4494,11 @@
         },
         "imperial_mandate": {
             "name": "제국의 명령",
-            "option": "\n명령: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <#92dc7bff>취약<> 상태로 표시하여 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다. 같은 대상을 다시 적중시키면 지속시간이 연장됩니다."
+            "option": "\n합동 공격: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 표식을 남깁니다. 아군 챔피언이 표식이 남은 적에게 피해를 입히면 표식이 폭발하여 대상 <#d94c49ff>현재 체력의 10%<>를 <#a974ffff>추가 마법 피해<>로 입힙니다. (대상별 재사용 대기시간 <#e8a800ff>9초<>)"
         },
         "radiant_imperial_mandate": {
             "name": "찬란한 제국의 명령",
-            "option": "\n명령: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <#92dc7bff>취약<> 상태로 표시하여 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다. 같은 대상을 다시 적중시키면 지속시간이 연장됩니다."
+            "option": "\n합동 공격: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 표식을 남깁니다. 아군 챔피언이 표식이 남은 적에게 피해를 입히면 표식이 폭발하여 대상 <#d94c49ff>현재 체력의 10%<>를 <#a974ffff>추가 마법 피해<>로 입힙니다. (대상별 재사용 대기시간 <#e8a800ff>9초<>)"
         },
         "radiant_axiom_arc": {
             "name": "찬란한 원칙의 원형낫",

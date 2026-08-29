@@ -702,7 +702,7 @@
   },
   "bandleglass_mirror": {
     "price": 650,
-    "hp": 250,
+    "hp": 200,
     "hp_regen": 2,
     "magic_power": 20,
     "skill_cooldown_mult": 5
@@ -849,7 +849,7 @@
   "bloodsong": {
     "price": 1050,
     "attack_speed_mult": 15,
-    "hp": 250,
+    "hp": 200,
     "hp_regen": 2,
     "magic_power": 20,
     "skill_cooldown_mult": 10,
@@ -862,7 +862,7 @@
   "radiant_bloodsong": {
     "price": 1500,
     "attack_speed_mult": 15,
-    "hp": 450,
+    "hp": 400,
     "hp_regen": 4,
     "magic_power": 40,
     "skill_cooldown_mult": 20,
@@ -1164,8 +1164,10 @@
     "hp_regen": 2,
     "magic_power": 50,
     "skill_cooldown_mult": 5,
-    "effect_damaged_amplify": 7,
-    "effect_duration_seconds": 4.0
+    "effect_hp_percent_damage": 10.0,
+    "effect_duration_seconds": 5.0,
+    "effect_cooldown_seconds": 9.0,
+    "effect_max_distance": 100
   },
   "radiant_imperial_mandate": {
     "price": 1650,
@@ -1173,7 +1175,9 @@
     "hp_regen": 3,
     "magic_power": 100,
     "skill_cooldown_mult": 10,
-    "effect_damaged_amplify": 7,
-    "effect_duration_seconds": 4.0
+    "effect_hp_percent_damage": 10.0,
+    "effect_duration_seconds": 5.0,
+    "effect_cooldown_seconds": 9.0,
+    "effect_max_distance": 100
   }
 }

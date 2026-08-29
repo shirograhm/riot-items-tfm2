@@ -29,7 +29,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | --- | --- | --- | --- |
 | **Aegis of the Legion** | 950G | +150 HP<br>+40 Armor<br>+60 MR | — |
 | **B.F. Sword** | 850G | +65 Attack Damage | — |
-| **Bandleglass Mirror** | 650G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
+| **Bandleglass Mirror** | 650G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
 | **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |
 | **Caulfield's Warhammer** | 950G | +45 AD<br>+10% CDR | — |
 | **Glacial Buckler** | 800G | +50 Armor<br>+5% CDR | — |
@@ -54,7 +54,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Maleficent: Landing an Ability on an enemy champion grants 10 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
-| **Bloodsong** | 1050G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
+| **Bloodsong** | 1050G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
 | **Collector** | 1450G | +60 AD<br>+20% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Dead Man's Plate** | 1450G | +300 HP<br>+55 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Deathblade** | 1400G | +90 AD | Apex: Increase your total Attack Damage by 15%. |
@@ -71,7 +71,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Heartsteel** | 1500G | +500 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
 | **Hubris** | 1300G | +70 AD<br>+10% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
-| **Imperial Mandate** | 1100G | +250 HP<br>+2 HP Regen<br>+50 AP<br>+5% CDR | Command: Landing an Ability on an enemy champion marks them as Vulnerable for 4 seconds, increasing their damage taken by 7%. Subsequent hits against the same target extends the duration of this effect. |
+| **Imperial Mandate** | 1100G | +250 HP<br>+2 HP Regen<br>+50 AP<br>+5% CDR | Coordinated Fire: Landing an Ability on an enemy champion marks them for 5 seconds. Allied champions that damage marked enemies consume the mark, dealing 10% of the target's current health as bonus magic damage (9 second cooldown per target). |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Jak'Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | Resilience: Taking damage from an enemy champion grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks). |
 | **Kraken Slayer** | 1400G | +45 AD<br>+25% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
@@ -121,7 +121,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Maleficent: Landing an Ability on an enemy champion grants 30 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
-| **Radiant Bloodsong** | 1500G | +450 HP<br>+4 HP Regen<br>+40 AP<br>+15% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
+| **Radiant Bloodsong** | 1500G | +400 HP<br>+4 HP Regen<br>+40 AP<br>+15% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
 | **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Radiant Dead Man's Plate** | 2100G | +650 HP<br>+70 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Radiant Deathblade** | 2000G | +140 AD | Apex: Increase your total Attack Damage by 25%. |
@@ -138,7 +138,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Heartsteel** | 2100G | +800 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
 | **Radiant Hubris** | 1950G | +115 AD<br>+15% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
-| **Radiant Imperial Mandate** | 1650G | +350 HP<br>+3 HP Regen<br>+100 AP<br>+10% CDR | Command: Landing an Ability on an enemy champion marks them as Vulnerable for 4 seconds, increasing their damage taken by 7%. Subsequent hits against the same target extends the duration of this effect. |
+| **Radiant Imperial Mandate** | 1650G | +350 HP<br>+3 HP Regen<br>+100 AP<br>+10% CDR | Coordinated Fire: Landing an Ability on an enemy champion marks them for 5 seconds. Allied champions that damage marked enemies consume the mark, dealing 10% of the target's current health as bonus magic damage (9 second cooldown per target). |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Radiant Jak'Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | Resilience: Taking damage from an enemy champion grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Kraken Slayer** | 2000G | +75 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |

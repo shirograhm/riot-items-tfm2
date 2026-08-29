@@ -15,7 +15,7 @@ impl Default for BandleglassMirror {
     fn default() -> Self {
         Self {
             price: 650,
-            hp: 250,
+            hp: 200,
             hp_regen: 2,
             magic_power: 20,
             skill_cooldown_mult: 5,
