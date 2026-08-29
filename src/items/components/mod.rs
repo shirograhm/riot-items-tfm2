@@ -7,6 +7,7 @@ items! {
     blighting_jewel,
     caulfields_warhammer,
     executioners_calling,
+    forbidden_idol,
     glacial_buckler,
     glowing_mote,
     haunting_guise,

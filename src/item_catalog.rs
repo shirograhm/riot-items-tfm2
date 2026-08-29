@@ -59,6 +59,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("stormrazor", "Marksman"),
     ("sundered_sky", "Fighter"),
     ("sunfire_cape", "Tank"),
+    ("sword_of_blossoming_dawn", "Support"),
     ("terminus", "Marksman"),
     ("thornmail", "Tank"),
     ("trinity_force", "Fighter"),

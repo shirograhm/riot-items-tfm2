@@ -5,5 +5,6 @@ items! {
     echoes_of_helia,
     locket_of_the_iron_solari,
     protoplasm_harness,
+    sword_of_blossoming_dawn,
     zekes_herald,
 }

@@ -523,6 +523,18 @@
             "name": "Bandleglass Mirror",
             "option": ""
         },
+        "forbidden_idol": {
+            "name": "Forbidden Idol",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Sword of Blossoming Dawn",
+            "option": ""
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Radiant Sword of Blossoming Dawn",
+            "option": ""
+        },
         "zekes_herald": {
             "name": "Zeke's Herald",
             "option": "\nAura: Grant <#d48294ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> and <#b7462dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
@@ -1276,6 +1288,18 @@
             "name": "Gương Thần Bandle",
             "option": ""
         },
+        "forbidden_idol": {
+            "name": "Dị Vật Tai Ương",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Kiếm Bình Minh Nở Rộ",
+            "option": ""
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Kiếm Bình Minh Nở Rộ Ánh Sáng",
+            "option": ""
+        },
         "liandrys_torment": {
             "name": "Mặt Nạ Đọa Đày Liandry",
             "option": "\nThống Khổ: Khi gây sát thương kĩ năng, thiêu đốt kẻ địch, khiến chúng chịu <#d94c49ff>6% máu tối đa của chúng<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>3 giây<>. Tối đa <#a974ffff>40 sát thương phép<> mỗi nhịp lên lính và quái vật."
@@ -2019,6 +2043,18 @@
         },
         "bandleglass_mirror": {
             "name": "班德尔玻璃镜",
+            "option": ""
+        },
+        "forbidden_idol": {
+            "name": "禁忌雕像",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "花晓之剑",
+            "option": ""
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "光明版花晓之剑",
             "option": ""
         },
         "liandrys_torment": {
@@ -2766,6 +2802,18 @@
             "name": "Espelho de Bandópolis",
             "option": ""
         },
+        "forbidden_idol": {
+            "name": "Ídolo Proibido",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Espada da Alvorada Florescente",
+            "option": ""
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Espada da Alvorada Florescente Radiante",
+            "option": ""
+        },
         "liandrys_torment": {
             "name": "Tormento de Liandry",
             "option": "\nSofrimento: Causar dano de habilidade queima os inimigos, fazendo-os sofrer <#d94c49ff>6% da Vida Máxima deles<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Máximo de <#a974ffff>40 de dano mágico<> por tique contra tropas e monstros."
@@ -3511,6 +3559,18 @@
             "name": "Зеркало йордлов",
             "option": ""
         },
+        "forbidden_idol": {
+            "name": "Запретный идол",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Меч сияющего рассвета",
+            "option": ""
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Лучезарный Меч сияющего рассвета",
+            "option": ""
+        },
         "liandrys_torment": {
             "name": "Мучения Лиандри",
             "option": "\nСтрадание: Нанесение урона умением поджигает врагов, заставляя их получить <#d94c49ff>6% их максимального здоровья<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>3 секунд<>. Наносит максимум <#a974ffff>40 магического урона<> за тик по миньонам и монстрам."
@@ -4246,6 +4306,18 @@
         },
         "bandleglass_mirror": {
             "name": "밴들유리 거울",
+            "option": ""
+        },
+        "forbidden_idol": {
+            "name": "금지된 우상",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "꽃피는 새벽의 검",
+            "option": ""
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "찬란한 꽃피는 새벽의 검",
             "option": ""
         },
         "zekes_herald": {
