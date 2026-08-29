@@ -27,7 +27,7 @@ pub struct Eclipse {
 impl Eclipse {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("eclipse", &["serrated_dirk"], &["radiant_eclipse"]),
+            meta: ItemMeta::base("eclipse", &["caulfields_warhammer"], &["radiant_eclipse"]),
             mark_buff: "eclipse_mark",
             cooldown_buff: "eclipse_cooldown",
             price: 1300,

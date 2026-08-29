@@ -643,6 +643,10 @@
             "name": "Serrated Dirk",
             "option": "\nGain <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>."
         },
+        "caulfields_warhammer": {
+            "name": "Caulfield's Warhammer",
+            "option": ""
+        },
         "hubris": {
             "name": "Hubris",
             "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nEminence: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>12<> (+3 per stack) <#ff9028ff>bonus<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>90 seconds<>."
@@ -1363,6 +1367,10 @@
         "serrated_dirk": {
             "name": "Dao Găm Răng Cưa",
             "option": "\nNhận <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>."
+        },
+        "caulfields_warhammer": {
+            "name": "Búa Chiến Caulfield",
+            "option": ""
         },
         "hubris": {
             "name": "Kiêu Ngạo",
@@ -2085,6 +2093,10 @@
             "name": "锯齿短匕",
             "option": "\n获得 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。"
         },
+        "caulfields_warhammer": {
+            "name": "考尔菲德的战锤",
+            "option": ""
+        },
         "hubris": {
             "name": "傲慢",
             "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n威望：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>12<>（每层+3）<#ff9028ff>额外<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>，持续 <#e8a800ff>90秒<>。"
@@ -2805,6 +2817,10 @@
         "serrated_dirk": {
             "name": "Adaga Serrilhada",
             "option": "\nGanha <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>."
+        },
+        "caulfields_warhammer": {
+            "name": "Martelo de Guerra de Caulfield",
+            "option": ""
         },
         "hubris": {
             "name": "Arrogância",
@@ -3527,6 +3543,10 @@
             "name": "Зубчатый кинжал",
             "option": "\nДаёт <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>."
         },
+        "caulfields_warhammer": {
+            "name": "Боевой молот Колфилда",
+            "option": ""
+        },
         "hubris": {
             "name": "Гордыня",
             "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nВозвышение: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>12<> (+3 за заряд) <#ff9028ff>дополнительной<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>90 секунд<>."
@@ -4247,6 +4267,10 @@
         "serrated_dirk": {
             "name": "톱날 단검",
             "option": "\n<#ffdd8eff>10의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다."
+        },
+        "caulfields_warhammer": {
+            "name": "콜필드의 전투 망치",
+            "option": ""
         },
         "hubris": {
             "name": "오만",

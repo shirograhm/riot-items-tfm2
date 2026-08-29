@@ -877,6 +877,11 @@
     "attack": 45,
     "effect_lethality": 10
   },
+  "caulfields_warhammer": {
+    "price": 950,
+    "attack": 45,
+    "skill_cooldown_mult": 10
+  },
   "hubris": {
     "price": 1300,
     "attack": 70,

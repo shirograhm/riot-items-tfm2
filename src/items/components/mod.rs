@@ -5,6 +5,7 @@ items! {
     bandleglass_mirror,
     bf_sword,
     blighting_jewel,
+    caulfields_warhammer,
     executioners_calling,
     glacial_buckler,
     glowing_mote,
