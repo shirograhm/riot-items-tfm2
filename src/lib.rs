@@ -347,6 +347,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4
+    reg.add_item(configured!("ardent_censer" => ArdentCenser));
     reg.add_item(configured!("atmas_reckoning" => AtmasReckoning));
     reg.add_item(configured!("axiom_arc" => AxiomArc));
     reg.add_item(configured!("bastionbreaker" => Bastionbreaker));
@@ -411,6 +412,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
 
     // Tier 5
+    reg.add_item(configured_radiant!("radiant_ardent_censer" => ArdentCenser));
     reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning));
     reg.add_item(configured_radiant!("radiant_axiom_arc" => AxiomArc));
     reg.add_item(configured_radiant!("radiant_bastionbreaker" => Bastionbreaker));

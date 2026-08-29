@@ -13,10 +13,10 @@ pub struct ForbiddenIdol {
 impl Default for ForbiddenIdol {
     fn default() -> Self {
         Self {
-            price: 600,
+            price: 650,
             hp: 200,
             magic_power: 20,
-            skill_cooldown_mult: 5,
+            skill_cooldown_mult: 10,
         }
     }
 }
@@ -55,7 +55,10 @@ impl StableItem for ForbiddenIdol {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["sword_of_blossoming_dawn".to_string()]
+        vec![
+            "sword_of_blossoming_dawn".to_string(),
+            "bloodsong".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffV1 {

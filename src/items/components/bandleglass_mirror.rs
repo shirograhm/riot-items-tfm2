@@ -62,9 +62,9 @@ impl StableItem for BandleglassMirror {
 
     fn next_tier(&self) -> Vec<String> {
         vec![
+            "ardent_censer".to_string(),
             "zekes_herald".to_string(),
             "echoes_of_helia".to_string(),
-            "bloodsong".to_string(),
         ]
     }
 

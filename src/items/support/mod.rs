@@ -1,6 +1,7 @@
 //! Completed items in the Support category.
 
 items! {
+    ardent_censer,
     bloodsong,
     echoes_of_helia,
     locket_of_the_iron_solari,

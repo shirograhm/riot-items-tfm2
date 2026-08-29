@@ -2,6 +2,7 @@ pub const CATEGORY_ORDER: [&str; 6] =
     ["Assassin", "Fighter", "Marksman", "Mage", "Tank", "Support"];
 
 const CATEGORY_OF: &[(&str, &str)] = &[
+    ("ardent_censer", "Support"),
     ("atmas_reckoning", "Tank"),
     ("axiom_arc", "Assassin"),
     ("bastionbreaker", "Assassin"),

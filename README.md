@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 145 new items (83 base + 62 Radiant) to the game.
+Reskins the 30 existing items and also adds 147 new items (84 base + 63 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -32,7 +32,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Bandleglass Mirror** | 650G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
 | **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |
 | **Caulfield's Warhammer** | 950G | +45 AD<br>+10% CDR | — |
-| **Forbidden Idol** | 600G | +200 HP<br>+20 AP<br>+5% CDR | — |
+| **Forbidden Idol** | 650G | +200 HP<br>+20 AP<br>+10% CDR | — |
 | **Glacial Buckler** | 800G | +50 Armor<br>+5% CDR | — |
 | **Haunting Guise** | 950G | +200 HP<br>+60 AP | — |
 | **Hearthbound Axe** | 950G | +30 AD<br>+20% AS | — |
@@ -48,6 +48,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
+| **Ardent Censer** | 1000G | +200 HP<br>+2 HP Regen<br>+45 AP<br>+5% CDR<br>+5% MS | — |
 | **Atma's Reckoning** | 1450G | +500 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Axiom Arc** | 1300G | +70 AD<br>+10% CDR | Gain 18 Lethality.<br>Flux: Gain 10% (+0.2% per 1 Lethality) cooldown reduction on your ultimate skill. |
 | **Bastionbreaker** | 1300G | +65 AD<br>+15% CDR | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus physical damage. |
@@ -55,7 +56,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Maleficent: Landing an Ability on an enemy champion grants 10 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
-| **Bloodsong** | 1050G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
+| **Bloodsong** | 1050G | +200 HP<br>+20 AP<br>+25% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
 | **Collector** | 1450G | +60 AD<br>+20% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Dead Man's Plate** | 1450G | +300 HP<br>+55 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Deathblade** | 1400G | +90 AD | Apex: Increase your total Attack Damage by 15%. |
@@ -115,6 +116,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
+| **Radiant Ardent Censer** | 1700G | +400 HP<br>+4 HP Regen<br>+90 AP<br>+5% CDR<br>+5% MS | — |
 | **Radiant Atma's Reckoning** | 2050G | +850 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Radiant Axiom Arc** | 1900G | +105 AD<br>+15% CDR | Gain 18 Lethality.<br>Flux: Gain 10% (+0.2% per 1 Lethality) cooldown reduction on your ultimate skill. |
 | **Radiant Bastionbreaker** | 1950G | +110 AD<br>+20% CDR | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus physical damage. |
@@ -122,7 +124,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Maleficent: Landing an Ability on an enemy champion grants 30 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
-| **Radiant Bloodsong** | 1500G | +400 HP<br>+4 HP Regen<br>+40 AP<br>+15% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
+| **Radiant Bloodsong** | 1500G | +400 HP<br>+40 AP<br>+35% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
 | **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Radiant Dead Man's Plate** | 2100G | +650 HP<br>+70 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Radiant Deathblade** | 2000G | +140 AD | Apex: Increase your total Attack Damage by 25%. |
