@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 137 new items (78 base + 59 Radiant) to the game.
+Reskins the 30 existing items and also adds 147 new items (86 base + 61 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -15,13 +15,17 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Glowing Mote** | 500G | +10% CDR | — |
+| **Hunter's Machete** | 500G | +10 AD<br>+5% AS | Maim: Basic attacks against monsters deal 5 bonus magic damage and restore 3 health. |
+| **Hunter's Talisman** | 500G | +20 AP<br>+2 HP Regen | Butcher: Deal 5% bonus damage against monsters and heal for 1% of the damage dealt. |
 
 #### Tier 2
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Executioner's Calling** | 500G | +25 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
+| **Madred's Razors** | 500G | +10 AD<br>+10% AS<br>+10 Armor | Maim: Basic attacks against monsters deal 15 bonus magic damage and restore 8 health. |
 | **Oblivion Orb** | 500G | +50 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Sheen** | 500G | +15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
+| **Spirit Stone** | 500G | +40 AP<br>+4 HP Regen<br>+5% CDR | Butcher: Deal 15% bonus damage against monsters and heal for 3% of the damage dealt. |
 
 
 #### Tier 3
@@ -33,6 +37,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |
 | **Caulfield's Warhammer** | 950G | +45 AD<br>+10% CDR | — |
 | **Glacial Buckler** | 800G | +50 Armor<br>+5% CDR | — |
+| **Grez's Spectral Lantern** | 800G | +60 AP<br>+6 HP Regen<br>+10% CDR | Butcher: Deal 20% bonus damage against monsters and heal for 4% of the damage dealt. |
 | **Haunting Guise** | 950G | +200 HP<br>+60 AP | — |
 | **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
@@ -42,6 +47,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Serrated Dirk** | 800G | +45 AD | Gain 10 Lethality. |
 | **Steel Sigil** | 950G | +30 AD<br>+50 Armor | — |
 | **Winged Moonplate** | 800G | +250 HP<br>+4% MS | — |
+| **Wriggle's Lantern** | 800G | +15 AD<br>+15% AS<br>+15 Armor | Maim: Basic attacks against monsters deal 30 bonus magic damage and restore 10 health. |
 
 #### Tier 4
 | Item | Cost | Stats | Passive |
@@ -62,6 +68,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Echoes of Helia** | 1100G | +250 HP<br>+4 HP Regen<br>+45 AP<br>+15% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion consumes all Soul Charges and heals them equal to the consumed amount. |
 | **Eclipse** | 1300G | +55 AD<br>+15% CDR | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast. Hitting a champion that is already marked consumes the mark to deal bonus physical damage equal to 6% of their maximum health and grant you a shield of 100 + 15% of your Attack Damage for 2 seconds (6 second cooldown). |
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Overdrive: Gain 15% cooldown reduction on your ultimate skill. |
+| **Feral Flare** | 1400G | +27 AD<br>+27% AS<br>+27 Armor | Maim: Gain a Feral stack for each champion takedown scored, up to 30. Basic attacks deal 40 (+1 per Feral stack) bonus magic damage and restore 15 health. This effect is 300% as effective against minions and monsters. |
 | **Frozen Heart** | 1300G | +65 Armor<br>+10% CDR<br>+10% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Frozen Mallet** | 1400G | +400 HP<br>+40 AD | Icy: Basic attacks apply a 15% slow for 2 seconds. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
@@ -92,6 +99,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Serpent's Fang** | 1200G | +60 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 50 + 10% of your Attack Damage as bonus physical damage. |
 | **Shadowflame** | 1350G | +115 AP<br>+15% Magic Pen | Cinderbloom: Your magic damage is 20% stronger against enemies below 30% maximum health. |
 | **Spear of Shojin** | 1400G | +350 HP<br>+35 AD<br>+10% CDR | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
+| **Spirit of the Spectral Wraith** | 1400G | +110 AP<br>+8 HP Regen<br>+15% CDR | Spirit Drain: Grants 2 Ability Power for each champion takedown, up to 60.<br>Butcher: Deal 30% bonus damage against monsters and heal for 6% of the damage dealt. |
 | **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Vitality: Increase all healing received by 20%. |
 | **Sterak's Gage** | 1400G | +400 HP<br>+30 AD<br>+15% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Stormrazor** | 1550G | +65 AD<br>+20% AS<br>+20% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
@@ -126,6 +134,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Echoes of Helia** | 1500G | +450 HP<br>+6 HP Regen<br>+65 AP<br>+20% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion consumes all Soul Charges and heals them equal to the consumed amount. |
 | **Radiant Eclipse** | 1950G | +95 AD<br>+15% CDR | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast. Hitting a champion that is already marked consumes the mark to deal bonus physical damage equal to 10% of their maximum health and grant you a shield of 160 + 20% of your Attack Damage for 2 seconds (6 second cooldown). |
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Overdrive: Gain 25% cooldown reduction on your ultimate skill. |
+| **Radiant Feral Flare** | 2000G | +45 AD<br>+45% AS<br>+45 Armor | Maim: Gain a Feral stack for each champion takedown scored, up to 30. Basic attacks deal 40 (+1 per Feral stack) bonus magic damage and restore 15 health. This effect is 300% as effective against minions and monsters. |
 | **Radiant Frozen Heart** | 1900G | +110 Armor<br>+15% CDR<br>+15% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Radiant Frozen Mallet** | 2000G | +600 HP<br>+60 AD | Icy: Basic attacks deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
@@ -156,6 +165,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Serpent's Fang** | 1800G | +100 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 85 + 15% of your Attack Damage as bonus physical damage. |
 | **Radiant Shadowflame** | 1800G | +210 AP<br>+15% Magic Pen | Cinderbloom: Your magic damage is 20% stronger against enemies below 30% maximum health. |
 | **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD<br>+20% CDR | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
+| **Radiant Spirit of the Spectral Wraith** | 2000G | +175 AP<br>+12 HP Regen<br>+20% CDR | Spirit Drain: Grants 2 Ability Power for each champion takedown, up to 60.<br>Butcher: Deal 40% bonus damage against monsters and heal for 8% of the damage dealt. |
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Vitality: Increase all healing received by 20%. |
 | **Radiant Sterak's Gage** | 2000G | +650 HP<br>+50 AD<br>+20% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Radiant Stormrazor** | 2200G | +100 AD<br>+40% AS<br>+25% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |

@@ -143,6 +143,17 @@ fn is_enemy_champion(ctx: &mut StableSim<'_>, caster: usize, target: usize) -> b
         .unwrap_or(false)
 }
 
+/// Neutral jungle and epic monsters. The stable API exposes only
+/// `is_champion`, `is_tower` and `is_minion`, so a monster is what is left
+/// once those three are ruled out — the same elimination
+/// `blade_of_the_ruined_king` already relies on for its "minions and
+/// monsters" damage cap. Nothing in the API separates an epic monster from
+/// an ordinary camp, which is why the jungle line stacks on champion
+/// takedowns alone.
+fn is_monster(entity: &StableEntity<'_, '_>) -> bool {
+    !entity.is_champion() && !entity.is_tower() && !entity.is_minion()
+}
+
 fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: i32, name: &str) {
     let Some((champion_id, favors_ap, already_applied)) = ctx.get_player(player).and_then(|p| {
         let champion_ref = p.champion()?;
@@ -399,6 +410,24 @@ fn init(host: &StableHost) -> StableMod {
     // New items go at the END of this list, never sorted into the blocks above:
     // saves address items by registration index rather than by key, so inserting
     // one mid-list renumbers every item after it.
+
+    // Jungle line: Hunter's Machete -> Madred's Razors -> Wriggle's Lantern
+    // -> Feral Flare -> Radiant Feral Flare.
+    reg.add_item(configured!("hunters_machete" => HuntersMachete));
+    reg.add_item(configured!("madreds_razors" => MadredsRazors));
+    reg.add_item(configured!("wriggles_lantern" => WrigglesLantern));
+    reg.add_item(configured!("feral_flare" => FeralFlare));
+    reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
+
+    // AP jungle line: Hunter's Talisman -> Spirit Stone -> Grez's Spectral
+    // Lantern -> Spirit of the Spectral Wraith -> Radiant.
+    reg.add_item(configured!("hunters_talisman" => HuntersTalisman));
+    reg.add_item(configured!("spirit_stone" => SpiritStone));
+    reg.add_item(configured!("grezs_spectral_lantern" => GrezsSpectralLantern));
+    reg.add_item(configured!("spirit_of_the_spectral_wraith" => SpiritOfTheSpectralWraith));
+    reg.add_item(configured_radiant!(
+        "radiant_spirit_of_the_spectral_wraith" => SpiritOfTheSpectralWraith
+    ));
 
     // What `item-builds.json` reaches the game through. Registered whether or
     // not a config exists: the hook keeps the engine's build when it has nothing

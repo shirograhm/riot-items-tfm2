@@ -3,7 +3,7 @@ use crate::{apply_config, is_monster};
 use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
-pub struct MadredsRazors {
+pub struct WrigglesLantern {
     price: usize,
     attack: i32,
     attack_speed_mult: i32,
@@ -12,20 +12,20 @@ pub struct MadredsRazors {
     effect_bonus_flat_heal: i32,
 }
 
-impl Default for MadredsRazors {
+impl Default for WrigglesLantern {
     fn default() -> Self {
         Self {
-            price: 500,
-            attack: 10,
-            attack_speed_mult: 10,
-            defence: 10,
-            effect_bonus_magic_damage: 15,
-            effect_bonus_flat_heal: 8,
+            price: 800,
+            attack: 15,
+            attack_speed_mult: 15,
+            defence: 15,
+            effect_bonus_magic_damage: 30,
+            effect_bonus_flat_heal: 10,
         }
     }
 }
 
-impl MadredsRazors {
+impl WrigglesLantern {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let mut item = Self::default();
         apply_config!(
@@ -44,17 +44,17 @@ impl MadredsRazors {
     }
 }
 
-impl StableItem for MadredsRazors {
+impl StableItem for WrigglesLantern {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> String {
-        "madreds_razors".to_string()
+        "wriggles_lantern".to_string()
     }
 
     fn icon(&self) -> String {
-        "madreds_razors".to_string()
+        "wriggles_lantern".to_string()
     }
 
     fn price(&self) -> usize {
@@ -62,15 +62,15 @@ impl StableItem for MadredsRazors {
     }
 
     fn tier(&self) -> usize {
-        1
+        2
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hunters_machete".to_string()]
+        vec!["madreds_razors".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["wriggles_lantern".to_string()]
+        vec!["feral_flare".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {

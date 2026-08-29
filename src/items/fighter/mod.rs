@@ -5,6 +5,7 @@ items! {
     deaths_dance,
     eclipse,
     experimental_hexplate,
+    feral_flare,
     frozen_mallet,
     overlords_bloodmail,
     spear_of_shojin,

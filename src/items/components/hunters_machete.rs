@@ -3,29 +3,27 @@ use crate::{apply_config, is_monster};
 use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
-pub struct MadredsRazors {
+pub struct HuntersMachete {
     price: usize,
     attack: i32,
     attack_speed_mult: i32,
-    defence: i32,
     effect_bonus_magic_damage: usize,
     effect_bonus_flat_heal: i32,
 }
 
-impl Default for MadredsRazors {
+impl Default for HuntersMachete {
     fn default() -> Self {
         Self {
             price: 500,
             attack: 10,
-            attack_speed_mult: 10,
-            defence: 10,
-            effect_bonus_magic_damage: 15,
-            effect_bonus_flat_heal: 8,
+            attack_speed_mult: 5,
+            effect_bonus_magic_damage: 5,
+            effect_bonus_flat_heal: 3,
         }
     }
 }
 
-impl MadredsRazors {
+impl HuntersMachete {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let mut item = Self::default();
         apply_config!(
@@ -35,7 +33,6 @@ impl MadredsRazors {
                 price,
                 attack,
                 attack_speed_mult,
-                defence,
                 effect_bonus_magic_damage,
                 effect_bonus_flat_heal
             ]
@@ -44,17 +41,17 @@ impl MadredsRazors {
     }
 }
 
-impl StableItem for MadredsRazors {
+impl StableItem for HuntersMachete {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> String {
-        "madreds_razors".to_string()
+        "hunters_machete".to_string()
     }
 
     fn icon(&self) -> String {
-        "madreds_razors".to_string()
+        "hunters_machete".to_string()
     }
 
     fn price(&self) -> usize {
@@ -62,22 +59,21 @@ impl StableItem for MadredsRazors {
     }
 
     fn tier(&self) -> usize {
-        1
+        0
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hunters_machete".to_string()]
+        vec![]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["wriggles_lantern".to_string()]
+        vec!["madreds_razors".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
             attack: self.attack,
             attack_speed_mult: self.attack_speed_mult,
-            defence: self.defence,
             ..Default::default()
         }
     }
@@ -116,7 +112,7 @@ impl StableItem for MadredsRazors {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed, ItemTagV1::Defense]
+        vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed]
     }
 
     fn category(&self) -> ItemCategoryV1 {

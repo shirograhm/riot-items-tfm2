@@ -15,5 +15,6 @@ items! {
     rite_of_ruin,
     rylais_crystal_scepter,
     shadowflame,
+    spirit_of_the_spectral_wraith,
     void_staff,
 }

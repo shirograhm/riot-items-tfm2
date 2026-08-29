@@ -1002,69 +1002,111 @@
             "w": 0.05,
             "h": 0.05
         },
-        "madreds_razors": {
+        "hunters_machete": {
             "x": 0.35,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "feral_flare": {
+        "madreds_razors": {
             "x": 0.4,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "radiant_feral_flare": {
+        "wriggles_lantern": {
             "x": 0.45,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "sword_of_blossoming_dawn": {
+        "feral_flare": {
             "x": 0.5,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "radiant_sword_of_blossoming_dawn": {
+        "radiant_feral_flare": {
             "x": 0.55,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "imperial_mandate": {
+        "sword_of_blossoming_dawn": {
             "x": 0.6,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "radiant_imperial_mandate": {
+        "radiant_sword_of_blossoming_dawn": {
             "x": 0.65,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "ardent_censer": {
+        "imperial_mandate": {
             "x": 0.7,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "radiant_ardent_censer": {
+        "radiant_imperial_mandate": {
             "x": 0.75,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "staff_of_flowing_water": {
+        "ardent_censer": {
             "x": 0.8,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "radiant_staff_of_flowing_water": {
+        "radiant_ardent_censer": {
             "x": 0.85,
             "y": 0.4,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "staff_of_flowing_water": {
+            "x": 0.9,
+            "y": 0.4,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_staff_of_flowing_water": {
+            "x": 0.95,
+            "y": 0.4,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "hunters_talisman": {
+            "x": 0.0,
+            "y": 0.45,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "spirit_stone": {
+            "x": 0.05,
+            "y": 0.45,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "grezs_spectral_lantern": {
+            "x": 0.1,
+            "y": 0.45,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "spirit_of_the_spectral_wraith": {
+            "x": 0.15,
+            "y": 0.45,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_spirit_of_the_spectral_wraith": {
+            "x": 0.2,
+            "y": 0.45,
             "w": 0.05,
             "h": 0.05
         }
