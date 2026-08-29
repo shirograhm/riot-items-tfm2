@@ -3,9 +3,6 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ItemMeta};
 
-// Maim: Gain a Feral stack for each champion takedown scored, up to 30. Basic
-// attacks deal 40 (+1 per Feral stack) bonus magic damage and restore 15
-// health. This effect is 300% as effective against minions and monsters.
 #[derive(Clone, Debug)]
 pub struct FeralFlare {
     meta: ItemMeta,
@@ -25,7 +22,7 @@ pub struct FeralFlare {
 impl FeralFlare {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("feral_flare", &["wriggles_lantern"], &["radiant_feral_flare"]),
+            meta: ItemMeta::base("feral_flare", &[], &["radiant_feral_flare"]),
             price: 1400,
             attack: 27,
             attack_speed_mult: 27,
@@ -46,6 +43,11 @@ impl FeralFlare {
             attack: 45,
             attack_speed_mult: 45,
             defence: 45,
+            effect_bonus_magic_damage: 40,
+            effect_stack_magic_damage: 1,
+            effect_bonus_flat_heal: 15,
+            effect_max_stacks: 30,
+            effect_minion_percent: 300.0,
             ..Self::base()
         }
     }
@@ -77,9 +79,6 @@ impl FeralFlare {
         self
     }
 
-    // A takedown is a kill or an assist, so both hooks feed this. The stable API
-    // cannot tell an epic monster from an ordinary camp (see `is_monster`), so
-    // only champion takedowns count.
     fn add_stack(&mut self) {
         if self.feral_stacks < self.effect_max_stacks {
             self.feral_stacks += 1;
@@ -131,9 +130,6 @@ impl StableItem for FeralFlare {
         }
     }
 
-    // Stacks are per-match: the count is carried on the item instance, which the
-    // host clones per player, so it has to be cleared the way `hubris` clears
-    // its own.
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.feral_stacks = 0;
     }
@@ -154,9 +150,6 @@ impl StableItem for FeralFlare {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        // Towers are excluded the way `blade_of_the_ruined_king` excludes them;
-        // everything else that is not a champion is a minion or a monster and
-        // takes the boosted version.
         if target_ref.is_tower() {
             return;
         }

@@ -411,23 +411,10 @@ fn init(host: &StableHost) -> StableMod {
     // saves address items by registration index rather than by key, so inserting
     // one mid-list renumbers every item after it.
 
-    // Jungle line: Hunter's Machete -> Madred's Razors -> Wriggle's Lantern
-    // -> Feral Flare -> Radiant Feral Flare.
-    reg.add_item(configured!("hunters_machete" => HuntersMachete));
-    reg.add_item(configured!("madreds_razors" => MadredsRazors));
-    reg.add_item(configured!("wriggles_lantern" => WrigglesLantern));
+    // Feral Flare has no component: the Hunter's Machete -> Madred's Razors ->
+    // Wriggle's Lantern line it used to complete was removed.
     reg.add_item(configured!("feral_flare" => FeralFlare));
     reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
-
-    // AP jungle line: Hunter's Talisman -> Spirit Stone -> Grez's Spectral
-    // Lantern -> Spirit of the Spectral Wraith -> Radiant.
-    reg.add_item(configured!("hunters_talisman" => HuntersTalisman));
-    reg.add_item(configured!("spirit_stone" => SpiritStone));
-    reg.add_item(configured!("grezs_spectral_lantern" => GrezsSpectralLantern));
-    reg.add_item(configured!("spirit_of_the_spectral_wraith" => SpiritOfTheSpectralWraith));
-    reg.add_item(configured_radiant!(
-        "radiant_spirit_of_the_spectral_wraith" => SpiritOfTheSpectralWraith
-    ));
 
     // What `item-builds.json` reaches the game through. Registered whether or
     // not a config exists: the hook keeps the engine's build when it has nothing

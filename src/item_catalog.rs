@@ -53,7 +53,6 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("serpents_fang", "Assassin"),
     ("shadowflame", "Mage"),
     ("spear_of_shojin", "Fighter"),
-    ("spirit_of_the_spectral_wraith", "Mage"),
     ("spirit_visage", "Tank"),
     ("steraks_gage", "Fighter"),
     ("stormrazor", "Marksman"),

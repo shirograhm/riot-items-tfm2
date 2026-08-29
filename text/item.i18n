@@ -723,18 +723,6 @@
             "name": "Radiant Eclipse",
             "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion <#92dc7bff>marks<> them for <#e8a800ff>2 seconds<>, up to once per cast. Hitting a champion that is already <#92dc7bff>marked<> consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>10% of their maximum health<> and grant you a <#cab944ff>shield<> of <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
         },
-        "hunters_machete": {
-            "name": "Hunter's Machete",
-            "option": "\nMaim: Basic attacks against monsters deal <#a974ffff>5 bonus magic damage<> and restore <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>."
-        },
-        "madreds_razors": {
-            "name": "Madred's Razors",
-            "option": "\nMaim: Basic attacks against monsters deal <#a974ffff>15 bonus magic damage<> and restore <#60e84dff>8 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>."
-        },
-        "wriggles_lantern": {
-            "name": "Wriggle's Lantern",
-            "option": "\nMaim: Basic attacks against monsters deal <#a974ffff>30 bonus magic damage<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>."
-        },
         "feral_flare": {
             "name": "Feral Flare",
             "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored, up to <#92dc7bff>30<>. Basic attacks deal <#a974ffff>40 <#92dc7bff>(+1 per Feral stack)<> bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>. This effect is <#d94c49ff>300%<> as effective against minions and monsters."
@@ -742,26 +730,6 @@
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
             "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored, up to <#92dc7bff>30<>. Basic attacks deal <#a974ffff>40 <#92dc7bff>(+1 per Feral stack)<> bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>. This effect is <#d94c49ff>300%<> as effective against minions and monsters."
-        },
-        "hunters_talisman": {
-            "name": "Hunter's Talisman",
-            "option": "\nButcher: Deal <#d94c49ff>5% bonus damage<> against monsters and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> for <#d94c49ff>1% of the damage dealt<>."
-        },
-        "spirit_stone": {
-            "name": "Spirit Stone",
-            "option": "\nButcher: Deal <#d94c49ff>15% bonus damage<> against monsters and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> for <#d94c49ff>3% of the damage dealt<>."
-        },
-        "grezs_spectral_lantern": {
-            "name": "Grez's Spectral Lantern",
-            "option": "\nButcher: Deal <#d94c49ff>20% bonus damage<> against monsters and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> for <#d94c49ff>4% of the damage dealt<>."
-        },
-        "spirit_of_the_spectral_wraith": {
-            "name": "Spirit of the Spectral Wraith",
-            "option": "\nSpirit Drain: Grants <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> for each champion takedown, up to <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>.\n\nButcher: Deal <#d94c49ff>30% bonus damage<> against monsters and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> for <#d94c49ff>6% of the damage dealt<>."
-        },
-        "radiant_spirit_of_the_spectral_wraith": {
-            "name": "Radiant Spirit of the Spectral Wraith",
-            "option": "\nSpirit Drain: Grants <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> for each champion takedown, up to <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>.\n\nButcher: Deal <#d94c49ff>40% bonus damage<> against monsters and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> for <#d94c49ff>8% of the damage dealt<>."
         }
     },
     "vi": {
@@ -1488,18 +1456,6 @@
             "name": "Nguyệt Đao Ánh Sáng",
             "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ <#92dc7bff>đánh dấu<> chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị <#92dc7bff>đánh dấu<> sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>10% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> bằng <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
         },
-        "hunters_machete": {
-            "name": "Mã Tấu Thợ Săn",
-            "option": "\nTàn Phế: Đòn đánh thường lên quái gây <#a974ffff>5 sát thương phép cộng thêm<> và hồi <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>."
-        },
-        "madreds_razors": {
-            "name": "Dao Cạo Madred",
-            "option": "\nTàn Phế: Đòn đánh thường lên quái gây <#a974ffff>15 sát thương phép cộng thêm<> và hồi <#60e84dff>8 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>."
-        },
-        "wriggles_lantern": {
-            "name": "Đèn Lồng Wriggle",
-            "option": "\nTàn Phế: Đòn đánh thường lên quái gây <#a974ffff>30 sát thương phép cộng thêm<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>."
-        },
         "feral_flare": {
             "name": "Ngọn Lửa Hoang Dã",
             "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch, tối đa <#92dc7bff>30<>. Đòn đánh thường gây <#a974ffff>40 <#92dc7bff>(+1 mỗi cộng dồn Hoang Dã)<> sát thương phép cộng thêm<> và hồi <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>. Hiệu ứng này hiệu quả <#d94c49ff>300%<> lên lính và quái."
@@ -1507,26 +1463,6 @@
         "radiant_feral_flare": {
             "name": "Ngọn Lửa Hoang Dã Ánh Sáng",
             "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch, tối đa <#92dc7bff>30<>. Đòn đánh thường gây <#a974ffff>40 <#92dc7bff>(+1 mỗi cộng dồn Hoang Dã)<> sát thương phép cộng thêm<> và hồi <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>. Hiệu ứng này hiệu quả <#d94c49ff>300%<> lên lính và quái."
-        },
-        "hunters_talisman": {
-            "name": "Bùa Thợ Săn",
-            "option": "\nĐồ Tể: Gây <#d94c49ff>5% sát thương cộng thêm<> lên quái và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#d94c49ff>1% sát thương đã gây<>."
-        },
-        "spirit_stone": {
-            "name": "Đá Linh Hồn",
-            "option": "\nĐồ Tể: Gây <#d94c49ff>15% sát thương cộng thêm<> lên quái và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#d94c49ff>3% sát thương đã gây<>."
-        },
-        "grezs_spectral_lantern": {
-            "name": "Đèn Ma Grez",
-            "option": "\nĐồ Tể: Gây <#d94c49ff>20% sát thương cộng thêm<> lên quái và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#d94c49ff>4% sát thương đã gây<>."
-        },
-        "spirit_of_the_spectral_wraith": {
-            "name": "Linh Hồn Bóng Ma",
-            "option": "\nHút Linh Hồn: Nhận <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> mỗi khi tham gia hạ gục một tướng địch, tối đa <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>.\n\nĐồ Tể: Gây <#d94c49ff>30% sát thương cộng thêm<> lên quái và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#d94c49ff>6% sát thương đã gây<>."
-        },
-        "radiant_spirit_of_the_spectral_wraith": {
-            "name": "Linh Hồn Bóng Ma Ánh Sáng",
-            "option": "\nHút Linh Hồn: Nhận <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> mỗi khi tham gia hạ gục một tướng địch, tối đa <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>.\n\nĐồ Tể: Gây <#d94c49ff>40% sát thương cộng thêm<> lên quái và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#d94c49ff>8% sát thương đã gây<>."
         }
     },
     "zh-hans": {
@@ -2253,18 +2189,6 @@
             "name": "光明版星蚀",
             "option": "\n永升之月：普通攻击或技能命中敌方英雄时会<#92dc7bff>标记<>其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被<#92dc7bff>标记<>的英雄会消耗该标记，造成相当于<#d94c49ff>其10%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得相当于 <#d8c9b3ff>160<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#d8c9b3ff>20%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
         },
-        "hunters_machete": {
-            "name": "猎人弯刀",
-            "option": "\n致残：普通攻击野怪时额外造成 <#a974ffff>5 点魔法伤害<>并回复 <#60e84dff>3 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>。"
-        },
-        "madreds_razors": {
-            "name": "玛德雷德的剃刀",
-            "option": "\n致残：普通攻击野怪时额外造成 <#a974ffff>15 点魔法伤害<>并回复 <#60e84dff>8 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>。"
-        },
-        "wriggles_lantern": {
-            "name": "维格尔的提灯",
-            "option": "\n致残：普通攻击野怪时额外造成 <#a974ffff>30 点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>。"
-        },
         "feral_flare": {
             "name": "野性之炎",
             "option": "\n致残：每次参与击杀敌方英雄获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>30<> 层。普通攻击额外造成 <#a974ffff>40 <#92dc7bff>（每层野性+1）<>点魔法伤害<>并回复 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>。该效果对小兵和野怪的效果为 <#d94c49ff>300%<>。"
@@ -2272,26 +2196,6 @@
         "radiant_feral_flare": {
             "name": "光明版野性之炎",
             "option": "\n致残：每次参与击杀敌方英雄获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>30<> 层。普通攻击额外造成 <#a974ffff>40 <#92dc7bff>（每层野性+1）<>点魔法伤害<>并回复 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>。该效果对小兵和野怪的效果为 <#d94c49ff>300%<>。"
-        },
-        "hunters_talisman": {
-            "name": "猎人护符",
-            "option": "\n屠戮：对野怪造成 <#d94c49ff>5% 额外伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于<#d94c49ff>已造成伤害 1%<>的生命值。"
-        },
-        "spirit_stone": {
-            "name": "灵魂之石",
-            "option": "\n屠戮：对野怪造成 <#d94c49ff>15% 额外伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于<#d94c49ff>已造成伤害 3%<>的生命值。"
-        },
-        "grezs_spectral_lantern": {
-            "name": "格雷兹的幽灵灯笼",
-            "option": "\n屠戮：对野怪造成 <#d94c49ff>20% 额外伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于<#d94c49ff>已造成伤害 4%<>的生命值。"
-        },
-        "spirit_of_the_spectral_wraith": {
-            "name": "幽魂之灵",
-            "option": "\n灵魂汲取：每次参与击杀敌方英雄获得 <#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>，最多 <#a974ffff>60<> 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0>。\n\n屠戮：对野怪造成 <#d94c49ff>30% 额外伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于<#d94c49ff>已造成伤害 6%<>的生命值。"
-        },
-        "radiant_spirit_of_the_spectral_wraith": {
-            "name": "光明版幽魂之灵",
-            "option": "\n灵魂汲取：每次参与击杀敌方英雄获得 <#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>，最多 <#a974ffff>60<> 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0>。\n\n屠戮：对野怪造成 <#d94c49ff>40% 额外伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于<#d94c49ff>已造成伤害 8%<>的生命值。"
         }
     },
     "pt-BR": {
@@ -3018,18 +2922,6 @@
             "name": "Eclipse Radiante",
             "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o <#92dc7bff>marca<> por <#e8a800ff>2 segundos<>, no máximo uma vez por conjuração. Atingir um campeão que já esteja <#92dc7bff>marcado<> consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>10% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> de <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
         },
-        "hunters_machete": {
-            "name": "Machete do Caçador",
-            "option": "\nMutilar: Ataques básicos contra monstros causam <#a974ffff>5 de dano mágico bônus<> e restauram <#60e84dff>3 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> vida<>."
-        },
-        "madreds_razors": {
-            "name": "Navalhas de Madred",
-            "option": "\nMutilar: Ataques básicos contra monstros causam <#a974ffff>15 de dano mágico bônus<> e restauram <#60e84dff>8 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> vida<>."
-        },
-        "wriggles_lantern": {
-            "name": "Lanterna de Wriggle",
-            "option": "\nMutilar: Ataques básicos contra monstros causam <#a974ffff>30 de dano mágico bônus<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> vida<>."
-        },
         "feral_flare": {
             "name": "Chama Feral",
             "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo, até <#92dc7bff>30<>. Ataques básicos causam <#a974ffff>40 <#92dc7bff>(+1 por acúmulo de Feral)<> de dano mágico bônus<> e restauram <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> vida<>. Este efeito é <#d94c49ff>300%<> mais efetivo contra lacaios e monstros."
@@ -3037,26 +2929,6 @@
         "radiant_feral_flare": {
             "name": "Chama Feral Radiante",
             "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo, até <#92dc7bff>30<>. Ataques básicos causam <#a974ffff>40 <#92dc7bff>(+1 por acúmulo de Feral)<> de dano mágico bônus<> e restauram <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> vida<>. Este efeito é <#d94c49ff>300%<> mais efetivo contra lacaios e monstros."
-        },
-        "hunters_talisman": {
-            "name": "Talismã do Caçador",
-            "option": "\nAçougueiro: Causa <#d94c49ff>5% de dano bônus<> contra monstros e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> <#d94c49ff>1% do dano causado<>."
-        },
-        "spirit_stone": {
-            "name": "Pedra Espiritual",
-            "option": "\nAçougueiro: Causa <#d94c49ff>15% de dano bônus<> contra monstros e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> <#d94c49ff>3% do dano causado<>."
-        },
-        "grezs_spectral_lantern": {
-            "name": "Lanterna Espectral de Grez",
-            "option": "\nAçougueiro: Causa <#d94c49ff>20% de dano bônus<> contra monstros e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> <#d94c49ff>4% do dano causado<>."
-        },
-        "spirit_of_the_spectral_wraith": {
-            "name": "Espírito do Espectro",
-            "option": "\nDreno Espiritual: Concede <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> ao participar do abate de um campeão inimigo, até <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>.\n\nAçougueiro: Causa <#d94c49ff>30% de dano bônus<> contra monstros e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> <#d94c49ff>6% do dano causado<>."
-        },
-        "radiant_spirit_of_the_spectral_wraith": {
-            "name": "Espírito do Espectro Radiante",
-            "option": "\nDreno Espiritual: Concede <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> ao participar do abate de um campeão inimigo, até <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>.\n\nAçougueiro: Causa <#d94c49ff>40% de dano bônus<> contra monstros e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> <#d94c49ff>8% do dano causado<>."
         }
     },
     "ru": {
@@ -3783,18 +3655,6 @@
             "name": "Лучезарное Затмение",
             "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону <#92dc7bff>отмечает<> его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по чемпиону, который уже <#92dc7bff>отмечен<>, поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>10% его максимального здоровья<> и давая вам <#cab944ff>щит<> в размере <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
         },
-        "hunters_machete": {
-            "name": "Мачете охотника",
-            "option": "\nУвечье: Автоатаки по монстрам наносят <#a974ffff>5 дополнительного магического урона<> и восстанавливают <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>."
-        },
-        "madreds_razors": {
-            "name": "Бритвы Мадреда",
-            "option": "\nУвечье: Автоатаки по монстрам наносят <#a974ffff>15 дополнительного магического урона<> и восстанавливают <#60e84dff>8 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>."
-        },
-        "wriggles_lantern": {
-            "name": "Фонарь Ригла",
-            "option": "\nУвечье: Автоатаки по монстрам наносят <#a974ffff>30 дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>."
-        },
         "feral_flare": {
             "name": "Дикое пламя",
             "option": "\nУвечье: При участии в убийстве вражеского чемпиона даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>30<>. Автоатаки наносят <#a974ffff>40 <#92dc7bff>(+1 за заряд Дикости)<> дополнительного магического урона<> и восстанавливают <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>. Против миньонов и монстров эффект составляет <#d94c49ff>300%<>."
@@ -3802,26 +3662,6 @@
         "radiant_feral_flare": {
             "name": "Лучезарное Дикое пламя",
             "option": "\nУвечье: При участии в убийстве вражеского чемпиона даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>30<>. Автоатаки наносят <#a974ffff>40 <#92dc7bff>(+1 за заряд Дикости)<> дополнительного магического урона<> и восстанавливают <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>. Против миньонов и монстров эффект составляет <#d94c49ff>300%<>."
-        },
-        "hunters_talisman": {
-            "name": "Талисман охотника",
-            "option": "\nМясник: Наносит <#d94c49ff>5% дополнительного урона<> монстрам и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#d94c49ff>1% нанесённого урона<>."
-        },
-        "spirit_stone": {
-            "name": "Камень духа",
-            "option": "\nМясник: Наносит <#d94c49ff>15% дополнительного урона<> монстрам и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#d94c49ff>3% нанесённого урона<>."
-        },
-        "grezs_spectral_lantern": {
-            "name": "Призрачный фонарь Греза",
-            "option": "\nМясник: Наносит <#d94c49ff>20% дополнительного урона<> монстрам и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#d94c49ff>4% нанесённого урона<>."
-        },
-        "spirit_of_the_spectral_wraith": {
-            "name": "Дух призрака",
-            "option": "\nПохищение духа: При участии в убийстве вражеского чемпиона даёт <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Силы умений<>, до <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>.\n\nМясник: Наносит <#d94c49ff>30% дополнительного урона<> монстрам и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#d94c49ff>6% нанесённого урона<>."
-        },
-        "radiant_spirit_of_the_spectral_wraith": {
-            "name": "Лучезарный Дух призрака",
-            "option": "\nПохищение духа: При участии в убийстве вражеского чемпиона даёт <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Силы умений<>, до <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>.\n\nМясник: Наносит <#d94c49ff>40% дополнительного урона<> монстрам и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#d94c49ff>8% нанесённого урона<>."
         }
     },
     "ko": {
@@ -4548,18 +4388,6 @@
             "name": "찬란한 월식",
             "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 <#92dc7bff>표식<> 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 이미 <#92dc7bff>표식<>이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#d8c9b3ff>160<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
         },
-        "hunters_machete": {
-            "name": "사냥꾼의 마체테",
-            "option": "\n불구: 몬스터를 기본 공격하면 <#a974ffff>5의 추가 마법 피해<>를 입히고 <#60e84dff>3<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 체력<>을 회복합니다."
-        },
-        "madreds_razors": {
-            "name": "마드레드의 면도날",
-            "option": "\n불구: 몬스터를 기본 공격하면 <#a974ffff>15의 추가 마법 피해<>를 입히고 <#60e84dff>8<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 체력<>을 회복합니다."
-        },
-        "wriggles_lantern": {
-            "name": "위글의 랜턴",
-            "option": "\n불구: 몬스터를 기본 공격하면 <#a974ffff>30의 추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 체력<>을 회복합니다."
-        },
         "feral_flare": {
             "name": "야성의 불꽃",
             "option": "\n불구: 적 챔피언 처치에 관여할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>30<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>40 <#92dc7bff>(야성 중첩당 +1)<>의 추가 마법 피해<>를 입히고 <#60e84dff>15<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#d94c49ff>300%<>로 적용됩니다."
@@ -4567,26 +4395,6 @@
         "radiant_feral_flare": {
             "name": "찬란한 야성의 불꽃",
             "option": "\n불구: 적 챔피언 처치에 관여할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>30<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>40 <#92dc7bff>(야성 중첩당 +1)<>의 추가 마법 피해<>를 입히고 <#60e84dff>15<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#d94c49ff>300%<>로 적용됩니다."
-        },
-        "hunters_talisman": {
-            "name": "사냥꾼의 부적",
-            "option": "\n도살자: 몬스터에게 <#d94c49ff>5%의 추가 피해<>를 입히고 <#d94c49ff>입힌 피해의 1%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
-        },
-        "spirit_stone": {
-            "name": "영혼의 돌",
-            "option": "\n도살자: 몬스터에게 <#d94c49ff>15%의 추가 피해<>를 입히고 <#d94c49ff>입힌 피해의 3%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
-        },
-        "grezs_spectral_lantern": {
-            "name": "그레즈의 유령 등불",
-            "option": "\n도살자: 몬스터에게 <#d94c49ff>20%의 추가 피해<>를 입히고 <#d94c49ff>입힌 피해의 4%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
-        },
-        "spirit_of_the_spectral_wraith": {
-            "name": "유령 망령의 정령",
-            "option": "\n영혼 흡수: 적 챔피언 처치에 관여할 때마다 <#a974ffff>2의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력<>을 얻으며, 최대 <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>까지 쌓입니다.\n\n도살자: 몬스터에게 <#d94c49ff>30%의 추가 피해<>를 입히고 <#d94c49ff>입힌 피해의 6%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
-        },
-        "radiant_spirit_of_the_spectral_wraith": {
-            "name": "찬란한 유령 망령의 정령",
-            "option": "\n영혼 흡수: 적 챔피언 처치에 관여할 때마다 <#a974ffff>2의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력<>을 얻으며, 최대 <#a974ffff>60<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0>까지 쌓입니다.\n\n도살자: 몬스터에게 <#d94c49ff>40%의 추가 피해<>를 입히고 <#d94c49ff>입힌 피해의 8%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
         }
     }
 }

@@ -3,11 +3,6 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 
-// Ever Rising Moon: Landing basic attacks and Abilities on enemy champions
-// marks them for 2 seconds, up to once per cast. If the champion is already
-// marked, consume the mark instead to deal bonus physical damage equal to 6% of
-// the target's maximum health and shield yourself for 100 (+15% AD) for 2
-// seconds (6 second cooldown).
 #[derive(Clone, Debug)]
 pub struct Eclipse {
     meta: ItemMeta,
@@ -45,9 +40,6 @@ impl Eclipse {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_eclipse", &["eclipse"]),
-            // Distinct names so a base-Eclipse ally and a radiant-Eclipse ally
-            // keep their own mark and their own cooldown, the way
-            // `night_harvester` separates its two variants.
             mark_buff: "radiant_eclipse_mark",
             cooldown_buff: "radiant_eclipse_cooldown",
             price: 1950,

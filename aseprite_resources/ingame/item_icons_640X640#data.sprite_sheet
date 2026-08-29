@@ -1002,19 +1002,19 @@
             "w": 0.05,
             "h": 0.05
         },
-        "hunters_machete": {
+        "axiom_arc": {
             "x": 0.35,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "madreds_razors": {
+        "radiant_axiom_arc": {
             "x": 0.4,
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
         },
-        "wriggles_lantern": {
+        "hearthbound_axe": {
             "x": 0.45,
             "y": 0.4,
             "w": 0.05,
@@ -1077,36 +1077,6 @@
         "radiant_staff_of_flowing_water": {
             "x": 0.95,
             "y": 0.4,
-            "w": 0.05,
-            "h": 0.05
-        },
-        "hunters_talisman": {
-            "x": 0.0,
-            "y": 0.45,
-            "w": 0.05,
-            "h": 0.05
-        },
-        "spirit_stone": {
-            "x": 0.05,
-            "y": 0.45,
-            "w": 0.05,
-            "h": 0.05
-        },
-        "grezs_spectral_lantern": {
-            "x": 0.1,
-            "y": 0.45,
-            "w": 0.05,
-            "h": 0.05
-        },
-        "spirit_of_the_spectral_wraith": {
-            "x": 0.15,
-            "y": 0.45,
-            "w": 0.05,
-            "h": 0.05
-        },
-        "radiant_spirit_of_the_spectral_wraith": {
-            "x": 0.2,
-            "y": 0.45,
             "w": 0.05,
             "h": 0.05
         }
