@@ -723,17 +723,33 @@
             "name": "Radiant Eclipse",
             "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion <#92dc7bff>marks<> them for <#e8a800ff>2 seconds<>, up to once per cast. Hitting a champion that is already <#92dc7bff>marked<> consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>10% of their maximum health<> and grant you a <#cab944ff>shield<> of <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
         },
+        "axiom_arc": {
+            "name": "Axiom Arc",
+            "option": "\nFlux: Gain <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+        },
+        "imperial_mandate": {
+            "name": "Imperial Mandate",
+            "option": "\nCommand: Landing an Ability on an enemy champion marks them as <#92dc7bff>Vulnerable<> for <#e8a800ff>4 seconds<>, increasing their <#d94c49ff>damage taken<> by <#d94c49ff>7%<>. Subsequent hits against the same target extend the duration."
+        },
+        "radiant_imperial_mandate": {
+            "name": "Radiant Imperial Mandate",
+            "option": "\nCommand: Landing an Ability on an enemy champion marks them as <#92dc7bff>Vulnerable<> for <#e8a800ff>4 seconds<>, increasing their <#d94c49ff>damage taken<> by <#d94c49ff>7%<>. Subsequent hits against the same target extend the duration."
+        },
+        "radiant_axiom_arc": {
+            "name": "Radiant Axiom Arc",
+            "option": "\nFlux: Gain <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+        },
         "hearthbound_axe": {
             "name": "Hearthbound Axe",
             "option": ""
         },
         "feral_flare": {
             "name": "Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored, up to <#92dc7bff>30<>. Basic attacks deal <#a974ffff>40 <#92dc7bff>(+1 per Feral stack)<> bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>. This effect is <#d94c49ff>300%<> as effective against minions and monsters."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored, up to <#92dc7bff>30<>. Basic attacks deal <#a974ffff>40 <#92dc7bff>(+1 per Feral stack)<> bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>300% effective<> against minions and monsters."
         },
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored, up to <#92dc7bff>30<>. Basic attacks deal <#a974ffff>40 <#92dc7bff>(+1 per Feral stack)<> bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>. This effect is <#d94c49ff>300%<> as effective against minions and monsters."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored, up to <#92dc7bff>30<>. Basic attacks deal <#a974ffff>40 <#92dc7bff>(+1 per Feral stack)<> bonus magic damage<> and restore <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>300% effective<> against minions and monsters."
         }
     },
     "vi": {
@@ -1459,6 +1475,22 @@
         "radiant_eclipse": {
             "name": "Nguyệt Đao Ánh Sáng",
             "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ <#92dc7bff>đánh dấu<> chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị <#92dc7bff>đánh dấu<> sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>10% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> bằng <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
+        },
+        "axiom_arc": {
+            "name": "Nguyên Tố Luân",
+            "option": "\nTái Thiết: Nhận <#4b7cffff>10%<> <#ffdd8eff>(+0.2% mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+        },
+        "imperial_mandate": {
+            "name": "Trát Lệnh Đế Vương",
+            "option": "\nChỉ Huy: Kĩ năng trúng tướng địch đánh dấu chúng <#92dc7bff>Yếu Thế<> trong <#e8a800ff>4 giây<>, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<>. Các đòn đánh tiếp theo lên cùng mục tiêu sẽ kéo dài hiệu ứng này."
+        },
+        "radiant_imperial_mandate": {
+            "name": "Trát Lệnh Đế Vương Ánh Sáng",
+            "option": "\nChỉ Huy: Kĩ năng trúng tướng địch đánh dấu chúng <#92dc7bff>Yếu Thế<> trong <#e8a800ff>4 giây<>, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<>. Các đòn đánh tiếp theo lên cùng mục tiêu sẽ kéo dài hiệu ứng này."
+        },
+        "radiant_axiom_arc": {
+            "name": "Nguyên Tố Luân Ánh Sáng",
+            "option": "\nTái Thiết: Nhận <#4b7cffff>10%<> <#ffdd8eff>(+0.2% mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
         },
         "hearthbound_axe": {
             "name": "Rìu Nhanh Nhẹn",
@@ -2197,6 +2229,22 @@
             "name": "光明版星蚀",
             "option": "\n永升之月：普通攻击或技能命中敌方英雄时会<#92dc7bff>标记<>其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被<#92dc7bff>标记<>的英雄会消耗该标记，造成相当于<#d94c49ff>其10%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得相当于 <#d8c9b3ff>160<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#d8c9b3ff>20%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
         },
+        "axiom_arc": {
+            "name": "公理圆弧",
+            "option": "\n涌动：终极技能获得 <#4b7cffff>10%<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2%）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+        },
+        "imperial_mandate": {
+            "name": "帝国指令",
+            "option": "\n命令：技能命中敌方英雄后为其标记<#92dc7bff>易伤<>，持续 <#e8a800ff>4秒<>，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>。对同一目标的后续命中会延长该效果的持续时间。"
+        },
+        "radiant_imperial_mandate": {
+            "name": "光明版帝国指令",
+            "option": "\n命令：技能命中敌方英雄后为其标记<#92dc7bff>易伤<>，持续 <#e8a800ff>4秒<>，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>。对同一目标的后续命中会延长该效果的持续时间。"
+        },
+        "radiant_axiom_arc": {
+            "name": "光明版公理圆弧",
+            "option": "\n涌动：终极技能获得 <#4b7cffff>10%<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2%）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+        },
         "hearthbound_axe": {
             "name": "缚炉之斧",
             "option": ""
@@ -2933,6 +2981,22 @@
         "radiant_eclipse": {
             "name": "Eclipse Radiante",
             "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o <#92dc7bff>marca<> por <#e8a800ff>2 segundos<>, no máximo uma vez por conjuração. Atingir um campeão que já esteja <#92dc7bff>marcado<> consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>10% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> de <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
+        },
+        "axiom_arc": {
+            "name": "Arco do Axioma",
+            "option": "\nFluxo: Recebe <#4b7cffff>10%<> <#ffdd8eff>(+0.2% por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+        },
+        "imperial_mandate": {
+            "name": "Mandato Imperial",
+            "option": "\nComando: Acertar uma Habilidade em um campeão inimigo o marca como <#92dc7bff>Vulnerável<> por <#e8a800ff>4 segundos<>, aumentando o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<>. Acertos subsequentes no mesmo alvo estendem a duração."
+        },
+        "radiant_imperial_mandate": {
+            "name": "Mandato Imperial Radiante",
+            "option": "\nComando: Acertar uma Habilidade em um campeão inimigo o marca como <#92dc7bff>Vulnerável<> por <#e8a800ff>4 segundos<>, aumentando o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<>. Acertos subsequentes no mesmo alvo estendem a duração."
+        },
+        "radiant_axiom_arc": {
+            "name": "Arco do Axioma Radiante",
+            "option": "\nFluxo: Recebe <#4b7cffff>10%<> <#ffdd8eff>(+0.2% por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
         },
         "hearthbound_axe": {
             "name": "Machado Termestre",
@@ -3671,6 +3735,22 @@
             "name": "Лучезарное Затмение",
             "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону <#92dc7bff>отмечает<> его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по чемпиону, который уже <#92dc7bff>отмечен<>, поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>10% его максимального здоровья<> и давая вам <#cab944ff>щит<> в размере <#d8c9b3ff>160<> + <#d8c9b3ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
         },
+        "axiom_arc": {
+            "name": "Шакрам Аксиом",
+            "option": "\nНепрерывность: Даёт <#4b7cffff>10%<> <#ffdd8eff>(+0.2% за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+        },
+        "imperial_mandate": {
+            "name": "Имперский мандат",
+            "option": "\nКоманда: Попадание умением по вражескому чемпиону помечает его как <#92dc7bff>Уязвимого<> на <#e8a800ff>4 секунды<>, увеличивая <#d94c49ff>получаемый им урон<> на <#d94c49ff>7%<>. Последующие попадания по той же цели продлевают действие эффекта."
+        },
+        "radiant_imperial_mandate": {
+            "name": "Лучезарный Имперский мандат",
+            "option": "\nКоманда: Попадание умением по вражескому чемпиону помечает его как <#92dc7bff>Уязвимого<> на <#e8a800ff>4 секунды<>, увеличивая <#d94c49ff>получаемый им урон<> на <#d94c49ff>7%<>. Последующие попадания по той же цели продлевают действие эффекта."
+        },
+        "radiant_axiom_arc": {
+            "name": "Лучезарный Шакрам Аксиом",
+            "option": "\nНепрерывность: Даёт <#4b7cffff>10%<> <#ffdd8eff>(+0.2% за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+        },
         "hearthbound_axe": {
             "name": "Топор Теплолюбивых",
             "option": ""
@@ -4407,6 +4487,22 @@
         "radiant_eclipse": {
             "name": "찬란한 월식",
             "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 <#92dc7bff>표식<> 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 이미 <#92dc7bff>표식<>이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#d8c9b3ff>160<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
+        },
+        "axiom_arc": {
+            "name": "원칙의 원형낫",
+            "option": "\n전이 표식: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>10%<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2%)<> 증가합니다."
+        },
+        "imperial_mandate": {
+            "name": "제국의 명령",
+            "option": "\n명령: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <#92dc7bff>취약<> 상태로 표시하여 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다. 같은 대상을 다시 적중시키면 지속시간이 연장됩니다."
+        },
+        "radiant_imperial_mandate": {
+            "name": "찬란한 제국의 명령",
+            "option": "\n명령: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <#92dc7bff>취약<> 상태로 표시하여 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다. 같은 대상을 다시 적중시키면 지속시간이 연장됩니다."
+        },
+        "radiant_axiom_arc": {
+            "name": "찬란한 원칙의 원형낫",
+            "option": "\n전이 표식: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>10%<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2%)<> 증가합니다."
         },
         "hearthbound_axe": {
             "name": "온기가 필요한 자의 도끼",

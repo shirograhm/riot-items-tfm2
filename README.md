@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 140 new items (80 base + 60 Radiant) to the game.
+Reskins the 30 existing items and also adds 144 new items (82 base + 62 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -48,6 +48,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Atma's Reckoning** | 1450G | +500 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
+| **Axiom Arc** | 1300G | +70 AD<br>+10% CDR | Flux: Gain 10% (+0.2% per 1 Lethality) cooldown reduction on your ultimate skill. |
 | **Bastionbreaker** | 1300G | +65 AD<br>+15% CDR | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus physical damage. |
 | **Black Cleaver** | 1500G | +45 AD<br>+300 HP<br>+5% CDR | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Maleficent: Landing an Ability on an enemy champion grants 10 Ability Power for 4 seconds (max 4 stacks). |
@@ -63,13 +64,14 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Echoes of Helia** | 1100G | +250 HP<br>+4 HP Regen<br>+45 AP<br>+15% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion consumes all Soul Charges and heals them equal to the consumed amount. |
 | **Eclipse** | 1300G | +55 AD<br>+15% CDR | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast. Hitting a champion that is already marked consumes the mark to deal bonus physical damage equal to 6% of their maximum health and grant you a shield of 100 + 15% of your Attack Damage for 2 seconds (6 second cooldown). |
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Overdrive: Gain 15% cooldown reduction on your ultimate skill. |
-| **Feral Flare** | 1400G | +27 AD<br>+27% AS<br>+27 Armor | Maim: Gain a Feral stack for each champion takedown scored, up to 30. Basic attacks deal 40 (+1 per Feral stack) bonus magic damage and restore 15 health. This effect is 300% as effective against minions and monsters. |
+| **Feral Flare** | 1400G | +45 AD<br>+20% AS<br>+20 Armor | Maim: Gain a Feral stack for each champion takedown scored, up to 30. Basic attacks deal 40 (+1 per Feral stack) bonus magic damage and restore 15 health. This effect is 300% as effective against minions and monsters. |
 | **Frozen Heart** | 1300G | +65 Armor<br>+10% CDR<br>+10% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Frozen Mallet** | 1400G | +400 HP<br>+40 AD | Icy: Basic attacks apply a 15% slow for 2 seconds. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Heartsteel** | 1500G | +500 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
 | **Hubris** | 1300G | +70 AD<br>+10% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
+| **Imperial Mandate** | 1100G | +250 HP<br>+2 HP Regen<br>+50 AP<br>+5% CDR | Command: Landing an Ability on an enemy champion marks them as Vulnerable for 4 seconds, increasing their damage taken by 7%. Subsequent hits against the same target extends the duration of this effect. |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Jak'Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | Resilience: Taking damage from an enemy champion grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks). |
 | **Kraken Slayer** | 1400G | +45 AD<br>+25% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
@@ -113,6 +115,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Radiant Atma's Reckoning** | 2050G | +850 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
+| **Radiant Axiom Arc** | 1900G | +105 AD<br>+15% CDR | Flux: Gain 10% (+0.2% per 1 Lethality) cooldown reduction on your ultimate skill. |
 | **Radiant Bastionbreaker** | 1950G | +110 AD<br>+20% CDR | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus physical damage. |
 | **Radiant Black Cleaver** | 2200G | +70 AD<br>+500 HP<br>+10% CDR | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Maleficent: Landing an Ability on an enemy champion grants 30 Ability Power for 4 seconds (max 4 stacks). |
@@ -128,13 +131,14 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Echoes of Helia** | 1500G | +450 HP<br>+6 HP Regen<br>+65 AP<br>+20% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion consumes all Soul Charges and heals them equal to the consumed amount. |
 | **Radiant Eclipse** | 1950G | +95 AD<br>+15% CDR | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast. Hitting a champion that is already marked consumes the mark to deal bonus physical damage equal to 10% of their maximum health and grant you a shield of 160 + 20% of your Attack Damage for 2 seconds (6 second cooldown). |
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Overdrive: Gain 25% cooldown reduction on your ultimate skill. |
-| **Radiant Feral Flare** | 2000G | +45 AD<br>+45% AS<br>+45 Armor | Maim: Gain a Feral stack for each champion takedown scored, up to 30. Basic attacks deal 40 (+1 per Feral stack) bonus magic damage and restore 15 health. This effect is 300% as effective against minions and monsters. |
+| **Radiant Feral Flare** | 2000G | +55 AD<br>+40% AS<br>+40 Armor | Maim: Gain a Feral stack for each champion takedown scored, up to 30. Basic attacks deal 40 (+1 per Feral stack) bonus magic damage and restore 15 health. This effect is 300% as effective against minions and monsters. |
 | **Radiant Frozen Heart** | 1900G | +110 Armor<br>+15% CDR<br>+15% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Radiant Frozen Mallet** | 2000G | +600 HP<br>+60 AD | Icy: Basic attacks deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Heartsteel** | 2100G | +800 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
 | **Radiant Hubris** | 1950G | +115 AD<br>+15% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
+| **Radiant Imperial Mandate** | 1650G | +350 HP<br>+3 HP Regen<br>+100 AP<br>+10% CDR | Command: Landing an Ability on an enemy champion marks them as Vulnerable for 4 seconds, increasing their damage taken by 7%. Subsequent hits against the same target extends the duration of this effect. |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Radiant Jak'Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | Resilience: Taking damage from an enemy champion grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Kraken Slayer** | 2000G | +75 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |

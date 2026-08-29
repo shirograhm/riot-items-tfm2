@@ -55,6 +55,7 @@ impl StableItem for SerratedDirk {
 
     fn next_tier(&self) -> Vec<String> {
         vec![
+            "axiom_arc".to_string(),
             "hubris".to_string(),
             "bastionbreaker".to_string(),
             "serpents_fang".to_string(),

@@ -1,6 +1,7 @@
 //! Completed items in the Assassin category.
 
 items! {
+    axiom_arc,
     bastionbreaker,
     collector,
     hubris,

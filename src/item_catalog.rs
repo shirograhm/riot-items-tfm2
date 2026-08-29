@@ -3,6 +3,7 @@ pub const CATEGORY_ORDER: [&str; 6] =
 
 const CATEGORY_OF: &[(&str, &str)] = &[
     ("atmas_reckoning", "Tank"),
+    ("axiom_arc", "Assassin"),
     ("bastionbreaker", "Assassin"),
     ("black_cleaver", "Fighter"),
     ("blackfire_torch", "Mage"),
@@ -27,6 +28,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("heartsteel", "Tank"),
     ("hextech_gunblade", "Mage"),
     ("hubris", "Assassin"),
+    ("imperial_mandate", "Support"),
     ("infinity_edge", "Marksman"),
     ("jaksho_the_protean", "Tank"),
     ("kraken_slayer", "Marksman"),

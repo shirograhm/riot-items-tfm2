@@ -1117,9 +1117,9 @@
   },
   "feral_flare": {
     "price": 1400,
-    "attack": 27,
-    "attack_speed_mult": 27,
-    "defence": 27,
+    "attack": 45,
+    "attack_speed_mult": 20,
+    "defence": 20,
     "effect_bonus_magic_damage": 40,
     "effect_stack_magic_damage": 1,
     "effect_bonus_flat_heal": 15,
@@ -1128,9 +1128,9 @@
   },
   "radiant_feral_flare": {
     "price": 2000,
-    "attack": 45,
-    "attack_speed_mult": 45,
-    "defence": 45,
+    "attack": 55,
+    "attack_speed_mult": 40,
+    "defence": 40,
     "effect_bonus_magic_damage": 40,
     "effect_stack_magic_damage": 1,
     "effect_bonus_flat_heal": 15,
@@ -1141,5 +1141,37 @@
     "price": 950,
     "attack": 30,
     "attack_speed_mult": 20
+  },
+  "axiom_arc": {
+    "price": 1300,
+    "attack": 70,
+    "skill_cooldown_mult": 10,
+    "effect_ult_cooldown_mult": 10,
+    "effect_ult_cooldown_per_lethality": 0.2
+  },
+  "radiant_axiom_arc": {
+    "price": 1900,
+    "attack": 105,
+    "skill_cooldown_mult": 15,
+    "effect_ult_cooldown_mult": 10,
+    "effect_ult_cooldown_per_lethality": 0.2
+  },
+  "imperial_mandate": {
+    "price": 1100,
+    "hp": 250,
+    "hp_regen": 2,
+    "magic_power": 50,
+    "skill_cooldown_mult": 5,
+    "effect_damaged_amplify": 7,
+    "effect_duration_seconds": 4.0
+  },
+  "radiant_imperial_mandate": {
+    "price": 1650,
+    "hp": 350,
+    "hp_regen": 3,
+    "magic_power": 100,
+    "skill_cooldown_mult": 10,
+    "effect_damaged_amplify": 7,
+    "effect_duration_seconds": 4.0
   }
 }

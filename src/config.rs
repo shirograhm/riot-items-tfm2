@@ -98,6 +98,8 @@ pub struct ItemConfig {
     pub effect_percent_bonus_damage: Option<f64>,
     pub effect_min_shield: Option<usize>,
     pub effect_max_shield: Option<usize>,
+    pub effect_ult_cooldown_mult: Option<i32>,
+    pub effect_ult_cooldown_per_lethality: Option<f64>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,
