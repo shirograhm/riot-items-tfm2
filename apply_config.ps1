@@ -173,12 +173,6 @@ $aaPerLeth = [double]$config.axiom_arc.effect_ult_cooldown_per_lethality
 $raaLeth = [int]$config.radiant_axiom_arc.effect_lethality
 $raaUltCdr = [int]$config.radiant_axiom_arc.effect_ult_cooldown_mult
 $raaPerLeth = [double]$config.radiant_axiom_arc.effect_ult_cooldown_per_lethality
-$imPct = [double]$config.imperial_mandate.effect_hp_percent_damage
-$imDur = [double]$config.imperial_mandate.effect_duration_seconds
-$imCd = [double]$config.imperial_mandate.effect_cooldown_seconds
-$rimPct = [double]$config.radiant_imperial_mandate.effect_hp_percent_damage
-$rimDur = [double]$config.radiant_imperial_mandate.effect_duration_seconds
-$rimCd = [double]$config.radiant_imperial_mandate.effect_cooldown_seconds
 $dtsForce = [int]$config.diamond_tipped_spear.adaptive_force
 $rdtsForce = [int]$config.radiant_diamond_tipped_spear.adaptive_force
 $dtsPct = [int]$config.diamond_tipped_spear.effect_max_percent_bonus
@@ -539,9 +533,6 @@ $i18n.en.radiant_rabadons_deathcap.option = "Opus: Increase your total <$apIcon>
 $feralEn = "Maim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>{3}<>. Basic attacks deal <#a974ffff>{0} <#92dc7bff>(+{1} per Feral stack)<> bonus magic damage<> and restore <#60e84dff>{2} <$hpRegenIcon> health<>. This effect is <#e8a800ff>{4}% effective<> against minions and monsters."
 $i18n.en.feral_flare.option = $feralEn -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.en.radiant_feral_flare.option = $feralEn -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$cmdEn = "Coordinated Fire: Landing an Ability on an enemy champion marks them for <#e8a800ff>{1} seconds<>. Allied champions that damage marked enemies consume the mark, dealing <#d94c49ff>{0}% of the target's current health<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>{2} second<> cooldown per target)."
-$i18n.en.imperial_mandate.option = $cmdEn -f $imPct, $imDur, $imCd
-$i18n.en.radiant_imperial_mandate.option = $cmdEn -f $rimPct, $rimDur, $rimCd
 $mbIllusion = "Illusion: Gain <#d48294ff>{0}<> <$forceIcon> <#d48294ff>Adaptive Force<>. Each <$forceIcon> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <$apIcon> <#a974ffff>Ability Power<>, depending on which is higher.`n`nBlur: On kill, gain <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>movement speed<> for <#e8a800ff>{2} seconds<>."
 $i18n.en.mirage_blade.option = $mbIllusion -f $mbForce, $mbMoveSpeed, $mbDuration
 $i18n.en.radiant_mirage_blade.option = $mbIllusion -f $rmbForce, $rmbMoveSpeed, $rmbDuration
@@ -701,9 +692,6 @@ $i18n.vi.radiant_rabadons_deathcap.option = "Hạt nhân: Tăng <$apIcon> <#a974
 $feralVi = "Tàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>{3}<>. Đòn đánh thường gây <#a974ffff>{0} <#92dc7bff>(+{1} mỗi cộng dồn Hoang Dã)<> sát thương phép cộng thêm<> và hồi <#60e84dff>{2} <$hpRegenIcon> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả {4}%<> lên lính và quái."
 $i18n.vi.feral_flare.option = $feralVi -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.vi.radiant_feral_flare.option = $feralVi -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$cmdVi = "Phối Hợp Ăn Ý: Kĩ năng trúng tướng địch đánh dấu chúng trong <#e8a800ff>{1} giây<>. Tướng đồng minh gây sát thương lên mục tiêu bị đánh dấu sẽ kích nổ dấu ấn, gây <#d94c49ff>{0}% máu hiện tại của mục tiêu<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<> mỗi mục tiêu)."
-$i18n.vi.imperial_mandate.option = $cmdVi -f $imPct, $imDur, $imCd
-$i18n.vi.radiant_imperial_mandate.option = $cmdVi -f $rimPct, $rimDur, $rimCd
 $mbIllusionVi = "Ảo ảnh: Nhận <#d48294ff>{0}<> <$forceIcon> <#d48294ff>Lực Thích Ứng<>. Với mỗi <$forceIcon> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <$apIcon> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.`n`nMờ ảo: Khi kết liễu tướng địch, nhận <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>{2} giây<>."
 $i18n.vi.mirage_blade.option = $mbIllusionVi -f $mbForce, $mbMoveSpeed, $mbDuration
 $i18n.vi.radiant_mirage_blade.option = $mbIllusionVi -f $rmbForce, $rmbMoveSpeed, $rmbDuration
@@ -863,9 +851,6 @@ $i18n.'zh-hans'.radiant_rabadons_deathcap.option = "魔法乐章：你的总 <$a
 $feralZh = "致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>{3}<> 层。普通攻击额外造成 <#a974ffff>{0} <#92dc7bff>（每层野性+{1}）<>点魔法伤害<>并回复 <#60e84dff>{2} 点<$hpRegenIcon> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 {4}%<>。"
 $i18n.'zh-hans'.feral_flare.option = $feralZh -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.'zh-hans'.radiant_feral_flare.option = $feralZh -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$cmdZh = "协同开火：技能命中敌方英雄后为其打上标记，持续 <#e8a800ff>{1}秒<>。友方英雄对被标记的敌人造成伤害时会引爆标记，造成相当于目标<#d94c49ff>当前生命值{0}%<>的<#a974ffff>额外魔法伤害<>（每个目标冷却 <#e8a800ff>{2}秒<>）。"
-$i18n.'zh-hans'.imperial_mandate.option = $cmdZh -f $imPct, $imDur, $imCd
-$i18n.'zh-hans'.radiant_imperial_mandate.option = $cmdZh -f $rimPct, $rimDur, $rimCd
 $mbIllusionZh = "幻象：获得 <#d48294ff>{0}<> <$forceIcon> <#d48294ff>自适应之力<>。每点 <$forceIcon> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <$apIcon> <#a974ffff>法术强度<>。`n`n模糊：击杀时获得 <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>移动速度<>，持续 <#e8a800ff>{2}秒<>。"
 $i18n.'zh-hans'.mirage_blade.option = $mbIllusionZh -f $mbForce, $mbMoveSpeed, $mbDuration
 $i18n.'zh-hans'.radiant_mirage_blade.option = $mbIllusionZh -f $rmbForce, $rmbMoveSpeed, $rmbDuration
@@ -1025,9 +1010,6 @@ $i18n.'pt-BR'.radiant_rabadons_deathcap.option = "Apogeu: Aumenta o <$apIcon> <#
 $feralPt = "Mutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>{3}<>. Ataques básicos causam <#a974ffff>{0} <#92dc7bff>(+{1} por acúmulo de Feral)<> de dano mágico bônus<> e restauram <#60e84dff>{2} de <$hpRegenIcon> vida<>. Este efeito é <#e8a800ff>{4}% efetivo<> contra lacaios e monstros."
 $i18n.'pt-BR'.feral_flare.option = $feralPt -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.'pt-BR'.radiant_feral_flare.option = $feralPt -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$cmdPt = "Fogo Coordenado: Acertar uma Habilidade em um campeão inimigo o marca por <#e8a800ff>{1} segundos<>. Campeões aliados que causarem dano a inimigos marcados consomem a marca, causando <#d94c49ff>{0}% da Vida Atual do alvo<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>{2} segundos<> por alvo)."
-$i18n.'pt-BR'.imperial_mandate.option = $cmdPt -f $imPct, $imDur, $imCd
-$i18n.'pt-BR'.radiant_imperial_mandate.option = $cmdPt -f $rimPct, $rimDur, $rimCd
 $mbIllusionPt = "Ilusão: Ganha <#d48294ff>{0}<> <$forceIcon> de <#d48294ff>Força Adaptativa<>. Cada <$forceIcon> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <$apIcon> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.`n`nBorrão: Abates concedem <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>{2} segundos<>."
 $i18n.'pt-BR'.mirage_blade.option = $mbIllusionPt -f $mbForce, $mbMoveSpeed, $mbDuration
 $i18n.'pt-BR'.radiant_mirage_blade.option = $mbIllusionPt -f $rmbForce, $rmbMoveSpeed, $rmbDuration
@@ -1187,9 +1169,6 @@ $i18n.ru.radiant_rabadons_deathcap.option = "Опус: Увеличивает в
 $feralRu = "Увечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>{3}<>. Автоатаки наносят <#a974ffff>{0} <#92dc7bff>(+{1} за заряд Дикости)<> дополнительного магического урона<> и восстанавливают <#60e84dff>{2} <$hpRegenIcon> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет {4}%<>."
 $i18n.ru.feral_flare.option = $feralRu -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.ru.radiant_feral_flare.option = $feralRu -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$cmdRu = "Координированный огонь: Попадание умением по вражескому чемпиону помечает его на <#e8a800ff>{1} секунд<>. Союзные чемпионы, наносящие урон помеченным врагам, снимают метку, нанося <#d94c49ff>{0}% текущего здоровья цели<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<> для каждой цели)."
-$i18n.ru.imperial_mandate.option = $cmdRu -f $imPct, $imDur, $imCd
-$i18n.ru.radiant_imperial_mandate.option = $cmdRu -f $rimPct, $rimDur, $rimCd
 $mbIllusionRu = "Иллюзия: Даёт <#d48294ff>{0}<> <$forceIcon> <#d48294ff>адаптивной силы<>. Каждая единица <$forceIcon> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <$apIcon> <#a974ffff>Силы умений<>, в зависимости от того, что выше.`n`nРазымытие: При убийстве даёт <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>скорости передвижения<> на <#e8a800ff>{2} секунды<>."
 $i18n.ru.mirage_blade.option = $mbIllusionRu -f $mbForce, $mbMoveSpeed, $mbDuration
 $i18n.ru.radiant_mirage_blade.option = $mbIllusionRu -f $rmbForce, $rmbMoveSpeed, $rmbDuration
@@ -1349,9 +1328,6 @@ $i18n.ko.radiant_rabadons_deathcap.option = "대작: 총 <$apIcon> <#a974ffff>�
 $feralKo = "불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>{3}<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>{0} <#92dc7bff>(야성 중첩당 +{1})<>의 추가 마법 피해<>를 입히고 <#60e84dff>{2}<$hpRegenIcon> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>{4}%로 적용됩니다<>."
 $i18n.ko.feral_flare.option = $feralKo -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.ko.radiant_feral_flare.option = $feralKo -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$cmdKo = "합동 공격: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>{1}초<> 동안 표식을 남깁니다. 아군 챔피언이 표식이 남은 적에게 피해를 입히면 표식이 폭발하여 대상 <#d94c49ff>현재 체력의 {0}%<>를 <#a974ffff>추가 마법 피해<>로 입힙니다. (대상별 재사용 대기시간 <#e8a800ff>{2}초<>)"
-$i18n.ko.imperial_mandate.option = $cmdKo -f $imPct, $imDur, $imCd
-$i18n.ko.radiant_imperial_mandate.option = $cmdKo -f $rimPct, $rimDur, $rimCd
 $mbIllusionKo = "환영: <$forceIcon> <#d48294ff>적응형 능력치<>를 <#d48294ff>{0}<> 얻습니다. <$forceIcon> 적응형 능력치 1당 더 높은 능력치에 따라 <$adIcon> <#ff9028ff>공격력 0.6<> 또는 <$apIcon> <#a974ffff>주문력 1<>을 얻습니다.`n`n잔상: 적을 처치하면 <#e8a800ff>{2}초<> 동안 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>{1}%<> 증가합니다."
 $i18n.ko.mirage_blade.option = $mbIllusionKo -f $mbForce, $mbMoveSpeed, $mbDuration
 $i18n.ko.radiant_mirage_blade.option = $mbIllusionKo -f $rmbForce, $rmbMoveSpeed, $rmbDuration
@@ -1495,7 +1471,6 @@ Write-Host "  Phage:                   +${phageMs}% MS for ${phageDur}s"
 Write-Host "  Maim (Machete/Razors/Wriggle's):  ${hmacDmg}/${mrazDmg}/${wrigDmg} magic dmg, ${hmacHeal}/${mrazHeal}/${wrigHeal} heal vs monsters"
 Write-Host "  Feral Flare:                 ${ffDmg} +${ffStack}/stack (max ${ffStacks}) / ${ffHeal} heal / ${ffMinion}% vs minions+monsters"
 Write-Host "  Axiom Arc:                   ${aaLeth} Lethality, ${aaUltCdr}% +${aaPerLeth}%/Lethality ult CDR (Radiant ${raaLeth}, ${raaUltCdr}% +${raaPerLeth}%)"
-Write-Host "  Imperial Mandate:            ${imPct}% current HP on a ${imDur}s mark, ${imCd}s per target (Radiant ${rimPct}% / ${rimDur}s / ${rimCd}s)"
 Write-Host "  Butcher (Talisman/Stone/Grez's): ${htalBonus}/${sstoneBonus}/${gslBonus}% vs monsters, ${htalHeal}/${sstoneHeal}/${gslHeal}% healed"
 Write-Host "  Spirit of the Spectral Wraith: ${sswAp} AP/takedown up to ${sswMaxAp} / ${sswBonus}% vs monsters / ${sswHeal}% healed"
 Write-Host "  Mirage Blade:            ${mbForce} force"

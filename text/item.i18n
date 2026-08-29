@@ -727,14 +727,6 @@
             "name": "Axiom Arc",
             "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nFlux: Gain <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
         },
-        "imperial_mandate": {
-            "name": "Imperial Mandate",
-            "option": "\nCoordinated Fire: Landing an Ability on an enemy champion marks them for <#e8a800ff>5 seconds<>. Allied champions that damage marked enemies consume the mark, dealing <#d94c49ff>10% of the target's current health<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>9 second<> cooldown per target)."
-        },
-        "radiant_imperial_mandate": {
-            "name": "Radiant Imperial Mandate",
-            "option": "\nCoordinated Fire: Landing an Ability on an enemy champion marks them for <#e8a800ff>5 seconds<>. Allied champions that damage marked enemies consume the mark, dealing <#d94c49ff>10% of the target's current health<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>9 second<> cooldown per target)."
-        },
         "radiant_axiom_arc": {
             "name": "Radiant Axiom Arc",
             "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nFlux: Gain <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
@@ -1479,14 +1471,6 @@
         "axiom_arc": {
             "name": "Nguyên Tố Luân",
             "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nTái Thiết: Nhận <#4b7cffff>10%<> <#ffdd8eff>(+0.2% mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
-        },
-        "imperial_mandate": {
-            "name": "Trát Lệnh Đế Vương",
-            "option": "\nPhối Hợp Ăn Ý: Kĩ năng trúng tướng địch đánh dấu chúng trong <#e8a800ff>5 giây<>. Tướng đồng minh gây sát thương lên mục tiêu bị đánh dấu sẽ kích nổ dấu ấn, gây <#d94c49ff>10% máu hiện tại của mục tiêu<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>9 giây<> mỗi mục tiêu)."
-        },
-        "radiant_imperial_mandate": {
-            "name": "Trát Lệnh Đế Vương Ánh Sáng",
-            "option": "\nPhối Hợp Ăn Ý: Kĩ năng trúng tướng địch đánh dấu chúng trong <#e8a800ff>5 giây<>. Tướng đồng minh gây sát thương lên mục tiêu bị đánh dấu sẽ kích nổ dấu ấn, gây <#d94c49ff>10% máu hiện tại của mục tiêu<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>9 giây<> mỗi mục tiêu)."
         },
         "radiant_axiom_arc": {
             "name": "Nguyên Tố Luân Ánh Sáng",
@@ -2233,14 +2217,6 @@
             "name": "公理圆弧",
             "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n涌动：终极技能获得 <#4b7cffff>10%<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2%）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
         },
-        "imperial_mandate": {
-            "name": "帝国指令",
-            "option": "\n协同开火：技能命中敌方英雄后为其打上标记，持续 <#e8a800ff>5秒<>。友方英雄对被标记的敌人造成伤害时会引爆标记，造成相当于目标<#d94c49ff>当前生命值10%<>的<#a974ffff>额外魔法伤害<>（每个目标冷却 <#e8a800ff>9秒<>）。"
-        },
-        "radiant_imperial_mandate": {
-            "name": "光明版帝国指令",
-            "option": "\n协同开火：技能命中敌方英雄后为其打上标记，持续 <#e8a800ff>5秒<>。友方英雄对被标记的敌人造成伤害时会引爆标记，造成相当于目标<#d94c49ff>当前生命值10%<>的<#a974ffff>额外魔法伤害<>（每个目标冷却 <#e8a800ff>9秒<>）。"
-        },
         "radiant_axiom_arc": {
             "name": "光明版公理圆弧",
             "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n涌动：终极技能获得 <#4b7cffff>10%<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2%）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
@@ -2985,14 +2961,6 @@
         "axiom_arc": {
             "name": "Arco do Axioma",
             "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nFluxo: Recebe <#4b7cffff>10%<> <#ffdd8eff>(+0.2% por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
-        },
-        "imperial_mandate": {
-            "name": "Mandato Imperial",
-            "option": "\nFogo Coordenado: Acertar uma Habilidade em um campeão inimigo o marca por <#e8a800ff>5 segundos<>. Campeões aliados que causarem dano a inimigos marcados consomem a marca, causando <#d94c49ff>10% da Vida Atual do alvo<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>9 segundos<> por alvo)."
-        },
-        "radiant_imperial_mandate": {
-            "name": "Mandato Imperial Radiante",
-            "option": "\nFogo Coordenado: Acertar uma Habilidade em um campeão inimigo o marca por <#e8a800ff>5 segundos<>. Campeões aliados que causarem dano a inimigos marcados consomem a marca, causando <#d94c49ff>10% da Vida Atual do alvo<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>9 segundos<> por alvo)."
         },
         "radiant_axiom_arc": {
             "name": "Arco do Axioma Radiante",
@@ -3739,14 +3707,6 @@
             "name": "Шакрам Аксиом",
             "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nНепрерывность: Даёт <#4b7cffff>10%<> <#ffdd8eff>(+0.2% за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
         },
-        "imperial_mandate": {
-            "name": "Имперский мандат",
-            "option": "\nКоординированный огонь: Попадание умением по вражескому чемпиону помечает его на <#e8a800ff>5 секунд<>. Союзные чемпионы, наносящие урон помеченным врагам, снимают метку, нанося <#d94c49ff>10% текущего здоровья цели<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>9 секунд<> для каждой цели)."
-        },
-        "radiant_imperial_mandate": {
-            "name": "Лучезарный Имперский мандат",
-            "option": "\nКоординированный огонь: Попадание умением по вражескому чемпиону помечает его на <#e8a800ff>5 секунд<>. Союзные чемпионы, наносящие урон помеченным врагам, снимают метку, нанося <#d94c49ff>10% текущего здоровья цели<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>9 секунд<> для каждой цели)."
-        },
         "radiant_axiom_arc": {
             "name": "Лучезарный Шакрам Аксиом",
             "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nНепрерывность: Даёт <#4b7cffff>10%<> <#ffdd8eff>(+0.2% за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
@@ -4491,14 +4451,6 @@
         "axiom_arc": {
             "name": "원칙의 원형낫",
             "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n전이 표식: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>10%<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2%)<> 증가합니다."
-        },
-        "imperial_mandate": {
-            "name": "제국의 명령",
-            "option": "\n합동 공격: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 표식을 남깁니다. 아군 챔피언이 표식이 남은 적에게 피해를 입히면 표식이 폭발하여 대상 <#d94c49ff>현재 체력의 10%<>를 <#a974ffff>추가 마법 피해<>로 입힙니다. (대상별 재사용 대기시간 <#e8a800ff>9초<>)"
-        },
-        "radiant_imperial_mandate": {
-            "name": "찬란한 제국의 명령",
-            "option": "\n합동 공격: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 표식을 남깁니다. 아군 챔피언이 표식이 남은 적에게 피해를 입히면 표식이 폭발하여 대상 <#d94c49ff>현재 체력의 10%<>를 <#a974ffff>추가 마법 피해<>로 입힙니다. (대상별 재사용 대기시간 <#e8a800ff>9초<>)"
         },
         "radiant_axiom_arc": {
             "name": "찬란한 원칙의 원형낫",

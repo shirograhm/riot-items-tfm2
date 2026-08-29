@@ -3,7 +3,6 @@
 items! {
     bloodsong,
     echoes_of_helia,
-    imperial_mandate,
     locket_of_the_iron_solari,
     protoplasm_harness,
     zekes_herald,

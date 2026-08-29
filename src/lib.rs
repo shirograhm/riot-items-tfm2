@@ -370,7 +370,6 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("heartsteel" => Heartsteel));
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
     reg.add_item(configured!("hubris" => Hubris));
-    reg.add_item(configured!("imperial_mandate" => ImperialMandate));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
     reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured!("kraken_slayer" => KrakenSlayer));
@@ -434,7 +433,6 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
     reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
-    reg.add_item(configured_radiant!("radiant_imperial_mandate" => ImperialMandate));
     reg.add_item(configured_radiant!("radiant_infinity_edge" => InfinityEdge));
     reg.add_item(configured_radiant!("radiant_jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured_radiant!("radiant_kraken_slayer" => KrakenSlayer));
