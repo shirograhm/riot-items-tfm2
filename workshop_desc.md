@@ -1,4 +1,4 @@
-Adds 134 new items (76 base + 58 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Adds 147 new items (84 base + 63 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]This mod supports custom item values, custom item builds, and a way to add another item slot. See instructions below![/b]  
@@ -77,7 +77,7 @@ This mod can be used with a 4th item slot. To enable/disable this slot:
 Next time you play a match, you should notice a 4th item slot both in your Builds editor and in the game sim.  
 
 [h1] Planned Features [/h1]
-- More support items (Ardent Censer?)
+- More support items
 - Ability to edit values on the 30 base game items, in addition to the current config.json.
 - Translations for other locales.
 - Various bugfixes.

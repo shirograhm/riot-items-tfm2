@@ -57,7 +57,8 @@ impl Shadowflame {
                 price,
                 magic_power,
                 magic_resistance_penetration,
-                effect_hp_percent_threshold
+                effect_hp_percent_threshold,
+                effect_bonus_damage_when_low
             ]
         );
         self

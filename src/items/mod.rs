@@ -1,9 +1,15 @@
 //! Item module index.
 //!
-//! Every item lives in its own file in this directory. The `items!` macro
-//! declares each module and re-exports its public types, so registering a new
-//! item is a one-line addition here (plus the file itself and its `add_item`
-//! call in `lib.rs`).
+//! Every item lives in its own file under a category directory that mirrors the
+//! roles in `item_catalog.rs` (`components` holds the tier-2 parts, which the
+//! catalog leaves uncategorised). The `items!` macro declares each module and
+//! re-exports its public types, so registering a new item is a one-line
+//! addition to that category's `mod.rs` (plus the file itself and its
+//! `add_item` call in `lib.rs`).
+//!
+//! The macro is defined here, before the `mod` declarations below, which puts
+//! it in textual scope for every category module — they call `items!` without
+//! importing anything.
 
 macro_rules! items {
     ($($module:ident),* $(,)?) => {
@@ -15,80 +21,11 @@ macro_rules! items {
 }
 
 items! {
-    aegis_of_the_legion,
-    atmas_reckoning,
-    bandleglass_mirror,
-    bastionbreaker,
-    bf_sword,
-    black_cleaver,
-    blackfire_torch,
-    blade_of_the_ruined_king,
-    blighting_jewel,
-    bloodletters_curse,
-    bloodsong,
-    collector,
-    dead_mans_plate,
-    deathblade,
-    deaths_dance,
-    diamond_tipped_spear,
-    dusk_and_dawn,
-    echoes_of_helia,
-    executioners_calling,
-    experimental_hexplate,
-    frozen_heart,
-    frozen_mallet,
-    glacial_buckler,
-    glowing_mote,
-    guinsoos_rageblade,
-    haunting_guise,
-    heartsteel,
-    hextech_gunblade,
-    hubris,
-    infinity_edge,
-    jaksho_the_protean,
-    kraken_slayer,
-    last_whisper,
-    liandrys_torment,
-    locket_of_the_iron_solari,
-    lord_dominiks_regards,
-    malignance,
-    mirage_blade,
-    morellonomicon,
-    mortal_reminder,
-    nashors_tooth,
-    needlessly_large_rod,
-    night_harvester,
-    noonquiver,
-    oblivion_orb,
-    opportunity,
-    overlords_bloodmail,
-    phage,
-    protectors_vow,
-    protoplasm_harness,
-    rabadons_deathcap,
-    randuins_omen,
-    riftmaker,
-    rite_of_ruin,
-    rylais_crystal_scepter,
-    scouts_slingshot,
-    serpents_fang,
-    serrated_dirk,
-    shadowflame,
-    sheen,
-    spear_of_shojin,
-    spirit_visage,
-    steel_sigil,
-    steraks_gage,
-    stormrazor,
-    sundered_sky,
-    terminus,
-    trinity_force,
-    unending_despair,
-    void_staff,
-    voltaic_cyclosword,
-    warmogs_armor,
-    winged_moonplate,
-    wits_end,
-    yun_tal_wildarrows,
-    zekes_herald,
+    assassin,
+    components,
+    fighter,
+    mage,
+    marksman,
+    support,
+    tank,
 }
