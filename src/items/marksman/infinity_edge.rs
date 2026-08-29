@@ -42,7 +42,7 @@ impl InfinityEdge {
     }
 
     fn configured(mut self, cfg: &ItemConfig) -> Self {
-        apply_config!(self, cfg, [price, attack, crit_chance]);
+        apply_config!(self, cfg, [price, attack, crit_chance, effect_crit_damage_bonus]);
         self
     }
 }

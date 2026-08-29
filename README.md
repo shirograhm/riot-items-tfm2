@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 134 new items (76 base + 58 Radiant) to the game.
+Reskins the 30 existing items and also adds 147 new items (84 base + 63 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -29,10 +29,13 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | --- | --- | --- | --- |
 | **Aegis of the Legion** | 950G | +150 HP<br>+40 Armor<br>+60 MR | — |
 | **B.F. Sword** | 850G | +65 Attack Damage | — |
-| **Bandleglass Mirror** | 650G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
+| **Bandleglass Mirror** | 650G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
 | **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |
+| **Caulfield's Warhammer** | 950G | +45 AD<br>+10% CDR | — |
+| **Forbidden Idol** | 650G | +200 HP<br>+20 AP<br>+10% CDR | — |
 | **Glacial Buckler** | 800G | +50 Armor<br>+5% CDR | — |
 | **Haunting Guise** | 950G | +200 HP<br>+60 AP | — |
+| **Hearthbound Axe** | 950G | +30 AD<br>+20% AS | — |
 | **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
 | **Noonquiver** | 800G | +45 AD<br>+10% Crit Chance | — |
@@ -45,21 +48,25 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
+| **Ardent Censer** | 1000G | +200 HP<br>+2 HP Regen<br>+45 AP<br>+5% CDR<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus magic damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Atma's Reckoning** | 1450G | +500 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
+| **Axiom Arc** | 1300G | +70 AD<br>+10% CDR | Gain 18 Lethality.<br>Flux: Gain 10% (+0.2% per 1 Lethality) cooldown reduction on your ultimate skill. |
 | **Bastionbreaker** | 1300G | +65 AD<br>+15% CDR | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus physical damage. |
 | **Black Cleaver** | 1500G | +45 AD<br>+300 HP<br>+5% CDR | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
 | **Blackfire Torch** | 1300G | +130 AP<br>+15% CDR | Maleficent: Landing an Ability on an enemy champion grants 10 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
-| **Bloodsong** | 1050G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
+| **Bloodsong** | 1050G | +200 HP<br>+20 AP<br>+25% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
 | **Collector** | 1450G | +60 AD<br>+20% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Dead Man's Plate** | 1450G | +300 HP<br>+55 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Deathblade** | 1400G | +90 AD | Apex: Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 1450G | +45 AD<br>+45 Armor<br>+10% CDR | Ignore Pain: 25% of the damage you take is dealt over time as physical damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 45 + 15% of your missing health. |
 | **Diamond Tipped Spear** | 1500G | +35% AS<br>+10% CDR | Pierce: Gain 60 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
-| **Dusk and Dawn** | 1400G | +200 HP<br>+60 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
+| **Dusk and Dawn** | 1400G | +200 HP<br>+75 AP<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Echoes of Helia** | 1100G | +250 HP<br>+4 HP Regen<br>+45 AP<br>+15% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion consumes all Soul Charges and heals them equal to the consumed amount. |
+| **Eclipse** | 1300G | +55 AD<br>+15% CDR | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast instance. Hitting a marked champion consumes the mark to deal bonus physical damage equal to 5% of their maximum health and grant you a shield that absorbs 100 + 15% of your Attack Damage for 2 seconds (6 second cooldown). |
 | **Experimental Hexplate** | 1200G | +350 HP<br>+35% AS | Overdrive: Gain 15% cooldown reduction on your ultimate skill. |
+| **Feral Flare** | 1400G | +45 AD<br>+20% AS<br>+20 Armor | Maim: Gain a Feral stack for each champion takedown scored and monster killed, up to 50. Basic attacks deal 25 (+1 per Feral stack) bonus magic damage and restore 10 health. This effect is 150% effective against minions and monsters. |
 | **Frozen Heart** | 1300G | +65 Armor<br>+10% CDR<br>+10% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Frozen Mallet** | 1400G | +400 HP<br>+40 AD | Icy: Basic attacks apply a 15% slow for 2 seconds. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
@@ -94,6 +101,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Sterak's Gage** | 1400G | +400 HP<br>+30 AD<br>+15% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Stormrazor** | 1550G | +65 AD<br>+20% AS<br>+20% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Sundered Sky** | 1400G | +400 HP<br>+30 AD<br>+10% CDR | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 20% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
+| **Sword of Blossoming Dawn** | 1000G | +200 HP<br>+40 AP<br>+20% AS<br>+10% CDR | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
 | **Trinity Force** | 1400G | +200 HP<br>+30 AD<br>+15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
 | **Unending Despair** | 1450G | +450 HP<br>+30 Armor | Anguish: Landing an Ability on an enemy champion heals you for 35 + 1% of your maximum health. |
@@ -108,21 +116,25 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
+| **Radiant Ardent Censer** | 1700G | +400 HP<br>+4 HP Regen<br>+90 AP<br>+5% CDR<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus magic damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Radiant Atma's Reckoning** | 2050G | +850 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
+| **Radiant Axiom Arc** | 1900G | +105 AD<br>+15% CDR | Gain 18 Lethality.<br>Flux: Gain 10% (+0.2% per 1 Lethality) cooldown reduction on your ultimate skill. |
 | **Radiant Bastionbreaker** | 1950G | +110 AD<br>+20% CDR | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus physical damage. |
 | **Radiant Black Cleaver** | 2200G | +70 AD<br>+500 HP<br>+10% CDR | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Blackfire Torch** | 1900G | +175 AP<br>+25% CDR | Maleficent: Landing an Ability on an enemy champion grants 30 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
-| **Radiant Bloodsong** | 1500G | +450 HP<br>+4 HP Regen<br>+40 AP<br>+15% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 8% for 4 seconds. |
+| **Radiant Bloodsong** | 1500G | +400 HP<br>+40 AP<br>+35% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
 | **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Radiant Dead Man's Plate** | 2100G | +650 HP<br>+70 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Radiant Deathblade** | 2000G | +140 AD | Apex: Increase your total Attack Damage by 25%. |
 | **Radiant Death's Dance** | 2100G | +75 AD<br>+75 Armor<br>+10% CDR | Ignore Pain: 25% of the damage you take is dealt over time as physical damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 75 + 25% of your missing health. |
 | **Radiant Diamond Tipped Spear** | 2250G | +60% AS<br>+10% CDR | Pierce: Gain 100 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
-| **Radiant Dusk and Dawn** | 2000G | +300 HP<br>+100 AP<br>+25% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
+| **Radiant Dusk and Dawn** | 2000G | +300 HP<br>+125 AP<br>+25% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Radiant Echoes of Helia** | 1500G | +450 HP<br>+6 HP Regen<br>+65 AP<br>+20% CDR | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion consumes all Soul Charges and heals them equal to the consumed amount. |
+| **Radiant Eclipse** | 1950G | +95 AD<br>+15% CDR | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast instance. Hitting a marked champion consumes the mark to deal bonus physical damage equal to 8% of their maximum health and grant you a shield that absorbs 120 + 20% of your Attack Damage for 2 seconds (6 second cooldown). |
 | **Radiant Experimental Hexplate** | 1850G | +500 HP<br>+50% AS<br>+5% MS | Overdrive: Gain 25% cooldown reduction on your ultimate skill. |
+| **Radiant Feral Flare** | 2000G | +55 AD<br>+40% AS<br>+40 Armor | Maim: Gain a Feral stack for each champion takedown scored and monster killed, up to 50. Basic attacks deal 25 (+1 per Feral stack) bonus magic damage and restore 10 health. This effect is 150% effective against minions and monsters. |
 | **Radiant Frozen Heart** | 1900G | +110 Armor<br>+15% CDR<br>+15% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Radiant Frozen Mallet** | 2000G | +600 HP<br>+60 AD | Icy: Basic attacks deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
@@ -157,6 +169,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Sterak's Gage** | 2000G | +650 HP<br>+50 AD<br>+20% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Radiant Stormrazor** | 2200G | +100 AD<br>+40% AS<br>+25% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Radiant Sundered Sky** | 2000G | +550 HP<br>+65 AD<br>+20% CDR | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 20% bonus damage and heals you for 60 + 10% of your missing health (20 second cooldown per target). |
+| **Radiant Sword of Blossoming Dawn** | 1700G | +350 HP<br>+70 AP<br>+35% AS<br>+15% CDR | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
 | **Radiant Trinity Force** | 2000G | +333 HP<br>+33 AD<br>+33% AS<br>+20% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
 | **Radiant Unending Despair** | 2100G | +700 HP<br>+50 Armor | Anguish: Landing an Ability on an enemy champion heals you for 50 + 2.5% of your maximum health. |

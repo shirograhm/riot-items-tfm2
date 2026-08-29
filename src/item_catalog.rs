@@ -2,7 +2,9 @@ pub const CATEGORY_ORDER: [&str; 6] =
     ["Assassin", "Fighter", "Marksman", "Mage", "Tank", "Support"];
 
 const CATEGORY_OF: &[(&str, &str)] = &[
+    ("ardent_censer", "Support"),
     ("atmas_reckoning", "Tank"),
+    ("axiom_arc", "Assassin"),
     ("bastionbreaker", "Assassin"),
     ("black_cleaver", "Fighter"),
     ("blackfire_torch", "Mage"),
@@ -18,7 +20,9 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("dragons_claw", "Tank"),
     ("dusk_and_dawn", "Mage"),
     ("echoes_of_helia", "Support"),
+    ("eclipse", "Fighter"),
     ("experimental_hexplate", "Fighter"),
+    ("feral_flare", "Fighter"),
     ("frozen_heart", "Tank"),
     ("frozen_mallet", "Fighter"),
     ("guinsoos_rageblade", "Marksman"),
@@ -56,6 +60,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("stormrazor", "Marksman"),
     ("sundered_sky", "Fighter"),
     ("sunfire_cape", "Tank"),
+    ("sword_of_blossoming_dawn", "Support"),
     ("terminus", "Marksman"),
     ("thornmail", "Tank"),
     ("trinity_force", "Fighter"),

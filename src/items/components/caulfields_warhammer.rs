@@ -3,41 +3,41 @@ use crate::config::ItemConfig;
 use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
-pub struct HauntingGuise {
+pub struct CaulfieldsWarhammer {
     price: usize,
-    magic_power: i32,
-    hp: i32,
+    attack: i32,
+    skill_cooldown_mult: i32,
 }
 
-impl Default for HauntingGuise {
+impl Default for CaulfieldsWarhammer {
     fn default() -> Self {
         Self {
             price: 950,
-            magic_power: 60,
-            hp: 200,
+            attack: 45,
+            skill_cooldown_mult: 10,
         }
     }
 }
 
-impl HauntingGuise {
+impl CaulfieldsWarhammer {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let mut item = Self::default();
-        apply_config!(item, cfg, [price, magic_power, hp]);
+        apply_config!(item, cfg, [price, attack, skill_cooldown_mult]);
         item
     }
 }
 
-impl StableItem for HauntingGuise {
+impl StableItem for CaulfieldsWarhammer {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> String {
-        "haunting_guise".to_string()
+        "caulfields_warhammer".to_string()
     }
 
     fn icon(&self) -> String {
-        "haunting_guise".to_string()
+        "caulfields_warhammer".to_string()
     }
 
     fn price(&self) -> usize {
@@ -49,30 +49,27 @@ impl StableItem for HauntingGuise {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hardened_heart".to_string(), "spirit_crystal".to_string()]
+        vec!["soldiers_longsword".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec![
-            "riftmaker".to_string(),
-            "bloodletters_curse".to_string(),
-            "dusk_and_dawn".to_string(),
-        ]
+        vec!["eclipse".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
-            magic_power: self.magic_power,
-            hp: self.hp,
+            attack: self.attack,
+            skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Ap]
+        vec![ItemTagV1::Ad, ItemTagV1::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategoryV1 {
-        ItemCategoryV1::Magic
+        ItemCategoryV1::Ad
     }
 }

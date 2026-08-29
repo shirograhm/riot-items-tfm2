@@ -30,6 +30,75 @@ fn ticks(seconds: f64) -> usize {
     (seconds * TICKS_PER_SECOND).round() as usize
 }
 
+/// Neutral jungle and epic monsters. The stable API exposes only `is_champion`,
+/// `is_tower` and `is_minion`, so a monster is what is left once those three are
+/// ruled out. Minions are excluded deliberately: `Feral Flare` stacks on monster
+/// kills but not on minion kills.
+fn is_monster(entity: &StableEntity<'_, '_>) -> bool {
+    !entity.is_champion() && !entity.is_tower() && !entity.is_minion()
+}
+
+/// Flat lethality granted by every item in this mod that carries some, keyed the
+/// way `item_keys` reports it.
+///
+/// TFM2 has no lethality attribute: each item simulates its own in `on_attack`
+/// via [`apply_lethality`], so nothing in the engine adds them up. `Axiom Arc`'s
+/// Flux scales on the wielder's *total*, which leaves reading the equipped keys
+/// back and summing them here as the only way to get that number.
+///
+/// Radiant variants are listed separately because they are distinct keys, even
+/// where the value matches the base item.
+const LETHALITY_BY_KEY: &[(&str, usize)] = &[
+    ("axiom_arc", 18),
+    ("bastionbreaker", 22),
+    ("collector", 10),
+    ("hubris", 18),
+    ("opportunity", 18),
+    ("radiant_axiom_arc", 18),
+    ("radiant_bastionbreaker", 22),
+    ("radiant_collector", 10),
+    ("radiant_hubris", 18),
+    ("radiant_opportunity", 18),
+    ("radiant_serpents_fang", 15),
+    ("radiant_voltaic_cyclosword", 12),
+    ("serpents_fang", 15),
+    ("serrated_dirk", 10),
+    ("voltaic_cyclosword", 12),
+];
+
+/// [`LETHALITY_BY_KEY`] with `config.json`'s `effect_lethality` overrides folded
+/// in, so retuning a lethality item retunes Flux with it. Filled once during
+/// [`init`], while the configs are still in hand.
+static LETHALITY_TABLE: std::sync::OnceLock<std::collections::HashMap<String, usize>> =
+    std::sync::OnceLock::new();
+
+fn record_lethality_table(configs: &std::collections::HashMap<String, config::ItemConfig>) {
+    let table = LETHALITY_BY_KEY
+        .iter()
+        .map(|&(key, default)| {
+            let value = configs
+                .get(key)
+                .and_then(|cfg| cfg.effect_lethality)
+                .unwrap_or(default);
+            (key.to_string(), value)
+        })
+        .collect();
+    let _ = LETHALITY_TABLE.set(table);
+}
+
+/// Total flat lethality across the player's equipped items. Only the static
+/// stat counts: a conditional bonus like `Opportunity`'s Preparation lives on
+/// that item's own instance and is not readable from here.
+fn total_lethality(ctx: &mut StableSim<'_>, player: usize) -> usize {
+    let Some(table) = LETHALITY_TABLE.get() else {
+        return 0;
+    };
+    let Some(keys) = ctx.get_player(player).map(|p| p.item_keys()) else {
+        return 0;
+    };
+    keys.iter().filter_map(|key| table.get(key)).sum()
+}
+
 fn has_buff(entity: &StableEntity<'_, '_>, name: &str) -> bool {
     (0..entity.buff_count()).any(|i| entity.buff_at(i).is_some_and(|b| b.name() == name))
 }
@@ -226,6 +295,7 @@ impl StableServerExtension for NativeTapExtension {
 fn init(host: &StableHost) -> StableMod {
     let mut reg = StableMod::new("riot_items_tfm2");
     let configs = config::load();
+    record_lethality_table(&configs);
 
     tactics::driver::on_mod_init();
 
@@ -255,7 +325,6 @@ fn init(host: &StableHost) -> StableMod {
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
-    reg.add_item(configured!("serrated_dirk" => SerratedDirk));
     reg.add_item(configured!("sheen" => Sheen));
 
     // Tier 3
@@ -263,18 +332,24 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
+    reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
+    reg.add_item(configured!("forbidden_idol" => ForbiddenIdol));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
+    reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
     reg.add_item(configured!("last_whisper" => LastWhisper));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("noonquiver" => Noonquiver));
     reg.add_item(configured!("phage" => Phage));
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
+    reg.add_item(configured!("serrated_dirk" => SerratedDirk));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
     reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4
+    reg.add_item(configured!("ardent_censer" => ArdentCenser));
     reg.add_item(configured!("atmas_reckoning" => AtmasReckoning));
+    reg.add_item(configured!("axiom_arc" => AxiomArc));
     reg.add_item(configured!("bastionbreaker" => Bastionbreaker));
     reg.add_item(configured!("black_cleaver" => BlackCleaver));
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
@@ -288,7 +363,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("diamond_tipped_spear" => DiamondTippedSpear));
     reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
+    reg.add_item(configured!("eclipse" => Eclipse));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured!("feral_flare" => FeralFlare));
     reg.add_item(configured!("frozen_heart" => FrozenHeart));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
     reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
@@ -323,6 +400,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("steraks_gage" => SteraksGage));
     reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("sundered_sky" => SunderedSky));
+    reg.add_item(configured!("sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("trinity_force" => TrinityForce));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
@@ -334,7 +412,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
 
     // Tier 5
+    reg.add_item(configured_radiant!("radiant_ardent_censer" => ArdentCenser));
     reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning));
+    reg.add_item(configured_radiant!("radiant_axiom_arc" => AxiomArc));
     reg.add_item(configured_radiant!("radiant_bastionbreaker" => Bastionbreaker));
     reg.add_item(configured_radiant!("radiant_black_cleaver" => BlackCleaver));
     reg.add_item(configured_radiant!("radiant_blackfire_torch" => BlackfireTorch));
@@ -348,7 +428,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_diamond_tipped_spear" => DiamondTippedSpear));
     reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
+    reg.add_item(configured_radiant!("radiant_eclipse" => Eclipse));
     reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
+    reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
     reg.add_item(configured_radiant!("radiant_frozen_heart" => FrozenHeart));
     reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
     reg.add_item(configured_radiant!("radiant_guinsoos_rageblade" => GuinsoosRageblade));
@@ -383,6 +465,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_steraks_gage" => SteraksGage));
     reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
     reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
+    reg.add_item(configured_radiant!("radiant_sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
     reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce));
     reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
@@ -393,18 +476,11 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
 
-    // New items go at the END of this list, never sorted into the blocks above:
-    // saves address items by registration index rather than by key, so inserting
-    // one mid-list renumbers every item after it.
-
-    // What `item-builds.json` reaches the game through. Registered whether or
-    // not a config exists: the hook keeps the engine's build when it has nothing
-    // to say, so an inert install costs one call per player per match.
+    // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
-
     reg.set_server_extension(NativeTapExtension);
-    // Client-side in-game build picker on the strategy screen. Purely additive:
-    // it no-ops unless the `ui/layout/strategy` asset override is in place.
+
+    // in-game build picker
     reg.set_extension(strategy_ui::StrategyPicker);
 
     host.log(

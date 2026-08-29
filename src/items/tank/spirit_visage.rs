@@ -17,7 +17,7 @@ impl SpiritVisage {
         Self {
             meta: ItemMeta::base(
                 "spirit_visage",
-                &["hardened_heart", "dusk_raven"],
+                &["dusk_raven"],
                 &["radiant_spirit_visage"],
             ),
             price: 1400,

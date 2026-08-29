@@ -3,39 +3,41 @@ use crate::config::ItemConfig;
 use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
-pub struct NeedlesslyLargeRod {
+pub struct Noonquiver {
     price: usize,
-    magic_power: i32,
+    attack: i32,
+    crit_chance: i32,
 }
 
-impl Default for NeedlesslyLargeRod {
+impl Default for Noonquiver {
     fn default() -> Self {
         Self {
-            price: 850,
-            magic_power: 115,
+            price: 800,
+            attack: 45,
+            crit_chance: 10,
         }
     }
 }
 
-impl NeedlesslyLargeRod {
+impl Noonquiver {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let mut item = Self::default();
-        apply_config!(item, cfg, [price, magic_power]);
+        apply_config!(item, cfg, [price, attack, crit_chance]);
         item
     }
 }
 
-impl StableItem for NeedlesslyLargeRod {
+impl StableItem for Noonquiver {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> String {
-        "needlessly_large_rod".to_string()
+        "noonquiver".to_string()
     }
 
     fn icon(&self) -> String {
-        "needlessly_large_rod".to_string()
+        "noonquiver".to_string()
     }
 
     fn price(&self) -> usize {
@@ -47,29 +49,31 @@ impl StableItem for NeedlesslyLargeRod {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["spirit_crystal".to_string()]
+        vec!["soldiers_longsword".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
         vec![
-            "rabadons_deathcap".to_string(),
-            "shadowflame".to_string(),
-            "rylais_crystal_scepter".to_string(),
+            "stormrazor".to_string(),
+            "yun_tal_wildarrows".to_string(),
+            "collector".to_string(),
+            "lord_dominiks_regards".to_string(),
         ]
     }
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
-            magic_power: self.magic_power,
+            attack: self.attack,
+            crit_chance: self.crit_chance,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Ap]
+        vec![ItemTagV1::Ad]
     }
 
     fn category(&self) -> ItemCategoryV1 {
-        ItemCategoryV1::Magic
+        ItemCategoryV1::Ad
     }
 }

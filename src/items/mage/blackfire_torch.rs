@@ -122,13 +122,16 @@ impl StableItem for BlackfireTorch {
         ctx: &mut StableSim<'_>,
         _rng_seed: u64,
         caster: usize,
-        _target: usize,
+        target: usize,
         is_ally: bool,
     ) {
         let Some(entity_ref) = ctx.get_entity(caster) else {
             return;
         };
-        if is_ally {
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if is_ally || !target_ref.is_champion() {
             return;
         }
 

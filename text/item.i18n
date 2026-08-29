@@ -633,15 +633,19 @@
         },
         "bloodsong": {
             "name": "Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "radiant_bloodsong": {
             "name": "Radiant Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>8%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "serrated_dirk": {
             "name": "Serrated Dirk",
             "option": "\nGain <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>."
+        },
+        "caulfields_warhammer": {
+            "name": "Caulfield's Warhammer",
+            "option": ""
         },
         "hubris": {
             "name": "Hubris",
@@ -710,6 +714,54 @@
         "radiant_randuins_omen": {
             "name": "Radiant Randuin's Omen",
             "option": "\nResilience: <#60e84dff>Heal<> for <#60e84dff>30%<> of the damage taken from <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<>."
+        },
+        "eclipse": {
+            "name": "Eclipse",
+            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>100<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
+        },
+        "radiant_eclipse": {
+            "name": "Radiant Eclipse",
+            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>8% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>120<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
+        },
+        "axiom_arc": {
+            "name": "Axiom Arc",
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nFlux: Gain <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+        },
+        "radiant_axiom_arc": {
+            "name": "Radiant Axiom Arc",
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nFlux: Gain <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+        },
+        "hearthbound_axe": {
+            "name": "Hearthbound Axe",
+            "option": ""
+        },
+        "feral_flare": {
+            "name": "Feral Flare",
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+        },
+        "radiant_feral_flare": {
+            "name": "Radiant Feral Flare",
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+        },
+        "forbidden_idol": {
+            "name": "Forbidden Idol",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Sword of Blossoming Dawn",
+            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Radiant Sword of Blossoming Dawn",
+            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+        },
+        "ardent_censer": {
+            "name": "Ardent Censer",
+            "option": "\nSanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#a974ffff>bonus magic damage<> on-hit equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
+        },
+        "radiant_ardent_censer": {
+            "name": "Radiant Ardent Censer",
+            "option": "\nSanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#a974ffff>bonus magic damage<> on-hit equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
         }
     },
     "vi": {
@@ -770,19 +822,19 @@
         },
         "ironsword": {
             "name": "Kiếm Dài",
-            "option": ""
+            "option": "\nGain <#d48294ff>10<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher."
         },
         "soldiers_longsword": {
             "name": "Cuốc Chim",
-            "option": ""
+            "option": "\nGain <#d48294ff>15<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher."
         },
         "ruinous_blade": {
             "name": "Huyết Trượng",
-            "option": ""
+            "option": "\nGain <#d48294ff>27<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher."
         },
         "conquerors_greatsword": {
             "name": "Huyết Kiếm",
-            "option": ""
+            "option": "\nGain <#d48294ff>45<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<>. Each <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<>, depending on which is higher."
         },
         "warlords_final_judgement": {
             "name": "Huyết Kiếm Ánh Sáng",
@@ -1346,15 +1398,19 @@
         },
         "bloodsong": {
             "name": "Khúc Ca Máu",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>8%<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "radiant_bloodsong": {
             "name": "Khúc Ca Máu Ánh Sáng",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>8%<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "serrated_dirk": {
             "name": "Dao Găm Răng Cưa",
             "option": "\nNhận <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>."
+        },
+        "caulfields_warhammer": {
+            "name": "Búa Chiến Caulfield",
+            "option": ""
         },
         "hubris": {
             "name": "Kiêu Ngạo",
@@ -1410,11 +1466,11 @@
         },
         "steraks_gage": {
             "name": "Móng Vuốt Sterak",
-            "option": "\nBảo Hiểm Ma Pháp: <#d94c49ff>Nhận sát thương khiến máu giảm xuống dưới 30%<> sẽ tạo cho bạn một <#cab944ff>khiên<> <#cab944ff>hấp thụ sát thương<> bằng <#d8c9b3ff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>máu tối đa<> của bạn trong <#e8a800ff>4 giây<> (<#e8a800ff>90 giây<> hồi chiêu)."
+            "option": "\nBảo Hiểm Ma Pháp: <#d94c49ff>Nhận sát thương khiến máu giảm xuống dưới 30%<> sẽ tạo cho bạn một <#cab944ff>khiên<> <#cab944ff>hấp thụ sát thương<> bằng <#60e84dff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn trong <#e8a800ff>4 giây<> (<#e8a800ff>90 giây<> hồi chiêu)."
         },
         "radiant_steraks_gage": {
             "name": "Móng Vuốt Sterak Ánh Sáng",
-            "option": "\nBảo Hiểm Ma Pháp: <#d94c49ff>Nhận sát thương khiến máu giảm xuống dưới 30%<> sẽ tạo cho bạn một <#cab944ff>khiên<> <#cab944ff>hấp thụ sát thương<> bằng <#d8c9b3ff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>máu tối đa<> của bạn trong <#e8a800ff>4 giây<> (<#e8a800ff>90 giây<> hồi chiêu)."
+            "option": "\nBảo Hiểm Ma Pháp: <#d94c49ff>Nhận sát thương khiến máu giảm xuống dưới 30%<> sẽ tạo cho bạn một <#cab944ff>khiên<> <#cab944ff>hấp thụ sát thương<> bằng <#60e84dff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn trong <#e8a800ff>4 giây<> (<#e8a800ff>90 giây<> hồi chiêu)."
         },
         "randuins_omen": {
             "name": "Khiên Băng Randuin",
@@ -1423,6 +1479,54 @@
         "radiant_randuins_omen": {
             "name": "Khiên Băng Randuin Ánh Sáng",
             "option": "\nKháng Chí Mạng: <#60e84dff>Hồi<> <#60e84dff>30%<> sát thương nhận phải từ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<>."
+        },
+        "eclipse": {
+            "name": "Nguyệt Đao",
+            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>5% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>100<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
+        },
+        "radiant_eclipse": {
+            "name": "Nguyệt Đao Ánh Sáng",
+            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>8% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>120<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
+        },
+        "axiom_arc": {
+            "name": "Nguyên Tố Luân",
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nTái Thiết: Nhận <#4b7cffff>10%<> <#ffdd8eff>(+0.2% mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+        },
+        "radiant_axiom_arc": {
+            "name": "Nguyên Tố Luân Ánh Sáng",
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nTái Thiết: Nhận <#4b7cffff>10%<> <#ffdd8eff>(+0.2% mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+        },
+        "hearthbound_axe": {
+            "name": "Rìu Nhanh Nhẹn",
+            "option": ""
+        },
+        "feral_flare": {
+            "name": "Ngọn Lửa Hoang Dã",
+            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+        },
+        "radiant_feral_flare": {
+            "name": "Ngọn Lửa Hoang Dã Ánh Sáng",
+            "option": "\nTàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+        },
+        "forbidden_idol": {
+            "name": "Dị Vật Tai Ương",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Kiếm Bình Minh Nở Rộ",
+            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Kiếm Bình Minh Nở Rộ Ánh Sáng",
+            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+        },
+        "ardent_censer": {
+            "name": "Lư Hương Sôi Sục",
+            "option": "\nCầu Nguyện: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#a974ffff>sát thương phép<> khi đánh trúng bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
+        },
+        "radiant_ardent_censer": {
+            "name": "Lư Hương Sôi Sục Ánh Sáng",
+            "option": "\nCầu Nguyện: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#a974ffff>sát thương phép<> khi đánh trúng bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
         }
     },
     "zh-hans": {
@@ -2059,15 +2163,19 @@
         },
         "bloodsong": {
             "name": "血歌",
-            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>8%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "radiant_bloodsong": {
             "name": "光明版血歌",
-            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>8%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "serrated_dirk": {
             "name": "锯齿短匕",
             "option": "\n获得 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。"
+        },
+        "caulfields_warhammer": {
+            "name": "考尔菲德的战锤",
+            "option": ""
         },
         "hubris": {
             "name": "傲慢",
@@ -2123,11 +2231,11 @@
         },
         "steraks_gage": {
             "name": "斯特拉克的挑战护手",
-            "option": "\n救主灵刃：<#d94c49ff>受到将使你的生命值跌到30%以下的伤害时<>，获得一个<#cab944ff>护盾<>，<#cab944ff>吸收<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>最大生命值<> 的 <#d8c9b3ff>60%<> 的<#cab944ff>伤害<>，持续 <#e8a800ff>4秒<>（冷却时间90秒）。"
+            "option": "\n救主灵刃：<#d94c49ff>受到将使你的生命值跌到30%以下的伤害时<>，获得一个<#cab944ff>护盾<>，<#cab944ff>吸收<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的 <#60e84dff>60%<> 的<#cab944ff>伤害<>，持续 <#e8a800ff>4秒<>（冷却时间90秒）。"
         },
         "radiant_steraks_gage": {
             "name": "光明版斯特拉克的挑战护手",
-            "option": "\n救主灵刃：<#d94c49ff>受到将使你的生命值跌到30%以下的伤害时<>，获得一个<#cab944ff>护盾<>，<#cab944ff>吸收<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>最大生命值<> 的 <#d8c9b3ff>60%<> 的<#cab944ff>伤害<>，持续 <#e8a800ff>4秒<>（冷却时间90秒）。"
+            "option": "\n救主灵刃：<#d94c49ff>受到将使你的生命值跌到30%以下的伤害时<>，获得一个<#cab944ff>护盾<>，<#cab944ff>吸收<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的 <#60e84dff>60%<> 的<#cab944ff>伤害<>，持续 <#e8a800ff>4秒<>（冷却时间90秒）。"
         },
         "randuins_omen": {
             "name": "兰顿之兆",
@@ -2136,6 +2244,54 @@
         "radiant_randuins_omen": {
             "name": "光明版兰顿之兆",
             "option": "\n复原力：<#60e84dff>治疗<>相当于所受 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击伤害<> <#60e84dff>30%<> 的生命值。"
+        },
+        "eclipse": {
+            "name": "星蚀",
+            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其5%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 15%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
+        },
+        "radiant_eclipse": {
+            "name": "光明版星蚀",
+            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其8%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 20%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
+        },
+        "axiom_arc": {
+            "name": "公理圆弧",
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n涌动：终极技能获得 <#4b7cffff>10%<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2%）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+        },
+        "radiant_axiom_arc": {
+            "name": "光明版公理圆弧",
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n涌动：终极技能获得 <#4b7cffff>10%<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2%）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+        },
+        "hearthbound_axe": {
+            "name": "缚炉之斧",
+            "option": ""
+        },
+        "feral_flare": {
+            "name": "野性之炎",
+            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+        },
+        "radiant_feral_flare": {
+            "name": "光明版野性之炎",
+            "option": "\n致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+        },
+        "forbidden_idol": {
+            "name": "禁忌雕像",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "花晓之剑",
+            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#d8c9b3ff>15<> - <#d8c9b3ff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "光明版花晓之剑",
+            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#d8c9b3ff>15<> - <#d8c9b3ff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
+        },
+        "ardent_censer": {
+            "name": "炽热香炉",
+            "option": "\n圣洁化：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 2%<>的<#a974ffff>额外魔法伤害<>，持续 <#e8a800ff>6秒<>。"
+        },
+        "radiant_ardent_censer": {
+            "name": "光明版炽热香炉",
+            "option": "\n圣洁化：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 2%<>的<#a974ffff>额外魔法伤害<>，持续 <#e8a800ff>6秒<>。"
         }
     },
     "pt-BR": {
@@ -2772,15 +2928,19 @@
         },
         "bloodsong": {
             "name": "Canção de Sangue",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>8%<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "radiant_bloodsong": {
             "name": "Canção de Sangue Radiante",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>8%<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "serrated_dirk": {
             "name": "Adaga Serrilhada",
             "option": "\nGanha <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>."
+        },
+        "caulfields_warhammer": {
+            "name": "Martelo de Guerra de Caulfield",
+            "option": ""
         },
         "hubris": {
             "name": "Arrogância",
@@ -2836,11 +2996,11 @@
         },
         "steraks_gage": {
             "name": "Sinal de Sterak",
-            "option": "\nSalva-Vidas: Ao sofrer dano que reduziria sua <#d94c49ff>Vida a menos de 30%<>, concede um <#cab944ff>escudo<> que <#cab944ff>absorve dano<> equivalente a <#d8c9b3ff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>Vida Máxima<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>90 segundos<>)."
+            "option": "\nSalva-Vidas: Ao sofrer dano que reduziria sua <#d94c49ff>Vida a menos de 30%<>, concede um <#cab944ff>escudo<> que <#cab944ff>absorve dano<> equivalente a <#60e84dff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>90 segundos<>)."
         },
         "radiant_steraks_gage": {
             "name": "Sinal de Sterak Radiante",
-            "option": "\nSalva-Vidas: Ao sofrer dano que reduziria sua <#d94c49ff>Vida a menos de 30%<>, concede um <#cab944ff>escudo<> que <#cab944ff>absorve dano<> equivalente a <#d8c9b3ff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>Vida Máxima<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>90 segundos<>)."
+            "option": "\nSalva-Vidas: Ao sofrer dano que reduziria sua <#d94c49ff>Vida a menos de 30%<>, concede um <#cab944ff>escudo<> que <#cab944ff>absorve dano<> equivalente a <#60e84dff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>90 segundos<>)."
         },
         "randuins_omen": {
             "name": "Presságio de Randuin",
@@ -2849,6 +3009,54 @@
         "radiant_randuins_omen": {
             "name": "Presságio de Randuin Radiante",
             "option": "\nResiliência: <#60e84dff>Cura<> <#60e84dff>30%<> do dano sofrido de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<>."
+        },
+        "eclipse": {
+            "name": "Eclipse",
+            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>5% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>100<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
+        },
+        "radiant_eclipse": {
+            "name": "Eclipse Radiante",
+            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>8% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>120<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
+        },
+        "axiom_arc": {
+            "name": "Arco do Axioma",
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nFluxo: Recebe <#4b7cffff>10%<> <#ffdd8eff>(+0.2% por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+        },
+        "radiant_axiom_arc": {
+            "name": "Arco do Axioma Radiante",
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nFluxo: Recebe <#4b7cffff>10%<> <#ffdd8eff>(+0.2% por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+        },
+        "hearthbound_axe": {
+            "name": "Machado Termestre",
+            "option": ""
+        },
+        "feral_flare": {
+            "name": "Chama Feral",
+            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+        },
+        "radiant_feral_flare": {
+            "name": "Chama Feral Radiante",
+            "option": "\nMutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+        },
+        "forbidden_idol": {
+            "name": "Ídolo Proibido",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Espada da Alvorada Florescente",
+            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Espada da Alvorada Florescente Radiante",
+            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
+        },
+        "ardent_censer": {
+            "name": "Turíbulo Ardente",
+            "option": "\nSantificar: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#a974ffff>dano mágico bônus<> no acerto equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
+        },
+        "radiant_ardent_censer": {
+            "name": "Turíbulo Ardente Radiante",
+            "option": "\nSantificar: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#a974ffff>dano mágico bônus<> no acerto equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
         }
     },
     "ru": {
@@ -3485,15 +3693,19 @@
         },
         "bloodsong": {
             "name": "Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>8%<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "radiant_bloodsong": {
             "name": "Лучезарная Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>8%<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "serrated_dirk": {
             "name": "Зубчатый кинжал",
             "option": "\nДаёт <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>."
+        },
+        "caulfields_warhammer": {
+            "name": "Боевой молот Колфилда",
+            "option": ""
         },
         "hubris": {
             "name": "Гордыня",
@@ -3549,11 +3761,11 @@
         },
         "steraks_gage": {
             "name": "Испытание Стерака",
-            "option": "\nЛиния жизни: При <#d94c49ff>получении урона, снижающего ваше здоровье ниже 30%<>, вы получаете <#cab944ff>щит<>, <#cab944ff>поглощающий урон<> в размере <#d8c9b3ff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>максимального здоровья<>, на <#e8a800ff>4 секунды<> (перезарядка 90 секунд)."
+            "option": "\nЛиния жизни: При <#d94c49ff>получении урона, снижающего ваше здоровье ниже 30%<>, вы получаете <#cab944ff>щит<>, <#cab944ff>поглощающий урон<> в размере <#60e84dff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, на <#e8a800ff>4 секунды<> (перезарядка 90 секунд)."
         },
         "radiant_steraks_gage": {
             "name": "Лучезарное Испытание Стерака",
-            "option": "\nЛиния жизни: При <#d94c49ff>получении урона, снижающего ваше здоровье ниже 30%<>, вы получаете <#cab944ff>щит<>, <#cab944ff>поглощающий урон<> в размере <#d8c9b3ff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>максимального здоровья<>, на <#e8a800ff>4 секунды<> (перезарядка 90 секунд)."
+            "option": "\nЛиния жизни: При <#d94c49ff>получении урона, снижающего ваше здоровье ниже 30%<>, вы получаете <#cab944ff>щит<>, <#cab944ff>поглощающий урон<> в размере <#60e84dff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, на <#e8a800ff>4 секунды<> (перезарядка 90 секунд)."
         },
         "randuins_omen": {
             "name": "Знамение Рандуина",
@@ -3562,6 +3774,54 @@
         "radiant_randuins_omen": {
             "name": "Лучезарное Знамение Рандуина",
             "option": "\nКритическая стойкость: <#60e84dff>Восстанавливает<> <#60e84dff>30%<> урона, полученного от <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критических ударов<>."
+        },
+        "eclipse": {
+            "name": "Затмение",
+            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>5% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>100<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
+        },
+        "radiant_eclipse": {
+            "name": "Лучезарное Затмение",
+            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>8% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>120<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
+        },
+        "axiom_arc": {
+            "name": "Шакрам Аксиом",
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nНепрерывность: Даёт <#4b7cffff>10%<> <#ffdd8eff>(+0.2% за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+        },
+        "radiant_axiom_arc": {
+            "name": "Лучезарный Шакрам Аксиом",
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nНепрерывность: Даёт <#4b7cffff>10%<> <#ffdd8eff>(+0.2% за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+        },
+        "hearthbound_axe": {
+            "name": "Топор Теплолюбивых",
+            "option": ""
+        },
+        "feral_flare": {
+            "name": "Дикое пламя",
+            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+        },
+        "radiant_feral_flare": {
+            "name": "Лучезарное Дикое пламя",
+            "option": "\nУвечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+        },
+        "forbidden_idol": {
+            "name": "Запретный идол",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Меч сияющего рассвета",
+            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Лучезарный Меч сияющего рассвета",
+            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
+        },
+        "ardent_censer": {
+            "name": "Пылающая кадильница",
+            "option": "\nОсвящение: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#a974ffff>дополнительный магический урон<> при попадании в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
+        },
+        "radiant_ardent_censer": {
+            "name": "Лучезарная Пылающая кадильница",
+            "option": "\nОсвящение: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#a974ffff>дополнительный магический урон<> при попадании в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
         }
     },
     "ko": {
@@ -4198,15 +4458,19 @@
         },
         "bloodsong": {
             "name": "피의 노래",
-            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>8%<> 증가합니다."
+            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "radiant_bloodsong": {
             "name": "찬란한 피의 노래",
-            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>8%<> 증가합니다."
+            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "serrated_dirk": {
             "name": "톱날 단검",
             "option": "\n<#ffdd8eff>10의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다."
+        },
+        "caulfields_warhammer": {
+            "name": "콜필드의 전투 망치",
+            "option": ""
         },
         "hubris": {
             "name": "오만",
@@ -4262,11 +4526,11 @@
         },
         "steraks_gage": {
             "name": "스테락의 도전",
-            "option": "\n생명선: <#d94c49ff>체력이 30% 밑으로 떨어질 만큼 피해를 입으면<> <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>최대 체력<>의 <#d8c9b3ff>60%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다."
+            "option": "\n생명선: <#d94c49ff>체력이 30% 밑으로 떨어질 만큼 피해를 입으면<> <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>60%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다."
         },
         "radiant_steraks_gage": {
             "name": "찬란한 스테락의 도전",
-            "option": "\n생명선: <#d94c49ff>체력이 30% 밑으로 떨어질 만큼 피해를 입으면<> <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#d8c9b3ff>최대 체력<>의 <#d8c9b3ff>60%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다."
+            "option": "\n생명선: <#d94c49ff>체력이 30% 밑으로 떨어질 만큼 피해를 입으면<> <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>60%<>만큼 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다."
         },
         "randuins_omen": {
             "name": "란두인의 예언",
@@ -4275,6 +4539,54 @@
         "radiant_randuins_omen": {
             "name": "찬란한 란두인의 예언",
             "option": "\n저항: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 받은 피해량의 <#60e84dff>30%<>만큼 <#60e84dff>체력을 회복<>합니다."
+        },
+        "eclipse": {
+            "name": "월식",
+            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
+        },
+        "radiant_eclipse": {
+            "name": "찬란한 월식",
+            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 8%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
+        },
+        "axiom_arc": {
+            "name": "원칙의 원형낫",
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n전이 표식: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>10%<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2%)<> 증가합니다."
+        },
+        "radiant_axiom_arc": {
+            "name": "찬란한 원칙의 원형낫",
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n전이 표식: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>10%<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2%)<> 증가합니다."
+        },
+        "hearthbound_axe": {
+            "name": "온기가 필요한 자의 도끼",
+            "option": ""
+        },
+        "feral_flare": {
+            "name": "야성의 불꽃",
+            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+        },
+        "radiant_feral_flare": {
+            "name": "찬란한 야성의 불꽃",
+            "option": "\n불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+        },
+        "forbidden_idol": {
+            "name": "금지된 우상",
+            "option": ""
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "꽃피는 새벽의 검",
+            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#d8c9b3ff>15<>~<#d8c9b3ff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "찬란한 꽃피는 새벽의 검",
+            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#d8c9b3ff>15<>~<#d8c9b3ff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+        },
+        "ardent_censer": {
+            "name": "불타는 향로",
+            "option": "\n축성: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#a974ffff>추가 마법 피해<>를 입힙니다."
+        },
+        "radiant_ardent_censer": {
+            "name": "찬란한 불타는 향로",
+            "option": "\n축성: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#a974ffff>추가 마법 피해<>를 입힙니다."
         }
     }
 }

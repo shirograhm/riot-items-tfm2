@@ -702,7 +702,7 @@
   },
   "bandleglass_mirror": {
     "price": 650,
-    "hp": 250,
+    "hp": 200,
     "hp_regen": 2,
     "magic_power": 20,
     "skill_cooldown_mult": 5
@@ -825,7 +825,7 @@
   "dusk_and_dawn": {
     "price": 1400,
     "hp": 200,
-    "magic_power": 60,
+    "magic_power": 75,
     "attack_speed_mult": 15,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 85,
@@ -837,7 +837,7 @@
   "radiant_dusk_and_dawn": {
     "price": 2000,
     "hp": 300,
-    "magic_power": 100,
+    "magic_power": 125,
     "attack_speed_mult": 25,
     "skill_cooldown_mult": 20,
     "effect_bonus_flat_damage": 85,
@@ -848,34 +848,37 @@
   },
   "bloodsong": {
     "price": 1050,
-    "attack_speed_mult": 15,
-    "hp": 250,
-    "hp_regen": 2,
+    "attack_speed_mult": 25,
+    "hp": 200,
     "magic_power": 20,
     "skill_cooldown_mult": 10,
     "effect_min_bonus_damage": 70,
     "effect_max_bonus_damage": 125,
     "effect_cooldown_seconds": 3.5,
-    "effect_damaged_amplify": 8,
+    "effect_damaged_amplify": 7,
     "effect_duration_seconds": 4
   },
   "radiant_bloodsong": {
     "price": 1500,
-    "attack_speed_mult": 15,
-    "hp": 450,
-    "hp_regen": 4,
+    "attack_speed_mult": 35,
+    "hp": 400,
     "magic_power": 40,
-    "skill_cooldown_mult": 20,
+    "skill_cooldown_mult": 10,
     "effect_min_bonus_damage": 70,
     "effect_max_bonus_damage": 125,
     "effect_cooldown_seconds": 3.5,
-    "effect_damaged_amplify": 8,
+    "effect_damaged_amplify": 7,
     "effect_duration_seconds": 4
   },
   "serrated_dirk": {
     "price": 800,
     "attack": 45,
     "effect_lethality": 10
+  },
+  "caulfields_warhammer": {
+    "price": 950,
+    "attack": 45,
+    "skill_cooldown_mult": 10
   },
   "hubris": {
     "price": 1300,
@@ -1087,5 +1090,122 @@
     "hp": 550,
     "defence": 90,
     "effect_crit_damage_percent_heal": 30.0
+  },
+  "eclipse": {
+    "price": 1300,
+    "attack": 55,
+    "skill_cooldown_mult": 15,
+    "effect_hp_percent_damage": 5.0,
+    "effect_bonus_flat_shield": 100,
+    "effect_ad_percent_shield": 15.0,
+    "effect_duration_seconds": 2,
+    "effect_shield_seconds": 2,
+    "effect_cooldown_seconds": 6
+  },
+  "radiant_eclipse": {
+    "price": 1950,
+    "attack": 95,
+    "skill_cooldown_mult": 15,
+    "effect_hp_percent_damage": 8.0,
+    "effect_bonus_flat_shield": 120,
+    "effect_ad_percent_shield": 20.0,
+    "effect_duration_seconds": 2,
+    "effect_shield_seconds": 2,
+    "effect_cooldown_seconds": 6
+  },
+  "feral_flare": {
+    "price": 1400,
+    "attack": 45,
+    "attack_speed_mult": 20,
+    "defence": 20,
+    "effect_bonus_magic_damage": 25,
+    "effect_stack_magic_damage": 1,
+    "effect_bonus_flat_heal": 10,
+    "effect_max_stacks": 50,
+    "effect_minion_percent": 150.0
+  },
+  "radiant_feral_flare": {
+    "price": 2000,
+    "attack": 55,
+    "attack_speed_mult": 40,
+    "defence": 40,
+    "effect_bonus_magic_damage": 25,
+    "effect_stack_magic_damage": 1,
+    "effect_bonus_flat_heal": 10,
+    "effect_max_stacks": 50,
+    "effect_minion_percent": 150.0
+  },
+  "hearthbound_axe": {
+    "price": 950,
+    "attack": 30,
+    "attack_speed_mult": 20
+  },
+  "axiom_arc": {
+    "price": 1300,
+    "attack": 70,
+    "skill_cooldown_mult": 10,
+    "effect_lethality": 18,
+    "effect_ult_cooldown_mult": 10,
+    "effect_ult_cooldown_per_lethality": 0.2
+  },
+  "radiant_axiom_arc": {
+    "price": 1900,
+    "attack": 105,
+    "skill_cooldown_mult": 15,
+    "effect_lethality": 18,
+    "effect_ult_cooldown_mult": 10,
+    "effect_ult_cooldown_per_lethality": 0.2
+  },
+  "forbidden_idol": {
+    "price": 650,
+    "hp": 200,
+    "magic_power": 20,
+    "skill_cooldown_mult": 10
+  },
+  "sword_of_blossoming_dawn": {
+    "price": 1000,
+    "attack_speed_mult": 20,
+    "hp": 200,
+    "magic_power": 40,
+    "skill_cooldown_mult": 10,
+    "effect_min_heal": 15,
+    "effect_max_heal": 60,
+    "effect_ad_percent_heal": 7.0,
+    "effect_ap_percent_heal": 7.0,
+    "effect_max_distance": 100
+  },
+  "radiant_sword_of_blossoming_dawn": {
+    "price": 1700,
+    "attack_speed_mult": 35,
+    "hp": 350,
+    "magic_power": 70,
+    "skill_cooldown_mult": 15,
+    "effect_min_heal": 15,
+    "effect_max_heal": 60,
+    "effect_ad_percent_heal": 7.0,
+    "effect_ap_percent_heal": 7.0,
+    "effect_max_distance": 100
+  },
+  "ardent_censer": {
+    "price": 1000,
+    "hp": 200,
+    "hp_regen": 2,
+    "magic_power": 45,
+    "skill_cooldown_mult": 5,
+    "move_speed_mult": 5,
+    "effect_attack_speed_mult": 20,
+    "effect_enemy_max_hp_damage": 2,
+    "effect_duration_seconds": 6
+  },
+  "radiant_ardent_censer": {
+    "price": 1700,
+    "hp": 400,
+    "hp_regen": 4,
+    "magic_power": 90,
+    "skill_cooldown_mult": 5,
+    "move_speed_mult": 5,
+    "effect_attack_speed_mult": 20,
+    "effect_enemy_max_hp_damage": 2,
+    "effect_duration_seconds": 6
   }
 }
