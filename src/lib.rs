@@ -30,6 +30,14 @@ fn ticks(seconds: f64) -> usize {
     (seconds * TICKS_PER_SECOND).round() as usize
 }
 
+/// Neutral jungle and epic monsters. The stable API exposes only `is_champion`,
+/// `is_tower` and `is_minion`, so a monster is what is left once those three are
+/// ruled out. Minions are excluded deliberately: `Feral Flare` stacks on monster
+/// kills but not on minion kills.
+fn is_monster(entity: &StableEntity<'_, '_>) -> bool {
+    !entity.is_champion() && !entity.is_tower() && !entity.is_minion()
+}
+
 /// Flat lethality granted by every item in this mod that carries some, keyed the
 /// way `item_keys` reports it.
 ///

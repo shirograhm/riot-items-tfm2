@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta};
+use crate::{apply_config, is_monster, percent_of, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct FeralFlare {
@@ -31,11 +31,11 @@ impl FeralFlare {
             attack: 45,
             attack_speed_mult: 20,
             defence: 20,
-            effect_bonus_magic_damage: 40,
+            effect_bonus_magic_damage: 25,
             effect_stack_magic_damage: 1,
             effect_bonus_flat_heal: 15,
-            effect_max_stacks: 30,
-            effect_minion_percent: 300.0,
+            effect_max_stacks: 50,
+            effect_minion_percent: 150.0,
             feral_stacks: 0,
         }
     }
@@ -47,11 +47,11 @@ impl FeralFlare {
             attack: 55,
             attack_speed_mult: 40,
             defence: 40,
-            effect_bonus_magic_damage: 40,
+            effect_bonus_magic_damage: 25,
             effect_stack_magic_damage: 1,
             effect_bonus_flat_heal: 15,
-            effect_max_stacks: 30,
-            effect_minion_percent: 300.0,
+            effect_max_stacks: 50,
+            effect_minion_percent: 150.0,
             ..Self::base()
         }
     }
@@ -183,7 +183,12 @@ impl StableItem for FeralFlare {
         _entity: usize,
         victim: usize,
     ) {
-        if ctx.get_entity(victim).is_some_and(|v| v.is_champion()) {
+        let Some(victim_ref) = ctx.get_entity(victim) else {
+            return;
+        };
+        // Champion kills and monster kills both stack; minions do not, which is
+        // what `is_monster` rules out on top of champions and towers.
+        if victim_ref.is_champion() || is_monster(&victim_ref) {
             self.add_stack();
         }
     }

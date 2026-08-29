@@ -532,7 +532,7 @@ $i18n.en.radiant_deaths_dance.option = "Ignore Pain: <#e8a800ff>${rddDelay}%<> o
 $i18n.en.rabadons_deathcap.option = "Opus: Increase your total <$apIcon> <#a974ffff>Ability Power<> by <#a974ffff>${rabMult}%<>."
 $i18n.en.radiant_rabadons_deathcap.option = "Opus: Increase your total <$apIcon> <#a974ffff>Ability Power<> by <#a974ffff>${radRabMult}%<>."
 
-$feralEn = "Maim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored, up to <#92dc7bff>{3}<>. Basic attacks deal <#a974ffff>{0} <#92dc7bff>(+{1} per Feral stack)<> bonus magic damage<> and restore <#60e84dff>{2} <$hpIcon> health<>. This effect is <#d94c49ff>{4}%<> as effective against minions and monsters."
+$feralEn = "Maim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>{3}<>. Basic attacks deal <#a974ffff>{0} <#92dc7bff>(+{1} per Feral stack)<> bonus magic damage<> and restore <#60e84dff>{2} <$hpRegenIcon> health<>. This effect is <#e8a800ff>{4}% effective<> against minions and monsters."
 $i18n.en.feral_flare.option = $feralEn -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.en.radiant_feral_flare.option = $feralEn -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
 $fluxEn = "Flux: Gain <#4b7cffff>{0}%<> <#ffdd8eff>(+{1}% per 1 <$armorPenIcon> Lethality)<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
@@ -694,7 +694,7 @@ $i18n.vi.radiant_deaths_dance.option = "Phớt Lờ Đau Đớn: <#e8a800ff>${rd
 $i18n.vi.rabadons_deathcap.option = "Hạt nhân: Tăng <$apIcon> <#a974ffff>SMPT<> của bản thân thêm <#a974ffff>${rabMult}%<>."
 $i18n.vi.radiant_rabadons_deathcap.option = "Hạt nhân: Tăng <$apIcon> <#a974ffff>SMPT<> của bản thân thêm <#a974ffff>${radRabMult}%<>."
 
-$feralVi = "Tàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch, tối đa <#92dc7bff>{3}<>. Đòn đánh thường gây <#a974ffff>{0} <#92dc7bff>(+{1} mỗi cộng dồn Hoang Dã)<> sát thương phép cộng thêm<> và hồi <#60e84dff>{2} <$hpIcon> máu<>. Hiệu ứng này hiệu quả <#d94c49ff>{4}%<> lên lính và quái."
+$feralVi = "Tàn Phế: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>{3}<>. Đòn đánh thường gây <#a974ffff>{0} <#92dc7bff>(+{1} mỗi cộng dồn Hoang Dã)<> sát thương phép cộng thêm<> và hồi <#60e84dff>{2} <$hpRegenIcon> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả {4}%<> lên lính và quái."
 $i18n.vi.feral_flare.option = $feralVi -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.vi.radiant_feral_flare.option = $feralVi -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
 $fluxVi = "Tái Thiết: Nhận <#4b7cffff>{0}%<> <#ffdd8eff>(+{1}% mỗi 1 <$armorPenIcon> Xuyên Giáp Trắng)<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
@@ -856,7 +856,7 @@ $i18n.'zh-hans'.radiant_deaths_dance.option = "无视痛苦：受到伤害的 <#
 $i18n.'zh-hans'.rabadons_deathcap.option = "魔法乐章：你的总 <$apIcon> <#a974ffff>法术强度<>提升 <#a974ffff>${rabMult}%<>。"
 $i18n.'zh-hans'.radiant_rabadons_deathcap.option = "魔法乐章：你的总 <$apIcon> <#a974ffff>法术强度<>提升 <#a974ffff>${radRabMult}%<>。"
 
-$feralZh = "致残：每次参与击杀敌方英雄获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>{3}<> 层。普通攻击额外造成 <#a974ffff>{0} <#92dc7bff>（每层野性+{1}）<>点魔法伤害<>并回复 <#60e84dff>{2} 点<$hpIcon> 生命值<>。该效果对小兵和野怪的效果为 <#d94c49ff>{4}%<>。"
+$feralZh = "致残：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>{3}<> 层。普通攻击额外造成 <#a974ffff>{0} <#92dc7bff>（每层野性+{1}）<>点魔法伤害<>并回复 <#60e84dff>{2} 点<$hpRegenIcon> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 {4}%<>。"
 $i18n.'zh-hans'.feral_flare.option = $feralZh -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.'zh-hans'.radiant_feral_flare.option = $feralZh -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
 $fluxZh = "涌动：终极技能获得 <#4b7cffff>{0}%<> <#ffdd8eff>（每 1 点<$armorPenIcon> 穿甲 +{1}%）<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
@@ -1018,7 +1018,7 @@ $i18n.'pt-BR'.radiant_deaths_dance.option = "Ignorar a Dor: <#e8a800ff>${rddDela
 $i18n.'pt-BR'.rabadons_deathcap.option = "Apogeu: Aumenta o <$apIcon> <#a974ffff>Poder de Habilidade<> total em <#a974ffff>${rabMult}%<>."
 $i18n.'pt-BR'.radiant_rabadons_deathcap.option = "Apogeu: Aumenta o <$apIcon> <#a974ffff>Poder de Habilidade<> total em <#a974ffff>${radRabMult}%<>"
 
-$feralPt = "Mutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo, até <#92dc7bff>{3}<>. Ataques básicos causam <#a974ffff>{0} <#92dc7bff>(+{1} por acúmulo de Feral)<> de dano mágico bônus<> e restauram <#60e84dff>{2} de <$hpIcon> vida<>. Este efeito é <#d94c49ff>{4}%<> mais efetivo contra lacaios e monstros."
+$feralPt = "Mutilar: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>{3}<>. Ataques básicos causam <#a974ffff>{0} <#92dc7bff>(+{1} por acúmulo de Feral)<> de dano mágico bônus<> e restauram <#60e84dff>{2} de <$hpRegenIcon> vida<>. Este efeito é <#e8a800ff>{4}% efetivo<> contra lacaios e monstros."
 $i18n.'pt-BR'.feral_flare.option = $feralPt -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.'pt-BR'.radiant_feral_flare.option = $feralPt -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
 $fluxPt = "Fluxo: Recebe <#4b7cffff>{0}%<> <#ffdd8eff>(+{1}% por 1 de <$armorPenIcon> Letalidade)<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
@@ -1180,7 +1180,7 @@ $i18n.ru.radiant_deaths_dance.option = "Игнорирование Боли: <#e
 $i18n.ru.rabadons_deathcap.option = "Опус: Увеличивает вашу общую <$apIcon> <#a974ffff>Силу Умений<> на <#a974ffff>${rabMult}%<>."
 $i18n.ru.radiant_rabadons_deathcap.option = "Опус: Увеличивает вашу общую <$apIcon> <#a974ffff>Силу Умений<> на <#a974ffff>${radRabMult}%<>."
 
-$feralRu = "Увечье: При участии в убийстве вражеского чемпиона даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>{3}<>. Автоатаки наносят <#a974ffff>{0} <#92dc7bff>(+{1} за заряд Дикости)<> дополнительного магического урона<> и восстанавливают <#60e84dff>{2} <$hpIcon> здоровья<>. Против миньонов и монстров эффект составляет <#d94c49ff>{4}%<>."
+$feralRu = "Увечье: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>{3}<>. Автоатаки наносят <#a974ffff>{0} <#92dc7bff>(+{1} за заряд Дикости)<> дополнительного магического урона<> и восстанавливают <#60e84dff>{2} <$hpRegenIcon> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет {4}%<>."
 $i18n.ru.feral_flare.option = $feralRu -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.ru.radiant_feral_flare.option = $feralRu -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
 $fluxRu = "Непрерывность: Даёт <#4b7cffff>{0}%<> <#ffdd8eff>(+{1}% за 1 ед. <$armorPenIcon> летальности)<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
@@ -1342,7 +1342,7 @@ $i18n.ko.radiant_deaths_dance.option = "고통 무시: 받는 피해의 <#e8a800
 $i18n.ko.rabadons_deathcap.option = "대작: 총 <$apIcon> <#a974ffff>주문력<>이 <#a974ffff>${rabMult}%<> 증가합니다."
 $i18n.ko.radiant_rabadons_deathcap.option = "대작: 총 <$apIcon> <#a974ffff>주문력<>이 <#a974ffff>${radRabMult}%<> 증가합니다."
 
-$feralKo = "불구: 적 챔피언 처치에 관여할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>{3}<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>{0} <#92dc7bff>(야성 중첩당 +{1})<>의 추가 마법 피해<>를 입히고 <#60e84dff>{2}<$hpIcon> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#d94c49ff>{4}%<>로 적용됩니다."
+$feralKo = "불구: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>{3}<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>{0} <#92dc7bff>(야성 중첩당 +{1})<>의 추가 마법 피해<>를 입히고 <#60e84dff>{2}<$hpRegenIcon> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>{4}%로 적용됩니다<>."
 $i18n.ko.feral_flare.option = $feralKo -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.ko.radiant_feral_flare.option = $feralKo -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
 $fluxKo = "전이 표식: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>{0}%<> <#ffdd8eff>(<$armorPenIcon> 물리 관통력 1당 +{1}%)<> 증가합니다."
