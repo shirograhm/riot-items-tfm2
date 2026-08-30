@@ -33,6 +33,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
 4. Play as you would normally!
 
+[h1] Versioning [/h1]
 Currently updated for game version 0.5.7. Also supports previous versions using an older build of the mod. See below for reference:  
 Mod v0.9.3+ - v0.5.7
 Mod v0.9.2 - v0.5.6
@@ -41,6 +42,8 @@ Mod v0.8.0+ - v0.5.4
 Mod v0.7.0+ - v0.5.3
 Mod v0.5.7+ - v0.5.1 & v0.5.2
 Mod v0.5.6 - versions up to 0.5.0
+
+If you are playing the beta, check the Git repository for a manual release for branch 0.6.0-beta. https://github.com/shirograhm/riot-items-tfm2/releases
 
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box!  
