@@ -238,6 +238,25 @@ impl StableItem for DeadMansPlate {
         );
     }
 
+    /// Momentum carries across the Radiant upgrade. Only whole stacks move —
+    /// `stack_progress` is the sub-stack remainder and is worth nothing on its
+    /// own — and the old variant's momentum buff expires on its own refresh
+    /// cycle, since base and Radiant name theirs differently.
+    fn on_upgrade(&mut self, next_key: &str) -> u64 {
+        if self.meta.upgrades_to(next_key) {
+            self.momentum as u64
+        } else {
+            0
+        }
+    }
+
+    fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
+        if self.meta.upgrades_from(prev_key) {
+            self.momentum = (carry as usize).min(self.effect_max_stacks);
+            self.stack_progress = 0;
+        }
+    }
+
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![ItemTagV1::Hp, ItemTagV1::Defense, ItemTagV1::MoveSpeed]
     }

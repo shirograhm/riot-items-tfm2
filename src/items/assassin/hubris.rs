@@ -191,6 +191,22 @@ impl StableItem for Hubris {
         );
     }
 
+    /// Eminence is bought, not earned twice: the kills banked on the base item
+    /// keep scaling the bonus after the Radiant upgrade replaces it.
+    fn on_upgrade(&mut self, next_key: &str) -> u64 {
+        if self.meta.upgrades_to(next_key) {
+            self.eminence_stacks as u64
+        } else {
+            0
+        }
+    }
+
+    fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
+        if self.meta.upgrades_from(prev_key) {
+            self.eminence_stacks = carry as usize;
+        }
+    }
+
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![ItemTagV1::Ad, ItemTagV1::CooltimeReduce]
     }
