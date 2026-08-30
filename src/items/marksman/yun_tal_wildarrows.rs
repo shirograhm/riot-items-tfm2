@@ -204,6 +204,24 @@ impl StableItem for YunTalWildarrows {
         }
     }
 
+    /// Practice stacks are permanent, so they cross the Radiant upgrade. Only
+    /// the counter moves: the crit chance already granted this life is sitting
+    /// on the champion as `yun_tal_practice` buffs, and `on_spawn` re-applies it
+    /// from the carried count on the next respawn.
+    fn on_upgrade(&mut self, next_key: &str) -> u64 {
+        if self.meta.upgrades_to(next_key) {
+            self.accumulated_stacks as u64
+        } else {
+            0
+        }
+    }
+
+    fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
+        if self.meta.upgrades_from(prev_key) {
+            self.accumulated_stacks = (carry as usize).min(self.effect_max_stacks);
+        }
+    }
+
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed]
     }

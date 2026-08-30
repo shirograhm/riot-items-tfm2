@@ -190,6 +190,24 @@ impl StableItem for KrakenSlayer {
         }
     }
 
+    /// Bring It Down counts attacks toward the next proc, so the progress made
+    /// on the base item survives the Radiant upgrade rather than resetting the
+    /// swing count to zero.
+    fn on_upgrade(&mut self, next_key: &str) -> u64 {
+        if self.meta.upgrades_to(next_key) {
+            self.attack_count as u64
+        } else {
+            0
+        }
+    }
+
+    fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
+        if self.meta.upgrades_from(prev_key) {
+            self.attack_count =
+                (carry as usize).min(self.effect_attack_interval.saturating_sub(1));
+        }
+    }
+
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed, ItemTagV1::MoveSpeed]
     }

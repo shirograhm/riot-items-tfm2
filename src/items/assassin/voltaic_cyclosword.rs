@@ -195,6 +195,22 @@ impl StableItem for VoltaicCyclosword {
         }
     }
 
+    /// The Energized meter carries across the Radiant upgrade, so buying it
+    /// mid-fight does not throw away a nearly full bar.
+    fn on_upgrade(&mut self, next_key: &str) -> u64 {
+        if self.meta.upgrades_to(next_key) {
+            self.energized_stacks as u64
+        } else {
+            0
+        }
+    }
+
+    fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
+        if self.meta.upgrades_from(prev_key) {
+            self.energized_stacks = (carry as usize).min(self.effect_max_stacks);
+        }
+    }
+
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![
             ItemTagV1::Ad,

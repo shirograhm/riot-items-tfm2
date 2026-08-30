@@ -197,6 +197,22 @@ impl StableItem for FeralFlare {
         self.add_stack();
     }
 
+    /// Feral stacks survive the Radiant upgrade, clamped to the successor's own
+    /// ceiling in case the config gives the two variants different caps.
+    fn on_upgrade(&mut self, next_key: &str) -> u64 {
+        if self.meta.upgrades_to(next_key) {
+            self.feral_stacks as u64
+        } else {
+            0
+        }
+    }
+
+    fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
+        if self.meta.upgrades_from(prev_key) {
+            self.feral_stacks = (carry as usize).min(self.effect_max_stacks);
+        }
+    }
+
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![ItemTagV1::Ad, ItemTagV1::AttackSpeed, ItemTagV1::Defense]
     }
