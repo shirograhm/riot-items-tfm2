@@ -757,11 +757,11 @@
         },
         "ardent_censer": {
             "name": "Ardent Censer",
-            "option": "\nSanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#a974ffff>bonus magic damage<> on-hit equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
+            "option": "\nSanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ff9028ff>bonus physical damage<> on-hit equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
         },
         "radiant_ardent_censer": {
             "name": "Radiant Ardent Censer",
-            "option": "\nSanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#a974ffff>bonus magic damage<> on-hit equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
+            "option": "\nSanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ff9028ff>bonus physical damage<> on-hit equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
         }
     },
     "vi": {
@@ -1522,11 +1522,11 @@
         },
         "ardent_censer": {
             "name": "Lư Hương Sôi Sục",
-            "option": "\nCầu Nguyện: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#a974ffff>sát thương phép<> khi đánh trúng bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
+            "option": "\nCầu Nguyện: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#ff9028ff>sát thương vật lí<> khi đánh trúng bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
         },
         "radiant_ardent_censer": {
             "name": "Lư Hương Sôi Sục Ánh Sáng",
-            "option": "\nCầu Nguyện: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#a974ffff>sát thương phép<> khi đánh trúng bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
+            "option": "\nCầu Nguyện: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#ff9028ff>sát thương vật lí<> khi đánh trúng bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
         }
     },
     "zh-hans": {
@@ -2287,11 +2287,11 @@
         },
         "ardent_censer": {
             "name": "炽热香炉",
-            "option": "\n圣洁化：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 2%<>的<#a974ffff>额外魔法伤害<>，持续 <#e8a800ff>6秒<>。"
+            "option": "\n圣洁化：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 2%<>的<#ff9028ff>额外物理伤害<>，持续 <#e8a800ff>6秒<>。"
         },
         "radiant_ardent_censer": {
             "name": "光明版炽热香炉",
-            "option": "\n圣洁化：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 2%<>的<#a974ffff>额外魔法伤害<>，持续 <#e8a800ff>6秒<>。"
+            "option": "\n圣洁化：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 2%<>的<#ff9028ff>额外物理伤害<>，持续 <#e8a800ff>6秒<>。"
         }
     },
     "pt-BR": {
@@ -3052,11 +3052,11 @@
         },
         "ardent_censer": {
             "name": "Turíbulo Ardente",
-            "option": "\nSantificar: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#a974ffff>dano mágico bônus<> no acerto equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
+            "option": "\nSantificar: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ff9028ff>dano físico bônus<> no acerto equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
         },
         "radiant_ardent_censer": {
             "name": "Turíbulo Ardente Radiante",
-            "option": "\nSantificar: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#a974ffff>dano mágico bônus<> no acerto equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
+            "option": "\nSantificar: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ff9028ff>dano físico bônus<> no acerto equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
         }
     },
     "ru": {
@@ -3817,11 +3817,11 @@
         },
         "ardent_censer": {
             "name": "Пылающая кадильница",
-            "option": "\nОсвящение: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#a974ffff>дополнительный магический урон<> при попадании в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
+            "option": "\nОсвящение: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ff9028ff>дополнительный физический урон<> при попадании в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
         },
         "radiant_ardent_censer": {
             "name": "Лучезарная Пылающая кадильница",
-            "option": "\nОсвящение: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#a974ffff>дополнительный магический урон<> при попадании в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
+            "option": "\nОсвящение: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ff9028ff>дополнительный физический урон<> при попадании в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
         }
     },
     "ko": {
@@ -4582,11 +4582,11 @@
         },
         "ardent_censer": {
             "name": "불타는 향로",
-            "option": "\n축성: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#a974ffff>추가 마법 피해<>를 입힙니다."
+            "option": "\n축성: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "radiant_ardent_censer": {
             "name": "찬란한 불타는 향로",
-            "option": "\n축성: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#a974ffff>추가 마법 피해<>를 입힙니다."
+            "option": "\n축성: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         }
     }
 }
