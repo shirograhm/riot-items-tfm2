@@ -11,6 +11,8 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 
 <img width="1748" height="1133" alt="image" src="https://github.com/user-attachments/assets/b19e829d-15d2-4010-aa7d-1839138eb8e5" />
 
+<img width="2024" height="1037" alt="image" src="https://github.com/user-attachments/assets/751df47e-8ed1-43a1-ac9c-168e42f15962" />
+
 ### Added Items
 
 #### Tier 1
