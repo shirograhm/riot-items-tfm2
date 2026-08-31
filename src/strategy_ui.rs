@@ -141,7 +141,7 @@ use std::sync::{Arc, Mutex, OnceLock};
 
 use mod_api_stable::*;
 
-use crate::build_config::{self, picker_slots, ChampionRow};
+use crate::build_config::{self, picker_slots, ChampionRow, Role};
 use crate::item_catalog;
 use crate::tactics;
 
@@ -177,6 +177,7 @@ struct Strings {
     filter: String,
     hint: String,
     col_champion: String,
+    col_role: String,
     /// One complete label per column — LabelRunner cannot compose `"ITEM " + n`.
     col_items: [String; 4],
     /// The two cells of each footer toggle. Both are on screen at once, so these
@@ -198,6 +199,7 @@ impl Default for Strings {
             filter: "filter by champion...".into(),
             hint: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.".into(),
             col_champion: "CHAMPION".into(),
+            col_role: "ROLE".into(),
             col_items: ["ITEM 1".into(), "ITEM 2".into(), "ITEM 3".into(), "ITEM 4".into()],
             unique_on: "Unique Items Enforced".into(),
             unique_off: "Duplicates Allowed".into(),
@@ -252,6 +254,7 @@ fn load_strings(ctx: &StableClient<'_>) {
         add: reference("add_champion", &fallback.add),
         hint: reference("hint", &fallback.hint),
         col_champion: reference("col_champion", &fallback.col_champion),
+        col_role: reference("col_role", &fallback.col_role),
         col_items: std::array::from_fn(|i| {
             reference(&format!("col_item{}", i + 1), &fallback.col_items[i])
         }),
@@ -294,6 +297,7 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
         &format!("{COLHEADER_PATH}.c_champion"),
         &strings.col_champion,
     );
+    ctx.ui_set_text(&format!("{COLHEADER_PATH}.c_role"), &strings.col_role);
     // The tab and the footer toggle cells carry `text` as a direct property, not
     // a nested block — see `#builds` in `strategy.ui` — so they take the plain
     // form. The cells are labelled once here rather than on every repaint: in a
@@ -422,12 +426,16 @@ const COMBO_H: u32 = 40;
 const MINI_Y: u32 = 14;
 const CHAMP_X: u32 = 8;
 const CHAMP_W: u32 = 280;
+/// The Role column, between the champion button and the item band. Narrow: it
+/// holds one of six short words, and every px here comes off the item columns.
+const ROLE_X: u32 = 296;
+const ROLE_W: u32 = 128;
 const DELETE_X: u32 = 1250;
 
 /// The band the item columns share, between the champion button and the delete
 /// button, and the gap left between two columns for a swap button (34px wide,
 /// plus a few px of air on each side).
-const COLUMNS_LEFT: u32 = 306;
+const COLUMNS_LEFT: u32 = 432;
 const COLUMNS_RIGHT: u32 = 1234;
 const COLUMN_GAP: u32 = 44;
 
@@ -438,8 +446,9 @@ fn combo_w() -> u32 {
     (COLUMNS_RIGHT - COLUMNS_LEFT - (slots - 1) * COLUMN_GAP) / slots
 }
 
-/// Left edge of an item column. Three slots reproduce the original 306/630/954
-/// exactly, so nothing moves unless the fourth slot is actually in play.
+/// Left edge of an item column. The band starts after the Role column, so the
+/// authored 306/630/954 no longer apply — `sync_column_headers` re-places the
+/// headers from here, which is what keeps the two in step.
 fn combo_x(slot: usize) -> u32 {
     COLUMNS_LEFT + slot as u32 * (combo_w() + COLUMN_GAP)
 }
@@ -456,6 +465,7 @@ fn swap_x(slot: usize) -> u32 {
 const LIST_W: i32 = 320;
 const LIST_H: i32 = 430;
 const CHAMP_LIST_W: i32 = 260;
+const ROLE_LIST_W: i32 = 160;
 
 /// Canvas the layouts are authored against; the clamps that keep a list on
 /// screen measure against this.
@@ -506,6 +516,7 @@ struct ChampionChoice {
 enum OpenList {
     Item { row: usize, slot: usize },
     Champion { row: usize },
+    Role { row: usize },
 }
 
 #[derive(Default)]
@@ -697,6 +708,7 @@ pub(crate) fn is_mod_final_item(key: &str) -> bool {
 const LISTCATCH_PATH: &str = "main.contents.build_editor.listcatch";
 const ITEMLIST_PATH: &str = "main.contents.build_editor.itemlist";
 const CHAMPLIST_PATH: &str = "main.contents.build_editor.champlist";
+const ROLELIST_PATH: &str = "main.contents.build_editor.rolelist";
 /// In the footer beside Save. These paths are matched by exact string, so a
 /// button moved between the two bars in `build_editor.ui` must be moved here
 /// too — a stale path registers nothing and the control goes quietly dead.
@@ -742,6 +754,7 @@ const ROWS_PATH: &str = "main.contents.build_editor.popup.rowscroll.rows";
 const ROWSCROLL_PATH: &str = "main.contents.build_editor.popup.rowscroll";
 const ITEMLIST_SCROLL: &str = "main.contents.build_editor.itemlist.list";
 const CHAMPLIST_SCROLL: &str = "main.contents.build_editor.champlist.list";
+const ROLELIST_SCROLL: &str = "main.contents.build_editor.rolelist.list";
 /// Resting `speed` of all three, restored to whichever one is live. Must match
 /// the value the three views are authored with in `build_editor.ui`.
 const SCROLL_SPEED: i32 = 100;
@@ -752,6 +765,10 @@ fn editor_row_path(row: usize) -> String {
 
 fn champ_path(row: usize) -> String {
     format!("{}.champ", editor_row_path(row))
+}
+
+fn role_path(row: usize) -> String {
+    format!("{}.role", editor_row_path(row))
 }
 
 fn combo_path(row: usize, slot: usize) -> String {
@@ -784,6 +801,14 @@ fn champ_contents_path() -> String {
 
 fn champ_entry_path(index: usize) -> String {
     format!("{}.c{index}", champ_contents_path())
+}
+
+fn role_contents_path() -> String {
+    format!("{EDITOR_PATH}.rolelist.list.contents")
+}
+
+fn role_entry_path(index: usize) -> String {
+    format!("{}.r{index}", role_contents_path())
 }
 
 /// Strips characters that would end a `.ui` string literal or be read as markup.
@@ -1308,10 +1333,32 @@ fn refresh_champ(
     );
 }
 
+/// Paints a row's Role button with the role it currently carries.
+///
+/// `Any` is dimmed the way an unassigned champion is: it is the default rather
+/// than a choice the player made, and the column should read as empty until it
+/// is set.
+fn refresh_role(ctx: &mut StableClient<'_>, rows: &[ChampionRow], row: usize) {
+    let role = rows.get(row).map(|entry| entry.role).unwrap_or_default();
+    let color = if role == Role::Any {
+        "#a5a5abff"
+    } else {
+        "#e8e8e8ff"
+    };
+    ctx.ui_set_properties(
+        &role_path(row),
+        &format!(
+            "text: {{ text: \"{PLAIN_PAD}{}\"; color: {color}; }}",
+            role.label()
+        ),
+    );
+}
+
 /// Repaints one row: its champion button and its three slot buttons.
 fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
     let rows = snapshot_rows();
     refresh_champ(ctx, &snapshot_champions(), &rows, row);
+    refresh_role(ctx, &rows, row);
     for slot in 0..picker_slots() {
         refresh_combo(ctx, entries, &rows, row, slot);
     }
@@ -1421,6 +1468,35 @@ fn row_source(row: usize) -> String {
          \n\
          text: {{\n\
          text: \"{no_champion}\";\n\
+         align_x: Left;\n\
+         align_y: Center;\n\
+         size: 14;\n\
+         color: #a5a5abff;\n\
+         }}\n\
+         \n\
+         #arrow:image {{\n\
+         ignore_event: true;\n\
+         anchor_x: 1;\n\
+         pivot_x: 1;\n\
+         x: -12px;\n\
+         anchor_y: 0.5;\n\
+         pivot_y: 0.5;\n\
+         width: 12px;\n\
+         height: 12px;\n\
+         source: \"asset/base/ui/icons/dropdown\";\n\
+         color: #a5a5abff;\n\
+         }}\n\
+         }}\n\
+         \n\
+         #role:color_icon_button {{\n\
+         @\"asset/base/style/main#tertiary_button\";\n\
+         x: {ROLE_X}px;\n\
+         y: {COMBO_Y}px;\n\
+         width: {ROLE_W}px;\n\
+         height: {COMBO_H}px;\n\
+         \n\
+         text: {{\n\
+         text: \"{PLAIN_PAD}Any\";\n\
          align_x: Left;\n\
          align_y: Center;\n\
          size: 14;\n\
@@ -1684,6 +1760,21 @@ fn champ_entry_source(index: usize, choice: &ChampionChoice) -> String {
     )
 }
 
+/// `.ui` source for one entry of the role list. Label only, like the champion
+/// list: a role is a word, and there is no art for one.
+fn role_entry_source(index: usize, role: Role) -> String {
+    format!(
+        "r{index}:color_selectable {{\n\
+         @\"asset/base/style/main#strategy_option\";\n\
+         width: 144px;\n\
+         height: {ENTRY_ITEM_H}px;\n\
+         label: {{ size: 14; align_x: Left; color: {LIST_ROW_TEXT}; }}\n\
+         text: \"{PLAIN_PAD}{}\";\n\
+         }}",
+        role.label()
+    )
+}
+
 /// Removes the spawned row nodes and spawns one per row passing the filter,
 /// registering every control. Called when the window is built, after any add or
 /// delete, and whenever the filter text changes.
@@ -1704,6 +1795,7 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
         }
         spawned.push(row);
         register_once(ctx, &champ_path(row));
+        register_once(ctx, &role_path(row));
         register_once(ctx, &delete_path(row));
         for slot in 0..picker_slots() {
             register_once(ctx, &combo_path(row, slot));
@@ -1908,6 +2000,20 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     ctx.ui_set_properties(
         &champ_contents,
         &format!("height: {}px;", champions.len() as i32 * ENTRY_ITEM_H),
+    );
+
+    // The six roles are fixed, so unlike the champion list this one is spawned
+    // complete and never rebuilt.
+    let role_contents = role_contents_path();
+    for (index, role) in Role::ALL.iter().enumerate() {
+        if !ctx.ui_spawn_source(&role_contents, &role_entry_source(index, *role)) {
+            break;
+        }
+        register_once(ctx, &role_entry_path(index));
+    }
+    ctx.ui_set_properties(
+        &role_contents,
+        &format!("height: {}px;", Role::ALL.len() as i32 * ENTRY_ITEM_H),
     );
 
     // Read from disk here rather than at every open, so a file edited by hand
@@ -2181,11 +2287,33 @@ fn open_champ_list(ctx: &mut StableClient<'_>, champions: &[ChampionChoice], row
     let _ = with_state(|state| state.open_list = Some(OpenList::Champion { row }));
 }
 
-/// Hides whichever floating list is showing. Both are hidden unconditionally:
+/// Opens the role list under a row's Role button.
+fn open_role_list(ctx: &mut StableClient<'_>, row: usize) {
+    place_list(ctx, ROLELIST_PATH, &role_path(row), ROLE_LIST_W);
+
+    let current = snapshot_rows()
+        .get(row)
+        .map(|entry| entry.role)
+        .unwrap_or_default();
+    for (index, role) in Role::ALL.iter().enumerate() {
+        ctx.ui_set_properties(
+            &role_entry_path(index),
+            &list_entry_style(*role == current, LIST_ROW_TEXT),
+        );
+    }
+
+    ctx.ui_set_visible(LISTCATCH_PATH, true);
+    ctx.ui_set_visible(ROLELIST_PATH, true);
+    focus_scroll(ctx, ROLELIST_SCROLL);
+    let _ = with_state(|state| state.open_list = Some(OpenList::Role { row }));
+}
+
+/// Hides whichever floating list is showing. All are hidden unconditionally:
 /// it costs one call and cannot leave a stale panel behind.
 fn close_list(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(ITEMLIST_PATH, false);
     ctx.ui_set_visible(CHAMPLIST_PATH, false);
+    ctx.ui_set_visible(ROLELIST_PATH, false);
     ctx.ui_set_visible(LISTCATCH_PATH, false);
     focus_scroll(ctx, ROWSCROLL_PATH);
     let _ = with_state(|state| state.open_list = None);
@@ -2303,13 +2431,19 @@ fn sync_info_popup(ctx: &mut StableClient<'_>) {
     let active = match with_state(|state| state.open_list).flatten() {
         Some(OpenList::Item { .. }) => ITEMLIST_SCROLL,
         Some(OpenList::Champion { .. }) => CHAMPLIST_SCROLL,
+        Some(OpenList::Role { .. }) => ROLELIST_SCROLL,
         None => ROWSCROLL_PATH,
     };
     focus_scroll(ctx, active);
 }
 
 fn focus_scroll(ctx: &mut StableClient<'_>, active: &str) {
-    for path in [ROWSCROLL_PATH, ITEMLIST_SCROLL, CHAMPLIST_SCROLL] {
+    for path in [
+        ROWSCROLL_PATH,
+        ITEMLIST_SCROLL,
+        CHAMPLIST_SCROLL,
+        ROLELIST_SCROLL,
+    ] {
         let (ignore, speed) = if path == active {
             ("false", SCROLL_SPEED)
         } else {
@@ -2439,6 +2573,13 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
+    if path.starts_with(&role_contents_path()) {
+        if let Some(index) = index_after(&path, ".r") {
+            pick_role(ctx, &entries, index);
+        }
+        return;
+    }
+
     let Some(row) = row_from_path(&path) else {
         return;
     };
@@ -2471,6 +2612,15 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             clear_saved(ctx);
             close_list(ctx);
             refresh_row(ctx, &entries, row);
+        }
+        return;
+    }
+
+    if path.ends_with(".role") {
+        if with_state(|state| state.open_list).flatten() == Some(OpenList::Role { row }) {
+            close_list(ctx);
+        } else {
+            open_role_list(ctx, row);
         }
         return;
     }
@@ -2515,6 +2665,25 @@ fn pick_item(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
         _ => return,
     };
     edit_row(row, |entry| entry.slots[slot] = picked.clone());
+    clear_saved(ctx);
+
+    close_list(ctx);
+    refresh_row(ctx, entries, row);
+}
+
+/// Commits a clicked role, assigning it to the open row.
+///
+/// Unlike the champion and item lists there is no click-again-to-clear: `Any` is
+/// itself an entry, so clearing is picking it.
+fn pick_role(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
+    let Some(Some(OpenList::Role { row })) = with_state(|state| state.open_list) else {
+        return;
+    };
+    let Some(role) = Role::ALL.get(index).copied() else {
+        return;
+    };
+
+    edit_row(row, |entry| entry.role = role);
     clear_saved(ctx);
 
     close_list(ctx);
