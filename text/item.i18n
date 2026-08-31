@@ -573,11 +573,11 @@
         },
         "rite_of_ruin": {
             "name": "Rite of Ruin",
-            "option": "\nWrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#d8c9b3ff>35<> - <#d8c9b3ff>145<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
+            "option": "\nWrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#d8c9b3ff>35<> - <#d8c9b3ff>90<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
         },
         "radiant_rite_of_ruin": {
             "name": "Radiant Rite of Ruin",
-            "option": "\nWrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#d8c9b3ff>65<> - <#d8c9b3ff>230<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
+            "option": "\nWrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#d8c9b3ff>65<> - <#d8c9b3ff>175<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
         },
         "glowing_mote": {
             "name": "Glowing Mote",
