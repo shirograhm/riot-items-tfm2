@@ -25,6 +25,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("feral_flare", "Fighter"),
     ("frozen_heart", "Tank"),
     ("frozen_mallet", "Fighter"),
+    ("grezs_spectral_lantern", "Mage"),
     ("guinsoos_rageblade", "Marksman"),
     ("heartsteel", "Tank"),
     ("hextech_gunblade", "Mage"),

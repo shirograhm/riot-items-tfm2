@@ -1061,6 +1061,18 @@
             "y": 0.4,
             "w": 0.05,
             "h": 0.05
+        },
+        "grezs_spectral_lantern": {
+            "x": 0.85,
+            "y": 0.4,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_grezs_spectral_lantern": {
+            "x": 0.9,
+            "y": 0.4,
+            "w": 0.05,
+            "h": 0.05
         }
     }
 }

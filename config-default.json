@@ -1015,7 +1015,7 @@
     "effect_duration_seconds": 5.0,
     "effect_shield_seconds": 3.0,
     "effect_min_shield": 35,
-    "effect_max_shield": 145
+    "effect_max_shield": 90
   },
   "radiant_rite_of_ruin": {
     "price": 2000,
@@ -1027,7 +1027,7 @@
     "effect_duration_seconds": 5.0,
     "effect_shield_seconds": 3.0,
     "effect_min_shield": 65,
-    "effect_max_shield": 230
+    "effect_max_shield": 175
   },
   "glowing_mote": {
     "price": 500,
@@ -1207,5 +1207,25 @@
     "effect_attack_speed_mult": 20,
     "effect_enemy_max_hp_damage": 2,
     "effect_duration_seconds": 6
+  },
+  "grezs_spectral_lantern": {
+    "price": 1400,
+    "hp": 250,
+    "magic_power": 60,
+    "skill_cooldown_mult": 10,
+    "effect_stack_magic_power": 2,
+    "effect_max_stacks": 20,
+    "effect_percent_bonus_damage": 20.0,
+    "effect_bonus_hp_percent_of_damage": 4.0
+  },
+  "radiant_grezs_spectral_lantern": {
+    "price": 2000,
+    "hp": 350,
+    "magic_power": 120,
+    "skill_cooldown_mult": 10,
+    "effect_stack_magic_power": 2,
+    "effect_max_stacks": 30,
+    "effect_percent_bonus_damage": 30.0,
+    "effect_bonus_hp_percent_of_damage": 6.0
   }
 }
