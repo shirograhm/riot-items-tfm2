@@ -33,11 +33,11 @@ impl Hamstringer {
             attack: 45,
             attack_speed_mult: 25,
             crit_chance: 20,
-            effect_min_bonus_damage: 70,
-            effect_max_bonus_damage: 180,
+            effect_min_bonus_damage: 55,
+            effect_max_bonus_damage: 110,
             effect_crit_percent_damage: 100.0,
             effect_slow_amount: 7,
-            effect_duration_seconds: 3.0,
+            effect_duration_seconds: 2.0,
             // Non-vital stats (internals)
             bleeds: Vec::new(),
         }
@@ -50,11 +50,11 @@ impl Hamstringer {
             attack: 75,
             attack_speed_mult: 45,
             crit_chance: 25,
-            effect_min_bonus_damage: 125,
-            effect_max_bonus_damage: 290,
+            effect_min_bonus_damage: 70,
+            effect_max_bonus_damage: 180,
             effect_crit_percent_damage: 100.0,
             effect_slow_amount: 7,
-            effect_duration_seconds: 3.0,
+            effect_duration_seconds: 2.0,
             ..Self::base()
         }
     }

@@ -781,11 +781,11 @@
         },
         "hamstringer": {
             "name": "Hamstringer",
-            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#ff9028ff>70<> - <#ff9028ff>180<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>3 seconds<> and applying a <#d94c49ff>7% slow<>."
+            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#ff9028ff>55<> - <#ff9028ff>110<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>2 seconds<> and applying a <#d94c49ff>7% slow<>."
         },
         "radiant_hamstringer": {
             "name": "Radiant Hamstringer",
-            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#ff9028ff>125<> - <#ff9028ff>290<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>3 seconds<> and applying a <#d94c49ff>7% slow<>."
+            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#ff9028ff>70<> - <#ff9028ff>180<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>2 seconds<> and applying a <#d94c49ff>7% slow<>."
         }
     },
     "vi": {
@@ -1570,11 +1570,11 @@
         },
         "hamstringer": {
             "name": "Gươm Tê Liệt",
-            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#ff9028ff>70<> - <#ff9028ff>180<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>3 giây<> và gây <#d94c49ff>7% kiệt sức<>."
+            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#ff9028ff>55<> - <#ff9028ff>110<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>2 giây<> và gây <#d94c49ff>7% kiệt sức<>."
         },
         "radiant_hamstringer": {
             "name": "Gươm Tê Liệt Ánh Sáng",
-            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#ff9028ff>125<> - <#ff9028ff>290<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>3 giây<> và gây <#d94c49ff>7% kiệt sức<>."
+            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#ff9028ff>70<> - <#ff9028ff>180<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>2 giây<> và gây <#d94c49ff>7% kiệt sức<>."
         }
     },
     "zh-hans": {
@@ -2359,11 +2359,11 @@
         },
         "hamstringer": {
             "name": "断筋者",
-            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>3秒<>内造成 <#ff9028ff>70<> - <#ff9028ff>180<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
+            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>2秒<>内造成 <#ff9028ff>55<> - <#ff9028ff>110<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
         },
         "radiant_hamstringer": {
             "name": "光明版断筋者",
-            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>3秒<>内造成 <#ff9028ff>125<> - <#ff9028ff>290<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
+            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>2秒<>内造成 <#ff9028ff>70<> - <#ff9028ff>180<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
         }
     },
     "pt-BR": {
@@ -3148,11 +3148,11 @@
         },
         "hamstringer": {
             "name": "Debilitador",
-            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#ff9028ff>70<> - <#ff9028ff>180<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>3 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
+            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#ff9028ff>55<> - <#ff9028ff>110<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>2 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
         },
         "radiant_hamstringer": {
             "name": "Debilitador Radiante",
-            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#ff9028ff>125<> - <#ff9028ff>290<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>3 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
+            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#ff9028ff>70<> - <#ff9028ff>180<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>2 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
         }
     },
     "ru": {
@@ -3937,11 +3937,11 @@
         },
         "hamstringer": {
             "name": "Выжигатель",
-            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#ff9028ff>70<> - <#ff9028ff>180<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>3 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
+            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#ff9028ff>55<> - <#ff9028ff>110<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>2 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
         },
         "radiant_hamstringer": {
             "name": "Лучезарный Выжигатель",
-            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#ff9028ff>125<> - <#ff9028ff>290<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>3 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
+            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#ff9028ff>70<> - <#ff9028ff>180<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>2 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
         }
     },
     "ko": {
@@ -4726,11 +4726,11 @@
         },
         "hamstringer": {
             "name": "불귀신",
-            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>3초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>70<>~<#ff9028ff>180<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
+            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>2초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>55<>~<#ff9028ff>110<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
         },
         "radiant_hamstringer": {
             "name": "찬란한 불귀신",
-            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>3초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>125<>~<#ff9028ff>290<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
+            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>2초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>70<>~<#ff9028ff>180<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
         }
     }
 }
