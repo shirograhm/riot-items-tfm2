@@ -762,6 +762,14 @@
         "radiant_ardent_censer": {
             "name": "Radiant Ardent Censer",
             "option": "\nSanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ff9028ff>bonus physical damage<> on-hit equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
+        },
+        "grezs_spectral_lantern": {
+            "name": "Grez's Spectral Lantern",
+            "option": "\nSpirit Drain: Gain <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for each champion takedown and monster killed, up to <#a974ffff>40<>.\n\nButcher: Against monsters, deal <#a974ffff>20% bonus magic damage<> and restore <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>health<> equal to <#d94c49ff>4% of your damage dealt<>."
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Radiant Grez's Spectral Lantern",
+            "option": "\nSpirit Drain: Gain <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for each champion takedown and monster killed, up to <#a974ffff>60<>.\n\nButcher: Against monsters, deal <#a974ffff>30% bonus magic damage<> and restore <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>health<> equal to <#d94c49ff>6% of your damage dealt<>."
         }
     },
     "vi": {
@@ -1527,6 +1535,14 @@
         "radiant_ardent_censer": {
             "name": "Lư Hương Sôi Sục Ánh Sáng",
             "option": "\nCầu Nguyện: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#ff9028ff>sát thương vật lí<> khi đánh trúng bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
+        },
+        "grezs_spectral_lantern": {
+            "name": "Lồng Đèn Ma Grez",
+            "option": "\nHút Linh Hồn: Nhận <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Sức Mạnh Phép Thuật<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#a974ffff>40<>.\n\nĐồ Tể: Với quái, gây thêm <#a974ffff>20% sát thương phép<> và hồi <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>máu<> bằng <#d94c49ff>4% sát thương bạn gây ra<>."
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Lồng Đèn Ma Grez Ánh Sáng",
+            "option": "\nHút Linh Hồn: Nhận <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Sức Mạnh Phép Thuật<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#a974ffff>60<>.\n\nĐồ Tể: Với quái, gây thêm <#a974ffff>30% sát thương phép<> và hồi <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>máu<> bằng <#d94c49ff>6% sát thương bạn gây ra<>."
         }
     },
     "zh-hans": {
@@ -2292,6 +2308,14 @@
         "radiant_ardent_censer": {
             "name": "光明版炽热香炉",
             "option": "\n圣洁化：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 2%<>的<#ff9028ff>额外物理伤害<>，持续 <#e8a800ff>6秒<>。"
+        },
+        "grezs_spectral_lantern": {
+            "name": "格雷兹之幽魂灯",
+            "option": "\n汲魂：每次参与击杀敌方英雄或击杀野怪获得 <#a974ffff>2<> 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，最多 <#a974ffff>40<> 点。\n\n屠夫：对野怪额外造成 <#a974ffff>20% 的魔法伤害<>，并回复相当于<#d94c49ff>已造成伤害 4%<>的 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>生命值<>。"
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "光明版格雷兹之幽魂灯",
+            "option": "\n汲魂：每次参与击杀敌方英雄或击杀野怪获得 <#a974ffff>2<> 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，最多 <#a974ffff>60<> 点。\n\n屠夫：对野怪额外造成 <#a974ffff>30% 的魔法伤害<>，并回复相当于<#d94c49ff>已造成伤害 6%<>的 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>生命值<>。"
         }
     },
     "pt-BR": {
@@ -3057,6 +3081,14 @@
         "radiant_ardent_censer": {
             "name": "Turíbulo Ardente Radiante",
             "option": "\nSantificar: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ff9028ff>dano físico bônus<> no acerto equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
+        },
+        "grezs_spectral_lantern": {
+            "name": "Lanterna Espectral de Grez",
+            "option": "\nDreno Espiritual: Ganha <#a974ffff>2<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#a974ffff>40<>.\n\nAçougueiro: Contra monstros, causa <#a974ffff>20% de dano mágico bônus<> e restaura <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>vida<> equivalente a <#d94c49ff>4% do dano causado<>."
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Lanterna Espectral de Grez Radiante",
+            "option": "\nDreno Espiritual: Ganha <#a974ffff>2<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#a974ffff>60<>.\n\nAçougueiro: Contra monstros, causa <#a974ffff>30% de dano mágico bônus<> e restaura <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>vida<> equivalente a <#d94c49ff>6% do dano causado<>."
         }
     },
     "ru": {
@@ -3822,6 +3854,14 @@
         "radiant_ardent_censer": {
             "name": "Лучезарная Пылающая кадильница",
             "option": "\nОсвящение: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ff9028ff>дополнительный физический урон<> при попадании в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
+        },
+        "grezs_spectral_lantern": {
+            "name": "Призрачный фонарь Греза",
+            "option": "\nПохищение душ: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<>, до <#a974ffff>40<>.\n\nМясник: Против монстров наносит <#a974ffff>20% дополнительного магического урона<> и восстанавливает <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>здоровье<> в размере <#d94c49ff>4% нанесённого урона<>."
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Лучезарный Призрачный фонарь Греза",
+            "option": "\nПохищение душ: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<>, до <#a974ffff>60<>.\n\nМясник: Против монстров наносит <#a974ffff>30% дополнительного магического урона<> и восстанавливает <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>здоровье<> в размере <#d94c49ff>6% нанесённого урона<>."
         }
     },
     "ko": {
@@ -4587,6 +4627,14 @@
         "radiant_ardent_censer": {
             "name": "찬란한 불타는 향로",
             "option": "\n축성: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+        },
+        "grezs_spectral_lantern": {
+            "name": "그레즈의 유령 랜턴",
+            "option": "\n영혼 흡수: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>2<> 얻으며, 최대 <#a974ffff>40<>까지 쌓입니다.\n\n도살자: 몬스터에게 <#a974ffff>20%의 추가 마법 피해<>를 입히고 <#d94c49ff>입힌 피해량의 4%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "찬란한 그레즈의 유령 랜턴",
+            "option": "\n영혼 흡수: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>2<> 얻으며, 최대 <#a974ffff>60<>까지 쌓입니다.\n\n도살자: 몬스터에게 <#a974ffff>30%의 추가 마법 피해<>를 입히고 <#d94c49ff>입힌 피해량의 6%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
         }
     }
 }

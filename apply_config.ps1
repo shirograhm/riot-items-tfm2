@@ -427,6 +427,16 @@ $rsgShDur = [int]$config.radiant_steraks_gage.effect_shield_seconds
 $rsgCd = [int]$config.radiant_steraks_gage.effect_cooldown_seconds
 $rndHeal = [double]$config.randuins_omen.effect_crit_damage_percent_heal
 $rrndHeal = [double]$config.radiant_randuins_omen.effect_crit_damage_percent_heal
+$gslAp = [int]$config.grezs_spectral_lantern.effect_stack_magic_power
+$gslStacks = [int]$config.grezs_spectral_lantern.effect_max_stacks
+$gslMaxAp = $gslAp * $gslStacks
+$gslBonus = [double]$config.grezs_spectral_lantern.effect_percent_bonus_damage
+$gslHeal = [double]$config.grezs_spectral_lantern.effect_bonus_hp_percent_of_damage
+$rgslAp = [int]$config.radiant_grezs_spectral_lantern.effect_stack_magic_power
+$rgslStacks = [int]$config.radiant_grezs_spectral_lantern.effect_max_stacks
+$rgslMaxAp = $rgslAp * $rgslStacks
+$rgslBonus = [double]$config.radiant_grezs_spectral_lantern.effect_percent_bonus_damage
+$rgslHeal = [double]$config.radiant_grezs_spectral_lantern.effect_bonus_hp_percent_of_damage
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -641,6 +651,9 @@ $i18n.en.radiant_collector.option = "$lethEn`n`nDeath: Dealing damage to enemy c
 $vcEn = "$lethEn`n`nEnergized: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>{1}<>.`n`nFirmament: When fully <#92dc7bff>Energized<>, your next instance of <#ff9028ff>physical damage<> grants you <#ffdd8eff>{2} <$armorPenIcon> Lethality<> for <#e8a800ff>{3} seconds<> and deals <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>{4}% of the target's current health<>. Deals a maximum of <#ff9028ff>{5} physical damage<> against minions and monsters."
 $i18n.en.voltaic_cyclosword.option = $vcEn -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.en.radiant_voltaic_cyclosword.option = $vcEn -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
+$gslEn = "Spirit Drain: Gain <#a974ffff>{0}<> <$apIcon> <#a974ffff>Ability Power<> for each champion takedown and monster killed, up to <#a974ffff>{1}<>.`n`nButcher: Against monsters, deal <#a974ffff>{2}% bonus magic damage<> and restore <$hpRegenIcon> <#60e84dff>health<> equal to <#d94c49ff>{3}% of your damage dealt<>."
+$i18n.en.grezs_spectral_lantern.option = $gslEn -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
+$i18n.en.radiant_grezs_spectral_lantern.option = $gslEn -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -806,6 +819,9 @@ $i18n.vi.radiant_collector.option = "$lethVi`n`nVề Với Cát Bụi: Gây sát
 $vcVi = "$lethVi`n`nTích Điện: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>{1}<>.`n`nThiên Đường: Khi <#92dc7bff>Tích Điện<> đầy, đòn <#ff9028ff>sát thương vật lí<> tiếp theo cho bạn thêm <#ffdd8eff>{2} <$armorPenIcon> Xuyên Giáp Trắng<> trong <#e8a800ff>{3} giây<> và gây <#ff9028ff>sát thương vật lý cộng thêm<> tương đương <#d94c49ff>{4}% Máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>{5} sát thương vật lí<> lên lính và quái vật."
 $i18n.vi.voltaic_cyclosword.option = $vcVi -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.vi.radiant_voltaic_cyclosword.option = $vcVi -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
+$gslVi = "Hút Linh Hồn: Nhận <#a974ffff>{0}<> <$apIcon> <#a974ffff>Sức Mạnh Phép Thuật<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#a974ffff>{1}<>.`n`nĐồ Tể: Với quái, gây thêm <#a974ffff>{2}% sát thương phép<> và hồi <$hpRegenIcon> <#60e84dff>máu<> bằng <#d94c49ff>{3}% sát thương bạn gây ra<>."
+$i18n.vi.grezs_spectral_lantern.option = $gslVi -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
+$i18n.vi.radiant_grezs_spectral_lantern.option = $gslVi -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -971,6 +987,9 @@ $i18n.'zh-hans'.radiant_collector.option = "$lethZh`n`n死：对生命值低于 
 $vcZh = "$lethZh`n`n蓄能：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>{1}<> 层。`n`n苍穹：<#92dc7bff>蓄能<>充满时，你的下一次 <#ff9028ff>物理伤害<> 造成相当于目标<#d94c49ff>当前生命值{4}%<>的<#ff9028ff>额外物理伤害<>，并为你提供持续 <#e8a800ff>{3}秒<> 的 <#ffdd8eff>{2} 点<$armorPenIcon> 额外穿甲<>。对小兵和野怪最多造成 <#ff9028ff>{5}点物理伤害<>。"
 $i18n.'zh-hans'.voltaic_cyclosword.option = $vcZh -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.'zh-hans'.radiant_voltaic_cyclosword.option = $vcZh -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
+$gslZh = "汲魂：每次参与击杀敌方英雄或击杀野怪获得 <#a974ffff>{0}<> 点<$apIcon> <#a974ffff>法术强度<>，最多 <#a974ffff>{1}<> 点。`n`n屠夫：对野怪额外造成 <#a974ffff>{2}% 的魔法伤害<>，并回复相当于<#d94c49ff>已造成伤害 {3}%<>的 <$hpRegenIcon> <#60e84dff>生命值<>。"
+$i18n.'zh-hans'.grezs_spectral_lantern.option = $gslZh -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
+$i18n.'zh-hans'.radiant_grezs_spectral_lantern.option = $gslZh -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1136,6 +1155,9 @@ $i18n.'pt-BR'.radiant_collector.option = "$lethPt`n`nMorte: Causar dano a campe�
 $vcPt = "$lethPt`n`nEnergizado: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>{1}<>.`n`nFirmamento: Quando totalmente <#92dc7bff>Energizado<>, sua próxima instância de <#ff9028ff>dano físico<> causa <#d94c49ff>{4}% da Vida atual do alvo<> como <#ff9028ff>Dano Físico adicional<> e concede a você <#ffdd8eff>{2} de <$armorPenIcon> Letalidade adicional<> por <#e8a800ff>{3}s<>. (Máximo de <#ff9028ff>{5}<> contra tropas e monstros.)"
 $i18n.'pt-BR'.voltaic_cyclosword.option = $vcPt -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.'pt-BR'.radiant_voltaic_cyclosword.option = $vcPt -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
+$gslPt = "Dreno Espiritual: Ganha <#a974ffff>{0}<> de <$apIcon> <#a974ffff>Poder de Habilidade<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#a974ffff>{1}<>.`n`nAçougueiro: Contra monstros, causa <#a974ffff>{2}% de dano mágico bônus<> e restaura <$hpRegenIcon> <#60e84dff>vida<> equivalente a <#d94c49ff>{3}% do dano causado<>."
+$i18n.'pt-BR'.grezs_spectral_lantern.option = $gslPt -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
+$i18n.'pt-BR'.radiant_grezs_spectral_lantern.option = $gslPt -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1301,6 +1323,9 @@ $i18n.ru.radiant_collector.option = "$lethRu`n`nСмерть: Нанесение
 $vcRu = "$lethRu`n`nЗаряд: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>{1}<>.`n`nНебосклон: При полном <#92dc7bff>Заряде<> ваш следующий <#ff9028ff>физический урон<> наносит <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>{4}% текущего здоровья цели<> и даёт вам <#ffdd8eff>{2} доп. <$armorPenIcon> летальности<> на <#e8a800ff>{3} сек<>. Наносит максимум <#ff9028ff>{5} физического урона<> по миньонам и монстрам."
 $i18n.ru.voltaic_cyclosword.option = $vcRu -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.ru.radiant_voltaic_cyclosword.option = $vcRu -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
+$gslRu = "Похищение душ: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#a974ffff>{0}<> <$apIcon> <#a974ffff>силы умений<>, до <#a974ffff>{1}<>.`n`nМясник: Против монстров наносит <#a974ffff>{2}% дополнительного магического урона<> и восстанавливает <$hpRegenIcon> <#60e84dff>здоровье<> в размере <#d94c49ff>{3}% нанесённого урона<>."
+$i18n.ru.grezs_spectral_lantern.option = $gslRu -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
+$i18n.ru.radiant_grezs_spectral_lantern.option = $gslRu -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -1465,6 +1490,9 @@ $i18n.ko.radiant_collector.option = "$lethKo`n`n죽음: <$hpIcon> <#60e84dff>최
 $vcKo = "$lethKo`n`n충전: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>{1}<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.`n`n창공: 완전히 <#92dc7bff>충전<>되면 다음 <#ff9028ff>물리 피해<>가 대상 <#d94c49ff>현재 체력의 {4}%<>에 비례하는 <#ff9028ff>추가 물리 피해<>를 입히고 <#e8a800ff>{3}초<> 동안 <#ffdd8eff>{2}의 <$armorPenIcon> 추가 물리 관통력<>을 획득합니다. 미니언과 몬스터에게는 최대 <#ff9028ff>{5}의 물리 피해<>를 입힙니다."
 $i18n.ko.voltaic_cyclosword.option = $vcKo -f $vcLeth, $vcStacks, $vcBonusLeth, $vcDur, $vcPct, $vcCap
 $i18n.ko.radiant_voltaic_cyclosword.option = $vcKo -f $rvcLeth, $rvcStacks, $rvcBonusLeth, $rvcDur, $rvcPct, $rvcCap
+$gslKo = "영혼 흡수: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <$apIcon> <#a974ffff>주문력<>을 <#a974ffff>{0}<> 얻으며, 최대 <#a974ffff>{1}<>까지 쌓입니다.`n`n도살자: 몬스터에게 <#a974ffff>{2}%의 추가 마법 피해<>를 입히고 <#d94c49ff>입힌 피해량의 {3}%<>만큼 <$hpRegenIcon> <#60e84dff>체력<>을 회복합니다."
+$i18n.ko.grezs_spectral_lantern.option = $gslKo -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
+$i18n.ko.radiant_grezs_spectral_lantern.option = $gslKo -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {
@@ -1521,7 +1549,9 @@ Write-Host "  Phage:                   +${phageMs}% MS for ${phageDur}s"
 Write-Host "  Maim (Machete/Razors/Wriggle's):  ${hmacDmg}/${mrazDmg}/${wrigDmg} magic dmg, ${hmacHeal}/${mrazHeal}/${wrigHeal} heal vs monsters"
 Write-Host "  Feral Flare:                 ${ffDmg} +${ffStack}/stack (max ${ffStacks}) / ${ffHeal} heal / ${ffMinion}% vs minions+monsters"
 Write-Host "  Axiom Arc:                   ${aaLeth} Lethality, ${aaUltCdr}% +${aaPerLeth}%/Lethality ult CDR (Radiant ${raaLeth}, ${raaUltCdr}% +${raaPerLeth}%)"
-Write-Host "  Butcher (Talisman/Stone/Grez's): ${htalBonus}/${sstoneBonus}/${gslBonus}% vs monsters, ${htalHeal}/${sstoneHeal}/${gslHeal}% healed"
+Write-Host "  Butcher (Talisman/Stone): ${htalBonus}/${sstoneBonus}% vs monsters, ${htalHeal}/${sstoneHeal}% healed"
+Write-Host "  Grez's Spectral Lantern:         ${gslAp} AP/takedown up to ${gslMaxAp} / ${gslBonus}% vs monsters / ${gslHeal}% healed"
+Write-Host "  Radiant Grez's Spectral Lantern: ${rgslAp} AP/takedown up to ${rgslMaxAp} / ${rgslBonus}% vs monsters / ${rgslHeal}% healed"
 Write-Host "  Spirit of the Spectral Wraith: ${sswAp} AP/takedown up to ${sswMaxAp} / ${sswBonus}% vs monsters / ${sswHeal}% healed"
 Write-Host "  Mirage Blade:            ${mbForce} force"
 Write-Host "  Radiant Mirage Blade:    ${rmbForce} force"

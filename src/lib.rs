@@ -368,6 +368,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("feral_flare" => FeralFlare));
     reg.add_item(configured!("frozen_heart" => FrozenHeart));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
+    reg.add_item(configured!("grezs_spectral_lantern" => GrezsSpectralLantern));
     reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured!("heartsteel" => Heartsteel));
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
@@ -433,6 +434,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
     reg.add_item(configured_radiant!("radiant_frozen_heart" => FrozenHeart));
     reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
+    reg.add_item(configured_radiant!("radiant_grezs_spectral_lantern" => GrezsSpectralLantern));
     reg.add_item(configured_radiant!("radiant_guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
     reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
