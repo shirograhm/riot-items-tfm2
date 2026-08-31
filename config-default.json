@@ -1227,5 +1227,23 @@
     "effect_max_stacks": 30,
     "effect_percent_bonus_damage": 30.0,
     "effect_bonus_hp_percent_of_damage": 6.0
+  },
+  "cloak_of_starry_night": {
+    "price": 1450,
+    "hp": 350,
+    "magic_resistance": 100,
+    "magic_resistance_mult": 20,
+    "effect_skill_damaged_reduce": 5,
+    "effect_magic_resistance_per_reduce": 25,
+    "effect_max_skill_damaged_reduce": 25
+  },
+  "radiant_cloak_of_starry_night": {
+    "price": 2100,
+    "hp": 500,
+    "magic_resistance": 200,
+    "magic_resistance_mult": 20,
+    "effect_skill_damaged_reduce": 5,
+    "effect_magic_resistance_per_reduce": 25,
+    "effect_max_skill_damaged_reduce": 25
   }
 }
