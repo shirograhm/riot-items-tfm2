@@ -191,7 +191,7 @@
             "name": "Phage",
             "option": "\nRage: Basic attacks against enemy champions grant <#ffffffff>5%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<>."
         },
-        "haunting_guise": {cvgp
+        "haunting_guise": {
             "name": "Haunting Guise",
             "option": ""
         },
