@@ -71,9 +71,17 @@ impl ConfiguredBuilds {
             return None;
         }
 
+        // The lane is the half the buy detour has to infer; here the host
+        // states it outright, so a role build is picked without guessing.
+        let role = ctx
+            .lane()
+            .map(|lane| build_config::Role::from_lane_code(lane.code() as usize))
+            .unwrap_or(build_config::Role::Any);
+
         build_config::build_for_champion(
             &config,
             ctx.champion_key(),
+            role,
             |key| ctx.item_index(key),
             ctx.base_build(),
         )
