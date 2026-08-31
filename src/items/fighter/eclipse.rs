@@ -161,15 +161,15 @@ impl StableItem for Eclipse {
             };
             (
                 has_buff(&target_ref, self.mark_buff),
-                has_buff(&caster_ref, self.cooldown_buff),
+                has_buff(&target_ref, self.cooldown_buff),
                 target_ref.hp().1,
                 caster_ref.stat().attack,
             )
         };
 
         if !marked {
-            // A hit that lands while the proc is still cooling down re-marks as
-            // normal, so the mark is already up when the cooldown ends.
+            // A hit that lands while this target is still cooling down re-marks
+            // as normal, so the mark is already up when the cooldown ends.
             ctx.add_buff(
                 target,
                 &BuffV1::timed(self.mark_buff, ticks(self.effect_duration_seconds)),
@@ -194,8 +194,10 @@ impl StableItem for Eclipse {
             + percent_of(caster_attack, self.effect_ad_percent_shield);
         ctx.entity_add_shield(caster, shield, ticks(self.effect_shield_seconds));
 
+        // The cooldown rides the target, not the carrier: Ever Rising Moon is
+        // spent per champion hit, so a second enemy can be procced immediately.
         ctx.add_buff(
-            caster,
+            target,
             &BuffV1::timed(self.cooldown_buff, ticks(self.effect_cooldown_seconds)),
         );
     }

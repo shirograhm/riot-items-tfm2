@@ -717,11 +717,11 @@
         },
         "eclipse": {
             "name": "Eclipse",
-            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>100<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
+            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>100<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown per target)."
         },
         "radiant_eclipse": {
             "name": "Radiant Eclipse",
-            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>8% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>120<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown)."
+            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>8% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>120<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown per target)."
         },
         "axiom_arc": {
             "name": "Axiom Arc",
@@ -1490,11 +1490,11 @@
         },
         "eclipse": {
             "name": "Nguyệt Đao",
-            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>5% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>100<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
+            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>5% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>100<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<> mỗi mục tiêu)."
         },
         "radiant_eclipse": {
             "name": "Nguyệt Đao Ánh Sáng",
-            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>8% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>120<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<>)."
+            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>8% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>120<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<> mỗi mục tiêu)."
         },
         "axiom_arc": {
             "name": "Nguyên Tố Luân",
@@ -2263,11 +2263,11 @@
         },
         "eclipse": {
             "name": "星蚀",
-            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其5%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 15%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
+            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其5%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 15%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（每个目标冷却 <#e8a800ff>6秒<>）。"
         },
         "radiant_eclipse": {
             "name": "光明版星蚀",
-            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其8%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 20%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>6秒<>）。"
+            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其8%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 20%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（每个目标冷却 <#e8a800ff>6秒<>）。"
         },
         "axiom_arc": {
             "name": "公理圆弧",
@@ -3036,11 +3036,11 @@
         },
         "eclipse": {
             "name": "Eclipse",
-            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>5% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>100<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
+            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>5% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>100<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<> por alvo)."
         },
         "radiant_eclipse": {
             "name": "Eclipse Radiante",
-            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>8% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>120<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<>)."
+            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>8% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>120<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<> por alvo)."
         },
         "axiom_arc": {
             "name": "Arco do Axioma",
@@ -3809,11 +3809,11 @@
         },
         "eclipse": {
             "name": "Затмение",
-            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>5% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>100<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
+            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>5% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>100<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<> на каждую цель)."
         },
         "radiant_eclipse": {
             "name": "Лучезарное Затмение",
-            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>8% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>120<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<>)."
+            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>8% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>120<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<> на каждую цель)."
         },
         "axiom_arc": {
             "name": "Шакрам Аксиом",
@@ -4582,11 +4582,11 @@
         },
         "eclipse": {
             "name": "월식",
-            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
+            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>6초<>)"
         },
         "radiant_eclipse": {
             "name": "찬란한 월식",
-            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 8%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (재사용 대기시간 <#e8a800ff>6초<>)"
+            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 8%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>6초<>)"
         },
         "axiom_arc": {
             "name": "원칙의 원형낫",
