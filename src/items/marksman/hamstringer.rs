@@ -1,9 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
-
-const BLEED_TICK_RATE: usize = 12;
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, DOT_TICK_RATE};
 
 const LEVEL_STEPS: f64 = 11.0;
 
@@ -86,10 +84,6 @@ impl Hamstringer {
         self
     }
 
-    /// Total bleed for a carrier at `level` holding `crit_chance` percent crit.
-    /// The level half is interpolated the way every other level-scaled item in
-    /// the mod does it; the crit half is a flat ratio on the chance itself, so
-    /// the default 100% reads as one point of damage per point of crit.
     fn bleed_damage(&self, level: usize, crit_chance: usize) -> usize {
         let per_level = ((self.effect_max_bonus_damage - self.effect_min_bonus_damage) as f64
             / LEVEL_STEPS)
@@ -100,16 +94,13 @@ impl Hamstringer {
     }
 
     fn duration_ticks(&self) -> usize {
-        ticks(self.effect_duration_seconds).max(BLEED_TICK_RATE)
+        ticks(self.effect_duration_seconds).max(DOT_TICK_RATE)
     }
 
     fn instance_count(&self) -> usize {
-        (self.duration_ticks() / BLEED_TICK_RATE).max(1)
+        (self.duration_ticks() / DOT_TICK_RATE).max(1)
     }
 
-    /// The total is fixed when the crit lands rather than re-read each instance:
-    /// Scour's damage comes off the carrier's level, so a bleed already running
-    /// should not change because the carrier levelled or died mid-tick.
     fn apply_bleed(&mut self, target: usize, level: usize, crit_chance: usize) {
         let duration = self.duration_ticks();
         let per_instance = (self.bleed_damage(level, crit_chance) as f64
@@ -122,7 +113,7 @@ impl Hamstringer {
             }
             None => self
                 .bleeds
-                .push((target, duration, BLEED_TICK_RATE, per_instance)),
+                .push((target, duration, DOT_TICK_RATE, per_instance)),
         }
     }
 
@@ -139,7 +130,7 @@ impl Hamstringer {
                     continue;
                 }
                 ctx.deal_damage(caster, id, per_instance, 0, AttackTypeV1::Item);
-                until_next = BLEED_TICK_RATE;
+                until_next = DOT_TICK_RATE;
             }
             if remaining > 0 {
                 kept.push((id, remaining, until_next, per_instance));
@@ -213,9 +204,6 @@ impl StableItem for Hamstringer {
         self.tick_bleeds(ctx, player_champion_id);
     }
 
-    /// Scour. `is_crit` is the whole trigger, so this covers a critical ability
-    /// hit as well as a critical auto; `Item` is excluded so the bleed's own
-    /// instances cannot re-arm it.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
