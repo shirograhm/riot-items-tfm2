@@ -1247,7 +1247,7 @@
     "effect_max_skill_damaged_reduce": 25
   },
   "hamstringer": {
-    "price": 1500,
+    "price": 1450,
     "attack": 45,
     "attack_speed_mult": 25,
     "crit_chance": 20,
@@ -1258,9 +1258,9 @@
     "effect_duration_seconds": 3
   },
   "radiant_hamstringer": {
-    "price": 2200,
-    "attack": 70,
-    "attack_speed_mult": 40,
+    "price": 2150,
+    "attack": 75,
+    "attack_speed_mult": 45,
     "crit_chance": 25,
     "effect_min_bonus_damage": 125,
     "effect_max_bonus_damage": 290,
