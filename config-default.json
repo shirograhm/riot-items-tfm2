@@ -1232,7 +1232,7 @@
     "price": 1450,
     "hp": 350,
     "magic_resistance": 100,
-    "magic_resistance_mult": 20,
+    "magic_resistance_mult": 25,
     "effect_skill_damaged_reduce": 5,
     "effect_magic_resistance_per_reduce": 25,
     "effect_max_skill_damaged_reduce": 25
@@ -1241,7 +1241,7 @@
     "price": 2100,
     "hp": 500,
     "magic_resistance": 200,
-    "magic_resistance_mult": 20,
+    "magic_resistance_mult": 25,
     "effect_skill_damaged_reduce": 5,
     "effect_magic_resistance_per_reduce": 25,
     "effect_max_skill_damaged_reduce": 25
