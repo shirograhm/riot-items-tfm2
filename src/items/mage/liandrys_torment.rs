@@ -191,13 +191,13 @@ impl StableItem for LiandrysTorment {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
+        attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
+        if target_ref.is_tower() || attack_type != AttackTypeV1::Skill {
             return;
         }
 
