@@ -437,6 +437,14 @@ $rgslStacks = [int]$config.radiant_grezs_spectral_lantern.effect_max_stacks
 $rgslMaxAp = $rgslAp * $rgslStacks
 $rgslBonus = [double]$config.radiant_grezs_spectral_lantern.effect_percent_bonus_damage
 $rgslHeal = [double]$config.radiant_grezs_spectral_lantern.effect_bonus_hp_percent_of_damage
+$cosnMr = [int]$config.cloak_of_starry_night.magic_resistance_mult
+$cosnSdr = [int]$config.cloak_of_starry_night.effect_skill_damaged_reduce
+$cosnPer = [int]$config.cloak_of_starry_night.effect_magic_resistance_per_reduce
+$cosnMax = [int]$config.cloak_of_starry_night.effect_max_skill_damaged_reduce
+$rcosnMr = [int]$config.radiant_cloak_of_starry_night.magic_resistance_mult
+$rcosnSdr = [int]$config.radiant_cloak_of_starry_night.effect_skill_damaged_reduce
+$rcosnPer = [int]$config.radiant_cloak_of_starry_night.effect_magic_resistance_per_reduce
+$rcosnMax = [int]$config.radiant_cloak_of_starry_night.effect_max_skill_damaged_reduce
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -481,6 +489,7 @@ $rangeIcon = "i#asset/base/ui/banpick/champion_stat_icon:range_0"
 $cdrIcon = "i#asset/base/ui/banpick/champion_stat_icon:cdr_0"
 $armorPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0"
 $magicPenIcon = "i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0"
+$sdrIcon = "i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0"
 $critIcon = "i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0"
 $critDamageIcon = "i#asset/base/ui/banpick/champion_stat_icon:crit_damage_0"
 $vampIcon = "i#asset/base/ui/banpick/champion_stat_icon:vamp_0"
@@ -654,6 +663,9 @@ $i18n.en.radiant_voltaic_cyclosword.option = $vcEn -f $rvcLeth, $rvcStacks, $rvc
 $gslEn = "Spirit Drain: Gain <#a974ffff>{0}<> <$apIcon> <#a974ffff>Ability Power<> for each champion takedown and monster killed, up to <#a974ffff>{1}<>.`n`nButcher: Against monsters, deal <#a974ffff>{2}% bonus magic damage<> and restore <$hpRegenIcon> <#60e84dff>health<> equal to <#d94c49ff>{3}% of your damage dealt<>."
 $i18n.en.grezs_spectral_lantern.option = $gslEn -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
 $i18n.en.radiant_grezs_spectral_lantern.option = $gslEn -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
+$cosnEn = "Limitless as the Stars: Increase your total <$mrIcon> <#88ccffff>magic resistance<> by <#88ccffff>{0}%<>. Additionally, gain <#92dc7bff>{1}%<> (<#92dc7bff>+1%<> per <#88ccffff>{2} <$mrIcon> magic resistance<>) <$sdrIcon> <#92dc7bff>skill damage reduction<>, up to a maximum of <#92dc7bff>{3}%<>."
+$i18n.en.cloak_of_starry_night.option = $cosnEn -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
+$i18n.en.radiant_cloak_of_starry_night.option = $cosnEn -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -822,6 +834,9 @@ $i18n.vi.radiant_voltaic_cyclosword.option = $vcVi -f $rvcLeth, $rvcStacks, $rvc
 $gslVi = "Hút Linh Hồn: Nhận <#a974ffff>{0}<> <$apIcon> <#a974ffff>Sức Mạnh Phép Thuật<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#a974ffff>{1}<>.`n`nĐồ Tể: Với quái, gây thêm <#a974ffff>{2}% sát thương phép<> và hồi <$hpRegenIcon> <#60e84dff>máu<> bằng <#d94c49ff>{3}% sát thương bạn gây ra<>."
 $i18n.vi.grezs_spectral_lantern.option = $gslVi -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
 $i18n.vi.radiant_grezs_spectral_lantern.option = $gslVi -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
+$cosnVi = "Tinh Tú Vô Tận: Tăng tổng <$mrIcon> <#88ccffff>Kháng Phép<> của bạn thêm <#88ccffff>{0}%<>. Ngoài ra, nhận <#92dc7bff>{1}%<> (<#92dc7bff>+1%<> mỗi <#88ccffff>{2} <$mrIcon> Kháng Phép<>) <$sdrIcon> <#92dc7bff>Giảm Sát thương Kỹ năng<>, tối đa <#92dc7bff>{3}%<>."
+$i18n.vi.cloak_of_starry_night.option = $cosnVi -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
+$i18n.vi.radiant_cloak_of_starry_night.option = $cosnVi -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -990,6 +1005,9 @@ $i18n.'zh-hans'.radiant_voltaic_cyclosword.option = $vcZh -f $rvcLeth, $rvcStack
 $gslZh = "汲魂：每次参与击杀敌方英雄或击杀野怪获得 <#a974ffff>{0}<> 点<$apIcon> <#a974ffff>法术强度<>，最多 <#a974ffff>{1}<> 点。`n`n屠夫：对野怪额外造成 <#a974ffff>{2}% 的魔法伤害<>，并回复相当于<#d94c49ff>已造成伤害 {3}%<>的 <$hpRegenIcon> <#60e84dff>生命值<>。"
 $i18n.'zh-hans'.grezs_spectral_lantern.option = $gslZh -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
 $i18n.'zh-hans'.radiant_grezs_spectral_lantern.option = $gslZh -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
+$cosnZh = "浩渺如群星：使你的总<$mrIcon> <#88ccffff>魔法抗性<>提升 <#88ccffff>{0}%<>。此外，获得 <#92dc7bff>{1}%<>（每 <#88ccffff>{2} 点<$mrIcon> 魔法抗性<> <#92dc7bff>+1%<>）<$sdrIcon> <#92dc7bff>技能伤害减免<>，最多 <#92dc7bff>{3}%<>。"
+$i18n.'zh-hans'.cloak_of_starry_night.option = $cosnZh -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
+$i18n.'zh-hans'.radiant_cloak_of_starry_night.option = $cosnZh -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1158,6 +1176,9 @@ $i18n.'pt-BR'.radiant_voltaic_cyclosword.option = $vcPt -f $rvcLeth, $rvcStacks,
 $gslPt = "Dreno Espiritual: Ganha <#a974ffff>{0}<> de <$apIcon> <#a974ffff>Poder de Habilidade<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#a974ffff>{1}<>.`n`nAçougueiro: Contra monstros, causa <#a974ffff>{2}% de dano mágico bônus<> e restaura <$hpRegenIcon> <#60e84dff>vida<> equivalente a <#d94c49ff>{3}% do dano causado<>."
 $i18n.'pt-BR'.grezs_spectral_lantern.option = $gslPt -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
 $i18n.'pt-BR'.radiant_grezs_spectral_lantern.option = $gslPt -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
+$cosnPt = "Inesgotável como as Estrelas: Aumenta sua <$mrIcon> <#88ccffff>Resistência Mágica<> total em <#88ccffff>{0}%<>. Além disso, concede <#92dc7bff>{1}%<> (<#92dc7bff>+1%<> a cada <#88ccffff>{2} de <$mrIcon> Resistência Mágica<>) de <$sdrIcon> <#92dc7bff>Redução de Dano de Habilidades<>, até um máximo de <#92dc7bff>{3}%<>."
+$i18n.'pt-BR'.cloak_of_starry_night.option = $cosnPt -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
+$i18n.'pt-BR'.radiant_cloak_of_starry_night.option = $cosnPt -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1326,6 +1347,9 @@ $i18n.ru.radiant_voltaic_cyclosword.option = $vcRu -f $rvcLeth, $rvcStacks, $rvc
 $gslRu = "Похищение душ: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#a974ffff>{0}<> <$apIcon> <#a974ffff>силы умений<>, до <#a974ffff>{1}<>.`n`nМясник: Против монстров наносит <#a974ffff>{2}% дополнительного магического урона<> и восстанавливает <$hpRegenIcon> <#60e84dff>здоровье<> в размере <#d94c49ff>{3}% нанесённого урона<>."
 $i18n.ru.grezs_spectral_lantern.option = $gslRu -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
 $i18n.ru.radiant_grezs_spectral_lantern.option = $gslRu -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
+$cosnRu = "Бесконечность звезд: Увеличивает ваше общее <$mrIcon> <#88ccffff>сопротивление магии<> на <#88ccffff>{0}%<>. Кроме того, даёт <#92dc7bff>{1}%<> (<#92dc7bff>+1%<> за каждые <#88ccffff>{2} <$mrIcon> сопротивления магии<>) <$sdrIcon> <#92dc7bff>снижения урона от умений<>, но не более <#92dc7bff>{3}%<>."
+$i18n.ru.cloak_of_starry_night.option = $cosnRu -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
+$i18n.ru.radiant_cloak_of_starry_night.option = $cosnRu -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -1493,6 +1517,9 @@ $i18n.ko.radiant_voltaic_cyclosword.option = $vcKo -f $rvcLeth, $rvcStacks, $rvc
 $gslKo = "영혼 흡수: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <$apIcon> <#a974ffff>주문력<>을 <#a974ffff>{0}<> 얻으며, 최대 <#a974ffff>{1}<>까지 쌓입니다.`n`n도살자: 몬스터에게 <#a974ffff>{2}%의 추가 마법 피해<>를 입히고 <#d94c49ff>입힌 피해량의 {3}%<>만큼 <$hpRegenIcon> <#60e84dff>체력<>을 회복합니다."
 $i18n.ko.grezs_spectral_lantern.option = $gslKo -f $gslAp, $gslMaxAp, $gslBonus, $gslHeal
 $i18n.ko.radiant_grezs_spectral_lantern.option = $gslKo -f $rgslAp, $rgslMaxAp, $rgslBonus, $rgslHeal
+$cosnKo = "별과 같은 무한함: <$mrIcon> <#88ccffff>마법 저항력<>이 <#88ccffff>{0}%<> 증가합니다. 또한 <$sdrIcon> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>{1}%<> (<$mrIcon> <#88ccffff>마법 저항력 {2}<>당 <#92dc7bff>+1%<>) 얻으며, 최대 <#92dc7bff>{3}%<>까지 적용됩니다."
+$i18n.ko.cloak_of_starry_night.option = $cosnKo -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
+$i18n.ko.radiant_cloak_of_starry_night.option = $cosnKo -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {
@@ -1552,6 +1579,8 @@ Write-Host "  Axiom Arc:                   ${aaLeth} Lethality, ${aaUltCdr}% +${
 Write-Host "  Butcher (Talisman/Stone): ${htalBonus}/${sstoneBonus}% vs monsters, ${htalHeal}/${sstoneHeal}% healed"
 Write-Host "  Grez's Spectral Lantern:         ${gslAp} AP/takedown up to ${gslMaxAp} / ${gslBonus}% vs monsters / ${gslHeal}% healed"
 Write-Host "  Radiant Grez's Spectral Lantern: ${rgslAp} AP/takedown up to ${rgslMaxAp} / ${rgslBonus}% vs monsters / ${rgslHeal}% healed"
+Write-Host "  Cloak of Starry Night:         +${cosnMr}% MR / ${cosnSdr}% + 1% per ${cosnPer} MR skill dmg reduction (max ${cosnMax}%)"
+Write-Host "  Radiant Cloak of Starry Night: +${rcosnMr}% MR / ${rcosnSdr}% + 1% per ${rcosnPer} MR skill dmg reduction (max ${rcosnMax}%)"
 Write-Host "  Spirit of the Spectral Wraith: ${sswAp} AP/takedown up to ${sswMaxAp} / ${sswBonus}% vs monsters / ${sswHeal}% healed"
 Write-Host "  Mirage Blade:            ${mbForce} force"
 Write-Host "  Radiant Mirage Blade:    ${rmbForce} force"

@@ -356,6 +356,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured!("bloodsong" => Bloodsong));
+    reg.add_item(configured!("cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured!("collector" => Collector));
     reg.add_item(configured!("dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured!("deathblade" => DeathBlade));
@@ -422,6 +423,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured_radiant!("radiant_bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong));
+    reg.add_item(configured_radiant!("radiant_cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured_radiant!("radiant_collector" => Collector));
     reg.add_item(configured_radiant!("radiant_dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
