@@ -573,11 +573,11 @@
         },
         "rite_of_ruin": {
             "name": "Rite of Ruin",
-            "option": "\nWrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#d8c9b3ff>35<> - <#d8c9b3ff>90<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
+            "option": "\nWrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#cab944ff>35<> - <#cab944ff>90<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
         },
         "radiant_rite_of_ruin": {
             "name": "Radiant Rite of Ruin",
-            "option": "\nWrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#d8c9b3ff>65<> - <#d8c9b3ff>175<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
+            "option": "\nWrath and Ruin: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\nSalvage the Wreckage: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#cab944ff>65<> - <#cab944ff>175<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
         },
         "glowing_mote": {
             "name": "Glowing Mote",
@@ -585,11 +585,11 @@
         },
         "echoes_of_helia": {
             "name": "Echoes of Helia",
-            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <#60e84dff>heals them<> equal to the consumed amount."
+            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals them<> equal to the consumed amount."
         },
         "radiant_echoes_of_helia": {
             "name": "Radiant Echoes of Helia",
-            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <#60e84dff>heals them<> equal to the consumed amount."
+            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals them<> equal to the consumed amount."
         },
         "sundered_sky": {
             "name": "Sundered Sky",
@@ -601,7 +601,7 @@
         },
         "sheen": {
             "name": "Sheen",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#ff9028ff>30<> - <#ff9028ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "trinity_force": {
             "name": "Trinity Force",
@@ -633,11 +633,11 @@
         },
         "bloodsong": {
             "name": "Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "radiant_bloodsong": {
             "name": "Radiant Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) as <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "serrated_dirk": {
             "name": "Serrated Dirk",
@@ -749,11 +749,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Sword of Blossoming Dawn",
-            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Radiant Sword of Blossoming Dawn",
-            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Ardent Censer",
@@ -781,11 +781,11 @@
         },
         "hamstringer": {
             "name": "Hamstringer",
-            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#d8c9b3ff>70<> - <#d8c9b3ff>180<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>3 seconds<> and applying a <#d94c49ff>7% slow<>."
+            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#ff9028ff>70<> - <#ff9028ff>180<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>3 seconds<> and applying a <#d94c49ff>7% slow<>."
         },
         "radiant_hamstringer": {
             "name": "Radiant Hamstringer",
-            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#d8c9b3ff>125<> - <#d8c9b3ff>290<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>3 seconds<> and applying a <#d94c49ff>7% slow<>."
+            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#ff9028ff>125<> - <#ff9028ff>290<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>3 seconds<> and applying a <#d94c49ff>7% slow<>."
         }
     },
     "vi": {
@@ -1362,11 +1362,11 @@
         },
         "rite_of_ruin": {
             "name": "Nghi Thức Suy Vong",
-            "option": "\nThịnh Nộ Và Suy Vong: Kĩ năng trúng tướng địch cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\nCứu Rỗi Trò Tàn: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#d8c9b3ff>35<> - <#d8c9b3ff>90<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
+            "option": "\nThịnh Nộ Và Suy Vong: Kĩ năng trúng tướng địch cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\nCứu Rỗi Trò Tàn: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#cab944ff>35<> - <#cab944ff>90<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
         },
         "radiant_rite_of_ruin": {
             "name": "Nghi Thức Suy Vong Ánh Sáng",
-            "option": "\nThịnh Nộ Và Suy Vong: Kĩ năng trúng tướng địch cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\nCứu Rỗi Trò Tàn: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#d8c9b3ff>65<> - <#d8c9b3ff>175<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
+            "option": "\nThịnh Nộ Và Suy Vong: Kĩ năng trúng tướng địch cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\nCứu Rỗi Trò Tàn: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#cab944ff>65<> - <#cab944ff>175<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
         },
         "glowing_mote": {
             "name": "Bụi Lấp Lánh",
@@ -1374,11 +1374,11 @@
         },
         "echoes_of_helia": {
             "name": "Vọng Âm Helia",
-            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
+            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
         },
         "radiant_echoes_of_helia": {
             "name": "Vọng Âm Helia Ánh Sáng",
-            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
+            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
         },
         "sundered_sky": {
             "name": "Bầu Trời Vỡ Nát",
@@ -1390,7 +1390,7 @@
         },
         "sheen": {
             "name": "Thủy Kiếm",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>30<> - <#ff9028ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
         },
         "trinity_force": {
             "name": "Tam Hợp Kiếm",
@@ -1422,11 +1422,11 @@
         },
         "bloodsong": {
             "name": "Khúc Ca Máu",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "radiant_bloodsong": {
             "name": "Khúc Ca Máu Ánh Sáng",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "serrated_dirk": {
             "name": "Dao Găm Răng Cưa",
@@ -1538,11 +1538,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ",
-            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ Ánh Sáng",
-            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
         },
         "ardent_censer": {
             "name": "Lư Hương Sôi Sục",
@@ -1570,11 +1570,11 @@
         },
         "hamstringer": {
             "name": "Gươm Tê Liệt",
-            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#d8c9b3ff>70<> - <#d8c9b3ff>180<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>3 giây<> và gây <#d94c49ff>7% kiệt sức<>."
+            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#ff9028ff>70<> - <#ff9028ff>180<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>3 giây<> và gây <#d94c49ff>7% kiệt sức<>."
         },
         "radiant_hamstringer": {
             "name": "Gươm Tê Liệt Ánh Sáng",
-            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#d8c9b3ff>125<> - <#d8c9b3ff>290<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>3 giây<> và gây <#d94c49ff>7% kiệt sức<>."
+            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#ff9028ff>125<> - <#ff9028ff>290<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>3 giây<> và gây <#d94c49ff>7% kiệt sức<>."
         }
     },
     "zh-hans": {
@@ -2151,11 +2151,11 @@
         },
         "rite_of_ruin": {
             "name": "毁坏仪式",
-            "option": "\n怒火与破坏：技能命中敌方英雄后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n打捞残骸：技能命中敌方英雄后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#d8c9b3ff>35<> - <#d8c9b3ff>90<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
+            "option": "\n怒火与破坏：技能命中敌方英雄后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n打捞残骸：技能命中敌方英雄后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>35<> - <#cab944ff>90<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
         },
         "radiant_rite_of_ruin": {
             "name": "光明版毁坏仪式",
-            "option": "\n怒火与破坏：技能命中敌方英雄后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n打捞残骸：技能命中敌方英雄后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#d8c9b3ff>65<> - <#d8c9b3ff>175<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
+            "option": "\n怒火与破坏：技能命中敌方英雄后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n打捞残骸：技能命中敌方英雄后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>65<> - <#cab944ff>175<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
         },
         "glowing_mote": {
             "name": "荧尘",
@@ -2163,11 +2163,11 @@
         },
         "echoes_of_helia": {
             "name": "海力亚的回响",
-            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<#60e84dff>回复<>等量的生命值。"
+            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>等量的生命值。"
         },
         "radiant_echoes_of_helia": {
             "name": "光明版海力亚的回响",
-            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<#60e84dff>回复<>等量的生命值。"
+            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>等量的生命值。"
         },
         "sundered_sky": {
             "name": "破碎苍穹",
@@ -2179,7 +2179,7 @@
         },
         "sheen": {
             "name": "耀光",
-            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>30<> - <#d8c9b3ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#ff9028ff>30<> - <#ff9028ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
         },
         "trinity_force": {
             "name": "三相之力",
@@ -2211,11 +2211,11 @@
         },
         "bloodsong": {
             "name": "血歌",
-            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "radiant_bloodsong": {
             "name": "光明版血歌",
-            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#d8c9b3ff>70<> - <#d8c9b3ff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "serrated_dirk": {
             "name": "锯齿短匕",
@@ -2327,11 +2327,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "花晓之剑",
-            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#d8c9b3ff>15<> - <#d8c9b3ff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
+            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "光明版花晓之剑",
-            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#d8c9b3ff>15<> - <#d8c9b3ff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
+            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
         },
         "ardent_censer": {
             "name": "炽热香炉",
@@ -2359,11 +2359,11 @@
         },
         "hamstringer": {
             "name": "断筋者",
-            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>3秒<>内造成 <#d8c9b3ff>70<> - <#d8c9b3ff>180<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
+            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>3秒<>内造成 <#ff9028ff>70<> - <#ff9028ff>180<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
         },
         "radiant_hamstringer": {
             "name": "光明版断筋者",
-            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>3秒<>内造成 <#d8c9b3ff>125<> - <#d8c9b3ff>290<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
+            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>3秒<>内造成 <#ff9028ff>125<> - <#ff9028ff>290<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
         }
     },
     "pt-BR": {
@@ -2940,11 +2940,11 @@
         },
         "rite_of_ruin": {
             "name": "Ritual da Ruína",
-            "option": "\nIra e Ruína: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\nRecuperando os Destroços: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#d8c9b3ff>35<> - <#d8c9b3ff>90<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
+            "option": "\nIra e Ruína: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\nRecuperando os Destroços: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#cab944ff>35<> - <#cab944ff>90<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
         },
         "radiant_rite_of_ruin": {
             "name": "Ritual da Ruína Radiante",
-            "option": "\nIra e Ruína: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\nRecuperando os Destroços: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#d8c9b3ff>65<> - <#d8c9b3ff>175<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
+            "option": "\nIra e Ruína: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\nRecuperando os Destroços: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#cab944ff>65<> - <#cab944ff>175<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
         },
         "glowing_mote": {
             "name": "Partícula Brilhante",
@@ -2952,11 +2952,11 @@
         },
         "echoes_of_helia": {
             "name": "Ecos de Helia",
-            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando-o<> na quantidade consumida."
+            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado consome todas as <#92dc7bff>Cargas de Alma<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando-o<> na quantidade consumida."
         },
         "radiant_echoes_of_helia": {
             "name": "Ecos de Helia Radiante",
-            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado consome todas as <#92dc7bff>Cargas de Alma<>, <#60e84dff>curando-o<> na quantidade consumida."
+            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado consome todas as <#92dc7bff>Cargas de Alma<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando-o<> na quantidade consumida."
         },
         "sundered_sky": {
             "name": "Céu Dilacerado",
@@ -2968,7 +2968,7 @@
         },
         "sheen": {
             "name": "Fulgor",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#ff9028ff>30<> - <#ff9028ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
         },
         "trinity_force": {
             "name": "Força da Trindade",
@@ -3000,11 +3000,11 @@
         },
         "bloodsong": {
             "name": "Canção de Sangue",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "radiant_bloodsong": {
             "name": "Canção de Sangue Radiante",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "serrated_dirk": {
             "name": "Adaga Serrilhada",
@@ -3116,11 +3116,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Espada da Alvorada Florescente",
-            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
+            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Espada da Alvorada Florescente Radiante",
-            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
+            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
         },
         "ardent_censer": {
             "name": "Turíbulo Ardente",
@@ -3148,11 +3148,11 @@
         },
         "hamstringer": {
             "name": "Debilitador",
-            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#d8c9b3ff>70<> - <#d8c9b3ff>180<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>3 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
+            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#ff9028ff>70<> - <#ff9028ff>180<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>3 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
         },
         "radiant_hamstringer": {
             "name": "Debilitador Radiante",
-            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#d8c9b3ff>125<> - <#d8c9b3ff>290<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>3 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
+            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#ff9028ff>125<> - <#ff9028ff>290<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>3 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
         }
     },
     "ru": {
@@ -3729,11 +3729,11 @@
         },
         "rite_of_ruin": {
             "name": "Ритуал уничтожения",
-            "option": "\nГнев и уничтожение: Попадание умением по вражескому чемпиону даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\nСпасение утопающих: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#d8c9b3ff>35<> - <#d8c9b3ff>90<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
+            "option": "\nГнев и уничтожение: Попадание умением по вражескому чемпиону даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\nСпасение утопающих: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#cab944ff>35<> - <#cab944ff>90<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
         },
         "radiant_rite_of_ruin": {
             "name": "Лучезарный Ритуал уничтожения",
-            "option": "\nГнев и уничтожение: Попадание умением по вражескому чемпиону даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\nСпасение утопающих: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#d8c9b3ff>65<> - <#d8c9b3ff>175<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
+            "option": "\nГнев и уничтожение: Попадание умением по вражескому чемпиону даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\nСпасение утопающих: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#cab944ff>65<> - <#cab944ff>175<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
         },
         "glowing_mote": {
             "name": "Светлячок",
@@ -3741,11 +3741,11 @@
         },
         "echoes_of_helia": {
             "name": "Эхо Гелии",
-            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
+            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона расходует все <#92dc7bff>Заряды Души<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
         },
         "radiant_echoes_of_helia": {
             "name": "Лучезарное Эхо Гелии",
-            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона расходует все <#92dc7bff>Заряды Души<>, <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
+            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона расходует все <#92dc7bff>Заряды Души<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
         },
         "sundered_sky": {
             "name": "Расколотые Небеса",
@@ -3757,7 +3757,7 @@
         },
         "sheen": {
             "name": "Сияние",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>30<> - <#d8c9b3ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#ff9028ff>30<> - <#ff9028ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
         },
         "trinity_force": {
             "name": "Тройственный Союз",
@@ -3789,11 +3789,11 @@
         },
         "bloodsong": {
             "name": "Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "radiant_bloodsong": {
             "name": "Лучезарная Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#d8c9b3ff>70<> - <#d8c9b3ff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "serrated_dirk": {
             "name": "Зубчатый кинжал",
@@ -3905,11 +3905,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Меч сияющего рассвета",
-            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
+            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Лучезарный Меч сияющего рассвета",
-            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#d8c9b3ff>15<> - <#d8c9b3ff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
+            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
         },
         "ardent_censer": {
             "name": "Пылающая кадильница",
@@ -3937,11 +3937,11 @@
         },
         "hamstringer": {
             "name": "Выжигатель",
-            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#d8c9b3ff>70<> - <#d8c9b3ff>180<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>3 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
+            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#ff9028ff>70<> - <#ff9028ff>180<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>3 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
         },
         "radiant_hamstringer": {
             "name": "Лучезарный Выжигатель",
-            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#d8c9b3ff>125<> - <#d8c9b3ff>290<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>3 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
+            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#ff9028ff>125<> - <#ff9028ff>290<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>3 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
         }
     },
     "ko": {
@@ -4518,11 +4518,11 @@
         },
         "rite_of_ruin": {
             "name": "파멸의식 고서",
-            "option": "\n분노와 파멸: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n난파선 인양: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>35<>~<#d8c9b3ff>90<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
+            "option": "\n분노와 파멸: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n난파선 인양: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>35<>~<#cab944ff>90<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
         },
         "radiant_rite_of_ruin": {
             "name": "찬란한 파멸의식 고서",
-            "option": "\n분노와 파멸: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n난파선 인양: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>65<>~<#d8c9b3ff>175<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
+            "option": "\n분노와 파멸: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n난파선 인양: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>65<>~<#cab944ff>175<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
         },
         "glowing_mote": {
             "name": "빛나는 티끌",
@@ -4530,11 +4530,11 @@
         },
         "echoes_of_helia": {
             "name": "헬리아의 메아리",
-            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
+            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "radiant_echoes_of_helia": {
             "name": "찬란한 헬리아의 메아리",
-            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <#60e84dff>회복<>시킵니다."
+            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "sundered_sky": {
             "name": "갈라진 하늘",
@@ -4546,7 +4546,7 @@
         },
         "sheen": {
             "name": "광휘의 검",
-            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>30<>~<#d8c9b3ff>85<>의 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>30<>~<#ff9028ff>85<>의 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
         },
         "trinity_force": {
             "name": "삼위일체",
@@ -4578,11 +4578,11 @@
         },
         "bloodsong": {
             "name": "피의 노래",
-            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
+            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "radiant_bloodsong": {
             "name": "찬란한 피의 노래",
-            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
+            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "serrated_dirk": {
             "name": "톱날 단검",
@@ -4694,11 +4694,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "꽃피는 새벽의 검",
-            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#d8c9b3ff>15<>~<#d8c9b3ff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "찬란한 꽃피는 새벽의 검",
-            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#d8c9b3ff>15<>~<#d8c9b3ff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "ardent_censer": {
             "name": "불타는 향로",
@@ -4726,11 +4726,11 @@
         },
         "hamstringer": {
             "name": "불귀신",
-            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>3초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>180<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
+            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>3초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>70<>~<#ff9028ff>180<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
         },
         "radiant_hamstringer": {
             "name": "찬란한 불귀신",
-            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>3초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>125<>~<#d8c9b3ff>290<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
+            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>3초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>125<>~<#ff9028ff>290<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
         }
     }
 }
