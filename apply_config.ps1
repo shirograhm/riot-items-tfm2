@@ -445,6 +445,16 @@ $rcosnMr = [int]$config.radiant_cloak_of_starry_night.magic_resistance_mult
 $rcosnSdr = [int]$config.radiant_cloak_of_starry_night.effect_skill_damaged_reduce
 $rcosnPer = [int]$config.radiant_cloak_of_starry_night.effect_magic_resistance_per_reduce
 $rcosnMax = [int]$config.radiant_cloak_of_starry_night.effect_max_skill_damaged_reduce
+$hamMin = [int]$config.hamstringer.effect_min_bonus_damage
+$hamMax = [int]$config.hamstringer.effect_max_bonus_damage
+$hamCrit = [int]$config.hamstringer.effect_crit_percent_damage
+$hamSlow = [int]$config.hamstringer.effect_slow_amount
+$hamDur = [int]$config.hamstringer.effect_duration_seconds
+$rhamMin = [int]$config.radiant_hamstringer.effect_min_bonus_damage
+$rhamMax = [int]$config.radiant_hamstringer.effect_max_bonus_damage
+$rhamCrit = [int]$config.radiant_hamstringer.effect_crit_percent_damage
+$rhamSlow = [int]$config.radiant_hamstringer.effect_slow_amount
+$rhamDur = [int]$config.radiant_hamstringer.effect_duration_seconds
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -666,6 +676,9 @@ $i18n.en.radiant_grezs_spectral_lantern.option = $gslEn -f $rgslAp, $rgslMaxAp, 
 $cosnEn = "Limitless as the Stars: Increase your total <$mrIcon> <#88ccffff>magic resistance<> by <#88ccffff>{0}%<>. Additionally, gain <#92dc7bff>{1}%<> (<#92dc7bff>+1%<> per <#88ccffff>{2} <$mrIcon> magic resistance<>) <$sdrIcon> <#92dc7bff>skill damage reduction<>, up to a maximum of <#92dc7bff>{3}%<>."
 $i18n.en.cloak_of_starry_night.option = $cosnEn -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
 $i18n.en.radiant_cloak_of_starry_night.option = $cosnEn -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
+$hamEn = "Scour: Your <$critIcon> <#d45656ff>critical strikes<> bleed the target, dealing <#d8c9b3ff>{0}<> - <#d8c9b3ff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#d45656ff>(+{3}% <$critIcon>)<> <#ff9028ff>physical damage<> over <#e8a800ff>{2} seconds<> and applying a <#d94c49ff>{4}% slow<>."
+$i18n.en.hamstringer.option = $hamEn -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
+$i18n.en.radiant_hamstringer.option = $hamEn -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -837,6 +850,9 @@ $i18n.vi.radiant_grezs_spectral_lantern.option = $gslVi -f $rgslAp, $rgslMaxAp, 
 $cosnVi = "Tinh Tú Vô Tận: Tăng tổng <$mrIcon> <#88ccffff>Kháng Phép<> của bạn thêm <#88ccffff>{0}%<>. Ngoài ra, nhận <#92dc7bff>{1}%<> (<#92dc7bff>+1%<> mỗi <#88ccffff>{2} <$mrIcon> Kháng Phép<>) <$sdrIcon> <#92dc7bff>Giảm Sát thương Kỹ năng<>, tối đa <#92dc7bff>{3}%<>."
 $i18n.vi.cloak_of_starry_night.option = $cosnVi -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
 $i18n.vi.radiant_cloak_of_starry_night.option = $cosnVi -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
+$hamVi = "Khám Xét: <$critIcon> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#d8c9b3ff>{0}<> - <#d8c9b3ff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+{3}% <$critIcon>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>{2} giây<> và gây <#d94c49ff>{4}% kiệt sức<>."
+$i18n.vi.hamstringer.option = $hamVi -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
+$i18n.vi.radiant_hamstringer.option = $hamVi -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1008,6 +1024,9 @@ $i18n.'zh-hans'.radiant_grezs_spectral_lantern.option = $gslZh -f $rgslAp, $rgsl
 $cosnZh = "浩渺如群星：使你的总<$mrIcon> <#88ccffff>魔法抗性<>提升 <#88ccffff>{0}%<>。此外，获得 <#92dc7bff>{1}%<>（每 <#88ccffff>{2} 点<$mrIcon> 魔法抗性<> <#92dc7bff>+1%<>）<$sdrIcon> <#92dc7bff>技能伤害减免<>，最多 <#92dc7bff>{3}%<>。"
 $i18n.'zh-hans'.cloak_of_starry_night.option = $cosnZh -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
 $i18n.'zh-hans'.radiant_cloak_of_starry_night.option = $cosnZh -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
+$hamZh = "冲洗：你的<$critIcon> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>{2}秒<>内造成 <#d8c9b3ff>{0}<> - <#d8c9b3ff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#d45656ff>（+{3}% <$critIcon>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>{4}%减速<>。"
+$i18n.'zh-hans'.hamstringer.option = $hamZh -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
+$i18n.'zh-hans'.radiant_hamstringer.option = $hamZh -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1179,6 +1198,9 @@ $i18n.'pt-BR'.radiant_grezs_spectral_lantern.option = $gslPt -f $rgslAp, $rgslMa
 $cosnPt = "Inesgotável como as Estrelas: Aumenta sua <$mrIcon> <#88ccffff>Resistência Mágica<> total em <#88ccffff>{0}%<>. Além disso, concede <#92dc7bff>{1}%<> (<#92dc7bff>+1%<> a cada <#88ccffff>{2} de <$mrIcon> Resistência Mágica<>) de <$sdrIcon> <#92dc7bff>Redução de Dano de Habilidades<>, até um máximo de <#92dc7bff>{3}%<>."
 $i18n.'pt-BR'.cloak_of_starry_night.option = $cosnPt -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
 $i18n.'pt-BR'.radiant_cloak_of_starry_night.option = $cosnPt -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
+$hamPt = "Erosão: Seus <$critIcon> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#d8c9b3ff>{0}<> - <#d8c9b3ff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) <#d45656ff>(+{3}% <$critIcon>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>{2} segundos<> e aplicando <#d94c49ff>{4}% de lentidão<>."
+$i18n.'pt-BR'.hamstringer.option = $hamPt -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
+$i18n.'pt-BR'.radiant_hamstringer.option = $hamPt -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1350,6 +1372,9 @@ $i18n.ru.radiant_grezs_spectral_lantern.option = $gslRu -f $rgslAp, $rgslMaxAp, 
 $cosnRu = "Бесконечность звезд: Увеличивает ваше общее <$mrIcon> <#88ccffff>сопротивление магии<> на <#88ccffff>{0}%<>. Кроме того, даёт <#92dc7bff>{1}%<> (<#92dc7bff>+1%<> за каждые <#88ccffff>{2} <$mrIcon> сопротивления магии<>) <$sdrIcon> <#92dc7bff>снижения урона от умений<>, но не более <#92dc7bff>{3}%<>."
 $i18n.ru.cloak_of_starry_night.option = $cosnRu -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
 $i18n.ru.radiant_cloak_of_starry_night.option = $cosnRu -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
+$hamRu = "Разъедание: Ваши <$critIcon> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#d8c9b3ff>{0}<> - <#d8c9b3ff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#d45656ff>(+{3}% <$critIcon>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>{2} секунд<> и накладывая <#d94c49ff>замедление на {4}%<>."
+$i18n.ru.hamstringer.option = $hamRu -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
+$i18n.ru.radiant_hamstringer.option = $hamRu -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -1520,6 +1545,9 @@ $i18n.ko.radiant_grezs_spectral_lantern.option = $gslKo -f $rgslAp, $rgslMaxAp, 
 $cosnKo = "별과 같은 무한함: <$mrIcon> <#88ccffff>마법 저항력<>이 <#88ccffff>{0}%<> 증가합니다. 또한 <$sdrIcon> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>{1}%<> (<$mrIcon> <#88ccffff>마법 저항력 {2}<>당 <#92dc7bff>+1%<>) 얻으며, 최대 <#92dc7bff>{3}%<>까지 적용됩니다."
 $i18n.ko.cloak_of_starry_night.option = $cosnKo -f $cosnMr, $cosnSdr, $cosnPer, $cosnMax
 $i18n.ko.radiant_cloak_of_starry_night.option = $cosnKo -f $rcosnMr, $rcosnSdr, $rcosnPer, $rcosnMax
+$hamKo = "전소: <$critIcon> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>{2}초<>에 걸쳐 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>{0}<>~<#d8c9b3ff>{1}<> <#d45656ff>(+{3}% <$critIcon>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>{4}% 둔화<>시킵니다."
+$i18n.ko.hamstringer.option = $hamKo -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
+$i18n.ko.radiant_hamstringer.option = $hamKo -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {
@@ -1581,6 +1609,8 @@ Write-Host "  Grez's Spectral Lantern:         ${gslAp} AP/takedown up to ${gslM
 Write-Host "  Radiant Grez's Spectral Lantern: ${rgslAp} AP/takedown up to ${rgslMaxAp} / ${rgslBonus}% vs monsters / ${rgslHeal}% healed"
 Write-Host "  Cloak of Starry Night:         +${cosnMr}% MR / ${cosnSdr}% + 1% per ${cosnPer} MR skill dmg reduction (max ${cosnMax}%)"
 Write-Host "  Radiant Cloak of Starry Night: +${rcosnMr}% MR / ${rcosnSdr}% + 1% per ${rcosnPer} MR skill dmg reduction (max ${rcosnMax}%)"
+Write-Host "  Hamstringer:             ${hamMin} - ${hamMax} + ${hamCrit}% crit chance physical bleed over ${hamDur}s / ${hamSlow}% slow"
+Write-Host "  Radiant Hamstringer:     ${rhamMin} - ${rhamMax} + ${rhamCrit}% crit chance physical bleed over ${rhamDur}s / ${rhamSlow}% slow"
 Write-Host "  Spirit of the Spectral Wraith: ${sswAp} AP/takedown up to ${sswMaxAp} / ${sswBonus}% vs monsters / ${sswHeal}% healed"
 Write-Host "  Mirage Blade:            ${mbForce} force"
 Write-Host "  Radiant Mirage Blade:    ${rmbForce} force"

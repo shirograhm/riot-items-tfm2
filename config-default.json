@@ -1245,5 +1245,27 @@
     "effect_skill_damaged_reduce": 5,
     "effect_magic_resistance_per_reduce": 25,
     "effect_max_skill_damaged_reduce": 25
+  },
+  "hamstringer": {
+    "price": 1500,
+    "attack": 45,
+    "attack_speed_mult": 25,
+    "crit_chance": 20,
+    "effect_min_bonus_damage": 70,
+    "effect_max_bonus_damage": 180,
+    "effect_crit_percent_damage": 100.0,
+    "effect_slow_amount": 7,
+    "effect_duration_seconds": 3
+  },
+  "radiant_hamstringer": {
+    "price": 2200,
+    "attack": 70,
+    "attack_speed_mult": 40,
+    "crit_chance": 25,
+    "effect_min_bonus_damage": 125,
+    "effect_max_bonus_damage": 290,
+    "effect_crit_percent_damage": 100.0,
+    "effect_slow_amount": 7,
+    "effect_duration_seconds": 3
   }
 }

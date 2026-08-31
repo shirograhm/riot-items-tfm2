@@ -36,6 +36,7 @@ pub struct ItemConfig {
     pub effect_minion_damage_cap: Option<usize>,
     pub effect_ap_percent_damage: Option<f64>,
     pub effect_ad_percent_damage: Option<f64>,
+    pub effect_crit_percent_damage: Option<f64>,
     pub effect_bonus_flat_damage: Option<usize>,
     pub effect_min_bonus_damage: Option<usize>,
     pub effect_max_bonus_damage: Option<usize>,

@@ -778,6 +778,14 @@
         "radiant_cloak_of_starry_night": {
             "name": "Radiant Cloak of Starry Night",
             "option": "\nLimitless as the Stars: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> by <#88ccffff>20%<>. Additionally, gain <#92dc7bff>5%<> (<#92dc7bff>+1%<> per <#88ccffff>25 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>) <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>skill damage reduction<>, up to a maximum of <#92dc7bff>25%<>."
+        },
+        "hamstringer": {
+            "name": "Hamstringer",
+            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#d8c9b3ff>70<> - <#d8c9b3ff>180<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>3 seconds<> and applying a <#d94c49ff>7% slow<>."
+        },
+        "radiant_hamstringer": {
+            "name": "Radiant Hamstringer",
+            "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#d8c9b3ff>125<> - <#d8c9b3ff>290<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>3 seconds<> and applying a <#d94c49ff>7% slow<>."
         }
     },
     "vi": {
@@ -1559,6 +1567,14 @@
         "radiant_cloak_of_starry_night": {
             "name": "Áo Choàng Sao Đêm Ánh Sáng",
             "option": "\nTinh Tú Vô Tận: Tăng tổng <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Kháng Phép<> của bạn thêm <#88ccffff>20%<>. Ngoài ra, nhận <#92dc7bff>5%<> (<#92dc7bff>+1%<> mỗi <#88ccffff>25 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Kháng Phép<>) <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Giảm Sát thương Kỹ năng<>, tối đa <#92dc7bff>25%<>."
+        },
+        "hamstringer": {
+            "name": "Gươm Tê Liệt",
+            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#d8c9b3ff>70<> - <#d8c9b3ff>180<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>3 giây<> và gây <#d94c49ff>7% kiệt sức<>."
+        },
+        "radiant_hamstringer": {
+            "name": "Gươm Tê Liệt Ánh Sáng",
+            "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#d8c9b3ff>125<> - <#d8c9b3ff>290<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>3 giây<> và gây <#d94c49ff>7% kiệt sức<>."
         }
     },
     "zh-hans": {
@@ -2340,6 +2356,14 @@
         "radiant_cloak_of_starry_night": {
             "name": "光明版星夜斗篷",
             "option": "\n浩渺如群星：使你的总<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<>提升 <#88ccffff>20%<>。此外，获得 <#92dc7bff>5%<>（每 <#88ccffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<> <#92dc7bff>+1%<>）<i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>技能伤害减免<>，最多 <#92dc7bff>25%<>。"
+        },
+        "hamstringer": {
+            "name": "断筋者",
+            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>3秒<>内造成 <#d8c9b3ff>70<> - <#d8c9b3ff>180<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
+        },
+        "radiant_hamstringer": {
+            "name": "光明版断筋者",
+            "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>3秒<>内造成 <#d8c9b3ff>125<> - <#d8c9b3ff>290<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
         }
     },
     "pt-BR": {
@@ -3121,6 +3145,14 @@
         "radiant_cloak_of_starry_night": {
             "name": "Manto da Noite Estrelada Radiante",
             "option": "\nInesgotável como as Estrelas: Aumenta sua <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> total em <#88ccffff>20%<>. Além disso, concede <#92dc7bff>5%<> (<#92dc7bff>+1%<> a cada <#88ccffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<>) de <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Redução de Dano de Habilidades<>, até um máximo de <#92dc7bff>25%<>."
+        },
+        "hamstringer": {
+            "name": "Debilitador",
+            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#d8c9b3ff>70<> - <#d8c9b3ff>180<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>3 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
+        },
+        "radiant_hamstringer": {
+            "name": "Debilitador Radiante",
+            "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#d8c9b3ff>125<> - <#d8c9b3ff>290<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>3 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
         }
     },
     "ru": {
@@ -3902,6 +3934,14 @@
         "radiant_cloak_of_starry_night": {
             "name": "Лучезарная Мантия звездной ночи",
             "option": "\nБесконечность звезд: Увеличивает ваше общее <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> на <#88ccffff>20%<>. Кроме того, даёт <#92dc7bff>5%<> (<#92dc7bff>+1%<> за каждые <#88ccffff>25 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<>) <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>снижения урона от умений<>, но не более <#92dc7bff>25%<>."
+        },
+        "hamstringer": {
+            "name": "Выжигатель",
+            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#d8c9b3ff>70<> - <#d8c9b3ff>180<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>3 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
+        },
+        "radiant_hamstringer": {
+            "name": "Лучезарный Выжигатель",
+            "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#d8c9b3ff>125<> - <#d8c9b3ff>290<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>3 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
         }
     },
     "ko": {
@@ -4683,6 +4723,14 @@
         "radiant_cloak_of_starry_night": {
             "name": "찬란한 별빛밤 망토",
             "option": "\n별과 같은 무한함: <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>이 <#88ccffff>20%<> 증가합니다. 또한 <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>5%<> (<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 25<>당 <#92dc7bff>+1%<>) 얻으며, 최대 <#92dc7bff>25%<>까지 적용됩니다."
+        },
+        "hamstringer": {
+            "name": "불귀신",
+            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>3초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>70<>~<#d8c9b3ff>180<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
+        },
+        "radiant_hamstringer": {
+            "name": "찬란한 불귀신",
+            "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>3초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#d8c9b3ff>125<>~<#d8c9b3ff>290<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
         }
     }
 }
