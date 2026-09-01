@@ -214,7 +214,7 @@ impl StableItem for Hamstringer {
         attack_type: AttackTypeV1,
         is_crit: bool,
     ) {
-        if !is_crit || attack_type == AttackTypeV1::Item {
+        if !is_crit || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
         let Some(target_ref) = ctx.get_entity(target) else {

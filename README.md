@@ -26,10 +26,9 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 2
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Executioner's Calling** | 500G | +25 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
-| **Oblivion Orb** | 500G | +50 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
-| **Sheen** | 500G | +15% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
-
+| **Executioner's Calling** | 1300G | +45 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
+| **Oblivion Orb** | 1300G | +90 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
+| **Sheen** | 1300G | +25% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
 
 #### Tier 3
 | Item | Cost | Stats | Passive |
@@ -161,9 +160,9 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Locket of the Iron Solari** | 1650G | +300 HP<br>+75 Armor<br>+100 MR<br>+15% CDR | Legion: Grant 10 armor, 20 magic resistance, and 4 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Radiant Lord Dominik's Regards** | 2000G | +85 AD<br>+25% Crit Chance<br>+35% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Radiant Malignance** | 1900G | +200 AP<br>+20% CDR | Scorn: Gain 20% cooldown reduction on your ultimate skill. |
-| **Radiant Mortal Reminder** | 2000G | +85 AD<br>+25% Crit Chance<br>+30% Armor Pen | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Radiant Mirage Blade** | 2100G | +65% AS<br>+15% MS | Illusion: Gain 100 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Blur: On kill, gain 20% movement speed for 2 seconds. |
 | **Radiant Morellonomicon** | 1850G | +350 HP<br>+190 AP<br>+10% CDR | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 40% for 2 seconds. |
+| **Radiant Mortal Reminder** | 2000G | +85 AD<br>+25% Crit Chance<br>+30% Armor Pen | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Radiant Nashor's Tooth** | 2050G | +180 AP<br>+40% AS | Icathian Bite: Basic attacks deal bonus magic damage equal to 50 + 5% Ability Power. |
 | **Radiant Night Harvester** | 2000G | +500 HP<br>+160 AP<br>+10% CDR | Soulrend: Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Radiant Opportunity** | 1950G | +100 AD<br>+5% MS | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
