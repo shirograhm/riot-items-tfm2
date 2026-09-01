@@ -24,6 +24,8 @@ The item build editor currently only supports EN language for item and champion 
 
 Older saves that were using older version of this mod may experience lag spikes during the BP phase and in-game. This is being investigated, for now, current workaround for this is to use a new save.  
 
+This mod is largely untested in multiplayer. It should work, but the custom item builds will only follow the host's choices.  
+
 [h1] Instructions [/h1]
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
 
