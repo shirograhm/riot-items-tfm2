@@ -21,7 +21,7 @@ impl BlackfireTorch {
         Self {
             meta: ItemMeta::base(
                 "blackfire_torch",
-                &["staff_of_rapture"],
+                &["staff_of_rapture", "needlessly_large_rod"],
                 &["radiant_blackfire_torch"],
             ),
             stack_buff: "blackfire_torch_buff",

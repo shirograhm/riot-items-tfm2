@@ -18,7 +18,7 @@ impl RanduinsOmen {
         Self {
             meta: ItemMeta::base(
                 "randuins_omen",
-                &["black_knights_heavy_plate"],
+                &["black_knights_heavy_plate", "ring_of_reincarnation"],
                 &["radiant_randuins_omen"],
             ),
             price: 1500,

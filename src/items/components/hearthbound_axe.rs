@@ -53,7 +53,10 @@ impl StableItem for HearthboundAxe {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["feral_flare".to_string()]
+        vec![
+            "feral_flare".to_string(),
+            "blade_of_the_ruined_king".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffV1 {

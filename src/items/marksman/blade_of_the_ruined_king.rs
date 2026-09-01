@@ -21,7 +21,7 @@ impl BladeOfTheRuinedKing {
         Self {
             meta: ItemMeta::base(
                 "blade_of_the_ruined_king",
-                &["wind_dagger", "ruinous_blade"],
+                &["hearthbound_axe", "ruinous_blade"],
                 &["radiant_blade_of_the_ruined_king"],
             ),
             price: 1450,
