@@ -23,6 +23,13 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | --- | --- | --- | --- |
 | **Glowing Mote** | 500G | +10% CDR | — |
 
+#### Tier 2
+| Item | Cost | Stats | Passive |
+| --- | --- | --- | --- |
+| **Executioner's Calling** | 1300G | +45 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
+| **Oblivion Orb** | 1300G | +90 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
+| **Sheen** | 1300G | +25% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
+
 #### Tier 3
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
@@ -31,7 +38,6 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Bandleglass Mirror** | 650G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
 | **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |
 | **Caulfield's Warhammer** | 950G | +45 AD<br>+10% CDR | — |
-| **Executioner's Calling** | 1300G | +45 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Forbidden Idol** | 650G | +200 HP<br>+20 AP<br>+10% CDR | — |
 | **Glacial Buckler** | 800G | +50 Armor<br>+5% CDR | — |
 | **Haunting Guise** | 950G | +200 HP<br>+60 AP | — |
@@ -39,11 +45,9 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
 | **Noonquiver** | 800G | +45 AD<br>+10% Crit Chance | — |
-| **Oblivion Orb** | 1300G | +90 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Phage** | 950G | +200 HP<br>+30 AD | Rage: Basic attacks against enemy champions grant 5% movement speed for 2 seconds. |
 | **Scout's Slingshot** | 800G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Serrated Dirk** | 800G | +45 AD | Gain 10 Lethality. |
-| **Sheen** | 1300G | +25% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
 | **Steel Sigil** | 950G | +30 AD<br>+50 Armor | — |
 | **Winged Moonplate** | 800G | +250 HP<br>+4% MS | — |
 

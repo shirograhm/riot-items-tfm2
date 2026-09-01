@@ -52,7 +52,7 @@ impl StableItem for ExecutionersCalling {
     }
 
     fn tier(&self) -> usize {
-        2
+        1
     }
 
     fn previous_tier(&self) -> Vec<String> {
