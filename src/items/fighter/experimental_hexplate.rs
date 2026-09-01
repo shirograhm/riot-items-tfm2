@@ -18,7 +18,7 @@ impl ExperimentalHexplate {
         Self {
             meta: ItemMeta::base(
                 "experimental_hexplate",
-                &["ring_of_reincarnation"],
+                &["ring_of_reincarnation", "scouts_slingshot"],
                 &["radiant_experimental_hexplate"],
             ),
             price: 1200,

@@ -14,7 +14,11 @@ pub struct Malignance {
 impl Malignance {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("malignance", &["staff_of_rapture"], &["radiant_malignance"]),
+            meta: ItemMeta::base(
+                "malignance",
+                &["staff_of_rapture", "needlessly_large_rod"],
+                &["radiant_malignance"],
+            ),
             price: 1250,
             magic_power: 120,
             skill_cooldown_mult: 12,

@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 151 new items (86 base + 65 Radiant) to the game.
+Reskins the 30 existing items and also adds 153 new items (87 base + 66 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -64,7 +64,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Blade of the Ruined King** | 1450G | +50 AD<br>+25% AS<br>+5% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Bloodletter's Curse** | 1500G | +300 HP<br>+110 AP<br>+5% CDR | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Bloodsong** | 1050G | +200 HP<br>+20 AP<br>+25% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
-| **Cloak of Starry Night** | 1450G | +350 HP<br>+100 MR<br>+20% Total MR | Limitless as the Stars: Increase your total magic resistance by 20%. Additionally, gain 5% (+1% per 25 magic resistance) skill damage reduction, up to a maximum of 25%. |
+| **Cloak of Starry Night** | 1450G | +350 HP<br>+100 MR<br>+25% Total MR | Limitless as the Stars: Increase your total magic resistance by 20%. Additionally, gain 5% (+1% per 25 magic resistance) skill damage reduction, up to a maximum of 25%. |
 | **Collector** | 1450G | +60 AD<br>+20% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Dead Man's Plate** | 1450G | +300 HP<br>+55 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Deathblade** | 1400G | +90 AD | Apex: Increase your total Attack Damage by 15%. |
@@ -79,6 +79,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Frozen Mallet** | 1400G | +400 HP<br>+40 AD | Icy: Basic attacks apply a 15% slow for 2 seconds. |
 | **Grez's Spectral Lantern** | 1400G | +250 HP<br>+60 AP<br>+10% CDR | Spirit Drain: Gain 2 Ability Power for each champion takedown and monster killed, up to 40.<br>Butcher: Against monsters, deal 20% bonus magic damage and restore health equal to 4% of your damage dealt. |
 | **Guinsoo's Rageblade** | 1350G | +30 AD<br>+30 AP<br>+30% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
+| **Hamstringer** | 1450G | +45 AD<br>+25% AS<br>+20% Crit Chance | Scour: Your critical strikes bleed the target, dealing 70 - 180 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
 | **Heartsteel** | 1500G | +500 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
 | **Hubris** | 1300G | +70 AD<br>+10% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
@@ -134,7 +135,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Blade of the Ruined King** | 2100G | +60 AD<br>+50% AS<br>+10% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Bloodletter's Curse** | 2200G | +500 HP<br>+180 AP<br>+10% CDR | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Bloodsong** | 1500G | +400 HP<br>+40 AP<br>+35% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
-| **Radiant Cloak of Starry Night** | 2100G | +500 HP<br>+200 MR<br>+20% Total MR | Limitless as the Stars: Increase your total magic resistance by 20%. Additionally, gain 5% (+1% per 25 magic resistance) skill damage reduction, up to a maximum of 25%. |
+| **Radiant Cloak of Starry Night** | 2100G | +500 HP<br>+200 MR<br>+25% Total MR | Limitless as the Stars: Increase your total magic resistance by 20%. Additionally, gain 5% (+1% per 25 magic resistance) skill damage reduction, up to a maximum of 25%. |
 | **Radiant Collector** | 2100G | +105 AD<br>+25% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Radiant Dead Man's Plate** | 2100G | +650 HP<br>+70 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Radiant Deathblade** | 2000G | +140 AD | Apex: Increase your total Attack Damage by 25%. |
@@ -149,6 +150,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Frozen Mallet** | 2000G | +600 HP<br>+60 AD | Icy: Basic attacks deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
 | **Radiant Grez's Spectral Lantern** | 2000G | +350 HP<br>+120 AP<br>+10% CDR | Spirit Drain: Gain 2 Ability Power for each champion takedown and monster killed, up to 60.<br>Butcher: Against monsters, deal 30% bonus magic damage and restore health equal to 6% of your damage dealt. |
 | **Radiant Guinsoo's Rageblade** | 1900G | +50 AD<br>+50 AP<br>+50% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
+| **Radiant Hamstringer** | 2150G | +75 AD<br>+45% AS<br>+25% Crit Chance | Scour: Your critical strikes bleed the target, dealing 125 - 290 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
 | **Radiant Heartsteel** | 2100G | +800 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
 | **Radiant Hubris** | 1950G | +115 AD<br>+15% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |

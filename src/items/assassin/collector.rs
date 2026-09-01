@@ -1,10 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, percent_of, ticks, ItemMeta};
-
-// How long Taxes waits after a kill before the gold payout
-const PAYOUT_DELAY_SECONDS: f64 = 0.2;
+use crate::{apply_config, apply_lethality, percent_of, ticks, ItemMeta, PROC_DELAY_SECONDS};
 
 #[derive(Clone, Debug)]
 pub struct Collector {
@@ -164,7 +161,7 @@ impl StableItem for Collector {
 
         if victim_ref.is_champion() {
             self.pending_gold
-                .push((ticks(PAYOUT_DELAY_SECONDS), self.effect_bonus_gold as i64));
+                .push((ticks(PROC_DELAY_SECONDS), self.effect_bonus_gold as i64));
         }
     }
 

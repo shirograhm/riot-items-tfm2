@@ -22,7 +22,7 @@ impl EchoesOfHelia {
         Self {
             meta: ItemMeta::base(
                 "echoes_of_helia",
-                &["bandleglass_mirror"],
+                &["bandleglass_mirror", "forbidden_idol"],
                 &["radiant_echoes_of_helia"],
             ),
             price: 1100,

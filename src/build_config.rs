@@ -17,7 +17,7 @@
 //!   play" and the final whistle can reload them.
 //!
 //! Extension seams (intentional TODOs):
-//! - [`build_for_champion`] keys builds by champion id alone. Lineup-aware
+//! - [`build_for_champion`] keys builds by champion id and [`Role`]. Lineup-aware
 //!   selection — varying a champion's build by the enemy comp — would slot in
 //!   there, using the `ally_champions`/`enemy_champions` the item-build hook
 //!   already has in hand.
@@ -32,8 +32,14 @@ use std::sync::{Arc, Mutex, RwLock};
 /// Schema of `item-builds.json`: the whole file is a map of champion id -> build
 /// (there is no wrapper object).
 ///
-/// Key = champion id (the champions the hook receives as `team1`), value = an
-/// ordered list of build slots. Each slot is
+/// Key = champion id, optionally suffixed with `@role` (`"lancer"`,
+/// `"lancer@jungle"`); value = an ordered list of build slots.
+///
+/// A bare champion id is the [`Role`]-agnostic build, which is what every file
+/// written before the Role column contains — so an old file loads unchanged, and
+/// a file this version writes still loads in an older build of the mod, which
+/// sees the suffixed keys as champions it does not have. A suffixed key wins over
+/// the bare one when the champion is played in that role; see [`build_entry`]. Each slot is
 /// either an item key (a *pinned* item) or JSON `null` (a *blank* slot the game's
 /// AI fills). Pinned keys are resolved to their `radiant_` (tier 5) variant
 /// (`radiant_key`), then to the game's internal key for renamed items
@@ -190,7 +196,121 @@ pub fn picker_slots() -> usize {
     crate::tactics::driver::picker_slots()
 }
 
-/// One editable row of the in-game editor: a champion and its three slots.
+/// The role a build is written for.
+///
+/// `Any` is the default and the one every build had before this column existed:
+/// it applies wherever the champion is played. A role-specific build wins over
+/// `Any` when the champion is actually played in that role, which is the whole
+/// point of the column.
+///
+/// The order matches the game's own `Position` (and the stable API's `LaneV1`)
+/// from `Top` on, so a lane code indexes straight into [`Role::LANES`].
+#[derive(Default, Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum Role {
+    #[default]
+    Any,
+    Top,
+    Jungle,
+    Mid,
+    Bottom,
+    Support,
+}
+
+impl Role {
+    /// Every role, in the order the editor's dropdown offers them.
+    pub const ALL: [Role; 6] = [
+        Role::Any,
+        Role::Top,
+        Role::Jungle,
+        Role::Mid,
+        Role::Bottom,
+        Role::Support,
+    ];
+
+    /// The five real lanes, indexed by lane code (`Top` = 0), which is the order
+    /// both `LaneV1` and the route hook's `team1` use.
+    pub const LANES: [Role; 5] = [
+        Role::Top,
+        Role::Jungle,
+        Role::Mid,
+        Role::Bottom,
+        Role::Support,
+    ];
+
+    /// Label for the editor's Role column.
+    pub fn label(self) -> &'static str {
+        match self {
+            Role::Any => "Any",
+            Role::Top => "Top",
+            Role::Jungle => "Jungle",
+            Role::Mid => "Mid",
+            Role::Bottom => "Bot",
+            Role::Support => "Support",
+        }
+    }
+
+    /// The role a lane code names, or [`Role::Any`] for a code the host does not
+    /// map — an unknown lane must not silently answer to a real role's build.
+    pub fn from_lane_code(code: usize) -> Role {
+        Role::LANES.get(code).copied().unwrap_or(Role::Any)
+    }
+
+    /// Suffix this role carries in an `item-builds.json` key.
+    ///
+    /// `Any` has none: its build stays under the bare champion id, which is
+    /// exactly what every file written before roles existed contains. That is
+    /// what makes the format change invisible to an existing file — and what
+    /// makes a file this version writes still readable by one that predates it,
+    /// which sees the suffixed keys as champions it does not have and ignores
+    /// them.
+    fn suffix(self) -> Option<&'static str> {
+        match self {
+            Role::Any => None,
+            Role::Top => Some("top"),
+            Role::Jungle => Some("jungle"),
+            Role::Mid => Some("mid"),
+            Role::Bottom => Some("bot"),
+            Role::Support => Some("support"),
+        }
+    }
+
+    fn from_suffix(suffix: &str) -> Option<Role> {
+        Role::ALL
+            .iter()
+            .copied()
+            .find(|role| role.suffix() == Some(suffix))
+    }
+}
+
+/// Splits a stored key into the champion it names and the role it is written
+/// for. A key with no `@` — or with a suffix this version does not know — is an
+/// [`Role::Any`] build for the whole key, so an unrecognised suffix degrades to
+/// "some champion we have no build for" rather than to the wrong role.
+pub fn split_build_key(key: &str) -> (&str, Role) {
+    match key.rsplit_once(ROLE_SEPARATOR) {
+        Some((champion, suffix)) => match Role::from_suffix(suffix) {
+            Some(role) => (champion, role),
+            None => (key, Role::Any),
+        },
+        None => (key, Role::Any),
+    }
+}
+
+/// The key a row is stored under: the champion id for [`Role::Any`], and
+/// `champion@role` for anything else.
+pub fn build_key(champion: &str, role: Role) -> String {
+    match role.suffix() {
+        Some(suffix) => format!("{champion}{ROLE_SEPARATOR}{suffix}"),
+        None => champion.to_string(),
+    }
+}
+
+/// Separator between champion and role in a stored key. `@` cannot occur in a
+/// champion id, which are all snake_case, so the split is unambiguous.
+const ROLE_SEPARATOR: char = '@';
+
+/// One editable row of the in-game editor: a champion, the role it is for, and
+/// its three slots.
 ///
 /// The champion is optional because a freshly added row has not been assigned
 /// one yet. Such a row is kept in the editor but never written, since a build
@@ -198,6 +318,9 @@ pub fn picker_slots() -> usize {
 #[derive(Default, Clone, Debug, PartialEq)]
 pub struct ChampionRow {
     pub champion: Option<String>,
+    /// Which role this build is for. Defaults to [`Role::Any`], so a row added
+    /// without touching the column behaves as every row did before.
+    pub role: Role,
     pub slots: Vec<Option<String>>,
 }
 
@@ -232,7 +355,8 @@ pub fn load_champion_rows() -> Vec<ChampionRow> {
     };
 
     map.into_iter()
-        .map(|(champion, value)| {
+        .map(|(key, value)| {
+            let (champion, role) = split_build_key(&key);
             let mut slots: Vec<Option<String>> = value
                 .as_array()
                 .map(|items| {
@@ -250,7 +374,8 @@ pub fn load_champion_rows() -> Vec<ChampionRow> {
                 slots.resize(picker_slots(), None);
             }
             ChampionRow {
-                champion: Some(champion),
+                champion: Some(champion.to_string()),
+                role,
                 slots,
             }
         })
@@ -259,9 +384,9 @@ pub fn load_champion_rows() -> Vec<ChampionRow> {
 
 /// Writes the complete rows back to `item-builds.json`, in row order.
 ///
-/// Incomplete rows are skipped and a later row with the same champion wins, so
-/// the file only ever holds builds that mean something. Returns false when it
-/// could not be written.
+/// Incomplete rows are skipped and a later row with the same champion *and
+/// role* wins, so one champion can hold an `Any` build alongside a build for
+/// each role it is played in. Returns false when it could not be written.
 pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
     let Ok(path) = config_path() else {
         return false;
@@ -279,7 +404,7 @@ pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
                 None => serde_json::Value::Null,
             })
             .collect();
-        map.insert(champion.clone(), serde_json::Value::Array(slots));
+        map.insert(build_key(champion, row.role), serde_json::Value::Array(slots));
     }
 
     let written = serde_json::to_string_pretty(&map)
@@ -367,13 +492,91 @@ fn pins() -> Option<Arc<HashMap<String, Vec<Option<String>>>>> {
     PINS.lock().ok()?.clone()
 }
 
-/// Whether this champion has any pinned item, which is what makes it worth
-/// looking up slot by slot.
+/// Whether this champion has any pinned item in the role it is being played,
+/// which is what makes it worth looking up slot by slot.
+///
+/// The role comes from [`role_for_champion`] rather than from the caller: the
+/// buy detour reads this from inside an athlete hook that has the champion key
+/// and nothing else, so the lineup snapshot is what supplies the missing half.
 pub fn has_pins(champion: &str) -> bool {
+    let role = role_for_champion(champion);
     pins().is_some_and(|pins| {
-        pins.get(champion)
-            .is_some_and(|build| build.iter().any(Option::is_some))
+        pin_entry(&pins, champion, role).is_some_and(|build| build.iter().any(Option::is_some))
     })
+}
+
+/// [`build_entry`] over the pin snapshot: the role's build first, `Any` second.
+fn pin_entry<'a>(
+    pins: &'a HashMap<String, Vec<Option<String>>>,
+    champion: &str,
+    role: Role,
+) -> Option<&'a Vec<Option<String>>> {
+    if role != Role::Any {
+        if let Some(build) = pins.get(&build_key(champion, role)) {
+            return Some(build);
+        }
+    }
+    pins.get(champion)
+}
+
+// ---------------------------------------------------------------------------
+//  Lineup roles, for the half that only knows the champion
+// ---------------------------------------------------------------------------
+//
+// The stable item-build hook is told the lane outright. The buy detour is not:
+// it resolves pins from inside an athlete spawn hook whose only handle on
+// identity is the champion key, and finding the position on the athlete struct
+// would mean a new offset in the part of this mod that breaks on every game
+// update.
+//
+// It does not need one. The route detour is handed `team1` position-ordered
+// (Top = 0), so recording champion -> role there hands the buy detour the same
+// answer with no memory work at all. The map is best effort by construction:
+// routes are built for every fixture on a league day, on parallel workers, so a
+// champion played in two simultaneous matches at two positions keeps whichever
+// was recorded last. The cost of losing that race is one build applied at the
+// wrong role, in a match the player is not watching.
+
+static LINEUP_ROLES: Mutex<Option<Arc<HashMap<String, Role>>>> = Mutex::new(None);
+
+/// Records a lineup's champion -> role mapping from a position-ordered roster.
+///
+/// Entries beyond the five lanes are ignored rather than wrapped: a longer
+/// roster than the map has positions for is not something to guess about.
+pub fn record_lineup_roles(champions: &[String]) {
+    let mut roles: HashMap<String, Role> = match lineup_roles() {
+        Some(existing) => (*existing).clone(),
+        None => HashMap::new(),
+    };
+    let mut changed = false;
+    for (index, champion) in champions.iter().enumerate() {
+        let role = Role::from_lane_code(index);
+        if role == Role::Any {
+            continue;
+        }
+        if roles.get(champion) != Some(&role) {
+            roles.insert(champion.clone(), role);
+            changed = true;
+        }
+    }
+    if !changed {
+        return;
+    }
+    if let Ok(mut cache) = LINEUP_ROLES.lock() {
+        *cache = Some(Arc::new(roles));
+    }
+}
+
+fn lineup_roles() -> Option<Arc<HashMap<String, Role>>> {
+    LINEUP_ROLES.lock().ok()?.clone()
+}
+
+/// The role a champion was last seen playing, or [`Role::Any`] when no lineup
+/// has named it — which is also what makes the `Any` build the answer.
+pub fn role_for_champion(champion: &str) -> Role {
+    lineup_roles()
+        .and_then(|roles| roles.get(champion).copied())
+        .unwrap_or(Role::Any)
 }
 
 /// The pinned item for one slot, exactly as written in the file.
@@ -383,7 +586,8 @@ pub fn has_pins(champion: &str) -> bool {
 /// item that has to be found by name.
 pub fn pinned_key_raw(champion: &str, slot: usize) -> Option<String> {
     let pins = pins()?;
-    pins.get(champion)?.get(slot)?.clone()
+    let role = role_for_champion(champion);
+    pin_entry(&pins, champion, role)?.get(slot)?.clone()
 }
 
 /// The pinned item for one slot, normalized the way [`resolve_key`] normalizes
@@ -512,16 +716,36 @@ pub fn own_team_only_enabled() -> bool {
 pub fn build_for_champion(
     config: &BuildConfig,
     champion: &str,
+    role: Role,
     resolve: impl Fn(&str) -> Option<usize>,
     ai_build: &[usize],
 ) -> Option<Vec<usize>> {
-    let build = config.by_champion.get(champion)?;
+    let build = build_entry(config, champion, role)?;
     // A build may be longer than the game has slots for — the file keeps a
     // fourth item while 3-slot mode is on, so that switching back restores the
     // build. Sending that item anyway would hand the game a slot it cannot put
     // anywhere.
     let usable = build.len().min(picker_slots());
     Some(merge_build(&build[..usable], ai_build, &resolve))
+}
+
+/// The build a champion uses in `role`: the role's own if one is written, and
+/// the [`Role::Any`] build otherwise.
+///
+/// This ordering is the whole contract of the Role column — a build written for
+/// Jungle beats the catch-all when the champion is actually jungling, and the
+/// catch-all still covers every role nobody wrote a build for.
+fn build_entry<'a>(
+    config: &'a BuildConfig,
+    champion: &str,
+    role: Role,
+) -> Option<&'a Vec<Option<String>>> {
+    if role != Role::Any {
+        if let Some(build) = config.by_champion.get(&build_key(champion, role)) {
+            return Some(build);
+        }
+    }
+    config.by_champion.get(champion)
 }
 
 /// Resolves one configured item key to a pool index. The key is normalized to

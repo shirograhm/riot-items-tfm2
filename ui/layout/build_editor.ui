@@ -122,13 +122,25 @@ build_editor:empty {
       #c_champion:label {
         @"asset/base/style/main#label";
         x: 8px;
-        width: 280px;
+        width: 224px;
         height: 32px;
         align_x: Left;
         align_y: Center;
         size: 13;
         color: #a5a5abff;
         text: "CHAMPION";
+      }
+
+      #c_role:label {
+        @"asset/base/style/main#label";
+        x: 240px;
+        width: 100px;
+        height: 32px;
+        align_x: Left;
+        align_y: Center;
+        size: 13;
+        color: #a5a5abff;
+        text: "ROLE";
       }
 
       #c_item1:label {
@@ -427,6 +439,58 @@ build_editor:empty {
 
       #contents:empty {
         width: 304px;
+        height: auto;
+
+        child_type: TopToBottom {
+          spacing: 0px;
+        }
+      }
+    }
+  }
+
+  #rolelist:empty {
+    visible: false;
+
+    width: 160px;
+    height: 186px;
+    z: 400;
+
+    #panel:color {
+      width: 160px;
+      height: 186px;
+
+      color: #0f1016ff;
+
+      rounding: Uniform {
+        rounding: 6;
+      }
+    }
+
+    #list:scroll_view {
+      x: 3px;
+      y: 3px;
+      width: 154px;
+      height: 180px;
+
+      speed: 100;
+
+      bar_width: 4;
+      bar: {
+        source: "asset/base/sprite/white";
+        color: #60ddc2ff;
+
+        hover: {
+          color: #ecfbf8ff;
+        }
+      }
+
+      back: {
+        source: "asset/base/sprite/white";
+        color: #4a4c56ff;
+      }
+
+      #contents:empty {
+        width: 144px;
         height: auto;
 
         child_type: TopToBottom {

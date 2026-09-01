@@ -54,6 +54,7 @@ impl StableItem for Noonquiver {
 
     fn next_tier(&self) -> Vec<String> {
         vec![
+            "hamstringer".to_string(),
             "stormrazor".to_string(),
             "yun_tal_wildarrows".to_string(),
             "collector".to_string(),

@@ -18,7 +18,7 @@ impl RylaisCrystalScepter {
         Self {
             meta: ItemMeta::base(
                 "rylais_crystal_scepter",
-                &["hardened_heart", "needlessly_large_rod"],
+                &["haunting_guise", "needlessly_large_rod"],
                 &["radiant_rylais_crystal_scepter"],
             ),
             price: 1350,

@@ -53,7 +53,10 @@ impl StableItem for GlacialBuckler {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["frozen_heart".to_string()]
+        vec![
+            "frozen_heart".to_string(),
+            "protectors_vow".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffV1 {

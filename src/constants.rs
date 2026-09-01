@@ -21,6 +21,23 @@ pub(crate) const TICKS_PER_SECOND: f64 = 60.0;
 pub(crate) const BUFF_REFRESH_DURATION_TICKS: usize = 60;
 pub(crate) const BUFF_REFRESH_PERIOD_TICKS: usize = 58;
 
+/// How long an on-hit effect waits before its own damage or payout lands.
+///
+/// An effect resolved straight out of `on_attack` or `on_kill` happens in the
+/// same instant as the event carrying it, so the two read as one number on
+/// screen instead of the item's proc reading as its own. A fifth of a second is
+/// enough to separate them without the proc feeling detached from the hit.
+pub(crate) const PROC_DELAY_SECONDS: f64 = 0.2;
+
+/// Ticks between the instances of a damage-over-time effect — five a second at
+/// [`TICKS_PER_SECOND`].
+///
+/// A DoT is modelled as a fixed number of instances rather than a per-tick
+/// trickle, so this also sets how finely a duration divides: the instance count
+/// is the duration over this, and a duration shorter than one interval still
+/// lands one instance.
+pub(crate) const DOT_TICK_RATE: usize = 12;
+
 /// Timings for an *aura* buff — one an item grants to other entities based on
 /// where they are standing, rather than to its own carrier.
 ///
