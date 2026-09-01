@@ -15,7 +15,7 @@ impl Default for OblivionOrb {
     fn default() -> Self {
         Self {
             price: 1300,
-            magic_power: 80,
+            magic_power: 90,
             effect_heal_reduce: 25,
             effect_duration_seconds: 2.0,
         }

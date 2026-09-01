@@ -15,7 +15,7 @@ impl Default for ExecutionersCalling {
     fn default() -> Self {
         Self {
             price: 1300,
-            attack: 40,
+            attack: 45,
             effect_heal_reduce: 25,
             effect_duration_seconds: 2.0,
         }

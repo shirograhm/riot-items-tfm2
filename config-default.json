@@ -1,7 +1,7 @@
 {
   "executioners_calling": {
     "price": 1300,
-    "attack": 40,
+    "attack": 45,
     "effect_heal_reduce": 25,
     "effect_duration_seconds": 2
   },
@@ -27,7 +27,7 @@
   },
   "oblivion_orb": {
     "price": 1300,
-    "magic_power": 80,
+    "magic_power": 90,
     "effect_heal_reduce": 25,
     "effect_duration_seconds": 2
   },
@@ -251,6 +251,7 @@
     "price": 1300,
     "hp": 350,
     "defence": 50,
+    "skill_cooldown_mult": 5,
     "effect_bonus_flat_hp": 50,
     "effect_caster_defence_percent_hp": 80.0
   },
