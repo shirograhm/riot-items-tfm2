@@ -16,11 +16,11 @@
             "option": "Effect"
         },
         "tier_header": {
-            "1": "Tier 1",
-            "2": "Tier 2",
-            "3": "Tier 3",
-            "4": "Tier 4",
-            "5": "Tier 5"
+            "1": "Starter Items",
+            "2": "Basic Items",
+            "3": "Epic Items",
+            "4": "Legendary Items",
+            "5": "Radiant Items"
         },
         "related": {
             "sub_items": "Builds From",
@@ -805,11 +805,11 @@
             "option": "Hiệu Ứng"
         },
         "tier_header": {
-            "1": "Bậc 1",
-            "2": "Bậc 2",
-            "3": "Bậc 3",
-            "4": "Bậc 4",
-            "5": "Bậc 5"
+            "1": "Trang Bị Khởi Đầu",
+            "2": "Trang Bị Cơ Bản",
+            "3": "Trang Bị Sử Thi",
+            "4": "Trang Bị Huyền Thoại",
+            "5": "Trang Bị Ánh Sáng"
         },
         "related": {
             "sub_items": "Ghép từ",
@@ -1594,11 +1594,11 @@
             "option": "效果"
         },
         "tier_header": {
-            "1": "1阶",
-            "2": "2阶",
-            "3": "3阶",
-            "4": "4阶",
-            "5": "5阶"
+            "1": "起始装备",
+            "2": "基础装备",
+            "3": "史诗装备",
+            "4": "传说装备",
+            "5": "光明装备"
         },
         "related": {
             "sub_items": "合成配方",
@@ -2383,11 +2383,11 @@
             "option": "Efeito"
         },
         "tier_header": {
-            "1": "Tier 1",
-            "2": "Tier 2",
-            "3": "Tier 3",
-            "4": "Tier 4",
-            "5": "Tier 5"
+            "1": "Itens Iniciais",
+            "2": "Itens Básicos",
+            "3": "Itens Épicos",
+            "4": "Itens Lendários",
+            "5": "Itens Radiantes"
         },
         "related": {
             "sub_items": "Componentes",
@@ -3172,11 +3172,11 @@
             "option": "Эффект"
         },
         "tier_header": {
-            "1": "Уровень 1",
-            "2": "Уровень 2",
-            "3": "Уровень 3",
-            "4": "Уровень 4",
-            "5": "Уровень 5"
+            "1": "Стартовые Предметы",
+            "2": "Базовые Предметы",
+            "3": "Эпические Предметы",
+            "4": "Легендарные Предметы",
+            "5": "Лучезарные Предметы"
         },
         "related": {
             "sub_items": "Компоненты",
@@ -3961,11 +3961,11 @@
             "option": "효과"
         },
         "tier_header": {
-            "1": "1등급",
-            "2": "2등급",
-            "3": "3등급",
-            "4": "4등급",
-            "5": "5등급"
+            "1": "시작 아이템",
+            "2": "기본 아이템",
+            "3": "서사 아이템",
+            "4": "전설 아이템",
+            "5": "찬란한 아이템"
         },
         "related": {
             "sub_items": "조합 재료",
