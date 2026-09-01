@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
@@ -15,6 +15,7 @@ pub struct Heartsteel {
     effect_bonus_hp_percent_of_damage: f64,
     effect_cooldown_seconds: f64,
     accumulated_bonus_hp: i32,
+    procs: ProcQueue,
 }
 
 impl Heartsteel {
@@ -35,6 +36,7 @@ impl Heartsteel {
             effect_cooldown_seconds: 20.0,
             // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
+            procs: ProcQueue::new(),
         }
     }
 
@@ -121,6 +123,8 @@ impl StableItem for Heartsteel {
     }
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        self.procs.clear();
+
         let Some(player_ref) = ctx.get_player(player) else {
             return;
         };
@@ -169,7 +173,9 @@ impl StableItem for Heartsteel {
             caster,
             &BuffV1::timed(self.cooldown_buff, ticks(self.effect_cooldown_seconds)),
         );
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
+        // The banked health is priced off the damage this swing earned and is
+        // granted with the swing; only the damage number waits.
+        self.procs.push_physical(ctx, target, bonus_damage);
         ctx.add_buff(
             caster,
             &BuffV1 {
@@ -178,6 +184,11 @@ impl StableItem for Heartsteel {
             },
         );
         self.accumulated_bonus_hp += bonus_hp;
+    }
+
+    /// Lands the Colossal Consumption damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     /// Colossal Consumption's banked HP is permanent, so it crosses the Radiant

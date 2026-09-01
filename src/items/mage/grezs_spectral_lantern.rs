@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ItemMeta};
+use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct GrezsSpectralLantern {
@@ -17,6 +17,7 @@ pub struct GrezsSpectralLantern {
     effect_bonus_hp_percent_of_damage: f64,
     // Non-vital stats (internals)
     accumulated_stacks: usize,
+    procs: ProcQueue,
 }
 
 impl GrezsSpectralLantern {
@@ -38,6 +39,7 @@ impl GrezsSpectralLantern {
             effect_bonus_hp_percent_of_damage: 4.0,
             // Non-vital stats (internals)
             accumulated_stacks: 0,
+            procs: ProcQueue::new(),
         }
     }
 
@@ -151,6 +153,10 @@ impl StableItem for GrezsSpectralLantern {
     /// Spirit Drain is permanent, so the Ability Power earned so far is
     /// re-applied each spawn from the banked count.
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        // Ahead of the early return below: a proc left over from the last
+        // fight has to go whether or not any power has been drained yet.
+        self.procs.clear();
+
         if self.accumulated_stacks == 0 {
             return;
         }
@@ -197,8 +203,15 @@ impl StableItem for GrezsSpectralLantern {
         let bonus = percent_of(*damage, self.effect_percent_bonus_damage);
         let heal = percent_of(*damage + bonus, self.effect_bonus_hp_percent_of_damage);
 
-        ctx.deal_damage(caster, target, 0, bonus, AttackTypeV1::Item);
+        // The heal is taken off the whole hit and lands with it; only the
+        // bonus damage waits, so it reads as its own number on the monster.
+        self.procs.push_magic(ctx, target, bonus);
         ctx.heal(caster, caster, heal);
+    }
+
+    /// Lands the Butcher bonus whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn on_kill(

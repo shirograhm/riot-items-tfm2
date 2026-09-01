@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, percent_of, ticks, ItemMeta};
+use crate::{apply_config, apply_lethality, percent_of, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct VoltaicCyclosword {
@@ -19,6 +19,7 @@ pub struct VoltaicCyclosword {
     energized_update_tick: usize,
     /// Ticks left on Firmament's bonus lethality
     firmament_ticks: usize,
+    procs: ProcQueue,
 }
 
 impl VoltaicCyclosword {
@@ -42,6 +43,7 @@ impl VoltaicCyclosword {
             energized_stacks: 0,
             energized_update_tick: 0,
             firmament_ticks: 0,
+            procs: ProcQueue::new(),
         }
     }
 
@@ -145,6 +147,7 @@ impl StableItem for VoltaicCyclosword {
         self.energized_stacks = 0;
         self.energized_update_tick = 0;
         self.firmament_ticks = 0;
+        self.procs.clear();
     }
 
     fn on_attack(
@@ -170,7 +173,10 @@ impl StableItem for VoltaicCyclosword {
                 bonus_damage = bonus_damage.min(self.effect_minion_damage_cap);
             }
 
-            ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
+            // The percentage is taken off the health the target had when the
+            // charged swing landed, not the health it has once the proc
+            // arrives, so the number matches the hit that earned it.
+            self.procs.push_physical(ctx, target, bonus_damage);
             self.firmament_ticks = ticks(self.effect_duration_seconds);
             self.energized_stacks = 0;
         }
@@ -183,7 +189,9 @@ impl StableItem for VoltaicCyclosword {
         }
     }
 
-    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
+
         self.firmament_ticks = self.firmament_ticks.saturating_sub(1);
 
         // Add 1 energized stack per 0.2 seconds

@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct NightHarvester {
@@ -17,6 +17,8 @@ pub struct NightHarvester {
     effect_move_speed_mult: i32,
     effect_duration_seconds: f64,
     effect_cooldown_seconds: f64,
+    // Non-vital stats (internals)
+    procs: ProcQueue,
 }
 
 impl NightHarvester {
@@ -38,6 +40,8 @@ impl NightHarvester {
             effect_move_speed_mult: 40,
             effect_duration_seconds: 2.0,
             effect_cooldown_seconds: 45.0,
+            // Non-vital stats (internals)
+            procs: ProcQueue::new(),
         }
     }
 
@@ -161,7 +165,9 @@ impl StableItem for NightHarvester {
             target,
             &BuffV1::timed(self.cooldown_buff, ticks(self.effect_cooldown_seconds)),
         );
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
+        // Soulrend's haste is the carrier's reward for the cast and lands with
+        // it; only the Soulrend damage waits out the delay.
+        self.procs.push_magic(ctx, target, bonus_damage);
         ctx.add_buff(
             caster,
             &BuffV1 {
@@ -169,6 +175,15 @@ impl StableItem for NightHarvester {
                 ..BuffV1::timed(self.soulrend_buff, ticks(self.effect_duration_seconds))
             },
         );
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.procs.clear();
+    }
+
+    /// Lands the Soulrend damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
