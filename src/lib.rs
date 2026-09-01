@@ -9,6 +9,7 @@ mod item_build_hook;
 mod item_catalog;
 mod item_meta;
 mod items;
+mod proc_queue;
 mod solo_rank_ui;
 mod strategy_ui;
 mod tactics;
@@ -17,6 +18,7 @@ use items::*;
 
 pub(crate) use constants::*;
 pub(crate) use item_meta::ItemMeta;
+pub(crate) use proc_queue::ProcQueue;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize

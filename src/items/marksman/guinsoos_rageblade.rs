@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, buff_stacks, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct GuinsoosRageblade {
@@ -15,6 +15,7 @@ pub struct GuinsoosRageblade {
     effect_stack_attack_speed_mult: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
+    procs: ProcQueue,
 }
 
 impl GuinsoosRageblade {
@@ -34,6 +35,8 @@ impl GuinsoosRageblade {
             effect_stack_attack_speed_mult: 8,
             effect_max_stacks: 4,
             effect_duration_seconds: 4.0,
+            // Non-vital stats (internals)
+            procs: ProcQueue::new(),
         }
     }
 
@@ -146,13 +149,8 @@ impl StableItem for GuinsoosRageblade {
 
         let stack_count = buff_stacks(&caster_ref, self.stack_buff);
 
-        ctx.deal_damage(
-            caster,
-            target,
-            0,
-            self.effect_bonus_magic_damage,
-            AttackTypeV1::Item,
-        );
+        self.procs
+            .push_magic(ctx, target, self.effect_bonus_magic_damage);
         if stack_count < self.effect_max_stacks {
             ctx.add_buff(
                 caster,
@@ -162,6 +160,15 @@ impl StableItem for GuinsoosRageblade {
                 },
             );
         }
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.procs.clear();
+    }
+
+    /// Lands the on-hit damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
