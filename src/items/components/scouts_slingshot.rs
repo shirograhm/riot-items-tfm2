@@ -72,6 +72,7 @@ impl StableItem for ScoutsSlingshot {
             "kraken_slayer".to_string(),
             "wits_end".to_string(),
             "experimental_hexplate".to_string(),
+            "terminus".to_string(),
         ]
     }
 

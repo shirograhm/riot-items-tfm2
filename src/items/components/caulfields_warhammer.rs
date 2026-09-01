@@ -53,7 +53,10 @@ impl StableItem for CaulfieldsWarhammer {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["eclipse".to_string()]
+        vec![
+            "eclipse".to_string(),
+            "deaths_dance".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffV1 {

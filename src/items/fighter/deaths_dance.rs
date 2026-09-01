@@ -25,7 +25,11 @@ pub struct DeathsDance {
 impl DeathsDance {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("deaths_dance", &["steel_sigil"], &["radiant_deaths_dance"]),
+            meta: ItemMeta::base(
+                "deaths_dance",
+                &["steel_sigil", "caulfields_warhammer"],
+                &["radiant_deaths_dance"],
+            ),
             burn_buff: "deaths_dance_burn",
             price: 1450,
             attack: 45,
