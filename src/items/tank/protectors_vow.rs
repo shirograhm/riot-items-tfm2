@@ -23,14 +23,14 @@ impl ProtectorsVow {
         Self {
             meta: ItemMeta::base(
                 "protectors_vow",
-                &["ring_of_reincarnation", "gatekeepers_armor"],
+                &["ring_of_reincarnation", "glacial_buckler"],
                 &["radiant_protectors_vow"],
             ),
             awe_buff: "protectors_vow_awe",
             price: 1300,
             hp: 350,
             defence: 50,
-            skill_cooldown_mult: 0,
+            skill_cooldown_mult: 5,
             effect_bonus_flat_hp: 50,
             effect_caster_defence_percent_hp: 80.0,
             // Non-vital stats (internals)

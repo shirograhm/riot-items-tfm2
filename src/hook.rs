@@ -552,6 +552,17 @@ unsafe fn detour(
     // one match, so the item-build hook cannot produce this list.
     build_config::record_champion_roster(champion_ids);
 
+    // `team1` arrives position-ordered (Top = 0), which is the one place in the
+    // process that states a champion's role without reading it off a struct.
+    // The buy detour resolves pins knowing only the champion key, so it reads
+    // the role back out of here — see `build_config::role_for_champion`.
+    build_config::record_lineup_roles(
+        &team1
+            .iter()
+            .map(|(_, champion)| champion.clone())
+            .collect::<Vec<_>>(),
+    );
+
     // The routes are returned exactly as the game made them. Builds are decided
     // in `crate::item_build_hook` now, on the stable API, where the champion a
     // build belongs to is stated rather than inferred from route order.

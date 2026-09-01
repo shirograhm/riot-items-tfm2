@@ -4,6 +4,7 @@ items! {
     blackfire_torch,
     bloodletters_curse,
     dusk_and_dawn,
+    grezs_spectral_lantern,
     hextech_gunblade,
     liandrys_torment,
     malignance,

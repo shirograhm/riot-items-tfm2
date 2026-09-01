@@ -18,7 +18,7 @@ impl NashorsTooth {
         Self {
             meta: ItemMeta::base(
                 "nashors_tooth",
-                &["needlessly_large_rod", "wind_dagger"],
+                &["needlessly_large_rod"],
                 &["radiant_nashors_tooth"],
             ),
             price: 1450,

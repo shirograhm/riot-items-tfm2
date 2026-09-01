@@ -2,6 +2,7 @@
 
 items! {
     atmas_reckoning,
+    cloak_of_starry_night,
     dead_mans_plate,
     frozen_heart,
     heartsteel,

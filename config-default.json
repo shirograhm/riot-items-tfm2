@@ -1,7 +1,7 @@
 {
   "executioners_calling": {
-    "price": 500,
-    "attack": 25,
+    "price": 1300,
+    "attack": 45,
     "effect_heal_reduce": 25,
     "effect_duration_seconds": 2
   },
@@ -26,8 +26,8 @@
     "effect_duration_seconds": 2
   },
   "oblivion_orb": {
-    "price": 500,
-    "magic_power": 50,
+    "price": 1300,
+    "magic_power": 90,
     "effect_heal_reduce": 25,
     "effect_duration_seconds": 2
   },
@@ -251,6 +251,7 @@
     "price": 1300,
     "hp": 350,
     "defence": 50,
+    "skill_cooldown_mult": 5,
     "effect_bonus_flat_hp": 50,
     "effect_caster_defence_percent_hp": 80.0
   },
@@ -795,27 +796,27 @@
     "effect_cooldown_seconds": 20
   },
   "sheen": {
-    "price": 500,
-    "attack_speed_mult": 15,
+    "price": 1300,
+    "attack_speed_mult": 25,
     "skill_cooldown_mult": 10,
     "effect_min_bonus_damage": 30,
     "effect_max_bonus_damage": 85,
     "effect_cooldown_seconds": 1.5
   },
   "trinity_force": {
-    "price": 1400,
+    "price": 1500,
     "hp": 200,
     "attack": 30,
-    "attack_speed_mult": 15,
+    "attack_speed_mult": 25,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 33,
     "effect_ad_percent_damage": 33.0,
     "effect_cooldown_seconds": 3.5
   },
   "radiant_trinity_force": {
-    "price": 2000,
+    "price": 2100,
     "hp": 333,
-    "attack": 33,
+    "attack": 50,
     "attack_speed_mult": 33,
     "skill_cooldown_mult": 20,
     "effect_bonus_flat_damage": 33,
@@ -825,8 +826,8 @@
   "dusk_and_dawn": {
     "price": 1400,
     "hp": 200,
-    "magic_power": 75,
-    "attack_speed_mult": 15,
+    "magic_power": 60,
+    "attack_speed_mult": 25,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 85,
     "effect_ap_percent_damage": 15.0,
@@ -837,9 +838,9 @@
   "radiant_dusk_and_dawn": {
     "price": 2000,
     "hp": 300,
-    "magic_power": 125,
+    "magic_power": 150,
     "attack_speed_mult": 25,
-    "skill_cooldown_mult": 20,
+    "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 85,
     "effect_ap_percent_damage": 15.0,
     "effect_caster_ap_percent_heal": 10.0,
@@ -1015,7 +1016,7 @@
     "effect_duration_seconds": 5.0,
     "effect_shield_seconds": 3.0,
     "effect_min_shield": 35,
-    "effect_max_shield": 145
+    "effect_max_shield": 90
   },
   "radiant_rite_of_ruin": {
     "price": 2000,
@@ -1027,7 +1028,7 @@
     "effect_duration_seconds": 5.0,
     "effect_shield_seconds": 3.0,
     "effect_min_shield": 65,
-    "effect_max_shield": 230
+    "effect_max_shield": 175
   },
   "glowing_mote": {
     "price": 500,
@@ -1207,5 +1208,65 @@
     "effect_attack_speed_mult": 20,
     "effect_enemy_max_hp_damage": 2,
     "effect_duration_seconds": 6
+  },
+  "grezs_spectral_lantern": {
+    "price": 1400,
+    "hp": 250,
+    "magic_power": 60,
+    "skill_cooldown_mult": 10,
+    "effect_stack_magic_power": 2,
+    "effect_max_stacks": 20,
+    "effect_percent_bonus_damage": 20.0,
+    "effect_bonus_hp_percent_of_damage": 4.0
+  },
+  "radiant_grezs_spectral_lantern": {
+    "price": 2000,
+    "hp": 350,
+    "magic_power": 120,
+    "skill_cooldown_mult": 10,
+    "effect_stack_magic_power": 2,
+    "effect_max_stacks": 30,
+    "effect_percent_bonus_damage": 30.0,
+    "effect_bonus_hp_percent_of_damage": 6.0
+  },
+  "cloak_of_starry_night": {
+    "price": 1450,
+    "hp": 350,
+    "magic_resistance": 100,
+    "magic_resistance_mult": 25,
+    "effect_skill_damaged_reduce": 5,
+    "effect_magic_resistance_per_reduce": 25,
+    "effect_max_skill_damaged_reduce": 25
+  },
+  "radiant_cloak_of_starry_night": {
+    "price": 2100,
+    "hp": 500,
+    "magic_resistance": 200,
+    "magic_resistance_mult": 25,
+    "effect_skill_damaged_reduce": 5,
+    "effect_magic_resistance_per_reduce": 25,
+    "effect_max_skill_damaged_reduce": 25
+  },
+  "hamstringer": {
+    "price": 1450,
+    "attack": 45,
+    "attack_speed_mult": 25,
+    "crit_chance": 20,
+    "effect_min_bonus_damage": 55,
+    "effect_max_bonus_damage": 110,
+    "effect_crit_percent_damage": 100.0,
+    "effect_slow_amount": 7,
+    "effect_duration_seconds": 2
+  },
+  "radiant_hamstringer": {
+    "price": 2150,
+    "attack": 75,
+    "attack_speed_mult": 45,
+    "crit_chance": 25,
+    "effect_min_bonus_damage": 70,
+    "effect_max_bonus_damage": 180,
+    "effect_crit_percent_damage": 100.0,
+    "effect_slow_amount": 7,
+    "effect_duration_seconds": 2
   }
 }

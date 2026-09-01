@@ -22,7 +22,7 @@ impl EchoesOfHelia {
         Self {
             meta: ItemMeta::base(
                 "echoes_of_helia",
-                &["bandleglass_mirror"],
+                &["bandleglass_mirror", "forbidden_idol"],
                 &["radiant_echoes_of_helia"],
             ),
             price: 1100,
@@ -188,6 +188,22 @@ impl StableItem for EchoesOfHelia {
         }
 
         self.charge_stored = 0;
+    }
+
+    /// Stored charges follow the item through the Radiant upgrade; the next
+    /// `save_charges` clamps them back down if the wielder's level allows less.
+    fn on_upgrade(&mut self, next_key: &str) -> u64 {
+        if self.meta.upgrades_to(next_key) {
+            self.charge_stored as u64
+        } else {
+            0
+        }
+    }
+
+    fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
+        if self.meta.upgrades_from(prev_key) {
+            self.charge_stored = carry as usize;
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

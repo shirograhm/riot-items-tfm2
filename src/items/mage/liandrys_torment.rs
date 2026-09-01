@@ -1,9 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ticks, ItemMeta};
-
-const BURN_TICK_RATE: usize = 12;
+use crate::{apply_config, percent_of, ticks, ItemMeta, DOT_TICK_RATE};
 
 #[derive(Clone, Debug)]
 pub struct LiandrysTorment {
@@ -73,11 +71,11 @@ impl LiandrysTorment {
     }
 
     fn duration_ticks(&self) -> usize {
-        ticks(self.effect_duration_seconds).max(BURN_TICK_RATE)
+        ticks(self.effect_duration_seconds).max(DOT_TICK_RATE)
     }
 
     fn instance_count(&self) -> usize {
-        (self.duration_ticks() / BURN_TICK_RATE).max(1)
+        (self.duration_ticks() / DOT_TICK_RATE).max(1)
     }
 
     fn instance_damage(&self, ctx: &mut StableSim<'_>, id: usize) -> Option<usize> {
@@ -97,7 +95,7 @@ impl LiandrysTorment {
         let duration = self.duration_ticks();
         match self.burns.iter_mut().find(|(id, _, _)| *id == target) {
             Some(burn) => burn.1 = duration,
-            None => self.burns.push((target, duration, BURN_TICK_RATE)),
+            None => self.burns.push((target, duration, DOT_TICK_RATE)),
         }
     }
 
@@ -111,7 +109,7 @@ impl LiandrysTorment {
                     continue;
                 };
                 ctx.deal_damage(caster, id, 0, damage, AttackTypeV1::Item);
-                until_next = BURN_TICK_RATE;
+                until_next = DOT_TICK_RATE;
             }
             if remaining > 0 {
                 kept.push((id, remaining, until_next));
@@ -191,13 +189,13 @@ impl StableItem for LiandrysTorment {
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
+        attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() {
+        if target_ref.is_tower() || attack_type != AttackTypeV1::Skill {
             return;
         }
 

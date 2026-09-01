@@ -19,7 +19,7 @@ impl Morellonomicon {
         Self {
             meta: ItemMeta::base(
                 "morellonomicon",
-                &["oblivion_orb"],
+                &["oblivion_orb", "staff_of_rapture"],
                 &["radiant_morellonomicon"],
             ),
             price: 1300,

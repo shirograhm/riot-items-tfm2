@@ -356,6 +356,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured!("bloodsong" => Bloodsong));
+    reg.add_item(configured!("cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured!("collector" => Collector));
     reg.add_item(configured!("dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured!("deathblade" => DeathBlade));
@@ -368,7 +369,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("feral_flare" => FeralFlare));
     reg.add_item(configured!("frozen_heart" => FrozenHeart));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
+    reg.add_item(configured!("grezs_spectral_lantern" => GrezsSpectralLantern));
     reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
+    reg.add_item(configured!("hamstringer" => Hamstringer));
     reg.add_item(configured!("heartsteel" => Heartsteel));
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
     reg.add_item(configured!("hubris" => Hubris));
@@ -421,6 +424,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured_radiant!("radiant_bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong));
+    reg.add_item(configured_radiant!("radiant_cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured_radiant!("radiant_collector" => Collector));
     reg.add_item(configured_radiant!("radiant_dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
@@ -433,7 +437,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
     reg.add_item(configured_radiant!("radiant_frozen_heart" => FrozenHeart));
     reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
+    reg.add_item(configured_radiant!("radiant_grezs_spectral_lantern" => GrezsSpectralLantern));
     reg.add_item(configured_radiant!("radiant_guinsoos_rageblade" => GuinsoosRageblade));
+    reg.add_item(configured_radiant!("radiant_hamstringer" => Hamstringer));
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
     reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));

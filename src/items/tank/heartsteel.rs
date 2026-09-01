@@ -180,6 +180,25 @@ impl StableItem for Heartsteel {
         self.accumulated_bonus_hp += bonus_hp;
     }
 
+    /// Colossal Consumption's banked HP is permanent, so it crosses the Radiant
+    /// upgrade. Only the counter moves: the HP already granted this life is
+    /// sitting on the champion as `heartsteel_stack` buffs, and `on_spawn`
+    /// re-applies it from the carried total on the next respawn. The cast round
+    /// trips exactly for every `i32`, so the total needs no clamping.
+    fn on_upgrade(&mut self, next_key: &str) -> u64 {
+        if self.meta.upgrades_to(next_key) {
+            self.accumulated_bonus_hp as u64
+        } else {
+            0
+        }
+    }
+
+    fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
+        if self.meta.upgrades_from(prev_key) {
+            self.accumulated_bonus_hp = carry as i32;
+        }
+    }
+
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![ItemTagV1::Hp, ItemTagV1::MyHpPercentDamage]
     }

@@ -22,7 +22,11 @@ pub struct Terminus {
 impl Terminus {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("terminus", &["twin_stormblade"], &["radiant_terminus"]),
+            meta: ItemMeta::base(
+                "terminus",
+                &["twin_stormblade", "scouts_slingshot"],
+                &["radiant_terminus"],
+            ),
             armor_pen_buff_buff: "terminus_armor_pen_buff",
             magic_resistance_pen_buff_buff: "terminus_magic_resistance_pen_buff",
             price: 1400,
