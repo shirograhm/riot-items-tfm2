@@ -25,18 +25,26 @@ pub(crate) const BUFF_REFRESH_PERIOD_TICKS: usize = 58;
 ///
 /// An effect resolved straight out of `on_attack` or `on_kill` happens in the
 /// same instant as the event carrying it, so the two read as one number on
-/// screen instead of the item's proc reading as its own. A fifth of a second is
-/// enough to separate them without the proc feeling detached from the hit.
-pub(crate) const PROC_DELAY_SECONDS: f64 = 0.2;
+/// screen instead of the item's proc reading as its own. Nine ticks is enough to
+/// separate them without the proc feeling detached from the hit.
+pub(crate) const PROC_DELAY_SECONDS: f64 = 0.15;
+
+/// How far apart procs that would land on the same tick are spread, in ticks.
+///
+/// One tick of separation is enough for the game to draw two numbers rather
+/// than one, but not enough for the eye to read them as separate events: at
+/// sixty ticks a second they arrive together. Two ticks is still fast enough to
+/// belong to the same hit.
+pub(crate) const PROC_STAGGER_STEP_TICKS: usize = 2;
 
 /// The most a pile-up of procs on one target may push the last of them past
 /// [`PROC_DELAY_SECONDS`], in ticks.
 ///
-/// Procs landing on the same tick are spaced a tick apart so they read as
-/// separate numbers (see [`crate::ProcQueue`]). Six on-hit items is already more
-/// than a build holds, so this cap is never reached in practice: it exists so
-/// that a pathological case collides on screen instead of dealing damage a
-/// visible moment after the hit that earned it.
+/// Procs landing on the same tick are spread by [`PROC_STAGGER_STEP_TICKS`] so
+/// they read as separate numbers (see [`crate::ProcQueue`]). Six on-hit items is
+/// already more than a build holds, so this cap is never reached in practice: it
+/// exists so that a pathological case collides on screen instead of dealing
+/// damage a visible moment after the hit that earned it.
 pub(crate) const PROC_STAGGER_MAX_TICKS: usize = 12;
 
 /// Ticks between the instances of a damage-over-time effect — five a second at

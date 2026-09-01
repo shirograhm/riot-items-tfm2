@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ItemMeta};
+use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct FeralFlare {
@@ -17,6 +17,7 @@ pub struct FeralFlare {
     effect_minion_percent: f64,
     // Non-vital stats (internals)
     feral_stacks: usize,
+    procs: ProcQueue,
 }
 
 impl FeralFlare {
@@ -37,6 +38,7 @@ impl FeralFlare {
             effect_max_stacks: 50,
             effect_minion_percent: 150.0,
             feral_stacks: 0,
+            procs: ProcQueue::new(),
         }
     }
 
@@ -136,6 +138,7 @@ impl StableItem for FeralFlare {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.feral_stacks = 0;
+        self.procs.clear();
     }
 
     fn on_attack(
@@ -171,8 +174,17 @@ impl StableItem for FeralFlare {
             (damage, heal)
         };
 
-        ctx.deal_damage(caster, target, 0, damage, AttackTypeV1::Item);
+        // The stack count is already folded into `damage`, so the proc pays out
+        // the Feral bar as it stood on the hit that earned it. The heal is left
+        // on the attack itself: it lands on the carrier rather than the target,
+        // so it has no number to collide with.
+        self.procs.push_magic(ctx, target, damage);
         ctx.heal(caster, caster, heal);
+    }
+
+    /// Lands the on-hit damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn on_kill(

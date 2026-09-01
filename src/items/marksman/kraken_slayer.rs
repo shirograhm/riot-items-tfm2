@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ItemMeta};
+use crate::{apply_config, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct KrakenSlayer {
@@ -15,6 +15,7 @@ pub struct KrakenSlayer {
     effect_hp_percent_threshold: f64,
     effect_attack_interval: usize,
     attack_count: usize,
+    procs: ProcQueue,
 }
 
 fn bring_it_down_damage(
@@ -64,6 +65,7 @@ impl KrakenSlayer {
             effect_attack_interval: 3,
             // Non-vital stats (internals)
             attack_count: 0,
+            procs: ProcQueue::new(),
         }
     }
 
@@ -155,12 +157,13 @@ impl StableItem for KrakenSlayer {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.attack_count = 0;
+        self.procs.clear();
     }
 
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        caster: usize,
+        _caster: usize,
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
@@ -182,12 +185,20 @@ impl StableItem for KrakenSlayer {
                 self.effect_max_percent_bonus,
                 self.effect_hp_percent_threshold,
             );
-            ctx.deal_damage(caster, target, final_damage, 0, AttackTypeV1::Item);
+            // `bring_it_down_damage` already read the target's health, so the
+            // execute bonus is the one the third swing earned, not the one the
+            // target's health would earn once the proc lands.
+            self.procs.push_physical(ctx, target, final_damage);
 
             self.attack_count = 0;
         } else {
             self.attack_count += 1;
         }
+    }
+
+    /// Lands the hits whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     /// Bring It Down counts attacks toward the next proc, so the progress made

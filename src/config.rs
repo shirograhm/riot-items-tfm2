@@ -42,6 +42,7 @@ pub struct ItemConfig {
     pub effect_max_bonus_damage: Option<usize>,
     pub effect_bonus_magic_damage: Option<usize>,
     pub effect_stack_magic_damage: Option<usize>,
+    pub effect_stack_percent_damage: Option<f64>,
     pub effect_hp_percent_damage: Option<f64>,
     pub effect_enemy_max_hp_damage: Option<usize>,
     pub effect_caster_hp_percent_damage: Option<f64>,
