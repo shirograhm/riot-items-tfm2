@@ -40,7 +40,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Caulfield's Warhammer** | 950G | +45 AD<br>+10% CDR | — |
 | **Forbidden Idol** | 650G | +200 HP<br>+20 AP<br>+10% CDR | — |
 | **Glacial Buckler** | 800G | +50 Armor<br>+5% CDR | — |
-| **Haunting Guise** | 950G | +200 HP<br>+60 AP | — |
+| **Haunting Guise** | 950G | +200 HP<br>+60 AP | Madness: For each second in combat with enemy champions, deal 2% bonus damage, stacking up to 3 times for a total of 6%. |
 | **Hearthbound Axe** | 950G | +30 AD<br>+20% AS | — |
 | **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |

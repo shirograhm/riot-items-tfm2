@@ -16,7 +16,11 @@
   "haunting_guise": {
     "price": 950,
     "magic_power": 60,
-    "hp": 200
+    "hp": 200,
+    "effect_stack_percent_damage": 2.0,
+    "effect_stacks_per_second": 1,
+    "effect_max_stacks": 3,
+    "effect_out_of_combat_seconds": 3.0
   },
   "phage": {
     "price": 950,

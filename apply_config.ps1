@@ -51,6 +51,10 @@ $ntFlat = [int]$config.nashors_tooth.effect_bonus_flat_damage
 $ntApPct = [double]$config.nashors_tooth.effect_ap_percent_damage
 $rntFlat = [int]$config.radiant_nashors_tooth.effect_bonus_flat_damage
 $rntApPct = [double]$config.radiant_nashors_tooth.effect_ap_percent_damage
+$hgPct = [double]$config.haunting_guise.effect_stack_percent_damage
+$hgStacks = [int]$config.haunting_guise.effect_max_stacks
+$hgOoc = [double]$config.haunting_guise.effect_out_of_combat_seconds
+$hgTotal = $hgPct * $hgStacks
 $rmHpPct = [double]$config.riftmaker.effect_caster_hp_percent_power
 $rmVamp = [int]$config.riftmaker.effect_vamp
 $rmDur = [int]$config.riftmaker.effect_duration_seconds
@@ -523,6 +527,7 @@ $i18n.en.protectors_vow.option = "Awe: Gain <$hpIcon> <#60e84dff>maximum health<
 $i18n.en.radiant_protectors_vow.option = "Awe: Gain <$hpIcon> <#60e84dff>maximum health<> equal to <#60e84dff>${rpvFlat}<> + <#ffdd8eff>${rpvArmorPct}%<> of your <$armorIcon> <#ffdd8eff>armor<>."
 $i18n.en.nashors_tooth.option = "Icathian Bite: Basic attacks deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
 $i18n.en.radiant_nashors_tooth.option = "Icathian Bite: Basic attacks deal <#a974ffff>bonus magic damage<> equal to <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Ability Power<>."
+$i18n.en.haunting_guise.option = "Madness: For each second in combat with enemy champions, deal <#ff9028ff>${hgPct}% bonus damage<>, stacking up to ${hgStacks} times for a total of <#ff9028ff>${hgTotal}%<>. Stacks are lost after <#e8a800ff>${hgOoc} seconds<> out of combat."
 $riftEn = "Corruption: Landing an Ability on an enemy champion grants <#b7462dff>{0}%<> <$vampIcon> <#b7462dff>Omnivamp<> for <#e8a800ff>{1} seconds<> (max {2} stacks).`n`nInfusion: Gain <#a974ffff>bonus<> <$apIcon> <#a974ffff>Ability Power<> equal to <#60e84dff>{3}%<> of your <$hpIcon> <#60e84dff>maximum health<>."
 $i18n.en.riftmaker.option = $riftEn -f $rmVamp, $rmDur, $rmStacks, $rmHpPct
 $i18n.en.radiant_riftmaker.option = $riftEn -f $rrmVamp, $rrmDur, $rrmStacks, $rrmHpPct
@@ -697,6 +702,7 @@ $i18n.vi.protectors_vow.option = "Kính Sợ: Nhận <$hpIcon> <#60e84dff>máu t
 $i18n.vi.radiant_protectors_vow.option = "Kính Sợ: Nhận <$hpIcon> <#60e84dff>máu tối đa<> tương ứng <#60e84dff>${rpvFlat}<> + <#ffdd8eff>${rpvArmorPct}%<> <$armorIcon> <#ffdd8eff>Giáp<> của bạn."
 $i18n.vi.nashors_tooth.option = "Vết cắn Icathian: Đòn đánh thường gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
 $i18n.vi.radiant_nashors_tooth.option = "Vết cắn Icathian: Đòn đánh thường gây <#a974ffff>thêm sát thương phép<> tương ứng <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>SMPT<>."
+$i18n.vi.haunting_guise.option = "Điên Cuồng: Mỗi giây trong giao tranh với tướng địch, gây thêm <#ff9028ff>${hgPct}% sát thương<>, cộng dồn tối đa ${hgStacks} lần (tổng <#ff9028ff>${hgTotal}%<>). Mất cộng dồn sau <#e8a800ff>${hgOoc} giây<> ngoài giao tranh."
 $riftVi = "Tha Hóa: Kĩ năng trúng đích tướng địch cấp <#b7462dff>{0}%<> <$vampIcon> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>{1} giây<> (tối đa {2} cộng dồn).`n`nDung Hòa: Nhận <#a974ffff>thêm<> <$apIcon> <#a974ffff>SMPT<> tương ứng <#60e84dff>{3}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân."
 $i18n.vi.riftmaker.option = $riftVi -f $rmVamp, $rmDur, $rmStacks, $rmHpPct
 $i18n.vi.radiant_riftmaker.option = $riftVi -f $rrmVamp, $rrmDur, $rrmStacks, $rrmHpPct
@@ -871,6 +877,7 @@ $i18n.'zh-hans'.protectors_vow.option = "敬畏：获得 <#60e84dff>${pvFlat}<> 
 $i18n.'zh-hans'.radiant_protectors_vow.option = "敬畏：获得 <#60e84dff>${rpvFlat}<> + 你的 <$armorIcon> <#ffdd8eff>护甲<> 的 <#ffdd8eff>${rpvArmorPct}%<> 作为<$hpIcon> <#60e84dff>最大生命值<>。"
 $i18n.'zh-hans'.nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${ntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${ntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
 $i18n.'zh-hans'.radiant_nashors_tooth.option = "艾卡西亚之咬：普通攻击造成 <#a974ffff>${rntFlat}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>${rntApPct}%<> 的<#a974ffff>额外魔法伤害<>。"
+$i18n.'zh-hans'.haunting_guise.option = "癫狂：与敌方英雄作战时，每过1秒便造成 <#ff9028ff>${hgPct}% 额外伤害<>，最多叠加${hgStacks}层（至多 <#ff9028ff>${hgTotal}%<>）。脱离战斗 <#e8a800ff>${hgOoc}秒<> 后层数清零。"
 $riftZh = "腐化：技能命中敌方英雄时，获得 <#b7462dff>{0}%<> <$vampIcon> <#b7462dff>全能吸血<>，持续 <#e8a800ff>{1}秒<>（最多叠加{2}层）。`n`n虚空灌注：获得相当于你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{3}%<> 的<#a974ffff>额外<> <$apIcon> <#a974ffff>法术强度<>。"
 $i18n.'zh-hans'.riftmaker.option = $riftZh -f $rmVamp, $rmDur, $rmStacks, $rmHpPct
 $i18n.'zh-hans'.radiant_riftmaker.option = $riftZh -f $rrmVamp, $rrmDur, $rrmStacks, $rrmHpPct
@@ -1045,6 +1052,7 @@ $i18n.'pt-BR'.protectors_vow.option = "Temor: Ganha <$hpIcon> <#60e84dff>Vida M�
 $i18n.'pt-BR'.radiant_protectors_vow.option = "Temor: Ganha <$hpIcon> <#60e84dff>Vida Máxima<> igual a <#60e84dff>${rpvFlat}<> + <#ffdd8eff>${rpvArmorPct}%<> da sua <$armorIcon> <#ffdd8eff>Armadura<>."
 $i18n.'pt-BR'.nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
 $i18n.'pt-BR'.radiant_nashors_tooth.option = "Mordida Icathiana: Ataques causam <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<>."
+$i18n.'pt-BR'.haunting_guise.option = "Loucura: Para cada segundo em combate contra campeões inimigos, causa <#ff9028ff>${hgPct}% de dano adicional<>, acumulando até ${hgStacks}x (total de <#ff9028ff>${hgTotal}%<>). Os acúmulos são perdidos após <#e8a800ff>${hgOoc} segundos<> fora de combate."
 $riftPt = "Corrupção: Acertar uma Habilidade em um campeão inimigo concede <#b7462dff>{0}%<> <$vampIcon> <#b7462dff>roubo de vida<> por <#e8a800ff>{1} segundos<> (acumula {2}x).`n`nInfusão: Ganha <#a974ffff>bônus<> de <$apIcon> <#a974ffff>Poder de Habilidade<> igual a <#60e84dff>{3}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>."
 $i18n.'pt-BR'.riftmaker.option = $riftPt -f $rmVamp, $rmDur, $rmStacks, $rmHpPct
 $i18n.'pt-BR'.radiant_riftmaker.option = $riftPt -f $rrmVamp, $rrmDur, $rrmStacks, $rrmHpPct
@@ -1219,6 +1227,7 @@ $i18n.ru.protectors_vow.option = "Трепет: Даёт <$hpIcon> <#60e84dff>м
 $i18n.ru.radiant_protectors_vow.option = "Трепет: Даёт <$hpIcon> <#60e84dff>максимальное здоровье<> равное <#60e84dff>${rpvFlat}<> + <#ffdd8eff>${rpvArmorPct}%<> вашей <$armorIcon> <#ffdd8eff>брони<>."
 $i18n.ru.nashors_tooth.option = "Укус Икатии: Базовые атаки наносят <#a974ffff>дополнительный магический урон<> равный <#a974ffff>${ntFlat}<> + <#a974ffff>${ntApPct}%<> <$apIcon> <#a974ffff>Силы Умений<>."
 $i18n.ru.radiant_nashors_tooth.option = "Укус Икатии: Базовые атаки наносят <#a974ffff>дополнительный магический урон<> равный <#a974ffff>${rntFlat}<> + <#a974ffff>${rntApPct}%<> <$apIcon> <#a974ffff>Силы Умений<>."
+$i18n.ru.haunting_guise.option = "Безумие: Каждую секунду в бою с вражескими чемпионами ваш урон увеличивается на <#ff9028ff>${hgPct}%<> (макс. ${hgStacks} стака, до <#ff9028ff>${hgTotal}%<>). Стаки теряются после <#e8a800ff>${hgOoc} секунд<> вне боя."
 $riftRu = "Порча: Попадание умением по вражескому чемпиону даёт <#b7462dff>{0}%<> <$vampIcon> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>{1} секунд<> (макс. {2} стака).`n`nНаполнение: Даёт <#a974ffff>дополнительную<> <$apIcon> <#a974ffff>Силу Умений<> равную <#60e84dff>{3}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<>."
 $i18n.ru.riftmaker.option = $riftRu -f $rmVamp, $rmDur, $rmStacks, $rmHpPct
 $i18n.ru.radiant_riftmaker.option = $riftRu -f $rrmVamp, $rrmDur, $rrmStacks, $rrmHpPct
@@ -1393,6 +1402,7 @@ $i18n.ko.protectors_vow.option = "경외: <#60e84dff>${pvFlat}<> + <$armorIcon> 
 $i18n.ko.radiant_protectors_vow.option = "경외: <#60e84dff>${rpvFlat}<> + <$armorIcon> <#ffdd8eff>방어력<>의 <#ffdd8eff>${rpvArmorPct}%<>만큼 <$hpIcon> <#60e84dff>최대 체력<>을 얻습니다."
 $i18n.ko.nashors_tooth.option = "이케시아의 이빨: 기본 공격 시 <#a974ffff>${ntFlat}<> + <$apIcon> <#a974ffff>주문력<>의 <#a974ffff>${ntApPct}%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다."
 $i18n.ko.radiant_nashors_tooth.option = "이케시아의 이빨: 기본 공격 시 <#a974ffff>${rntFlat}<> + <$apIcon> <#a974ffff>주문력<>의 <#a974ffff>${rntApPct}%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다."
+$i18n.ko.haunting_guise.option = "광기: 적 챔피언과 전투 중 매초 <#ff9028ff>${hgPct}%의 추가 피해<>를 입힙니다. 최대 ${hgStacks}회 중첩되어 총 <#ff9028ff>${hgTotal}%<>까지 증가합니다. 비전투 상태가 <#e8a800ff>${hgOoc}초<> 지속되면 중첩이 모두 사라집니다."
 $riftKo = "타락: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>{1}초<> 동안 <$vampIcon> <#b7462dff>모든 피해 흡혈 {0}%<>를 얻습니다. 최대 {2}회 중첩됩니다.`n`n주입: <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>{3}%<>만큼 <$apIcon> <#a974ffff>추가 주문력<>을 얻습니다."
 $i18n.ko.riftmaker.option = $riftKo -f $rmVamp, $rmDur, $rmStacks, $rmHpPct
 $i18n.ko.radiant_riftmaker.option = $riftKo -f $rrmVamp, $rrmDur, $rrmStacks, $rrmHpPct
@@ -1576,6 +1586,7 @@ Write-Host "  Protector's Vow:            ${pvFlat} + ${pvArmorPct}% Armor as HP
 Write-Host "  Radiant Protector's Vow:    ${rpvFlat} + ${rpvArmorPct}% Armor as HP"
 Write-Host "  Nashor's Tooth:         ${ntFlat} + ${ntApPct}% AP magic dmg"
 Write-Host "  Radiant Nashor's Tooth: ${rntFlat} + ${rntApPct}% AP magic dmg"
+Write-Host "  Haunting Guise:    ${hgPct}% damage/stack (max ${hgStacks}, ${hgTotal}%) / ${hgOoc}s out of combat"
 Write-Host "  Riftmaker:         ${rmVamp}% omnivamp/stack ${rmDur}s (max ${rmStacks}) / ${rmHpPct}% max HP as AP"
 Write-Host "  Radiant Riftmaker: ${rrmVamp}% omnivamp/stack ${rrmDur}s (max ${rrmStacks}) / ${rrmHpPct}% max HP as AP"
 Write-Host "  Mortal Reminder:         -${mrHeal}% healing / ${mrDur}s"

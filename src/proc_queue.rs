@@ -3,13 +3,13 @@
 //! An item that deals its damage straight out of `on_attack` resolves in the
 //! same instant as the attack carrying it, so the two read as one number on
 //! screen. [`ProcQueue`] holds the damage for [`PROC_DELAY_SECONDS`] instead and
-//! lands it from `update`, and it spaces procs that would otherwise land on the
-//! same tick one tick apart — see [`reserve_landing`].
+//! lands it from `update`, and it spreads procs that would otherwise land on the
+//! same tick — see [`reserve_landing`].
 
 use mod_api_stable::*;
 use std::cell::Cell;
 
-use crate::{ticks, PROC_DELAY_SECONDS, PROC_STAGGER_MAX_TICKS};
+use crate::{ticks, PROC_DELAY_SECONDS, PROC_STAGGER_MAX_TICKS, PROC_STAGGER_STEP_TICKS};
 
 /// Damage that has been dealt but has not landed yet.
 #[derive(Clone, Copy, Debug)]
@@ -43,8 +43,8 @@ thread_local! {
 /// three of them puts three numbers on one target in one tick, which the game
 /// draws on top of each other. Each proc therefore reserves its landing tick
 /// here: the first off an attack lands after the full [`PROC_DELAY_SECONDS`],
-/// and each further proc against the same target lands one tick after the one
-/// before it, so they tick up the screen as separate numbers.
+/// and each further proc against the same target lands [`PROC_STAGGER_STEP_TICKS`]
+/// after the one before it, so they tick up the screen as separate numbers.
 ///
 /// The reservation is only pushed back by procs still *ahead* of the natural
 /// delay, so the spacing resets between attacks rather than drifting later and
@@ -58,7 +58,8 @@ fn reserve_landing(ctx: &mut StableSim<'_>, target: usize) -> usize {
     let landing = LAST_PROC.with(|cell| {
         let landing = match cell.get() {
             Some(prev) if prev.target == target && prev.landing_tick >= earliest => {
-                (prev.landing_tick + 1).min(earliest + PROC_STAGGER_MAX_TICKS)
+                (prev.landing_tick + PROC_STAGGER_STEP_TICKS)
+                    .min(earliest + PROC_STAGGER_MAX_TICKS)
             }
             _ => earliest,
         };

@@ -193,7 +193,7 @@
         },
         "haunting_guise": {
             "name": "Haunting Guise",
-            "option": ""
+            "option": "\nMadness: For each second in combat with enemy champions, deal <#ff9028ff>2% bonus damage<>, stacking up to 3 times for a total of <#ff9028ff>6%<>. Stacks are lost after <#e8a800ff>3 seconds<> out of combat."
         },
         "infinity_edge": {
             "name": "Infinity Edge",
@@ -982,7 +982,7 @@
         },
         "haunting_guise": {
             "name": "Mặt Nạ Ám Ảnh",
-            "option": ""
+            "option": "\nĐiên Cuồng: Mỗi giây trong giao tranh với tướng địch, gây thêm <#ff9028ff>2% sát thương<>, cộng dồn tối đa 3 lần (tổng <#ff9028ff>6%<>). Mất cộng dồn sau <#e8a800ff>3 giây<> ngoài giao tranh."
         },
         "infinity_edge": {
             "name": "Vô Cực Kiếm",
@@ -1771,7 +1771,7 @@
         },
         "haunting_guise": {
             "name": "幽魂面具",
-            "option": ""
+            "option": "\n癫狂：与敌方英雄作战时，每过1秒便造成 <#ff9028ff>2% 额外伤害<>，最多叠加3层（至多 <#ff9028ff>6%<>）。脱离战斗 <#e8a800ff>3秒<> 后层数清零。"
         },
         "infinity_edge": {
             "name": "无尽之刃",
@@ -2560,7 +2560,7 @@
         },
         "haunting_guise": {
             "name": "Máscara Assustadora",
-            "option": ""
+            "option": "\nLoucura: Para cada segundo em combate contra campeões inimigos, causa <#ff9028ff>2% de dano adicional<>, acumulando até 3x (total de <#ff9028ff>6%<>). Os acúmulos são perdidos após <#e8a800ff>3 segundos<> fora de combate."
         },
         "infinity_edge": {
             "name": "Gume do Infinito",
@@ -3349,7 +3349,7 @@
         },
         "haunting_guise": {
             "name": "Преследующая маска",
-            "option": ""
+            "option": "\nБезумие: Каждую секунду в бою с вражескими чемпионами ваш урон увеличивается на <#ff9028ff>2%<> (макс. 3 стака, до <#ff9028ff>6%<>). Стаки теряются после <#e8a800ff>3 секунд<> вне боя."
         },
         "infinity_edge": {
             "name": "Грань Бесконечности",
@@ -4138,7 +4138,7 @@
         },
         "haunting_guise": {
             "name": "기괴한 가면",
-            "option": ""
+            "option": "\n광기: 적 챔피언과 전투 중 매초 <#ff9028ff>2%의 추가 피해<>를 입힙니다. 최대 3회 중첩되어 총 <#ff9028ff>6%<>까지 증가합니다. 비전투 상태가 <#e8a800ff>3초<> 지속되면 중첩이 모두 사라집니다."
         },
         "infinity_edge": {
             "name": "무한의 대검",
