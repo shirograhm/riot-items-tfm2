@@ -209,7 +209,7 @@
   "riftmaker": {
     "price": 1300,
     "hp": 400,
-    "magic_power": 75,
+    "magic_power": 60,
     "effect_caster_hp_percent_power": 2.0,
     "effect_vamp": 2,
     "effect_max_stacks": 3,
@@ -488,7 +488,7 @@
   "radiant_riftmaker": {
     "price": 1900,
     "hp": 600,
-    "magic_power": 150,
+    "magic_power": 120,
     "effect_caster_hp_percent_power": 2.0,
     "effect_vamp": 2,
     "effect_max_stacks": 3,
