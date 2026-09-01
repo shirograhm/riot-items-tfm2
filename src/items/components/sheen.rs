@@ -78,7 +78,7 @@ impl StableItem for Sheen {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["glowing_mote".to_string()]
+        vec!["dagger".to_string(), "glowing_mote".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
