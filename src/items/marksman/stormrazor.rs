@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ticks, ItemMeta};
+use crate::{apply_config, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct Stormrazor {
@@ -16,6 +16,7 @@ pub struct Stormrazor {
     effect_duration_seconds: f64,
     energized_stacks: usize,
     energized_update_tick: usize,
+    procs: ProcQueue,
 }
 
 impl Stormrazor {
@@ -33,6 +34,7 @@ impl Stormrazor {
             // Non-vital stats (internals)
             energized_stacks: 0,
             energized_update_tick: 0,
+            procs: ProcQueue::new(),
         }
     }
 
@@ -124,6 +126,7 @@ impl StableItem for Stormrazor {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.energized_stacks = 0;
+        self.procs.clear();
     }
 
     fn on_attack(
@@ -144,13 +147,8 @@ impl StableItem for Stormrazor {
         }
 
         if self.energized_stacks >= self.effect_max_stacks {
-            ctx.deal_damage(
-                caster,
-                target,
-                0,
-                self.effect_bonus_flat_damage,
-                AttackTypeV1::Item,
-            );
+            self.procs
+                .push_magic(ctx, target, self.effect_bonus_flat_damage);
             ctx.add_buff(
                 caster,
                 &BuffV1 {
@@ -166,7 +164,9 @@ impl StableItem for Stormrazor {
         self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
     }
 
-    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
+
         // Add 1 energized stack per 0.2 seconds
         if self.energized_update_tick >= 12 {
             self.energized_stacks = (self.energized_stacks + 1).min(self.effect_max_stacks);

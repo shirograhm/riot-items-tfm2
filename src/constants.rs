@@ -29,6 +29,16 @@ pub(crate) const BUFF_REFRESH_PERIOD_TICKS: usize = 58;
 /// enough to separate them without the proc feeling detached from the hit.
 pub(crate) const PROC_DELAY_SECONDS: f64 = 0.2;
 
+/// The most a pile-up of procs on one target may push the last of them past
+/// [`PROC_DELAY_SECONDS`], in ticks.
+///
+/// Procs landing on the same tick are spaced a tick apart so they read as
+/// separate numbers (see [`crate::ProcQueue`]). Six on-hit items is already more
+/// than a build holds, so this cap is never reached in practice: it exists so
+/// that a pathological case collides on screen instead of dealing damage a
+/// visible moment after the hit that earned it.
+pub(crate) const PROC_STAGGER_MAX_TICKS: usize = 12;
+
 /// Ticks between the instances of a damage-over-time effect — five a second at
 /// [`TICKS_PER_SECOND`].
 ///

@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ItemMeta};
+use crate::{apply_config, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct WitsEnd {
@@ -11,6 +11,7 @@ pub struct WitsEnd {
     magic_resistance: i32,
     toughness: usize,
     effect_bonus_magic_damage: usize,
+    procs: ProcQueue,
 }
 
 impl WitsEnd {
@@ -22,6 +23,8 @@ impl WitsEnd {
             magic_resistance: 80,
             toughness: 20,
             effect_bonus_magic_damage: 45,
+            // Non-vital stats (internals)
+            procs: ProcQueue::new(),
         }
     }
 
@@ -108,7 +111,7 @@ impl StableItem for WitsEnd {
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        caster: usize,
+        _caster: usize,
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
@@ -122,13 +125,17 @@ impl StableItem for WitsEnd {
             return;
         }
 
-        ctx.deal_damage(
-            caster,
-            target,
-            0,
-            self.effect_bonus_magic_damage,
-            AttackTypeV1::Item,
-        );
+        self.procs
+            .push_magic(ctx, target, self.effect_bonus_magic_damage);
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.procs.clear();
+    }
+
+    /// Lands the on-hit damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
