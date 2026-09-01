@@ -425,22 +425,23 @@ const COMBO_H: u32 = 40;
 /// Square buttons (clear, swap glyph target, delete), centred in the row.
 const MINI_Y: u32 = 14;
 const CHAMP_X: u32 = 8;
-const CHAMP_W: u32 = 280;
+const CHAMP_W: u32 = 224;
 /// The Role column, between the champion button and the item band. Narrow: it
 /// holds one of six short words, and every px here comes off the item columns.
-const ROLE_X: u32 = 296;
-const ROLE_W: u32 = 128;
+const ROLE_X: u32 = 240;
+const ROLE_W: u32 = 100;
 const DELETE_X: u32 = 1250;
 
 /// The band the item columns share, between the champion button and the delete
 /// button, and the gap left between two columns for a swap button (34px wide,
 /// plus a few px of air on each side).
-const COLUMNS_LEFT: u32 = 432;
+const COLUMNS_LEFT: u32 = 348;
 const COLUMNS_RIGHT: u32 = 1234;
 const COLUMN_GAP: u32 = 44;
 
 /// Width of one item column: the shared band split evenly, gaps removed. Three
-/// slots give the 280px column the layout was authored with; four give 199px.
+/// slots give 266px, four give 188px. The champion and Role columns were
+/// trimmed to hand the difference here, since item names are what truncate.
 fn combo_w() -> u32 {
     let slots = picker_slots() as u32;
     (COLUMNS_RIGHT - COLUMNS_LEFT - (slots - 1) * COLUMN_GAP) / slots

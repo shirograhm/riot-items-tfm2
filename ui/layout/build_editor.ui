@@ -122,7 +122,7 @@ build_editor:empty {
       #c_champion:label {
         @"asset/base/style/main#label";
         x: 8px;
-        width: 280px;
+        width: 224px;
         height: 32px;
         align_x: Left;
         align_y: Center;
@@ -133,8 +133,8 @@ build_editor:empty {
 
       #c_role:label {
         @"asset/base/style/main#label";
-        x: 296px;
-        width: 128px;
+        x: 240px;
+        width: 100px;
         height: 32px;
         align_x: Left;
         align_y: Center;
