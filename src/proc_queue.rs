@@ -2,14 +2,14 @@
 //!
 //! An item that deals its damage straight out of `on_attack` resolves in the
 //! same instant as the attack carrying it, so the two read as one number on
-//! screen. [`ProcQueue`] holds the damage for [`PROC_DELAY_SECONDS`] instead and
-//! lands it from `update`, and it spreads procs that would otherwise land on the
-//! same tick — see [`reserve_landing`].
+//! screen. [`ProcQueue`] holds the damage back instead and lands it from
+//! `update` one [`PROC_STAGGER_STEP_TICKS`] step later, spacing procs that would
+//! otherwise share a tick by a further step each — see [`reserve_landing`].
 
 use mod_api_stable::*;
 use std::cell::Cell;
 
-use crate::{ticks, PROC_DELAY_SECONDS, PROC_STAGGER_MAX_TICKS, PROC_STAGGER_STEP_TICKS};
+use crate::{PROC_STAGGER_MAX_TICKS, PROC_STAGGER_STEP_TICKS};
 
 /// Damage that has been dealt but has not landed yet.
 #[derive(Clone, Copy, Debug)]
@@ -42,18 +42,19 @@ thread_local! {
 /// Every on-hit item in a build procs off the same attack, so a carrier holding
 /// three of them puts three numbers on one target in one tick, which the game
 /// draws on top of each other. Each proc therefore reserves its landing tick
-/// here: the first off an attack lands after the full [`PROC_DELAY_SECONDS`],
-/// and each further proc against the same target lands [`PROC_STAGGER_STEP_TICKS`]
-/// after the one before it, so they tick up the screen as separate numbers.
+/// here, one [`PROC_STAGGER_STEP_TICKS`] step at a time: the first off an attack
+/// lands a step after the hit, and each further proc against the same target a
+/// step after the one before it, so the hit and its procs tick up the screen as
+/// an evenly spaced run of separate numbers.
 ///
-/// The reservation is only pushed back by procs still *ahead* of the natural
-/// delay, so the spacing resets between attacks rather than drifting later and
+/// The reservation is only pushed back by procs still *ahead* of that first
+/// slot, so the spacing resets between attacks rather than drifting later and
 /// later over a fight. [`PROC_STAGGER_MAX_TICKS`] caps how far a single attack
 /// can push, so an implausible pile-up collides on screen rather than landing
 /// visibly late.
 fn reserve_landing(ctx: &mut StableSim<'_>, target: usize) -> usize {
     let now = ctx.tick();
-    let earliest = now + ticks(PROC_DELAY_SECONDS);
+    let earliest = now + PROC_STAGGER_STEP_TICKS;
 
     let landing = LAST_PROC.with(|cell| {
         let landing = match cell.get() {

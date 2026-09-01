@@ -21,30 +21,35 @@ pub(crate) const TICKS_PER_SECOND: f64 = 60.0;
 pub(crate) const BUFF_REFRESH_DURATION_TICKS: usize = 60;
 pub(crate) const BUFF_REFRESH_PERIOD_TICKS: usize = 58;
 
-/// How long an on-hit effect waits before its own damage or payout lands.
+/// How long a non-damage payout waits before it lands.
 ///
-/// An effect resolved straight out of `on_attack` or `on_kill` happens in the
-/// same instant as the event carrying it, so the two read as one number on
-/// screen instead of the item's proc reading as its own. Nine ticks is enough to
-/// separate them without the proc feeling detached from the hit.
+/// A payout resolved straight out of `on_kill` happens in the same instant as
+/// the kill carrying it, so the two read as one event on screen instead of the
+/// item's own. Nine ticks is enough to separate them without the payout feeling
+/// detached from what earned it. Proc *damage* does not use this: it is spaced
+/// by [`PROC_STAGGER_STEP_TICKS`], which is much tighter.
 pub(crate) const PROC_DELAY_SECONDS: f64 = 0.15;
 
-/// How far apart procs that would land on the same tick are spread, in ticks.
+/// How long a proc waits before landing, and how far apart procs against the
+/// same target are spaced — one quantity, because a hit and everything it procs
+/// arrive as an evenly spaced run: the hit, a step, a proc, a step, the next
+/// proc (see [`crate::ProcQueue`]).
 ///
 /// One tick of separation is enough for the game to draw two numbers rather
 /// than one, but not enough for the eye to read them as separate events: at
-/// sixty ticks a second they arrive together. Two ticks is still fast enough to
-/// belong to the same hit.
+/// sixty ticks a second they arrive together. Two ticks reads as a run while
+/// still belonging to the hit that earned it.
 pub(crate) const PROC_STAGGER_STEP_TICKS: usize = 2;
 
-/// The most a pile-up of procs on one target may push the last of them past
-/// [`PROC_DELAY_SECONDS`], in ticks.
+/// The most a pile-up of procs on one target may push the last of them past the
+/// first proc's slot, in ticks.
 ///
-/// Procs landing on the same tick are spread by [`PROC_STAGGER_STEP_TICKS`] so
-/// they read as separate numbers (see [`crate::ProcQueue`]). Six on-hit items is
-/// already more than a build holds, so this cap is never reached in practice: it
-/// exists so that a pathological case collides on screen instead of dealing
-/// damage a visible moment after the hit that earned it.
+/// Procs are spaced a [`PROC_STAGGER_STEP_TICKS`] step apart so they read as
+/// separate numbers (see [`crate::ProcQueue`]). Twelve ticks is six further
+/// procs on one target off a single hit, already more than a build holds, so
+/// this cap is never reached in practice: it exists so that a pathological case
+/// collides on screen instead of dealing damage a visible moment after the hit
+/// that earned it.
 pub(crate) const PROC_STAGGER_MAX_TICKS: usize = 12;
 
 /// Ticks between the instances of a damage-over-time effect — five a second at

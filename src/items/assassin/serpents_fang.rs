@@ -1,25 +1,28 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, percent_of, ItemMeta};
+use crate::{apply_config, apply_lethality, percent_of, ItemMeta, ProcQueue};
 
+/// The Shield Reaver bonus this hit earned, or zero when the passive does not
+/// apply. The shield is read here, at the moment of the hit, so the proc that
+/// lands a moment later is the one the attack earned rather than one judged
+/// against whatever shield the target has by then.
 fn shield_reaver(
     ctx: &mut StableSim<'_>,
     caster: usize,
     target: usize,
     flat: usize,
     ad_percent: f64,
-) {
+) -> usize {
     let shielded_champion = ctx
         .get_entity(target)
         .map(|t| t.is_champion() && t.shield() > 0)
         .unwrap_or(false);
     if !shielded_champion {
-        return;
+        return 0;
     }
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
-    let bonus = flat + percent_of(caster_ad, ad_percent);
-    ctx.deal_damage(caster, target, bonus, 0, AttackTypeV1::Item);
+    flat + percent_of(caster_ad, ad_percent)
 }
 
 #[derive(Clone, Debug)]
@@ -30,6 +33,8 @@ pub struct SerpentsFang {
     effect_lethality: usize,
     effect_bonus_flat_damage: usize,
     effect_ad_percent_damage: f64,
+    // Non-vital stats (internals)
+    procs: ProcQueue,
 }
 
 impl SerpentsFang {
@@ -45,6 +50,8 @@ impl SerpentsFang {
             effect_lethality: 15,
             effect_bonus_flat_damage: 50,
             effect_ad_percent_damage: 10.0,
+            // Non-vital stats (internals)
+            procs: ProcQueue::new(),
         }
     }
 
@@ -146,13 +153,23 @@ impl StableItem for SerpentsFang {
             apply_lethality(ctx, caster, target, self.effect_lethality, damage);
         }
 
-        shield_reaver(
+        let bonus = shield_reaver(
             ctx,
             caster,
             target,
             self.effect_bonus_flat_damage,
             self.effect_ad_percent_damage,
         );
+        self.procs.push_physical(ctx, target, bonus);
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.procs.clear();
+    }
+
+    /// Lands the Shield Reaver damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
