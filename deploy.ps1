@@ -34,6 +34,12 @@ $Include = @(
     "config-default.json",
     "better_mod_menu_profile.json",
     "profile_icon.png",
+    # TFM2ModUploader picks the Workshop preview from the deployed folder, and
+    # its candidate order is preview.png, preview.jpg, thumbnail.png,
+    # thumbnail.jpg — so preview.png wins when both are present. Deploying only
+    # thumbnail.png worked, but it left the choice to the fallback; ship both so
+    # the image the repo names "preview" is the one Steam actually gets.
+    "preview.png",
     "thumbnail.png"
 )
 
