@@ -1896,7 +1896,9 @@ fn visible_rows() -> Vec<usize> {
     // champion list from inside the closure would deadlock on itself.
     let champions = snapshot_champions();
     with_state(|state| {
-        let query = state.filter.trim().to_lowercase();
+        // Owned, so the borrow of `state.filter` ends before `state.rows` is
+        // iterated below.
+        let terms = filter_terms(&state.filter);
         state
             .rows
             .iter()
@@ -1907,10 +1909,13 @@ fn visible_rows() -> Vec<usize> {
                 // a champion this install does not have — whose label falls back
                 // to the raw id — is still reachable by typing it.
                 Some(id) => {
-                    query.is_empty()
-                        || format!("{} {id}", champion_label(&champions, Some(id)))
-                            .to_lowercase()
-                            .contains(&query)
+                    terms.is_empty() || {
+                        let haystack = format!("{} {id}", champion_label(&champions, Some(id)))
+                            .to_lowercase();
+                        // Any term, not all: commas read as "or", so a row needs
+                        // to answer only one of the names typed.
+                        terms.iter().any(|term| haystack.contains(term))
+                    }
                 }
             })
             .map(|(index, _)| index)
@@ -1919,9 +1924,29 @@ fn visible_rows() -> Vec<usize> {
     .unwrap_or_default()
 }
 
+/// The search box's text as the terms a row may match.
+///
+/// Commas separate alternatives, so `ashe, garen` shows both. Blank terms are
+/// dropped rather than kept as empty strings, which is what stops a lone comma
+/// or a trailing separator — the state the box is in half way through typing a
+/// second name — from either matching everything or matching nothing.
+///
+/// Lowercased here so the comparison against the label does not have to be.
+fn filter_terms(filter: &str) -> Vec<String> {
+    filter
+        .split(',')
+        .map(|term| term.trim().to_lowercase())
+        .filter(|term| !term.is_empty())
+        .collect()
+}
+
 /// Whether a filter is currently narrowing the list.
+///
+/// Asks [`filter_terms`] rather than testing the raw text, so that "the box has
+/// something in it" and "the list is narrowed" cannot drift apart: `,` is the
+/// case where they differ.
 fn filter_active() -> bool {
-    with_state(|state| !state.filter.trim().is_empty()).unwrap_or(false)
+    with_state(|state| !filter_terms(&state.filter).is_empty()).unwrap_or(false)
 }
 
 /// Reads the filter box and rebuilds the rows when its text has changed.
