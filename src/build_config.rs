@@ -404,7 +404,10 @@ pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
                 None => serde_json::Value::Null,
             })
             .collect();
-        map.insert(build_key(champion, row.role), serde_json::Value::Array(slots));
+        map.insert(
+            build_key(champion, row.role),
+            serde_json::Value::Array(slots),
+        );
     }
 
     let written = serde_json::to_string_pretty(&map)

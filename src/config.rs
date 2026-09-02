@@ -150,26 +150,12 @@ pub fn load() -> HashMap<String, ItemConfig> {
         .unwrap_or_default()
 }
 
-/// Directory the mod's data files live in: [`dll_dir`], or the process working
-/// directory when that cannot be resolved.
-///
-/// Everything that reads or writes a mod file goes through here so the client
-/// and the hook always agree on one directory. They run in the same process, so
-/// they resolve identically — but a silent `None` in one caller and a fallback
-/// in another would put reads and writes in different folders.
 pub(crate) fn mod_dir() -> PathBuf {
     dll_dir()
         .or_else(|| std::env::current_dir().ok())
         .unwrap_or_else(|| PathBuf::from("."))
 }
 
-// Returns the directory containing this DLL by passing a static address within
-// it to GetModuleHandleExW (FROM_ADDRESS flag), then resolving the full path.
-//
-// Resolved once and cached. The DLL cannot move while the process runs, and this
-// sits under every file path the mod builds — including two on the item-build
-// route hook, which fires from parallel sim workers. Each uncached call was two
-// Win32 calls plus a 64 KB stack buffer to zero.
 pub(crate) fn dll_dir() -> Option<PathBuf> {
     static CACHED: std::sync::OnceLock<Option<PathBuf>> = std::sync::OnceLock::new();
     CACHED.get_or_init(resolve_dll_dir).clone()

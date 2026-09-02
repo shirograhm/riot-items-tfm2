@@ -92,10 +92,6 @@ pub fn icon_frame(slug: &str, is_mod_item: bool) -> Option<&str> {
     is_mod_item.then_some(slug)
 }
 
-/// `None` for a slug with no entry, which the editor hides rather than grouping
-/// under a catch-all header. Not `unwrap`: this runs on every key the game hands
-/// the picker, mod and vanilla alike, so an unmapped one has to be an ordinary
-/// answer and not a panic inside a UI callback.
 pub fn category_of(slug: &str) -> Option<&'static str> {
     CATEGORY_OF
         .binary_search_by_key(&slug, |(key, _)| key)
