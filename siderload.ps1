@@ -355,7 +355,7 @@ function Find-FreeCell($images, $cols) {
 
 $dirty = $false
 $graphics = [System.Drawing.Graphics]::FromImage($bmp)
-$goldBorderPath = Join-Path $sider 'icons\_gold_border.png'
+$goldBorderPath = Join-Path $sider 'icons\radiant_border.png'
 
 foreach ($item in $items) {
     if (-not $item.icon) { continue }
@@ -395,9 +395,9 @@ foreach ($item in $items) {
             $border = [System.Drawing.Image]::FromFile($goldBorderPath)
             $graphics.DrawImage($border, ($cell.col * $cellPx), ($cell.row * $cellPx), $cellPx, $cellPx)
             $border.Dispose()
-            Write-Host "[icons] synthesized radiant for $($item.slug) (base + gold border)"
+            Write-Host "[icons] synthesized radiant for $($item.slug) (base + radiant border)"
         } else {
-            Write-Warning "[icons] $($item.slug): no radiant icon and no siderloader/icons/_gold_border.png to synthesize one - skipping"
+            Write-Warning "[icons] $($item.slug): no radiant icon and no siderloader/icons/radiant_border.png to synthesize one - skipping"
             continue
         }
         $frac = 1.0 / $cols
