@@ -229,11 +229,11 @@
         },
         "deaths_dance": {
             "name": "Death's Dance",
-            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#e3ab9dff>true damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>45<> + <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>45<> + <#60e84dff>15%<> of your <#60e84dff>missing health<>."
         },
         "radiant_deaths_dance": {
             "name": "Radiant Death's Dance",
-            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#e3ab9dff>true damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>75<> + <#60e84dff>25%<> of your <#60e84dff>missing health<>."
+            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>75<> + <#60e84dff>25%<> of your <#60e84dff>missing health<>."
         },
         "needlessly_large_rod": {
             "name": "Needlessly Large Rod",
@@ -657,11 +657,11 @@
         },
         "bastionbreaker": {
             "name": "Bastionbreaker",
-            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#e3ab9dff>bonus true damage<>."
+            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "radiant_bastionbreaker": {
             "name": "Radiant Bastionbreaker",
-            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#e3ab9dff>bonus true damage<>."
+            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "serpents_fang": {
             "name": "Serpent's Fang",
@@ -1807,11 +1807,11 @@
         },
         "deaths_dance": {
             "name": "死亡之舞",
-            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#e3ab9dff>额外真实伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>45<> + <#60e84dff>15%<> 的<#60e84dff>已损失生命值<>。"
+            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#ff9028ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>45<> + <#60e84dff>15%<> 的<#60e84dff>已损失生命值<>。"
         },
         "radiant_deaths_dance": {
             "name": "光明版死亡之舞",
-            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#e3ab9dff>额外真实伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>75<> + <#60e84dff>25%<> 的<#60e84dff>已损失生命值<>。"
+            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#ff9028ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>75<> + <#60e84dff>25%<> 的<#60e84dff>已损失生命值<>。"
         },
         "needlessly_large_rod": {
             "name": "无用大棒",
@@ -2235,11 +2235,11 @@
         },
         "bastionbreaker": {
             "name": "破垒者",
-            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#e3ab9dff>额外真实伤害<>。"
+            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "radiant_bastionbreaker": {
             "name": "光明版破垒者",
-            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#e3ab9dff>额外真实伤害<>。"
+            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "serpents_fang": {
             "name": "毒蛇之牙",
@@ -2596,11 +2596,11 @@
         },
         "deaths_dance": {
             "name": "Dança da Morte",
-            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#e3ab9dff>dano verdadeiro<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>45<> + <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
+            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#ff9028ff>dano físico<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>45<> + <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
         },
         "radiant_deaths_dance": {
             "name": "Dança da Morte Radiante",
-            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#e3ab9dff>dano verdadeiro<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>75<> + <#60e84dff>25%<> da sua <#60e84dff>vida perdida<>."
+            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#ff9028ff>dano físico<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>75<> + <#60e84dff>25%<> da sua <#60e84dff>vida perdida<>."
         },
         "needlessly_large_rod": {
             "name": "Bastão Desnecessariamente Grande",
@@ -3385,11 +3385,11 @@
         },
         "deaths_dance": {
             "name": "Танец Смерти",
-            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#e3ab9dff>чистый урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#60e84dff>45<> + <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
+            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#ff9028ff>физический урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#60e84dff>45<> + <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
         },
         "radiant_deaths_dance": {
             "name": "Лучезарный Танец Смерти",
-            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#e3ab9dff>чистый урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#60e84dff>75<> + <#60e84dff>25%<> от вашего <#60e84dff>потерянного здоровья<>."
+            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#ff9028ff>физический урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#60e84dff>75<> + <#60e84dff>25%<> от вашего <#60e84dff>потерянного здоровья<>."
         },
         "needlessly_large_rod": {
             "name": "Слишком Большой Жезл",
