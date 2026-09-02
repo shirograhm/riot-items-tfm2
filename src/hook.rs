@@ -37,7 +37,7 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.5.7.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.5.8.
 //!
 //! The finder identifies the target by its **argument shape** rather than by
 //! anything in its body: the return type is 24 bytes so it comes back via `sret`
@@ -90,18 +90,42 @@ const PROLOGUE_PUSHES: [u8; 12] = [
 const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-/// Signature for game 0.5.7, where the target is `0x1ce9d90` (size 2270).
+/// Signature for game 0.5.8, where the target is `0x2430190` (size 2270).
 ///
-/// The bytes below have now survived the 0.5.6 -> 0.5.7 update **unchanged**: they
+/// The bytes below have now survived the 0.5.7 -> 0.5.8 update **unchanged**: they
 /// are address independent, and re-scanning the new executable finds them in
 /// exactly one place, at a `.pdata` function start of the same size 2270. The
 /// old/new pair is instruction-isomorphic with zero differing displacements, so
-/// only the address moved. This is the second update in a row that needed no
+/// only the address moved. This is the third update in a row that needed no
 /// edit here — which is the point of fingerprinting the argument shape rather
 /// than the emitted code.
 ///
-/// 48 bytes, not 40: the first 40 are a prologue idiom shared with four other
-/// functions, so a shorter signature is ambiguous. `tools/find_item_build_hook.py`
+/// 0.5.7 -> 0.5.8 moved it `0x1ce9d90` -> `0x2430190`, and **three** derivations
+/// agree without sharing any evidence:
+///
+/// 1. `rederive.py match` from the kept 0.5.7 executable builds a 157-byte
+///    masked signature and gets a single hit, at a function start of identical
+///    size 2270. `pairdiff` then reports the pair clean with **zero** differing
+///    struct displacements over 466 instructions — the same function relocated.
+/// 2. Scanning these 48 bytes in the new image returns exactly one hit, at that
+///    same address, still at a `.pdata` function start of size 2270.
+/// 3. `find_item_build_hook.py`, which knows nothing of the old binary, narrows
+///    137,497 functions to two by argument shape, and they map 1:1 onto every
+///    previous build's pair by fingerprint: the target at **2270/14/7**
+///    (size/calls/unique-callees) and the same long-standing decoy at
+///    **1489/23/10**, now `0x26513e0`. Those are the identical numbers recorded
+///    for 0.5.4 and 0.5.5.
+///
+/// Note this is the opposite outcome to 0.6.0_beta1, where the body *did* change
+/// and this constant could not be reused — see `tools/rederive.py`. 0.5.8 is the
+/// mainline successor to 0.5.7, not to that beta.
+///
+/// 48 bytes, not 40: the first 40 are a prologue idiom shared with other
+/// functions, so a shorter signature is ambiguous — and getting more so, which is
+/// worth watching. That prefix matched 5 places in the 0.5.3-era builds and
+/// matches **9** in 0.5.8, while the full 48 still match exactly 1. If a future
+/// build ever pushes the 48-byte form above one hit, lengthen it rather than
+/// reaching for an address. `tools/find_item_build_hook.py`
 /// grows the signature until it is unique and prints the result — re-run it after
 /// a game update and paste the new bytes here, or ship a `hook-target.json`,
 /// which takes precedence and needs no rebuild.
@@ -383,7 +407,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.5.5 and this build differs — \
+            "{error}; the built-in signature is for game 0.5.8 and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;

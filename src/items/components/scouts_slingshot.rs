@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks};
+use crate::{apply_config, has_buff, ticks, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct ScoutsSlingshot {
@@ -9,6 +9,8 @@ pub struct ScoutsSlingshot {
     attack_speed_mult: i32,
     effect_bonus_flat_damage: usize,
     effect_cooldown_seconds: f64,
+    // Non-vital stats (internals)
+    procs: ProcQueue,
 }
 
 impl Default for ScoutsSlingshot {
@@ -18,6 +20,8 @@ impl Default for ScoutsSlingshot {
             attack_speed_mult: 30,
             effect_bonus_flat_damage: 40,
             effect_cooldown_seconds: 20.0,
+            // Non-vital stats (internals)
+            procs: ProcQueue::new(),
         }
     }
 }
@@ -114,14 +118,18 @@ impl StableItem for ScoutsSlingshot {
                     ticks(self.effect_cooldown_seconds),
                 ),
             );
-            ctx.deal_damage(
-                caster,
-                target,
-                0,
-                self.effect_bonus_flat_damage,
-                AttackTypeV1::Item,
-            );
+            self.procs
+                .push_magic(ctx, target, self.effect_bonus_flat_damage);
         }
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.procs.clear();
+    }
+
+    /// Lands the on-hit damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

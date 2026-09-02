@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ticks, ItemMeta, PROC_DELAY_SECONDS};
+use crate::{apply_config, percent_of, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct BladeOfTheRuinedKing {
@@ -12,8 +12,7 @@ pub struct BladeOfTheRuinedKing {
     vamp: i32,
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
-    /// `(ticks left, target, damage)` for hits that have not landed yet.
-    pending_hits: Vec<(usize, usize, usize)>,
+    procs: ProcQueue,
 }
 
 impl BladeOfTheRuinedKing {
@@ -31,7 +30,7 @@ impl BladeOfTheRuinedKing {
             effect_hp_percent_damage: 5.0,
             effect_minion_damage_cap: 50,
             // Non-vital state (internal)
-            pending_hits: Vec::new(),
+            procs: ProcQueue::new(),
         }
     }
 
@@ -144,49 +143,16 @@ impl StableItem for BladeOfTheRuinedKing {
 
         // Fixed here rather than re-read when it lands: the health the tooltip
         // promises a share of is the health the target had when it was hit.
-        self.pending_hits
-            .push((ticks(PROC_DELAY_SECONDS), target, bonus_damage));
+        self.procs.push_physical(ctx, target, bonus_damage);
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.pending_hits.clear();
+        self.procs.clear();
     }
 
     /// Lands the hits whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        if self.pending_hits.is_empty() {
-            return;
-        }
-        let Some(caster) = ctx
-            .get_player(player)
-            .and_then(|player_ref| player_ref.champion())
-            .map(|champion| champion.id())
-        else {
-            return;
-        };
-
-        // Collected first: the drain cannot deal damage while it still holds the
-        // list, and `ctx` is needed for both.
-        let mut landed = Vec::new();
-        self.pending_hits.retain_mut(|(remaining, target, damage)| {
-            *remaining = remaining.saturating_sub(1);
-            if *remaining > 0 {
-                return true;
-            }
-            landed.push((*target, *damage));
-            false
-        });
-
-        for (target, damage) in landed {
-            // The target can die inside the delay, and damage dealt to a corpse
-            // still lands in the damage statistics.
-            if ctx
-                .get_entity(target)
-                .is_some_and(|target_ref| target_ref.is_alive())
-            {
-                ctx.deal_damage(caster, target, damage, 0, AttackTypeV1::Item);
-            }
-        }
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

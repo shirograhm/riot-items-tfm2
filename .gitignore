@@ -28,3 +28,4 @@ previews/*
 hook-target.json
 rust-toolchain.toml
 item-builds.json
+deploy.ps1

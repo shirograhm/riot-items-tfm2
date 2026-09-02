@@ -193,7 +193,7 @@
         },
         "haunting_guise": {
             "name": "Haunting Guise",
-            "option": ""
+            "option": "\nMadness: For each second in combat with enemy champions, deal <#ff9028ff>2% bonus damage<>, stacking up to 3 times for a total of <#ff9028ff>6%<>. Stacks are lost after <#e8a800ff>3 seconds<> out of combat."
         },
         "infinity_edge": {
             "name": "Infinity Edge",
@@ -229,11 +229,11 @@
         },
         "deaths_dance": {
             "name": "Death's Dance",
-            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>45<> + <#60e84dff>15%<> of your <#60e84dff>missing health<>."
+            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#e3ab9dff>true damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>45<> + <#60e84dff>15%<> of your <#60e84dff>missing health<>."
         },
         "radiant_deaths_dance": {
             "name": "Radiant Death's Dance",
-            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#ff9028ff>physical damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>75<> + <#60e84dff>25%<> of your <#60e84dff>missing health<>."
+            "option": "\nIgnore Pain: <#e8a800ff>25%<> of the damage you take is dealt over time as <#e3ab9dff>true damage<> (up to <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> per second).\n\nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>75<> + <#60e84dff>25%<> of your <#60e84dff>missing health<>."
         },
         "needlessly_large_rod": {
             "name": "Needlessly Large Rod",
@@ -281,11 +281,11 @@
         },
         "shadowflame": {
             "name": "Shadowflame",
-            "option": "\nCinderbloom: Your <#a974ffff>magic damage<> is <#e8a800ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
+            "option": "\nCinderbloom: Your <#a974ffff>magic<> and <#e3ab9dff>true damage<> is <#e8a800ff>20% stronger<> against enemies <#d94c49ff>below 40% maximum health<>."
         },
         "radiant_shadowflame": {
             "name": "Radiant Shadowflame",
-            "option": "\nCinderbloom: Your <#a974ffff>magic damage<> is <#e8a800ff>20% stronger<> against enemies <#d94c49ff>below 30% maximum health<>."
+            "option": "\nCinderbloom: Your <#a974ffff>magic<> and <#e3ab9dff>true damage<> is <#e8a800ff>20% stronger<> against enemies <#d94c49ff>below 40% maximum health<>."
         },
         "yun_tal_wildarrows": {
             "name": "Yun Tal Wildarrows",
@@ -593,11 +593,11 @@
         },
         "sundered_sky": {
             "name": "Sundered Sky",
-            "option": "\nLightshield Strike: Your next basic attack against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
+            "option": "\nLightshield Strike: Your next basic attack against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>60% bonus damage<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>6%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
         },
         "radiant_sundered_sky": {
             "name": "Radiant Sundered Sky",
-            "option": "\nLightshield Strike: Your next basic attack against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>20% bonus damage<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>10%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
+            "option": "\nLightshield Strike: Your next basic attack against an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strikes<> for <#e8a800ff>60% bonus damage<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>60<> + <#60e84dff>10%<> of your <#60e84dff>missing health<> (<#e8a800ff>20 second<> cooldown per target)."
         },
         "sheen": {
             "name": "Sheen",
@@ -657,11 +657,11 @@
         },
         "bastionbreaker": {
             "name": "Bastionbreaker",
-            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>150<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#e3ab9dff>bonus true damage<>."
         },
         "radiant_bastionbreaker": {
             "name": "Radiant Bastionbreaker",
-            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nSabotage: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#92dc7bff>Sabotage<> for <#e8a800ff>90 seconds<>, empowering your next basic attack against a turret to deal <#ff9028ff>200<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#e3ab9dff>bonus true damage<>."
         },
         "serpents_fang": {
             "name": "Serpent's Fang",
@@ -982,7 +982,7 @@
         },
         "haunting_guise": {
             "name": "Mặt Nạ Ám Ảnh",
-            "option": ""
+            "option": "\nĐiên Cuồng: Mỗi giây trong giao tranh với tướng địch, gây thêm <#ff9028ff>2% sát thương<>, cộng dồn tối đa 3 lần (tổng <#ff9028ff>6%<>). Mất cộng dồn sau <#e8a800ff>3 giây<> ngoài giao tranh."
         },
         "infinity_edge": {
             "name": "Vô Cực Kiếm",
@@ -1018,11 +1018,11 @@
         },
         "deaths_dance": {
             "name": "Vũ Điệu Tử Thần",
-            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho bạn <#60e84dff>45<> + <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
+            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#e3ab9dff>sát thương chuẩn<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho bạn <#60e84dff>45<> + <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
         },
         "radiant_deaths_dance": {
             "name": "Vũ Điệu Tử Thần Ánh Sáng",
-            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#d94c49ff>sát thương vật lí<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho bạn <#60e84dff>75<> + <#60e84dff>25%<> <#60e84dff>máu đã mất<>."
+            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#e3ab9dff>sát thương chuẩn<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho bạn <#60e84dff>75<> + <#60e84dff>25%<> <#60e84dff>máu đã mất<>."
         },
         "needlessly_large_rod": {
             "name": "Gậy Quá Khổ",
@@ -1070,11 +1070,11 @@
         },
         "shadowflame": {
             "name": "Ngọn Lửa Hắc Hóa",
-            "option": "\nHạt Tro: <#a974ffff>Sát thương phép<> của bạn <#e8a800ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
+            "option": "\nHạt Tro: <#a974ffff>Sát thương phép<> và <#e3ab9dff>Sát thương Chuẩn<> của bạn <#e8a800ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 40% máu tối đa<>."
         },
         "radiant_shadowflame": {
             "name": "Ngọn Lửa Hắc Hóa Ánh Sáng",
-            "option": "\nHạt Tro: <#a974ffff>Sát thương phép<> của bạn <#e8a800ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 30% máu tối đa<>."
+            "option": "\nHạt Tro: <#a974ffff>Sát thương phép<> và <#e3ab9dff>Sát thương Chuẩn<> của bạn <#e8a800ff>mạnh hơn 20%<> khi gây lên kẻ địch <#d94c49ff>dưới 40% máu tối đa<>."
         },
         "yun_tal_wildarrows": {
             "name": "Mũi Tên Yun Tal",
@@ -1382,11 +1382,11 @@
         },
         "sundered_sky": {
             "name": "Bầu Trời Vỡ Nát",
-            "option": "\nĐòn Khiên Sáng: Đòn đánh thường tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>20% sát thương cộng thêm<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> <#60e84dff>máu đã mất<> (<#e8a800ff>20 giây<> hồi chiêu mỗi mục tiêu)."
+            "option": "\nĐòn Khiên Sáng: Đòn đánh thường tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>6%<> <#60e84dff>máu đã mất<> (<#e8a800ff>20 giây<> hồi chiêu mỗi mục tiêu)."
         },
         "radiant_sundered_sky": {
             "name": "Bầu Trời Vỡ Nát Ánh Sáng",
-            "option": "\nĐòn Khiên Sáng: Đòn đánh thường tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>20% sát thương cộng thêm<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>10%<> <#60e84dff>máu đã mất<> (<#e8a800ff>20 giây<> hồi chiêu mỗi mục tiêu)."
+            "option": "\nĐòn Khiên Sáng: Đòn đánh thường tiếp theo của bạn lên một tướng địch sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>60<> + <#60e84dff>10%<> <#60e84dff>máu đã mất<> (<#e8a800ff>20 giây<> hồi chiêu mỗi mục tiêu)."
         },
         "sheen": {
             "name": "Thủy Kiếm",
@@ -1446,11 +1446,11 @@
         },
         "bastionbreaker": {
             "name": "Kẻ Phá Thành",
-            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#e3ab9dff>sát thương chuẩn cộng thêm<>."
         },
         "radiant_bastionbreaker": {
             "name": "Kẻ Phá Thành Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#e3ab9dff>sát thương chuẩn cộng thêm<>."
         },
         "serpents_fang": {
             "name": "Nanh Rắn Độc",
@@ -1771,7 +1771,7 @@
         },
         "haunting_guise": {
             "name": "幽魂面具",
-            "option": ""
+            "option": "\n癫狂：与敌方英雄作战时，每过1秒便造成 <#ff9028ff>2% 额外伤害<>，最多叠加3层（至多 <#ff9028ff>6%<>）。脱离战斗 <#e8a800ff>3秒<> 后层数清零。"
         },
         "infinity_edge": {
             "name": "无尽之刃",
@@ -1807,11 +1807,11 @@
         },
         "deaths_dance": {
             "name": "死亡之舞",
-            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>45<> + <#60e84dff>15%<> 的<#60e84dff>已损失生命值<>。"
+            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#e3ab9dff>额外真实伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>45<> + <#60e84dff>15%<> 的<#60e84dff>已损失生命值<>。"
         },
         "radiant_deaths_dance": {
             "name": "光明版死亡之舞",
-            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#d94c49ff>额外物理伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>75<> + <#60e84dff>25%<> 的<#60e84dff>已损失生命值<>。"
+            "option": "\n无视痛苦：受到伤害的 <#e8a800ff>25%<> 会被储存，并随时间作为 <#e3ab9dff>额外真实伤害<> 返还给你（每秒最多为你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<>）。\n\n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>75<> + <#60e84dff>25%<> 的<#60e84dff>已损失生命值<>。"
         },
         "needlessly_large_rod": {
             "name": "无用大棒",
@@ -1859,11 +1859,11 @@
         },
         "shadowflame": {
             "name": "影焰",
-            "option": "\n余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#e8a800ff>提高20%<>。"
+            "option": "\n余烬绽放：你的<#a974ffff>魔法伤害<>和<#e3ab9dff>真实伤害<>对<#d94c49ff>最大生命值低于40%<>的敌人<#e8a800ff>提高20%<>。"
         },
         "radiant_shadowflame": {
             "name": "光明版影焰",
-            "option": "\n余烬绽放：你的<#a974ffff>魔法伤害<>对<#d94c49ff>最大生命值低于30%<>的敌人<#e8a800ff>提高20%<>。"
+            "option": "\n余烬绽放：你的<#a974ffff>魔法伤害<>和<#e3ab9dff>真实伤害<>对<#d94c49ff>最大生命值低于40%<>的敌人<#e8a800ff>提高20%<>。"
         },
         "yun_tal_wildarrows": {
             "name": "育恩塔尔荒野箭",
@@ -2171,11 +2171,11 @@
         },
         "sundered_sky": {
             "name": "破碎苍穹",
-            "option": "\n光盾打击：你对敌方英雄的下一次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>20% 额外伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>20秒<>）。"
+            "option": "\n光盾打击：你对敌方英雄的下一次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>6%<>（每个目标冷却 <#e8a800ff>20秒<>）。"
         },
         "radiant_sundered_sky": {
             "name": "光明版破碎苍穹",
-            "option": "\n光盾打击：你对敌方英雄的下一次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>20% 额外伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>10%<>（每个目标冷却 <#e8a800ff>20秒<>）。"
+            "option": "\n光盾打击：你对敌方英雄的下一次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为你回复<> <#60e84dff>60<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>10%<>（每个目标冷却 <#e8a800ff>20秒<>）。"
         },
         "sheen": {
             "name": "耀光",
@@ -2235,11 +2235,11 @@
         },
         "bastionbreaker": {
             "name": "破垒者",
-            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#e3ab9dff>额外真实伤害<>。"
         },
         "radiant_bastionbreaker": {
             "name": "光明版破垒者",
-            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>22 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破坏：参与击杀敌方英雄时，获得 <#92dc7bff>破坏<> 效果，持续 <#e8a800ff>90秒<>，强化你对防御塔的下一次普通攻击，造成 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 作为<#e3ab9dff>额外真实伤害<>。"
         },
         "serpents_fang": {
             "name": "毒蛇之牙",
@@ -2560,7 +2560,7 @@
         },
         "haunting_guise": {
             "name": "Máscara Assustadora",
-            "option": ""
+            "option": "\nLoucura: Para cada segundo em combate contra campeões inimigos, causa <#ff9028ff>2% de dano adicional<>, acumulando até 3x (total de <#ff9028ff>6%<>). Os acúmulos são perdidos após <#e8a800ff>3 segundos<> fora de combate."
         },
         "infinity_edge": {
             "name": "Gume do Infinito",
@@ -2596,11 +2596,11 @@
         },
         "deaths_dance": {
             "name": "Dança da Morte",
-            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>45<> + <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
+            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#e3ab9dff>dano verdadeiro<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>45<> + <#60e84dff>15%<> da sua <#60e84dff>vida perdida<>."
         },
         "radiant_deaths_dance": {
             "name": "Dança da Morte Radiante",
-            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#d94c49ff>dano físico<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>75<> + <#60e84dff>25%<> da sua <#60e84dff>vida perdida<>."
+            "option": "\nIgnorar a Dor: <#e8a800ff>25%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#e3ab9dff>dano verdadeiro<> (até <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por segundo).\n\nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>75<> + <#60e84dff>25%<> da sua <#60e84dff>vida perdida<>."
         },
         "needlessly_large_rod": {
             "name": "Bastão Desnecessariamente Grande",
@@ -2648,11 +2648,11 @@
         },
         "shadowflame": {
             "name": "Chama Sombria",
-            "option": "\nFloregris: Seu <#a974ffff>dano mágico<> é <#e8a800ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
+            "option": "\nFloregris: Seu <#a974ffff>dano mágico<> e <#e3ab9dff>dano verdadeiro<> são <#e8a800ff>20% mais fortes<> contra inimigos <#d94c49ff>abaixo de 40% da Vida Máxima<>."
         },
         "radiant_shadowflame": {
             "name": "Chama Sombria Radiante",
-            "option": "\nFloregris: Seu <#a974ffff>dano mágico<> é <#e8a800ff>20% mais forte<> contra inimigos <#d94c49ff>abaixo de 30% da Vida Máxima<>."
+            "option": "\nFloregris: Seu <#a974ffff>dano mágico<> e <#e3ab9dff>dano verdadeiro<> são <#e8a800ff>20% mais fortes<> contra inimigos <#d94c49ff>abaixo de 40% da Vida Máxima<>."
         },
         "yun_tal_wildarrows": {
             "name": "Flechatroz de Yun Tal",
@@ -2960,11 +2960,11 @@
         },
         "sundered_sky": {
             "name": "Céu Dilacerado",
-            "option": "\nGolpe do Escudo de Luz: Seu próximo ataque básico contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>20% de dano bônus<> e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>20 segundos<> por alvo)."
+            "option": "\nGolpe do Escudo de Luz: Seu próximo ataque básico contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>60% de dano bônus<> e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>6%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>20 segundos<> por alvo)."
         },
         "radiant_sundered_sky": {
             "name": "Céu Dilacerado Radiante",
-            "option": "\nGolpe do Escudo de Luz: Seu próximo ataque básico contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>20% de dano bônus<> e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>10%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>20 segundos<> por alvo)."
+            "option": "\nGolpe do Escudo de Luz: Seu próximo ataque básico contra um campeão inimigo <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>60% de dano bônus<> e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura você<> em <#60e84dff>60<> + <#60e84dff>10%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>20 segundos<> por alvo)."
         },
         "sheen": {
             "name": "Fulgor",
@@ -3024,11 +3024,11 @@
         },
         "bastionbreaker": {
             "name": "Quebra-Bastião",
-            "option": "\nGanha <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque básico contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "\nGanha <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque básico contra uma torre para causar <#ff9028ff>150<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#e3ab9dff>dano verdadeiro bônus<>."
         },
         "radiant_bastionbreaker": {
             "name": "Quebra-Bastião Radiante",
-            "option": "\nGanha <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque básico contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "\nGanha <#ffdd8eff>22 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nSabotagem: Ao participar do abate de um campeão inimigo, concede <#92dc7bff>Sabotagem<> por <#e8a800ff>90 segundos<>, potencializando seu próximo ataque básico contra uma torre para causar <#ff9028ff>200<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#e3ab9dff>dano verdadeiro bônus<>."
         },
         "serpents_fang": {
             "name": "Presa da Serpente",
@@ -3349,7 +3349,7 @@
         },
         "haunting_guise": {
             "name": "Преследующая маска",
-            "option": ""
+            "option": "\nБезумие: Каждую секунду в бою с вражескими чемпионами ваш урон увеличивается на <#ff9028ff>2%<> (макс. 3 стака, до <#ff9028ff>6%<>). Стаки теряются после <#e8a800ff>3 секунд<> вне боя."
         },
         "infinity_edge": {
             "name": "Грань Бесконечности",
@@ -3385,11 +3385,11 @@
         },
         "deaths_dance": {
             "name": "Танец Смерти",
-            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#60e84dff>45<> + <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
+            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#e3ab9dff>чистый урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#60e84dff>45<> + <#60e84dff>15%<> от вашего <#60e84dff>потерянного здоровья<>."
         },
         "radiant_deaths_dance": {
             "name": "Лучезарный Танец Смерти",
-            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#d94c49ff>физический урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#60e84dff>75<> + <#60e84dff>25%<> от вашего <#60e84dff>потерянного здоровья<>."
+            "option": "\nИгнорирование Боли: <#e8a800ff>25%<> получаемого урона вместо этого наносится с течением времени как <#e3ab9dff>чистый урон<> (до <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в секунду).\n\nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> <#60e84dff>75<> + <#60e84dff>25%<> от вашего <#60e84dff>потерянного здоровья<>."
         },
         "needlessly_large_rod": {
             "name": "Слишком Большой Жезл",
@@ -3437,11 +3437,11 @@
         },
         "shadowflame": {
             "name": "Сумрачное пламя",
-            "option": "\nОгненный цветок: Ваш <#a974ffff>магический урон<> <#e8a800ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
+            "option": "\nОгненный цветок: Ваш <#a974ffff>магический урон<> и <#e3ab9dff>чистый урон<> <#e8a800ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 40% от максимального<>."
         },
         "radiant_shadowflame": {
             "name": "Лучезарное Сумрачное пламя",
-            "option": "\nОгненный цветок: Ваш <#a974ffff>магический урон<> <#e8a800ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 30% от максимального<>."
+            "option": "\nОгненный цветок: Ваш <#a974ffff>магический урон<> и <#e3ab9dff>чистый урон<> <#e8a800ff>на 20% сильнее<> против врагов, чьё <#d94c49ff>здоровье ниже 40% от максимального<>."
         },
         "yun_tal_wildarrows": {
             "name": "Дикие стрелы Юнталь",
@@ -3749,11 +3749,11 @@
         },
         "sundered_sky": {
             "name": "Расколотые Небеса",
-            "option": "\nУдар Светового Щита: Ваша следующая базовая атака по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>20% дополнительного урона<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>20 секунд<> на каждую цель)."
+            "option": "\nУдар Светового Щита: Ваша следующая базовая атака по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>60% дополнительного урона<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>6%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>20 секунд<> на каждую цель)."
         },
         "radiant_sundered_sky": {
             "name": "Лучезарные Расколотые Небеса",
-            "option": "\nУдар Светового Щита: Ваша следующая базовая атака по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>20% дополнительного урона<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>10%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>20 секунд<> на каждую цель)."
+            "option": "\nУдар Светового Щита: Ваша следующая базовая атака по вражескому чемпиону <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносит критический удар<> с <#e8a800ff>60% дополнительного урона<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> <#60e84dff>60<> + <#60e84dff>10%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>20 секунд<> на каждую цель)."
         },
         "sheen": {
             "name": "Сияние",
@@ -3813,11 +3813,11 @@
         },
         "bastionbreaker": {
             "name": "Разрушитель бастионов",
-            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#e3ab9dff>дополнительный чистый урон<>."
         },
         "radiant_bastionbreaker": {
             "name": "Лучезарный Разрушитель бастионов",
-            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#e3ab9dff>дополнительный чистый урон<>."
         },
         "serpents_fang": {
             "name": "Клык змея",
@@ -4138,7 +4138,7 @@
         },
         "haunting_guise": {
             "name": "기괴한 가면",
-            "option": ""
+            "option": "\n광기: 적 챔피언과 전투 중 매초 <#ff9028ff>2%의 추가 피해<>를 입힙니다. 최대 3회 중첩되어 총 <#ff9028ff>6%<>까지 증가합니다. 비전투 상태가 <#e8a800ff>3초<> 지속되면 중첩이 모두 사라집니다."
         },
         "infinity_edge": {
             "name": "무한의 대검",
@@ -4174,11 +4174,11 @@
         },
         "deaths_dance": {
             "name": "죽음의 무도",
-            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>45<> + <#60e84dff>잃은 체력의 15%<>만큼 체력을 회복합니다."
+            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#e3ab9dff>고정 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>45<> + <#60e84dff>잃은 체력의 15%<>만큼 체력을 회복합니다."
         },
         "radiant_deaths_dance": {
             "name": "찬란한 죽음의 무도",
-            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>75<> + <#60e84dff>잃은 체력의 25%<>만큼 체력을 회복합니다."
+            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#e3ab9dff>고정 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>75<> + <#60e84dff>잃은 체력의 25%<>만큼 체력을 회복합니다."
         },
         "needlessly_large_rod": {
             "name": "쓸데없이 큰 지팡이",
@@ -4226,11 +4226,11 @@
         },
         "shadowflame": {
             "name": "그림자불꽃",
-            "option": "\n잿불꽃: <#d94c49ff>최대 체력이 30% 아래인<> 적에게 입히는 <#a974ffff>마법 피해<>가 <#e8a800ff>20% 증가<>합니다."
+            "option": "\n잿불꽃: <#d94c49ff>최대 체력이 40% 아래인<> 적에게 입히는 <#a974ffff>마법 피해<>와 <#e3ab9dff>고정 피해<>가 <#e8a800ff>20% 증가<>합니다."
         },
         "radiant_shadowflame": {
             "name": "찬란한 그림자불꽃",
-            "option": "\n잿불꽃: <#d94c49ff>최대 체력이 30% 아래인<> 적에게 입히는 <#a974ffff>마법 피해<>가 <#e8a800ff>20% 증가<>합니다."
+            "option": "\n잿불꽃: <#d94c49ff>최대 체력이 40% 아래인<> 적에게 입히는 <#a974ffff>마법 피해<>와 <#e3ab9dff>고정 피해<>가 <#e8a800ff>20% 증가<>합니다."
         },
         "yun_tal_wildarrows": {
             "name": "윤 탈 야생화살",
@@ -4538,11 +4538,11 @@
         },
         "sundered_sky": {
             "name": "갈라진 하늘",
-            "option": "\n빛의 방패 일격: 적 챔피언에게 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>20%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>6%<>만큼 체력을 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
+            "option": "\n빛의 방패 일격: 적 챔피언에게 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>60%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>6%<>만큼 체력을 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
         },
         "radiant_sundered_sky": {
             "name": "찬란한 갈라진 하늘",
-            "option": "\n빛의 방패 일격: 적 챔피언에게 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>20%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>10%<>만큼 체력을 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
+            "option": "\n빛의 방패 일격: 적 챔피언에게 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>60%의 추가 피해<>를 입히고, <#60e84dff>60<> + <#60e84dff>잃은 체력<>의 <#60e84dff>10%<>만큼 체력을 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>20초<>입니다."
         },
         "sheen": {
             "name": "광휘의 검",
@@ -4602,11 +4602,11 @@
         },
         "bastionbreaker": {
             "name": "요새파괴자",
-            "option": "\n<#ffdd8eff>22의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>22의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다."
         },
         "radiant_bastionbreaker": {
             "name": "찬란한 요새파괴자",
-            "option": "\n<#ffdd8eff>22의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>22의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다."
         },
         "serpents_fang": {
             "name": "독사의 송곳니",

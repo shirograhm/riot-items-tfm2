@@ -2,7 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
+    apply_config, ItemMeta, ProcQueue, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
     TICKS_PER_SECOND,
 };
 
@@ -25,6 +25,7 @@ pub struct DeadMansPlate {
     stack_progress: usize,
     refresh_cooldown: usize,
     proc_cooldown: usize,
+    procs: ProcQueue,
 }
 
 impl DeadMansPlate {
@@ -50,6 +51,7 @@ impl DeadMansPlate {
             stack_progress: 0,
             refresh_cooldown: 0,
             proc_cooldown: 0,
+            procs: ProcQueue::new(),
         }
     }
 
@@ -198,9 +200,14 @@ impl StableItem for DeadMansPlate {
         self.stack_progress = 0;
         self.refresh_cooldown = 0;
         self.proc_cooldown = 0;
+        self.procs.clear();
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        // Ahead of the momentum lockout below, which returns early for a full
+        // second after a proc: the queued damage must not wait that out.
+        self.procs.update(ctx, player);
+
         if self.proc_cooldown > 0 {
             self.proc_cooldown -= 1;
             return;
@@ -212,7 +219,7 @@ impl StableItem for DeadMansPlate {
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        caster: usize,
+        _caster: usize,
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
@@ -229,13 +236,10 @@ impl StableItem for DeadMansPlate {
         self.proc_cooldown = PROC_LOCKOUT_TICKS;
         self.refresh_cooldown = 0;
 
-        ctx.deal_damage(
-            caster,
-            target,
-            self.proc_damage(consumed),
-            0,
-            AttackTypeV1::Item,
-        );
+        // Momentum is spent above, so the damage is priced off the stacks this
+        // swing consumed rather than off whatever has rebuilt by landing time.
+        let bonus_damage = self.proc_damage(consumed);
+        self.procs.push_physical(ctx, target, bonus_damage);
     }
 
     /// Momentum carries across the Radiant upgrade. Only whole stacks move —

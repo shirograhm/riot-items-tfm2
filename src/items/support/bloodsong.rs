@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, ItemMeta};
+use crate::{apply_config, has_buff, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
@@ -18,6 +18,7 @@ pub struct Bloodsong {
     effect_damaged_amplify: usize,
     effect_duration_seconds: f64,
     spellblade_ready: bool,
+    procs: ProcQueue,
 }
 
 impl Bloodsong {
@@ -41,6 +42,7 @@ impl Bloodsong {
             effect_duration_seconds: 4.0,
             // Non-vital stats (internals)
             spellblade_ready: false,
+            procs: ProcQueue::new(),
         }
     }
 
@@ -146,6 +148,7 @@ impl StableItem for Bloodsong {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade_ready = false;
+        self.procs.clear();
     }
 
     fn on_skill_hit(
@@ -190,7 +193,10 @@ impl StableItem for Bloodsong {
         let bonus_damage = self.spellblade_damage(caster_ref.level());
         self.spellblade_ready = false;
 
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
+        // Vulnerable goes on below and is up by the time this lands, so the
+        // proc is amplified by its own debuff — it was not when the damage
+        // resolved inline, ahead of the buff.
+        self.procs.push_magic(ctx, target, bonus_damage);
         ctx.add_buff(
             caster,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
@@ -212,6 +218,11 @@ impl StableItem for Bloodsong {
                 },
             );
         }
+    }
+
+    /// Lands the Spellblade damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

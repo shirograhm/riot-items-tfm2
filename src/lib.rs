@@ -9,6 +9,7 @@ mod item_build_hook;
 mod item_catalog;
 mod item_meta;
 mod items;
+mod proc_queue;
 mod solo_rank_ui;
 mod strategy_ui;
 mod tactics;
@@ -17,6 +18,7 @@ use items::*;
 
 pub(crate) use constants::*;
 pub(crate) use item_meta::ItemMeta;
+pub(crate) use proc_queue::ProcQueue;
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -30,24 +32,10 @@ fn ticks(seconds: f64) -> usize {
     (seconds * TICKS_PER_SECOND).round() as usize
 }
 
-/// Neutral jungle and epic monsters. The stable API exposes only `is_champion`,
-/// `is_tower` and `is_minion`, so a monster is what is left once those three are
-/// ruled out. Minions are excluded deliberately: `Feral Flare` stacks on monster
-/// kills but not on minion kills.
 fn is_monster(entity: &StableEntity<'_, '_>) -> bool {
     !entity.is_champion() && !entity.is_tower() && !entity.is_minion()
 }
 
-/// Flat lethality granted by every item in this mod that carries some, keyed the
-/// way `item_keys` reports it.
-///
-/// TFM2 has no lethality attribute: each item simulates its own in `on_attack`
-/// via [`apply_lethality`], so nothing in the engine adds them up. `Axiom Arc`'s
-/// Flux scales on the wielder's *total*, which leaves reading the equipped keys
-/// back and summing them here as the only way to get that number.
-///
-/// Radiant variants are listed separately because they are distinct keys, even
-/// where the value matches the base item.
 const LETHALITY_BY_KEY: &[(&str, usize)] = &[
     ("axiom_arc", 18),
     ("bastionbreaker", 22),
@@ -66,9 +54,6 @@ const LETHALITY_BY_KEY: &[(&str, usize)] = &[
     ("voltaic_cyclosword", 12),
 ];
 
-/// [`LETHALITY_BY_KEY`] with `config.json`'s `effect_lethality` overrides folded
-/// in, so retuning a lethality item retunes Flux with it. Filled once during
-/// [`init`], while the configs are still in hand.
 static LETHALITY_TABLE: std::sync::OnceLock<std::collections::HashMap<String, usize>> =
     std::sync::OnceLock::new();
 
@@ -86,9 +71,6 @@ fn record_lethality_table(configs: &std::collections::HashMap<String, config::It
     let _ = LETHALITY_TABLE.set(table);
 }
 
-/// Total flat lethality across the player's equipped items. Only the static
-/// stat counts: a conditional bonus like `Opportunity`'s Preparation lives on
-/// that item's own instance and is not readable from here.
 fn total_lethality(ctx: &mut StableSim<'_>, player: usize) -> usize {
     let Some(table) = LETHALITY_TABLE.get() else {
         return 0;
@@ -109,14 +91,6 @@ fn buff_stacks(entity: &StableEntity<'_, '_>, name: &str) -> usize {
         .count()
 }
 
-/// Damage multiplier that simulates `lethality` flat armor penetration against a
-/// target with `armor`. The game mitigates physical damage by `100 / (100 + armor)`
-/// (verified: `mitigated = floor(raw * 100 / (100 + armor))`), so scaling the
-/// outgoing damage by this factor makes the post-mitigation result match what the
-/// target would take at `armor - lethality` (floored at 0):
-/// `(100 + armor) / (100 + max(0, armor - lethality))`. The bump is largest against
-/// low-armor targets, like real lethality. Returns `1.0` when there is nothing to
-/// penetrate (non-positive armor or lethality).
 fn lethality_multiplier(armor: i32, lethality: i32) -> f64 {
     if armor <= 0 || lethality <= 0 {
         return 1.0;
@@ -125,45 +99,19 @@ fn lethality_multiplier(armor: i32, lethality: i32) -> f64 {
     (100 + armor) as f64 / (100 + effective_armor) as f64
 }
 
-/// How much armor earlier lethality items already stripped during the attack
-/// currently being resolved, so the next item starts where they stopped.
 #[derive(Clone, Copy)]
 struct Penetration {
     tick: usize,
     caster: usize,
     target: usize,
-    /// Damage after the last item ran. An item continuing the same attack is
-    /// handed exactly this value, which is what distinguishes "next item on this
-    /// attack" from "first item on a fresh attack against the same target".
     damage: usize,
     armor: i32,
 }
 
 thread_local! {
-    /// Thread-local because parallel match simulations resolve attacks
-    /// concurrently. The items of a single attack always run consecutively on
-    /// one thread, so this needs no lock.
     static PENETRATION: Cell<Option<Penetration>> = Cell::new(None);
 }
 
-/// Scales a basic attack's `damage` to simulate `lethality` flat armor
-/// penetration against `target` (via [`lethality_multiplier`]). Basic attacks are
-/// the only damage instance a mod can modify — ability damage is dealt by the
-/// game — so lethality items apply this in `on_attack`.
-///
-/// Lethality is additive across items, but each item knows only its own value
-/// and the host threads one `damage` through every item in turn. Having each
-/// penetrate the target's *full* armor compounds into more penetration than the
-/// sum — worst against low-armor targets, where every item independently strips
-/// the armor to zero and gets paid for it. So each item instead penetrates from
-/// where the previous one stopped, and the multipliers telescope into a single
-/// reduction by the total:
-///
-/// ```text
-/// (100+A)/(100+A-L1) * (100+A-L1)/(100+A-L1-L2) = (100+A)/(100+A-L1-L2)
-/// ```
-///
-/// A lone lethality item sees `already == 0`, so its result is unchanged.
 fn apply_lethality(
     ctx: &mut StableSim<'_>,
     caster: usize,
@@ -243,17 +191,6 @@ fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: 
     ctx.add_buff(champion_id, &buff);
 }
 
-// Installs the native tap on the item-build route function when the server
-// starts. It is fail-closed (see `hook.rs`): on any mismatch it records a
-// refusal and leaves the game function untouched. It is the one part of this
-// mod that is NOT stable-ABI — it detours the game binary directly, so it needs
-// the pinned toolchain in `rust-toolchain.toml` and the `game_core` rlib in
-// `.cargo/config.toml`, and it must be re-verified after every game update.
-//
-// It no longer decides builds; `item_build_hook::ConfiguredBuilds` does, on the
-// stable API. What it still supplies is the `Database` address and the item
-// catalog the tactics half cannot reach any other way, plus the full champion
-// roster for the editor — so a refusal costs those, not the builds.
 struct NativeTapExtension;
 
 impl StableServerExtension for NativeTapExtension {
@@ -310,10 +247,6 @@ fn init(host: &StableHost) -> StableMod {
                 .get($key)
                 .map(<$T>::radiant_with_config)
                 .unwrap_or_else(<$T>::radiant);
-            // The category is taken off the built item rather than written down
-            // beside the key: it is the same value the engine will be told, so
-            // the two cannot drift. `tactics` needs it to find a same-category
-            // stand-in when unique enforcement rejects a 4th item.
             strategy_ui::note_final_item($key, StableItem::category(&item));
             item
         }};

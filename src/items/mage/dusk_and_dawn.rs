@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct DuskAndDawn {
@@ -17,6 +17,7 @@ pub struct DuskAndDawn {
     effect_caster_hp_percent_heal: f64,
     effect_cooldown_seconds: f64,
     spellblade_ready: bool,
+    procs: ProcQueue,
 }
 
 impl DuskAndDawn {
@@ -39,6 +40,7 @@ impl DuskAndDawn {
             effect_cooldown_seconds: 3.5,
             // Non-vital stats (internals)
             spellblade_ready: false,
+            procs: ProcQueue::new(),
         }
     }
 
@@ -136,6 +138,7 @@ impl StableItem for DuskAndDawn {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade_ready = false;
+        self.procs.clear();
     }
 
     fn on_skill_hit(
@@ -185,7 +188,9 @@ impl StableItem for DuskAndDawn {
             self.effect_caster_ap_percent_heal,
         ) + percent_of(caster_ref.hp().1, self.effect_caster_hp_percent_heal);
 
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
+        // Only the damage waits: the heal is what the swing bought the
+        // carrier, so it lands with the hit rather than a moment behind it.
+        self.procs.push_magic(ctx, target, bonus_damage);
         ctx.heal(caster, caster, heal_amount);
 
         self.spellblade_ready = false;
@@ -193,6 +198,11 @@ impl StableItem for DuskAndDawn {
             caster,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
+    }
+
+    /// Lands the Spellblade damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

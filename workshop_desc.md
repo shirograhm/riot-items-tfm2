@@ -68,7 +68,7 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 2. Press [b]+ Add Champion[/b], pick a champion, then set its item slots.
   a. Modded champions are listed too, so long as their mod is loaded.
   b. If you only want to decide [i]some[/i] items, set the slots you care about and leave the rest on [b]Let Player Decide[/b] (the default). The mod keeps your chosen items and lets the game's AI fill the remaining slots.
-  c. Use the [b]filter by champion[/b] box in the toolbar to find a champion once the list gets long.
+  c. Use the [b]filter by champion[/b] box in the toolbar to find a champion once the list gets long. You can list multiple champions here using commas. 
 3. Start the simulated match!
 
 Builds are saved automatically when changed to [b]item-builds.json[/b] as you make them, so they carry across sessions. Click [b]Save Item Builds[/b] to run a manual save.  

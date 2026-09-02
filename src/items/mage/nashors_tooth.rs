@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta};
+use crate::{apply_config, percent_of, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct NashorsTooth {
@@ -11,6 +11,8 @@ pub struct NashorsTooth {
     attack_speed_mult: i32,
     effect_bonus_flat_damage: usize,
     effect_ap_percent_damage: f64,
+    // Non-vital stats (internals)
+    procs: ProcQueue,
 }
 
 impl NashorsTooth {
@@ -26,6 +28,8 @@ impl NashorsTooth {
             attack_speed_mult: 25,
             effect_bonus_flat_damage: 35,
             effect_ap_percent_damage: 3.0,
+            // Non-vital stats (internals)
+            procs: ProcQueue::new(),
         }
     }
 
@@ -128,7 +132,16 @@ impl StableItem for NashorsTooth {
 
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
-        ctx.deal_damage(caster, target, 0, bonus_damage, AttackTypeV1::Item);
+        self.procs.push_magic(ctx, target, bonus_damage);
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.procs.clear();
+    }
+
+    /// Lands the on-hit damage whose delay has run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
