@@ -58,7 +58,7 @@ build_editor:empty {
           bottom: 5px;
         }
         placeholder: "filter by champion...";
-        max_length: 40;
+        max_length: 160;
 
         #icon:image {
           ignore_event: true;
