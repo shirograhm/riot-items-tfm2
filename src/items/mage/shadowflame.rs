@@ -24,7 +24,7 @@ impl Shadowflame {
             price: 1350,
             magic_power: 115,
             magic_resistance_penetration: 15,
-            effect_hp_percent_threshold: 30.0,
+            effect_hp_percent_threshold: 40.0,
             effect_bonus_damage_when_low: 20.0,
         }
     }
@@ -35,7 +35,7 @@ impl Shadowflame {
             price: 1800,
             magic_power: 210,
             magic_resistance_penetration: 15,
-            effect_hp_percent_threshold: 30.0,
+            effect_hp_percent_threshold: 40.0,
             effect_bonus_damage_when_low: 20.0,
             ..Self::base()
         }
@@ -126,7 +126,9 @@ impl StableItem for Shadowflame {
         }
 
         let hp_threshold = percent_of(target_ref.hp().1, self.effect_hp_percent_threshold);
-        if target_ref.hp().0 < hp_threshold && damage_type == DamageTypeV1::Ap {
+        if target_ref.hp().0 < hp_threshold
+            && (damage_type == DamageTypeV1::Ap || damage_type == DamageTypeV1::Fixed)
+        {
             *damage +=
                 (*damage as f64 * (self.effect_bonus_damage_when_low / 100.0)).round() as usize;
         }
