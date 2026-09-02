@@ -138,11 +138,17 @@ impl StableItem for Collector {
             apply_lethality(ctx, caster, target, self.effect_lethality, damage);
         }
 
-        // Apply execute threshold to champions
-        if is_target_champion {
+        if is_target_champion && target_curr_hp > *damage {
             let hp_threshold = percent_of(target_max_hp, self.effect_hp_percent_threshold);
-            if target_curr_hp - *damage <= hp_threshold {
-                *damage = target_curr_hp;
+            let remaining = target_curr_hp - *damage;
+            if remaining <= hp_threshold {
+                ctx.deal_damage_typed(
+                    caster,
+                    target,
+                    remaining,
+                    DamageTypeV1::Fixed,
+                    AttackTypeV1::Item,
+                );
             }
         }
     }
