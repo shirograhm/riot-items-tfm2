@@ -1018,11 +1018,11 @@
         },
         "deaths_dance": {
             "name": "Vũ Điệu Tử Thần",
-            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#e3ab9dff>sát thương chuẩn<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho bạn <#60e84dff>45<> + <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
+            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#ff9028ff>sát thương vật lí<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho bạn <#60e84dff>45<> + <#60e84dff>15%<> <#60e84dff>máu đã mất<>."
         },
         "radiant_deaths_dance": {
             "name": "Vũ Điệu Tử Thần Ánh Sáng",
-            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#e3ab9dff>sát thương chuẩn<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho bạn <#60e84dff>75<> + <#60e84dff>25%<> <#60e84dff>máu đã mất<>."
+            "option": "\nPhớt Lờ Đau Đớn: <#e8a800ff>25%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#ff9028ff>sát thương vật lí<> (tối đa <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi giây).\n\nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho bạn <#60e84dff>75<> + <#60e84dff>25%<> <#60e84dff>máu đã mất<>."
         },
         "needlessly_large_rod": {
             "name": "Gậy Quá Khổ",
@@ -1446,11 +1446,11 @@
         },
         "bastionbreaker": {
             "name": "Kẻ Phá Thành",
-            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#e3ab9dff>sát thương chuẩn cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>150<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "radiant_bastionbreaker": {
             "name": "Kẻ Phá Thành Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#e3ab9dff>sát thương chuẩn cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nPhá Hoại: Tham gia hạ gục một tướng địch sẽ trao <#92dc7bff>Phá Hoại<> trong <#e8a800ff>90 giây<>, tăng cường đòn đánh thường tiếp theo của bạn lên trụ để gây <#ff9028ff>200<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "serpents_fang": {
             "name": "Nanh Rắn Độc",
@@ -3813,11 +3813,11 @@
         },
         "bastionbreaker": {
             "name": "Разрушитель бастионов",
-            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#e3ab9dff>дополнительный чистый урон<>."
+            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>150<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "radiant_bastionbreaker": {
             "name": "Лучезарный Разрушитель бастионов",
-            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#e3ab9dff>дополнительный чистый урон<>."
+            "option": "\nДаёт <#ffdd8eff>22 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nСаботаж: При участии в убийстве вражеского чемпиона даёт <#92dc7bff>Саботаж<> на <#e8a800ff>90 секунд<>, усиливая вашу следующую базовую атаку по башне, чтобы нанести <#ff9028ff>200<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "serpents_fang": {
             "name": "Клык змея",
@@ -4174,11 +4174,11 @@
         },
         "deaths_dance": {
             "name": "죽음의 무도",
-            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#e3ab9dff>고정 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>45<> + <#60e84dff>잃은 체력의 15%<>만큼 체력을 회복합니다."
+            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>45<> + <#60e84dff>잃은 체력의 15%<>만큼 체력을 회복합니다."
         },
         "radiant_deaths_dance": {
             "name": "찬란한 죽음의 무도",
-            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#e3ab9dff>고정 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>75<> + <#60e84dff>잃은 체력의 25%<>만큼 체력을 회복합니다."
+            "option": "\n고통 무시: 받는 피해의 <#e8a800ff>25%<>를 지속적으로 <#ff9028ff>물리 피해<>로 받습니다. 초당 피해량은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>를 넘지 않습니다.\n\n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>75<> + <#60e84dff>잃은 체력의 25%<>만큼 체력을 회복합니다."
         },
         "needlessly_large_rod": {
             "name": "쓸데없이 큰 지팡이",
@@ -4602,11 +4602,11 @@
         },
         "bastionbreaker": {
             "name": "요새파괴자",
-            "option": "\n<#ffdd8eff>22의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>22의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>150<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "radiant_bastionbreaker": {
             "name": "찬란한 요새파괴자",
-            "option": "\n<#ffdd8eff>22의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>22의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n파괴 공작: 적 챔피언 처치에 관여하면 <#e8a800ff>90초<> 동안 <#92dc7bff>파괴 공작<>을 얻습니다. 이 효과를 보유한 동안 포탑을 대상으로 하는 다음 기본 공격이 <#ff9028ff>200<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "serpents_fang": {
             "name": "독사의 송곳니",
