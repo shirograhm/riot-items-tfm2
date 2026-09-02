@@ -127,7 +127,7 @@ checksum = "63b8176103e19a2643978565ca18b50549f6101881c443590420e4dc998a3c69"
 
 [[package]]
 name = "riot_items_tfm2"
-version = "0.9.5-beta"
+version = "0.9.6-beta"
 dependencies = [
  "mod-api-stable",
  "rand",

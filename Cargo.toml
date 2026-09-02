@@ -1,10 +1,6 @@
 [package]
 name = "riot_items_tfm2"
-<<<<<<< HEAD
-version = "0.9.5-beta"
-=======
-version = "0.9.6"
->>>>>>> 629dc8c (version update)
+version = "0.9.6-beta"
 edition = "2021"
 
 [lib]
