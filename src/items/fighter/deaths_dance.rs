@@ -199,7 +199,13 @@ impl StableItem for DeathsDance {
         );
         let dealt = (tick_damage as f64 * self.mitigation_scale()).round() as usize;
         self.self_inflicted_credit += tick_damage;
-        ctx.deal_damage(self.last_damaged_by, entity, dealt, 0, AttackTypeV1::Item);
+        ctx.deal_damage_typed(
+            self.last_damaged_by,
+            entity,
+            dealt,
+            DamageTypeV1::Fixed,
+            AttackTypeV1::Item,
+        );
         self.accumulated_damage -= tick_damage;
     }
 
