@@ -196,7 +196,7 @@ impl Default for Strings {
         Self {
             tab: "Builds".into(),
             add: "+ Add Champion".into(),
-            filter: "filter by champion...".into(),
+            filter: "filter by champion(s)...".into(),
             hint: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.".into(),
             col_champion: "CHAMPION".into(),
             col_role: "ROLE".into(),

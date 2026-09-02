@@ -47,7 +47,7 @@ build_editor:empty {
         @"asset/base/style/main#text_edit";
         x: 205px;
         y: 10px;
-        width: 260px;
+        width: 450px;
         height: 40px;
         size: 14;
         align_y: Center;
@@ -58,7 +58,7 @@ build_editor:empty {
           bottom: 5px;
         }
         placeholder: "filter by champion...";
-        max_length: 160;
+        max_length: 60;
 
         #icon:image {
           ignore_event: true;
@@ -74,7 +74,7 @@ build_editor:empty {
       #searchclear:color_icon_button {
         visible: false;
 
-        x: 475px;
+        x: 665px;
         y: 19px;
         width: 22px;
         height: 22px;
