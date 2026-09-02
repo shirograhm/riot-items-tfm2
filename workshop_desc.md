@@ -36,8 +36,9 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 4. Play as you would normally!
 
 [h1] Versioning [/h1]
-Currently updated for game version 0.5.7. Also supports previous versions using an older build of the mod. See below for reference:  
-Mod v0.9.3+ - v0.5.7
+Currently updated for game version 0.5.8. Also supports previous versions using an older build of the mod. See below for reference:  
+Mod v0.9.6+ - v0.5.8
+Mod v0.9.3-5 - v0.5.7
 Mod v0.9.2 - v0.5.6
 Mod v0.9.0-1 - v0.5.5
 Mod v0.8.0+ - v0.5.4
