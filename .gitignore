@@ -30,8 +30,5 @@ rust-toolchain.toml
 item-builds.json
 deploy.ps1
 
-# Siderloader: our custom/modified items, reapplied by siderloader/siderload.ps1
-/siderloader/
-
 # sideloader: our custom/modified items, reapplied by sideloader/sideload.ps1
 /sideloader/
