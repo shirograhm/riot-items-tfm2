@@ -104,6 +104,8 @@ Special thanks to @blasé for helping playtest the 4 Item Mod compatibility!
 
 Thank you to the people in the modding discord for their help with the mod-sdk setup, documentation, and general coolness.
 
+If you would like to support my endeavor and buy me a coffee, you can find me on ko-fi: https://ko-fi.com/shirograhm
+
 [h2] Legalese [/h2]
 This is a free fan-made mod. I am not affiliated with Riot Games in any way. Item concepts, names, and effects are all property to Riot Games.
 

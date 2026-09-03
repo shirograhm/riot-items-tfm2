@@ -18,6 +18,9 @@
       "save": "Save Item Builds",
       "ai_slot": "Let Player Decide",
       "no_champion": "(champion)"
+    },
+    "item_stats": {
+      "tab": "Item Stats"
     }
   },
   "ko": {
@@ -39,6 +42,9 @@
       "save": "빌드 저장",
       "ai_slot": "선수에게 맡기기",
       "no_champion": "(챔피언)"
+    },
+    "item_stats": {
+      "tab": "아이템 통계"
     }
   },
   "zh-hans": {
@@ -60,6 +66,9 @@
       "save": "保存装备构建",
       "ai_slot": "交给选手决定",
       "no_champion": "(英雄)"
+    },
+    "item_stats": {
+      "tab": "物品统计"
     }
   },
   "ja": {
@@ -81,6 +90,9 @@
       "save": "ビルドを保存",
       "ai_slot": "選手に任せる",
       "no_champion": "(チャンピオン)"
+    },
+    "item_stats": {
+      "tab": "アイテム統計"
     }
   },
   "pt-BR": {
@@ -102,6 +114,9 @@
       "save": "Salvar Builds",
       "ai_slot": "Deixar o Jogador Decidir",
       "no_champion": "(campeão)"
+    },
+    "item_stats": {
+      "tab": "Estat. Itens"
     }
   },
   "ru": {
@@ -123,6 +138,9 @@
       "save": "Сохранить сборки",
       "ai_slot": "На усмотрение игрока",
       "no_champion": "(чемпион)"
+    },
+    "item_stats": {
+      "tab": "Статистика предметов"
     }
   },
   "vi": {
@@ -144,6 +162,9 @@
       "save": "Lưu cách lên đồ",
       "ai_slot": "Để tuyển thủ quyết định",
       "no_champion": "(tướng)"
+    },
+    "item_stats": {
+      "tab": "Thống kê Trang bị"
     }
   }
 }

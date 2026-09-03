@@ -1,0 +1,1019 @@
+//! Item Stats: a fourth tab on the statistics screen, beside Champ/Player/Team.
+//!
+//! One row per item, ordered by win rate, over every match the game still holds
+//! a record of. [`crate::item_stats`] owns the numbers; this file owns the tab,
+//! the panel and the bookkeeping that keeps the two sides of the screen from
+//! showing at once.
+//!
+//! # Why the tab lives in a layout override
+//!
+//! `ui/layout/statistics.ui` is an asset override (see `mod.override_info`): a
+//! full copy of the game's layout with a fourth `#item` selectable in `#tabs`,
+//! `#tabs` widened 704 -> 936 to fit it, and an `#item_stats` panel beside the
+//! three vanilla ones in `#data`. Only the rows are built at runtime.
+//!
+//! The first version spawned all of it with `ui_spawn_source` instead, on the
+//! reasoning that a bad override kills the whole screen —
+//!
+//! ```text
+//! [main_ui] failed to create main tab: Statistics
+//! ```
+//!
+//! — the way a missing fourth item slot killed Solorank, whereas a failed spawn
+//! leaves the vanilla screen standing. That reasoning was sound and the
+//! conclusion was still wrong, because it valued the wrong risk: **game code
+//! rebuilds this screen's subtrees on its own tab switches**, and a spawned node
+//! is not in the layout it rebuilds from. So the tab disappeared on the first
+//! switch to Champ/Player/Team, and re-spawning it from [`heal`] traded that for
+//! a visible flicker on every switch.
+//!
+//! A declared node has no such problem: the rebuild puts it back, because it is
+//! part of what "rebuild" means. The exe's string table is what makes this safe
+//! to declare — the runner addresses its tabs and panels by literal name
+//! (`tabs.champion`, `tabs.athlete`, `tabs.team`, and a single
+//! `data.athlete`/`data.champion`/`data.team` lookup blob) and never enumerates
+//! `#tabs`, so a fourth child is one it does not look at.
+//!
+//! What survives from the spawning version is [`heal`], now narrowed to the one
+//! thing the layout cannot restore: the rows.
+//!
+//! # The three filters are hidden, not ignored
+//!
+//! `#position`, `#patch`, `#year_filter` and `#league_filter` drive the vanilla
+//! tables and know nothing about this one. Leaving them up while this tab is
+//! open would offer four controls that look like they filter what is on screen
+//! and do not — the same reason the Builds tab removed Personal rather than
+//! leaving it beside an editor that supersedes it. They are hidden on entry and
+//! restored on the way out.
+//!
+//! Making them work is a real feature and a much larger one: it needs a season,
+//! league and lane recorded against every sample rather than a single running
+//! total, which is a different shape of aggregate than [`crate::item_stats`]
+//! keeps.
+
+use std::collections::{BTreeMap, BTreeSet};
+use std::sync::Mutex;
+
+use mod_api_stable::*;
+
+use crate::item_stats::{self, ItemInfo, Totals};
+use crate::strategy_ui::{tab_style, ICON_SHEET};
+
+/// How often to walk the tree looking for the statistics screen, in frames.
+///
+/// [`find_screen`] is a breadth-first `ui_child_names` sweep and running one per
+/// frame is a documented way to make this mod lag — but [`on_statistics_tab`]
+/// gates it to the one screen that needs it, so the throttle only has to bound
+/// repeated *failed* sweeps rather than pay for every other screen in the game.
+///
+/// It was a full second, which is what "the tab takes a moment to appear" was:
+/// the screen is up and the walk has not run yet. A twelfth of that is not
+/// noticeable and still collapses to a single successful sweep.
+const PROBE_EVERY: u32 = 5;
+
+/// How deep below the UI root [`find_screen`] will look.
+///
+/// The screen sits at depth 2 in the management scene (`main` -> `contents` ->
+/// the tab), so this has room to spare without turning a missed match into a
+/// sweep of the entire tree.
+const SCREEN_DEPTH: u32 = 4;
+
+/// Nodes [`find_screen`] will visit before giving up for this sweep.
+const SCREEN_NODES: u32 = 600;
+
+/// Frames between repaints while records are still being folded.
+///
+/// A repaint rewrites every visible row, and the order changes as samples land,
+/// so it cannot be skipped entirely during the scan — but it also does not need
+/// to happen at 60Hz for a table nobody is reading yet.
+const REPAINT_EVERY: u32 = 12;
+
+/// Frames between checks that our spawned nodes are still there.
+const HEAL_EVERY: u32 = 10;
+
+/// Frames between re-checks of the record id list while the screen is up.
+///
+/// `wire` sweeps once on arrival, which is enough if leaving the screen destroys
+/// it — the next visit wires from scratch. It is not enough if the game merely
+/// hides it, because then `wired` is still true on the way back and matches
+/// simmed in between would never be swept in. Which of the two the game does is
+/// not something this module has to know: a sweep every few seconds is one
+/// `record_ids` call and a set comparison, and it is correct either way.
+const SWEEP_EVERY: u32 = 300;
+
+/// Rows spawned per repaint.
+///
+/// The full table is one row per item in the pool, which is around 150 nodes'
+/// worth of subtree. Spawning them in one frame is a visible hitch on arrival;
+/// spread over a few repaints it is not.
+const SPAWN_PER_REPAINT: usize = 60;
+
+/// Most rows the table will ever show.
+const MAX_ROWS: usize = 300;
+
+/// Row pitch: 56px of data, a 1px separator, and the scroll view's 4px spacing.
+const ROW_PITCH: usize = 61;
+
+/// Column widths, left to right. They sum to less than the panel's 1600px on
+/// purpose — the vanilla champion table fills its width with three damage
+/// columns this table has no equivalent of, and stretching six columns across
+/// the gap would leave the numbers floating far from their headings.
+const COL_RANK: u32 = 68;
+const COL_NAME: u32 = 420;
+const COL_GAMES: u32 = 140;
+const COL_WIN: u32 = 130;
+const COL_LOSE: u32 = 130;
+const COL_RATE: u32 = 150;
+
+/// The three vanilla tabs and the panel each one shows, paired so the two can
+/// never drift apart. Named relative to the screen root, resolved at runtime.
+const VANILLA: [(&str, &str); 3] = [
+    ("tabs.champion", "data.champion"),
+    ("tabs.athlete", "data.athlete"),
+    ("tabs.team", "data.team"),
+];
+
+/// The header controls that filter the vanilla tables and not this one.
+const FILTERS: [&str; 4] = ["position", "patch", "year_filter", "league_filter"];
+
+/// Which column the table is ordered by.
+#[derive(Clone, Copy, PartialEq, Eq, Default)]
+enum SortBy {
+    /// Display name, so it follows the game's language rather than the key.
+    Item,
+    Games,
+    Wins,
+    Losses,
+    #[default]
+    WinRate,
+}
+
+impl SortBy {
+    /// Header node under `#header`, and the click path that selects this column.
+    fn node(self) -> &'static str {
+        match self {
+            SortBy::Item => "item_name",
+            SortBy::Games => "games",
+            SortBy::Wins => "win",
+            SortBy::Losses => "lose",
+            SortBy::WinRate => "win_rate",
+        }
+    }
+
+    /// Which way round to sort when this column is first clicked.
+    ///
+    /// Descending for the numbers, because "most" is the question being asked of
+    /// every one of them. Ascending for the name, because that is what
+    /// alphabetical means to a reader.
+    fn starts_descending(self) -> bool {
+        self != SortBy::Item
+    }
+
+    const ALL: [SortBy; 5] = [
+        SortBy::Item,
+        SortBy::Games,
+        SortBy::Wins,
+        SortBy::Losses,
+        SortBy::WinRate,
+    ];
+}
+
+#[derive(Default)]
+struct State {
+    /// Statistics screen path, once found. Cleared when the screen goes away so
+    /// a re-entered screen is searched for again rather than written to at a
+    /// stale path.
+    screen: Option<String>,
+    /// Whether the tab and panel are spawned and the tabs are registered.
+    wired: bool,
+    /// Whether this tab is the one currently showing.
+    showing: bool,
+    /// Row nodes spawned so far.
+    spawned: usize,
+    /// Rows currently visible, so a shrinking table hides its tail.
+    shown: usize,
+    /// Set when new records land; cleared by a repaint.
+    dirty: bool,
+    /// Column the table is ordered by.
+    sort: SortBy,
+    /// Which way round. Named for the *non*-default so that `State::default()`
+    /// gives the intended opening view — win rate, highest first — without
+    /// hand-writing a `Default` impl for the whole struct.
+    ascending: bool,
+    tick: u32,
+    /// Counts every frame the screen is up, which `tick` does not — it only
+    /// advances while probing for the screen or while this tab is showing.
+    sweep_tick: u32,
+}
+
+static STATE: Mutex<Option<State>> = Mutex::new(None);
+
+fn with_state<T>(f: impl FnOnce(&mut State) -> T) -> Option<T> {
+    let mut guard = STATE.lock().ok()?;
+    Some(f(guard.get_or_insert_with(State::default)))
+}
+
+/// Paths this module has registered a handler for.
+///
+/// Same hazard and same fix as the build editor's set: a handler outlives the
+/// node it was registered for, so registering twice on one live path runs the
+/// handler twice, and a process-lifetime set would leave the *second* visit to
+/// this screen unwired. Cleared only on teardown.
+static REGISTERED: Mutex<BTreeSet<String>> = Mutex::new(BTreeSet::new());
+
+fn register_once(ctx: &mut StableClient<'_>, path: &str) {
+    let fresh = REGISTERED
+        .lock()
+        .map(|mut set| set.insert(path.to_string()))
+        .unwrap_or(false);
+    if !fresh {
+        return;
+    }
+    if !ctx.ui_register_path_events(path, handle_event) {
+        if let Ok(mut set) = REGISTERED.lock() {
+            set.remove(path);
+        }
+    }
+}
+
+fn forget_registrations() {
+    if let Ok(mut set) = REGISTERED.lock() {
+        set.clear();
+    }
+}
+
+/// Per-frame entry point, called from the mod's one client hook.
+///
+/// Ordered before that hook's strategy-screen early return, since this screen is
+/// not that one.
+pub fn sync(ctx: &mut StableClient<'_>) {
+    let Some(screen) = resolve_screen(ctx) else {
+        return;
+    };
+
+    // Frames spent on this screen. Drives the two housekeeping cadences below,
+    // and is separate from `tick` because that one only advances while probing
+    // for the screen or while this tab is showing.
+    let frame = with_state(|state| {
+        state.sweep_tick = state.sweep_tick.wrapping_add(1);
+        state.sweep_tick
+    })
+    .unwrap_or(0);
+
+    if frame % HEAL_EVERY == 0 {
+        heal(ctx, &screen);
+    }
+
+    if !with_state(|state| state.wired).unwrap_or(true) {
+        wire(ctx, &screen);
+    }
+
+    // Both of these run whether or not the tab is open, and both have to run
+    // from here rather than from the click that opens it: `setting_get_json`
+    // and `record_get_json` are not live inside a UI handler. Folding early
+    // also means the scan is finished by the time the player reaches for the
+    // tab, rather than starting when they do.
+    item_stats::prime_catalog(ctx);
+    if item_stats::pump(ctx) {
+        let _ = with_state(|state| state.dirty = true);
+    }
+
+    if frame % SWEEP_EVERY == 0 {
+        item_stats::sweep(ctx);
+    }
+
+    if !with_state(|state| state.showing).unwrap_or(false) {
+        return;
+    }
+
+    // Game code drives its own panels from its own tab state, which never
+    // becomes this one, so a one-shot hide on entry is not guaranteed to
+    // survive anything that makes it re-assert them.
+    for (_, panel) in VANILLA {
+        ctx.ui_set_visible(&format!("{screen}.{panel}"), false);
+    }
+
+    let due = with_state(|state| {
+        state.tick = state.tick.wrapping_add(1);
+        let due = state.dirty && state.tick % REPAINT_EVERY == 0;
+        if due {
+            state.dirty = false;
+        }
+        due
+    })
+    .unwrap_or(false);
+
+    if due {
+        repaint(ctx, &screen);
+    }
+}
+
+/// Re-syncs to a screen subtree game code has rebuilt underneath us.
+///
+/// Game code rebuilds parts of this screen on its own tab switches. The tab and
+/// the panel come back on their own now that the layout declares them — that is
+/// the whole reason they moved into the override, and what stopped them
+/// flickering — but the **rows** do not: those are spawned per session from the
+/// current totals, and a rebuilt panel comes back with an empty `#contents` and
+/// its authored `visible: false`.
+///
+/// Missing rows are therefore the signal that a rebuild happened. Without this,
+/// `spawned` still claims rows exist, every repaint writes text at paths that no
+/// longer resolve, and the table stays blank for the rest of the visit.
+///
+/// Rate-limited rather than run every frame: if game code ever rebuilt
+/// continuously, an unthrottled version would respawn a subtree per frame. At
+/// [`HEAL_EVERY`] the worst case is a few per second, and the normal case — one
+/// rebuild, caught within a sixth of a second — is imperceptible.
+fn heal(ctx: &mut StableClient<'_>, screen: &str) {
+    if !with_state(|state| state.wired).unwrap_or(false) {
+        return;
+    }
+
+    // The layout's own nodes. Gone means the override stopped applying, which is
+    // not something to paper over silently.
+    if !ctx.ui_exists(&format!("{screen}.tabs.item"))
+        || !ctx.ui_exists(&format!("{screen}.data.item_stats"))
+    {
+        diag("layout nodes vanished; re-adopting");
+        let _ = with_state(|state| *state = State::default());
+        return;
+    }
+
+    let spawned = with_state(|state| state.spawned).unwrap_or(0);
+    if spawned == 0 {
+        return;
+    }
+    let rows_alive = ctx.ui_exists(&format!("{screen}.data.item_stats.data.contents.row0"));
+    if rows_alive {
+        return;
+    }
+
+    diag("panel was rebuilt; respawning rows");
+    let _ = with_state(|state| {
+        // The handlers are keyed by path and outlive the nodes, so `REGISTERED`
+        // is deliberately untouched: re-registering a live path is what makes
+        // one click run twice.
+        state.spawned = 0;
+        state.shown = 0;
+        // The rebuilt panel came back at its authored `visible: false`, so
+        // whatever this thought it was showing, it is not showing it now.
+        state.showing = false;
+        state.dirty = true;
+    });
+}
+
+/// The statistics screen path, or `None` when it is not up.
+///
+/// # Why this searches instead of naming a path
+///
+/// The first version of this anchored on `main.contents.statistics`, reasoning
+/// from `main.contents.strategy`, which is a path the build editor uses and
+/// which works. That reasoning was wrong, and the tab silently never appeared.
+///
+/// A path's root is the root **node name of the scene's own layout**, and that
+/// name is not `main` everywhere:
+///
+/// ```text
+/// main.ui        main:main_ui          <- the management scene
+/// strategy.ui    main:strategy_ui      <- also `main`, hence main.contents.strategy
+/// lineup.ui      main:lineup_ui
+/// ingame.ui      ingame:ingame_ui      <- NOT main; see the in-match note
+/// solo_rank.ui   solo_rank:solo_rank_ui
+/// statistics.ui  statistics:statistics_ui
+/// ```
+///
+/// So "prefix with `main.`" is not a rule, it is a coincidence of the three
+/// layouts that happen to declare that root, and the statistics screen is not
+/// one of them. Rather than swap one guess for another, this walks down from the
+/// real UI root — `ui_child_names("")` — until it finds a node with a
+/// `tabs.champion` under it, which is a shape no other screen has.
+///
+/// The walk is throttled to [`PROBE_EVERY`] because an unthrottled breadth-first
+/// `ui_child_names` sweep is a known way to make this mod lag, and it stops as
+/// soon as the screen is cached.
+fn resolve_screen(ctx: &mut StableClient<'_>) -> Option<String> {
+    if let Some(screen) = with_state(|state| state.screen.clone()).flatten() {
+        if ctx.ui_exists(&format!("{screen}.tabs.champion")) {
+            return Some(screen);
+        }
+        // Left the screen. Everything spawned into it died with it, so the next
+        // visit rebuilds rather than writing to paths that no longer resolve.
+        let _ = with_state(|state| {
+            *state = State::default();
+        });
+        forget_registrations();
+        return None;
+    }
+
+    let due = with_state(|state| {
+        state.tick = state.tick.wrapping_add(1);
+        state.tick % PROBE_EVERY == 0
+    })
+    .unwrap_or(false);
+    if !due {
+        return None;
+    }
+
+    if !on_statistics_tab(ctx) {
+        return None;
+    }
+
+    let found = find_screen(ctx)?;
+    diag(&format!("screen found at {found}"));
+    let _ = with_state(|state| state.screen = Some(found.clone()));
+    Some(found)
+}
+
+/// Whether the client is on the Statistics main tab.
+///
+/// This is the gate that keeps [`find_screen`]'s sweep off every other screen in
+/// the game, which is the difference between a walk that runs once on arrival
+/// and one that runs once a second forever. `Statistics` is a real main-tab
+/// variant name in the exe's string table, beside `Solorank` and `Recruitment`.
+///
+/// Matched loosely and failing open: `None` means the host would not say (an
+/// older ABI, or not on the Main screen at all), and being inert is a worse
+/// answer than searching. The substring test is because the engine has form for
+/// spelling these inconsistently — `solo_rank` vs `solorank` cost the
+/// solo-rank module the same question.
+fn on_statistics_tab(ctx: &StableClient<'_>) -> bool {
+    let Some(tab) = ctx.client_main_tab() else {
+        return true;
+    };
+
+    // Logged on change rather than per probe: it names the tab the player is
+    // actually on, which is both the confirmation that this gate works and the
+    // exact spelling to match if it ever stops working.
+    static LAST: Mutex<Option<String>> = Mutex::new(None);
+    if let Ok(mut last) = LAST.lock() {
+        if last.as_deref() != Some(tab.as_str()) {
+            diag(&format!("main tab = {tab:?}"));
+            *last = Some(tab.clone());
+        }
+    }
+
+    tab.to_ascii_lowercase().contains("statistic")
+}
+
+/// Breadth-first from the UI root for the node holding the statistics tabs.
+///
+/// `tabs.champion` is the marker rather than the screen's name, for the same
+/// reason `solo_rank_ui` matches on an `item_slot3` child: the name is game
+/// code's business and the engine has been inconsistent about it before
+/// (`solo_rank` vs `solorank`), while the shape is what this module actually
+/// needs to be true.
+fn find_screen(ctx: &StableClient<'_>) -> Option<String> {
+    let mut level: Vec<String> = ctx.ui_child_names("");
+
+    // Logged on the first probe rather than only on failure. A search that never
+    // matches would otherwise write nothing at all, which is indistinguishable
+    // from the mod not running — and "what are the root's children" is the one
+    // fact that turns a wrong assumption about the tree into a correct one.
+    {
+        use std::sync::atomic::{AtomicBool, Ordering};
+        static ONCE: AtomicBool = AtomicBool::new(false);
+        if !ONCE.swap(true, Ordering::Relaxed) {
+            diag(&format!("ui root children: {level:?}"));
+        }
+    }
+
+    if level.is_empty() {
+        // A root that enumerates nothing would make this inert forever, so the
+        // scene roots seen in the layouts are tried as a seed rather than
+        // trusting one call.
+        level = ["main", "statistics"]
+            .iter()
+            .map(|s| s.to_string())
+            .collect();
+    }
+
+    let mut budget = SCREEN_NODES;
+    for _ in 0..SCREEN_DEPTH {
+        if level.is_empty() {
+            break;
+        }
+        let mut next = Vec::new();
+        for path in level {
+            if ctx.ui_exists(&format!("{path}.tabs.champion")) {
+                return Some(path);
+            }
+            // A depth limit alone does not bound this: one wide level can be
+            // hundreds of nodes, and this runs on the UI thread.
+            budget = budget.saturating_sub(1);
+            if budget == 0 {
+                diag("screen search hit its node budget");
+                return None;
+            }
+            for name in ctx.ui_child_names(&path) {
+                next.push(format!("{path}.{name}"));
+            }
+        }
+        level = next;
+    }
+    None
+}
+
+/// Spawns the tab and the panel, and registers all four tabs.
+///
+/// Registering the vanilla three is observation only — a handler on them is what
+/// puts this panel away when the player switches back, and game code's own
+/// handling for those clicks is untouched.
+fn wire(ctx: &mut StableClient<'_>, screen: &str) {
+    let tabs = format!("{screen}.tabs");
+
+    // Both nodes come from the layout override, so this only adopts them. An
+    // absent one means the override is not installed — a stale deploy, or a game
+    // update that changed `statistics.ui` out from under it — and there is
+    // nothing useful to do but say so and stay out of the way.
+    let tab_up = ctx.ui_exists(&format!("{tabs}.item"));
+    let panel_up = ctx.ui_exists(&format!("{screen}.data.item_stats"));
+    if !tab_up || !panel_up {
+        diag(&format!(
+            "layout override missing: tab={tab_up} panel={panel_up}"
+        ));
+        return;
+    }
+
+    for (tab, _) in VANILLA {
+        register_once(ctx, &format!("{screen}.{tab}"));
+    }
+    register_once(ctx, &format!("{tabs}.item"));
+    for column in SortBy::ALL {
+        register_once(ctx, &header_path(screen, column));
+    }
+
+    // The id list is refreshed per screen entry rather than per frame: it copies
+    // the whole set across the ABI twice, and no match is simmed while the
+    // player is standing here.
+    item_stats::sweep(ctx);
+    diag(&format!(
+        "wired; match replay records = {}",
+        ctx.record_ids(RecordKindV1::MatchReplay).len()
+    ));
+
+    let _ = with_state(|state| {
+        state.wired = true;
+        state.dirty = true;
+    });
+}
+
+/// Tags a line as this half's and hands it to the shared, capped writer.
+///
+/// Every failure mode here is silent — a wrong path, a rejected spawn and a
+/// screen that was never found all look identical from the outside, which is a
+/// whole build spent guessing.
+fn diag(line: &str) {
+    crate::item_stats::diag(&format!("[ui] {line}"));
+}
+
+fn handle_event(ctx: &mut StableClient<'_>) {
+    let Some(event) = ctx.ui_current_event() else {
+        return;
+    };
+    // `Remove` fires as a node is torn down, and this screen is torn down every
+    // time the player leaves it — so the tab's own destruction would otherwise
+    // arrive here as a click and open a panel into a dying tree.
+    if matches!(event.kind, Some(UiEventKindV1::Remove)) {
+        return;
+    }
+    let Some(screen) = with_state(|state| state.screen.clone()).flatten() else {
+        return;
+    };
+
+    if event.path == format!("{screen}.tabs.item") {
+        open(ctx, &screen);
+        return;
+    }
+
+    if let Some(column) = SortBy::ALL
+        .into_iter()
+        .find(|column| event.path == header_path(&screen, *column))
+    {
+        sort_by(ctx, &screen, column);
+        return;
+    }
+
+    // Every event on a vanilla tab lands here, hover included, so this has to be
+    // idempotent and cheap — it may only act when this tab is the one up.
+    let clicked = VANILLA
+        .iter()
+        .find(|(tab, _)| event.path == format!("{screen}.{tab}"));
+    if let Some((_, panel)) = clicked {
+        if with_state(|state| state.showing).unwrap_or(false) {
+            close(ctx, &screen, panel);
+        }
+    }
+}
+
+fn open(ctx: &mut StableClient<'_>, screen: &str) {
+    // Ahead of the repaint below, not left to the next `sync`: a click that
+    // lands between a rebuild and the throttled heal would otherwise paint text
+    // onto row nodes that no longer exist and show an empty table until the
+    // heal caught up.
+    heal(ctx, screen);
+
+    for (_, panel) in VANILLA {
+        ctx.ui_set_visible(&format!("{screen}.{panel}"), false);
+    }
+    for filter in FILTERS {
+        ctx.ui_set_visible(&format!("{screen}.{filter}"), false);
+    }
+    ctx.ui_set_visible(&format!("{screen}.data.item_stats"), true);
+    paint_tabs(ctx, screen, true);
+    // The panel comes back from the layout with every arrow transparent, so the
+    // opening view would otherwise be sorted by a column that does not say so.
+    paint_headers(ctx, screen);
+
+    let _ = with_state(|state| state.showing = true);
+    repaint(ctx, screen);
+}
+
+/// Leaves the tab for `panel`, the vanilla panel belonging to the tab that was
+/// clicked.
+///
+/// The panel is shown here rather than left to game code, which is the opposite
+/// of what the Builds tab does on the strategy screen. The difference is what is
+/// selected underneath: game code never stopped considering one of these three
+/// tabs selected while this one was up, so a click on *that* tab is a click on
+/// the already-selected tab, and a runner that short-circuits it would leave the
+/// screen with nothing showing at all. Showing it here cannot disagree with game
+/// code — it is the panel belonging to the tab just clicked, so the worst case
+/// is that both of us show the same one.
+fn close(ctx: &mut StableClient<'_>, screen: &str, panel: &str) {
+    ctx.ui_set_visible(&format!("{screen}.data.item_stats"), false);
+    ctx.ui_set_visible(&format!("{screen}.{panel}"), true);
+    for filter in FILTERS {
+        ctx.ui_set_visible(&format!("{screen}.{filter}"), true);
+    }
+    paint_tabs(ctx, screen, false);
+    let _ = with_state(|state| state.showing = false);
+}
+
+fn header_path(screen: &str, column: SortBy) -> String {
+    format!("{screen}.data.item_stats.header.{}", column.node())
+}
+
+/// Re-orders the table by `column`.
+///
+/// Clicking the column already in use flips the direction; clicking a new one
+/// starts it at [`SortBy::starts_descending`]. That is the behaviour every table
+/// with clickable headings has, and getting it wrong is immediately obvious.
+fn sort_by(ctx: &mut StableClient<'_>, screen: &str, column: SortBy) {
+    // Same reason `open` does it: a click landing between a rebuild and the
+    // throttled heal would otherwise repaint onto rows that no longer exist.
+    heal(ctx, screen);
+
+    let _ = with_state(|state| {
+        if state.sort == column {
+            state.ascending = !state.ascending;
+        } else {
+            state.sort = column;
+            state.ascending = !column.starts_descending();
+        }
+        state.dirty = true;
+    });
+    paint_headers(ctx, screen);
+    repaint(ctx, screen);
+}
+
+/// Puts the arrow on the column being sorted by, pointing the way it sorts.
+///
+/// The layout authors every arrow transparent, so "inactive" needs no repaint of
+/// its own — only the active one is coloured in, and the previous active one is
+/// cleared by the same loop. `dropdown`/`dropdown_up` are the game's own matched
+/// pair, which is why the direction can be shown by swapping `source` rather
+/// than by rotating anything.
+fn paint_headers(ctx: &mut StableClient<'_>, screen: &str) {
+    let (sort, ascending) =
+        with_state(|state| (state.sort, state.ascending)).unwrap_or((SortBy::default(), false));
+
+    for column in SortBy::ALL {
+        let active = column == sort;
+        let source = if active && ascending {
+            "asset/base/ui/icons/dropdown_up"
+        } else {
+            "asset/base/ui/icons/dropdown"
+        };
+        let color = if active { "#ecfbf8ff" } else { "#00000000" };
+        ctx.ui_set_properties(
+            &header_path(screen, column),
+            &format!("icon: {{ source: \"{source}\"; color: {color}; }}"),
+        );
+    }
+}
+
+/// Paints which tab looks selected.
+///
+/// The selection cannot be *set*: `ui_set_selectable_selected` is
+/// `state_set_json` with `{"selected": …}`, which the host accepts only for the
+/// `checkbox`, `text_edit`, `slider` and `selectable` runner kinds — these tabs
+/// are `color_selectable`, so the write is rejected. The highlight is drawn on
+/// instead, exactly as the Builds tab does it.
+///
+/// The two sides go through different property pairs because they are in
+/// different states underneath. This tab is never `selected` as far as game code
+/// is concerned, so its plain `image`/`label` are what render. Whichever vanilla
+/// tab game code thinks is selected renders `selected_image`/`selected_label`
+/// instead, and those are the ones that have to be dulled — writing all three is
+/// how this avoids having to know which one it is, since the other two are
+/// rendering `image`/`label` and ignore it.
+fn paint_tabs(ctx: &mut StableClient<'_>, screen: &str, ours_active: bool) {
+    ctx.ui_set_properties(
+        &format!("{screen}.tabs.item"),
+        &tab_style("image", "label", ours_active),
+    );
+    for (tab, _) in VANILLA {
+        ctx.ui_set_properties(
+            &format!("{screen}.{tab}"),
+            &tab_style("selected_image", "selected_label", !ours_active),
+        );
+    }
+}
+
+// -- rendering --------------------------------------------------------------
+
+/// Orders the table by the chosen column.
+///
+/// Every comparison ends on the item key, so the order is total: without that,
+/// rows that tie — and on a small sample most of them tie — would swap places
+/// between repaints while the scan is still folding records, which reads as the
+/// table flickering.
+///
+/// Win rate is the one column with a rule beyond the number. Rows under
+/// [`item_stats::MIN_GAMES`] sort below every qualified row **in both
+/// directions**, because a single game at 100% is not the best item in the game
+/// and a single game at 0% is not the worst. They stay in the table — they are
+/// real data — they just cannot take the top of it. Sorting by pick count is the
+/// way to see them on their own terms.
+fn order_rows(
+    rows: &mut [(String, item_stats::Totals)],
+    catalog: &BTreeMap<String, item_stats::ItemInfo>,
+    sort: SortBy,
+    ascending: bool,
+) {
+    let name_of = |key: &String| {
+        catalog
+            .get(key)
+            .map(|info| info.name.to_lowercase())
+            .unwrap_or_else(|| key.to_lowercase())
+    };
+
+    rows.sort_by(|(a_key, a), (b_key, b)| {
+        let ordering = match sort {
+            SortBy::Item => name_of(a_key).cmp(&name_of(b_key)),
+            SortBy::Games => a.games.cmp(&b.games),
+            SortBy::Wins => a.wins.cmp(&b.wins),
+            SortBy::Losses => a.losses().cmp(&b.losses()),
+            SortBy::WinRate => a
+                .win_rate()
+                .partial_cmp(&b.win_rate())
+                .unwrap_or(std::cmp::Ordering::Equal),
+        };
+        let ordering = if ascending {
+            ordering
+        } else {
+            ordering.reverse()
+        };
+
+        if sort == SortBy::WinRate {
+            let thin = |t: &item_stats::Totals| t.games < item_stats::MIN_GAMES;
+            // Applied before the direction flip is undone, so it holds either
+            // way round rather than only when sorting downwards.
+            return thin(a)
+                .cmp(&thin(b))
+                .then(ordering)
+                .then_with(|| a_key.cmp(b_key));
+        }
+        ordering.then_with(|| a_key.cmp(b_key))
+    });
+}
+
+fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
+    let mut snapshot = item_stats::snapshot();
+    let catalog = item_stats::catalog();
+    let contents = format!("{screen}.data.item_stats.data.contents");
+
+    let (sort, ascending) =
+        with_state(|state| (state.sort, state.ascending)).unwrap_or((SortBy::default(), false));
+    order_rows(&mut snapshot.rows, &catalog, sort, ascending);
+
+    let wanted = snapshot.rows.len().min(MAX_ROWS);
+
+    // Spawned in bounded batches, so the first repaint after arrival is not a
+    // 150-node stall. A short table this frame is a table that fills in over the
+    // next few, which is what the scan is doing anyway.
+    let spawned = with_state(|state| state.spawned).unwrap_or(0);
+    if spawned < wanted {
+        let target = wanted.min(spawned + SPAWN_PER_REPAINT);
+        for index in spawned..target {
+            ctx.ui_spawn_source(&contents, &row_source(index));
+        }
+        let _ = with_state(|state| state.spawned = target);
+    }
+
+    let spawned = with_state(|state| state.spawned).unwrap_or(0);
+    let visible = wanted.min(spawned);
+
+    for (index, (key, totals)) in snapshot.rows.iter().take(visible).enumerate() {
+        let info = catalog.get(key).cloned().unwrap_or_else(|| ItemInfo {
+            // An item the settings document does not describe: a key from a save
+            // written with another item set, or a positional id this build could
+            // not resolve. Showing the raw key is the honest answer.
+            name: key.clone(),
+            frame: None,
+        });
+        write_row(ctx, &contents, index, index + 1, &info, totals);
+    }
+
+    // A shrinking table (a fresh sweep after a save change) has to put its tail
+    // away; the nodes stay spawned for the next one.
+    let previously = with_state(|state| state.shown).unwrap_or(0);
+    for index in visible..previously.min(spawned) {
+        ctx.ui_set_visible(&format!("{contents}.row{index}"), false);
+    }
+    let _ = with_state(|state| state.shown = visible);
+
+    ctx.ui_set_properties(&contents, &format!("height: {}px;", visible * ROW_PITCH));
+    ctx.ui_set_text(
+        &format!("{screen}.data.item_stats.status"),
+        &status_text(&snapshot),
+    );
+
+    // A repaint that could not spawn its whole batch has to ask for another
+    // one. Without this the table stalls at whatever `SPAWN_PER_REPAINT`
+    // reached when the scan finished, because `dirty` is otherwise only ever
+    // set by new records arriving and there are none left to arrive.
+    let _ = with_state(|state| {
+        if state.spawned < wanted {
+            state.dirty = true;
+        }
+    });
+}
+
+fn write_row(
+    ctx: &mut StableClient<'_>,
+    contents: &str,
+    index: usize,
+    rank: usize,
+    info: &ItemInfo,
+    totals: &Totals,
+) {
+    let row = format!("{contents}.row{index}");
+    ctx.ui_set_visible(&row, true);
+
+    let cell = |name: &str| format!("{row}.data.{name}.text");
+    ctx.ui_set_text(&cell("rank"), &rank.to_string());
+    ctx.ui_set_text(&cell("item_name"), &info.name);
+    ctx.ui_set_text(&cell("games"), &totals.games.to_string());
+    ctx.ui_set_text(&cell("win"), &totals.wins.to_string());
+    ctx.ui_set_text(&cell("lose"), &totals.losses().to_string());
+    ctx.ui_set_text(
+        &cell("win_rate"),
+        &totals
+            .win_rate()
+            .map(|rate| format!("{rate:.1}%"))
+            .unwrap_or_else(|| "-".into()),
+    );
+
+    // Two properties, never `sheet#tag`: `ui_set_properties` feeds the `.ui`
+    // parser, which has no `#` form. Passing one returns true and renders
+    // nothing.
+    let icon = format!("{row}.data.item_name.icon_slot.icon");
+    match &info.frame {
+        Some(frame) => {
+            ctx.ui_set_properties(
+                &icon,
+                &format!(
+                    "visible: true; source: \"{ICON_SHEET}\"; rect_tag: \"{}\";",
+                    escape(frame)
+                ),
+            );
+        }
+        None => {
+            ctx.ui_set_visible(&icon, false);
+        }
+    }
+}
+
+fn status_text(snapshot: &item_stats::Snapshot) -> String {
+    if snapshot.pending > 0 {
+        return format!(
+            "{} matches · reading {} more",
+            snapshot.matches, snapshot.pending
+        );
+    }
+    if snapshot.matches == 0 {
+        return "No match records with item data yet".into();
+    }
+    let mut text = format!("{} matches simmed", snapshot.matches);
+    // Said plainly rather than folded into the total: these matches happened and
+    // are in none of the rates on screen, and a total that quietly excluded them
+    // would be the more misleading number. It is also the fastest read on whether
+    // the record format is behaving — a large `brief` count is the game
+    // compacting history, a large `unreadable` one is this mod being wrong about
+    // the record shape.
+    let missing = snapshot.brief + snapshot.unreadable;
+    if missing > 0 {
+        text.push_str(&format!(" · {missing} without item data"));
+    }
+    text
+}
+
+// -- layout sources ---------------------------------------------------------
+
+/// One table row, mirroring `statistics_component/champion.ui`: a `LeftToRight`
+/// data band over a 1px separator, with the item's icon in the name cell the way
+/// the champion table carries a portrait.
+fn row_source(index: usize) -> String {
+    let value_cell = |name: &str, width: u32| {
+        format!(
+            "#{name}:empty {{\n\
+             width: {width}px;\n\
+             height: 56px;\n\
+             #text:label {{\n\
+             @\"asset/base/style/main#label\";\n\
+             x: 21px;\n\
+             y: 18px;\n\
+             height: 20px;\n\
+             align_y: Center;\n\
+             size: 18;\n\
+             text: \"\";\n\
+             }}\n\
+             }}\n"
+        )
+    };
+
+    format!(
+        "row{index}:empty {{\n\
+         width: 1600px;\n\
+         height: 57px;\n\
+         child_type: TopToBottom {{ spacing: 0px; }}\n\
+         \n\
+         #data:empty {{\n\
+         width: 1600px;\n\
+         height: 56px;\n\
+         child_type: LeftToRight {{ spacing: 0px; }}\n\
+         \n\
+         {rank}\
+         \n\
+         #item_name:empty {{\n\
+         width: {COL_NAME}px;\n\
+         height: 56px;\n\
+         \n\
+         #icon_slot:color {{\n\
+         x: 21px;\n\
+         anchor_y: 0.5;\n\
+         pivot_y: 0.5;\n\
+         width: 40px;\n\
+         height: 40px;\n\
+         color: #1d1f2cff;\n\
+         rounding: Uniform {{ rounding: 8; }}\n\
+         \n\
+         #icon:image {{\n\
+         width: 36px;\n\
+         height: 36px;\n\
+         anchor_x: 0.5;\n\
+         anchor_y: 0.5;\n\
+         pivot_x: 0.5;\n\
+         pivot_y: 0.5;\n\
+         }}\n\
+         }}\n\
+         \n\
+         #text:label {{\n\
+         @\"asset/base/style/main#label\";\n\
+         x: 66px;\n\
+         y: 18px;\n\
+         width: {name_w}px;\n\
+         height: 20px;\n\
+         align_y: Center;\n\
+         size: 18;\n\
+         fit_width: true;\n\
+         text: \"\";\n\
+         }}\n\
+         }}\n\
+         \n\
+         {games}{win}{lose}{rate}\
+         }}\n\
+         \n\
+         #line:color {{\n\
+         width: 100%;\n\
+         height: 1px;\n\
+         color: #1d1f2cff;\n\
+         }}\n\
+         }}",
+        rank = value_cell("rank", COL_RANK),
+        // The label starts 66px in, behind the icon, so it gets what is left of
+        // the cell. `fit_width` shrinks the longest names ("Radiant Sword of
+        // Blossoming Dawn") rather than letting them run into the next column.
+        name_w = COL_NAME - 66 - 12,
+        games = value_cell("games", COL_GAMES),
+        win = value_cell("win", COL_WIN),
+        lose = value_cell("lose", COL_LOSE),
+        rate = value_cell("win_rate", COL_RATE),
+    )
+}
+
+fn escape(text: &str) -> String {
+    text.replace('\\', "\\\\").replace('"', "\\\"")
+}

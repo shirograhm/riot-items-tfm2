@@ -8,6 +8,8 @@ mod hook;
 mod item_build_hook;
 mod item_catalog;
 mod item_meta;
+mod item_stats;
+mod item_stats_ui;
 mod items;
 mod proc_queue;
 mod solo_rank_ui;
@@ -236,13 +238,19 @@ fn init(host: &StableHost) -> StableMod {
 
     tactics::driver::on_mod_init();
 
+    // Both macros note the key as they go. That call order *is* the second half
+    // of the id space a match record's numeric `items` entry indexes, and there
+    // is nowhere else to read it from: `ItemSetting` describes only the game's
+    // own 30 items. See `item_stats::index_table`.
     macro_rules! configured {
-        ($key:literal => $T:ty) => {
+        ($key:literal => $T:ty) => {{
+            item_stats::note_registered($key);
             configs.get($key).map(<$T>::with_config).unwrap_or_default()
-        };
+        }};
     }
     macro_rules! configured_radiant {
         ($key:literal => $T:ty) => {{
+            item_stats::note_registered($key);
             let item = configs
                 .get($key)
                 .map(<$T>::radiant_with_config)
