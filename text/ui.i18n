@@ -20,7 +20,16 @@
       "no_champion": "(champion)"
     },
     "item_stats": {
-      "tab": "Item Stats"
+      "tab": "Item Stats",
+      "rank": "Rank",
+      "purchased_on": "Purchased On",
+      "cat_all": "   All",
+      "cat_assassin": "   Assassin",
+      "cat_fighter": "   Fighter",
+      "cat_marksman": "   Marksman",
+      "cat_mage": "   Mage",
+      "cat_tank": "   Tank",
+      "cat_support": "   Support"
     }
   },
   "ko": {
@@ -44,7 +53,16 @@
       "no_champion": "(챔피언)"
     },
     "item_stats": {
-      "tab": "아이템 통계"
+      "tab": "아이템 통계",
+      "rank": "순위",
+      "purchased_on": "구매 챔피언",
+      "cat_all": "   전체",
+      "cat_assassin": "   암살자",
+      "cat_fighter": "   전사",
+      "cat_marksman": "   원거리 딜러",
+      "cat_mage": "   마법사",
+      "cat_tank": "   탱커",
+      "cat_support": "   서포터"
     }
   },
   "zh-hans": {
@@ -68,7 +86,16 @@
       "no_champion": "(英雄)"
     },
     "item_stats": {
-      "tab": "物品统计"
+      "tab": "物品统计",
+      "rank": "排名",
+      "purchased_on": "购买英雄",
+      "cat_all": "   全部",
+      "cat_assassin": "   刺客",
+      "cat_fighter": "   战士",
+      "cat_marksman": "   射手",
+      "cat_mage": "   法师",
+      "cat_tank": "   坦克",
+      "cat_support": "   辅助"
     }
   },
   "ja": {
@@ -92,7 +119,16 @@
       "no_champion": "(チャンピオン)"
     },
     "item_stats": {
-      "tab": "アイテム統計"
+      "tab": "アイテム統計",
+      "rank": "順位",
+      "purchased_on": "購入チャンピオン",
+      "cat_all": "   全体",
+      "cat_assassin": "   アサシン",
+      "cat_fighter": "   ファイター",
+      "cat_marksman": "   マークスマン",
+      "cat_mage": "   メイジ",
+      "cat_tank": "   タンク",
+      "cat_support": "   サポート"
     }
   },
   "pt-BR": {
@@ -116,7 +152,16 @@
       "no_champion": "(campeão)"
     },
     "item_stats": {
-      "tab": "Estat. Itens"
+      "tab": "Estat. Itens",
+      "rank": "Posição",
+      "purchased_on": "Comprado Por",
+      "cat_all": "   Todos",
+      "cat_assassin": "   Assassino",
+      "cat_fighter": "   Lutador",
+      "cat_marksman": "   Atirador",
+      "cat_mage": "   Mago",
+      "cat_tank": "   Tanque",
+      "cat_support": "   Suporte"
     }
   },
   "ru": {
@@ -140,7 +185,16 @@
       "no_champion": "(чемпион)"
     },
     "item_stats": {
-      "tab": "Статистика предметов"
+      "tab": "Статистика предметов",
+      "rank": "Ранг",
+      "purchased_on": "Покупают",
+      "cat_all": "   Все",
+      "cat_assassin": "   Убийца",
+      "cat_fighter": "   Боец",
+      "cat_marksman": "   Стрелок",
+      "cat_mage": "   Маг",
+      "cat_tank": "   Танк",
+      "cat_support": "   Поддержка"
     }
   },
   "vi": {
@@ -164,7 +218,16 @@
       "no_champion": "(tướng)"
     },
     "item_stats": {
-      "tab": "Thống kê Trang bị"
+      "tab": "Thống kê Trang bị",
+      "rank": "Hạng",
+      "purchased_on": "Mua Bởi",
+      "cat_all": "   Tất Cả",
+      "cat_assassin": "   Sát Thủ",
+      "cat_fighter": "   Đấu Sĩ",
+      "cat_marksman": "   Xạ Thủ",
+      "cat_mage": "   Pháp Sư",
+      "cat_tank": "   Đỡ Đòn",
+      "cat_support": "   Hỗ Trợ"
     }
   }
 }

@@ -124,6 +124,7 @@ const COL_GAMES: u32 = 140;
 const COL_WIN: u32 = 130;
 const COL_LOSE: u32 = 130;
 const COL_RATE: u32 = 150;
+const COL_CHAMPS: u32 = 160;
 
 /// The three vanilla tabs and the panel each one shows, paired so the two can
 /// never drift apart. Named relative to the screen root, resolved at runtime.
@@ -135,6 +136,109 @@ const VANILLA: [(&str, &str); 3] = [
 
 /// The header controls that filter the vanilla tables and not this one.
 const FILTERS: [&str; 4] = ["position", "patch", "year_filter", "league_filter"];
+
+/// Fills the patch list from the patches the scan has actually seen.
+///
+/// Rewritten whenever the set changes, which during a scan is often at first and
+/// then never. Rows past the end are hidden rather than removed, because the
+/// list is declared in the layout: a rebuilt panel brings all of them back and
+/// nothing here has to re-spawn anything.
+fn refresh_patch_rows(ctx: &mut StableClient<'_>, screen: &str) {
+    let patches = item_stats::patches();
+
+    // Written every time rather than only when the set changes. Caching on
+    // `patch_rows` looked free and was the bug behind "the patch dropdown breaks
+    // when I tab back and forth": game code rebuilds these nodes on a tab
+    // switch, so they come back from the layout blank and hidden while the
+    // cached set still matched — and the list opened empty, for good. Twelve
+    // property writes on open is not worth outsmarting.
+
+    // Resolved before the writes below: `label` reads the ctx and
+    // `ui_set_properties` wants it mutably, so the two cannot share a statement.
+    let all = escape(&label(ctx, "item_stats.cat_all", "   All"));
+
+    for row in 0..PATCH_ROWS {
+        let path = format!("{screen}.item_patch_list.pat{row}");
+        // Row 0 is All and is always present; the rest follow the patch list and
+        // run out before the row pool does.
+        let text = match row.checked_sub(1) {
+            None => Some(all.clone()),
+            // Patch names are version strings, not translated text, so the
+            // indent the category rows get from their i18n entry is prepended
+            // here instead.
+            Some(index) => patches
+                .get(index)
+                .map(|patch| escape(&format!("{ROW_INDENT}{patch}"))),
+        };
+        match text {
+            Some(text) => {
+                ctx.ui_set_properties(&path, &format!("visible: true; text: \"{text}\";"));
+            }
+            None => {
+                ctx.ui_set_visible(&path, false);
+            }
+        }
+    }
+
+    // Sized to what is actually on offer. The layout declares a pool of
+    // [`PATCH_ROWS`], and a save one patch into its first season would otherwise
+    // get a panel eleven empty rows tall.
+    let shown = 1 + patches.len().min(PATCH_ROWS - 1);
+    ctx.ui_set_properties(
+        &format!("{screen}.item_patch_list"),
+        &format!(
+            "height: {}px;",
+            shown * PATCH_ROW_HEIGHT + PATCH_LIST_PADDING
+        ),
+    );
+
+    // A patch that has scrolled off the end of the list cannot stay selected, or
+    // the table would be filtered by something with no row to unselect it from.
+    let _ = with_state(|state| {
+        if state
+            .patch
+            .as_ref()
+            .is_some_and(|current| !patches.contains(current))
+        {
+            state.patch = None;
+            state.dirty = true;
+        }
+        state.patch_rows = patches.clone();
+    });
+}
+
+/// The item categories the filter offers, in the order the list declares them.
+/// Row 0 is "All"; row `i` is `CATEGORIES[i - 1]`.
+const CATEGORIES: [&str; 6] = crate::item_catalog::CATEGORY_ORDER;
+
+/// Row height and the list's own padding, both as the layout declares them —
+/// needed here because the list is resized to the patches on offer.
+const PATCH_ROW_HEIGHT: usize = 36;
+const PATCH_LIST_PADDING: usize = 8;
+
+/// Leading whitespace that indents a dropdown row's text.
+///
+/// The indent is in the text rather than in the node's `x`, because insetting
+/// the node moves its highlight in too and the row stops looking full-width.
+/// A `label:` block accepts nothing positional (size/font/align/colour/hover
+/// only), so this is the one place the offset can live.
+const ROW_INDENT: &str = "   ";
+
+/// Rows the patch list declares. One is "All"; the rest hold the patches found
+/// in the records, newest first, and any beyond this are not offered — a save
+/// with more than this many patches shows the most recent.
+const PATCH_ROWS: usize = 12;
+
+/// i18n keys for the list rows, All first — parallel to the `#cat{i}` nodes.
+const CATEGORY_KEYS: [&str; 7] = [
+    "item_stats.cat_all",
+    "item_stats.cat_assassin",
+    "item_stats.cat_fighter",
+    "item_stats.cat_marksman",
+    "item_stats.cat_mage",
+    "item_stats.cat_tank",
+    "item_stats.cat_support",
+];
 
 /// Which column the table is ordered by.
 #[derive(Clone, Copy, PartialEq, Eq, Default)]
@@ -194,6 +298,16 @@ struct State {
     shown: usize,
     /// Set when new records land; cleared by a repaint.
     dirty: bool,
+    /// Category filter, as an index into [`CATEGORIES`]. `None` is "All".
+    category: Option<usize>,
+    /// Patch filter. `None` is "All".
+    patch: Option<String>,
+    /// Patches currently offered by the list, in row order.
+    patch_rows: Vec<String>,
+    /// Whether the category list is dropped down.
+    list_open: bool,
+    /// Whether the patch list is dropped down. Only ever one of the two.
+    patch_open: bool,
     /// Column the table is ordered by.
     sort: SortBy,
     /// Which way round. Named for the *non*-default so that `State::default()`
@@ -286,12 +400,18 @@ pub fn sync(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    // Game code drives its own panels from its own tab state, which never
-    // becomes this one, so a one-shot hide on entry is not guaranteed to
-    // survive anything that makes it re-assert them.
+    // Game code drives its own panels and header controls from its own tab
+    // state, which never becomes this one, so a one-shot hide on entry does not
+    // survive anything that makes it re-assert them — which is why the position
+    // dropdown was still on screen over this tab.
     for (_, panel) in VANILLA {
         ctx.ui_set_visible(&format!("{screen}.{panel}"), false);
     }
+    for filter in FILTERS {
+        ctx.ui_set_visible(&format!("{screen}.{filter}"), false);
+    }
+    ctx.ui_set_visible(&format!("{screen}.item_category"), true);
+    ctx.ui_set_visible(&format!("{screen}.item_patch"), true);
 
     let due = with_state(|state| {
         state.tick = state.tick.wrapping_add(1);
@@ -542,6 +662,15 @@ fn wire(ctx: &mut StableClient<'_>, screen: &str) {
     for column in SortBy::ALL {
         register_once(ctx, &header_path(screen, column));
     }
+    register_once(ctx, &format!("{screen}.item_category"));
+    register_once(ctx, &format!("{screen}.item_category_catch"));
+    for row in 0..CATEGORY_KEYS.len() {
+        register_once(ctx, &format!("{screen}.item_category_list.cat{row}"));
+    }
+    register_once(ctx, &format!("{screen}.item_patch"));
+    for row in 0..PATCH_ROWS {
+        register_once(ctx, &format!("{screen}.item_patch_list.pat{row}"));
+    }
 
     // The id list is refreshed per screen entry rather than per frame: it copies
     // the whole set across the ABI twice, and no match is simmed while the
@@ -594,6 +723,54 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
+    if event.path == format!("{screen}.item_category") {
+        let open = with_state(|state| {
+            state.list_open = !state.list_open;
+            state.patch_open = false;
+            state.list_open
+        })
+        .unwrap_or(false);
+        show_patch_list(ctx, &screen, false);
+        show_category_list(ctx, &screen, open);
+        return;
+    }
+
+    if event.path == format!("{screen}.item_patch") {
+        let open = with_state(|state| {
+            state.patch_open = !state.patch_open;
+            state.list_open = false;
+            state.patch_open
+        })
+        .unwrap_or(false);
+        show_category_list(ctx, &screen, false);
+        show_patch_list(ctx, &screen, open);
+        return;
+    }
+
+    for row in 0..PATCH_ROWS {
+        if event.path == format!("{screen}.item_patch_list.pat{row}") {
+            pick_patch(ctx, &screen, row);
+            return;
+        }
+    }
+
+    if event.path == format!("{screen}.item_category_catch") {
+        let _ = with_state(|state| {
+            state.list_open = false;
+            state.patch_open = false;
+        });
+        show_category_list(ctx, &screen, false);
+        show_patch_list(ctx, &screen, false);
+        return;
+    }
+
+    for row in 0..CATEGORY_KEYS.len() {
+        if event.path == format!("{screen}.item_category_list.cat{row}") {
+            pick_category(ctx, &screen, row);
+            return;
+        }
+    }
+
     // Every event on a vanilla tab lands here, hover included, so this has to be
     // idempotent and cheap — it may only act when this tab is the one up.
     let clicked = VANILLA
@@ -616,10 +793,12 @@ fn open(ctx: &mut StableClient<'_>, screen: &str) {
     for (_, panel) in VANILLA {
         ctx.ui_set_visible(&format!("{screen}.{panel}"), false);
     }
-    for filter in FILTERS {
-        ctx.ui_set_visible(&format!("{screen}.{filter}"), false);
-    }
     ctx.ui_set_visible(&format!("{screen}.data.item_stats"), true);
+    ctx.ui_set_visible(&format!("{screen}.item_category"), true);
+    ctx.ui_set_visible(&format!("{screen}.item_patch"), true);
+    paint_category_button(ctx, screen);
+    refresh_patch_rows(ctx, screen);
+    paint_patch_button(ctx, screen);
     paint_tabs(ctx, screen, true);
     // The panel comes back from the layout with every arrow transparent, so the
     // opening view would otherwise be sorted by a column that does not say so.
@@ -642,12 +821,150 @@ fn open(ctx: &mut StableClient<'_>, screen: &str) {
 /// is that both of us show the same one.
 fn close(ctx: &mut StableClient<'_>, screen: &str, panel: &str) {
     ctx.ui_set_visible(&format!("{screen}.data.item_stats"), false);
+    ctx.ui_set_visible(&format!("{screen}.item_category"), false);
+    ctx.ui_set_visible(&format!("{screen}.item_patch"), false);
+    let _ = with_state(|state| {
+        state.list_open = false;
+        state.patch_open = false;
+    });
+    show_category_list(ctx, screen, false);
+    show_patch_list(ctx, screen, false);
     ctx.ui_set_visible(&format!("{screen}.{panel}"), true);
     for filter in FILTERS {
         ctx.ui_set_visible(&format!("{screen}.{filter}"), true);
     }
     paint_tabs(ctx, screen, false);
     let _ = with_state(|state| state.showing = false);
+}
+
+/// Shows or hides the category list, and the full-screen catcher behind it.
+///
+/// The catcher is what makes a click anywhere else dismiss the list. Without one
+/// the list can only be closed by choosing something or by clicking the button
+/// again, which is not what a dropdown does — the build editor learned the same
+/// thing and for the same reason.
+fn show_category_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
+    ctx.ui_set_visible(&format!("{screen}.item_category_list"), open);
+    if open {
+        paint_category_rows(ctx, screen);
+    }
+    // One catcher serves both lists, so it stays up while either is down.
+    let patch_open = with_state(|state| state.patch_open).unwrap_or(false);
+    ctx.ui_set_visible(&format!("{screen}.item_category_catch"), open || patch_open);
+}
+
+/// Shows or hides the patch list, sharing the category list's catcher.
+fn show_patch_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
+    ctx.ui_set_visible(&format!("{screen}.item_patch_list"), open);
+    if open {
+        // Kept in step here rather than per frame: the set only changes while
+        // the scan is running, and this is the moment it is about to be read.
+        refresh_patch_rows(ctx, screen);
+        paint_patch_rows(ctx, screen);
+    }
+    let category_open = with_state(|state| state.list_open).unwrap_or(false);
+    ctx.ui_set_visible(
+        &format!("{screen}.item_category_catch"),
+        open || category_open,
+    );
+}
+
+/// Applies the patch on row `row` and closes the list.
+fn pick_patch(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
+    let _ = with_state(|state| {
+        // Row 0 is All, which is the absence of a filter.
+        state.patch = row
+            .checked_sub(1)
+            .and_then(|index| state.patch_rows.get(index).cloned());
+        state.patch_open = false;
+        state.dirty = true;
+    });
+
+    show_patch_list(ctx, screen, false);
+    paint_patch_button(ctx, screen);
+    repaint(ctx, screen);
+}
+
+/// Writes the selected patch onto the button face.
+///
+/// A version string is not translated text, so this goes on as a literal —
+/// unlike the category button, which hands over a document reference so the
+/// label follows the game's language.
+fn paint_patch_button(ctx: &mut StableClient<'_>, screen: &str) {
+    let selected = with_state(|state| state.patch.clone()).unwrap_or(None);
+    let text = match &selected {
+        Some(patch) => escape(&format!("{ROW_INDENT}{patch}")),
+        None => escape(&label(ctx, "item_stats.cat_all", "   All")),
+    };
+    ctx.ui_set_properties(
+        &format!("{screen}.item_patch.text"),
+        &format!("text: \"{text}\";"),
+    );
+}
+
+/// Lights the row of the patch currently in force.
+fn paint_patch_rows(ctx: &mut StableClient<'_>, screen: &str) {
+    let (selected, rows) =
+        with_state(|state| (state.patch.clone(), state.patch_rows.clone())).unwrap_or_default();
+    let lit_row = selected
+        .and_then(|patch| rows.iter().position(|row| *row == patch))
+        .map_or(0, |index| index + 1);
+    for row in 0..PATCH_ROWS {
+        ctx.ui_set_properties(
+            &format!("{screen}.item_patch_list.pat{row}"),
+            &tab_style("image", "label", row == lit_row),
+        );
+    }
+}
+
+/// Applies the category on row `row` and closes the list.
+fn pick_category(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
+    let _ = with_state(|state| {
+        // Row 0 is All, which is the absence of a filter rather than one of the
+        // categories, hence the `Option` rather than a sentinel index.
+        state.category = row.checked_sub(1);
+        state.list_open = false;
+        state.dirty = true;
+    });
+    show_category_list(ctx, screen, false);
+    paint_category_button(ctx, screen);
+    repaint(ctx, screen);
+}
+
+/// Writes the selected category onto the button face.
+///
+/// The text is handed over as a document reference, not as resolved text, so the
+/// button follows the game's language the way the layout's own labels do.
+fn paint_category_button(ctx: &mut StableClient<'_>, screen: &str) {
+    let selected = with_state(|state| state.category).unwrap_or(None);
+    let key = CATEGORY_KEYS[selected.map_or(0, |index| index + 1)];
+    let fallback = match selected {
+        Some(index) => format!("{ROW_INDENT}{}", CATEGORIES[index]),
+        None => format!("{ROW_INDENT}All"),
+    };
+    let text = label(ctx, key, &fallback);
+    ctx.ui_set_text(&format!("{screen}.item_category.text"), &text);
+}
+
+/// Lights the row of the category currently in force.
+fn paint_category_rows(ctx: &mut StableClient<'_>, screen: &str) {
+    let selected = with_state(|state| state.category).unwrap_or(None);
+    let lit_row = selected.map_or(0, |index| index + 1);
+    for row in 0..CATEGORY_KEYS.len() {
+        ctx.ui_set_properties(
+            &format!("{screen}.item_category_list.cat{row}"),
+            &tab_style("image", "label", row == lit_row),
+        );
+    }
+}
+
+/// The category an item belongs to, or `None` for one with no role.
+///
+/// Components and the game's own lower tiers have no role — a BF Sword goes into
+/// half the builds in the game — so they answer `None` and appear only under
+/// "All". That is the honest answer rather than filing them somewhere.
+fn category_of(key: &str) -> Option<&'static str> {
+    crate::item_catalog::category_of(crate::build_config::base_slug(key))
 }
 
 fn header_path(screen: &str, column: SortBy) -> String {
@@ -733,19 +1050,17 @@ fn paint_tabs(ctx: &mut StableClient<'_>, screen: &str, ours_active: bool) {
 
 // -- rendering --------------------------------------------------------------
 
-/// Orders the table by the chosen column.
+/// Orders the table by the chosen column, on the column's value and nothing else.
 ///
 /// Every comparison ends on the item key, so the order is total: without that,
 /// rows that tie — and on a small sample most of them tie — would swap places
 /// between repaints while the scan is still folding records, which reads as the
 /// table flickering.
 ///
-/// Win rate is the one column with a rule beyond the number. Rows under
-/// [`item_stats::MIN_GAMES`] sort below every qualified row **in both
-/// directions**, because a single game at 100% is not the best item in the game
-/// and a single game at 0% is not the worst. They stay in the table — they are
-/// real data — they just cannot take the top of it. Sorting by pick count is the
-/// way to see them on their own terms.
+/// Win rate used to demote thin samples below everything else, on the grounds
+/// that one game at 100% is not the best item in the game. That is true of the
+/// number and not this function's call to make: the pick count is right there in
+/// the next column, so the reader can see the sample for themselves.
 fn order_rows(
     rows: &mut [(String, item_stats::Totals)],
     catalog: &BTreeMap<String, item_stats::ItemInfo>,
@@ -775,27 +1090,28 @@ fn order_rows(
         } else {
             ordering.reverse()
         };
-
-        if sort == SortBy::WinRate {
-            let thin = |t: &item_stats::Totals| t.games < item_stats::MIN_GAMES;
-            // Applied before the direction flip is undone, so it holds either
-            // way round rather than only when sorting downwards.
-            return thin(a)
-                .cmp(&thin(b))
-                .then(ordering)
-                .then_with(|| a_key.cmp(b_key));
-        }
         ordering.then_with(|| a_key.cmp(b_key))
     });
 }
 
 fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
-    let mut snapshot = item_stats::snapshot();
+    let patch = with_state(|state| state.patch.clone()).unwrap_or(None);
+    let mut snapshot = item_stats::snapshot(patch.as_deref());
     let catalog = item_stats::catalog();
     let contents = format!("{screen}.data.item_stats.data.contents");
 
-    let (sort, ascending) =
-        with_state(|state| (state.sort, state.ascending)).unwrap_or((SortBy::default(), false));
+    let (sort, ascending, category) =
+        with_state(|state| (state.sort, state.ascending, state.category)).unwrap_or((
+            SortBy::default(),
+            false,
+            None,
+        ));
+    if let Some(index) = category {
+        let wanted = CATEGORIES[index];
+        snapshot
+            .rows
+            .retain(|(key, _)| category_of(key) == Some(wanted));
+    }
     order_rows(&mut snapshot.rows, &catalog, sort, ascending);
 
     let wanted = snapshot.rows.len().min(MAX_ROWS);
@@ -823,7 +1139,12 @@ fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
             name: key.clone(),
             frame: None,
         });
-        write_row(ctx, &contents, index, index + 1, &info, totals);
+        let champions = snapshot
+            .champions
+            .get(key)
+            .map(Vec::as_slice)
+            .unwrap_or_default();
+        write_row(ctx, &contents, index, index + 1, &info, totals, champions);
     }
 
     // A shrinking table (a fresh sweep after a save change) has to put its tail
@@ -858,6 +1179,7 @@ fn write_row(
     rank: usize,
     info: &ItemInfo,
     totals: &Totals,
+    champions: &[String],
 ) {
     let row = format!("{contents}.row{index}");
     ctx.ui_set_visible(&row, true);
@@ -879,6 +1201,31 @@ fn write_row(
     // Two properties, never `sheet#tag`: `ui_set_properties` feeds the `.ui`
     // parser, which has no `#` form. Passing one returns true and renders
     // nothing.
+    // The champions that bought it most. Slots are fixed and hidden rather than
+    // spawned, so an item with one buyer shows one portrait, not one portrait
+    // and two empty boxes.
+    let strip = format!("{row}.data.most_used.container");
+    for slot in 0..item_stats::TOP_CHAMPIONS {
+        let path = format!("{strip}.slot{slot}");
+        match champions.get(slot).filter(|name| !name.is_empty()) {
+            Some(champion) => {
+                // 36x36 at scale 2.0 is what the game passes for its own
+                // portraits of this size; the call fits the sprite into that box
+                // rather than stretching the node to the sheet.
+                //
+                // Shown only if it lands: a champion from a mod that is no
+                // longer enabled is still in the records but has no sheet, and
+                // an empty rounded box reads as a bug rather than as absence.
+                let drawn =
+                    ctx.ui_set_champion_icon(&format!("{path}.icon"), champion, 36.0, 36.0, 2.0);
+                ctx.ui_set_visible(&path, drawn);
+            }
+            None => {
+                ctx.ui_set_visible(&path, false);
+            }
+        }
+    }
+
     let icon = format!("{row}.data.item_name.icon_slot.icon");
     match &info.frame {
         Some(frame) => {
@@ -994,6 +1341,21 @@ fn row_source(index: usize) -> String {
          }}\n\
          \n\
          {games}{win}{lose}{rate}\
+         \n\
+         #most_used:empty {{\n\
+         width: {COL_CHAMPS}px;\n\
+         height: 56px;\n\
+         \n\
+         #container:empty {{\n\
+         x: 21px;\n\
+         width: 132px;\n\
+         height: 40px;\n\
+         anchor_y: 0.5;\n\
+         pivot_y: 0.5;\n\
+         child_type: LeftToRight {{ spacing: 4px; }}\n\
+         {champs}\
+         }}\n\
+         }}\n\
          }}\n\
          \n\
          #line:color {{\n\
@@ -1011,7 +1373,52 @@ fn row_source(index: usize) -> String {
         win = value_cell("win", COL_WIN),
         lose = value_cell("lose", COL_LOSE),
         rate = value_cell("win_rate", COL_RATE),
+        // Three fixed slots rather than one spawn per row: the count never
+        // changes, and the vanilla cell this copies is 132px wide — three 40px
+        // slots and two 4px gaps, exactly. A slot with no champion is hidden,
+        // which is why they are authored invisible.
+        champs = (0..item_stats::TOP_CHAMPIONS)
+            .map(|slot| {
+                format!(
+                    "#slot{slot}:color {{\n\
+                     width: 40px;\n\
+                     height: 40px;\n\
+                     visible: false;\n\
+                     color: #1d1f2cff;\n\
+                     rounding: Uniform {{ rounding: 8; }}\n\
+                     \n\
+                     #icon:image {{\n\
+                     width: 36px;\n\
+                     height: 36px;\n\
+                     anchor_x: 0.5;\n\
+                     anchor_y: 0.5;\n\
+                     pivot_x: 0.5;\n\
+                     pivot_y: 0.5;\n\
+                     }}\n\
+                     }}\n"
+                )
+            })
+            .collect::<String>(),
     )
+}
+
+/// A `text/ui` key as a document reference, where one resolves.
+///
+/// Handed to the label as a reference rather than as resolved text, so
+/// LabelRunner does the lookup and the category button follows the game's
+/// language the way the layout's own headings do. `ctx.i18n` answers in `en`
+/// whatever the locale is, which is useless as a translation and exactly right
+/// as the existence check this needs — an unresolvable key would otherwise be
+/// drawn as a literal `#asset/...`.
+///
+/// Safe from a click handler, unlike `setting_get_json`: `i18n` reads through
+/// the asset table, and asset calls are live there.
+fn label(ctx: &StableClient<'_>, key: &str, fallback: &str) -> String {
+    let path = format!("#asset/base/text/ui?{key}");
+    match ctx.i18n(&path) {
+        Some(text) if !text.is_empty() && !text.starts_with('#') => path,
+        _ => fallback.to_string(),
+    }
 }
 
 fn escape(text: &str) -> String {

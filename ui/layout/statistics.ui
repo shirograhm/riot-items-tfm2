@@ -303,7 +303,7 @@ statistics:statistics_ui {
             align_y: Center;
 
             size: 16;
-            text: "#asset/base/text/ui?standing.rank";
+            text: "#asset/base/text/ui?item_stats.rank";
           }
         }
 
@@ -798,7 +798,7 @@ statistics:statistics_ui {
             align_y: Center;
 
             size: 16;
-            text: "#asset/base/text/ui?standing.rank";
+            text: "#asset/base/text/ui?item_stats.rank";
           }
         }
 
@@ -1302,7 +1302,7 @@ statistics:statistics_ui {
             align_y: Center;
 
             size: 16;
-            text: "#asset/base/text/ui?standing.rank";
+            text: "#asset/base/text/ui?item_stats.rank";
           }
         }
 
@@ -1724,7 +1724,7 @@ statistics:statistics_ui {
             align_y: Center;
 
             size: 16;
-            text: "#asset/base/text/ui?standing.rank";
+            text: "#asset/base/text/ui?item_stats.rank";
           }
         }
 
@@ -1927,6 +1927,23 @@ statistics:statistics_ui {
             }
           }
         }
+
+        #most_used:empty {
+          width: 160px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?item_stats.purchased_on";
+          }
+        }
       }
 
       #status:label {
@@ -1972,7 +1989,7 @@ statistics:statistics_ui {
         }
 
         #contents:empty {
-          width: 1038px;
+          width: 1198px;
           height: 0px;
 
           child_type: TopToBottom {
@@ -1981,6 +1998,556 @@ statistics:statistics_ui {
         }
       }
     }
+  }
+
+
+  #item_category:color_icon_button {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -194px;
+    width: 216px;
+    height: 40px;
+
+    visible: false;
+
+    btn: {
+      color: #4a4c56ff;
+      back_color: #1d1f2cff;
+      stroke: 1;
+
+      rounding: Uniform {
+        rounding: 8;
+      }
+
+      hover: {
+        color: #a5a5abff;
+      }
+    }
+
+    icon: {
+      source: "asset/base/ui/icons/dropdown";
+
+      rect: {
+        x: 187;
+        y: 17.47;
+        w: 8.78;
+        h: 5.06;
+      }
+
+      color: #a5a5abff;
+    }
+
+    hover: {
+      icon: {
+        color: #e8e8e8ff;
+      }
+    }
+
+    #text:label {
+      @"asset/base/style/main#label";
+      x: 4px;
+      y: 6px;
+
+      width: 164px;
+      height: 28px;
+      align_y: Center;
+
+      size: 18;
+      text: "#asset/base/text/ui?item_stats.cat_all";
+    }
+  }
+
+  #item_patch:color_icon_button {
+    anchor_x: 1;
+    pivot_x: 1;
+    width: 186px;
+    height: 40px;
+
+    visible: false;
+
+    btn: {
+      color: #4a4c56ff;
+      back_color: #1d1f2cff;
+      stroke: 1;
+
+      rounding: Uniform {
+        rounding: 8;
+      }
+
+      hover: {
+        color: #a5a5abff;
+      }
+    }
+
+    icon: {
+      source: "asset/base/ui/icons/dropdown";
+
+      rect: {
+        x: 157;
+        y: 17.47;
+        w: 8.78;
+        h: 5.06;
+      }
+
+      color: #a5a5abff;
+    }
+
+    hover: {
+      icon: {
+        color: #e8e8e8ff;
+      }
+    }
+
+    #text:label {
+      @"asset/base/style/main#label";
+      x: 4px;
+      y: 6px;
+
+      width: 134px;
+      height: 28px;
+      align_y: Center;
+
+      size: 18;
+      text: "#asset/base/text/ui?item_stats.cat_all";
+    }
+  }
+
+
+  #item_category_catch:color_icon_button {
+    visible: false;
+
+    width: 100%;
+    height: 100%;
+
+    btn: {
+      color: #00000000;
+    }
+  }
+
+  #item_category_list:color {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -194px;
+    y: 44px;
+
+    width: 216px;
+    height: 260px;
+
+    visible: false;
+
+    color: #4a4c56ff;
+    back_color: #1d1f2cff;
+    stroke: 1;
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+      #cat0:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 208px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_all";
+      }
+
+      #cat1:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 208px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_assassin";
+      }
+
+      #cat2:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 208px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_fighter";
+      }
+
+      #cat3:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 208px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_marksman";
+      }
+
+      #cat4:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 208px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_mage";
+      }
+
+      #cat5:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 208px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_tank";
+      }
+
+      #cat6:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 208px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_support";
+      }
+  }
+  #item_patch_list:color {
+    anchor_x: 1;
+    pivot_x: 1;
+    y: 44px;
+
+    width: 186px;
+    height: 440px;
+
+    visible: false;
+
+    color: #4a4c56ff;
+    back_color: #1d1f2cff;
+    stroke: 1;
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+      #pat0:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat1:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat2:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat3:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat4:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat5:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat6:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat7:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat8:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat9:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat10:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat11:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
   }
 
   #popup_container:empty {

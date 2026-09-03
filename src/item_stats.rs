@@ -66,15 +66,6 @@ use serde_json::Value;
 /// scrolling-smooth catch-up, and the panel shows its progress while it happens.
 const CHUNK: usize = 24;
 
-/// Games below which a win rate is not a claim about the item.
-///
-/// Without a floor, the top of a win-rate sort is whatever component happened to
-/// be on a winning board once. Rows under this are kept — they are real data —
-/// but sort below every qualified row. Applied by `item_stats_ui::order_rows`,
-/// and only to the win-rate column: it is a statement about that number, not
-/// about the item, so sorting by pick count still shows them in place.
-pub(crate) const MIN_GAMES: u32 = 5;
-
 #[derive(Clone, Copy, Default)]
 pub(crate) struct Totals {
     pub games: u32,
@@ -101,9 +92,19 @@ struct Aggregate {
     /// Ids found by the last sweep and not yet folded, newest first so the
     /// table is useful before the scan finishes.
     pending: Vec<usize>,
-    counts: BTreeMap<String, Totals>,
-    /// Matches that yielded at least one item.
-    matches: u32,
+    /// Patch -> item -> totals.
+    ///
+    /// Keyed by patch first so the filter is a map lookup rather than a re-scan:
+    /// picking one reads its submap, and "All" merges them. The record's
+    /// `version` is what a patch is here — it sits beside `seed` in the replay
+    /// data, which is what a replay would need to reproduce the balance a match
+    /// was played under.
+    counts: BTreeMap<String, BTreeMap<String, Totals>>,
+    /// Patch -> item -> champion -> times that champion was holding it. Feeds
+    /// the "purchased on" column, which is the top few of these by count.
+    champions: BTreeMap<String, BTreeMap<String, BTreeMap<String, u32>>>,
+    /// Patch -> matches that yielded at least one item.
+    matches: BTreeMap<String, u32>,
     /// Records that parsed but held no per-player items.
     brief: u32,
     /// Records that could not be read at all.
@@ -131,7 +132,20 @@ pub(crate) struct Snapshot {
     pub unreadable: u32,
     /// Records still to fold. Non-zero means the table is incomplete.
     pub pending: usize,
+    /// Per item, the champions that bought it most, best first, at most
+    /// [`TOP_CHAMPIONS`] of them.
+    pub champions: BTreeMap<String, Vec<String>>,
 }
+
+/// How many champions the "purchased on" column shows.
+///
+/// Three, because that is what the vanilla "Most Used Champ" column shows and
+/// the cell it borrows its shape from is 132px wide — three 40px slots and two
+/// 4px gaps, with nothing left over.
+pub(crate) const TOP_CHAMPIONS: usize = 3;
+
+/// Bucket for a record that names no version.
+pub(crate) const UNKNOWN_PATCH: &str = "?";
 
 /// Refreshes the list of records to fold.
 ///
@@ -194,13 +208,28 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
         let _ = with_agg(|agg| {
             agg.seen.insert(id);
             match record {
-                Some(sides) if sides.iter().any(|(items, _)| !items.is_empty()) => {
-                    agg.matches += 1;
-                    for (items, won) in sides {
-                        for key in items {
-                            let entry = agg.counts.entry(key).or_default();
-                            entry.games += 1;
-                            entry.wins += u32::from(won);
+                Some((patch, sides)) if sides.iter().any(|(players, _)| !players.is_empty()) => {
+                    *agg.matches.entry(patch.clone()).or_default() += 1;
+                    let counts = agg.counts.entry(patch.clone()).or_default();
+                    for (players, won) in &sides {
+                        for (_, items) in players {
+                            for key in items {
+                                let entry = counts.entry(key.clone()).or_default();
+                                entry.games += 1;
+                                entry.wins += u32::from(*won);
+                            }
+                        }
+                    }
+                    let champions = agg.champions.entry(patch).or_default();
+                    for (players, _) in &sides {
+                        for (champion, items) in players {
+                            for key in items {
+                                *champions
+                                    .entry(key.clone())
+                                    .or_default()
+                                    .entry(champion.clone())
+                                    .or_default() += 1;
+                            }
                         }
                     }
                 }
@@ -212,19 +241,70 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
     true
 }
 
-/// The current table, in key order.
+/// The patches seen in the records, newest first.
+///
+/// Populated from the records themselves rather than from the game's own patch
+/// list, which the stable API does not expose. That also makes it exactly the
+/// right set: a patch nothing was played on has nothing to filter to.
+pub(crate) fn patches() -> Vec<String> {
+    with_agg(|agg| {
+        let mut out: Vec<String> = agg.counts.keys().cloned().collect();
+        out.sort_by(|a, b| b.cmp(a));
+        out
+    })
+    .unwrap_or_default()
+}
+
+/// The current table, in key order, for one patch or for all of them.
 ///
 /// Deliberately *not* sorted for display: the column the player picked can be
 /// the item's name, which lives in the catalog, so ordering is the UI's job.
 /// Key order makes it a stable starting point, which is what keeps equal rows
 /// from reshuffling between repaints mid-scan.
-pub(crate) fn snapshot() -> Snapshot {
-    with_agg(|agg| Snapshot {
-        rows: rows(&agg.counts),
-        matches: agg.matches,
-        brief: agg.brief,
-        unreadable: agg.unreadable,
-        pending: agg.pending.len(),
+pub(crate) fn snapshot(patch: Option<&str>) -> Snapshot {
+    with_agg(|agg| {
+        // One patch reads its own submap; "All" merges them. Merging here rather
+        // than keeping a second running total means there is one set of numbers
+        // to be wrong, and it costs a walk of at most items x patches.
+        let mut counts: BTreeMap<String, Totals> = BTreeMap::new();
+        let mut champions: BTreeMap<String, BTreeMap<String, u32>> = BTreeMap::new();
+        let mut matches = 0;
+
+        for (key, per_item) in &agg.counts {
+            if patch.is_some_and(|wanted| wanted != key.as_str()) {
+                continue;
+            }
+            for (item, totals) in per_item {
+                let entry = counts.entry(item.clone()).or_default();
+                entry.games += totals.games;
+                entry.wins += totals.wins;
+            }
+        }
+        for (key, per_item) in &agg.champions {
+            if patch.is_some_and(|wanted| wanted != key.as_str()) {
+                continue;
+            }
+            for (item, tally) in per_item {
+                let entry = champions.entry(item.clone()).or_default();
+                for (champion, count) in tally {
+                    *entry.entry(champion.clone()).or_default() += count;
+                }
+            }
+        }
+        for (key, count) in &agg.matches {
+            if patch.is_none_or(|wanted| wanted == key.as_str()) {
+                matches += count;
+            }
+        }
+
+        Snapshot {
+            rows: rows(&counts),
+            matches,
+            brief: agg.brief,
+            unreadable: agg.unreadable,
+            pending: agg.pending.len(),
+            champions: top_champions(&champions),
+        }
     })
     .unwrap_or(Snapshot {
         rows: Vec::new(),
@@ -232,7 +312,28 @@ pub(crate) fn snapshot() -> Snapshot {
         brief: 0,
         unreadable: 0,
         pending: 0,
+        champions: BTreeMap::new(),
     })
+}
+
+/// The most frequent champions per item, best first.
+///
+/// Ties break on the champion key so the three shown do not swap places between
+/// repaints while the scan is still folding records.
+fn top_champions(tally: &BTreeMap<String, BTreeMap<String, u32>>) -> BTreeMap<String, Vec<String>> {
+    tally
+        .iter()
+        .map(|(item, champions)| {
+            let mut ranked: Vec<(&String, &u32)> = champions.iter().collect();
+            ranked.sort_by(|(a_key, a), (b_key, b)| b.cmp(a).then_with(|| a_key.cmp(b_key)));
+            let top = ranked
+                .into_iter()
+                .take(TOP_CHAMPIONS)
+                .map(|(champion, _)| champion.clone())
+                .collect();
+            (item.clone(), top)
+        })
+        .collect()
 }
 
 fn rows(counts: &BTreeMap<String, Totals>) -> Vec<(String, Totals)> {
@@ -251,7 +352,7 @@ fn read_record(
     ctx: &StableClient<'_>,
     id: usize,
     index: &[String],
-) -> Option<Vec<(Vec<String>, bool)>> {
+) -> Option<(String, Vec<(Vec<(String, Vec<String>)>, bool)>)> {
     let record = match ctx
         .record_get_json(RecordKindV1::MatchReplay, id, "")
         .and_then(|json| serde_json::from_str::<Value>(&json).ok())
@@ -269,6 +370,7 @@ fn read_record(
             serde_json::json!({
                 "blue_team_win": field("blue_team_win"),
                 "is_brief": field("is_brief"),
+                "version": field("version"),
                 "blue_team": field("blue_team"),
                 "red_team": field("red_team"),
             })
@@ -278,20 +380,33 @@ fn read_record(
     diagnose(id, &record, index);
 
     let blue_win = record.get("blue_team_win")?.as_bool()?;
-    Some(vec![
-        (team_items(record.get("blue_team"), index), blue_win),
-        (team_items(record.get("red_team"), index), !blue_win),
-    ])
+
+    // A record with no version still counts; it just lands in its own bucket
+    // rather than being dropped, and the filter shows it for what it is.
+    let patch = record
+        .get("version")
+        .and_then(Value::as_str)
+        .filter(|version| !version.is_empty())
+        .unwrap_or(UNKNOWN_PATCH)
+        .to_string();
+
+    Some((
+        patch,
+        vec![
+            (team_players(record.get("blue_team"), index), blue_win),
+            (team_players(record.get("red_team"), index), !blue_win),
+        ],
+    ))
 }
 
-/// Every item key held by any player on one side, with duplicates within a
+/// Every player on one side as `(champion, item keys)`, duplicates within a
 /// single player collapsed.
 ///
 /// Written as a walk rather than as `team[i].items` because the exact nesting of
 /// a side is the game's business and has moved before (see the athlete/champion
 /// split in `statistics.ui`). Any object carrying an `items` array is a player;
 /// nothing else in a match record has that shape.
-fn team_items(team: Option<&Value>, index: &[String]) -> Vec<String> {
+fn team_players(team: Option<&Value>, index: &[String]) -> Vec<(String, Vec<String>)> {
     let mut out = Vec::new();
     let Some(team) = team else {
         return out;
@@ -300,7 +415,12 @@ fn team_items(team: Option<&Value>, index: &[String]) -> Vec<String> {
     out
 }
 
-fn collect_players(value: &Value, depth: usize, out: &mut Vec<String>, index: &[String]) {
+fn collect_players(
+    value: &Value,
+    depth: usize,
+    out: &mut Vec<(String, Vec<String>)>,
+    index: &[String],
+) {
     if depth > 4 {
         return;
     }
@@ -321,7 +441,12 @@ fn collect_players(value: &Value, depth: usize, out: &mut Vec<String>, index: &[
                         held.insert(key);
                     }
                 }
-                out.extend(held);
+                let champion = fields
+                    .get("champion")
+                    .and_then(Value::as_str)
+                    .unwrap_or_default()
+                    .to_string();
+                out.push((champion, held.into_iter().collect()));
                 return;
             }
             for field in fields.values() {
@@ -389,7 +514,8 @@ fn diagnose(id: usize, record: &Value, index: &[String]) {
 
     let brief = record.get("is_brief").and_then(Value::as_bool);
     diag(&format!(
-        "record id={id} is_brief={brief:?} index={} entries",
+        "record id={id} is_brief={brief:?} version={:?} index={} entries",
+        record.get("version"),
         index.len()
     ));
 
