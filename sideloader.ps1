@@ -17,7 +17,8 @@ $ErrorActionPreference = 'Stop'
 if ((Split-Path -Leaf $PSScriptRoot) -eq 'siderloader') {
     $root = Split-Path -Parent $PSScriptRoot
     $sider = $PSScriptRoot
-} else {
+}
+else {
     $root = $PSScriptRoot
     $sider = Join-Path $PSScriptRoot 'siderloader'
 }
@@ -78,7 +79,7 @@ $libNl = Get-Newline $libRs
 function Set-MarkerBlock([string]$text, [string]$nl, [string]$tag, [string]$anchorRegex, [string[]]$lines) {
     # Give each block its own tag so replacing tier 4 doesn't remove tier 5.
     $beginMark = "    // >>> SIDERLOADER $tag BEGIN (managed by siderloader/siderload.ps1 - do not hand-edit) <<<"
-    $endMark   = "    // <<< SIDERLOADER $tag END >>>"
+    $endMark = "    // <<< SIDERLOADER $tag END >>>"
     # Remove the extra newline from the last run too, or blank lines pile up.
     $blockRegex = '\r?\n' + [regex]::Escape($beginMark) + '[\s\S]*?' + [regex]::Escape($endMark) + "`r?`n?"
     $text = [regex]::Replace($text, $blockRegex, '')
@@ -95,7 +96,8 @@ foreach ($item in $items) {
         if ($item.enabled -eq $false) {
             $tier4Lines += "// Temporarily disabled: $($item.slug) ($($item.disabled_reason))"
             $tier4Lines += "// $reg"
-        } else {
+        }
+        else {
             $tier4Lines += $reg
         }
     }
@@ -103,7 +105,8 @@ foreach ($item in $items) {
         if ($item.enabled -eq $false) {
             $tier5Lines += "// Temporarily disabled: radiant_$($item.slug)"
             $tier5Lines += "// $reg"
-        } else {
+        }
+        else {
             $tier5Lines += $reg
         }
     }
@@ -140,7 +143,8 @@ if ($catalogMatch.Success) {
     $catalog = $catalog.Substring(0, $catalogMatch.Index) + $newBlock + $catalog.Substring($catalogMatch.Index + $catalogMatch.Length)
     Write-Utf8NoBom $catalogPath $catalog
     Write-Host "[item_catalog.rs] CATEGORY_OF has $($sortedKeys.Count) entries"
-} else {
+}
+else {
     Write-Warning "[item_catalog.rs] could not find CATEGORY_OF array - skipped"
 }
 
@@ -151,7 +155,7 @@ $configNl = Get-Newline $configRs
 # Keep this as an array, even when there's only one extra field.
 $fieldLines = @($manifest.config_rs_extra_fields | ForEach-Object { "    pub $($_.name): $($_.type)," })
 $beginMark = '    // >>> SIDERLOADER BEGIN (managed by siderloader/siderload.ps1 - do not hand-edit) <<<'
-$endMark   = '    // <<< SIDERLOADER END >>>'
+$endMark = '    // <<< SIDERLOADER END >>>'
 # Keep the newline before this block: it belongs to the struct's opening
 # brace. Unlike Set-MarkerBlock, there's no extra separator to remove.
 $blockRegex = [regex]::Escape($beginMark) + '[\s\S]*?' + [regex]::Escape($endMark) + "`r?`n?"
@@ -200,7 +204,8 @@ foreach ($item in $items) {
         $entryText = "  `"$key`": " + $objText.TrimStart()
         if ($configDefaultText -match $entryPattern) {
             $configDefaultText = [regex]::Replace($configDefaultText, $entryPattern, { param($m) $entryText }, 1)
-        } else {
+        }
+        else {
             # Add the new entry before the file's closing brace.
             $configDefaultText = $configDefaultText.TrimEnd()
             $configDefaultText = $configDefaultText.Substring(0, $configDefaultText.Length - 1).TrimEnd()
@@ -220,19 +225,19 @@ function Resolve-OptionTemplate([string]$text, $configObj) {
     # Values come from the config object passed in by the caller.
     if (-not $text) { return $text }
     return [regex]::Replace($text, '\{(\w+)\}', {
-        param($m)
-        $name = $m.Groups[1].Value
-        if ($configObj -and ($configObj.PSObject.Properties.Name -contains $name)) {
-            # Show whole numbers as 250 rather than 250.0 in descriptions.
-            # Handle both double and decimal values, keeping any fractional part.
-            $v = $configObj.$name
-            if (($v -is [double] -or $v -is [decimal]) -and $v -eq [math]::Floor($v)) {
-                return "$([math]::Floor($v))"
+            param($m)
+            $name = $m.Groups[1].Value
+            if ($configObj -and ($configObj.PSObject.Properties.Name -contains $name)) {
+                # Show whole numbers as 250 rather than 250.0 in descriptions.
+                # Handle both double and decimal values, keeping any fractional part.
+                $v = $configObj.$name
+                if (($v -is [double] -or $v -is [decimal]) -and $v -eq [math]::Floor($v)) {
+                    return "$([math]::Floor($v))"
+                }
+                return "$v"
             }
-            return "$v"
-        }
-        return "{?$name}"
-    })
+            return "{?$name}"
+        })
 }
 
 $configJsonPath = Join-Path $root 'config.json'
@@ -281,7 +286,8 @@ foreach ($item in $items) {
             $entryPattern = '"' + [regex]::Escape($key) + '":\s*\{[^{}]*\}'
             $entryText = "`"$key`": " + $objText.TrimStart()
             $configJsonText = [regex]::Replace($configJsonText, $entryPattern, { param($m) $entryText }, 1)
-        } else {
+        }
+        else {
             $entryText = "  `"$key`": " + $objText.TrimStart()
             $configJsonText = $configJsonText.TrimEnd()
             $configJsonText = $configJsonText.Substring(0, $configJsonText.Length - 1).TrimEnd()
@@ -327,13 +333,14 @@ if ($itemsWithI18n.Count -gt 0) {
     }
     Write-Utf8NoBom $i18nPath (($i18n | ConvertTo-Json -Depth 10) -replace "`n", "`r`n")
     Write-Host "[item.i18n] upserted text for $($itemsWithI18n.Count) sideloaded item(s)"
-} else {
+}
+else {
     Write-Host "[item.i18n] no sideloaded items have manifest text yet - left untouched"
 }
 
 # Add item icons to the shared sprite sheet
 $sheetJsonPath = Join-Path $root 'aseprite_resources\ingame\item_icons_640X640#data.sprite_sheet'
-$sheetPngPath  = Join-Path $root 'aseprite_resources\ingame\item_icons_640X640#sheet.png'
+$sheetPngPath = Join-Path $root 'aseprite_resources\ingame\item_icons_640X640#sheet.png'
 $sheetJsonText = Read-Utf8 $sheetJsonPath
 $sheetNl = Get-Newline $sheetJsonText
 $sheetJson = $sheetJsonText | ConvertFrom-Json
@@ -399,7 +406,8 @@ foreach ($item in $items) {
             $icon = [System.Drawing.Image]::FromFile($radiantPngPath)
             $graphics.DrawImage($icon, ($cell.col * $cellPx), ($cell.row * $cellPx), $cellPx, $cellPx)
             $icon.Dispose()
-        } elseif ((Test-Path $goldBorderPath)) {
+        }
+        elseif ((Test-Path $goldBorderPath)) {
             $icon = [System.Drawing.Image]::FromFile($basePngPath)
             $graphics.DrawImage($icon, ($cell.col * $cellPx), ($cell.row * $cellPx), $cellPx, $cellPx)
             $icon.Dispose()
@@ -407,7 +415,8 @@ foreach ($item in $items) {
             $graphics.DrawImage($border, ($cell.col * $cellPx), ($cell.row * $cellPx), $cellPx, $cellPx)
             $border.Dispose()
             Write-Host "[icons] synthesized radiant for $($item.slug) (base + radiant border)"
-        } else {
+        }
+        else {
             Write-Warning "[icons] $($item.slug): no radiant icon and no siderloader/icons/radiant_border.png to synthesize one - skipping"
             continue
         }
@@ -437,7 +446,8 @@ if ($dirty) {
     $sheetJsonText = [regex]::Replace($sheetJsonText, $imagesCloseRegex, { param($m) $m.Groups[1].Value + ",$sheetNl" + $insertion + $m.Groups[2].Value }, 1)
     Write-Utf8NoBom $sheetJsonPath $sheetJsonText
     Write-Host "[icons] sprite sheet updated"
-} else {
+}
+else {
     $bmp.Dispose()
     Write-Host "[icons] no changes"
 }
