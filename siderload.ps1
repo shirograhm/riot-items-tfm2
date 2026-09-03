@@ -12,7 +12,8 @@
 
 $ErrorActionPreference = 'Stop'
 
-# Allow the script to run from either siderloader/ or the mod root.
+# Allow the script to run from either siderloader/ or a copy deployed
+# straight to the mod root (e.g. for a PR upstream).
 if ((Split-Path -Leaf $PSScriptRoot) -eq 'siderloader') {
     $root = Split-Path -Parent $PSScriptRoot
     $sider = $PSScriptRoot
@@ -235,6 +236,16 @@ function Resolve-OptionTemplate([string]$text, $configObj) {
 }
 
 $configJsonPath = Join-Path $root 'config.json'
+if (-not (Test-Path $configJsonPath)) {
+    # No root config.json means the user hasn't opted into one yet.
+    # Fall back to siderloader/config.json, bootstrapping it from
+    # config-default.json if that doesn't exist either.
+    $configJsonPath = Join-Path $sider 'config.json'
+    if (-not (Test-Path $configJsonPath)) {
+        Copy-Item (Join-Path $root 'config-default.json') $configJsonPath
+        Write-Host "[config.json] no root config.json or siderloader/config.json found - bootstrapped siderloader/config.json from config-default.json"
+    }
+}
 $configJsonText = Read-Utf8 $configJsonPath
 $configJsonNl = Get-Newline $configJsonText
 $configJsonParsed = $configJsonText | ConvertFrom-Json
