@@ -88,89 +88,14 @@ impl ConfiguredBuilds {
             None => build_config::role_for_champion(champion),
         };
 
-        match build_config::build_for_champion(
+        build_config::build_for_champion(
             &config,
             champion,
             role,
             |key| ctx.item_index(key),
             ctx.base_build(),
-        ) {
-            Ok(build) => build,
-            Err(miss) => {
-                build_config::record_hook_miss(champion, role, describe_miss(ctx, lane, &miss));
-                ctx.base_build().to_vec()
-            }
-        }
-    }
-}
-
-/// One human-readable block explaining a [`build_config::BuildMiss`], for the
-/// report `build_config::take_hook_miss_report` writes.
-///
-/// Built only on the failing path, so the formatting never costs anything in a
-/// match whose builds all apply.
-fn describe_miss(
-    ctx: &StableItemBuildContext<'_>,
-    lane: Option<usize>,
-    miss: &build_config::BuildMiss,
-) -> String {
-    let lane = match lane {
-        Some(code) => format!("host lane code {code}"),
-        None => "host named NO lane (fell back to the lineup map)".to_string(),
-    };
-    match miss {
-        build_config::BuildMiss::NoEntry { tried, available } => format!(
-            "  cause : no entry for this champion+role\n  \
-             lane  : {lane}\n  \
-             wanted: {tried}\n  \
-             file  : {}\n",
-            if available.is_empty() {
-                "(nothing for this champion - is the champion id right?)".to_string()
-            } else {
-                available.join(", ")
-            }
-        ),
-        build_config::BuildMiss::Unresolved { key, pins } => {
-            let mut out = format!(
-                "  cause : entry found, but no pinned item is in the engine's pool\n  \
-                 lane  : {lane}\n  \
-                 entry : {key}\n  \
-                 pool  : {} selectable items\n",
-                ctx.item_count()
-            );
-            for (pin, hit) in pins {
-                match hit {
-                    Some(index) => out.push_str(&format!("  pin   : {pin} -> index {index}\n")),
-                    None => out.push_str(&format!("  pin   : {pin} -> NOT IN POOL\n")),
-                }
-            }
-            // A handful of pool keys sharing a word with a failed pin. This is
-            // what tells a key that is absent from one that is merely spelled
-            // differently than the file has it.
-            let stem = pins
-                .iter()
-                .find(|(_, hit)| hit.is_none())
-                .map(|(pin, _)| build_config::base_slug(pin).to_string())
-                .unwrap_or_default();
-            let needle = stem.split('_').next().unwrap_or("");
-            if !needle.is_empty() {
-                let near: Vec<&str> = ctx
-                    .item_keys()
-                    .into_iter()
-                    .filter(|key| key.contains(needle))
-                    .take(6)
-                    .collect();
-                out.push_str(&format!(
-                    "  near  : {}\n",
-                    if near.is_empty() {
-                        format!("no pool key contains \"{needle}\"")
-                    } else {
-                        near.join(", ")
-                    }
-                ));
-            }
-            out
-        }
+        )
+        .unwrap_or_else(|| ctx.base_build().to_vec())
     }
 }
 

@@ -713,148 +713,37 @@ pub fn own_team_only_enabled() -> bool {
 /// blank (`null`) slots.
 ///
 /// Unknown item keys are skipped rather than aborting, so one typo does not
-/// discard the rest of a build — but a build in which *nothing* resolved is an
-/// [`Err`], not an `Ok` route that happens to equal `ai_build`. Both leave the
-/// engine's build in place; only the first can be reported, and reporting it is
-/// the whole difference between a diagnosable failure and a silent one. See
-/// [`BuildMiss`].
+/// discard the rest of a build — but a build in which *nothing* resolved is a
+/// [`None`], not a `Some` route that happens to equal `ai_build`: both leave the
+/// engine's build in place, and the caller has no other way to tell them apart.
 pub fn build_for_champion(
     config: &BuildConfig,
     champion: &str,
     role: Role,
     resolve: impl Fn(&str) -> Option<usize>,
     ai_build: &[usize],
-) -> Result<Vec<usize>, BuildMiss> {
-    let Some((key, build)) = build_entry(config, champion, role) else {
-        return Err(BuildMiss::NoEntry {
-            tried: build_key(champion, role),
-            available: keys_for_champion(config, champion),
-        });
-    };
+) -> Option<Vec<usize>> {
+    let build = build_entry(config, champion, role)?;
     // A build may be longer than the game has slots for — the file keeps a
     // fourth item while 3-slot mode is on, so that switching back restores the
     // build. Sending that item anyway would hand the game a slot it cannot put
     // anywhere.
     let usable = build.len().min(picker_slots());
     let slots = &build[..usable];
-    let mut pins = Vec::new();
+    let mut pinned = 0usize;
     let mut resolved = 0usize;
     for pin in slots.iter().flatten() {
-        let hit = resolve_key(pin, &resolve);
-        resolved += usize::from(hit.is_some());
-        pins.push((pin.clone(), hit));
+        pinned += 1;
+        resolved += usize::from(resolve_key(pin, &resolve).is_some());
     }
     // Every pinned slot dropped. `merge_build` would fill the whole route from
     // `ai_build`, which is byte-for-byte the build the engine already had — so
-    // the caller's "did this change anything" test says no, and the failure is
-    // indistinguishable from "this champion has no build". Report it instead:
-    // this is the shape a one-pin-plus-blanks build fails in, and it is silent.
-    if !pins.is_empty() && resolved == 0 {
-        return Err(BuildMiss::Unresolved { key, pins });
-    }
-    Ok(merge_build(slots, ai_build, &resolve))
-}
-
-/// Why a configured build never reached the engine.
-///
-/// Both arms end the same way — the engine keeps the build it made — so without
-/// naming them apart there is nothing to tell a role that did not match from an
-/// item key that is not in the pool. See [`build_for_champion`].
-#[derive(Debug)]
-pub enum BuildMiss {
-    /// Nothing is written for this champion, under this role or bare.
-    NoEntry {
-        /// The key that was looked for.
-        tried: String,
-        /// The keys the file *does* hold for this champion, which is what makes
-        /// a role mismatch legible: asked for `x@mid`, file has `x@jungle`.
-        available: Vec<String>,
-    },
-    /// An entry exists, but not one of its pinned keys is an item the engine
-    /// offered, so the merge could only reproduce the engine's own picks.
-    Unresolved {
-        /// The key the entry was found under.
-        key: String,
-        /// Each pinned slot and the pool index it resolved to, in file order.
-        pins: Vec<(String, Option<usize>)>,
-    },
-}
-
-// ---------------------------------------------------------------------------
-//  Miss log
-// ---------------------------------------------------------------------------
-//
-// A build that does not apply produces no symptom the player can read: the
-// champion simply buys what the AI wanted, which is also what it does when
-// nothing is configured for it. Every such decision is recorded here and
-// written out by the main thread, so "some champions ignore their build" turns
-// into a file naming the champion, the role that was asked for and the keys
-// that did not resolve.
-//
-// Deduped by champion and role and capped, because the hook runs for every
-// player of every fixture on a league day, on parallel rayon workers: the same
-// miss recurs thousands of times and only the first is news.
-
-/// Recorded misses, keyed by `champion@role`. `None` until the first one.
-static HOOK_MISSES: Mutex<Option<std::collections::BTreeMap<String, String>>> = Mutex::new(None);
-
-/// Distinct misses kept. A save with many configured champions can exceed this;
-/// the cap is what stops a league day growing the map without bound.
-const HOOK_MISS_MAX: usize = 64;
-
-/// Set when the map changes, so the main thread rewrites the file only then
-/// rather than once per frame.
-static HOOK_MISSES_DIRTY: AtomicU8 = AtomicU8::new(0);
-
-/// Records one build that did not apply. Cheap and idempotent per key: a miss
-/// already on file returns without taking the lock's write path twice.
-pub fn record_hook_miss(champion: &str, role: Role, detail: String) {
-    let key = build_key(champion, role);
-    let Ok(mut guard) = HOOK_MISSES.lock() else {
-        return;
-    };
-    let misses = guard.get_or_insert_with(std::collections::BTreeMap::new);
-    if misses.contains_key(&key) || misses.len() >= HOOK_MISS_MAX {
-        return;
-    }
-    misses.insert(key, detail);
-    HOOK_MISSES_DIRTY.store(1, Ordering::Relaxed);
-}
-
-/// The report to write, or `None` when nothing new has been recorded since the
-/// last call. Main thread only — it formats and allocates.
-pub fn take_hook_miss_report() -> Option<String> {
-    if HOOK_MISSES_DIRTY.swap(0, Ordering::Relaxed) == 0 {
+    // the caller's "did this change anything" test says no. Give back `None`
+    // rather than a route that only reproduces the engine's own picks.
+    if pinned > 0 && resolved == 0 {
         return None;
     }
-    let guard = HOOK_MISSES.lock().ok()?;
-    let misses = guard.as_ref()?;
-    let mut report = String::from(
-        "riot_items_tfm2: configured builds that did NOT reach the engine.\n\
-         Each entry is one champion+role, recorded the first time it happened.\n\
-         An empty file (or no file) means every build applied.\n\n",
-    );
-    for (key, detail) in misses.iter() {
-        report.push_str(&format!("{key}\n{detail}\n"));
-    }
-    if misses.len() >= HOOK_MISS_MAX {
-        report.push_str("\n(cap reached - later misses were not recorded)\n");
-    }
-    Some(report)
-}
-
-/// Every key in the file that names `champion`, bare or role-suffixed.
-///
-/// Diagnostic only — [`build_entry`] is what decides which one applies.
-pub fn keys_for_champion(config: &BuildConfig, champion: &str) -> Vec<String> {
-    let mut keys: Vec<String> = config
-        .by_champion
-        .keys()
-        .filter(|key| split_build_key(key).0 == champion)
-        .cloned()
-        .collect();
-    keys.sort();
-    keys
+    Some(merge_build(slots, ai_build, &resolve))
 }
 
 /// The build a champion uses in `role`: the role's own if one is written, and
@@ -863,23 +752,17 @@ pub fn keys_for_champion(config: &BuildConfig, champion: &str) -> Vec<String> {
 /// This ordering is the whole contract of the Role column — a build written for
 /// Jungle beats the catch-all when the champion is actually jungling, and the
 /// catch-all still covers every role nobody wrote a build for.
-/// Returns the key it matched alongside the build, so a caller reporting a
-/// failure can say which of a champion's entries was in play.
 fn build_entry<'a>(
     config: &'a BuildConfig,
     champion: &str,
     role: Role,
-) -> Option<(String, &'a Vec<Option<String>>)> {
+) -> Option<&'a Vec<Option<String>>> {
     if role != Role::Any {
-        let key = build_key(champion, role);
-        if let Some(build) = config.by_champion.get(&key) {
-            return Some((key, build));
+        if let Some(build) = config.by_champion.get(&build_key(champion, role)) {
+            return Some(build);
         }
     }
-    config
-        .by_champion
-        .get(champion)
-        .map(|build| (champion.to_string(), build))
+    config.by_champion.get(champion)
 }
 
 /// Resolves one configured item key to a pool index. The key is normalized to
