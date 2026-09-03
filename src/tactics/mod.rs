@@ -3581,6 +3581,17 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                 }
             }
         }
+        // Configured builds the stable hook could not apply. Unlike the report
+        // above this is NOT behind `BUILD_EXT_DIAG`: a build that quietly does
+        // not apply looks exactly like a champion with no build configured, so
+        // there is nothing to notice that would prompt turning a flag on. The
+        // write is free while every build applies — `take_hook_miss_report`
+        // returns `None` until the hook records something new.
+        if let Some(report) = crate::build_config::take_hook_miss_report() {
+            if let Some(d) = mod_dir() {
+                let _ = fs::write(d.join("build_misses.txt"), report);
+            }
+        }
         // (the every-frame hook retry that used to sit here now runs at the top
         //  of the function, because it is what publishes `TIP_ROOT`)
         if !in_game {
