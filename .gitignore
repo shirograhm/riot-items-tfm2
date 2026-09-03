@@ -29,3 +29,6 @@ hook-target.json
 rust-toolchain.toml
 item-builds.json
 deploy.ps1
+
+# Siderloader: our custom/modified items, reapplied by siderloader/siderload.ps1
+/siderloader/
