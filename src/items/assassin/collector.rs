@@ -142,13 +142,7 @@ impl StableItem for Collector {
             let hp_threshold = percent_of(target_max_hp, self.effect_hp_percent_threshold);
             let remaining = target_curr_hp - *damage;
             if remaining <= hp_threshold {
-                ctx.deal_damage_typed(
-                    caster,
-                    target,
-                    remaining,
-                    DamageTypeV1::Fixed,
-                    AttackTypeV1::Item,
-                );
+                ctx.deal_damage(caster, target, remaining, 0, AttackTypeV1::Item);
             }
         }
     }

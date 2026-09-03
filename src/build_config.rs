@@ -710,12 +710,12 @@ pub fn own_team_only_enabled() -> bool {
 /// the detour this used to serve.
 ///
 /// `ai_build` is the build the engine picked for the same champion; it fills the
-/// blank (`null`) slots. Returns `None` when the champion has no entry, which
-/// callers must read as "leave the engine's build alone" — distinct from
-/// `Some(vec![])`, a configured build whose every key failed to resolve.
+/// blank (`null`) slots.
 ///
 /// Unknown item keys are skipped rather than aborting, so one typo does not
-/// discard the rest of a build.
+/// discard the rest of a build — but a build in which *nothing* resolved is a
+/// [`None`], not a `Some` route that happens to equal `ai_build`: both leave the
+/// engine's build in place, and the caller has no other way to tell them apart.
 pub fn build_for_champion(
     config: &BuildConfig,
     champion: &str,
@@ -729,7 +729,21 @@ pub fn build_for_champion(
     // build. Sending that item anyway would hand the game a slot it cannot put
     // anywhere.
     let usable = build.len().min(picker_slots());
-    Some(merge_build(&build[..usable], ai_build, &resolve))
+    let slots = &build[..usable];
+    let mut pinned = 0usize;
+    let mut resolved = 0usize;
+    for pin in slots.iter().flatten() {
+        pinned += 1;
+        resolved += usize::from(resolve_key(pin, &resolve).is_some());
+    }
+    // Every pinned slot dropped. `merge_build` would fill the whole route from
+    // `ai_build`, which is byte-for-byte the build the engine already had — so
+    // the caller's "did this change anything" test says no. Give back `None`
+    // rather than a route that only reproduces the engine's own picks.
+    if pinned > 0 && resolved == 0 {
+        return None;
+    }
+    Some(merge_build(slots, ai_build, &resolve))
 }
 
 /// The build a champion uses in `role`: the role's own if one is written, and

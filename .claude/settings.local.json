@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(PYTHONUTF8=1 PYTHONIOENCODING=utf-8 python -)",
+      "Bash(cd \"c:/Users/xavie/Documents/Personal/Teamfight Manager 2/Mods\" && grep -n \"player_kills\\\\|player_cs\" -B 3 mod-api-stable/src/host.rs | head -20; echo \"=== offsets: is player_add_gold far out? ===\"; grep -n \"player_kills\\\\|player_add_gold\" mod-api-stable/contract/frozen/abi_level_1.txt)",
+      "Read(//c/Users/xavie/Documents/Personal/Teamfight Manager 2/Mods/**)",
+      "Bash(python -c ' *)"
+    ]
+  }
+}

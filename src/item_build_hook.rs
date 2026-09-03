@@ -46,7 +46,7 @@ impl StableItemBuildHook for ConfiguredBuilds {
         let mut build = if build_config::own_team_only_enabled() {
             base.to_vec()
         } else {
-            self.configured_build(ctx).unwrap_or_else(|| base.to_vec())
+            self.configured_build(ctx)
         };
 
         if build_config::unique_items_enabled() {
@@ -65,26 +65,37 @@ impl ConfiguredBuilds {
     // applies to whoever plays it, enemy included. A player who does not want
     // that turns on `own_team_only`, which stops `decide_build` calling this at
     // all — see there.
-    fn configured_build(&self, ctx: &StableItemBuildContext<'_>) -> Option<Vec<usize>> {
+    fn configured_build(&self, ctx: &StableItemBuildContext<'_>) -> Vec<usize> {
         let config = build_config::load_cached();
         if config.is_empty() {
-            return None;
+            return ctx.base_build().to_vec();
         }
 
+        let champion = ctx.champion_key();
         // The lane is the half the buy detour has to infer; here the host
         // states it outright, so a role build is picked without guessing.
-        let role = ctx
-            .lane()
-            .map(|lane| build_config::Role::from_lane_code(lane.code() as usize))
-            .unwrap_or(build_config::Role::Any);
+        //
+        // Unless it does not. A host that leaves `lane` at a code `LaneV1` does
+        // not map yields `None`, and taking that as `Role::Any` makes every
+        // `champion@role` line in the file dead — the whole configured build
+        // silently becomes the engine's. The route detour's position-ordered
+        // `team1` is the mod's other source for the same fact, so fall back to
+        // it rather than to a role that matches nothing. It is best effort (see
+        // `build_config::role_for_champion`), which still beats certain failure.
+        let lane = ctx.lane().map(|lane| lane.code() as usize);
+        let role = match lane {
+            Some(code) => build_config::Role::from_lane_code(code),
+            None => build_config::role_for_champion(champion),
+        };
 
         build_config::build_for_champion(
             &config,
-            ctx.champion_key(),
+            champion,
             role,
             |key| ctx.item_index(key),
             ctx.base_build(),
         )
+        .unwrap_or_else(|| ctx.base_build().to_vec())
     }
 }
 

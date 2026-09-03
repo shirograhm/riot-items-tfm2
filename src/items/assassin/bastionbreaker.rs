@@ -171,13 +171,7 @@ impl StableItem for Bastionbreaker {
                 self.effect_bonus_flat_damage,
                 self.effect_ad_percent_damage,
             );
-            ctx.deal_damage_typed(
-                caster,
-                target,
-                bonus,
-                DamageTypeV1::Fixed,
-                AttackTypeV1::Item,
-            );
+            ctx.deal_damage(caster, target, bonus, 0, AttackTypeV1::Item);
             ctx.entity_remove_buff(caster, self.sabotage_buff);
         }
     }
