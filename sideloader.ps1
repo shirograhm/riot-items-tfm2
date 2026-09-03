@@ -1,26 +1,26 @@
 <#
 .SYNOPSIS
-  Reapply custom and modified items from siderloader/ after merging upstream.
+  Reapply custom and modified items from sideloader/ after merging upstream.
   Run this after fetching and merging shiro/<branch>, before building.
   Existing entries are updated, so you can run it again without adding duplicates.
 
   To change the items, edit with sideload-editor.exe.
-  Advanced users may edit siderloader/manifest.json or siderloader/items/*.rs directly
-  and run this again. Changes made directly inside the generated SIDERLOADER
+  Advanced users may edit sideloader/manifest.json or sideloader/items/*.rs directly
+  and run this again. Changes made directly inside the generated SIDELOADER
   blocks will be overwritten.
 #>
 
 $ErrorActionPreference = 'Stop'
 
-# Allow the script to run from either siderloader/ or a copy deployed
+# Allow the script to run from either sideloader/ or a copy deployed
 # straight to the mod root (e.g. for a PR upstream).
-if ((Split-Path -Leaf $PSScriptRoot) -eq 'siderloader') {
+if ((Split-Path -Leaf $PSScriptRoot) -eq 'sideloader') {
     $root = Split-Path -Parent $PSScriptRoot
     $sider = $PSScriptRoot
 }
 else {
     $root = $PSScriptRoot
-    $sider = Join-Path $PSScriptRoot 'siderloader'
+    $sider = Join-Path $PSScriptRoot 'sideloader'
 }
 
 function Read-Utf8($path) {
@@ -49,7 +49,7 @@ foreach ($item in $items) {
     $src = Join-Path $sider "items\$($item.module).rs"
     $dst = Join-Path $root "src\items\$($item.dir)\$($item.module).rs"
     Copy-Item $src $dst -Force
-    Write-Host "[items] $($item.module).rs <- siderloader"
+    Write-Host "[items] $($item.module).rs <- sideloader"
 }
 
 # Add missing module declarations
@@ -78,8 +78,8 @@ $libNl = Get-Newline $libRs
 
 function Set-MarkerBlock([string]$text, [string]$nl, [string]$tag, [string]$anchorRegex, [string[]]$lines) {
     # Give each block its own tag so replacing tier 4 doesn't remove tier 5.
-    $beginMark = "    // >>> SIDERLOADER $tag BEGIN (managed by siderloader/siderload.ps1 - do not hand-edit) <<<"
-    $endMark = "    // <<< SIDERLOADER $tag END >>>"
+    $beginMark = "    // >>> SIDELOADER $tag BEGIN (managed by sideloader/sideloader.ps1 - do not hand-edit) <<<"
+    $endMark = "    // <<< SIDELOADER $tag END >>>"
     # Remove the extra newline from the last run too, or blank lines pile up.
     $blockRegex = '\r?\n' + [regex]::Escape($beginMark) + '[\s\S]*?' + [regex]::Escape($endMark) + "`r?`n?"
     $text = [regex]::Replace($text, $blockRegex, '')
@@ -121,7 +121,7 @@ if ($tier5Lines.Count -gt 0) {
     $libRs = Set-MarkerBlock $libRs $libNl 'TIER5' '(?m)^\s*//\s*Tier 5[ \t]*(?=\r?\n|$)' $tier5Lines
 }
 Write-Utf8NoBom $libRsPath $libRs
-Write-Host "[lib.rs] rewrote SIDERLOADER blocks ($($tier4Lines.Count) tier-4 / $($tier5Lines.Count) tier-5 lines)"
+Write-Host "[lib.rs] rewrote SIDELOADER blocks ($($tier4Lines.Count) tier-4 / $($tier5Lines.Count) tier-5 lines)"
 
 # Update CATEGORY_OF in src/item_catalog.rs and keep it sorted
 $catalogPath = Join-Path $root 'src\item_catalog.rs'
@@ -154,8 +154,8 @@ $configRs = Read-Utf8 $configRsPath
 $configNl = Get-Newline $configRs
 # Keep this as an array, even when there's only one extra field.
 $fieldLines = @($manifest.config_rs_extra_fields | ForEach-Object { "    pub $($_.name): $($_.type)," })
-$beginMark = '    // >>> SIDERLOADER BEGIN (managed by siderloader/siderload.ps1 - do not hand-edit) <<<'
-$endMark = '    // <<< SIDERLOADER END >>>'
+$beginMark = '    // >>> SIDELOADER BEGIN (managed by sideloader/sideloader.ps1 - do not hand-edit) <<<'
+$endMark = '    // <<< SIDELOADER END >>>'
 # Keep the newline before this block: it belongs to the struct's opening
 # brace. Unlike Set-MarkerBlock, there's no extra separator to remove.
 $blockRegex = [regex]::Escape($beginMark) + '[\s\S]*?' + [regex]::Escape($endMark) + "`r?`n?"
@@ -243,12 +243,12 @@ function Resolve-OptionTemplate([string]$text, $configObj) {
 $configJsonPath = Join-Path $root 'config.json'
 if (-not (Test-Path $configJsonPath)) {
     # No root config.json means the user hasn't opted into one yet.
-    # Fall back to siderloader/config.json, bootstrapping it from
+    # Fall back to sideloader/config.json, bootstrapping it from
     # config-default.json if that doesn't exist either.
     $configJsonPath = Join-Path $sider 'config.json'
     if (-not (Test-Path $configJsonPath)) {
         Copy-Item (Join-Path $root 'config-default.json') $configJsonPath
-        Write-Host "[config.json] no root config.json or siderloader/config.json found - bootstrapped siderloader/config.json from config-default.json"
+        Write-Host "[config.json] no root config.json or sideloader/config.json found - bootstrapped sideloader/config.json from config-default.json"
     }
 }
 $configJsonText = Read-Utf8 $configJsonPath
@@ -379,7 +379,7 @@ foreach ($item in $items) {
     if (-not $item.icon) { continue }
     $basePngPath = Join-Path $sider "icons\$($item.icon.base)"
     if (-not (Test-Path $basePngPath)) {
-        Write-Warning "[icons] $($item.slug): no siderloader/icons/$($item.icon.base) provided - skipping icon injection"
+        Write-Warning "[icons] $($item.slug): no sideloader/icons/$($item.icon.base) provided - skipping icon injection"
         continue
     }
     if (-not $images.ContainsKey($item.slug)) {
@@ -417,7 +417,7 @@ foreach ($item in $items) {
             Write-Host "[icons] synthesized radiant for $($item.slug) (base + radiant border)"
         }
         else {
-            Write-Warning "[icons] $($item.slug): no radiant icon and no siderloader/icons/radiant_border.png to synthesize one - skipping"
+            Write-Warning "[icons] $($item.slug): no radiant icon and no sideloader/icons/radiant_border.png to synthesize one - skipping"
             continue
         }
         $frac = 1.0 / $cols
@@ -452,15 +452,15 @@ else {
     Write-Host "[icons] no changes"
 }
 
-# Add /siderloader/ to .gitignore if needed
+# Add /sideloader/ to .gitignore if needed
 $gitignorePath = Join-Path $root '.gitignore'
 $gitignore = Read-Utf8 $gitignorePath
 $gitignoreNl = Get-Newline $gitignore
-if ($gitignore -notmatch '(?m)^/siderloader/\s*$') {
-    $gitignore = $gitignore.TrimEnd() + "$gitignoreNl$gitignoreNl# Siderloader: our custom/modified items, reapplied by siderloader/siderload.ps1${gitignoreNl}/siderloader/$gitignoreNl"
+if ($gitignore -notmatch '(?m)^/sideloader/\s*$') {
+    $gitignore = $gitignore.TrimEnd() + "$gitignoreNl$gitignoreNl# Siderloader: our custom/modified items, reapplied by sideloader/sideloader.ps1${gitignoreNl}/sideloader/$gitignoreNl"
     Write-Utf8NoBom $gitignorePath $gitignore
-    Write-Host "[.gitignore] added /siderloader/"
+    Write-Host "[.gitignore] added /sideloader/"
 }
 
 Write-Host ""
-Write-Host "siderload.ps1 complete." -ForegroundColor Green
+Write-Host "sideloader.ps1 complete." -ForegroundColor Green
