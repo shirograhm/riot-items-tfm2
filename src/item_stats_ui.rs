@@ -235,6 +235,18 @@ const ROW_INDENT: &str = "   ";
 /// with more than this many patches shows the most recent.
 const PATCH_ROWS: usize = 12;
 
+/// Radiant, as the item documents number tiers: 0..=4 is
+/// starter/basic/epic/legendary/radiant.
+const TIER_RADIANT: usize = 4;
+
+/// The tier the filter opens on.
+///
+/// Radiant rather than "All", because "All" opens on a table led by components:
+/// a BF Sword goes into half the builds in the game, so it out-samples every
+/// finished item and its win rate is the average of the whole format. The
+/// finished items are the question this tab is opened to ask.
+const DEFAULT_TIER: Option<usize> = Some(TIER_RADIANT);
+
 /// i18n keys for the tier rows, All first — parallel to the `#tier{i}` nodes.
 /// Row `i` filters to tier `i - 1`, which is the item's own `tier` field.
 const TIER_KEYS: [&str; 6] = [
@@ -367,9 +379,9 @@ struct State {
     patch_open: bool,
     /// Column the table is ordered by.
     sort: SortBy,
-    /// Which way round. Named for the *non*-default so that `State::default()`
-    /// gives the intended opening view — win rate, highest first — without
-    /// hand-writing a `Default` impl for the whole struct.
+    /// Which way round. Named for the *non*-default so that the derived
+    /// `Default` — which is what [`State::new`] builds on — gives the intended
+    /// opening view, win rate highest first, with no field to set by hand.
     ascending: bool,
     tick: u32,
     /// Counts every frame the screen is up, which `tick` does not — it only
@@ -379,11 +391,25 @@ struct State {
     last_event: Option<(String, u32)>,
 }
 
+impl State {
+    /// A fresh state, with the filters at their opening positions.
+    ///
+    /// Separate from `Default` rather than replacing it: `..Self::default()` is
+    /// what keeps this from being a hand-written list of all twenty fields, and
+    /// a `Default` impl cannot spell itself that way.
+    fn new() -> Self {
+        Self {
+            tier: DEFAULT_TIER,
+            ..Self::default()
+        }
+    }
+}
+
 static STATE: Mutex<Option<State>> = Mutex::new(None);
 
 fn with_state<T>(f: impl FnOnce(&mut State) -> T) -> Option<T> {
     let mut guard = STATE.lock().ok()?;
-    Some(f(guard.get_or_insert_with(State::default)))
+    Some(f(guard.get_or_insert_with(State::new)))
 }
 
 /// Paths this module has registered a handler for.
@@ -542,7 +568,7 @@ fn heal(ctx: &mut StableClient<'_>, screen: &str) {
     if !ctx.ui_exists(&format!("{screen}.tabs.item"))
         || !ctx.ui_exists(&format!("{screen}.data.item_stats"))
     {
-        let _ = with_state(|state| *state = State::default());
+        let _ = with_state(|state| *state = State::new());
         return;
     }
 
@@ -626,7 +652,7 @@ fn resolve_screen(ctx: &mut StableClient<'_>) -> Option<String> {
         // Left the screen. Everything spawned into it died with it, so the next
         // visit rebuilds rather than writing to paths that no longer resolve.
         let _ = with_state(|state| {
-            *state = State::default();
+            *state = State::new();
         });
         forget_registrations();
         return None;
@@ -1149,7 +1175,7 @@ fn pick_tier(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
 
 /// Writes the selected tier onto the button face.
 fn paint_tier_button(ctx: &mut StableClient<'_>, screen: &str) {
-    let selected = with_state(|state| state.tier).unwrap_or(None);
+    let selected = with_state(|state| state.tier).unwrap_or(DEFAULT_TIER);
     let key = TIER_KEYS[selected.map_or(0, |tier| tier + 1)];
     let text = label(ctx, key, "   All");
     ctx.ui_set_text(&format!("{screen}.item_tier.text"), &text);
@@ -1157,7 +1183,7 @@ fn paint_tier_button(ctx: &mut StableClient<'_>, screen: &str) {
 
 /// Lights the row of the tier currently in force.
 fn paint_tier_rows(ctx: &mut StableClient<'_>, screen: &str) {
-    let selected = with_state(|state| state.tier).unwrap_or(None);
+    let selected = with_state(|state| state.tier).unwrap_or(DEFAULT_TIER);
     let lit_row = selected.map_or(0, |tier| tier + 1);
     for row in 0..TIER_KEYS.len() {
         ctx.ui_set_properties(
@@ -1437,7 +1463,7 @@ fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
             SortBy::default(),
             false,
             None,
-            None,
+            DEFAULT_TIER,
         ));
     if let Some(index) = category {
         let wanted = CATEGORIES[index];

@@ -2223,7 +2223,7 @@ statistics:statistics_ui {
       align_y: Center;
 
       size: 18;
-      text: "#asset/base/text/ui?item_stats.cat_all";
+      text: "#asset/base/text/ui?item_stats.tier_radiant";
     }
   }
 
