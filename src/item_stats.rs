@@ -476,6 +476,10 @@ pub(crate) struct ItemInfo {
     pub name: String,
     /// `rect_tag` into the item sheet, or `None` for an item with no art.
     pub frame: Option<String>,
+    /// 0..=4, which the tier filter reads as starter/basic/epic/legendary/
+    /// radiant. `None` for an item neither the settings document nor this mod
+    /// describes.
+    pub tier: Option<usize>,
 }
 
 static CATALOG: Mutex<Option<BTreeMap<String, ItemInfo>>> = Mutex::new(None);
@@ -487,17 +491,17 @@ static CATALOG: Mutex<Option<BTreeMap<String, ItemInfo>>> = Mutex::new(None);
 /// there is nowhere to read it from: `ItemSetting` contains only the 30 base
 /// items (confirmed — the document parses to exactly 30 entries), so a mod's
 /// items are absent from the one document that describes items at all.
-static REGISTERED: Mutex<Vec<String>> = Mutex::new(Vec::new());
+static REGISTERED: Mutex<Vec<(String, usize)>> = Mutex::new(Vec::new());
 
-/// Notes one item key at registration time. Called from `init` for every item
-/// the mod adds.
+/// Notes one item key and its tier at registration time. Called from `init` for
+/// every item the mod adds.
 ///
-/// This is the only record that a mod item exists: the settings document
-/// describes the game's own items and nothing else, so without this the mod's
-/// own rows would draw under their raw keys with no icon.
-pub(crate) fn note_registered(key: &str) {
+/// The tier has to come from here because the settings document describes only
+/// the game's own items — a mod's are absent from the one place items are
+/// described, so `StableItem::tier` at registration is the only source.
+pub(crate) fn note_registered(key: &str, tier: usize) {
     if let Ok(mut keys) = REGISTERED.lock() {
-        keys.push(key.to_string());
+        keys.push((key.to_string(), tier));
     }
 }
 
@@ -549,10 +553,11 @@ pub(crate) fn prime_catalog(ctx: &StableClient<'_>) {
     // being what makes a radiant look radiant. So every one of the mod's 66
     // radiant items drew its own non-radiant twin.
     if let Ok(keys) = REGISTERED.lock() {
-        for key in keys.iter() {
+        for (key, tier) in keys.iter() {
             out.entry(key.clone()).or_insert_with(|| ItemInfo {
                 name: display_name(ctx, key),
                 frame: Some(key.clone()),
+                tier: Some(*tier),
             });
         }
     }
@@ -610,6 +615,10 @@ fn collect_items(
             ItemInfo {
                 name: display_name(ctx, key),
                 frame: icon_frame(object, key),
+                tier: object
+                    .get("tier")
+                    .and_then(Value::as_u64)
+                    .map(|tier| tier as usize),
             },
         );
     }

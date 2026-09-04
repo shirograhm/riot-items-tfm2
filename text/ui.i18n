@@ -30,7 +30,12 @@
       "cat_marksman": "   Marksman",
       "cat_mage": "   Mage",
       "cat_tank": "   Tank",
-      "cat_support": "   Support"
+      "cat_support": "   Support",
+      "tier_starter": "   Starter",
+      "tier_basic": "   Basic",
+      "tier_epic": "   Epic",
+      "tier_legendary": "   Legendary",
+      "tier_radiant": "   Radiant"
     }
   },
   "ko": {
@@ -64,7 +69,12 @@
       "cat_marksman": "   원거리 딜러",
       "cat_mage": "   마법사",
       "cat_tank": "   탱커",
-      "cat_support": "   서포터"
+      "cat_support": "   서포터",
+      "tier_starter": "   시작",
+      "tier_basic": "   기본",
+      "tier_epic": "   서사",
+      "tier_legendary": "   전설",
+      "tier_radiant": "   찬란"
     }
   },
   "zh-hans": {
@@ -98,7 +108,12 @@
       "cat_marksman": "   射手",
       "cat_mage": "   法师",
       "cat_tank": "   坦克",
-      "cat_support": "   辅助"
+      "cat_support": "   辅助",
+      "tier_starter": "   起始",
+      "tier_basic": "   基础",
+      "tier_epic": "   史诗",
+      "tier_legendary": "   传说",
+      "tier_radiant": "   光明"
     }
   },
   "ja": {
@@ -132,7 +147,12 @@
       "cat_marksman": "   マークスマン",
       "cat_mage": "   メイジ",
       "cat_tank": "   タンク",
-      "cat_support": "   サポート"
+      "cat_support": "   サポート",
+      "tier_starter": "   スターター",
+      "tier_basic": "   ベーシック",
+      "tier_epic": "   エピック",
+      "tier_legendary": "   レジェンダリー",
+      "tier_radiant": "   レディアント"
     }
   },
   "pt-BR": {
@@ -166,7 +186,12 @@
       "cat_marksman": "   Atirador",
       "cat_mage": "   Mago",
       "cat_tank": "   Tanque",
-      "cat_support": "   Suporte"
+      "cat_support": "   Suporte",
+      "tier_starter": "   Inicial",
+      "tier_basic": "   Básico",
+      "tier_epic": "   Épico",
+      "tier_legendary": "   Lendário",
+      "tier_radiant": "   Radiante"
     }
   },
   "ru": {
@@ -200,7 +225,12 @@
       "cat_marksman": "   Стрелок",
       "cat_mage": "   Маг",
       "cat_tank": "   Танк",
-      "cat_support": "   Поддержка"
+      "cat_support": "   Поддержка",
+      "tier_starter": "   Стартовый",
+      "tier_basic": "   Базовый",
+      "tier_epic": "   Эпический",
+      "tier_legendary": "   Легендарный",
+      "tier_radiant": "   Сияющий"
     }
   },
   "vi": {
@@ -234,7 +264,12 @@
       "cat_marksman": "   Xạ Thủ",
       "cat_mage": "   Pháp Sư",
       "cat_tank": "   Đỡ Đòn",
-      "cat_support": "   Hỗ Trợ"
+      "cat_support": "   Hỗ Trợ",
+      "tier_starter": "   Khởi Đầu",
+      "tier_basic": "   Cơ Bản",
+      "tier_epic": "   Sử Thi",
+      "tier_legendary": "   Huyền Thoại",
+      "tier_radiant": "   Ánh Sáng"
     }
   }
 }

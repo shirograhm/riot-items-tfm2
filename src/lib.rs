@@ -252,7 +252,7 @@ fn init(host: &StableHost) -> StableMod {
     macro_rules! configured {
         ($key:literal => $T:ty) => {{
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
-            item_stats::note_registered($key);
+            item_stats::note_registered($key, StableItem::tier(&item));
             item
         }};
     }
@@ -262,7 +262,7 @@ fn init(host: &StableHost) -> StableMod {
                 .get($key)
                 .map(<$T>::radiant_with_config)
                 .unwrap_or_else(<$T>::radiant);
-            item_stats::note_registered($key);
+            item_stats::note_registered($key, StableItem::tier(&item));
             strategy_ui::note_final_item($key, StableItem::category(&item));
             item
         }};
