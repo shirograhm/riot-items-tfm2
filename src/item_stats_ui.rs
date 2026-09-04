@@ -246,6 +246,34 @@ const TIER_KEYS: [&str; 6] = [
     "item_stats.tier_radiant",
 ];
 
+/// i18n keys for the lane rows, All first — parallel to the `#lane{i}` nodes.
+/// Row `i` filters to lane `i - 1`, which is `LaneV1` as its code.
+///
+/// The wording is vanilla's own `position.*`, copied per locale rather than
+/// referenced, because a dropdown row carries its indent in the string and
+/// vanilla's has none.
+/// The icon each lane draws on the button face, parallel to `LaneV1`'s codes.
+///
+/// The game's own, at the size its own position dropdown uses them (18x18).
+/// They are plain SVG sources rather than sheet tags, so `source` alone is the
+/// whole reference — no `rect_tag`, unlike the aseprite item sheet.
+const LANE_ICONS: [&str; 5] = [
+    "asset/base/ui/icons/top",
+    "asset/base/ui/icons/jungle",
+    "asset/base/ui/icons/mid",
+    "asset/base/ui/icons/bottom",
+    "asset/base/ui/icons/support",
+];
+
+const LANE_KEYS: [&str; 6] = [
+    "item_stats.cat_all",
+    "item_stats.lane_top",
+    "item_stats.lane_jungle",
+    "item_stats.lane_mid",
+    "item_stats.lane_bottom",
+    "item_stats.lane_support",
+];
+
 /// i18n keys for the list rows, All first — parallel to the `#cat{i}` nodes.
 const CATEGORY_KEYS: [&str; 7] = [
     "item_stats.cat_all",
@@ -311,8 +339,6 @@ struct State {
     screen: Option<String>,
     /// Whether every handler is registered for the current screen.
     wired: bool,
-    /// Whether the "still building" note has been logged for this screen.
-    wire_warned: bool,
     /// Whether this tab is the one currently showing.
     showing: bool,
     /// Row nodes spawned so far.
@@ -327,6 +353,10 @@ struct State {
     tier: Option<usize>,
     /// Whether the tier list is dropped down.
     tier_open: bool,
+    /// Lane filter — `LaneV1` as its code, 0..=4. `None` is "All".
+    lane: Option<usize>,
+    /// Whether the lane list is dropped down.
+    lane_open: bool,
     /// Patch filter. `None` is "All".
     patch: Option<String>,
     /// Patches currently offered by the list, in row order.
@@ -446,20 +476,28 @@ pub fn sync(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(&format!("{screen}.item_category"), true);
     ctx.ui_set_visible(&format!("{screen}.item_patch"), true);
     ctx.ui_set_visible(&format!("{screen}.item_tier"), true);
+    ctx.ui_set_visible(&format!("{screen}.item_lane"), true);
 
     // The catcher is a full-screen transparent button, so if it is ever left up
     // it eats every click on this screen — which is the difference between "a
     // dropdown is open" and "the tab is dead". Driving it from state every frame
     // means it cannot be stranded by a rebuild.
-    let (list_open, patch_open, tier_open) =
-        with_state(|state| (state.list_open, state.patch_open, state.tier_open))
-            .unwrap_or((false, false, false));
+    let (list_open, patch_open, tier_open, lane_open) = with_state(|state| {
+        (
+            state.list_open,
+            state.patch_open,
+            state.tier_open,
+            state.lane_open,
+        )
+    })
+    .unwrap_or((false, false, false, false));
     ctx.ui_set_visible(&format!("{screen}.item_category_list"), list_open);
     ctx.ui_set_visible(&format!("{screen}.item_patch_list"), patch_open);
     ctx.ui_set_visible(&format!("{screen}.item_tier_list"), tier_open);
+    ctx.ui_set_visible(&format!("{screen}.item_lane_list"), lane_open);
     ctx.ui_set_visible(
         &format!("{screen}.item_category_catch"),
-        list_open || patch_open || tier_open,
+        list_open || patch_open || tier_open || lane_open,
     );
 
     let due = with_state(|state| {
@@ -504,7 +542,6 @@ fn heal(ctx: &mut StableClient<'_>, screen: &str) {
     if !ctx.ui_exists(&format!("{screen}.tabs.item"))
         || !ctx.ui_exists(&format!("{screen}.data.item_stats"))
     {
-        diag("layout nodes vanished; re-adopting");
         let _ = with_state(|state| *state = State::default());
         return;
     }
@@ -518,7 +555,6 @@ fn heal(ctx: &mut StableClient<'_>, screen: &str) {
         return;
     }
 
-    diag("panel was rebuilt; respawning rows");
     let _ = with_state(|state| {
         // The handlers are keyed by path and outlive the nodes, so `REGISTERED`
         // is deliberately untouched: re-registering a live path is what makes
@@ -536,6 +572,7 @@ fn heal(ctx: &mut StableClient<'_>, screen: &str) {
         state.list_open = false;
         state.patch_open = false;
         state.tier_open = false;
+        state.lane_open = false;
         state.dirty = true;
     });
 
@@ -546,6 +583,7 @@ fn heal(ctx: &mut StableClient<'_>, screen: &str) {
         paint_category_button(ctx, screen);
         paint_patch_button(ctx, screen);
         paint_tier_button(ctx, screen);
+        paint_lane_button(ctx, screen);
         paint_headers(ctx, screen);
         paint_tabs(ctx, screen, true);
     }
@@ -608,7 +646,6 @@ fn resolve_screen(ctx: &mut StableClient<'_>) -> Option<String> {
     }
 
     let found = find_screen(ctx)?;
-    diag(&format!("screen found at {found}"));
     let _ = with_state(|state| state.screen = Some(found.clone()));
     Some(found)
 }
@@ -630,17 +667,6 @@ fn on_statistics_tab(ctx: &StableClient<'_>) -> bool {
         return true;
     };
 
-    // Logged on change rather than per probe: it names the tab the player is
-    // actually on, which is both the confirmation that this gate works and the
-    // exact spelling to match if it ever stops working.
-    static LAST: Mutex<Option<String>> = Mutex::new(None);
-    if let Ok(mut last) = LAST.lock() {
-        if last.as_deref() != Some(tab.as_str()) {
-            diag(&format!("main tab = {tab:?}"));
-            *last = Some(tab.clone());
-        }
-    }
-
     tab.to_ascii_lowercase().contains("statistic")
 }
 
@@ -653,18 +679,6 @@ fn on_statistics_tab(ctx: &StableClient<'_>) -> bool {
 /// needs to be true.
 fn find_screen(ctx: &StableClient<'_>) -> Option<String> {
     let mut level: Vec<String> = ctx.ui_child_names("");
-
-    // Logged on the first probe rather than only on failure. A search that never
-    // matches would otherwise write nothing at all, which is indistinguishable
-    // from the mod not running — and "what are the root's children" is the one
-    // fact that turns a wrong assumption about the tree into a correct one.
-    {
-        use std::sync::atomic::{AtomicBool, Ordering};
-        static ONCE: AtomicBool = AtomicBool::new(false);
-        if !ONCE.swap(true, Ordering::Relaxed) {
-            diag(&format!("ui root children: {level:?}"));
-        }
-    }
 
     if level.is_empty() {
         // A root that enumerates nothing would make this inert forever, so the
@@ -690,7 +704,6 @@ fn find_screen(ctx: &StableClient<'_>) -> Option<String> {
             // hundreds of nodes, and this runs on the UI thread.
             budget = budget.saturating_sub(1);
             if budget == 0 {
-                diag("screen search hit its node budget");
                 return None;
             }
             for name in ctx.ui_child_names(&path) {
@@ -720,16 +733,13 @@ fn wire(ctx: &mut StableClient<'_>, screen: &str) {
     // The panel carries no handler of its own, but nothing here works without
     // it, so it joins the readiness check.
     let panel = format!("{screen}.data.item_stats");
-    if let Some(missing) = paths
+    if paths
         .iter()
         .chain(std::iter::once(&panel))
-        .find(|path| !ctx.ui_exists(path))
+        .any(|path| !ctx.ui_exists(path))
     {
-        // Once per screen, not once per frame: this is the normal state for the
-        // frame or two a screen takes to build, and it must not burn the log.
-        if !with_state(|state| std::mem::replace(&mut state.wire_warned, true)).unwrap_or(true) {
-            diag(&format!("waiting for {missing}"));
-        }
+        // Normal for the frame or two a screen takes to build. `sync` calls this
+        // again next frame, and nothing is registered until every node is there.
         return;
     }
 
@@ -741,11 +751,6 @@ fn wire(ctx: &mut StableClient<'_>, screen: &str) {
     // the whole set across the ABI twice, and no match is simmed while the
     // player is standing here.
     item_stats::sweep(ctx);
-    diag(&format!(
-        "wired {} handlers; match replay records = {}",
-        paths.len(),
-        ctx.record_ids(RecordKindV1::MatchReplay).len()
-    ));
 
     let _ = with_state(|state| {
         state.wired = true;
@@ -782,16 +787,11 @@ fn handler_paths(screen: &str) -> Vec<String> {
     for row in 0..TIER_KEYS.len() {
         paths.push(format!("{screen}.item_tier_list.tier{row}"));
     }
+    paths.push(format!("{screen}.item_lane"));
+    for row in 0..LANE_KEYS.len() {
+        paths.push(format!("{screen}.item_lane_list.lane{row}"));
+    }
     paths
-}
-
-/// Tags a line as this half's and hands it to the shared, capped writer.
-///
-/// Every failure mode here is silent — a wrong path, a rejected spawn and a
-/// screen that was never found all look identical from the outside, which is a
-/// whole build spent guessing.
-fn diag(line: &str) {
-    crate::item_stats::diag(&format!("[ui] {line}"));
 }
 
 /// Whether this exact event has already been acted on this frame.
@@ -823,7 +823,7 @@ fn diag(line: &str) {
 /// that is dead on every visit but the first, which is worse than a handler that
 /// occasionally does nothing.
 fn already_handled(path: &str) -> bool {
-    let duplicate = with_state(|state| {
+    with_state(|state| {
         // `sweep_tick` advances once per frame for as long as the screen is up,
         // and a person cannot click the same node twice inside one frame — so a
         // repeat within a frame is a second delivery, not a second click.
@@ -832,19 +832,7 @@ fn already_handled(path: &str) -> bool {
         state.last_event = Some(stamp);
         duplicate
     })
-    .unwrap_or(false);
-
-    if duplicate {
-        // Once, not per click: it confirms the diagnosis from the log rather
-        // than from reasoning about it, and after the first there is one of
-        // these for every click for the rest of the session.
-        use std::sync::atomic::{AtomicBool, Ordering};
-        static ONCE: AtomicBool = AtomicBool::new(false);
-        if !ONCE.swap(true, Ordering::Relaxed) {
-            diag(&format!("suppressed a duplicate event on {path}"));
-        }
-    }
-    duplicate
+    .unwrap_or(false)
 }
 
 fn handle_event(ctx: &mut StableClient<'_>) {
@@ -886,11 +874,13 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             state.list_open = !state.list_open;
             state.patch_open = false;
             state.tier_open = false;
+            state.lane_open = false;
             state.list_open
         })
         .unwrap_or(false);
         show_patch_list(ctx, &screen, false);
         show_tier_list(ctx, &screen, false);
+        show_lane_list(ctx, &screen, false);
         show_category_list(ctx, &screen, open);
         return;
     }
@@ -900,11 +890,13 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             state.patch_open = !state.patch_open;
             state.list_open = false;
             state.tier_open = false;
+            state.lane_open = false;
             state.patch_open
         })
         .unwrap_or(false);
         show_category_list(ctx, &screen, false);
         show_tier_list(ctx, &screen, false);
+        show_lane_list(ctx, &screen, false);
         show_patch_list(ctx, &screen, open);
         return;
     }
@@ -921,11 +913,13 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             state.tier_open = !state.tier_open;
             state.list_open = false;
             state.patch_open = false;
+            state.lane_open = false;
             state.tier_open
         })
         .unwrap_or(false);
         show_category_list(ctx, &screen, false);
         show_patch_list(ctx, &screen, false);
+        show_lane_list(ctx, &screen, false);
         show_tier_list(ctx, &screen, open);
         return;
     }
@@ -937,15 +931,40 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         }
     }
 
+    if event.path == format!("{screen}.item_lane") {
+        let open = with_state(|state| {
+            state.lane_open = !state.lane_open;
+            state.list_open = false;
+            state.patch_open = false;
+            state.tier_open = false;
+            state.lane_open
+        })
+        .unwrap_or(false);
+        show_category_list(ctx, &screen, false);
+        show_patch_list(ctx, &screen, false);
+        show_tier_list(ctx, &screen, false);
+        show_lane_list(ctx, &screen, open);
+        return;
+    }
+
+    for row in 0..LANE_KEYS.len() {
+        if event.path == format!("{screen}.item_lane_list.lane{row}") {
+            pick_lane(ctx, &screen, row);
+            return;
+        }
+    }
+
     if event.path == format!("{screen}.item_category_catch") {
         let _ = with_state(|state| {
             state.list_open = false;
             state.patch_open = false;
             state.tier_open = false;
+            state.lane_open = false;
         });
         show_category_list(ctx, &screen, false);
         show_patch_list(ctx, &screen, false);
         show_tier_list(ctx, &screen, false);
+        show_lane_list(ctx, &screen, false);
         return;
     }
 
@@ -982,10 +1001,12 @@ fn open(ctx: &mut StableClient<'_>, screen: &str) {
     ctx.ui_set_visible(&format!("{screen}.item_category"), true);
     ctx.ui_set_visible(&format!("{screen}.item_patch"), true);
     ctx.ui_set_visible(&format!("{screen}.item_tier"), true);
+    ctx.ui_set_visible(&format!("{screen}.item_lane"), true);
     paint_category_button(ctx, screen);
     refresh_patch_rows(ctx, screen);
     paint_patch_button(ctx, screen);
     paint_tier_button(ctx, screen);
+    paint_lane_button(ctx, screen);
     paint_tabs(ctx, screen, true);
     // The panel comes back from the layout with every arrow transparent, so the
     // opening view would otherwise be sorted by a column that does not say so.
@@ -1011,14 +1032,17 @@ fn close(ctx: &mut StableClient<'_>, screen: &str, panel: &str) {
     ctx.ui_set_visible(&format!("{screen}.item_category"), false);
     ctx.ui_set_visible(&format!("{screen}.item_patch"), false);
     ctx.ui_set_visible(&format!("{screen}.item_tier"), false);
+    ctx.ui_set_visible(&format!("{screen}.item_lane"), false);
     let _ = with_state(|state| {
         state.list_open = false;
         state.patch_open = false;
         state.tier_open = false;
+        state.lane_open = false;
     });
     show_category_list(ctx, screen, false);
     show_patch_list(ctx, screen, false);
     show_tier_list(ctx, screen, false);
+    show_lane_list(ctx, screen, false);
     ctx.ui_set_visible(&format!("{screen}.{panel}"), true);
     for filter in FILTERS {
         ctx.ui_set_visible(&format!("{screen}.{filter}"), true);
@@ -1143,13 +1167,80 @@ fn paint_tier_rows(ctx: &mut StableClient<'_>, screen: &str) {
     }
 }
 
+/// Shows or hides the lane list, sharing the one catcher.
+fn show_lane_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
+    ctx.ui_set_visible(&format!("{screen}.item_lane_list"), open);
+    if open {
+        paint_lane_rows(ctx, screen);
+    }
+    sync_catch(ctx, screen);
+}
+
+/// Applies the lane on row `row` and closes the list.
+fn pick_lane(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
+    let _ = with_state(|state| {
+        // Row 0 is All; row `i` is lane `i - 1`.
+        state.lane = row.checked_sub(1);
+        state.lane_open = false;
+        state.dirty = true;
+    });
+    show_lane_list(ctx, screen, false);
+    paint_lane_button(ctx, screen);
+    repaint(ctx, screen);
+}
+
+/// Writes the selected lane onto the button face, as its icon.
+///
+/// The face shows the icon *instead of* the name, which is what lets this
+/// dropdown be 96px wide where the others need 160 or more — the 30px it gives
+/// back went to the tier and category buttons. The list still spells the lanes
+/// out; a dropdown may be wider than the trigger that opens it.
+///
+/// "All" is the exception, because there is no art for "every position". It
+/// falls back to the word, which is the one thing the 96px has to hold.
+fn paint_lane_button(ctx: &mut StableClient<'_>, screen: &str) {
+    let selected = with_state(|state| state.lane).unwrap_or(None);
+    let icon = format!("{screen}.item_lane.icon");
+    let text = format!("{screen}.item_lane.text");
+
+    match selected.and_then(|lane| LANE_ICONS.get(lane)) {
+        Some(source) => {
+            ctx.ui_set_properties(&icon, &format!("visible: true; source: \"{source}\";"));
+            ctx.ui_set_visible(&text, false);
+        }
+        None => {
+            // Resolved before the write: `label` borrows the ctx and
+            // `ui_set_text` wants it mutably, so the two cannot share a
+            // statement.
+            let all = label(ctx, LANE_KEYS[0], "   All");
+            ctx.ui_set_visible(&icon, false);
+            ctx.ui_set_visible(&text, true);
+            ctx.ui_set_text(&text, &all);
+        }
+    }
+}
+
+/// Lights the row of the lane currently in force.
+fn paint_lane_rows(ctx: &mut StableClient<'_>, screen: &str) {
+    let selected = with_state(|state| state.lane).unwrap_or(None);
+    let lit_row = selected.map_or(0, |lane| lane + 1);
+    for row in 0..LANE_KEYS.len() {
+        ctx.ui_set_properties(
+            &format!("{screen}.item_lane_list.lane{row}"),
+            &tab_style("image", "label", row == lit_row),
+        );
+    }
+}
+
 /// Puts the catcher up while any list is down, and takes it away otherwise.
 ///
-/// One place rather than three, so a new dropdown cannot forget to consider the
-/// other two and strand a full-screen button over the whole screen.
+/// One place rather than four, so a new dropdown cannot forget to consider the
+/// others and strand a full-screen button over the whole screen.
 fn sync_catch(ctx: &mut StableClient<'_>, screen: &str) {
-    let any =
-        with_state(|state| state.list_open || state.patch_open || state.tier_open).unwrap_or(false);
+    let any = with_state(|state| {
+        state.list_open || state.patch_open || state.tier_open || state.lane_open
+    })
+    .unwrap_or(false);
     ctx.ui_set_visible(&format!("{screen}.item_category_catch"), any);
 }
 
@@ -1335,8 +1426,9 @@ fn order_rows(
 }
 
 fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
-    let patch = with_state(|state| state.patch.clone()).unwrap_or(None);
-    let mut snapshot = item_stats::snapshot(patch.as_deref());
+    let (patch, lane) =
+        with_state(|state| (state.patch.clone(), state.lane)).unwrap_or((None, None));
+    let mut snapshot = item_stats::snapshot(patch.as_deref(), lane);
     let catalog = item_stats::catalog();
     let contents = format!("{screen}.data.item_stats.data.contents");
 
@@ -1511,14 +1603,9 @@ fn status_text(snapshot: &item_stats::Snapshot) -> String {
         return "No matches with end-of-game items yet".into();
     }
 
-    let mut text = format!("{} matches simmed", snapshot.matches);
-    if snapshot.uncaptured > 0 {
-        // Matches that predate loadout capture. Named rather than folded in:
-        // they are real matches this table deliberately does not count, and a
-        // total that quietly omitted them would look like data loss.
-        text.push_str(&format!(" · {} before item tracking", snapshot.uncaptured));
-    }
-    text
+    // Just the count. The "N before item tracking" note that used to follow it
+    // was long enough to run under the "Purchased On" heading.
+    format!("{} matches simmed", snapshot.matches)
 }
 
 // -- layout sources ---------------------------------------------------------

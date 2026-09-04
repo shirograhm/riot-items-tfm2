@@ -38,7 +38,7 @@
 //! records.
 
 use std::collections::{BTreeMap, VecDeque};
-use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::Mutex;
 
 use mod_api_stable::*;
@@ -56,6 +56,12 @@ pub(crate) struct CapturedPlayer {
     pub champion: String,
     pub items: Vec<String>,
     pub won: bool,
+    /// [`LaneV1`] as its code, 0..=4 for top/jungle/mid/bottom/support.
+    ///
+    /// `None` only if the host declines to answer, which no normal match does.
+    /// Such a player still counts in the unfiltered table rather than being
+    /// dropped — the loadout is real either way, it just cannot be placed.
+    pub lane: Option<usize>,
 }
 
 /// One match: the loadouts, and the patch it was played on once a record has
@@ -100,11 +106,6 @@ static ROSTERS: Mutex<Option<BTreeMap<u64, Vec<String>>>> = Mutex::new(None);
 /// reaches its end tick would otherwise leak an entry forever.
 const MAX_ROSTERS: usize = 512;
 static DIRTY: AtomicBool = AtomicBool::new(false);
-
-/// Sims whose last tick has been recorded. Diagnostic only — it is the number
-/// that tells "the table is empty because nothing has been simmed yet" apart
-/// from "the match hook never fires", which look identical from the outside.
-static CAPTURED: AtomicUsize = AtomicUsize::new(0);
 
 fn with_captures<T>(f: impl FnOnce(&mut Captures) -> T) -> Option<T> {
     let mut guard = CAPTURES.lock().ok()?;
@@ -162,12 +163,6 @@ pub(crate) fn for_each(mut f: impl FnMut(Option<&str>, &[CapturedPlayer])) {
             f(entry.patch.as_deref(), &entry.players);
         }
     });
-}
-
-/// How many matches have been captured, and how many are on file.
-pub(crate) fn stats() -> (usize, usize) {
-    let held = with_captures(|captures| captures.by_seed.len()).unwrap_or(0);
-    (CAPTURED.load(Ordering::Relaxed), held)
 }
 
 /// The match hook. Registered for every match the game simulates.
@@ -229,6 +224,7 @@ impl StableMatchHook for EndOfMatchItems {
                 continue;
             }
             let team = player.team();
+            let lane = player.lane().map(|lane| lane.code() as usize);
             players.push(CapturedPlayer {
                 // The start-of-match roster first; the live entity only as a
                 // fallback, for a host that never called `on_match_start`.
@@ -241,6 +237,7 @@ impl StableMatchHook for EndOfMatchItems {
                 items,
                 // At the final tick the side that is ahead is the side that won.
                 won: sim.score_diff(team) > 0,
+                lane,
             });
         }
 
@@ -263,7 +260,6 @@ impl StableMatchHook for EndOfMatchItems {
                 }
             }
         });
-        CAPTURED.fetch_add(1, Ordering::Relaxed);
         REVISION.fetch_add(1, Ordering::Relaxed);
         DIRTY.store(true, Ordering::Relaxed);
     }
@@ -291,13 +287,26 @@ pub(crate) fn flush() {
 
 const FILE: &str = "item-stats-builds.json";
 
-/// `{"<seed>": [{"c": champion, "w": won, "i": [item, ...]}, ...], ...}`
+/// The capture format this build writes and is willing to read.
+///
+/// Bumped to 2 when the lane was added to each player. A file written before
+/// that is **discarded rather than migrated**: its matches have no lane, so
+/// every one of them would sit outside whatever the lane filter is set to and
+/// silently under-report — the table would disagree with itself depending on
+/// which dropdown you touched. Starting the history over is the honest option,
+/// and it is what "no stats should be retroactive" asks for.
+const FORMAT: u32 = 2;
+
+/// `{"v": 2, "m": {"<seed>": {"p": patch, "l": [{"c", "w", "i", "n"}, ...]}}}`
 ///
 /// Hand-rolled rather than derived: the mod's `serde` is not wired up for these
-/// types, the shape is four fields, and keeping it terse matters when the file
-/// holds thousands of matches.
+/// types, the shape is five fields, and keeping it terse matters when the file
+/// holds thousands of matches — `n` rather than `lane` is worth roughly half a
+/// megabyte across a full history.
+///
+/// `v` is what makes a format change safe: see [`FORMAT`].
 fn serialise(captures: &mut Captures) -> String {
-    let mut out = String::from("{");
+    let mut out = format!("{{\"v\":{FORMAT},\"m\":{{");
     let mut first = true;
     for seed in captures.order.iter() {
         let Some(entry) = captures.by_seed.get(seed) else {
@@ -317,10 +326,14 @@ fn serialise(captures: &mut Captures) -> String {
                 out.push(',');
             }
             out.push_str(&format!(
-                "{{\"c\":{},\"w\":{},\"i\":[",
+                "{{\"c\":{},\"w\":{},",
                 quote(&player.champion),
                 player.won
             ));
+            if let Some(lane) = player.lane {
+                out.push_str(&format!("\"n\":{lane},"));
+            }
+            out.push_str("\"i\":[");
             for (position, item) in player.items.iter().enumerate() {
                 if position > 0 {
                     out.push(',');
@@ -331,7 +344,7 @@ fn serialise(captures: &mut Captures) -> String {
         }
         out.push_str("]}");
     }
-    out.push('}');
+    out.push_str("}}");
     out
 }
 
@@ -346,8 +359,18 @@ fn load_into(captures: &mut Captures) {
     let Ok(text) = std::fs::read_to_string(path) else {
         return;
     };
-    let Ok(serde_json::Value::Object(root)) = serde_json::from_str::<serde_json::Value>(&text)
+    let Ok(serde_json::Value::Object(file)) = serde_json::from_str::<serde_json::Value>(&text)
     else {
+        return;
+    };
+
+    // Anything this build did not write is not read. The older shapes — a bare
+    // array per seed, and the unversioned object that followed it — carry no
+    // lane, and there is nothing to infer one from.
+    if file.get("v").and_then(serde_json::Value::as_u64) != Some(FORMAT as u64) {
+        return;
+    }
+    let Some(serde_json::Value::Object(root)) = file.get("m").cloned() else {
         return;
     };
 
@@ -355,25 +378,15 @@ fn load_into(captures: &mut Captures) {
         let Ok(seed) = seed.parse::<u64>() else {
             continue;
         };
-        // Two shapes are accepted. The current one is an object carrying the
-        // patch beside the loadouts; the first version wrote a bare array, and
-        // files written by it are still worth reading — they just have no patch
-        // until a record backfills one.
-        let (patch, players) = match &value {
-            serde_json::Value::Array(players) => (None, players.clone()),
-            serde_json::Value::Object(fields) => {
-                let patch = fields
-                    .get("p")
-                    .and_then(serde_json::Value::as_str)
-                    .map(str::to_string);
-                let serde_json::Value::Array(players) =
-                    fields.get("l").cloned().unwrap_or_default()
-                else {
-                    continue;
-                };
-                (patch, players)
-            }
-            _ => continue,
+        let serde_json::Value::Object(fields) = &value else {
+            continue;
+        };
+        let patch = fields
+            .get("p")
+            .and_then(serde_json::Value::as_str)
+            .map(str::to_string);
+        let serde_json::Value::Array(players) = fields.get("l").cloned().unwrap_or_default() else {
+            continue;
         };
 
         let loadouts: Vec<CapturedPlayer> = players
@@ -397,6 +410,10 @@ fn load_into(captures: &mut Captures) {
                         .get("w")
                         .and_then(serde_json::Value::as_bool)
                         .unwrap_or(false),
+                    lane: fields
+                        .get("n")
+                        .and_then(serde_json::Value::as_u64)
+                        .map(|lane| lane as usize),
                 })
             })
             .collect();

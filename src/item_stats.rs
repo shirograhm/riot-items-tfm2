@@ -92,25 +92,23 @@ struct Aggregate {
     pending: Vec<usize>,
     /// Capture revision these totals were folded at.
     revision: u64,
-    /// Patch -> item -> totals.
+    /// Patch -> (lane, item) -> totals.
     ///
     /// Keyed by patch first so the filter is a map lookup rather than a re-scan:
     /// picking one reads its submap, and "All" merges them. The record's
     /// `version` is what a patch is here — it sits beside `seed` in the replay
     /// data, which is what a replay would need to reproduce the balance a match
     /// was played under.
-    counts: BTreeMap<String, BTreeMap<String, Totals>>,
-    /// Patch -> item -> champion -> times that champion was holding it. Feeds
-    /// the "purchased on" column, which is the top few of these by count.
-    champions: BTreeMap<String, BTreeMap<String, BTreeMap<String, u32>>>,
+    ///
+    /// The lane rides in the inner key rather than adding a third level of map,
+    /// so both filters are one pass over the same entries and "All" on either
+    /// axis is the same merge with one term dropped.
+    counts: BTreeMap<String, BTreeMap<(Option<usize>, String), Totals>>,
+    /// Patch -> (lane, item) -> champion -> times that champion was holding it.
+    /// Feeds the "purchased on" column, which is the top few of these by count.
+    champions: BTreeMap<String, BTreeMap<(Option<usize>, String), BTreeMap<String, u32>>>,
     /// Patch -> captured matches.
     matches: BTreeMap<String, u32>,
-    /// Records for matches simmed before capturing began. They are real matches
-    /// with no end-of-game item data, so they are reported rather than silently
-    /// dropped. Published only once a full pass has counted them.
-    uncaptured: u32,
-    /// The in-progress pass's count, which becomes `uncaptured` when it ends.
-    scanning_uncaptured: u32,
 }
 
 static AGG: Mutex<Option<Aggregate>> = Mutex::new(None);
@@ -125,8 +123,6 @@ pub(crate) struct Snapshot {
     /// Items in display order — see [`rows`].
     pub rows: Vec<(String, Totals)>,
     pub matches: u32,
-    /// Matches with no captured loadout — simmed before capturing began.
-    pub uncaptured: u32,
     /// Records still to read. Non-zero means a patch pass is in flight.
     pub pending: usize,
     /// Per item, the champions that bought it most, best first, at most
@@ -158,7 +154,6 @@ pub(crate) fn sweep(ctx: &StableClient<'_>) {
     }
     let _ = with_agg(|agg| {
         agg.pending = ids.iter().rev().copied().collect();
-        agg.scanning_uncaptured = 0;
     });
 }
 
@@ -179,22 +174,15 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
         let Some((patch, seed)) = read_record(ctx, *id) else {
             continue;
         };
+        // A seed with no capture is a match simmed before capturing began.
+        // Nothing to do with it: the loadout it would need does not exist, and
+        // the record carries no usable substitute.
         if crate::item_stats_sim::has(seed) {
             crate::item_stats_sim::set_patch(seed, &patch);
-        } else {
-            // A match simmed before capturing began. Counted so the tab can say
-            // how much history it is deliberately not showing.
-            let _ = with_agg(|agg| agg.scanning_uncaptured += 1);
         }
     }
 
-    let finished = with_agg(|agg| {
-        if agg.pending.is_empty() {
-            agg.uncaptured = agg.scanning_uncaptured;
-        }
-        agg.pending.is_empty()
-    })
-    .unwrap_or(false);
+    let finished = with_agg(|agg| agg.pending.is_empty()).unwrap_or(false);
 
     // The totals are a pure function of what is on file, so they are rebuilt
     // when that changes rather than nudged along and kept in step by hand. It is
@@ -212,8 +200,9 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
 
 /// Folds every captured match into the totals from scratch.
 fn rebuild(revision: u64) {
-    let mut counts: BTreeMap<String, BTreeMap<String, Totals>> = BTreeMap::new();
-    let mut champions: BTreeMap<String, BTreeMap<String, BTreeMap<String, u32>>> = BTreeMap::new();
+    let mut counts: BTreeMap<String, BTreeMap<(Option<usize>, String), Totals>> = BTreeMap::new();
+    let mut champions: BTreeMap<String, BTreeMap<(Option<usize>, String), BTreeMap<String, u32>>> =
+        BTreeMap::new();
     let mut matches: BTreeMap<String, u32> = BTreeMap::new();
 
     crate::item_stats_sim::for_each(|patch, players| {
@@ -233,7 +222,7 @@ fn rebuild(revision: u64) {
         let per_item = counts.entry(patch.clone()).or_default();
         for player in players {
             for (slot, key) in player.items.iter().enumerate() {
-                let entry = per_item.entry(key.clone()).or_default();
+                let entry = per_item.entry((player.lane, key.clone())).or_default();
                 entry.games += 1;
                 entry.wins += u32::from(player.won);
                 // Slot order is completion order, so the first slot is the item
@@ -247,7 +236,7 @@ fn rebuild(revision: u64) {
         for player in players {
             for key in &player.items {
                 *per_champion
-                    .entry(key.clone())
+                    .entry((player.lane, key.clone()))
                     .or_default()
                     .entry(player.champion.clone())
                     .or_default() += 1;
@@ -277,13 +266,13 @@ pub(crate) fn patches() -> Vec<String> {
     .unwrap_or_default()
 }
 
-/// The current table, in key order, for one patch or for all of them.
+/// The current table, in key order, for one patch and lane or for all of them.
 ///
 /// Deliberately *not* sorted for display: the column the player picked can be
 /// the item's name, which lives in the catalog, so ordering is the UI's job.
 /// Key order makes it a stable starting point, which is what keeps equal rows
 /// from reshuffling between repaints mid-scan.
-pub(crate) fn snapshot(patch: Option<&str>) -> Snapshot {
+pub(crate) fn snapshot(patch: Option<&str>, lane: Option<usize>) -> Snapshot {
     with_agg(|agg| {
         // One patch reads its own submap; "All" merges them. Merging here rather
         // than keeping a second running total means there is one set of numbers
@@ -292,11 +281,20 @@ pub(crate) fn snapshot(patch: Option<&str>) -> Snapshot {
         let mut champions: BTreeMap<String, BTreeMap<String, u32>> = BTreeMap::new();
         let mut matches = 0;
 
+        // A lane filter keeps only the entries recorded under it. A player the
+        // host would not give a lane for is `None`, which no lane selection
+        // matches — the same rule the category filter follows for an item with
+        // no role, and the reason such a player still shows up under "All".
+        let wanted_lane = |recorded: Option<usize>| lane.is_none_or(|want| recorded == Some(want));
+
         for (key, per_item) in &agg.counts {
             if patch.is_some_and(|wanted| wanted != key.as_str()) {
                 continue;
             }
-            for (item, totals) in per_item {
+            for ((recorded, item), totals) in per_item {
+                if !wanted_lane(*recorded) {
+                    continue;
+                }
                 let entry = counts.entry(item.clone()).or_default();
                 entry.games += totals.games;
                 entry.wins += totals.wins;
@@ -307,7 +305,10 @@ pub(crate) fn snapshot(patch: Option<&str>) -> Snapshot {
             if patch.is_some_and(|wanted| wanted != key.as_str()) {
                 continue;
             }
-            for (item, tally) in per_item {
+            for ((recorded, item), tally) in per_item {
+                if !wanted_lane(*recorded) {
+                    continue;
+                }
                 let entry = champions.entry(item.clone()).or_default();
                 for (champion, count) in tally {
                     *entry.entry(champion.clone()).or_default() += count;
@@ -323,7 +324,6 @@ pub(crate) fn snapshot(patch: Option<&str>) -> Snapshot {
         Snapshot {
             rows: rows(&counts),
             matches,
-            uncaptured: agg.uncaptured,
             pending: agg.pending.len(),
             champions: top_champions(&champions),
         }
@@ -331,7 +331,6 @@ pub(crate) fn snapshot(patch: Option<&str>) -> Snapshot {
     .unwrap_or(Snapshot {
         rows: Vec::new(),
         matches: 0,
-        uncaptured: 0,
         pending: 0,
         champions: BTreeMap::new(),
     })
@@ -377,8 +376,8 @@ fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
         Some(record) => record,
         // Older hosts, or a path grammar that does not accept the empty path for
         // this record kind. Named reads say the same thing, and are reassembled
-        // into the same shape so that everything below — the diagnostic
-        // included — has one case to handle rather than two.
+        // into the same shape so that everything below has one case to handle
+        // rather than two.
         None => {
             let field = |name: &str| {
                 ctx.record_get_json(RecordKindV1::MatchReplay, id, name)
@@ -390,8 +389,6 @@ fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
             })
         }
     };
-
-    diagnose(id, &record);
 
     // A league match always names its version, so one that does not is not a
     // record this table can place — skipped rather than filed under a catch-all
@@ -407,65 +404,6 @@ fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
     // the round trip that an `f64` would round off.
     let seed = record.get("seed").and_then(Value::as_u64)?;
     Some((patch, seed))
-}
-
-// -- diagnostics ------------------------------------------------------------
-
-/// Reports the record/capture join, once per process.
-///
-/// The one thing that cannot be seen from the table itself: an empty table means
-/// either "nothing has been simmed since capturing began" or "the match hook is
-/// never called", and those want very different fixes. Printing the seed, the
-/// patch and whether a loadout was found for it tells them apart on the first
-/// run.
-fn diagnose(id: usize, record: &Value) {
-    use std::sync::atomic::{AtomicBool, Ordering};
-
-    static DONE: AtomicBool = AtomicBool::new(false);
-    if DONE.swap(true, Ordering::Relaxed) {
-        return;
-    }
-
-    let seed = record.get("seed").and_then(Value::as_u64);
-    let (captured, held) = crate::item_stats_sim::stats();
-    diag(&format!(
-        "record id={id} version={:?} seed={seed:?} joined={} | sims captured this run={captured}, loadouts on file={held}",
-        record.get("version"),
-        seed.is_some_and(crate::item_stats_sim::has),
-    ));
-}
-
-/// Lines [`diag`] will write before it goes quiet.
-const DIAG_LINES: u32 = 40;
-
-/// Appends one line to `item-stats.log` beside the DLL, up to [`DIAG_LINES`].
-///
-/// Shared with [`crate::item_stats_ui`], so the UI half's account of finding the
-/// screen and the data half's account of reading a record land in one file in
-/// the order they happened — which is the only way to tell "the tab never
-/// spawned" from "the tab spawned over an empty table".
-///
-/// There is no `log` to use instead: `StableHost` is valid only inside the
-/// callback that receives it and extensions never get one. The cap is what keeps
-/// this from becoming the per-frame spam the strategy-screen probe turned into.
-pub(crate) fn diag(line: &str) {
-    use std::io::Write;
-    use std::sync::atomic::{AtomicU32, Ordering};
-
-    static WRITTEN: AtomicU32 = AtomicU32::new(0);
-    if WRITTEN.fetch_add(1, Ordering::Relaxed) >= DIAG_LINES {
-        return;
-    }
-    let Some(path) = crate::config::dll_dir().map(|dir| dir.join("item-stats.log")) else {
-        return;
-    };
-    if let Ok(mut file) = std::fs::OpenOptions::new()
-        .create(true)
-        .append(true)
-        .open(path)
-    {
-        let _ = writeln!(file, "{line}");
-    }
 }
 
 // -- item catalog -----------------------------------------------------------
@@ -562,7 +500,6 @@ pub(crate) fn prime_catalog(ctx: &StableClient<'_>) {
         }
     }
 
-    diag(&format!("catalog: {} items named", out.len()));
     if let Ok(mut cached) = CATALOG.lock() {
         *cached = Some(out);
     }

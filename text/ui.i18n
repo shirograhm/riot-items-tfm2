@@ -35,7 +35,12 @@
       "tier_basic": "   Basic",
       "tier_epic": "   Epic",
       "tier_legendary": "   Legendary",
-      "tier_radiant": "   Radiant"
+      "tier_radiant": "   Radiant",
+      "lane_top": "   Top",
+      "lane_jungle": "   Jungle",
+      "lane_mid": "   Mid",
+      "lane_bottom": "   Bottom",
+      "lane_support": "   Support"
     }
   },
   "ko": {
@@ -74,7 +79,12 @@
       "tier_basic": "   기본",
       "tier_epic": "   서사",
       "tier_legendary": "   전설",
-      "tier_radiant": "   찬란"
+      "tier_radiant": "   찬란",
+      "lane_top": "   탑",
+      "lane_jungle": "   정글",
+      "lane_mid": "   미드",
+      "lane_bottom": "   바텀",
+      "lane_support": "   서포터"
     }
   },
   "zh-hans": {
@@ -113,7 +123,12 @@
       "tier_basic": "   基础",
       "tier_epic": "   史诗",
       "tier_legendary": "   传说",
-      "tier_radiant": "   光明"
+      "tier_radiant": "   光明",
+      "lane_top": "   上单",
+      "lane_jungle": "   打野",
+      "lane_mid": "   中单",
+      "lane_bottom": "   下路",
+      "lane_support": "   辅助"
     }
   },
   "ja": {
@@ -152,7 +167,12 @@
       "tier_basic": "   ベーシック",
       "tier_epic": "   エピック",
       "tier_legendary": "   レジェンダリー",
-      "tier_radiant": "   レディアント"
+      "tier_radiant": "   レディアント",
+      "lane_top": "   トップ",
+      "lane_jungle": "   ジャングル",
+      "lane_mid": "   ミッド",
+      "lane_bottom": "   ボトム",
+      "lane_support": "   サポート"
     }
   },
   "pt-BR": {
@@ -191,7 +211,12 @@
       "tier_basic": "   Básico",
       "tier_epic": "   Épico",
       "tier_legendary": "   Lendário",
-      "tier_radiant": "   Radiante"
+      "tier_radiant": "   Radiante",
+      "lane_top": "   Topo",
+      "lane_jungle": "   Selva",
+      "lane_mid": "   Meio",
+      "lane_bottom": "   Base",
+      "lane_support": "   Suporte"
     }
   },
   "ru": {
@@ -230,7 +255,12 @@
       "tier_basic": "   Базовый",
       "tier_epic": "   Эпический",
       "tier_legendary": "   Легендарный",
-      "tier_radiant": "   Сияющий"
+      "tier_radiant": "   Сияющий",
+      "lane_top": "   Топ",
+      "lane_jungle": "   Лес",
+      "lane_mid": "   Мид",
+      "lane_bottom": "   Керри",
+      "lane_support": "   Поддержка"
     }
   },
   "vi": {
@@ -269,7 +299,12 @@
       "tier_basic": "   Cơ Bản",
       "tier_epic": "   Sử Thi",
       "tier_legendary": "   Huyền Thoại",
-      "tier_radiant": "   Ánh Sáng"
+      "tier_radiant": "   Ánh Sáng",
+      "lane_top": "   Đường Trên",
+      "lane_jungle": "   Đi Rừng",
+      "lane_mid": "   Đường Giữa",
+      "lane_bottom": "   Đường Dưới",
+      "lane_support": "   Hỗ Trợ"
     }
   }
 }

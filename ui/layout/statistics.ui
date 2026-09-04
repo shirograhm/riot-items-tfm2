@@ -2045,7 +2045,7 @@ statistics:statistics_ui {
     anchor_x: 1;
     pivot_x: 1;
     x: -194px;
-    width: 216px;
+    width: 172px;
     height: 40px;
 
     visible: false;
@@ -2064,7 +2064,7 @@ statistics:statistics_ui {
       source: "asset/base/ui/icons/dropdown";
 
       rect: {
-        x: 187;
+        x: 143;
         y: 17.47;
         w: 8.78;
         h: 5.06;
@@ -2094,7 +2094,7 @@ statistics:statistics_ui {
       x: 4px;
       y: 6px;
 
-      width: 164px;
+      width: 120px;
       height: 28px;
       align_y: Center;
 
@@ -2168,8 +2168,8 @@ statistics:statistics_ui {
   #item_tier:color_icon_button {
     anchor_x: 1;
     pivot_x: 1;
-    x: -418px;
-    width: 186px;
+    x: -374px;
+    width: 160px;
     height: 40px;
 
     visible: false;
@@ -2188,7 +2188,7 @@ statistics:statistics_ui {
       source: "asset/base/ui/icons/dropdown";
 
       rect: {
-        x: 157;
+        x: 131;
         y: 17.47;
         w: 8.78;
         h: 5.06;
@@ -2218,7 +2218,81 @@ statistics:statistics_ui {
       x: 4px;
       y: 6px;
 
-      width: 134px;
+      width: 108px;
+      height: 28px;
+      align_y: Center;
+
+      size: 18;
+      text: "#asset/base/text/ui?item_stats.cat_all";
+    }
+  }
+
+  #item_lane:color_icon_button {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -542px;
+    width: 104px;
+    height: 40px;
+
+    visible: false;
+
+    btn: {
+      color: #4a4c56ff;
+      back_color: #1d1f2cff;
+      stroke: 1;
+
+      rounding: Uniform {
+        rounding: 8;
+      }
+    }
+
+    icon: {
+      source: "asset/base/ui/icons/dropdown";
+
+      rect: {
+        x: 75;
+        y: 17.47;
+        w: 8.78;
+        h: 5.06;
+      }
+
+      color: #a5a5abff;
+    }
+
+    hover: {
+      btn: {
+        color: #a5a5abff;
+        back_color: #1d1f2cff;
+        stroke: 1;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+      }
+
+      icon: {
+        color: #e8e8e8ff;
+      }
+    }
+
+    #icon:image {
+      x: 8px;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+      width: 18px;
+      height: 18px;
+
+      visible: false;
+      ignore_event: true;
+      color: #e8e8e8ff;
+    }
+
+    #text:label {
+      @"asset/base/style/main#label";
+      x: 4px;
+      y: 6px;
+
+      width: 52px;
       height: 28px;
       align_y: Center;
 
@@ -2244,7 +2318,7 @@ statistics:statistics_ui {
     x: -194px;
     y: 44px;
 
-    width: 216px;
+    width: 172px;
     height: 260px;
 
     visible: false;
@@ -2270,7 +2344,7 @@ statistics:statistics_ui {
 
       #cat0:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 208px;
+        width: 164px;
         height: 36px;
 
         label: {
@@ -2288,7 +2362,7 @@ statistics:statistics_ui {
 
       #cat1:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 208px;
+        width: 164px;
         height: 36px;
 
         label: {
@@ -2306,7 +2380,7 @@ statistics:statistics_ui {
 
       #cat2:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 208px;
+        width: 164px;
         height: 36px;
 
         label: {
@@ -2324,7 +2398,7 @@ statistics:statistics_ui {
 
       #cat3:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 208px;
+        width: 164px;
         height: 36px;
 
         label: {
@@ -2342,7 +2416,7 @@ statistics:statistics_ui {
 
       #cat4:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 208px;
+        width: 164px;
         height: 36px;
 
         label: {
@@ -2360,7 +2434,7 @@ statistics:statistics_ui {
 
       #cat5:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 208px;
+        width: 164px;
         height: 36px;
 
         label: {
@@ -2378,7 +2452,7 @@ statistics:statistics_ui {
 
       #cat6:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 208px;
+        width: 164px;
         height: 36px;
 
         label: {
@@ -2666,10 +2740,10 @@ statistics:statistics_ui {
   #item_tier_list:color {
     anchor_x: 1;
     pivot_x: 1;
-    x: -418px;
+    x: -374px;
     y: 44px;
 
-    width: 186px;
+    width: 160px;
     height: 224px;
 
     visible: false;
@@ -2695,7 +2769,7 @@ statistics:statistics_ui {
 
       #tier0:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 178px;
+        width: 152px;
         height: 36px;
 
         label: {
@@ -2713,7 +2787,7 @@ statistics:statistics_ui {
 
       #tier1:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 178px;
+        width: 152px;
         height: 36px;
 
         label: {
@@ -2731,7 +2805,7 @@ statistics:statistics_ui {
 
       #tier2:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 178px;
+        width: 152px;
         height: 36px;
 
         label: {
@@ -2749,7 +2823,7 @@ statistics:statistics_ui {
 
       #tier3:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 178px;
+        width: 152px;
         height: 36px;
 
         label: {
@@ -2767,7 +2841,7 @@ statistics:statistics_ui {
 
       #tier4:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 178px;
+        width: 152px;
         height: 36px;
 
         label: {
@@ -2785,7 +2859,7 @@ statistics:statistics_ui {
 
       #tier5:color_selectable {
         @"asset/base/style/main#strategy_option";
-        width: 178px;
+        width: 152px;
         height: 36px;
 
         label: {
@@ -2799,6 +2873,145 @@ statistics:statistics_ui {
         }
 
         text: "#asset/base/text/ui?item_stats.tier_radiant";
+      }
+  }
+
+  #item_lane_list:color {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -542px;
+    y: 44px;
+
+    width: 150px;
+    height: 224px;
+
+    visible: false;
+
+    color: #4a4c56ff;
+    back_color: #1d1f2cff;
+    stroke: 1;
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+      #lane0:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_all";
+      }
+
+      #lane1:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_top";
+      }
+
+      #lane2:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_jungle";
+      }
+
+      #lane3:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_mid";
+      }
+
+      #lane4:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_bottom";
+      }
+
+      #lane5:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_support";
       }
   }
 
@@ -2832,4 +3045,5 @@ statistics:statistics_ui {
       height: 100%;
     }
   }
+
 }
