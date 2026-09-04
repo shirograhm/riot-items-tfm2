@@ -99,6 +99,7 @@ Thank you to @Monsoon on discord for the Chinese (Simplified) translations!
 Thank you to @Dushnerd on discord for the Russian translations!
 Thank you to @Flover on discord for the Korean translations!
 
+Special thanks to @toxicsnek for helping with custom item creation & testing.
 Special thanks to @Monsoon for helping with the custom item builds functionality!  
 Special thanks to @blasé for helping playtest the 4 Item Mod compatibility!  
 
