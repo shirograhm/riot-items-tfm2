@@ -235,17 +235,6 @@ const ROW_INDENT: &str = "   ";
 /// with more than this many patches shows the most recent.
 const PATCH_ROWS: usize = 12;
 
-/// i18n keys for the tier rows, All first — parallel to the `#tier{i}` nodes.
-/// Row `i` filters to tier `i - 1`, which is the item's own `tier` field.
-const TIER_KEYS: [&str; 6] = [
-    "item_stats.cat_all",
-    "item_stats.tier_starter",
-    "item_stats.tier_basic",
-    "item_stats.tier_epic",
-    "item_stats.tier_legendary",
-    "item_stats.tier_radiant",
-];
-
 /// i18n keys for the list rows, All first — parallel to the `#cat{i}` nodes.
 const CATEGORY_KEYS: [&str; 7] = [
     "item_stats.cat_all",
@@ -323,10 +312,6 @@ struct State {
     dirty: bool,
     /// Category filter, as an index into [`CATEGORIES`]. `None` is "All".
     category: Option<usize>,
-    /// Tier filter — the item's own `tier`, 0..=4. `None` is "All".
-    tier: Option<usize>,
-    /// Whether the tier list is dropped down.
-    tier_open: bool,
     /// Patch filter. `None` is "All".
     patch: Option<String>,
     /// Patches currently offered by the list, in row order.
@@ -445,21 +430,18 @@ pub fn sync(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(&format!("{screen}.data.item_stats"), true);
     ctx.ui_set_visible(&format!("{screen}.item_category"), true);
     ctx.ui_set_visible(&format!("{screen}.item_patch"), true);
-    ctx.ui_set_visible(&format!("{screen}.item_tier"), true);
 
     // The catcher is a full-screen transparent button, so if it is ever left up
     // it eats every click on this screen — which is the difference between "a
     // dropdown is open" and "the tab is dead". Driving it from state every frame
     // means it cannot be stranded by a rebuild.
-    let (list_open, patch_open, tier_open) =
-        with_state(|state| (state.list_open, state.patch_open, state.tier_open))
-            .unwrap_or((false, false, false));
+    let (list_open, patch_open) =
+        with_state(|state| (state.list_open, state.patch_open)).unwrap_or((false, false));
     ctx.ui_set_visible(&format!("{screen}.item_category_list"), list_open);
     ctx.ui_set_visible(&format!("{screen}.item_patch_list"), patch_open);
-    ctx.ui_set_visible(&format!("{screen}.item_tier_list"), tier_open);
     ctx.ui_set_visible(
         &format!("{screen}.item_category_catch"),
-        list_open || patch_open || tier_open,
+        list_open || patch_open,
     );
 
     let due = with_state(|state| {
@@ -535,7 +517,6 @@ fn heal(ctx: &mut StableClient<'_>, screen: &str) {
         // The lists do not survive a rebuild in any useful state, so they close.
         state.list_open = false;
         state.patch_open = false;
-        state.tier_open = false;
         state.dirty = true;
     });
 
@@ -545,7 +526,6 @@ fn heal(ctx: &mut StableClient<'_>, screen: &str) {
     if with_state(|state| state.showing).unwrap_or(false) {
         paint_category_button(ctx, screen);
         paint_patch_button(ctx, screen);
-        paint_tier_button(ctx, screen);
         paint_headers(ctx, screen);
         paint_tabs(ctx, screen, true);
     }
@@ -778,10 +758,6 @@ fn handler_paths(screen: &str) -> Vec<String> {
     for row in 0..PATCH_ROWS {
         paths.push(format!("{screen}.item_patch_list.pat{row}"));
     }
-    paths.push(format!("{screen}.item_tier"));
-    for row in 0..TIER_KEYS.len() {
-        paths.push(format!("{screen}.item_tier_list.tier{row}"));
-    }
     paths
 }
 
@@ -885,12 +861,10 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         let open = with_state(|state| {
             state.list_open = !state.list_open;
             state.patch_open = false;
-            state.tier_open = false;
             state.list_open
         })
         .unwrap_or(false);
         show_patch_list(ctx, &screen, false);
-        show_tier_list(ctx, &screen, false);
         show_category_list(ctx, &screen, open);
         return;
     }
@@ -899,12 +873,10 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         let open = with_state(|state| {
             state.patch_open = !state.patch_open;
             state.list_open = false;
-            state.tier_open = false;
             state.patch_open
         })
         .unwrap_or(false);
         show_category_list(ctx, &screen, false);
-        show_tier_list(ctx, &screen, false);
         show_patch_list(ctx, &screen, open);
         return;
     }
@@ -916,36 +888,13 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         }
     }
 
-    if event.path == format!("{screen}.item_tier") {
-        let open = with_state(|state| {
-            state.tier_open = !state.tier_open;
-            state.list_open = false;
-            state.patch_open = false;
-            state.tier_open
-        })
-        .unwrap_or(false);
-        show_category_list(ctx, &screen, false);
-        show_patch_list(ctx, &screen, false);
-        show_tier_list(ctx, &screen, open);
-        return;
-    }
-
-    for row in 0..TIER_KEYS.len() {
-        if event.path == format!("{screen}.item_tier_list.tier{row}") {
-            pick_tier(ctx, &screen, row);
-            return;
-        }
-    }
-
     if event.path == format!("{screen}.item_category_catch") {
         let _ = with_state(|state| {
             state.list_open = false;
             state.patch_open = false;
-            state.tier_open = false;
         });
         show_category_list(ctx, &screen, false);
         show_patch_list(ctx, &screen, false);
-        show_tier_list(ctx, &screen, false);
         return;
     }
 
@@ -981,11 +930,9 @@ fn open(ctx: &mut StableClient<'_>, screen: &str) {
     ctx.ui_set_visible(&format!("{screen}.data.item_stats"), true);
     ctx.ui_set_visible(&format!("{screen}.item_category"), true);
     ctx.ui_set_visible(&format!("{screen}.item_patch"), true);
-    ctx.ui_set_visible(&format!("{screen}.item_tier"), true);
     paint_category_button(ctx, screen);
     refresh_patch_rows(ctx, screen);
     paint_patch_button(ctx, screen);
-    paint_tier_button(ctx, screen);
     paint_tabs(ctx, screen, true);
     // The panel comes back from the layout with every arrow transparent, so the
     // opening view would otherwise be sorted by a column that does not say so.
@@ -1010,15 +957,12 @@ fn close(ctx: &mut StableClient<'_>, screen: &str, panel: &str) {
     ctx.ui_set_visible(&format!("{screen}.data.item_stats"), false);
     ctx.ui_set_visible(&format!("{screen}.item_category"), false);
     ctx.ui_set_visible(&format!("{screen}.item_patch"), false);
-    ctx.ui_set_visible(&format!("{screen}.item_tier"), false);
     let _ = with_state(|state| {
         state.list_open = false;
         state.patch_open = false;
-        state.tier_open = false;
     });
     show_category_list(ctx, screen, false);
     show_patch_list(ctx, screen, false);
-    show_tier_list(ctx, screen, false);
     ctx.ui_set_visible(&format!("{screen}.{panel}"), true);
     for filter in FILTERS {
         ctx.ui_set_visible(&format!("{screen}.{filter}"), true);
@@ -1101,55 +1045,12 @@ fn paint_patch_rows(ctx: &mut StableClient<'_>, screen: &str) {
     }
 }
 
-/// Shows or hides the tier list, sharing the one catcher.
-fn show_tier_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
-    ctx.ui_set_visible(&format!("{screen}.item_tier_list"), open);
-    if open {
-        paint_tier_rows(ctx, screen);
-    }
-    sync_catch(ctx, screen);
-}
-
-/// Applies the tier on row `row` and closes the list.
-fn pick_tier(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
-    let _ = with_state(|state| {
-        // Row 0 is All; row `i` is tier `i - 1`.
-        state.tier = row.checked_sub(1);
-        state.tier_open = false;
-        state.dirty = true;
-    });
-    show_tier_list(ctx, screen, false);
-    paint_tier_button(ctx, screen);
-    repaint(ctx, screen);
-}
-
-/// Writes the selected tier onto the button face.
-fn paint_tier_button(ctx: &mut StableClient<'_>, screen: &str) {
-    let selected = with_state(|state| state.tier).unwrap_or(None);
-    let key = TIER_KEYS[selected.map_or(0, |tier| tier + 1)];
-    let text = label(ctx, key, "   All");
-    ctx.ui_set_text(&format!("{screen}.item_tier.text"), &text);
-}
-
-/// Lights the row of the tier currently in force.
-fn paint_tier_rows(ctx: &mut StableClient<'_>, screen: &str) {
-    let selected = with_state(|state| state.tier).unwrap_or(None);
-    let lit_row = selected.map_or(0, |tier| tier + 1);
-    for row in 0..TIER_KEYS.len() {
-        ctx.ui_set_properties(
-            &format!("{screen}.item_tier_list.tier{row}"),
-            &tab_style("image", "label", row == lit_row),
-        );
-    }
-}
-
 /// Puts the catcher up while any list is down, and takes it away otherwise.
 ///
-/// One place rather than three, so a new dropdown cannot forget to consider the
-/// other two and strand a full-screen button over the whole screen.
+/// One place rather than two, so a new dropdown cannot forget to consider the
+/// other and strand a full-screen button over the whole screen.
 fn sync_catch(ctx: &mut StableClient<'_>, screen: &str) {
-    let any =
-        with_state(|state| state.list_open || state.patch_open || state.tier_open).unwrap_or(false);
+    let any = with_state(|state| state.list_open || state.patch_open).unwrap_or(false);
     ctx.ui_set_visible(&format!("{screen}.item_category_catch"), any);
 }
 
@@ -1340,11 +1241,10 @@ fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
     let catalog = item_stats::catalog();
     let contents = format!("{screen}.data.item_stats.data.contents");
 
-    let (sort, ascending, category, tier) =
-        with_state(|state| (state.sort, state.ascending, state.category, state.tier)).unwrap_or((
+    let (sort, ascending, category) =
+        with_state(|state| (state.sort, state.ascending, state.category)).unwrap_or((
             SortBy::default(),
             false,
-            None,
             None,
         ));
     if let Some(index) = category {
@@ -1352,14 +1252,6 @@ fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
         snapshot
             .rows
             .retain(|(key, _)| category_of(key) == Some(wanted));
-    }
-    if let Some(wanted) = tier {
-        // An item the catalog cannot place has no tier, so it answers no tier
-        // filter — the same rule the category filter follows for an item with
-        // no role.
-        snapshot
-            .rows
-            .retain(|(key, _)| catalog.get(key).and_then(|info| info.tier) == Some(wanted));
     }
     order_rows(&mut snapshot.rows, &catalog, sort, ascending);
 
@@ -1383,12 +1275,9 @@ fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
     for (index, (key, totals)) in snapshot.rows.iter().take(visible).enumerate() {
         let info = catalog.get(key).cloned().unwrap_or_else(|| ItemInfo {
             // An item nothing describes: a key from a save written with another
-            // item set. Showing the raw key is the honest answer, and no tier
-            // means it answers no tier filter rather than being filed under a
-            // guess.
+            // item set. Showing the raw key is the honest answer.
             name: key.clone(),
             frame: None,
-            tier: None,
         });
         let champions = snapshot
             .champions
