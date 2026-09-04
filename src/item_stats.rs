@@ -234,6 +234,16 @@ fn rebuild(revision: u64) {
         }
         let per_champion = champions.entry(patch).or_default();
         for player in players {
+            // A player whose champion could not be read still counts toward the
+            // item's games and wins — the loadout is real — but it must not be
+            // tallied as a champion. It used to be, under the empty key, and
+            // `top_champions` then ranked it like any other name: on an item
+            // bought mostly by champions that were dead at the final tick, the
+            // blank outranked every real name and took a column slot that then
+            // drew nothing. That is the "played, but no portraits" case.
+            if player.champion.is_empty() {
+                continue;
+            }
             for key in &player.items {
                 *per_champion
                     .entry((player.lane, key.clone()))

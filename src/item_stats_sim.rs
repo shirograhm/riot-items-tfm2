@@ -102,6 +102,89 @@ static REVISION: AtomicU64 = AtomicU64::new(0);
 /// as most rows having no "purchased on" portraits at all.
 static ROSTERS: Mutex<Option<BTreeMap<u64, Vec<String>>>> = Mutex::new(None);
 
+/// Fills in any roster entry still unknown, from whoever is resolvable now.
+///
+/// # Why the start-of-match roster was not enough
+///
+/// `on_match_start` runs before the champions exist, so it records ten empty
+/// strings, and the end-of-match fallback — `player.champion()`, which resolves
+/// a *live* entity — is what actually supplied the names. That only works for
+/// whoever is still standing on the final tick, which is why 72% of losing
+/// players were captured nameless against 14% of winners: the losing side is
+/// dead when the match ends. Their items were recorded either way, so the item
+/// totals were right, but the "purchased on" column had nothing to draw.
+///
+/// Topping up as the match runs fixes it at the source, because every champion
+/// is alive on *some* tick — including everyone who is dead by the last one.
+///
+/// The cost decays to nothing. Only entries that are still blank are read, so
+/// once a roster is complete this is one pass over ten strings per tick.
+fn top_up_roster(sim: &mut StableSim<'_>) {
+    let seed = sim.seed();
+    let count = sim.player_count();
+
+    // Which seats still need a name. The lock is taken to answer that and then
+    // released before any of them are resolved: `player_at` crosses the ABI,
+    // and presims arrive in batches, so holding a process-wide lock across those
+    // calls would serialise sims that have nothing to do with each other.
+    let missing: Vec<usize> = {
+        let Ok(mut guard) = ROSTERS.lock() else {
+            return;
+        };
+        let rosters = guard.get_or_insert_with(BTreeMap::new);
+        // Created here when `on_match_start` never ran for this sim, under the
+        // same bound that function applies — this is a second way into the map.
+        if !rosters.contains_key(&seed) {
+            if rosters.len() >= MAX_ROSTERS {
+                if let Some(&oldest) = rosters.keys().next() {
+                    rosters.remove(&oldest);
+                }
+            }
+            rosters.insert(seed, vec![String::new(); count]);
+        }
+        let Some(roster) = rosters.get_mut(&seed) else {
+            return;
+        };
+        roster.resize(count, String::new());
+        roster
+            .iter()
+            .enumerate()
+            .filter(|(_, name)| name.is_empty())
+            .map(|(index, _)| index)
+            .collect()
+    };
+    if missing.is_empty() {
+        return;
+    }
+
+    let found: Vec<(usize, String)> = missing
+        .into_iter()
+        .filter_map(|index| {
+            let name = sim
+                .player_at(index)
+                .and_then(|player| player.champion())
+                .and_then(|champion| champion.name())
+                .filter(|name| !name.is_empty())?;
+            Some((index, name))
+        })
+        .collect();
+    if found.is_empty() {
+        return;
+    }
+
+    if let Ok(mut guard) = ROSTERS.lock() {
+        if let Some(roster) = guard.as_mut().and_then(|rosters| rosters.get_mut(&seed)) {
+            for (index, name) in found {
+                // Only ever fills a gap. The entry may have been written while
+                // the lock was down, and the earlier answer is no worse.
+                if let Some(slot) = roster.get_mut(index).filter(|slot| slot.is_empty()) {
+                    *slot = name;
+                }
+            }
+        }
+    }
+}
+
 /// Matches whose roster is remembered while they play. A sim that somehow never
 /// reaches its end tick would otherwise leak an entry forever.
 const MAX_ROSTERS: usize = 512;
@@ -195,6 +278,7 @@ impl StableMatchHook for EndOfMatchItems {
 
     fn on_match_tick(&self, sim: &mut StableSim<'_>, _rng_seed: u64) {
         if !sim.is_end() {
+            top_up_roster(sim);
             return;
         }
 
