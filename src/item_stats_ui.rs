@@ -345,6 +345,8 @@ struct State {
     /// Counts every frame the screen is up, which `tick` does not — it only
     /// advances while probing for the screen or while this tab is showing.
     sweep_tick: u32,
+    /// The last event acted on, as `(path, frame)`. See [`already_handled`].
+    last_event: Option<(String, u32)>,
 }
 
 static STATE: Mutex<Option<State>> = Mutex::new(None);
@@ -792,14 +794,74 @@ fn diag(line: &str) {
     crate::item_stats::diag(&format!("[ui] {line}"));
 }
 
+/// Whether this exact event has already been acted on this frame.
+///
+/// # Why one click arrives twice
+///
+/// `ui_register_path_events` registers a handler for **every** event whose path
+/// equals the one given, and the closure it takes is leaked — "handlers live
+/// until process exit". A registration is therefore permanent and keyed by the
+/// *path*, not by the node that happens to sit at it. [`forget_registrations`]
+/// clears only this module's own bookkeeping when the screen goes away, so the
+/// next visit registers the same paths again and leaves **two** live handlers on
+/// each of them.
+///
+/// Two is not harmless, because nearly everything this handler does is a
+/// toggle. A dropdown opens and instantly closes again; a sort header reverses
+/// and reverses back. That is the whole of "the dropdowns do nothing and the
+/// sort only ever goes one way" — and it is why leaving and re-entering appeared
+/// to fix it: a third registration restores the parity a fourth breaks again, so
+/// the tab works on odd visits and is dead on even ones. Which is also why it
+/// looked intermittent rather than broken.
+///
+/// # Why it is suppressed here
+///
+/// Rather than by not re-registering, which would be the other obvious fix.
+/// This one is correct whether or not the host *also* drops a registration when
+/// the screen it belongs to is destroyed, and that is not a question this can
+/// answer from the outside. Guessing wrong in the other direction gives a tab
+/// that is dead on every visit but the first, which is worse than a handler that
+/// occasionally does nothing.
+fn already_handled(path: &str) -> bool {
+    let duplicate = with_state(|state| {
+        // `sweep_tick` advances once per frame for as long as the screen is up,
+        // and a person cannot click the same node twice inside one frame — so a
+        // repeat within a frame is a second delivery, not a second click.
+        let stamp = (path.to_string(), state.sweep_tick);
+        let duplicate = state.last_event.as_ref() == Some(&stamp);
+        state.last_event = Some(stamp);
+        duplicate
+    })
+    .unwrap_or(false);
+
+    if duplicate {
+        // Once, not per click: it confirms the diagnosis from the log rather
+        // than from reasoning about it, and after the first there is one of
+        // these for every click for the rest of the session.
+        use std::sync::atomic::{AtomicBool, Ordering};
+        static ONCE: AtomicBool = AtomicBool::new(false);
+        if !ONCE.swap(true, Ordering::Relaxed) {
+            diag(&format!("suppressed a duplicate event on {path}"));
+        }
+    }
+    duplicate
+}
+
 fn handle_event(ctx: &mut StableClient<'_>) {
     let Some(event) = ctx.ui_current_event() else {
         return;
     };
-    // `Remove` fires as a node is torn down, and this screen is torn down every
-    // time the player leaves it — so the tab's own destruction would otherwise
-    // arrive here as a click and open a panel into a dying tree.
-    if matches!(event.kind, Some(UiEventKindV1::Remove)) {
+    // Only clicks drive this tab. `Remove` in particular fires as a node is torn
+    // down, and this screen is torn down every time the player leaves it — so
+    // the tab's own destruction would otherwise arrive here as a click and open
+    // a panel into a dying tree.
+    //
+    // An unreported kind is treated as a click: on a host that does not fill the
+    // field in, a tab that does nothing at all is the worse failure.
+    if !matches!(event.kind, Some(UiEventKindV1::Click) | None) {
+        return;
+    }
+    if already_handled(&event.path) {
         return;
     }
     let Some(screen) = with_state(|state| state.screen.clone()).flatten() else {

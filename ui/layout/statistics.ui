@@ -2058,10 +2058,6 @@ statistics:statistics_ui {
       rounding: Uniform {
         rounding: 8;
       }
-
-      hover: {
-        color: #a5a5abff;
-      }
     }
 
     icon: {
@@ -2078,6 +2074,16 @@ statistics:statistics_ui {
     }
 
     hover: {
+      btn: {
+        color: #a5a5abff;
+        back_color: #1d1f2cff;
+        stroke: 1;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+      }
+
       icon: {
         color: #e8e8e8ff;
       }
@@ -2113,10 +2119,6 @@ statistics:statistics_ui {
       rounding: Uniform {
         rounding: 8;
       }
-
-      hover: {
-        color: #a5a5abff;
-      }
     }
 
     icon: {
@@ -2133,6 +2135,16 @@ statistics:statistics_ui {
     }
 
     hover: {
+      btn: {
+        color: #a5a5abff;
+        back_color: #1d1f2cff;
+        stroke: 1;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+      }
+
       icon: {
         color: #e8e8e8ff;
       }
@@ -2170,10 +2182,6 @@ statistics:statistics_ui {
       rounding: Uniform {
         rounding: 8;
       }
-
-      hover: {
-        color: #a5a5abff;
-      }
     }
 
     icon: {
@@ -2190,6 +2198,16 @@ statistics:statistics_ui {
     }
 
     hover: {
+      btn: {
+        color: #a5a5abff;
+        back_color: #1d1f2cff;
+        stroke: 1;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+      }
+
       icon: {
         color: #e8e8e8ff;
       }
