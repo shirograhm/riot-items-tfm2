@@ -91,15 +91,17 @@ const REPAINT_EVERY: u32 = 12;
 /// Frames between checks that our spawned nodes are still there.
 const HEAL_EVERY: u32 = 10;
 
-/// Frames between re-checks of the record id list while the screen is up.
+/// Frames between patch-backfill passes while the screen is up.
 ///
-/// `wire` sweeps once on arrival, which is enough if leaving the screen destroys
-/// it — the next visit wires from scratch. It is not enough if the game merely
-/// hides it, because then `wired` is still true on the way back and matches
-/// simmed in between would never be swept in. Which of the two the game does is
-/// not something this module has to know: a sweep every few seconds is one
-/// `record_ids` call and a set comparison, and it is correct either way.
-const SWEEP_EVERY: u32 = 300;
+/// Thirty seconds. `wire` runs one on arrival, which is the pass that matters;
+/// this is the safety net for a screen the game hides rather than destroys, and
+/// for records that appear while it is open.
+///
+/// Slower than it was, because a pass now re-reads *every* record rather than
+/// only ids it has not seen — record ids are recycled, so "already scanned" is
+/// not a durable fact. Nothing is folded from records any more, so the only cost
+/// is the reads, and there is no reason to pay it every five seconds.
+const SWEEP_EVERY: u32 = 1800;
 
 /// Rows spawned per repaint.
 ///
@@ -124,6 +126,10 @@ const COL_GAMES: u32 = 140;
 const COL_WIN: u32 = 130;
 const COL_LOSE: u32 = 130;
 const COL_RATE: u32 = 150;
+/// Wider than the other percentage column because its heading is the longest on
+/// the table — "Primeiro Item" and "Первый предмет" both run past 130px, and a
+/// heading that reaches the sort arrow looks like a rendering fault.
+const COL_FIRST: u32 = 160;
 const COL_CHAMPS: u32 = 160;
 
 /// The three vanilla tabs and the panel each one shows, paired so the two can
@@ -229,6 +235,17 @@ const ROW_INDENT: &str = "   ";
 /// with more than this many patches shows the most recent.
 const PATCH_ROWS: usize = 12;
 
+/// i18n keys for the tier rows, All first — parallel to the `#tier{i}` nodes.
+/// Row `i` filters to tier `i - 1`, which is the item's own `tier` field.
+const TIER_KEYS: [&str; 6] = [
+    "item_stats.cat_all",
+    "item_stats.tier_starter",
+    "item_stats.tier_basic",
+    "item_stats.tier_epic",
+    "item_stats.tier_legendary",
+    "item_stats.tier_radiant",
+];
+
 /// i18n keys for the list rows, All first — parallel to the `#cat{i}` nodes.
 const CATEGORY_KEYS: [&str; 7] = [
     "item_stats.cat_all",
@@ -250,6 +267,8 @@ enum SortBy {
     Losses,
     #[default]
     WinRate,
+    /// Share of this item's buys where it went in the first slot.
+    FirstRate,
 }
 
 impl SortBy {
@@ -261,6 +280,7 @@ impl SortBy {
             SortBy::Wins => "win",
             SortBy::Losses => "lose",
             SortBy::WinRate => "win_rate",
+            SortBy::FirstRate => "first_rate",
         }
     }
 
@@ -273,12 +293,13 @@ impl SortBy {
         self != SortBy::Item
     }
 
-    const ALL: [SortBy; 5] = [
+    const ALL: [SortBy; 6] = [
         SortBy::Item,
         SortBy::Games,
         SortBy::Wins,
         SortBy::Losses,
         SortBy::WinRate,
+        SortBy::FirstRate,
     ];
 }
 
@@ -288,8 +309,10 @@ struct State {
     /// a re-entered screen is searched for again rather than written to at a
     /// stale path.
     screen: Option<String>,
-    /// Whether the tab and panel are spawned and the tabs are registered.
+    /// Whether every handler is registered for the current screen.
     wired: bool,
+    /// Whether the "still building" note has been logged for this screen.
+    wire_warned: bool,
     /// Whether this tab is the one currently showing.
     showing: bool,
     /// Row nodes spawned so far.
@@ -300,6 +323,10 @@ struct State {
     dirty: bool,
     /// Category filter, as an index into [`CATEGORIES`]. `None` is "All".
     category: Option<usize>,
+    /// Tier filter — the item's own `tier`, 0..=4. `None` is "All".
+    tier: Option<usize>,
+    /// Whether the tier list is dropped down.
+    tier_open: bool,
     /// Patch filter. `None` is "All".
     patch: Option<String>,
     /// Patches currently offered by the list, in row order.
@@ -410,8 +437,28 @@ pub fn sync(ctx: &mut StableClient<'_>) {
     for filter in FILTERS {
         ctx.ui_set_visible(&format!("{screen}.{filter}"), false);
     }
+    // The panel and both dropdowns are authored `visible: false`, so a rebuild
+    // hands them back hidden. Asserted here rather than only on entry, for the
+    // same reason the vanilla panels are.
+    ctx.ui_set_visible(&format!("{screen}.data.item_stats"), true);
     ctx.ui_set_visible(&format!("{screen}.item_category"), true);
     ctx.ui_set_visible(&format!("{screen}.item_patch"), true);
+    ctx.ui_set_visible(&format!("{screen}.item_tier"), true);
+
+    // The catcher is a full-screen transparent button, so if it is ever left up
+    // it eats every click on this screen — which is the difference between "a
+    // dropdown is open" and "the tab is dead". Driving it from state every frame
+    // means it cannot be stranded by a rebuild.
+    let (list_open, patch_open, tier_open) =
+        with_state(|state| (state.list_open, state.patch_open, state.tier_open))
+            .unwrap_or((false, false, false));
+    ctx.ui_set_visible(&format!("{screen}.item_category_list"), list_open);
+    ctx.ui_set_visible(&format!("{screen}.item_patch_list"), patch_open);
+    ctx.ui_set_visible(&format!("{screen}.item_tier_list"), tier_open);
+    ctx.ui_set_visible(
+        &format!("{screen}.item_category_catch"),
+        list_open || patch_open || tier_open,
+    );
 
     let due = with_state(|state| {
         state.tick = state.tick.wrapping_add(1);
@@ -476,11 +523,30 @@ fn heal(ctx: &mut StableClient<'_>, screen: &str) {
         // one click run twice.
         state.spawned = 0;
         state.shown = 0;
-        // The rebuilt panel came back at its authored `visible: false`, so
-        // whatever this thought it was showing, it is not showing it now.
-        state.showing = false;
+        // `showing` is deliberately NOT cleared. A rebuild is game code
+        // replacing nodes underneath us, not the player leaving the tab — and
+        // clearing it stopped `sync` re-asserting anything, which left the tab
+        // frozen: sort clicks did nothing, the dropdowns went dead, and only
+        // leaving and coming back fixed it. Staying "showing" is what lets the
+        // per-frame block put the rebuilt panel back the way it was.
+        //
+        // The lists do not survive a rebuild in any useful state, so they close.
+        state.list_open = false;
+        state.patch_open = false;
+        state.tier_open = false;
         state.dirty = true;
     });
+
+    // Everything the rebuild reverted to a layout default and that no per-frame
+    // assert covers: the two dropdown faces and the tab highlight all carry
+    // state that only lives in this module.
+    if with_state(|state| state.showing).unwrap_or(false) {
+        paint_category_button(ctx, screen);
+        paint_patch_button(ctx, screen);
+        paint_tier_button(ctx, screen);
+        paint_headers(ctx, screen);
+        paint_tabs(ctx, screen, true);
+    }
 }
 
 /// The statistics screen path, or `None` when it is not up.
@@ -640,36 +706,33 @@ fn find_screen(ctx: &StableClient<'_>) -> Option<String> {
 /// puts this panel away when the player switches back, and game code's own
 /// handling for those clicks is untouched.
 fn wire(ctx: &mut StableClient<'_>, screen: &str) {
-    let tabs = format!("{screen}.tabs");
+    let paths = handler_paths(screen);
 
-    // Both nodes come from the layout override, so this only adopts them. An
-    // absent one means the override is not installed — a stale deploy, or a game
-    // update that changed `statistics.ui` out from under it — and there is
-    // nothing useful to do but say so and stay out of the way.
-    let tab_up = ctx.ui_exists(&format!("{tabs}.item"));
-    let panel_up = ctx.ui_exists(&format!("{screen}.data.item_stats"));
-    if !tab_up || !panel_up {
-        diag(&format!(
-            "layout override missing: tab={tab_up} panel={panel_up}"
-        ));
+    // Every one of them, before registering any of them. `resolve_screen` finds
+    // this screen the moment `tabs.champion` resolves, which is not the moment
+    // the whole subtree exists — the dropdowns are declared after `#data` and
+    // arrive later. Registering what happened to be ready and then claiming
+    // `wired` left the rest without handlers for the life of the screen: on the
+    // first visit the dropdowns did nothing and only some sort headers
+    // responded, and only leaving and coming back fixed it.
+    // The panel carries no handler of its own, but nothing here works without
+    // it, so it joins the readiness check.
+    let panel = format!("{screen}.data.item_stats");
+    if let Some(missing) = paths
+        .iter()
+        .chain(std::iter::once(&panel))
+        .find(|path| !ctx.ui_exists(path))
+    {
+        // Once per screen, not once per frame: this is the normal state for the
+        // frame or two a screen takes to build, and it must not burn the log.
+        if !with_state(|state| std::mem::replace(&mut state.wire_warned, true)).unwrap_or(true) {
+            diag(&format!("waiting for {missing}"));
+        }
         return;
     }
 
-    for (tab, _) in VANILLA {
-        register_once(ctx, &format!("{screen}.{tab}"));
-    }
-    register_once(ctx, &format!("{tabs}.item"));
-    for column in SortBy::ALL {
-        register_once(ctx, &header_path(screen, column));
-    }
-    register_once(ctx, &format!("{screen}.item_category"));
-    register_once(ctx, &format!("{screen}.item_category_catch"));
-    for row in 0..CATEGORY_KEYS.len() {
-        register_once(ctx, &format!("{screen}.item_category_list.cat{row}"));
-    }
-    register_once(ctx, &format!("{screen}.item_patch"));
-    for row in 0..PATCH_ROWS {
-        register_once(ctx, &format!("{screen}.item_patch_list.pat{row}"));
+    for path in &paths {
+        register_once(ctx, path);
     }
 
     // The id list is refreshed per screen entry rather than per frame: it copies
@@ -677,7 +740,8 @@ fn wire(ctx: &mut StableClient<'_>, screen: &str) {
     // player is standing here.
     item_stats::sweep(ctx);
     diag(&format!(
-        "wired; match replay records = {}",
+        "wired {} handlers; match replay records = {}",
+        paths.len(),
         ctx.record_ids(RecordKindV1::MatchReplay).len()
     ));
 
@@ -685,6 +749,38 @@ fn wire(ctx: &mut StableClient<'_>, screen: &str) {
         state.wired = true;
         state.dirty = true;
     });
+}
+
+/// Every node this module puts a click handler on.
+///
+/// One list so that "is the screen ready" and "what gets registered" cannot
+/// disagree — the bug above was exactly that disagreement.
+fn handler_paths(screen: &str) -> Vec<String> {
+    let mut paths = Vec::new();
+    // Registering the vanilla tabs is observation only: a handler on them is
+    // what puts this panel away when the player switches back, and game code's
+    // own handling for those clicks is untouched.
+    for (tab, _) in VANILLA {
+        paths.push(format!("{screen}.{tab}"));
+    }
+    paths.push(format!("{screen}.tabs.item"));
+    for column in SortBy::ALL {
+        paths.push(header_path(screen, column));
+    }
+    paths.push(format!("{screen}.item_category"));
+    paths.push(format!("{screen}.item_category_catch"));
+    for row in 0..CATEGORY_KEYS.len() {
+        paths.push(format!("{screen}.item_category_list.cat{row}"));
+    }
+    paths.push(format!("{screen}.item_patch"));
+    for row in 0..PATCH_ROWS {
+        paths.push(format!("{screen}.item_patch_list.pat{row}"));
+    }
+    paths.push(format!("{screen}.item_tier"));
+    for row in 0..TIER_KEYS.len() {
+        paths.push(format!("{screen}.item_tier_list.tier{row}"));
+    }
+    paths
 }
 
 /// Tags a line as this half's and hands it to the shared, capped writer.
@@ -727,10 +823,12 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         let open = with_state(|state| {
             state.list_open = !state.list_open;
             state.patch_open = false;
+            state.tier_open = false;
             state.list_open
         })
         .unwrap_or(false);
         show_patch_list(ctx, &screen, false);
+        show_tier_list(ctx, &screen, false);
         show_category_list(ctx, &screen, open);
         return;
     }
@@ -739,10 +837,12 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         let open = with_state(|state| {
             state.patch_open = !state.patch_open;
             state.list_open = false;
+            state.tier_open = false;
             state.patch_open
         })
         .unwrap_or(false);
         show_category_list(ctx, &screen, false);
+        show_tier_list(ctx, &screen, false);
         show_patch_list(ctx, &screen, open);
         return;
     }
@@ -754,13 +854,36 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         }
     }
 
+    if event.path == format!("{screen}.item_tier") {
+        let open = with_state(|state| {
+            state.tier_open = !state.tier_open;
+            state.list_open = false;
+            state.patch_open = false;
+            state.tier_open
+        })
+        .unwrap_or(false);
+        show_category_list(ctx, &screen, false);
+        show_patch_list(ctx, &screen, false);
+        show_tier_list(ctx, &screen, open);
+        return;
+    }
+
+    for row in 0..TIER_KEYS.len() {
+        if event.path == format!("{screen}.item_tier_list.tier{row}") {
+            pick_tier(ctx, &screen, row);
+            return;
+        }
+    }
+
     if event.path == format!("{screen}.item_category_catch") {
         let _ = with_state(|state| {
             state.list_open = false;
             state.patch_open = false;
+            state.tier_open = false;
         });
         show_category_list(ctx, &screen, false);
         show_patch_list(ctx, &screen, false);
+        show_tier_list(ctx, &screen, false);
         return;
     }
 
@@ -796,9 +919,11 @@ fn open(ctx: &mut StableClient<'_>, screen: &str) {
     ctx.ui_set_visible(&format!("{screen}.data.item_stats"), true);
     ctx.ui_set_visible(&format!("{screen}.item_category"), true);
     ctx.ui_set_visible(&format!("{screen}.item_patch"), true);
+    ctx.ui_set_visible(&format!("{screen}.item_tier"), true);
     paint_category_button(ctx, screen);
     refresh_patch_rows(ctx, screen);
     paint_patch_button(ctx, screen);
+    paint_tier_button(ctx, screen);
     paint_tabs(ctx, screen, true);
     // The panel comes back from the layout with every arrow transparent, so the
     // opening view would otherwise be sorted by a column that does not say so.
@@ -823,12 +948,15 @@ fn close(ctx: &mut StableClient<'_>, screen: &str, panel: &str) {
     ctx.ui_set_visible(&format!("{screen}.data.item_stats"), false);
     ctx.ui_set_visible(&format!("{screen}.item_category"), false);
     ctx.ui_set_visible(&format!("{screen}.item_patch"), false);
+    ctx.ui_set_visible(&format!("{screen}.item_tier"), false);
     let _ = with_state(|state| {
         state.list_open = false;
         state.patch_open = false;
+        state.tier_open = false;
     });
     show_category_list(ctx, screen, false);
     show_patch_list(ctx, screen, false);
+    show_tier_list(ctx, screen, false);
     ctx.ui_set_visible(&format!("{screen}.{panel}"), true);
     for filter in FILTERS {
         ctx.ui_set_visible(&format!("{screen}.{filter}"), true);
@@ -848,9 +976,7 @@ fn show_category_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
     if open {
         paint_category_rows(ctx, screen);
     }
-    // One catcher serves both lists, so it stays up while either is down.
-    let patch_open = with_state(|state| state.patch_open).unwrap_or(false);
-    ctx.ui_set_visible(&format!("{screen}.item_category_catch"), open || patch_open);
+    sync_catch(ctx, screen);
 }
 
 /// Shows or hides the patch list, sharing the category list's catcher.
@@ -862,11 +988,7 @@ fn show_patch_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
         refresh_patch_rows(ctx, screen);
         paint_patch_rows(ctx, screen);
     }
-    let category_open = with_state(|state| state.list_open).unwrap_or(false);
-    ctx.ui_set_visible(
-        &format!("{screen}.item_category_catch"),
-        open || category_open,
-    );
+    sync_catch(ctx, screen);
 }
 
 /// Applies the patch on row `row` and closes the list.
@@ -915,6 +1037,58 @@ fn paint_patch_rows(ctx: &mut StableClient<'_>, screen: &str) {
             &tab_style("image", "label", row == lit_row),
         );
     }
+}
+
+/// Shows or hides the tier list, sharing the one catcher.
+fn show_tier_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
+    ctx.ui_set_visible(&format!("{screen}.item_tier_list"), open);
+    if open {
+        paint_tier_rows(ctx, screen);
+    }
+    sync_catch(ctx, screen);
+}
+
+/// Applies the tier on row `row` and closes the list.
+fn pick_tier(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
+    let _ = with_state(|state| {
+        // Row 0 is All; row `i` is tier `i - 1`.
+        state.tier = row.checked_sub(1);
+        state.tier_open = false;
+        state.dirty = true;
+    });
+    show_tier_list(ctx, screen, false);
+    paint_tier_button(ctx, screen);
+    repaint(ctx, screen);
+}
+
+/// Writes the selected tier onto the button face.
+fn paint_tier_button(ctx: &mut StableClient<'_>, screen: &str) {
+    let selected = with_state(|state| state.tier).unwrap_or(None);
+    let key = TIER_KEYS[selected.map_or(0, |tier| tier + 1)];
+    let text = label(ctx, key, "   All");
+    ctx.ui_set_text(&format!("{screen}.item_tier.text"), &text);
+}
+
+/// Lights the row of the tier currently in force.
+fn paint_tier_rows(ctx: &mut StableClient<'_>, screen: &str) {
+    let selected = with_state(|state| state.tier).unwrap_or(None);
+    let lit_row = selected.map_or(0, |tier| tier + 1);
+    for row in 0..TIER_KEYS.len() {
+        ctx.ui_set_properties(
+            &format!("{screen}.item_tier_list.tier{row}"),
+            &tab_style("image", "label", row == lit_row),
+        );
+    }
+}
+
+/// Puts the catcher up while any list is down, and takes it away otherwise.
+///
+/// One place rather than three, so a new dropdown cannot forget to consider the
+/// other two and strand a full-screen button over the whole screen.
+fn sync_catch(ctx: &mut StableClient<'_>, screen: &str) {
+    let any =
+        with_state(|state| state.list_open || state.patch_open || state.tier_open).unwrap_or(false);
+    ctx.ui_set_visible(&format!("{screen}.item_category_catch"), any);
 }
 
 /// Applies the category on row `row` and closes the list.
@@ -1084,6 +1258,10 @@ fn order_rows(
                 .win_rate()
                 .partial_cmp(&b.win_rate())
                 .unwrap_or(std::cmp::Ordering::Equal),
+            SortBy::FirstRate => a
+                .first_rate()
+                .partial_cmp(&b.first_rate())
+                .unwrap_or(std::cmp::Ordering::Equal),
         };
         let ordering = if ascending {
             ordering
@@ -1100,10 +1278,11 @@ fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
     let catalog = item_stats::catalog();
     let contents = format!("{screen}.data.item_stats.data.contents");
 
-    let (sort, ascending, category) =
-        with_state(|state| (state.sort, state.ascending, state.category)).unwrap_or((
+    let (sort, ascending, category, tier) =
+        with_state(|state| (state.sort, state.ascending, state.category, state.tier)).unwrap_or((
             SortBy::default(),
             false,
+            None,
             None,
         ));
     if let Some(index) = category {
@@ -1111,6 +1290,14 @@ fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
         snapshot
             .rows
             .retain(|(key, _)| category_of(key) == Some(wanted));
+    }
+    if let Some(wanted) = tier {
+        // An item the catalog cannot place has no tier, so it answers no tier
+        // filter — the same rule the category filter follows for an item with
+        // no role.
+        snapshot
+            .rows
+            .retain(|(key, _)| catalog.get(key).and_then(|info| info.tier) == Some(wanted));
     }
     order_rows(&mut snapshot.rows, &catalog, sort, ascending);
 
@@ -1133,11 +1320,13 @@ fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
 
     for (index, (key, totals)) in snapshot.rows.iter().take(visible).enumerate() {
         let info = catalog.get(key).cloned().unwrap_or_else(|| ItemInfo {
-            // An item the settings document does not describe: a key from a save
-            // written with another item set, or a positional id this build could
-            // not resolve. Showing the raw key is the honest answer.
+            // An item nothing describes: a key from a save written with another
+            // item set. Showing the raw key is the honest answer, and no tier
+            // means it answers no tier filter rather than being filed under a
+            // guess.
             name: key.clone(),
             frame: None,
+            tier: None,
         });
         let champions = snapshot
             .champions
@@ -1197,6 +1386,15 @@ fn write_row(
             .map(|rate| format!("{rate:.1}%"))
             .unwrap_or_else(|| "-".into()),
     );
+    // Of this item's buys, how often it was the one rushed. A dash rather than
+    // 0.0% for an item with no games, for the same reason the win rate uses one.
+    ctx.ui_set_text(
+        &cell("first_rate"),
+        &totals
+            .first_rate()
+            .map(|rate| format!("{rate:.1}%"))
+            .unwrap_or_else(|| "-".into()),
+    );
 
     // Two properties, never `sheet#tag`: `ui_set_properties` feeds the `.ui`
     // parser, which has no `#` form. Passing one returns true and renders
@@ -1244,25 +1442,19 @@ fn write_row(
 }
 
 fn status_text(snapshot: &item_stats::Snapshot) -> String {
-    if snapshot.pending > 0 {
-        return format!(
-            "{} matches · reading {} more",
-            snapshot.matches, snapshot.pending
-        );
+    if snapshot.matches == 0 && snapshot.pending > 0 {
+        return "Reading match records…".to_string();
     }
     if snapshot.matches == 0 {
-        return "No match records with item data yet".into();
+        return "No matches with end-of-game items yet".into();
     }
+
     let mut text = format!("{} matches simmed", snapshot.matches);
-    // Said plainly rather than folded into the total: these matches happened and
-    // are in none of the rates on screen, and a total that quietly excluded them
-    // would be the more misleading number. It is also the fastest read on whether
-    // the record format is behaving — a large `brief` count is the game
-    // compacting history, a large `unreadable` one is this mod being wrong about
-    // the record shape.
-    let missing = snapshot.brief + snapshot.unreadable;
-    if missing > 0 {
-        text.push_str(&format!(" · {missing} without item data"));
+    if snapshot.uncaptured > 0 {
+        // Matches that predate loadout capture. Named rather than folded in:
+        // they are real matches this table deliberately does not count, and a
+        // total that quietly omitted them would look like data loss.
+        text.push_str(&format!(" · {} before item tracking", snapshot.uncaptured));
     }
     text
 }
@@ -1340,7 +1532,7 @@ fn row_source(index: usize) -> String {
          }}\n\
          }}\n\
          \n\
-         {games}{win}{lose}{rate}\
+         {games}{win}{lose}{rate}{first}\
          \n\
          #most_used:empty {{\n\
          width: {COL_CHAMPS}px;\n\
@@ -1373,6 +1565,7 @@ fn row_source(index: usize) -> String {
         win = value_cell("win", COL_WIN),
         lose = value_cell("lose", COL_LOSE),
         rate = value_cell("win_rate", COL_RATE),
+        first = value_cell("first_rate", COL_FIRST),
         // Three fixed slots rather than one spawn per row: the count never
         // changes, and the vanilla cell this copies is 132px wide — three 40px
         // slots and two 4px gaps, exactly. A slot with no champion is hidden,

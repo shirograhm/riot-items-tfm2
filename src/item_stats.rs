@@ -1,75 +1,68 @@
-//! Per-item win/loss totals, folded out of the game's own saved match records.
+//! Per-item win/loss totals over the matches [`crate::item_stats_sim`] captured.
 //!
-//! # Why records and not a sim hook
+//! # Where the numbers come from
 //!
-//! The game already persists everything this needs. `MatchReplayData` (record
-//! kind [`RecordKindV1::MatchReplay`]) carries `blue_team_win` alongside
-//! `blue_team`/`red_team`, and each entry in those is a player with an `items`
-//! list — so "which items were on the board and did that side win" is a read,
-//! not something that has to be observed as it happens.
+//! The loadouts come from the simulation, not from the match record. The
+//! record's per-player `items` is the build the game *assigned*, not what the
+//! champion finished holding — proven by its shape: every player carried exactly
+//! 3 or 4 items, never fewer, and never a component. `StablePlayer::item_keys`
+//! on the last tick is the real end state, and it hands back real item keys
+//! rather than numbers indexing a table the API does not expose.
 //!
-//! That matters for two reasons. It covers matches simmed **before** this code
-//! ever ran, which a [`StableMatchHook`] never could; and it counts AI-vs-AI
-//! league games the player never watched, which is most of the season. The
-//! alternative — folding `player.item_keys()` against `score_diff` at
-//! `sim.is_end()` — also has to filter `sim_origin()` so that watching your own
-//! match live does not count it a second time. Reading the record afterwards has
-//! no such trap: one record is one match.
+//! So the totals are a fold over the captures, and the record answers only what
+//! the simulation cannot: which patch a match was played on, and whether it was
+//! a league match at all.
 //!
-//! # What the record actually looks like
+//! # What the record is used for
 //!
-//! Two things about it could not be established offline (the save is compressed,
-//! so its field encoding is not greppable). [`diagnose`] settled both on the
-//! first run, against a live save:
+//! Only two fields: `version`, which is the patch the match was played on and
+//! what the patch filter groups by, and `seed`, which joins it to the loadout
+//! [`crate::item_stats_sim`] captured from the simulation.
 //!
-//! ```text
-//! record id=41 is_brief=Some(true) keys=[…, "blue_team", "blue_team_win", …]
-//!   blue_team=[{"athlete_id":776,"champion":"test_mod_galio","id":0,
-//!               "items":[24,24,24],"position":"Top", …}, …]
-//! ```
-//!
-//! * **`is_brief` does not strip the detail.** That record is flagged brief and
-//!   still carries every player, their champion and their items. So the feared
-//!   case — most of a season stored with no items — does not happen, and the
-//!   fallback of instrumenting the sim is not needed. [`Snapshot::brief`] still
-//!   counts records that yield nothing, because "flagged brief" and "has no
-//!   items" turned out to be different questions.
-//! * **`items` holds numbers, not keys.** They index the item settings document
-//!   in declaration order; see [`index_table`], which is what turns 24 back
-//!   into `prophet_of_the_abyss`.
-//!
-//! [`item_key`] still accepts strings and objects, because the numeric form is
-//! something this mod inferred from one build rather than something the ABI
-//! promises.
+//! Its per-player `items` is deliberately **not** read. That field holds the
+//! build the game *assigned*, not what was finished with, and it is stored as
+//! bare numbers indexing a table the API does not expose — which previously
+//! meant inferring the whole id space from the order items are declared and
+//! registered in. Taking the loadout from the sim instead makes both problems
+//! disappear at once: real keys, and the real end state.
 //!
 //! # Retention
 //!
-//! Totals live for the process and are rebuilt per session. If the game turns
-//! out to prune old match records, this under-counts old seasons and the fix is
-//! to accumulate into the save (`save_set_string`, which the mod's server
-//! extension can already reach) instead of recomputing. [`sweep`] detects the
-//! pruning case — a previously folded id going missing resets everything rather
-//! than leaving totals that describe records that no longer exist.
+//! The totals are a pure fold over the captures, which live in a file this mod
+//! owns, so history is bounded by `MAX_MATCHES` rather than by how long the game
+//! keeps a record. That matters: the record count was seen going 126 -> 28 -> 77
+//! inside one session, so the game prunes and recycles ids freely, and anything
+//! that counted records — or trusted "id 12 is already scanned" — drifted with
+//! it. Re-reading every record on every pass is safe precisely because records
+//! contribute no numbers, only patches, and the captures deduplicate themselves
+//! by match seed.
 
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 use std::sync::Mutex;
 
 use mod_api_stable::*;
 use serde_json::Value;
 
-/// Records folded per [`pump`] call.
+/// Records read per [`pump`] call.
 ///
-/// Each one is an FFI round trip plus a JSON parse of a document that holds ten
-/// players' full match statistics, and this runs on the UI thread. A season is
-/// hundreds of matches, so the whole set cannot be folded in one frame without a
-/// visible hitch; at 24 per frame a thousand records take under a second of
-/// scrolling-smooth catch-up, and the panel shows its progress while it happens.
+/// Two fields are wanted from each, but the whole record still crosses the ABI
+/// and is parsed — ten players' match statistics included — and this runs on the
+/// UI thread. A season is hundreds of matches, so reading the set in one frame
+/// is a visible hitch; at 24 a frame a full pass costs a handful of frames.
 const CHUNK: usize = 24;
 
 #[derive(Clone, Copy, Default)]
 pub(crate) struct Totals {
     pub games: u32,
     pub wins: u32,
+    /// Games where this item was the one in the player's **first** item slot.
+    ///
+    /// "First" is slot order: `StablePlayer::item_keys` enumerates the player's
+    /// items by index, and a champion's items are appended as they are
+    /// completed, so slot 0 is the item they finished first. That is the closest
+    /// thing to a purchase order the simulation exposes — there is no timestamp
+    /// on an item — and it is the same order the assigned build is written in.
+    pub firsts: u32,
 }
 
 impl Totals {
@@ -82,16 +75,23 @@ impl Totals {
     pub fn win_rate(&self) -> Option<f64> {
         (self.games > 0).then(|| self.wins as f64 * 100.0 / self.games as f64)
     }
+
+    /// Share of this item's buys where it was bought first, in percent.
+    ///
+    /// Same `None`-for-no-games rule as [`Totals::win_rate`], and for the same
+    /// reason: an item nobody has bought has no first-item rate, and printing
+    /// 0.0% for it would claim it is never rushed.
+    pub fn first_rate(&self) -> Option<f64> {
+        (self.games > 0).then(|| self.firsts as f64 * 100.0 / self.games as f64)
+    }
 }
 
 #[derive(Default)]
 struct Aggregate {
-    /// Record ids already folded in. Also the guard against double counting a
-    /// record that a later sweep hands back.
-    seen: BTreeSet<usize>,
-    /// Ids found by the last sweep and not yet folded, newest first so the
-    /// table is useful before the scan finishes.
+    /// Record ids still to read for their patch, newest first.
     pending: Vec<usize>,
+    /// Capture revision these totals were folded at.
+    revision: u64,
     /// Patch -> item -> totals.
     ///
     /// Keyed by patch first so the filter is a map lookup rather than a re-scan:
@@ -103,12 +103,14 @@ struct Aggregate {
     /// Patch -> item -> champion -> times that champion was holding it. Feeds
     /// the "purchased on" column, which is the top few of these by count.
     champions: BTreeMap<String, BTreeMap<String, BTreeMap<String, u32>>>,
-    /// Patch -> matches that yielded at least one item.
+    /// Patch -> captured matches.
     matches: BTreeMap<String, u32>,
-    /// Records that parsed but held no per-player items.
-    brief: u32,
-    /// Records that could not be read at all.
-    unreadable: u32,
+    /// Records for matches simmed before capturing began. They are real matches
+    /// with no end-of-game item data, so they are reported rather than silently
+    /// dropped. Published only once a full pass has counted them.
+    uncaptured: u32,
+    /// The in-progress pass's count, which becomes `uncaptured` when it ends.
+    scanning_uncaptured: u32,
 }
 
 static AGG: Mutex<Option<Aggregate>> = Mutex::new(None);
@@ -123,14 +125,9 @@ pub(crate) struct Snapshot {
     /// Items in display order — see [`rows`].
     pub rows: Vec<(String, Totals)>,
     pub matches: u32,
-    /// Records that parsed but carried no per-player items.
-    pub brief: u32,
-    /// Records that could not be read at all. Distinct from `brief`: that is
-    /// the game choosing not to keep the detail, this is a read that failed,
-    /// and while the record format is still an inference the difference is
-    /// exactly what tells one from the other.
-    pub unreadable: u32,
-    /// Records still to fold. Non-zero means the table is incomplete.
+    /// Matches with no captured loadout — simmed before capturing began.
+    pub uncaptured: u32,
+    /// Records still to read. Non-zero means a patch pass is in flight.
     pub pending: usize,
     /// Per item, the champions that bought it most, best first, at most
     /// [`TOP_CHAMPIONS`] of them.
@@ -144,101 +141,126 @@ pub(crate) struct Snapshot {
 /// 4px gaps, with nothing left over.
 pub(crate) const TOP_CHAMPIONS: usize = 3;
 
-/// Bucket for a record that names no version.
-pub(crate) const UNKNOWN_PATCH: &str = "?";
-
-/// Refreshes the list of records to fold.
+/// Queues every match record for a patch-backfill pass.
 ///
-/// Called on entry to the statistics screen rather than per frame: `record_ids`
-/// copies the whole id set across the ABI twice (once to size, once to fill),
-/// which is not a per-frame cost, and matches are not simmed while the player is
-/// standing on this screen anyway.
+/// Every record, not just unseen ones. Record ids are **reused**: the count was
+/// observed going 126 -> 28 -> 77 inside one session, so the game prunes and
+/// recycles them, and "id 12 is already scanned" is not a fact that stays true.
+/// Re-reading them all is what makes that harmless.
 ///
-/// A previously folded id that is no longer present means the record set is not
-/// the one the totals were built from — a different save was loaded, or the game
-/// pruned history. Either way the totals describe records that are gone, so they
-/// are dropped and rebuilt rather than carried forward as a mix of two saves.
+/// It is affordable because a record is now read for two fields and nothing is
+/// folded from it — the totals come from the captures, which are deduplicated by
+/// match seed and cannot be double counted however often a record is re-read.
 pub(crate) fn sweep(ctx: &StableClient<'_>) {
     let ids = ctx.record_ids(RecordKindV1::MatchReplay);
     if ids.is_empty() {
         return;
     }
-    let present: BTreeSet<usize> = ids.iter().copied().collect();
-
     let _ = with_agg(|agg| {
-        if !agg.seen.is_subset(&present) {
-            *agg = Aggregate::default();
-        }
-        // Newest first: match ids ascend with time, so the most recent season
-        // lands in the table first and the scan fills in history behind it.
-        let pending: Vec<usize> = ids
-            .iter()
-            .rev()
-            .copied()
-            .filter(|id| !agg.seen.contains(id))
-            .collect();
-        agg.pending = pending;
+        agg.pending = ids.iter().rev().copied().collect();
+        agg.scanning_uncaptured = 0;
     });
 }
 
-/// Folds up to [`CHUNK`] outstanding records. Returns whether anything changed,
-/// which is what tells the panel it needs repainting.
+/// Reads a bounded batch of records to backfill patches, then re-folds the
+/// totals if the captures have changed.
+///
+/// Records no longer contribute any numbers. They answer one question — which
+/// patch was this match played on — and the answer is written onto the capture
+/// so it survives the record being pruned.
 pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
-    // Records name items by index, so folding before the index table exists
-    // would file real games under `#24` and leave them there — the totals would
-    // be a mix of two key spaces that no later pass could separate. Waiting is
-    // free: `prime_catalog` runs first in the same frame.
-    let index = index_table();
-    if index.is_empty() {
-        return false;
-    }
-
     let batch = with_agg(|agg| {
         let take = CHUNK.min(agg.pending.len());
         agg.pending.drain(..take).collect::<Vec<_>>()
     })
     .unwrap_or_default();
 
-    if batch.is_empty() {
-        return false;
+    for id in &batch {
+        let Some((patch, seed)) = read_record(ctx, *id) else {
+            continue;
+        };
+        if crate::item_stats_sim::has(seed) {
+            crate::item_stats_sim::set_patch(seed, &patch);
+        } else {
+            // A match simmed before capturing began. Counted so the tab can say
+            // how much history it is deliberately not showing.
+            let _ = with_agg(|agg| agg.scanning_uncaptured += 1);
+        }
     }
 
-    for id in batch {
-        let record = read_record(ctx, id, &index);
-        let _ = with_agg(|agg| {
-            agg.seen.insert(id);
-            match record {
-                Some((patch, sides)) if sides.iter().any(|(players, _)| !players.is_empty()) => {
-                    *agg.matches.entry(patch.clone()).or_default() += 1;
-                    let counts = agg.counts.entry(patch.clone()).or_default();
-                    for (players, won) in &sides {
-                        for (_, items) in players {
-                            for key in items {
-                                let entry = counts.entry(key.clone()).or_default();
-                                entry.games += 1;
-                                entry.wins += u32::from(*won);
-                            }
-                        }
-                    }
-                    let champions = agg.champions.entry(patch).or_default();
-                    for (players, _) in &sides {
-                        for (champion, items) in players {
-                            for key in items {
-                                *champions
-                                    .entry(key.clone())
-                                    .or_default()
-                                    .entry(champion.clone())
-                                    .or_default() += 1;
-                            }
-                        }
-                    }
-                }
-                Some(_) => agg.brief += 1,
-                None => agg.unreadable += 1,
-            }
-        });
+    let finished = with_agg(|agg| {
+        if agg.pending.is_empty() {
+            agg.uncaptured = agg.scanning_uncaptured;
+        }
+        agg.pending.is_empty()
+    })
+    .unwrap_or(false);
+
+    // The totals are a pure function of what is on file, so they are rebuilt
+    // when that changes rather than nudged along and kept in step by hand. It is
+    // an in-memory walk of a few thousand entries; the expensive part of this
+    // module is the record reads above.
+    let revision = crate::item_stats_sim::revision();
+    let stale = with_agg(|agg| agg.revision != revision).unwrap_or(false);
+    if stale {
+        rebuild(revision);
+        return true;
     }
-    true
+
+    !batch.is_empty() && finished
+}
+
+/// Folds every captured match into the totals from scratch.
+fn rebuild(revision: u64) {
+    let mut counts: BTreeMap<String, BTreeMap<String, Totals>> = BTreeMap::new();
+    let mut champions: BTreeMap<String, BTreeMap<String, BTreeMap<String, u32>>> = BTreeMap::new();
+    let mut matches: BTreeMap<String, u32> = BTreeMap::new();
+
+    crate::item_stats_sim::for_each(|patch, players| {
+        // Only matches a league record has vouched for. The hook captures every
+        // simulation the game runs — solo-rank games athletes play on their own
+        // time, practice, tutorials — and none of those produce a
+        // `MatchReplay` record, so none of them are ever given a patch.
+        //
+        // This is what keeps the tab counting the same matches the tabs beside
+        // it count. Without it, sitting on the screen while solo rank ticks
+        // along quietly moves every number, which is exactly how it was noticed.
+        let Some(patch) = patch else {
+            return;
+        };
+        let patch = patch.to_string();
+        *matches.entry(patch.clone()).or_default() += 1;
+        let per_item = counts.entry(patch.clone()).or_default();
+        for player in players {
+            for (slot, key) in player.items.iter().enumerate() {
+                let entry = per_item.entry(key.clone()).or_default();
+                entry.games += 1;
+                entry.wins += u32::from(player.won);
+                // Slot order is completion order, so the first slot is the item
+                // this player rushed. Counted here rather than stored on the
+                // capture, so the whole history already on file answers the new
+                // column without being re-simmed.
+                entry.firsts += u32::from(slot == 0);
+            }
+        }
+        let per_champion = champions.entry(patch).or_default();
+        for player in players {
+            for key in &player.items {
+                *per_champion
+                    .entry(key.clone())
+                    .or_default()
+                    .entry(player.champion.clone())
+                    .or_default() += 1;
+            }
+        }
+    });
+
+    let _ = with_agg(|agg| {
+        agg.counts = counts;
+        agg.champions = champions;
+        agg.matches = matches;
+        agg.revision = revision;
+    });
 }
 
 /// The patches seen in the records, newest first.
@@ -278,6 +300,7 @@ pub(crate) fn snapshot(patch: Option<&str>) -> Snapshot {
                 let entry = counts.entry(item.clone()).or_default();
                 entry.games += totals.games;
                 entry.wins += totals.wins;
+                entry.firsts += totals.firsts;
             }
         }
         for (key, per_item) in &agg.champions {
@@ -300,8 +323,7 @@ pub(crate) fn snapshot(patch: Option<&str>) -> Snapshot {
         Snapshot {
             rows: rows(&counts),
             matches,
-            brief: agg.brief,
-            unreadable: agg.unreadable,
+            uncaptured: agg.uncaptured,
             pending: agg.pending.len(),
             champions: top_champions(&champions),
         }
@@ -309,8 +331,7 @@ pub(crate) fn snapshot(patch: Option<&str>) -> Snapshot {
     .unwrap_or(Snapshot {
         rows: Vec::new(),
         matches: 0,
-        brief: 0,
-        unreadable: 0,
+        uncaptured: 0,
         pending: 0,
         champions: BTreeMap::new(),
     })
@@ -345,14 +366,10 @@ fn rows(counts: &BTreeMap<String, Totals>) -> Vec<(String, Totals)> {
 
 /// One match as `(item keys, did that side win)`, one entry per side.
 ///
-/// The whole record is fetched in a single call where the host allows it — a
-/// match is ten players and three targeted reads per record triples the FFI cost
-/// of a scan that is already the expensive part of this module.
-fn read_record(
-    ctx: &StableClient<'_>,
-    id: usize,
-    index: &[String],
-) -> Option<(String, Vec<(Vec<(String, Vec<String>)>, bool)>)> {
+/// Two fields are wanted — the patch and the join key — but the whole record is
+/// fetched in one call where the host allows it, because one round trip beats
+/// two and the parse is the same either way.
+fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
     let record = match ctx
         .record_get_json(RecordKindV1::MatchReplay, id, "")
         .and_then(|json| serde_json::from_str::<Value>(&json).ok())
@@ -368,143 +385,40 @@ fn read_record(
                     .and_then(|json| serde_json::from_str::<Value>(&json).ok())
             };
             serde_json::json!({
-                "blue_team_win": field("blue_team_win"),
-                "is_brief": field("is_brief"),
                 "version": field("version"),
-                "blue_team": field("blue_team"),
-                "red_team": field("red_team"),
+                "seed": field("seed"),
             })
         }
     };
 
-    diagnose(id, &record, index);
+    diagnose(id, &record);
 
-    let blue_win = record.get("blue_team_win")?.as_bool()?;
-
-    // A record with no version still counts; it just lands in its own bucket
-    // rather than being dropped, and the filter shows it for what it is.
+    // A league match always names its version, so one that does not is not a
+    // record this table can place — skipped rather than filed under a catch-all
+    // bucket that would only ever collect things that should not be there.
     let patch = record
         .get("version")
         .and_then(Value::as_str)
-        .filter(|version| !version.is_empty())
-        .unwrap_or(UNKNOWN_PATCH)
+        .filter(|version| !version.is_empty())?
         .to_string();
 
-    Some((
-        patch,
-        vec![
-            (team_players(record.get("blue_team"), index), blue_win),
-            (team_players(record.get("red_team"), index), !blue_win),
-        ],
-    ))
-}
-
-/// Every player on one side as `(champion, item keys)`, duplicates within a
-/// single player collapsed.
-///
-/// Written as a walk rather than as `team[i].items` because the exact nesting of
-/// a side is the game's business and has moved before (see the athlete/champion
-/// split in `statistics.ui`). Any object carrying an `items` array is a player;
-/// nothing else in a match record has that shape.
-fn team_players(team: Option<&Value>, index: &[String]) -> Vec<(String, Vec<String>)> {
-    let mut out = Vec::new();
-    let Some(team) = team else {
-        return out;
-    };
-    collect_players(team, 0, &mut out, index);
-    out
-}
-
-fn collect_players(
-    value: &Value,
-    depth: usize,
-    out: &mut Vec<(String, Vec<String>)>,
-    index: &[String],
-) {
-    if depth > 4 {
-        return;
-    }
-    match value {
-        Value::Array(entries) => {
-            for entry in entries {
-                collect_players(entry, depth + 1, out, index);
-            }
-        }
-        Value::Object(fields) => {
-            if let Some(Value::Array(items)) = fields.get("items") {
-                // Per player, not per team: two players on a side holding the
-                // same item are two games for it, which is what a pick rate
-                // means. The same player holding it twice is not.
-                let mut held = BTreeSet::new();
-                for item in items {
-                    if let Some(key) = item_key(item, index) {
-                        held.insert(key);
-                    }
-                }
-                let champion = fields
-                    .get("champion")
-                    .and_then(Value::as_str)
-                    .unwrap_or_default()
-                    .to_string();
-                out.push((champion, held.into_iter().collect()));
-                return;
-            }
-            for field in fields.values() {
-                collect_players(field, depth + 1, out, index);
-            }
-        }
-        _ => {}
-    }
-}
-
-/// One entry of a player's `items` as an item key.
-///
-/// Records store items as bare numbers, which [`index_table`] turns back into
-/// keys. An
-/// index past the end of the table keeps its `#`-prefixed raw form rather than
-/// being attributed to some other item — a row reading `#207` is a visible bug,
-/// a row crediting the wrong item is a silent one.
-///
-/// The string and object arms are kept because the numeric form is something
-/// this mod inferred from one build's records, not something the ABI promises.
-/// `null` is an empty slot and yields nothing.
-fn item_key(value: &Value, index: &[String]) -> Option<String> {
-    match value {
-        Value::String(key) if !key.is_empty() => Some(key.clone()),
-        Value::Number(id) => {
-            let slot = id.as_u64()?;
-            Some(
-                index
-                    .get(slot as usize)
-                    .cloned()
-                    .unwrap_or_else(|| format!("#{slot}")),
-            )
-        }
-        Value::Object(fields) => fields
-            .get("key")
-            .or_else(|| fields.get("name"))
-            .or_else(|| fields.get("id"))
-            .and_then(|inner| item_key(inner, index)),
-        _ => None,
-    }
+    // The seed joins this record to the loadout the simulation captured for the
+    // same match. `serde_json` keeps integers as `u64`, so a match seed survives
+    // the round trip that an `f64` would round off.
+    let seed = record.get("seed").and_then(Value::as_u64)?;
+    Some((patch, seed))
 }
 
 // -- diagnostics ------------------------------------------------------------
 
-/// Checks the decoded id space against ground truth, once per process.
+/// Reports the record/capture join, once per process.
 ///
-/// [`index_table`] is an inference, and a wrong one would not look wrong: every
-/// row would carry a real item's name and the numbers behind it would belong to
-/// some other item. So it is checked rather than trusted, against the one thing
-/// in this mod that ties a champion to specific item *keys* — `item-builds.json`.
-/// The item-build hook forces those keys, so a pinned champion's record ids must
-/// decode back to them.
-///
-/// Prints one line per pinned player found, `MATCH` or `MISMATCH`, plus the raw
-/// first record for anything else that needs eyeballing. A `MISMATCH` line names
-/// the id, what this decoded it to, and what it should have been — which is
-/// enough to correct the table without another guess.
-fn diagnose(id: usize, record: &Value, index: &[String]) {
+/// The one thing that cannot be seen from the table itself: an empty table means
+/// either "nothing has been simmed since capturing began" or "the match hook is
+/// never called", and those want very different fixes. Printing the seed, the
+/// patch and whether a loadout was found for it tells them apart on the first
+/// run.
+fn diagnose(id: usize, record: &Value) {
     use std::sync::atomic::{AtomicBool, Ordering};
 
     static DONE: AtomicBool = AtomicBool::new(false);
@@ -512,48 +426,13 @@ fn diagnose(id: usize, record: &Value, index: &[String]) {
         return;
     }
 
-    let brief = record.get("is_brief").and_then(Value::as_bool);
+    let seed = record.get("seed").and_then(Value::as_u64);
+    let (captured, held) = crate::item_stats_sim::stats();
     diag(&format!(
-        "record id={id} is_brief={brief:?} version={:?} index={} entries",
+        "record id={id} version={:?} seed={seed:?} joined={} | sims captured this run={captured}, loadouts on file={held}",
         record.get("version"),
-        index.len()
+        seed.is_some_and(crate::item_stats_sim::has),
     ));
-
-    for side in ["blue_team", "red_team"] {
-        let Some(Value::Array(players)) = record.get(side) else {
-            continue;
-        };
-        for player in players {
-            let champion = player
-                .get("champion")
-                .and_then(Value::as_str)
-                .unwrap_or("<none>");
-            let Some(Value::Array(items)) = player.get("items") else {
-                continue;
-            };
-            let decoded: Vec<String> = items
-                .iter()
-                .map(|item| item_key(item, index).unwrap_or_else(|| "<empty>".to_string()))
-                .collect();
-
-            if !crate::build_config::has_pins(champion) {
-                diag(&format!("  {champion}: {items:?} -> {decoded:?}"));
-                continue;
-            }
-
-            // Slot order is not guaranteed to line up, so this compares as sets:
-            // the question is whether the ids decode to the pinned items at all,
-            // not whether they arrived in the pinned order.
-            let pinned: Vec<String> = (0..4)
-                .filter_map(|slot| crate::build_config::pinned_key(champion, slot))
-                .collect();
-            let hit = decoded.iter().filter(|key| pinned.contains(key)).count();
-            let verdict = if hit > 0 { "MATCH" } else { "MISMATCH" };
-            diag(&format!(
-                "  {verdict} {champion}: {items:?} -> {decoded:?}; pinned {pinned:?}"
-            ));
-        }
-    }
 }
 
 /// Lines [`diag`] will write before it goes quiet.
@@ -597,55 +476,13 @@ pub(crate) struct ItemInfo {
     pub name: String,
     /// `rect_tag` into the item sheet, or `None` for an item with no art.
     pub frame: Option<String>,
+    /// 0..=4, which the tier filter reads as starter/basic/epic/legendary/
+    /// radiant. `None` for an item neither the settings document nor this mod
+    /// describes.
+    pub tier: Option<usize>,
 }
 
 static CATALOG: Mutex<Option<BTreeMap<String, ItemInfo>>> = Mutex::new(None);
-
-/// The game's 30 base items, in the order the item table declares them.
-///
-/// This is the first half of the id space a record's numeric `items` entry
-/// indexes, and it has to be written down because the API will not give it: the
-/// host serialises `ItemSetting` with its keys **sorted**, so what
-/// `setting_get_json` hands back is alphabetical and its order says nothing
-/// about ids. The order below is the one `asset/base/setting/item_setting`
-/// declares (readable as plain text inside `bundle.game_data`, and the same
-/// order the exe's own key blob lists).
-///
-/// A game update that adds or reorders base items invalidates this. That shows
-/// up as rows named after the wrong item rather than as an error, which is why
-/// [`diagnose`] cross-checks it against the pinned builds on every run.
-const VANILLA_ORDER: [&str; 30] = [
-    "iron_blade",
-    "soldiers_longsword",
-    "ruinous_blade",
-    "conquerors_greatsword",
-    "warlords_final_judgement",
-    "dagger",
-    "wind_dagger",
-    "twin_stormblade",
-    "thunderclaw",
-    "storm_sovereign",
-    "steel_armor",
-    "gatekeepers_armor",
-    "black_knights_heavy_plate",
-    "eternal_iron_plate",
-    "impregnable_fortress",
-    "mystic_cloak",
-    "night_hood",
-    "dusk_raven",
-    "souls_edge",
-    "veil_of_annihilation",
-    "arcane_crystal",
-    "spirit_crystal",
-    "staff_of_rapture",
-    "angels_fang",
-    "prophet_of_the_abyss",
-    "vital_orb",
-    "hardened_heart",
-    "ring_of_reincarnation",
-    "hourglass_of_eternity",
-    "giants_horn_shard",
-];
 
 /// This mod's item keys, in the order `init` registered them — the second half
 /// of the id space.
@@ -654,43 +491,18 @@ const VANILLA_ORDER: [&str; 30] = [
 /// there is nowhere to read it from: `ItemSetting` contains only the 30 base
 /// items (confirmed — the document parses to exactly 30 entries), so a mod's
 /// items are absent from the one document that describes items at all.
-static REGISTERED: Mutex<Vec<String>> = Mutex::new(Vec::new());
+static REGISTERED: Mutex<Vec<(String, usize)>> = Mutex::new(Vec::new());
 
-/// Notes one item key at registration time. Called from `init` for every item
-/// the mod adds, in call order.
-pub(crate) fn note_registered(key: &str) {
+/// Notes one item key and its tier at registration time. Called from `init` for
+/// every item the mod adds.
+///
+/// The tier has to come from here because the settings document describes only
+/// the game's own items — a mod's are absent from the one place items are
+/// described, so `StableItem::tier` at registration is the only source.
+pub(crate) fn note_registered(key: &str, tier: usize) {
     if let Ok(mut keys) = REGISTERED.lock() {
-        keys.push(key.to_string());
+        keys.push((key.to_string(), tier));
     }
-}
-
-/// The id space: base items, then this mod's.
-///
-/// # How this was established
-///
-/// Records store items as bare numbers (`"items":[24,24,24]`), and three
-/// orderings were possible. The observed data rules out the other two:
-///
-/// * **Alphabetical over everything** would scatter cheap components across the
-///   whole range. Instead every id under 30 carries a huge pick count (386, 380,
-///   446 over 121 matches) and everything above 120 carries a small one, which
-///   is what "base items are a block at the front, and they are the low tiers
-///   every build routes through" looks like.
-/// * **Settings-document order** cannot be it either: that document arrives
-///   sorted and holds only 30 of the 183 items, so it cannot describe ids up to
-///   179 at all. Shipping it produced exactly that — 30 named rows and the rest
-///   showing `#134`.
-///
-/// It is still an inference, so [`diagnose`] checks it against ground truth the
-/// mod already has: `item-builds.json` pins specific keys to specific champions,
-/// and the hook forces them, so a pinned champion's record ids must decode to
-/// its pinned keys. A mismatch is printed, loudly, rather than assumed away.
-fn index_table() -> Vec<String> {
-    let mut table: Vec<String> = VANILLA_ORDER.iter().map(|key| key.to_string()).collect();
-    if let Ok(keys) = REGISTERED.lock() {
-        table.extend(keys.iter().cloned());
-    }
-    table
 }
 
 /// Builds the item table from the settings document, once.
@@ -741,25 +553,16 @@ pub(crate) fn prime_catalog(ctx: &StableClient<'_>) {
     // being what makes a radiant look radiant. So every one of the mod's 66
     // radiant items drew its own non-radiant twin.
     if let Ok(keys) = REGISTERED.lock() {
-        for key in keys.iter() {
+        for (key, tier) in keys.iter() {
             out.entry(key.clone()).or_insert_with(|| ItemInfo {
                 name: display_name(ctx, key),
                 frame: Some(key.clone()),
+                tier: Some(*tier),
             });
         }
     }
 
-    let table = index_table();
-    diag(&format!(
-        "catalog: {} named, {} ids ({} base + {} mod); 4={:?} 24={:?} 134={:?}",
-        out.len(),
-        table.len(),
-        VANILLA_ORDER.len(),
-        table.len() - VANILLA_ORDER.len(),
-        table.get(4),
-        table.get(24),
-        table.get(134),
-    ));
+    diag(&format!("catalog: {} items named", out.len()));
     if let Ok(mut cached) = CATALOG.lock() {
         *cached = Some(out);
     }
@@ -796,11 +599,26 @@ fn collect_items(
             }
             continue;
         }
+        // Filed under the item's own `key` field, not the map key it sits
+        // under. They are the same for all but one item — `iron_blade` calls
+        // itself `ironsword` — and the inner one is the identity that matters:
+        // it is what `StablePlayer::item_keys` returns and what the item text
+        // document is keyed by. Using the map key left that row with a raw
+        // `ironsword` and no icon.
+        let key = object
+            .get("key")
+            .and_then(Value::as_str)
+            .filter(|inner| !inner.is_empty())
+            .unwrap_or(key);
         out.insert(
-            key.clone(),
+            key.to_string(),
             ItemInfo {
                 name: display_name(ctx, key),
                 frame: icon_frame(object, key),
+                tier: object
+                    .get("tier")
+                    .and_then(Value::as_u64)
+                    .map(|tier| tier as usize),
             },
         );
     }

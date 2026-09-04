@@ -9,6 +9,7 @@ mod item_build_hook;
 mod item_catalog;
 mod item_meta;
 mod item_stats;
+mod item_stats_sim;
 mod item_stats_ui;
 mod items;
 mod proc_queue;
@@ -200,6 +201,12 @@ impl StableServerExtension for NativeTapExtension {
         tactics::driver::before_management_tick();
     }
 
+    fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
+        // Presims arrive in batches as a season advances, so the captures are
+        // written here rather than from the sim loop itself.
+        item_stats_sim::flush();
+    }
+
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
         tactics::driver::on_server_start();
 
@@ -244,17 +251,18 @@ fn init(host: &StableHost) -> StableMod {
     // own 30 items. See `item_stats::index_table`.
     macro_rules! configured {
         ($key:literal => $T:ty) => {{
-            item_stats::note_registered($key);
-            configs.get($key).map(<$T>::with_config).unwrap_or_default()
+            let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
+            item_stats::note_registered($key, StableItem::tier(&item));
+            item
         }};
     }
     macro_rules! configured_radiant {
         ($key:literal => $T:ty) => {{
-            item_stats::note_registered($key);
             let item = configs
                 .get($key)
                 .map(<$T>::radiant_with_config)
                 .unwrap_or_else(<$T>::radiant);
+            item_stats::note_registered($key, StableItem::tier(&item));
             strategy_ui::note_final_item($key, StableItem::category(&item));
             item
         }};
@@ -425,6 +433,10 @@ fn init(host: &StableHost) -> StableMod {
 
     // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
+
+    // Records only keep the build a match was *assigned*; this reads what each
+    // champion actually finished holding, off the simulation's last tick.
+    reg.set_match_hook(item_stats_sim::EndOfMatchItems);
     reg.set_server_extension(NativeTapExtension);
 
     // in-game build picker
