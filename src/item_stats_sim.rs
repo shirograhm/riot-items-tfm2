@@ -27,28 +27,62 @@
 //! as matches are simmed, instead of quietly mixing two different meanings of
 //! "the items in this match".
 //!
-//! # Why it is written to a file
+//! # Why so little is written to a file
 //!
 //! Captures happen during presims; the table is read much later, often in
 //! another session. Held only in memory they would be lost on every restart and
 //! the table would reset to empty each launch — which looks exactly like the
-//! feature not working. The file lives next to the DLL, the way
-//! `item-builds.json` does, and is keyed by seed so two saves cannot corrupt
-//! each other's numbers: a seed from one simply never matches the other's
-//! records.
+//! feature not working. The file lives in the save's own folder under
+//! `item_stats/`, beside the totals it feeds, so a save's uncounted matches
+//! travel with its numbers and neither can leak into another save's.
+//!
+//! What is kept, though, is only what has not been counted yet. A capture is a
+//! **queue entry**, not history: it waits here for a record to vouch for it,
+//! [`crate::item_stats`] folds it into the running totals, and it is dropped.
+//! Keeping every match instead meant two costs that grew with the save — the
+//! totals were re-folded from scratch over the whole history every time one
+//! match was added, and the whole file was rewritten with it. Both are now
+//! proportional to what is in flight rather than to how long the save has been
+//! played.
+//!
+//! The price is that a column the table does not collect yet cannot be answered
+//! retroactively — the raw loadouts are gone once counted, so a new statistic
+//! only fills in from matches simmed after it is added.
 
-use std::collections::{BTreeMap, VecDeque};
-use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+use std::collections::{BTreeMap, BTreeSet, VecDeque};
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::Mutex;
 
 use mod_api_stable::*;
 
-/// Matches kept before the oldest are dropped.
+/// Captures held while they wait for a record to vouch for them.
 ///
-/// A season is on the order of a hundred matches, so this is years of history at
-/// a few hundred KB. The cap exists so a save played indefinitely cannot grow
-/// the file without bound.
-const MAX_MATCHES: usize = 20_000;
+/// The queue drains every time the statistics tab sweeps records, so it holds
+/// the matches simmed since the last sweep, not a history. The cap is what stops
+/// a save played for a season without ever opening the tab from growing the file
+/// without bound; reaching it drops the oldest uncounted match.
+const MAX_QUEUED: usize = 4_000;
+
+/// Seeds remembered after their match has been counted.
+///
+/// Dedup used to be free: an already-counted match was still in the file, so
+/// `by_seed` answered it. Now that a counted match is dropped, the seed has to be
+/// remembered on its own, or watching a presimmed match play out would capture
+/// and count it a second time.
+///
+/// A ring rather than the full set, because the risk it covers is immediate — a
+/// replay or a live view of a match simmed moments ago. Nothing re-runs a seed
+/// from three seasons back.
+const MAX_COUNTED: usize = 4_000;
+
+/// Ticks between roster top-ups.
+///
+/// This is the only work the module does inside the simulation loop, and it used
+/// to run every tick of every sim — a process-wide lock taken 60 times a second
+/// per match, with presims arriving in batches. Half a second between passes cuts
+/// that by thirty and still catches every champion, because a champion that is
+/// alive at all is alive for far longer than that.
+const ROSTER_EVERY: usize = 30;
 
 /// One champion's finished loadout.
 #[derive(Clone)]
@@ -64,35 +98,50 @@ pub(crate) struct CapturedPlayer {
     pub lane: Option<usize>,
 }
 
-/// One match: the loadouts, and the patch it was played on once a record has
-/// been seen for it.
+/// Matches captured but not yet counted, and the seeds of those that have been.
 ///
-/// The patch is backfilled rather than captured because the simulation has no
-/// idea what patch it is running under — only the match record knows, and it is
-/// read much later. Storing it here means a match keeps its patch even after the
-/// game prunes the record it came from.
+/// A queue entry carries no patch: the simulation has no idea what patch it is
+/// running under, only the match record knows, and that is read much later. So an
+/// entry sits here until [`take`] hands it over with the patch attached.
 #[derive(Default)]
-pub(crate) struct Match {
-    pub patch: Option<String>,
-    pub players: Vec<CapturedPlayer>,
-}
-
-#[derive(Default)]
-struct Captures {
-    by_seed: BTreeMap<u64, Match>,
+struct Queue {
+    by_seed: BTreeMap<u64, Vec<CapturedPlayer>>,
     /// Insertion order, so the oldest can be evicted. A `BTreeMap` is ordered by
     /// seed, which says nothing about when a match was played.
     order: VecDeque<u64>,
+    /// Seeds already folded into the totals, oldest first, for eviction order.
+    counted: VecDeque<u64>,
+    /// The same seeds, for lookup.
+    ///
+    /// Kept beside the queue rather than scanning it: `seen` is asked on every
+    /// tick once a match has ended, since `is_end` stays true for the rest of the
+    /// sim, and a linear walk of [`MAX_COUNTED`] seeds there would be a tax on the
+    /// simulation loop — the one place this module must not cost anything.
+    counted_set: BTreeSet<u64>,
     loaded: bool,
 }
 
-static CAPTURES: Mutex<Option<Captures>> = Mutex::new(None);
+impl Queue {
+    /// Whether this seed has been captured, whether or not it has been counted.
+    fn seen(&self, seed: u64) -> bool {
+        self.by_seed.contains_key(&seed) || self.counted_set.contains(&seed)
+    }
 
-/// Bumped whenever the captures change in a way that alters the totals — a new
-/// match, or a patch backfilled onto an old one. The table folds itself again
-/// when this moves, which is what keeps it a pure function of what is on file
-/// rather than a running tally that has to be kept in step by hand.
-static REVISION: AtomicU64 = AtomicU64::new(0);
+    /// Remembers a seed as counted, dropping the oldest once full.
+    fn mark_counted(&mut self, seed: u64) {
+        if !self.counted_set.insert(seed) {
+            return;
+        }
+        self.counted.push_back(seed);
+        while self.counted.len() > MAX_COUNTED {
+            if let Some(oldest) = self.counted.pop_front() {
+                self.counted_set.remove(&oldest);
+            }
+        }
+    }
+}
+
+static QUEUE: Mutex<Option<Queue>> = Mutex::new(None);
 
 /// Champion names by player index, taken at match start and keyed by seed.
 ///
@@ -120,6 +169,19 @@ static ROSTERS: Mutex<Option<BTreeMap<u64, Vec<String>>>> = Mutex::new(None);
 /// The cost decays to nothing. Only entries that are still blank are read, so
 /// once a roster is complete this is one pass over ten strings per tick.
 fn top_up_roster(sim: &mut StableSim<'_>) {
+    // Twice a second is enough: see [`ROSTER_EVERY`]. Taken off the sim's own
+    // tick rather than a counter of our own, so batched presims each throttle
+    // independently instead of sharing one global phase — and so it costs no
+    // state, which a counter would have had to lock to reach.
+    //
+    // This assumes `on_match_tick` arrives once per tick, so every value comes
+    // round. It does today: the proc queue's stagger arithmetic depends on the
+    // same thing. A host that called it every other tick could land only on odd
+    // values and skip the pass entirely, which would show up as the "purchased
+    // on" column going empty again.
+    if sim.tick() % ROSTER_EVERY != 0 {
+        return;
+    }
     let seed = sim.seed();
     let count = sim.player_count();
 
@@ -190,62 +252,35 @@ fn top_up_roster(sim: &mut StableSim<'_>) {
 const MAX_ROSTERS: usize = 512;
 static DIRTY: AtomicBool = AtomicBool::new(false);
 
-fn with_captures<T>(f: impl FnOnce(&mut Captures) -> T) -> Option<T> {
-    let mut guard = CAPTURES.lock().ok()?;
-    let captures = guard.get_or_insert_with(Captures::default);
-    if !captures.loaded {
-        captures.loaded = true;
-        load_into(captures);
-        if !captures.by_seed.is_empty() {
-            // The totals are rebuilt when this moves, and reading a file full of
-            // matches changes them as surely as playing one does. Without this
-            // the revision sits at its initial value, matches the freshly
-            // defaulted aggregate, and a session that loads history folds none
-            // of it — an empty table on top of a full file.
-            REVISION.fetch_add(1, Ordering::Relaxed);
-        }
+fn with_queue<T>(f: impl FnOnce(&mut Queue) -> T) -> Option<T> {
+    let mut guard = QUEUE.lock().ok()?;
+    let queue = guard.get_or_insert_with(Queue::default);
+    if !queue.loaded {
+        queue.loaded = true;
+        load_into(queue);
     }
-    Some(f(captures))
+    Some(f(queue))
 }
 
-/// Whether a match was simmed while this was running.
-pub(crate) fn has(seed: u64) -> bool {
-    with_captures(|captures| captures.by_seed.contains_key(&seed)).unwrap_or(false)
-}
-
-/// Attaches the patch a match was played on, learned from its record.
-pub(crate) fn set_patch(seed: u64, patch: &str) {
-    let changed = with_captures(|captures| {
-        let Some(entry) = captures.by_seed.get_mut(&seed) else {
-            return false;
-        };
-        if entry.patch.as_deref() == Some(patch) {
-            return false;
-        }
-        entry.patch = Some(patch.to_string());
-        true
+/// Hands over a captured match to be counted, and remembers that it was.
+///
+/// The entry is removed as it is returned: once the caller has folded it into the
+/// totals the loadouts have served their purpose, and keeping them is the cost
+/// this module exists to avoid. The seed stays behind so the same match cannot be
+/// captured again — see [`MAX_COUNTED`].
+pub(crate) fn take(seed: u64) -> Option<Vec<CapturedPlayer>> {
+    let taken = with_queue(|queue| {
+        let players = queue.by_seed.remove(&seed)?;
+        queue.order.retain(|queued| *queued != seed);
+        queue.mark_counted(seed);
+        Some(players)
     })
-    .unwrap_or(false);
+    .flatten();
 
-    if changed {
-        REVISION.fetch_add(1, Ordering::Relaxed);
+    if taken.is_some() {
         DIRTY.store(true, Ordering::Relaxed);
     }
-}
-
-/// The revision the totals were last folded at.
-pub(crate) fn revision() -> u64 {
-    REVISION.load(Ordering::Relaxed)
-}
-
-/// Every captured match, for the fold. Takes a callback rather than returning a
-/// collection because this runs over every match on file.
-pub(crate) fn for_each(mut f: impl FnMut(Option<&str>, &[CapturedPlayer])) {
-    let _ = with_captures(|captures| {
-        for entry in captures.by_seed.values() {
-            f(entry.patch.as_deref(), &entry.players);
-        }
-    });
+    taken
 }
 
 /// The match hook. Registered for every match the game simulates.
@@ -288,7 +323,7 @@ impl StableMatchHook for EndOfMatchItems {
         // counts — which is also why this does not need to filter on
         // `sim_origin`, and can therefore keep matches the player watches live.
         let seed = sim.seed();
-        if with_captures(|captures| captures.by_seed.contains_key(&seed)).unwrap_or(true) {
+        if with_queue(|queue| queue.seen(seed)).unwrap_or(true) {
             return;
         }
 
@@ -329,39 +364,104 @@ impl StableMatchHook for EndOfMatchItems {
             return;
         }
 
-        let _ = with_captures(|captures| {
-            captures.by_seed.insert(
-                seed,
-                Match {
-                    patch: None,
-                    players,
-                },
-            );
-            captures.order.push_back(seed);
-            while captures.order.len() > MAX_MATCHES {
-                if let Some(oldest) = captures.order.pop_front() {
-                    captures.by_seed.remove(&oldest);
+        let _ = with_queue(|queue| {
+            queue.by_seed.insert(seed, players);
+            queue.order.push_back(seed);
+            while queue.order.len() > MAX_QUEUED {
+                if let Some(oldest) = queue.order.pop_front() {
+                    queue.by_seed.remove(&oldest);
                 }
             }
         });
-        REVISION.fetch_add(1, Ordering::Relaxed);
         DIRTY.store(true, Ordering::Relaxed);
     }
 }
 
-/// Writes the captures out if any have been added since the last call.
+/// Queue entries a write may cost per management tick.
+///
+/// The write is proportional to the queue, so the interval between writes is
+/// made proportional too: a queue of 2,000 is written every ten ticks, one of 50
+/// every tick. That holds the amortised cost per tick flat however far the queue
+/// has been allowed to grow, where a fixed interval would only divide it by a
+/// constant.
+///
+/// It normally changes nothing, because the queue drains to near empty every time
+/// the statistics screen pumps. It is here for the case that does not: a long
+/// stretch played without ever opening that screen, where the queue climbs toward
+/// [`MAX_QUEUED`] and every write is the whole of it.
+const FLUSH_BUDGET: usize = 200;
+
+/// Management ticks since the queue was last written.
+static SINCE_WRITE: AtomicUsize = AtomicUsize::new(0);
+
+/// Writes the queue out if it changed since the last call, and enough ticks have
+/// passed for what that costs.
 ///
 /// Called from the management tick rather than from the capture itself: presims
 /// arrive in batches of dozens as a season advances, and a file write per match
 /// would put disk IO inside the simulation loop.
+///
+/// What it writes is bounded by what is waiting to be counted, so unlike the file
+/// this replaced it does not get slower as a save is played.
+///
+/// A write deferred is a write that can be lost: quitting with one outstanding
+/// leaves those matches uncounted, since a capture is only counted once. What is
+/// at risk is whatever was simmed during the wait, which is at most
+/// `MAX_QUEUED / FLUSH_BUDGET` management ticks and only reaches that when the
+/// queue is already full. Re-simming is the only way back, and the queue drains
+/// — so the interval returns to one tick — the moment the statistics screen is
+/// opened.
 pub(crate) fn flush() {
-    if !DIRTY.swap(false, Ordering::Relaxed) {
+    if !DIRTY.load(Ordering::Relaxed) {
         return;
     }
-    let Some(text) = with_captures(serialise) else {
+    // Only ticks with something pending are counted, so a quiet stretch does not
+    // bank credit toward the next write.
+    let waited = SINCE_WRITE.fetch_add(1, Ordering::Relaxed) + 1;
+    let Some(queued) = with_queue(|queue| queue.by_seed.len()) else {
         return;
     };
-    let Some(path) = crate::config::dll_dir().map(|dir| dir.join(FILE)) else {
+    // At most MAX_QUEUED / FLUSH_BUDGET, so the interval has a ceiling of its own
+    // and never needs clamping.
+    if waited < (queued / FLUSH_BUDGET).max(1) {
+        return;
+    }
+
+    write_queue();
+}
+
+/// Drops the loaded queue so the next use reads the save that is loaded now.
+///
+/// The captures belong to the save they were simmed in — each save has its own
+/// queue file — so switching saves must not carry them across. Called from
+/// [`crate::item_stats::adopt_save`] *after* the outgoing queue has been written
+/// and *before* the id that names its folder is replaced.
+pub(crate) fn forget() {
+    if let Ok(mut guard) = QUEUE.lock() {
+        *guard = None;
+    }
+    DIRTY.store(false, Ordering::Relaxed);
+    SINCE_WRITE.store(0, Ordering::Relaxed);
+}
+
+/// Writes the queue out now, whatever the throttle would have said.
+///
+/// For shutdown. [`flush`] can be sitting on a deferred write, and the process is
+/// about to stop calling it — which is the whole of the risk that throttle takes.
+pub(crate) fn flush_now() {
+    if !DIRTY.load(Ordering::Relaxed) {
+        return;
+    }
+    write_queue();
+}
+
+fn write_queue() {
+    SINCE_WRITE.store(0, Ordering::Relaxed);
+    DIRTY.store(false, Ordering::Relaxed);
+    let Some(text) = with_queue(serialise) else {
+        return;
+    };
+    let Some(path) = crate::item_stats::save_file(FILE) else {
         return;
     };
     // Written whole rather than appended: the map is the truth and a partial
@@ -369,43 +469,40 @@ pub(crate) fn flush() {
     let _ = std::fs::write(path, text);
 }
 
-const FILE: &str = "item-stats-builds.json";
+/// This save's uncounted captures, in the folder [`crate::item_stats`] names.
+const FILE: &str = "queue.json";
 
-/// The capture format this build writes and is willing to read.
+/// The queue format this build writes and is willing to read.
 ///
-/// Bumped to 2 when the lane was added to each player. A file written before
-/// that is **discarded rather than migrated**: its matches have no lane, so
-/// every one of them would sit outside whatever the lane filter is set to and
-/// silently under-report — the table would disagree with itself depending on
-/// which dropdown you touched. Starting the history over is the honest option,
-/// and it is what "no stats should be retroactive" asks for.
-const FORMAT: u32 = 2;
+/// A file that does not match is ignored rather than migrated, and the save it
+/// belongs to starts over. That is the right call for this file specifically: it
+/// holds matches that have not been counted, so the cost of dropping it is a few
+/// uncounted matches, where reading one whose shape has changed underneath risks
+/// counting them wrongly. Bump this whenever the shape changes.
+const FORMAT: u32 = 1;
 
-/// `{"v": 2, "m": {"<seed>": {"p": patch, "l": [{"c", "w", "i", "n"}, ...]}}}`
+/// `{"v": 3, "q": {"<seed>": [{"c", "w", "i", "n"}, ...]}, "d": [seed, ...]}`
+///
+/// `q` is what is still waiting to be counted; `d` is the seeds that already
+/// have been, which is all that is kept of them.
 ///
 /// Hand-rolled rather than derived: the mod's `serde` is not wired up for these
-/// types, the shape is five fields, and keeping it terse matters when the file
-/// holds thousands of matches — `n` rather than `lane` is worth roughly half a
-/// megabyte across a full history.
+/// types and the shape is four fields per player.
 ///
 /// `v` is what makes a format change safe: see [`FORMAT`].
-fn serialise(captures: &mut Captures) -> String {
-    let mut out = format!("{{\"v\":{FORMAT},\"m\":{{");
+fn serialise(queue: &mut Queue) -> String {
+    let mut out = format!("{{\"v\":{FORMAT},\"q\":{{");
     let mut first = true;
-    for seed in captures.order.iter() {
-        let Some(entry) = captures.by_seed.get(seed) else {
+    for seed in queue.order.iter() {
+        let Some(entry) = queue.by_seed.get(seed) else {
             continue;
         };
         if !first {
             out.push(',');
         }
         first = false;
-        out.push_str(&format!("\"{seed}\":{{"));
-        if let Some(patch) = &entry.patch {
-            out.push_str(&format!("\"p\":{},", quote(patch)));
-        }
-        out.push_str("\"l\":[");
-        for (slot, player) in entry.players.iter().enumerate() {
+        out.push_str(&format!("\"{seed}\":["));
+        for (slot, player) in entry.iter().enumerate() {
             if slot > 0 {
                 out.push(',');
             }
@@ -426,9 +523,16 @@ fn serialise(captures: &mut Captures) -> String {
             }
             out.push_str("]}");
         }
-        out.push_str("]}");
+        out.push_str("]");
     }
-    out.push_str("}}");
+    out.push_str("},\"d\":[");
+    for (slot, seed) in queue.counted.iter().enumerate() {
+        if slot > 0 {
+            out.push(',');
+        }
+        out.push_str(&format!("{seed}"));
+    }
+    out.push_str("]}");
     out
 }
 
@@ -436,8 +540,8 @@ fn quote(text: &str) -> String {
     format!("\"{}\"", text.replace('\\', "\\\\").replace('"', "\\\""))
 }
 
-fn load_into(captures: &mut Captures) {
-    let Some(path) = crate::config::dll_dir().map(|dir| dir.join(FILE)) else {
+fn load_into(queue: &mut Queue) {
+    let Some(path) = crate::item_stats::save_dir().map(|dir| dir.join(FILE)) else {
         return;
     };
     let Ok(text) = std::fs::read_to_string(path) else {
@@ -448,31 +552,27 @@ fn load_into(captures: &mut Captures) {
         return;
     };
 
-    // Anything this build did not write is not read. The older shapes — a bare
-    // array per seed, and the unversioned object that followed it — carry no
-    // lane, and there is nothing to infer one from.
+    // Anything this build did not write is not read: see [`FORMAT`].
     if file.get("v").and_then(serde_json::Value::as_u64) != Some(FORMAT as u64) {
         return;
     }
-    let Some(serde_json::Value::Object(root)) = file.get("m").cloned() else {
+
+    if let Some(serde_json::Value::Array(counted)) = file.get("d") {
+        for seed in counted.iter().filter_map(serde_json::Value::as_u64) {
+            queue.mark_counted(seed);
+        }
+    }
+
+    let Some(serde_json::Value::Object(root)) = file.get("q").cloned() else {
         return;
     };
-
     for (seed, value) in root {
         let Ok(seed) = seed.parse::<u64>() else {
             continue;
         };
-        let serde_json::Value::Object(fields) = &value else {
+        let serde_json::Value::Array(players) = value else {
             continue;
         };
-        let patch = fields
-            .get("p")
-            .and_then(serde_json::Value::as_str)
-            .map(str::to_string);
-        let serde_json::Value::Array(players) = fields.get("l").cloned().unwrap_or_default() else {
-            continue;
-        };
-
         let loadouts: Vec<CapturedPlayer> = players
             .iter()
             .filter_map(|player| {
@@ -504,13 +604,7 @@ fn load_into(captures: &mut Captures) {
         if loadouts.is_empty() {
             continue;
         }
-        captures.by_seed.insert(
-            seed,
-            Match {
-                patch,
-                players: loadouts,
-            },
-        );
-        captures.order.push_back(seed);
+        queue.by_seed.insert(seed, loadouts);
+        queue.order.push_back(seed);
     }
 }

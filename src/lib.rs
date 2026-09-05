@@ -202,9 +202,18 @@ impl StableServerExtension for NativeTapExtension {
     }
 
     fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
-        // Presims arrive in batches as a season advances, so the captures are
-        // written here rather than from the sim loop itself.
+        // Presims arrive in batches as a season advances, so both files are
+        // written here rather than from the sim loop itself: the queue of
+        // captures waiting to be counted, and the totals they are counted into.
+        //
+        // The queue goes FIRST, and the order is load bearing. A match leaves the
+        // queue and enters the totals in memory, so a crash between the two writes
+        // loses whichever step had not reached disk. Queue-then-totals loses the
+        // match — one undercounted item row. Totals-then-queue would leave the
+        // match still queued after its numbers were already banked, and count it
+        // twice on the next pass.
         item_stats_sim::flush();
+        item_stats::flush();
     }
 
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {

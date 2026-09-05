@@ -9,9 +9,9 @@
 //! on the last tick is the real end state, and it hands back real item keys
 //! rather than numbers indexing a table the API does not expose.
 //!
-//! So the totals are a fold over the captures, and the record answers only what
-//! the simulation cannot: which patch a match was played on, and whether it was
-//! a league match at all.
+//! So a match is counted once, when a record vouches for it, and the record
+//! answers only what the simulation cannot: which patch it was played on, and
+//! whether it was a league match at all.
 //!
 //! # What the record is used for
 //!
@@ -26,18 +26,31 @@
 //! registered in. Taking the loadout from the sim instead makes both problems
 //! disappear at once: real keys, and the real end state.
 //!
-//! # Retention
+//! # Why the totals are kept, and not the matches
 //!
-//! The totals are a pure fold over the captures, which live in a file this mod
-//! owns, so history is bounded by `MAX_MATCHES` rather than by how long the game
-//! keeps a record. That matters: the record count was seen going 126 -> 28 -> 77
-//! inside one session, so the game prunes and recycles ids freely, and anything
-//! that counted records — or trusted "id 12 is already scanned" — drifted with
-//! it. Re-reading every record on every pass is safe precisely because records
-//! contribute no numbers, only patches, and the captures deduplicate themselves
-//! by match seed.
+//! These counters **are** the stored history: a match is folded in once and its
+//! loadouts are dropped. The alternative, keeping every match and re-folding them
+//! whenever one was added, cost two passes over the whole save — the fold itself
+//! and the file write that followed it — and both got slower the longer the save
+//! was played, which is exactly backwards for a feature that only becomes useful
+//! once a lot has been played. What is on disk is now proportional to the number
+//! of items, patches and lanes, all of which are fixed.
+//!
+//! The trade is that nothing can be recomputed. A column added later starts
+//! empty and fills from new matches, where a stored history could have answered
+//! it at once — that is how the first-item rate was added retroactively. Worth
+//! knowing before adding the next column.
+//!
+//! Records still cannot be trusted to persist or to keep their ids: the count was
+//! seen going 126 -> 28 -> 77 inside one session, so the game prunes and recycles
+//! them freely. Re-reading every record on every pass stays safe because a record
+//! contributes no numbers, only a patch, and a match can be counted only once —
+//! [`crate::item_stats_sim::take`] hands each one over exactly once and remembers
+//! that it did.
 
 use std::collections::BTreeMap;
+use std::path::PathBuf;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
 
 use mod_api_stable::*;
@@ -90,8 +103,8 @@ impl Totals {
 struct Aggregate {
     /// Record ids still to read for their patch, newest first.
     pending: Vec<usize>,
-    /// Capture revision these totals were folded at.
-    revision: u64,
+    /// Whether the counters have been read back from disk yet.
+    loaded: bool,
     /// Patch -> (lane, item) -> totals.
     ///
     /// Keyed by patch first so the filter is a map lookup rather than a re-scan:
@@ -115,7 +128,12 @@ static AGG: Mutex<Option<Aggregate>> = Mutex::new(None);
 
 fn with_agg<T>(f: impl FnOnce(&mut Aggregate) -> T) -> Option<T> {
     let mut guard = AGG.lock().ok()?;
-    Some(f(guard.get_or_insert_with(Aggregate::default)))
+    let agg = guard.get_or_insert_with(Aggregate::default);
+    if !agg.loaded {
+        agg.loaded = true;
+        load_into(agg);
+    }
+    Some(f(agg))
 }
 
 /// What the panel draws.
@@ -170,69 +188,54 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
     })
     .unwrap_or_default();
 
+    let mut folded = false;
     for id in &batch {
         let Some((patch, seed)) = read_record(ctx, *id) else {
             continue;
         };
-        // A seed with no capture is a match simmed before capturing began.
-        // Nothing to do with it: the loadout it would need does not exist, and
-        // the record carries no usable substitute.
-        if crate::item_stats_sim::has(seed) {
-            crate::item_stats_sim::set_patch(seed, &patch);
-        }
+        // A seed with no capture waiting is either a match simmed before
+        // capturing began — the loadout it would need does not exist, and the
+        // record carries no usable substitute — or one already counted, which
+        // `take` declines a second time. Both are nothing to do.
+        let Some(players) = crate::item_stats_sim::take(seed) else {
+            continue;
+        };
+        fold(&patch, &players);
+        folded = true;
     }
 
-    let finished = with_agg(|agg| agg.pending.is_empty()).unwrap_or(false);
-
-    // The totals are a pure function of what is on file, so they are rebuilt
-    // when that changes rather than nudged along and kept in step by hand. It is
-    // an in-memory walk of a few thousand entries; the expensive part of this
-    // module is the record reads above.
-    let revision = crate::item_stats_sim::revision();
-    let stale = with_agg(|agg| agg.revision != revision).unwrap_or(false);
-    if stale {
-        rebuild(revision);
+    if folded {
+        DIRTY.store(true, Ordering::Relaxed);
         return true;
     }
 
+    let finished = with_agg(|agg| agg.pending.is_empty()).unwrap_or(false);
     !batch.is_empty() && finished
 }
 
-/// Folds every captured match into the totals from scratch.
-fn rebuild(revision: u64) {
-    let mut counts: BTreeMap<String, BTreeMap<(Option<usize>, String), Totals>> = BTreeMap::new();
-    let mut champions: BTreeMap<String, BTreeMap<(Option<usize>, String), BTreeMap<String, u32>>> =
-        BTreeMap::new();
-    let mut matches: BTreeMap<String, u32> = BTreeMap::new();
+/// Folds one vouched match into the running totals.
+///
+/// Called once per match, ever. The counters it adds to are the stored history,
+/// so nothing is recomputed and nothing is walked twice — which is the whole
+/// point of keeping numbers rather than matches.
+fn fold(patch: &str, players: &[crate::item_stats_sim::CapturedPlayer]) {
+    let _ = with_agg(|agg| {
+        *agg.matches.entry(patch.to_string()).or_default() += 1;
 
-    crate::item_stats_sim::for_each(|patch, players| {
-        // Only matches a league record has vouched for. The hook captures every
-        // simulation the game runs — solo-rank games athletes play on their own
-        // time, practice, tutorials — and none of those produce a
-        // `MatchReplay` record, so none of them are ever given a patch.
-        //
-        // This is what keeps the tab counting the same matches the tabs beside
-        // it count. Without it, sitting on the screen while solo rank ticks
-        // along quietly moves every number, which is exactly how it was noticed.
-        let Some(patch) = patch else {
-            return;
-        };
-        let patch = patch.to_string();
-        *matches.entry(patch.clone()).or_default() += 1;
-        let per_item = counts.entry(patch.clone()).or_default();
+        let per_item = agg.counts.entry(patch.to_string()).or_default();
         for player in players {
             for (slot, key) in player.items.iter().enumerate() {
                 let entry = per_item.entry((player.lane, key.clone())).or_default();
                 entry.games += 1;
                 entry.wins += u32::from(player.won);
                 // Slot order is completion order, so the first slot is the item
-                // this player rushed. Counted here rather than stored on the
-                // capture, so the whole history already on file answers the new
-                // column without being re-simmed.
+                // this player rushed. There is no timestamp on an item; this is
+                // the only purchase order the simulation exposes.
                 entry.firsts += u32::from(slot == 0);
             }
         }
-        let per_champion = champions.entry(patch).or_default();
+
+        let per_champion = agg.champions.entry(patch.to_string()).or_default();
         for player in players {
             // A player whose champion could not be read still counts toward the
             // item's games and wins — the loadout is real — but it must not be
@@ -253,15 +256,7 @@ fn rebuild(revision: u64) {
             }
         }
     });
-
-    let _ = with_agg(|agg| {
-        agg.counts = counts;
-        agg.champions = champions;
-        agg.matches = matches;
-        agg.revision = revision;
-    });
 }
-
 /// The patches seen in the records, newest first.
 ///
 /// Populated from the records themselves rather than from the game's own patch
@@ -601,4 +596,287 @@ fn icon_frame(object: &serde_json::Map<String, Value>, key: &str) -> Option<Stri
         .filter(|icon| !icon.is_empty())
         .map(str::to_string)
         .or_else(|| Some(key.to_string()))
+}
+
+/// Set when the counters change, cleared when they reach disk.
+static DIRTY: AtomicBool = AtomicBool::new(false);
+
+/// Key the save's own id is kept under, inside this mod's save namespace.
+///
+/// The namespace belongs to the save file, so a value written here travels with
+/// it and nothing else can see it. That is the whole trick: the id does not have
+/// to be derived from anything the game exposes — there is no save name or handle
+/// in the client API — because the save can simply be asked to hold one.
+const SAVE_KEY: &str = "stats_save_id";
+
+/// The save whose totals are loaded, or `None` before one has been adopted.
+static SAVE: Mutex<Option<String>> = Mutex::new(None);
+
+/// Folder holding every save's statistics, one subfolder each.
+const STATS_DIR: &str = "item_stats";
+
+/// This save's counters, inside its own folder.
+const FILE: &str = "totals.json";
+
+/// Where this save's statistics live: `item_stats/<save id>/`.
+///
+/// `None` until a save has been adopted, which is what keeps the main menu from
+/// writing anything: there is nowhere to put it, and nothing to put there either,
+/// since a match is only ever counted from the statistics screen.
+///
+/// Shared with [`crate::item_stats_sim`], which keeps its queue of uncounted
+/// matches in the same folder — a save's captures belong to it as much as its
+/// totals do, and keeping them together means one directory to copy or delete.
+pub(crate) fn save_dir() -> Option<PathBuf> {
+    let id = SAVE.lock().ok()?.clone()?;
+    crate::config::dll_dir().map(|dir| dir.join(STATS_DIR).join(id))
+}
+
+/// The path to write one of this save's files to, folder created.
+///
+/// Reads go through [`save_dir`] instead: a missing folder is a save with nothing
+/// recorded yet, which reads as an empty table rather than as an error, and there
+/// is no reason for a read to leave a folder behind.
+pub(crate) fn save_file(name: &str) -> Option<PathBuf> {
+    let dir = save_dir()?;
+    std::fs::create_dir_all(&dir).ok()?;
+    Some(dir.join(name))
+}
+
+/// Points the totals at whichever save is loaded, and puts away the last one's.
+///
+/// Called every frame from the client's `post_update`, off the statistics screen
+/// as well as on it — the numbers have to be pointed at the right save before
+/// anything folds into them or flushes them, and neither of those happens here.
+///
+/// Cheap to call repeatedly: a save key read, and on the frame the save changes,
+/// one write and one load.
+///
+/// **A new id is minted only when this process holds none.** The namespace is
+/// not a reliable answer to "which save is this" on any given frame — it reads
+/// empty mid-load, and the id it holds only reaches disk when the player saves —
+/// so an empty read is treated as "ask again later", not as a new save. Only an
+/// id that comes back *different* moves the totals to another folder.
+pub(crate) fn adopt_save(ctx: &mut StableClient<'_>) {
+    // The save namespace no-ops outside an active game, so this is also how the
+    // main menu is recognised. The previous save's totals stay loaded there,
+    // which is harmless: the tab that reads them cannot be reached.
+    if !ctx.save_can_write() {
+        return;
+    }
+
+    // Bound before the match rather than read in its scrutinee: a temporary there
+    // lives to the end of the match, so the shared borrow of `ctx` would still be
+    // alive when the arms below need it mutably to write the id back.
+    let existing = ctx.save_get_string(SAVE_KEY).filter(|id| !id.is_empty());
+    let adopted = SAVE.lock().ok().and_then(|current| current.clone());
+
+    let id = match (existing, adopted) {
+        // The save names itself and it is the one already loaded.
+        (Some(id), Some(adopted)) if id == adopted => return,
+        // The save names itself and it is a different one. Only an id that came
+        // out of the namespace is proof of a switch, which is why this is the
+        // one case that moves to another folder.
+        (Some(id), _) => id,
+        // Nothing in the namespace, but this process has already adopted an id.
+        //
+        // An empty namespace is NOT proof of a different save. It reads empty
+        // while a save is still being loaded, and an id only reaches disk when
+        // the player saves, so a restart before saving loses it too. Minting
+        // here treated both as new saves and forked one save's history across
+        // folders — three of them in one evening, with no match in common,
+        // 44 minutes and then 20 seconds apart. Re-assert what is held instead:
+        // if the namespace is real the id sticks, and if it is not, the write
+        // goes nowhere and costs nothing.
+        (None, Some(adopted)) => {
+            let _ = ctx.save_set_string(SAVE_KEY, &adopted);
+            return;
+        }
+        // Nothing anywhere: the first save this process has seen. The id is
+        // arbitrary — it only has to differ from every other save's and be
+        // usable in a file name.
+        (None, None) => {
+            let id = new_save_id();
+            if !ctx.save_set_string(SAVE_KEY, &id) {
+                return;
+            }
+            id
+        }
+    };
+
+    // Order matters: both files are written into the outgoing save's folder, so
+    // they have to go out before the id that names it is replaced. The queue is
+    // forced rather than flushed, because its throttle may be sitting on a
+    // deferred write and this is the last chance to take it.
+    flush();
+    crate::item_stats_sim::flush_now();
+    let _ = with_agg(|agg| *agg = Aggregate::default());
+    crate::item_stats_sim::forget();
+    if let Ok(mut save) = SAVE.lock() {
+        *save = Some(id);
+    }
+}
+
+/// An id for a save that has none yet.
+///
+/// The clock rather than a random number: the mod has no RNG outside a
+/// simulation, and two saves cannot be first seen in the same nanosecond.
+fn new_save_id() -> String {
+    let nanos = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|since| since.as_nanos() as u64)
+        .unwrap_or(0);
+    format!("{nanos:016x}")
+}
+
+/// The totals format this build writes and is willing to read.
+///
+/// A file that does not match is ignored rather than migrated, and that save's
+/// table starts over. These counters cannot be recomputed from anything — the
+/// matches behind them are long gone — so a shape change is the one case where
+/// history is lost, and worth weighing before bumping this.
+const FORMAT: u32 = 1;
+
+/// Writes the counters out if they changed since the last call.
+///
+/// Driven from the management tick beside the queue's own flush. The file is a
+/// few thousand rows whatever the save has been through, so unlike the history it
+/// replaced this costs the same on the first match and the ten-thousandth.
+pub(crate) fn flush() {
+    if !DIRTY.swap(false, Ordering::Relaxed) {
+        return;
+    }
+    let Some(text) = with_agg(serialise) else {
+        return;
+    };
+    let Some(path) = save_file(FILE) else {
+        return;
+    };
+    // Written whole rather than appended: a partial append after a crash would
+    // be a file that no longer parses, and these numbers cannot be re-derived.
+    let _ = std::fs::write(path, text);
+}
+
+/// `{"v": 1, "t": {"<patch>": {"m": matches, "i": [entry, ...]}}}`, where an
+/// entry is `{"n": lane, "k": item, "g": games, "w": wins, "f": firsts,
+/// "c": {champion: count}}`.
+///
+/// The champion tally rides inside the entry rather than in a map of its own
+/// because both are keyed by the same `(lane, item)` pair — every champion count
+/// came from a player whose items were counted in the same pass, so the item map
+/// is always a superset and there is no second key space to keep in step.
+///
+/// `n` is omitted for a player the host gave no lane for, and `c` when no champion
+/// on the entry could be named.
+fn serialise(agg: &mut Aggregate) -> String {
+    let mut out = format!("{{\"v\":{FORMAT},\"t\":{{");
+    for (slot, (patch, per_item)) in agg.counts.iter().enumerate() {
+        if slot > 0 {
+            out.push(',');
+        }
+        let matches = agg.matches.get(patch).copied().unwrap_or(0);
+        out.push_str(&format!("{}:{{\"m\":{matches},\"i\":[", quote(patch)));
+        let per_champion = agg.champions.get(patch);
+        for (slot, ((lane, item), totals)) in per_item.iter().enumerate() {
+            if slot > 0 {
+                out.push(',');
+            }
+            out.push('{');
+            if let Some(lane) = lane {
+                out.push_str(&format!("\"n\":{lane},"));
+            }
+            out.push_str(&format!(
+                "\"k\":{},\"g\":{},\"w\":{},\"f\":{}",
+                quote(item),
+                totals.games,
+                totals.wins,
+                totals.firsts
+            ));
+            let tally = per_champion.and_then(|per| per.get(&(*lane, item.clone())));
+            if let Some(tally) = tally.filter(|tally| !tally.is_empty()) {
+                out.push_str(",\"c\":{");
+                for (slot, (champion, count)) in tally.iter().enumerate() {
+                    if slot > 0 {
+                        out.push(',');
+                    }
+                    out.push_str(&format!("{}:{count}", quote(champion)));
+                }
+                out.push('}');
+            }
+            out.push('}');
+        }
+        out.push_str("]}");
+    }
+    out.push_str("}}");
+    out
+}
+
+fn quote(text: &str) -> String {
+    format!("\"{}\"", text.replace('\\', "\\\\").replace('"', "\\\""))
+}
+
+fn load_into(agg: &mut Aggregate) {
+    let Some(path) = save_dir().map(|dir| dir.join(FILE)) else {
+        return;
+    };
+    let Ok(text) = std::fs::read_to_string(path) else {
+        return;
+    };
+    let Ok(Value::Object(file)) = serde_json::from_str::<Value>(&text) else {
+        return;
+    };
+    if file.get("v").and_then(Value::as_u64) != Some(FORMAT as u64) {
+        return;
+    }
+    let Some(Value::Object(patches)) = file.get("t") else {
+        return;
+    };
+
+    for (patch, body) in patches {
+        let Some(body) = body.as_object() else {
+            continue;
+        };
+        let matches = body.get("m").and_then(Value::as_u64).unwrap_or(0) as u32;
+        let Some(Value::Array(entries)) = body.get("i") else {
+            continue;
+        };
+        let per_item = agg.counts.entry(patch.clone()).or_default();
+        let mut champions: BTreeMap<(Option<usize>, String), BTreeMap<String, u32>> =
+            BTreeMap::new();
+        for entry in entries {
+            let Some(fields) = entry.as_object() else {
+                continue;
+            };
+            let Some(item) = fields.get("k").and_then(Value::as_str) else {
+                continue;
+            };
+            let lane = fields
+                .get("n")
+                .and_then(Value::as_u64)
+                .map(|lane| lane as usize);
+            let key = (lane, item.to_string());
+            let read = |name: &str| fields.get(name).and_then(Value::as_u64).unwrap_or(0) as u32;
+            per_item.insert(
+                key.clone(),
+                Totals {
+                    games: read("g"),
+                    wins: read("w"),
+                    firsts: read("f"),
+                },
+            );
+            if let Some(Value::Object(tally)) = fields.get("c") {
+                let per_champion = champions.entry(key).or_default();
+                for (champion, count) in tally {
+                    let Some(count) = count.as_u64() else {
+                        continue;
+                    };
+                    per_champion.insert(champion.clone(), count as u32);
+                }
+            }
+        }
+        agg.matches.insert(patch.clone(), matches);
+        if !champions.is_empty() {
+            agg.champions.insert(patch.clone(), champions);
+        }
+    }
 }

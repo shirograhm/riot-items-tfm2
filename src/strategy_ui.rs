@@ -2774,6 +2774,12 @@ impl StableExtension for StrategyPicker {
         // inert unless `4items.cfg` says three slots.
         crate::solo_rank_ui::sync(ctx);
 
+        // Which save's item totals are loaded. Unconditional because it has to
+        // be settled before anything reads or writes them, and the two places
+        // that do — the statistics screen and the management tick — are both
+        // somewhere this early return would have skipped.
+        crate::item_stats::adopt_save(ctx);
+
         // Same again, for the statistics screen and its Item Stats tab. Inert
         // anywhere else: it returns on its first line unless that screen is up.
         crate::item_stats_ui::sync(ctx);
@@ -2833,5 +2839,21 @@ impl StableExtension for StrategyPicker {
             sync_filter(ctx);
             sync_info_popup(ctx);
         }
+    }
+
+    /// Last call before the process goes away, so anything held back for the sake
+    /// of not writing it every tick has to go out here.
+    ///
+    /// The item stats are the only state that can be owed a write: the queue's
+    /// flush defers when it has grown large, and the totals are written from the
+    /// management tick, which stops running before this. Both take no ctx — they
+    /// resolve their own path beside the DLL — which is what makes them callable
+    /// from a hook that is given none.
+    ///
+    /// There is no save hook in the stable API to pair this with, so a save made
+    /// and then played on is covered by the ordinary flush, not by this.
+    fn on_end(&self) {
+        crate::item_stats_sim::flush_now();
+        crate::item_stats::flush();
     }
 }
