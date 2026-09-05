@@ -291,9 +291,11 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
     reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
+    reg.add_item(configured!("fated_ashes" => FatedAshes));
     reg.add_item(configured!("forbidden_idol" => ForbiddenIdol));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
+    reg.add_item(configured!("hextech_alternator" => HextechAlternator));
     reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
     reg.add_item(configured!("last_whisper" => LastWhisper));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
@@ -365,6 +367,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("trinity_force" => TrinityForce));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
+    reg.add_item(configured!("stormsurge" => Stormsurge));
     reg.add_item(configured!("void_staff" => VoidStaff));
     reg.add_item(configured!("voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
@@ -433,6 +436,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
     reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce));
     reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
+    reg.add_item(configured_radiant!("radiant_stormsurge" => Stormsurge));
     reg.add_item(configured_radiant!("radiant_void_staff" => VoidStaff));
     reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));

@@ -16,5 +16,6 @@ items! {
     rite_of_ruin,
     rylais_crystal_scepter,
     shadowflame,
+    stormsurge,
     void_staff,
 }
