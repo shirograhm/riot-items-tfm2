@@ -43,6 +43,19 @@ fn reserve_landing(ctx: &mut StableSim<'_>, target: usize) -> usize {
     (landing - now).max(1)
 }
 
+/// Whether `target` is still the entity the proc was queued against.
+///
+/// Entity ids are bare slot indices -- `EntityHandleV1::from_id` is just
+/// `id + 1`, with no generation counter -- so the id of something that died
+/// is free to be handed to whatever spawns next. A proc that only checks
+/// this at its landing tick can hit a stranger sitting in the dead target's
+/// slot, which is why the queue re-checks every tick and drops the proc the
+/// moment its target goes down.
+fn target_still_valid(ctx: &StableSim<'_>, target: usize) -> bool {
+    ctx.get_entity(target)
+        .is_some_and(|target_ref| target_ref.is_alive())
+}
+
 #[derive(Clone, Debug, Default)]
 pub(crate) struct ProcQueue {
     pending: Vec<PendingProc>,
@@ -53,6 +66,14 @@ impl ProcQueue {
         Self::default()
     }
 
+    /// Queues a hit to land in a few ticks.
+    ///
+    /// Landing procs go out through `deal_damage` as `AttackTypeV1::Item`,
+    /// so they come back around through `on_attack`. A caller that queues
+    /// off an `Item` hit feeds its own procs and cycles forever -- the
+    /// stagger cap only paces that loop, it does not end it. Gate on
+    /// `attack_type` first: most items take `BaseAttack` only, and the ones
+    /// that want skills too still have to reject `Item` explicitly.
     pub(crate) fn push(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -104,6 +125,9 @@ impl ProcQueue {
 
         let mut landed = Vec::new();
         self.pending.retain_mut(|hit| {
+            if !target_still_valid(ctx, hit.target) {
+                return false;
+            }
             hit.remaining = hit.remaining.saturating_sub(1);
             if hit.remaining > 0 {
                 return true;
@@ -113,10 +137,9 @@ impl ProcQueue {
         });
 
         for hit in landed {
-            if ctx
-                .get_entity(hit.target)
-                .is_some_and(|target_ref| target_ref.is_alive())
-            {
+            // Still worth re-testing: an earlier proc in this same batch can
+            // have killed a target that a later one also points at.
+            if target_still_valid(ctx, hit.target) {
                 ctx.deal_damage(
                     caster,
                     hit.target,
