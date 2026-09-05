@@ -665,11 +665,11 @@
         },
         "serpents_fang": {
             "name": "Serpent's Fang",
-            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>50<> + <#ff9028ff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nShield Reaver: Landing a basic attack or an Ability on an enemy champion with a shield deals <#ff9028ff>50<> + <#ff9028ff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "radiant_serpents_fang": {
             "name": "Radiant Serpent's Fang",
-            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>85<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nShield Reaver: Landing a basic attack or an Ability on an enemy champion with a shield deals <#ff9028ff>85<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "opportunity": {
             "name": "Opportunity",
@@ -1454,11 +1454,11 @@
         },
         "serpents_fang": {
             "name": "Nanh Rắn Độc",
-            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>50<> + <#ff9028ff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nKẻ Cắt Khiên: Đòn đánh thường hoặc kĩ năng trúng tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>50<> + <#ff9028ff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "radiant_serpents_fang": {
             "name": "Nanh Rắn Độc Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>85<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nKẻ Cắt Khiên: Đòn đánh thường hoặc kĩ năng trúng tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>85<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "opportunity": {
             "name": "Gươm Thức Thời",
@@ -2243,11 +2243,11 @@
         },
         "serpents_fang": {
             "name": "毒蛇之牙",
-            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>10%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破盾者：普通攻击或技能命中拥有护盾的敌方英雄时，额外造成 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>10%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "radiant_serpents_fang": {
             "name": "光明版毒蛇之牙",
-            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破盾者：普通攻击或技能命中拥有护盾的敌方英雄时，额外造成 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "opportunity": {
             "name": "禁忌时机",
@@ -3032,11 +3032,11 @@
         },
         "serpents_fang": {
             "name": "Presa da Serpente",
-            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>50<> + <#ff9028ff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nCeifador de Escudos: Acertar um ataque básico ou uma Habilidade em um campeão inimigo com escudo causa <#ff9028ff>50<> + <#ff9028ff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "radiant_serpents_fang": {
             "name": "Presa da Serpente Radiante",
-            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>85<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nCeifador de Escudos: Acertar um ataque básico ou uma Habilidade em um campeão inimigo com escudo causa <#ff9028ff>85<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "opportunity": {
             "name": "Oportunidade",
@@ -3821,11 +3821,11 @@
         },
         "serpents_fang": {
             "name": "Клык змея",
-            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>50<> + <#ff9028ff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nПожиратель щитов: Попадание базовой атакой или умением по вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>50<> + <#ff9028ff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "radiant_serpents_fang": {
             "name": "Лучезарный Клык змея",
-            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>85<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nПожиратель щитов: Попадание базовой атакой или умением по вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>85<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "opportunity": {
             "name": "Возможность",
@@ -4610,11 +4610,11 @@
         },
         "serpents_fang": {
             "name": "독사의 송곳니",
-            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "radiant_serpents_fang": {
             "name": "찬란한 독사의 송곳니",
-            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "opportunity": {
             "name": "기회",
