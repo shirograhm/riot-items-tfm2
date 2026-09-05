@@ -1272,5 +1272,42 @@
     "effect_crit_percent_damage": 100.0,
     "effect_slow_amount": 7,
     "effect_duration_seconds": 2
+  },
+  "hextech_alternator": {
+    "price": 800,
+    "magic_power": 100,
+    "effect_bonus_flat_damage": 65,
+    "effect_cooldown_seconds": 40
+  },
+  "fated_ashes": {
+    "price": 500,
+    "magic_power": 50,
+    "effect_bonus_flat_damage": 15,
+    "effect_duration_seconds": 3,
+    "effect_minion_percent": 400.0
+  },
+  "stormsurge": {
+    "price": 1400,
+    "magic_power": 110,
+    "move_speed_mult": 5,
+    "magic_resistance_penetration": 10,
+    "effect_hp_percent_threshold": 25.0,
+    "effect_duration_seconds": 2.5,
+    "effect_delay_seconds": 2,
+    "effect_cooldown_seconds": 30,
+    "effect_bonus_flat_damage": 125,
+    "effect_ap_percent_damage": 10.0
+  },
+  "radiant_stormsurge": {
+    "price": 2000,
+    "magic_power": 200,
+    "move_speed_mult": 5,
+    "magic_resistance_penetration": 15,
+    "effect_hp_percent_threshold": 25.0,
+    "effect_duration_seconds": 2.5,
+    "effect_delay_seconds": 2,
+    "effect_cooldown_seconds": 30,
+    "effect_bonus_flat_damage": 125,
+    "effect_ap_percent_damage": 10.0
   }
 }

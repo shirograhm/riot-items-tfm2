@@ -409,7 +409,7 @@ const EDITOR_SOURCE: &str = include_str!("../ui/layout/build_editor.ui");
 
 /// Sheet the item icons come from. The mod overrides this asset with its own
 /// 640x640 sheet (see `mod.override_info`), so frame names are the mod's.
-const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
+pub(crate) const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
 
 // Row geometry, inside the 1314px band `#rows` gives its children. The x offsets
 // match `build_editor.ui`'s column headers. The band is the panel minus the
@@ -2207,9 +2207,14 @@ fn list_entry_style(lit: bool, idle_text: &str) -> String {
 }
 
 /// One tab's appearance, through whichever property pair actually renders for
-/// it — `image`/`label` for our never-selected tab, `selected_image`/
-/// `selected_label` for Team, which game code still considers selected.
-fn tab_style(image_key: &str, label_key: &str, lit: bool) -> String {
+/// it — `image`/`label` for a tab this mod added, which game code never
+/// considers selected, and `selected_image`/`selected_label` for a vanilla one
+/// it does.
+///
+/// Shared with [`crate::item_stats_ui`], whose fourth tab on the statistics
+/// screen is the same trick against a different runner: same `strategy_option`
+/// style underneath, so the same pair of property sets lights and dims it.
+pub(crate) fn tab_style(image_key: &str, label_key: &str, lit: bool) -> String {
     let (fill, text, stroke) = if lit {
         (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
     } else {
@@ -2769,6 +2774,16 @@ impl StableExtension for StrategyPicker {
         // inert unless `4items.cfg` says three slots.
         crate::solo_rank_ui::sync(ctx);
 
+        // Which save's item totals are loaded. Unconditional because it has to
+        // be settled before anything reads or writes them, and the two places
+        // that do — the statistics screen and the management tick — are both
+        // somewhere this early return would have skipped.
+        crate::item_stats::adopt_save(ctx);
+
+        // Same again, for the statistics screen and its Item Stats tab. Inert
+        // anywhere else: it returns on its first line unless that screen is up.
+        crate::item_stats_ui::sync(ctx);
+
         if !ctx.ui_exists(BUILDS_TAB) {
             // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.
@@ -2824,5 +2839,21 @@ impl StableExtension for StrategyPicker {
             sync_filter(ctx);
             sync_info_popup(ctx);
         }
+    }
+
+    /// Last call before the process goes away, so anything held back for the sake
+    /// of not writing it every tick has to go out here.
+    ///
+    /// The item stats are the only state that can be owed a write: the queue's
+    /// flush defers when it has grown large, and the totals are written from the
+    /// management tick, which stops running before this. Both take no ctx — they
+    /// resolve their own path beside the DLL — which is what makes them callable
+    /// from a hook that is given none.
+    ///
+    /// There is no save hook in the stable API to pair this with, so a save made
+    /// and then played on is covered by the ordinary flush, not by this.
+    fn on_end(&self) {
+        crate::item_stats_sim::flush_now();
+        crate::item_stats::flush();
     }
 }

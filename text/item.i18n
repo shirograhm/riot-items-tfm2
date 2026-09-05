@@ -665,11 +665,11 @@
         },
         "serpents_fang": {
             "name": "Serpent's Fang",
-            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>50<> + <#ff9028ff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nShield Reaver: Landing a basic attack or an Ability on an enemy champion with a shield deals <#ff9028ff>50<> + <#ff9028ff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "radiant_serpents_fang": {
             "name": "Radiant Serpent's Fang",
-            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nShield Reaver: Dealing damage to an enemy champion with a shield deals <#ff9028ff>85<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
+            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\nShield Reaver: Landing a basic attack or an Ability on an enemy champion with a shield deals <#ff9028ff>85<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>."
         },
         "opportunity": {
             "name": "Opportunity",
@@ -737,11 +737,11 @@
         },
         "feral_flare": {
             "name": "Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
         },
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
-            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% effective<> against minions and monsters."
+            "option": "\nMaim: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
@@ -786,6 +786,22 @@
         "radiant_hamstringer": {
             "name": "Radiant Hamstringer",
             "option": "\nScour: Your <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strikes<> bleed the target, dealing <#ff9028ff>70<> - <#ff9028ff>180<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>physical damage<> over <#e8a800ff>2 seconds<> and applying a <#d94c49ff>7% slow<>."
+        },
+        "hextech_alternator": {
+            "name": "Hextech Alternator",
+            "option": "\nRevved: Damaging an enemy champion deals <#a974ffff>65 bonus magic damage<> (<#e8a800ff>40 second<> cooldown)."
+        },
+        "fated_ashes": {
+            "name": "Fated Ashes",
+            "option": "\nInflame: Landing an Ability on an enemy burns them for <#a974ffff>15 magic damage<> over <#e8a800ff>3 seconds<>. This effect is <#e8a800ff>400% as effective<> against minions and monsters."
+        },
+        "stormsurge": {
+            "name": "Stormsurge",
+            "option": "\nStormraider: Dealing damage to an enemy champion equal to <#60e84dff>25%<> of their <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> within <#e8a800ff>2.5 seconds<> inflicts them with Squall (<#e8a800ff>30 second<> cooldown per target).\n\nSquall: After <#e8a800ff>2 seconds<>, strike the target, dealing <#a974ffff>125<> + <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<>."
+        },
+        "radiant_stormsurge": {
+            "name": "Radiant Stormsurge",
+            "option": "\nStormraider: Dealing damage to an enemy champion equal to <#60e84dff>25%<> of their <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> within <#e8a800ff>2.5 seconds<> inflicts them with Squall (<#e8a800ff>30 second<> cooldown per target).\n\nSquall: After <#e8a800ff>2 seconds<>, strike the target, dealing <#a974ffff>125<> + <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<>."
         }
     },
     "vi": {
@@ -1454,11 +1470,11 @@
         },
         "serpents_fang": {
             "name": "Nanh Rắn Độc",
-            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>50<> + <#ff9028ff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nKẻ Cắt Khiên: Đòn đánh thường hoặc kĩ năng trúng tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>50<> + <#ff9028ff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "radiant_serpents_fang": {
             "name": "Nanh Rắn Độc Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nKẻ Cắt Khiên: Gây sát thương lên tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>85<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
+            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\nKẻ Cắt Khiên: Đòn đánh thường hoặc kĩ năng trúng tướng địch đang có lá chắn sẽ gây thêm <#ff9028ff>85<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>."
         },
         "opportunity": {
             "name": "Gươm Thức Thời",
@@ -1575,6 +1591,22 @@
         "radiant_hamstringer": {
             "name": "Gươm Tê Liệt Ánh Sáng",
             "option": "\nKhám Xét: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#ff9028ff>70<> - <#ff9028ff>180<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>2 giây<> và gây <#d94c49ff>7% kiệt sức<>."
+        },
+        "hextech_alternator": {
+            "name": "Máy Chuyển Pha Hextech",
+            "option": "\nCăng Ga: Khi gây sát thương cho tướng địch, gây <#a974ffff>65 sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>40 giây<>)."
+        },
+        "fated_ashes": {
+            "name": "Tro Tàn Định Mệnh",
+            "option": "\nTàn Lửa: Kĩ năng trúng kẻ địch sẽ thiêu đốt chúng, gây <#a974ffff>15 sát thương phép<> trong <#e8a800ff>3 giây<>. Hiệu ứng này <#e8a800ff>hiệu quả 400%<> lên lính và quái."
+        },
+        "stormsurge": {
+            "name": "Quyền Trượng Bão Tố",
+            "option": "\nĐột Kích Bão Tố: Gây sát thương bằng <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu tối đa<> của tướng địch trong vòng <#e8a800ff>2.5 giây<> sẽ gây hiệu ứng Gió Giật lên chúng (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\nGió Giật: Sau <#e8a800ff>2 giây<>, đánh vào mục tiêu, gây <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<>."
+        },
+        "radiant_stormsurge": {
+            "name": "Quyền Trượng Bão Tố Ánh Sáng",
+            "option": "\nĐột Kích Bão Tố: Gây sát thương bằng <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu tối đa<> của tướng địch trong vòng <#e8a800ff>2.5 giây<> sẽ gây hiệu ứng Gió Giật lên chúng (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\nGió Giật: Sau <#e8a800ff>2 giây<>, đánh vào mục tiêu, gây <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<>."
         }
     },
     "zh-hans": {
@@ -2243,11 +2275,11 @@
         },
         "serpents_fang": {
             "name": "毒蛇之牙",
-            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>10%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破盾者：普通攻击或技能命中拥有护盾的敌方英雄时，额外造成 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>10%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "radiant_serpents_fang": {
             "name": "光明版毒蛇之牙",
-            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破盾者：对拥有护盾的敌方英雄造成伤害时，额外造成 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
+            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n破盾者：普通攻击或技能命中拥有护盾的敌方英雄时，额外造成 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 作为<#ff9028ff>额外物理伤害<>。"
         },
         "opportunity": {
             "name": "禁忌时机",
@@ -2364,6 +2396,22 @@
         "radiant_hamstringer": {
             "name": "光明版断筋者",
             "option": "\n冲洗：你的<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>2秒<>内造成 <#ff9028ff>70<> - <#ff9028ff>180<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>7%减速<>。"
+        },
+        "hextech_alternator": {
+            "name": "海克斯科技发电机",
+            "option": "\n转速加快：对敌方英雄造成伤害时，额外造成 <#a974ffff>65 点魔法伤害<>（冷却 <#e8a800ff>40秒<>）。"
+        },
+        "fated_ashes": {
+            "name": "命定灰烬",
+            "option": "\n激燃：技能命中敌人时点燃目标，在 <#e8a800ff>3 秒<>内造成 <#a974ffff>15 点魔法伤害<>。该效果对小兵和野怪的<#e8a800ff>效果为 400%<>。"
+        },
+        "stormsurge": {
+            "name": "风暴狂涌",
+            "option": "\n风暴掠袭：在 <#e8a800ff>2.5秒<> 内对敌方英雄造成相当于其 <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的伤害时，对其施加风啸（每个目标冷却 <#e8a800ff>30秒<>）。\n\n风啸：<#e8a800ff>2秒<> 后打击目标，造成 <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。"
+        },
+        "radiant_stormsurge": {
+            "name": "光明版风暴狂涌",
+            "option": "\n风暴掠袭：在 <#e8a800ff>2.5秒<> 内对敌方英雄造成相当于其 <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的伤害时，对其施加风啸（每个目标冷却 <#e8a800ff>30秒<>）。\n\n风啸：<#e8a800ff>2秒<> 后打击目标，造成 <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。"
         }
     },
     "pt-BR": {
@@ -3032,11 +3080,11 @@
         },
         "serpents_fang": {
             "name": "Presa da Serpente",
-            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>50<> + <#ff9028ff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nCeifador de Escudos: Acertar um ataque básico ou uma Habilidade em um campeão inimigo com escudo causa <#ff9028ff>50<> + <#ff9028ff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "radiant_serpents_fang": {
             "name": "Presa da Serpente Radiante",
-            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nCeifador de Escudos: Causar dano a um campeão inimigo com escudo causa <#ff9028ff>85<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
+            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\nCeifador de Escudos: Acertar um ataque básico ou uma Habilidade em um campeão inimigo com escudo causa <#ff9028ff>85<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>."
         },
         "opportunity": {
             "name": "Oportunidade",
@@ -3153,6 +3201,22 @@
         "radiant_hamstringer": {
             "name": "Debilitador Radiante",
             "option": "\nErosão: Seus <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#ff9028ff>70<> - <#ff9028ff>180<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>2 segundos<> e aplicando <#d94c49ff>7% de lentidão<>."
+        },
+        "hextech_alternator": {
+            "name": "Alternador Hextec",
+            "option": "\nEntusiasmo: Causar dano a um campeão inimigo causa <#a974ffff>65 de dano mágico bônus<> (recarga de <#e8a800ff>40 segundos<>)."
+        },
+        "fated_ashes": {
+            "name": "Cinzas do Destino",
+            "option": "\nInflamar: Acertar uma Habilidade em um inimigo o queima, causando <#a974ffff>15 de dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Este efeito é <#e8a800ff>400% efetivo<> contra lacaios e monstros."
+        },
+        "stormsurge": {
+            "name": "Ápice da Tempestade",
+            "option": "\nInvasor da Tempestade: Causar dano equivalente a <#60e84dff>25%<> da <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida máxima<> de um campeão inimigo dentro de <#e8a800ff>2.5 segundos<> aplica Dilúvio a ele (recarga de <#e8a800ff>30 segundos<> por alvo).\n\nDilúvio: Depois de <#e8a800ff>2 segundos<>, atinge o alvo, causando <#a974ffff>125<> + <#a974ffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<>."
+        },
+        "radiant_stormsurge": {
+            "name": "Ápice da Tempestade Radiante",
+            "option": "\nInvasor da Tempestade: Causar dano equivalente a <#60e84dff>25%<> da <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida máxima<> de um campeão inimigo dentro de <#e8a800ff>2.5 segundos<> aplica Dilúvio a ele (recarga de <#e8a800ff>30 segundos<> por alvo).\n\nDilúvio: Depois de <#e8a800ff>2 segundos<>, atinge o alvo, causando <#a974ffff>125<> + <#a974ffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<>."
         }
     },
     "ru": {
@@ -3821,11 +3885,11 @@
         },
         "serpents_fang": {
             "name": "Клык змея",
-            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>50<> + <#ff9028ff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nПожиратель щитов: Попадание базовой атакой или умением по вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>50<> + <#ff9028ff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "radiant_serpents_fang": {
             "name": "Лучезарный Клык змея",
-            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nПожиратель щитов: Нанесение урона вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>85<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
+            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\nПожиратель щитов: Попадание базовой атакой или умением по вражескому чемпиону со щитом наносит дополнительно <#ff9028ff>85<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> как <#ff9028ff>дополнительный физический урон<>."
         },
         "opportunity": {
             "name": "Возможность",
@@ -3942,6 +4006,22 @@
         "radiant_hamstringer": {
             "name": "Лучезарный Выжигатель",
             "option": "\nРазъедание: Ваши <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#ff9028ff>70<> - <#ff9028ff>180<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>2 секунд<> и накладывая <#d94c49ff>замедление на 7%<>."
+        },
+        "hextech_alternator": {
+            "name": "Хекстек-альтернатор",
+            "option": "\nНа взводе: Нанесение урона вражескому чемпиону наносит <#a974ffff>65 дополнительного магического урона<> (перезарядка <#e8a800ff>40 секунд<>)."
+        },
+        "fated_ashes": {
+            "name": "Роковой пепел",
+            "option": "\nРазгорание: Попадание умением по противнику поджигает его, нанося <#a974ffff>15 магического урона<> в течение <#e8a800ff>3 сек.<> Против миньонов и монстров эффект <#e8a800ff>400%<>."
+        },
+        "stormsurge": {
+            "name": "Штормовой прилив",
+            "option": "\nШтормовой налет: Если вы наносите вражескому чемпиону урон в размере <#60e84dff>25%<> от его <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального запаса здоровья<> в течение <#e8a800ff>2.5 секунд<>, к нему применяется Порыв (перезарядка <#e8a800ff>30 секунд<> на каждую цель).\n\nПорыв: Через <#e8a800ff>2 секунды<> цель получает <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>."
+        },
+        "radiant_stormsurge": {
+            "name": "Лучезарный Штормовой прилив",
+            "option": "\nШтормовой налет: Если вы наносите вражескому чемпиону урон в размере <#60e84dff>25%<> от его <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального запаса здоровья<> в течение <#e8a800ff>2.5 секунд<>, к нему применяется Порыв (перезарядка <#e8a800ff>30 секунд<> на каждую цель).\n\nПорыв: Через <#e8a800ff>2 секунды<> цель получает <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>."
         }
     },
     "ko": {
@@ -4610,11 +4690,11 @@
         },
         "serpents_fang": {
             "name": "독사의 송곳니",
-            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#ff9028ff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 10%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "radiant_serpents_fang": {
             "name": "찬란한 독사의 송곳니",
-            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 피해를 입히면 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n보호막 파괴자: 보호막이 있는 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#ff9028ff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "opportunity": {
             "name": "기회",
@@ -4731,6 +4811,22 @@
         "radiant_hamstringer": {
             "name": "찬란한 불귀신",
             "option": "\n전소: <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>2초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>70<>~<#ff9028ff>180<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>7% 둔화<>시킵니다."
+        },
+        "hextech_alternator": {
+            "name": "마법공학 교류 발전기",
+            "option": "\n자극: 적 챔피언에게 피해를 입히면 <#a974ffff>65의 추가 마법 피해<>를 입힙니다. 재사용 대기시간은 <#e8a800ff>40초<>입니다."
+        },
+        "fated_ashes": {
+            "name": "운명의 재",
+            "option": "\n발화: 스킬이 적에게 적중하면 대상을 불태워 <#e8a800ff>3초<> 동안 <#a974ffff>15의 마법 피해<>를 입힙니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>400%<>로 적용됩니다."
+        },
+        "stormsurge": {
+            "name": "폭풍 쇄도",
+            "option": "\n폭풍 약탈자: <#e8a800ff>2.5초<> 내로 적 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 25%<>에 해당하는 피해를 입히면 질풍을 적용합니다. 대상별 재사용 대기시간은 <#e8a800ff>30초<>입니다.\n\n질풍: <#e8a800ff>2초<> 후 대상을 강타하여 <#a974ffff>125<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>10%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+        },
+        "radiant_stormsurge": {
+            "name": "찬란한 폭풍 쇄도",
+            "option": "\n폭풍 약탈자: <#e8a800ff>2.5초<> 내로 적 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 25%<>에 해당하는 피해를 입히면 질풍을 적용합니다. 대상별 재사용 대기시간은 <#e8a800ff>30초<>입니다.\n\n질풍: <#e8a800ff>2초<> 후 대상을 강타하여 <#a974ffff>125<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>10%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
         }
     }
 }

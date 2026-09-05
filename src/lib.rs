@@ -8,6 +8,9 @@ mod hook;
 mod item_build_hook;
 mod item_catalog;
 mod item_meta;
+mod item_stats;
+mod item_stats_sim;
+mod item_stats_ui;
 mod items;
 mod proc_queue;
 mod solo_rank_ui;
@@ -198,6 +201,21 @@ impl StableServerExtension for NativeTapExtension {
         tactics::driver::before_management_tick();
     }
 
+    fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
+        // Presims arrive in batches as a season advances, so both files are
+        // written here rather than from the sim loop itself: the queue of
+        // captures waiting to be counted, and the totals they are counted into.
+        //
+        // The queue goes FIRST, and the order is load bearing. A match leaves the
+        // queue and enters the totals in memory, so a crash between the two writes
+        // loses whichever step had not reached disk. Queue-then-totals loses the
+        // match — one undercounted item row. Totals-then-queue would leave the
+        // match still queued after its numbers were already banked, and count it
+        // twice on the next pass.
+        item_stats_sim::flush();
+        item_stats::flush();
+    }
+
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
         tactics::driver::on_server_start();
 
@@ -236,10 +254,16 @@ fn init(host: &StableHost) -> StableMod {
 
     tactics::driver::on_mod_init();
 
+    // Both macros note the key as they go. That call order *is* the second half
+    // of the id space a match record's numeric `items` entry indexes, and there
+    // is nowhere else to read it from: `ItemSetting` describes only the game's
+    // own 30 items. See `item_stats::index_table`.
     macro_rules! configured {
-        ($key:literal => $T:ty) => {
-            configs.get($key).map(<$T>::with_config).unwrap_or_default()
-        };
+        ($key:literal => $T:ty) => {{
+            let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
+            item_stats::note_registered($key, StableItem::tier(&item));
+            item
+        }};
     }
     macro_rules! configured_radiant {
         ($key:literal => $T:ty) => {{
@@ -247,6 +271,7 @@ fn init(host: &StableHost) -> StableMod {
                 .get($key)
                 .map(<$T>::radiant_with_config)
                 .unwrap_or_else(<$T>::radiant);
+            item_stats::note_registered($key, StableItem::tier(&item));
             strategy_ui::note_final_item($key, StableItem::category(&item));
             item
         }};
@@ -266,9 +291,11 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
     reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
+    reg.add_item(configured!("fated_ashes" => FatedAshes));
     reg.add_item(configured!("forbidden_idol" => ForbiddenIdol));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
+    reg.add_item(configured!("hextech_alternator" => HextechAlternator));
     reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
     reg.add_item(configured!("last_whisper" => LastWhisper));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
@@ -340,6 +367,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("trinity_force" => TrinityForce));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
+    reg.add_item(configured!("stormsurge" => Stormsurge));
     reg.add_item(configured!("void_staff" => VoidStaff));
     reg.add_item(configured!("voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
@@ -408,6 +436,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
     reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce));
     reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
+    reg.add_item(configured_radiant!("radiant_stormsurge" => Stormsurge));
     reg.add_item(configured_radiant!("radiant_void_staff" => VoidStaff));
     reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
@@ -417,6 +446,10 @@ fn init(host: &StableHost) -> StableMod {
 
     // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
+
+    // Records only keep the build a match was *assigned*; this reads what each
+    // champion actually finished holding, off the simulation's last tick.
+    reg.set_match_hook(item_stats_sim::EndOfMatchItems);
     reg.set_server_extension(NativeTapExtension);
 
     // in-game build picker

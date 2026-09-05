@@ -26,7 +26,7 @@ impl NightHarvester {
         Self {
             meta: ItemMeta::base(
                 "night_harvester",
-                &["haunting_guise"],
+                &["staff_of_rapture", "hextech_alternator"],
                 &["radiant_night_harvester"],
             ),
             cooldown_buff: "night_harvester_cooldown",

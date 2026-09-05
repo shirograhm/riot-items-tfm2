@@ -76,7 +76,7 @@ impl StableItem for Sheen {
     }
 
     fn tier(&self) -> usize {
-        1
+        2
     }
 
     fn previous_tier(&self) -> Vec<String> {

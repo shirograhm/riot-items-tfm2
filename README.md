@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 153 new items (87 base + 66 Radiant) to the game.
+Reskins the 30 existing items and also adds 157 new items (90 base + 67 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -26,9 +26,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 2
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Executioner's Calling** | 1300G | +45 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
-| **Oblivion Orb** | 1300G | +90 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
-| **Sheen** | 1300G | +25% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
+| **Fated Ashes** | 500G | +50 AP | Inflame: Landing an Ability on an enemy burns them for 15 magic damage over 3 seconds. This effect is 400% effective against minions and monsters. |
 
 #### Tier 3
 | Item | Cost | Stats | Passive |
@@ -38,16 +36,20 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Bandleglass Mirror** | 650G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
 | **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |
 | **Caulfield's Warhammer** | 950G | +45 AD<br>+10% CDR | — |
+| **Executioner's Calling** | 1300G | +45 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Forbidden Idol** | 650G | +200 HP<br>+20 AP<br>+10% CDR | — |
 | **Glacial Buckler** | 800G | +50 Armor<br>+5% CDR | — |
 | **Haunting Guise** | 950G | +200 HP<br>+60 AP | Madness: For each second in combat with enemy champions, deal 2% bonus damage, stacking up to 3 times for a total of 6%. |
-| **Hearthbound Axe** | 950G | +30 AD<br>+20% AS | — |
+| **Hearthbound Axe** | 950G | +30 AD<br>+20% AS | — |
+| **Hextech Alternator** | 800G | +100 AP | Revved: Damaging an enemy champion deals 65 bonus magic damage (40 second cooldown). |
 | **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
 | **Noonquiver** | 800G | +45 AD<br>+10% Crit Chance | — |
+| **Oblivion Orb** | 1300G | +90 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Phage** | 950G | +200 HP<br>+30 AD | Rage: Basic attacks against enemy champions grant 5% movement speed for 2 seconds. |
 | **Scout's Slingshot** | 800G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Serrated Dirk** | 800G | +45 AD | Gain 10 Lethality. |
+| **Sheen** | 1300G | +25% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
 | **Steel Sigil** | 950G | +30 AD<br>+50 Armor | — |
 | **Winged Moonplate** | 800G | +250 HP<br>+4% MS | — |
 
@@ -109,6 +111,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Vitality: Increase all healing received by 20%. |
 | **Sterak's Gage** | 1400G | +400 HP<br>+30 AD<br>+15% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Stormrazor** | 1550G | +65 AD<br>+20% AS<br>+20% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
+| **Stormsurge** | 1400G | +110 AP<br>+5% MS<br>+10% Magic Pen | Stormraider: Dealing damage to an enemy champion equal to 25% of their maximum health within 2.5 seconds inflicts them with Squall (30 second cooldown per target). Squall: After 2 seconds, strike the target, dealing 125 + 10% of your Ability Power as magic damage. |
 | **Sundered Sky** | 1400G | +400 HP<br>+30 AD<br>+10% CDR | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
 | **Sword of Blossoming Dawn** | 1000G | +200 HP<br>+40 AP<br>+20% AS<br>+10% CDR | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Terminus** | 1400G | +30 AD<br>+35% AS<br>+20% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
@@ -180,6 +183,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Vitality: Increase all healing received by 20%. |
 | **Radiant Sterak's Gage** | 2000G | +650 HP<br>+50 AD<br>+20% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Radiant Stormrazor** | 2200G | +100 AD<br>+40% AS<br>+25% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
+| **Radiant Stormsurge** | 2000G | +200 AP<br>+5% MS<br>+15% Magic Pen | Stormraider: Dealing damage to an enemy champion equal to 25% of their maximum health within 2.5 seconds inflicts them with Squall (30 second cooldown per target). Squall: After 2 seconds, strike the target, dealing 125 + 10% of your Ability Power as magic damage. |
 | **Radiant Sundered Sky** | 2000G | +550 HP<br>+65 AD<br>+20% CDR | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 10% of your missing health (20 second cooldown per target). |
 | **Radiant Sword of Blossoming Dawn** | 1700G | +350 HP<br>+70 AP<br>+35% AS<br>+15% CDR | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Radiant Terminus** | 2000G | +50 AD<br>+60% AS<br>+25% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
