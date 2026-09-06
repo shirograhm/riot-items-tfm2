@@ -4,6 +4,7 @@ use std::cell::Cell;
 mod build_config;
 mod config;
 mod constants;
+mod counter_items;
 mod hook;
 mod item_build_hook;
 mod item_catalog;
@@ -263,6 +264,7 @@ fn init(host: &StableHost) -> StableMod {
         ($key:literal => $T:ty) => {{
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
             item_stats::note_registered($key, StableItem::tier(&item));
+            counter_items::note_registered($key, &StableItem::tags(&item));
             item
         }};
     }
@@ -273,6 +275,7 @@ fn init(host: &StableHost) -> StableMod {
                 .map(<$T>::radiant_with_config)
                 .unwrap_or_else(<$T>::radiant);
             item_stats::note_registered($key, StableItem::tier(&item));
+            counter_items::note_registered($key, &StableItem::tags(&item));
             strategy_ui::note_final_item($key, StableItem::category(&item));
             item
         }};

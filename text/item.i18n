@@ -681,11 +681,11 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Locket of the Iron Solari",
-            "option": "\nDevotion: <#d94c49ff>Falling below 50% health<> grants you and all nearby allied champions a <#cab944ff>shield<> that absorbs damage equal to <#cab944ff>170<> - <#cab944ff>225<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>health<> over <#e8a800ff>2.5 seconds<> (<#e8a800ff>90 second<> cooldown).\n\nLegion: Grant <#ffdd8eff>5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>10 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>2 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
+            "option": "\nDevotion: <#d94c49ff>Falling below 50% health<> grants you and all nearby allied champions a <#cab944ff>shield<> that absorbs damage equal to <#cab944ff>170<> - <#cab944ff>225<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>health<> over <#e8a800ff>2.5 seconds<> (<#e8a800ff>90 second<> cooldown).\n\nLegion: Grant <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Radiant Locket of the Iron Solari",
-            "option": "\nDevotion: <#d94c49ff>Falling below 50% health<> grants you and all nearby allied champions a <#cab944ff>shield<> that absorbs damage equal to <#cab944ff>295<> - <#cab944ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>health<> over <#e8a800ff>2.5 seconds<> (<#e8a800ff>90 second<> cooldown).\n\nLegion: Grant <#ffdd8eff>5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>10 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>2 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
+            "option": "\nDevotion: <#d94c49ff>Falling below 50% health<> grants you and all nearby allied champions a <#cab944ff>shield<> that absorbs damage equal to <#cab944ff>295<> - <#cab944ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>health<> over <#e8a800ff>2.5 seconds<> (<#e8a800ff>90 second<> cooldown).\n\nLegion: Grant <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>, and <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health regeneration<> to all allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. Minions gain <#e8a800ff>150%<> of this value."
         },
         "dead_mans_plate": {
             "name": "Dead Man's Plate",
@@ -797,11 +797,11 @@
         },
         "stormsurge": {
             "name": "Stormsurge",
-            "option": "\nStormraider: Dealing damage to an enemy champion equal to <#60e84dff>25%<> of their <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> within <#e8a800ff>2.5 seconds<> inflicts them with Squall (<#e8a800ff>30 second<> cooldown per target).\n\nSquall: After <#e8a800ff>2 seconds<>, strike the target, dealing <#a974ffff>125<> + <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<>."
+            "option": "\nStormraider: Dealing damage to an enemy champion equal to <#60e84dff>25%<> of their <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> within <#e8a800ff>2.5 seconds<> inflicts them with Squall (<#e8a800ff>30 second<> cooldown per target).\n\nSquall: After <#e8a800ff>2 seconds<>, strike the target with lightning, dealing <#a974ffff>125<> + <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<>."
         },
         "radiant_stormsurge": {
             "name": "Radiant Stormsurge",
-            "option": "\nStormraider: Dealing damage to an enemy champion equal to <#60e84dff>25%<> of their <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> within <#e8a800ff>2.5 seconds<> inflicts them with Squall (<#e8a800ff>30 second<> cooldown per target).\n\nSquall: After <#e8a800ff>2 seconds<>, strike the target, dealing <#a974ffff>125<> + <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<>."
+            "option": "\nStormraider: Dealing damage to an enemy champion equal to <#60e84dff>25%<> of their <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> within <#e8a800ff>2.5 seconds<> inflicts them with Squall (<#e8a800ff>30 second<> cooldown per target).\n\nSquall: After <#e8a800ff>2 seconds<>, strike the target with lightning, dealing <#a974ffff>125<> + <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<>."
         }
     },
     "vi": {
@@ -1486,11 +1486,11 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Dây Chuyền Iron Solari",
-            "option": "\nTận Hiến: <#d94c49ff>Máu rơi xuống dưới 50%<> sẽ tạo cho bạn và mọi tướng đồng minh lân cận một <#cab944ff>khiên<> <#cab944ff>hấp thụ<> <#cab944ff>170<> - <#cab944ff>225<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<> trong <#e8a800ff>2.5 giây<> (<#e8a800ff>90 giây<> hồi chiêu).\n\nQuân Đoàn: Cấp <#ffdd8eff>5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>10 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>2 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
+            "option": "\nTận Hiến: <#d94c49ff>Máu rơi xuống dưới 50%<> sẽ tạo cho bạn và mọi tướng đồng minh lân cận một <#cab944ff>khiên<> <#cab944ff>hấp thụ<> <#cab944ff>170<> - <#cab944ff>225<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<> trong <#e8a800ff>2.5 giây<> (<#e8a800ff>90 giây<> hồi chiêu).\n\nQuân Đoàn: Cấp <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Dây Chuyền Iron Solari Ánh Sáng",
-            "option": "\nTận Hiến: <#d94c49ff>Máu rơi xuống dưới 50%<> sẽ tạo cho bạn và mọi tướng đồng minh lân cận một <#cab944ff>khiên<> <#cab944ff>hấp thụ<> <#cab944ff>295<> - <#cab944ff>350<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<> trong <#e8a800ff>2.5 giây<> (<#e8a800ff>90 giây<> hồi chiêu).\n\nQuân Đoàn: Cấp <#ffdd8eff>5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>10 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>2 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
+            "option": "\nTận Hiến: <#d94c49ff>Máu rơi xuống dưới 50%<> sẽ tạo cho bạn và mọi tướng đồng minh lân cận một <#cab944ff>khiên<> <#cab944ff>hấp thụ<> <#cab944ff>295<> - <#cab944ff>350<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<> trong <#e8a800ff>2.5 giây<> (<#e8a800ff>90 giây<> hồi chiêu).\n\nQuân Đoàn: Cấp <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<> và <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cho mọi đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Lính nhận <#e8a800ff>150%<> giá trị này."
         },
         "dead_mans_plate": {
             "name": "Giáp Liệt Sĩ",
@@ -1602,11 +1602,11 @@
         },
         "stormsurge": {
             "name": "Quyền Trượng Bão Tố",
-            "option": "\nĐột Kích Bão Tố: Gây sát thương bằng <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu tối đa<> của tướng địch trong vòng <#e8a800ff>2.5 giây<> sẽ gây hiệu ứng Gió Giật lên chúng (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\nGió Giật: Sau <#e8a800ff>2 giây<>, đánh vào mục tiêu, gây <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<>."
+            "option": "\nĐột Kích Bão Tố: Gây sát thương bằng <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu tối đa<> của tướng địch trong vòng <#e8a800ff>2.5 giây<> sẽ gây hiệu ứng Gió Giật lên chúng (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\nGió Giật: Sau <#e8a800ff>2 giây<>, giáng sét vào mục tiêu, gây <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<>."
         },
         "radiant_stormsurge": {
             "name": "Quyền Trượng Bão Tố Ánh Sáng",
-            "option": "\nĐột Kích Bão Tố: Gây sát thương bằng <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu tối đa<> của tướng địch trong vòng <#e8a800ff>2.5 giây<> sẽ gây hiệu ứng Gió Giật lên chúng (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\nGió Giật: Sau <#e8a800ff>2 giây<>, đánh vào mục tiêu, gây <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<>."
+            "option": "\nĐột Kích Bão Tố: Gây sát thương bằng <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu tối đa<> của tướng địch trong vòng <#e8a800ff>2.5 giây<> sẽ gây hiệu ứng Gió Giật lên chúng (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\nGió Giật: Sau <#e8a800ff>2 giây<>, giáng sét vào mục tiêu, gây <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<>."
         }
     },
     "zh-hans": {
@@ -2291,11 +2291,11 @@
         },
         "locket_of_the_iron_solari": {
             "name": "钢铁烈阳之匣",
-            "option": "\n虔诚：<#d94c49ff>生命值降至50%以下<>时，为你和附近的友方英雄提供一个持续 <#e8a800ff>2.5秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>170<> - <#cab944ff>225<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>（冷却时间90秒）。\n\n军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>5 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>10 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>2 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
+            "option": "\n虔诚：<#d94c49ff>生命值降至50%以下<>时，为你和附近的友方英雄提供一个持续 <#e8a800ff>2.5秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>170<> - <#cab944ff>225<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>（冷却时间90秒）。\n\n军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>6 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>12 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>3 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "光明版钢铁烈阳之匣",
-            "option": "\n虔诚：<#d94c49ff>生命值降至50%以下<>时，为你和附近的友方英雄提供一个持续 <#e8a800ff>2.5秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>295<> - <#cab944ff>350<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>（冷却时间90秒）。\n\n军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>5 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>10 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>2 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
+            "option": "\n虔诚：<#d94c49ff>生命值降至50%以下<>时，为你和附近的友方英雄提供一个持续 <#e8a800ff>2.5秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>295<> - <#cab944ff>350<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>（冷却时间90秒）。\n\n军团：为 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有友军提供 <#ffdd8eff>6 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>、<#88ccffff>12 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>和 <#60e84dff>3 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命回复<>。小兵获得该数值的 <#e8a800ff>150%<>。"
         },
         "dead_mans_plate": {
             "name": "亡者板甲",
@@ -2407,11 +2407,11 @@
         },
         "stormsurge": {
             "name": "风暴狂涌",
-            "option": "\n风暴掠袭：在 <#e8a800ff>2.5秒<> 内对敌方英雄造成相当于其 <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的伤害时，对其施加风啸（每个目标冷却 <#e8a800ff>30秒<>）。\n\n风啸：<#e8a800ff>2秒<> 后打击目标，造成 <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。"
+            "option": "\n风暴掠袭：在 <#e8a800ff>2.5秒<> 内对敌方英雄造成相当于其 <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的伤害时，对其施加风啸（每个目标冷却 <#e8a800ff>30秒<>）。\n\n风啸：<#e8a800ff>2秒<> 后以闪电打击目标，造成 <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。"
         },
         "radiant_stormsurge": {
             "name": "光明版风暴狂涌",
-            "option": "\n风暴掠袭：在 <#e8a800ff>2.5秒<> 内对敌方英雄造成相当于其 <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的伤害时，对其施加风啸（每个目标冷却 <#e8a800ff>30秒<>）。\n\n风啸：<#e8a800ff>2秒<> 后打击目标，造成 <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。"
+            "option": "\n风暴掠袭：在 <#e8a800ff>2.5秒<> 内对敌方英雄造成相当于其 <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的伤害时，对其施加风啸（每个目标冷却 <#e8a800ff>30秒<>）。\n\n风啸：<#e8a800ff>2秒<> 后以闪电打击目标，造成 <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。"
         }
     },
     "pt-BR": {
@@ -3096,11 +3096,11 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Medalhão dos Solari de Ferro",
-            "option": "\nDevoção: Ao cair <#d94c49ff>abaixo de 50% de Vida<>, concede a você e a todos os campeões aliados próximos um <#cab944ff>escudo<> que <#cab944ff>absorve<> <#cab944ff>170<> - <#cab944ff>225<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<> por <#e8a800ff>2.5 segundos<> (recarga de <#e8a800ff>90 segundos<>).\n\nLegião: Concede <#ffdd8eff>5 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>10 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>2 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
+            "option": "\nDevoção: Ao cair <#d94c49ff>abaixo de 50% de Vida<>, concede a você e a todos os campeões aliados próximos um <#cab944ff>escudo<> que <#cab944ff>absorve<> <#cab944ff>170<> - <#cab944ff>225<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<> por <#e8a800ff>2.5 segundos<> (recarga de <#e8a800ff>90 segundos<>).\n\nLegião: Concede <#ffdd8eff>6 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>12 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>3 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Medalhão dos Solari de Ferro Radiante",
-            "option": "\nDevoção: Ao cair <#d94c49ff>abaixo de 50% de Vida<>, concede a você e a todos os campeões aliados próximos um <#cab944ff>escudo<> que <#cab944ff>absorve<> <#cab944ff>295<> - <#cab944ff>350<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<> por <#e8a800ff>2.5 segundos<> (recarga de <#e8a800ff>90 segundos<>).\n\nLegião: Concede <#ffdd8eff>5 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>10 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>2 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
+            "option": "\nDevoção: Ao cair <#d94c49ff>abaixo de 50% de Vida<>, concede a você e a todos os campeões aliados próximos um <#cab944ff>escudo<> que <#cab944ff>absorve<> <#cab944ff>295<> - <#cab944ff>350<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<> por <#e8a800ff>2.5 segundos<> (recarga de <#e8a800ff>90 segundos<>).\n\nLegião: Concede <#ffdd8eff>6 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, <#88ccffff>12 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<> e <#60e84dff>3 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> a todos os aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Tropas recebem <#e8a800ff>150%<> deste valor."
         },
         "dead_mans_plate": {
             "name": "Placa do Morto",
@@ -3212,11 +3212,11 @@
         },
         "stormsurge": {
             "name": "Ápice da Tempestade",
-            "option": "\nInvasor da Tempestade: Causar dano equivalente a <#60e84dff>25%<> da <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida máxima<> de um campeão inimigo dentro de <#e8a800ff>2.5 segundos<> aplica Dilúvio a ele (recarga de <#e8a800ff>30 segundos<> por alvo).\n\nDilúvio: Depois de <#e8a800ff>2 segundos<>, atinge o alvo, causando <#a974ffff>125<> + <#a974ffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<>."
+            "option": "\nInvasor da Tempestade: Causar dano equivalente a <#60e84dff>25%<> da <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida máxima<> de um campeão inimigo dentro de <#e8a800ff>2.5 segundos<> aplica Dilúvio a ele (recarga de <#e8a800ff>30 segundos<> por alvo).\n\nDilúvio: Depois de <#e8a800ff>2 segundos<>, atinge o alvo com um raio, causando <#a974ffff>125<> + <#a974ffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<>."
         },
         "radiant_stormsurge": {
             "name": "Ápice da Tempestade Radiante",
-            "option": "\nInvasor da Tempestade: Causar dano equivalente a <#60e84dff>25%<> da <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida máxima<> de um campeão inimigo dentro de <#e8a800ff>2.5 segundos<> aplica Dilúvio a ele (recarga de <#e8a800ff>30 segundos<> por alvo).\n\nDilúvio: Depois de <#e8a800ff>2 segundos<>, atinge o alvo, causando <#a974ffff>125<> + <#a974ffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<>."
+            "option": "\nInvasor da Tempestade: Causar dano equivalente a <#60e84dff>25%<> da <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida máxima<> de um campeão inimigo dentro de <#e8a800ff>2.5 segundos<> aplica Dilúvio a ele (recarga de <#e8a800ff>30 segundos<> por alvo).\n\nDilúvio: Depois de <#e8a800ff>2 segundos<>, atinge o alvo com um raio, causando <#a974ffff>125<> + <#a974ffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<>."
         }
     },
     "ru": {
@@ -3901,11 +3901,11 @@
         },
         "locket_of_the_iron_solari": {
             "name": "Медальон Железных Солари",
-            "option": "\nПреданность: При <#d94c49ff>падении здоровья ниже 50%<> вы и все союзные чемпионы поблизости получаете <#cab944ff>щит<>, поглощающий <#cab944ff>170<> - <#cab944ff>225<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>, на <#e8a800ff>2.5 секунды<> (перезарядка 90 секунд).\n\nЛегион: Даёт <#ffdd8eff>5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>10 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>2 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
+            "option": "\nПреданность: При <#d94c49ff>падении здоровья ниже 50%<> вы и все союзные чемпионы поблизости получаете <#cab944ff>щит<>, поглощающий <#cab944ff>170<> - <#cab944ff>225<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>, на <#e8a800ff>2.5 секунды<> (перезарядка 90 секунд).\n\nЛегион: Даёт <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "Лучезарный Медальон Железных Солари",
-            "option": "\nПреданность: При <#d94c49ff>падении здоровья ниже 50%<> вы и все союзные чемпионы поблизости получаете <#cab944ff>щит<>, поглощающий <#cab944ff>295<> - <#cab944ff>350<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>, на <#e8a800ff>2.5 секунды<> (перезарядка 90 секунд).\n\nЛегион: Даёт <#ffdd8eff>5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>10 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>2 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
+            "option": "\nПреданность: При <#d94c49ff>падении здоровья ниже 50%<> вы и все союзные чемпионы поблизости получаете <#cab944ff>щит<>, поглощающий <#cab944ff>295<> - <#cab944ff>350<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>, на <#e8a800ff>2.5 секунды<> (перезарядка 90 секунд).\n\nЛегион: Даёт <#ffdd8eff>6 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, <#88ccffff>12 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<> и <#60e84dff>3 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> восстановления здоровья<> всем союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Миньоны получают <#e8a800ff>150%<> от этого значения."
         },
         "dead_mans_plate": {
             "name": "Доспехи Мертвеца",
@@ -4017,11 +4017,11 @@
         },
         "stormsurge": {
             "name": "Штормовой прилив",
-            "option": "\nШтормовой налет: Если вы наносите вражескому чемпиону урон в размере <#60e84dff>25%<> от его <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального запаса здоровья<> в течение <#e8a800ff>2.5 секунд<>, к нему применяется Порыв (перезарядка <#e8a800ff>30 секунд<> на каждую цель).\n\nПорыв: Через <#e8a800ff>2 секунды<> цель получает <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>."
+            "option": "\nШтормовой налет: Если вы наносите вражескому чемпиону урон в размере <#60e84dff>25%<> от его <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального запаса здоровья<> в течение <#e8a800ff>2.5 секунд<>, к нему применяется Порыв (перезарядка <#e8a800ff>30 секунд<> на каждую цель).\n\nПорыв: Через <#e8a800ff>2 секунды<> молния поражает цель, нанося <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>."
         },
         "radiant_stormsurge": {
             "name": "Лучезарный Штормовой прилив",
-            "option": "\nШтормовой налет: Если вы наносите вражескому чемпиону урон в размере <#60e84dff>25%<> от его <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального запаса здоровья<> в течение <#e8a800ff>2.5 секунд<>, к нему применяется Порыв (перезарядка <#e8a800ff>30 секунд<> на каждую цель).\n\nПорыв: Через <#e8a800ff>2 секунды<> цель получает <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>."
+            "option": "\nШтормовой налет: Если вы наносите вражескому чемпиону урон в размере <#60e84dff>25%<> от его <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального запаса здоровья<> в течение <#e8a800ff>2.5 секунд<>, к нему применяется Порыв (перезарядка <#e8a800ff>30 секунд<> на каждую цель).\n\nПорыв: Через <#e8a800ff>2 секунды<> молния поражает цель, нанося <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>."
         }
     },
     "ko": {
@@ -4706,11 +4706,11 @@
         },
         "locket_of_the_iron_solari": {
             "name": "강철의 솔라리 펜던트",
-            "option": "\n헌신: <#d94c49ff>체력이 50% 아래로 내려가면<> 자신과 주변의 모든 아군 챔피언이 <#e8a800ff>2.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>170<>~<#cab944ff>225<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다.\n\n군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 5<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 10<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 2<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
+            "option": "\n헌신: <#d94c49ff>체력이 50% 아래로 내려가면<> 자신과 주변의 모든 아군 챔피언이 <#e8a800ff>2.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>170<>~<#cab944ff>225<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다.\n\n군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 6<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 12<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 3<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
         },
         "radiant_locket_of_the_iron_solari": {
             "name": "찬란한 강철의 솔라리 펜던트",
-            "option": "\n헌신: <#d94c49ff>체력이 50% 아래로 내려가면<> 자신과 주변의 모든 아군 챔피언이 <#e8a800ff>2.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>295<>~<#cab944ff>350<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다.\n\n군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 5<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 10<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 2<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
+            "option": "\n헌신: <#d94c49ff>체력이 50% 아래로 내려가면<> 자신과 주변의 모든 아군 챔피언이 <#e8a800ff>2.5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>295<>~<#cab944ff>350<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다.\n\n군단: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 모든 아군에게 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 6<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 12<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력 재생 3<>를 부여합니다. 미니언은 이 수치의 <#e8a800ff>150%<>를 얻습니다."
         },
         "dead_mans_plate": {
             "name": "망자의 갑옷",
@@ -4822,11 +4822,11 @@
         },
         "stormsurge": {
             "name": "폭풍 쇄도",
-            "option": "\n폭풍 약탈자: <#e8a800ff>2.5초<> 내로 적 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 25%<>에 해당하는 피해를 입히면 질풍을 적용합니다. 대상별 재사용 대기시간은 <#e8a800ff>30초<>입니다.\n\n질풍: <#e8a800ff>2초<> 후 대상을 강타하여 <#a974ffff>125<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>10%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+            "option": "\n폭풍 약탈자: <#e8a800ff>2.5초<> 내로 적 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 25%<>에 해당하는 피해를 입히면 질풍을 적용합니다. 대상별 재사용 대기시간은 <#e8a800ff>30초<>입니다.\n\n질풍: <#e8a800ff>2초<> 후 번개로 대상을 강타하여 <#a974ffff>125<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>10%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
         },
         "radiant_stormsurge": {
             "name": "찬란한 폭풍 쇄도",
-            "option": "\n폭풍 약탈자: <#e8a800ff>2.5초<> 내로 적 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 25%<>에 해당하는 피해를 입히면 질풍을 적용합니다. 대상별 재사용 대기시간은 <#e8a800ff>30초<>입니다.\n\n질풍: <#e8a800ff>2초<> 후 대상을 강타하여 <#a974ffff>125<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>10%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+            "option": "\n폭풍 약탈자: <#e8a800ff>2.5초<> 내로 적 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 25%<>에 해당하는 피해를 입히면 질풍을 적용합니다. 대상별 재사용 대기시간은 <#e8a800ff>30초<>입니다.\n\n질풍: <#e8a800ff>2초<> 후 번개로 대상을 강타하여 <#a974ffff>125<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>10%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
         }
     }
 }

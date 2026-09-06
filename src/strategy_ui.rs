@@ -2784,6 +2784,12 @@ impl StableExtension for StrategyPicker {
         // anywhere else: it returns on its first line unless that screen is up.
         crate::item_stats_ui::sync(ctx);
 
+        // Champion Heal/Shield tags for the item-build hook's counter nudge.
+        // Unconditional and here rather than in the hook because the tags are
+        // only readable through the client, which the hook does not get. Costs
+        // one atomic load per frame once it has succeeded.
+        crate::counter_items::prime(ctx);
+
         if !ctx.ui_exists(BUILDS_TAB) {
             // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.

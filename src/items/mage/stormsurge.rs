@@ -45,11 +45,14 @@ impl Stormsurge {
                 &["hextech_alternator"],
                 &["radiant_stormsurge"],
             ),
-            // A view-effect name the client already binds, not an asset of
-            // ours: `lightning_mage_skill2` is the eight-frame bolt that
-            // strikes straight down out of `skill_effect/lightning_mage_effect`.
-            // See the note on `strike` in `update`.
-            strike_effect: "lightning_mage_skill2",
+            // Our own bolt, bound in `view/effects.view_effects` to
+            // `effects/stormsurge_lightning` (tag `strike`).
+            //
+            // This used to be `lightning_mage_skill2`, which drew nothing: that
+            // name is registered as a view *projectile*, and `play_view_effect`
+            // only searches the view-effect table. An unknown name is not an
+            // error — it silently draws nothing. See the note in `update`.
+            strike_effect: "riot_stormsurge_squall",
             price: 1400,
             magic_power: 110,
             move_speed_mult: 5,

@@ -1,0 +1,14 @@
+{
+    "view_effects": [
+        {
+            "type": "Animation",
+            "name": "riot_stormsurge_squall",
+            "anim": "asset/riot_items_tfm2/effects/stormsurge_lightning",
+            "tag": "strike",
+            "z": 1,
+            "is_follow": false
+        }
+    ],
+    "view_projectiles": [],
+    "view_buffs": []
+}

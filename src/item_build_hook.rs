@@ -1,6 +1,6 @@
 use mod_api_stable::{StableDraftDecision, StableItemBuildContext, StableItemBuildHook};
 
-use crate::build_config;
+use crate::{build_config, counter_items};
 
 const MOD_ITEM_SCORE_BONUS: f32 = 0.5;
 
@@ -21,17 +21,40 @@ impl StableItemBuildHook for ConfiguredBuilds {
         candidate: usize,
         base_score: f32,
     ) -> StableDraftDecision {
-        // Already wanted, or not ours: leave the engine's ranking alone.
-        if base_score > 0.0 {
-            return StableDraftDecision::Pass;
-        }
         let Some(key) = ctx.item_key(candidate) else {
             return StableDraftDecision::Pass;
         };
-        if !crate::strategy_ui::is_mod_final_item(key) {
-            return StableDraftDecision::Pass;
+
+        // Not wanted yet, and ours: lift it into contention.
+        let mut bonus = if base_score <= 0.0 && crate::strategy_ui::is_mod_final_item(key) {
+            MOD_ITEM_SCORE_BONUS
+        } else {
+            0.0
+        };
+
+        // The counter nudge, which deliberately is NOT behind the `base_score`
+        // gate above: an anti-heal item the engine already ranks is exactly the
+        // one worth pushing further up when the enemy actually heals. Adding to
+        // the engine's own score rather than replacing it keeps the ranking
+        // among counter items — which of them suits this champion — the
+        // engine's call, and only moves the whole class up the list.
+        //
+        // `is_counter_item` is checked first because it is a scan of a handful
+        // of keys, while `enemy_champions` allocates: this runs once per
+        // candidate item, and almost no candidate is a counter item.
+        if counter_items::is_counter_item(key) {
+            let enemy = ctx.enemy_champions();
+            counter_items::note_first_decision(ctx.champion_key(), &enemy);
+            if let Some(counter) = counter_items::bonus(key, ctx.champion_key(), &enemy) {
+                bonus += counter;
+            }
         }
-        StableDraftDecision::Add(MOD_ITEM_SCORE_BONUS)
+
+        if bonus > 0.0 {
+            StableDraftDecision::Add(bonus)
+        } else {
+            StableDraftDecision::Pass
+        }
     }
 
     fn decide_build(&self, ctx: &StableItemBuildContext<'_>) -> Vec<usize> {
