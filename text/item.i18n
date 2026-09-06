@@ -585,11 +585,11 @@
         },
         "echoes_of_helia": {
             "name": "Echoes of Helia",
-            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals them<> equal to the consumed amount."
+            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion (excluding yourself) consumes all <#92dc7bff>Soul Charges<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals them<> equal to the consumed amount."
         },
         "radiant_echoes_of_helia": {
             "name": "Radiant Echoes of Helia",
-            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion consumes all <#92dc7bff>Soul Charges<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals them<> equal to the consumed amount."
+            "option": "\nSoul Siphon: Store <#e8a800ff>30%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion (excluding yourself) consumes all <#92dc7bff>Soul Charges<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals them<> equal to the consumed amount."
         },
         "sundered_sky": {
             "name": "Sundered Sky",
@@ -1390,11 +1390,11 @@
         },
         "echoes_of_helia": {
             "name": "Vọng Âm Helia",
-            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
+            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh (không tính bản thân) sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
         },
         "radiant_echoes_of_helia": {
             "name": "Vọng Âm Helia Ánh Sáng",
-            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
+            "option": "\nHút Hồn: Tích trữ <#e8a800ff>30%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh (không tính bản thân) sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
         },
         "sundered_sky": {
             "name": "Bầu Trời Vỡ Nát",
@@ -2195,11 +2195,11 @@
         },
         "echoes_of_helia": {
             "name": "海力亚的回响",
-            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>等量的生命值。"
+            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄（自己除外）回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>等量的生命值。"
         },
         "radiant_echoes_of_helia": {
             "name": "光明版海力亚的回响",
-            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>等量的生命值。"
+            "option": "\n灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>30%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<>（随<#d8c9b3ff>等级<>提升）。为友方英雄（自己除外）回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>等量的生命值。"
         },
         "sundered_sky": {
             "name": "破碎苍穹",
@@ -3000,11 +3000,11 @@
         },
         "echoes_of_helia": {
             "name": "Ecos de Helia",
-            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado consome todas as <#92dc7bff>Cargas de Alma<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando-o<> na quantidade consumida."
+            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado (exceto você) consome todas as <#92dc7bff>Cargas de Alma<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando-o<> na quantidade consumida."
         },
         "radiant_echoes_of_helia": {
             "name": "Ecos de Helia Radiante",
-            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado consome todas as <#92dc7bff>Cargas de Alma<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando-o<> na quantidade consumida."
+            "option": "\nSifão de Almas: Armazena <#e8a800ff>30%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado (exceto você) consome todas as <#92dc7bff>Cargas de Alma<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando-o<> na quantidade consumida."
         },
         "sundered_sky": {
             "name": "Céu Dilacerado",
@@ -3805,11 +3805,11 @@
         },
         "echoes_of_helia": {
             "name": "Эхо Гелии",
-            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона расходует все <#92dc7bff>Заряды Души<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
+            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона (кроме вас) расходует все <#92dc7bff>Заряды Души<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
         },
         "radiant_echoes_of_helia": {
             "name": "Лучезарное Эхо Гелии",
-            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона расходует все <#92dc7bff>Заряды Души<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
+            "option": "\nПохищение душ: Накапливает <#e8a800ff>30%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>130<> - <#d8c9b3ff>350<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона (кроме вас) расходует все <#92dc7bff>Заряды Души<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
         },
         "sundered_sky": {
             "name": "Расколотые Небеса",
@@ -4610,11 +4610,11 @@
         },
         "echoes_of_helia": {
             "name": "헬리아의 메아리",
-            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언(자신 제외)을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "radiant_echoes_of_helia": {
             "name": "찬란한 헬리아의 메아리",
-            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n영혼 착취: 주고받은 피해의 <#e8a800ff>30%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>130<> - <#d8c9b3ff>350<>까지 저장합니다. 아군 챔피언(자신 제외)을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "sundered_sky": {
             "name": "갈라진 하늘",

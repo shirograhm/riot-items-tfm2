@@ -171,6 +171,17 @@ impl StableItem for EchoesOfHelia {
         self.save_charges(caster_ref.level(), *damage as f64);
     }
 
+    /// Spends the stored charges on an ally.
+    ///
+    /// Self-casts count as ally-targeted, so the carrier is ruled out
+    /// explicitly, the way `ardent_censer` does: Soul Charges only ever spend on
+    /// someone else.
+    ///
+    /// Every one of these checks now returns *before* the reset rather than
+    /// skipping only the heal. Clearing the charges unconditionally spent them
+    /// on casts that healed nobody — a self-cast, an enemy-targeted skill, a
+    /// minion, a dead ally — which contradicted the tooltip and made the
+    /// self-exclusion a punishment rather than a no-op.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -179,14 +190,17 @@ impl StableItem for EchoesOfHelia {
         target: usize,
         is_ally: bool,
     ) {
+        if !is_ally || target == caster {
+            return;
+        }
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-
-        if is_ally && target != caster && target_ref.is_champion() && target_ref.is_alive() {
-            ctx.heal(caster, target, self.charge_stored);
+        if !target_ref.is_champion() || !target_ref.is_alive() {
+            return;
         }
 
+        ctx.heal(caster, target, self.charge_stored);
         self.charge_stored = 0;
     }
 
