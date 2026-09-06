@@ -30,8 +30,8 @@ impl RavenousHydra {
             attack: 55,
             vamp: 10,
             skill_cooldown_mult: 10,
-            effect_melee_ad_percent_damage: 15.0,
-            effect_ranged_ad_percent_damage: 30.0,
+            effect_melee_ad_percent_damage: 30.0,
+            effect_ranged_ad_percent_damage: 15.0,
             effect_max_distance: 35,
             effect_melee_distance: 35,
         }
@@ -44,8 +44,8 @@ impl RavenousHydra {
             attack: 90,
             vamp: 15,
             skill_cooldown_mult: 15,
-            effect_melee_ad_percent_damage: 20.0,
-            effect_ranged_ad_percent_damage: 40.0,
+            effect_melee_ad_percent_damage: 40.0,
+            effect_ranged_ad_percent_damage: 20.0,
             effect_max_distance: 35,
             effect_melee_distance: 35,
             ..Self::base()

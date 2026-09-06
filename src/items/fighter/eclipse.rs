@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, DISTANCE_UNITS_PER_RANGE};
 
 #[derive(Clone, Debug)]
 pub struct Eclipse {
@@ -11,7 +11,9 @@ pub struct Eclipse {
     price: usize,
     attack: i32,
     skill_cooldown_mult: i32,
-    effect_hp_percent_damage: f64,
+    effect_melee_hp_percent_damage: f64,
+    effect_ranged_hp_percent_damage: f64,
+    effect_melee_distance: usize,
     effect_bonus_flat_shield: usize,
     effect_ad_percent_shield: f64,
     effect_duration_seconds: f64,
@@ -28,7 +30,9 @@ impl Eclipse {
             price: 1300,
             attack: 55,
             skill_cooldown_mult: 15,
-            effect_hp_percent_damage: 5.0,
+            effect_melee_hp_percent_damage: 8.0,
+            effect_ranged_hp_percent_damage: 5.0,
+            effect_melee_distance: 35,
             effect_bonus_flat_shield: 100,
             effect_ad_percent_shield: 15.0,
             effect_duration_seconds: 2.0,
@@ -45,7 +49,9 @@ impl Eclipse {
             price: 1950,
             attack: 95,
             skill_cooldown_mult: 15,
-            effect_hp_percent_damage: 8.0,
+            effect_melee_hp_percent_damage: 8.0,
+            effect_ranged_hp_percent_damage: 5.0,
+            effect_melee_distance: 35,
             effect_bonus_flat_shield: 120,
             effect_ad_percent_shield: 20.0,
             effect_duration_seconds: 2.0,
@@ -71,7 +77,9 @@ impl Eclipse {
                 price,
                 attack,
                 skill_cooldown_mult,
-                effect_hp_percent_damage,
+                effect_melee_hp_percent_damage,
+                effect_ranged_hp_percent_damage,
+                effect_melee_distance,
                 effect_bonus_flat_shield,
                 effect_ad_percent_shield,
                 effect_duration_seconds,
@@ -187,7 +195,13 @@ impl StableItem for Eclipse {
         // rather than reading it) all go at once.
         ctx.entity_remove_buff(target, self.mark_buff);
 
-        let bonus_damage = percent_of(target_max_hp, self.effect_hp_percent_damage);
+        let reach = (self.effect_melee_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let hp_percent = if ctx.distance_sq(caster, target) > reach * reach {
+            self.effect_ranged_hp_percent_damage
+        } else {
+            self.effect_melee_hp_percent_damage
+        };
+        let bonus_damage = percent_of(target_max_hp, hp_percent);
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
 
         let shield = self.effect_bonus_flat_shield

@@ -156,9 +156,11 @@ $bftStacks = [int]$config.blackfire_torch.effect_max_stacks
 $rbftPower = [int]$config.radiant_blackfire_torch.effect_stack_magic_power
 $rbftDur = [int]$config.radiant_blackfire_torch.effect_duration_seconds
 $rbftStacks = [int]$config.radiant_blackfire_torch.effect_max_stacks
-$borkPct = [double]$config.blade_of_the_ruined_king.effect_hp_percent_damage
+$borkMeleePct = [double]$config.blade_of_the_ruined_king.effect_melee_hp_percent_damage
+$borkRangedPct = [double]$config.blade_of_the_ruined_king.effect_ranged_hp_percent_damage
 $borkCap = [int]$config.blade_of_the_ruined_king.effect_minion_damage_cap
-$rborkPct = [double]$config.radiant_blade_of_the_ruined_king.effect_hp_percent_damage
+$rborkMeleePct = [double]$config.radiant_blade_of_the_ruined_king.effect_melee_hp_percent_damage
+$rborkRangedPct = [double]$config.radiant_blade_of_the_ruined_king.effect_ranged_hp_percent_damage
 $rborkCap = [int]$config.radiant_blade_of_the_ruined_king.effect_minion_damage_cap
 $dbMult = [int]$config.deathblade.attack_mult
 $rdbMult = [int]$config.radiant_deathblade.attack_mult
@@ -337,13 +339,15 @@ $rssFlatHeal = [double]$config.radiant_sundered_sky.effect_bonus_flat_heal
 $rssPercentHeal = [double]$config.radiant_sundered_sky.effect_caster_hp_percent_heal
 $rssOnHitCD = [double]$config.radiant_sundered_sky.effect_cooldown_seconds
 $eclDur = [int]$config.eclipse.effect_duration_seconds
-$eclHpPct = [double]$config.eclipse.effect_hp_percent_damage
+$eclMeleePct = [double]$config.eclipse.effect_melee_hp_percent_damage
+$eclRangedPct = [double]$config.eclipse.effect_ranged_hp_percent_damage
 $eclShield = [int]$config.eclipse.effect_bonus_flat_shield
 $eclAdPct = [double]$config.eclipse.effect_ad_percent_shield
 $eclShDur = [int]$config.eclipse.effect_shield_seconds
 $eclCd = [int]$config.eclipse.effect_cooldown_seconds
 $reclDur = [int]$config.radiant_eclipse.effect_duration_seconds
-$reclHpPct = [double]$config.radiant_eclipse.effect_hp_percent_damage
+$reclMeleePct = [double]$config.radiant_eclipse.effect_melee_hp_percent_damage
+$reclRangedPct = [double]$config.radiant_eclipse.effect_ranged_hp_percent_damage
 $reclShield = [int]$config.radiant_eclipse.effect_bonus_flat_shield
 $reclAdPct = [double]$config.radiant_eclipse.effect_ad_percent_shield
 $reclShDur = [int]$config.radiant_eclipse.effect_shield_seconds
@@ -384,12 +388,14 @@ $rdndCd = [double]$config.radiant_dusk_and_dawn.effect_cooldown_seconds
 $bsMin = [int]$config.bloodsong.effect_min_bonus_damage
 $bsMax = [int]$config.bloodsong.effect_max_bonus_damage
 $bsCd = [double]$config.bloodsong.effect_cooldown_seconds
-$bsAmp = [int]$config.bloodsong.effect_damaged_amplify
+$bsMeleeAmp = [int]$config.bloodsong.effect_melee_damaged_amplify
+$bsRangedAmp = [int]$config.bloodsong.effect_ranged_damaged_amplify
 $bsDur = [int]$config.bloodsong.effect_duration_seconds
 $rbsMin = [int]$config.radiant_bloodsong.effect_min_bonus_damage
 $rbsMax = [int]$config.radiant_bloodsong.effect_max_bonus_damage
 $rbsCd = [double]$config.radiant_bloodsong.effect_cooldown_seconds
-$rbsAmp = [int]$config.radiant_bloodsong.effect_damaged_amplify
+$rbsMeleeAmp = [int]$config.radiant_bloodsong.effect_melee_damaged_amplify
+$rbsRangedAmp = [int]$config.radiant_bloodsong.effect_ranged_damaged_amplify
 $rbsDur = [int]$config.radiant_bloodsong.effect_duration_seconds
 $sdLeth = [int]$config.serrated_dirk.effect_lethality
 $hubLeth = [int]$config.hubris.effect_lethality
@@ -610,8 +616,8 @@ $i18n.en.lord_dominiks_regards.option = "Giant Slayer: Deal <#ff9028ff>${ldrPct}
 $i18n.en.radiant_lord_dominiks_regards.option = "Giant Slayer: Deal <#ff9028ff>${rldrPct}% bonus damage<> for every <#60e84dff>${rldrHp}<> <$hpIcon> <#60e84dff>maximum health<> the target has, up to <#ff9028ff>${rldrMax}%<>."
 $i18n.en.blackfire_torch.option = "Maleficent: Landing an Ability on an enemy champion grants <#a974ffff>${bftPower}<> <$apIcon> <#a974ffff>Ability Power<> for <#e8a800ff>${bftDur} seconds<> (max ${bftStacks} stacks)."
 $i18n.en.radiant_blackfire_torch.option = "Maleficent: Landing an Ability on an enemy champion grants <#a974ffff>${rbftPower}<> <$apIcon> <#a974ffff>Ability Power<> for <#e8a800ff>${rbftDur} seconds<> (max ${rbftStacks} stacks)."
-$i18n.en.blade_of_the_ruined_king.option = "Mist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>${borkPct}% of the target's current health<>. Deals a maximum of <#ff9028ff>${borkCap} physical damage<> against minions and monsters."
-$i18n.en.radiant_blade_of_the_ruined_king.option = "Mist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>${rborkPct}% of the target's current health<>. Deals a maximum of <#ff9028ff>${rborkCap} physical damage<> against minions and monsters."
+$i18n.en.blade_of_the_ruined_king.option = "Mist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<$meleeIcon> ${borkMeleePct}% / <$rangedIcon> ${borkRangedPct}%) of the target's current health<>. Deals a maximum of <#ff9028ff>${borkCap} physical damage<> against minions and monsters."
+$i18n.en.radiant_blade_of_the_ruined_king.option = "Mist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<$meleeIcon> ${rborkMeleePct}% / <$rangedIcon> ${rborkRangedPct}%) of the target's current health<>. Deals a maximum of <#ff9028ff>${rborkCap} physical damage<> against minions and monsters."
 $i18n.en.deathblade.option = "Apex: Increase your total <$adIcon> <#ff9028ff>Attack Damage<> by <#ff9028ff>${dbMult}%<>."
 $i18n.en.radiant_deathblade.option = "Apex: Increase your total <$adIcon> <#ff9028ff>Attack Damage<> by <#ff9028ff>${rdbMult}%<>."
 $i18n.en.deaths_dance.option = "Ignore Pain: <#e8a800ff>${ddDelay}%<> of the damage you take is dealt over time as <#e3ab9dff>true damage<> (up to <#60e84dff>${ddBurnCap}%<> of your <$hpIcon> <#60e84dff>maximum health<> per second).`n`nDefy: Scoring a <#e8a800ff>takedown<> on an enemy champion cleanses the remaining stored damage and <$hpRegenIcon> <#60e84dff>heals you<> for <#60e84dff>${ddFlatHeal}<> + <#60e84dff>${ddHeal}%<> of your <#60e84dff>missing health<>."
@@ -668,9 +674,9 @@ $i18n.en.bloodletters_curse.option = "Decay: Dealing <#a974ffff>magic damage<> t
 $i18n.en.radiant_bloodletters_curse.option = "Decay: Dealing <#a974ffff>magic damage<> to enemy champions <#d94c49ff>reduces their <$mrIcon> <#88ccffff>magic resistance<> by ${rblcShred}%<> for <#e8a800ff>${rblcDur} seconds<> (max ${rblcStacks} stacks)."
 $i18n.en.sundered_sky.option = "Lightshield Strike: Your next basic attack against an enemy champion <$critIcon> <#d45656ff>critically strikes<> for <#e8a800ff>${ssDamage}% bonus damage<> and <$hpRegenIcon> <#60e84dff>heals you<> for <#60e84dff>${ssFlatHeal}<> + <#60e84dff>${ssPercentHeal}%<> of your <#60e84dff>missing health<> (<#e8a800ff>${ssOnHitCD} second<> cooldown per target)."
 $i18n.en.radiant_sundered_sky.option = "Lightshield Strike: Your next basic attack against an enemy champion <$critIcon> <#d45656ff>critically strikes<> for <#e8a800ff>${rssDamage}% bonus damage<> and <$hpRegenIcon> <#60e84dff>heals you<> for <#60e84dff>${rssFlatHeal}<> + <#60e84dff>${rssPercentHeal}%<> of your <#60e84dff>missing health<> (<#e8a800ff>${rssOnHitCD} second<> cooldown per target)."
-$eclEn = "Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>{0} seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>{1}% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>{2}<> + <#ff9028ff>{3}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>{4} seconds<> (<#e8a800ff>{5} second<> cooldown per target)."
-$i18n.en.eclipse.option = $eclEn -f $eclDur, $eclHpPct, $eclShield, $eclAdPct, $eclShDur, $eclCd
-$i18n.en.radiant_eclipse.option = $eclEn -f $reclDur, $reclHpPct, $reclShield, $reclAdPct, $reclShDur, $reclCd
+$eclEn = "Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>{0} seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<$meleeIcon> {1}% / <$rangedIcon> {6}%) of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>{2}<> + <#ff9028ff>{3}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>{4} seconds<> (<#e8a800ff>{5} second<> cooldown per target)."
+$i18n.en.eclipse.option = $eclEn -f $eclDur, $eclMeleePct, $eclShield, $eclAdPct, $eclShDur, $eclCd, $eclRangedPct
+$i18n.en.radiant_eclipse.option = $eclEn -f $reclDur, $reclMeleePct, $reclShield, $reclAdPct, $reclShDur, $reclCd, $reclRangedPct
 $i18n.en.echoes_of_helia.option = "Soul Siphon: Store <#e8a800ff>${eohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (based on <$levelIcon> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion (excluding yourself) consumes all <#92dc7bff>Soul Charges<> and <$hpRegenIcon> <#60e84dff>heals them<> equal to the consumed amount."
 $i18n.en.radiant_echoes_of_helia.option = "Soul Siphon: Store <#e8a800ff>${reohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (based on <$levelIcon> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion (excluding yourself) consumes all <#92dc7bff>Soul Charges<> and <$hpRegenIcon> <#60e84dff>heals them<> equal to the consumed amount."
 
@@ -680,7 +686,7 @@ $tfTemplate = "Spellblade: Landing an Ability on an enemy champion causes your n
 $i18n.en.trinity_force.option = $tfTemplate -f $tfFlat, $tfAdPct, $tfCd
 $i18n.en.radiant_trinity_force.option = $tfTemplate -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$rhTemplate = "Cleave: Basic attacks deal <#ff9028ff><$meleeIcon> {0}% / <$rangedIcon> {1}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>{2} <$rangeIcon> range<> of your target."
+$rhTemplate = "Cleave: Basic attacks deal <#ff9028ff>(<$meleeIcon> {0}% / <$rangedIcon> {1}%)<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>{2} <$rangeIcon> range<> of your target."
 $i18n.en.ravenous_hydra.option = $rhTemplate -f $rhMeleePct, $rhRangedPct, $rhRange
 $i18n.en.radiant_ravenous_hydra.option = $rhTemplate -f $rrhMeleePct, $rrhRangedPct, $rrhRange
 
@@ -688,9 +694,9 @@ $dndTemplate = "Spellblade: Landing an Ability on an enemy champion causes your 
 $i18n.en.dusk_and_dawn.option = $dndTemplate -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.en.radiant_dusk_and_dawn.option = $dndTemplate -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
-$bsTemplate = "Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>{0}<> - <#a974ffff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>{2} second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>{3}%<> for <#e8a800ff>{4} seconds<>."
-$i18n.en.bloodsong.option = $bsTemplate -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.en.radiant_bloodsong.option = $bsTemplate -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$bsTemplate = "Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>{0}<> - <#a974ffff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>{2} second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>(<$meleeIcon> {3}% / <$rangedIcon> {5}%)<> for <#e8a800ff>{4} seconds<>."
+$i18n.en.bloodsong.option = $bsTemplate -f $bsMin, $bsMax, $bsCd, $bsMeleeAmp, $bsDur, $bsRangedAmp
+$i18n.en.radiant_bloodsong.option = $bsTemplate -f $rbsMin, $rbsMax, $rbsCd, $rbsMeleeAmp, $rbsDur, $rbsRangedAmp
 
 $lethEn = "Gain <#ffdd8eff>{0} <$armorPenIcon> Lethality<>."
 $i18n.en.serrated_dirk.option = $lethEn -f $sdLeth
@@ -793,8 +799,8 @@ $i18n.vi.lord_dominiks_regards.option = "Diệt Khổng Lồ: Gây thêm <#ff902
 $i18n.vi.radiant_lord_dominiks_regards.option = "Diệt Khổng Lồ: Gây thêm <#ff9028ff>${rldrPct}% sát thương<> cho mỗi <#60e84dff>${rldrHp}<> <$hpIcon> <#60e84dff>máu tối đa<> của mục tiêu, tối đa <#ff9028ff>${rldrMax}%<>."
 $i18n.vi.blackfire_torch.option = "Tội ác: Kĩ năng trúng sẽ tăng <#a974ffff>${bftPower}<> <$apIcon> <#a974ffff>SMPT<> trong <#e8a800ff>${bftDur} giây<> (tối đa ${bftStacks} cộng dồn)."
 $i18n.vi.radiant_blackfire_torch.option = "Tội ác: Kĩ năng trúng sẽ tăng <#a974ffff>${rbftPower}<> <$apIcon> <#a974ffff>SMPT<> trong <#e8a800ff>${rbftDur} giây<> (tối đa ${rbftStacks} cộng dồn)."
-$i18n.vi.blade_of_the_ruined_king.option = "Nanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>${borkPct}% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>${borkCap} sát thương vật lí<> lên lính và quái vật."
-$i18n.vi.radiant_blade_of_the_ruined_king.option = "Nanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>${rborkPct}% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>${rborkCap} sát thương vật lí<> lên lính và quái vật."
+$i18n.vi.blade_of_the_ruined_king.option = "Nanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>(<$meleeIcon> ${borkMeleePct}% / <$rangedIcon> ${borkRangedPct}%) máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>${borkCap} sát thương vật lí<> lên lính và quái vật."
+$i18n.vi.radiant_blade_of_the_ruined_king.option = "Nanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>(<$meleeIcon> ${rborkMeleePct}% / <$rangedIcon> ${rborkRangedPct}%) máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>${rborkCap} sát thương vật lí<> lên lính và quái vật."
 $i18n.vi.deathblade.option = "Cường hóa: Tăng <$adIcon> <#ff9028ff>SMCK<> của bản thân thêm <#ff9028ff>${dbMult}%<>."
 $i18n.vi.radiant_deathblade.option = "Cường hóa: Tăng <$adIcon> <#ff9028ff>SMCK<> của bản thân thêm <#ff9028ff>${rdbMult}%<>."
 $i18n.vi.deaths_dance.option = "Phớt Lờ Đau Đớn: <#e8a800ff>${ddDelay}%<> sát thương nhận vào được tích trữ và gây lại cho bạn theo thời gian dưới dạng <#e3ab9dff>sát thương chuẩn<> (tối đa <#60e84dff>${ddBurnCap}%<> <$hpIcon> <#60e84dff>máu tối đa<> mỗi giây).`n`nCự Tuyệt: Tham gia hạ gục một tướng địch sẽ xóa lượng sát thương tích trữ còn lại và <$hpRegenIcon> <#60e84dff>hồi<> cho bạn <#60e84dff>${ddFlatHeal}<> + <#60e84dff>${ddHeal}%<> <#60e84dff>máu đã mất<>."
@@ -851,9 +857,9 @@ $i18n.vi.bloodletters_curse.option = "Phân Rã: Gây <#a974ffff>sát thương p
 $i18n.vi.radiant_bloodletters_curse.option = "Phân Rã: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm <$mrIcon> <#88ccffff>kháng phép<> của chúng ${rblcShred}%<> trong <#e8a800ff>${rblcDur} giây<> (tối đa ${rblcStacks} cộng dồn)."
 $i18n.vi.sundered_sky.option = "Đòn Khiên Sáng: Đòn đánh thường tiếp theo của bạn lên một tướng địch sẽ <$critIcon> <#d45656ff>chí mạng<>, gây <#e8a800ff>${ssDamage}% sát thương cộng thêm<> và <$hpRegenIcon> <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>${ssFlatHeal}<> + <#60e84dff>${ssPercentHeal}%<> <#60e84dff>máu đã mất<> (<#e8a800ff>${ssOnHitCD} giây<> hồi chiêu mỗi mục tiêu)."
 $i18n.vi.radiant_sundered_sky.option = "Đòn Khiên Sáng: Đòn đánh thường tiếp theo của bạn lên một tướng địch sẽ <$critIcon> <#d45656ff>chí mạng<>, gây <#e8a800ff>${rssDamage}% sát thương cộng thêm<> và <$hpRegenIcon> <#60e84dff>hồi máu cho bạn<> một lượng bằng <#60e84dff>${rssFlatHeal}<> + <#60e84dff>${rssPercentHeal}%<> <#60e84dff>máu đã mất<> (<#e8a800ff>${rssOnHitCD} giây<> hồi chiêu mỗi mục tiêu)."
-$eclVi = "Ánh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>{0} giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>{1}% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>{2}<> + <#ff9028ff>{3}%<> <$adIcon> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>{4} giây<> (hồi chiêu <#e8a800ff>{5} giây<> mỗi mục tiêu)."
-$i18n.vi.eclipse.option = $eclVi -f $eclDur, $eclHpPct, $eclShield, $eclAdPct, $eclShDur, $eclCd
-$i18n.vi.radiant_eclipse.option = $eclVi -f $reclDur, $reclHpPct, $reclShield, $reclAdPct, $reclShDur, $reclCd
+$eclVi = "Ánh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>{0} giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>(<$meleeIcon> {1}% / <$rangedIcon> {6}%) máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>{2}<> + <#ff9028ff>{3}%<> <$adIcon> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>{4} giây<> (hồi chiêu <#e8a800ff>{5} giây<> mỗi mục tiêu)."
+$i18n.vi.eclipse.option = $eclVi -f $eclDur, $eclMeleePct, $eclShield, $eclAdPct, $eclShDur, $eclCd, $eclRangedPct
+$i18n.vi.radiant_eclipse.option = $eclVi -f $reclDur, $reclMeleePct, $reclShield, $reclAdPct, $reclShDur, $reclCd, $reclRangedPct
 $i18n.vi.echoes_of_helia.option = "Hút Hồn: Tích trữ <#e8a800ff>${eohConversion}%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh (không tính bản thân) sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <$hpRegenIcon> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
 $i18n.vi.radiant_echoes_of_helia.option = "Hút Hồn: Tích trữ <#e8a800ff>${reohConversion}%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh (không tính bản thân) sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <$hpRegenIcon> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
 
@@ -863,7 +869,7 @@ $tfTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn �
 $i18n.vi.trinity_force.option = $tfTemplateVi -f $tfFlat, $tfAdPct, $tfCd
 $i18n.vi.radiant_trinity_force.option = $tfTemplateVi -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$rhTemplateVi = "Sát Thương Lan: Đòn đánh thường gây <#ff9028ff><$meleeIcon> {0}% / <$rangedIcon> {1}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>{2}<> <$rangeIcon> quanh mục tiêu."
+$rhTemplateVi = "Sát Thương Lan: Đòn đánh thường gây <#ff9028ff>(<$meleeIcon> {0}% / <$rangedIcon> {1}%)<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>{2}<> <$rangeIcon> quanh mục tiêu."
 $i18n.vi.ravenous_hydra.option = $rhTemplateVi -f $rhMeleePct, $rhRangedPct, $rhRange
 $i18n.vi.radiant_ravenous_hydra.option = $rhTemplateVi -f $rrhMeleePct, $rrhRangedPct, $rrhRange
 
@@ -871,9 +877,9 @@ $dndTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn 
 $i18n.vi.dusk_and_dawn.option = $dndTemplateVi -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.vi.radiant_dusk_and_dawn.option = $dndTemplateVi -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
-$bsTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>{0}<> - <#a974ffff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>{3}%<> trong <#e8a800ff>{4} giây<>."
-$i18n.vi.bloodsong.option = $bsTemplateVi -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.vi.radiant_bloodsong.option = $bsTemplateVi -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$bsTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>{0}<> - <#a974ffff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>(<$meleeIcon> {3}% / <$rangedIcon> {5}%)<> trong <#e8a800ff>{4} giây<>."
+$i18n.vi.bloodsong.option = $bsTemplateVi -f $bsMin, $bsMax, $bsCd, $bsMeleeAmp, $bsDur, $bsRangedAmp
+$i18n.vi.radiant_bloodsong.option = $bsTemplateVi -f $rbsMin, $rbsMax, $rbsCd, $rbsMeleeAmp, $rbsDur, $rbsRangedAmp
 
 $lethVi = "Nhận <#ffdd8eff>{0} <$armorPenIcon> Xuyên Giáp Trắng<>."
 $i18n.vi.serrated_dirk.option = $lethVi -f $sdLeth
@@ -976,8 +982,8 @@ $i18n.'zh-hans'.lord_dominiks_regards.option = "巨人杀手：目标每拥有 <
 $i18n.'zh-hans'.radiant_lord_dominiks_regards.option = "巨人杀手：目标每拥有 <#60e84dff>${rldrHp}点<> <$hpIcon> <#60e84dff>最大生命值<>，便造成 <#ff9028ff>${rldrPct}%<> 额外伤害，最多 <#ff9028ff>${rldrMax}%<>。"
 $i18n.'zh-hans'.blackfire_torch.option = "邪焰：技能命中时获得 <#a974ffff>${bftPower}<> <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${bftDur}秒<>（最多叠加${bftStacks}层）。"
 $i18n.'zh-hans'.radiant_blackfire_torch.option = "邪焰：技能命中时获得 <#a974ffff>${rbftPower}<> <$apIcon> <#a974ffff>法术强度<>，持续 <#e8a800ff>${rbftDur}秒<>（最多叠加${rbftStacks}层）。"
-$i18n.'zh-hans'.blade_of_the_ruined_king.option = "雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值${borkPct}%<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>${borkCap}点物理伤害<>。"
-$i18n.'zh-hans'.radiant_blade_of_the_ruined_king.option = "雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值${rborkPct}%<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>${rborkCap}点物理伤害<>。"
+$i18n.'zh-hans'.blade_of_the_ruined_king.option = "雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值(<$meleeIcon> ${borkMeleePct}% / <$rangedIcon> ${borkRangedPct}%)<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>${borkCap}点物理伤害<>。"
+$i18n.'zh-hans'.radiant_blade_of_the_ruined_king.option = "雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值(<$meleeIcon> ${rborkMeleePct}% / <$rangedIcon> ${rborkRangedPct}%)<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>${rborkCap}点物理伤害<>。"
 $i18n.'zh-hans'.deathblade.option = "顶峰：你的总 <$adIcon> <#ff9028ff>攻击力<>提升 <#ff9028ff>${dbMult}%<>。"
 $i18n.'zh-hans'.radiant_deathblade.option = "顶峰：你的总 <$adIcon> <#ff9028ff>攻击力<>提升 <#ff9028ff>${rdbMult}%<>。"
 $i18n.'zh-hans'.deaths_dance.option = "无视痛苦：受到伤害的 <#e8a800ff>${ddDelay}%<> 会被储存，并随时间作为 <#e3ab9dff>额外真实伤害<> 返还给你（每秒最多为你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${ddBurnCap}%<>）。`n`n拒止：参与击杀敌方英雄会清除剩余的储存伤害，并为你<$hpRegenIcon> <#60e84dff>回复<> <#60e84dff>${ddFlatHeal}<> + <#60e84dff>${ddHeal}%<> 的<#60e84dff>已损失生命值<>。"
@@ -1034,9 +1040,9 @@ $i18n.'zh-hans'.bloodletters_curse.option = "腐蚀：对敌方英雄造成<#a97
 $i18n.'zh-hans'.radiant_bloodletters_curse.option = "腐蚀：对敌方英雄造成<#a974ffff>魔法伤害<>会<#d94c49ff>使其 <$mrIcon> <#88ccffff>魔法抗性<> 降低${rblcShred}%<>，持续 <#e8a800ff>${rblcDur}秒<>（最多叠加${rblcStacks}层）。"
 $i18n.'zh-hans'.sundered_sky.option = "光盾打击：你对敌方英雄的下一次普通攻击会 <$critIcon> <#d45656ff>暴击<>，造成 <#e8a800ff>${ssDamage}% 额外伤害<>，并<$hpRegenIcon> <#60e84dff>为你回复<> <#60e84dff>${ssFlatHeal}<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>${ssPercentHeal}%<>（每个目标冷却 <#e8a800ff>${ssOnHitCD}秒<>）。"
 $i18n.'zh-hans'.radiant_sundered_sky.option = "光盾打击：你对敌方英雄的下一次普通攻击会 <$critIcon> <#d45656ff>暴击<>，造成 <#e8a800ff>${rssDamage}% 额外伤害<>，并<$hpRegenIcon> <#60e84dff>为你回复<> <#60e84dff>${rssFlatHeal}<> + 你<#60e84dff>已损失生命值<> 的 <#60e84dff>${rssPercentHeal}%<>（每个目标冷却 <#e8a800ff>${rssOnHitCD}秒<>）。"
-$eclZh = "永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>{0}秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其{1}%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>{2}<> + <$adIcon> <#ff9028ff>攻击力的 {3}%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>{4}秒<>（每个目标冷却 <#e8a800ff>{5}秒<>）。"
-$i18n.'zh-hans'.eclipse.option = $eclZh -f $eclDur, $eclHpPct, $eclShield, $eclAdPct, $eclShDur, $eclCd
-$i18n.'zh-hans'.radiant_eclipse.option = $eclZh -f $reclDur, $reclHpPct, $reclShield, $reclAdPct, $reclShDur, $reclCd
+$eclZh = "永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>{0}秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其(<$meleeIcon> {1}% / <$rangedIcon> {6}%)最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>{2}<> + <$adIcon> <#ff9028ff>攻击力的 {3}%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>{4}秒<>（每个目标冷却 <#e8a800ff>{5}秒<>）。"
+$i18n.'zh-hans'.eclipse.option = $eclZh -f $eclDur, $eclMeleePct, $eclShield, $eclAdPct, $eclShDur, $eclCd, $eclRangedPct
+$i18n.'zh-hans'.radiant_eclipse.option = $eclZh -f $reclDur, $reclMeleePct, $reclShield, $reclAdPct, $reclShDur, $reclCd, $reclRangedPct
 $i18n.'zh-hans'.echoes_of_helia.option = "灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>${eohConversion}%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<>（随<#d8c9b3ff>等级<>提升）。为友方英雄（自己除外）回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<$hpRegenIcon> <#60e84dff>回复<>等量的生命值。"
 $i18n.'zh-hans'.radiant_echoes_of_helia.option = "灵魂虹吸：将你造成和受到伤害的 <#e8a800ff>${reohConversion}%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<>（随<#d8c9b3ff>等级<>提升）。为友方英雄（自己除外）回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<$hpRegenIcon> <#60e84dff>回复<>等量的生命值。"
 
@@ -1046,7 +1052,7 @@ $tfTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻
 $i18n.'zh-hans'.trinity_force.option = $tfTemplateZh -f $tfFlat, $tfAdPct, $tfCd
 $i18n.'zh-hans'.radiant_trinity_force.option = $tfTemplateZh -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$rhTemplateZh = "顺劈：普通攻击会对目标周围 <#ff86c2ff>{2} <$rangeIcon> 射程<>内的敌人造成相当于你 <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff><$meleeIcon> {0}% / <$rangedIcon> {1}%<> 的<#ff9028ff>物理伤害<>。"
+$rhTemplateZh = "顺劈：普通攻击会对目标周围 <#ff86c2ff>{2} <$rangeIcon> 射程<>内的敌人造成相当于你 <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>(<$meleeIcon> {0}% / <$rangedIcon> {1}%)<> 的<#ff9028ff>物理伤害<>。"
 $i18n.'zh-hans'.ravenous_hydra.option = $rhTemplateZh -f $rhMeleePct, $rhRangedPct, $rhRange
 $i18n.'zh-hans'.radiant_ravenous_hydra.option = $rhTemplateZh -f $rrhMeleePct, $rrhRangedPct, $rrhRange
 
@@ -1054,9 +1060,9 @@ $dndTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通�
 $i18n.'zh-hans'.dusk_and_dawn.option = $dndTemplateZh -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.'zh-hans'.radiant_dusk_and_dawn.option = $dndTemplateZh -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
-$bsTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#a974ffff>{0}<> - <#a974ffff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>{2}秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>{3}%<>，持续 <#e8a800ff>{4}秒<>。"
-$i18n.'zh-hans'.bloodsong.option = $bsTemplateZh -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.'zh-hans'.radiant_bloodsong.option = $bsTemplateZh -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$bsTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#a974ffff>{0}<> - <#a974ffff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>{2}秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>(<$meleeIcon> {3}% / <$rangedIcon> {5}%)<>，持续 <#e8a800ff>{4}秒<>。"
+$i18n.'zh-hans'.bloodsong.option = $bsTemplateZh -f $bsMin, $bsMax, $bsCd, $bsMeleeAmp, $bsDur, $bsRangedAmp
+$i18n.'zh-hans'.radiant_bloodsong.option = $bsTemplateZh -f $rbsMin, $rbsMax, $rbsCd, $rbsMeleeAmp, $rbsDur, $rbsRangedAmp
 
 $lethZh = "获得 <#ffdd8eff>{0} 点<$armorPenIcon> 穿甲<>。"
 $i18n.'zh-hans'.serrated_dirk.option = $lethZh -f $sdLeth
@@ -1159,8 +1165,8 @@ $i18n.'pt-BR'.lord_dominiks_regards.option = "Mata-Gigantes: Cause <#ff9028ff>${
 $i18n.'pt-BR'.radiant_lord_dominiks_regards.option = "Mata-Gigantes: Cause <#ff9028ff>${rldrPct}% de dano bônus<> a cada <#60e84dff>${rldrHp}<> de <$hpIcon> <#60e84dff>Vida Máxima<> do alvo, até <#ff9028ff>${rldrMax}%<>."
 $i18n.'pt-BR'.blackfire_torch.option = "Nefastidão: Suas mágias te dão <#a974ffff>${bftPower}<> <$apIcon> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>${bftDur} segundos<> (acumula ${bftStacks}x)."
 $i18n.'pt-BR'.radiant_blackfire_torch.option = "Nefastidão: Suas mágias te dão <#a974ffff>${rbftPower}<> <$apIcon> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>${rbftDur} segundos<> (acumula ${rbftStacks}x)."
-$i18n.'pt-BR'.blade_of_the_ruined_king.option = "Gume da Névoa: Ataques causam <#d94c49ff>${borkPct}% da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>${borkCap}<> contra tropas e monstros.)"
-$i18n.'pt-BR'.radiant_blade_of_the_ruined_king.option = "Gume da Névoa: Ataques causam <#d94c49ff>${rborkPct}% da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>${rborkCap}<> contra tropas e monstros.)"
+$i18n.'pt-BR'.blade_of_the_ruined_king.option = "Gume da Névoa: Ataques causam <#d94c49ff>(<$meleeIcon> ${borkMeleePct}% / <$rangedIcon> ${borkRangedPct}%) da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>${borkCap}<> contra tropas e monstros.)"
+$i18n.'pt-BR'.radiant_blade_of_the_ruined_king.option = "Gume da Névoa: Ataques causam <#d94c49ff>(<$meleeIcon> ${rborkMeleePct}% / <$rangedIcon> ${rborkRangedPct}%) da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>${rborkCap}<> contra tropas e monstros.)"
 $i18n.'pt-BR'.deathblade.option = "Apex: Aumenta seu <$adIcon> <#ff9028ff>Dano de Ataque<> em <#ff9028ff>${dbMult}%<>."
 $i18n.'pt-BR'.radiant_deathblade.option = "Apex: Aumenta seu <$adIcon> <#ff9028ff>Dano de Ataque<> em <#ff9028ff>${rdbMult}%<>."
 $i18n.'pt-BR'.deaths_dance.option = "Ignorar a Dor: <#e8a800ff>${ddDelay}%<> do dano sofrido é armazenado e causado de volta a você ao longo do tempo como <#e3ab9dff>dano verdadeiro<> (até <#60e84dff>${ddBurnCap}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> por segundo).`n`nDesafiar: Participar de um abate de um campeão inimigo remove o dano armazenado restante e <$hpRegenIcon> <#60e84dff>cura você<> em <#60e84dff>${ddFlatHeal}<> + <#60e84dff>${ddHeal}%<> da sua <#60e84dff>vida perdida<>."
@@ -1217,9 +1223,9 @@ $i18n.'pt-BR'.bloodletters_curse.option = "Decaimento: Causar <#a974ffff>dano m�
 $i18n.'pt-BR'.radiant_bloodletters_curse.option = "Decaimento: Causar <#a974ffff>dano mágico<> a campeões inimigos <#d94c49ff>reduz a <$mrIcon> <#88ccffff>Resistência Mágica<> deles em ${rblcShred}%<> por <#e8a800ff>${rblcDur} segundos<> (acumula ${rblcStacks}x)."
 $i18n.'pt-BR'.sundered_sky.option = "Golpe do Escudo de Luz: Seu próximo ataque básico contra um campeão inimigo <$critIcon> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>${ssDamage}% de dano bônus<> e <$hpRegenIcon> <#60e84dff>cura você<> em <#60e84dff>${ssFlatHeal}<> + <#60e84dff>${ssPercentHeal}%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>${ssOnHitCD} segundos<> por alvo)."
 $i18n.'pt-BR'.radiant_sundered_sky.option = "Golpe do Escudo de Luz: Seu próximo ataque básico contra um campeão inimigo <$critIcon> <#d45656ff>causa acerto crítico<>, causando <#e8a800ff>${rssDamage}% de dano bônus<> e <$hpRegenIcon> <#60e84dff>cura você<> em <#60e84dff>${rssFlatHeal}<> + <#60e84dff>${rssPercentHeal}%<> da sua <#60e84dff>vida perdida<> (recarga de <#e8a800ff>${rssOnHitCD} segundos<> por alvo)."
-$eclPt = "Lua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>{0} segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>{1}% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>{2}<> + <#ff9028ff>{3}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>{4} segundos<> (recarga de <#e8a800ff>{5} segundos<> por alvo)."
-$i18n.'pt-BR'.eclipse.option = $eclPt -f $eclDur, $eclHpPct, $eclShield, $eclAdPct, $eclShDur, $eclCd
-$i18n.'pt-BR'.radiant_eclipse.option = $eclPt -f $reclDur, $reclHpPct, $reclShield, $reclAdPct, $reclShDur, $reclCd
+$eclPt = "Lua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>{0} segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>(<$meleeIcon> {1}% / <$rangedIcon> {6}%) da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>{2}<> + <#ff9028ff>{3}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>{4} segundos<> (recarga de <#e8a800ff>{5} segundos<> por alvo)."
+$i18n.'pt-BR'.eclipse.option = $eclPt -f $eclDur, $eclMeleePct, $eclShield, $eclAdPct, $eclShDur, $eclCd, $eclRangedPct
+$i18n.'pt-BR'.radiant_eclipse.option = $eclPt -f $reclDur, $reclMeleePct, $reclShield, $reclAdPct, $reclShDur, $reclCd, $reclRangedPct
 $i18n.'pt-BR'.echoes_of_helia.option = "Sifão de Almas: Armazena <#e8a800ff>${eohConversion}%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado (exceto você) consome todas as <#92dc7bff>Cargas de Alma<>, <$hpRegenIcon> <#60e84dff>curando-o<> na quantidade consumida."
 $i18n.'pt-BR'.radiant_echoes_of_helia.option = "Sifão de Almas: Armazena <#e8a800ff>${reohConversion}%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado (exceto você) consome todas as <#92dc7bff>Cargas de Alma<>, <$hpRegenIcon> <#60e84dff>curando-o<> na quantidade consumida."
 
@@ -1229,7 +1235,7 @@ $tfTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo f
 $i18n.'pt-BR'.trinity_force.option = $tfTemplatePt -f $tfFlat, $tfAdPct, $tfCd
 $i18n.'pt-BR'.radiant_trinity_force.option = $tfTemplatePt -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$rhTemplatePt = "Fenda: Ataques básicos causam <#ff9028ff><$meleeIcon> {0}% / <$rangedIcon> {1}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>{2} <$rangeIcon> alcance<> do alvo."
+$rhTemplatePt = "Fenda: Ataques básicos causam <#ff9028ff>(<$meleeIcon> {0}% / <$rangedIcon> {1}%)<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>{2} <$rangeIcon> alcance<> do alvo."
 $i18n.'pt-BR'.ravenous_hydra.option = $rhTemplatePt -f $rhMeleePct, $rhRangedPct, $rhRange
 $i18n.'pt-BR'.radiant_ravenous_hydra.option = $rhTemplatePt -f $rrhMeleePct, $rrhRangedPct, $rrhRange
 
@@ -1237,9 +1243,9 @@ $dndTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo 
 $i18n.'pt-BR'.dusk_and_dawn.option = $dndTemplatePt -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.'pt-BR'.radiant_dusk_and_dawn.option = $dndTemplatePt -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
-$bsTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>{0}<> - <#a974ffff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>{2} segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>{3}%<> por <#e8a800ff>{4} segundos<>."
-$i18n.'pt-BR'.bloodsong.option = $bsTemplatePt -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.'pt-BR'.radiant_bloodsong.option = $bsTemplatePt -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$bsTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>{0}<> - <#a974ffff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>{2} segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>(<$meleeIcon> {3}% / <$rangedIcon> {5}%)<> por <#e8a800ff>{4} segundos<>."
+$i18n.'pt-BR'.bloodsong.option = $bsTemplatePt -f $bsMin, $bsMax, $bsCd, $bsMeleeAmp, $bsDur, $bsRangedAmp
+$i18n.'pt-BR'.radiant_bloodsong.option = $bsTemplatePt -f $rbsMin, $rbsMax, $rbsCd, $rbsMeleeAmp, $rbsDur, $rbsRangedAmp
 
 $lethPt = "Ganha <#ffdd8eff>{0} de <$armorPenIcon> Letalidade<>."
 $i18n.'pt-BR'.serrated_dirk.option = $lethPt -f $sdLeth
@@ -1342,8 +1348,8 @@ $i18n.ru.lord_dominiks_regards.option = "Убийца великанов: Нан
 $i18n.ru.radiant_lord_dominiks_regards.option = "Убийца великанов: Наносит <#ff9028ff>${rldrPct}% дополнительного урона<> за каждые <#60e84dff>${rldrHp}<> <$hpIcon> <#60e84dff>максимального здоровья<> цели, вплоть до <#ff9028ff>${rldrMax}%<>."
 $i18n.ru.blackfire_torch.option = "Злодейский: Попадания умениями дают <#a974ffff>${bftPower}<> <$apIcon> <#a974ffff>Силы Умений<> на <#e8a800ff>${bftDur} секунды<> (макс. ${bftStacks} стака)."
 $i18n.ru.radiant_blackfire_torch.option = "Злодейский: Попадания умениями дают <#a974ffff>${rbftPower}<> <$apIcon> <#a974ffff>Силы Умений<> на <#e8a800ff>${rbftDur} секунды<> (макс. ${rbftStacks} стака)."
-$i18n.ru.blade_of_the_ruined_king.option = "Край тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>${borkPct}% текущего здоровья цели<>. Наносит максимум <#ff9028ff>${borkCap} физического урона<> по миньонам и монстрам."
-$i18n.ru.radiant_blade_of_the_ruined_king.option = "Край тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>${rborkPct}% текущего здоровья цели<>. Наносит максимум <#ff9028ff>${rborkCap} физического урона<> по миньонам и монстрам."
+$i18n.ru.blade_of_the_ruined_king.option = "Край тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>(<$meleeIcon> ${borkMeleePct}% / <$rangedIcon> ${borkRangedPct}%) текущего здоровья цели<>. Наносит максимум <#ff9028ff>${borkCap} физического урона<> по миньонам и монстрам."
+$i18n.ru.radiant_blade_of_the_ruined_king.option = "Край тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>(<$meleeIcon> ${rborkMeleePct}% / <$rangedIcon> ${rborkRangedPct}%) текущего здоровья цели<>. Наносит максимум <#ff9028ff>${rborkCap} физического урона<> по миньонам и монстрам."
 $i18n.ru.deathblade.option = "Вершина: Увеличивает вашу общую <$adIcon> <#ff9028ff>Силу Атаки<> на <#ff9028ff>${dbMult}%<>."
 $i18n.ru.radiant_deathblade.option = "Вершина: Увеличивает вашу общую <$adIcon> <#ff9028ff>Силу Атаки<> на <#ff9028ff>${rdbMult}%<>."
 $i18n.ru.deaths_dance.option = "Игнорирование Боли: <#e8a800ff>${ddDelay}%<> получаемого урона вместо этого наносится с течением времени как <#e3ab9dff>чистый урон<> (до <#60e84dff>${ddBurnCap}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> в секунду).`n`nВызов: Участие в убийстве вражеского чемпиона снимает оставшийся накопленный урон и <$hpRegenIcon> <#60e84dff>восстанавливает<> <#60e84dff>${ddFlatHeal}<> + <#60e84dff>${ddHeal}%<> от вашего <#60e84dff>потерянного здоровья<>."
@@ -1400,9 +1406,9 @@ $i18n.ru.bloodletters_curse.option = "Распад: Нанесение <#a974fff
 $i18n.ru.radiant_bloodletters_curse.option = "Распад: Нанесение <#a974ffff>магического урона<> вражеским чемпионам <#d94c49ff>снижает их <$mrIcon> <#88ccffff>сопротивление магии<> на ${rblcShred}%<> на <#e8a800ff>${rblcDur} секунд<> (макс. ${rblcStacks} стаков)."
 $i18n.ru.sundered_sky.option = "Удар Светового Щита: Ваша следующая базовая атака по вражескому чемпиону <$critIcon> <#d45656ff>наносит критический удар<> с <#e8a800ff>${ssDamage}% дополнительного урона<> и <$hpRegenIcon> <#60e84dff>восстанавливает вам<> <#60e84dff>${ssFlatHeal}<> + <#60e84dff>${ssPercentHeal}%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>${ssOnHitCD} секунд<> на каждую цель)."
 $i18n.ru.radiant_sundered_sky.option = "Удар Светового Щита: Ваша следующая базовая атака по вражескому чемпиону <$critIcon> <#d45656ff>наносит критический удар<> с <#e8a800ff>${rssDamage}% дополнительного урона<> и <$hpRegenIcon> <#60e84dff>восстанавливает вам<> <#60e84dff>${rssFlatHeal}<> + <#60e84dff>${rssPercentHeal}%<> от вашего <#60e84dff>потерянного здоровья<> (перезарядка <#e8a800ff>${rssOnHitCD} секунд<> на каждую цель)."
-$eclRu = "Восходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>{0} секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>{1}% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>{2}<> + <#ff9028ff>{3}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> на <#e8a800ff>{4} секунды<> (перезарядка <#e8a800ff>{5} секунд<> на каждую цель)."
-$i18n.ru.eclipse.option = $eclRu -f $eclDur, $eclHpPct, $eclShield, $eclAdPct, $eclShDur, $eclCd
-$i18n.ru.radiant_eclipse.option = $eclRu -f $reclDur, $reclHpPct, $reclShield, $reclAdPct, $reclShDur, $reclCd
+$eclRu = "Восходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>{0} секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>(<$meleeIcon> {1}% / <$rangedIcon> {6}%) его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>{2}<> + <#ff9028ff>{3}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> на <#e8a800ff>{4} секунды<> (перезарядка <#e8a800ff>{5} секунд<> на каждую цель)."
+$i18n.ru.eclipse.option = $eclRu -f $eclDur, $eclMeleePct, $eclShield, $eclAdPct, $eclShDur, $eclCd, $eclRangedPct
+$i18n.ru.radiant_eclipse.option = $eclRu -f $reclDur, $reclMeleePct, $reclShield, $reclAdPct, $reclShDur, $reclCd, $reclRangedPct
 $i18n.ru.echoes_of_helia.option = "Похищение душ: Накапливает <#e8a800ff>${eohConversion}%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона (кроме вас) расходует все <#92dc7bff>Заряды Души<>, <$hpRegenIcon> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
 $i18n.ru.radiant_echoes_of_helia.option = "Похищение душ: Накапливает <#e8a800ff>${reohConversion}%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона (кроме вас) расходует все <#92dc7bff>Заряды Души<>, <$hpRegenIcon> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
 
@@ -1412,7 +1418,7 @@ $tfTemplateRu = "Чародейский клинок: Попадание уме�
 $i18n.ru.trinity_force.option = $tfTemplateRu -f $tfFlat, $tfAdPct, $tfCd
 $i18n.ru.radiant_trinity_force.option = $tfTemplateRu -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$rhTemplateRu = "Рассечение: Базовые атаки наносят <#ff9028ff><$meleeIcon> {0}% / <$rangedIcon> {1}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>{2} <$rangeIcon> дальности<> от цели."
+$rhTemplateRu = "Рассечение: Базовые атаки наносят <#ff9028ff>(<$meleeIcon> {0}% / <$rangedIcon> {1}%)<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>{2} <$rangeIcon> дальности<> от цели."
 $i18n.ru.ravenous_hydra.option = $rhTemplateRu -f $rhMeleePct, $rhRangedPct, $rhRange
 $i18n.ru.radiant_ravenous_hydra.option = $rhTemplateRu -f $rrhMeleePct, $rrhRangedPct, $rrhRange
 
@@ -1420,9 +1426,9 @@ $dndTemplateRu = "Чародейский клинок: Попадание уме
 $i18n.ru.dusk_and_dawn.option = $dndTemplateRu -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ru.radiant_dusk_and_dawn.option = $dndTemplateRu -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
-$bsTemplateRu = "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>{0}<> - <#a974ffff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>{3}%<> на <#e8a800ff>{4} секунды<>."
-$i18n.ru.bloodsong.option = $bsTemplateRu -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.ru.radiant_bloodsong.option = $bsTemplateRu -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$bsTemplateRu = "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>{0}<> - <#a974ffff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>(<$meleeIcon> {3}% / <$rangedIcon> {5}%)<> на <#e8a800ff>{4} секунды<>."
+$i18n.ru.bloodsong.option = $bsTemplateRu -f $bsMin, $bsMax, $bsCd, $bsMeleeAmp, $bsDur, $bsRangedAmp
+$i18n.ru.radiant_bloodsong.option = $bsTemplateRu -f $rbsMin, $rbsMax, $rbsCd, $rbsMeleeAmp, $rbsDur, $rbsRangedAmp
 
 $lethRu = "Даёт <#ffdd8eff>{0} <$armorPenIcon> летальности<>."
 $i18n.ru.serrated_dirk.option = $lethRu -f $sdLeth
@@ -1525,8 +1531,8 @@ $i18n.ko.lord_dominiks_regards.option = "거인 학살자: 대상이 보유한 <
 $i18n.ko.radiant_lord_dominiks_regards.option = "거인 학살자: 대상이 보유한 <$hpIcon> <#60e84dff>최대 체력 ${rldrHp}<>마다 <#ff9028ff>${rldrPct}%의 추가 피해<>를 입히며, 최대 <#ff9028ff>${rldrMax}%<>까지 증가합니다."
 $i18n.ko.blackfire_torch.option = "악의: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>${bftDur}초<> 동안 <$apIcon> <#a974ffff>주문력<>을 <#a974ffff>${bftPower}<> 얻습니다. 최대 ${bftStacks}회 중첩됩니다."
 $i18n.ko.radiant_blackfire_torch.option = "악의: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>${rbftDur}초<> 동안 <$apIcon> <#a974ffff>주문력<>을 <#a974ffff>${rbftPower}<> 얻습니다. 최대 ${rbftStacks}회 중첩됩니다."
-$i18n.ko.blade_of_the_ruined_king.option = "안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 ${borkPct}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>${borkCap}의 물리 피해<>를 입힙니다."
-$i18n.ko.radiant_blade_of_the_ruined_king.option = "안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 ${rborkPct}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>${rborkCap}의 물리 피해<>를 입힙니다."
+$i18n.ko.blade_of_the_ruined_king.option = "안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 (<$meleeIcon> ${borkMeleePct}% / <$rangedIcon> ${borkRangedPct}%)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>${borkCap}의 물리 피해<>를 입힙니다."
+$i18n.ko.radiant_blade_of_the_ruined_king.option = "안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 (<$meleeIcon> ${rborkMeleePct}% / <$rangedIcon> ${rborkRangedPct}%)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>${rborkCap}의 물리 피해<>를 입힙니다."
 $i18n.ko.deathblade.option = "정점: 총 <$adIcon> <#ff9028ff>공격력<>이 <#ff9028ff>${dbMult}%<> 증가합니다."
 $i18n.ko.radiant_deathblade.option = "정점: 총 <$adIcon> <#ff9028ff>공격력<>이 <#ff9028ff>${rdbMult}%<> 증가합니다."
 $i18n.ko.deaths_dance.option = "고통 무시: 받는 피해의 <#e8a800ff>${ddDelay}%<>를 지속적으로 <#e3ab9dff>고정 피해<>로 받습니다. 초당 피해량은 <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${ddBurnCap}%<>를 넘지 않습니다.`n`n저항: 적 챔피언 처치에 관여하면 남아 있는 지연 피해를 제거하고 <$hpRegenIcon> <#60e84dff>${ddFlatHeal}<> + <#60e84dff>잃은 체력의 ${ddHeal}%<>만큼 체력을 회복합니다."
@@ -1582,9 +1588,9 @@ $i18n.ko.bloodletters_curse.option = "부식: 적 챔피언에게 <#a974ffff>마
 $i18n.ko.radiant_bloodletters_curse.option = "부식: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>${rblcDur}초<> 동안 대상의 <$mrIcon> <#88ccffff>마법 저항력<>이 <#d94c49ff>${rblcShred}% 감소<>합니다. 최대 ${rblcStacks}회 중첩됩니다."
 $i18n.ko.sundered_sky.option = "빛의 방패 일격: 적 챔피언에게 가하는 다음 기본 공격이 <$critIcon> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>${ssDamage}%의 추가 피해<>를 입히고, <#60e84dff>${ssFlatHeal}<> + <#60e84dff>잃은 체력<>의 <#60e84dff>${ssPercentHeal}%<>만큼 체력을 <$hpRegenIcon> <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>${ssOnHitCD}초<>입니다."
 $i18n.ko.radiant_sundered_sky.option = "빛의 방패 일격: 적 챔피언에게 가하는 다음 기본 공격이 <$critIcon> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>${rssDamage}%의 추가 피해<>를 입히고, <#60e84dff>${rssFlatHeal}<> + <#60e84dff>잃은 체력<>의 <#60e84dff>${rssPercentHeal}%<>만큼 체력을 <$hpRegenIcon> <#60e84dff>회복<>합니다. 대상별 재사용 대기시간은 <#e8a800ff>${rssOnHitCD}초<>입니다."
-$eclKo = "늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>{0}초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 {1}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>{4}초<> 동안 <#cab944ff>{2}<> + <$adIcon> <#ff9028ff>공격력의 {3}%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>{5}초<>)"
-$i18n.ko.eclipse.option = $eclKo -f $eclDur, $eclHpPct, $eclShield, $eclAdPct, $eclShDur, $eclCd
-$i18n.ko.radiant_eclipse.option = $eclKo -f $reclDur, $reclHpPct, $reclShield, $reclAdPct, $reclShDur, $reclCd
+$eclKo = "늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>{0}초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 (<$meleeIcon> {1}% / <$rangedIcon> {6}%)<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>{4}초<> 동안 <#cab944ff>{2}<> + <$adIcon> <#ff9028ff>공격력의 {3}%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>{5}초<>)"
+$i18n.ko.eclipse.option = $eclKo -f $eclDur, $eclMeleePct, $eclShield, $eclAdPct, $eclShDur, $eclCd, $eclRangedPct
+$i18n.ko.radiant_eclipse.option = $eclKo -f $reclDur, $reclMeleePct, $reclShield, $reclAdPct, $reclShDur, $reclCd, $reclRangedPct
 $i18n.ko.echoes_of_helia.option = "영혼 착취: 주고받은 피해의 <#e8a800ff>${eohConversion}%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <$levelIcon> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<>까지 저장합니다. 아군 챔피언(자신 제외)을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <$hpRegenIcon> <#60e84dff>회복<>시킵니다."
 $i18n.ko.radiant_echoes_of_helia.option = "영혼 착취: 주고받은 피해의 <#e8a800ff>${reohConversion}%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <$levelIcon> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<>까지 저장합니다. 아군 챔피언(자신 제외)을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <$hpRegenIcon> <#60e84dff>회복<>시킵니다."
 
@@ -1594,7 +1600,7 @@ $tfTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다�
 $i18n.ko.trinity_force.option = $tfTemplateKo -f $tfFlat, $tfAdPct, $tfCd
 $i18n.ko.radiant_trinity_force.option = $tfTemplateKo -f $rtfFlat, $rtfAdPct, $rtfCd
 
-$rhTemplateKo = "쪼개기: 기본 공격 시 대상 주변 <$rangeIcon> <#ff86c2ff>사거리 {2}<> 안의 적들에게 <$adIcon> <#ff9028ff>공격력의<> <#ff9028ff><$meleeIcon> {0}% / <$rangedIcon> {1}%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다."
+$rhTemplateKo = "쪼개기: 기본 공격 시 대상 주변 <$rangeIcon> <#ff86c2ff>사거리 {2}<> 안의 적들에게 <$adIcon> <#ff9028ff>공격력의<> <#ff9028ff>(<$meleeIcon> {0}% / <$rangedIcon> {1}%)<>만큼 <#ff9028ff>물리 피해<>를 입힙니다."
 $i18n.ko.ravenous_hydra.option = $rhTemplateKo -f $rhMeleePct, $rhRangedPct, $rhRange
 $i18n.ko.radiant_ravenous_hydra.option = $rhTemplateKo -f $rrhMeleePct, $rrhRangedPct, $rrhRange
 
@@ -1602,9 +1608,9 @@ $dndTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다�
 $i18n.ko.dusk_and_dawn.option = $dndTemplateKo -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ko.radiant_dusk_and_dawn.option = $dndTemplateKo -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
-$bsTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>{0}<>~<#a974ffff>{1}<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>) 대상이 챔피언이면 <#e8a800ff>{4}초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>{3}%<> 증가합니다."
-$i18n.ko.bloodsong.option = $bsTemplateKo -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.ko.radiant_bloodsong.option = $bsTemplateKo -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$bsTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>{0}<>~<#a974ffff>{1}<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>) 대상이 챔피언이면 <#e8a800ff>{4}초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>(<$meleeIcon> {3}% / <$rangedIcon> {5}%)<> 증가합니다."
+$i18n.ko.bloodsong.option = $bsTemplateKo -f $bsMin, $bsMax, $bsCd, $bsMeleeAmp, $bsDur, $bsRangedAmp
+$i18n.ko.radiant_bloodsong.option = $bsTemplateKo -f $rbsMin, $rbsMax, $rbsCd, $rbsMeleeAmp, $rbsDur, $rbsRangedAmp
 
 $lethKo = "<#ffdd8eff>{0}의 <$armorPenIcon> 물리 관통력<>을 획득합니다."
 $i18n.ko.serrated_dirk.option = $lethKo -f $sdLeth
@@ -1688,8 +1694,8 @@ Write-Host "  Guinsoo's Rageblade:         ${gbDmg} magic dmg / ${gbSpeed}% AS/s
 Write-Host "  Radiant Guinsoo's Rageblade: ${rgbDmg} magic dmg / ${rgbSpeed}% AS/stack / ${rgbDur}s / ${rgbStacks} stacks"
 Write-Host "  Blackfire Torch:         ${bftPower} AP/stack / ${bftDur}s / ${bftStacks} stacks"
 Write-Host "  Radiant Blackfire Torch: ${rbftPower} AP/stack / ${rbftDur}s / ${rbftStacks} stacks"
-Write-Host "  Blade of the Ruined King:         ${borkPct}% HP / ${borkCap} cap"
-Write-Host "  Radiant Blade of the Ruined King: ${rborkPct}% HP / ${rborkCap} cap"
+Write-Host "  Blade of the Ruined King:         ${borkMeleePct}%/${borkRangedPct}% HP / ${borkCap} cap"
+Write-Host "  Radiant Blade of the Ruined King: ${rborkMeleePct}%/${rborkRangedPct}% HP / ${rborkCap} cap"
 Write-Host "  Deathblade:              ${dbMult}%"
 Write-Host "  Radiant Deathblade:      ${rdbMult}%"
 Write-Host "  Death's Dance:           ${ddDelay}% deferred / ${ddBurnCap}% max HP per second / ${ddFlatHeal}+${ddHeal}% missing HP heal on takedown"
@@ -1740,10 +1746,10 @@ Write-Host "  Bloodletter's Curse:         -${blcShred}% MR / ${blcDur}s / ${blc
 Write-Host "  Radiant Bloodletter's Curse: -${rblcShred}% MR / ${rblcDur}s / ${rblcStacks} stacks"
 Write-Host "  Sundered Sky:                ${ssDamage}% first hit damage bonus / ${ssFlatHeal} + ${ssPercentHeal}% missing HP heal / (${ssOnHitCD} CD per target)"
 Write-Host "  Sundered Sky:                ${rssDamage}% first hit damage bonus / ${rssFlatHeal} + ${rssPercentHeal}% missing HP heal / (${rssOnHitCD} CD per target)"
-Write-Host "  Eclipse:                     ${eclHpPct}% max HP dmg / ${eclShield} + ${eclAdPct}% AD shield ${eclShDur}s / ${eclDur}s mark / ${eclCd}s CD"
-Write-Host "  Radiant Eclipse:             ${reclHpPct}% max HP dmg / ${reclShield} + ${reclAdPct}% AD shield ${reclShDur}s / ${reclDur}s mark / ${reclCd}s CD"
-Write-Host "  Bloodsong:                   ${bsMin} - ${bsMax} magic (by level) / ${bsCd}s CD / +${bsAmp}% damage taken ${bsDur}s"
-Write-Host "  Radiant Bloodsong:           ${rbsMin} - ${rbsMax} magic (by level) / ${rbsCd}s CD / +${rbsAmp}% damage taken ${rbsDur}s"
+Write-Host "  Eclipse:                     ${eclMeleePct}%/${eclRangedPct}% max HP dmg / ${eclShield} + ${eclAdPct}% AD shield ${eclShDur}s / ${eclDur}s mark / ${eclCd}s CD"
+Write-Host "  Radiant Eclipse:             ${reclMeleePct}%/${reclRangedPct}% max HP dmg / ${reclShield} + ${reclAdPct}% AD shield ${reclShDur}s / ${reclDur}s mark / ${reclCd}s CD"
+Write-Host "  Bloodsong:                   ${bsMin} - ${bsMax} magic (by level) / ${bsCd}s CD / +${bsMeleeAmp}% melee / +${bsRangedAmp}% ranged damage taken ${bsDur}s"
+Write-Host "  Radiant Bloodsong:           ${rbsMin} - ${rbsMax} magic (by level) / ${rbsCd}s CD / +${rbsMeleeAmp}% melee / +${rbsRangedAmp}% ranged damage taken ${rbsDur}s"
 Write-Host "  Rite of Ruin:                +${rorCrit}% crit/stack (max ${rorStacks}) / ${rorDur}s / ${rorMin} - ${rorMax} shield ${rorShDur}s"
 Write-Host "  Radiant Rite of Ruin:        +${rrorCrit}% crit/stack (max ${rrorStacks}) / ${rrorDur}s / ${rrorMin} - ${rrorMax} shield ${rrorShDur}s"
 Write-Host "  Sterak's Gage:               ${sgShieldPct}% max HP shield ${sgShDur}s below ${sgThreshold}% HP / ${sgCd}s CD"

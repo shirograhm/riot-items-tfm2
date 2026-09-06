@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, ProcQueue};
+use crate::{apply_config, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE};
 
 #[derive(Clone, Debug)]
 pub struct BladeOfTheRuinedKing {
@@ -10,7 +10,9 @@ pub struct BladeOfTheRuinedKing {
     attack: i32,
     attack_speed_mult: i32,
     vamp: i32,
-    effect_hp_percent_damage: f64,
+    effect_melee_hp_percent_damage: f64,
+    effect_ranged_hp_percent_damage: f64,
+    effect_melee_distance: usize,
     effect_minion_damage_cap: usize,
     procs: ProcQueue,
 }
@@ -27,7 +29,9 @@ impl BladeOfTheRuinedKing {
             attack: 50,
             attack_speed_mult: 25,
             vamp: 5,
-            effect_hp_percent_damage: 5.0,
+            effect_melee_hp_percent_damage: 8.0,
+            effect_ranged_hp_percent_damage: 5.0,
+            effect_melee_distance: 35,
             effect_minion_damage_cap: 50,
             // Non-vital state (internal)
             procs: ProcQueue::new(),
@@ -44,7 +48,9 @@ impl BladeOfTheRuinedKing {
             attack: 60,
             attack_speed_mult: 50,
             vamp: 10,
-            effect_hp_percent_damage: 5.0,
+            effect_melee_hp_percent_damage: 8.0,
+            effect_ranged_hp_percent_damage: 5.0,
+            effect_melee_distance: 35,
             effect_minion_damage_cap: 50,
             ..Self::base()
         }
@@ -67,7 +73,9 @@ impl BladeOfTheRuinedKing {
                 attack,
                 attack_speed_mult,
                 vamp,
-                effect_hp_percent_damage,
+                effect_melee_hp_percent_damage,
+                effect_ranged_hp_percent_damage,
+                effect_melee_distance,
                 effect_minion_damage_cap,
             ]
         );
@@ -122,7 +130,7 @@ impl StableItem for BladeOfTheRuinedKing {
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _caster: usize,
+        caster: usize,
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
@@ -136,8 +144,17 @@ impl StableItem for BladeOfTheRuinedKing {
             return;
         }
 
-        let mut bonus_damage = percent_of(target_ref.hp().0, self.effect_hp_percent_damage as f64);
-        if !target_ref.is_champion() {
+        let target_hp = target_ref.hp().0;
+        let is_champion = target_ref.is_champion();
+
+        let reach = (self.effect_melee_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let hp_percent = if ctx.distance_sq(caster, target) > reach * reach {
+            self.effect_ranged_hp_percent_damage
+        } else {
+            self.effect_melee_hp_percent_damage
+        };
+        let mut bonus_damage = percent_of(target_hp, hp_percent);
+        if !is_champion {
             bonus_damage = bonus_damage.clamp(0, self.effect_minion_damage_cap);
         }
 
