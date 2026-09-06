@@ -802,6 +802,14 @@
         "radiant_stormsurge": {
             "name": "Radiant Stormsurge",
             "option": "\nStormraider: Dealing damage to an enemy champion equal to <#60e84dff>25%<> of their <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> within <#e8a800ff>2.5 seconds<> inflicts them with Squall (<#e8a800ff>30 second<> cooldown per target).\n\nSquall: After <#e8a800ff>2 seconds<>, strike the target with lightning, dealing <#a974ffff>125<> + <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<>."
+        },
+        "ravenous_hydra": {
+            "name": "Ravenous Hydra",
+            "option": "\nCleave: Basic attacks deal <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target, <#d94c49ff>reduced by 50%<> against targets further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> away."
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Radiant Ravenous Hydra",
+            "option": "\nCleave: Basic attacks deal <#ff9028ff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target, <#d94c49ff>reduced by 50%<> against targets further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> away."
         }
     },
     "vi": {
@@ -1607,6 +1615,14 @@
         "radiant_stormsurge": {
             "name": "Quyền Trượng Bão Tố Ánh Sáng",
             "option": "\nĐột Kích Bão Tố: Gây sát thương bằng <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu tối đa<> của tướng địch trong vòng <#e8a800ff>2.5 giây<> sẽ gây hiệu ứng Gió Giật lên chúng (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\nGió Giật: Sau <#e8a800ff>2 giây<>, giáng sét vào mục tiêu, gây <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<>."
+        },
+        "ravenous_hydra": {
+            "name": "Rìu Mãng Xà",
+            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu, <#d94c49ff>giảm 50%<> nếu mục tiêu ở xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>."
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Rìu Mãng Xà Ánh Sáng",
+            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu, <#d94c49ff>giảm 50%<> nếu mục tiêu ở xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>."
         }
     },
     "zh-hans": {
@@ -2412,6 +2428,14 @@
         "radiant_stormsurge": {
             "name": "光明版风暴狂涌",
             "option": "\n风暴掠袭：在 <#e8a800ff>2.5秒<> 内对敌方英雄造成相当于其 <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的伤害时，对其施加风啸（每个目标冷却 <#e8a800ff>30秒<>）。\n\n风啸：<#e8a800ff>2秒<> 后以闪电打击目标，造成 <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。"
+        },
+        "ravenous_hydra": {
+            "name": "贪欲九头蛇",
+            "option": "\n顺劈：普通攻击会对目标周围 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 的<#ff9028ff>物理伤害<>；若目标距离超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>，<#d94c49ff>此伤害降低 50%<>。"
+        },
+        "radiant_ravenous_hydra": {
+            "name": "光明版贪欲九头蛇",
+            "option": "\n顺劈：普通攻击会对目标周围 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>25%<> 的<#ff9028ff>物理伤害<>；若目标距离超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>，<#d94c49ff>此伤害降低 50%<>。"
         }
     },
     "pt-BR": {
@@ -3217,6 +3241,14 @@
         "radiant_stormsurge": {
             "name": "Ápice da Tempestade Radiante",
             "option": "\nInvasor da Tempestade: Causar dano equivalente a <#60e84dff>25%<> da <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida máxima<> de um campeão inimigo dentro de <#e8a800ff>2.5 segundos<> aplica Dilúvio a ele (recarga de <#e8a800ff>30 segundos<> por alvo).\n\nDilúvio: Depois de <#e8a800ff>2 segundos<>, atinge o alvo com um raio, causando <#a974ffff>125<> + <#a974ffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<>."
+        },
+        "ravenous_hydra": {
+            "name": "Hidra Raivosa",
+            "option": "\nFenda: Ataques básicos causam <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> do alvo, <#d94c49ff>reduzido em 50%<> contra alvos a mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> de distância."
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Hidra Raivosa Radiante",
+            "option": "\nFenda: Ataques básicos causam <#ff9028ff>25%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> do alvo, <#d94c49ff>reduzido em 50%<> contra alvos a mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> de distância."
         }
     },
     "ru": {
@@ -4022,6 +4054,14 @@
         "radiant_stormsurge": {
             "name": "Лучезарный Штормовой прилив",
             "option": "\nШтормовой налет: Если вы наносите вражескому чемпиону урон в размере <#60e84dff>25%<> от его <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального запаса здоровья<> в течение <#e8a800ff>2.5 секунд<>, к нему применяется Порыв (перезарядка <#e8a800ff>30 секунд<> на каждую цель).\n\nПорыв: Через <#e8a800ff>2 секунды<> молния поражает цель, нанося <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>."
+        },
+        "ravenous_hydra": {
+            "name": "Ненасытная гидра",
+            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели; <#d94c49ff>урон снижается на 50%<> против целей дальше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Лучезарная Ненасытная гидра",
+            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff>25%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели; <#d94c49ff>урон снижается на 50%<> против целей дальше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         }
     },
     "ko": {
@@ -4827,6 +4867,14 @@
         "radiant_stormsurge": {
             "name": "찬란한 폭풍 쇄도",
             "option": "\n폭풍 약탈자: <#e8a800ff>2.5초<> 내로 적 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 25%<>에 해당하는 피해를 입히면 질풍을 적용합니다. 대상별 재사용 대기시간은 <#e8a800ff>30초<>입니다.\n\n질풍: <#e8a800ff>2초<> 후 번개로 대상을 강타하여 <#a974ffff>125<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>10%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+        },
+        "ravenous_hydra": {
+            "name": "굶주린 히드라",
+            "option": "\n쪼개기: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<> 안의 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 멀리 있는 대상에게는 <#d94c49ff>이 피해가 50% 감소합니다<>."
+        },
+        "radiant_ravenous_hydra": {
+            "name": "찬란한 굶주린 히드라",
+            "option": "\n쪼개기: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<> 안의 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 25%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 멀리 있는 대상에게는 <#d94c49ff>이 피해가 50% 감소합니다<>."
         }
     }
 }

@@ -3,12 +3,27 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ticks, ItemMeta};
 
+/// How far ahead of the damage the bolt is drawn.
+///
+/// `effects/stormsurge_lightning` is six frames at 0.1s, so at 60 ticks a second
+/// each frame is 6 ticks. Three frames of lead puts the damage on the third/
+/// fourth frame — where the bolt is fully extended — instead of on frame one,
+/// which had the hit landing as the bolt was still only a wisp at the top.
+///
+/// Retune by frames: this is `frames * 6`, and the frame count and durations are
+/// in `effects/stormsurge_lightning#anim.fanim`.
+const STRIKE_LEAD_TICKS: usize = 18;
+
 #[derive(Clone, Debug)]
 struct Tracked {
     target: usize,
     accumulated: usize,
     window: usize,
     strike: usize,
+    /// Whether the bolt for the pending strike has been drawn yet — the strike
+    /// countdown alone cannot say, because the tick it fires on is passed
+    /// through once and the effect must not repeat on later ticks.
+    flashed: bool,
     cooldown: usize,
 }
 
@@ -120,6 +135,7 @@ impl Stormsurge {
             accumulated: 0,
             window: 0,
             strike: 0,
+            flashed: false,
             cooldown: 0,
         });
         self.tracked
@@ -217,6 +233,7 @@ impl StableItem for Stormsurge {
             return;
         }
         tracked.strike = delay;
+        tracked.flashed = false;
         tracked.cooldown = cooldown;
         tracked.window = 0;
         tracked.accumulated = 0;
@@ -244,6 +261,7 @@ impl StableItem for Stormsurge {
                 })
                 .unwrap_or(0);
 
+        let mut flashed = Vec::new();
         let mut struck = Vec::new();
         self.tracked.retain_mut(|tracked| {
             if !ctx
@@ -262,6 +280,15 @@ impl StableItem for Stormsurge {
             }
             if tracked.strike > 0 {
                 tracked.strike -= 1;
+                // `<=` rather than `==`, guarded by the flag: a configured
+                // `effect_delay_seconds` shorter than the lead never counts down
+                // *through* the lead value, and an equality test would silently
+                // draw no bolt at all. This way a short delay simply draws it on
+                // the first tick it can.
+                if !tracked.flashed && tracked.strike <= STRIKE_LEAD_TICKS {
+                    tracked.flashed = true;
+                    flashed.push(tracked.target);
+                }
                 if tracked.strike == 0 {
                     struck.push(tracked.target);
                 }
@@ -269,15 +296,20 @@ impl StableItem for Stormsurge {
             tracked.live()
         });
 
-        // The bolt is drawn on the target the tick the strike lands. It goes
-        // through the same frame-event pipeline the game's own `.data_champion`
-        // `ViewEffect`s use, so it shows up in replays too, and is skipped
-        // silently by the background pre-sims that have no frame recording.
+        // The bolt is drawn `STRIKE_LEAD_TICKS` before the hit, not on it, so
+        // the animation is mid-strike when the damage lands rather than only
+        // beginning. The damage tick itself is unchanged, so the tooltip's
+        // delay still describes when it hurts.
+        //
+        // It goes through the same frame-event pipeline the game's own
+        // `.data_champion` `ViewEffect`s use, so it shows up in replays too, and
+        // is skipped silently by the background pre-sims that have no frame
+        // recording.
         //
         // `range`/`radius`/`time` are the `.data_champion` `ViewEffect` fields;
         // they steer travelling and area effects, and a bolt anchored on one
         // entity uses none of them, so all three are the documented 0.
-        for target in struck {
+        for target in flashed {
             ctx.play_view_effect(
                 self.strike_effect,
                 caster,
@@ -286,6 +318,8 @@ impl StableItem for Stormsurge {
                 0,
                 0,
             );
+        }
+        for target in struck {
             ctx.deal_damage(caster, target, 0, damage, AttackTypeV1::Item);
         }
     }

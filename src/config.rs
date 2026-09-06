@@ -109,6 +109,8 @@ pub struct ItemConfig {
     pub effect_percent_mr_shred: Option<i32>,
     pub effect_bonus_gold: Option<usize>,
     pub effect_max_distance: Option<usize>,
+    pub effect_melee_distance: Option<usize>,
+    pub effect_ranged_percent_reduction: Option<f64>,
     pub effect_max_percent_bonus: Option<f64>,
     pub effect_percent_bonus_damage: Option<f64>,
     pub effect_min_shield: Option<usize>,

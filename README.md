@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 157 new items (90 base + 67 Radiant) to the game.
+Reskins the 30 existing items and also adds 159 new items (91 base + 68 Radiant) to the game.
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -85,7 +85,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Hextech Gunblade** | 1500G | +50 AD<br>+100 AP<br>+10% Omnivamp | — |
 | **Hubris** | 1300G | +70 AD<br>+10% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Infinity Edge** | 1300G | +80 AD<br>+25% Crit Chance | Excoriate: Gain 30% critical strike damage. |
-| **Jak'Sho, The Protean** | 1400G | +300 HP<br>+40 Armor<br>+65 MR | Resilience: Taking damage from an enemy champion grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks). |
+| **Jak'Sho, The Protean** | 1400G | +300 HP<br>+50 Armor<br>+75 MR | Resilience: Taking damage from an enemy champion grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks). |
 | **Kraken Slayer** | 1400G | +45 AD<br>+25% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Liandry's Torment** | 1400G | +350 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
 | **Locket of the Iron Solari** | 1100G | +200 HP<br>+40 Armor<br>+60 MR<br>+10% CDR | Devotion: Falling below 50% health grants you and all nearby allied champions a shield that absorbs damage equal to 170 - 225 (based on level) health over 2.5 seconds (90 second cooldown).<br>Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
@@ -102,6 +102,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Protoplasm Harness** | 1200G | +350 HP<br>+10% CDR<br>+5% MS | Fortification: Falling below 40% health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Rabadon's Deathcap** | 1500G | +165 AP | Opus: Increase your total Ability Power by 20%. |
 | **Randuin's Omen** | 1500G | +300 HP<br>+70 Armor | Resilience: Heal for 30% of the damage taken from critical strikes. |
+| **Ravenous Hydra** | 1350G | +55 AD<br>+10% Omnivamp<br>+10% CDR | Cleave: Basic attacks deal 15% of your Attack Damage as physical damage to enemies within 35 range of your target, reduced by 50% against targets further than 35 range away. |
 | **Riftmaker** | 1300G | +400 HP<br>+60 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Rite of Ruin** | 1400G | +105 AP<br>+10% CDR<br>+20% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
 | **Rylai's Crystal Scepter** | 1350G | +250 HP<br>+125 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |
@@ -157,7 +158,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Hextech Gunblade** | 2100G | +85 AD<br>+150 AP<br>+15% Omnivamp | — |
 | **Radiant Hubris** | 1950G | +115 AD<br>+15% CDR | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Radiant Infinity Edge** | 1900G | +120 AD<br>+50% Crit Chance | Excoriate: Gain 30% critical strike damage. |
-| **Radiant Jak'Sho, The Protean** | 2000G | +550 HP<br>+65 Armor<br>+65 MR | Resilience: Taking damage from an enemy champion grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks). |
+| **Radiant Jak'Sho, The Protean** | 2000G | +550 HP<br>+70 Armor<br>+120 MR | Resilience: Taking damage from an enemy champion grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Kraken Slayer** | 2000G | +75 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Radiant Liandry's Torment** | 2000G | +550 HP<br>+150 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
 | **Radiant Locket of the Iron Solari** | 1650G | +300 HP<br>+75 Armor<br>+100 MR<br>+15% CDR | Devotion: Falling below 50% health grants you and all nearby allied champions a shield that absorbs damage equal to 295 - 350 (based on level) health over 2.5 seconds (90 second cooldown).<br>Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
@@ -174,6 +175,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Protoplasm Harness** | 1650G | +650 HP<br>+10% CDR<br>+5% MS | Fortification: Falling below 40% health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
 | **Radiant Rabadon's Deathcap** | 2300G | +230 AP | Opus: Increase your total Ability Power by 35%. |
 | **Radiant Randuin's Omen** | 2000G | +550 HP<br>+90 Armor | Resilience: Heal for 30% of the damage taken from critical strikes. |
+| **Radiant Ravenous Hydra** | 1900G | +90 AD<br>+15% Omnivamp<br>+15% CDR | Cleave: Basic attacks deal 25% of your Attack Damage as physical damage to enemies within 35 range of your target, reduced by 50% against targets further than 35 range away. |
 | **Radiant Riftmaker** | 1900G | +600 HP<br>+120 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Radiant Rite of Ruin** | 2000G | +185 AP<br>+15% CDR<br>+25% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
 | **Radiant Rylai's Crystal Scepter** | 1900G | +400 HP<br>+200 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |

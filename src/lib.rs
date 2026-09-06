@@ -354,6 +354,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured!("randuins_omen" => RanduinsOmen));
+    reg.add_item(configured!("ravenous_hydra" => RavenousHydra));
     reg.add_item(configured!("riftmaker" => Riftmaker));
     reg.add_item(configured!("rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
@@ -423,6 +424,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured_radiant!("radiant_rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured_radiant!("radiant_randuins_omen" => RanduinsOmen));
+    reg.add_item(configured_radiant!("radiant_ravenous_hydra" => RavenousHydra));
     reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
     reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));

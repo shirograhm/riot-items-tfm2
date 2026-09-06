@@ -363,6 +363,14 @@ $tfCd = [double]$config.trinity_force.effect_cooldown_seconds
 $rtfFlat = [int]$config.radiant_trinity_force.effect_bonus_flat_damage
 $rtfAdPct = [double]$config.radiant_trinity_force.effect_ad_percent_damage
 $rtfCd = [double]$config.radiant_trinity_force.effect_cooldown_seconds
+$rhAdPct = [double]$config.ravenous_hydra.effect_ad_percent_damage
+$rhRange = [int]$config.ravenous_hydra.effect_max_distance
+$rrhAdPct = [double]$config.radiant_ravenous_hydra.effect_ad_percent_damage
+$rrhRange = [int]$config.radiant_ravenous_hydra.effect_max_distance
+$rhReach = [int]$config.ravenous_hydra.effect_melee_distance
+$rhRangedCut = [double]$config.ravenous_hydra.effect_ranged_percent_reduction
+$rrhReach = [int]$config.radiant_ravenous_hydra.effect_melee_distance
+$rrhRangedCut = [double]$config.radiant_ravenous_hydra.effect_ranged_percent_reduction
 $dndFlat = [int]$config.dusk_and_dawn.effect_bonus_flat_damage
 $dndApPct = [double]$config.dusk_and_dawn.effect_ap_percent_damage
 $dndApHeal = [double]$config.dusk_and_dawn.effect_caster_ap_percent_heal
@@ -670,6 +678,10 @@ $tfTemplate = "Spellblade: Landing an Ability on an enemy champion causes your n
 $i18n.en.trinity_force.option = $tfTemplate -f $tfFlat, $tfAdPct, $tfCd
 $i18n.en.radiant_trinity_force.option = $tfTemplate -f $rtfFlat, $rtfAdPct, $rtfCd
 
+$rhTemplate = "Cleave: Basic attacks deal <#ff9028ff>{0}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>{1} <$rangeIcon> range<> of your target, <#d94c49ff>reduced by {3}%<> against targets further than <#ff86c2ff>{2} <$rangeIcon> range<> away."
+$i18n.en.ravenous_hydra.option = $rhTemplate -f $rhAdPct, $rhRange, $rhReach, $rhRangedCut
+$i18n.en.radiant_ravenous_hydra.option = $rhTemplate -f $rrhAdPct, $rrhRange, $rrhReach, $rrhRangedCut
+
 $dndTemplate = "Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <$hpRegenIcon> <#60e84dff>heal you<> for <#a974ffff>{2}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>{3}%<> of your <$hpIcon> <#60e84dff>maximum health<> (<#e8a800ff>{4} second<> cooldown)."
 $i18n.en.dusk_and_dawn.option = $dndTemplate -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.en.radiant_dusk_and_dawn.option = $dndTemplate -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
@@ -848,6 +860,10 @@ $i18n.vi.sheen.option = "Kiếm Phép: Kĩ năng trúng tướng địch khiến
 $tfTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>)."
 $i18n.vi.trinity_force.option = $tfTemplateVi -f $tfFlat, $tfAdPct, $tfCd
 $i18n.vi.radiant_trinity_force.option = $tfTemplateVi -f $rtfFlat, $rtfAdPct, $rtfCd
+
+$rhTemplateVi = "Sát Thương Lan: Đòn đánh thường gây <#ff9028ff>{0}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon> quanh mục tiêu, <#d94c49ff>giảm {3}%<> nếu mục tiêu ở xa hơn <#ff86c2ff>{2}<> <$rangeIcon>."
+$i18n.vi.ravenous_hydra.option = $rhTemplateVi -f $rhAdPct, $rhRange, $rhReach, $rhRangedCut
+$i18n.vi.radiant_ravenous_hydra.option = $rhTemplateVi -f $rrhAdPct, $rrhRange, $rrhReach, $rrhRangedCut
 
 $dndTemplateVi = "Kiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <$hpRegenIcon> <#60e84dff>hồi máu cho bạn<> <#a974ffff>{2}%<> <$apIcon> <#a974ffff>SMPT<> và <#60e84dff>{3}%<> <$hpIcon> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>{4} giây<>)."
 $i18n.vi.dusk_and_dawn.option = $dndTemplateVi -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1028,6 +1044,10 @@ $tfTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻
 $i18n.'zh-hans'.trinity_force.option = $tfTemplateZh -f $tfFlat, $tfAdPct, $tfCd
 $i18n.'zh-hans'.radiant_trinity_force.option = $tfTemplateZh -f $rtfFlat, $rtfAdPct, $rtfCd
 
+$rhTemplateZh = "顺劈：普通攻击会对目标周围 <#ff86c2ff>{1} <$rangeIcon> 射程<>内的敌人造成相当于你 <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{0}%<> 的<#ff9028ff>物理伤害<>；若目标距离超过 <#ff86c2ff>{2} <$rangeIcon> 射程<>，<#d94c49ff>此伤害降低 {3}%<>。"
+$i18n.'zh-hans'.ravenous_hydra.option = $rhTemplateZh -f $rhAdPct, $rhRange, $rhReach, $rhRangedCut
+$i18n.'zh-hans'.radiant_ravenous_hydra.option = $rhTemplateZh -f $rrhAdPct, $rrhRange, $rrhReach, $rrhRangedCut
+
 $dndTemplateZh = "咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>，并<$hpRegenIcon> <#60e84dff>为你回复<>相当于<$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{2}%<> 与<$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{3}%<> 的生命值（冷却 <#e8a800ff>{4}秒<>）。"
 $i18n.'zh-hans'.dusk_and_dawn.option = $dndTemplateZh -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.'zh-hans'.radiant_dusk_and_dawn.option = $dndTemplateZh -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
@@ -1206,6 +1226,10 @@ $i18n.'pt-BR'.sheen.option = "Lâmina Arcana: Acertar uma Habilidade em um campe
 $tfTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>{2} segundos<>)."
 $i18n.'pt-BR'.trinity_force.option = $tfTemplatePt -f $tfFlat, $tfAdPct, $tfCd
 $i18n.'pt-BR'.radiant_trinity_force.option = $tfTemplatePt -f $rtfFlat, $rtfAdPct, $rtfCd
+
+$rhTemplatePt = "Fenda: Ataques básicos causam <#ff9028ff>{0}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>{1} <$rangeIcon> alcance<> do alvo, <#d94c49ff>reduzido em {3}%<> contra alvos a mais de <#ff86c2ff>{2} <$rangeIcon> alcance<> de distância."
+$i18n.'pt-BR'.ravenous_hydra.option = $rhTemplatePt -f $rhAdPct, $rhRange, $rhReach, $rhRangedCut
+$i18n.'pt-BR'.radiant_ravenous_hydra.option = $rhTemplatePt -f $rrhAdPct, $rrhRange, $rrhReach, $rrhRangedCut
 
 $dndTemplatePt = "Lâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <$hpRegenIcon> <#60e84dff>curar você<> em <#a974ffff>{2}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> e <#60e84dff>{3}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>{4} segundos<>)."
 $i18n.'pt-BR'.dusk_and_dawn.option = $dndTemplatePt -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1386,6 +1410,10 @@ $tfTemplateRu = "Чародейский клинок: Попадание уме�
 $i18n.ru.trinity_force.option = $tfTemplateRu -f $tfFlat, $tfAdPct, $tfCd
 $i18n.ru.radiant_trinity_force.option = $tfTemplateRu -f $rtfFlat, $rtfAdPct, $rtfCd
 
+$rhTemplateRu = "Рассечение: Базовые атаки наносят <#ff9028ff>{0}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<> от цели; <#d94c49ff>урон снижается на {3}%<> против целей дальше <#ff86c2ff>{2} <$rangeIcon> дальности<>."
+$i18n.ru.ravenous_hydra.option = $rhTemplateRu -f $rhAdPct, $rhRange, $rhReach, $rhRangedCut
+$i18n.ru.radiant_ravenous_hydra.option = $rhTemplateRu -f $rrhAdPct, $rrhRange, $rrhReach, $rrhRangedCut
+
 $dndTemplateRu = "Чародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <$hpRegenIcon> <#60e84dff>восстановить вам<> <#a974ffff>{2}%<> вашей <$apIcon> <#a974ffff>силы умений<> и <#60e84dff>{3}%<> вашего <$hpIcon> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>{4} секунд<>)."
 $i18n.ru.dusk_and_dawn.option = $dndTemplateRu -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ru.radiant_dusk_and_dawn.option = $dndTemplateRu -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
@@ -1564,6 +1592,10 @@ $tfTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다�
 $i18n.ko.trinity_force.option = $tfTemplateKo -f $tfFlat, $tfAdPct, $tfCd
 $i18n.ko.radiant_trinity_force.option = $tfTemplateKo -f $rtfFlat, $rtfAdPct, $rtfCd
 
+$rhTemplateKo = "쪼개기: 기본 공격 시 대상 주변 <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 적들에게 <$adIcon> <#ff9028ff>공격력의 {0}%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <$rangeIcon> <#ff86c2ff>사거리 {2}<>보다 멀리 있는 대상에게는 <#d94c49ff>이 피해가 {3}% 감소합니다<>."
+$i18n.ko.ravenous_hydra.option = $rhTemplateKo -f $rhAdPct, $rhRange, $rhReach, $rhRangedCut
+$i18n.ko.radiant_ravenous_hydra.option = $rhTemplateKo -f $rrhAdPct, $rrhRange, $rrhReach, $rrhRangedCut
+
 $dndTemplateKo = "주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <$apIcon> <#60e84dff>주문력의 {2}%<>와 <$hpIcon> <#60e84dff>최대 체력의 {3}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>{4}초<>)"
 $i18n.ko.dusk_and_dawn.option = $dndTemplateKo -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ko.radiant_dusk_and_dawn.option = $dndTemplateKo -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
@@ -1716,5 +1748,7 @@ Write-Host "  Sterak's Gage:               ${sgShieldPct}% max HP shield ${sgShD
 Write-Host "  Radiant Sterak's Gage:       ${rsgShieldPct}% max HP shield ${rsgShDur}s below ${rsgThreshold}% HP / ${rsgCd}s CD"
 Write-Host "  Randuin's Omen:              heals ${rndHeal}% of damage taken from critical strikes"
 Write-Host "  Radiant Randuin's Omen:      heals ${rrndHeal}% of damage taken from critical strikes"
+Write-Host "  Ravenous Hydra:              ${rhAdPct}% AD cleave within ${rhRange} range of the target / -${rhRangedCut}% beyond ${rhReach} range"
+Write-Host "  Radiant Ravenous Hydra:      ${rrhAdPct}% AD cleave within ${rrhRange} range of the target / -${rrhRangedCut}% beyond ${rrhReach} range"
 Write-Host "  Locket of the Iron Solari:         ${lockDef} armor / ${lockMr} MR / ${lockRegen} regen within ${lockDist} range / Devotion ${lockMinShield} - ${lockMaxShield} shield ${lockShieldDur}s below ${lockThreshold}% HP (${lockCd}s CD)"
 Write-Host "  Radiant Locket of the Iron Solari: ${rlockDef} armor / ${rlockMr} MR / ${rlockRegen} regen within ${rlockDist} range / Devotion ${rlockMinShield} - ${rlockMaxShield} shield ${rlockShieldDur}s below ${rlockThreshold}% HP (${rlockCd}s CD)"
