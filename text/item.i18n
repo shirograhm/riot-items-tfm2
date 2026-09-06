@@ -805,11 +805,11 @@
         },
         "ravenous_hydra": {
             "name": "Ravenous Hydra",
-            "option": "\nCleave: Basic attacks deal <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target, <#d94c49ff>reduced by 50%<> against targets further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> away."
+            "option": "\nCleave: Basic attacks deal <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 15% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 30%)<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target."
         },
         "radiant_ravenous_hydra": {
             "name": "Radiant Ravenous Hydra",
-            "option": "\nCleave: Basic attacks deal <#ff9028ff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target, <#d94c49ff>reduced by 50%<> against targets further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> away."
+            "option": "\nCleave: Basic attacks deal <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 20% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 40%)<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target."
         }
     },
     "vi": {
@@ -1618,11 +1618,11 @@
         },
         "ravenous_hydra": {
             "name": "Rìu Mãng Xà",
-            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu, <#d94c49ff>giảm 50%<> nếu mục tiêu ở xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>."
+            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 15% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 30%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu."
         },
         "radiant_ravenous_hydra": {
             "name": "Rìu Mãng Xà Ánh Sáng",
-            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu, <#d94c49ff>giảm 50%<> nếu mục tiêu ở xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>."
+            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 20% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 40%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu."
         }
     },
     "zh-hans": {
@@ -2431,11 +2431,11 @@
         },
         "ravenous_hydra": {
             "name": "贪欲九头蛇",
-            "option": "\n顺劈：普通攻击会对目标周围 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 的<#ff9028ff>物理伤害<>；若目标距离超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>，<#d94c49ff>此伤害降低 50%<>。"
+            "option": "\n顺劈：普通攻击会对目标周围 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 15% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 30%<> 的<#ff9028ff>物理伤害<>。"
         },
         "radiant_ravenous_hydra": {
             "name": "光明版贪欲九头蛇",
-            "option": "\n顺劈：普通攻击会对目标周围 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>25%<> 的<#ff9028ff>物理伤害<>；若目标距离超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>，<#d94c49ff>此伤害降低 50%<>。"
+            "option": "\n顺劈：普通攻击会对目标周围 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 20% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 40%<> 的<#ff9028ff>物理伤害<>。"
         }
     },
     "pt-BR": {
@@ -3244,11 +3244,11 @@
         },
         "ravenous_hydra": {
             "name": "Hidra Raivosa",
-            "option": "\nFenda: Ataques básicos causam <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> do alvo, <#d94c49ff>reduzido em 50%<> contra alvos a mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> de distância."
+            "option": "\nFenda: Ataques básicos causam <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 15% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 30%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> do alvo."
         },
         "radiant_ravenous_hydra": {
             "name": "Hidra Raivosa Radiante",
-            "option": "\nFenda: Ataques básicos causam <#ff9028ff>25%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> do alvo, <#d94c49ff>reduzido em 50%<> contra alvos a mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> de distância."
+            "option": "\nFenda: Ataques básicos causam <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 20% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 40%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> do alvo."
         }
     },
     "ru": {
@@ -4057,11 +4057,11 @@
         },
         "ravenous_hydra": {
             "name": "Ненасытная гидра",
-            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели; <#d94c49ff>урон снижается на 50%<> против целей дальше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 15% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 30%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели."
         },
         "radiant_ravenous_hydra": {
             "name": "Лучезарная Ненасытная гидра",
-            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff>25%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели; <#d94c49ff>урон снижается на 50%<> против целей дальше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 20% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 40%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели."
         }
     },
     "ko": {
@@ -4870,11 +4870,11 @@
         },
         "ravenous_hydra": {
             "name": "굶주린 히드라",
-            "option": "\n쪼개기: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<> 안의 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 멀리 있는 대상에게는 <#d94c49ff>이 피해가 50% 감소합니다<>."
+            "option": "\n쪼개기: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<> 안의 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의<> <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 15% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 30%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다."
         },
         "radiant_ravenous_hydra": {
             "name": "찬란한 굶주린 히드라",
-            "option": "\n쪼개기: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<> 안의 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 25%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 멀리 있는 대상에게는 <#d94c49ff>이 피해가 50% 감소합니다<>."
+            "option": "\n쪼개기: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<> 안의 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의<> <#ff9028ff><i#asset/base/ui/banpick/champion_stat_icon:melee_0> 20% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 40%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다."
         }
     }
 }

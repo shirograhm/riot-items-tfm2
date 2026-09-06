@@ -11,10 +11,10 @@ pub struct RavenousHydra {
     attack: i32,
     vamp: i32,
     skill_cooldown_mult: i32,
-    effect_ad_percent_damage: f64,
+    effect_melee_ad_percent_damage: f64,
+    effect_ranged_ad_percent_damage: f64,
     effect_max_distance: usize,
     effect_melee_distance: usize,
-    effect_ranged_percent_reduction: f64,
 }
 
 impl RavenousHydra {
@@ -30,10 +30,10 @@ impl RavenousHydra {
             attack: 55,
             vamp: 10,
             skill_cooldown_mult: 10,
-            effect_ad_percent_damage: 15.0,
+            effect_melee_ad_percent_damage: 15.0,
+            effect_ranged_ad_percent_damage: 30.0,
             effect_max_distance: 35,
             effect_melee_distance: 35,
-            effect_ranged_percent_reduction: 50.0,
         }
     }
 
@@ -44,10 +44,10 @@ impl RavenousHydra {
             attack: 90,
             vamp: 15,
             skill_cooldown_mult: 15,
-            effect_ad_percent_damage: 25.0,
+            effect_melee_ad_percent_damage: 20.0,
+            effect_ranged_ad_percent_damage: 40.0,
             effect_max_distance: 35,
             effect_melee_distance: 35,
-            effect_ranged_percent_reduction: 50.0,
             ..Self::base()
         }
     }
@@ -69,10 +69,10 @@ impl RavenousHydra {
                 attack,
                 vamp,
                 skill_cooldown_mult,
-                effect_ad_percent_damage,
+                effect_melee_ad_percent_damage,
+                effect_ranged_ad_percent_damage,
                 effect_max_distance,
-                effect_melee_distance,
-                effect_ranged_percent_reduction
+                effect_melee_distance
             ]
         );
         self
@@ -172,12 +172,15 @@ impl StableItem for RavenousHydra {
             return;
         };
         let caster_team = caster_ref.team();
-        let mut damage = percent_of(caster_ref.stat().attack, self.effect_ad_percent_damage);
+        let attack = caster_ref.stat().attack;
 
         let reach = (self.effect_melee_distance * DISTANCE_UNITS_PER_RANGE) as u64;
-        if ctx.distance_sq(caster, target) > reach * reach {
-            damage = percent_of(damage, 100.0 - self.effect_ranged_percent_reduction);
-        }
+        let ad_percent = if ctx.distance_sq(caster, target) > reach * reach {
+            self.effect_ranged_ad_percent_damage
+        } else {
+            self.effect_melee_ad_percent_damage
+        };
+        let damage = percent_of(attack, ad_percent);
         if damage == 0 {
             return;
         }
