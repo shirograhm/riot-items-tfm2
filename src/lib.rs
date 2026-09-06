@@ -254,10 +254,11 @@ fn init(host: &StableHost) -> StableMod {
 
     tactics::driver::on_mod_init();
 
-    // Both macros note the key as they go. That call order *is* the second half
-    // of the id space a match record's numeric `items` entry indexes, and there
-    // is nowhere else to read it from: `ItemSetting` describes only the game's
-    // own 30 items. See `item_stats::index_table`.
+    // Both macros note the key as they go, for the item catalog to name and draw.
+    // Registration order used to matter: the numeric `items` on a match record were
+    // decoded by it. Nothing reads them that way now — loadouts come from the
+    // simulation as real keys, and the statistics are stored under those keys — so
+    // the order below is for people, grouped by tier and alphabetical within it.
     macro_rules! configured {
         ($key:literal => $T:ty) => {{
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
@@ -282,6 +283,7 @@ fn init(host: &StableHost) -> StableMod {
 
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
+    reg.add_item(configured!("fated_ashes" => FatedAshes));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
     reg.add_item(configured!("sheen" => Sheen));
 
@@ -291,12 +293,11 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
     reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
-    reg.add_item(configured!("fated_ashes" => FatedAshes));
     reg.add_item(configured!("forbidden_idol" => ForbiddenIdol));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
-    reg.add_item(configured!("hextech_alternator" => HextechAlternator));
     reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
+    reg.add_item(configured!("hextech_alternator" => HextechAlternator));
     reg.add_item(configured!("last_whisper" => LastWhisper));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("noonquiver" => Noonquiver));
@@ -362,12 +363,12 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("steraks_gage" => SteraksGage));
     reg.add_item(configured!("stormrazor" => Stormrazor));
+    reg.add_item(configured!("stormsurge" => Stormsurge));
     reg.add_item(configured!("sundered_sky" => SunderedSky));
     reg.add_item(configured!("sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("trinity_force" => TrinityForce));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
-    reg.add_item(configured!("stormsurge" => Stormsurge));
     reg.add_item(configured!("void_staff" => VoidStaff));
     reg.add_item(configured!("voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
@@ -431,12 +432,12 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
     reg.add_item(configured_radiant!("radiant_steraks_gage" => SteraksGage));
     reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
+    reg.add_item(configured_radiant!("radiant_stormsurge" => Stormsurge));
     reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
     reg.add_item(configured_radiant!("radiant_sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
     reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce));
     reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
-    reg.add_item(configured_radiant!("radiant_stormsurge" => Stormsurge));
     reg.add_item(configured_radiant!("radiant_void_staff" => VoidStaff));
     reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));

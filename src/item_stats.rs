@@ -48,8 +48,8 @@
 //! [`crate::item_stats_sim::take`] hands each one over exactly once and remembers
 //! that it did.
 
-use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::collections::{BTreeMap, BTreeSet};
+use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
 
@@ -601,16 +601,38 @@ fn icon_frame(object: &serde_json::Map<String, Value>, key: &str) -> Option<Stri
 /// Set when the counters change, cleared when they reach disk.
 static DIRTY: AtomicBool = AtomicBool::new(false);
 
-/// Key the save's own id is kept under, inside this mod's save namespace.
+/// The folder the loaded save's statistics live in, or `None` before one has been
+/// identified.
 ///
-/// The namespace belongs to the save file, so a value written here travels with
-/// it and nothing else can see it. That is the whole trick: the id does not have
-/// to be derived from anything the game exposes — there is no save name or handle
-/// in the client API — because the save can simply be asked to hold one.
-const SAVE_KEY: &str = "stats_save_id";
-
-/// The save whose totals are loaded, or `None` before one has been adopted.
+/// **A save is recognised by its match seeds, not by its name.**
+///
+/// Nothing the mod writes into the save can identify it. Minting an id and keeping
+/// it in this mod's save namespace was tried twice and failed twice: the namespace
+/// reads back fine within a session and is **empty again after a reload**, so the
+/// same save came back nameless and opened a new, empty folder. (Storing the whole
+/// table there fails the same way, which is why it is on disk.)
+///
+/// Match seeds have neither problem. They come *out* of the save's own records, so
+/// they survive a reload and anything done to the mod, and no two saves ever share
+/// one. The folder already holding captures for a seed this save has a record of
+/// is this save's folder, whatever it is called — which is also what makes
+/// renaming a folder by hand safe.
+///
+/// The team's name only *names* a folder the first time one is made, so the
+/// directory is legible from outside the game. Two saves fielding a team of the
+/// same name get `Gen.G` and `Gen.G (2)`; the seeds keep them apart from then on.
 static SAVE: Mutex<Option<String>> = Mutex::new(None);
+
+/// Frames spent waiting for the save's records to become readable.
+///
+/// Identification needs seeds, and `record_ids` is empty for the first frames after
+/// a load. Adopting then would look like a save with no history and start a second
+/// folder for it, so the answer is deferred — but only up to [`SEED_GRACE`],
+/// because a genuinely new save has no records to wait for.
+static WAITED: Mutex<usize> = Mutex::new(0);
+
+/// Frames to wait for records before accepting that a save simply has none.
+const SEED_GRACE: usize = 600;
 
 /// Folder holding every save's statistics, one subfolder each.
 const STATS_DIR: &str = "item_stats";
@@ -628,8 +650,102 @@ const FILE: &str = "totals.json";
 /// matches in the same folder — a save's captures belong to it as much as its
 /// totals do, and keeping them together means one directory to copy or delete.
 pub(crate) fn save_dir() -> Option<PathBuf> {
-    let id = SAVE.lock().ok()?.clone()?;
-    crate::config::dll_dir().map(|dir| dir.join(STATS_DIR).join(id))
+    let folder = SAVE.lock().ok()?.clone()?;
+    crate::config::dll_dir().map(|dir| dir.join(STATS_DIR).join(folder))
+}
+
+/// Seeds of the matches this save has records for.
+///
+/// The fingerprint. Only the seed field is read from each record — the cheapest
+/// question that can be asked of one — and this runs once per load rather than per
+/// frame, so reading every record is affordable and maximises the chance of an
+/// overlap with what a folder already holds.
+fn record_seeds(ctx: &StableClient<'_>) -> BTreeSet<u64> {
+    ctx.record_ids(RecordKindV1::MatchReplay)
+        .into_iter()
+        .filter_map(|id| ctx.record_get_json(RecordKindV1::MatchReplay, id, "seed"))
+        .filter_map(|json| serde_json::from_str::<Value>(&json).ok())
+        .filter_map(|value| value.as_u64())
+        .collect()
+}
+
+/// The folder holding captures for any of `seeds`.
+///
+/// Both halves of a queue file are searched: matches still waiting to be counted,
+/// and the ring of seeds kept after they were. A save that has played at all leaves
+/// one or the other, and the ring outlives the records themselves — which is what
+/// lets a save still be recognised long after the game has pruned the records that
+/// first identified it.
+fn folder_for_seeds(root: &Path, seeds: &BTreeSet<u64>) -> Option<String> {
+    if seeds.is_empty() {
+        return None;
+    }
+    // The strongest overlap wins rather than the first found. Folders left behind
+    // by an earlier scheme can share a handful of seeds with the real one, and
+    // directory order is not an argument about which is which.
+    let mut best: (usize, Option<String>) = (0, None);
+    for entry in std::fs::read_dir(root).ok()?.flatten() {
+        let path = entry.path().join(crate::item_stats_sim::FILE);
+        let Ok(text) = std::fs::read_to_string(path) else {
+            continue;
+        };
+        let Ok(Value::Object(file)) = serde_json::from_str::<Value>(&text) else {
+            continue;
+        };
+        let queued: Vec<u64> = file
+            .get("q")
+            .and_then(Value::as_object)
+            .map(|q| q.keys().filter_map(|k| k.parse::<u64>().ok()).collect())
+            .unwrap_or_default();
+        let counted: Vec<u64> = file
+            .get("d")
+            .and_then(Value::as_array)
+            .map(|d| d.iter().filter_map(Value::as_u64).collect())
+            .unwrap_or_default();
+        let shared = queued
+            .iter()
+            .chain(&counted)
+            .filter(|seed| seeds.contains(seed))
+            .count();
+        if shared > best.0 {
+            best = (
+                shared,
+                Some(entry.file_name().to_string_lossy().into_owned()),
+            );
+        }
+    }
+    best.1
+}
+
+/// `base`, or the first `base (n)` that is not taken.
+fn unique_name(root: &Path, base: &str) -> String {
+    if !root.join(base).exists() {
+        return base.to_string();
+    }
+    (2..100)
+        .map(|n| format!("{base} ({n})"))
+        .find(|name| !root.join(name).exists())
+        .unwrap_or_else(|| base.to_string())
+}
+
+/// A team name reduced to something a directory can be called.
+///
+/// Players name their team whatever they like, and that string goes straight into a
+/// path. Everything Windows forbids is dropped rather than substituted, and a name
+/// that survives as nothing is refused so the caller can wait rather than create a
+/// folder called `___`.
+fn sanitise(name: &str) -> Option<String> {
+    const FORBIDDEN: &[char] = &['<', '>', ':', '\"', '/', '\\', '|', '?', '*'];
+    let cleaned: String = name
+        .chars()
+        .filter(|c| !FORBIDDEN.contains(c) && !c.is_control())
+        .collect();
+    // Trailing dots and spaces are legal to create and then awkward to open.
+    let cleaned = cleaned.trim().trim_end_matches('.').trim();
+    if cleaned.is_empty() {
+        return None;
+    }
+    Some(cleaned.chars().take(64).collect())
 }
 
 /// The path to write one of this save's files to, folder created.
@@ -645,88 +761,85 @@ pub(crate) fn save_file(name: &str) -> Option<PathBuf> {
 
 /// Points the totals at whichever save is loaded, and puts away the last one's.
 ///
-/// Called every frame from the client's `post_update`, off the statistics screen
-/// as well as on it — the numbers have to be pointed at the right save before
-/// anything folds into them or flushes them, and neither of those happens here.
+/// Called every frame from the client's `post_update`, off the statistics screen as
+/// well as on it — the numbers have to be pointed at the right save before anything
+/// folds into them or flushes them, and neither of those happens here.
 ///
-/// Cheap to call repeatedly: a save key read, and on the frame the save changes,
-/// one write and one load.
-///
-/// **A new id is minted only when this process holds none.** The namespace is
-/// not a reliable answer to "which save is this" on any given frame — it reads
-/// empty mid-load, and the id it holds only reaches disk when the player saves —
-/// so an empty read is treated as "ask again later", not as a new save. Only an
-/// id that comes back *different* moves the totals to another folder.
+/// Identification happens once per load and costs a pass over the save's match
+/// records; every other frame is a single call to `save_can_write`. See [`SAVE`] for
+/// why the seeds in those records are what a save is recognised by.
 pub(crate) fn adopt_save(ctx: &mut StableClient<'_>) {
-    // The save namespace no-ops outside an active game, so this is also how the
-    // main menu is recognised. The previous save's totals stay loaded there,
-    // which is harmless: the tab that reads them cannot be reached.
+    // The save namespace no-ops outside an active game, so this is how the main menu
+    // is recognised — and the menu is the one moment a different save can be on the
+    // way in, which is why the current one is put away here rather than when the next
+    // one appears.
     if !ctx.save_can_write() {
+        release();
         return;
     }
+    if SAVE.lock().ok().is_some_and(|current| current.is_some()) {
+        return;
+    }
+    let Some(name) = ctx
+        .player_team_id()
+        .and_then(|team| ctx.team_name(team))
+        .as_deref()
+        .and_then(sanitise)
+    else {
+        return;
+    };
+    let Some(root) = crate::config::dll_dir().map(|dir| dir.join(STATS_DIR)) else {
+        return;
+    };
+    let _ = std::fs::create_dir_all(&root);
 
-    // Bound before the match rather than read in its scrutinee: a temporary there
-    // lives to the end of the match, so the shared borrow of `ctx` would still be
-    // alive when the arms below need it mutably to write the id back.
-    let existing = ctx.save_get_string(SAVE_KEY).filter(|id| !id.is_empty());
-    let adopted = SAVE.lock().ok().and_then(|current| current.clone());
-
-    let id = match (existing, adopted) {
-        // The save names itself and it is the one already loaded.
-        (Some(id), Some(adopted)) if id == adopted => return,
-        // The save names itself and it is a different one. Only an id that came
-        // out of the namespace is proof of a switch, which is why this is the
-        // one case that moves to another folder.
-        (Some(id), _) => id,
-        // Nothing in the namespace, but this process has already adopted an id.
-        //
-        // An empty namespace is NOT proof of a different save. It reads empty
-        // while a save is still being loaded, and an id only reaches disk when
-        // the player saves, so a restart before saving loses it too. Minting
-        // here treated both as new saves and forked one save's history across
-        // folders — three of them in one evening, with no match in common,
-        // 44 minutes and then 20 seconds apart. Re-assert what is held instead:
-        // if the namespace is real the id sticks, and if it is not, the write
-        // goes nowhere and costs nothing.
-        (None, Some(adopted)) => {
-            let _ = ctx.save_set_string(SAVE_KEY, &adopted);
-            return;
-        }
-        // Nothing anywhere: the first save this process has seen. The id is
-        // arbitrary — it only has to differ from every other save's and be
-        // usable in a file name.
-        (None, None) => {
-            let id = new_save_id();
-            if !ctx.save_set_string(SAVE_KEY, &id) {
+    let seeds = record_seeds(ctx);
+    let folder = match folder_for_seeds(&root, &seeds) {
+        Some(found) => found,
+        // No overlap. Either this save is new, or its records are not readable yet —
+        // and those look identical from here, so the answer is deferred until the
+        // grace period runs out rather than risking a second folder for a save that
+        // already has one.
+        None => {
+            let waited = WAITED
+                .lock()
+                .map(|mut frames| {
+                    *frames += 1;
+                    *frames
+                })
+                .unwrap_or(SEED_GRACE);
+            if seeds.is_empty() && waited < SEED_GRACE {
                 return;
             }
-            id
+            unique_name(&root, &name)
         }
     };
 
-    // Order matters: both files are written into the outgoing save's folder, so
-    // they have to go out before the id that names it is replaced. The queue is
-    // forced rather than flushed, because its throttle may be sitting on a
-    // deferred write and this is the last chance to take it.
+    let _ = std::fs::create_dir_all(root.join(&folder));
+    if let Ok(mut current) = SAVE.lock() {
+        *current = Some(folder);
+    }
+}
+
+/// Writes the loaded save out and forgets it, so the next load is identified afresh.
+///
+/// The queue is forced rather than flushed, because its throttle may be sitting on a
+/// deferred write and this is the last chance to take it.
+fn release() {
+    let held = SAVE.lock().ok().is_some_and(|current| current.is_some());
+    if !held {
+        return;
+    }
     flush();
     crate::item_stats_sim::flush_now();
     let _ = with_agg(|agg| *agg = Aggregate::default());
     crate::item_stats_sim::forget();
-    if let Ok(mut save) = SAVE.lock() {
-        *save = Some(id);
+    if let Ok(mut current) = SAVE.lock() {
+        *current = None;
     }
-}
-
-/// An id for a save that has none yet.
-///
-/// The clock rather than a random number: the mod has no RNG outside a
-/// simulation, and two saves cannot be first seen in the same nanosecond.
-fn new_save_id() -> String {
-    let nanos = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|since| since.as_nanos() as u64)
-        .unwrap_or(0);
-    format!("{nanos:016x}")
+    if let Ok(mut frames) = WAITED.lock() {
+        *frames = 0;
+    }
 }
 
 /// The totals format this build writes and is willing to read.

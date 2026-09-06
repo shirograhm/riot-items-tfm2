@@ -470,7 +470,10 @@ fn write_queue() {
 }
 
 /// This save's uncounted captures, in the folder [`crate::item_stats`] names.
-const FILE: &str = "queue.json";
+///
+/// Public because identifying a save means looking for its seeds, and this is
+/// the file that holds them — see `item_stats::folder_for_seeds`.
+pub(crate) const FILE: &str = "queue.json";
 
 /// The queue format this build writes and is willing to read.
 ///

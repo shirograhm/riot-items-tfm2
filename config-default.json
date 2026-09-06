@@ -958,11 +958,16 @@
     "defence": 40,
     "magic_resistance": 60,
     "skill_cooldown_mult": 10,
-    "effect_bonus_defence": 6,
-    "effect_bonus_magic_resistance": 12,
-    "effect_bonus_hp_regen": 3,
+    "effect_bonus_defence": 5,
+    "effect_bonus_magic_resistance": 10,
+    "effect_bonus_hp_regen": 2,
     "effect_minion_percent": 150.0,
-    "effect_max_distance": 100
+    "effect_max_distance": 100,
+    "effect_hp_percent_threshold": 50.0,
+    "effect_min_shield": 170,
+    "effect_max_shield": 225,
+    "effect_shield_seconds": 2.5,
+    "effect_cooldown_seconds": 90
   },
   "radiant_locket_of_the_iron_solari": {
     "price": 1650,
@@ -970,11 +975,16 @@
     "defence": 75,
     "magic_resistance": 100,
     "skill_cooldown_mult": 15,
-    "effect_bonus_defence": 10,
-    "effect_bonus_magic_resistance": 20,
-    "effect_bonus_hp_regen": 4,
+    "effect_bonus_defence": 5,
+    "effect_bonus_magic_resistance": 10,
+    "effect_bonus_hp_regen": 2,
     "effect_minion_percent": 150.0,
-    "effect_max_distance": 100
+    "effect_max_distance": 100,
+    "effect_hp_percent_threshold": 50.0,
+    "effect_min_shield": 295,
+    "effect_max_shield": 350,
+    "effect_shield_seconds": 2.5,
+    "effect_cooldown_seconds": 90
   },
   "dead_mans_plate": {
     "price": 1450,

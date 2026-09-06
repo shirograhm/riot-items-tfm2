@@ -22,6 +22,7 @@ impl Tracked {
 #[derive(Clone, Debug)]
 pub struct Stormsurge {
     meta: ItemMeta,
+    strike_effect: &'static str,
     price: usize,
     magic_power: i32,
     move_speed_mult: i32,
@@ -44,6 +45,11 @@ impl Stormsurge {
                 &["hextech_alternator"],
                 &["radiant_stormsurge"],
             ),
+            // A view-effect name the client already binds, not an asset of
+            // ours: `lightning_mage_skill2` is the eight-frame bolt that
+            // strikes straight down out of `skill_effect/lightning_mage_effect`.
+            // See the note on `strike` in `update`.
+            strike_effect: "lightning_mage_skill2",
             price: 1400,
             magic_power: 110,
             move_speed_mult: 5,
@@ -260,7 +266,23 @@ impl StableItem for Stormsurge {
             tracked.live()
         });
 
+        // The bolt is drawn on the target the tick the strike lands. It goes
+        // through the same frame-event pipeline the game's own `.data_champion`
+        // `ViewEffect`s use, so it shows up in replays too, and is skipped
+        // silently by the background pre-sims that have no frame recording.
+        //
+        // `range`/`radius`/`time` are the `.data_champion` `ViewEffect` fields;
+        // they steer travelling and area effects, and a bolt anchored on one
+        // entity uses none of them, so all three are the documented 0.
         for target in struck {
+            ctx.play_view_effect(
+                self.strike_effect,
+                caster,
+                &InputTargetV1::target(target),
+                0,
+                0,
+                0,
+            );
             ctx.deal_damage(caster, target, 0, damage, AttackTypeV1::Item);
         }
     }
