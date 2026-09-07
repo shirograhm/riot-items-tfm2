@@ -31,10 +31,26 @@
 //! These counters **are** the stored history: a match is folded in once and its
 //! loadouts are dropped. The alternative, keeping every match and re-folding them
 //! whenever one was added, cost two passes over the whole save — the fold itself
-//! and the file write that followed it — and both got slower the longer the save
-//! was played, which is exactly backwards for a feature that only becomes useful
-//! once a lot has been played. What is on disk is now proportional to the number
-//! of items, patches and lanes, all of which are fixed.
+//! and the write that followed it — and both got slower the longer the save was
+//! played, which is exactly backwards for a feature that only becomes useful once
+//! a lot has been played. What is stored is now proportional to the number of
+//! items, patches and lanes, all of which are fixed.
+//!
+//! # Where they are stored
+//!
+//! In the save file, under this mod's own namespace — see [`sync`]. They used to
+//! be a `totals.json` in `item_stats/<save>/` beside the DLL, which needed the
+//! mod to work out *which save is this* on its own; it had no answer, so it
+//! fingerprinted saves by their match seeds and named folders after the team.
+//! That machinery is gone: data kept inside the save is tied to it by
+//! construction, and a save loaded from an earlier point now shows the numbers it
+//! had then instead of a future it was rolled back from.
+//!
+//! Two things follow, both worth knowing. The table reaches disk only when the
+//! player saves, so quitting without saving drops the session's matches along
+//! with everything else that session. And the namespace answers empty on some
+//! frames while it is already writable, which is why nothing folds or writes
+//! before a load has been confirmed — see [`LOAD_GRACE`].
 //!
 //! The trade is that nothing can be recomputed. A column added later starts
 //! empty and fills from new matches, where a stored history could have answered
@@ -48,8 +64,7 @@
 //! [`crate::item_stats_sim::take`] hands each one over exactly once and remembers
 //! that it did.
 
-use std::collections::{BTreeMap, BTreeSet};
-use std::path::{Path, PathBuf};
+use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
 
@@ -103,7 +118,12 @@ impl Totals {
 struct Aggregate {
     /// Record ids still to read for their patch, newest first.
     pending: Vec<usize>,
-    /// Whether the counters have been read back from disk yet.
+    /// Whether the save's counters have been read into this table yet.
+    ///
+    /// Nothing may be written back before this is true. A read can come back
+    /// empty on a frame where `save_can_write` already answers true, and folding
+    /// into an empty table and then saving it would overwrite the save's real
+    /// history — see [`sync`].
     loaded: bool,
     /// Patch -> (lane, item) -> totals.
     ///
@@ -128,12 +148,7 @@ static AGG: Mutex<Option<Aggregate>> = Mutex::new(None);
 
 fn with_agg<T>(f: impl FnOnce(&mut Aggregate) -> T) -> Option<T> {
     let mut guard = AGG.lock().ok()?;
-    let agg = guard.get_or_insert_with(Aggregate::default);
-    if !agg.loaded {
-        agg.loaded = true;
-        load_into(agg);
-    }
-    Some(f(agg))
+    Some(f(guard.get_or_insert_with(Aggregate::default)))
 }
 
 /// What the panel draws.
@@ -182,6 +197,14 @@ pub(crate) fn sweep(ctx: &StableClient<'_>) {
 /// patch was this match played on — and the answer is written onto the capture
 /// so it survives the record being pruned.
 pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
+    // Nothing folds into a table that has not been read back from the save yet.
+    // The fold would be overwritten by the load that follows it, and the capture
+    // it consumed is dropped as it is handed over — so the match would be lost
+    // rather than merely delayed. `sync` loads first for the same reason; this
+    // guard is for the statistics screen, which pumps on its own.
+    if !with_agg(|agg| agg.loaded).unwrap_or(false) {
+        return false;
+    }
     let batch = with_agg(|agg| {
         let take = CHUNK.min(agg.pending.len());
         agg.pending.drain(..take).collect::<Vec<_>>()
@@ -601,273 +624,134 @@ fn icon_frame(object: &serde_json::Map<String, Value>, key: &str) -> Option<Stri
 /// Set when the counters change, cleared when they reach disk.
 static DIRTY: AtomicBool = AtomicBool::new(false);
 
-/// The folder the loaded save's statistics live in, or `None` before one has been
-/// identified.
-///
-/// **A save is recognised by its match seeds, not by its name.**
-///
-/// Nothing the mod writes into the save can identify it. Minting an id and keeping
-/// it in this mod's save namespace was tried twice and failed twice: the namespace
-/// reads back fine within a session and is **empty again after a reload**, so the
-/// same save came back nameless and opened a new, empty folder. (Storing the whole
-/// table there fails the same way, which is why it is on disk.)
-///
-/// Match seeds have neither problem. They come *out* of the save's own records, so
-/// they survive a reload and anything done to the mod, and no two saves ever share
-/// one. The folder already holding captures for a seed this save has a record of
-/// is this save's folder, whatever it is called — which is also what makes
-/// renaming a folder by hand safe.
-///
-/// The team's name only *names* a folder the first time one is made, so the
-/// directory is legible from outside the game. Two saves fielding a team of the
-/// same name get `Gen.G` and `Gen.G (2)`; the seeds keep them apart from then on.
-static SAVE: Mutex<Option<String>> = Mutex::new(None);
-
-/// Frames spent waiting for the save's records to become readable.
-///
-/// Identification needs seeds, and `record_ids` is empty for the first frames after
-/// a load. Adopting then would look like a save with no history and start a second
-/// folder for it, so the answer is deferred — but only up to [`SEED_GRACE`],
-/// because a genuinely new save has no records to wait for.
-static WAITED: Mutex<usize> = Mutex::new(0);
-
-/// Frames to wait for records before accepting that a save simply has none.
-const SEED_GRACE: usize = 600;
-
-/// Folder holding every save's statistics, one subfolder each.
-const STATS_DIR: &str = "item_stats";
-
-/// This save's counters, inside its own folder.
-const FILE: &str = "totals.json";
-
-/// Where this save's statistics live: `item_stats/<save id>/`.
-///
-/// `None` until a save has been adopted, which is what keeps the main menu from
-/// writing anything: there is nowhere to put it, and nothing to put there either,
-/// since a match is only ever counted from the statistics screen.
-///
-/// Shared with [`crate::item_stats_sim`], which keeps its queue of uncounted
-/// matches in the same folder — a save's captures belong to it as much as its
-/// totals do, and keeping them together means one directory to copy or delete.
-pub(crate) fn save_dir() -> Option<PathBuf> {
-    let folder = SAVE.lock().ok()?.clone()?;
-    crate::config::dll_dir().map(|dir| dir.join(STATS_DIR).join(folder))
-}
-
-/// Seeds of the matches this save has records for.
-///
-/// The fingerprint. Only the seed field is read from each record — the cheapest
-/// question that can be asked of one — and this runs once per load rather than per
-/// frame, so reading every record is affordable and maximises the chance of an
-/// overlap with what a folder already holds.
-fn record_seeds(ctx: &StableClient<'_>) -> BTreeSet<u64> {
-    ctx.record_ids(RecordKindV1::MatchReplay)
-        .into_iter()
-        .filter_map(|id| ctx.record_get_json(RecordKindV1::MatchReplay, id, "seed"))
-        .filter_map(|json| serde_json::from_str::<Value>(&json).ok())
-        .filter_map(|value| value.as_u64())
-        .collect()
-}
-
-/// The folder holding captures for any of `seeds`.
-///
-/// Both halves of a queue file are searched: matches still waiting to be counted,
-/// and the ring of seeds kept after they were. A save that has played at all leaves
-/// one or the other, and the ring outlives the records themselves — which is what
-/// lets a save still be recognised long after the game has pruned the records that
-/// first identified it.
-fn folder_for_seeds(root: &Path, seeds: &BTreeSet<u64>) -> Option<String> {
-    if seeds.is_empty() {
-        return None;
-    }
-    // The strongest overlap wins rather than the first found. Folders left behind
-    // by an earlier scheme can share a handful of seeds with the real one, and
-    // directory order is not an argument about which is which.
-    let mut best: (usize, Option<String>) = (0, None);
-    for entry in std::fs::read_dir(root).ok()?.flatten() {
-        let path = entry.path().join(crate::item_stats_sim::FILE);
-        let Ok(text) = std::fs::read_to_string(path) else {
-            continue;
-        };
-        let Ok(Value::Object(file)) = serde_json::from_str::<Value>(&text) else {
-            continue;
-        };
-        let queued: Vec<u64> = file
-            .get("q")
-            .and_then(Value::as_object)
-            .map(|q| q.keys().filter_map(|k| k.parse::<u64>().ok()).collect())
-            .unwrap_or_default();
-        let counted: Vec<u64> = file
-            .get("d")
-            .and_then(Value::as_array)
-            .map(|d| d.iter().filter_map(Value::as_u64).collect())
-            .unwrap_or_default();
-        let shared = queued
-            .iter()
-            .chain(&counted)
-            .filter(|seed| seeds.contains(seed))
-            .count();
-        if shared > best.0 {
-            best = (
-                shared,
-                Some(entry.file_name().to_string_lossy().into_owned()),
-            );
-        }
-    }
-    best.1
-}
-
-/// `base`, or the first `base (n)` that is not taken.
-fn unique_name(root: &Path, base: &str) -> String {
-    if !root.join(base).exists() {
-        return base.to_string();
-    }
-    (2..100)
-        .map(|n| format!("{base} ({n})"))
-        .find(|name| !root.join(name).exists())
-        .unwrap_or_else(|| base.to_string())
-}
-
-/// A team name reduced to something a directory can be called.
-///
-/// Players name their team whatever they like, and that string goes straight into a
-/// path. Everything Windows forbids is dropped rather than substituted, and a name
-/// that survives as nothing is refused so the caller can wait rather than create a
-/// folder called `___`.
-fn sanitise(name: &str) -> Option<String> {
-    const FORBIDDEN: &[char] = &['<', '>', ':', '\"', '/', '\\', '|', '?', '*'];
-    let cleaned: String = name
-        .chars()
-        .filter(|c| !FORBIDDEN.contains(c) && !c.is_control())
-        .collect();
-    // Trailing dots and spaces are legal to create and then awkward to open.
-    let cleaned = cleaned.trim().trim_end_matches('.').trim();
-    if cleaned.is_empty() {
-        return None;
-    }
-    Some(cleaned.chars().take(64).collect())
-}
-
-/// The path to write one of this save's files to, folder created.
-///
-/// Reads go through [`save_dir`] instead: a missing folder is a save with nothing
-/// recorded yet, which reads as an empty table rather than as an error, and there
-/// is no reason for a read to leave a folder behind.
-pub(crate) fn save_file(name: &str) -> Option<PathBuf> {
-    let dir = save_dir()?;
-    std::fs::create_dir_all(&dir).ok()?;
-    Some(dir.join(name))
-}
-
-/// Points the totals at whichever save is loaded, and puts away the last one's.
-///
-/// Called every frame from the client's `post_update`, off the statistics screen as
-/// well as on it — the numbers have to be pointed at the right save before anything
-/// folds into them or flushes them, and neither of those happens here.
-///
-/// Identification happens once per load and costs a pass over the save's match
-/// records; every other frame is a single call to `save_can_write`. See [`SAVE`] for
-/// why the seeds in those records are what a save is recognised by.
-pub(crate) fn adopt_save(ctx: &mut StableClient<'_>) {
-    // The save namespace no-ops outside an active game, so this is how the main menu
-    // is recognised — and the menu is the one moment a different save can be on the
-    // way in, which is why the current one is put away here rather than when the next
-    // one appears.
-    if !ctx.save_can_write() {
-        release();
-        return;
-    }
-    if SAVE.lock().ok().is_some_and(|current| current.is_some()) {
-        return;
-    }
-    let Some(name) = ctx
-        .player_team_id()
-        .and_then(|team| ctx.team_name(team))
-        .as_deref()
-        .and_then(sanitise)
-    else {
-        return;
-    };
-    let Some(root) = crate::config::dll_dir().map(|dir| dir.join(STATS_DIR)) else {
-        return;
-    };
-    let _ = std::fs::create_dir_all(&root);
-
-    let seeds = record_seeds(ctx);
-    let folder = match folder_for_seeds(&root, &seeds) {
-        Some(found) => found,
-        // No overlap. Either this save is new, or its records are not readable yet —
-        // and those look identical from here, so the answer is deferred until the
-        // grace period runs out rather than risking a second folder for a save that
-        // already has one.
-        None => {
-            let waited = WAITED
-                .lock()
-                .map(|mut frames| {
-                    *frames += 1;
-                    *frames
-                })
-                .unwrap_or(SEED_GRACE);
-            if seeds.is_empty() && waited < SEED_GRACE {
-                return;
-            }
-            unique_name(&root, &name)
-        }
-    };
-
-    let _ = std::fs::create_dir_all(root.join(&folder));
-    if let Ok(mut current) = SAVE.lock() {
-        *current = Some(folder);
-    }
-}
-
-/// Writes the loaded save out and forgets it, so the next load is identified afresh.
-///
-/// The queue is forced rather than flushed, because its throttle may be sitting on a
-/// deferred write and this is the last chance to take it.
-fn release() {
-    let held = SAVE.lock().ok().is_some_and(|current| current.is_some());
-    if !held {
-        return;
-    }
-    flush();
-    crate::item_stats_sim::flush_now();
-    let _ = with_agg(|agg| *agg = Aggregate::default());
-    crate::item_stats_sim::forget();
-    if let Ok(mut current) = SAVE.lock() {
-        *current = None;
-    }
-    if let Ok(mut frames) = WAITED.lock() {
-        *frames = 0;
-    }
-}
-
 /// The totals format this build writes and is willing to read.
 ///
-/// A file that does not match is ignored rather than migrated, and that save's
-/// table starts over. These counters cannot be recomputed from anything — the
-/// matches behind them are long gone — so a shape change is the one case where
-/// history is lost, and worth weighing before bumping this.
+/// A table that does not match is ignored rather than migrated, and that save's
+/// counters start over. These cannot be recomputed from anything — the matches
+/// behind them are long gone — so a shape change is the one case where history is
+/// lost, and worth weighing before bumping this.
 const FORMAT: u32 = 1;
+
+/// The key the whole table lives under, inside this mod's own namespace in the
+/// save file. One key: the table is written whole, so splitting it would only add
+/// a way for the halves to disagree.
+const KEY: &str = "item_stats";
+
+/// Frames to wait for the save's namespace to answer before believing it.
+///
+/// The namespace reads empty on some frames while `save_can_write` already
+/// answers true — mid-load, or across a scene change. Believing the first empty
+/// read would start this save's table from nothing and then write that over its
+/// real history, so an absent key is only accepted after it has stayed absent
+/// this long. A genuinely new save simply waits these frames out once.
+const LOAD_GRACE: u32 = 600;
+
+/// Frames spent waiting for that answer.
+static WAITED: Mutex<u32> = Mutex::new(0);
+
+/// Loads the save's table, folds anything the simulation has captured, and
+/// writes the result back.
+///
+/// # Why folding happens here rather than on the statistics screen
+///
+/// It used to run only while that screen was open, so a season could be played
+/// with every match still sitting in the capture queue — which is what made that
+/// queue a 2MB file. Driven from the management tick instead, the queue drains
+/// within a tick or two of a match ending and never needs to persist at all.
+///
+/// The sweep is gated on there being something to fold, so a quiet tick costs one
+/// atomic read.
+///
+/// # What "saved" means now
+///
+/// `save_set_string` writes the *in-memory* save. It reaches disk when the player
+/// saves, and not before — quit without saving and the session's matches are gone
+/// along with everything else that session. That is the trade for the table being
+/// tied to the save rather than to a folder beside the DLL, and it is what makes
+/// loading an older save show that save's numbers instead of a future's.
+pub(crate) fn sync(ctx: &mut StableClient<'_>) {
+    if !ctx.save_can_write() {
+        // Back at the menu, or between saves. Drop everything so the next save
+        // loads its own table rather than inheriting this one's.
+        if with_agg(|agg| agg.loaded).unwrap_or(false) {
+            let _ = with_agg(|agg| *agg = Aggregate::default());
+            crate::item_stats_sim::forget();
+        }
+        if let Ok(mut waited) = WAITED.lock() {
+            *waited = 0;
+        }
+        DIRTY.store(false, Ordering::Relaxed);
+        return;
+    }
+
+    if !with_agg(|agg| agg.loaded).unwrap_or(false) && !load_from_save(ctx) {
+        return;
+    }
+
+    if crate::item_stats_sim::pending() > 0 {
+        sweep(ctx);
+        while pump(ctx) {}
+    }
+
+    flush(ctx);
+}
+
+/// Reads the save's table into the aggregate, or decides it has none.
+///
+/// Returns whether the table may now be folded into. See [`LOAD_GRACE`] for why
+/// an empty answer is not taken at face value.
+fn load_from_save(ctx: &StableClient<'_>) -> bool {
+    if ctx.save_version() as u32 == FORMAT {
+        if let Some(text) = ctx.save_get_string(KEY) {
+            let _ = with_agg(|agg| {
+                agg.loaded = true;
+                load_into(agg, &text);
+            });
+            return true;
+        }
+    } else if ctx.save_contains_key(KEY) {
+        // A table this build will not read. Left where it is rather than
+        // removed: a downgrade should still find its own numbers.
+        let _ = with_agg(|agg| agg.loaded = true);
+        return true;
+    }
+
+    let waited = WAITED
+        .lock()
+        .map(|mut frames| {
+            *frames += 1;
+            *frames
+        })
+        .unwrap_or(LOAD_GRACE);
+    if waited < LOAD_GRACE {
+        return false;
+    }
+    // Nothing there after the grace period: a save that has never carried this
+    // table. Starting empty is now safe.
+    let _ = with_agg(|agg| agg.loaded = true);
+    true
+}
 
 /// Writes the counters out if they changed since the last call.
 ///
 /// Driven from the management tick beside the queue's own flush. The file is a
 /// few thousand rows whatever the save has been through, so unlike the history it
 /// replaced this costs the same on the first match and the ten-thousandth.
-pub(crate) fn flush() {
+pub(crate) fn flush(ctx: &mut StableClient<'_>) {
     if !DIRTY.swap(false, Ordering::Relaxed) {
+        return;
+    }
+    // Never before the save's own table has been read, or this writes an empty
+    // one over it. `sync` will not fold either until then, so in practice this
+    // guard only fires if something else marks the table dirty first.
+    if !with_agg(|agg| agg.loaded).unwrap_or(false) {
         return;
     }
     let Some(text) = with_agg(serialise) else {
         return;
     };
-    let Some(path) = save_file(FILE) else {
-        return;
-    };
-    // Written whole rather than appended: a partial append after a crash would
-    // be a file that no longer parses, and these numbers cannot be re-derived.
-    let _ = std::fs::write(path, text);
+    ctx.save_set_version(FORMAT as usize);
+    ctx.save_set_string(KEY, &text);
 }
 
 /// `{"v": 1, "t": {"<patch>": {"m": matches, "i": [entry, ...]}}}`, where an
@@ -928,14 +812,8 @@ fn quote(text: &str) -> String {
     format!("\"{}\"", text.replace('\\', "\\\\").replace('"', "\\\""))
 }
 
-fn load_into(agg: &mut Aggregate) {
-    let Some(path) = save_dir().map(|dir| dir.join(FILE)) else {
-        return;
-    };
-    let Ok(text) = std::fs::read_to_string(path) else {
-        return;
-    };
-    let Ok(Value::Object(file)) = serde_json::from_str::<Value>(&text) else {
+fn load_into(agg: &mut Aggregate, text: &str) {
+    let Ok(Value::Object(file)) = serde_json::from_str::<Value>(text) else {
         return;
     };
     if file.get("v").and_then(Value::as_u64) != Some(FORMAT as u64) {
