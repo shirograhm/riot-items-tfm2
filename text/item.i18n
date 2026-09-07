@@ -305,11 +305,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Blade of the Ruined King",
-            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> of the <#d94c49ff>target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Radiant Blade of the Ruined King",
-            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> of the <#d94c49ff>target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>8% of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
         },
         "blackfire_torch": {
             "name": "Blackfire Torch",
@@ -633,11 +633,11 @@
         },
         "bloodsong": {
             "name": "Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "radiant_bloodsong": {
             "name": "Radiant Bloodsong",
-            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> for <#e8a800ff>4 seconds<>."
+            "option": "\nSpellblade: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "serrated_dirk": {
             "name": "Serrated Dirk",
@@ -717,11 +717,11 @@
         },
         "eclipse": {
             "name": "Eclipse",
-            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>100<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown per target)."
+            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>5% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>100<> + <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown per target)."
         },
         "radiant_eclipse": {
             "name": "Radiant Eclipse",
-            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>120<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown per target)."
+            "option": "\nEver Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for <#e8a800ff>2 seconds<>, up to once per cast instance. Hitting a marked champion consumes the mark to deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>8% of their maximum health<> and grant you a <#cab944ff>shield<> that absorbs <#cab944ff>120<> + <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>2 seconds<> (<#e8a800ff>6 second<> cooldown per target)."
         },
         "axiom_arc": {
             "name": "Axiom Arc",
@@ -805,11 +805,11 @@
         },
         "ravenous_hydra": {
             "name": "Ravenous Hydra",
-            "option": "\nCleave: Basic attacks deal <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 30% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 15%)<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the target."
+            "option": "\nCleave: Basic attacks deal <#ff9028ff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
         },
         "radiant_ravenous_hydra": {
             "name": "Radiant Ravenous Hydra",
-            "option": "\nCleave: Basic attacks deal <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 40% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 20%)<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the target."
+            "option": "\nCleave: Basic attacks deal <#ff9028ff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
         }
     },
     "vi": {
@@ -1118,11 +1118,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Gươm Suy Vong",
-            "option": "\nNanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>50 sát thương vật lí<> lên lính và quái vật."
+            "option": "\nNanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>5% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>50 sát thương vật lí<> lên lính và quái vật."
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Gươm Suy Vong Ánh Sáng",
-            "option": "\nNanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>50 sát thương vật lí<> lên lính và quái vật."
+            "option": "\nNanh vuốt sương mù: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#d94c49ff>8% máu hiện tại của mục tiêu<>. Tối đa <#ff9028ff>50 sát thương vật lí<> lên lính và quái vật."
         },
         "blackfire_torch": {
             "name": "Đuốc Lửa Đen",
@@ -1446,11 +1446,11 @@
         },
         "bloodsong": {
             "name": "Khúc Ca Máu",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "radiant_bloodsong": {
             "name": "Khúc Ca Máu Ánh Sáng",
-            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> trong <#e8a800ff>4 giây<>."
+            "option": "\nKiếm Phép: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "serrated_dirk": {
             "name": "Dao Găm Răng Cưa",
@@ -1530,11 +1530,11 @@
         },
         "eclipse": {
             "name": "Nguyệt Đao",
-            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>100<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<> mỗi mục tiêu)."
+            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>5% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>100<> + <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<> mỗi mục tiêu)."
         },
         "radiant_eclipse": {
             "name": "Nguyệt Đao Ánh Sáng",
-            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>120<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<> mỗi mục tiêu)."
+            "option": "\nÁnh Trăng Công Kích: Đòn đánh thường hoặc kĩ năng trúng tướng địch sẽ đánh dấu chúng trong <#e8a800ff>2 giây<>, tối đa một lần mỗi lần thi triển. Đánh trúng tướng đã bị đánh dấu sẽ tiêu thụ dấu, gây <#ff9028ff>sát thương vật lí cộng thêm<> bằng <#d94c49ff>8% máu tối đa của chúng<> và tạo cho bạn một <#cab944ff>khiên<> hấp thụ <#cab944ff>120<> + <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>6 giây<> mỗi mục tiêu)."
         },
         "axiom_arc": {
             "name": "Nguyên Tố Luân",
@@ -1618,11 +1618,11 @@
         },
         "ravenous_hydra": {
             "name": "Rìu Mãng Xà",
-            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 30% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 15%)<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu."
+            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
         },
         "radiant_ravenous_hydra": {
             "name": "Rìu Mãng Xà Ánh Sáng",
-            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 40% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 20%)<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch trong phạm vi <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu."
+            "option": "\nSát Thương Lan: Đòn đánh thường gây <#ff9028ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
         }
     },
     "zh-hans": {
@@ -1931,11 +1931,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "破败王者之刃",
-            "option": "\n雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>50点物理伤害<>。"
+            "option": "\n雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值5%<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>50点物理伤害<>。"
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "光明版破败王者之刃",
-            "option": "\n雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>50点物理伤害<>。"
+            "option": "\n雾之锋：普通攻击造成相当于目标<#d94c49ff>当前生命值8%<>的<#ff9028ff>额外物理伤害<>。对小兵和野怪最多造成 <#ff9028ff>50点物理伤害<>。"
         },
         "blackfire_torch": {
             "name": "黯炎火炬",
@@ -2259,11 +2259,11 @@
         },
         "bloodsong": {
             "name": "血歌",
-            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "radiant_bloodsong": {
             "name": "光明版血歌",
-            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n咒刃：技能命中敌方英雄后，你的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "serrated_dirk": {
             "name": "锯齿短匕",
@@ -2343,11 +2343,11 @@
         },
         "eclipse": {
             "name": "星蚀",
-            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 15%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（每个目标冷却 <#e8a800ff>6秒<>）。"
+            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其5%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 15%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（每个目标冷却 <#e8a800ff>6秒<>）。"
         },
         "radiant_eclipse": {
             "name": "光明版星蚀",
-            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 20%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（每个目标冷却 <#e8a800ff>6秒<>）。"
+            "option": "\n永升之月：普通攻击或技能命中敌方英雄时会标记其 <#e8a800ff>2秒<>，每次施放最多触发一次。命中已被标记的英雄会消耗该标记，造成相当于<#d94c49ff>其8%最大生命值<>的<#ff9028ff>额外物理伤害<>，并为你获得可吸收 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力的 20%<> 的<#cab944ff>护盾<>，持续 <#e8a800ff>2秒<>（每个目标冷却 <#e8a800ff>6秒<>）。"
         },
         "axiom_arc": {
             "name": "公理圆弧",
@@ -2431,11 +2431,11 @@
         },
         "ravenous_hydra": {
             "name": "贪欲九头蛇",
-            "option": "\n顺劈：普通攻击会对目标周围 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 30% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 15%)<> 的<#ff9028ff>物理伤害<>。"
+            "option": "\n顺劈：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>15%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
         },
         "radiant_ravenous_hydra": {
             "name": "光明版贪欲九头蛇",
-            "option": "\n顺劈：普通攻击会对目标周围 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 40% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 20%)<> 的<#ff9028ff>物理伤害<>。"
+            "option": "\n顺劈：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>25%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
         }
     },
     "pt-BR": {
@@ -2744,11 +2744,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Espada do Rei Destruído",
-            "option": "\nGume da Névoa: Ataques causam <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> da <#d94c49ff>Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
+            "option": "\nGume da Névoa: Ataques causam <#d94c49ff>5% da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Espada do Rei Destruído Radiante",
-            "option": "\nGume da Névoa: Ataques causam <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> da <#d94c49ff>Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
+            "option": "\nGume da Névoa: Ataques causam <#d94c49ff>8% da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
         },
         "blackfire_torch": {
             "name": "Tocha de Chamas Negras",
@@ -3072,11 +3072,11 @@
         },
         "bloodsong": {
             "name": "Canção de Sangue",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "radiant_bloodsong": {
             "name": "Canção de Sangue Radiante",
-            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> por <#e8a800ff>4 segundos<>."
+            "option": "\nLâmina Arcana: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "serrated_dirk": {
             "name": "Adaga Serrilhada",
@@ -3156,11 +3156,11 @@
         },
         "eclipse": {
             "name": "Eclipse",
-            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>100<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<> por alvo)."
+            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>5% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>100<> + <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<> por alvo)."
         },
         "radiant_eclipse": {
             "name": "Eclipse Radiante",
-            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>120<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<> por alvo)."
+            "option": "\nLua Sempre Crescente: Acertar um ataque básico ou uma Habilidade em um campeão inimigo o marca por <#e8a800ff>2 segundos<>, no máximo uma vez por instância de conjuração. Atingir um campeão marcado consome a marca para causar <#ff9028ff>dano físico bônus<> equivalente a <#d94c49ff>8% da Vida Máxima dele<> e conceder a você um <#cab944ff>escudo<> que absorve <#cab944ff>120<> + <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>6 segundos<> por alvo)."
         },
         "axiom_arc": {
             "name": "Arco do Axioma",
@@ -3244,11 +3244,11 @@
         },
         "ravenous_hydra": {
             "name": "Hidra Raivosa",
-            "option": "\nFenda: Ataques básicos causam <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 30% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 15%)<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> do alvo."
+            "option": "\nFenda: Ataques básicos causam <#ff9028ff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
         },
         "radiant_ravenous_hydra": {
             "name": "Hidra Raivosa Radiante",
-            "option": "\nFenda: Ataques básicos causam <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 40% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 20%)<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos dentro de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> do alvo."
+            "option": "\nFenda: Ataques básicos causam <#ff9028ff>25%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
         }
     },
     "ru": {
@@ -3557,11 +3557,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Клинок падшего короля",
-            "option": "\nКрай тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
+            "option": "\nКрай тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>5% текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Лучезарный Клинок падшего короля",
-            "option": "\nКрай тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
+            "option": "\nКрай тумана: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#d94c49ff>8% текущего здоровья цели<>. Наносит максимум <#ff9028ff>50 физического урона<> по миньонам и монстрам."
         },
         "blackfire_torch": {
             "name": "Факел Тёмного Огня",
@@ -3885,11 +3885,11 @@
         },
         "bloodsong": {
             "name": "Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "radiant_bloodsong": {
             "name": "Лучезарная Песнь Крови",
-            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> на <#e8a800ff>4 секунды<>."
+            "option": "\nЧародейский клинок: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "serrated_dirk": {
             "name": "Зубчатый кинжал",
@@ -3969,11 +3969,11 @@
         },
         "eclipse": {
             "name": "Затмение",
-            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>100<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<> на каждую цель)."
+            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>5% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>100<> + <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<> на каждую цель)."
         },
         "radiant_eclipse": {
             "name": "Лучезарное Затмение",
-            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>120<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<> на каждую цель)."
+            "option": "\nВосходящая луна: Попадание базовой атакой или умением по вражескому чемпиону отмечает его на <#e8a800ff>2 секунды<>, не более одного раза за применение. Попадание по отмеченному чемпиону поглощает метку, нанося <#ff9028ff>дополнительный физический урон<> в размере <#d94c49ff>8% его максимального здоровья<> и давая вам <#cab944ff>щит<>, поглощающий <#cab944ff>120<> + <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>6 секунд<> на каждую цель)."
         },
         "axiom_arc": {
             "name": "Шакрам Аксиом",
@@ -4057,11 +4057,11 @@
         },
         "ravenous_hydra": {
             "name": "Ненасытная гидра",
-            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 30% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 15%)<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели."
+            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
         },
         "radiant_ravenous_hydra": {
             "name": "Лучезарная Ненасытная гидра",
-            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 40% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 20%)<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> врагам в пределах <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели."
+            "option": "\nРассечение: Базовые атаки наносят <#ff9028ff>25%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
         }
     },
     "ko": {
@@ -4370,11 +4370,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "몰락한 왕의 검",
-            "option": "\n안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 (<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>50의 물리 피해<>를 입힙니다."
+            "option": "\n안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 5%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>50의 물리 피해<>를 입힙니다."
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "찬란한 몰락한 왕의 검",
-            "option": "\n안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 (<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>50의 물리 피해<>를 입힙니다."
+            "option": "\n안개의 검: 기본 공격 시 대상 <#d94c49ff>현재 체력의 8%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 미니언과 몬스터에게는 최대 <#ff9028ff>50의 물리 피해<>를 입힙니다."
         },
         "blackfire_torch": {
             "name": "어둠불꽃 횃불",
@@ -4698,11 +4698,11 @@
         },
         "bloodsong": {
             "name": "피의 노래",
-            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> 증가합니다."
+            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "radiant_bloodsong": {
             "name": "찬란한 피의 노래",
-            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> 증가합니다."
+            "option": "\n주문 검: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "serrated_dirk": {
             "name": "톱날 단검",
@@ -4782,11 +4782,11 @@
         },
         "eclipse": {
             "name": "월식",
-            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 (<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>6초<>)"
+            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>100<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>6초<>)"
         },
         "radiant_eclipse": {
             "name": "찬란한 월식",
-            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 (<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>6초<>)"
+            "option": "\n늘 떠오르는 달: 적 챔피언에게 기본 공격이나 스킬을 적중시키면 <#e8a800ff>2초<> 동안 대상을 표식 상태로 만듭니다. 시전당 최대 1회 적용됩니다. 표식이 있는 챔피언을 적중시키면 표식을 소모하여 대상 <#d94c49ff>최대 체력의 8%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>2초<> 동안 <#cab944ff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>를 흡수하는 <#cab944ff>보호막<>을 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>6초<>)"
         },
         "axiom_arc": {
             "name": "원칙의 원형낫",
@@ -4870,11 +4870,11 @@
         },
         "ravenous_hydra": {
             "name": "굶주린 히드라",
-            "option": "\n쪼개기: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<> 안의 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의<> <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 30% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 15%)<>만큼 <#ff9028ff>물리 피해<>를 입힙니다."
+            "option": "\n쪼개기: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 15%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
         },
         "radiant_ravenous_hydra": {
             "name": "찬란한 굶주린 히드라",
-            "option": "\n쪼개기: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<> 안의 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의<> <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 40% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 20%)<>만큼 <#ff9028ff>물리 피해<>를 입힙니다."
+            "option": "\n쪼개기: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 25%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
         }
     }
 }

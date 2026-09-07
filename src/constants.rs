@@ -1,11 +1,4 @@
 pub(crate) const DISTANCE_UNITS_PER_RANGE: usize = 1000;
-
-// Attacks landed from within this many range units count as melee. It sits in
-// the empty band between the champion sheet's two attack-range clusters --
-// melee tops out at 30 and ranged starts at 40 -- so no champion falls on the
-// boundary. See `is_melee`.
-pub(crate) const MELEE_DISTANCE: usize = 35;
-
 pub(crate) const ADAPTIVE_FORCE_AD_RATIO: f64 = 0.6;
 pub(crate) const TICKS_PER_SECOND: f64 = 60.0;
 

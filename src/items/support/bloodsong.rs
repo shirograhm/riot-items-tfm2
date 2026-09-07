@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, is_melee, ticks, ItemMeta, ProcQueue};
+use crate::{apply_config, has_buff, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
@@ -15,8 +15,7 @@ pub struct Bloodsong {
     effect_min_bonus_damage: usize,
     effect_max_bonus_damage: usize,
     effect_cooldown_seconds: f64,
-    effect_melee_damaged_amplify: usize,
-    effect_ranged_damaged_amplify: usize,
+    effect_damaged_amplify: usize,
     effect_duration_seconds: f64,
     spellblade_ready: bool,
     procs: ProcQueue,
@@ -39,8 +38,7 @@ impl Bloodsong {
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
             effect_cooldown_seconds: 3.5,
-            effect_melee_damaged_amplify: 8,
-            effect_ranged_damaged_amplify: 5,
+            effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
             // Non-vital stats (internals)
             spellblade_ready: false,
@@ -60,8 +58,7 @@ impl Bloodsong {
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
             effect_cooldown_seconds: 3.5,
-            effect_melee_damaged_amplify: 8,
-            effect_ranged_damaged_amplify: 5,
+            effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
             ..Self::base()
         }
@@ -88,8 +85,7 @@ impl Bloodsong {
                 effect_min_bonus_damage,
                 effect_max_bonus_damage,
                 effect_cooldown_seconds,
-                effect_melee_damaged_amplify,
-                effect_ranged_damaged_amplify,
+                effect_damaged_amplify,
                 effect_duration_seconds
             ]
         );
@@ -214,15 +210,10 @@ impl StableItem for Bloodsong {
         }
         let already_vulnerable = has_buff(&target_ref, self.vulnerable_buff);
         if !already_vulnerable {
-            let amplify = if is_melee(ctx, caster, target) {
-                self.effect_melee_damaged_amplify
-            } else {
-                self.effect_ranged_damaged_amplify
-            };
             ctx.add_buff(
                 target,
                 &BuffV1 {
-                    damaged_amplify: amplify,
+                    damaged_amplify: self.effect_damaged_amplify,
                     ..BuffV1::timed(self.vulnerable_buff, ticks(self.effect_duration_seconds))
                 },
             );
