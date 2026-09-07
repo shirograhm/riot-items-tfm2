@@ -43,20 +43,25 @@ impl StableItemBuildHook for ConfiguredBuilds {
         // would apply it to both — exactly what the toggle is off for. Unique
         // enforcement below still runs: it is about the shape of a build, not
         // about whose it is, and it applies to the engine's own picks too.
-        let mut build = if build_config::own_team_only_enabled() {
-            base.to_vec()
+        let own_team_only = build_config::own_team_only_enabled();
+        let configured = if own_team_only {
+            None
         } else {
-            self.configured_build(ctx).unwrap_or_else(|| base.to_vec())
+            self.configured_build(ctx)
         };
+        let mut build = configured.clone().unwrap_or_else(|| base.to_vec());
 
         if build_config::unique_items_enabled() {
             enforce_unique_items(ctx, &mut build);
         }
 
-        if build.is_empty() || build == base {
-            return Vec::new();
-        }
-        build
+        let decided = if build.is_empty() || build == base {
+            Vec::new()
+        } else {
+            build
+        };
+        record(ctx, own_team_only, configured.is_some(), base, &decided);
+        decided
     }
 }
 
@@ -121,4 +126,61 @@ fn enforce_unique_items(ctx: &StableItemBuildContext<'_>, build: &mut [usize]) {
             seen.insert(index);
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+//  Diagnostics
+// ---------------------------------------------------------------------------
+
+/// One line per build decision, when `crate::diag` is switched on.
+///
+/// This is the only vantage point from which "the editor's build was ignored"
+/// can be told apart from its three quite different causes: the hook never
+/// firing for that match at all (no line at all), the champion having no entry
+/// for the role it is played in (`configured=no`), and a pinned key the
+/// engine's item list does not carry (`configured=yes`, with fewer items in
+/// `result` than the editor shows). All three look identical in game.
+///
+/// Volume: `decide_build` runs for every player of every fixture on a league
+/// day, so a line for each would be mostly background sims. Configured
+/// champions are always logged - those are the ones being asked about - and
+/// everything else only for the first [`SAMPLE_OTHERS`] calls, which is enough
+/// to show the hook is alive and what champion keys reach it.
+const SAMPLE_OTHERS: usize = 20;
+
+fn record(
+    ctx: &StableItemBuildContext<'_>,
+    own_team_only: bool,
+    configured: bool,
+    base: &[usize],
+    decided: &[usize],
+) {
+    if !crate::diag::enabled() {
+        return;
+    }
+    if !configured {
+        static SEEN: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+        if SEEN.fetch_add(1, std::sync::atomic::Ordering::Relaxed) >= SAMPLE_OTHERS {
+            return;
+        }
+    }
+    crate::diag::log(&format!(
+        "decide champion={} team={} lane={:?} items={} own_team_only={own_team_only} configured={} base=[{}] result=[{}]",
+        ctx.champion_key(),
+        ctx.team(),
+        ctx.lane(),
+        ctx.item_count(),
+        if configured { "yes" } else { "no" },
+        keys(ctx, base),
+        keys(ctx, decided),
+    ));
+}
+
+/// Build indices as the item keys they name, for a log line.
+fn keys(ctx: &StableItemBuildContext<'_>, build: &[usize]) -> String {
+    build
+        .iter()
+        .map(|index| ctx.item_key(*index).unwrap_or("?"))
+        .collect::<Vec<_>>()
+        .join(",")
 }

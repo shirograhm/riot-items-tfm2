@@ -88,6 +88,14 @@ const PROLOGUE_PUSHES: [u8; 12] = [
 ];
 
 const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
+
+/// Route calls written to the item-build diagnostic log.
+///
+/// Two lines each and one call per team per match, so this is the number of
+/// lineups the log can name before it goes quiet - enough to cover a comp test
+/// or lane test launched a few minutes into a session, rather than only the
+/// league fixtures that sim on the way there.
+const ROUTE_CALLS_LOGGED: usize = 40;
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
 /// Signature for game 0.5.8, where the target is `0x2430190` (size 2270).
@@ -531,7 +539,9 @@ unsafe fn detour(
     // Both lines present means the target is right.
     {
         static ENTERED: AtomicUsize = AtomicUsize::new(0);
-        if ENTERED.fetch_add(1, Ordering::Relaxed) < 3 {
+        let count = ENTERED.fetch_add(1, Ordering::Relaxed);
+        if count < ROUTE_CALLS_LOGGED {
+            crate::diag::log(&format!("hook_entered n={count}"));
         }
     }
 
@@ -587,10 +597,35 @@ unsafe fn detour(
             .collect::<Vec<_>>(),
     );
 
-    // The routes are returned exactly as the game made them. Builds are decided
-    // in `crate::item_build_hook` now, on the stable API, where the champion a
-    // build belongs to is stated rather than inferred from route order.
-    ORIGINAL
+    // Paired with `hook_entered` above: both lines present means every argument
+    // was read without faulting, so the detoured function really is the one the
+    // signature names. It also states, for a match whose builds came out wrong,
+    // which lineups the route call was made for.
+    {
+        static CALLED: AtomicUsize = AtomicUsize::new(0);
+        let count = CALLED.fetch_add(1, Ordering::Relaxed);
+        if count < ROUTE_CALLS_LOGGED {
+            let lineup = |team: &Vec<(Position, String)>| {
+                team.iter()
+                    .map(|(_, champion)| champion.as_str())
+                    .collect::<Vec<_>>()
+                    .join(",")
+            };
+            crate::diag::log(&format!(
+                "hook_call n={count} items={} champions={} mode={mode} team1=[{}] team2=[{}]",
+                items.len(),
+                champion_ids.len(),
+                lineup(team1),
+                lineup(team2),
+            ));
+        }
+    }
+
+    // League routes are returned exactly as the game made them. Builds for those
+    // are decided in `crate::item_build_hook`, on the stable API, where the
+    // champion a build belongs to is stated rather than inferred from route
+    // order. The `mode` routes are the exception - see below.
+    let mut routes = ORIGINAL
         .get()
         .copied()
         .expect("item build hook original function missing")(
@@ -601,7 +636,104 @@ unsafe fn detour(
         team1,
         team2,
         mode,
-    )
+    );
+
+    if mode {
+        apply_training_builds(&mut routes, items, team1);
+    }
+
+    routes
+}
+
+/// Applies the editor's builds to a training-screen match, which is the one
+/// place the stable hook never runs.
+///
+/// # Why this exists again
+///
+/// Rewriting routes here is what this detour did for *every* match before
+/// `crate::item_build_hook` took the job over on the stable API. The reason it
+/// has to come back for `mode == true` is measurable rather than theoretical.
+/// Over one session's diagnostic log (`crate::diag`):
+///
+/// - **36 route calls with `mode == false`.** Every one is followed by a
+///   `decide_build` per player, and every configured champion in the resulting
+///   match finished holding its editor build - 44 of 45 exactly, the one
+///   exception being a blank slot the AI refilled, which is what blank slots
+///   are for.
+/// - **4 route calls with `mode == true`** - a 1v1 lane test and a 5v5
+///   composition test, each called twice as both sides. Between all four, *not
+///   one* `decide_build`. The engine does not consult mod item-build hooks on
+///   this path at all, so a build set in the editor was silently ignored in
+///   exactly the two screens a player uses to try builds out.
+///
+/// # Why in place
+///
+/// The routes were allocated by the game and are handed straight back to it.
+/// This mod is a separate cdylib with its own `std`, so replacing a `Vec` would
+/// mean freeing the game's allocation on the mod's allocator. Overwriting the
+/// existing elements touches no allocation at all, and keeping each route's
+/// original length means the engine sees exactly the shape it built - a build
+/// longer than the route simply loses its tail, the same way the stable hook's
+/// return is capped by the host.
+///
+/// # Why `team1`
+///
+/// Routes come back in `team1` order, position-ordered from Top, which is the
+/// same correspondence `record_lineup_roles` above relies on. So route `i`
+/// takes both its champion and its role from `team1[i]`.
+fn apply_training_builds(
+    routes: &mut [Vec<usize>],
+    items: &[Box<dyn ItemInfo>],
+    team1: &[(Position, String)],
+) {
+    let config = build_config::load_cached();
+    if config.is_empty() {
+        return;
+    }
+
+    // `to_string` rather than a borrow: `ItemInfo::key` is reached through the
+    // classic rlib, and this runs a few hundred times per training match - once
+    // - so an allocation per comparison is not worth pinning the return type
+    // over.
+    let index_of = |key: &str| items.iter().position(|item| item.key().to_string() == key);
+
+    for (position, route) in routes.iter_mut().enumerate() {
+        let Some((_, champion)) = team1.get(position) else {
+            break;
+        };
+        let role = build_config::Role::from_lane_code(position);
+        let Some(build) =
+            build_config::build_for_champion(&config, champion, role, &index_of, route)
+        else {
+            continue;
+        };
+        // `get` rather than indexing: this runs inside a detour, where a panic
+        // would unwind into game code that has no idea a Rust panic is
+        // possible. An out-of-range index is not expected - both sides index
+        // the `items` list the game just passed in - but it is not worth
+        // trading a wrong log line for a crash.
+        let names = |slots: &[usize]| {
+            slots
+                .iter()
+                .map(|index| {
+                    items
+                        .get(*index)
+                        .map_or_else(|| format!("?{index}"), |item| item.key().to_string())
+                })
+                .collect::<Vec<_>>()
+                .join(",")
+        };
+        if crate::diag::enabled() {
+            crate::diag::log(&format!(
+                "training champion={champion} role={role:?} was=[{}] now=[{}]",
+                names(route),
+                names(&build[..build.len().min(route.len())]),
+            ));
+        }
+        for (slot, item) in build.iter().enumerate().take(route.len()) {
+            route[slot] = *item;
+        }
+    }
 }
 
 pub fn install_hook() -> Result<usize, String> {

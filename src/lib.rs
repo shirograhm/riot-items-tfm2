@@ -4,6 +4,7 @@ use std::cell::Cell;
 mod build_config;
 mod config;
 mod constants;
+mod diag;
 mod hook;
 mod item_build_hook;
 mod item_catalog;
@@ -217,10 +218,12 @@ impl StableServerExtension for NativeTapExtension {
             Ok(address) => {
                 let message = format!("hook_installed address=0x{address:x}");
                 eprintln!("riot_items_tfm2: {message}");
+                diag::log(&message);
             }
             Err(error) if error == "hook already installed" => {}
             Err(error) => {
                 eprintln!("riot_items_tfm2: hook_refused error={error}");
+                diag::log(&format!("hook_refused error={error}"));
                 // Resolution failed diagnostics
                 match hook::candidate_report() {
                     Ok(candidates) => {
@@ -443,6 +446,19 @@ fn init(host: &StableHost) -> StableMod {
 
     // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
+
+    // The state every later `decide` line has to be read against: how many
+    // builds the file holds, how wide a build may be, and which of the two
+    // application paths the scope toggle has selected. Logged here rather than
+    // inferred from the lines themselves, because "no builds applied" and "no
+    // builds configured" produce the same silence.
+    diag::log(&format!(
+        "init builds={} slots={} unique_items={} own_team_only={}",
+        build_config::load_cached().by_champion.len(),
+        build_config::picker_slots(),
+        build_config::unique_items_enabled(),
+        build_config::own_team_only_enabled(),
+    ));
 
     // Records only keep the build a match was *assigned*; this reads what each
     // champion actually finished holding, off the simulation's last tick.
