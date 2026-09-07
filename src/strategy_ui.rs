@@ -285,19 +285,19 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
     let strings = strings();
     let escape = |text: &str| text.replace('\\', "\\\\").replace('"', "\\\"");
 
-    for (path, text) in [(ADD_PATH, &strings.add), (SAVE_PATH, &strings.save)] {
+    for (path, text) in [(add_path(), &strings.add), (save_path(), &strings.save)] {
         ctx.ui_set_properties(path, &format!("text: {{ text: \"{}\"; }}", escape(text)));
     }
     ctx.ui_set_properties(
-        SEARCH_PATH,
+        search_path(),
         &format!("placeholder: \"{}\";", escape(&strings.filter)),
     );
-    ctx.ui_set_text(HINT_PATH, &strings.hint);
+    ctx.ui_set_text(hint_path(), &strings.hint);
     ctx.ui_set_text(
-        &format!("{COLHEADER_PATH}.c_champion"),
+        &format!("{}.c_champion", colheader_path()),
         &strings.col_champion,
     );
-    ctx.ui_set_text(&format!("{COLHEADER_PATH}.c_role"), &strings.col_role);
+    ctx.ui_set_text(&format!("{}.c_role", colheader_path()), &strings.col_role);
     // The tab and the footer toggle cells carry `text` as a direct property, not
     // a nested block — see `#builds` in `strategy.ui` — so they take the plain
     // form. The cells are labelled once here rather than on every repaint: in a
@@ -305,17 +305,14 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
     // is lit changes with the setting.
     for (path, text) in [
         (BUILDS_TAB, &strings.tab),
-        (UNIQUE_ON_PATH, &strings.unique_on),
-        (UNIQUE_OFF_PATH, &strings.unique_off),
-        (SCOPE_ALL_PATH, &strings.scope_all),
-        (SCOPE_OWN_PATH, &strings.scope_own),
+        (unique_on_path(), &strings.unique_on),
+        (unique_off_path(), &strings.unique_off),
+        (scope_all_path(), &strings.scope_all),
+        (scope_own_path(), &strings.scope_own),
     ] {
         ctx.ui_set_properties(path, &format!("text: \"{}\";", escape(text)));
     }
 }
-
-/// The toolbar hint, the one label in the editor long enough to matter.
-const HINT_PATH: &str = "main.contents.build_editor.popup.toolbar.hint";
 
 const AI_SLOT_LABEL_FALLBACK: &str = "Let Player Decide";
 
@@ -323,13 +320,19 @@ const AI_SLOT_LABEL_FALLBACK: &str = "Let Player Decide";
 /// the editor but never written.
 const NO_CHAMPION_LABEL_FALLBACK: &str = "(champion)";
 
-/// Root every runtime UI path hangs off.
+/// The strategy screen's container, and the editor's host there.
 ///
-/// `main` is the name of `strategy.ui`'s root node (`main:strategy_ui`), and
-/// `contents` its first child. The bare `contents.…` prefix that appears in the
-/// executable's string table is what game code *builds* paths with, one level
-/// below the root the query API expects — confirmed by the path probe, which
-/// reports `contents.*` absent and `main.contents.*` present.
+/// **Not a universal root.** `main` is the name of `strategy.ui`'s root node
+/// (`main:strategy_ui`) and `contents` is its first child, so this whole path is
+/// authored inside that one layout and exists only while that screen is loaded —
+/// `main.ui` declares no `contents` at all. Reasoning from it to
+/// `main.contents.<other screen>` is how both the Item Stats tab and the
+/// composition test host were first written wrong; see [`resolve_comp_tactics`].
+///
+/// The bare `contents.…` prefix that appears in the executable's string table is
+/// what game code *builds* paths with, one level below the root the query API
+/// expects — confirmed by the path probe, which reports `contents.*` absent and
+/// `main.contents.*` present.
 const UI_ROOT: &str = "main.contents";
 
 /// The Builds tab, added by the `strategy.ui` override beside Team. It exists
@@ -372,6 +375,54 @@ const CONTENT_PANELS: [&str; 4] = [
     "main.contents.strategy.sub3",
 ];
 
+/// The composition test's "Tactics & Item Build Setup" panel, relative to the
+/// training screen's root — the editor's second host, and one that shares none
+/// of the strategy screen's paths.
+const COMP_TACTICS_REL: &str = "comp_test_popup.tactics";
+
+/// The vanilla block the editor replaces there, relative to the same root.
+///
+/// Despite the "Personal Tactics" heading above it (`tactics_builds`, while the
+/// *team* tactics above are `tactics_strategy` — the two read backwards), this
+/// is a build editor: ten rows of `blue0..blue4`/`red0..red4`, each three item
+/// dropdowns. It sets a build for that one test, where this module's editor
+/// writes the persistent per-champion builds in `item-builds.json`. Leaving both
+/// up would be two controls for the same slot disagreeing, so it is hidden.
+///
+/// Doubles as the marker [`find_comp_tactics`] walks for: no other screen has a
+/// `comp_test_popup.tactics.builds` under it.
+const COMP_BUILDS_REL: &str = "comp_test_popup.tactics.builds";
+
+/// The root `training.ui` says the composition test hangs off.
+///
+/// Its first line is `training:training_ui`, and `#comp_test_popup` is a direct
+/// child of that root, so this is what the documented rule gives — see
+/// [`resolve_comp_tactics`] for why it is a candidate rather than the answer.
+const COMP_ROOT: &str = "training";
+
+/// Frames between failed sweeps for the composition test panel.
+///
+/// Only failed ones: a hit is cached in [`EditorState::comp_tactics`] and
+/// re-checked with a single `ui_exists`. The throttle exists because an
+/// unthrottled breadth-first `ui_child_names` sweep is a documented way to make
+/// this mod lag, and unlike the statistics tab there is no cheap "am I on the
+/// right screen?" test to gate it with.
+const COMP_PROBE_EVERY: u32 = 30;
+
+/// Depth and node budget for that sweep, mirroring `item_stats_ui::find_screen`.
+/// A depth limit alone does not bound the walk — one wide level can be hundreds
+/// of nodes, and this runs on the UI thread.
+const COMP_PROBE_DEPTH: u32 = 4;
+const COMP_PROBE_NODES: u32 = 600;
+
+/// The editor popup's authored origin, restored when it goes back to the
+/// strategy screen after the composition test has moved it.
+const EDITOR_RECT_STRATEGY: &str = "x: 47px; y: 182px;";
+
+/// Air left between the editor and the dialog furniture above and below it,
+/// matching the 10px the vanilla block leaves under its own header.
+const COMP_SLOT_GAP: f32 = 10.0;
+
 /// The Team tab's fourth column, left showing while the Builds tab is up so its
 /// Matchup card stays on screen — the editor panel is narrowed to 1364px to
 /// leave exactly this column uncovered.
@@ -402,10 +453,14 @@ const TAB_IDLE_TEXT: &str = "#a3a9b6ff";
 const TAB_HOVER_LINE: &str = "#a3a9b6ff";
 const TAB_HOVER_TEXT: &str = "#e0e2e7ff";
 
-/// Parent for the spawned window, and its layout source.
-const EDITOR_PARENT: &str = UI_ROOT;
-const EDITOR_PATH: &str = "main.contents.build_editor";
+/// The editor's layout source, and the node name its root declares.
+///
+/// There is no `EDITOR_PARENT` constant any more: the editor has two hosts and
+/// they live in different scenes. `#contents` is authored inside `strategy.ui`,
+/// so `main.contents` does not exist at all while the composition test is up —
+/// see [`EditorPaths`].
 const EDITOR_SOURCE: &str = include_str!("../ui/layout/build_editor.ui");
+const EDITOR_NODE: &str = "build_editor";
 
 /// Sheet the item icons come from. The mod overrides this asset with its own
 /// 640x640 sheet (see `mod.override_info`), so frame names are the mod's.
@@ -414,7 +469,101 @@ pub(crate) const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_i
 // Row geometry, inside the 1314px band `#rows` gives its children. The x offsets
 // match `build_editor.ui`'s column headers. The band is the panel minus the
 // right-hand column the vanilla Matchup card is left sitting in.
-const ROW_WIDTH: u32 = 1306;
+/// The panel size `build_editor.ui` authors, and what the strategy screen uses.
+///
+/// The composition test cannot use it: its dialog is 1280 wide, so a 1364 panel
+/// hangs 42px off each side. Everything below is therefore expressed as an inset
+/// from the panel's edges rather than an absolute x, and [`set_panel_size`]
+/// re-lays the chrome whenever the host changes.
+const PANEL_W: u32 = 1364;
+const PANEL_H: u32 = 645;
+
+/// Insets from the panel's right edge, taken from the authored 1364 layout:
+/// rows 1306, the delete button at 1250, the item band ending at 1234, and the
+/// two scrolling strips 1334. Keeping them as insets is what makes the panel
+/// resizable without re-authoring the layout.
+const ROW_INSET: u32 = PANEL_W - 1306;
+const DELETE_INSET: u32 = PANEL_W - 1250;
+const COLUMNS_INSET: u32 = PANEL_W - 1234;
+const STRIP_INSET: u32 = PANEL_W - 1334;
+const ROWS_INSET: u32 = PANEL_W - 1314;
+
+/// Panel height not available to the row list: the toolbar and column header
+/// above it (92), the bottom-anchored footer (60), and the 7px of air the
+/// authored 645/486 pair leaves between them.
+const CHROME_H: u32 = 92 + 60 + 7;
+
+/// The size the editor is currently laid out at. Not a constant because the two
+/// hosts are different sizes; see [`PANEL_W`].
+static PANEL_SIZE: Mutex<(u32, u32)> = Mutex::new((PANEL_W, PANEL_H));
+
+fn panel_size() -> (u32, u32) {
+    PANEL_SIZE
+        .lock()
+        .map(|size| *size)
+        .unwrap_or((PANEL_W, PANEL_H))
+}
+
+fn row_width() -> u32 {
+    panel_size().0 - ROW_INSET
+}
+
+fn delete_x() -> u32 {
+    panel_size().0 - DELETE_INSET
+}
+
+fn columns_right() -> u32 {
+    panel_size().0 - COLUMNS_INSET
+}
+
+/// Records the size the editor should be laid out at, reporting whether it
+/// moved.
+///
+/// Separate from [`apply_panel_size`] because the two have to happen either side
+/// of a spawn: rows carry their width in the `.ui` source they are built from,
+/// so the size has to be settled *before* `ensure_editor` runs, while the chrome
+/// can only be written *after* it. A caller that gets `true` back has rows built
+/// for the old width and must rebuild them.
+fn want_panel_size(w: u32, h: u32) -> bool {
+    match PANEL_SIZE.lock() {
+        Ok(mut size) => {
+            let changed = *size != (w, h);
+            *size = (w, h);
+            changed
+        }
+        Err(_) => false,
+    }
+}
+
+/// Writes the current size onto the panel's five sized nodes.
+///
+/// Only five carry a size at all: the toolbar and footer span the panel, the
+/// column header and row list are inset 15px each side, and everything else is
+/// anchored — the footer to the bottom, Save and the toolbar hint to the right —
+/// so they follow on their own.
+fn apply_panel_size(ctx: &mut StableClient<'_>) {
+    let (w, h) = panel_size();
+    let strip = w.saturating_sub(STRIP_INSET);
+    let list_h = h.saturating_sub(CHROME_H);
+    let paths = paths();
+    ctx.ui_set_properties(paths.popup, &format!("width: {w}px; height: {h}px;"));
+    ctx.ui_set_properties(paths.toolbar, &format!("width: {w}px;"));
+    ctx.ui_set_properties(paths.footer, &format!("width: {w}px;"));
+    ctx.ui_set_properties(paths.colheader, &format!("width: {strip}px;"));
+    ctx.ui_set_properties(
+        paths.rowscroll,
+        &format!("width: {strip}px; height: {list_h}px;"),
+    );
+    ctx.ui_set_properties(
+        paths.rows,
+        &format!("width: {}px;", w.saturating_sub(ROWS_INSET)),
+    );
+    // The item columns are derived from the panel width, so the headers move
+    // with it. Cheap and idempotent, and the only other caller is `ensure_editor`
+    // — which does not run when the panel merely changes size.
+    sync_column_headers(ctx);
+}
+
 /// Row height and gap are the vanilla Personal panel's own (50px rows, 10px
 /// spacing), so the tab reads as one of the game's own rather than a graft.
 const ROW_HEIGHT: u32 = 50;
@@ -430,13 +579,11 @@ const CHAMP_W: u32 = 224;
 /// holds one of six short words, and every px here comes off the item columns.
 const ROLE_X: u32 = 240;
 const ROLE_W: u32 = 100;
-const DELETE_X: u32 = 1250;
 
 /// The band the item columns share, between the champion button and the delete
 /// button, and the gap left between two columns for a swap button (34px wide,
 /// plus a few px of air on each side).
 const COLUMNS_LEFT: u32 = 348;
-const COLUMNS_RIGHT: u32 = 1234;
 const COLUMN_GAP: u32 = 44;
 
 /// Width of one item column: the shared band split evenly, gaps removed. Three
@@ -444,7 +591,7 @@ const COLUMN_GAP: u32 = 44;
 /// trimmed to hand the difference here, since item names are what truncate.
 fn combo_w() -> u32 {
     let slots = picker_slots() as u32;
-    (COLUMNS_RIGHT - COLUMNS_LEFT - (slots - 1) * COLUMN_GAP) / slots
+    (columns_right() - COLUMNS_LEFT - (slots - 1) * COLUMN_GAP) / slots
 }
 
 /// Left edge of an item column. The band starts after the Role column, so the
@@ -556,6 +703,13 @@ struct EditorState {
     /// Whether that popup was up as of the last frame, so the scroll views are
     /// only rewritten when it opens or closes.
     info_showing: bool,
+    /// Where the composition test's tactics panel was found, and how many frames
+    /// have passed since it was last looked for. Cleared as soon as the cached
+    /// path stops resolving, so leaving the screen re-resolves on the next visit
+    /// rather than writing to a node that no longer exists. See
+    /// [`resolve_comp_tactics`].
+    comp_tactics: Option<String>,
+    comp_probe_tick: u32,
 }
 
 static STATE: Mutex<Option<EditorState>> = Mutex::new(None);
@@ -698,70 +852,258 @@ pub(crate) fn is_mod_final_item(key: &str) -> bool {
 
 // -- paths --------------------------------------------------------------
 
-/// Full-screen transparent button shown only while a floating list is open, so
-/// that a click anywhere other than the list dismisses it.
+/// Every path inside the editor, resolved against one host.
 ///
-/// Declared between `#popup` and the two lists, which at equal `z` puts it above
-/// the window and below them — a click on a list row reaches the row, a click
-/// anywhere else reaches this. Without it a list could only be dismissed by
-/// choosing something or by hitting the backdrop outside the window, which left
-/// clicks on the window itself doing nothing at all.
-const LISTCATCH_PATH: &str = "main.contents.build_editor.listcatch";
-const ITEMLIST_PATH: &str = "main.contents.build_editor.itemlist";
-const CHAMPLIST_PATH: &str = "main.contents.build_editor.champlist";
-const ROLELIST_PATH: &str = "main.contents.build_editor.rolelist";
-/// In the footer beside Save. These paths are matched by exact string, so a
-/// button moved between the two bars in `build_editor.ui` must be moved here
-/// too — a stale path registers nothing and the control goes quietly dead.
-/// The two footer settings are segmented controls, not buttons whose label
-/// changes: each is a bordered box holding one `color_selectable` per choice,
-/// built exactly like the Team/Builds `#mode_toggle` at the top of the screen.
-/// Both options stay on screen, so the alternative is readable without clicking
-/// to find out what it is — which a single relabelling button cannot do.
+/// # Why these are not constants any more
 ///
-/// The container paths themselves are never addressed; only the cells are.
-const UNIQUE_ON_PATH: &str = "main.contents.build_editor.popup.footer.unique.on";
-const UNIQUE_OFF_PATH: &str = "main.contents.build_editor.popup.footer.unique.off";
-/// Beside the unique toggle, in the same footer bar: both are match-wide rules
-/// about the builds rather than edits to one, so they read as a pair.
-const SCOPE_ALL_PATH: &str = "main.contents.build_editor.popup.footer.scope.all";
-const SCOPE_OWN_PATH: &str = "main.contents.build_editor.popup.footer.scope.own";
-/// In the footer rather than the toolbar: it is the panel's "done" button, and
-/// bottom-right is where one is looked for.
-const SAVE_PATH: &str = "main.contents.build_editor.popup.footer.save";
-/// The confirmation tick left of Save. Hidden until a save succeeds; it is the
-/// only thing that reports one now that the button stays on the tab.
-const SAVED_PATH: &str = "main.contents.build_editor.popup.footer.saved";
-/// In the toolbar, above the column headers: adding a row acts on the list
-/// below it.
-const ADD_PATH: &str = "main.contents.build_editor.popup.toolbar.add";
-/// The filter box, beside Add. A `text_edit` styled after the ban/pick screen's
-/// own champion search — same `main#text_edit` style, same magnifier child, same
-/// `placeholder`/`max_length` keys — so it reads as one of the game's controls.
+/// The editor is spawned under whichever node hosts it, and it has two hosts in
+/// two different scenes, so nothing below its root has a fixed absolute path.
 ///
-/// No handler is registered for it. `TextEditComplete` fires on commit (Enter or
-/// focus loss), not per keystroke, so a handler alone would give a filter that
-/// only updates when you leave the box; [`sync_filter`] polls its text every
-/// frame instead. Its X *is* a registered control, since a click is exactly the
-/// event a button reports.
-const SEARCH_PATH: &str = "main.contents.build_editor.popup.toolbar.search";
-const SEARCH_CLEAR_PATH: &str = "main.contents.build_editor.popup.toolbar.searchclear";
-/// The editor panel.
-const POPUP_PATH: &str = "main.contents.build_editor.popup";
-const ROWS_PATH: &str = "main.contents.build_editor.popup.rowscroll.rows";
+/// # Why they hand back `&'static str`
+///
+/// Because that is what keeps the change from reaching the ~95 places that use
+/// them: a call site gains `()` and nothing else — no borrow, no temporary to
+/// keep alive, and `==` on two of them still compares text, which several click
+/// handlers depend on. Returning `String` would have touched every one of those
+/// lines, on a refactor with no way to compile-check the result here.
+///
+/// The strings are leaked, which is sound because the set is bounded by the
+/// number of distinct hosts — two — and each is built at most once. That is a
+/// fixed ~46 small strings for the life of the process; it does not grow with
+/// time, with screen changes, or with use.
+struct EditorPaths {
+    /// The node the window is spawned under. Never addressed except to spawn.
+    parent: &'static str,
+    editor: &'static str,
+    /// The editor panel.
+    popup: &'static str,
+    /// The two full-width bars. Only ever addressed to resize them.
+    toolbar: &'static str,
+    footer: &'static str,
+    rows: &'static str,
+    /// The three scroll views in the editor: the row list and the two floating
+    /// lists. See [`focus_scroll`] — only one may take the wheel at a time.
+    rowscroll: &'static str,
+    /// The column-header strip, whose labels have to track the same geometry the
+    /// rows are laid out with.
+    colheader: &'static str,
+    /// The toolbar hint, the one label in the editor long enough to matter.
+    hint: &'static str,
+    /// In the toolbar, above the column headers: adding a row acts on the list
+    /// below it.
+    add: &'static str,
+    /// The filter box, beside Add. A `text_edit` styled after the ban/pick
+    /// screen's own champion search — same `main#text_edit` style, same
+    /// magnifier child, same `placeholder`/`max_length` keys — so it reads as one
+    /// of the game's controls.
+    ///
+    /// No handler is registered for it. `TextEditComplete` fires on commit (Enter
+    /// or focus loss), not per keystroke, so a handler alone would give a filter
+    /// that only updates when you leave the box; [`sync_filter`] polls its text
+    /// every frame instead. Its X *is* a registered control, since a click is
+    /// exactly the event a button reports.
+    search: &'static str,
+    search_clear: &'static str,
+    /// In the footer rather than the toolbar: it is the panel's "done" button,
+    /// and bottom-right is where one is looked for.
+    save: &'static str,
+    /// The confirmation tick left of Save. Hidden until a save succeeds; it is
+    /// the only thing that reports one now that the button stays on the tab.
+    saved: &'static str,
+    /// In the footer beside Save. These paths are matched by exact string, so a
+    /// button moved between the two bars in `build_editor.ui` must be moved here
+    /// too — a stale path registers nothing and the control goes quietly dead.
+    /// The two footer settings are segmented controls, not buttons whose label
+    /// changes: each is a bordered box holding one `color_selectable` per choice,
+    /// built exactly like the Team/Builds `#mode_toggle` at the top of the screen.
+    /// Both options stay on screen, so the alternative is readable without
+    /// clicking to find out what it is — which a single relabelling button cannot
+    /// do.
+    ///
+    /// The container paths themselves are never addressed; only the cells are.
+    unique_on: &'static str,
+    unique_off: &'static str,
+    /// Beside the unique toggle, in the same footer bar: both are match-wide
+    /// rules about the builds rather than edits to one, so they read as a pair.
+    scope_all: &'static str,
+    scope_own: &'static str,
+    /// Full-screen transparent button shown only while a floating list is open,
+    /// so that a click anywhere other than the list dismisses it.
+    ///
+    /// Declared between `#popup` and the two lists, which at equal `z` puts it
+    /// above the window and below them — a click on a list row reaches the row, a
+    /// click anywhere else reaches this. Without it a list could only be
+    /// dismissed by choosing something or by hitting the backdrop outside the
+    /// window, which left clicks on the window itself doing nothing at all.
+    listcatch: &'static str,
+    itemlist: &'static str,
+    champlist: &'static str,
+    rolelist: &'static str,
+    itemlist_scroll: &'static str,
+    champlist_scroll: &'static str,
+    rolelist_scroll: &'static str,
+}
 
-/// The three scroll views in the editor: the row list and the two floating
-/// lists. See [`focus_scroll`] — only one of them may take the wheel at a time.
-const ROWSCROLL_PATH: &str = "main.contents.build_editor.popup.rowscroll";
-const ITEMLIST_SCROLL: &str = "main.contents.build_editor.itemlist.list";
-const CHAMPLIST_SCROLL: &str = "main.contents.build_editor.champlist.list";
-const ROLELIST_SCROLL: &str = "main.contents.build_editor.rolelist.list";
+/// Leaks one path. See [`EditorPaths`] for why this is bounded.
+fn leak(text: String) -> &'static str {
+    Box::leak(text.into_boxed_str())
+}
+
+impl EditorPaths {
+    fn build(parent: &str) -> &'static Self {
+        let editor = leak(format!("{parent}.{EDITOR_NODE}"));
+        let popup = leak(format!("{editor}.popup"));
+        let toolbar = leak(format!("{popup}.toolbar"));
+        let footer = leak(format!("{popup}.footer"));
+        Box::leak(Box::new(Self {
+            parent: leak(parent.to_string()),
+            editor,
+            popup,
+            toolbar,
+            footer,
+            rows: leak(format!("{popup}.rowscroll.rows")),
+            rowscroll: leak(format!("{popup}.rowscroll")),
+            colheader: leak(format!("{popup}.colheader")),
+            hint: leak(format!("{toolbar}.hint")),
+            add: leak(format!("{toolbar}.add")),
+            search: leak(format!("{toolbar}.search")),
+            search_clear: leak(format!("{toolbar}.searchclear")),
+            save: leak(format!("{footer}.save")),
+            saved: leak(format!("{footer}.saved")),
+            unique_on: leak(format!("{footer}.unique.on")),
+            unique_off: leak(format!("{footer}.unique.off")),
+            scope_all: leak(format!("{footer}.scope.all")),
+            scope_own: leak(format!("{footer}.scope.own")),
+            listcatch: leak(format!("{editor}.listcatch")),
+            itemlist: leak(format!("{editor}.itemlist")),
+            champlist: leak(format!("{editor}.champlist")),
+            rolelist: leak(format!("{editor}.rolelist")),
+            itemlist_scroll: leak(format!("{editor}.itemlist.list")),
+            champlist_scroll: leak(format!("{editor}.champlist.list")),
+            rolelist_scroll: leak(format!("{editor}.rolelist.list")),
+        }))
+    }
+}
+
+/// Path sets built so far, one per host. Looked up by parent so a host revisited
+/// later reuses its set rather than leaking a second copy.
+static HOSTS: Mutex<Vec<&'static EditorPaths>> = Mutex::new(Vec::new());
+
+/// The host the editor is currently addressed under.
+static ACTIVE_HOST: Mutex<Option<&'static EditorPaths>> = Mutex::new(None);
+
+fn host_paths(parent: &str) -> &'static EditorPaths {
+    // A poisoned lock falls through to an unshared set rather than disabling the
+    // editor: the paths are values, so a duplicate is merely wasteful.
+    let Ok(mut hosts) = HOSTS.lock() else {
+        return EditorPaths::build(parent);
+    };
+    if let Some(found) = hosts.iter().find(|paths| paths.parent == parent) {
+        return *found;
+    }
+    let built = EditorPaths::build(parent);
+    hosts.push(built);
+    built
+}
+
+/// Points every editor path at `parent`.
+///
+/// Callers do not have to react to a change of host. The previous host's subtree
+/// is in a scene that is no longer loaded, and [`ensure_editor`] notices that on
+/// its own: its `ui_exists` stops resolving and it respawns into the new host.
+fn set_host(parent: &str) {
+    let built = host_paths(parent);
+    if let Ok(mut active) = ACTIVE_HOST.lock() {
+        *active = Some(built);
+    }
+}
+
+/// The active host's paths.
+///
+/// Defaults to the strategy screen, which is where the editor lived when its
+/// paths were constants — so anything reading a path before a host is chosen
+/// behaves exactly as it used to.
+fn paths() -> &'static EditorPaths {
+    if let Ok(active) = ACTIVE_HOST.lock() {
+        if let Some(found) = *active {
+            return found;
+        }
+    }
+    host_paths(UI_ROOT)
+}
+
+fn editor_path() -> &'static str {
+    paths().editor
+}
+fn popup_path() -> &'static str {
+    paths().popup
+}
+fn rows_path() -> &'static str {
+    paths().rows
+}
+fn rowscroll_path() -> &'static str {
+    paths().rowscroll
+}
+fn colheader_path() -> &'static str {
+    paths().colheader
+}
+fn hint_path() -> &'static str {
+    paths().hint
+}
+fn add_path() -> &'static str {
+    paths().add
+}
+fn search_path() -> &'static str {
+    paths().search
+}
+fn search_clear_path() -> &'static str {
+    paths().search_clear
+}
+fn save_path() -> &'static str {
+    paths().save
+}
+fn saved_path() -> &'static str {
+    paths().saved
+}
+fn unique_on_path() -> &'static str {
+    paths().unique_on
+}
+fn unique_off_path() -> &'static str {
+    paths().unique_off
+}
+fn scope_all_path() -> &'static str {
+    paths().scope_all
+}
+fn scope_own_path() -> &'static str {
+    paths().scope_own
+}
+fn listcatch_path() -> &'static str {
+    paths().listcatch
+}
+fn itemlist_path() -> &'static str {
+    paths().itemlist
+}
+fn champlist_path() -> &'static str {
+    paths().champlist
+}
+fn rolelist_path() -> &'static str {
+    paths().rolelist
+}
+fn itemlist_scroll() -> &'static str {
+    paths().itemlist_scroll
+}
+fn champlist_scroll() -> &'static str {
+    paths().champlist_scroll
+}
+fn rolelist_scroll() -> &'static str {
+    paths().rolelist_scroll
+}
 /// Resting `speed` of all three, restored to whichever one is live. Must match
 /// the value the three views are authored with in `build_editor.ui`.
 const SCROLL_SPEED: i32 = 100;
 
 fn editor_row_path(row: usize) -> String {
-    format!("{ROWS_PATH}.row{row}")
+    format!("{}.row{row}", rows_path())
 }
 
 fn champ_path(row: usize) -> String {
@@ -789,7 +1131,7 @@ fn delete_path(row: usize) -> String {
 }
 
 fn list_contents_path() -> String {
-    format!("{EDITOR_PATH}.itemlist.list.contents")
+    format!("{}.itemlist.list.contents", editor_path())
 }
 
 fn entry_path(index: usize) -> String {
@@ -797,7 +1139,7 @@ fn entry_path(index: usize) -> String {
 }
 
 fn champ_contents_path() -> String {
-    format!("{EDITOR_PATH}.champlist.list.contents")
+    format!("{}.champlist.list.contents", editor_path())
 }
 
 fn champ_entry_path(index: usize) -> String {
@@ -805,7 +1147,7 @@ fn champ_entry_path(index: usize) -> String {
 }
 
 fn role_contents_path() -> String {
-    format!("{EDITOR_PATH}.rolelist.list.contents")
+    format!("{}.rolelist.list.contents", editor_path())
 }
 
 fn role_entry_path(index: usize) -> String {
@@ -1415,9 +1757,9 @@ fn toggle_style(lit: bool) -> String {
 /// Paints which half of the unique-items toggle is the live setting.
 fn refresh_unique(ctx: &mut StableClient<'_>) {
     if build_config::unique_items_enabled() {
-        paint_toggle(ctx, UNIQUE_ON_PATH, UNIQUE_OFF_PATH);
+        paint_toggle(ctx, unique_on_path(), unique_off_path());
     } else {
-        paint_toggle(ctx, UNIQUE_OFF_PATH, UNIQUE_ON_PATH);
+        paint_toggle(ctx, unique_off_path(), unique_on_path());
     }
 }
 
@@ -1432,15 +1774,15 @@ fn refresh_unique(ctx: &mut StableClient<'_>) {
 /// rewrites anyway. Writing `false` when it is already hidden is what makes the
 /// callers able to say "edited" without first asking whether it was showing.
 fn clear_saved(ctx: &mut StableClient<'_>) {
-    ctx.ui_set_visible(SAVED_PATH, false);
+    ctx.ui_set_visible(saved_path(), false);
 }
 
 /// Paints which half of the build-scope toggle is the live setting.
 fn refresh_scope(ctx: &mut StableClient<'_>) {
     if build_config::own_team_only_enabled() {
-        paint_toggle(ctx, SCOPE_OWN_PATH, SCOPE_ALL_PATH);
+        paint_toggle(ctx, scope_own_path(), scope_all_path());
     } else {
-        paint_toggle(ctx, SCOPE_ALL_PATH, SCOPE_OWN_PATH);
+        paint_toggle(ctx, scope_all_path(), scope_own_path());
     }
 }
 
@@ -1453,9 +1795,13 @@ fn row_source(row: usize) -> String {
     let strings = strings();
     let no_champion = &strings.no_champion;
     let ai_slot = &strings.ai_slot;
+    // Both follow the panel width, so a row built for one host is the wrong
+    // shape for the other -- see `set_panel_size`, which rebuilds them.
+    let row_w = row_width();
+    let delete_x = delete_x();
     let mut source = format!(
         "row{row}:color {{\n\
-         width: {ROW_WIDTH}px;\n\
+         width: {row_w}px;\n\
          height: {ROW_HEIGHT}px;\n\
          color: #161721ff;\n\
          rounding: Uniform {{ rounding: 8; }}\n\
@@ -1623,7 +1969,7 @@ fn row_source(row: usize) -> String {
 
     source.push_str(&format!(
         "#delete:color_icon_button {{\n\
-         x: {DELETE_X}px;\n\
+         x: {delete_x}px;\n\
          y: {MINI_Y}px;\n\
          width: 22px;\n\
          height: 22px;\n\
@@ -1791,7 +2137,7 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
 
     let mut spawned = Vec::new();
     for row in visible_rows() {
-        if !ctx.ui_spawn_source(ROWS_PATH, &row_source(row)) {
+        if !ctx.ui_spawn_source(rows_path(), &row_source(row)) {
             break;
         }
         spawned.push(row);
@@ -1814,16 +2160,12 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     // contents are zero tall shows nothing however many children it has. The
     // height is knowable exactly, so it is stated.
     let height = count as i32 * (ROW_HEIGHT as i32 + ROW_SPACING);
-    ctx.ui_set_properties(ROWS_PATH, &format!("height: {height}px;"));
+    ctx.ui_set_properties(rows_path(), &format!("height: {height}px;"));
 
     for row in spawned {
         refresh_row(ctx, entries, row);
     }
 }
-
-/// Path of the column-header strip, whose labels have to track the same
-/// geometry the rows are laid out with.
-const COLHEADER_PATH: &str = "main.contents.build_editor.popup.colheader";
 
 /// `.ui` source for one column header, matching the `#c_item*` labels
 /// `build_editor.ui` authors for the first three.
@@ -1857,7 +2199,7 @@ fn header_source(slot: usize) -> String {
 /// fourth header to remove.
 fn sync_column_headers(ctx: &mut StableClient<'_>) {
     for slot in 0..picker_slots() {
-        let path = format!("{COLHEADER_PATH}.c_item{}", slot + 1);
+        let path = format!("{}.c_item{}", colheader_path(), slot + 1);
         if ctx.ui_exists(&path) {
             // Text as well as geometry: the first three are authored in
             // `build_editor.ui` with their English labels, so this is the only
@@ -1872,7 +2214,7 @@ fn sync_column_headers(ctx: &mut StableClient<'_>) {
                 ),
             );
         } else {
-            ctx.ui_spawn_source(COLHEADER_PATH, &header_source(slot));
+            ctx.ui_spawn_source(colheader_path(), &header_source(slot));
         }
     }
 }
@@ -1957,7 +2299,7 @@ fn filter_active() -> bool {
 /// once a frame is cheap, and the rebuild is gated on the text actually
 /// differing.
 fn sync_filter(ctx: &mut StableClient<'_>) {
-    let Some(text) = ctx.ui_text_edit_text(SEARCH_PATH) else {
+    let Some(text) = ctx.ui_text_edit_text(search_path()) else {
         return;
     };
     let changed = with_state(|state| {
@@ -1970,7 +2312,7 @@ fn sync_filter(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    ctx.ui_set_visible(SEARCH_CLEAR_PATH, !text.trim().is_empty());
+    ctx.ui_set_visible(search_clear_path(), !text.trim().is_empty());
     // A floating list is positioned against the row that opened it, and that row
     // is about to be removed and respawned.
     close_list(ctx);
@@ -1978,20 +2320,237 @@ fn sync_filter(ctx: &mut StableClient<'_>) {
     rebuild_rows(ctx, &entries);
 }
 
+/// The composition test's tactics panel, or `None` when it is not up.
+///
+/// # Why this searches instead of naming a path
+///
+/// The first version named `main.contents.training.comp_test_popup.tactics`,
+/// reasoning from `main.contents.strategy`. That was wrong twice over. The
+/// training layout's root node is `training` (`training:training_ui`), not
+/// `main`; and `contents` is a node authored *inside* `strategy.ui`, so it does
+/// not exist on any screen but that one. `ui_visible` returned `None` for the
+/// whole path, the vanilla rows were never hidden and the editor never opened —
+/// the same silent failure `item_stats_ui::resolve_screen` documents for the
+/// statistics tab, which cost a build there.
+///
+/// So the documented path is a *candidate*, not an answer: [`COMP_ROOT`] is
+/// tried first because it costs one `ui_exists`, and a throttled breadth-first
+/// walk for the `comp_test_popup.tactics.builds` shape backs it up. The shape is
+/// the marker rather than the screen's name for the reason `find_screen` gives:
+/// the name is game code's business, the shape is what this module needs.
+fn resolve_comp_tactics(ctx: &StableClient<'_>) -> Option<String> {
+    // Cached from an earlier frame, and still resolving. This is the usual path
+    // and it costs one call.
+    if let Some(found) = with_state(|state| state.comp_tactics.clone()).flatten() {
+        if ctx.ui_exists(&found) {
+            return Some(found);
+        }
+        let _ = with_state(|state| state.comp_tactics = None);
+    }
+
+    let candidate = format!("{COMP_ROOT}.{COMP_TACTICS_REL}");
+    if ctx.ui_exists(&candidate) {
+        let _ = with_state(|state| state.comp_tactics = Some(candidate.clone()));
+        return Some(candidate);
+    }
+
+    // Everything above is one `ui_exists` and runs anywhere. The sweep is not:
+    // without this gate a screen that simply has no composition test — which is
+    // every screen but one — would pay for a failed 600-node walk twice a second,
+    // forever.
+    if !on_training_tab(ctx) {
+        return None;
+    }
+
+    let due = with_state(|state| {
+        state.comp_probe_tick = state.comp_probe_tick.wrapping_add(1);
+        state.comp_probe_tick % COMP_PROBE_EVERY == 0
+    })
+    .unwrap_or(false);
+    if !due {
+        return None;
+    }
+
+    let found = find_comp_tactics(ctx)?;
+    let _ = with_state(|state| state.comp_tactics = Some(found.clone()));
+    Some(found)
+}
+
+/// Whether the client says the Training tab is the one up.
+///
+/// Gates the sweep in [`resolve_comp_tactics`] the way `item_stats_ui`'s
+/// `on_statistics_tab` gates its own. `None` means the client could not answer,
+/// and the sweep is allowed rather than blocked: the throttle still bounds it,
+/// and refusing on a missing answer would make the fallback dead code on any
+/// build where that call stops working.
+fn on_training_tab(ctx: &StableClient<'_>) -> bool {
+    let Some(tab) = ctx.client_main_tab() else {
+        return true;
+    };
+    tab.to_ascii_lowercase().contains("train")
+}
+
+/// Breadth-first from the UI root for the node holding the composition test's
+/// build block. Bounded by both depth and node count — one wide level can be
+/// hundreds of nodes, and this runs on the UI thread.
+fn find_comp_tactics(ctx: &StableClient<'_>) -> Option<String> {
+    let mut level: Vec<String> = ctx.ui_child_names("");
+    if level.is_empty() {
+        // A root that enumerates nothing would make this inert forever, so the
+        // scene roots seen in the layouts are tried as a seed rather than
+        // trusting one call.
+        level = [COMP_ROOT, "main"].iter().map(|s| s.to_string()).collect();
+    }
+
+    let mut budget = COMP_PROBE_NODES;
+    for _ in 0..COMP_PROBE_DEPTH {
+        if level.is_empty() {
+            break;
+        }
+        let mut next = Vec::new();
+        for path in level {
+            if ctx.ui_exists(&format!("{path}.{COMP_BUILDS_REL}")) {
+                return Some(format!("{path}.{COMP_TACTICS_REL}"));
+            }
+            budget = budget.saturating_sub(1);
+            if budget == 0 {
+                return None;
+            }
+            for name in ctx.ui_child_names(&path) {
+                next.push(format!("{path}.{name}"));
+            }
+        }
+        level = next;
+    }
+    None
+}
+
+/// Puts the editor in the composition test's build section, in place of the
+/// vanilla rows.
+///
+/// There is no tab to enter here and none to leave by, so the editor is simply
+/// what that section *is* while the panel is up — opened on arrival rather than
+/// on a click, and torn down with the screen by the same teardown the strategy
+/// screen uses.
+fn comp_test_host(ctx: &mut StableClient<'_>, tactics: &str) {
+    let builds = format!("{tactics}.builds");
+
+    // Measured against the *header* and the Back button, not against the block
+    // the editor replaces. `builds` is hidden two lines below, so from the second
+    // frame on its rect is unreliable, and a panel that can only be placed on the
+    // frame it first appeared is a panel that never recovers from a relayout.
+    // These two stay visible for as long as the dialog does.
+    //
+    // Nothing here can come from the layout file: the dialog is authored 680px
+    // tall and resized at runtime to fit this 1072px panel, so everything inside
+    // it moves, and the lane test lays out differently again. `ui_node_rect`
+    // reports in the same design space the layouts are authored in — see
+    // `place_list`, which positions the floating lists the same way.
+    let slot = comp_test_slot(ctx, tactics);
+
+    // Point every editor path at this screen before one is read. The strategy
+    // screen's host is a node inside `strategy.ui`, which is not loaded here, so
+    // until this runs `editor_path()` names something that cannot exist.
+    set_host(tactics);
+
+    // Re-asserted every frame rather than once on entry: game code rebuilds
+    // this block whenever the champion selection changes, and a one-shot hide
+    // does not survive that. `post_update` runs after game code, so this is the
+    // last word — the same reason the strategy screen re-asserts its writes.
+    ctx.ui_set_visible(&builds, false);
+
+    // Whether the panel is already up. It survives the dialog closing — same
+    // scene, same subtree — so this is true again the *next* time the dialog is
+    // opened, in whichever mode.
+    let already_up =
+        with_state(|state| state.showing).unwrap_or(false) && ctx.ui_exists(editor_path());
+
+    // Settled before any spawn, because rows carry the panel width in the source
+    // they are built from.
+    let resized = slot.map(|s| want_panel_size(s.2, s.3)).unwrap_or(false);
+
+    if !already_up {
+        // Read here, in `post_update`, for the reason given on the strategy
+        // screen's copy: `setting_get_json` returns None inside a click handler.
+        cached_entries(ctx);
+        cached_champions(ctx);
+        if !ensure_editor(ctx) {
+            return;
+        }
+    }
+
+    // Geometry is re-asserted every frame, like the hide above, and for a
+    // sharper reason: the 5v5 and lane tests are the same `tactics` panel laid
+    // out differently, and the editor outlives the dialog. Applying this only on
+    // the frame the editor was built meant each mode kept whichever geometry the
+    // *other* one had measured.
+    apply_panel_size(ctx);
+    if resized {
+        let entries = snapshot_entries();
+        rebuild_rows(ctx, &entries);
+    }
+
+    // Both rects are absolute and the popup's x/y are relative to the host, so
+    // the host's own origin comes off — see [`host_origin`]. On the strategy
+    // screen that subtraction is a no-op, which is why the first version of this
+    // looked right there and only there.
+    //
+    // Left where it is when the measurement did not come back — an editor in the
+    // wrong place still works, and the alternative is not showing one at all.
+    if let Some((x, y, _, _)) = slot {
+        let (origin_x, origin_y) = host_origin(ctx);
+        let (left, top) = (x as i32 - origin_x, y as i32 - origin_y);
+        ctx.ui_set_properties(popup_path(), &format!("x: {left}px; y: {top}px;"));
+    }
+
+    if !already_up {
+        let entries = snapshot_entries();
+        open_editor(ctx, &entries);
+    }
+}
+
+/// The rectangle the editor should occupy inside the composition test, in the
+/// absolute space `ui_node_rect` reports: `(x, y, w, h)`.
+///
+/// Spans from just under the "Personal Tactics" header down to just above the
+/// Back button, at the header's own x and width — which is the same 24px inset
+/// and 1232px span the vanilla block uses, taken from the live layout rather
+/// than copied out of `training.ui`.
+fn comp_test_slot(ctx: &StableClient<'_>, tactics: &str) -> Option<(f32, f32, u32, u32)> {
+    let header = ctx.ui_node_rect(&format!("{tactics}.build_header"))?;
+    let back = ctx.ui_node_rect(&format!("{tactics}.back"))?;
+    if header.2 <= 0.0 || header.3 <= 0.0 {
+        return None;
+    }
+
+    let top = header.1 + header.3 + COMP_SLOT_GAP;
+    let bottom = back.1 - COMP_SLOT_GAP;
+    if bottom <= top {
+        return None;
+    }
+    Some((header.0, top, header.2 as u32, (bottom - top) as u32))
+}
+
 /// Spawns the window, its rows and both dropdown lists, and registers every
 /// control. Deferred until the first click so a failure costs nothing until the
 /// player actually asks for the editor, and is retried on the next click.
+///
+/// Also the join between the two hosts: `modal_ready` is not enough on its own,
+/// because the flag survives a screen change while the subtree it describes does
+/// not. The `ui_exists` beside it is what notices that the editor's root now
+/// names a node in a scene that has been unloaded, and respawns into the current
+/// host instead.
 fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
-    if with_state(|state| state.modal_ready).unwrap_or(false) && ctx.ui_exists(EDITOR_PATH) {
+    if with_state(|state| state.modal_ready).unwrap_or(false) && ctx.ui_exists(editor_path()) {
         return true;
     }
 
     // Drop any half-built subtree from a previous attempt so this is idempotent.
-    ctx.ui_remove_node(EDITOR_PATH);
-    if !ctx.ui_spawn_source(EDITOR_PARENT, EDITOR_SOURCE) {
+    ctx.ui_remove_node(editor_path());
+    if !ctx.ui_spawn_source(paths().parent, EDITOR_SOURCE) {
         return false;
     }
-    if !ctx.ui_exists(EDITOR_PATH) {
+    if !ctx.ui_exists(editor_path()) {
         return false;
     }
     // Before anything reads a label. The subtree was just respawned from source,
@@ -2054,14 +2613,14 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     rebuild_rows(ctx, &entries);
 
     for path in [
-        SAVE_PATH,
-        ADD_PATH,
-        UNIQUE_ON_PATH,
-        UNIQUE_OFF_PATH,
-        SCOPE_ALL_PATH,
-        SCOPE_OWN_PATH,
-        LISTCATCH_PATH,
-        SEARCH_CLEAR_PATH,
+        save_path(),
+        add_path(),
+        unique_on_path(),
+        unique_off_path(),
+        scope_all_path(),
+        scope_own_path(),
+        listcatch_path(),
+        search_clear_path(),
     ] {
         register_once(ctx, path);
     }
@@ -2069,7 +2628,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     // Both lists start hidden but nothing in the source stops them taking the
     // wheel, so without this a scroll of the rows also scrolls two panels that
     // are not on screen — invisible until one is opened and found part-way down.
-    focus_scroll(ctx, ROWSCROLL_PATH);
+    focus_scroll(ctx, rowscroll_path());
 
     let _ = with_state(|state| state.modal_ready = true);
     true
@@ -2089,7 +2648,7 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
 
     // The panel is authored visible and only ever hidden with the editor around
     // it, so this is belt and braces rather than a mode reset.
-    ctx.ui_set_visible(POPUP_PATH, true);
+    ctx.ui_set_visible(popup_path(), true);
 
     for panel in CONTENT_PANELS {
         ctx.ui_set_visible(panel, false);
@@ -2109,7 +2668,7 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     for row in with_state(|state| state.spawned_rows.clone()).unwrap_or_default() {
         refresh_row(ctx, entries, row);
     }
-    ctx.ui_set_visible(EDITOR_PATH, true);
+    ctx.ui_set_visible(editor_path(), true);
     let _ = with_state(|state| state.showing = true);
 }
 
@@ -2121,7 +2680,7 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
 fn close_editor(ctx: &mut StableClient<'_>) {
     close_list(ctx);
     paint_tabs(ctx, false);
-    ctx.ui_set_visible(EDITOR_PATH, false);
+    ctx.ui_set_visible(editor_path(), false);
     // The one thing put back, because it is the one thing hidden that game code
     // may not restore: "Closing Out" belongs to the Team tab, and if its handler
     // does not re-show it the block would stay gone for the rest of the screen.
@@ -2264,17 +2823,39 @@ fn place_list(ctx: &mut StableClient<'_>, panel: &str, anchor: &str, width: i32)
         (y - LIST_H - 4).max(8)
     };
     // Nudged left rather than pinned to the control's own x, so one at the right
-    // edge of the window still gets the whole list on screen.
+    // edge of the window still gets the whole list on screen. Clamped in screen
+    // space, which is what the canvas bounds are in, and only then moved into the
+    // host's frame.
     let left = x.min(CANVAS_W - width - 8).max(8);
 
-    if !ctx.ui_set_properties(panel, &format!("x: {left}px; y: {top}px;")) {}
+    let (origin_x, origin_y) = host_origin(ctx);
+    let (local_left, local_top) = (left - origin_x, top - origin_y);
+    if !ctx.ui_set_properties(panel, &format!("x: {local_left}px; y: {local_top}px;")) {}
     (left, top)
+}
+
+/// Origin of the node the editor is spawned under, in the absolute design space
+/// [`StableClient::ui_node_rect`] reports.
+///
+/// A node's own `x`/`y` are relative to its parent while `ui_node_rect` answers
+/// in absolute coordinates, so anything positioned *from a measurement* has to
+/// have this taken off it first.
+///
+/// It is (0, 0) on the strategy screen — `main.contents` is a full-screen node at
+/// the origin, which is why nothing needed this while that was the only host —
+/// and it is not on the composition test, whose panel is a centred dialog. A
+/// failed measurement falls back to (0, 0) rather than skipping the write: the
+/// old behaviour, and a list in the wrong place still beats no list.
+fn host_origin(ctx: &StableClient<'_>) -> (i32, i32) {
+    ctx.ui_node_rect(paths().parent)
+        .map(|(x, y, _, _)| (x.round() as i32, y.round() as i32))
+        .unwrap_or((0, 0))
 }
 
 /// Shows the item list under the slot that was clicked, with the slot's current
 /// pick ticked.
 fn open_item_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize, slot: usize) {
-    place_list(ctx, ITEMLIST_PATH, &combo_path(row, slot), LIST_W);
+    place_list(ctx, itemlist_path(), &combo_path(row, slot), LIST_W);
 
     let pinned = pinned_key(&snapshot_rows(), row, slot);
     for (index, entry) in entries.iter().enumerate() {
@@ -2290,16 +2871,16 @@ fn open_item_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize,
         ctx.ui_set_properties(&entry_path(index), &list_entry_style(selected, idle));
     }
 
-    ctx.ui_set_visible(LISTCATCH_PATH, true);
-    ctx.ui_set_visible(ITEMLIST_PATH, true);
-    focus_scroll(ctx, ITEMLIST_SCROLL);
+    ctx.ui_set_visible(listcatch_path(), true);
+    ctx.ui_set_visible(itemlist_path(), true);
+    focus_scroll(ctx, itemlist_scroll());
     let _ = with_state(|state| state.open_list = Some(OpenList::Item { row, slot }));
 }
 
 /// Shows the champion list under the row's champion button, with the row's
 /// current champion ticked.
 fn open_champ_list(ctx: &mut StableClient<'_>, champions: &[ChampionChoice], row: usize) {
-    place_list(ctx, CHAMPLIST_PATH, &champ_path(row), CHAMP_LIST_W);
+    place_list(ctx, champlist_path(), &champ_path(row), CHAMP_LIST_W);
 
     let current = snapshot_rows()
         .get(row)
@@ -2312,15 +2893,15 @@ fn open_champ_list(ctx: &mut StableClient<'_>, champions: &[ChampionChoice], row
         );
     }
 
-    ctx.ui_set_visible(LISTCATCH_PATH, true);
-    ctx.ui_set_visible(CHAMPLIST_PATH, true);
-    focus_scroll(ctx, CHAMPLIST_SCROLL);
+    ctx.ui_set_visible(listcatch_path(), true);
+    ctx.ui_set_visible(champlist_path(), true);
+    focus_scroll(ctx, champlist_scroll());
     let _ = with_state(|state| state.open_list = Some(OpenList::Champion { row }));
 }
 
 /// Opens the role list under a row's Role button.
 fn open_role_list(ctx: &mut StableClient<'_>, row: usize) {
-    place_list(ctx, ROLELIST_PATH, &role_path(row), ROLE_LIST_W);
+    place_list(ctx, rolelist_path(), &role_path(row), ROLE_LIST_W);
 
     let current = snapshot_rows()
         .get(row)
@@ -2333,20 +2914,20 @@ fn open_role_list(ctx: &mut StableClient<'_>, row: usize) {
         );
     }
 
-    ctx.ui_set_visible(LISTCATCH_PATH, true);
-    ctx.ui_set_visible(ROLELIST_PATH, true);
-    focus_scroll(ctx, ROLELIST_SCROLL);
+    ctx.ui_set_visible(listcatch_path(), true);
+    ctx.ui_set_visible(rolelist_path(), true);
+    focus_scroll(ctx, rolelist_scroll());
     let _ = with_state(|state| state.open_list = Some(OpenList::Role { row }));
 }
 
 /// Hides whichever floating list is showing. All are hidden unconditionally:
 /// it costs one call and cannot leave a stale panel behind.
 fn close_list(ctx: &mut StableClient<'_>) {
-    ctx.ui_set_visible(ITEMLIST_PATH, false);
-    ctx.ui_set_visible(CHAMPLIST_PATH, false);
-    ctx.ui_set_visible(ROLELIST_PATH, false);
-    ctx.ui_set_visible(LISTCATCH_PATH, false);
-    focus_scroll(ctx, ROWSCROLL_PATH);
+    ctx.ui_set_visible(itemlist_path(), false);
+    ctx.ui_set_visible(champlist_path(), false);
+    ctx.ui_set_visible(rolelist_path(), false);
+    ctx.ui_set_visible(listcatch_path(), false);
+    focus_scroll(ctx, rowscroll_path());
     let _ = with_state(|state| state.open_list = None);
 }
 
@@ -2460,20 +3041,20 @@ fn sync_info_popup(ctx: &mut StableClient<'_>) {
         return;
     }
     let active = match with_state(|state| state.open_list).flatten() {
-        Some(OpenList::Item { .. }) => ITEMLIST_SCROLL,
-        Some(OpenList::Champion { .. }) => CHAMPLIST_SCROLL,
-        Some(OpenList::Role { .. }) => ROLELIST_SCROLL,
-        None => ROWSCROLL_PATH,
+        Some(OpenList::Item { .. }) => itemlist_scroll(),
+        Some(OpenList::Champion { .. }) => champlist_scroll(),
+        Some(OpenList::Role { .. }) => rolelist_scroll(),
+        None => rowscroll_path(),
     };
     focus_scroll(ctx, active);
 }
 
 fn focus_scroll(ctx: &mut StableClient<'_>, active: &str) {
     for path in [
-        ROWSCROLL_PATH,
-        ITEMLIST_SCROLL,
-        CHAMPLIST_SCROLL,
-        ROLELIST_SCROLL,
+        rowscroll_path(),
+        itemlist_scroll(),
+        champlist_scroll(),
+        rolelist_scroll(),
     ] {
         let (ignore, speed) = if path == active {
             ("false", SCROLL_SPEED)
@@ -2511,11 +3092,29 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     let path = event.path.clone();
 
     if path == BUILDS_TAB {
+        // This tab only exists on the strategy screen, so its host is settled.
+        // `post_update` has almost certainly said so already; saying it here too
+        // is what keeps the handler correct on its own rather than by ordering.
+        set_host(UI_ROOT);
+        // Back to the authored size. Settled before the spawn for the reason
+        // given on `want_panel_size`: rows carry the width they were built at,
+        // and the composition test builds them narrower.
+        let resized = want_panel_size(PANEL_W, PANEL_H);
         // Built on first entry rather than up front, so a strategy screen whose
         // Builds tab is never opened pays nothing for it.
         if !ensure_editor(ctx) {
             return;
         }
+        apply_panel_size(ctx);
+        if resized {
+            let entries = snapshot_entries();
+            rebuild_rows(ctx, &entries);
+        }
+        // Put the popup back where it is authored. Belt and braces since the
+        // hosts were split: the composition test moves its *own* subtree, not
+        // this one, and a strategy screen that has been reloaded respawns this
+        // from source at the authored rect anyway.
+        ctx.ui_set_properties(popup_path(), EDITOR_RECT_STRATEGY);
         let entries = snapshot_entries();
         open_editor(ctx, &entries);
         return;
@@ -2531,14 +3130,14 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    if path == LISTCATCH_PATH {
+    if path == listcatch_path() {
         close_list(ctx);
         return;
     }
 
     let entries = snapshot_entries();
 
-    if path == SAVE_PATH {
+    if path == save_path() {
         // Save no longer leaves for the Team tab: the common thing to do after
         // saving is to keep editing, and being thrown out of the panel to come
         // back cost more than the exit was worth. So the button has to report
@@ -2549,11 +3148,11 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         // happened is not a report. It goes down again on the next edit (see
         // `clear_saved`), which is what keeps it about *this* state of the rows.
         let rows = snapshot_rows();
-        ctx.ui_set_visible(SAVED_PATH, build_config::save_champion_rows(&rows));
+        ctx.ui_set_visible(saved_path(), build_config::save_champion_rows(&rows));
         return;
     }
 
-    if path == ADD_PATH {
+    if path == add_path() {
         let _ = with_state(|state| state.rows.push(ChampionRow::default()));
         clear_saved(ctx);
         close_list(ctx);
@@ -2561,9 +3160,9 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    if path == SEARCH_CLEAR_PATH {
-        ctx.ui_set_text_edit_text(SEARCH_PATH, "");
-        ctx.ui_set_visible(SEARCH_CLEAR_PATH, false);
+    if path == search_clear_path() {
+        ctx.ui_set_text_edit_text(search_path(), "");
+        ctx.ui_set_visible(search_clear_path(), false);
         let _ = with_state(|state| state.filter.clear());
         close_list(ctx);
         rebuild_rows(ctx, &entries);
@@ -2576,15 +3175,15 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     // The setting is all this writes. It deliberately does not touch the saved
     // builds: a pinned duplicate is the player's, and enforcement is something
     // the match does to a build, not something the editor does to the config.
-    if path == UNIQUE_ON_PATH || path == UNIQUE_OFF_PATH {
-        if build_config::set_unique_items(path == UNIQUE_ON_PATH) {
+    if path == unique_on_path() || path == unique_off_path() {
+        if build_config::set_unique_items(path == unique_on_path()) {
             refresh_unique(ctx);
         }
         return;
     }
 
-    if path == SCOPE_ALL_PATH || path == SCOPE_OWN_PATH {
-        if build_config::set_own_team_only(path == SCOPE_OWN_PATH) {
+    if path == scope_all_path() || path == scope_own_path() {
+        if build_config::set_own_team_only(path == scope_own_path()) {
             refresh_scope(ctx);
         }
         return;
@@ -2784,6 +3383,28 @@ impl StableExtension for StrategyPicker {
         // anywhere else: it returns on its first line unless that screen is up.
         crate::item_stats_ui::sync(ctx);
 
+        // The composition test hosts the editor too. It has to be handled
+        // before the gate below, which returns — and tears the editor down —
+        // for any screen without the strategy tabs, this one included.
+        //
+        // Visibility, not existence: the panel is authored `visible: false` and
+        // toggled by game code, so it *exists* for as long as the Training
+        // screen is loaded. Gating on `ui_exists` would put the editor up over
+        // the whole Training screen with the dialog shut.
+        if let Some(tactics) = resolve_comp_tactics(ctx) {
+            if ctx.ui_visible(&tactics).unwrap_or(false) {
+                comp_test_host(ctx, &tactics);
+                // The editor's own upkeep, minus the strategy-screen half
+                // (`ITEM_INFO_BTN`, `keep_matchup`): those paths do not exist
+                // here.
+                if with_state(|state| state.showing).unwrap_or(false) {
+                    sync_filter(ctx);
+                    sync_info_popup(ctx);
+                }
+                return;
+            }
+        }
+
         if !ctx.ui_exists(BUILDS_TAB) {
             // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.
@@ -2811,6 +3432,12 @@ impl StableExtension for StrategyPicker {
 
             return;
         }
+
+        // On the strategy screen, so its host is the one every editor path is
+        // addressed under. Asserted here rather than once on entry because the
+        // composition test repoints them at itself and this is the only place
+        // that knows they have to come back.
+        set_host(UI_ROOT);
 
         if !with_state(|state| state.wired).unwrap_or(true) {
             // Loaded here, in `post_update`, not from a click handler:
