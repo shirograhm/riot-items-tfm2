@@ -305,11 +305,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Blade of the Ruined King",
-            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> of the <#d94c49ff>target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Radiant Blade of the Ruined King",
-            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) of the target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
+            "option": "\nMist's Edge: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> of the <#d94c49ff>target's current health<>. Deals a maximum of <#ff9028ff>50 physical damage<> against minions and monsters."
         },
         "blackfire_torch": {
             "name": "Blackfire Torch",
@@ -805,11 +805,11 @@
         },
         "ravenous_hydra": {
             "name": "Ravenous Hydra",
-            "option": "\nCleave: Basic attacks deal <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 30% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 15%)<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target."
+            "option": "\nCleave: Basic attacks deal <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 30% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 15%)<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the target."
         },
         "radiant_ravenous_hydra": {
             "name": "Radiant Ravenous Hydra",
-            "option": "\nCleave: Basic attacks deal <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 40% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 20%)<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target."
+            "option": "\nCleave: Basic attacks deal <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 40% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 20%)<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the target."
         }
     },
     "vi": {
@@ -2744,11 +2744,11 @@
         },
         "blade_of_the_ruined_king": {
             "name": "Espada do Rei Destruído",
-            "option": "\nGume da Névoa: Ataques causam <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
+            "option": "\nGume da Névoa: Ataques causam <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> da <#d94c49ff>Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
         },
         "radiant_blade_of_the_ruined_king": {
             "name": "Espada do Rei Destruído Radiante",
-            "option": "\nGume da Névoa: Ataques causam <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%) da Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
+            "option": "\nGume da Névoa: Ataques causam <#d94c49ff>(<i#asset/base/ui/banpick/champion_stat_icon:melee_0> 8% / <i#asset/base/ui/banpick/champion_stat_icon:ranged_0> 5%)<> da <#d94c49ff>Vida Atual do alvo<> como <#ff9028ff>dano físico<> adicional. (Máximo de <#ff9028ff>50<> contra tropas e monstros.)"
         },
         "blackfire_torch": {
             "name": "Tocha de Chamas Negras",
