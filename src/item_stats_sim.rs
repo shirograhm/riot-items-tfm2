@@ -293,8 +293,6 @@ impl StableMatchHook for EndOfMatchItems {
             })
             .collect();
 
-        record_start(seed, &roster);
-
         if let Ok(mut guard) = ROSTERS.lock() {
             let rosters = guard.get_or_insert_with(BTreeMap::new);
             if rosters.len() >= MAX_ROSTERS {
@@ -361,8 +359,6 @@ impl StableMatchHook for EndOfMatchItems {
             return;
         }
 
-        record_final(seed, &players);
-
         let _ = with_queue(|queue| {
             queue.by_seed.insert(seed, players);
             queue.order.push_back(seed);
@@ -378,59 +374,5 @@ impl StableMatchHook for EndOfMatchItems {
 pub(crate) fn forget() {
     if let Ok(mut guard) = QUEUE.lock() {
         *guard = None;
-    }
-}
-
-/// Matches bracketed in the item-build diagnostic log, by `start` and `final`.
-///
-/// Together they are the other half of `item_build_hook`'s `decide` line.
-/// `decide` says what the mod handed the engine; `final` says what the champion
-/// was actually holding on the last tick. A `final` that matches means the
-/// build was applied and the question is elsewhere; one that ignores it means
-/// the engine dropped the build after taking it; a short one means the athlete
-/// never earned enough gold to finish what it was told to buy.
-///
-/// Capped because a league day sims dozens of fixtures, and the interesting one
-/// is whichever the player just ran.
-const DIAG_MATCHES: usize = 40;
-
-/// Opens a match's block in the diagnostic log.
-///
-/// `decide` lines carry no match id, so what identifies the match one belongs
-/// to is the sequence numbers either side of it: a decide between two `start`
-/// lines was made for the match the later one names. A match whose `start`
-/// follows the previous one with no decides in between was not decided through
-/// the hook at all - which is the distinction the end-state comparison cannot
-/// draw on its own, because "decided and overridden" and "never asked" leave
-/// the same wrong items behind.
-fn record_start(seed: u64, roster: &[String]) {
-    if !crate::diag::enabled() {
-        return;
-    }
-    static SEEN: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
-    if SEEN.fetch_add(1, std::sync::atomic::Ordering::Relaxed) >= DIAG_MATCHES {
-        return;
-    }
-    crate::diag::log(&format!(
-        "start seed={seed} champions=[{}]",
-        roster.join(",")
-    ));
-}
-
-fn record_final(seed: u64, players: &[CapturedPlayer]) {
-    if !crate::diag::enabled() {
-        return;
-    }
-    static SEEN: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
-    if SEEN.fetch_add(1, std::sync::atomic::Ordering::Relaxed) >= DIAG_MATCHES {
-        return;
-    }
-    for player in players {
-        crate::diag::log(&format!(
-            "final seed={seed} champion={} lane={:?} items=[{}]",
-            player.champion,
-            player.lane,
-            player.items.join(","),
-        ));
     }
 }

@@ -74,7 +74,7 @@
 use std::ffi::c_void;
 use std::mem;
 use std::ptr;
-use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Mutex, OnceLock};
 
 extern crate game_core;
@@ -89,13 +89,6 @@ const PROLOGUE_PUSHES: [u8; 12] = [
 
 const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 
-/// Route calls written to the item-build diagnostic log.
-///
-/// Two lines each and one call per team per match, so this is the number of
-/// lineups the log can name before it goes quiet - enough to cover a comp test
-/// or lane test launched a few minutes into a session, rather than only the
-/// league fixtures that sim on the way there.
-const ROUTE_CALLS_LOGGED: usize = 40;
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
 /// Signature for game 0.5.8, where the target is `0x2430190` (size 2270).
@@ -530,21 +523,6 @@ unsafe fn detour(
     team2: &Vec<(Position, String)>,
     mode: bool,
 ) -> Vec<Vec<usize>> {
-    // Logged BEFORE anything is read, including the arguments. The target was
-    // identified structurally, so if it is the wrong function these references
-    // point at whatever the real signature passes and dereferencing them is
-    // undefined — the crash would happen before any later report could be
-    // written. `hook_entered` with no following `hook_call` therefore means
-    // "reached the detour, died reading the arguments", i.e. wrong function.
-    // Both lines present means the target is right.
-    {
-        static ENTERED: AtomicUsize = AtomicUsize::new(0);
-        let count = ENTERED.fetch_add(1, Ordering::Relaxed);
-        if count < ROUTE_CALLS_LOGGED {
-            crate::diag::log(&format!("hook_entered n={count}"));
-        }
-    }
-
     // The merged `tfm2_item_tactics` half needs the game's `Database`, which a
     // stable-ABI mod is never handed. `agent` is the item recommendation network
     // that lives at a fixed offset inside it, so this argument is the one route
@@ -597,30 +575,6 @@ unsafe fn detour(
             .collect::<Vec<_>>(),
     );
 
-    // Paired with `hook_entered` above: both lines present means every argument
-    // was read without faulting, so the detoured function really is the one the
-    // signature names. It also states, for a match whose builds came out wrong,
-    // which lineups the route call was made for.
-    {
-        static CALLED: AtomicUsize = AtomicUsize::new(0);
-        let count = CALLED.fetch_add(1, Ordering::Relaxed);
-        if count < ROUTE_CALLS_LOGGED {
-            let lineup = |team: &Vec<(Position, String)>| {
-                team.iter()
-                    .map(|(_, champion)| champion.as_str())
-                    .collect::<Vec<_>>()
-                    .join(",")
-            };
-            crate::diag::log(&format!(
-                "hook_call n={count} items={} champions={} mode={mode} team1=[{}] team2=[{}]",
-                items.len(),
-                champion_ids.len(),
-                lineup(team1),
-                lineup(team2),
-            ));
-        }
-    }
-
     // League routes are returned exactly as the game made them. Builds for those
     // are decided in `crate::item_build_hook`, on the stable API, where the
     // champion a build belongs to is stated rather than inferred from route
@@ -653,7 +607,7 @@ unsafe fn detour(
 /// Rewriting routes here is what this detour did for *every* match before
 /// `crate::item_build_hook` took the job over on the stable API. The reason it
 /// has to come back for `mode == true` is measurable rather than theoretical.
-/// Over one session's diagnostic log (`crate::diag`):
+/// One session was instrumented end to end to settle it:
 ///
 /// - **36 route calls with `mode == false`.** Every one is followed by a
 ///   `decide_build` per player, and every configured champion in the resulting
@@ -707,29 +661,6 @@ fn apply_training_builds(
         else {
             continue;
         };
-        // `get` rather than indexing: this runs inside a detour, where a panic
-        // would unwind into game code that has no idea a Rust panic is
-        // possible. An out-of-range index is not expected - both sides index
-        // the `items` list the game just passed in - but it is not worth
-        // trading a wrong log line for a crash.
-        let names = |slots: &[usize]| {
-            slots
-                .iter()
-                .map(|index| {
-                    items
-                        .get(*index)
-                        .map_or_else(|| format!("?{index}"), |item| item.key().to_string())
-                })
-                .collect::<Vec<_>>()
-                .join(",")
-        };
-        if crate::diag::enabled() {
-            crate::diag::log(&format!(
-                "training champion={champion} role={role:?} was=[{}] now=[{}]",
-                names(route),
-                names(&build[..build.len().min(route.len())]),
-            ));
-        }
         for (slot, item) in build.iter().enumerate().take(route.len()) {
             route[slot] = *item;
         }

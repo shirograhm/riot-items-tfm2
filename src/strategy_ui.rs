@@ -2435,7 +2435,6 @@ fn find_comp_tactics(ctx: &StableClient<'_>) -> Option<String> {
 fn comp_test_host(ctx: &mut StableClient<'_>, tactics: &str) {
     let builds = format!("{tactics}.builds");
 
-    probe_tactics_geometry(ctx, tactics);
     shrink_team_tactics(ctx, tactics);
 
     // Measured against the *header* and the Back button, not against the block
@@ -2603,53 +2602,6 @@ fn shrink_team_tactics(ctx: &mut StableClient<'_>, tactics: &str) {
         &format!("{tactics}.build_header"),
         &format!("y: {top}px;"),
     );
-}
-
-/// Records this screen's live geometry, once per distinct shape, for the
-/// item-build diagnostic log.
-///
-/// The panel is authored once but laid out twice: `training.ui` has a single
-/// `comp_test_popup.tactics.strategy` block of twelve rows, shared by the 5v5
-/// and the lane test, and this repo's own note that the two are "the same
-/// `tactics` panel laid out differently" is borne out by an override landing on
-/// one mode and not the other. Editing the layout therefore changes whichever
-/// mode the exe does *not* re-lay at runtime - the lane test - which is the
-/// opposite of what a shorter 5v5 tactics block needs.
-///
-/// So before shrinking anything: what the exe actually leaves in that block's
-/// rect in each mode, and where it puts the header the editor is measured
-/// against, and whether `shrink_team_tactics` above took effect.
-fn probe_tactics_geometry(ctx: &StableClient<'_>, tactics: &str) {
-    if !crate::diag::enabled() {
-        return;
-    }
-    let five_v_five = team_tactics_shown(ctx, tactics);
-    let rect = |name: &str| {
-        ctx.ui_node_rect(&format!("{tactics}.{name}"))
-            .map(|(x, y, w, h)| format!("{name}=({x},{y},{w},{h})"))
-            .unwrap_or_else(|| format!("{name}=none"))
-    };
-    let line = format!(
-        "tactics mode={} header_visible={:?} strategy_visible={:?} {} {} {} {}",
-        if five_v_five { "5v5" } else { "lane" },
-        ctx.ui_visible(&format!("{tactics}.strategy_header")),
-        ctx.ui_visible(&format!("{tactics}.strategy")),
-        rect("strategy"),
-        rect("build_header"),
-        rect("builds"),
-        rect("back"),
-    );
-
-    // One line per distinct shape rather than per frame: this runs every frame
-    // the dialog is up, and the answer only changes when the exe re-lays it.
-    static LAST: std::sync::Mutex<String> = std::sync::Mutex::new(String::new());
-    if let Ok(mut last) = LAST.lock() {
-        if *last == line {
-            return;
-        }
-        last.clone_from(&line);
-    }
-    crate::diag::log(&line);
 }
 
 /// The rectangle the editor should occupy inside the composition test, in the
