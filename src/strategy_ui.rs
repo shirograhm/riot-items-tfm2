@@ -2435,6 +2435,9 @@ fn find_comp_tactics(ctx: &StableClient<'_>) -> Option<String> {
 fn comp_test_host(ctx: &mut StableClient<'_>, tactics: &str) {
     let builds = format!("{tactics}.builds");
 
+    probe_tactics_geometry(ctx, tactics);
+    shrink_team_tactics(ctx, tactics);
+
     // Measured against the *header* and the Back button, not against the block
     // the editor replaces. `builds` is hidden two lines below, so from the second
     // frame on its rect is unreliable, and a panel that can only be placed on the
@@ -2507,6 +2510,146 @@ fn comp_test_host(ctx: &mut StableClient<'_>, tactics: &str) {
         let entries = snapshot_entries();
         open_editor(ctx, &entries);
     }
+}
+
+/// Whether this screen is showing team tactics at all, which is what separates
+/// the 5v5 from the lane test.
+///
+/// **Visibility, not geometry.** The first version of this asked whether the
+/// first tactics row had a rect, and it read `true` in both modes: the exe
+/// leaves those nodes laid out and simply stops drawing them, so a hidden row
+/// still reports its size. The "Team Tactics" label is the node that actually
+/// disappears in the lane test - along with the Blue/Red labels beside it - and
+/// `ui_visible` is what reports that.
+///
+/// Both the label and the block are checked, because either one being hidden
+/// means there is nothing to scroll; `None` (no such node) is treated as hidden
+/// for the same reason.
+fn team_tactics_shown(ctx: &StableClient<'_>, tactics: &str) -> bool {
+    ctx.ui_visible(&format!("{tactics}.strategy_header")) == Some(true)
+        && ctx.ui_visible(&format!("{tactics}.strategy")) == Some(true)
+}
+
+/// Height the team-tactics block is cut to on the 5v5 screen: eight of its
+/// twelve rows, on the 38px pitch they are authored at. The rest scroll.
+const TEAM_TACTICS_HEIGHT: i32 = 296;
+
+/// The block's authored height, restored on any screen that is not the 5v5.
+/// Keep in step with `#strategy` in `ui/layout/training.ui`, which this mod
+/// ships - it is the same twelve rows at the same pitch.
+const TEAM_TACTICS_FULL_HEIGHT: i32 = 456;
+
+/// Gap the exe leaves between the bottom of that block and the "Personal
+/// Tactics" header. Measured, not guessed: with the block at its authored
+/// `(y 160, h 456)` the exe puts the header at `y 662`, and 662 - 616 is this.
+const BUILD_HEADER_GAP: i32 = 46;
+
+/// Shortens the team-tactics block on the 5v5 screen and pulls the header under
+/// it, handing the reclaimed height to the item-build editor below.
+///
+/// # Why the 5v5 only, and how that is decided
+///
+/// `training.ui` has one `comp_test_popup.tactics.strategy` block, shared by
+/// the 5v5 and the lane test, so the layout cannot tell them apart - which is
+/// why the `scroll_view` this needs is declared there at the block's *unchanged*
+/// height, and the shrink happens here instead.
+///
+/// The test is whether the rows are on screen at all. The lane test has no team
+/// tactics: the exe hides that whole section, header and Blue/Red labels
+/// included, leaving the block occupying empty space. Asking `focused` - the
+/// first row - for a rect answers that directly, and it answers it about the
+/// thing being resized rather than about some proxy for the mode. A screen with
+/// nothing to scroll keeps the vanilla block and never shows a bar.
+///
+/// # Why every frame
+///
+/// The same reason the rest of this screen's geometry is re-asserted: game code
+/// rebuilds this panel when the champion selection changes, and `post_update`
+/// runs after it, so a write here is the last word. A one-shot would survive
+/// until the first reselect.
+fn shrink_team_tactics(ctx: &mut StableClient<'_>, tactics: &str) {
+    // Lane test. Put the block back rather than merely leaving it alone: this
+    // write sticks to the node, and the panel outlives the dialog - same
+    // subtree, same scene - so a 5v5 followed by a lane test would otherwise
+    // hand the lane test the shrunk block it is not supposed to get.
+    // `build_header` needs no counterpart: the exe positions that one itself
+    // (authored at 252, it lands at 662), so not writing it is enough.
+    if !team_tactics_shown(ctx, tactics) {
+        ctx.ui_set_properties(
+            &format!("{tactics}.strategy"),
+            &format!("height: {TEAM_TACTICS_FULL_HEIGHT}px;"),
+        );
+        return;
+    }
+
+    let Some(panel) = ctx.ui_node_rect(tactics) else {
+        return;
+    };
+    let Some(strategy) = ctx.ui_node_rect(&format!("{tactics}.strategy")) else {
+        return;
+    };
+
+    ctx.ui_set_properties(
+        &format!("{tactics}.strategy"),
+        &format!("height: {TEAM_TACTICS_HEIGHT}px;"),
+    );
+
+    // `ui_node_rect` is absolute and `ui_set_properties` is parent-relative, and
+    // the header's parent is the panel - the same subtraction the editor popup
+    // does against its own host. The block's own top is read live rather than
+    // assumed, so this follows the panel wherever the exe puts it.
+    let top = (strategy.1 - panel.1).round() as i32 + TEAM_TACTICS_HEIGHT + BUILD_HEADER_GAP;
+    ctx.ui_set_properties(
+        &format!("{tactics}.build_header"),
+        &format!("y: {top}px;"),
+    );
+}
+
+/// Records this screen's live geometry, once per distinct shape, for the
+/// item-build diagnostic log.
+///
+/// The panel is authored once but laid out twice: `training.ui` has a single
+/// `comp_test_popup.tactics.strategy` block of twelve rows, shared by the 5v5
+/// and the lane test, and this repo's own note that the two are "the same
+/// `tactics` panel laid out differently" is borne out by an override landing on
+/// one mode and not the other. Editing the layout therefore changes whichever
+/// mode the exe does *not* re-lay at runtime - the lane test - which is the
+/// opposite of what a shorter 5v5 tactics block needs.
+///
+/// So before shrinking anything: what the exe actually leaves in that block's
+/// rect in each mode, and where it puts the header the editor is measured
+/// against, and whether `shrink_team_tactics` above took effect.
+fn probe_tactics_geometry(ctx: &StableClient<'_>, tactics: &str) {
+    if !crate::diag::enabled() {
+        return;
+    }
+    let five_v_five = team_tactics_shown(ctx, tactics);
+    let rect = |name: &str| {
+        ctx.ui_node_rect(&format!("{tactics}.{name}"))
+            .map(|(x, y, w, h)| format!("{name}=({x},{y},{w},{h})"))
+            .unwrap_or_else(|| format!("{name}=none"))
+    };
+    let line = format!(
+        "tactics mode={} header_visible={:?} strategy_visible={:?} {} {} {} {}",
+        if five_v_five { "5v5" } else { "lane" },
+        ctx.ui_visible(&format!("{tactics}.strategy_header")),
+        ctx.ui_visible(&format!("{tactics}.strategy")),
+        rect("strategy"),
+        rect("build_header"),
+        rect("builds"),
+        rect("back"),
+    );
+
+    // One line per distinct shape rather than per frame: this runs every frame
+    // the dialog is up, and the answer only changes when the exe re-lays it.
+    static LAST: std::sync::Mutex<String> = std::sync::Mutex::new(String::new());
+    if let Ok(mut last) = LAST.lock() {
+        if *last == line {
+            return;
+        }
+        last.clone_from(&line);
+    }
+    crate::diag::log(&line);
 }
 
 /// The rectangle the editor should occupy inside the composition test, in the

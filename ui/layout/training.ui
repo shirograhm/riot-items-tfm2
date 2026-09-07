@@ -1,0 +1,2923 @@
+training:training_ui {
+  width: 1600px;
+  height: 968px;
+
+  x: 32px;
+  y: 24px;
+
+  #tabs:color {
+    visible: true;
+    y: 0px;
+    width: 938px;
+    height: 39px;
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    color: #4a4c56ff;
+    stroke: 1;
+    back_color: #00000000;
+
+    child_type: LeftToRight {
+      spacing: 0px;
+    }
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    #team_plan:color_selectable {
+      @"asset/base/style/main#strategy_option";
+      width: 307px;
+      height: 32px;
+
+      label: {
+        size: 18;
+      }
+
+      selected_label: {
+        size: 18;
+      }
+
+      text: "#asset/base/text/ui?training.team";
+    }
+
+    #personal_plan:color_selectable {
+      @"asset/base/style/main#strategy_option";
+
+      width: 323px;
+      height: 32px;
+
+      label: {
+        size: 18;
+      }
+
+      selected_label: {
+        size: 18;
+      }
+
+      text: "#asset/base/text/ui?training.personal";
+    }
+
+    #streaming:color_selectable {
+      @"asset/base/style/main#strategy_option";
+
+      width: 300px;
+      height: 32px;
+
+      label: {
+        size: 18;
+      }
+
+      selected_label: {
+        size: 18;
+      }
+
+      text: "#asset/base/text/ui?training.streaming_tab";
+    }
+  }
+
+  #delegate_to_coach:color_icon_button {
+    @"asset/base/style/main#secondary_button";
+    anchor_x: 1;
+    pivot_x: 1;
+    x: 0px;
+    y: 0px;
+    width: 180px;
+    height: 39px;
+    text: {
+      font: "asset/base/font/set/bold";
+      text: "#asset/base/text/ui?training.delegate_to_head_coach";
+      size: 14;
+      align_x: Center;
+      align_y: Center;
+    }
+  }
+
+  #unassign_coach:color_icon_button {
+    @"asset/base/style/main#secondary_button_active";
+    visible: false;
+    anchor_x: 1;
+    pivot_x: 1;
+    x: 0px;
+    y: 0px;
+    width: 180px;
+    height: 39px;
+    text: {
+      font: "asset/base/font/set/bold";
+      text: "#asset/base/text/ui?training.unassign_head_coach";
+      size: 14;
+      align_x: Center;
+      align_y: Center;
+    }
+  }
+
+
+  #streaming_period_switcher:empty {
+    visible: false;
+    y: 0px;
+    x: 958px;
+    width: 200px;
+    height: 39px;
+
+    #left:color_icon_button {
+      @"asset/base/style/main#tertiary_button";
+      y: 3.5px;
+      width: 32px;
+      height: 32px;
+      icon: {
+        source: "asset/base/ui/icons/left";
+        rect: {
+          x: 13;
+          y: 12;
+          w: 6;
+          h: 8;
+        }
+      }
+    }
+
+    #period_text:label {
+      @"asset/base/style/main#bold_label";
+      x: 35px;
+      y: 4px;
+      width: 130px;
+      height: 30px;
+      align_x: Center;
+      align_y: Center;
+      size: 16;
+      text: "#asset/base/text/ui?training.results.period_weekly";
+    }
+
+    #right:color_icon_button {
+      @"asset/base/style/main#tertiary_button";
+      x: 168px;
+      y: 3.5px;
+      width: 32px;
+      height: 32px;
+      icon: {
+        source: "asset/base/ui/icons/right";
+        rect: {
+          x: 13;
+          y: 12;
+          w: 6;
+          h: 8;
+        }
+      }
+    }
+  }
+
+  #panel:empty {
+    visible: true;
+    width: 1600px;
+    height: 916px;
+
+    anchor_y: 1;
+    pivot_y: 1;
+
+    #schedule:color {
+      width: 792.5px;
+      height: 280px;
+
+      color: #161721ff;
+      rounding: Uniform {
+        rounding: 12;
+      }
+
+      #header:label {
+        @"asset/base/style/main#bold_label";
+        width: 747px;
+        height: 30px;
+        x: 24px;
+        y: 24px;
+
+        align_y: Center;
+
+        text: "#asset/base/text/ui?training.schedule.header";
+        size: 20;
+      }
+
+      #training_row:empty {
+        x: 24px;
+        y: 78px;
+        width: 747px;
+        height: 40px;
+
+        #label:label {
+          @"asset/base/style/main#label";
+          width: 150px;
+          height: 40px;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.schedule.training";
+          size: 18;
+        }
+
+        #minus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 155px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/minus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #slider:slider {
+          x: 205px;
+          y: 10px;
+          width: 435px;
+          height: 20px;
+
+          background: Color {
+            prop: {
+              color: #4a4c56ff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          foreground: Color {
+            prop: {
+              color: #fba37cff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          view_min_ratio: 0.0;
+          ratio: 0.7;
+        }
+
+        #plus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 650px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/plus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #value:label {
+          @"asset/base/style/main#label";
+          x: 700px;
+          width: 47px;
+          height: 40px;
+          align_x: Right;
+          align_y: Center;
+          text: "70%";
+          size: 18;
+        }
+      }
+
+      #streaming_row:empty {
+        x: 24px;
+        y: 134px;
+        width: 747px;
+        height: 40px;
+
+        #label:label {
+          @"asset/base/style/main#label";
+          width: 150px;
+          height: 40px;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.schedule.streaming";
+          size: 18;
+        }
+
+        #minus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 155px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/minus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #slider:slider {
+          x: 205px;
+          y: 10px;
+          width: 435px;
+          height: 20px;
+
+          background: Color {
+            prop: {
+              color: #4a4c56ff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          foreground: Color {
+            prop: {
+              color: #fbde6eff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          view_min_ratio: 0.0;
+          ratio: 0.2;
+        }
+
+        #plus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 650px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/plus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #value:label {
+          @"asset/base/style/main#label";
+          x: 700px;
+          width: 47px;
+          height: 40px;
+          align_x: Right;
+          align_y: Center;
+          text: "20%";
+          size: 18;
+        }
+      }
+
+      #rest_row:empty {
+        x: 24px;
+        y: 190px;
+        width: 747px;
+        height: 40px;
+
+        #label:label {
+          @"asset/base/style/main#label";
+          width: 150px;
+          height: 40px;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.schedule.rest";
+          size: 18;
+        }
+
+        #minus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 155px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/minus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #slider:slider {
+          x: 205px;
+          y: 10px;
+          width: 435px;
+          height: 20px;
+
+          background: Color {
+            prop: {
+              color: #4a4c56ff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          foreground: Color {
+            prop: {
+              color: #7adfceff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          view_min_ratio: 0.0;
+          ratio: 0.1;
+        }
+
+        #plus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 650px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/plus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #value:label {
+          @"asset/base/style/main#label";
+          x: 700px;
+          width: 47px;
+          height: 40px;
+          align_x: Right;
+          align_y: Center;
+          text: "10%";
+          size: 18;
+        }
+      }
+    }
+
+    #comp_test:color {
+      y: 295px;
+      width: 792.5px;
+      height: 140px;
+
+      color: #161721ff;
+      rounding: Uniform {
+        rounding: 12;
+      }
+
+      #header:label {
+        @"asset/base/style/main#bold_label";
+        x: 24px;
+        y: 18px;
+        width: 230px;
+        height: 28px;
+        align_y: Center;
+        text: "#asset/base/text/ui?training.comp_test.header";
+        size: 20;
+      }
+
+      #daily_count:label {
+        @"asset/base/style/main#label";
+        anchor_x: 1;
+        pivot_x: 1;
+        x: -24px;
+        y: 18px;
+        width: 260px;
+        height: 28px;
+        align_x: Right;
+        align_y: Center;
+        text: "#asset/base/text/ui?training.comp_test.daily_count";
+        size: 16;
+        color: #9a9ca6ff;
+      }
+
+      #stamina_note:label {
+        @"asset/base/style/main#label";
+        x: 24px;
+        y: 54px;
+        width: 745px;
+        height: 24px;
+        align_y: Center;
+        text: "#asset/base/text/ui?training.comp_test.stamina_note";
+        size: 15;
+        color: #9a9ca6ff;
+      }
+
+      #btn_5v5:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 24px;
+        y: 86px;
+        width: 360px;
+        height: 40px;
+        text: {
+          rect: { x: 12; y: 0; w: 336; h: 40; }
+          text: "#asset/base/text/ui?training.comp_test.five_vs_five";
+          font: "asset/base/font/set/bold";
+          size: 16;
+          align_x: Center;
+          align_y: Center;
+        }
+      }
+
+      #btn_5v5_hover_capture:color {
+        visible: false;
+        x: 24px;
+        y: 86px;
+        width: 360px;
+        height: 40px;
+        color: #00000000;
+        back_color: #00000000;
+      }
+
+      #btn_lane:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 408px;
+        y: 86px;
+        width: 360px;
+        height: 40px;
+        text: {
+          rect: { x: 12; y: 0; w: 336; h: 40; }
+          text: "#asset/base/text/ui?training.comp_test.lane";
+          font: "asset/base/font/set/bold";
+          size: 16;
+          align_x: Center;
+          align_y: Center;
+        }
+      }
+
+      #btn_lane_hover_capture:color {
+        visible: false;
+        x: 408px;
+        y: 86px;
+        width: 360px;
+        height: 40px;
+        color: #00000000;
+        back_color: #00000000;
+      }
+    }
+
+    #program_ratios:color {
+      anchor_x: 1;
+      pivot_x: 1;
+      width: 792.5px;
+      height: 280px;
+
+      color: #161721ff;
+      rounding: Uniform {
+        rounding: 12;
+      }
+
+      #header:label {
+        @"asset/base/style/main#bold_label";
+        width: 747px;
+        height: 30px;
+        x: 24px;
+        y: 24px;
+
+        align_y: Center;
+
+        text: "#asset/base/text/ui?training.program_ratios.header";
+        size: 20;
+      }
+
+      #control_row:empty {
+        x: 24px;
+        y: 78px;
+        width: 747px;
+        height: 40px;
+
+        #label:label {
+          @"asset/base/style/main#label";
+          width: 150px;
+          height: 40px;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.program_ratios.control";
+          size: 18;
+        }
+
+        #minus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 155px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/minus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #slider:slider {
+          x: 205px;
+          y: 10px;
+          width: 300px;
+          height: 20px;
+
+          background: Color {
+            prop: {
+              color: #4a4c56ff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          foreground: Color {
+            prop: {
+              color: #eb3d4dff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          view_min_ratio: 0.0;
+          ratio: 0.35;
+        }
+
+        #plus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 515px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/plus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #value:label {
+          @"asset/base/style/main#label";
+          x: 565px;
+          width: 47px;
+          height: 40px;
+          align_x: Right;
+          align_y: Center;
+          text: "35%";
+          size: 18;
+        }
+
+        #efficiency:label {
+          @"asset/base/style/main#label";
+          x: 622px;
+          width: 148px;
+          height: 40px;
+          align_x: Right;
+          align_y: Center;
+          text: "";
+          size: 16;
+        }
+      }
+
+      #judgment_row:empty {
+        x: 24px;
+        y: 134px;
+        width: 747px;
+        height: 40px;
+
+        #label:label {
+          @"asset/base/style/main#label";
+          width: 150px;
+          height: 40px;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.program_ratios.judgment";
+          size: 18;
+        }
+
+        #minus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 155px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/minus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #slider:slider {
+          x: 205px;
+          y: 10px;
+          width: 300px;
+          height: 20px;
+
+          background: Color {
+            prop: {
+              color: #4a4c56ff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          foreground: Color {
+            prop: {
+              color: #f9c80eff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          view_min_ratio: 0.0;
+          ratio: 0.35;
+        }
+
+        #plus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 515px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/plus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #value:label {
+          @"asset/base/style/main#label";
+          x: 565px;
+          width: 47px;
+          height: 40px;
+          align_x: Right;
+          align_y: Center;
+          text: "35%";
+          size: 18;
+        }
+
+        #efficiency:label {
+          @"asset/base/style/main#label";
+          x: 622px;
+          width: 148px;
+          height: 40px;
+          align_x: Right;
+          align_y: Center;
+          text: "";
+          size: 16;
+        }
+      }
+
+      #mental_row:empty {
+        x: 24px;
+        y: 190px;
+        width: 747px;
+        height: 40px;
+
+        #label:label {
+          @"asset/base/style/main#label";
+          width: 150px;
+          height: 40px;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.program_ratios.mental";
+          size: 18;
+        }
+
+        #minus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 155px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/minus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #slider:slider {
+          x: 205px;
+          y: 10px;
+          width: 300px;
+          height: 20px;
+
+          background: Color {
+            prop: {
+              color: #4a4c56ff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          foreground: Color {
+            prop: {
+              color: #2bb2feff;
+              rounding: Uniform { rounding: 100; }
+            }
+          }
+
+          view_min_ratio: 0.0;
+          ratio: 0.3;
+        }
+
+        #plus:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          x: 515px;
+          width: 40px;
+          height: 40px;
+          icon: {
+            source: "asset/base/ui/icons/plus";
+            rect: { x: 8; y: 8; w: 24; h: 24; }
+          }
+        }
+
+        #value:label {
+          @"asset/base/style/main#label";
+          x: 565px;
+          width: 47px;
+          height: 40px;
+          align_x: Right;
+          align_y: Center;
+          text: "30%";
+          size: 18;
+        }
+
+        #efficiency:label {
+          @"asset/base/style/main#label";
+          x: 622px;
+          width: 148px;
+          height: 40px;
+          align_x: Right;
+          align_y: Center;
+          text: "";
+          size: 16;
+        }
+      }
+    }
+
+    #coach_opinion:color {
+      width: 792.5px;
+      height: 466px;
+
+      anchor_y: 1;
+      pivot_y: 1;
+
+      color: #161721ff;
+      rounding: Uniform {
+        rounding: 12;
+      }
+
+      #header:label {
+        @"asset/base/style/main#bold_label";
+        width: 747px;
+        height: 30px;
+        x: 24px;
+        y: 24px;
+
+        align_y: Center;
+
+        text: "#asset/base/text/ui?training.coach.header";
+        size: 20;
+      }
+
+      #opinion_scroll:scroll_view {
+        y: 64px;
+        width: 792.5px;
+        height: 394px;
+        speed: 100;
+        bar_width: 4;
+        bar: {
+          source: "asset/base/sprite/white";
+          color: #37d5b3ff;
+
+          hover: {
+            color: #ecfbf8ff;
+          }
+        }
+        back: {
+          source: "asset/base/sprite/white";
+          color: #4a4c56ff;
+        }
+
+        #opinion_contents:empty {
+          width: 747px;
+          height: auto;
+          x: 24px;
+          y: 12px;
+          child_type: TopToBottom {
+            spacing: 6px;
+          }
+        }
+      }
+    }
+
+    #training_results:color {
+      anchor_x: 1;
+      pivot_x: 1;
+      width: 792.5px;
+      height: 621px;
+
+      anchor_y: 1;
+      pivot_y: 1;
+
+      color: #161721ff;
+      rounding: Uniform {
+        rounding: 12;
+      }
+
+      #header:label {
+        @"asset/base/style/main#bold_label";
+        width: 400px;
+        height: 30px;
+        x: 24px;
+        y: 24px;
+
+        align_y: Center;
+
+        text: "#asset/base/text/ui?training.results.header";
+        size: 20;
+      }
+
+      #period_switcher:empty {
+        width: 200px;
+        height: 32px;
+        anchor_x: 1;
+        pivot_x: 1;
+        x: -24px;
+        y: 24px;
+
+        #left:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          width: 32px;
+          height: 32px;
+          icon: {
+            source: "asset/base/ui/icons/left";
+            rect: {
+              x: 13;
+              y: 12;
+              w: 6;
+              h: 8;
+            }
+          }
+        }
+
+        #period_text:label {
+          @"asset/base/style/main#bold_label";
+          x: 35px;
+          width: 130px;
+          height: 30px;
+          align_x: Center;
+          align_y: Center;
+          size: 16;
+          text: "#asset/base/text/ui?training.results.period_weekly";
+        }
+
+        #right:color_icon_button {
+          @"asset/base/style/main#tertiary_button";
+          anchor_x: 1;
+          pivot_x: 1;
+          width: 32px;
+          height: 32px;
+          icon: {
+            source: "asset/base/ui/icons/right";
+            rect: {
+              x: 13;
+              y: 12;
+              w: 6;
+              h: 8;
+            }
+          }
+        }
+      }
+
+      #results_scroll:scroll_view {
+        y: 64px;
+        width: 792.5px;
+        height: 549px;
+        speed: 100;
+        bar_width: 4;
+        bar: {
+          source: "asset/base/sprite/white";
+          color: #37d5b3ff;
+
+          hover: {
+            color: #ecfbf8ff;
+          }
+        }
+        back: {
+          source: "asset/base/sprite/white";
+          color: #4a4c56ff;
+        }
+
+        #results_contents:empty {
+          width: 747px;
+          height: auto;
+          x: 24px;
+          child_type: TopToBottom {
+            spacing: 4px;
+          }
+        }
+      }
+
+      #profile_tooltips:empty {
+        ignore_event: true;
+        width: 792.5px;
+        height: 621px;
+      }
+
+      #no_results:label {
+        @"asset/base/style/main#label";
+        visible: false;
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        width: 600px;
+        height: 40px;
+        align_x: Center;
+        align_y: Center;
+        color: #9a9ca6ff;
+        text: "#asset/base/text/ui?training.results.no_results";
+        size: 16;
+      }
+    }
+  }
+
+  #list:color {
+    width: 1600px;
+    height: 916px;
+    y: 52px;
+    visible: false;
+
+    color:#161721ff;
+    rounding: Uniform {
+      rounding: 12;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+    #header:color {
+      width: 1600px;
+      height: 56px;
+      color: #0f1016ff;
+      rounding: Individual {
+        top_left: 12;
+        top_right: 12;
+      }
+      child_type: LeftToRight {
+        spacing: 0px;
+      }
+
+      #name:empty {
+        width: 198px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 29px;
+          y: 18px;
+          width: 148px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?athlete";
+          size: 16;
+        }
+      }
+
+      #position:empty {
+        width: 147.5px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 105.5px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/athlete?stat.position";
+          size: 16;
+        }
+      }
+
+      #match:empty {
+        width: 130px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 108px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?statistics.game";
+          size: 16;
+        }
+      }
+
+      #kill:empty {
+        width: 130px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 88px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?statistics.avr_kill";
+          size: 16;
+        }
+      }
+
+      #death:empty {
+        width: 130px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 88px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?statistics.avr_death";
+          size: 16;
+        }
+      }
+
+      #assist:empty {
+        width: 130px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 88px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?statistics.avr_assist";
+          size: 16;
+        }
+      }
+
+      #kda:empty {
+        width: 130px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 88px;
+          height: 20px;
+          align_y: Center;
+
+          text: "KDA";
+          size: 16;
+        }
+      }
+
+      #stress:empty {
+        width: 130px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 95px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?training.stress";
+          size: 16;
+        }
+      }
+
+      #rating:empty {
+        width: 130px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 95px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?statistics.avr_rating";
+          size: 16;
+        }
+      }
+
+      #program:empty {
+        width: 165px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 123px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?standing.etc.header";
+          size: 16;
+        }
+      }
+    }
+
+    #athletes:scroll_view {
+      width: 1600px;
+      height: 860px;
+      speed: 100;
+      bar_width: 4;
+      bar: {
+        source: "asset/base/sprite/white";
+        color: #37d5b3ff;
+
+        hover: {
+        color: #ecfbf8ff;
+        }
+      }
+
+      back: {
+        source: "asset/base/sprite/white";
+        color: #4a4c56ff;
+      }
+
+      #contents:empty {
+        width: 1560px;
+        height: auto;
+
+        child_type: TopToBottom {
+          spacing: 0px;
+        }
+      }
+    }
+  }
+
+
+
+  #streaming_list:color {
+    width: 1600px;
+    height: 916px;
+    y: 52px;
+    visible: false;
+
+    color:#161721ff;
+    rounding: Uniform {
+      rounding: 12;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+    #header:color {
+      width: 1600px;
+      height: 56px;
+      color: #0f1016ff;
+      rounding: Individual {
+        top_left: 12;
+        top_right: 12;
+      }
+      child_type: LeftToRight {
+        spacing: 0px;
+      }
+
+      #name:empty {
+        width: 280px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 29px;
+          y: 18px;
+          width: 230px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?athlete";
+          size: 16;
+        }
+      }
+
+      #streaming_time:empty {
+        width: 220px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 180px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?training.streaming_table.streaming_time";
+          size: 16;
+        }
+      }
+
+      #fan_count:empty {
+        width: 200px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 160px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?training.streaming_table.fan_count";
+          size: 16;
+        }
+      }
+
+      #revenue:empty {
+        width: 220px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 180px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?training.streaming_table.revenue";
+          size: 16;
+        }
+      }
+
+      #status:empty {
+        width: 180px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 140px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?training.streaming_table.status";
+          size: 16;
+        }
+      }
+
+      #viewers:empty {
+        width: 200px;
+        height: 56px;
+
+        #text:label {
+          @"asset/base/style/main#label";
+          x: 21px;
+          y: 18px;
+          width: 160px;
+          height: 20px;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?training.streaming_table.viewers";
+          size: 16;
+        }
+      }
+    }
+
+    #athletes:scroll_view {
+      width: 1600px;
+      height: 860px;
+      speed: 100;
+      bar_width: 4;
+      bar: {
+        source: "asset/base/sprite/white";
+        color: #37d5b3ff;
+
+        hover: {
+          color: #ecfbf8ff;
+        }
+      }
+
+      back: {
+        source: "asset/base/sprite/white";
+        color: #4a4c56ff;
+      }
+
+      #contents:empty {
+        width: 1560px;
+        height: auto;
+
+        child_type: TopToBottom {
+          spacing: 0px;
+        }
+      }
+    }
+  }
+  #disabled_tooltip:color {
+    visible: false;
+    ignore_event: true;
+    height: 42px;
+    width: 550px;
+    back_color: #161721ff;
+    color: #4a4c56ff;
+    stroke: 1;
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    padding: {
+      left: 10px;
+      right: 10px;
+      top: 5px;
+      bottom: 5px;
+    }
+
+    #text:label {
+      @"asset/base/style/main#label";
+      size: 18;
+      text: "";
+      align_y: Center;
+    }
+  }
+
+  #comp_test_overlay:color {
+    visible: false;
+    x: 0px;
+    y: 0px;
+    width: 1920px;
+    height: 1080px;
+    color: #60708540;
+  }
+
+  #comp_test_popup:color {
+    visible: false;
+    anchor_x: 0.5;
+    pivot_x: 0.5;
+    anchor_y: 0.5;
+    pivot_y: 0.5;
+    x: -154px;
+    y: 32px;
+    width: 1280px;
+    height: 680px;
+    color: #161721ff;
+
+    rounding: Uniform {
+      rounding: 12;
+    }
+
+    #header:label {
+      @"asset/base/style/main#bold_label";
+      x: 24px;
+      y: 18px;
+      width: 320px;
+      height: 36px;
+      align_y: Center;
+      text: "#asset/base/text/ui?training.comp_test.popup_header";
+      size: 20;
+    }
+
+    #daily_count:label {
+      @"asset/base/style/main#label";
+      x: 350px;
+      y: 18px;
+      width: 260px;
+      height: 36px;
+      align_y: Center;
+      text: "#asset/base/text/ui?training.comp_test.daily_count";
+      size: 16;
+      color: #9a9ca6ff;
+    }
+
+    #cancel:button {
+      width: 16px;
+      height: 16px;
+      anchor_x: 1;
+      pivot_x: 1;
+      x: -24px;
+      y: 28px;
+      source: "asset/base/ui/icons/cross";
+      color: #c2c6ceff;
+
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+    }
+
+    #stamina_note:label {
+      @"asset/base/style/main#label";
+      x: 24px;
+      y: 62px;
+      width: 850px;
+      height: 28px;
+      align_y: Center;
+      text: "#asset/base/text/ui?training.comp_test.popup_stamina_note";
+      size: 16;
+      color: #fba37cff;
+    }
+
+    #popup_tabs:color {
+      x: 820px;
+      y: 18px;
+      width: 372px;
+      height: 40px;
+
+      padding: {
+        left: 4px;
+        right: 4px;
+        top: 4px;
+        bottom: 4px;
+      }
+
+      color: #4a4c56ff;
+      stroke: 1;
+      back_color: #00000000;
+
+      rounding: Uniform {
+        rounding: 8;
+      }
+
+      child_type: LeftToRight {
+        spacing: 0px;
+      }
+
+      #setup:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 182px;
+        height: 32px;
+        label: { size: 16; }
+        selected_label: { size: 16; }
+        text: "#asset/base/text/ui?training.comp_test.setup_tab";
+      }
+
+      #history:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 182px;
+        height: 32px;
+        label: { size: 16; }
+        selected_label: { size: 16; }
+        text: "#asset/base/text/ui?training.comp_test.history_tab";
+      }
+    }
+
+    #setup:empty {
+      x: 0px;
+      y: 0px;
+      width: 1280px;
+      height: 680px;
+
+      #lane_select:color {
+        visible: false;
+        x: 24px;
+        y: 100px;
+        width: 1232px;
+        height: 40px;
+        padding: {
+          left: 4px;
+          right: 4px;
+          top: 4px;
+          bottom: 4px;
+        }
+        color: #4a4c56ff;
+        stroke: 1;
+        back_color: #00000000;
+        rounding: Uniform {
+          rounding: 8;
+        }
+        child_type: LeftToRight {
+          spacing: 0px;
+        }
+
+        #top:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 306px;
+          height: 32px;
+          label: { size: 16; }
+          selected_label: { size: 16; }
+          text: "#asset/base/text/ui?position.top";
+        }
+
+        #jungle:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 306px;
+          height: 32px;
+          label: { size: 16; }
+          selected_label: { size: 16; }
+          text: "#asset/base/text/ui?position.jungle";
+        }
+
+        #mid:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 306px;
+          height: 32px;
+          label: { size: 16; }
+          selected_label: { size: 16; }
+          text: "#asset/base/text/ui?position.mid";
+        }
+
+        #bottom:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 306px;
+          height: 32px;
+          label: { size: 16; }
+          selected_label: { size: 16; }
+          text: "#asset/base/text/ui?position.bottom";
+        }
+
+        #support:color_selectable {
+          visible: false;
+          @"asset/base/style/main#strategy_option";
+          width: 0px;
+          height: 32px;
+          label: { size: 16; }
+          selected_label: { size: 16; }
+          text: "#asset/base/text/ui?position.support";
+        }
+      }
+
+      #slots:empty {
+        x: 0px;
+        y: 0px;
+        width: 1280px;
+        height: 420px;
+
+        #blue_header:label {
+          @"asset/base/style/main#bold_label";
+          x: 24px;
+          y: 120px;
+          width: 608.5px;
+          height: 24px;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.comp_test.blue";
+          size: 16;
+          color: #37d5b3ff;
+        }
+
+        #red_header:label {
+          @"asset/base/style/main#bold_label";
+          x: 647.5px;
+          y: 120px;
+          width: 608.5px;
+          height: 24px;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.comp_test.red";
+          size: 16;
+          color: #eb3d4dff;
+        }
+
+        #slot0:color {
+          x: 24px;
+          y: 150px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/top"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.top"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+
+        #slot1:color {
+          x: 24px;
+          y: 206px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/jungle"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.jungle"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+
+        #slot2:color {
+          x: 24px;
+          y: 262px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/mid"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.mid"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+
+        #slot3:color {
+          x: 24px;
+          y: 318px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/bottom"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.bottom"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+
+        #slot4:color {
+          x: 24px;
+          y: 374px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/support"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.support"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+
+        #slot5:color {
+          x: 647.5px;
+          y: 150px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/top"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.top"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+
+        #slot6:color {
+          x: 647.5px;
+          y: 206px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/jungle"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.jungle"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+
+        #slot7:color {
+          x: 647.5px;
+          y: 262px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/mid"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.mid"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+
+        #slot8:color {
+          x: 647.5px;
+          y: 318px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/bottom"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.bottom"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+
+        #slot9:color {
+          x: 647.5px;
+          y: 374px;
+          width: 608.5px;
+          height: 48px;
+          color: #20212bff;
+          rounding: Uniform { rounding: 6; }
+          #side:label { @"asset/base/style/main#bold_label"; x: 12px; width: 58px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 14; }
+          #position_icon:image { x: 78px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/support"; }
+          #position:label { @"asset/base/style/main#label"; x: 104px; width: 78px; height: 48px; align_y: Center; text: "#asset/base/text/ui?position.support"; size: 14; }
+          #athlete:dropdown { @"asset/base/style/main#dropdown"; x: 184px; y: 6px; width: 230px; height: 36px; selected_item_icon_layout: { x: 12px; y: 10px; width: 16px; height: 16px; } item_icon_layout: { x: 8px; y: 10px; width: 16px; height: 16px; } text_layout: { x: 34px; y: 5px; width: 158px; height: 26px; } item_layout: { x: 2px; width: 226px; height: 36px; } item_text_layout: { x: 30px; y: 5px; width: 186px; height: 26px; } text: { size: 15; } item_text: { size: 15; } max_items_height: 144; }
+          #champion:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            x: 426px;
+            y: 6px;
+            width: 170.5px;
+            height: 36px;
+            text: { rect: { x: 0; y: 0; w: 170.5; h: 36; } text: "#asset/base/text/ui?training.comp_test.pick"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+
+            #icon:image {
+              x: 8px;
+              y: 3px;
+              width: 30px;
+              height: 30px;
+              ignore_event: true;
+            }
+
+            #name:label {
+              @"asset/base/style/main#bold_label";
+              x: 42px;
+              y: 0px;
+              width: 122.5px;
+              height: 36px;
+              align_x: Center;
+              align_y: Center;
+              text: "";
+              size: 12;
+              fit_width: true;
+            }
+          }
+        }
+      }
+
+      #warning:label {
+        @"asset/base/style/main#label";
+        x: 24px;
+        y: 510px;
+        width: 1232px;
+        height: 24px;
+        align_y: Center;
+        text: "";
+        size: 15;
+        color: #eb3d4dff;
+      }
+
+      #delegate_starting:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 24px;
+        y: 545px;
+        width: 608.5px;
+        height: 48px;
+        text: { rect: { x: 14; y: 0; w: 580.5; h: 48; } text: "#asset/base/text/ui?training.comp_test.delegate_starting_to_coach"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+
+      #open_tactics:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 24px;
+        y: 608px;
+        width: 608.5px;
+        height: 48px;
+        text: { rect: { x: 14; y: 0; w: 580.5; h: 48; } text: "#asset/base/text/ui?training.comp_test.open_tactics"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+
+      #open_champion_select:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 647.5px;
+        y: 545px;
+        width: 608.5px;
+        height: 48px;
+        text: { rect: { x: 14; y: 0; w: 580.5; h: 48; } text: "#asset/base/text/ui?training.comp_test.open_champion_select"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+
+      #run:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 647.5px;
+        y: 608px;
+        width: 608.5px;
+        height: 48px;
+        text: { rect: { x: 14; y: 0; w: 580.5; h: 48; } text: "#asset/base/text/ui?training.comp_test.run"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+    }
+
+    #history:empty {
+      visible: false;
+      x: 0px;
+      y: 0px;
+      width: 1280px;
+      height: 680px;
+
+      #empty:label {
+        @"asset/base/style/main#label";
+        x: 24px;
+        y: 132px;
+        width: 1232px;
+        height: 40px;
+        align_x: Center;
+        align_y: Center;
+        text: "#asset/base/text/ui?training.comp_test.history_empty";
+        size: 18;
+        color: #9a9ca6ff;
+      }
+
+      #scroll:scroll_view {
+        x: 24px;
+        y: 112px;
+        width: 1232px;
+        height: 480px;
+        speed: 100;
+        bar_width: 4;
+        bar: { source: "asset/base/sprite/white"; color: #37d5b3ff; hover: { color: #ecfbf8ff; } }
+        back: { source: "asset/base/sprite/white"; color: #4a4c56ff; }
+
+        #contents:empty {
+          width: 1208px;
+          height: auto;
+          child_type: TopToBottom {
+            spacing: 8px;
+          }
+        }
+      }
+    }
+
+    #champion_select:empty {
+      visible: false;
+      x: 0px;
+      y: 0px;
+      width: 1280px;
+      height: 880px;
+
+      #title:label {
+        @"asset/base/style/main#bold_label";
+        x: 24px;
+        y: 90px;
+        width: 620px;
+        height: 28px;
+        align_y: Center;
+        text: "#asset/base/text/ui?training.comp_test.champion_select_header";
+        size: 16;
+        fit_width: true;
+      }
+
+      #pick_progress:label {
+        @"asset/base/style/main#label";
+        x: 680px;
+        y: 90px;
+        width: 476px;
+        height: 28px;
+        align_x: Right;
+        align_y: Center;
+        text: "";
+        size: 16;
+        color: #9a9ca6ff;
+      }
+
+      #pick_slots:empty {
+        x: 24px;
+        y: 121px;
+        width: 1232px;
+        height: 136px;
+
+        #blue_label:label { @"asset/base/style/main#bold_label"; x: 3px; y: 16px; width: 64px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 15; color: #37d5b3ff; }
+        #red_label:label { @"asset/base/style/main#bold_label"; x: 3px; y: 74px; width: 64px; height: 48px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 15; color: #eb3d4dff; }
+        #slot0:color { x: 82px; y: 16px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/top"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+        #slot1:color { x: 315px; y: 16px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/jungle"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+        #slot2:color { x: 548px; y: 16px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/mid"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+        #slot3:color { x: 781px; y: 16px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/bottom"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+        #slot4:color { x: 1014px; y: 16px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/support"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+        #slot5:color { x: 82px; y: 74px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/top"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+        #slot6:color { x: 315px; y: 74px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/jungle"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+        #slot7:color { x: 548px; y: 74px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/mid"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+        #slot8:color { x: 781px; y: 74px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/bottom"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+        #slot9:color { x: 1014px; y: 74px; width: 218px; height: 48px; color: #20212bff; rounding: Uniform { rounding: 6; } #position_icon:image { x: 12px; y: 15px; width: 18px; height: 18px; source: "asset/base/ui/icons/support"; } #champion_icon:image { x: 40px; y: 9px; width: 30px; height: 30px; ignore_event: true; } #text:label { @"asset/base/style/main#label"; x: 78px; width: 128px; height: 48px; align_y: Center; text: ""; size: 14; fit_width: true; } }
+      }
+
+      #champion_search:text_edit {
+        @"asset/base/style/main#text_edit";
+        x: 24px;
+        y: 253px;
+        width: 473px;
+        height: 36px;
+        size: 15;
+        align_y: Center;
+        padding: { left: 40px; top: 4px; right: 12px; bottom: 4px; }
+        placeholder: "#asset/base/text/ui?banpick.champion_search_placeholder";
+        max_length: 40;
+
+        #icon:image {
+          ignore_event: true;
+          x: -28px;
+          y: 4px;
+          width: 18px;
+          height: 18px;
+          source: "asset/base/ui/banpick/fi-rr-search";
+          color: #858d9dff;
+        }
+      }
+
+      #champion_search_clear:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 505px;
+        y: 253px;
+        width: 36px;
+        height: 36px;
+        icon: { source: "asset/base/ui/icons/cross"; rect: { x: 10; y: 10; w: 16; h: 16; } }
+      }
+
+      #role_filter:dropdown {
+        @"asset/base/style/main#dropdown";
+        x: 24px;
+        y: 297px;
+        width: 254.5px;
+        height: 36px;
+        text: { size: 15; }
+        item_text: { size: 15; }
+        text_layout: { x: 14px; y: 5px; width: 224.5px; height: 26px; }
+        item_layout: { x: 2px; y: 0px; width: 250.5px; height: 36px; }
+        item_text_layout: { x: 14px; y: 5px; width: 222.5px; height: 26px; }
+        max_items_height: 252;
+      }
+
+      #position_filter:dropdown {
+        @"asset/base/style/main#dropdown";
+        x: 286.5px;
+        y: 297px;
+        width: 254.5px;
+        height: 36px;
+        text: { size: 15; }
+        item_text: { size: 15; }
+        text_layout: { x: 14px; y: 5px; width: 224.5px; height: 26px; }
+        item_layout: { x: 2px; y: 0px; width: 250.5px; height: 36px; }
+        item_text_layout: { x: 14px; y: 5px; width: 222.5px; height: 26px; }
+        max_items_height: 252;
+      }
+
+      #champion_grid:scroll_view {
+        x: 24px;
+        y: 341px;
+        width: 517px;
+        height: 454px;
+        speed: 100;
+        bar_width: 4;
+        bar: { source: "asset/base/sprite/white"; color: #37d5b3ff; hover: { color: #ecfbf8ff; } }
+        back: { source: "asset/base/sprite/white"; color: #4a4c56ff; }
+
+        #contents:empty {
+          x: 4px;
+          y: 4px;
+          width: 488px;
+          height: auto;
+          child_type: Table {
+            spacing_x: 8px;
+            spacing_y: 8px;
+          }
+        }
+      }
+
+      #champion_info:color {
+        x: 549px;
+        y: 253px;
+        width: 707px;
+        height: 542px;
+        back_color: #161721ff;
+        color: #4a4c56ff;
+        stroke: 1;
+        rounding: Uniform {
+          rounding: 8;
+        }
+
+        #hint:label {
+          @"asset/base/style/main#label";
+          anchor_x: 0.5;
+          pivot_x: 0.5;
+          anchor_y: 0.5;
+          pivot_y: 0.5;
+          width: 500px;
+          height: 40px;
+          align_x: Center;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.comp_test.champion_info_hint";
+          size: 16;
+          color: #9a9ca6ff;
+        }
+      }
+
+      #undo:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 24px;
+        y: 813px;
+        width: 296.75px;
+        height: 48px;
+        icon: { source: "asset/base/ui/icons/undo"; rect: { x: 14; y: 14; w: 20; h: 20; } }
+        text: { rect: { x: 42; y: 0; w: 212.75; h: 48; } text: "#asset/base/text/ui?training.comp_test.undo"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+
+      #reset:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 335.75px;
+        y: 813px;
+        width: 296.75px;
+        height: 48px;
+        text: { rect: { x: 14; y: 0; w: 268.75; h: 48; } text: "#asset/base/text/ui?training.comp_test.reset"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+
+      #back:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 647.5px;
+        y: 813px;
+        width: 296.75px;
+        height: 48px;
+        text: { rect: { x: 14; y: 0; w: 268.75; h: 48; } text: "#asset/base/text/ui?training.comp_test.back"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+
+      #run:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 959.25px;
+        y: 813px;
+        width: 296.75px;
+        height: 48px;
+        text: { rect: { x: 14; y: 0; w: 268.75; h: 48; } text: "#asset/base/text/ui?training.comp_test.open_tactics"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+    }
+
+    #tactics:empty {
+      visible: false;
+      x: 0px;
+      y: 0px;
+      width: 1280px;
+      height: 1072px;
+
+      #title:label {
+        @"asset/base/style/main#bold_label";
+        x: 24px;
+        y: 90px;
+        width: 860px;
+        height: 28px;
+        align_y: Center;
+        text: "#asset/base/text/ui?training.comp_test.tactics_header";
+        size: 16;
+        fit_width: true;
+      }
+
+      #delegate_strategy:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 936px;
+        y: 86px;
+        width: 320px;
+        height: 40px;
+        text: { rect: { x: 14; y: 0; w: 292; h: 40; } text: "#asset/base/text/ui?training.delegate_to_head_coach"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
+      }
+
+      #strategy_header:label { @"asset/base/style/main#bold_label"; x: 24px; y: 130px; width: 220px; height: 24px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.tactics_strategy"; size: 15; color: #c2c6ceff; }
+      #blue_strategy_label:label { @"asset/base/style/main#bold_label"; x: 266px; y: 130px; width: 390px; height: 24px; align_x: Center; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 14; color: #37d5b3ff; }
+      #red_strategy_label:label { @"asset/base/style/main#bold_label"; x: 804px; y: 130px; width: 390px; height: 24px; align_x: Center; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 14; color: #eb3d4dff; }
+
+      #strategy:scroll_view {
+        x: 24px;
+        y: 160px;
+        width: 1248px;
+        height: 456px;
+
+        speed: 100;
+        bar_width: 4;
+
+        bar: {
+          source: "asset/base/sprite/white";
+          color: #37d5b3ff;
+          hover: {
+            color: #ecfbf8ff;
+          }
+        }
+
+        back: {
+          source: "asset/base/sprite/white";
+          color: #4a4c56ff;
+        }
+
+        #scroll_extent:empty { x: 0px; y: 0px; width: 1232px; height: 448px; }
+
+        #focused:empty { x: 0px; y: 0px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #early_jungle:empty { x: 0px; y: 38px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #early_serpen:empty { x: 0px; y: 76px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #early_serpen_top:empty { x: 0px; y: 114px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #object_buildup:empty { x: 0px; y: 152px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #object_battle:empty { x: 0px; y: 190px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #object_finish:empty { x: 0px; y: 228px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #morgard_use:empty { x: 0px; y: 266px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #tower_press:empty { x: 0px; y: 304px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #morgard_defense:empty { x: 0px; y: 342px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #minion_wave:empty { x: 0px; y: 380px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+        #game_finish:empty { x: 0px; y: 418px; width: 1232px; height: 30px; #label:label { @"asset/base/style/main#bold_label"; x: 0px; y: 0px; width: 220px; height: 30px; align_y: Center; text: ""; size: 13; color: #c2c6ceff; fit_width: true; } #blue_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 228px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #blue:dropdown { @"asset/base/style/main#dropdown"; x: 266px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #blue_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 664px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red_prev:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 766px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/left"; rect: { x: 12; y: 11; w: 6; h: 8; } } } #red:dropdown { @"asset/base/style/main#dropdown"; x: 804px; y: 0px; width: 390px; height: 30px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 10px; y: 4px; width: 362px; height: 22px; } item_layout: { x: 2px; y: 0px; width: 386px; height: 30px; } item_text_layout: { x: 10px; y: 4px; width: 358px; height: 22px; } max_items_height: 240; } #red_next:color_icon_button { @"asset/base/style/main#tertiary_button"; x: 1202px; y: 0px; width: 30px; height: 30px; icon: { source: "asset/base/ui/icons/right"; rect: { x: 12; y: 11; w: 6; h: 8; } } } }
+      }
+
+      #build_header:label { @"asset/base/style/main#bold_label"; x: 24px; y: 252px; width: 1232px; height: 24px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.tactics_builds"; size: 15; color: #c2c6ceff; }
+
+      #builds:empty {
+        x: 24px;
+        y: 286px;
+        width: 1232px;
+        height: 280px;
+
+        #blue_group:color { x: 0px; y: 0px; width: 608.5px; height: 280px; color: #20212bff; rounding: Uniform { rounding: 6; } ignore_event: true; }
+        #red_group:color { x: 623.5px; y: 0px; width: 608.5px; height: 280px; color: #20212bff; rounding: Uniform { rounding: 6; } ignore_event: true; }
+
+        #blue0:color { x: 0px; y: 0px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/top"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+        #blue1:color { x: 0px; y: 64px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/jungle"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+        #blue2:color { x: 0px; y: 128px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/mid"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+        #blue3:color { x: 0px; y: 192px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/bottom"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+        #blue4:color { x: 0px; y: 256px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/support"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+
+        #red0:color { x: 623.5px; y: 0px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/top"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+        #red1:color { x: 623.5px; y: 64px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/jungle"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+        #red2:color { x: 623.5px; y: 128px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/mid"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+        #red3:color { x: 623.5px; y: 192px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/bottom"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+        #red4:color { x: 623.5px; y: 256px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/support"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 296px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 446px; y: 10px; width: 140px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 136px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 98px; height: 26px; } max_items_height: 252; } }
+      }
+
+      #back:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 24px;
+        y: 1000px;
+        width: 400.667px;
+        height: 48px;
+        icon: { source: "asset/base/ui/icons/undo"; rect: { x: 14; y: 14; w: 20; h: 20; } }
+        text: { rect: { x: 42; y: 0; w: 316.667; h: 48; } text: "#asset/base/text/ui?training.comp_test.back"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+
+      #open_champion_select:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 439.667px;
+        y: 1000px;
+        width: 400.667px;
+        height: 48px;
+        text: { rect: { x: 14; y: 0; w: 372.667; h: 48; } text: "#asset/base/text/ui?training.comp_test.open_champion_select"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+
+      #run:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 855.334px;
+        y: 1000px;
+        width: 400.667px;
+        height: 48px;
+        icon: { source: "asset/base/ui/icons/right"; rect: { x: 371; y: 14; w: 20; h: 20; } }
+        text: { rect: { x: 42; y: 0; w: 316.667; h: 48; } text: "#asset/base/text/ui?training.comp_test.run"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+    }
+
+    #summary:empty {
+      visible: false;
+      x: 0px;
+      y: 0px;
+      width: 1280px;
+      height: 900px;
+
+      #title:label {
+        @"asset/base/style/main#bold_label";
+        x: 24px;
+        y: 100px;
+        width: 500px;
+        height: 34px;
+        align_y: Center;
+        text: "#asset/base/text/ui?training.comp_test.summary_header";
+        size: 20;
+      }
+
+      #loading:empty {
+        x: 0px;
+        y: 0px;
+        width: 1280px;
+        height: 900px;
+
+        #label:label {
+          @"asset/base/style/main#bold_label";
+          x: 24px;
+          y: 250px;
+          width: 1232px;
+          height: 42px;
+          align_x: Center;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.comp_test.summary_loading";
+          size: 26;
+        }
+
+        #loading_bar:color {
+          x: 380px;
+          y: 324px;
+          width: 520px;
+          height: 18px;
+          color: #4a4c56ff;
+          rounding: Uniform { rounding: 9; }
+
+          #fill:color {
+            width: 0px;
+            height: 18px;
+            color: #37d5b3ff;
+            rounding: Uniform { rounding: 9; }
+          }
+        }
+
+        #loading_progress:label {
+          @"asset/base/style/main#label";
+          x: 380px;
+          y: 352px;
+          width: 520px;
+          height: 30px;
+          align_x: Center;
+          align_y: Center;
+          text: "#asset/base/text/ui?training.comp_test.summary_loading_progress";
+          size: 18;
+          color: #9a9ca6ff;
+        }
+      }
+
+      #result:empty {
+        visible: false;
+        x: 0px;
+        y: 0px;
+        width: 1280px;
+        height: 900px;
+
+        #score:label {
+          @"asset/base/style/main#bold_label";
+          x: 24px;
+          y: 140px;
+          width: 1232px;
+          height: 44px;
+          align_x: Center;
+          align_y: Center;
+          text: "";
+          size: 28;
+        }
+
+        #win_tag:label {
+          @"asset/base/style/main#bold_label";
+          x: 24px;
+          y: 110px;
+          width: 1232px;
+          height: 22px;
+          align_x: Center;
+          align_y: Center;
+          text: "";
+          size: 15;
+        }
+
+        #objectives:empty {
+          x: 255px;
+          y: 196px;
+          width: 670px;
+          height: 36px;
+          child_type: LeftToRight {
+            spacing: 15px;
+          }
+
+          #morgard:empty {
+            width: 210px;
+            height: 36px;
+            #icon:image { x: 0px; y: 7px; width: 22px; height: 22px; source: "asset/base/ui/icons/morgard"; }
+            #count:label { @"asset/base/style/main#bold_label"; x: 30px; width: 180px; height: 36px; align_y: Center; text: ""; size: 15; }
+          }
+          #serpen:empty {
+            width: 210px;
+            height: 36px;
+            #icon:image { x: 0px; y: 7px; width: 22px; height: 22px; source: "asset/base/ui/icons/serpen"; }
+            #count:label { @"asset/base/style/main#bold_label"; x: 30px; width: 180px; height: 36px; align_y: Center; text: ""; size: 15; }
+          }
+          #tower:empty {
+            width: 220px;
+            height: 36px;
+            #icon:image { x: 0px; y: 7px; width: 22px; height: 22px; source: "asset/base/ui/icons/tower"; }
+            #count:label { @"asset/base/style/main#bold_label"; x: 30px; width: 190px; height: 36px; align_y: Center; text: ""; size: 15; }
+          }
+        }
+
+        #tactics:color {
+          x: 0px;
+          y: 255px;
+          width: 1280px;
+          height: 172px;
+          color: #00000000;
+          rounding: Uniform { rounding: 0; }
+
+          #blue_panel:color {
+            x: 24px;
+            y: 0px;
+            width: 320px;
+            height: 172px;
+            color: #20212bff;
+            rounding: Uniform { rounding: 6; }
+            #label:label { @"asset/base/style/main#bold_label"; x: 18px; y: 12px; width: 284px; height: 22px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 14; color: #37d5b3ff; }
+            #text:label { @"asset/base/style/main#label"; x: 18px; y: 42px; width: 284px; height: 116px; align_y: Center; text: ""; size: 12; line_height: 16; color: #c2c6ceff; fit_width: true; }
+          }
+
+          #red_panel:color {
+            x: 936px;
+            y: 0px;
+            width: 320px;
+            height: 172px;
+            color: #20212bff;
+            rounding: Uniform { rounding: 6; }
+            #label:label { @"asset/base/style/main#bold_label"; x: 18px; y: 12px; width: 284px; height: 22px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 14; color: #eb3d4dff; }
+            #text:label { @"asset/base/style/main#label"; x: 18px; y: 42px; width: 284px; height: 116px; align_y: Center; text: ""; size: 12; line_height: 16; color: #c2c6ceff; fit_width: true; }
+          }
+        }
+
+        #bars:empty {
+          x: 0px;
+          y: 267px;
+          width: 1280px;
+          height: 148px;
+
+          #deal_label:label { @"asset/base/style/main#label"; x: 0px; y: 0px; width: 1280px; height: 16px; align_x: Center; align_y: Center; text: "#asset/base/text/ui?training.comp_test.bar_deal"; size: 13; color: #9a9ca6ff; }
+          #deal_blue:label { @"asset/base/style/main#bold_label"; x: 290px; y: 24px; width: 110px; height: 16px; align_x: Right; align_y: Center; text: "0"; size: 13; color: #37d5b3ff; }
+          #deal_red:label { @"asset/base/style/main#bold_label"; x: 880px; y: 24px; width: 110px; height: 16px; align_x: Left; align_y: Center; text: "0"; size: 13; color: #eb3d4dff; }
+          #deal_track:color { x: 410px; y: 26px; width: 460px; height: 12px; color: #161721ff; rounding: Uniform { rounding: 6; }
+            #blue:color { x: 0px; width: 230px; height: 12px; color: #37d5b3ff; rounding: Individual { top_left: 6; bottom_left: 6; } }
+            #red:color { anchor_x: 1; pivot_x: 1; x: 0px; width: 230px; height: 12px; color: #eb3d4dff; rounding: Individual { top_right: 6; bottom_right: 6; } }
+          }
+
+          #tank_label:label { @"asset/base/style/main#label"; x: 0px; y: 52px; width: 1280px; height: 16px; align_x: Center; align_y: Center; text: "#asset/base/text/ui?training.comp_test.bar_tank"; size: 13; color: #9a9ca6ff; }
+          #tank_blue:label { @"asset/base/style/main#bold_label"; x: 290px; y: 76px; width: 110px; height: 16px; align_x: Right; align_y: Center; text: "0"; size: 13; color: #37d5b3ff; }
+          #tank_red:label { @"asset/base/style/main#bold_label"; x: 880px; y: 76px; width: 110px; height: 16px; align_x: Left; align_y: Center; text: "0"; size: 13; color: #eb3d4dff; }
+          #tank_track:color { x: 410px; y: 78px; width: 460px; height: 12px; color: #161721ff; rounding: Uniform { rounding: 6; }
+            #blue:color { x: 0px; width: 230px; height: 12px; color: #37d5b3ff; rounding: Individual { top_left: 6; bottom_left: 6; } }
+            #red:color { anchor_x: 1; pivot_x: 1; x: 0px; width: 230px; height: 12px; color: #eb3d4dff; rounding: Individual { top_right: 6; bottom_right: 6; } }
+          }
+
+          #heal_label:label { @"asset/base/style/main#label"; x: 0px; y: 104px; width: 1280px; height: 16px; align_x: Center; align_y: Center; text: "#asset/base/text/ui?training.comp_test.bar_heal"; size: 13; color: #9a9ca6ff; }
+          #heal_blue:label { @"asset/base/style/main#bold_label"; x: 290px; y: 128px; width: 110px; height: 16px; align_x: Right; align_y: Center; text: "0"; size: 13; color: #37d5b3ff; }
+          #heal_red:label { @"asset/base/style/main#bold_label"; x: 880px; y: 128px; width: 110px; height: 16px; align_x: Left; align_y: Center; text: "0"; size: 13; color: #eb3d4dff; }
+          #heal_track:color { x: 410px; y: 130px; width: 460px; height: 12px; color: #161721ff; rounding: Uniform { rounding: 6; }
+            #blue:color { x: 0px; width: 230px; height: 12px; color: #37d5b3ff; rounding: Individual { top_left: 6; bottom_left: 6; } }
+            #red:color { anchor_x: 1; pivot_x: 1; x: 0px; width: 230px; height: 12px; color: #eb3d4dff; rounding: Individual { top_right: 6; bottom_right: 6; } }
+          }
+        }
+
+        #blue_players:empty {
+          x: 24px;
+          y: 456px;
+          width: 608.5px;
+          height: 356px;
+
+          #slot0:color { y: 0px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/top"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+          #slot1:color { y: 72px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/jungle"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+          #slot2:color { y: 144px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/mid"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+          #slot3:color { y: 216px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/bottom"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+          #slot4:color { y: 288px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/support"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+        }
+
+        #red_players:empty {
+          x: 647.5px;
+          y: 456px;
+          width: 608.5px;
+          height: 356px;
+
+          #slot0:color { y: 0px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/top"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+          #slot1:color { y: 72px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/jungle"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+          #slot2:color { y: 144px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/mid"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+          #slot3:color { y: 216px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/bottom"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+          #slot4:color { y: 288px; width: 554px; height: 68px; color: #20212bff; rounding: Uniform { rounding: 6; }
+            #champion_icon:image { x: 8px; y: 16px; width: 40px; height: 40px; ignore_event: true; }
+            #position_icon:image { x: 54px; y: 27px; width: 18px; height: 18px; source: "asset/base/ui/icons/support"; ignore_event: true; }
+            #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 13px; width: 92px; height: 18px; align_y: Center; size: 14; fit_width: true; }
+            #kda:label { @"asset/base/style/main#label"; x: 78px; y: 34px; width: 92px; height: 18px; align_y: Center; size: 14; color: #9a9ca6ff; fit_width: true; }
+            #deal:empty { x: 174px; y: 5px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_attack"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #37d5b3ff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #37d5b3ff; fit_width: true; } }
+            #tank:empty { x: 174px; y: 25px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_defense"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #c2c6ceff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #c2c6ceff; fit_width: true; } }
+            #heal:empty { x: 174px; y: 45px; width: 176px; height: 18px; #icon:image { x: 0px; y: 2px; width: 14px; height: 14px; source: "asset/base/ui/icons/comp_test_stat_health"; color: #ffffffff; ignore_event: true; } #track:color { x: 30px; y: 6px; width: 86px; height: 6px; color: #171820ff; rounding: Uniform { rounding: 3; } #fill:color { width: 0px; height: 6px; color: #f9c80eff; rounding: Uniform { rounding: 3; } } } #value:label { @"asset/base/style/main#bold_label"; x: 124px; y: 0px; width: 42px; height: 18px; align_y: Center; size: 14; color: #f9c80eff; fit_width: true; } }
+            #items:empty { x: 354px; y: 19px; width: 255px; height: 30px; #item0:image { x: 0px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item1:image { x: 45px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item2:image { x: 90px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item3:image { x: 135px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item4:image { x: 180px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } #item5:image { x: 225px; width: 30px; height: 30px; visible: false; source: "asset/base/aseprite_resources/ingame/item_icons_18x18"; } }
+          }
+        }
+      }
+
+      #replay:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 24px;
+        y: 824px;
+        width: 608.5px;
+        height: 52px;
+        icon: { source: "asset/base/ui/ingame/auto_camera"; rect: { x: 83.25; y: 18.7; w: 20; h: 14.55; } }
+        text: { rect: { x: 115.25; y: 0; w: 360; h: 52; } text: "#asset/base/text/ui?training.comp_test.watch_replay"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+
+      #close:color_icon_button {
+        @"asset/base/style/main#tertiary_button";
+        x: 647.5px;
+        y: 824px;
+        width: 608.5px;
+        height: 52px;
+        text: { rect: { x: 14; y: 0; w: 580.5; h: 52; } text: "#asset/base/text/ui?common.close"; font: "asset/base/font/set/bold"; size: 18; align_x: Center; align_y: Center; }
+      }
+    }
+
+    #comp_test_tooltips:empty {
+      ignore_event: true;
+      x: 0px;
+      y: 0px;
+      width: 1280px;
+      height: 900px;
+    }
+  }
+
+  #comp_test_item_tooltip:color {
+    width: 274px;
+    height: 250px;
+    x: 60px;
+    y: 60px;
+    visible: false;
+    rounding: Uniform { rounding: 12; }
+    color: #4a4c56ff;
+    image_scale: 0.5;
+    left: 12;
+    right: 12;
+    top: 12;
+    bottom: 12;
+    ignore_event: true;
+
+    #bg:color {
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+      width: 272px;
+      height: 248px;
+      rounding: Uniform { rounding: 12; }
+      color: #161721ff;
+      ignore_event: true;
+      image_scale: 0.5;
+      left: 12;
+      right: 12;
+      top: 12;
+      bottom: 12;
+    }
+
+    #data:empty {
+      width: 264px;
+      height: 237px;
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+
+      #slot:color {
+        width: 40px;
+        height: 40px;
+        rounding: Uniform { rounding: 8; }
+        ignore_event: true;
+        color: #4a4c56ff;
+
+        #icon:image {
+          width: 36px;
+          height: 36px;
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+          ignore_event: true;
+        }
+      }
+
+      #name:label {
+        @"asset/base/style/main#bold_label";
+        width: 200px;
+        height: 20px;
+        size: 18;
+        x: 45px;
+        text: "";
+      }
+
+      #tier:label {
+        @"asset/base/style/main#bold_label";
+        width: 119px;
+        height: 24px;
+        size: 16;
+        x: 145px;
+        color: #666666ff;
+        text: "#asset/base/text/item?tier";
+        align_x: Right;
+      }
+
+      #gold_icon:image {
+        width: 16px;
+        height: 16px;
+        x: 45px;
+        y: 21px;
+        ignore_event: true;
+        source: "asset/base/ui/gold";
+      }
+
+      #price:label {
+        @"asset/base/style/main#label";
+        width: 92px;
+        height: 17px;
+        size: 16;
+        x: 62px;
+        y: 21px;
+        text: "1200";
+        color: #fde99fff;
+        align_y: Center;
+      }
+
+      #bar:color {
+        width: 264px;
+        height: 1px;
+        y: 46px;
+        ignore_event: true;
+        color: #1d1f2cff;
+      }
+
+      #desc:label {
+        @"asset/base/style/main#label";
+        width: 264px;
+        height: 185px;
+        size: 16;
+        line_height: 20;
+        anchor_y: 1;
+        pivot_y: 1;
+        text: "";
+      }
+    }
+  }
+
+}
