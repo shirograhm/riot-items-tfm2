@@ -801,7 +801,7 @@
         },
         "radiant_stormsurge": {
             "name": "Radiant Stormsurge",
-            "option": "\n<#ff7a3eff>Stormraider<>: Dealing damage to an enemy champion equal to <#60e84dff>25%<> of their <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> within <#e8a800ff>2.5 seconds<> inflicts them with Squall (<#e8a800ff>30 second<> cooldown per target).\n\n<#ff7a3eff>Squall<>: After <#e8a800ff>2 seconds<>, strike the target with lightning, dealing <#a974ffff>125<> + <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<>."
+            "option": "\n<#ff7a3eff>Stormraider<>: Dealing damage to an enemy champion equal to <#60e84dff>25%<> of their <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> within <#e8a800ff>2.5 seconds<> inflicts them with Squall (<#e8a800ff>30 second<> cooldown per target).\n\n<#ff7a3eff>Squall<>: After <#e8a800ff>2 seconds<>, strike the target with lightning, dealing <#a974ffff>125<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<>."
         },
         "ravenous_hydra": {
             "name": "Ravenous Hydra",
@@ -1614,7 +1614,7 @@
         },
         "radiant_stormsurge": {
             "name": "Quyền Trượng Bão Tố Ánh Sáng",
-            "option": "\n<#ff7a3eff>Đột Kích Bão Tố<>: Gây sát thương bằng <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu tối đa<> của tướng địch trong vòng <#e8a800ff>2.5 giây<> sẽ gây hiệu ứng Gió Giật lên chúng (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\n<#ff7a3eff>Gió Giật<>: Sau <#e8a800ff>2 giây<>, giáng sét vào mục tiêu, gây <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<>."
+            "option": "\n<#ff7a3eff>Đột Kích Bão Tố<>: Gây sát thương bằng <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Máu tối đa<> của tướng địch trong vòng <#e8a800ff>2.5 giây<> sẽ gây hiệu ứng Gió Giật lên chúng (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\n<#ff7a3eff>Gió Giật<>: Sau <#e8a800ff>2 giây<>, giáng sét vào mục tiêu, gây <#a974ffff>125<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<>."
         },
         "ravenous_hydra": {
             "name": "Rìu Mãng Xà",
@@ -2427,7 +2427,7 @@
         },
         "radiant_stormsurge": {
             "name": "光明版风暴狂涌",
-            "option": "\n<#ff7a3eff>风暴掠袭<>：在 <#e8a800ff>2.5秒<> 内对敌方英雄造成相当于其 <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的伤害时，对其施加风啸（每个目标冷却 <#e8a800ff>30秒<>）。\n\n<#ff7a3eff>风啸<>：<#e8a800ff>2秒<> 后以闪电打击目标，造成 <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。"
+            "option": "\n<#ff7a3eff>风暴掠袭<>：在 <#e8a800ff>2.5秒<> 内对敌方英雄造成相当于其 <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的伤害时，对其施加风啸（每个目标冷却 <#e8a800ff>30秒<>）。\n\n<#ff7a3eff>风啸<>：<#e8a800ff>2秒<> 后以闪电打击目标，造成 <#a974ffff>125<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。"
         },
         "ravenous_hydra": {
             "name": "贪欲九头蛇",
@@ -3240,7 +3240,7 @@
         },
         "radiant_stormsurge": {
             "name": "Ápice da Tempestade Radiante",
-            "option": "\n<#ff7a3eff>Invasor da Tempestade<>: Causar dano equivalente a <#60e84dff>25%<> da <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida máxima<> de um campeão inimigo dentro de <#e8a800ff>2.5 segundos<> aplica Dilúvio a ele (recarga de <#e8a800ff>30 segundos<> por alvo).\n\n<#ff7a3eff>Dilúvio<>: Depois de <#e8a800ff>2 segundos<>, atinge o alvo com um raio, causando <#a974ffff>125<> + <#a974ffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<>."
+            "option": "\n<#ff7a3eff>Invasor da Tempestade<>: Causar dano equivalente a <#60e84dff>25%<> da <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida máxima<> de um campeão inimigo dentro de <#e8a800ff>2.5 segundos<> aplica Dilúvio a ele (recarga de <#e8a800ff>30 segundos<> por alvo).\n\n<#ff7a3eff>Dilúvio<>: Depois de <#e8a800ff>2 segundos<>, atinge o alvo com um raio, causando <#a974ffff>125<> + <#a974ffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<>."
         },
         "ravenous_hydra": {
             "name": "Hidra Raivosa",
@@ -4053,7 +4053,7 @@
         },
         "radiant_stormsurge": {
             "name": "Лучезарный Штормовой прилив",
-            "option": "\n<#ff7a3eff>Штормовой налет<>: Если вы наносите вражескому чемпиону урон в размере <#60e84dff>25%<> от его <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального запаса здоровья<> в течение <#e8a800ff>2.5 секунд<>, к нему применяется Порыв (перезарядка <#e8a800ff>30 секунд<> на каждую цель).\n\n<#ff7a3eff>Порыв<>: Через <#e8a800ff>2 секунды<> молния поражает цель, нанося <#a974ffff>125<> + <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>."
+            "option": "\n<#ff7a3eff>Штормовой налет<>: Если вы наносите вражескому чемпиону урон в размере <#60e84dff>25%<> от его <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального запаса здоровья<> в течение <#e8a800ff>2.5 секунд<>, к нему применяется Порыв (перезарядка <#e8a800ff>30 секунд<> на каждую цель).\n\n<#ff7a3eff>Порыв<>: Через <#e8a800ff>2 секунды<> молния поражает цель, нанося <#a974ffff>125<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>."
         },
         "ravenous_hydra": {
             "name": "Ненасытная гидра",
@@ -4866,7 +4866,7 @@
         },
         "radiant_stormsurge": {
             "name": "찬란한 폭풍 쇄도",
-            "option": "\n<#ff7a3eff>폭풍 약탈자<>: <#e8a800ff>2.5초<> 내로 적 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 25%<>에 해당하는 피해를 입히면 질풍을 적용합니다. 대상별 재사용 대기시간은 <#e8a800ff>30초<>입니다.\n\n<#ff7a3eff>질풍<>: <#e8a800ff>2초<> 후 번개로 대상을 강타하여 <#a974ffff>125<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>10%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>폭풍 약탈자<>: <#e8a800ff>2.5초<> 내로 적 챔피언에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 25%<>에 해당하는 피해를 입히면 질풍을 적용합니다. 대상별 재사용 대기시간은 <#e8a800ff>30초<>입니다.\n\n<#ff7a3eff>질풍<>: <#e8a800ff>2초<> 후 번개로 대상을 강타하여 <#a974ffff>125<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>15%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
         },
         "ravenous_hydra": {
             "name": "굶주린 히드라",

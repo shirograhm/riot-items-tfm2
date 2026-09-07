@@ -89,6 +89,7 @@ impl Stormsurge {
             price: 2000,
             magic_power: 200,
             magic_resistance_penetration: 15,
+            effect_ap_percent_damage: 15.0,
             ..Self::base()
         }
     }
