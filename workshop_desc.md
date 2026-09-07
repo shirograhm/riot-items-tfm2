@@ -20,9 +20,11 @@ Some AI champions seem to prefer the wrong stats when given deference of item se
 
 The SoloQ page may sometimes show incorrect item builds.  
 
-The item build editor currently only supports EN language for item and champion names.  
+The item build editor currently only supports EN language for item and champion names at the moment.  
 
 Older saves that were using older version of this mod may experience lag spikes during the BP phase and in-game. This is being investigated, for now, current workaround for this is to use a new save.  
+
+The players will not follow custom item builds during 5v5 and Lane Tests. Currently, I am not sure why this is.  
 
 This mod is largely untested in multiplayer. It should work, but the custom item builds will only follow the host's choices.  
 
@@ -99,13 +101,13 @@ Thank you to @Monsoon on discord for the Chinese (Simplified) translations!
 Thank you to @Dushnerd on discord for the Russian translations!
 Thank you to @Flover on discord for the Korean translations!
 
-Special thanks to @toxicsnek for helping with custom item creation & testing.
+Special thanks to @toxicsnek for helping with custom item creation & code!
 Special thanks to @Monsoon for helping with the custom item builds functionality!  
 Special thanks to @blasé for helping playtest the 4 Item Mod compatibility!  
 
 Thank you to the people in the modding discord for their help with the mod-sdk setup, documentation, and general coolness.
 
-If you would like to support my endeavor and buy me a coffee, you can find me on ko-fi: https://ko-fi.com/shirograhm
+If you would like to support my endeavors and buy me a coffee, you can find me on ko-fi: https://ko-fi.com/shirograhm
 
 [h2] Legalese [/h2]
 This is a free fan-made mod. I am not affiliated with Riot Games in any way. Item concepts, names, and effects are all property to Riot Games.
