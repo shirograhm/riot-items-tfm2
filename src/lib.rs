@@ -39,6 +39,25 @@ fn is_monster(entity: &StableEntity<'_, '_>) -> bool {
     !entity.is_champion() && !entity.is_tower() && !entity.is_minion()
 }
 
+/// Whether an attack from `caster` onto `target` was made at melee reach.
+///
+/// The sim cannot answer melee-versus-ranged directly: nothing on an entity
+/// reports attack range, and the `Melee`/`Range` champion tags sit on too few
+/// champions to classify anyone. Where the swing came from does classify it --
+/// the champion sheet's attack ranges are bimodal, roughly 23-30 for melee and
+/// 60-80 for ranged, so a threshold in the empty band between them separates
+/// the two.
+///
+/// Inclusive: exactly `MELEE_DISTANCE` away still counts as melee. Measured
+/// centre to centre, which is what `distance_sq` reports. If melee carriers
+/// turn out to be classified as ranged in game, the engine is measuring attack
+/// range edge to edge and `MELEE_DISTANCE` wants to go up by about the two
+/// radii (a champion radius is 10) rather than this changing shape.
+fn is_melee(ctx: &StableSim<'_>, caster: usize, target: usize) -> bool {
+    let reach = (MELEE_DISTANCE * DISTANCE_UNITS_PER_RANGE) as u64;
+    ctx.distance_sq(caster, target) <= reach * reach
+}
+
 const LETHALITY_BY_KEY: &[(&str, usize)] = &[
     ("axiom_arc", 18),
     ("bastionbreaker", 22),

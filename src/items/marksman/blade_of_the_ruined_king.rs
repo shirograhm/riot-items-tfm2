@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, is_melee, percent_of, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct BladeOfTheRuinedKing {
@@ -12,7 +12,6 @@ pub struct BladeOfTheRuinedKing {
     vamp: i32,
     effect_melee_hp_percent_damage: f64,
     effect_ranged_hp_percent_damage: f64,
-    effect_melee_distance: usize,
     effect_minion_damage_cap: usize,
     procs: ProcQueue,
 }
@@ -31,7 +30,6 @@ impl BladeOfTheRuinedKing {
             vamp: 5,
             effect_melee_hp_percent_damage: 8.0,
             effect_ranged_hp_percent_damage: 5.0,
-            effect_melee_distance: 35,
             effect_minion_damage_cap: 50,
             // Non-vital state (internal)
             procs: ProcQueue::new(),
@@ -50,7 +48,6 @@ impl BladeOfTheRuinedKing {
             vamp: 10,
             effect_melee_hp_percent_damage: 8.0,
             effect_ranged_hp_percent_damage: 5.0,
-            effect_melee_distance: 35,
             effect_minion_damage_cap: 50,
             ..Self::base()
         }
@@ -75,7 +72,6 @@ impl BladeOfTheRuinedKing {
                 vamp,
                 effect_melee_hp_percent_damage,
                 effect_ranged_hp_percent_damage,
-                effect_melee_distance,
                 effect_minion_damage_cap,
             ]
         );
@@ -147,11 +143,10 @@ impl StableItem for BladeOfTheRuinedKing {
         let target_hp = target_ref.hp().0;
         let is_champion = target_ref.is_champion();
 
-        let reach = (self.effect_melee_distance * DISTANCE_UNITS_PER_RANGE) as u64;
-        let hp_percent = if ctx.distance_sq(caster, target) > reach * reach {
-            self.effect_ranged_hp_percent_damage
-        } else {
+        let hp_percent = if is_melee(ctx, caster, target) {
             self.effect_melee_hp_percent_damage
+        } else {
+            self.effect_ranged_hp_percent_damage
         };
         let mut bonus_damage = percent_of(target_hp, hp_percent);
         if !is_champion {

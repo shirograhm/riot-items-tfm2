@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, is_melee, percent_of, ItemMeta, DISTANCE_UNITS_PER_RANGE};
 
 #[derive(Clone, Debug)]
 pub struct RavenousHydra {
@@ -14,7 +14,6 @@ pub struct RavenousHydra {
     effect_melee_ad_percent_damage: f64,
     effect_ranged_ad_percent_damage: f64,
     effect_max_distance: usize,
-    effect_melee_distance: usize,
 }
 
 impl RavenousHydra {
@@ -33,7 +32,6 @@ impl RavenousHydra {
             effect_melee_ad_percent_damage: 30.0,
             effect_ranged_ad_percent_damage: 15.0,
             effect_max_distance: 35,
-            effect_melee_distance: 35,
         }
     }
 
@@ -47,7 +45,6 @@ impl RavenousHydra {
             effect_melee_ad_percent_damage: 40.0,
             effect_ranged_ad_percent_damage: 20.0,
             effect_max_distance: 35,
-            effect_melee_distance: 35,
             ..Self::base()
         }
     }
@@ -71,8 +68,7 @@ impl RavenousHydra {
                 skill_cooldown_mult,
                 effect_melee_ad_percent_damage,
                 effect_ranged_ad_percent_damage,
-                effect_max_distance,
-                effect_melee_distance
+                effect_max_distance
             ]
         );
         self
@@ -174,11 +170,10 @@ impl StableItem for RavenousHydra {
         let caster_team = caster_ref.team();
         let attack = caster_ref.stat().attack;
 
-        let reach = (self.effect_melee_distance * DISTANCE_UNITS_PER_RANGE) as u64;
-        let ad_percent = if ctx.distance_sq(caster, target) > reach * reach {
-            self.effect_ranged_ad_percent_damage
-        } else {
+        let ad_percent = if is_melee(ctx, caster, target) {
             self.effect_melee_ad_percent_damage
+        } else {
+            self.effect_ranged_ad_percent_damage
         };
         let damage = percent_of(attack, ad_percent);
         if damage == 0 {

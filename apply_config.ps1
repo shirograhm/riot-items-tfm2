@@ -370,11 +370,9 @@ $rtfCd = [double]$config.radiant_trinity_force.effect_cooldown_seconds
 $rhMeleePct = [double]$config.ravenous_hydra.effect_melee_ad_percent_damage
 $rhRangedPct = [double]$config.ravenous_hydra.effect_ranged_ad_percent_damage
 $rhRange = [int]$config.ravenous_hydra.effect_max_distance
-$rhReach = [int]$config.ravenous_hydra.effect_melee_distance
 $rrhMeleePct = [double]$config.radiant_ravenous_hydra.effect_melee_ad_percent_damage
 $rrhRangedPct = [double]$config.radiant_ravenous_hydra.effect_ranged_ad_percent_damage
 $rrhRange = [int]$config.radiant_ravenous_hydra.effect_max_distance
-$rrhReach = [int]$config.radiant_ravenous_hydra.effect_melee_distance
 $dndFlat = [int]$config.dusk_and_dawn.effect_bonus_flat_damage
 $dndApPct = [double]$config.dusk_and_dawn.effect_ap_percent_damage
 $dndApHeal = [double]$config.dusk_and_dawn.effect_caster_ap_percent_heal
@@ -1756,7 +1754,7 @@ Write-Host "  Sterak's Gage:               ${sgShieldPct}% max HP shield ${sgShD
 Write-Host "  Radiant Sterak's Gage:       ${rsgShieldPct}% max HP shield ${rsgShDur}s below ${rsgThreshold}% HP / ${rsgCd}s CD"
 Write-Host "  Randuin's Omen:              heals ${rndHeal}% of damage taken from critical strikes"
 Write-Host "  Radiant Randuin's Omen:      heals ${rrndHeal}% of damage taken from critical strikes"
-Write-Host "  Ravenous Hydra:              ${rhMeleePct}% melee / ${rhRangedPct}% ranged AD cleave within ${rhRange} range (ranged past ${rhReach})"
-Write-Host "  Radiant Ravenous Hydra:      ${rrhMeleePct}% melee / ${rrhRangedPct}% ranged AD cleave within ${rrhRange} range (ranged past ${rrhReach})"
+Write-Host "  Ravenous Hydra:              ${rhMeleePct}% melee / ${rhRangedPct}% ranged AD cleave within ${rhRange} range"
+Write-Host "  Radiant Ravenous Hydra:      ${rrhMeleePct}% melee / ${rrhRangedPct}% ranged AD cleave within ${rrhRange} range"
 Write-Host "  Locket of the Iron Solari:         ${lockDef} armor / ${lockMr} MR / ${lockRegen} regen within ${lockDist} range / Devotion ${lockMinShield} - ${lockMaxShield} shield ${lockShieldDur}s below ${lockThreshold}% HP (${lockCd}s CD)"
 Write-Host "  Radiant Locket of the Iron Solari: ${rlockDef} armor / ${rlockMr} MR / ${rlockRegen} regen within ${rlockDist} range / Devotion ${rlockMinShield} - ${rlockMaxShield} shield ${rlockShieldDur}s below ${rlockThreshold}% HP (${rlockCd}s CD)"

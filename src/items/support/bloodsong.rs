@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, has_buff, is_melee, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
@@ -17,7 +17,6 @@ pub struct Bloodsong {
     effect_cooldown_seconds: f64,
     effect_melee_damaged_amplify: usize,
     effect_ranged_damaged_amplify: usize,
-    effect_melee_distance: usize,
     effect_duration_seconds: f64,
     spellblade_ready: bool,
     procs: ProcQueue,
@@ -42,7 +41,6 @@ impl Bloodsong {
             effect_cooldown_seconds: 3.5,
             effect_melee_damaged_amplify: 8,
             effect_ranged_damaged_amplify: 5,
-            effect_melee_distance: 35,
             effect_duration_seconds: 4.0,
             // Non-vital stats (internals)
             spellblade_ready: false,
@@ -64,7 +62,6 @@ impl Bloodsong {
             effect_cooldown_seconds: 3.5,
             effect_melee_damaged_amplify: 8,
             effect_ranged_damaged_amplify: 5,
-            effect_melee_distance: 35,
             effect_duration_seconds: 4.0,
             ..Self::base()
         }
@@ -93,7 +90,6 @@ impl Bloodsong {
                 effect_cooldown_seconds,
                 effect_melee_damaged_amplify,
                 effect_ranged_damaged_amplify,
-                effect_melee_distance,
                 effect_duration_seconds
             ]
         );
@@ -218,11 +214,10 @@ impl StableItem for Bloodsong {
         }
         let already_vulnerable = has_buff(&target_ref, self.vulnerable_buff);
         if !already_vulnerable {
-            let reach = (self.effect_melee_distance * DISTANCE_UNITS_PER_RANGE) as u64;
-            let amplify = if ctx.distance_sq(caster, target) > reach * reach {
-                self.effect_ranged_damaged_amplify
-            } else {
+            let amplify = if is_melee(ctx, caster, target) {
                 self.effect_melee_damaged_amplify
+            } else {
+                self.effect_ranged_damaged_amplify
             };
             ctx.add_buff(
                 target,
