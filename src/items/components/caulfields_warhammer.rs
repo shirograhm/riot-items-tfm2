@@ -56,6 +56,7 @@ impl StableItem for CaulfieldsWarhammer {
         vec![
             "eclipse".to_string(),
             "deaths_dance".to_string(),
+            "ravenous_hydra".to_string(),
         ]
     }
 

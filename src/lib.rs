@@ -8,6 +8,9 @@ mod hook;
 mod item_build_hook;
 mod item_catalog;
 mod item_meta;
+mod item_stats;
+mod item_stats_sim;
+mod item_stats_ui;
 mod items;
 mod proc_queue;
 mod solo_rank_ui;
@@ -198,6 +201,15 @@ impl StableServerExtension for NativeTapExtension {
         tactics::driver::before_management_tick();
     }
 
+    fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
+        // Nothing to write here any more. The captures stay in memory and the
+        // totals live in the save file, which only a `StableClient` can reach —
+        // so both are driven from `item_stats::sync` on the client frame loop.
+        // That also retired the write-ordering hazard this used to carry: with
+        // one store instead of two files, there is no half-written pair to lose
+        // a match between.
+    }
+
     fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
         tactics::driver::on_server_start();
 
@@ -236,10 +248,17 @@ fn init(host: &StableHost) -> StableMod {
 
     tactics::driver::on_mod_init();
 
+    // Both macros note the key as they go, for the item catalog to name and draw.
+    // Registration order used to matter: the numeric `items` on a match record were
+    // decoded by it. Nothing reads them that way now — loadouts come from the
+    // simulation as real keys, and the statistics are stored under those keys — so
+    // the order below is for people, grouped by tier and alphabetical within it.
     macro_rules! configured {
-        ($key:literal => $T:ty) => {
-            configs.get($key).map(<$T>::with_config).unwrap_or_default()
-        };
+        ($key:literal => $T:ty) => {{
+            let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
+            item_stats::note_registered($key, StableItem::tier(&item));
+            item
+        }};
     }
     macro_rules! configured_radiant {
         ($key:literal => $T:ty) => {{
@@ -247,6 +266,7 @@ fn init(host: &StableHost) -> StableMod {
                 .get($key)
                 .map(<$T>::radiant_with_config)
                 .unwrap_or_else(<$T>::radiant);
+            item_stats::note_registered($key, StableItem::tier(&item));
             strategy_ui::note_final_item($key, StableItem::category(&item));
             item
         }};
@@ -257,6 +277,7 @@ fn init(host: &StableHost) -> StableMod {
 
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
+    reg.add_item(configured!("fated_ashes" => FatedAshes));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
     reg.add_item(configured!("sheen" => Sheen));
 
@@ -270,6 +291,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
     reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
+    reg.add_item(configured!("hextech_alternator" => HextechAlternator));
     reg.add_item(configured!("last_whisper" => LastWhisper));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("noonquiver" => Noonquiver));
@@ -326,6 +348,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured!("randuins_omen" => RanduinsOmen));
+    reg.add_item(configured!("ravenous_hydra" => RavenousHydra));
     reg.add_item(configured!("riftmaker" => Riftmaker));
     reg.add_item(configured!("rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
@@ -335,6 +358,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("steraks_gage" => SteraksGage));
     reg.add_item(configured!("stormrazor" => Stormrazor));
+    reg.add_item(configured!("stormsurge" => Stormsurge));
     reg.add_item(configured!("sundered_sky" => SunderedSky));
     reg.add_item(configured!("sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured!("terminus" => Terminus));
@@ -394,6 +418,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured_radiant!("radiant_rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured_radiant!("radiant_randuins_omen" => RanduinsOmen));
+    reg.add_item(configured_radiant!("radiant_ravenous_hydra" => RavenousHydra));
     reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
     reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
@@ -403,6 +428,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
     reg.add_item(configured_radiant!("radiant_steraks_gage" => SteraksGage));
     reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
+    reg.add_item(configured_radiant!("radiant_stormsurge" => Stormsurge));
     reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
     reg.add_item(configured_radiant!("radiant_sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
@@ -417,6 +443,10 @@ fn init(host: &StableHost) -> StableMod {
 
     // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
+
+    // Records only keep the build a match was *assigned*; this reads what each
+    // champion actually finished holding, off the simulation's last tick.
+    reg.set_match_hook(item_stats_sim::EndOfMatchItems);
     reg.set_server_extension(NativeTapExtension);
 
     // in-game build picker

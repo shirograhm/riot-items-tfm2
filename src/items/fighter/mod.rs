@@ -8,6 +8,7 @@ items! {
     feral_flare,
     frozen_mallet,
     overlords_bloodmail,
+    ravenous_hydra,
     spear_of_shojin,
     steraks_gage,
     sundered_sky,

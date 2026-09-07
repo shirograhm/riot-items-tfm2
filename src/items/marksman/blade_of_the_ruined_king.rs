@@ -44,7 +44,7 @@ impl BladeOfTheRuinedKing {
             attack: 60,
             attack_speed_mult: 50,
             vamp: 10,
-            effect_hp_percent_damage: 5.0,
+            effect_hp_percent_damage: 8.0,
             effect_minion_damage_cap: 50,
             ..Self::base()
         }

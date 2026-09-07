@@ -17,7 +17,7 @@ impl HextechGunblade {
         Self {
             meta: ItemMeta::base(
                 "hextech_gunblade",
-                &["ruinous_blade"],
+                &["ruinous_blade", "hextech_alternator"],
                 &["radiant_hextech_gunblade"],
             ),
             price: 1500,

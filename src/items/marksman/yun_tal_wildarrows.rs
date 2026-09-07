@@ -143,8 +143,14 @@ impl StableItem for YunTalWildarrows {
         let Some(champion_ref) = player_ref.champion() else {
             return;
         };
+        let champion_id = champion_ref.id();
+        // Same-name buffs stack and this carries the whole banked total, so
+        // the previous life's copies go before the new one lands. Without the
+        // remove, every respawn added another full total on top of the ones
+        // already worn and the cap stopped meaning anything.
+        ctx.entity_remove_buff(champion_id, self.yun_tal_practice_buff);
         ctx.add_buff(
-            champion_ref.id(),
+            champion_id,
             &BuffV1 {
                 crit_chance: self.accumulated_stacks as i32 * self.effect_stack_crit_chance,
                 ..BuffV1::named(self.yun_tal_practice_buff)

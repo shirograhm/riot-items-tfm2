@@ -27,6 +27,10 @@
     "remapping": "asset/riot_items_tfm2/ui/layout/strategy",
     "type": "override"
   },
+  "asset/base/ui/layout/statistics": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/statistics",
+    "type": "override"
+  },
   "asset/base/ui/layout/solo_rank_component/view_slot": {
     "remapping": "asset/riot_items_tfm2/ui/layout/solo_rank_component/view_slot",
     "type": "override"

@@ -1,0 +1,22 @@
+{
+    "view_effects": [
+        {
+            "type": "Animation",
+            "name": "riot_stormsurge_squall",
+            "anim": "asset/riot_items_tfm2/effects/stormsurge_lightning",
+            "tag": "strike",
+            "z": 1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_ravenous_hydra_cleave",
+            "anim": "asset/riot_items_tfm2/effects/ravenous_hydra_cleave",
+            "tag": "cleave",
+            "z": 1,
+            "is_follow": false
+        }
+    ],
+    "view_projectiles": [],
+    "view_buffs": []
+}

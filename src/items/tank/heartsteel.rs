@@ -131,8 +131,14 @@ impl StableItem for Heartsteel {
         let Some(champion_ref) = player_ref.champion() else {
             return;
         };
+        let champion_id = champion_ref.id();
+        // Same-name buffs stack and this carries the whole banked total, so
+        // the previous life's copies go before the new one lands. Without the
+        // remove, every respawn added another full total on top of the ones
+        // already worn and the cap stopped meaning anything.
+        ctx.entity_remove_buff(champion_id, self.stack_buff);
         ctx.add_buff(
-            champion_ref.id(),
+            champion_id,
             &BuffV1 {
                 hp: self.accumulated_bonus_hp,
                 ..BuffV1::named(self.stack_buff)

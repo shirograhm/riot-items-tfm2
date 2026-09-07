@@ -18,7 +18,7 @@ impl Shadowflame {
         Self {
             meta: ItemMeta::base(
                 "shadowflame",
-                &["needlessly_large_rod"],
+                &["needlessly_large_rod", "hextech_alternator"],
                 &["radiant_shadowflame"],
             ),
             price: 1350,

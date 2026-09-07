@@ -18,6 +18,29 @@
       "save": "Save Item Builds",
       "ai_slot": "Let Player Decide",
       "no_champion": "(champion)"
+    },
+    "item_stats": {
+      "tab": "Item Stats",
+      "rank": "Rank",
+      "purchased_on": "Purchased On",
+      "first_item": "First Item",
+      "cat_all": "   All",
+      "cat_assassin": "   Assassin",
+      "cat_fighter": "   Fighter",
+      "cat_marksman": "   Marksman",
+      "cat_mage": "   Mage",
+      "cat_tank": "   Tank",
+      "cat_support": "   Support",
+      "tier_starter": "   Starter",
+      "tier_basic": "   Basic",
+      "tier_epic": "   Epic",
+      "tier_legendary": "   Legendary",
+      "tier_radiant": "   Radiant",
+      "lane_top": "   Top",
+      "lane_jungle": "   Jungle",
+      "lane_mid": "   Mid",
+      "lane_bottom": "   Bottom",
+      "lane_support": "   Support"
     }
   },
   "ko": {
@@ -39,6 +62,29 @@
       "save": "빌드 저장",
       "ai_slot": "선수에게 맡기기",
       "no_champion": "(챔피언)"
+    },
+    "item_stats": {
+      "tab": "아이템 통계",
+      "rank": "순위",
+      "purchased_on": "구매 챔피언",
+      "first_item": "첫 아이템",
+      "cat_all": "   전체",
+      "cat_assassin": "   암살자",
+      "cat_fighter": "   전사",
+      "cat_marksman": "   원거리 딜러",
+      "cat_mage": "   마법사",
+      "cat_tank": "   탱커",
+      "cat_support": "   서포터",
+      "tier_starter": "   시작",
+      "tier_basic": "   기본",
+      "tier_epic": "   서사",
+      "tier_legendary": "   전설",
+      "tier_radiant": "   찬란",
+      "lane_top": "   탑",
+      "lane_jungle": "   정글",
+      "lane_mid": "   미드",
+      "lane_bottom": "   바텀",
+      "lane_support": "   서포터"
     }
   },
   "zh-hans": {
@@ -60,6 +106,29 @@
       "save": "保存装备构建",
       "ai_slot": "交给选手决定",
       "no_champion": "(英雄)"
+    },
+    "item_stats": {
+      "tab": "物品统计",
+      "rank": "排名",
+      "purchased_on": "购买英雄",
+      "first_item": "首件装备",
+      "cat_all": "   全部",
+      "cat_assassin": "   刺客",
+      "cat_fighter": "   战士",
+      "cat_marksman": "   射手",
+      "cat_mage": "   法师",
+      "cat_tank": "   坦克",
+      "cat_support": "   辅助",
+      "tier_starter": "   起始",
+      "tier_basic": "   基础",
+      "tier_epic": "   史诗",
+      "tier_legendary": "   传说",
+      "tier_radiant": "   光明",
+      "lane_top": "   上单",
+      "lane_jungle": "   打野",
+      "lane_mid": "   中单",
+      "lane_bottom": "   下路",
+      "lane_support": "   辅助"
     }
   },
   "ja": {
@@ -81,6 +150,29 @@
       "save": "ビルドを保存",
       "ai_slot": "選手に任せる",
       "no_champion": "(チャンピオン)"
+    },
+    "item_stats": {
+      "tab": "アイテム統計",
+      "rank": "順位",
+      "purchased_on": "購入チャンピオン",
+      "first_item": "初手アイテム",
+      "cat_all": "   全体",
+      "cat_assassin": "   アサシン",
+      "cat_fighter": "   ファイター",
+      "cat_marksman": "   マークスマン",
+      "cat_mage": "   メイジ",
+      "cat_tank": "   タンク",
+      "cat_support": "   サポート",
+      "tier_starter": "   スターター",
+      "tier_basic": "   ベーシック",
+      "tier_epic": "   エピック",
+      "tier_legendary": "   レジェンダリー",
+      "tier_radiant": "   レディアント",
+      "lane_top": "   トップ",
+      "lane_jungle": "   ジャングル",
+      "lane_mid": "   ミッド",
+      "lane_bottom": "   ボトム",
+      "lane_support": "   サポート"
     }
   },
   "pt-BR": {
@@ -102,6 +194,29 @@
       "save": "Salvar Builds",
       "ai_slot": "Deixar o Jogador Decidir",
       "no_champion": "(campeão)"
+    },
+    "item_stats": {
+      "tab": "Estat. Itens",
+      "rank": "Posição",
+      "purchased_on": "Comprado Por",
+      "first_item": "Primeiro Item",
+      "cat_all": "   Todos",
+      "cat_assassin": "   Assassino",
+      "cat_fighter": "   Lutador",
+      "cat_marksman": "   Atirador",
+      "cat_mage": "   Mago",
+      "cat_tank": "   Tanque",
+      "cat_support": "   Suporte",
+      "tier_starter": "   Inicial",
+      "tier_basic": "   Básico",
+      "tier_epic": "   Épico",
+      "tier_legendary": "   Lendário",
+      "tier_radiant": "   Radiante",
+      "lane_top": "   Topo",
+      "lane_jungle": "   Selva",
+      "lane_mid": "   Meio",
+      "lane_bottom": "   Base",
+      "lane_support": "   Suporte"
     }
   },
   "ru": {
@@ -123,6 +238,29 @@
       "save": "Сохранить сборки",
       "ai_slot": "На усмотрение игрока",
       "no_champion": "(чемпион)"
+    },
+    "item_stats": {
+      "tab": "Статистика предметов",
+      "rank": "Ранг",
+      "purchased_on": "Покупают",
+      "first_item": "Первый предмет",
+      "cat_all": "   Все",
+      "cat_assassin": "   Убийца",
+      "cat_fighter": "   Боец",
+      "cat_marksman": "   Стрелок",
+      "cat_mage": "   Маг",
+      "cat_tank": "   Танк",
+      "cat_support": "   Поддержка",
+      "tier_starter": "   Стартовый",
+      "tier_basic": "   Базовый",
+      "tier_epic": "   Эпический",
+      "tier_legendary": "   Легендарный",
+      "tier_radiant": "   Сияющий",
+      "lane_top": "   Топ",
+      "lane_jungle": "   Лес",
+      "lane_mid": "   Мид",
+      "lane_bottom": "   Керри",
+      "lane_support": "   Поддержка"
     }
   },
   "vi": {
@@ -144,6 +282,29 @@
       "save": "Lưu cách lên đồ",
       "ai_slot": "Để tuyển thủ quyết định",
       "no_champion": "(tướng)"
+    },
+    "item_stats": {
+      "tab": "Thống kê Trang bị",
+      "rank": "Hạng",
+      "purchased_on": "Mua Bởi",
+      "first_item": "Món Đầu Tiên",
+      "cat_all": "   Tất Cả",
+      "cat_assassin": "   Sát Thủ",
+      "cat_fighter": "   Đấu Sĩ",
+      "cat_marksman": "   Xạ Thủ",
+      "cat_mage": "   Pháp Sư",
+      "cat_tank": "   Đỡ Đòn",
+      "cat_support": "   Hỗ Trợ",
+      "tier_starter": "   Khởi Đầu",
+      "tier_basic": "   Cơ Bản",
+      "tier_epic": "   Sử Thi",
+      "tier_legendary": "   Huyền Thoại",
+      "tier_radiant": "   Ánh Sáng",
+      "lane_top": "   Đường Trên",
+      "lane_jungle": "   Đi Rừng",
+      "lane_mid": "   Đường Giữa",
+      "lane_bottom": "   Đường Dưới",
+      "lane_support": "   Hỗ Trợ"
     }
   }
 }

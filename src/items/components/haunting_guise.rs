@@ -111,17 +111,16 @@ impl StableItem for HauntingGuise {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hardened_heart".to_string(), "spirit_crystal".to_string()]
+        vec!["fated_ashes".to_string(), "hardened_heart".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
         vec![
             "riftmaker".to_string(),
+            "liandrys_torment".to_string(),
             "bloodletters_curse".to_string(),
             "dusk_and_dawn".to_string(),
-            "liandrys_torment".to_string(),
             "grezs_spectral_lantern".to_string(),
-            "night_harvester".to_string(),
             "rylais_crystal_scepter".to_string(),
         ]
     }

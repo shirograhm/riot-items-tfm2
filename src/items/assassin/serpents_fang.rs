@@ -140,7 +140,7 @@ impl StableItem for SerpentsFang {
         target: usize,
         damage: &mut usize,
         _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
+        attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
@@ -151,6 +151,13 @@ impl StableItem for SerpentsFang {
 
         if !is_target_tower {
             apply_lethality(ctx, caster, target, self.effect_lethality, damage);
+        }
+
+        // The bonus is dealt through the engine, so it comes back around as an
+        // `Item` hit. Without this it would reave itself, forever: every proc
+        // that lands queues the next one for as long as the shield holds up.
+        if attack_type == AttackTypeV1::Item {
+            return;
         }
 
         let bonus = shield_reaver(

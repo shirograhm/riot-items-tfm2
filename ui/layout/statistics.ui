@@ -1,0 +1,3049 @@
+statistics:statistics_ui {
+  width: 1600px;
+  height: 968px;
+
+  x: 32px;
+  y: 24px;
+
+  #tabs:color {
+    x: 0px;
+    width: 936px;
+    height: 39px;
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    color: #4a4c56ff;
+    stroke: 1;
+    back_color: #00000000;
+
+    child_type: LeftToRight {
+      spacing: 0px;
+    }
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    #champion:color_selectable {
+      @"asset/base/style/main#strategy_option";
+      width: 232px;
+      height: 32px;
+
+      label: {
+        size: 18;
+      }
+
+      selected_label: {
+        size: 18;
+      }
+
+      text: "#asset/base/text/ui?statistics.champion";
+    }
+
+    #athlete:color_selectable {
+      @"asset/base/style/main#strategy_option";
+
+      width: 232px;
+      height: 32px;
+
+      label: {
+        size: 18;
+      }
+
+      selected_label: {
+        size: 18;
+      }
+
+      text: "#asset/base/text/ui?statistics.athlete";
+    }
+
+    #team:color_selectable {
+      @"asset/base/style/main#strategy_option";
+
+      width: 232px;
+      height: 32px;
+
+      label: {
+        size: 18;
+      }
+
+      selected_label: {
+        size: 18;
+      }
+
+      text: "#asset/base/text/ui?statistics.team";
+    }
+
+    #item:color_selectable {
+      @"asset/base/style/main#strategy_option";
+
+      width: 232px;
+      height: 32px;
+
+      label: {
+        size: 18;
+      }
+
+      selected_label: {
+        size: 18;
+      }
+
+      text: "#asset/base/text/ui?item_stats.tab";
+    }
+  }
+
+  #position:dropdown {
+    @"asset/base/style/main#dropdown";
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -194px;
+    width: 216px;
+    height: 40px;
+
+    text: {
+      size: 18;
+    }
+
+    item_text: {
+      size: 18;
+    }
+
+    text_layout: {
+      x: 36px;
+      y: 6px;
+      width: 100%;
+      height: 28px;
+    }
+
+    selected_item_icon_layout: {
+      x: 12px;
+      y: 11px;
+      width: 18px;
+      height: 18px;
+    }
+
+    item_icon_layout: {
+      y: 11px;
+      width: 18px;
+      height: 18px;
+    }
+
+    item_layout: {
+      height: 40px;
+      width: 211.5px;
+      x: 12px;
+    }
+
+    item_text_layout: {
+      x: 25px;
+      y: 6px;
+      width: 211.5px;
+      height: 28px;
+    }
+  }
+
+  #patch:dropdown {
+    @"asset/base/style/main#dropdown";
+    anchor_x: 1;
+    pivot_x: 1;
+    width: 186px;
+    height: 40px;
+    max_items_height: 400;
+
+    text: {
+      size: 18;
+    }
+
+    item_text: {
+      size: 18;
+    }
+
+    text_layout: {
+      x: 14px;
+      y: 6px;
+      width: 100%;
+      height: 28px;
+    }
+
+    item_layout: {
+      height: 40px;
+      width: 181.5px;
+      x: 14px;
+    }
+
+    item_text_layout: {
+      y: 6px;
+      width: 181.5px;
+      height: 28px;
+    }
+  }
+
+  #year_filter:dropdown {
+    @"asset/base/style/main#dropdown";
+    anchor_x: 1;
+    pivot_x: 1;
+    width: 186px;
+    height: 40px;
+    max_items_height: 400;
+
+    visible: false;
+
+    text: {
+      size: 18;
+    }
+
+    item_text: {
+      size: 18;
+    }
+
+    text_layout: {
+      x: 14px;
+      y: 6px;
+      width: 100%;
+      height: 28px;
+    }
+
+    item_layout: {
+      height: 40px;
+      width: 181.5px;
+      x: 14px;
+    }
+
+    item_text_layout: {
+      y: 6px;
+      width: 181.5px;
+      height: 28px;
+    }
+  }
+
+  #league_filter:dropdown {
+    @"asset/base/style/main#dropdown";
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -194px;
+    width: 216px;
+    height: 40px;
+    max_items_height: 400;
+
+    visible: false;
+
+    text: {
+      size: 18;
+    }
+
+    item_text: {
+      size: 18;
+    }
+
+    text_layout: {
+      x: 14px;
+      y: 6px;
+      width: 100%;
+      height: 28px;
+    }
+
+    item_layout: {
+      height: 40px;
+      width: 211.5px;
+      x: 14px;
+    }
+
+    item_text_layout: {
+      y: 6px;
+      width: 211.5px;
+      height: 28px;
+    }
+  }
+
+  #data:color {
+    y: 52px;
+    width: 1600px;
+    height: 916px;
+
+    color: #161721ff;
+
+    rounding: Uniform {
+      rounding: 12;
+    }
+
+    #athlete:empty {
+      width: 1600px;
+      height: 916px;
+
+      visible: false;
+
+      #header:color {
+        width: 1600px;
+        height: 56px;
+        color: #0f1016ff;
+        rounding: Individual {
+          top_left: 12;
+          top_right: 12;
+        }
+
+        child_type: LeftToRight {
+          spacing: 0px;
+        }
+
+        #rank:empty {
+          width: 80px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?item_stats.rank";
+          }
+        }
+
+        #athlete:empty {
+          width: 168px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?athlete";
+          }
+        }
+
+        #kill:color_icon_button {
+          width: 110px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.kill";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 90;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #assist:color_icon_button {
+          width: 110px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.assist";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 90;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #match:color_icon_button {
+          width: 120px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.match";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 100;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #win:color_icon_button {
+          width: 100px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?standing.win";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 80;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #lose:color_icon_button {
+          width: 100px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?standing.lose";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 80;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #win_rate:color_icon_button {
+          width: 120px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?common.win_rate";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 100;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #solo_kill:color_icon_button {
+          width: 120px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.solo_kill";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 100;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #mvp:color_icon_button {
+          width: 130px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.mvp";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 110;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #ratio:color_icon_button {
+          width: 130px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.avr_rating";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 115;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #level:color_icon_button {
+          width: 130px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.avr_level";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 110;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #most_use:empty {
+          width: 160px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.most_use";
+          }
+        }
+      }
+
+      #data:scroll_view {
+        width: 1600px;
+        height: 860px;
+        y: 56px;
+
+        speed: 100;
+
+        bar_width: 4;
+        bar_padding: {
+          bottom: 12px;
+        }
+        bar: {
+          source: "asset/base/sprite/white";
+          color: #37d5b3ff;
+
+          hover: {
+          color: #ecfbf8ff;
+          }
+        }
+
+        back: {
+          source: "asset/base/sprite/white";
+          color: #4a4c56ff;
+        }
+
+        #contents:empty {
+          width: 461px;
+          height: 1500px;
+          
+          child_type: TopToBottom {
+            spacing: 4px;
+          }
+        }
+      }
+    }
+
+    #champion:empty {
+      width: 1600px;
+      height: 916px;
+
+      #header:color {
+        width: 1600px;
+        height: 56px;
+        color: #0f1016ff;
+        rounding: Individual {
+          top_left: 12;
+          top_right: 12;
+        }
+
+        child_type: LeftToRight {
+          spacing: 0px;
+        }
+
+        #rank:empty {
+          width: 68px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?item_stats.rank";
+          }
+        }
+
+        #champion_name:color_icon_button {
+          width: 248px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.champion_name";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 228;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #tier:color_icon_button {
+          width: 64px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 6px;
+            y: 18px;
+
+            width: 34px;
+            height: 20px;
+            align_x: Left;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.tier";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 44;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #win:color_icon_button {
+          width: 110px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?standing.win";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 90;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #lose:color_icon_button {
+          width: 110px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?standing.lose";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 90;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #win_rate:color_icon_button {
+          width: 130px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?common.win_rate";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 110;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #pick_count:color_icon_button {
+          width: 140px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.pick_count";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 120;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #ban_count:color_icon_button {
+          width: 140px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.ban_count";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 120;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #banpick_rate:color_icon_button {
+          width: 140px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.banpick_rate";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 120;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #deal:color_icon_button {
+          width: 150px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.dealing";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 120;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #tank:color_icon_button {
+          width: 150px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.tanking";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 120;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #heal:color_icon_button {
+          width: 150px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.healing";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 120;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+      }
+
+      #data:scroll_view {
+        width: 1600px;
+        height: 860px;
+        y: 56px;
+
+        speed: 100;
+
+        bar_width: 4;
+        bar_padding: {
+          bottom: 12px;
+        }
+        bar: {
+          source: "asset/base/sprite/white";
+          color: #37d5b3ff;
+
+          hover: {
+          color: #ecfbf8ff;
+          }
+        }
+
+        back: {
+          source: "asset/base/sprite/white";
+          color: #4a4c56ff;
+        }
+
+        #contents:empty {
+          width: 461px;
+          height: 1500px;
+
+          child_type: TopToBottom {
+            spacing: 4px;
+          }
+        }
+      }
+    }
+
+    #team:empty {
+      width: 1600px;
+      height: 916px;
+
+      visible: false;
+
+      #header:color {
+        width: 1600px;
+        height: 56px;
+        color: #0f1016ff;
+        rounding: Individual {
+          top_left: 12;
+          top_right: 12;
+        }
+
+        child_type: LeftToRight {
+          spacing: 0px;
+        }
+
+        #rank:empty {
+          width: 80px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?item_stats.rank";
+          }
+        }
+
+        #team_name:empty {
+          width: 230px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.team_name";
+          }
+        }
+
+        #win:color_icon_button {
+          width: 100px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?standing.win";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 80;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #lose:color_icon_button {
+          width: 100px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?standing.lose";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 80;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #set_diff:color_icon_button {
+          width: 110px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.set_diff";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 90;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #win_rate:color_icon_button {
+          width: 120px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?common.win_rate";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 100;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #kda:color_icon_button {
+          width: 100px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.kda";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 80;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #kill:color_icon_button {
+          width: 100px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.kill";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 80;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #death:color_icon_button {
+          width: 100px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.death";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 80;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #assist:color_icon_button {
+          width: 100px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.assist";
+          }
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 80;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #c2c6ceff;
+          }
+
+          hover: {
+            icon: {
+              color: #e8e8e8ff;
+            }
+          }
+        }
+
+        #most_pick:empty {
+          width: 168px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.most_pick";
+          }
+        }
+
+        #most_ban:empty {
+          width: 168px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.most_ban";
+          }
+        }
+
+        #detail:empty {
+          width: 124px;
+          height: 56px;
+        }
+      }
+
+      #data:empty {
+        width: 1600px;
+        height: 860px;
+        y: 56px;
+
+        #contents:empty {
+          width: 1600px;
+          height: 860px;
+
+          child_type: TopToBottom {
+            spacing: 0px;
+          }
+        }
+      }
+    }
+
+    #item_stats:empty {
+      width: 1600px;
+      height: 916px;
+
+      visible: false;
+
+      #header:color {
+        width: 1600px;
+        height: 56px;
+        color: #0f1016ff;
+
+        rounding: Individual {
+          top_left: 12;
+          top_right: 12;
+        }
+
+        child_type: LeftToRight {
+          spacing: 0px;
+        }
+
+        #rank:empty {
+          width: 68px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?item_stats.rank";
+          }
+        }
+
+        #item_name:color_icon_button {
+          width: 420px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?common.item";
+          }
+
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 400;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #00000000;
+          }
+
+          hover: {
+            icon: {
+              color: #c2c6ceff;
+            }
+          }
+        }
+
+        #games:color_icon_button {
+          width: 140px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?statistics.pick_count";
+          }
+
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 120;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #00000000;
+          }
+
+          hover: {
+            icon: {
+              color: #c2c6ceff;
+            }
+          }
+        }
+
+        #win:color_icon_button {
+          width: 130px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?standing.win";
+          }
+
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 110;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #00000000;
+          }
+
+          hover: {
+            icon: {
+              color: #c2c6ceff;
+            }
+          }
+        }
+
+        #lose:color_icon_button {
+          width: 130px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?standing.lose";
+          }
+
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 110;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #00000000;
+          }
+
+          hover: {
+            icon: {
+              color: #c2c6ceff;
+            }
+          }
+        }
+
+        #win_rate:color_icon_button {
+          width: 150px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?common.win_rate";
+          }
+
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 130;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #00000000;
+          }
+
+          hover: {
+            icon: {
+              color: #c2c6ceff;
+            }
+          }
+        }
+
+        #first_rate:color_icon_button {
+          width: 160px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?item_stats.first_item";
+          }
+
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 140;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #00000000;
+          }
+
+          hover: {
+            icon: {
+              color: #c2c6ceff;
+            }
+          }
+        }
+
+        #most_used:empty {
+          width: 160px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?item_stats.purchased_on";
+          }
+        }
+      }
+
+      #status:label {
+        @"asset/base/style/main#label";
+        anchor_x: 1;
+        pivot_x: 1;
+        x: -21px;
+        y: 18px;
+
+        width: 520px;
+        height: 20px;
+        align_x: Right;
+        align_y: Center;
+
+        size: 14;
+        color: #a3a9b6ff;
+        text: "";
+      }
+
+      #data:scroll_view {
+        width: 1600px;
+        height: 860px;
+        y: 56px;
+
+        speed: 100;
+
+        bar_width: 4;
+        bar_padding: {
+          bottom: 12px;
+        }
+        bar: {
+          source: "asset/base/sprite/white";
+          color: #37d5b3ff;
+
+          hover: {
+            color: #ecfbf8ff;
+          }
+        }
+
+        back: {
+          source: "asset/base/sprite/white";
+          color: #4a4c56ff;
+        }
+
+        #contents:empty {
+          width: 1198px;
+          height: 0px;
+
+          child_type: TopToBottom {
+            spacing: 4px;
+          }
+        }
+      }
+    }
+  }
+
+
+  #item_category:color_icon_button {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -194px;
+    width: 172px;
+    height: 40px;
+
+    visible: false;
+
+    btn: {
+      color: #4a4c56ff;
+      back_color: #1d1f2cff;
+      stroke: 1;
+
+      rounding: Uniform {
+        rounding: 8;
+      }
+    }
+
+    icon: {
+      source: "asset/base/ui/icons/dropdown";
+
+      rect: {
+        x: 143;
+        y: 17.47;
+        w: 8.78;
+        h: 5.06;
+      }
+
+      color: #a5a5abff;
+    }
+
+    hover: {
+      btn: {
+        color: #a5a5abff;
+        back_color: #1d1f2cff;
+        stroke: 1;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+      }
+
+      icon: {
+        color: #e8e8e8ff;
+      }
+    }
+
+    #text:label {
+      @"asset/base/style/main#label";
+      x: 4px;
+      y: 6px;
+
+      width: 120px;
+      height: 28px;
+      align_y: Center;
+
+      size: 18;
+      text: "#asset/base/text/ui?item_stats.cat_all";
+    }
+  }
+
+  #item_patch:color_icon_button {
+    anchor_x: 1;
+    pivot_x: 1;
+    width: 186px;
+    height: 40px;
+
+    visible: false;
+
+    btn: {
+      color: #4a4c56ff;
+      back_color: #1d1f2cff;
+      stroke: 1;
+
+      rounding: Uniform {
+        rounding: 8;
+      }
+    }
+
+    icon: {
+      source: "asset/base/ui/icons/dropdown";
+
+      rect: {
+        x: 157;
+        y: 17.47;
+        w: 8.78;
+        h: 5.06;
+      }
+
+      color: #a5a5abff;
+    }
+
+    hover: {
+      btn: {
+        color: #a5a5abff;
+        back_color: #1d1f2cff;
+        stroke: 1;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+      }
+
+      icon: {
+        color: #e8e8e8ff;
+      }
+    }
+
+    #text:label {
+      @"asset/base/style/main#label";
+      x: 4px;
+      y: 6px;
+
+      width: 134px;
+      height: 28px;
+      align_y: Center;
+
+      size: 18;
+      text: "#asset/base/text/ui?item_stats.cat_all";
+    }
+  }
+
+
+  #item_tier:color_icon_button {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -374px;
+    width: 160px;
+    height: 40px;
+
+    visible: false;
+
+    btn: {
+      color: #4a4c56ff;
+      back_color: #1d1f2cff;
+      stroke: 1;
+
+      rounding: Uniform {
+        rounding: 8;
+      }
+    }
+
+    icon: {
+      source: "asset/base/ui/icons/dropdown";
+
+      rect: {
+        x: 131;
+        y: 17.47;
+        w: 8.78;
+        h: 5.06;
+      }
+
+      color: #a5a5abff;
+    }
+
+    hover: {
+      btn: {
+        color: #a5a5abff;
+        back_color: #1d1f2cff;
+        stroke: 1;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+      }
+
+      icon: {
+        color: #e8e8e8ff;
+      }
+    }
+
+    #text:label {
+      @"asset/base/style/main#label";
+      x: 4px;
+      y: 6px;
+
+      width: 108px;
+      height: 28px;
+      align_y: Center;
+
+      size: 18;
+      text: "#asset/base/text/ui?item_stats.tier_radiant";
+    }
+  }
+
+  #item_lane:color_icon_button {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -542px;
+    width: 104px;
+    height: 40px;
+
+    visible: false;
+
+    btn: {
+      color: #4a4c56ff;
+      back_color: #1d1f2cff;
+      stroke: 1;
+
+      rounding: Uniform {
+        rounding: 8;
+      }
+    }
+
+    icon: {
+      source: "asset/base/ui/icons/dropdown";
+
+      rect: {
+        x: 75;
+        y: 17.47;
+        w: 8.78;
+        h: 5.06;
+      }
+
+      color: #a5a5abff;
+    }
+
+    hover: {
+      btn: {
+        color: #a5a5abff;
+        back_color: #1d1f2cff;
+        stroke: 1;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+      }
+
+      icon: {
+        color: #e8e8e8ff;
+      }
+    }
+
+    #icon:image {
+      x: 8px;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+      width: 18px;
+      height: 18px;
+
+      visible: false;
+      ignore_event: true;
+      color: #e8e8e8ff;
+    }
+
+    #text:label {
+      @"asset/base/style/main#label";
+      x: 4px;
+      y: 6px;
+
+      width: 52px;
+      height: 28px;
+      align_y: Center;
+
+      size: 18;
+      text: "#asset/base/text/ui?item_stats.cat_all";
+    }
+  }
+
+  #item_category_catch:color_icon_button {
+    visible: false;
+
+    width: 100%;
+    height: 100%;
+
+    btn: {
+      color: #00000000;
+    }
+  }
+
+  #item_category_list:color {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -194px;
+    y: 44px;
+
+    width: 172px;
+    height: 260px;
+
+    visible: false;
+
+    color: #4a4c56ff;
+    back_color: #1d1f2cff;
+    stroke: 1;
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+      #cat0:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 164px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_all";
+      }
+
+      #cat1:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 164px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_assassin";
+      }
+
+      #cat2:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 164px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_fighter";
+      }
+
+      #cat3:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 164px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_marksman";
+      }
+
+      #cat4:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 164px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_mage";
+      }
+
+      #cat5:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 164px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_tank";
+      }
+
+      #cat6:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 164px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_support";
+      }
+  }
+  #item_patch_list:color {
+    anchor_x: 1;
+    pivot_x: 1;
+    y: 44px;
+
+    width: 186px;
+    height: 440px;
+
+    visible: false;
+
+    color: #4a4c56ff;
+    back_color: #1d1f2cff;
+    stroke: 1;
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+      #pat0:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat1:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat2:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat3:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat4:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat5:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat6:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat7:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat8:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat9:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat10:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+
+      #pat11:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 178px;
+        height: 36px;
+
+        visible: false;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "";
+      }
+  }
+  #item_tier_list:color {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -374px;
+    y: 44px;
+
+    width: 160px;
+    height: 224px;
+
+    visible: false;
+
+    color: #4a4c56ff;
+    back_color: #1d1f2cff;
+    stroke: 1;
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+      #tier0:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 152px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_all";
+      }
+
+      #tier1:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 152px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.tier_starter";
+      }
+
+      #tier2:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 152px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.tier_basic";
+      }
+
+      #tier3:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 152px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.tier_epic";
+      }
+
+      #tier4:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 152px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.tier_legendary";
+      }
+
+      #tier5:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 152px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.tier_radiant";
+      }
+  }
+
+  #item_lane_list:color {
+    anchor_x: 1;
+    pivot_x: 1;
+    x: -542px;
+    y: 44px;
+
+    width: 150px;
+    height: 224px;
+
+    visible: false;
+
+    color: #4a4c56ff;
+    back_color: #1d1f2cff;
+    stroke: 1;
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+      #lane0:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.cat_all";
+      }
+
+      #lane1:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_top";
+      }
+
+      #lane2:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_jungle";
+      }
+
+      #lane3:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_mid";
+      }
+
+      #lane4:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_bottom";
+      }
+
+      #lane5:color_selectable {
+        @"asset/base/style/main#strategy_option";
+        width: 142px;
+        height: 36px;
+
+        label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        selected_label: {
+          size: 18;
+          align_x: Left;
+        }
+
+        text: "#asset/base/text/ui?item_stats.lane_support";
+      }
+  }
+
+
+  #popup_container:empty {
+    z: 1000;
+    visible: false;
+    width: 1920px;
+    height: 1080px;
+    x: -296px;
+    y: -24px;
+
+    #fade:color {
+      width: 100%;
+      height: 100%;
+      color: #60708540;
+    }
+
+    #athlete_popups:empty {
+      width: 100%;
+      height: 100%;
+    }
+
+    #champion_tier_popups:empty {
+      width: 100%;
+      height: 100%;
+    }
+
+    #modal_content:empty {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+}

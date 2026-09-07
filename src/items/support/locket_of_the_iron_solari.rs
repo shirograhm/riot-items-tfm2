@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of_i32, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS,
-    DISTANCE_UNITS_PER_RANGE,
+    apply_config, percent_of, percent_of_i32, ticks, ItemMeta, AURA_DURATION_TICKS,
+    AURA_REFRESH_TICKS, DISTANCE_UNITS_PER_RANGE,
 };
 
 #[derive(Clone, Debug)]
@@ -20,7 +20,14 @@ pub struct LocketOfTheIronSolari {
     effect_bonus_hp_regen: i32,
     effect_minion_percent: f64,
     effect_max_distance: usize,
+    effect_hp_percent_threshold: f64,
+    effect_min_shield: usize,
+    effect_max_shield: usize,
+    effect_shield_seconds: f64,
+    effect_cooldown_seconds: f64,
+    // Non-vital stats (internals)
     refresh_cooldown: usize,
+    devotion_cooldown: usize,
 }
 
 impl LocketOfTheIronSolari {
@@ -42,10 +49,20 @@ impl LocketOfTheIronSolari {
             effect_bonus_hp_regen: 3,
             effect_minion_percent: 150.0,
             effect_max_distance: 100,
+            effect_hp_percent_threshold: 50.0,
+            effect_min_shield: 170,
+            effect_max_shield: 225,
+            effect_shield_seconds: 2.5,
+            effect_cooldown_seconds: 90.0,
+            // Non-vital stats (internals)
             refresh_cooldown: 0,
+            devotion_cooldown: 0,
         }
     }
 
+    /// Radiant buys a bigger stat line, a second aura instance and a bigger
+    /// Devotion shield — but not a stronger Legion: the resistances it hands out
+    /// are the base item's.
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant(
@@ -58,9 +75,8 @@ impl LocketOfTheIronSolari {
             defence: 75,
             magic_resistance: 100,
             skill_cooldown_mult: 15,
-            effect_bonus_defence: 10,
-            effect_bonus_magic_resistance: 20,
-            effect_bonus_hp_regen: 4,
+            effect_min_shield: 295,
+            effect_max_shield: 350,
             ..Self::base()
         }
     }
@@ -87,10 +103,79 @@ impl LocketOfTheIronSolari {
                 effect_bonus_magic_resistance,
                 effect_bonus_hp_regen,
                 effect_minion_percent,
-                effect_max_distance
+                effect_max_distance,
+                effect_hp_percent_threshold,
+                effect_min_shield,
+                effect_max_shield,
+                effect_shield_seconds,
+                effect_cooldown_seconds
             ]
         );
         self
+    }
+
+    /// Level 1 pays `effect_min_shield` and level 12 pays `effect_max_shield`,
+    /// the same eleven-step ramp `rite_of_ruin` uses for Salvage the Wreckage.
+    fn shield_amount(&self, level: usize) -> usize {
+        let per_level =
+            ((self.effect_max_shield - self.effect_min_shield) as f64 / 11.0).round() as usize;
+        self.effect_min_shield + level.saturating_sub(1) * per_level
+    }
+
+    /// Devotion. The host has already resolved the hit by the time `on_damaged`
+    /// runs, so "falling below the threshold" is read after the fact: the shield
+    /// lands on the tick the carrier crosses under it, the way `steraks_gage`
+    /// reads its own Lifeline.
+    ///
+    /// The cooldown is an item-side tick counter rather than a second buff on
+    /// the carrier: `has_buff` cannot see a buff for its first few ticks, and a
+    /// gate that blind is beatable by a fast second hit — 90 seconds of uptime
+    /// is too much to hand out twice for one dip below half health.
+    fn cast_devotion(&mut self, ctx: &mut StableSim<'_>, caster: usize) {
+        if self.devotion_cooldown > 0 {
+            return;
+        }
+        let Some(caster_ref) = ctx.get_entity(caster) else {
+            return;
+        };
+        let (current_hp, max_hp) = caster_ref.hp();
+        if current_hp > percent_of(max_hp, self.effect_hp_percent_threshold) {
+            return;
+        }
+        let caster_team = caster_ref.team();
+        let shield = self.shield_amount(caster_ref.level());
+        if shield == 0 {
+            return;
+        }
+
+        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let range_sq = range * range;
+
+        // Champions only — Legion is the half of the item that looks after
+        // minions, and Devotion says "allied champions".
+        let mut targets = vec![caster];
+        for index in 0..ctx.champion_count() {
+            let id = ctx.champion_id_at(index);
+            if id == caster {
+                continue;
+            }
+            let Some(ally_ref) = ctx.get_entity(id) else {
+                continue;
+            };
+            if !ally_ref.is_alive() || ally_ref.team() != caster_team {
+                continue;
+            }
+            if ctx.distance_sq(caster, id) > range_sq {
+                continue;
+            }
+            targets.push(id);
+        }
+
+        let duration = ticks(self.effect_shield_seconds);
+        for id in targets {
+            ctx.entity_add_shield(id, shield, duration);
+        }
+        self.devotion_cooldown = ticks(self.effect_cooldown_seconds);
     }
 
     fn apply_aura(&mut self, ctx: &mut StableSim<'_>, player: usize) {
@@ -205,11 +290,27 @@ impl StableItem for LocketOfTheIronSolari {
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.refresh_cooldown = 0;
+        self.devotion_cooldown = 0;
         self.apply_aura(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.devotion_cooldown = self.devotion_cooldown.saturating_sub(1);
         self.apply_aura(ctx, player);
+    }
+
+    fn on_damaged(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _player: usize,
+        entity: usize,
+        _attacker: usize,
+        _damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
+    ) {
+        self.cast_devotion(ctx, entity);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
@@ -218,6 +319,7 @@ impl StableItem for LocketOfTheIronSolari {
             ItemTagV1::Defense,
             ItemTagV1::MagicResistance,
             ItemTagV1::CooltimeReduce,
+            ItemTagV1::Shield,
         ]
     }
 
