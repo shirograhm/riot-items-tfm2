@@ -26,7 +26,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 #### Tier 2
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Fated Ashes** | 500G | +50 AP | Inflame: Landing an Ability on an enemy burns them for 15 magic damage over 3 seconds. This effect is 400% effective against minions and monsters. |
+| **Fated Ashes** | 500G | +55 AP | Inflame: Landing an Ability on an enemy burns them for 15 magic damage over 3 seconds. This effect is 400% effective against minions and monsters. |
 
 #### Tier 3
 | Item | Cost | Stats | Passive |
