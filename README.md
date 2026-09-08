@@ -14,6 +14,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
 ##### Item Scroller Mod Add-On
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739984076
+https://github.com/shirograhm/item-scroller-tfm2/releases
 
 ##### Gold Efficiency Stats - For Base Values
 https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWpGO02nyy00m7mcyySuxhGvUaU8HGrvljAChaHQx2n_yO5V8S/pubhtml
