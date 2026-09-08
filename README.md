@@ -15,6 +15,15 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 ##### Pregame Item Builds Editor
 <img width="2024" height="1037" alt="image" src="https://github.com/user-attachments/assets/751df47e-8ed1-43a1-ac9c-168e42f15962" />
 
+##### Instructions  
+If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
+
+1. Save your current game and go back to the main menu.
+2. Click Load -> Load on the save you just made. It will probably say "No Info" under mods.
+2. Once launched, progress once and save again. Then go back to the main menu.
+3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
+4. Play as you would normally!
+
 
 ### Added Items
 
@@ -198,15 +207,6 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Wit's End** | 2000G | +65% AS<br>+130 MR<br>+30% Tenacity | Fray: Basic attacks deal 45 bonus magic damage. |
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
 | **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+55 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force and 10% Omnivamp to all allied champions within 100 range. |
-
-Instructions
-If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
-
-1. Save your current game and go back to the main menu.
-2. Click Load -> Load on the save you just made. It will probably say "No Info" under mods.
-2. Once launched, progress once and save again. Then go back to the main menu.
-3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
-4. Play as you would normally!
 
 ### Base Item Reskins
 
