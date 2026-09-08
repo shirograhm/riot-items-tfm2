@@ -40,7 +40,8 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Forbidden Idol** | 650G | +200 HP<br>+20 AP<br>+10% CDR | — |
 | **Glacial Buckler** | 800G | +50 Armor<br>+5% CDR | — |
 | **Haunting Guise** | 950G | +200 HP<br>+60 AP | Madness: For each second in combat with enemy champions, deal 2% bonus damage, stacking up to 3 times for a total of 6%. |
-| **Hearthbound Axe** | 950G | +30 AD<br>+20% AS | — |
+| **Hearthbound Axe** | 950G | +30 AD<br>+20% AS | — |
+
 | **Hextech Alternator** | 800G | +100 AP | Revved: Damaging an enemy champion deals 65 bonus magic damage (40 second cooldown). |
 | **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
@@ -198,6 +199,14 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Radiant Yun Tal Wildarrows** | 2200G | +80 AD<br>+50% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
 | **Radiant Zeke's Herald** | 1500G | +500 HP<br>+5 HP Regen<br>+55 AP<br>+15% CDR | Aura: Grant 50 Adaptive Force and 10% Omnivamp to all allied champions within 100 range. |
 
+Instructions
+If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
+
+1. Save your current game and go back to the main menu.
+2. Click Load -> Load on the save you just made. It will probably say "No Info" under mods.
+2. Once launched, progress once and save again. Then go back to the main menu.
+3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
+4. Play as you would normally!
 
 ### Base Item Reskins
 
