@@ -2351,6 +2351,9 @@ static PLAYER_TEAM_ID: AtomicU64 = AtomicU64::new(u64::MAX); // u64::MAX = not c
                                                              //   champ len  0x418 -> 0x478     items len 0x448 -> 0x4a8     build ptr 0x488 -> 0x4e8     team   0x810 -> 0x930
                                                              //                                                              build len 0x490 -> 0x4f0     gold   0x878 -> 0x998
                                                              //   read guard 0x8a8 -> 0x9c8     stride    0x8c0 -> 0x9e0
+                                                             //   position   0x8b0 -> 0x9c0  (dword, sits 8 below the read guard in both layouts)
+                                                             // The position row was missing from this table until 2026-09-08, and the helpers that read it were still on
+                                                             // 0x8b0 that whole time — see `O_ATHLETE_POS`, which is now the only place any of these are written.
                                                              //
                                                              // Every one of these comes from a function established to walk the athlete *by call contract* and then shown to
                                                              // be a clean recompile — same .pdata size, same instruction count, zero mnemonic mismatches — so the offsets are
@@ -2375,6 +2378,53 @@ static PLAYER_TEAM_ID: AtomicU64 = AtomicU64::new(u64::MAX); // u64::MAX = not c
 // clean (0x18c84b0 -> 0x191e560, zero differing displacements) and in the new body still reads the id as
 // `mov r14,[rdx+0x920]` at 0x191e58d, immediately before `add rbx,0x9e0` (= ATH_STRIDE) at 0x191e5aa.
 const O_ATHLETE_ID: usize = 0x920; // 0.5.8 (0.5.7 was 0x920, 0.5.4 0x800, 0.5.3 0x810)
+
+/// The rest of the athlete fields this module reads, as constants rather than
+/// literals — which is the whole point of them existing.
+///
+/// # Why they were added (2026-09-08)
+///
+/// The 0.5.5 layout migration above updated the buy detour, which spells these
+/// offsets out inline, and **missed every helper below it**: `athlete_lineup_at`,
+/// `ath_champ_name`, `ath_side_champ`, `build_lineup_ctx` and `valid_ps_elem`
+/// were still reading the 0.5.4/0.5.3 layout — champion at `0x420/0x428`, team
+/// at `0x820`, position at `0x8b0` — three game versions later. They fail
+/// silently: `athlete_lineup_at` validates `team <= 1` against whatever now sits
+/// at `0x820`, so the roster scan finds bogus bounds and `build_lineup_ctx`
+/// hands `compute_auto_4th_id` a lineup of `9999`s. The auto 4th-item pick has
+/// been scoring on that since 0.5.5.
+///
+/// A named constant is what stops the next migration repeating it: one place to
+/// change, and a grep for the name finds every reader.
+///
+/// # Measured, on the shipped 0.5.8 executable
+///
+/// One site carries all four fields — id, team, position, champion — in eight
+/// instructions (`0x1818df0 +0xf1`, base `r13`):
+///
+/// ```text
+///   movdqu xmm6, [r13+0x920]        id, as the 0x920/0x928 pair
+///   mov    rbx,  [r13+0x930]        team
+///   mov    eax,  dword [r13+0x9c0]  position
+///   mov    rdi,  [r13+0x478]        champion name len
+///   mov    r15,  [r13+0x470]        champion name ptr
+/// ```
+///
+/// Across the whole image: of every function reading both `+0x920` and `+0x930`
+/// through one non-stack base, `+0x9c0` is the *only* dword field any of them
+/// also reads (9 sites in 9 functions; the runner-up has 1). `+0x470`/`+0x478`
+/// dominate the champion String range at 11 and 14 sites. And the 0.5.5 note
+/// above independently pins it: it recorded `read guard 0x8a8 -> 0x9c8`, and the
+/// position sits 8 below the guard in both layouts (`0x8b0` under `0x8a8`,
+/// `0x9c0` under `0x9c8`) — the guard was written down and the position beside
+/// it was not, which is how it went missing.
+///
+/// The buy detour still writes these as literals; it is the hottest path in the
+/// mod and its values are correct, so it was left alone.
+const O_ATHLETE_CHAMP_PTR: usize = 0x470; // 0.5.8 (0.5.4 was 0x410, 0.5.3 0x420)
+const O_ATHLETE_CHAMP_LEN: usize = 0x478; // 0.5.8 (0.5.4 was 0x418, 0.5.3 0x428)
+const O_ATHLETE_TEAM: usize = 0x930; // 0.5.8 (0.5.4 was 0x810, 0.5.3 0x820)
+const O_ATHLETE_POS: usize = 0x9c0; // dword. 0.5.8 (0.5.4 was 0x8b0)
 static MY_ATHLETES: AtomicPtr<std::collections::HashSet<u64>> =
     AtomicPtr::new(core::ptr::null_mut());
 static MY_ATH_PREV: AtomicPtr<std::collections::HashSet<u64>> =
@@ -2435,7 +2485,7 @@ unsafe fn is_my_athlete(athlete: usize) -> Option<bool> {
     //   solved by ignoring 0 in comp-test context + the team-0 acceptance rule; see the mod's implementation notes, section 12).
     Some((*p).contains(&aid))
 }
-// * buy-path team gate: a sim athlete has no global team_id path, only side (+0x820, 0/1) (ghidra-re). Which side the player is on
+// * buy-path team gate: a sim athlete has no global team_id path, only side (`O_ATHLETE_TEAM`, 0/1) (ghidra-re). Which side the player is on
 //   = decided by majority vote over the side holding more user-designated/PT champions. Reset per match (before_management_tick). Enemy team = skip designation.
 static PLAYER_SIDE: AtomicU64 = AtomicU64::new(u64::MAX); // 0/1, u64::MAX = undecided (fallback = apply)
 static D_WROTE: AtomicU64 = AtomicU64::new(0); // an actual build[si] write happened
@@ -2497,7 +2547,7 @@ const EXTEND_BUILD: bool = false; // extending the candidate build is useless be
                                   //   preference.
 const BUILD_EXT_DIAG: bool = false; // * OFF again 2026-08-12: the 0.5.5 in-match icon is fixed and confirmed in game. It was this report that found it, in four steps — buy path healthy, UI root never resolving, the path route landing on the right node, and finally the written value being wrong. Turn it back on before guessing at anything in this area again.
                                     // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
-const BUY_ORDER_DIAG: bool = false;
+const BUY_ORDER_DIAG: bool = false; // Not needed: the question it was going to answer (can the buy path reach slot 0?) is moot now that `SPAWN_INJECT_ENABLED` sets slot 0 before any purchase. Also writes a .txt into the mod folder, which the user asked not to have.
 // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
 // * Cause identified and fixed (comp-test injection = the missing team gate bypass; all 9 launcher retaddrs confirmed) -> OFF in production.
 //   Set true to re-investigate = the measured list is written to launcher_retaddr.txt (it was decisive in tracking the cause down).
@@ -2892,12 +2942,34 @@ fn install_seed_ctor_hook() {
 //     (1) prologue: 7 push + mov eax + chkstk -> **8 push (12B) + sub rsp,0xf8** (no chkstk) => ORIG_LEN=12 and no rax preservation needed (generic works).
 //     (2) argument contract: r8 = &descriptor -> **r8/r9 = the descriptor's two-word pair** (the caller switched to calling the builder indirectly through the global function pointer 0x144531340).
 //        rcx=Game and rdx=athlete stack copy (0x8b8) are unchanged. 15 direct callers = it remains a single choke point.
-const SPAWN_RVA: usize = 0xebfe50; // 0.5.3 (0.5.2 was 0x1d9e0e0, 0.5.1 was 0x2060280). WARNING: SPAWN_INJECT_ENABLED=false, so no detour is installed = no effect.
+// * 0.5.8 re-derivation (2026-09-08) — the gate is ON again, so this address is live.
+//   exe2exe `match` is useless here: the body changed at 0.5.3 -> 0.5.4 and gets 0 hits at every length,
+//   strict and `--loose` alike. Derived structurally instead, and the filter was **validated against the
+//   known 0.5.3 answer before being trusted**: "8-push prologue + `sub rsp,imm32`, size 600..3000, body
+//   containing all four Game displacements 0x1dc0/0x1dc8/0x1dd0/0x1dd8" returns **exactly one** function in
+//   0.5.3 — 0xebfe50, size 1202, frame 0xf8, 15 direct callers, matching every number recorded below — and
+//   **exactly one** in 0.5.8: 0x1819300, size 1150, frame 0xf8.
+//   The pair is then confirmed instruction-for-instruction over the whole head: every instruction sits at the
+//   same offset with the same mnemonic through +0xcd, and only four operands differ, each of them a struct
+//   field that independently moved:
+//     [rdx+0x888] -> [rdx+0x998]   athlete **gold** — exactly the move the 0.5.5 layout table records
+//     [rdx+0x598] -> [rdx+0x5e8]   athlete field, the same low-range shift
+//     [r15+0x160] -> [r15+0x188]   provider vtable slot
+//     plus relocated branch/call targets.
+//   Two of those four *are* the argument contract: `rdx` is written at the athlete's own gold offset, so
+//   **rdx = athlete** is proven rather than assumed, and `[rcx+0x2060]`/`[rcx+0x1dc0]`/`[rcx+0x1dc8]` keep
+//   **rcx = Game**. The 0.5.3 warning (2) — r8/r9 becoming the descriptor's two-word pair — is moot for this
+//   mod: `cap_spawn` reads only saved[0] (rcx) and saved[1] (rdx) and never touches r8/r9. Warning (1) is
+//   satisfied too: the prologue is still 8 push + `sub rsp,0xf8`, byte-identical, so SPAWN_PROLOGUE and
+//   SPAWN_ORIG_LEN=12 needed no edit and the generic detour still suffices.
+//   Direct callers fell 15 -> 2, which is the documented trend, not a mismatch: 0.5.3 already noted the
+//   callers moving to an indirect call through a global function pointer.
+const SPAWN_RVA: usize = 0x1819300; // 0.5.8 (0.5.3 was 0xebfe50, 0.5.2 0x1d9e0e0, 0.5.1 0x2060280).
 const SPAWN_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
-]; // 0.5.3: 8 push (12B) + sub rsp,0xf8 (0.5.2 was 7 push + mov eax,0x4d20)
-const SPAWN_ORIG_LEN: usize = 12; // 0.5.3: relocate the 8 pushes only (12B = exactly an instruction boundary) => install_detour_r11 is unnecessary on re-enable (generic suffices).
-const SPAWN_INJECT_ENABLED: bool = false; // * keep the gate OFF (0.5.3 confirmed the **argument contract really did change** = (2) above - review before wiring it up). History for 0.5.2: gate OFF (logic change unconfirmed) - 0.5.1 had true. ~~resumed (07-19)~~ the sealing reason "no catalog at spawn time" turned out to be an offset error.
+]; // 0.5.8: unchanged since 0.5.3 - 8 push (12B) + sub rsp,0xf8, byte-identical at the new address (0.5.2 was 7 push + mov eax,0x4d20)
+const SPAWN_ORIG_LEN: usize = 12; // 0.5.8: unchanged - relocate the 8 pushes only (12B = exactly an instruction boundary) => install_detour_r11 is unnecessary on re-enable (generic suffices).
+const SPAWN_INJECT_ENABLED: bool = true; // * ON (2026-09-08), confirmed in game: with this closed the first item was always the engine's pick, and with it open all four slots hold the configured build. ON after the 0.5.8 re-derivation above re-confirmed both sealing reasons: the prologue is unchanged (warning 1) and the r8/r9 contract change (warning 2) never applied to `cap_spawn`, which reads only rcx/rdx. This is the only path that can set build slot 0 under `own_team_only` — see `build_config::own_team_only_enabled`. History: OFF from 0.5.2 (logic change unconfirmed) through 0.5.7; 0.5.1 had true. ~~resumed (07-19)~~ the sealing reason "no catalog at spawn time" turned out to be an offset error.
                                           //   The old 0x1fe8/0x1ff0 = a neighbouring empty Vec (always len=0) -> the real catalog is Game+0x1fd0/+0x1fd8 (ghidra-re confirmed).
                                           //   The v15 team decision (athlete_id membership) is verified (aid valid 10/10, my team 5/10 correct) -> (4) injection expected to complete.
 static SPAWN_INSTALLED: AtomicU64 = AtomicU64::new(0);
@@ -2925,14 +2997,31 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         if provider < 0x10000 || provider >= 0x0000_8000_0000_0000 {
             return;
         }
+        // Whether this athlete belongs to the match currently on screen.
+        //
+        // This used to `return` here, so nothing was injected unless the match
+        // was being watched. That was right when the team decision below could
+        // fall back on scene state — a scene answer is worthless off-screen —
+        // but it is too strict for the athlete-id gate, which is scene-free by
+        // construction and is the whole reason v15 exists. Under
+        // `own_team_only` the only athletes this path ever writes to are the
+        // player's own five, and whether the player happens to be watching does
+        // not change whose they are. Keeping the old behaviour would have left
+        // slot 0 correct in spectated matches and wrong in every simulated one,
+        // which is a worse bug than the one being fixed because it looks
+        // intermittent.
+        //
+        // So it is now a *fact* rather than a gate: definite roster membership
+        // is honoured either way, and only the uncertain scene fallback still
+        // requires it. See the team decision below.
         let lseed = LIVE_SEED.load(Ordering::Relaxed);
         let seed_ok =
             lseed != 0 && safe_read_u64(provider as usize + O_PROVIDER_SEED) == Some(lseed);
         let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
-        if !(seed_ok || (rp != 0 && provider == rp)) {
-            return;
+        let rendered = seed_ok || (rp != 0 && provider == rp);
+        if rendered {
+            SPAWN_LIVE_N.fetch_add(1, Ordering::Relaxed);
         }
-        SPAWN_LIVE_N.fetch_add(1, Ordering::Relaxed);
         // * Diagnostic (v15 prerequisite check): is athlete_id (+0x810) already filled in at spawn time? If it is 0 this path is impossible.
         if readable(athlete + O_ATHLETE_ID, 8) {
             let aid = rd_u64(athlete + O_ATHLETE_ID);
@@ -2979,9 +3068,29 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             Some(true) => true,
             Some(false) => return, // definitely another team = do not inject
             None => {
-                // roster/aid unavailable -> scene fallback (if any)
-                let side = if readable(athlete + 0x930, 8) {
-                    rd_u64(athlete + 0x930)
+                // Roster/aid unavailable -> scene fallback, which is only
+                // meaningful for the match actually on screen. Off-screen there
+                // is no scene side to compare against, so stay undecided and
+                // leave it to the buy path (slots 1/2), exactly as before:
+                // avoiding enemy-team contamination beats coverage.
+                //
+                // ** Observed cost of that choice (2026-09-08): slot 0 can be
+                // wrong for the *first* match of a session and correct from the
+                // second on. `MY_ATHLETES` is published from the Team record's
+                // `last_starting` on the roster poll in `tactics_post_update`,
+                // so until that first publish lands `is_my_athlete` answers
+                // `None` and this arm declines — and the buy path, which does
+                // cover slots 1/2, is structurally too late for slot 0. It is
+                // the safe failure, not a bug to paper over: guessing here puts
+                // the player's build on the enemy. If it needs tightening, the
+                // fix belongs at the publish end (poll every frame until the
+                // roster is first obtained, then back off to ROSTER_POLL),
+                // not here.
+                if !rendered {
+                    return;
+                }
+                let side = if readable(athlete + O_ATHLETE_TEAM, 8) {
+                    rd_u64(athlete + O_ATHLETE_TEAM)
                 } else {
                     u64::MAX
                 };
@@ -3085,7 +3194,7 @@ const BS_INJECT_TEST: bool = false; // input injection = heap DB corruption cras
 // ===========================================================================
 //  player-state array probe - find the array that feeds the top item bar display (GamePlayerState array)
 //  by scanning, and pin the items Vec offset. (GameViewSystem+0x840 array, stride 0x8d0)
-//  champion@+0x420, team@+0x820, position@+0x8b0. items = somewhere between +0x420 and +0x820.
+//  champion@`O_ATHLETE_CHAMP_PTR`, team@`O_ATHLETE_TEAM`, position@`O_ATHLETE_POS`. items = between champion and team.
 // ===========================================================================
 const PS_PROBE_ENABLED: bool = false; // production: playerstate diagnostics OFF
 static PS_DONE: AtomicBool = AtomicBool::new(false);
@@ -3213,10 +3322,10 @@ fn is_known_item_key(k: &str) -> bool {
         || k.contains("_armor")
         || k.contains("_plate")
 }
-// Validate a roster element by the position of its champion String. * 0.5.0_3: champ name @ +0x420 (consistent with ath_champ_name).
+// Validate a roster element by the position of its champion String, at `O_ATHLETE_CHAMP_PTR` (consistent with ath_champ_name).
 //   WARNING looking only at the legacy +0x388~0x3b0 offsets fails to recognize a 0.5.0 athlete -> find_view_by_scan fails -> LIVE_ARR=0 (the team gate collapses).
 unsafe fn valid_ps_elem(elem: usize) -> bool {
-    if read_str_try(elem + 0x420).is_some() {
+    if read_str_try(elem + O_ATHLETE_CHAMP_PTR).is_some() {
         return true;
     } // the correct 0.5.0_3 position
     let mut o = 0x388usize; // fallback (for older versions / layout variants)
@@ -3542,7 +3651,7 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                      buy_item detour (install_replace_4th) : {}\n  \
                      launcher (LIVE_SEED source)           : {}  fired={} render={} seed={:#x}\n  \
                      seed_ctor                             : {}  provider={:#x}\n  \
-                     spawn                                 : {} (SPAWN_INJECT_ENABLED={SPAWN_INJECT_ENABLED}, so \"not attempted\" is expected)\n  \
+                     spawn                                 : {} (SPAWN_INJECT_ENABLED={SPAWN_INJECT_ENABLED}, when true this is the slot-0 injector and should report installed)\n  \
                      VEH registered (gates every safe_read): {}\n  \
                      game_view (TIP_ROOT/GameView)         : {}\n  \
                      launcher install path: calls={} ours={} waited={} real_installs={} throttled={} last_b0={:#04x} last_movabs={:#x}\n  \
@@ -4441,7 +4550,7 @@ fn item_id_to_key(id: u64) -> Option<String> {
     reg.get((id as usize).checked_sub(30)?).cloned()
 }
 // * AUTO 4th = pick the highest-scoring final item via forward (neural recommendation). false = only capture beam4.
-// * 0.5.0: ON - roster offsets RE-confirmed (SimState+0x840 stride 0x8d0, team@+0x820, pos@+0x8b0, champ@+0x420,
+// * 0.5.0: ON - roster offsets RE-confirmed (SimState+0x840 stride 0x8d0, team@0x820, pos@0x8b0, champ@0x420 — all three 0.5.4-era,
 //   net@Database+0xda0). compute_auto_4th_id / build_lineup_ctx back in service = neural automatic 4th selection.
 const AUTO4_FORWARD_SCORE: bool = true; // * Re-enabled (07-17): the crash cause was that the weight ptr net+0x8 goes stale after detection (session switch) and was never re-validated. itemnet_forward now re-checks net+0x8 readability on every call, so a stale net is skipped -> fallback (no crash). Feature kept + crash condition cut. ~~false (an attempt to drop the shadow-call)~~
                                         // forward scoring at c6 (personal tactics application) time - abandoned (never fires for enemy/background). AUTO is handled at buy time (compute_auto_4th_id).
@@ -4495,7 +4604,7 @@ fn auto_cands() -> std::sync::Arc<Vec<u64>> {
 }
 
 // -- Restore the match's real lineup ctx from the roster array (SimState+0x840, stride 0x8d0) --
-//   athlete = an array element. team = +0x820 (0/1), champion name = +0x420. Parallel matches use separate arrays, so an
+//   athlete = an array element. team = `O_ATHLETE_TEAM` (0/1), champion name = `O_ATHLETE_CHAMP_PTR`. Parallel matches use separate arrays, so an
 //   athlete pointer belongs to exactly one match = no collisions (no back pointer needed, RE confirmed).
 // 0.5.4 = 0x8c0 (0.5.3 was 0x8d0). `imul r,r,stride`: 15 hits/0 on 0.5.3, 0/16 on 0.5.4.
 // 0.5.6 / 0.5.7 = still 0x9e0. Re-measured on 0.5.7 the same way the 0.5.4 entry was: `imul r,r,0x9e0` has
@@ -4506,12 +4615,12 @@ unsafe fn athlete_lineup_at(p: usize) -> Option<(u64, u64)> {
     if p < 0x10000 {
         return None;
     }
-    let team = safe_read_u64(p + 0x820)?;
+    let team = safe_read_u64(p + O_ATHLETE_TEAM)?;
     if team > 1 {
         return None;
     }
-    let nptr = safe_read_u64(p + 0x420)? as usize; // 0.5.0 champion name ptr (was 0x398)
-    let nlen = safe_read_u64(p + 0x428)? as usize; // 0.5.0 champion name len (was 0x3a0)
+    let nptr = safe_read_u64(p + O_ATHLETE_CHAMP_PTR)? as usize;
+    let nlen = safe_read_u64(p + O_ATHLETE_CHAMP_LEN)? as usize;
     if nptr < 0x10000 || nlen == 0 || nlen > 48 {
         return None;
     }
@@ -4523,13 +4632,13 @@ unsafe fn athlete_lineup_at(p: usize) -> Option<(u64, u64)> {
     let cid = champ_id_of(&name)? as u64;
     Some((team, cid))
 }
-// * Read an athlete's champion name (+0x420 ptr / +0x428 len, confirmed on 0.5.0_3). For SEL/PT matching.
+// * Read an athlete's champion name (`O_ATHLETE_CHAMP_PTR` / `O_ATHLETE_CHAMP_LEN`). For SEL/PT matching.
 unsafe fn ath_champ_name(p: usize) -> Option<String> {
     if p < 0x10000 {
         return None;
     }
-    let nptr = safe_read_u64(p + 0x420)? as usize;
-    let nlen = safe_read_u64(p + 0x428)? as usize;
+    let nptr = safe_read_u64(p + O_ATHLETE_CHAMP_PTR)? as usize;
+    let nlen = safe_read_u64(p + O_ATHLETE_CHAMP_LEN)? as usize;
     if nptr < 0x10000 || nlen == 0 || nlen > 48 {
         return None;
     }
@@ -4540,16 +4649,16 @@ unsafe fn ath_champ_name(p: usize) -> Option<String> {
     Some(String::from_utf8_lossy(&buf).into_owned())
 }
 // * Validate an athlete + return (side 0/1, champ name). WARNING it uses neither champ_id_of nor a name charset = **mod champions fully included**
-//   Criteria = side (+0x820) in {0,1} + **position (+0x8b0) in 0..4 (a structural filter, independent of champion type = mod champions included)** + a readable name (len 2~48).
+//   Criteria = side (`O_ATHLETE_TEAM`) in {0,1} + **position (`O_ATHLETE_POS`) in 0..4 (a structural filter, independent of champion type = mod champions included)** + a readable name (len 2~48).
 //   WARNING lesson: using the name charset (the old ascii filter) for bounds detection (1) excludes mod champions with non-identifier names and (2) removing it entirely leaves only side,
 //     which misjudges adjacent structural memory -> bounds over-extend -> the count collapses (a regression where nothing was injected at all). position<5 gives precise bounds and mod-champion compatibility at once.
 //   False positives are harmless since they fail SEL/PT membership (count) anyway. (build_lineup_ctx uses lane<5 as well.)
 unsafe fn ath_side_champ(p: usize) -> Option<(u64, String)> {
-    let side = safe_read_u64(p + 0x820)?;
+    let side = safe_read_u64(p + O_ATHLETE_TEAM)?;
     if side > 1 {
         return None;
     }
-    let pos = safe_read_u64(p + 0x8b0)? & 0xffff_ffff; // lane 0~4
+    let pos = safe_read_u64(p + O_ATHLETE_POS)? & 0xffff_ffff; // lane 0~4
     if pos >= 5 {
         return None;
     }
@@ -4559,7 +4668,7 @@ unsafe fn ath_side_champ(p: usize) -> Option<(u64, String)> {
     }
     Some((side, nm))
 }
-// buy athlete -> (that match's real ctx[11], view roster count@+0x848). Position = athlete+0x8b0.
+// buy athlete -> (that match's real ctx[11], view roster count@+0x848). Position = athlete + `O_ATHLETE_POS`.
 //   view = base - 0x840. count==3 marks a demo/title live sim (the context where forward crashes).
 unsafe fn build_lineup_ctx(p: usize) -> Option<([u64; 11], u64)> {
     let (my_team, _) = athlete_lineup_at(p)?;
@@ -4586,7 +4695,7 @@ unsafe fn build_lineup_ctx(p: usize) -> Option<([u64; 11], u64)> {
     let mut a = base;
     while a <= end {
         if let Some((team, cid)) = athlete_lineup_at(a) {
-            let lane = (safe_read_u64(a + 0x8b0).unwrap_or(9) & 0xffff_ffff) as usize; // the real position (0~4)
+            let lane = (safe_read_u64(a + O_ATHLETE_POS).unwrap_or(9) & 0xffff_ffff) as usize; // the real position (0~4)
             if lane < 5 {
                 if team == my_team {
                     ctx[lane] = cid;
@@ -4597,7 +4706,7 @@ unsafe fn build_lineup_ctx(p: usize) -> Option<([u64; 11], u64)> {
         }
         a = a.wrapping_add(ATH_STRIDE);
     }
-    let pos = ((safe_read_u64(p + 0x8b0).unwrap_or(0) & 0xffff_ffff) as usize).min(4);
+    let pos = ((safe_read_u64(p + O_ATHLETE_POS).unwrap_or(0) & 0xffff_ffff) as usize).min(4);
     ctx[10] = pos as u64; // ctx[pos] = my champion (self-consistent)
     let vcount = safe_read_u64(base.wrapping_sub(0x840) + 0x848).unwrap_or(0);
     Some((ctx, vcount))
@@ -5113,16 +5222,33 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // can exist. `crate::item_build_hook::decide_build` sets the same three
         // slots on the stable API, earlier and more cheaply — the engine is
         // handed the build before the match instead of having it overwritten per
-        // buy decision — but it is told the champion and not the team, so what
-        // it sets reaches BOTH sides. This path is the opposite trade: it costs
-        // a per-buy write and it can only fire under `is_player`, because a sim
-        // athlete carries no team id and the gate has to be inferred from the
-        // athlete-id roster — which is exactly the scoping the toggle asks for.
+        // buy decision — but it has no *usable* team gate, so what it sets
+        // reaches BOTH sides. (Its context does carry a `team()`, measured
+        // 2026-09-08 as a 0/1 side index within the match: it cannot say which
+        // side is the player's, nor whether the player is in the match at all.
+        // See `build_config::own_team_only_enabled`.) This path is the opposite
+        // trade: it costs a per-buy write and it can only fire under
+        // `is_player`, because a sim athlete carries no team id and the gate has
+        // to be inferred from the athlete-id roster — which is exactly the
+        // scoping the toggle asks for.
         //
         // The two must never both apply, or they fight over the same three
         // slots; `decide_build` returns the engine's own build untouched
         // whenever this is live, and the toggle is the single thing deciding
         // which of them runs.
+        //
+        // # What this path cannot do
+        //
+        // Slot 0. A buy decision is the earliest moment it sees the athlete, and
+        // by then one item has completed, so the `owned > si` guard below skips
+        // si=0 for the rest of the match — si=1 needs `owned >= 2` and si=2
+        // `owned >= 3`, so only the first slot is ever locked out. That is why,
+        // with the toggle on, every configured item applies except the first.
+        // Setting it here is not possible. Moving it to `decide_build` was the
+        // obvious answer and is ruled out (see above), so the remaining route is
+        // `SPAWN_INJECT_ENABLED` — the spawn-time injector below, which runs
+        // before any purchase, has no `owned` guard, and holds the athlete
+        // pointer that makes `is_my_athlete` usable.
         //
         // Slot 3 is not part of that split: `decide_build` can only return as
         // many items as the engine's build Vec holds, and growing that Vec from
@@ -5483,7 +5609,7 @@ unsafe fn install_replace_buy(
 //  WARNING the old GameStart packet deserializer hook (0x3217f0) is a dead end (never fires in a single live process; crossbeam delivers directly) -> removed.
 // ===========================================================================
 const SCENE_GATE_ENABLED: bool = true; // * v5 (07-11): after confirming live (tid), decide the side by reading the scene directly -> ON. update_scene_side refreshes SCENE_SIDE every frame (main thread).
-                                       // ** Confirmed (07-11, in game): the sim athlete+0x820 side is fixed at blue=0 / red=1. In a spectated match (my team blue), KT Aiming = meiling was
+                                       // ** Confirmed (07-11, in game): the sim athlete side (`O_ATHLETE_TEAM`, then 0x820) is fixed at blue=0 / red=1. In a spectated match (my team blue), KT Aiming = meiling was
                                        //   dumped as sim side1 (red) -> confirming side0 = blue = my team. So the scene player <-> sim side mapping = blue is side0.
                                        //   WARNING this is a side-independent fixed mapping (not a constant inversion) - matching scene team_id <-> pid returns the correct sim side even when sides swap.
 const SCENE_BLUE_IS_SIDE0: bool = true; // blue team = sim side0 (confirmed in game). update_scene_side matches pid with (s0,s1) = (blue,red).

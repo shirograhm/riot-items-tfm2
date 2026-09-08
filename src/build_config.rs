@@ -469,6 +469,18 @@ pub fn champion_roster() -> Vec<String> {
         .unwrap_or_default()
 }
 
+/// The buy detour's view of `item-builds.json`: the file's keys exactly as
+/// written, plus an index that survives the detour not knowing the lane.
+struct PinSnapshot {
+    /// `champion` or `champion@role`, as the file has it.
+    by_key: HashMap<String, Vec<Option<String>>>,
+    /// Champion id -> its only key in [`Self::by_key`], for champions the file
+    /// gives exactly one build. Built here rather than searched per lookup
+    /// because the buy detour reads pins per slot per buy decision, hundreds of
+    /// thousands of times a match, and must not scan a map to do it.
+    sole_key: HashMap<String, String>,
+}
+
 /// `item-builds.json`, as the *simulation* side reads it.
 ///
 /// The buy detour that applies these builds per athlete fires per buy decision,
@@ -479,19 +491,40 @@ pub fn champion_roster() -> Vec<String> {
 /// a couple of times a match". It does not — see the cache above — so the load
 /// and the publication are now one event, in [`load_cached`], and the snapshot
 /// changes only when the editor saves.
-static PINS: Mutex<Option<Arc<HashMap<String, Vec<Option<String>>>>>> = Mutex::new(None);
+static PINS: Mutex<Option<Arc<PinSnapshot>>> = Mutex::new(None);
 
 /// Publishes the current builds for the buy detour. An empty config publishes an
 /// empty set — builds the editor removed must stop applying, not keep the last
 /// ones alive.
 fn publish_pins(config: &BuildConfig) {
-    let builds = config.by_champion.clone();
+    let by_key = config.by_champion.clone();
+
+    // Champions with exactly one build in the file, keyed by the champion id
+    // alone. A second entry for the same champion removes it again: with two
+    // roles configured there is no single answer, and guessing between them is
+    // what `pin_entry`'s fallback exists to avoid doing.
+    let sole_key = {
+        let mut counts: HashMap<&str, usize> = HashMap::new();
+        for key in by_key.keys() {
+            *counts
+                .entry(key.split(ROLE_SEPARATOR).next().unwrap_or(key.as_str()))
+                .or_insert(0) += 1;
+        }
+        by_key
+            .keys()
+            .filter_map(|key| {
+                let champion = key.split(ROLE_SEPARATOR).next().unwrap_or(key.as_str());
+                (counts.get(champion) == Some(&1)).then(|| (champion.to_string(), key.clone()))
+            })
+            .collect()
+    };
+
     if let Ok(mut pins) = PINS.lock() {
-        *pins = Some(Arc::new(builds));
+        *pins = Some(Arc::new(PinSnapshot { by_key, sole_key }));
     }
 }
 
-fn pins() -> Option<Arc<HashMap<String, Vec<Option<String>>>>> {
+fn pins() -> Option<Arc<PinSnapshot>> {
     PINS.lock().ok()?.clone()
 }
 
@@ -508,18 +541,48 @@ pub fn has_pins(champion: &str) -> bool {
     })
 }
 
-/// [`build_entry`] over the pin snapshot: the role's build first, `Any` second.
+/// [`build_entry`] over the pin snapshot: the role's build first, `Any` second,
+/// and — unlike `build_entry` — the champion's only build third.
+///
+/// # Why this has a third arm and `build_entry` does not
+///
+/// `build_entry` is reached from the stable item-build hook, where the host
+/// *states* the lane. A `champion@jungle` build not matching a champion played
+/// mid is the correct answer there: the player said which role that build is
+/// for.
+///
+/// Here the role is a guess. The buy detour has the champion key and nothing
+/// else, so `role` arrives from [`role_for_champion`] — a process-global,
+/// last-writer-wins map that `record_lineup_roles` refills from *every* route
+/// call, background league fixtures included. A champion the player fields at
+/// jungle is overwritten by whatever lane an AI team last played it at, so the
+/// first arm looks up `champion@top`, misses, the second looks up the bare
+/// `champion`, misses too because the row is role-specific — and the build the
+/// player configured is silently not applied.
+///
+/// That path is the only one `own_team_only` has: with the toggle on, the
+/// stable hook deliberately declines (it cannot tell the teams apart) and this
+/// is what applies slots 0/1/2. So a wrong guess here is the whole feature
+/// failing, and it fails for exactly the role-specific rows the editor
+/// encourages writing.
+///
+/// When the file gives a champion exactly one build, the guess is not needed:
+/// there is one build it could mean. Two or more and this arm stays out of it —
+/// a wrong role is better answered by no build than by another role's.
 fn pin_entry<'a>(
-    pins: &'a HashMap<String, Vec<Option<String>>>,
+    pins: &'a PinSnapshot,
     champion: &str,
     role: Role,
 ) -> Option<&'a Vec<Option<String>>> {
     if role != Role::Any {
-        if let Some(build) = pins.get(&build_key(champion, role)) {
+        if let Some(build) = pins.by_key.get(&build_key(champion, role)) {
             return Some(build);
         }
     }
-    pins.get(champion)
+    if let Some(build) = pins.by_key.get(champion) {
+        return Some(build);
+    }
+    pins.by_key.get(pins.sole_key.get(champion)?)
 }
 
 // ---------------------------------------------------------------------------
@@ -691,12 +754,47 @@ pub fn unique_items_enabled() -> bool {
 /// whoever plays the champion, both teams — which is the behaviour every version
 /// up to now had and the only one the stable item-build hook can express.
 ///
-/// Turning it on moves the work to the other half of the mod. The hook is told
-/// the champion but not whose team it is playing for, so it stops setting builds
-/// entirely and the native buy detour pins the same items per athlete instead,
-/// under the athlete-id team gate that already scopes the 4th item
-/// (`tactics::is_my_athlete`). The two must never both be applying builds — see
-/// `item_build_hook::decide_build` and the injection in `tactics`.
+/// Turning it on moves the work to the other half of the mod: the stable hook
+/// stops setting builds entirely and the native buy detour pins the same items
+/// per athlete instead, under the athlete-id team gate that already scopes the
+/// 4th item (`tactics::is_my_athlete`). The two must never both be applying
+/// builds — see `item_build_hook::decide_build` and the injection in `tactics`.
+///
+/// # The cost of that split, and why it is still here
+///
+/// The buy detour can only write a build slot at a *buy decision*, which is
+/// never early enough for slot 0: by the time it first sees the athlete, one
+/// item has completed and its `owned > si` guard locks that slot out for the
+/// rest of the match. So under this toggle the first item is the engine's pick,
+/// not the configured one, while slots 1 and 2 apply normally.
+///
+/// The obvious fix is to set the build before the match, on the stable hook,
+/// which is the one place it can be done once per player with no purchase race.
+/// **That was tried and does not work**, and the reason is worth keeping so it
+/// is not tried again.
+///
+/// It needs a team gate the hook can evaluate. `StableItemBuildContext` does
+/// carry a `team()` — the older claim here and in `item_build_hook` that it
+/// "never says which side" was wrong in letter — but a logged match
+/// (2026-09-08) established what the number is: a **0/1 side index within the
+/// match**. 40 decisions across 4 fixtures came back as five `team=0` lines
+/// then five `team=1` lines per match, uniform per lineup.
+///
+/// That is one bit about which of two lineups a build belongs to, and it does
+/// not answer either half of the question the gate needs. Which side is the
+/// player's alternates per match, and nothing in the context says whether the
+/// player is in the match at all — all 40 of those decisions were background
+/// league fixtures between AI teams, where `team=0` means only "the first
+/// lineup". The lineups cannot bridge it either: champions are drafted per
+/// match, and the `Athlete` record carries `recent_champions` and
+/// `champion_proficiency` but no assigned champion, so there is no athlete ->
+/// champion mapping to match `ally_champions()` against the player's starters.
+///
+/// So the pre-match route needs a live-match/side signal this context does not
+/// have, and the remaining candidate for slot 0 is the native spawn-time
+/// injector, which holds the athlete pointer and therefore the `is_my_athlete`
+/// gate that already works — see `tactics::SPAWN_INJECT_ENABLED`, currently off
+/// pending re-derivation.
 pub fn own_team_only_enabled() -> bool {
     setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, false)
 }

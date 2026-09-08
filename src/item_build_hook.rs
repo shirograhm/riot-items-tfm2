@@ -38,11 +38,27 @@ impl StableItemBuildHook for ConfiguredBuilds {
         let base = ctx.base_build();
         // `own_team_only` hands the configured builds to the native buy detour,
         // which is the only half of the mod that can tell the player's athletes
-        // from the enemy's. This context names the champion and the two lineups
-        // but never says which side it belongs to, so applying a build here
-        // would apply it to both — exactly what the toggle is off for. Unique
-        // enforcement below still runs: it is about the shape of a build, not
-        // about whose it is, and it applies to the engine's own picks too.
+        // from the enemy's.
+        //
+        // This used to say the context "never says which side it belongs to",
+        // which was wrong in letter — `ctx.team()` exists — but right in
+        // substance, and a logged match (2026-09-08) settled why. `team` is a
+        // **0/1 side index within the match**, not a team id: 40 decisions
+        // across 4 fixtures came back as exactly five `team=0` lines then five
+        // `team=1` lines per match, uniform per lineup. It says which of the two
+        // lineups a build belongs to and nothing else.
+        //
+        // That is not enough to gate on, for two separate reasons. It cannot
+        // say *which* side is the player's — that alternates per match — and it
+        // cannot say whether the player is in this match at all: every one of
+        // those 40 decisions was a background league fixture between two AI
+        // teams, where `team=0` means only "the first lineup". Applying a build
+        // here would still reach both sides, which is exactly what the toggle
+        // is off for.
+        //
+        // Unique enforcement below still runs: it is about the shape of a
+        // build, not about whose it is, and it applies to the engine's own
+        // picks too.
         let own_team_only = build_config::own_team_only_enabled();
         let configured = if own_team_only {
             None
@@ -64,10 +80,11 @@ impl StableItemBuildHook for ConfiguredBuilds {
 }
 
 impl ConfiguredBuilds {
-    // No team gate, and there is none to write: a build is keyed by champion and
-    // applies to whoever plays it, enemy included. A player who does not want
-    // that turns on `own_team_only`, which stops `decide_build` calling this at
-    // all — see there.
+    // No team gate, and none that can be written from this context alone: a
+    // build is keyed by champion and applies to whoever plays it, enemy
+    // included. A player who does not want that turns on `own_team_only`, which
+    // stops `decide_build` calling this at all — see there for what `ctx.team()`
+    // turned out to be and why it does not close the gap.
     fn configured_build(&self, ctx: &StableItemBuildContext<'_>) -> Option<Vec<usize>> {
         let config = build_config::load_cached();
         if config.is_empty() {
