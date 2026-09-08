@@ -1,6 +1,15 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
 Reskins the 30 existing items and also adds 159 new items (91 base + 68 Radiant) to the game.
 
+##### Instructions  
+If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
+
+1. Save your current game and go back to the main menu.
+2. Click Load -> Load on the save you just made. It will probably say "No Info" under mods.
+2. Once launched, progress once and save again. Then go back to the main menu.
+3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
+4. Play as you would normally!
+
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
 ##### Item Scroller Mod Add-On
@@ -14,16 +23,6 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 
 ##### Pregame Item Builds Editor
 <img width="2024" height="1037" alt="image" src="https://github.com/user-attachments/assets/751df47e-8ed1-43a1-ac9c-168e42f15962" />
-
-##### Instructions  
-If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
-
-1. Save your current game and go back to the main menu.
-2. Click Load -> Load on the save you just made. It will probably say "No Info" under mods.
-2. Once launched, progress once and save again. Then go back to the main menu.
-3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
-4. Play as you would normally!
-
 
 ### Added Items
 
