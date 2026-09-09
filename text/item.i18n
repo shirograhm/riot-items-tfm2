@@ -810,6 +810,14 @@
         "radiant_ravenous_hydra": {
             "name": "Radiant Ravenous Hydra",
             "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "tiamat": {
+            "name": "Tiamat",
+            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "bamis_cinder": {
+            "name": "Bami's Cinder",
+            "option": "\n<#ff7a3eff>Immolate<>: Taking or dealing damage causes you to deal <#a974ffff>15 magic damage<> per second to all enemies within <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect is <#e8a800ff>200% as effective<> against minions and monsters."
         }
     },
     "vi": {
@@ -1623,6 +1631,14 @@
         "radiant_ravenous_hydra": {
             "name": "Rìu Mãng Xà Ánh Sáng",
             "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "tiamat": {
+            "name": "Rìu Tiamat",
+            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "bamis_cinder": {
+            "name": "Tàn Tích Bami",
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Khi nhận hoặc gây sát thương, bạn gây <#a974ffff>15 sát thương phép<> mỗi giây lên mọi kẻ địch trong phạm vi <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>. Hiệu ứng này <#e8a800ff>hiệu quả 200%<> lên lính và quái."
         }
     },
     "zh-hans": {
@@ -2436,6 +2452,14 @@
         "radiant_ravenous_hydra": {
             "name": "光明版贪欲九头蛇",
             "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>40%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "tiamat": {
+            "name": "提亚马特",
+            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "bamis_cinder": {
+            "name": "斑比的熔渣",
+            "option": "\n<#ff7a3eff>献祭<>：受到或造成伤害后，你每秒对 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的所有敌人造成 <#a974ffff>15 点魔法伤害<>。该效果对小兵和野怪的<#e8a800ff>效果为 200%<>。"
         }
     },
     "pt-BR": {
@@ -3249,6 +3273,14 @@
         "radiant_ravenous_hydra": {
             "name": "Hidra Raivosa Radiante",
             "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>40%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "tiamat": {
+            "name": "Tiamat",
+            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "bamis_cinder": {
+            "name": "Brasa de Bami",
+            "option": "\n<#ff7a3eff>Imolar<>: Sofrer ou causar dano faz você causar <#a974ffff>15 de dano mágico<> por segundo a todos os inimigos dentro de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito é <#e8a800ff>200% efetivo<> contra lacaios e monstros."
         }
     },
     "ru": {
@@ -4062,6 +4094,14 @@
         "radiant_ravenous_hydra": {
             "name": "Лучезарная Ненасытная гидра",
             "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>40%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "tiamat": {
+            "name": "Тиамат",
+            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "bamis_cinder": {
+            "name": "Пепел Бами",
+            "option": "\n<#ff7a3eff>Изничтожение<>: Получая или нанося урон, вы наносите <#a974ffff>15 магического урона<> в секунду всем врагам в пределах <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект <#e8a800ff>200%<>."
         }
     },
     "ko": {
@@ -4875,6 +4915,14 @@
         "radiant_ravenous_hydra": {
             "name": "찬란한 굶주린 히드라",
             "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 40%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "tiamat": {
+            "name": "티아맷",
+            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "bamis_cinder": {
+            "name": "바미의 불씨",
+            "option": "\n<#ff7a3eff>불사르기<>: 피해를 받거나 입히면 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<> 안의 모든 적에게 초당 <#a974ffff>15의 마법 피해<>를 입힙니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>200%<>로 적용됩니다."
         }
     }
 }

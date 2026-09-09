@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 159 new items (91 base + 68 Radiant) to the game.
+Reskins the 30 existing items and also adds 161 new items (93 base + 68 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -41,6 +41,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Aegis of the Legion** | 950G | +150 HP<br>+40 Armor<br>+60 MR | — |
+| **Bami's Cinder** | 800G | +300 HP | Immolate: Taking or dealing damage causes you to deal 15 magic damage per second to all enemies within 35 range. This effect is 200% as effective against minions and monsters. |
 | **B.F. Sword** | 850G | +65 Attack Damage | — |
 | **Bandleglass Mirror** | 650G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+5% CDR | — |
 | **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |
@@ -61,6 +62,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 | **Serrated Dirk** | 800G | +45 AD | Gain 10 Lethality. |
 | **Sheen** | 1300G | +25% AS<br>+10% CDR | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
 | **Steel Sigil** | 950G | +30 AD<br>+50 Armor | — |
+| **Tiamat** | 800G | +50 Attack Damage | Cleave: Basic attacks deal 20% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Winged Moonplate** | 800G | +250 HP<br>+4% MS | — |
 
 #### Tier 4
