@@ -2,7 +2,8 @@
 //!   (1) Chained install: save the current 12 bytes of the entry point and prepend ourselves -> chain "behind"
 //!      another mod's single-owner hook (ai_adjust/scrim). Installed late, from post_update (after those mods' init), to guarantee ordering.
 //!      Works standalone when ai_adjust is off too (it saves the original prologue). Idempotent across re-init (INSTALLED).
-//!   (2) When the player_info/wide_player_info templates are loaded -> replace the root's children with our edited version (.ui, compressed 4 slots).
+//!   (2) When the player_info/wide_player_info templates are loaded -> replace the root's children with our edited version (.ui, widened #items so the
+//!      game's own populator lays out 4 full-size slots instead of shrinking them - see IN_MATCH_UI).
 //!      (Unlike an asset override this is a loader hook, so it layers on top of other overrides and chains. "Edits" still do not compose between mods,
 //!       but nobody else touches player_info, so it is safe.)
 //!   RVAs (0.4.14 hotfix): LOADER 0x540ad0 / PARSER 0x220e100 / ALLOC 0x231fb70.
@@ -46,7 +47,7 @@ use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 //   training's nine leas spread over several callers. `pairdiff` then reported the old/new pair
 //   instruction-isomorphic with zero differing displacements, so the entry is still the eight pushes: the 12B
 //   chained install is unchanged and STRAT_LOADER stays equal to LOADER (second hook still skipped).
-const LOADER_RVA: usize = 0x2ea830; // 0.5.8 - string xref, 16/16 sites (player_info/wide_player_info/strategy/training), size 425, pairdiff clean. (0.5.7 was 0x2ea930, 0.5.6 0x2e6f60, 0.5.5 0x2e42d0, 0.5.4 0x2e35d0, 0.5.3 0x2e1550, 0.5.2 0x5ac950).
+const LOADER_RVA: usize = 0x2f7090; // 0.6.0-beta (0.5.7 was 0x2ea930, 0.5.6 0x2e6f60, 0.5.5 0x2e42d0, 0.5.4 0x2e35d0, 0.5.3 0x2e1550, 0.5.2 0x5ac950).
 // ** 0.5.4 (2026-08-04): exe2exe `match` against the kept 0.5.3 binary - **1 hit at 320 and at 640 bytes**
 //   of masked signature, size 2192. Three first-principles attempts had failed on this one (error-marker
 //   store, 0x90 stride as imul, node-type string xref); with the old exe it took a single command.
@@ -56,7 +57,7 @@ const LOADER_RVA: usize = 0x2ea830; // 0.5.8 - string xref, 16/16 sites (player_
 // ** 0.5.7 (2026-08-26): exe2exe `match` against the kept 0.5.6 binary — 1 hit, function start, size 2192 on
 //   both sides, and `pairdiff` reports zero differing struct displacements across all 452 instructions. The
 //   node layout the parser writes is untouched, so NT_SIZE stays 0x90.
-const PARSER_RVA: usize = 0x1ab140; // 0.5.8 - exe2exe unique, size 2192 and 452 instructions both sides, pairdiff clean => NT_SIZE still 0x90. (0.5.7 was 0x1ab310, 0.5.6 0x19ab40, 0.5.5 0x1a3e70, 0.5.4 0x1a3ce0, 0.5.3 0x1a6530, 0.5.2 0x24b5a00). The 3-argument contract (out, ptr, len), the `:`/`{`/`}` parsing, out[2]=-1 on error and the 0x90 node stride are all confirmed identical => NT_SIZE unchanged.
+const PARSER_RVA: usize = 0x1ab1a0; // 0.6.0-beta (0.5.7 was 0x1ab310, 0.5.6 0x19ab40, 0.5.5 0x1a3e70, 0.5.4 0x1a3ce0, 0.5.3 0x1a6530, 0.5.2 0x24b5a00). The 3-argument contract (out, ptr, len), the `:`/`{`/`}` parsing, out[2]=-1 on error and the 0x90 node stride are all confirmed identical => NT_SIZE unchanged.
 // WARNING in 0.5.3 the 2-argument `__rust_alloc(size, align)` shim **disappeared** (inlined into every call site) => we call the internal heap helper directly.
 //   ~~candidate 0xbb2bd0 (align fixed at 8, aborts on OOM)~~ -> **0x28f7df0 adopted** (instruction-identical to 0.5.2's 0x25d9640, preserves returning 0 on OOM,
 //   and matches the value used by the parallel ai_adjust session = unified across mods). For the contract see the `AllocFn` comment above.
@@ -71,7 +72,7 @@ const PARSER_RVA: usize = 0x1ab140; // 0.5.8 - exe2exe unique, size 2192 and 452
 // ** 0.5.7 (2026-08-26): exe2exe unique, size 60 both sides, `pairdiff` clean. Cross-confirmed the same two
 //   ways as 0.5.5/0.5.6 — `__rust_realloc` (0x2a9fb50) still reaches it on its over-aligned path, and the
 //   launcher (0x106dd60) calls it at the same instruction offsets it called 0x2ab1670 from in 0.5.6.
-const ALLOC_RVA: usize  = 0x2b1b410; // 0.5.8 heap alloc helper - exe2exe unique, size 60 both sides, and it is the 60-byte callee at the eight identical call sites inside the launcher. (0.5.7 was 0x2ab4010, 0.5.6 0x2ab1670, 0.5.5 0x2a9bf30, 0.5.4 0x29bb920, 0.5.3 0x28f7df0). (corresponds to 0.5.2's 0x25d9640. The old __rust_alloc shim 0x25c4d30 does not exist in 0.5.3).
+const ALLOC_RVA: usize  = 0x2dd4b50; // 0.6.0-beta heap alloc helper (0.5.7 was 0x2ab4010, 0.5.6 0x2ab1670, 0.5.5 0x2a9bf30, 0.5.4 0x29bb920, 0.5.3 0x28f7df0). (corresponds to 0.5.2's 0x25d9640. The old __rust_alloc shim 0x25c4d30 does not exist in 0.5.3).
 const DEALLOC_RVA: usize = 0x1000; // 0.5.3 (0.5.2 was 0x25c4d90). The only `__rust_dealloc(ptr,size,align)`-shaped function. Currently unused.
 const NT_SIZE: usize = 0x90;
 
@@ -105,8 +106,85 @@ static TRAMP: AtomicUsize = AtomicUsize::new(0);
 static INSTALLED: AtomicBool = AtomicBool::new(false);
 // * 4-item mode gate: when false no UI modification happens (3-slot mode = vanilla). Set by lib.rs from the cfg.
 pub static MODE4: AtomicBool = AtomicBool::new(true);
-// * Gate for replacing the in-match player_info slot UI: turned on once the 4th purchase was wired up (prevents empty slots while unwired). Off by default.
-pub static IN_MATCH_UI: AtomicBool = AtomicBool::new(true); // * ON: inject the #slot3 node (the target the overlay fills). The bounds patch stays off, so there is no OOB crash.
+/// Gate for replacing the in-match `player_info` panel (the item row). Set by
+/// `lib.rs` from the cfg, together with [`MODE4`].
+///
+/// **0.6.0 (2026-08-27): ON again, but the layout it ships means something new.**
+///
+/// Before 0.6.0 this delivered a template that *authored four slots*:
+/// `player_info` carried flat `#slot0..#slot2` and the edited copy added a
+/// `#slot3` for the mod to fill itself.
+///
+/// 0.6.0 took the slots out of the layout. Each side now holds one empty
+/// container
+///
+/// ```text
+/// #items:empty { x: 59px; width: 142px; height: 42px; }   // blue, player_info
+/// ```
+///
+/// which the game populates at runtime, creating `slot0..slotN-1` from
+/// `ingame_component/item_slot` and laying them out itself — and **N is not
+/// three**. It is `max(3, max over players of items-bought)`, so the byte
+/// patches that let a player buy a 4th item are already enough to make the game
+/// build, place, fill and hit-test a 4th slot with no help from this file —
+/// and `patch_slot_count` raises that floor 3 -> 4, so in `slots = 4` the row is
+/// four wide from the first frame rather than only once someone completes a 4th
+/// item. (Evidence, game
+/// 0.6.0_beta1: the count at `0xc389be` is `cmp rax,4 / mov ecx,3 / cmovae
+/// rcx,rax` over `0x8fb640`'s per-player maximum; the fill loop at `0xc3927c`
+/// runs `i < count` and reads `items[i]` behind a real `i < items.len()` bound
+/// at `0xc395ca` before writing `slot{i}.bg.icon`.)
+///
+/// That is why the stale layout broke the panel rather than merely failing to
+/// help: it had no `#items` node at all, so `replace_children` deleted the
+/// container the game fills and blanked the vanilla three, while the `#slot3`
+/// the mod filled by hand still drew. What shipped between then and now was
+/// this gate held OFF, which restored the three but left the fourth to the
+/// game's fallback geometry.
+///
+/// **What the replacement is for now is width.** The populate helper
+/// (`0x219ce00`) sizes the row from the container:
+///
+/// ```text
+/// max_fit = roundf((W + gap) / (slot + gap))       gap = 8 compact / 3 wide
+/// count <= max_fit -> authored size, stride = slot + gap
+/// count >  max_fit -> size = floorf((W - 2*(count-1)) / count), gap forced to 2
+/// ```
+///
+/// **`max_fit` rounds, it does not floor** (`0x3495f11` and `0x3495f35` resolve
+/// through the import table to `roundf` and `floorf`). That distinction decides
+/// which regime a width lands in, and getting it backwards is not a rounding
+/// quibble — `W = 174` gives `roundf(3.64) = 4`, so four slots take the *fit*
+/// path at their authored 50px stride and draw a 192px row inside a 174px box,
+/// hanging 18px past the panel. That was the first attempt at these numbers.
+///
+/// Vanilla `W` is exactly three slots wide (142 = 3*42 + 2*8), so four shrinks
+/// every icon to 34px. Only two widths hold four without overflowing, and the
+/// two layouts take different ones because they have different room to spare:
+///
+/// ```text
+/// compact  W=166  shrink  floorf((166-6)/4) = 40  ->  4 x 40px, 2px gaps, row 166
+/// wide     W=137  fit                             ->  4 x 32px, 3px gaps, row 137
+/// ```
+///
+/// Compact shrinks on purpose. The fit path would need `W = 192`, which does not
+/// fit the red side: `#items` would start at x:159, leaving 119px for `#cs` (76)
+/// and `#kda` (84) ahead of it, whose text centres land 37px apart — close enough
+/// to collide on a 4-digit CS. 166 is the largest `W` that still rounds below
+/// 3.5, and it leaves `#kda`/`#cs` exactly where they are while packing the icons
+/// at the 42px stride the mod used before 0.6.0. Wide has the room, so it keeps
+/// full-size icons at its exact natural width.
+///
+/// With `patch_slot_count` the count is always 4 here, so each layout stays in
+/// one regime for the whole match and the row never re-spaces. Neither width is
+/// free to nudge: move compact past 166 and it flips to the fit path and
+/// overflows; move wide off 137 and it either overflows or starts scaling.
+///
+/// Both files are the vanilla layout with fourteen numbers changed, generated
+/// by `tools/rebase_player_info.py`. **Re-run that after a game update rather
+/// than hand-editing them** — everything except those numbers has to stay
+/// identical to base, and drifting from it is precisely the failure above.
+pub static IN_MATCH_UI: AtomicBool = AtomicBool::new(true);
 // Replacement idempotence (avoids re-replacing the same template ptr; a reload = a new ptr = replace again).
 static LAST_PI: AtomicUsize = AtomicUsize::new(0);
 static LAST_WIDE: AtomicUsize = AtomicUsize::new(0);

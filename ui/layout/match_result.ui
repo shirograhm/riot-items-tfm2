@@ -1,0 +1,1395 @@
+main:match_result_ui {
+  width: 100%;
+  height: 100%;
+
+  #background:color {
+    width: 100%;
+    height: 100%;
+
+    color: #07080bff;
+  }
+
+  #header:color {
+    source: "asset/base/sprite/white";
+    width: 100%;
+    height: 85px;
+    color: #161721ff;
+
+    #text:label {
+      @"asset/base/style/main#label";
+      height: 100%;
+      width: 100%;
+
+      align_x: Center;
+      align_y: Center;
+      color: #e8e8e8ff;
+      size: 30;
+      text: "#asset/base/text/ui?set_result.header";
+    }
+  }
+
+  #contents:color {
+    source: "asset/base/sprite/white";
+    width: 1864px;
+    height: 828px;
+    y: 122px;
+
+    anchor_x: 0.5;
+    pivot_x: 0.5;
+
+    color: #161721ff;
+    rounding: Uniform {
+      rounding: 12;
+    }
+
+    child_type: TopToBottom {
+      spacing: 0px;
+    }
+
+    #header:empty {
+      width: 1826px;
+      height: 100px;
+
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+
+      #blue_side_mark:color {
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        x: 0px;
+        width: 4px;
+        height: 56px;
+
+        ignore_event: true;
+        color: #5b73ffff;
+        rounding: Uniform {
+          rounding: 2;
+        }
+      }
+
+      #blue_logo:image {
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        x: 14px;
+        height: 56px;
+        width: 56px;
+
+        sample_linear: false;
+        source: "asset/base/aseprite_resources/team_logo";
+        rect_tag: "0_0";
+      }
+
+      #blue_team:label {
+        @"asset/base/style/main#bold_label";
+        size: 36;
+        text: "Rapid Storm Super Rapid";
+
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        align_y: Center;
+
+        x: 84px;
+        width: 400px;
+        height: 40px;
+      }
+
+      #blue_set:label {
+        @"asset/base/style/main#bold_label";
+        size: 30;
+
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        align_x: Center;
+        align_y: Center;
+
+        x: 500px;
+        width: 50px;
+        height: 40px;
+        text: "1";
+      }
+
+      #blue_state:label {
+        @"asset/base/style/main#bold_label";
+        size: 30;
+
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        align_x: Center;
+        align_y: Center;
+
+        x: 600px;
+        width: 200px;
+        height: 40px;
+        text: "#asset/base/text/ui?set_result.lose";
+      }
+
+      #red_side_mark:color {
+        anchor_x: 1;
+        pivot_x: 1;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        x: 0px;
+        width: 4px;
+        height: 56px;
+
+        ignore_event: true;
+        color: #ef6471ff;
+        rounding: Uniform {
+          rounding: 2;
+        }
+      }
+
+      #red_logo:image {
+        anchor_x: 1;
+        pivot_x: 1;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        x: -14px;
+        height: 56px;
+        width: 56px;
+
+        sample_linear: false;
+        source: "asset/base/aseprite_resources/team_logo";
+        rect_tag: "0_0";
+      }
+
+      #red_team:label {
+        anchor_x: 1;
+        pivot_x: 1;
+        @"asset/base/style/main#bold_label";
+        size: 36;
+        text: "Rapid Storm Super Rapid";
+
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        align_y: Center;
+        align_x: Right;
+
+        x: -84px;
+        width: 400px;
+        height: 40px;
+      }
+
+      #red_set:label {
+        @"asset/base/style/main#bold_label";
+        size: 30;
+
+        anchor_x: 1;
+        pivot_x: 1;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        align_x: Center;
+        align_y: Center;
+
+        x: -500px;
+        width: 50px;
+        height: 40px;
+        text: "0";
+      }
+
+      #red_state:label {
+        @"asset/base/style/main#bold_label";
+        size: 30;
+
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+        align_x: Center;
+        align_y: Center;
+        anchor_x: 1;
+        pivot_x: 1;
+
+        x: -600px;
+        width: 200px;
+        height: 40px;
+        text: "#asset/base/text/ui?set_result.lose";
+      }
+
+      #game_time:empty {
+        anchor_x: 0.5;
+        pivot_x: 0.5;
+        anchor_y: 0.5;
+        pivot_y: 0.5;
+
+        width: 200px;
+        height: 56px;
+
+        child_type: TopToBottom {
+          spacing: 0px;
+        }
+
+        #header:label {
+          @"asset/base/style/main#label";
+          size: 18;
+
+          width: 100%;
+          height: 24px;
+
+          align_x: Center;
+          align_y: Center;
+
+          text: "#asset/base/text/ui?set_result.time";
+        }
+
+        #value:label {
+          @"asset/base/style/main#bold_label";
+          size: 30;
+          
+          width: 100%;
+          height: 32px;
+
+          align_x: Center;
+          align_y: Center;
+
+          text: "12:34";
+        }
+      }
+    }
+
+    #bar:color {
+      color: #4a4c56ff;
+
+      width: 1826px;
+      height: 1px;
+
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+    }
+
+    #data:empty {
+      y: 12px;
+
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+
+      width: 1826px;
+      height: 693px;
+
+      #damage:empty {
+        width: 856px;
+        height: 693px;
+
+        #header:empty {
+          y: 10px;
+          width: 814px;
+          height: 28px;
+          anchor_x: 0.5;
+          pivot_x: 0.5;
+
+          #left_btn:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            width: 40px;
+            height: 40px;
+            anchor_x: 0.2;
+            pivot_x: 0.5;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            icon: {
+              source: "asset/base/ui/icons/left";
+              rect: {
+                x: 17.47;
+                y: 15.61;
+                w: 5.06;
+                h: 8.78;
+              }
+            }
+          }
+
+          #title:label {
+            @"asset/base/style/main#bold_label";
+            width: 814px;
+            height: 28px;
+            anchor_x: 0.5;
+            pivot_x: 0.5;
+            align_x: Center;
+            align_y: Center;
+            size: 20;
+            text: "#asset/base/text/ui?set_result.deal";
+          }
+
+          #right_btn:color_icon_button {
+            @"asset/base/style/main#tertiary_button";
+            width: 40px;
+            height: 40px;
+            anchor_x: 0.8;
+            pivot_x: 0.5;
+            anchor_y: 0.5;
+            pivot_y: 0.5;
+            icon: {
+              source: "asset/base/ui/icons/right";
+              rect: {
+                x: 17.47;
+                y: 15.61;
+                w: 5.06;
+                h: 8.78;
+              }
+            }
+          }
+        }
+
+        #mode_dots:empty {
+          y: 44px;
+          width: 856px;
+          height: 8px;
+        }
+
+        #legend:empty {
+          y: 58px;
+          width: 856px;
+          height: 24px;
+
+          #ad:empty {
+            width: 200px;
+            height: 24px;
+
+            #dot:color {
+              anchor_y: 0.5;
+              pivot_y: 0.5;
+              width: 12px;
+              height: 12px;
+              ignore_event: true;
+              color: #ff9028ff;
+              rounding: Uniform {
+                rounding: 3;
+              }
+            }
+
+            #text:label {
+              @"asset/base/style/main#label";
+              x: 18px;
+              width: 182px;
+              height: 24px;
+              size: 18;
+              color: #a5a5abff;
+              align_y: Center;
+              text: "#asset/base/text/ui?set_result.damage_ad";
+            }
+          }
+
+          #ap:empty {
+            width: 200px;
+            height: 24px;
+
+            #dot:color {
+              anchor_y: 0.5;
+              pivot_y: 0.5;
+              width: 12px;
+              height: 12px;
+              ignore_event: true;
+              color: #a974ffff;
+              rounding: Uniform {
+                rounding: 3;
+              }
+            }
+
+            #text:label {
+              @"asset/base/style/main#label";
+              x: 18px;
+              width: 182px;
+              height: 24px;
+              size: 18;
+              color: #a5a5abff;
+              align_y: Center;
+              text: "#asset/base/text/ui?set_result.damage_ap";
+            }
+          }
+
+          #fixed:empty {
+            width: 200px;
+            height: 24px;
+
+            #dot:color {
+              anchor_y: 0.5;
+              pivot_y: 0.5;
+              width: 12px;
+              height: 12px;
+              ignore_event: true;
+              color: #f5f5f5ff;
+              rounding: Uniform {
+                rounding: 3;
+              }
+            }
+
+            #text:label {
+              @"asset/base/style/main#label";
+              x: 18px;
+              width: 182px;
+              height: 24px;
+              size: 18;
+              color: #a5a5abff;
+              align_y: Center;
+              text: "#asset/base/text/ui?set_result.damage_fixed";
+            }
+          }
+        }
+
+        #container:empty {
+          y: 88px;
+          width: 856px;
+          height: 605px;
+
+          child_type: LeftToRight {
+            spacing: 0px;
+          }
+
+          #blue_side:empty {
+            width: 428px;
+            height: 605px;
+
+            child_type: TopToBottom {
+              spacing: 23px;
+            }
+
+            padding: {
+              top: 6px;
+              right: 20px;
+              left: 14px;
+              bottom: 6px;
+            }
+          }
+
+          #red_side:empty {
+            width: 428px;
+            height: 605px;
+
+            child_type: TopToBottom {
+              spacing: 23px;
+            }
+
+            padding: {
+              top: 6px;
+              right: 14px;
+              left: 20px;
+              bottom: 6px;
+            }
+          }
+        }
+      }
+
+      #detail:empty {
+        width: 955px;
+        height: 693px;
+
+        anchor_x: 1;
+        pivot_x: 1;
+
+        child_type: TopToBottom {
+          spacing: 0px;
+        }
+
+        #stats:empty {
+          y: 10px;
+
+          width: 955px;
+          height: 298px;
+
+          child_type: TopToBottom {
+            spacing: 0px;
+          }
+
+          #header:label {
+            @"asset/base/style/main#bold_label";
+            height: 28px;
+            width: 955px;
+
+            align_x: Center;
+            align_y: Center;
+            size: 20;
+            text: "#asset/base/text/ui?set_result.stat";
+          }
+
+          #kda:empty {
+            y: 8px;
+            width: 100%;
+            height: 40px;
+
+            #header:label {
+              @"asset/base/style/main#label";
+              width: 219px;
+              height: 40px;
+
+              anchor_x: 0.5;
+              pivot_x: 0.5;
+
+              size: 20;
+
+              align_x: Center;
+              align_y: Center;
+
+              text: "KDA";
+            }
+
+            #blue:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 1;
+
+              align_x: Right;
+              align_y: Center;
+              x: -149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+
+            #red:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 0;
+
+              align_x: Left;
+              align_y: Center;
+              x: 149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+          }
+
+          #gold:empty {
+            width: 100%;
+            height: 40px;
+
+            #header:label {
+              @"asset/base/style/main#label";
+              width: 219px;
+              height: 40px;
+
+              anchor_x: 0.5;
+              pivot_x: 0.5;
+
+              size: 20;
+
+              align_x: Center;
+              align_y: Center;
+
+              text: "#asset/base/text/ui?set_result.gold";
+            }
+
+            #blue:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 1;
+
+              align_x: Right;
+              align_y: Center;
+              x: -149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+
+            #red:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 0;
+
+              align_x: Left;
+              align_y: Center;
+              x: 149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+          }
+
+          #tower:empty {
+            width: 100%;
+            height: 40px;
+
+            #header:label {
+              @"asset/base/style/main#label";
+              width: 219px;
+              height: 40px;
+
+              anchor_x: 0.5;
+              pivot_x: 0.5;
+
+              size: 20;
+
+              align_x: Center;
+              align_y: Center;
+
+              text: "#asset/base/text/ui?set_result.tower";
+            }
+
+            #blue:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 1;
+
+              align_x: Right;
+              align_y: Center;
+              x: -149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+
+            #red:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 0;
+
+              align_x: Left;
+              align_y: Center;
+              x: 149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+          }
+
+          #serpen:empty {
+            width: 100%;
+            height: 40px;
+
+            #header:label {
+              @"asset/base/style/main#label";
+              width: 219px;
+              height: 40px;
+
+              anchor_x: 0.5;
+              pivot_x: 0.5;
+
+              size: 20;
+
+              align_x: Center;
+              align_y: Center;
+
+              text: "#asset/base/text/ui?set_result.serpen";
+            }
+
+            #blue:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 1;
+
+              align_x: Right;
+              align_y: Center;
+              x: -149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+
+            #red:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 0;
+
+              align_x: Left;
+              align_y: Center;
+              x: 149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+          }
+
+          #epic:empty {
+            width: 100%;
+            height: 40px;
+
+            #header:label {
+              @"asset/base/style/main#label";
+              width: 219px;
+              height: 40px;
+
+              anchor_x: 0.5;
+              pivot_x: 0.5;
+
+              size: 20;
+
+              align_x: Center;
+              align_y: Center;
+
+              text: "#asset/base/text/ui?set_result.epic";
+            }
+
+            #blue:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 1;
+
+              align_x: Right;
+              align_y: Center;
+              x: -149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+
+            #red:label {
+              @"asset/base/style/main#bold_label";
+              
+              anchor_x: 0.5;
+              pivot_x: 0;
+
+              align_x: Left;
+              align_y: Center;
+              x: 149px;
+              width: 382px;
+              size: 24;
+
+              text: "0/0/0";
+            }
+          }
+
+          #ban:empty {
+            width: 100%;
+            height: 50px;
+
+            #header:label {
+              @"asset/base/style/main#label";
+              width: 219px;
+              height: 50px;
+
+              anchor_x: 0.5;
+              pivot_x: 0.5;
+
+              size: 20;
+
+              align_x: Center;
+              align_y: Center;
+
+              text: "#asset/base/text/ui?set_result.ban";
+            }
+
+            #blue:empty {
+              anchor_x: 0.5;
+              pivot_x: 1;
+              x: -149px;
+              height: 46px;
+
+              child_type: LeftToRight {
+                spacing: 10px;
+              }
+            }
+
+            #red:empty {
+              anchor_x: 0.5;
+              pivot_x: 0;
+              x: 149px;
+              height: 46px;
+              
+              child_type: LeftToRight {
+                spacing: 10px;
+              }
+            }
+          }
+        }
+
+        #gold_diff:empty {
+          y: 20px;
+          width: 955px;
+          height: 365px;
+
+          #header:label {
+            @"asset/base/style/main#bold_label";
+            height: 28px;
+            width: 955px;
+
+            align_x: Center;
+            align_y: Center;
+            size: 20;
+            text: "#asset/base/text/ui?set_result.gold_diff";
+          }
+
+          #y:empty {
+            height: 297px;
+            width: 52px;
+
+            anchor_y: 1;
+            pivot_y: 1;
+            y: -36px;
+
+            #y0:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_y: 0.5;
+              align_y: Center;
+              width: 52px;
+              height: 24px;
+              align_x: Right;
+            }
+
+            #y1:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_y: 0.5;
+              align_y: Center;
+              width: 52px;
+              height: 24px;
+              align_x: Right;
+            }
+
+            #y2:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_y: 0.5;
+              align_y: Center;
+              width: 52px;
+              height: 24px;
+              align_x: Right;
+            }
+
+            #y3:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_y: 0.5;
+              align_y: Center;
+              width: 52px;
+              height: 24px;
+              align_x: Right;
+            }
+
+            #y4:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_y: 0.5;
+              align_y: Center;
+              width: 52px;
+              height: 24px;
+              align_x: Right;
+            }
+
+            #y5:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_y: 0.5;
+              align_y: Center;
+              width: 52px;
+              height: 24px;
+              align_x: Right;
+            }
+          }
+
+          #x:empty {
+            width: 895px;
+            height: 27px;
+            anchor_x: 1;
+            pivot_x: 1;
+            anchor_y: 1;
+            pivot_y: 1;
+
+            #x0:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_x: 0.5;
+              align_x: Center;
+              align_y: Center;
+              width: 84px;
+              height: 24px;
+              x: 95px;
+            }
+
+            #x1:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_x: 0.5;
+              align_x: Center;
+              align_y: Center;
+              width: 84px;
+              height: 24px;
+              x: 285px;
+            }
+
+            #x2:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_x: 0.5;
+              align_x: Center;
+              align_y: Center;
+              width: 84px;
+              height: 24px;
+              x: 475px;
+            }
+
+            #x3:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_x: 0.5;
+              align_x: Center;
+              align_y: Center;
+              width: 84px;
+              height: 24px;
+              x: 665px;
+            }
+
+            #x4:label {
+              @"asset/base/style/main#label";
+              size: 18;
+              color: #858b9dff;
+              pivot_x: 0.5;
+              align_x: Center;
+              align_y: Center;
+              width: 84px;
+              height: 24px;
+              x: 855px;
+            }
+          }
+
+          #graph:canvas {
+            anchor_x: 1;
+            pivot_x: 1;
+            anchor_y: 1;
+            pivot_y: 1;
+            y: -36px;
+            width: 895px;
+            height: 297px;
+          }
+
+          #events:empty {
+            anchor_x: 1;
+            pivot_x: 1;
+            anchor_y: 1;
+            pivot_y: 1;
+            y: -36px;
+            width: 895px;
+            height: 297px;
+          }
+
+          #event_popup:empty {
+            visible: false;
+            anchor_x: 1;
+            pivot_x: 1;
+            anchor_y: 1;
+            pivot_y: 1;
+            y: -36px;
+            width: 895px;
+            height: 297px;
+
+            #popup_box:color {
+              width: 220px;
+              height: 36px;
+              pivot_x: 0.5;
+              pivot_y: 0.5;
+              back_color: #1d1f2cff;
+              color: #4a4c56ff;
+              stroke: 1;
+              ignore_event: true;
+              rounding: Uniform { rounding: 8; }
+
+              #popup_text:label {
+                @"asset/base/style/main#label";
+                width: 220px;
+                height: 36px;
+                size: 18;
+                color: #e8e8e8ff;
+                align_x: Center;
+                align_y: Center;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #chat_panel:color {
+    width: 44px;
+    height: 44px;
+
+    anchor_x: 1;
+    pivot_x: 1;
+    anchor_y: 1;
+    pivot_y: 1;
+
+    x: -27px;
+    y: -26px;
+
+    visible: false;
+
+    color: #1d1f2cff;
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    #chat_btn:button {
+      width: 24px;
+      height: 24px;
+
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+
+      source: "asset/base/ui/icons/chat";
+      color: #a5a5abff;
+
+      hover: {
+        color: #e8e8e8ff;
+      }
+
+      active: {
+        color: #e8e8e8ff;
+      }
+
+      #chat_red_dot:color {
+        width: 14px;
+        height: 14px;
+
+        anchor_x: 1;
+        pivot_x: 0.5;
+        x: -3px;
+
+        anchor_y: 0;
+        pivot_y: 0.5;
+        y: 3px;
+
+        ignore_event: true;
+        visible: false;
+
+        color: #eb3d4dff;
+
+        rounding: Uniform {
+          rounding: 7;
+        }
+      }
+    }
+  }
+
+  #next:color_icon_button {
+    @"asset/base/style/main#primary_button";
+    width: 379px;
+    height: 80px;
+
+    anchor_x: 0.5;
+    anchor_y: 1;
+
+    pivot_x: 0.5;
+    pivot_y: 1;
+
+    y: -26px;
+
+    text: {
+      align_x: Center;
+      align_y: Center;
+      size: 24;
+      text: "#asset/base/text/ui?set_result.next";
+    }
+  }
+
+  #damage_popup:color {
+    width: 268px;
+    height: 106px;
+    z: 1000;
+    x: 60px;
+    y: 60px;
+    visible: false;
+    ignore_event: true;
+
+    rounding: Uniform { rounding: 12; }
+    color: #4a4c56ff;
+
+    #bg:color {
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+      width: 266px;
+      height: 104px;
+      z: 1001;
+      ignore_event: true;
+      rounding: Uniform { rounding: 12; }
+      color: #161721ff;
+    }
+
+    #rows:empty {
+      x: 14px;
+      y: 11px;
+      width: 240px;
+      height: 84px;
+      z: 1001;
+
+      #ad:empty {
+        width: 240px;
+        height: 28px;
+        z: 1002;
+
+        #dot:color {
+          anchor_y: 0.5;
+          pivot_y: 0.5;
+          width: 12px;
+          height: 12px;
+          z: 1003;
+          ignore_event: true;
+          color: #ff9028ff;
+          rounding: Uniform { rounding: 3; }
+        }
+
+        #name:label {
+          @"asset/base/style/main#label";
+          x: 18px;
+          width: 118px;
+          height: 28px;
+          z: 1003;
+          size: 18;
+          color: #a5a5abff;
+          align_y: Center;
+          text: "#asset/base/text/ui?set_result.damage_ad";
+        }
+
+        #value:label {
+          @"asset/base/style/main#label";
+          anchor_x: 1;
+          pivot_x: 1;
+          width: 118px;
+          height: 28px;
+          z: 1003;
+          size: 18;
+          align_x: Right;
+          align_y: Center;
+          text: "0";
+        }
+      }
+
+      #ap:empty {
+        y: 28px;
+        width: 240px;
+        height: 28px;
+        z: 1002;
+
+        #dot:color {
+          anchor_y: 0.5;
+          pivot_y: 0.5;
+          width: 12px;
+          height: 12px;
+          z: 1003;
+          ignore_event: true;
+          color: #a974ffff;
+          rounding: Uniform { rounding: 3; }
+        }
+
+        #name:label {
+          @"asset/base/style/main#label";
+          x: 18px;
+          width: 118px;
+          height: 28px;
+          z: 1003;
+          size: 18;
+          color: #a5a5abff;
+          align_y: Center;
+          text: "#asset/base/text/ui?set_result.damage_ap";
+        }
+
+        #value:label {
+          @"asset/base/style/main#label";
+          anchor_x: 1;
+          pivot_x: 1;
+          width: 118px;
+          height: 28px;
+          z: 1003;
+          size: 18;
+          align_x: Right;
+          align_y: Center;
+          text: "0";
+        }
+      }
+
+      #fixed:empty {
+        y: 56px;
+        width: 240px;
+        height: 28px;
+        z: 1002;
+
+        #dot:color {
+          anchor_y: 0.5;
+          pivot_y: 0.5;
+          width: 12px;
+          height: 12px;
+          z: 1003;
+          ignore_event: true;
+          color: #f5f5f5ff;
+          rounding: Uniform { rounding: 3; }
+        }
+
+        #name:label {
+          @"asset/base/style/main#label";
+          x: 18px;
+          width: 118px;
+          height: 28px;
+          z: 1003;
+          size: 18;
+          color: #a5a5abff;
+          align_y: Center;
+          text: "#asset/base/text/ui?set_result.damage_fixed";
+        }
+
+        #value:label {
+          @"asset/base/style/main#label";
+          anchor_x: 1;
+          pivot_x: 1;
+          width: 118px;
+          height: 28px;
+          z: 1003;
+          size: 18;
+          align_x: Right;
+          align_y: Center;
+          text: "0";
+        }
+      }
+    }
+  }
+
+  #item_tooltip:color {
+    width: 274px;
+    height: 250px;
+    z: 1010;
+    x: 60px;
+    y: 60px;
+    visible: false;
+    rounding: Uniform { rounding: 12; }
+    color: #4a4c56ff;
+    image_scale: 0.5;
+    left: 12;
+    right: 12;
+    top: 12;
+    bottom: 12;
+    ignore_event: true;
+
+    #bg:color {
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+      width: 272px;
+      height: 248px;
+      z: 1011;
+      rounding: Uniform { rounding: 12; }
+      color: #161721ff;
+      ignore_event: true;
+      image_scale: 0.5;
+      left: 12;
+      right: 12;
+      top: 12;
+      bottom: 12;
+    }
+
+    #data:empty {
+      width: 264px;
+      height: 237px;
+      z: 1011;
+      anchor_x: 0.5;
+      pivot_x: 0.5;
+      anchor_y: 0.5;
+      pivot_y: 0.5;
+
+      #slot:color {
+        width: 40px;
+        height: 40px;
+        z: 1012;
+        rounding: Uniform { rounding: 8; }
+        ignore_event: true;
+        color: #4a4c56ff;
+
+        #icon:image {
+          width: 36px;
+          height: 36px;
+          z: 1013;
+          anchor_x: 0.5;
+          anchor_y: 0.5;
+          pivot_x: 0.5;
+          pivot_y: 0.5;
+          ignore_event: true;
+        }
+      }
+
+      #name:label {
+        @"asset/base/style/main#bold_label";
+        width: 200px;
+        height: 20px;
+        z: 1012;
+        size: 18;
+        x: 45px;
+        text: "";
+      }
+
+      #tier:label {
+        @"asset/base/style/main#bold_label";
+        width: 119px;
+        height: 24px;
+        z: 1012;
+        size: 16;
+        x: 145px;
+        color: #666666ff;
+        text: "#asset/base/text/item?tier";
+        align_x: Right;
+      }
+
+      #gold_icon:image {
+        width: 16px;
+        height: 16px;
+        z: 1012;
+        x: 45px;
+        y: 21px;
+        ignore_event: true;
+        source: "asset/base/ui/gold";
+      }
+
+      #price:label {
+        @"asset/base/style/main#label";
+        width: 92px;
+        height: 17px;
+        z: 1012;
+        size: 16;
+        x: 62px;
+        y: 21px;
+        text: "1200";
+        color: #fde99fff;
+        align_y: Center;
+      }
+
+      #bar:color {
+        width: 264px;
+        height: 1px;
+        z: 1012;
+        y: 46px;
+        ignore_event: true;
+        color: #1d1f2cff;
+      }
+
+      #desc:label {
+        @"asset/base/style/main#label";
+        width: 264px;
+        height: 185px;
+        z: 1012;
+        size: 16;
+        line_height: 20;
+        anchor_y: 1;
+        pivot_y: 1;
+        text: "";
+      }
+    }
+  }
+
+}
