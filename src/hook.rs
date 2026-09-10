@@ -37,7 +37,7 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.6.0-beta.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.6.0_beta2.
 //!
 //! The finder identifies the target by its **argument shape** rather than by
 //! anything in its body: the return type is 24 bytes so it comes back via `sret`
@@ -114,7 +114,7 @@ const ABSOLUTE_JUMP_LEN: usize = 12;
 ///     caller sizes correspond 1:1 (31248/31219, 75968/75744, 2957/3101,
 ///     1239/1415). The 75.9KB one is the match-sim megafunction, independently
 ///     tied to its 0.5.7 self through `CL_LAUNCHER`'s caller list.
-///   * it calls the independently derived 0.6.0 allocator (0x2dd4b50), and its
+///   * it calls the independently derived 0.6.0 allocator (0x2dd4b50 on beta1, 0x2f2f7e0 on beta2), and its
 ///     6.3KB callee sits at **+0xa10 from `itemnet_forward` in both builds**.
 ///   * the two adjacent equal-size siblings (team1/team2 `spec_from_iter`) are
 ///     called at +0x91 and +0xc1 — inside the ground-truth 0xCA window.
@@ -178,10 +178,29 @@ const ABSOLUTE_JUMP_LEN: usize = 12;
 /// identical size (2270), and `tools/pairdiff.py` shows the two bodies are
 /// instruction-for-instruction isomorphic with zero differing struct
 /// displacements — only relocated call and rip-relative operands differ.
+/// 0.6.0_beta1 -> 0.6.0_beta2 (2026-09-09) moved it `0x25f2b10` -> **`0x2039c00`**, and this
+/// time the bytes DID change: the frame shrank `0x248` -> `0x228` and both rbp displacements
+/// moved by exactly that `0x20` (`0x1b0` -> `0x190`, `0x1a8` -> `0x188`) — the same uniform-shift
+/// relationship that identified the 0.5.4 move, which is what says "same function recompiled"
+/// rather than "a lookalike". `rederive.py match` finds nothing here even at 48 bytes masked,
+/// so the argument-shape filter is what produced it:
+///
+///   * `tools/find_item_build_hook.py` returns 3 candidates on beta1 and 4 on beta2. The two
+///     decoys map 1:1 across the builds on all three metrics (size/calls/uniq 1497/11/8 and
+///     1489/23/10), and beta1's known target carries `uniq=7` — which on beta2 belongs to
+///     `0x2039c00` alone. The extra beta2 candidate (`0x1d8a80`) saves no xmm register at all,
+///     so it is not this shape.
+///   * The prologue is instruction-for-instruction identical to beta1's, per the shift above.
+///   * These 48 bytes occur **exactly once** in `.text`, at a function start, size 2270 — and are
+///     still ambiguous at 40 bytes (4 hits), so the 48-byte length is still the right margin.
+///
+/// Symptom when this is stale: league matches are fine and the lane/comp test silently ignores
+/// `item-builds.json`, because training mode is the one path the engine never asks the stable
+/// hook about — `apply_training_builds` runs in this detour or not at all.
 const FALLBACK_SIGNATURE: [u8; 48] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x48,
-    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0xB0, 0x01,
-    0x00, 0x00, 0x48, 0xC7, 0x85, 0xA8, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0x4D,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x28,
+    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x90, 0x01,
+    0x00, 0x00, 0x48, 0xC7, 0x85, 0x88, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0x4D,
 ];
 
 /// Plausible size range for the target in bytes (1869 in SDK 0.5.2). Narrows the
