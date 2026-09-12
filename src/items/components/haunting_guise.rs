@@ -111,7 +111,7 @@ impl StableItem for HauntingGuise {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["fated_ashes".to_string(), "hardened_heart".to_string()]
+        vec!["fated_ashes".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

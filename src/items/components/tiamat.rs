@@ -1,81 +1,50 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, percent_of, DISTANCE_UNITS_PER_RANGE};
 
 #[derive(Clone, Debug)]
-pub struct RavenousHydra {
-    meta: ItemMeta,
+pub struct Tiamat {
     cleave_effect: &'static str,
     price: usize,
     attack: i32,
-    vamp: i32,
-    skill_cooldown_mult: i32,
     effect_ad_percent_damage: f64,
     effect_max_distance: usize,
     effect_melee_distance: usize,
     effect_ranged_percent: f64,
 }
 
-impl RavenousHydra {
-    pub fn base() -> Self {
+impl Default for Tiamat {
+    fn default() -> Self {
         Self {
-            meta: ItemMeta::base(
-                "ravenous_hydra",
-                &["caulfields_warhammer", "tiamat"],
-                &["radiant_ravenous_hydra"],
-            ),
+            // The same swing Ravenous Hydra draws: one Cleave, one animation.
             cleave_effect: "riot_ravenous_hydra_cleave",
-            price: 1350,
-            attack: 55,
-            vamp: 10,
-            skill_cooldown_mult: 10,
-            effect_ad_percent_damage: 30.0,
+            price: 800,
+            attack: 50,
+            effect_ad_percent_damage: 20.0,
             effect_max_distance: 35,
             effect_melee_distance: 35,
             effect_ranged_percent: 50.0,
         }
     }
+}
 
-    pub fn radiant() -> Self {
-        Self {
-            meta: ItemMeta::radiant("radiant_ravenous_hydra", &["ravenous_hydra"]),
-            price: 1900,
-            attack: 90,
-            vamp: 15,
-            skill_cooldown_mult: 15,
-            effect_ad_percent_damage: 40.0,
-            effect_max_distance: 35,
-            effect_melee_distance: 35,
-            effect_ranged_percent: 50.0,
-            ..Self::base()
-        }
-    }
-
+impl Tiamat {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        Self::base().configured(cfg)
-    }
-
-    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
-        Self::radiant().configured(cfg)
-    }
-
-    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        let mut item = Self::default();
         apply_config!(
-            self,
+            item,
             cfg,
             [
                 price,
                 attack,
-                vamp,
-                skill_cooldown_mult,
                 effect_ad_percent_damage,
                 effect_max_distance,
                 effect_melee_distance,
                 effect_ranged_percent
             ]
         );
-        self
+        item
     }
 
     fn splash_targets(&self, ctx: &StableSim<'_>, caster_team: usize, target: usize) -> Vec<usize> {
@@ -104,23 +73,17 @@ impl RavenousHydra {
     }
 }
 
-impl Default for RavenousHydra {
-    fn default() -> Self {
-        Self::base()
-    }
-}
-
-impl StableItem for RavenousHydra {
+impl StableItem for Tiamat {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> String {
-        self.meta.key.to_string()
+        "tiamat".to_string()
     }
 
     fn icon(&self) -> String {
-        self.meta.key.to_string()
+        "tiamat".to_string()
     }
 
     fn price(&self) -> usize {
@@ -128,26 +91,27 @@ impl StableItem for RavenousHydra {
     }
 
     fn tier(&self) -> usize {
-        self.meta.tier
+        2
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        self.meta.previous_tier()
+        vec!["soldiers_longsword".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        self.meta.next_tier()
+        vec!["ravenous_hydra".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
             attack: self.attack,
-            vamp: self.vamp,
-            skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
 
+    /// Cleave. The weaker half of Ravenous Hydra's, on the same terms: the
+    /// splash is measured around the target, and a ranged wielder lands it at
+    /// reduced strength.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -197,7 +161,7 @@ impl StableItem for RavenousHydra {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Ad, ItemTagV1::Vamp, ItemTagV1::CooltimeReduce]
+        vec![ItemTagV1::Ad]
     }
 
     fn category(&self) -> ItemCategoryV1 {

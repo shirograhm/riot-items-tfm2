@@ -1,5 +1,5 @@
-Adds 159 new items (91 base + 68 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
-Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Cooldown Reduction, Tenacity, Omnivamp, and Skill Damage Reduction.  
+Adds 161 new items (93 base + 68 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]This mod supports custom item values, custom item builds, and a way to add another item slot. See instructions below![/b]  
 
@@ -46,7 +46,7 @@ Mod v0.7.0+ - v0.5.3
 Mod v0.5.7+ - v0.5.1 & v0.5.2
 Mod v0.5.6 - versions up to 0.5.0
 
-If you are playing the beta, check the Git repository for a manual release for branch 0.6.0-beta. https://github.com/shirograhm/riot-items-tfm2/releases
+If you are playing the beta, check the Git repository for a manual release for branch 0.6.0-beta2. https://github.com/shirograhm/riot-items-tfm2/releases
 
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box!  

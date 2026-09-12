@@ -105,14 +105,10 @@ impl StableItem for AxiomArc {
         self.meta.next_tier()
     }
 
-    // The flat CDR stat covers both bars, the way every other cooldown item in
-    // this mod grants it. Flux's share is ultimate-only and is applied as a
-    // buff instead, because it depends on the rest of the build.
     fn stat(&self) -> BuffV1 {
         BuffV1 {
             attack: self.attack,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }

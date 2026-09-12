@@ -91,7 +91,7 @@ player_info:empty {
         @"asset/base/style/main#bold_label";
         width: 100%;
         height: 100%;
-        size: 16;
+        size: 18;
 
         text: "0";
 
@@ -100,173 +100,12 @@ player_info:empty {
       }
     }
 
-    #slot0:color {
+    #items:empty {
       x: 59px;
-
-      width: 42px;
+      width: 166px;
       height: 42px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-      
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 40px;
-        height: 40px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 36px;
-          height: 36px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
     }
 
-    #slot1:color {
-      x: 101px;
-
-      width: 42px;
-      height: 42px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 40px;
-        height: 40px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 36px;
-          height: 36px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
-
-    #slot2:color {
-      x: 143px;
-
-      width: 42px;
-      height: 42px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 40px;
-        height: 40px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 36px;
-          height: 36px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
-
-    #slot3:color {
-      x: 185px;
-
-      width: 42px;
-      height: 42px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 40px;
-        height: 40px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 36px;
-          height: 36px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
   }
 
   #red_player:empty {
@@ -295,7 +134,7 @@ player_info:empty {
 
     #kda:label {
       @"asset/base/style/main#bold_label";
-      x: 95px;
+      x: 92px;
       y: 6px;
 
       width: 84px;
@@ -347,7 +186,7 @@ player_info:empty {
         @"asset/base/style/main#bold_label";
         width: 100%;
         height: 100%;
-        size: 16;
+        size: 18;
 
         text: "0";
 
@@ -356,173 +195,12 @@ player_info:empty {
       }
     }
 
-    #slot0:color {
-      x: 182px;
-
-      width: 42px;
+    #items:empty {
+      x: 184px;
+      width: 166px;
       height: 42px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 40px;
-        height: 40px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 36px;
-          height: 36px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
     }
 
-    #slot1:color {
-      x: 224px;
-
-      width: 42px;
-      height: 42px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-      
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 40px;
-        height: 40px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 36px;
-          height: 36px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
-
-    #slot2:color {
-      x: 266px;
-
-      width: 42px;
-      height: 42px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-      
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 40px;
-        height: 40px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 36px;
-          height: 36px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
-
-    #slot3:color {
-      x: 308px;
-
-      width: 42px;
-      height: 42px;
-
-      color: #e8e8e800;
-      hover: {
-        color: #e8e8e8ff;
-      }
-      
-      active: {
-        color: #e8e8e8ff;
-      }
-
-      #bg:color {
-        anchor_x: 0.5;
-        pivot_x: 0.5;
-        anchor_y: 0.5;
-        pivot_y: 0.5;
-
-        width: 40px;
-        height: 40px;
-
-        color: #4a4c56ff;
-
-        ignore_event: true;
-
-        #icon:image {
-          width: 36px;
-          height: 36px;
-
-          anchor_x: 0.5;
-          anchor_y: 0.5;
-          pivot_x: 0.5;
-          pivot_y: 0.5;
-
-          ignore_event: true;
-        }
-      }
-    }
   }
 
   #diff:empty {

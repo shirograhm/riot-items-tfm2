@@ -154,7 +154,6 @@ impl StableItem for DeathsDance {
             attack: self.attack,
             defence: self.defence,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             damaged_reduce: self.effect_delayed_damage_percent as usize,
             ..Default::default()
         }
