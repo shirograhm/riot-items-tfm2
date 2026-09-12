@@ -37,7 +37,7 @@
             "hp_mult": "\n\nGrowth: Increase your total Max Health by {Value}%.",
             "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> {Value}% Movement Speed",
             "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> {Value}% Attack Speed",
-            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value}% Cooldown Reduction",
+            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value} Ability Haste",
             "range": "+{Value} Range",
             "defence_mult": "\n\nSecond Skin: Increase your total Armor by {Value}%.",
             "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> {Value}% Armor Penetration",
@@ -345,11 +345,11 @@
         },
         "experimental_hexplate": {
             "name": "Experimental Hexplate",
-            "option": "\n<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+            "option": "\n<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
         },
         "radiant_experimental_hexplate": {
             "name": "Radiant Experimental Hexplate",
-            "option": "\n<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+            "option": "\n<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
         },
         "nashors_tooth": {
             "name": "Nashor's Tooth",
@@ -565,11 +565,11 @@
         },
         "malignance": {
             "name": "Malignance",
-            "option": "\n<#ff7a3eff>Scorn<>: Gain <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+            "option": "\n<#ff7a3eff>Scorn<>: Gain <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
         },
         "radiant_malignance": {
             "name": "Radiant Malignance",
-            "option": "\n<#ff7a3eff>Scorn<>: Gain <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+            "option": "\n<#ff7a3eff>Scorn<>: Gain <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
         },
         "rite_of_ruin": {
             "name": "Rite of Ruin",
@@ -725,11 +725,11 @@
         },
         "axiom_arc": {
             "name": "Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Gain <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Gain <#4b7cffff>10<> (<#4b7cffff>+0.2<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
         },
         "radiant_axiom_arc": {
             "name": "Radiant Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Gain <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Gain <#4b7cffff>10<> (<#4b7cffff>+0.2<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
         },
         "hearthbound_axe": {
             "name": "Hearthbound Axe",
@@ -858,7 +858,7 @@
             "hp_mult": "+{Value}% Máu",
             "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> {Value}% Tốc Độ Di Chuyển",
             "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> {Value}% Tốc Độ Đánh",
-            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value}% Giảm Thời Gian Hồi Chiêu",
+            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value} Điểm Hồi Kỹ Năng",
             "range": "+{Value} Tầm Đánh",
             "defence_mult": "+{Value}% Giáp",
             "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> {Value}% Xuyên Giáp",
@@ -1166,11 +1166,11 @@
         },
         "experimental_hexplate": {
             "name": "Khiên Hextech Thử Nghiệm",
-            "option": "\n<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+            "option": "\n<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
         },
         "radiant_experimental_hexplate": {
             "name": "Khiên Hextech Thử Nghiệm Ánh Sáng",
-            "option": "\n<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+            "option": "\n<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
         },
         "nashors_tooth": {
             "name": "Nanh Nashor",
@@ -1386,11 +1386,11 @@
         },
         "malignance": {
             "name": "Hỏa Khuẩn",
-            "option": "\n<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+            "option": "\n<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
         },
         "radiant_malignance": {
             "name": "Hỏa Khuẩn Ánh Sáng",
-            "option": "\n<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+            "option": "\n<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
         },
         "rite_of_ruin": {
             "name": "Nghi Thức Suy Vong",
@@ -1546,11 +1546,11 @@
         },
         "axiom_arc": {
             "name": "Nguyên Tố Luân",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>10%<> <#ffdd8eff>(+0.2% mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>10<> <#ffdd8eff>(+0.2 mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
         },
         "radiant_axiom_arc": {
             "name": "Nguyên Tố Luân Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>10%<> <#ffdd8eff>(+0.2% mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>10<> <#ffdd8eff>(+0.2 mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
         },
         "hearthbound_axe": {
             "name": "Rìu Nhanh Nhẹn",
@@ -1679,7 +1679,7 @@
             "hp_mult": "\n\n成长：总最大生命值提升{Value}%。",
             "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> {Value}% 移动速度",
             "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> {Value}% 攻击速度",
-            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value}% 冷却缩减",
+            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value} 技能急速",
             "range": "+{Value} 射程",
             "defence_mult": "\n\n第二层皮肤：总护甲提升{Value}%。",
             "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> {Value}% 穿甲",
@@ -1987,11 +1987,11 @@
         },
         "experimental_hexplate": {
             "name": "海克斯注力刚壁",
-            "option": "\n<#ff7a3eff>过载<>：终极技能获得 <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+            "option": "\n<#ff7a3eff>过载<>：获得 <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
         },
         "radiant_experimental_hexplate": {
             "name": "光明版海克斯注力刚壁",
-            "option": "\n<#ff7a3eff>过载<>：终极技能获得 <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+            "option": "\n<#ff7a3eff>过载<>：获得 <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
         },
         "nashors_tooth": {
             "name": "纳什之牙",
@@ -2207,11 +2207,11 @@
         },
         "malignance": {
             "name": "残疫",
-            "option": "\n<#ff7a3eff>蔑视<>：终极技能获得 <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+            "option": "\n<#ff7a3eff>蔑视<>：获得 <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
         },
         "radiant_malignance": {
             "name": "光明版残疫",
-            "option": "\n<#ff7a3eff>蔑视<>：终极技能获得 <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+            "option": "\n<#ff7a3eff>蔑视<>：获得 <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
         },
         "rite_of_ruin": {
             "name": "毁坏仪式",
@@ -2367,11 +2367,11 @@
         },
         "axiom_arc": {
             "name": "公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：终极技能获得 <#4b7cffff>10%<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2%）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：获得 <#4b7cffff>10<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
         },
         "radiant_axiom_arc": {
             "name": "光明版公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：终极技能获得 <#4b7cffff>10%<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2%）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却缩减<>。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：获得 <#4b7cffff>10<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
         },
         "hearthbound_axe": {
             "name": "缚炉之斧",
@@ -2500,7 +2500,7 @@
             "hp_mult": "\n\nVitalidade: Aumenta sua Vida Máxima em {Value}%.",
             "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> {Value}% Velocidade de Movimento",
             "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> {Value}% Velocidade de Ataque",
-            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value}% Redução de Tempo de Recarga",
+            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value} Aceleração de Habilidade",
             "range": "+{Value} Alcance",
             "defence_mult": "\n\nSegunda Pele: Aumenta sua Armadura em {Value}%.",
             "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> {Value}% Penetração de Armadura",
@@ -2808,11 +2808,11 @@
         },
         "experimental_hexplate": {
             "name": "Hexoplaca Experimental",
-            "option": "\n<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+            "option": "\n<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
         },
         "radiant_experimental_hexplate": {
             "name": "Hexoplaca Experimental Radiante",
-            "option": "\n<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+            "option": "\n<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
         },
         "nashors_tooth": {
             "name": "Dente de Nashor",
@@ -3028,11 +3028,11 @@
         },
         "malignance": {
             "name": "Malevolência",
-            "option": "\n<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+            "option": "\n<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
         },
         "radiant_malignance": {
             "name": "Malevolência Radiante",
-            "option": "\n<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+            "option": "\n<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
         },
         "rite_of_ruin": {
             "name": "Ritual da Ruína",
@@ -3188,11 +3188,11 @@
         },
         "axiom_arc": {
             "name": "Arco do Axioma",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>10%<> <#ffdd8eff>(+0.2% por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>10<> <#ffdd8eff>(+0.2 por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
         },
         "radiant_axiom_arc": {
             "name": "Arco do Axioma Radiante",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>10%<> <#ffdd8eff>(+0.2% por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>10<> <#ffdd8eff>(+0.2 por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
         },
         "hearthbound_axe": {
             "name": "Machado Termestre",
@@ -3321,7 +3321,7 @@
             "hp_mult": "\n\nGrowth: Увеличивает ваше максимальное здоровье на {Value}%.",
             "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> {Value}% Скорость передвижения",
             "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> {Value}% Скорость Атаки",
-            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value}% Ускорение Умений",
+            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> {Value} Ускорение Умений",
             "range": "+{Value} Дальность",
             "defence_mult": "\n\nВторая Кожа: Увеличивает вашу общую броню на {Value}%.",
             "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> {Value}% Пробивание Брони",
@@ -3629,11 +3629,11 @@
         },
         "experimental_hexplate": {
             "name": "Экспериментальная Хекстековая Броня",
-            "option": "\n<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+            "option": "\n<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
         },
         "radiant_experimental_hexplate": {
             "name": "Лучезарная Экспериментальная Хекс Броня",
-            "option": "\n<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+            "option": "\n<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
         },
         "nashors_tooth": {
             "name": "Зуб Нашора",
@@ -3849,11 +3849,11 @@
         },
         "malignance": {
             "name": "Пагубность",
-            "option": "\n<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+            "option": "\n<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
         },
         "radiant_malignance": {
             "name": "Лучезарная Пагубность",
-            "option": "\n<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+            "option": "\n<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
         },
         "rite_of_ruin": {
             "name": "Ритуал уничтожения",
@@ -4009,11 +4009,11 @@
         },
         "axiom_arc": {
             "name": "Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>10%<> <#ffdd8eff>(+0.2% за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>10<> <#ffdd8eff>(+0.2 за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
         },
         "radiant_axiom_arc": {
             "name": "Лучезарный Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>10%<> <#ffdd8eff>(+0.2% за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>10<> <#ffdd8eff>(+0.2 за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
         },
         "hearthbound_axe": {
             "name": "Топор Теплолюбивых",
@@ -4142,7 +4142,7 @@
             "hp_mult": "\n\n성장: 최대 체력이 총 {Value}% 증가합니다.",
             "move_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:speed_0> 이동 속도 {Value}%",
             "attack_speed_mult": "<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> 공격 속도 {Value}%",
-            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 재사용 대기시간 감소 {Value}%",
+            "skill_cooldown_mult": "<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 스킬 가속 {Value}",
             "range": "사거리 +{Value}",
             "defence_mult": "\n\n두 번째 피부: 방어력이 총 {Value}% 증가합니다.",
             "defence_penetration": "<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 방어구 관통력 {Value}%",
@@ -4450,11 +4450,11 @@
         },
         "experimental_hexplate": {
             "name": "실험적 마공학판",
-            "option": "\n<#ff7a3eff>과충전<>: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>15%<> 증가합니다."
+            "option": "\n<#ff7a3eff>과충전<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>15<> 증가합니다."
         },
         "radiant_experimental_hexplate": {
             "name": "찬란한 실험적 마공학판",
-            "option": "\n<#ff7a3eff>과충전<>: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>25%<> 증가합니다."
+            "option": "\n<#ff7a3eff>과충전<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>25<> 증가합니다."
         },
         "nashors_tooth": {
             "name": "내셔의 이빨",
@@ -4670,11 +4670,11 @@
         },
         "malignance": {
             "name": "악의",
-            "option": "\n<#ff7a3eff>경멸<>: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>12%<> 증가합니다."
+            "option": "\n<#ff7a3eff>경멸<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>12<> 증가합니다."
         },
         "radiant_malignance": {
             "name": "찬란한 악의",
-            "option": "\n<#ff7a3eff>경멸<>: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>20%<> 증가합니다."
+            "option": "\n<#ff7a3eff>경멸<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>20<> 증가합니다."
         },
         "rite_of_ruin": {
             "name": "파멸의식 고서",
@@ -4830,11 +4830,11 @@
         },
         "axiom_arc": {
             "name": "원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>10%<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2%)<> 증가합니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>10<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2)<> 증가합니다."
         },
         "radiant_axiom_arc": {
             "name": "찬란한 원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 궁극기의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>10%<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2%)<> 증가합니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>10<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2)<> 증가합니다."
         },
         "hearthbound_axe": {
             "name": "온기가 필요한 자의 도끼",

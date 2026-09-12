@@ -144,7 +144,6 @@ impl StableItem for RavenousHydra {
             attack: self.attack,
             vamp: self.vamp,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }

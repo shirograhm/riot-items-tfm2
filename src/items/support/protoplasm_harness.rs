@@ -126,7 +126,6 @@ impl StableItem for ProtoplasmHarness {
         BuffV1 {
             hp: self.hp,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             move_speed_mult: self.move_speed_mult,
             ..Default::default()
         }

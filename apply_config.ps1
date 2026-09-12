@@ -590,10 +590,10 @@ $i18n.en.frozen_mallet.option = "<#ff7a3eff>Icy<>: Basic attacks apply a <#d94c4
 $i18n.en.radiant_frozen_mallet.option = "<#ff7a3eff>Icy<>: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> and apply a <#d94c49ff>${rfmSlow}% slow<> for <#e8a800ff>${rfmDur} seconds<>."
 $i18n.en.rylais_crystal_scepter.option = "<#ff7a3eff>Rimefrost<>: Landing an Ability on an enemy applies a <#d94c49ff>${rcsSlow}% slow<> for <#e8a800ff>${rcsDur} seconds<>."
 $i18n.en.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>Rimefrost<>: Landing an Ability on an enemy applies a <#d94c49ff>${rrcsSlow}% slow<> for <#e8a800ff>${rrcsDur} seconds<>."
-$i18n.en.experimental_hexplate.option = "<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>${hexUltCdr}%<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
-$i18n.en.radiant_experimental_hexplate.option = "<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
-$i18n.en.malignance.option = "<#ff7a3eff>Scorn<>: Gain <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
-$i18n.en.radiant_malignance.option = "<#ff7a3eff>Scorn<>: Gain <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+$i18n.en.experimental_hexplate.option = "<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>."
+$i18n.en.radiant_experimental_hexplate.option = "<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>."
+$i18n.en.malignance.option = "<#ff7a3eff>Scorn<>: Gain <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>."
+$i18n.en.radiant_malignance.option = "<#ff7a3eff>Scorn<>: Gain <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>."
 $rorTemplate = "<#ff7a3eff>Wrath and Ruin<>: Landing an Ability on an enemy champion grants <#d45656ff>{0}% <$critIcon> critical strike chance<> for <#e8a800ff>{1} seconds<> (max {2} stacks).`n`n<#ff7a3eff>Salvage the Wreckage<>: Landing an Ability on an enemy champion has a <#d45656ff>chance (<$critIcon>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>{3} seconds<> that <#cab944ff>absorbs<> <#cab944ff>{4}<> - <#cab944ff>{5}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
 $i18n.en.rite_of_ruin.option = $rorTemplate -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.en.radiant_rite_of_ruin.option = $rorTemplate -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
@@ -703,7 +703,7 @@ $i18n.en.radiant_bloodsong.option = $bsTemplate -f $rbsMin, $rbsMax, $rbsCd, $rb
 
 $lethEn = "Gain <#ffdd8eff>{0} <$armorPenIcon> Lethality<>."
 $i18n.en.serrated_dirk.option = $lethEn -f $sdLeth
-$fluxEn = "$lethEn`n`n<#ff7a3eff>Flux<>: Gain <#4b7cffff>{1}%<> (<#4b7cffff>+{2}%<> per <#ffdd8eff>1 <$armorPenIcon> Lethality<>) <$cdrIcon> <#4b7cffff>cooldown reduction<> on your ultimate skill."
+$fluxEn = "$lethEn`n`n<#ff7a3eff>Flux<>: Gain <#4b7cffff>{1}<> (<#4b7cffff>+{2}<> per <#ffdd8eff>1 <$armorPenIcon> Lethality<>) <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>."
 $i18n.en.axiom_arc.option = $fluxEn -f $aaLeth, $aaUltCdr, $aaPerLeth
 $i18n.en.radiant_axiom_arc.option = $fluxEn -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubEn = "$lethEn`n`n<#ff7a3eff>Eminence<>: Scoring a <#e8a800ff>takedown<> on an enemy champion generates a permanent stack and grants <#ff9028ff>{1}<> (+{2} per stack) <#ff9028ff>bonus<> <$adIcon> <#ff9028ff>Attack Damage<> for <#e8a800ff>{3} seconds<>."
@@ -777,10 +777,10 @@ $i18n.vi.frozen_mallet.option = "<#ff7a3eff>Băng kết<>: Đòn đánh thườn
 $i18n.vi.radiant_frozen_mallet.option = "<#ff7a3eff>Băng kết<>: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân và gây <#d94c49ff>${rfmSlow}% kiệt sức <> trong <#e8a800ff>${rfmDur} giây<>."
 $i18n.vi.rylais_crystal_scepter.option = "<#ff7a3eff>Sương Giá<>: Kĩ năng trúng kẻ địch sẽ gây <#d94c49ff>${rcsSlow}% kiệt sức<> trong <#e8a800ff>${rcsDur} giây<>."
 $i18n.vi.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>Sương Giá<>: Kĩ năng trúng kẻ địch sẽ gây <#d94c49ff>${rrcsSlow}% kiệt sức<> trong <#e8a800ff>${rrcsDur} giây<>."
-$i18n.vi.experimental_hexplate.option = "<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>${hexUltCdr}%<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
-$i18n.vi.radiant_experimental_hexplate.option = "<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
-$i18n.vi.malignance.option = "<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
-$i18n.vi.radiant_malignance.option = "<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+$i18n.vi.experimental_hexplate.option = "<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+$i18n.vi.radiant_experimental_hexplate.option = "<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+$i18n.vi.malignance.option = "<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+$i18n.vi.radiant_malignance.option = "<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
 $rorTemplateVi = "<#ff7a3eff>Thịnh Nộ Và Suy Vong<>: Kĩ năng trúng tướng địch cấp <#d45656ff>{0}% <$critIcon> tỉ lệ chí mạng<> trong <#e8a800ff>{1} giây<> (tối đa {2} cộng dồn).`n`n<#ff7a3eff>Cứu Rỗi Trò Tàn<>: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<$critIcon>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>{3} giây<>, <#cab944ff>hấp thụ<> <#cab944ff>{4}<> - <#cab944ff>{5}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
 $i18n.vi.rite_of_ruin.option = $rorTemplateVi -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.vi.radiant_rite_of_ruin.option = $rorTemplateVi -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
@@ -890,7 +890,7 @@ $i18n.vi.radiant_bloodsong.option = $bsTemplateVi -f $rbsMin, $rbsMax, $rbsCd, $
 
 $lethVi = "Nhận <#ffdd8eff>{0} <$armorPenIcon> Xuyên Giáp Trắng<>."
 $i18n.vi.serrated_dirk.option = $lethVi -f $sdLeth
-$fluxVi = "$lethVi`n`n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>{1}%<> <#ffdd8eff>(+{2}% mỗi 1 <$armorPenIcon> Xuyên Giáp Trắng)<> <$cdrIcon> <#4b7cffff>giảm thời gian hồi chiêu<> cuối."
+$fluxVi = "$lethVi`n`n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>{1}<> <#ffdd8eff>(+{2} mỗi 1 <$armorPenIcon> Xuyên Giáp Trắng)<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
 $i18n.vi.axiom_arc.option = $fluxVi -f $aaLeth, $aaUltCdr, $aaPerLeth
 $i18n.vi.radiant_axiom_arc.option = $fluxVi -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubVi = "$lethVi`n`n<#ff7a3eff>Uy Danh<>: Khi tham gia hạ gục một tướng địch, tạo một cộng dồn vĩnh viễn và nhận <#ff9028ff>{1}<> (+{2} mỗi cộng dồn) <$adIcon> <#ff9028ff>SMCK cộng thêm<> trong <#e8a800ff>{3} giây<>."
@@ -964,10 +964,10 @@ $i18n.'zh-hans'.frozen_mallet.option = "<#ff7a3eff>冰寒<>：普通攻击会施
 $i18n.'zh-hans'.radiant_frozen_mallet.option = "<#ff7a3eff>冰寒<>：普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>${rfmFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rfmHpPct}%<>，并施加 <#d94c49ff>${rfmSlow}%减速<>，持续 <#e8a800ff>${rfmDur}秒<>。"
 $i18n.'zh-hans'.rylais_crystal_scepter.option = "<#ff7a3eff>凛霜<>：技能命中敌人时，对其施加 <#d94c49ff>${rcsSlow}%减速<>，持续 <#e8a800ff>${rcsDur}秒<>。"
 $i18n.'zh-hans'.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>凛霜<>：技能命中敌人时，对其施加 <#d94c49ff>${rrcsSlow}%减速<>，持续 <#e8a800ff>${rrcsDur}秒<>。"
-$i18n.'zh-hans'.experimental_hexplate.option = "<#ff7a3eff>过载<>：终极技能获得 <#4b7cffff>${hexUltCdr}%<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
-$i18n.'zh-hans'.radiant_experimental_hexplate.option = "<#ff7a3eff>过载<>：终极技能获得 <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
-$i18n.'zh-hans'.malignance.option = "<#ff7a3eff>蔑视<>：终极技能获得 <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
-$i18n.'zh-hans'.radiant_malignance.option = "<#ff7a3eff>蔑视<>：终极技能获得 <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
+$i18n.'zh-hans'.experimental_hexplate.option = "<#ff7a3eff>过载<>：获得 <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。"
+$i18n.'zh-hans'.radiant_experimental_hexplate.option = "<#ff7a3eff>过载<>：获得 <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。"
+$i18n.'zh-hans'.malignance.option = "<#ff7a3eff>蔑视<>：获得 <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。"
+$i18n.'zh-hans'.radiant_malignance.option = "<#ff7a3eff>蔑视<>：获得 <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。"
 $rorTemplateZh = "<#ff7a3eff>怒火与破坏<>：技能命中敌方英雄后获得 <#d45656ff>{0}% <$critIcon> 暴击几率<>，持续 <#e8a800ff>{1}秒<>（最多 {2} 层）。`n`n<#ff7a3eff>打捞残骸<>：技能命中敌方英雄后有<#d45656ff>几率（<$critIcon>）<>为你提供一个持续 <#e8a800ff>{3}秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>{4}<> - <#cab944ff>{5}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
 $i18n.'zh-hans'.rite_of_ruin.option = $rorTemplateZh -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.'zh-hans'.radiant_rite_of_ruin.option = $rorTemplateZh -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
@@ -1077,7 +1077,7 @@ $i18n.'zh-hans'.radiant_bloodsong.option = $bsTemplateZh -f $rbsMin, $rbsMax, $r
 
 $lethZh = "获得 <#ffdd8eff>{0} 点<$armorPenIcon> 穿甲<>。"
 $i18n.'zh-hans'.serrated_dirk.option = $lethZh -f $sdLeth
-$fluxZh = "$lethZh`n`n<#ff7a3eff>涌动<>：终极技能获得 <#4b7cffff>{1}%<> <#ffdd8eff>（每 1 点<$armorPenIcon> 穿甲 +{2}%）<> <$cdrIcon> <#4b7cffff>冷却缩减<>。"
+$fluxZh = "$lethZh`n`n<#ff7a3eff>涌动<>：获得 <#4b7cffff>{1}<> <#ffdd8eff>（每 1 点<$armorPenIcon> 穿甲 +{2}）<> <$cdrIcon> <#4b7cffff>终极技能急速<>。"
 $i18n.'zh-hans'.axiom_arc.option = $fluxZh -f $aaLeth, $aaUltCdr, $aaPerLeth
 $i18n.'zh-hans'.radiant_axiom_arc.option = $fluxZh -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubZh = "$lethZh`n`n<#ff7a3eff>威望<>：参与击杀敌方英雄时生成一层永久印记，并获得 <#ff9028ff>{1}<>（每层+{2}）<#ff9028ff>额外<$adIcon> 攻击力<>，持续 <#e8a800ff>{3}秒<>。"
@@ -1151,10 +1151,10 @@ $i18n.'pt-BR'.frozen_mallet.option = "<#ff7a3eff>Congelante<>: Seus ataques apli
 $i18n.'pt-BR'.radiant_frozen_mallet.option = "<#ff7a3eff>Congelante<>: Seus ataques causam <#ff9028ff>dano físico<> igual a <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> e aplicam <#d94c49ff>${rfmSlow}% de lentidão<> por <#e8a800ff>${rfmDur} segundos<>."
 $i18n.'pt-BR'.rylais_crystal_scepter.option = "<#ff7a3eff>Gélido<>: Acertar uma Habilidade em um inimigo aplica <#d94c49ff>${rcsSlow}% de lentidão<> por <#e8a800ff>${rcsDur} segundos<>."
 $i18n.'pt-BR'.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>Gélido<>: Acertar uma Habilidade em um inimigo aplica <#d94c49ff>${rrcsSlow}% de lentidão<> por <#e8a800ff>${rrcsDur} segundos<>."
-$i18n.'pt-BR'.experimental_hexplate.option = "<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>${hexUltCdr}%<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
-$i18n.'pt-BR'.radiant_experimental_hexplate.option = "<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
-$i18n.'pt-BR'.malignance.option = "<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
-$i18n.'pt-BR'.radiant_malignance.option = "<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+$i18n.'pt-BR'.experimental_hexplate.option = "<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+$i18n.'pt-BR'.radiant_experimental_hexplate.option = "<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+$i18n.'pt-BR'.malignance.option = "<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+$i18n.'pt-BR'.radiant_malignance.option = "<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
 $rorTemplatePt = "<#ff7a3eff>Ira e Ruína<>: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>{0}% de <$critIcon> Chance de Acerto Crítico<> por <#e8a800ff>{1} segundos<> (máx. {2} acúmulos).`n`n<#ff7a3eff>Recuperando os Destroços<>: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<$critIcon>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>{3} segundos<> que <#cab944ff>absorve<> <#cab944ff>{4}<> - <#cab944ff>{5}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
 $i18n.'pt-BR'.rite_of_ruin.option = $rorTemplatePt -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.'pt-BR'.radiant_rite_of_ruin.option = $rorTemplatePt -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
@@ -1264,7 +1264,7 @@ $i18n.'pt-BR'.radiant_bloodsong.option = $bsTemplatePt -f $rbsMin, $rbsMax, $rbs
 
 $lethPt = "Ganha <#ffdd8eff>{0} de <$armorPenIcon> Letalidade<>."
 $i18n.'pt-BR'.serrated_dirk.option = $lethPt -f $sdLeth
-$fluxPt = "$lethPt`n`n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>{1}%<> <#ffdd8eff>(+{2}% por 1 de <$armorPenIcon> Letalidade)<> <$cdrIcon> <#4b7cffff>Redução de Tempo de Recarga<> na sua habilidade ultimate."
+$fluxPt = "$lethPt`n`n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>{1}<> <#ffdd8eff>(+{2} por 1 de <$armorPenIcon> Letalidade)<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
 $i18n.'pt-BR'.axiom_arc.option = $fluxPt -f $aaLeth, $aaUltCdr, $aaPerLeth
 $i18n.'pt-BR'.radiant_axiom_arc.option = $fluxPt -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubPt = "$lethPt`n`n<#ff7a3eff>Eminência<>: Ao participar do abate de um campeão inimigo, gera um acúmulo permanente e concede <#ff9028ff>{1}<> (+{2} por acúmulo) de <$adIcon> <#ff9028ff>Dano de Ataque bônus<> por <#e8a800ff>{3} segundos<>."
@@ -1338,10 +1338,10 @@ $i18n.ru.frozen_mallet.option = "<#ff7a3eff>Обледенение<>: Базов
 $i18n.ru.radiant_frozen_mallet.option = "<#ff7a3eff>Обледенение<>: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> и накладывают <#d94c49ff>замедление на ${rfmSlow}%<> на <#e8a800ff>${rfmDur} секунды<>."
 $i18n.ru.rylais_crystal_scepter.option = "<#ff7a3eff>Иней<>: Попадание умением по противнику замедляет его на <#d94c49ff>${rcsSlow}%<> на <#e8a800ff>${rcsDur} секунды<>."
 $i18n.ru.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>Иней<>: Попадание умением по противнику замедляет его на <#d94c49ff>${rrcsSlow}%<> на <#e8a800ff>${rrcsDur} секунды<>."
-$i18n.ru.experimental_hexplate.option = "<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>${hexUltCdr}%<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
-$i18n.ru.radiant_experimental_hexplate.option = "<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>${rhexUltCdr}%<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
-$i18n.ru.malignance.option = "<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>${malUltCdr}%<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
-$i18n.ru.radiant_malignance.option = "<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>${rmalUltCdr}%<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+$i18n.ru.experimental_hexplate.option = "<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>."
+$i18n.ru.radiant_experimental_hexplate.option = "<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>."
+$i18n.ru.malignance.option = "<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>."
+$i18n.ru.radiant_malignance.option = "<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>."
 $rorTemplateRu = "<#ff7a3eff>Гнев и уничтожение<>: Попадание умением по вражескому чемпиону даёт <#d45656ff>{0}% <$critIcon> шанса критического удара<> на <#e8a800ff>{1} сек<> (максимум {2} зарядов).`n`n<#ff7a3eff>Спасение утопающих<>: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<$critIcon>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>{3} сек<>, поглощающий <#cab944ff>{4}<> - <#cab944ff>{5}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
 $i18n.ru.rite_of_ruin.option = $rorTemplateRu -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.ru.radiant_rite_of_ruin.option = $rorTemplateRu -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
@@ -1451,7 +1451,7 @@ $i18n.ru.radiant_bloodsong.option = $bsTemplateRu -f $rbsMin, $rbsMax, $rbsCd, $
 
 $lethRu = "Даёт <#ffdd8eff>{0} <$armorPenIcon> летальности<>."
 $i18n.ru.serrated_dirk.option = $lethRu -f $sdLeth
-$fluxRu = "$lethRu`n`n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>{1}%<> <#ffdd8eff>(+{2}% за 1 ед. <$armorPenIcon> летальности)<> <$cdrIcon> <#4b7cffff>сокращения времени перезарядки<> вашего ультимейта."
+$fluxRu = "$lethRu`n`n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>{1}<> <#ffdd8eff>(+{2} за 1 ед. <$armorPenIcon> летальности)<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>."
 $i18n.ru.axiom_arc.option = $fluxRu -f $aaLeth, $aaUltCdr, $aaPerLeth
 $i18n.ru.radiant_axiom_arc.option = $fluxRu -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubRu = "$lethRu`n`n<#ff7a3eff>Возвышение<>: При участии в убийстве вражеского чемпиона создаёт постоянный заряд и даёт <#ff9028ff>{1}<> (+{2} за заряд) <#ff9028ff>дополнительной<> <$adIcon> <#ff9028ff>Силы Атаки<> на <#e8a800ff>{3} секунд<>."
@@ -1525,10 +1525,10 @@ $i18n.ko.frozen_mallet.option = "<#ff7a3eff>빙결<>: 기본 공격 시 <#e8a800
 $i18n.ko.radiant_frozen_mallet.option = "<#ff7a3eff>빙결<>: 기본 공격 시 <#ff9028ff>${rfmFlat}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rfmHpPct}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>${rfmDur}초<> 동안 <#d94c49ff>${rfmSlow}% 둔화<>시킵니다."
 $i18n.ko.rylais_crystal_scepter.option = "<#ff7a3eff>서리<>: 적에게 스킬을 적중시키면 <#e8a800ff>${rcsDur}초<> 동안 <#d94c49ff>${rcsSlow}% 둔화<>시킵니다."
 $i18n.ko.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>서리<>: 적에게 스킬을 적중시키면 <#e8a800ff>${rrcsDur}초<> 동안 <#d94c49ff>${rrcsSlow}% 둔화<>시킵니다."
-$i18n.ko.experimental_hexplate.option = "<#ff7a3eff>과충전<>: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>${hexUltCdr}%<> 증가합니다."
-$i18n.ko.radiant_experimental_hexplate.option = "<#ff7a3eff>과충전<>: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>${rhexUltCdr}%<> 증가합니다."
-$i18n.ko.malignance.option = "<#ff7a3eff>경멸<>: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>${malUltCdr}%<> 증가합니다."
-$i18n.ko.radiant_malignance.option = "<#ff7a3eff>경멸<>: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>${rmalUltCdr}%<> 증가합니다."
+$i18n.ko.experimental_hexplate.option = "<#ff7a3eff>과충전<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${hexUltCdr}<> 증가합니다."
+$i18n.ko.radiant_experimental_hexplate.option = "<#ff7a3eff>과충전<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${rhexUltCdr}<> 증가합니다."
+$i18n.ko.malignance.option = "<#ff7a3eff>경멸<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${malUltCdr}<> 증가합니다."
+$i18n.ko.radiant_malignance.option = "<#ff7a3eff>경멸<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${rmalUltCdr}<> 증가합니다."
 $rorTemplateKo = "<#ff7a3eff>분노와 파멸<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>{1}초<> 동안 <#d45656ff>{0}%의 <$critIcon> 치명타 확률<>을 얻습니다. (최대 {2}중첩)`n`n<#ff7a3eff>난파선 인양<>: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<$critIcon>)<>로 <#e8a800ff>{3}초<> 동안 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>{4}<>~<#cab944ff>{5}<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
 $i18n.ko.rite_of_ruin.option = $rorTemplateKo -f $rorCrit, $rorDur, $rorStacks, $rorShDur, $rorMin, $rorMax
 $i18n.ko.radiant_rite_of_ruin.option = $rorTemplateKo -f $rrorCrit, $rrorDur, $rrorStacks, $rrorShDur, $rrorMin, $rrorMax
@@ -1637,7 +1637,7 @@ $i18n.ko.radiant_bloodsong.option = $bsTemplateKo -f $rbsMin, $rbsMax, $rbsCd, $
 
 $lethKo = "<#ffdd8eff>{0}의 <$armorPenIcon> 물리 관통력<>을 획득합니다."
 $i18n.ko.serrated_dirk.option = $lethKo -f $sdLeth
-$fluxKo = "$lethKo`n`n<#ff7a3eff>전이 표식<>: 궁극기의 <$cdrIcon> <#4b7cffff>재사용 대기시간 감소<>가 <#4b7cffff>{1}%<> <#ffdd8eff>(<$armorPenIcon> 물리 관통력 1당 +{2}%)<> 증가합니다."
+$fluxKo = "$lethKo`n`n<#ff7a3eff>전이 표식<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>{1}<> <#ffdd8eff>(<$armorPenIcon> 물리 관통력 1당 +{2})<> 증가합니다."
 $i18n.ko.axiom_arc.option = $fluxKo -f $aaLeth, $aaUltCdr, $aaPerLeth
 $i18n.ko.radiant_axiom_arc.option = $fluxKo -f $raaLeth, $raaUltCdr, $raaPerLeth
 $hubKo = "$lethKo`n`n<#ff7a3eff>명성<>: 적 챔피언 처치에 관여하면 영구 중첩을 1회 얻고, <#e8a800ff>{3}초<> 동안 <#ff9028ff>{1}<> + 중첩당 <#ff9028ff>{2}<>의 <$adIcon> <#ff9028ff>추가 공격력<>을 얻습니다."
@@ -1711,8 +1711,8 @@ Write-Host "  Frozen Heart:          -${fhAS}% enemy AS within ${fhDist} range"
 Write-Host "  Radiant Frozen Heart:  -${rfhAS}% enemy AS within ${rfhDist} range"
 Write-Host "  Frozen Mallet:         ${fmSlow}% slow / ${fmDur}s"
 Write-Host "  Radiant Frozen Mallet: ${rfmFlat} + ${rfmHpPct}% max HP dmg / ${rfmSlow}% slow / ${rfmDur}s"
-Write-Host "  Experimental Hexplate:         ${hexUltCdr}% ult CDR"
-Write-Host "  Radiant Experimental Hexplate: ${rhexUltCdr}% ult CDR"
+Write-Host "  Experimental Hexplate:         ${hexUltCdr} Ultimate Ability Haste"
+Write-Host "  Radiant Experimental Hexplate: ${rhexUltCdr} Ultimate Ability Haste"
 Write-Host "  Guinsoo's Rageblade:         ${gbDmg} magic dmg / ${gbSpeed}% AS/stack / ${gbDur}s / ${gbStacks} stacks"
 Write-Host "  Radiant Guinsoo's Rageblade: ${rgbDmg} magic dmg / ${rgbSpeed}% AS/stack / ${rgbDur}s / ${rgbStacks} stacks"
 Write-Host "  Blackfire Torch:         ${bftPower} AP/stack / ${bftDur}s / ${bftStacks} stacks"
@@ -1728,7 +1728,7 @@ Write-Host "  Radiant Rabadon's:       ${radRabMult}%"
 Write-Host "  Phage:                   +${phageMs}% MS for ${phageDur}s"
 Write-Host "  Maim (Machete/Razors/Wriggle's):  ${hmacDmg}/${mrazDmg}/${wrigDmg} magic dmg, ${hmacHeal}/${mrazHeal}/${wrigHeal} heal vs monsters"
 Write-Host "  Feral Flare:                 ${ffDmg} +${ffStack}/stack (max ${ffStacks}) / ${ffHeal} heal / ${ffMinion}% vs minions+monsters"
-Write-Host "  Axiom Arc:                   ${aaLeth} Lethality, ${aaUltCdr}% +${aaPerLeth}%/Lethality ult CDR (Radiant ${raaLeth}, ${raaUltCdr}% +${raaPerLeth}%)"
+Write-Host "  Axiom Arc:                   ${aaLeth} Lethality, ${aaUltCdr} +${aaPerLeth}/Lethality Ultimate Ability Haste (Radiant ${raaLeth}, ${raaUltCdr} +${raaPerLeth})"
 Write-Host "  Butcher (Talisman/Stone): ${htalBonus}/${sstoneBonus}% vs monsters, ${htalHeal}/${sstoneHeal}% healed"
 Write-Host "  Grez's Spectral Lantern:         ${gslAp} AP/takedown up to ${gslMaxAp} / ${gslBonus}% vs monsters / ${gslHeal}% healed"
 Write-Host "  Radiant Grez's Spectral Lantern: ${rgslAp} AP/takedown up to ${rgslMaxAp} / ${rgslBonus}% vs monsters / ${rgslHeal}% healed"
