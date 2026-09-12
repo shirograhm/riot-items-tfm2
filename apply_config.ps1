@@ -371,13 +371,6 @@ $rhReach = [int]$config.ravenous_hydra.effect_melee_distance
 $rhStrength = [double]$config.ravenous_hydra.effect_ranged_percent
 $rrhReach = [int]$config.radiant_ravenous_hydra.effect_melee_distance
 $rrhStrength = [double]$config.radiant_ravenous_hydra.effect_ranged_percent
-$tiaAdPct = [double]$config.tiamat.effect_ad_percent_damage
-$tiaRange = [int]$config.tiamat.effect_max_distance
-$tiaReach = [int]$config.tiamat.effect_melee_distance
-$tiaStrength = [double]$config.tiamat.effect_ranged_percent
-$bamiFlat = [int]$config.bamis_cinder.effect_bonus_flat_damage
-$bamiRange = [int]$config.bamis_cinder.effect_max_distance
-$bamiPct = [int]$config.bamis_cinder.effect_minion_percent
 $dndFlat = [int]$config.dusk_and_dawn.effect_bonus_flat_damage
 $dndApPct = [double]$config.dusk_and_dawn.effect_ap_percent_damage
 $dndApHeal = [double]$config.dusk_and_dawn.effect_caster_ap_percent_heal
@@ -688,10 +681,6 @@ $i18n.en.radiant_trinity_force.option = $tfTemplate -f $rtfFlat, $rtfAdPct, $rtf
 $rhTemplate = "<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>{0}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>{1} <$rangeIcon> range<> apply this effect at <#d94c49ff>{2}% strength<>."
 $i18n.en.ravenous_hydra.option = $rhTemplate -f $rhAdPct, $rhReach, $rhStrength
 $i18n.en.radiant_ravenous_hydra.option = $rhTemplate -f $rrhAdPct, $rrhReach, $rrhStrength
-$i18n.en.tiamat.option = $rhTemplate -f $tiaAdPct, $tiaReach, $tiaStrength
-
-$bamiTemplate = "<#ff7a3eff>Immolate<>: Taking or dealing damage causes you to deal <#a974ffff>{0} magic damage<> per second to all enemies within <#ff86c2ff>{1} <$rangeIcon> range<>. This effect is <#e8a800ff>{2}% as effective<> against minions and monsters."
-$i18n.en.bamis_cinder.option = $bamiTemplate -f $bamiFlat, $bamiRange, $bamiPct
 
 $dndTemplate = "<#ff7a3eff>Spellblade<>: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <$hpRegenIcon> <#60e84dff>heal you<> for <#a974ffff>{2}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>{3}%<> of your <$hpIcon> <#60e84dff>maximum health<> (<#e8a800ff>{4} second<> cooldown)."
 $i18n.en.dusk_and_dawn.option = $dndTemplate -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -875,10 +864,6 @@ $i18n.vi.radiant_trinity_force.option = $tfTemplateVi -f $rtfFlat, $rtfAdPct, $r
 $rhTemplateVi = "<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>{0}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>{1}<> <$rangeIcon> chỉ áp dụng hiệu ứng này ở <#d94c49ff>{2}% sức mạnh<>."
 $i18n.vi.ravenous_hydra.option = $rhTemplateVi -f $rhAdPct, $rhReach, $rhStrength
 $i18n.vi.radiant_ravenous_hydra.option = $rhTemplateVi -f $rrhAdPct, $rrhReach, $rrhStrength
-$i18n.vi.tiamat.option = $rhTemplateVi -f $tiaAdPct, $tiaReach, $tiaStrength
-
-$bamiTemplateVi = "<#ff7a3eff>Hiến Tế<>: Khi nhận hoặc gây sát thương, bạn gây <#a974ffff>{0} sát thương phép<> mỗi giây lên mọi kẻ địch trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon>. Hiệu ứng này <#e8a800ff>hiệu quả {2}%<> lên lính và quái."
-$i18n.vi.bamis_cinder.option = $bamiTemplateVi -f $bamiFlat, $bamiRange, $bamiPct
 
 $dndTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <$hpRegenIcon> <#60e84dff>hồi máu cho bạn<> <#a974ffff>{2}%<> <$apIcon> <#a974ffff>SMPT<> và <#60e84dff>{3}%<> <$hpIcon> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>{4} giây<>)."
 $i18n.vi.dusk_and_dawn.option = $dndTemplateVi -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1062,10 +1047,6 @@ $i18n.'zh-hans'.radiant_trinity_force.option = $tfTemplateZh -f $rtfFlat, $rtfAd
 $rhTemplateZh = "<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{0}%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>{1} <$rangeIcon> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>{2}% 强度<>触发。"
 $i18n.'zh-hans'.ravenous_hydra.option = $rhTemplateZh -f $rhAdPct, $rhReach, $rhStrength
 $i18n.'zh-hans'.radiant_ravenous_hydra.option = $rhTemplateZh -f $rrhAdPct, $rrhReach, $rrhStrength
-$i18n.'zh-hans'.tiamat.option = $rhTemplateZh -f $tiaAdPct, $tiaReach, $tiaStrength
-
-$bamiTemplateZh = "<#ff7a3eff>献祭<>：受到或造成伤害后，你每秒对 <#ff86c2ff>{1} <$rangeIcon> 射程<>范围内的所有敌人造成 <#a974ffff>{0} 点魔法伤害<>。该效果对小兵和野怪的<#e8a800ff>效果为 {2}%<>。"
-$i18n.'zh-hans'.bamis_cinder.option = $bamiTemplateZh -f $bamiFlat, $bamiRange, $bamiPct
 
 $dndTemplateZh = "<#ff7a3eff>咒刃<>：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>，并<$hpRegenIcon> <#60e84dff>为你回复<>相当于<$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{2}%<> 与<$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{3}%<> 的生命值（冷却 <#e8a800ff>{4}秒<>）。"
 $i18n.'zh-hans'.dusk_and_dawn.option = $dndTemplateZh -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1249,10 +1230,6 @@ $i18n.'pt-BR'.radiant_trinity_force.option = $tfTemplatePt -f $rtfFlat, $rtfAdPc
 $rhTemplatePt = "<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>{0}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>{1} <$rangeIcon> alcance<> aplicam este efeito com <#d94c49ff>{2}% de intensidade<>."
 $i18n.'pt-BR'.ravenous_hydra.option = $rhTemplatePt -f $rhAdPct, $rhReach, $rhStrength
 $i18n.'pt-BR'.radiant_ravenous_hydra.option = $rhTemplatePt -f $rrhAdPct, $rrhReach, $rrhStrength
-$i18n.'pt-BR'.tiamat.option = $rhTemplatePt -f $tiaAdPct, $tiaReach, $tiaStrength
-
-$bamiTemplatePt = "<#ff7a3eff>Imolar<>: Sofrer ou causar dano faz você causar <#a974ffff>{0} de dano mágico<> por segundo a todos os inimigos dentro de <#ff86c2ff>{1} <$rangeIcon> alcance<>. Este efeito é <#e8a800ff>{2}% efetivo<> contra lacaios e monstros."
-$i18n.'pt-BR'.bamis_cinder.option = $bamiTemplatePt -f $bamiFlat, $bamiRange, $bamiPct
 
 $dndTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <$hpRegenIcon> <#60e84dff>curar você<> em <#a974ffff>{2}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> e <#60e84dff>{3}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>{4} segundos<>)."
 $i18n.'pt-BR'.dusk_and_dawn.option = $dndTemplatePt -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1436,10 +1413,6 @@ $i18n.ru.radiant_trinity_force.option = $tfTemplateRu -f $rtfFlat, $rtfAdPct, $r
 $rhTemplateRu = "<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>{0}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>{1} <$rangeIcon> дальности<> применяют этот эффект с <#d94c49ff>{2}% силы<>."
 $i18n.ru.ravenous_hydra.option = $rhTemplateRu -f $rhAdPct, $rhReach, $rhStrength
 $i18n.ru.radiant_ravenous_hydra.option = $rhTemplateRu -f $rrhAdPct, $rrhReach, $rrhStrength
-$i18n.ru.tiamat.option = $rhTemplateRu -f $tiaAdPct, $tiaReach, $tiaStrength
-
-$bamiTemplateRu = "<#ff7a3eff>Изничтожение<>: Получая или нанося урон, вы наносите <#a974ffff>{0} магического урона<> в секунду всем врагам в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<>. Против миньонов и монстров эффект <#e8a800ff>{2}%<>."
-$i18n.ru.bamis_cinder.option = $bamiTemplateRu -f $bamiFlat, $bamiRange, $bamiPct
 
 $dndTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <$hpRegenIcon> <#60e84dff>восстановить вам<> <#a974ffff>{2}%<> вашей <$apIcon> <#a974ffff>силы умений<> и <#60e84dff>{3}%<> вашего <$hpIcon> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>{4} секунд<>)."
 $i18n.ru.dusk_and_dawn.option = $dndTemplateRu -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1622,10 +1595,6 @@ $i18n.ko.radiant_trinity_force.option = $tfTemplateKo -f $rtfFlat, $rtfAdPct, $r
 $rhTemplateKo = "<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <$adIcon> <#ff9028ff>공격력의 {0}%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <$rangeIcon> <#ff86c2ff>사거리 {1}<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>{2}% 위력<>으로 적용됩니다."
 $i18n.ko.ravenous_hydra.option = $rhTemplateKo -f $rhAdPct, $rhReach, $rhStrength
 $i18n.ko.radiant_ravenous_hydra.option = $rhTemplateKo -f $rrhAdPct, $rrhReach, $rrhStrength
-$i18n.ko.tiamat.option = $rhTemplateKo -f $tiaAdPct, $tiaReach, $tiaStrength
-
-$bamiTemplateKo = "<#ff7a3eff>불사르기<>: 피해를 받거나 입히면 <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 모든 적에게 초당 <#a974ffff>{0}의 마법 피해<>를 입힙니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>{2}%<>로 적용됩니다."
-$i18n.ko.bamis_cinder.option = $bamiTemplateKo -f $bamiFlat, $bamiRange, $bamiPct
 
 $dndTemplateKo = "<#ff7a3eff>주문 검<>: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <$apIcon> <#60e84dff>주문력의 {2}%<>와 <$hpIcon> <#60e84dff>최대 체력의 {3}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>{4}초<>)"
 $i18n.ko.dusk_and_dawn.option = $dndTemplateKo -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1781,7 +1750,5 @@ Write-Host "  Randuin's Omen:              heals ${rndHeal}% of damage taken fro
 Write-Host "  Radiant Randuin's Omen:      heals ${rrndHeal}% of damage taken from critical strikes"
 Write-Host "  Ravenous Hydra:              ${rhAdPct}% AD cleave within ${rhRange} range / ${rhStrength}% strength beyond ${rhReach} range"
 Write-Host "  Radiant Ravenous Hydra:      ${rrhAdPct}% AD cleave within ${rrhRange} range / ${rrhStrength}% strength beyond ${rrhReach} range"
-Write-Host "  Tiamat:                      ${tiaAdPct}% AD cleave within ${tiaRange} range / ${tiaStrength}% strength beyond ${tiaReach} range"
-Write-Host "  Bami's Cinder:               ${bamiFlat} magic dmg/s within ${bamiRange} range / ${bamiPct}% vs minions and monsters"
 Write-Host "  Locket of the Iron Solari:         ${lockDef} armor / ${lockMr} MR / ${lockRegen} regen within ${lockDist} range / Devotion ${lockMinShield} - ${lockMaxShield} shield ${lockShieldDur}s below ${lockThreshold}% HP (${lockCd}s CD)"
 Write-Host "  Radiant Locket of the Iron Solari: ${rlockDef} armor / ${rlockMr} MR / ${rlockRegen} regen within ${rlockDist} range / Devotion ${rlockMinShield} - ${rlockMaxShield} shield ${rlockShieldDur}s below ${rlockThreshold}% HP (${rlockCd}s CD)"

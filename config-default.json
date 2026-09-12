@@ -1339,21 +1339,5 @@
     "effect_max_distance": 35,
     "effect_melee_distance": 35,
     "effect_ranged_percent": 50.0
-  },
-  "tiamat": {
-    "price": 800,
-    "attack": 50,
-    "effect_ad_percent_damage": 20.0,
-    "effect_max_distance": 35,
-    "effect_melee_distance": 35,
-    "effect_ranged_percent": 50.0
-  },
-  "bamis_cinder": {
-    "price": 800,
-    "hp": 300,
-    "effect_bonus_flat_damage": 15,
-    "effect_minion_percent": 200.0,
-    "effect_max_distance": 35,
-    "effect_out_of_combat_seconds": 3.0
   }
 }
