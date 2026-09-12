@@ -2,7 +2,6 @@
 
 items! {
     aegis_of_the_legion,
-    bamis_cinder,
     bandleglass_mirror,
     bf_sword,
     blighting_jewel,
@@ -24,6 +23,5 @@ items! {
     serrated_dirk,
     sheen,
     steel_sigil,
-    tiamat,
     winged_moonplate,
 }

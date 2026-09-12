@@ -282,7 +282,6 @@ fn init(host: &StableHost) -> StableMod {
 
     // Tier 3
     reg.add_item(configured!("aegis_of_the_legion" => AegisOfTheLegion));
-    reg.add_item(configured!("bamis_cinder" => BamisCinder));
     reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
@@ -299,7 +298,6 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
     reg.add_item(configured!("serrated_dirk" => SerratedDirk));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
-    reg.add_item(configured!("tiamat" => Tiamat));
     reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4
