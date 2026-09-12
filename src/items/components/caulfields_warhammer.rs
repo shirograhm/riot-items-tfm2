@@ -64,7 +64,6 @@ impl StableItem for CaulfieldsWarhammer {
         BuffV1 {
             attack: self.attack,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }

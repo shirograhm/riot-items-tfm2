@@ -150,7 +150,6 @@ impl StableItem for ProtectorsVow {
             hp: self.hp,
             defence: self.defence,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
