@@ -165,7 +165,6 @@ impl StableItem for FrozenHeart {
         BuffV1 {
             defence: self.defence,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             skill_damaged_reduce: self.skill_damaged_reduce,
             ..Default::default()
         }

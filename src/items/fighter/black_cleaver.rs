@@ -109,7 +109,6 @@ impl StableItem for BlackCleaver {
             attack: self.attack,
             hp: self.hp,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }

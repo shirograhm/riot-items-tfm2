@@ -74,7 +74,6 @@ impl StableItem for BandleglassMirror {
             hp_regen: self.hp_regen,
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }

@@ -137,7 +137,6 @@ impl StableItem for RiteOfRuin {
         BuffV1 {
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             crit_chance: self.crit_chance,
             ..Default::default()
         }

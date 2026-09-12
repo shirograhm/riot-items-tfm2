@@ -67,7 +67,6 @@ impl StableItem for ForbiddenIdol {
             hp: self.hp,
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
-            ult_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
