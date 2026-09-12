@@ -128,7 +128,7 @@ impl StableItem for BamisCinder {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["ring_of_reincarnation".to_string()]
+        vec!["hardened_heart".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

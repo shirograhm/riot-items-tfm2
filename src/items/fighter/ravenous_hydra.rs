@@ -22,7 +22,7 @@ impl RavenousHydra {
         Self {
             meta: ItemMeta::base(
                 "ravenous_hydra",
-                &["caulfields_warhammer", "tiamat"],
+                &["tiamat"],
                 &["radiant_ravenous_hydra"],
             ),
             cleave_effect: "riot_ravenous_hydra_cleave",
