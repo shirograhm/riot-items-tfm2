@@ -22,7 +22,8 @@ target/
 
 .cargo/*
 .vscode/*
-tools/*
+tools/*.py
+tools/__pycache__/*
 docs/*
 previews/*
 hook-target.json
