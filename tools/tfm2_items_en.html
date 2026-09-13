@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>TFM2 — Item Builder</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    :root {
+      --bg: #0f0f12;
+      --surface: #1a1a22;
+      --card: #22222e;
+      --border: #2e2e3e;
+      --accent: #7b6ff0;
+      --accent-bg: #1e1b3a;
+      --accent-text: #a89cf5;
+      --text: #e8e8f0;
+      --muted: #888899;
+      --sub: #555566;
+      --warn: #c9962a;
+      --warn-bg: #2a2010;
+      --phys: #d4882a;
+      --phys-bg: #2a1e0a;
+      --mag: #7b6ff0;
+      --mag-bg: #1e1b3a;
+      --tank: #4caf7a;
+      --tank-bg: #0f2018;
+      --sup: #c06ab0;
+      --sup-bg: #2a1028;
+      --sword: #e0a030;
+      --sword-bg: #2a2008;
+      --new: #e05555;
+      --new-bg: #2a1010;
+      --radius: 8px
+    }
+
+    html,
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6
+    }
+
+    #app {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 4rem
+    }
+
+    .app-header {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .app-header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 3px
+    }
+
+    .app-header p {
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    .patch-badge {
+      display: inline-block;
+      margin-top: .5rem;
+      padding: 3px 9px;
+      background: var(--new-bg);
+      color: var(--new);
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--new)
+    }
+
+    .tabs {
+      display: flex;
+      gap: 3px;
+      margin-top: .75rem;
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 3px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch
+    }
+
+    .tab {
+      flex: 0 0 auto;
+      padding: .45rem .6rem;
+      text-align: center;
+      font-size: 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--muted);
+      border: none;
+      background: none;
+      white-space: nowrap;
+      -webkit-appearance: none;
+      transition: all .15s
+    }
+
+    .tab.active {
+      background: var(--card);
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      min-height: 20px
+    }
+
+    .crumb {
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 2px 0
+    }
+
+    .crumb:hover {
+      color: var(--accent-text)
+    }
+
+    .crumb.active {
+      color: var(--text);
+      font-weight: 500;
+      cursor: default
+    }
+
+    .sep {
+      font-size: 11px;
+      color: var(--sub)
+    }
+
+    .q-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: .7rem;
+      line-height: 1.5
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 7px;
+      margin-bottom: .875rem
+    }
+
+    .choice {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: .75rem .85rem;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      text-align: left;
+      -webkit-appearance: none
+    }
+
+    .choice:hover,
+    .choice:active {
+      border-color: var(--accent);
+      background: var(--accent-bg)
+    }
+
+    .choice:hover .ct {
+      color: var(--accent-text)
+    }
+
+    .ct {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 2px;
+      line-height: 1.3
+    }
+
+    .cd {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4
+    }
+
+    .result-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem;
+      margin-bottom: .75rem
+    }
+
+    .result-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: .75rem
+    }
+
+    .result-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 2px
+    }
+
+    .result-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.2
+    }
+
+    .result-meta {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .gold-badge {
+      display: inline-block;
+      padding: 2px 7px;
+      background: var(--warn-bg);
+      color: var(--warn);
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      margin-left: 5px
+    }
+
+    .new-badge {
+      display: inline-block;
+      padding: 2px 6px;
+      background: var(--new-bg);
+      color: var(--new);
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: 5px;
+      vertical-align: middle
+    }
+
+    .items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: .75rem
+    }
+
+    .item-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: .55rem .65rem;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border)
+    }
+
+    .item-row.is-new {
+      border-color: var(--new);
+      background: var(--new-bg)
+    }
+
+    .item-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-bg);
+      color: var(--accent-text);
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px
+    }
+
+    .item-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 2px
+    }
+
+    .item-cost {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 2px
+    }
+
+    .item-why {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4
+    }
+
+    .swaps {
+      padding-top: .65rem;
+      border-top: 1px solid var(--border)
+    }
+
+    .swaps-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--sub);
+      margin-bottom: .45rem
+    }
+
+    .swap {
+      font-size: 12px;
+      color: var(--muted);
+      padding: .3rem 0;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.5
+    }
+
+    .swap:last-child {
+      border-bottom: none
+    }
+
+    .swap-if {
+      color: var(--warn);
+      font-weight: 500
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 10px;
+      vertical-align: middle
+    }
+
+    .t-phys {
+      background: var(--phys-bg);
+      color: var(--phys)
+    }
+
+    .t-mag {
+      background: var(--mag-bg);
+      color: var(--mag)
+    }
+
+    .t-tank {
+      background: var(--tank-bg);
+      color: var(--tank)
+    }
+
+    .t-sup {
+      background: var(--sup-bg);
+      color: var(--sup)
+    }
+
+    .t-sword {
+      background: var(--sword-bg);
+      color: var(--sword)
+    }
+
+    .t-new {
+      background: var(--new-bg);
+      color: var(--new)
+    }
+
+    .t-neu {
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--border)
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: .625rem
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      padding: .42rem .8rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      -webkit-appearance: none;
+      transition: all .15s
+    }
+
+    .btn:hover,
+    .btn:active {
+      color: var(--text);
+      border-color: var(--accent)
+    }
+
+    .btn-accent {
+      background: var(--accent-bg);
+      color: var(--accent-text);
+      border-color: var(--accent)
+    }
+
+    .sit-grid,
+    .combo-grid,
+    .new-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 9px
+    }
+
+    .sit-card,
+    .combo-card,
+    .new-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: .85rem 1rem
+    }
+
+    .new-card {
+      border-color: var(--new)
+    }
+
+    .sit-head {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer
+    }
+
+    .sit-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.3
+    }
+
+    .arrow {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--sub);
+      transition: transform .2s;
+      flex-shrink: 0
+    }
+
+    .sit-body {
+      display: none;
+      margin-top: .55rem;
+      padding-top: .55rem;
+      border-top: 1px solid var(--border)
+    }
+
+    .sit-body.open {
+      display: block
+    }
+
+    .sit-item {
+      font-size: 12px;
+      color: var(--muted);
+      padding: .3rem 0;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.5
+    }
+
+    .sit-item:last-child {
+      border-bottom: none
+    }
+
+    .sit-item strong {
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .combo-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3px
+    }
+
+    .combo-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text)
+    }
+
+    .combo-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: .55rem
+    }
+
+    .combo-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: .45rem
+    }
+
+    .combo-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 11px;
+      color: var(--text)
+    }
+
+    .combo-item.new {
+      border-color: var(--new);
+      color: var(--new)
+    }
+
+    .combo-why {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5
+    }
+
+    .new-stat {
+      font-size: 12px;
+      color: var(--muted);
+      margin: .3rem 0;
+      line-height: 1.5
+    }
+
+    .new-stat strong {
+      color: var(--text)
+    }
+
+    .new-passive {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: .5rem .7rem;
+      font-size: 12px;
+      color: var(--muted);
+      margin: .5rem 0;
+      line-height: 1.5;
+      border: 1px solid var(--border)
+    }
+
+    .new-passive .pname {
+      color: var(--new);
+      font-weight: 600
+    }
+
+    .new-section {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--sub);
+      margin: .75rem 0 .4rem
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="app-header">
+      <h1>TFM2 — Item Builder</h1>
+      <p>Pick your role and situation → get the right build</p>
+      <div class="patch-badge">🆕 Patch 0.9.7 — Stormsurge &amp; Ravenous Hydra added</div>
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('build',this)">🎯 Build Picker</button>
+        <button class="tab" onclick="switchTab('new',this)">🆕 New Items</button>
+        <button class="tab" onclick="switchTab('sit',this)">⚡ Situational</button>
+        <button class="tab" onclick="switchTab('combos',this)">💡 Combos</button>
+      </div>
+    </div>
+    <div id="build-tab">
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <div id="content"></div>
+    </div>
+    <div id="new-tab" style="display:none">
+      <div class="new-grid" id="new-content"></div>
+    </div>
+    <div id="sit-tab" style="display:none">
+      <div class="sit-grid" id="sit-content"></div>
+    </div>
+    <div id="combos-tab" style="display:none">
+      <div class="combo-grid" id="combo-content"></div>
+    </div>
+  </div>
+  <script>
+    // ── ALL BUILDS ────────────────────────────────────────────────────────────────
+    const B = {
+      // ADC
+      adc_crit: {
+        label: "Crit Machine", sub: "Standard ADC, no heavy tanks", role: "phys", icon: "🏹",
+        items: [
+          { name: "Infinity Edge", cost: 1900, why: "50% crit + 30% crit damage from item 1. Every second hit is a critical" },
+          { name: "Hamstringer", cost: 2150, why: "75% crit + bleed 2s + 7% slow on every crit. Enemy can't escape" },
+          { name: "Phantom Dancer", cost: 2000, why: "100% crit + 10% MS. Now every single hit crits" },
+          { name: "Deathblade", cost: 2000, why: "×1.25 to all your AD — the final multiplier that makes everything stronger" }
+        ],
+        swaps: [
+          { cond: "2+ tanks", action: "4th: Lord Dominik's instead of Deathblade" },
+          { cond: "Enemies have healing", action: "4th: Mortal Reminder instead of Deathblade" },
+          { cond: "Enemies buy Randuin's", action: "2nd: Kraken Slayer instead of Hamstringer" }
+        ]
+      },
+      adc_antitank: {
+        label: "Tank Shredder", sub: "Enemies have 2+ heavy tanks (3000+ HP)", role: "phys", icon: "🗡️",
+        items: [
+          { name: "Lord Dominik's Regards", cost: 2000, why: "Immediately ignores 35% armor + bonus damage scales with target max HP (up to +15%)" },
+          { name: "Kraken Slayer", cost: 2000, why: "Every 3rd attack: 150+ bonus damage, maximized at 25% enemy HP" },
+          { name: "Infinity Edge", cost: 1900, why: "75% crit total — stack crit on top of tank shred" },
+          { name: "Deathblade", cost: 2000, why: "Final ×1.25 multiplier" }
+        ],
+        swaps: [
+          { cond: "Enemies have healing", action: "3rd: Mortal Reminder instead of Infinity Edge" },
+          { cond: "Need mobility", action: "3rd: Stormrazor instead of Infinity Edge" }
+        ]
+      },
+      adc_antiheal: {
+        label: "ADC vs Healing", sub: "Enemy team has strong heals", role: "phys", icon: "💉",
+        items: [
+          { name: "Infinity Edge", cost: 1900, why: "Core crit foundation" },
+          { name: "Mortal Reminder", cost: 2000, why: "REQUIRED — reduces enemy healing by 40% on physical damage" },
+          { name: "Hamstringer", cost: 2150, why: "75% crit + slow — enemy can't run away to heal" },
+          { name: "Phantom Dancer", cost: 2000, why: "100% crit + 10% MS for sustained pressure" }
+        ],
+        swaps: [{ cond: "Healing is no longer a threat", action: "Swap Mortal Reminder for Deathblade" }]
+      },
+      adc_speed: {
+        label: "Lightning & Speed", sub: "Mobility + fast tempo (sub-12 min)", role: "phys", icon: "⚡",
+        items: [
+          { name: "Stormrazor", cost: 2200, why: "Charges up → lightning strike 100 magic damage + 35% MS for 1.5s" },
+          { name: "Phantom Dancer", cost: 2000, why: "50% crit + 100% AS + 10% MS — extremely fast" },
+          { name: "Hamstringer", cost: 2150, why: "75% crit + bleed — adds control to the speed" },
+          { name: "Deathblade", cost: 2000, why: "Final ×1.25 AD multiplier" }
+        ],
+        swaps: [
+          { cond: "Enemies are tanky", action: "4th: Lord Dominik's" },
+          { cond: "Enemies heal a lot", action: "4th: Mortal Reminder" }
+        ]
+      },
+      adc_defense: {
+        label: "ADC with Defense", sub: "One defensive item in the build", role: "phys", icon: "🛡️",
+        items: [
+          { name: "Infinity Edge", cost: 1900, why: "50% crit from item 1 — keep damage as the foundation" },
+          { name: "Sterak's Gage", cost: 2000, why: "DEFENSIVE SLOT: 650 HP + shield equal to 60% max HP at 30% health. Saves you from one burst combo" },
+          { name: "Hamstringer", cost: 2150, why: "75% crit + slow" },
+          { name: "Deathblade", cost: 2000, why: "Final ×1.25 multiplier" }
+        ],
+        swaps: [
+          { cond: "Enemies have 2+ mages", action: "2nd: Wit's End instead of Sterak's (130 MR + 65% AS + 30% tenacity)" },
+          { cond: "Enemies are physical", action: "2nd: Randuin's Omen instead of Sterak's (−30% crit damage)" },
+          { cond: "No real threat", action: "2nd: Phantom Dancer — go back to full crit" }
+        ]
+      },
+      adc_melee: {
+        label: "Melee ADC (Yasuo/Yone)", sub: "Melee carry on bot lane", role: "sword", icon: "⚔️",
+        items: [
+          { name: "Eclipse", cost: 1950, why: "Double-hit every 6s: mark → second hit = 8% max HP + shield 139 damage. Perfect rhythm for melee" },
+          { name: "Sundered Sky", cost: 2000, why: "Free guaranteed crit every 20s + heals 10% missing HP. Sustain built in" },
+          { name: "Death's Dance", cost: 2100, why: "75 armor + 25% damage spread over time + heals on kill. Survive melee range fights" },
+          { name: "Deathblade", cost: 2000, why: "×1.25 AD — the final multiplier" }
+        ],
+        swaps: [
+          { cond: "Enemies heavy AP", action: "3rd: Dragon's Claw instead of Death's Dance" },
+          { cond: "Enemies very tanky", action: "4th: Cyclosword instead of Deathblade (10% current HP)" },
+          { cond: "Need survivability", action: "4th: Sterak's Gage instead of Deathblade" }
+        ]
+      },
+      // ASSASSIN
+      ass_snowball: {
+        label: "Snowball Assassin", sub: "Winning early fights", role: "phys", icon: "☄️",
+        items: [
+          { name: "Hubris", cost: 1950, why: "Buy FIRST — cheaper! Each kill: +12 AD for 90s (stackable infinitely)" },
+          { name: "Axiom Arc", cost: 1900, why: "Lethality reduces ult cooldown by 10%+. More ult = more kills" },
+          { name: "Bastionbreaker", cost: 1950, why: "Kill → next tower attack deals 200 + 20% AD true damage for free" },
+          { name: "Collector", cost: 2100, why: "Executes below 6% HP + 25 bonus gold per kill. No one escapes" }
+        ],
+        swaps: [
+          { cond: "Not getting early kills", action: "1st: Opportunity instead of Hubris" },
+          { cond: "Enemies buying shields", action: "1st: Serpent's Fang instead of Hubris" }
+        ]
+      },
+      ass_antishield: {
+        label: "Shield Breaker", sub: "Enemies building Sterak's and shields", role: "phys", icon: "🗡️",
+        items: [
+          { name: "Serpent's Fang", cost: 1800, why: "Cheapest. Damage to shielded target = +85 bonus AD. Their shield is no longer protection" },
+          { name: "Opportunity", cost: 1950, why: "7s out of combat → +7% lethality. Lethal from the bushes" },
+          { name: "Hubris", cost: 1950, why: "Stacking AD through kills" },
+          { name: "Collector", cost: 2100, why: "Execute + gold — the finisher nobody survives" }
+        ],
+        swaps: [
+          { cond: "Enemies not buying shields", action: "1st: Hubris instead of Serpent's Fang" },
+          { cond: "Enemies are very tanky", action: "3rd: Cyclosword instead of Hubris (10% current HP damage)" }
+        ]
+      },
+      ass_ult: {
+        label: "Ultimate Machine", sub: "Ultimate is your primary weapon", role: "phys", icon: "🔱",
+        items: [
+          { name: "Axiom Arc", cost: 1900, why: "−10% ult CD immediately, scales with lethality up to −17%+" },
+          { name: "Hubris", cost: 1950, why: "115 AD + kill stacks + more lethality = lower ult CD" },
+          { name: "Voltaic Cyclosword", cost: 1950, why: "Charges → 10% current HP bonus damage. Kills tanks where ult alone can't" },
+          { name: "Bastionbreaker", cost: 1950, why: "Kill → free tower damage after every ult" }
+        ],
+        swaps: [{ cond: "Enemies have huge HP pools", action: "3rd: Blade of the Ruined King instead of Cyclosword" }]
+      },
+      ass_burst: {
+        label: "Pure Burst", sub: "One or two hits = death", role: "phys", icon: "💀",
+        items: [
+          { name: "Opportunity", cost: 1950, why: "7s in shadows → +7% lethality. First hit from bushes is maximally lethal" },
+          { name: "Deathblade", cost: 2000, why: "×1.25 AD. With high lethality, each hit kills squishy targets" },
+          { name: "Hubris", cost: 1950, why: "Kill stacks. After 3 kills — nearly anything dies" },
+          { name: "Collector", cost: 2100, why: "Execute at <6% HP. No one will survive with 1 HP" }
+        ],
+        swaps: [
+          { cond: "Enemies have shields", action: "1st: Serpent's Fang instead of Opportunity" },
+          { cond: "Need cooldown reduction", action: "2nd: Axiom Arc instead of Deathblade" }
+        ]
+      },
+      ass_jungle: {
+        label: "Jungle Assassin", sub: "Ganks, pressure, tower kills", role: "phys", icon: "🌲",
+        items: [
+          { name: "Bastionbreaker", cost: 1950, why: "Kill at gank → free tower. Ideal jungler: gank + tower = map pressure" },
+          { name: "Hubris", cost: 1950, why: "AD stacks through all kills and ganks. Snowball across the whole map" },
+          { name: "Axiom Arc", cost: 1900, why: "Ult more often = gank more often. Ult cooldown is critical for junglers" },
+          { name: "Collector", cost: 2100, why: "+25 gold per kill = faster items. Execute — no one walks away alive" }
+        ],
+        swaps: [
+          { cond: "Need more damage", action: "4th: Cyclosword instead of Collector" },
+          { cond: "Enemies buy shields", action: "1st: Serpent's Fang instead of Bastionbreaker" }
+        ]
+      },
+      // SWORDSMAN (Yasuo/Yone)
+      sword_mid: {
+        label: "Swordsman Mid", sub: "Yasuo / Yone style on midlane", role: "sword", icon: "⚔️",
+        items: [
+          { name: "Eclipse", cost: 1950, why: "Double-hit every 6s: mark target → second hit = 8% max HP + 139 shield. Perfect for melee auto-attack rhythm" },
+          { name: "Infinity Edge", cost: 1900, why: "50% crit + 30% crit damage. Swordsman with crit — every second hit crits" },
+          { name: "Phantom Dancer", cost: 2000, why: "25% crit + 60% AS + 10% MS total. Swordsman attacks very fast and kites" },
+          { name: "Deathblade", cost: 2000, why: "×1.25 AD — final multiplier" }
+        ],
+        swaps: [
+          { cond: "Enemies very high HP", action: "4th: Cyclosword instead of Deathblade (10% current HP)" },
+          { cond: "Need survivability", action: "3rd: Death's Dance instead of Phantom Dancer" },
+          { cond: "Enemies heavy AP", action: "3rd: Dragon's Claw instead of Phantom Dancer" }
+        ]
+      },
+      sword_adc: {
+        label: "Swordsman ADC", sub: "Melee carry with crit and speed", role: "sword", icon: "🗡️",
+        items: [
+          { name: "Sundered Sky", cost: 2000, why: "Guaranteed crit every 20s + heals 10% missing HP. First item — instant damage and sustain" },
+          { name: "Hamstringer", cost: 2150, why: "75% crit after Sundered Sky + bleed + slow. Enemy can't flee from a melee champ" },
+          { name: "Death's Dance", cost: 2100, why: "75 armor + damage spread over time. Melee carry must survive face-to-face fights" },
+          { name: "Deathblade", cost: 2000, why: "×1.25 AD — final multiplier" }
+        ],
+        swaps: [
+          { cond: "Enemies many tanks", action: "3rd: Blade of the Ruined King instead of Death's Dance" },
+          { cond: "Enemies buy Randuin's", action: "2nd: Kraken Slayer instead of Hamstringer" }
+        ]
+      },
+      sword_jungle: {
+        label: "Swordsman Jungle", sub: "Duelist in the jungle, ganks, fights", role: "sword", icon: "🌲",
+        items: [
+          { name: "Eclipse", cost: 1950, why: "Double-hit + shield — jungler survives early 1v1 fights in the jungle" },
+          { name: "Sundered Sky", cost: 2000, why: "Guaranteed crit + healing. Can't back to base between camps — Sundered Sky compensates" },
+          { name: "Bastionbreaker", cost: 1950, why: "Kill at gank → free tower damage. Maximum pressure for each gank" },
+          { name: "Death's Dance", cost: 2100, why: "Survivability: 75 armor + damage over time + healing on kill — stay in the fight" }
+        ],
+        swaps: [
+          { cond: "Enemies heavy AP", action: "4th: Dragon's Claw instead of Death's Dance" },
+          { cond: "Want more damage", action: "4th: Deathblade instead of Death's Dance" }
+        ]
+      },
+      // MAGE
+      mag_nuke: {
+        label: "One-Shot Mage", sub: "One combo = death", role: "mag", icon: "💥",
+        items: [
+          { name: "Blackfire Torch", cost: 1900, why: "175 AP + at 4 stacks effectively ~385 AP during combo window" },
+          { name: "Luden's Tempest", cost: 2000, why: "200 AP + 15% magic pen. Total 375 AP + penetration" },
+          { name: "Rabadon's Deathcap", cost: 2300, why: "×1.35 total AP. 375 AP → 506 AP" },
+          { name: "Void Staff", cost: 2200, why: "40% magic pen. Tank with 200 MR effectively has 120 MR" }
+        ],
+        swaps: [
+          { cond: "Enemies heal heavily", action: "4th: Morellonomicon instead of Void Staff" },
+          { cond: "Enemies very tanky", action: "2nd: Liandry's Torment instead of Luden's" }
+        ]
+      },
+      mag_nuke_surge: {
+        label: "Burst Mage + Stormsurge", sub: "New item: burst into lightning", role: "mag", icon: "⚡",
+        items: [
+          { name: "Stormsurge", cost: 2000, why: "NEW 0.9.7: 200 AP + 5% MS + 15% magic pen. Stormraider: deal 25% max HP damage in 2.5s → enemy gets struck by lightning 2s later for 125 + 15% AP. 30s cooldown per target", isNew: true },
+          { name: "Blackfire Torch", cost: 1900, why: "175 AP + burst stacks during combo. Combine with Stormsurge: deal combo → trigger Stormraider lightning" },
+          { name: "Rabadon's Deathcap", cost: 2300, why: "×1.35 amplifies both your AP and Stormsurge's lightning (15% AP scaling)" },
+          { name: "Void Staff", cost: 2200, why: "40% magic pen — ensures both Blackfire and Stormsurge lightning cut through MR" }
+        ],
+        swaps: [
+          { cond: "Enemies heal a lot", action: "4th: Morellonomicon instead of Void Staff" },
+          { cond: "Enemies very tanky", action: "2nd: Liandry's Torment instead of Blackfire" }
+        ]
+      },
+      mag_antitank: {
+        label: "Tank-Melting Mage", sub: "Enemies have lots of HP and MR", role: "mag", icon: "⚗️",
+        items: [
+          { name: "Liandry's Torment", cost: 2000, why: "6% max HP/s — a 4000 HP tank loses 240 damage per second from every ability" },
+          { name: "Void Staff", cost: 2200, why: "40% magic pen — tank with 100 MR effectively has 60 MR" },
+          { name: "Bloodletter's Curse", cost: 2200, why: "−6% MR per stack × 5 = −30% MR. The whole team benefits" },
+          { name: "Rabadon's Deathcap", cost: 2300, why: "×1.35 total — ~972 AP" }
+        ],
+        swaps: [{ cond: "Enemies heal a lot", action: "3rd: Morellonomicon instead of Bloodletter's Curse" }]
+      },
+      mag_tanky: {
+        label: "Battle Mage", sub: "Survive and deal damage", role: "mag", icon: "🛡️",
+        items: [
+          { name: "Liandry's Torment", cost: 2000, why: "150 AP + 550 HP — damage and tankiness together" },
+          { name: "Riftmaker", cost: 1900, why: "120 AP + 600 HP + omnivamp — you heal from your damage" },
+          { name: "Night Harvester", cost: 2000, why: "160 AP + 500 HP + 40% MS — hit and reposition" },
+          { name: "Rabadon's Deathcap", cost: 2300, why: "×1.35 — ~891 AP while sitting at 1650 HP" }
+        ],
+        swaps: [{ cond: "Dying too quickly", action: "3rd: Unending Despair instead of Night Harvester (heal from abilities)" }]
+      },
+      mag_ult: {
+        label: "Ultimate Mage", sub: "Ult is your main weapon", role: "mag", icon: "🌀",
+        items: [
+          { name: "Malignance", cost: 1900, why: "200 AP + 20% CDR + −20% ult cooldown. Ult at 60s → becomes 48s" },
+          { name: "Blackfire Torch", cost: 1900, why: "175 AP + stacking AP burst during ult combo" },
+          { name: "Luden's Tempest", cost: 2000, why: "200 AP + 15% magic pen" },
+          { name: "Rabadon's Deathcap", cost: 2300, why: "×1.35 — final multiplier" }
+        ],
+        swaps: [{ cond: "Need survivability", action: "2nd: Riftmaker instead of Blackfire Torch" }]
+      },
+      mag_attack: {
+        label: "Auto-Attack Mage", sub: "AP + basic attacks hybrid", role: "mag", icon: "⚡",
+        items: [
+          { name: "Nashor's Tooth", cost: 2050, why: "180 AP + 40% AS + each attack: 50+5% AP magic damage. At 300 AP → +65 magic per hit" },
+          { name: "Dusk and Dawn", cost: 2000, why: "150 AP + 25% AS + after ability: next attack = 85+15% AP magic damage + heals you" },
+          { name: "Rabadon's Deathcap", cost: 2300, why: "×1.35 amplifies both AP and auto-attack magic damage" },
+          { name: "Liandry's Torment", cost: 2000, why: "150 AP + 550 HP + 6% max HP/s from abilities. Survivability + burn DoT" }
+        ],
+        swaps: [
+          { cond: "Need more survivability", action: "4th: Riftmaker instead of Liandry's" },
+          { cond: "Enemies are very tanky", action: "Keep Liandry's — it's mandatory here" }
+        ]
+      },
+      // TANK
+      tank_universal: {
+        label: "Universal Tank", sub: "Don't know enemy composition", role: "tank", icon: "🛡️",
+        items: [
+          { name: "Jak'Sho, The Protean", cost: 2000, why: "65 armor + 65 MR + 550 HP + stacking defense from taking damage. Covers all damage types" },
+          { name: "Warmog's Armor", cost: 2100, why: "1000 HP + 3% HP/s regen out of combat + 4% MS. Maximum survivability" },
+          { name: "Sterak's Gage", cost: 2000, why: "650 HP + shield = 60% max HP at 30% health. Saves you from burst" },
+          { name: "Death's Dance", cost: 2100, why: "25% damage spread over time + heal on kill. Nearly unkillable in long fights" }
+        ],
+        swaps: [
+          { cond: "Enemies heavy AP", action: "2nd: Dragon's Claw instead of Warmog's" },
+          { cond: "Getting burst-killed instantly", action: "3+4th: Sterak's + Protoplasm Harness" }
+        ]
+      },
+      tank_vs_adc: {
+        label: "ADC Counter Tank", sub: "Enemy carry dominating", role: "tank", icon: "🎯",
+        items: [
+          { name: "Frozen Heart", cost: 1900, why: "−30% attack speed to all nearby enemies. ADC attacks one third slower" },
+          { name: "Thornmail", cost: 2000, why: "130 armor + thorns: each attacker takes 10 + 2% armor as magic damage per hit" },
+          { name: "Randuin's Omen", cost: 2000, why: "−30% crit damage received. ADC with Infinity Edge loses their main advantage" },
+          { name: "Jak'Sho, The Protean", cost: 2000, why: "Stacking armor + MR — final layer of protection" }
+        ],
+        swaps: [
+          { cond: "ADC not building crit", action: "3rd: Warmog's instead of Randuin's" },
+          { cond: "Enemies have mages too", action: "4th: Dragon's Claw instead of Jak'Sho" }
+        ]
+      },
+      tank_dmg: {
+        label: "Damage Tank", sub: "Pressure enemies while being tanky", role: "tank", icon: "💪",
+        items: [
+          { name: "Heartsteel", cost: 2100, why: "800 HP + every 20s your next attack: 15 + 6% max HP bonus damage" },
+          { name: "Sunfire Cape", cost: 2000, why: "800 HP + 1% max HP magic damage per second to all nearby enemies + regen" },
+          { name: "Dead Man's Plate", cost: 2100, why: "650 HP + movement charges up → next attack deals up to 200 bonus physical damage" },
+          { name: "Warmog's Armor", cost: 2100, why: "1000 HP + regen. Total 3250 HP — keep pressing objectives" }
+        ],
+        swaps: [{ cond: "Enemies heavy AP", action: "3rd: Dragon's Claw instead of Dead Man's Plate" }]
+      },
+      // BRUISER
+      bruiser_sustain: {
+        label: "Sustain Bruiser", sub: "High HP + regen + damage", role: "tank", icon: "💚",
+        items: [
+          { name: "Sundered Sky", cost: 2000, why: "65 AD + 550 HP + guaranteed crit every 20s + heal 10% missing HP. Survives through combat" },
+          { name: "Warmog's Armor", cost: 2100, why: "1000 HP + 3% HP/s regen out of combat + 4% MS. Recover between fights" },
+          { name: "Death's Dance", cost: 2100, why: "75 armor + 25% damage over time + on kill: clear stored damage + heal 75+25% missing HP" },
+          { name: "Jak'Sho, The Protean", cost: 2000, why: "65 armor + 65 MR + 550 HP + growing defense. Universal shield against everything" }
+        ],
+        swaps: [
+          { cond: "Enemies heavy burst", action: "4th: Sterak's Gage instead of Jak'Sho (60% HP shield)" },
+          { cond: "Want more damage", action: "1st: Eclipse instead of Sundered Sky (8% max HP every 6s)" }
+        ]
+      },
+      bruiser_dmg: {
+        label: "Physical Bruiser", sub: "HP + growing physical damage", role: "tank", icon: "🔥",
+        items: [
+          { name: "Overlord's Bloodmail", cost: 2000, why: "40 AD + 650 HP + 2.5% max HP as bonus AD. At 3000 HP → +75 bonus AD. Fatter = stronger" },
+          { name: "Frozen Mallet", cost: 2000, why: "60 AD + 600 HP + every attack slows 15%. At 3000 HP = +90 bonus damage per attack" },
+          { name: "Sundered Sky", cost: 2000, why: "550 HP + free crit every 20s + healing. Sustain through combat" },
+          { name: "Warmog's Armor", cost: 2100, why: "1000 HP + regen. Total 3800 HP → Bloodmail gives +95 bonus AD" }
+        ],
+        swaps: [
+          { cond: "Need more defense", action: "3rd: Death's Dance instead of Sundered Sky" },
+          { cond: "Enemies heavy AP", action: "4th: Dragon's Claw instead of Warmog's" }
+        ]
+      },
+      bruiser_burn: {
+        label: "Burn Bruiser", sub: "High HP + area burning aura", role: "tank", icon: "🔥",
+        items: [
+          { name: "Liandry's Torment", cost: 2000, why: "150 AP + 550 HP + 6% max HP/s. Stand nearby — enemies burn" },
+          { name: "Sunfire Cape", cost: 2000, why: "800 HP + 1% max HP magic damage/s to all nearby enemies + 40 HP regen/s. Burn aura" },
+          { name: "Heartsteel", cost: 2100, why: "800 HP + every 20s: 6% max HP bonus attack damage. At 4000 HP = 255 bonus damage" },
+          { name: "Warmog's Armor", cost: 2100, why: "1000 HP + regen. Total 4150 HP — they burn longer than it takes you to die" }
+        ],
+        swaps: [{ cond: "Need protection", action: "4th: Jak'Sho instead of Warmog's" }]
+      },
+      bruiser_hydra: {
+        label: "Bruiser + Ravenous Hydra", sub: "New item: HP + AOE cleave on attacks", role: "tank", icon: "🌊",
+        items: [
+          { name: "Ravenous Hydra", cost: 1900, why: "NEW 0.9.7: 90 AD + 15% omnivamp + 15% CDR. Passive Cleave: basic attacks deal 40% AD as physical damage to nearby enemies. Attacks from beyond 35 range apply this at 50% effectiveness", isNew: true },
+          { name: "Overlord's Bloodmail", cost: 2000, why: "650 HP + 2.5% max HP as bonus AD. At 3000 HP → +75 AD. Hydra Cleave hits harder with more AD" },
+          { name: "Frozen Mallet", cost: 2000, why: "600 HP + every attack slows 15%. Slow + Hydra Cleave = enemies can't escape the area burn" },
+          { name: "Warmog's Armor", cost: 2100, why: "1000 HP + regen. Total 3250 HP — Bloodmail now gives +81 AD, Hydra cleaves even harder" }
+        ],
+        swaps: [
+          { cond: "Need more defense", action: "4th: Jak'Sho instead of Warmog's" },
+          { cond: "Enemies heavy AP", action: "3rd: Dragon's Claw instead of Frozen Mallet" }
+        ]
+      },
+      tank_vs_mage: {
+        label: "Mage Counter Tank", sub: "Enemy damage is mostly magic", role: "tank", icon: "🐲",
+        items: [
+          { name: "Dragon's Claw", cost: 2000, why: "400 HP + 200 MR + 20% skill damage reduction. Pure stats, no condition to meet — it works from the moment you buy it" },
+          { name: "Cloak of Starry Night", cost: 2100, why: "500 HP + 200 MR, then ×1.25 to your total MR. Also 5% skill damage reduction +1% per 25 MR, up to 25%" },
+          { name: "Spirit Visage", cost: 1900, why: "600 HP + 150 MR + all healing you receive increased 20%. Multiplies every heal, shield and regen you already have" },
+          { name: "Jak'Sho, The Protean", cost: 2000, why: "550 HP + 70 armor + 120 MR, and 10% armor/MR per stack (max 4) while you keep taking damage" }
+        ],
+        swaps: [
+          { cond: "No healing on your team", action: "3rd: Protoplasm Harness instead of Spirit Visage — +20% healing needs healing to multiply" },
+          { cond: "Enemy mage auto-attacks (Nashor's build)", action: "3rd: Wit's End instead of Spirit Visage (65% AS + 130 MR + 45 magic damage on-hit)" },
+          { cond: "Damage is actually mixed", action: "2nd: Randuin's Omen instead of Cloak — 670 flat MR is wasted if half their damage is physical" }
+        ]
+      },
+      bruiser_antiheal: {
+        label: "Anti-Heal Bruiser", sub: "Enemy team out-sustains you", role: "tank", icon: "🩸",
+        items: [
+          { name: "Mortal Reminder", cost: 2000, why: "85 AD + 30 armor pen. Any physical hit cuts enemy healing 40% for 2s — the melee answer to sustain comps" },
+          { name: "Sundered Sky", cost: 2000, why: "550 HP + 65 AD. Guaranteed crit every 20s per target for 60% bonus damage, healing you 60 + 10% of missing HP" },
+          { name: "Death's Dance", cost: 2100, why: "75 AD + 75 armor. 25% of damage taken is spread over time; a takedown clears the rest and heals 75 + 25% missing HP" },
+          { name: "Warmog's Armor", cost: 2100, why: "1000 HP + 3% max HP/s regen out of combat + 4% MS. Full HP by the time you reach the next fight" }
+        ],
+        swaps: [
+          { cond: "You need the healing cut sooner", action: "Buy Executioner's Calling (1300) at tier 3 — 25% cut until Mortal Reminder comes online" },
+          { cond: "Enemies heavy AP", action: "4th: Dragon's Claw instead of Warmog's (200 MR + 20% skill damage reduction)" }
+        ]
+      },
+      // SUPPORT
+      sup_aura: {
+        label: "Aura Machine", sub: "Buff your entire team", role: "sup", icon: "✨",
+        items: [
+          { name: "Echoes of Helia", cost: 1500, why: "Cheapest! Stores 30% damage/healing as charges → dumps all into ally healing" },
+          { name: "Zeke's Herald", cost: 1500, why: "Also 1500! Aura: +50 adaptive force + 10% omnivamp to all nearby allies" },
+          { name: "Ardent Censer", cost: 1700, why: "Heal an ally → they get +20% AS and 2% HP as physical damage for 6s" },
+          { name: "Locket of the Iron Solari", cost: 1650, why: "Aura: +10 armor, +20 MR, +4 HP regen + shield passive to all nearby allies" }
+        ],
+        swaps: [
+          { cond: "No healer on team", action: "1st: Locket of the Iron Solari instead of Echoes" },
+          { cond: "ADC is carrying hard", action: "3rd: Sword of Blossoming Dawn instead of Ardent (attacks heal the ADC)" }
+        ]
+      },
+      sup_protect: {
+        label: "Protect Support", sub: "Keep allies alive in fights", role: "sup", icon: "🛡️",
+        items: [
+          { name: "Locket of the Iron Solari", cost: 1650, why: "75 armor + 100 MR + team-wide armor/MR/regen/shield aura" },
+          { name: "Protector's Vow", cost: 1800, why: "75 armor + 550 HP + bonus HP equal to 80% of your total armor" },
+          { name: "Protoplasm Harness", cost: 1650, why: "650 HP + shield when below 40% HP — 30s cooldown means it triggers often" },
+          { name: "Jak'Sho, The Protean", cost: 2000, why: "Stacking armor + MR from taking hits — you become unkillable over time" }
+        ],
+        swaps: [
+          { cond: "Team needs more damage", action: "2nd: Zeke's Herald instead of Protector's Vow" },
+          { cond: "Enemies heavy AP", action: "4th: Dragon's Claw instead of Jak'Sho" }
+        ]
+      },
+      sup_tank: {
+        label: "Tank Support", sub: "Initiate + absorb damage + aura", role: "sup", icon: "🛡️",
+        items: [
+          { name: "Locket of the Iron Solari", cost: 1650, why: "Protective aura for the whole team — protect first" },
+          { name: "Protector's Vow", cost: 1800, why: "75 armor + 550 HP + bonus HP from armor. You become a proper tank" },
+          { name: "Jak'Sho, The Protean", cost: 2000, why: "Stacking defense from taking damage — initiator that doesn't die" },
+          { name: "Warmog's Armor", cost: 2100, why: "1000 HP + out-of-combat regen. Return to lane quickly without backing" }
+        ],
+        swaps: [
+          { cond: "Enemies heavy AP", action: "3rd: Dragon's Claw instead of Jak'Sho" },
+          { cond: "Want area damage", action: "3rd: Sunfire Cape instead of Jak'Sho (burn aura + HP)" }
+        ]
+      },
+      sup_heal: {
+        label: "Healer Support", sub: "Maximum team healing", role: "sup", icon: "💊",
+        items: [
+          { name: "Echoes of Helia", cost: 1500, why: "Core: passively stacks charges and heals allies" },
+          { name: "Ardent Censer", cost: 1700, why: "Heal → ally gets +20% AS and bonus physical damage for 6s" },
+          { name: "Zeke's Herald", cost: 1500, why: "Aura: +50 adaptive force to all nearby + 10% omnivamp" },
+          { name: "Spirit Visage", cost: 1900, why: "150 MR + 600 HP + all healing received by you ×1.20. You also heal better yourself" }
+        ],
+        swaps: [
+          { cond: "Enemies heavy physical", action: "4th: Locket of the Iron Solari instead of Spirit Visage" },
+          { cond: "Team needs more protection", action: "4th: Protector's Vow instead of Spirit Visage" }
+        ]
+      }
+    };
+
+    const TREE = {
+      root: {
+        q: "What role are you playing?", choices: [
+          { l: "🏹 Marksman (ADC)", d: "Ranged physical carry", n: "adc_q1" },
+          { l: "⚔️ Swordsman (Yasuo/Yone)", d: "Melee AD, crit, speed", n: "sword_q1" },
+          { l: "💀 Assassin / Jungler", d: "Fast kills, ganks", n: "ass_q1" },
+          { l: "💥 Mage", d: "Ability power, magic damage", n: "mag_q1" },
+          { l: "🛡️ Tank / Bruiser", d: "Frontline, durability", n: "tank_q1" },
+          { l: "✨ Support", d: "Team utility", n: "sup_q1" }
+        ]
+      },
+      adc_q1: {
+        q: "What's the main threat?", choices: [
+          { l: "No specific threat", d: "Standard comp", n: "adc_q2" },
+          { l: "2+ heavy tanks", d: "3000+ HP enemies", n: "adc_antitank" },
+          { l: "Strong healing / regen", d: "Healer support or items", n: "adc_antiheal" },
+          { l: "Need mobility", d: "Fast tempo, kiting", n: "adc_speed" },
+          { l: "Enemies are dangerous, need defense", d: "1 defensive item", n: "adc_defense" },
+          { l: "Playing melee ADC", d: "Yasuo, Yone style", n: "adc_melee" }
+        ]
+      },
+      adc_q2: {
+        q: "Expected game length?", choices: [
+          { l: "Short (under 12 min)", d: "Snowball win", n: "adc_speed" },
+          { l: "Standard (15–20 min)", d: "Normal game", n: "adc_crit" },
+          { l: "Long (20+ min)", d: "Late game scaling", n: "adc_crit" }
+        ]
+      },
+      sword_q1: {
+        q: "Where are you playing?", choices: [
+          { l: "Midlane", d: "Yasuo / Yone style", n: "sword_mid" },
+          { l: "Bot lane (ADC position)", d: "Melee carry in bot", n: "sword_adc" },
+          { l: "Jungle", d: "Duelist, ganks", n: "sword_jungle" }
+        ]
+      },
+      ass_q1: {
+        q: "How do you win fights?", choices: [
+          { l: "Early kill pressure", d: "Many early frags", n: "ass_snowball" },
+          { l: "Ultimate is the main tool", d: "Ult cooldown matters", n: "ass_ult" },
+          { l: "Enemies buying shields", d: "Sterak's and shield items", n: "ass_antishield" },
+          { l: "One powerful burst", d: "Kill from ambush", n: "ass_burst" },
+          { l: "Ganks and tower pressure", d: "Jungler with map pressure", n: "ass_jungle" }
+        ]
+      },
+      mag_q1: {
+        q: "What's your playstyle?", choices: [
+          { l: "One-shot with combo", d: "Burst nuker", n: "mag_nuke" },
+          { l: "One-shot + new Stormsurge", d: "Lightning burst synergy", n: "mag_nuke_surge" },
+          { l: "Frequent ultimate", d: "Low ult cooldown", n: "mag_ult" },
+          { l: "Enemies have lots of tanks", d: "% HP damage", n: "mag_antitank" },
+          { l: "Survive and deal damage", d: "Battle mage", n: "mag_tanky" },
+          { l: "Auto-attack + cast abilities", d: "Auto-attack mage", n: "mag_attack" }
+        ]
+      },
+      tank_q1: {
+        q: "What's your role in the team?", choices: [
+          { l: "Universal tank", d: "Don't know the composition", n: "tank_universal" },
+          { l: "Shut down the ADC", d: "Counter the marksman", n: "tank_vs_adc" },
+          { l: "Tank who deals damage", d: "Pressure + DPS", n: "tank_dmg" },
+          { l: "Bruiser — HP + regen", d: "High HP, self-sustain", n: "bruiser_sustain" },
+          { l: "Bruiser — HP + physical damage", d: "Bloodmail + Mallet", n: "bruiser_dmg" },
+          { l: "Bruiser — area burn", d: "AOE fire aura", n: "bruiser_burn" },
+          { l: "Bruiser + Ravenous Hydra", d: "New item: AOE cleave on attacks", n: "bruiser_hydra" },
+          { l: "Shut down the mage", d: "Counter magic damage", n: "tank_vs_mage" },
+          { l: "Bruiser — cut enemy healing", d: "Grievous wounds in melee", n: "bruiser_antiheal" }
+        ]
+      },
+      sup_q1: {
+        q: "What's your support style?", choices: [
+          { l: "Buff everyone", d: "Auras, team buffs", n: "sup_aura" },
+          { l: "Protect allies", d: "Shields, healing", n: "sup_protect" },
+          { l: "Heavy tank initiator", d: "Initiate + absorb damage", n: "sup_tank" },
+          { l: "Pure healer", d: "Maximum healing", n: "sup_heal" }
+        ]
+      }
+    };
+
+    const NEW_ITEMS = [
+      {
+        name: "Radiant Ravenous Hydra",
+        patch: "0.9.7",
+        type: "AD / Omnivamp",
+        role: "Bruiser · Fighter · ADC",
+        icon: "🌊",
+        stats: [
+          { s: "Attack Damage", v: "90 AD" },
+          { s: "Omnivamp", v: "15%" },
+          { s: "Cooldown Reduction", v: "15%" }
+        ],
+        passive: { name: "Cleave", text: "Basic attacks deal 40% of your attack damage as physical damage to nearby enemies. Attacks from beyond 35 range apply this effect at 50% effectiveness." },
+        use: "The key to Ravenous Hydra is the 90 AD base — extremely high. With 15% omnivamp, every bit of that AoE cleave heals you. Ideal for bruisers who fight in melee range where all enemies are within 35 units. The 50% reduction at range matters for ADC: you still get the cleave but at half value, so melee champions benefit much more.",
+        best: ["Physical Bruiser build (Bloodmail + Hydra + Frozen Mallet)", "Any frontliner who fights in the middle of enemies", "Champions with high attack speed — more attacks = more cleave = more heal"],
+        avoid: ["Long-range ADC — you'll mostly get the 50% version", "Full AP mages — AD scaling doesn't help"],
+        synergy: ["Frozen Mallet — slow enemies, they stay in cleave range", "Bloodmail — more HP = more AD from Bloodmail = stronger Hydra cleave", "Death's Dance — 15% CDR from Hydra + Death's Dance = very frequent ult"]
+      },
+      {
+        name: "Radiant Stormsurge",
+        patch: "0.9.7",
+        type: "AP / Magic Penetration / Burst",
+        role: "Mage · Burst Assassin Mage",
+        icon: "⚡",
+        stats: [
+          { s: "Ability Power", v: "200 AP" },
+          { s: "Magic Penetration", v: "15%" },
+          { s: "Movement Speed", v: "+5%" }
+        ],
+        passive: { name: "Stormraider", text: "Dealing magic damage equivalent to 25% of an enemy champion's max HP within 2.5 seconds inflicts Squall on them (30s cooldown per target). After 2 seconds, Squall strikes the target with lightning dealing 125 + 15% of your AP as magic damage." },
+        use: "Stormsurge is a delayed execute. You need to deal 25% max HP in 2.5s to proc the lightning — this works naturally with a full burst combo (Blackfire Torch at 4 stacks + big ability). 2 seconds later, 125 + 15% AP additional magic damage lands. At 500 AP that's +200 delayed magic damage on top of your combo. The 200 AP base + 15% magic pen makes it comparable to Void Staff for pure AP, but trades 40% pen for the delayed lightning burst.",
+        best: ["Burst mage (Blackfire Torch → Stormsurge → Rabadon's)", "Any mage that can dump 25% HP in one combo window", "Champions with strong single-target combos"],
+        avoid: ["DoT mages (Liandry's build) — you won't hit 25% HP in 2.5s with ticks", "Auto-attack mages — the window is too short for attack-based damage"],
+        synergy: ["Blackfire Torch — 4 stacks during combo easily clears the 25% HP threshold", "Rabadon's Deathcap — ×1.35 multiplies your AP, making Stormsurge lightning hit harder", "Void Staff vs Stormsurge: both give ~same base AP. Void Staff → better vs high MR tanks. Stormsurge → better vs squishy targets where the 25% HP proc is easy"]
+      }
+    ];
+
+    const SITUATIONAL = [
+      {
+        title: "vs Crit ADC", tag: "t-tank", label: "Defense", items: [
+          { t: "Randuin's Omen", d: "If ADC builds Infinity Edge — −30% crit damage received. If ADC has no crit — take Thornmail instead" },
+          { t: "Frozen Heart", d: "Always vs any ADC. −30% attack speed to all nearby enemies = ADC deals one third less DPS per second" },
+          { t: "Thornmail", d: "ADC takes damage from their own attacks. At 130 armor: thorns deal 10+2.6 = 12.6 per hit" },
+          { t: "Spirit Visage", d: "If you have a healer on team — all healing received by you ×1.20" }
+        ]
+      },
+      {
+        title: "vs Heavy Healing", tag: "t-phys", label: "Anti-Heal", items: [
+          { t: "Mortal Reminder", d: "ADC: −40% healing to enemy on physical hit. Swap in for your 4th item" },
+          { t: "Morellonomicon", d: "Mage: same anti-heal on magic damage. 190 AP included" },
+          { t: "Thornmail", d: "Passive: −12% damage from basic attacks reduces the input that needs to be healed" }
+        ]
+      },
+      {
+        title: "New: When to pick Ravenous Hydra", tag: "t-new", label: "0.9.7", items: [
+          { t: "Physical Bruiser", d: "Hydra's 90 AD + 15% omnivamp + Bloodmail synergy = each cleave tick heals you. Best in class for melee range fighting" },
+          { t: "vs Thornmail tanks", d: "Hydra cleave is magic damage? No — it's physical, so Thornmail will reflect it. Avoid Hydra if the whole enemy team is stacking Thornmail" },
+          { t: "Hydra vs Ravenous Hydra (LoL comparison)", d: "In TFM2 the Radiant version gives 90 AD — much higher than standard. The 15% omnivamp means you're healing from AoE, which is strong in extended team fights" }
+        ]
+      },
+      {
+        title: "New: When to pick Stormsurge", tag: "t-new", label: "0.9.7", items: [
+          { t: "vs Void Staff", d: "Similar AP base (200 vs 160). Void Staff: better vs high MR (40% pen vs 15%). Stormsurge: better vs squishy targets where the 25% HP threshold is easy to hit — adds delayed lightning burst" },
+          { t: "Vs Luden's Tempest", d: "Luden's: consistent poke + 15% pen. Stormsurge: higher burst threshold but bigger payoff when triggered. Use Luden's for sustained poke, Stormsurge for all-in combos" },
+          { t: "Who should NOT buy Stormsurge", d: "DoT mages (Liandry's build), auto-attack mages, champions that don't deal 25% HP in 2.5s burst windows" }
+        ]
+      },
+      {
+        title: "vs 2+ Mages", tag: "t-mag", label: "Magic Resist", items: [
+          { t: "Dragon's Claw", d: "Buy first: 200 MR + −20% ability damage + 50% tenacity. CC lasts half as long" },
+          { t: "Cloak of Starry Night", d: "Second after Dragon's Claw: ×1.25 MR. 400 MR → 500 effective MR" },
+          { t: "Spirit Visage", d: "If you have a healer: all healing ×1.20 + 150 MR + 600 HP" },
+          { t: "Wit's End", d: "ADC replacement for Phantom Dancer vs heavy AP: 65% AS + 130 MR + 30% tenacity" }
+        ]
+      },
+      {
+        title: "Swordsman situational items", tag: "t-sword", label: "Swordsman", items: [
+          { t: "Eclipse", d: "Double-hit every 6s: 8% max HP + shield. Best first item for any swordsman" },
+          { t: "Sundered Sky", d: "Free guaranteed crit every 20s + healing. Survivability through combat" },
+          { t: "Death's Dance", d: "75 armor + damage over time + heal on kill. Swordsman survives melee fights" },
+          { t: "Blade of the Ruined King", d: "5% current HP per attack + omnivamp. Best against tanky enemies" },
+          { t: "Trinity Force", d: "Ability → empowered attack 33% AD. Cycle of ability+attack = constant bonus damage" }
+        ]
+      },
+      {
+        title: "Reducing Ultimate Cooldown", tag: "t-sup", label: "Ult CD", items: [
+          { t: "Malignance", d: "Mage: −20% ult cooldown. Highest single-item reduction in the game" },
+          { t: "Axiom Arc", d: "Assassin/AD: −10% ult CD, scales with lethality up to −17%+" },
+          { t: "Experimental Hexplate", d: "Any: −25% ult CD + 50% AS + 500 HP. Best if ult empowers basic attacks" },
+          { t: "Spear of Shojin", d: "Fighter: 20% CDR on all abilities + −20% ult CD — maximum ult frequency" }
+        ]
+      },
+      {
+        title: "vs Mobile Enemies", tag: "t-mag", label: "Lockdown", items: [
+          { t: "Rylai's Crystal Scepter", d: "Mage: every ability slows 15% for 2s. Enemy can't run from your next spell" },
+          { t: "Frozen Mallet", d: "Fighter/tank: every basic attack slows 15%. At 3000 HP = +90 bonus damage per hit" },
+          { t: "Stormrazor", d: "ADC: lightning proc + 35% MS — now you're faster than them" },
+          { t: "Night Harvester", d: "Mage: 40% MS for 2s after bonus damage. Hit and escape" }
+        ]
+      },
+      {
+        title: "Cheap first items for early tempo", tag: "t-neu", label: "Early Game", items: [
+          { t: "Echoes of Helia — 1500", d: "Support. Cheapest useful item in the game" },
+          { t: "Zeke's Herald — 1500", d: "Support. Powerful team aura from the very start" },
+          { t: "Bloodsong (low-tier) — 1500", d: "Mage/hybrid. Cheapest magic item. +7% damage debuff on target" },
+          { t: "Serpent's Fang — 1800", d: "Assassin. 100 AD + 15 leth + shield-break. Builds fast" },
+          { t: "Locket of the Iron Solari — 1650", d: "Support-tank. Instant team-wide armor + MR + shield aura" },
+          { t: "Eclipse — 1950", d: "Swordsman. Cheap item with high damage through double-hit mechanic" }
+        ]
+      }
+    ];
+
+    const COMBOS = [
+      {
+        role: "tank", icon: "💚", title: "Sustain Bruiser",
+        sub: "Sundered Sky + Warmog's + Death's Dance",
+        items: ["Sundered Sky", "Warmog's Armor", "Death's Dance", "Jak'Sho / Sterak's"],
+        why: "Sundered Sky: guaranteed crit every 20s + heals 10% of missing HP — the lower your HP, the more you heal. Warmog's: 1000 HP + 3% HP/s regen out of combat. Death's Dance: 25% of incoming damage spread over time, and on kill — clears all stored damage + heals 75 + 25% missing HP. Result: extremely hard to kill, basically full HP after each kill."
+      },
+      {
+        role: "tank", icon: "🌊", title: "Cleave Bruiser [NEW 0.9.7]",
+        sub: "Ravenous Hydra + Bloodmail + Frozen Mallet",
+        items: ["Ravenous Hydra (NEW)", "Bloodmail", "Frozen Mallet", "Warmog's"],
+        newCombo: true,
+        why: "Ravenous Hydra: 90 AD + 15% omnivamp + 40% AD cleave on attacks. Bloodmail: at 3800 HP total → +95 bonus AD. Frozen Mallet: slows every hit — enemies stay in cleave range. Every basic attack hits the main target AND nearby enemies for 40% AD, and you heal from all of it via 15% omnivamp. At max items you're hitting 4 targets for 185 physical damage each hit and healing from all of it."
+      },
+      {
+        role: "mag", icon: "⚡", title: "Lightning Burst Mage [NEW 0.9.7]",
+        sub: "Blackfire Torch + Stormsurge + Rabadon's",
+        items: ["Blackfire Torch", "Stormsurge (NEW)", "Rabadon's Deathcap", "Void Staff"],
+        newCombo: true,
+        why: "Blackfire Torch 4 stacks during combo → deal 25% HP in 2.5s → Stormsurge triggers Stormraider. After 2s the target gets struck by lightning for 125 + 15% AP additional damage. At 500 AP: +200 delayed magic damage after your full combo. Rabadon's ×1.35 amplifies everything. Void Staff makes even MR tanks eat the full combo. The combo window: Torch stacks → big ability → trigger Squall → lightning finalizes the kill."
+      },
+      {
+        role: "tank", icon: "🔥", title: "Burn Tank",
+        sub: "Liandry's + Sunfire Cape + Heartsteel",
+        items: ["Liandry's Torment", "Sunfire Cape", "Heartsteel", "Warmog's Armor"],
+        why: "Liandry's burns 6% max HP over 3s from every ability. Sunfire Cape passively deals 1% max HP/s to all nearby enemies. Heartsteel at 4000 HP hits for 255 bonus damage every 20s. Just stand next to enemies and they melt. Great counter against teams that cluster together."
+      },
+      {
+        role: "sword", icon: "⚔️", title: "Swordsman Duelist",
+        sub: "Eclipse + Sundered Sky + Death's Dance",
+        items: ["Eclipse", "Sundered Sky", "Death's Dance", "Deathblade"],
+        why: "Eclipse: double-hit every 6s = 8% max HP + shield 139. Sundered Sky: free crit every 20s + healing. Death's Dance: damage spread over time + heal on kill. A swordsman who doesn't die in melee range and constantly heals through item mechanics."
+      },
+      {
+        role: "phys", icon: "🗡️", title: "Tanky Assassin",
+        sub: "Death's Dance + Hubris + Collector",
+        items: ["Death's Dance", "Hubris", "Collector", "Axiom Arc"],
+        why: "Non-standard assassin. Death's Dance: 75 armor + damage spread over time + heal on kill. Lets you dive into a group, survive the initial burst, get a kill, and heal back up. Hubris stacks AD with kills. Collector finishes fleeing enemies. Plays like a fighter-assassin that doesn't die immediately."
+      },
+      {
+        role: "sup", icon: "✨", title: "Fast Double Support (by min 9-10)",
+        sub: "Echoes + Zeke's — both cost 1500",
+        items: ["Echoes of Helia (1500)", "Zeke's Herald (1500)", "Ardent Censer", "Locket of the Iron Solari"],
+        why: "Echoes + Zeke's = 3000 gold = both items around 9-10 minutes. Zeke's gives every nearby ally +50 adaptive force = free +30 AD or +50 AP. Echoes passively heals through charges. Already with two cheap items your team gets a significant power spike. Perfect when you want to be strong mid-game on support income."
+      },
+      {
+        role: "tank", icon: "⚔️", title: "Crit Tank",
+        sub: "Sundered Sky + Atma's Reckoning + Warmog's",
+        items: ["Sundered Sky", "Atma's Reckoning", "Warmog's Armor", "Overlord's Bloodmail"],
+        why: "Sundered Sky: a guaranteed critical strike every 20s per target — 60% bonus damage, healing you for 60 + 10% of missing health. Atma's Reckoning: 25% crit chance on its own, plus 5% more per 1000 maximum health (capped at 25%). At 4000 HP that is 25% + 20% = 45% crit. Warmog's: +1000 HP → the fifth and final Atma stack = 50% crit. Bloodmail: at 5000 HP = +125 bonus AD. A tank that crits every second hit and hits very hard."
+      },
+      {
+        role: "sup", icon: "🛡️", title: "Tank Support Initiator",
+        sub: "Iron Solari + Protector's Vow + Jak'Sho + Warmog's",
+        items: ["Locket of the Iron Solari", "Protector's Vow", "Jak'Sho, The Protean", "Warmog's Armor"],
+        why: "Iron Solari: protective aura for the whole team. Protector's Vow: 75 armor + 550 HP + bonus HP from armor. Jak'Sho: stacking defense from taking damage — you don't die when initiating. Warmog's: 1000 HP + out-of-combat regen for constant return to the fight. A support who can initiate first, absorb damage, and survive."
+      }
+    ];
+
+    // ── ENGINE ────────────────────────────────────────────────────────────────────
+    let path = [], current = "root";
+
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      ['build', 'new', 'sit', 'combos'].forEach(t => {
+        document.getElementById(t + '-tab').style.display = t === tab ? '' : 'none';
+      });
+      if (tab === 'new') renderNew();
+      if (tab === 'sit') renderSit();
+      if (tab === 'combos') renderCombos();
+    }
+
+    function roleTag(r) {
+      const m = { phys: ['t-phys', 'Physical'], mag: ['t-mag', 'Mage'], tank: ['t-tank', 'Tank/Bruiser'], sup: ['t-sup', 'Support'], sword: ['t-sword', 'Swordsman'] };
+      const [cls, label] = m[r] || ['t-neu', r];
+      return `<span class="tag ${cls}">${label}</span>`;
+    }
+
+    function renderBC() {
+      const bc = document.getElementById('breadcrumb');
+      const steps = [{ label: 'Start' }, ...path.map(p => ({ label: p.label }))];
+      bc.innerHTML = steps.map((s, i) => {
+        const last = i === steps.length - 1;
+        return `<span class="crumb${last ? ' active' : ''}" data-idx="${i}">${s.label}</span>${last ? '' : `<span class="sep">›</span>`}`;
+      }).join('');
+      bc.querySelectorAll('.crumb:not(.active)').forEach(el => {
+        el.onclick = () => {
+          const idx = parseInt(el.dataset.idx);
+          path = path.slice(0, idx);
+          current = path.length === 0 ? 'root' : path[path.length - 1].next;
+          renderBuild();
+        };
+      });
+    }
+
+    function renderBuild() {
+      renderBC();
+      const c = document.getElementById('content');
+      if (B[current]) { renderResult(current, c); return; }
+      const node = TREE[current];
+      if (!node) { c.innerHTML = '<p style="color:var(--muted)">Navigation error</p>'; return; }
+      let h = `<p class="q-label">${node.q}</p><div class="choices">`;
+      node.choices.forEach(ch => {
+        h += `<div class="choice" data-next="${ch.n}" data-label="${ch.l}"><div class="ct">${ch.l}</div><div class="cd">${ch.d || ''}</div></div>`;
+      });
+      h += `</div>`;
+      c.innerHTML = h;
+      c.querySelectorAll('.choice').forEach(el => {
+        el.onclick = () => { path.push({ label: el.dataset.label, next: el.dataset.next }); current = el.dataset.next; renderBuild(); };
+      });
+    }
+
+    function renderResult(id, c) {
+      const b = B[id];
+      const namedItems = b.items.filter(i => i.cost > 0);
+      const total = namedItems.reduce((a, i) => a + i.cost, 0);
+      let h = `<div class="result-card"><div class="result-head"><div class="result-icon">${b.icon}</div><div>
+    <div class="result-title">${b.label}</div>
+    <div class="result-meta">${b.sub} &nbsp;${roleTag(b.role)}<span class="gold-badge">~${total.toLocaleString()} gold (named items)</span></div>
+  </div></div><div class="items-list">`;
+      b.items.forEach((item, i) => {
+        const newCls = item.isNew ? ' is-new' : '';
+        const newBadge = item.isNew ? `<span class="new-badge">NEW 0.9.7</span>` : '';
+        h += `<div class="item-row${newCls}"><div class="item-num">${i + 1}</div><div>
+      <div class="item-name">${item.name}${newBadge}</div>
+      ${item.cost > 0 ? `<div class="item-cost">${item.cost.toLocaleString()} gold</div>` : ''}
+      <div class="item-why">${item.why}</div>
+    </div></div>`;
+      });
+      h += `</div>`;
+      if (b.swaps && b.swaps.length) {
+        h += `<div class="swaps"><div class="swaps-title">Situational Swaps</div>`;
+        b.swaps.forEach(s => { h += `<div class="swap"><span class="swap-if">If ${s.cond}</span> — ${s.action}</div>`; });
+        h += `</div>`;
+      }
+      h += `</div><div class="btn-row">
+    <button class="btn" onclick="goBack()">← Back</button>
+    <button class="btn btn-accent" onclick="restart()">↺ Start Over</button>
+  </div>`;
+      c.innerHTML = h;
+    }
+
+    function goBack() { path = path.slice(0, -1); current = path.length === 0 ? 'root' : path[path.length - 1].next; renderBuild(); }
+    function restart() { path = []; current = 'root'; renderBuild(); }
+
+    function renderNew() {
+      const c = document.getElementById('new-content');
+      c.innerHTML = NEW_ITEMS.map(item => {
+        const stats = item.stats.map(s => `<div class="new-stat"><strong>${s.s}:</strong> ${s.v}</div>`).join('');
+        const best = item.best.map(b => `<div class="sit-item">✓ ${b}</div>`).join('');
+        const avoid = item.avoid.map(a => `<div class="sit-item">✗ ${a}</div>`).join('');
+        const syn = item.synergy.map(s => `<div class="sit-item">⟳ ${s}</div>`).join('');
+        return `<div class="new-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:.625rem">
+        <span style="font-size:24px">${item.icon}</span>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:var(--text)">${item.name} <span class="new-badge">NEW 0.9.7</span></div>
+          <div style="font-size:12px;color:var(--muted)">${item.type} · ${item.role}</div>
+        </div>
+      </div>
+      ${stats}
+      <div class="new-passive"><span class="pname">${item.passive.name}:</span> ${item.passive.text}</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:.5rem">${item.use}</div>
+      <div class="new-section">Best for</div>${best}
+      <div class="new-section">Avoid when</div>${avoid}
+      <div class="new-section">Key synergies</div>${syn}
+    </div>`;
+      }).join('');
+    }
+
+    function renderSit() {
+      const c = document.getElementById('sit-content');
+      c.innerHTML = SITUATIONAL.map((s, i) => {
+        const items = s.items.map(it => `<div class="sit-item"><strong>${it.t}</strong> — ${it.d}</div>`).join('');
+        return `<div class="sit-card">
+      <div class="sit-head" onclick="toggleSit(${i})">
+        <span class="sit-title">${s.title}</span>
+        <span class="tag ${s.tag}" style="margin-left:8px">${s.label}</span>
+        <span class="arrow" id="arr-${i}">▶</span>
+      </div>
+      <div class="sit-body" id="sit-${i}">${items}</div>
+    </div>`;
+      }).join('');
+    }
+
+    function toggleSit(i) {
+      const b = document.getElementById('sit-' + i);
+      const a = document.getElementById('arr-' + i);
+      const open = b.classList.toggle('open');
+      a.style.transform = open ? 'rotate(90deg)' : 'none';
+    }
+
+    function renderCombos() {
+      const c = document.getElementById('combo-content');
+      const rc = { phys: 't-phys', mag: 't-mag', tank: 't-tank', sup: 't-sup', sword: 't-sword' };
+      const rl = { phys: 'Physical', mag: 'Mage', tank: 'Tank/Bruiser', sup: 'Support', sword: 'Swordsman' };
+      c.innerHTML = COMBOS.map(cb => {
+        const pills = cb.items.map(i => {
+          const isNew = i.includes('NEW');
+          return `<span class="combo-item${isNew ? ' new' : ''}">${i}</span>`;
+        }).join('');
+        const newBadge = cb.newCombo ? `<span class="new-badge" style="margin-left:6px">NEW 0.9.7</span>` : '';
+        return `<div class="combo-card${cb.newCombo ? ' is-new' : ''}">
+      <div class="combo-head">
+        <span style="font-size:20px">${cb.icon}</span>
+        <div class="combo-title">${cb.title}${newBadge}</div>
+        <span class="tag ${rc[cb.role] || 't-neu'}" style="margin-left:auto;flex-shrink:0">${rl[cb.role] || ''}</span>
+      </div>
+      <div class="combo-sub">${cb.sub}</div>
+      <div class="combo-items">${pills}</div>
+      <div class="combo-why">${cb.why}</div>
+    </div>`;
+      }).join('');
+    }
+
+    renderBuild();
+  </script>
+</body>
+
+</html>
