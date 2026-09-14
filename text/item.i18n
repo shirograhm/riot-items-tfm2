@@ -177,11 +177,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Sunfire Cape",
-            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second."
+            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         },
         "giants_horn_shard": {
             "name": "Radiant Sunfire Cape",
-            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Disdain<>: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         },
         "bf_sword": {
             "name": "B.F. Sword",
@@ -990,11 +990,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Áo Choàng Lửa Mặt Trời",
-            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây."
+            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
         },
         "giants_horn_shard": {
             "name": "Áo Choàng Lửa Mặt Trời Ánh Sáng",
-            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Khinh Miệt<>: Gây <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{Range}<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{Range}<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
         },
         "bf_sword": {
             "name": "Kiếm B.F.",
@@ -1803,11 +1803,11 @@
         },
         "hourglass_of_eternity": {
             "name": "日炎斗篷",
-            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{Flat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
+            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{Flat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。"
         },
         "giants_horn_shard": {
             "name": "光明版日炎斗篷",
-            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{RegenFlat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>蔑视<>：对 <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>{DmgFlat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>{DmgRatio}%<> 的<#a974ffff>魔法伤害<>。"
+            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{RegenFlat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>{DmgFlat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>{DmgRatio}%<> 的<#a974ffff>魔法伤害<>。"
         },
         "bf_sword": {
             "name": "暴风之剑",
@@ -2616,7 +2616,7 @@
         },
         "hourglass_of_eternity": {
             "name": "Capa do Sol Nascente",
-            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{Flat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo."
+            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{Flat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
         },
         "giants_horn_shard": {
             "name": "Capa do Sol Nascente Radiante",
@@ -3429,11 +3429,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Плащ солнечного пламени",
-            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду."
+            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "giants_horn_shard": {
             "name": "Светоносный плащ солнечного пламени",
-            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Disdain<>: Наносит <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "bf_sword": {
             "name": "Самый Лучший Меч",
@@ -4242,11 +4242,11 @@
         },
         "hourglass_of_eternity": {
             "name": "태양불꽃 망토",
-            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{Flat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{Flat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
         },
         "giants_horn_shard": {
             "name": "찬란한 태양불꽃 망토",
-            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{RegenFlat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>경멸<>: <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>{DmgFlat}<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>{DmgRatio}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{RegenFlat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>{DmgFlat}<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>{DmgRatio}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
         },
         "bf_sword": {
             "name": "B.F. 대검",

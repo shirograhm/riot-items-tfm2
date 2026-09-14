@@ -1,5 +1,5 @@
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, is_enemy_champion, ticks};
+use crate::{apply_config, has_buff, ticks};
 use mod_api_stable::*;
 
 const RAGE_BUFF: &str = "phage_rage";
@@ -117,7 +117,7 @@ impl StableItem for Phage {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if attack_type == AttackTypeV1::BaseAttack && is_enemy_champion(ctx, caster, target) {
+        if attack_type == AttackTypeV1::BaseAttack {
             self.grant_rage(ctx, caster, target);
         }
     }
