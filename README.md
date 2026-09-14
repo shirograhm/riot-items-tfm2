@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 159 new items (91 base + 68 Radiant) to the game.
+Reskins the 30 existing items and also adds 160 new items (92 base + 68 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -43,6 +43,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Aegis of the Legion** | 950G | +150 HP<br>+40 Armor<br>+60 MR | — |
+| **Bami's Cinder** | 800G | +300 HP | Immolate: Deal 5 + 0.5% of your maximum health as magic damage to all enemies within 30 range. |
 | **B.F. Sword** | 850G | +65 Attack Damage | — |
 | **Bandleglass Mirror** | 650G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+5 Ability Haste | — |
 | **Blighting Jewel** | 800G | +80 AP<br>+10% Magic Pen | — |

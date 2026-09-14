@@ -9,21 +9,55 @@
 //!
 //! Radiant Sunfire Cape (`giants_horn_shard`) already has this aura built into
 //! the engine (`flat_aoe_damage` / `max_hp_aoe_ratio` / `aoe_range`), so it is
-//! deliberately not handled here. The numbers below mirror its vanilla values,
-//! matching the tooltip.
+//! deliberately not handled here. Its numbers, like the rest of the HP line's
+//! stats, are written into `setting/item_setting.item_setting` by
+//! `apply_config.ps1`; only this scripted aura is read from config here, under
+//! the `sunfire_cape` entry.
 
 use mod_api_stable::*;
 
-use crate::{percent_of, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND};
+use crate::config::ItemConfig;
+use crate::{apply_config, percent_of, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND};
 
 const SUNFIRE_KEY: &str = "hourglass_of_eternity";
 
-const IMMOLATE_FLAT_DAMAGE: usize = 10;
-const IMMOLATE_MAX_HP_PERCENT: f64 = 1.0;
-const IMMOLATE_RANGE: usize = 30;
+/// Sunfire Cape's Immolate numbers. Defaults mirror Radiant Sunfire Cape's
+/// vanilla aura, matching the tooltip.
+#[derive(Clone, Debug)]
+pub(crate) struct Immolate {
+    effect_bonus_flat_damage: usize,
+    effect_caster_hp_percent_damage: f64,
+    effect_max_distance: usize,
+}
+
+impl Default for Immolate {
+    fn default() -> Self {
+        Self {
+            effect_bonus_flat_damage: 10,
+            effect_caster_hp_percent_damage: 1.0,
+            effect_max_distance: 30,
+        }
+    }
+}
+
+impl Immolate {
+    pub(crate) fn with_config(cfg: &ItemConfig) -> Self {
+        let mut immolate = Self::default();
+        apply_config!(
+            immolate,
+            cfg,
+            [
+                effect_bonus_flat_damage,
+                effect_caster_hp_percent_damage,
+                effect_max_distance
+            ]
+        );
+        immolate
+    }
+}
 
 /// Deals one second of Immolate for every living Sunfire Cape holder.
-pub(crate) fn immolate(sim: &mut StableSim<'_>) {
+fn immolate(sim: &mut StableSim<'_>, numbers: &Immolate) {
     if sim.tick() % TICKS_PER_SECOND as usize != 0 {
         return;
     }
@@ -42,11 +76,12 @@ pub(crate) fn immolate(sim: &mut StableSim<'_>) {
         if !champion.is_alive() {
             continue;
         }
-        let damage = IMMOLATE_FLAT_DAMAGE + percent_of(champion.hp().1, IMMOLATE_MAX_HP_PERCENT);
+        let damage = numbers.effect_bonus_flat_damage
+            + percent_of(champion.hp().1, numbers.effect_caster_hp_percent_damage);
         burns.push((champion.id(), champion.team(), damage));
     }
 
-    let range = (IMMOLATE_RANGE * DISTANCE_UNITS_PER_RANGE) as u64;
+    let range = (numbers.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
     let range_sq = range * range;
     for (caster, caster_team, damage) in burns {
         let targets: Vec<usize> = (0..sim.entity_count())
@@ -66,7 +101,9 @@ pub(crate) fn immolate(sim: &mut StableSim<'_>) {
 
 /// The mod's one match hook: Immolate while the match runs, then the
 /// end-of-match item capture.
-pub(crate) struct MatchHooks;
+pub(crate) struct MatchHooks {
+    pub(crate) immolate: Immolate,
+}
 
 impl StableMatchHook for MatchHooks {
     fn on_match_start(&self, sim: &mut StableSim<'_>) {
@@ -75,7 +112,7 @@ impl StableMatchHook for MatchHooks {
 
     fn on_match_tick(&self, sim: &mut StableSim<'_>, rng_seed: u64) {
         if !sim.is_end() {
-            immolate(sim);
+            immolate(sim, &self.immolate);
         }
         crate::item_stats_sim::EndOfMatchItems.on_match_tick(sim, rng_seed);
     }
