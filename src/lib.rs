@@ -15,6 +15,7 @@ mod items;
 mod proc_queue;
 mod solo_rank_ui;
 mod strategy_ui;
+mod sunfire;
 mod tactics;
 
 use items::*;
@@ -444,8 +445,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
 
     // Records only keep the build a match was *assigned*; this reads what each
-    // champion actually finished holding, off the simulation's last tick.
-    reg.set_match_hook(item_stats_sim::EndOfMatchItems);
+    // champion actually finished holding, off the simulation's last tick. The
+    // same hook runs Immolate for the vanilla Sunfire Cape.
+    reg.set_match_hook(sunfire::MatchHooks);
     reg.set_server_extension(NativeTapExtension);
 
     // in-game build picker
