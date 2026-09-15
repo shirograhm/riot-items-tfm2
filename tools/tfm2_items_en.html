@@ -836,6 +836,23 @@
         ],
         swaps: [{ cond: "Dying too quickly", action: "3rd: Unending Despair instead of Night Harvester (heal from abilities)" }]
       },
+      mag_battle_crit: {
+        label: "Crit Battle Mage", sub: "Riftmaker + Atma's + Rite of Ruin, flex 4th", role: "mag", icon: "🔮",
+        items: [
+          { name: "Riftmaker", cost: 1900, why: "120 AP + 600 HP. Infusion: bonus AP equal to 2% of max HP. Corruption: each ability hit grants 2% omnivamp for 3s (max 3 stacks)" },
+          { name: "Atma's Reckoning", cost: 2050, why: "850 HP + 25% crit. Big Hands: +5% crit per 1000 max HP (up to +25%). Its HP also feeds Riftmaker: 850 HP = +17 AP" },
+          { name: "Rite of Ruin", cost: 2000, why: "185 AP + 15 ability haste + 25% crit. Each ability hit: +5% crit for 5s (max 5). Salvage the Wreckage: ability hits have a chance equal to your crit chance to shield you for 65–175 for 3s. At ~75% crit the shield procs on most casts" },
+          { name: "Flex slot", cost: 0, why: "Pick based on the enemy comp — see the swaps below. Rabadon's Deathcap is the default if nothing specific is threatening you" }
+        ],
+        swaps: [
+          { cond: "No specific threat", action: "4th: Rabadon's Deathcap (×1.35 total AP, including Riftmaker's HP-based AP)" },
+          { cond: "You want more crit and bulk", action: "4th: Warmog's Armor (+1000 HP = one more Atma stack and +20 AP from Riftmaker)" },
+          { cond: "Enemies have 2+ heavy tanks", action: "4th: Liandry's Torment (6% max HP/s burn + 550 HP)" },
+          { cond: "Enemies stack magic resist", action: "4th: Void Staff (40% magic pen)" },
+          { cond: "Enemies heal a lot", action: "4th: Morellonomicon (cuts enemy healing on magic damage)" },
+          { cond: "Getting burst down anyway", action: "4th: Dragon's Claw vs AP or Jak'Sho vs mixed damage" }
+        ]
+      },
       mag_ult: {
         label: "Ultimate Mage", sub: "Ult is your main weapon", role: "mag", icon: "🌀",
         items: [
@@ -1079,6 +1096,7 @@
           { l: "Frequent ultimate", d: "Low ult cooldown", n: "mag_ult" },
           { l: "Enemies have lots of tanks", d: "% HP damage", n: "mag_antitank" },
           { l: "Survive and deal damage", d: "Battle mage", n: "mag_tanky" },
+          { l: "Crit battle mage", d: "Riftmaker + Atma's + Rite of Ruin, flex 4th", n: "mag_battle_crit" },
           { l: "Auto-attack + cast abilities", d: "Auto-attack mage", n: "mag_attack" }
         ]
       },
