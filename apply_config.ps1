@@ -371,6 +371,15 @@ $rhReach = [int]$config.ravenous_hydra.effect_melee_distance
 $rhStrength = [double]$config.ravenous_hydra.effect_ranged_percent
 $rrhReach = [int]$config.radiant_ravenous_hydra.effect_melee_distance
 $rrhStrength = [double]$config.radiant_ravenous_hydra.effect_ranged_percent
+$bamiFlat = [int]$config.bamis_cinder.effect_bonus_flat_damage
+$bamiHpPct = [double]$config.bamis_cinder.effect_caster_hp_percent_damage
+$bamiRange = [int]$config.bamis_cinder.effect_max_distance
+$sunFlat = [int]$config.sunfire_cape.effect_bonus_flat_damage
+$sunHpPct = [double]$config.sunfire_cape.effect_caster_hp_percent_damage
+$sunRange = [int]$config.sunfire_cape.effect_max_distance
+$bvPlating = [int]$config.bramble_vest.base_attack_damaged_reduce
+$tmPlating = [int]$config.thornmail.base_attack_damaged_reduce
+$rtmPlating = [int]$config.radiant_thornmail.base_attack_damaged_reduce
 $dndFlat = [int]$config.dusk_and_dawn.effect_bonus_flat_damage
 $dndApPct = [double]$config.dusk_and_dawn.effect_ap_percent_damage
 $dndApHeal = [double]$config.dusk_and_dawn.effect_caster_ap_percent_heal
@@ -620,7 +629,7 @@ $i18n.en.radiant_rabadons_deathcap.option = "<#ff7a3eff>Opus<>: Increase your to
 $feralEn = "<#ff7a3eff>Maim<>: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>{3}<>. Basic attacks deal <#a974ffff>{0}<> (<#a974ffff>+{1}<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> and restore <#60e84dff>{2} <$hpRegenIcon> health<>. This effect is <#e8a800ff>{4}% as effective<> against minions and monsters."
 $i18n.en.feral_flare.option = $feralEn -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.en.radiant_feral_flare.option = $feralEn -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$sbdEn = "Basic attacks <$hpRegenIcon> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>{0}<> - <#60e84dff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#ff9028ff>(+{2}% <$adIcon> AD)<> <#a974ffff>(+{3}% <$apIcon> AP)<>."
+$sbdEn = "<#ff7a3eff>Peppermint<>: Basic attacks <$hpRegenIcon> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>{0}<> - <#60e84dff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#ff9028ff>(+{2}% <$adIcon> AD)<> <#a974ffff>(+{3}% <$apIcon> AP)<>."
 $i18n.en.sword_of_blossoming_dawn.option = $sbdEn -f $sbdMin, $sbdMax, $sbdAd, $sbdAp
 $i18n.en.radiant_sword_of_blossoming_dawn.option = $sbdEn -f $rsbdMin, $rsbdMax, $rsbdAd, $rsbdAp
 $acEn = "<#ff7a3eff>Sanctify<>: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>{0}%<> <$asIcon> <#ceff99ff>attack speed<> and <#ff9028ff>bonus physical damage<> on-hit equal to <#d94c49ff>{1}% of the target's maximum health<> for <#e8a800ff>{2} seconds<>."
@@ -681,6 +690,14 @@ $i18n.en.radiant_trinity_force.option = $tfTemplate -f $rtfFlat, $rtfAdPct, $rtf
 $rhTemplate = "<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>{0}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>{1} <$rangeIcon> range<> apply this effect at <#d94c49ff>{2}% strength<>."
 $i18n.en.ravenous_hydra.option = $rhTemplate -f $rhAdPct, $rhReach, $rhStrength
 $i18n.en.radiant_ravenous_hydra.option = $rhTemplate -f $rrhAdPct, $rrhReach, $rrhStrength
+
+$bamiTemplate = "<#ff7a3eff>Immolate<>: Deal <#60e84dff>{0}<> + <#60e84dff>{1}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{2} <$rangeIcon> range<>."
+$i18n.en.bamis_cinder.option = $bamiTemplate -f $bamiFlat, $bamiHpPct, $bamiRange
+$i18n.en.hourglass_of_eternity.option = "<#ff7a3eff>Mending<>: Recover <#60e84dff>{Flat} <$hpRegenIcon> health<> every second.`n`n" + ($bamiTemplate -f $sunFlat, $sunHpPct, $sunRange)
+$platingTemplate = "<#ff7a3eff>Plating<>: Reduce damage taken from basic attacks by <#e8a800ff>{0}%<>."
+$i18n.en.black_knights_heavy_plate.option = $platingTemplate -f $bvPlating
+$i18n.en.eternal_iron_plate.option = $platingTemplate -f $tmPlating
+$i18n.en.impregnable_fortress.option = ($platingTemplate -f $rtmPlating) + "`n`n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <$armorIcon> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
 
 $dndTemplate = "<#ff7a3eff>Spellblade<>: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <$hpRegenIcon> <#60e84dff>heal you<> for <#a974ffff>{2}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>{3}%<> of your <$hpIcon> <#60e84dff>maximum health<> (<#e8a800ff>{4} second<> cooldown)."
 $i18n.en.dusk_and_dawn.option = $dndTemplate -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -803,7 +820,7 @@ $i18n.vi.radiant_rabadons_deathcap.option = "<#ff7a3eff>Hạt nhân<>: Tăng <$a
 $feralVi = "<#ff7a3eff>Tàn Phế<>: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>{3}<>. Đòn đánh thường gây <#a974ffff>{0}<> (<#a974ffff>+{1}<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>{2} <$hpRegenIcon> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả {4}%<> lên lính và quái."
 $i18n.vi.feral_flare.option = $feralVi -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.vi.radiant_feral_flare.option = $feralVi -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$sbdVi = "Đòn đánh thường <$hpRegenIcon> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>{0}<> - <#60e84dff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+{2}% <$adIcon> SMCK)<> <#a974ffff>(+{3}% <$apIcon> SMPT)<>."
+$sbdVi = "<#ff7a3eff>Peppermint<>: Đòn đánh thường <$hpRegenIcon> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>{0}<> - <#60e84dff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+{2}% <$adIcon> SMCK)<> <#a974ffff>(+{3}% <$apIcon> SMPT)<>."
 $i18n.vi.sword_of_blossoming_dawn.option = $sbdVi -f $sbdMin, $sbdMax, $sbdAd, $sbdAp
 $i18n.vi.radiant_sword_of_blossoming_dawn.option = $sbdVi -f $rsbdMin, $rsbdMax, $rsbdAd, $rsbdAp
 $acVi = "<#ff7a3eff>Cầu Nguyện<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>{0}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> và gây thêm <#ff9028ff>sát thương vật lí<> khi đánh trúng bằng <#d94c49ff>{1}% máu tối đa của mục tiêu<> trong <#e8a800ff>{2} giây<>."
@@ -864,6 +881,14 @@ $i18n.vi.radiant_trinity_force.option = $tfTemplateVi -f $rtfFlat, $rtfAdPct, $r
 $rhTemplateVi = "<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>{0}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>{1}<> <$rangeIcon> chỉ áp dụng hiệu ứng này ở <#d94c49ff>{2}% sức mạnh<>."
 $i18n.vi.ravenous_hydra.option = $rhTemplateVi -f $rhAdPct, $rhReach, $rhStrength
 $i18n.vi.radiant_ravenous_hydra.option = $rhTemplateVi -f $rrhAdPct, $rrhReach, $rrhStrength
+
+$bamiTemplateVi = "<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>{0}<> + <#60e84dff>{1}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{2}<> <$rangeIcon> ."
+$i18n.vi.bamis_cinder.option = $bamiTemplateVi -f $bamiFlat, $bamiHpPct, $bamiRange
+$i18n.vi.hourglass_of_eternity.option = "<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{Flat} <$hpRegenIcon> Máu<> Tối Đa mỗi giây.`n`n" + ($bamiTemplateVi -f $sunFlat, $sunHpPct, $sunRange)
+$platingTemplateVi = "<#ff7a3eff>Giáp Cứng<>: Giảm <#e8a800ff>{0}%<> sát thương nhận vào từ đòn đánh thường."
+$i18n.vi.black_knights_heavy_plate.option = $platingTemplateVi -f $bvPlating
+$i18n.vi.eternal_iron_plate.option = $platingTemplateVi -f $tmPlating
+$i18n.vi.impregnable_fortress.option = ($platingTemplateVi -f $rtmPlating) + "`n`n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <$armorIcon> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
 
 $dndTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <$hpRegenIcon> <#60e84dff>hồi máu cho bạn<> <#a974ffff>{2}%<> <$apIcon> <#a974ffff>SMPT<> và <#60e84dff>{3}%<> <$hpIcon> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>{4} giây<>)."
 $i18n.vi.dusk_and_dawn.option = $dndTemplateVi -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -986,7 +1011,7 @@ $i18n.'zh-hans'.radiant_rabadons_deathcap.option = "<#ff7a3eff>魔法乐章<>：
 $feralZh = "<#ff7a3eff>致残<>：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>{3}<> 层。普通攻击额外造成 <#a974ffff>{0}<>（每层<#92dc7bff>野性<>+<#a974ffff>{1}<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>{2} 点<$hpRegenIcon> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 {4}%<>。"
 $i18n.'zh-hans'.feral_flare.option = $feralZh -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.'zh-hans'.radiant_feral_flare.option = $feralZh -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$sbdZh = "普通攻击<$hpRegenIcon> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>{0}<> - <#60e84dff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#ff9028ff>（+{2}% <$adIcon> 攻击力）<> <#a974ffff>（+{3}% <$apIcon> 法术强度）<>。"
+$sbdZh = "<#ff7a3eff>Peppermint<>：普通攻击<$hpRegenIcon> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>{0}<> - <#60e84dff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#ff9028ff>（+{2}% <$adIcon> 攻击力）<> <#a974ffff>（+{3}% <$apIcon> 法术强度）<>。"
 $i18n.'zh-hans'.sword_of_blossoming_dawn.option = $sbdZh -f $sbdMin, $sbdMax, $sbdAd, $sbdAp
 $i18n.'zh-hans'.radiant_sword_of_blossoming_dawn.option = $sbdZh -f $rsbdMin, $rsbdMax, $rsbdAd, $rsbdAp
 $acZh = "<#ff7a3eff>圣洁化<>：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>{0}%<> <$asIcon> <#ceff99ff>攻击速度<>，且攻击时造成相当于<#d94c49ff>目标最大生命值 {1}%<>的<#ff9028ff>额外物理伤害<>，持续 <#e8a800ff>{2}秒<>。"
@@ -1047,6 +1072,14 @@ $i18n.'zh-hans'.radiant_trinity_force.option = $tfTemplateZh -f $rtfFlat, $rtfAd
 $rhTemplateZh = "<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{0}%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>{1} <$rangeIcon> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>{2}% 强度<>触发。"
 $i18n.'zh-hans'.ravenous_hydra.option = $rhTemplateZh -f $rhAdPct, $rhReach, $rhStrength
 $i18n.'zh-hans'.radiant_ravenous_hydra.option = $rhTemplateZh -f $rrhAdPct, $rrhReach, $rrhStrength
+
+$bamiTemplateZh = "<#ff7a3eff>献祭<>：对 <#ff86c2ff>{2} <$rangeIcon> 射程<>内的所有敌人造成 <#60e84dff>{0}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{1}%<> 的<#a974ffff>魔法伤害<>。"
+$i18n.'zh-hans'.bamis_cinder.option = $bamiTemplateZh -f $bamiFlat, $bamiHpPct, $bamiRange
+$i18n.'zh-hans'.hourglass_of_eternity.option = "<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{Flat}点 <$hpRegenIcon> 生命值<>。`n`n" + ($bamiTemplateZh -f $sunFlat, $sunHpPct, $sunRange)
+$platingTemplateZh = "<#ff7a3eff>镀层<>：受到的普通攻击伤害降低 <#e8a800ff>{0}%<>。"
+$i18n.'zh-hans'.black_knights_heavy_plate.option = $platingTemplateZh -f $bvPlating
+$i18n.'zh-hans'.eternal_iron_plate.option = $platingTemplateZh -f $tmPlating
+$i18n.'zh-hans'.impregnable_fortress.option = ($platingTemplateZh -f $rtmPlating) + "`n`n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <$armorIcon> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
 
 $dndTemplateZh = "<#ff7a3eff>咒刃<>：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>，并<$hpRegenIcon> <#60e84dff>为你回复<>相当于<$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{2}%<> 与<$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{3}%<> 的生命值（冷却 <#e8a800ff>{4}秒<>）。"
 $i18n.'zh-hans'.dusk_and_dawn.option = $dndTemplateZh -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1169,7 +1202,7 @@ $i18n.'pt-BR'.radiant_rabadons_deathcap.option = "<#ff7a3eff>Apogeu<>: Aumenta o
 $feralPt = "<#ff7a3eff>Mutilar<>: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>{3}<>. Ataques básicos causam <#a974ffff>{0}<> (<#a974ffff>+{1}<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> e restauram <#60e84dff>{2} de <$hpRegenIcon> vida<>. Este efeito é <#e8a800ff>{4}% efetivo<> contra lacaios e monstros."
 $i18n.'pt-BR'.feral_flare.option = $feralPt -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.'pt-BR'.radiant_feral_flare.option = $feralPt -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$sbdPt = "Ataques básicos <$hpRegenIcon> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>{0}<> - <#60e84dff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) <#ff9028ff>(+{2}% de <$adIcon> Dano de Ataque)<> <#a974ffff>(+{3}% de <$apIcon> Poder de Habilidade)<>."
+$sbdPt = "<#ff7a3eff>Peppermint<>: Ataques básicos <$hpRegenIcon> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>{0}<> - <#60e84dff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) <#ff9028ff>(+{2}% de <$adIcon> Dano de Ataque)<> <#a974ffff>(+{3}% de <$apIcon> Poder de Habilidade)<>."
 $i18n.'pt-BR'.sword_of_blossoming_dawn.option = $sbdPt -f $sbdMin, $sbdMax, $sbdAd, $sbdAp
 $i18n.'pt-BR'.radiant_sword_of_blossoming_dawn.option = $sbdPt -f $rsbdMin, $rsbdMax, $rsbdAd, $rsbdAp
 $acPt = "<#ff7a3eff>Santificar<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>{0}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> e <#ff9028ff>dano físico bônus<> no acerto equivalente a <#d94c49ff>{1}% da Vida Máxima do alvo<> por <#e8a800ff>{2} segundos<>."
@@ -1230,6 +1263,14 @@ $i18n.'pt-BR'.radiant_trinity_force.option = $tfTemplatePt -f $rtfFlat, $rtfAdPc
 $rhTemplatePt = "<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>{0}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>{1} <$rangeIcon> alcance<> aplicam este efeito com <#d94c49ff>{2}% de intensidade<>."
 $i18n.'pt-BR'.ravenous_hydra.option = $rhTemplatePt -f $rhAdPct, $rhReach, $rhStrength
 $i18n.'pt-BR'.radiant_ravenous_hydra.option = $rhTemplatePt -f $rrhAdPct, $rrhReach, $rrhStrength
+
+$bamiTemplatePt = "<#ff7a3eff>Imolar<>: Causa <#60e84dff>{0}<> + <#60e84dff>{1}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>{2} <$rangeIcon> alcance<>."
+$i18n.'pt-BR'.bamis_cinder.option = $bamiTemplatePt -f $bamiFlat, $bamiHpPct, $bamiRange
+$i18n.'pt-BR'.hourglass_of_eternity.option = "<#ff7a3eff>Coração<>: Restaura <#60e84dff>{Flat} de <$hpRegenIcon> Vida<> por segundo.`n`n" + ($bamiTemplatePt -f $sunFlat, $sunHpPct, $sunRange)
+$platingTemplatePt = "<#ff7a3eff>Revestimento<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>{0}%<>."
+$i18n.'pt-BR'.black_knights_heavy_plate.option = $platingTemplatePt -f $bvPlating
+$i18n.'pt-BR'.eternal_iron_plate.option = $platingTemplatePt -f $tmPlating
+$i18n.'pt-BR'.impregnable_fortress.option = ($platingTemplatePt -f $rtmPlating) + "`n`n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <$armorIcon> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
 
 $dndTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <$hpRegenIcon> <#60e84dff>curar você<> em <#a974ffff>{2}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> e <#60e84dff>{3}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>{4} segundos<>)."
 $i18n.'pt-BR'.dusk_and_dawn.option = $dndTemplatePt -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1352,7 +1393,7 @@ $i18n.ru.radiant_rabadons_deathcap.option = "<#ff7a3eff>Опус<>: Увелич
 $feralRu = "<#ff7a3eff>Увечье<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>{3}<>. Автоатаки наносят <#a974ffff>{0}<> (<#a974ffff>+{1}<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>{2} <$hpRegenIcon> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет {4}%<>."
 $i18n.ru.feral_flare.option = $feralRu -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.ru.radiant_feral_flare.option = $feralRu -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$sbdRu = "Автоатаки <$hpRegenIcon> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>{0}<> - <#60e84dff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#ff9028ff>(+{2}% <$adIcon> силы атаки)<> <#a974ffff>(+{3}% <$apIcon> силы умений)<>."
+$sbdRu = "<#ff7a3eff>Peppermint<>: Автоатаки <$hpRegenIcon> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>{0}<> - <#60e84dff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#ff9028ff>(+{2}% <$adIcon> силы атаки)<> <#a974ffff>(+{3}% <$apIcon> силы умений)<>."
 $i18n.ru.sword_of_blossoming_dawn.option = $sbdRu -f $sbdMin, $sbdMax, $sbdAd, $sbdAp
 $i18n.ru.radiant_sword_of_blossoming_dawn.option = $sbdRu -f $rsbdMin, $rsbdMax, $rsbdAd, $rsbdAp
 $acRu = "<#ff7a3eff>Освящение<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>{0}%<> <$asIcon> <#ceff99ff>скорости атаки<> и <#ff9028ff>дополнительный физический урон<> при попадании в размере <#d94c49ff>{1}% максимального здоровья цели<> на <#e8a800ff>{2} секунд<>."
@@ -1413,6 +1454,14 @@ $i18n.ru.radiant_trinity_force.option = $tfTemplateRu -f $rtfFlat, $rtfAdPct, $r
 $rhTemplateRu = "<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>{0}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>{1} <$rangeIcon> дальности<> применяют этот эффект с <#d94c49ff>{2}% силы<>."
 $i18n.ru.ravenous_hydra.option = $rhTemplateRu -f $rhAdPct, $rhReach, $rhStrength
 $i18n.ru.radiant_ravenous_hydra.option = $rhTemplateRu -f $rrhAdPct, $rrhReach, $rrhStrength
+
+$bamiTemplateRu = "<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>{0}<> + <#60e84dff>{1}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{2} <$rangeIcon> дальности<>."
+$i18n.ru.bamis_cinder.option = $bamiTemplateRu -f $bamiFlat, $bamiHpPct, $bamiRange
+$i18n.ru.hourglass_of_eternity.option = "<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{Flat} <$hpRegenIcon> здоровья<> каждую секунду.`n`n" + ($bamiTemplateRu -f $sunFlat, $sunHpPct, $sunRange)
+$platingTemplateRu = "<#ff7a3eff>Обшивка<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>{0}%<>."
+$i18n.ru.black_knights_heavy_plate.option = $platingTemplateRu -f $bvPlating
+$i18n.ru.eternal_iron_plate.option = $platingTemplateRu -f $tmPlating
+$i18n.ru.impregnable_fortress.option = ($platingTemplateRu -f $rtmPlating) + "`n`n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <$armorIcon> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
 
 $dndTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <$hpRegenIcon> <#60e84dff>восстановить вам<> <#a974ffff>{2}%<> вашей <$apIcon> <#a974ffff>силы умений<> и <#60e84dff>{3}%<> вашего <$hpIcon> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>{4} секунд<>)."
 $i18n.ru.dusk_and_dawn.option = $dndTemplateRu -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1535,7 +1584,7 @@ $i18n.ko.radiant_rabadons_deathcap.option = "<#ff7a3eff>대작<>: 총 <$apIcon> 
 $feralKo = "<#ff7a3eff>불구<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>{3}<>중첩까지 쌓입니다. 기본 공격이 <#a974ffff>{0}<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+{1}<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>{2}<$hpRegenIcon> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>{4}%로 적용됩니다<>."
 $i18n.ko.feral_flare.option = $feralKo -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.ko.radiant_feral_flare.option = $feralKo -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$sbdKo = "기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>{0}<>~<#60e84dff>{1}<> (<$levelIcon> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+{2}% <$adIcon> 공격력)<> <#a974ffff>(+{3}% <$apIcon> 주문력)<> <$hpRegenIcon> <#60e84dff>회복<>시킵니다."
+$sbdKo = "<#ff7a3eff>Peppermint<>: 기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>{0}<>~<#60e84dff>{1}<> (<$levelIcon> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+{2}% <$adIcon> 공격력)<> <#a974ffff>(+{3}% <$apIcon> 주문력)<> <$hpRegenIcon> <#60e84dff>회복<>시킵니다."
 $i18n.ko.sword_of_blossoming_dawn.option = $sbdKo -f $sbdMin, $sbdMax, $sbdAd, $sbdAp
 $i18n.ko.radiant_sword_of_blossoming_dawn.option = $sbdKo -f $rsbdMin, $rsbdMax, $rsbdAd, $rsbdAp
 $acKo = "<#ff7a3eff>축성<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>{2}초<> 동안 대상의 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>{0}%<> 상승하고, 공격 시 <#d94c49ff>대상 최대 체력의 {1}%<>에 해당하는 <#ff9028ff>추가 물리 피해<>를 입힙니다."
@@ -1596,6 +1645,14 @@ $rhTemplateKo = "<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <
 $i18n.ko.ravenous_hydra.option = $rhTemplateKo -f $rhAdPct, $rhReach, $rhStrength
 $i18n.ko.radiant_ravenous_hydra.option = $rhTemplateKo -f $rrhAdPct, $rrhReach, $rrhStrength
 
+$bamiTemplateKo = "<#ff7a3eff>불사르기<>: <#ff86c2ff>{2} <$rangeIcon> 사거리<> 안의 모든 적에게 <#60e84dff>{0}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>{1}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+$i18n.ko.bamis_cinder.option = $bamiTemplateKo -f $bamiFlat, $bamiHpPct, $bamiRange
+$i18n.ko.hourglass_of_eternity.option = "<#ff7a3eff>회복<>: 매초 <#60e84dff>{Flat}의 <$hpRegenIcon> 체력<>을 회복합니다.`n`n" + ($bamiTemplateKo -f $sunFlat, $sunHpPct, $sunRange)
+$platingTemplateKo = "<#ff7a3eff>장갑<>: 기본 공격으로 받는 피해가 <#e8a800ff>{0}%<> 감소합니다."
+$i18n.ko.black_knights_heavy_plate.option = $platingTemplateKo -f $bvPlating
+$i18n.ko.eternal_iron_plate.option = $platingTemplateKo -f $tmPlating
+$i18n.ko.impregnable_fortress.option = ($platingTemplateKo -f $rtmPlating) + "`n`n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <$armorIcon> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
+
 $dndTemplateKo = "<#ff7a3eff>주문 검<>: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <$apIcon> <#60e84dff>주문력의 {2}%<>와 <$hpIcon> <#60e84dff>최대 체력의 {3}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>{4}초<>)"
 $i18n.ko.dusk_and_dawn.option = $dndTemplateKo -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ko.radiant_dusk_and_dawn.option = $dndTemplateKo -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
@@ -1655,6 +1712,96 @@ foreach ($language in $i18n.PSObject.Properties) {
 $i18nJson = $i18n | ConvertTo-Json -Depth 10
 $i18nJson = $i18nJson -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0027', "'"
 [System.IO.File]::WriteAllText($i18nPath, $i18nJson)
+
+# Vanilla items. These are engine items, so their stats live in the game's item
+# data rather than in the DLL: mod.override_info merges
+# setting\item_setting.item_setting over asset/base/setting/item_setting, and
+# this writes the config values into it. Each entry stays a complete copy of
+# the vanilla item, so the result is the same however deep the merge goes.
+# Config names are the LoL ones; the file is keyed by the game's.
+$itemSettingPath = Join-Path $scriptDir "setting\item_setting.item_setting"
+$itemSetting = Get-Content $itemSettingPath -Raw | ConvertFrom-Json
+$vanillaKeys = [ordered]@{
+    long_sword             = "iron_blade"
+    pickaxe                = "soldiers_longsword"
+    vampiric_scepter       = "ruinous_blade"
+    bloodthirster          = "conquerors_greatsword"
+    radiant_bloodthirster  = "warlords_final_judgement"
+    dagger                 = "dagger"
+    recurve_bow            = "wind_dagger"
+    zeal                   = "twin_stormblade"
+    phantom_dancer         = "thunderclaw"
+    radiant_phantom_dancer = "storm_sovereign"
+    cloth_armor            = "steel_armor"
+    chain_vest             = "gatekeepers_armor"
+    bramble_vest           = "black_knights_heavy_plate"
+    thornmail              = "eternal_iron_plate"
+    radiant_thornmail      = "impregnable_fortress"
+    null_magic_mantle      = "mystic_cloak"
+    negatron_cloak         = "night_hood"
+    spectres_cowl          = "dusk_raven"
+    dragons_claw           = "souls_edge"
+    radiant_dragons_claw   = "veil_of_annihilation"
+    amplifying_tome        = "arcane_crystal"
+    blasting_wand          = "spirit_crystal"
+    lost_chapter           = "staff_of_rapture"
+    ludens_tempest         = "angels_fang"
+    radiant_ludens_tempest = "prophet_of_the_abyss"
+    ruby_crystal           = "vital_orb"
+    kindlegem              = "hardened_heart"
+    giants_belt            = "ring_of_reincarnation"
+    sunfire_cape           = "hourglass_of_eternity"
+    radiant_sunfire_cape   = "giants_horn_shard"
+}
+# Passive numbers the engine keeps outside the stat block, by config field.
+# Mending's regen is the tooltip's {Flat}/{RegenFlat}; Radiant Thornmail's
+# Thorns is {Flat}/{Ratio}; Radiant Sunfire Cape's Immolate is built into the
+# engine, its ratio a whole percent and its range in distance units.
+$vanillaPassiveFields = @{
+    giants_belt          = @{ effect_bonus_hp_regen = "flat_regen" }
+    sunfire_cape         = @{ effect_bonus_hp_regen = "flat_regen" }
+    radiant_sunfire_cape = @{
+        effect_bonus_hp_regen           = "flat_regen"
+        effect_bonus_flat_damage        = "flat_aoe_damage"
+        effect_caster_hp_percent_damage = "max_hp_aoe_ratio"
+        effect_max_distance             = "aoe_range"
+    }
+    radiant_thornmail    = @{
+        effect_bonus_flat_damage               = "flat_damage"
+        effect_caster_defence_percent_damage   = "defence_ratio"
+    }
+}
+# Config fields the DLL reads itself (Sunfire Cape's Immolate is mod code).
+$vanillaDllFields = @{
+    sunfire_cape = @("effect_bonus_flat_damage", "effect_caster_hp_percent_damage", "effect_max_distance")
+}
+foreach ($name in $vanillaKeys.Keys) {
+    $cfg = $config.$name
+    if ($null -eq $cfg) { continue }
+    $entry = $itemSetting.($vanillaKeys[$name])
+    foreach ($field in $cfg.PSObject.Properties) {
+        $passive = $vanillaPassiveFields[$name]
+        if ($vanillaDllFields[$name] -contains $field.Name) {
+            continue
+        }
+        elseif ($field.Name -eq "price") {
+            $entry.price = [int]$field.Value
+        }
+        elseif ($passive -and $passive.ContainsKey($field.Name)) {
+            $value = [int]$field.Value
+            if ($passive[$field.Name] -eq "aoe_range") { $value *= 1000 }
+            $entry.($passive[$field.Name]) = $value
+        }
+        elseif ($entry.stat.PSObject.Properties[$field.Name]) {
+            # Any stat-block field works, not just the ones the item has.
+            $entry.stat.($field.Name) = [int]$field.Value
+        }
+        else {
+            Write-Warning "${name}: '$($field.Name)' is not a field this item has; ignored."
+        }
+    }
+}
+[System.IO.File]::WriteAllText($itemSettingPath, ($itemSetting | ConvertTo-Json -Depth 10))
 
 Write-Host "Done."
 Write-Host "  Executioner's Calling:   -${execHeal}% healing / ${execDur}s"
@@ -1750,5 +1897,9 @@ Write-Host "  Randuin's Omen:              heals ${rndHeal}% of damage taken fro
 Write-Host "  Radiant Randuin's Omen:      heals ${rrndHeal}% of damage taken from critical strikes"
 Write-Host "  Ravenous Hydra:              ${rhAdPct}% AD cleave within ${rhRange} range / ${rhStrength}% strength beyond ${rhReach} range"
 Write-Host "  Radiant Ravenous Hydra:      ${rrhAdPct}% AD cleave within ${rrhRange} range / ${rrhStrength}% strength beyond ${rrhReach} range"
+Write-Host "  Bami's Cinder:               ${bamiFlat} + ${bamiHpPct}% max HP magic dmg/s within ${bamiRange} range"
+Write-Host "  Sunfire Cape:                ${sunFlat} + ${sunHpPct}% max HP magic dmg/s within ${sunRange} range"
+Write-Host "  Radiant Sunfire Cape:        $($config.radiant_sunfire_cape.effect_bonus_flat_damage) + $($config.radiant_sunfire_cape.effect_caster_hp_percent_damage)% max HP magic dmg/s within $($config.radiant_sunfire_cape.effect_max_distance) range"
+Write-Host "  Bramble Vest / Thornmail / Radiant Thornmail: -${bvPlating}% / -${tmPlating}% / -${rtmPlating}% basic attack damage taken"
 Write-Host "  Locket of the Iron Solari:         ${lockDef} armor / ${lockMr} MR / ${lockRegen} regen within ${lockDist} range / Devotion ${lockMinShield} - ${lockMaxShield} shield ${lockShieldDur}s below ${lockThreshold}% HP (${lockCd}s CD)"
 Write-Host "  Radiant Locket of the Iron Solari: ${rlockDef} armor / ${rlockMr} MR / ${rlockRegen} regen within ${rlockDist} range / Devotion ${rlockMinShield} - ${rlockMaxShield} shield ${rlockShieldDur}s below ${rlockThreshold}% HP (${rlockCd}s CD)"

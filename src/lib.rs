@@ -15,6 +15,7 @@ mod items;
 mod proc_queue;
 mod solo_rank_ui;
 mod strategy_ui;
+mod sunfire;
 mod tactics;
 
 use items::*;
@@ -282,6 +283,7 @@ fn init(host: &StableHost) -> StableMod {
 
     // Tier 3
     reg.add_item(configured!("aegis_of_the_legion" => AegisOfTheLegion));
+    reg.add_item(configured!("bamis_cinder" => BamisCinder));
     reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
@@ -444,8 +446,14 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
 
     // Records only keep the build a match was *assigned*; this reads what each
-    // champion actually finished holding, off the simulation's last tick.
-    reg.set_match_hook(item_stats_sim::EndOfMatchItems);
+    // champion actually finished holding, off the simulation's last tick. The
+    // same hook runs Immolate for the vanilla Sunfire Cape.
+    reg.set_match_hook(sunfire::MatchHooks {
+        immolate: configs
+            .get("sunfire_cape")
+            .map(sunfire::Immolate::with_config)
+            .unwrap_or_default(),
+    });
     reg.set_server_extension(NativeTapExtension);
 
     // in-game build picker
