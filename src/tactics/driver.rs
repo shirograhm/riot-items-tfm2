@@ -45,6 +45,12 @@ static DB_PROBED: AtomicBool = AtomicBool::new(false);
 /// dereferencing it inside `forward` is an access violation no `catch_unwind`
 /// can catch.
 pub fn record_item_net(agent: usize) {
+    // Nothing reads `db()` while this half is retired, and settling a
+    // `Database` base costs a `VirtualQuery` plus a 64KB `readable` probe
+    // on the weight array, on the detour's hot path.
+    if RETIRED {
+        return;
+    }
     if DB_ADDR.load(Ordering::Relaxed) != 0 || agent < ITEM_NET_DB_OFFSET {
         return;
     }
@@ -100,45 +106,74 @@ pub unsafe fn ui_root() -> Option<&'static mut Node> {
     (addr > 0x10000).then(|| &mut *(addr as *mut Node))
 }
 
+/// **Partly revived, 2026-09-16, for the team gate only.**
+///
+/// This half existed for the fourth item slot, and 0.6.0 ships that natively
+/// -- the game's own slot-count clamps already read 4 and every build row
+/// carries `#item3`. So it was retired on 2026-09-15 and none of its RVAs
+/// were re-derived.
+///
+/// One thing came back with it that is not about slots at all:
+/// **`own_team_only`**. Restricting configured builds to the player's own
+/// athletes needs `is_my_athlete`, and the stable API cannot express it --
+/// `StableItemBuildContext` (re-checked at ABI 9) offers only a 0/1 lineup
+/// index that says neither which side is the player's nor whether the player
+/// is in the match at all. The native buy detour is the only thing that can,
+/// because it is handed the athlete pointer.
+///
+/// So the three addresses that path needs were re-derived against the
+/// release and this is `false` again. **Everything else stays inert**, and
+/// through gates that already existed rather than new ones: `slot_count()`
+/// is pinned at 3, which is what the four 3 -> 4 byte patches, the build
+/// extension, the slot-3 icon and `uinj::MODE4` are all keyed on;
+/// `UI_INJECT_ENABLED` and `SPAWN_INJECT_ENABLED` are off in `super`, each
+/// with its reason recorded there.
+///
+/// Live, and therefore re-derived and covered by `tools/verify_rvas.py`:
+/// `RVA_BUY_ITEM`, `SEEDCTOR_RVA`, `CL_LAUNCHER_RVA` and the athlete/provider
+/// offsets (`O_ATHLETE_ID`, `ATH_STRIDE`, `O_PROVIDER_SEED` -- all three
+/// unchanged from beta2, confirmed by a STRICT exe2exe match of the 286-byte
+/// roster walk). Not re-derived, and not reachable: LOADER/PARSER/ALLOC,
+/// GV_UPDATE, REALLOC, ITEMNET_FORWARD, SPAWN, PV_*.
+///
+/// `src/hook.rs` is unaffected either way -- it installs from
+/// `lib.rs::on_server_start` independently, and is still the only route to
+/// training/comp-test builds and the 60-champion roster.
+const RETIRED: bool = false;
+
 // ---------------------------------------------------------------------------
 // Entry points — called from the host's stable extensions in `src/lib.rs`.
 // ---------------------------------------------------------------------------
 
-/// Was `init()` + `declare_mod!`. Runs the version gate and, in 4-slot mode, the
-/// byte patches, and records whether this half came up at all — which is what
-/// [`picker_slots`] answers from.
+/// Was `init()` + `declare_mod!`. Ran the version gate and, in 4-slot mode, the
+/// byte patches, and recorded whether this half came up at all.
+///
+/// `ACTIVE` is all that record is now. Nothing outside reads it: the slot count
+/// moved to `build_config::picker_slots` when this half was retired, because it
+/// is a property of the game rather than of this mod.
 pub fn on_mod_init() {
+    if RETIRED {
+        return;
+    }
     ACTIVE.store(super::tactics_init(), Ordering::Relaxed);
 }
 
 /// Whether [`on_mod_init`] ran and its version gate passed.
 static ACTIVE: AtomicBool = AtomicBool::new(false);
 
-/// Item slots a build has, for the host half's editor and item-build hook: 4
-/// when this half is active and `4items.cfg` asks for four, otherwise the three
-/// the game ships with.
-///
-/// The active flag is what makes this safe to call at any time. `slot_count`
-/// reads `ITEM_MODE`, which starts at its optimistic default of 4 and is only
-/// corrected once `load_mode` runs — which happens inside [`on_mod_init`], and
-/// not at all when the version gate fails. Asking before then, or on a game
-/// version this half is disabled for, would otherwise offer a fourth slot no
-/// byte patch exists to fill.
-pub fn picker_slots() -> usize {
-    if ACTIVE.load(Ordering::Relaxed) {
-        super::slot_count()
-    } else {
-        3
-    }
-}
-
 /// Was `ModServerExtension::on_server_start`.
 pub fn on_server_start() {
+    if RETIRED {
+        return;
+    }
     super::tactics_on_server_start();
 }
 
 /// Was `ModServerExtension::before_management_tick`.
 pub fn before_management_tick() {
+    if RETIRED {
+        return;
+    }
     super::tactics_before_management_tick();
 }
 
@@ -146,6 +181,11 @@ pub fn before_management_tick() {
 /// payload used to; the UI root is fetched from `TIP_ROOT` rather than passed
 /// in.
 pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
+    // Also the per-frame cost: this retried four detour installs every
+    // frame, each of which can only fail on the release image.
+    if RETIRED {
+        return;
+    }
     let in_game = client.is_in_game();
     super::tactics_post_update(client, in_game);
 }
@@ -160,6 +200,9 @@ pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
 ///
 /// Idempotent — every call after the first that sticks is ignored.
 pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
+    if RETIRED {
+        return;
+    }
     super::record_item_catalog(catalog);
 }
 
@@ -167,6 +210,13 @@ pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
 /// building the argument for [`record_item_catalog`] — which would otherwise be
 /// two `String` allocations per item, discarded, on every call after the first.
 pub fn item_catalog_recorded() -> bool {
+    // While retired, claim the catalog is already in hand. Nothing consumes
+    // one, and the honest `false` would make `hook::detour` rebuild the
+    // argument on EVERY call — two `String` allocations per item, per call,
+    // immediately discarded — instead of only on the first.
+    if RETIRED {
+        return true;
+    }
     super::item_catalog_recorded()
 }
 

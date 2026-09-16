@@ -1,4 +1,4 @@
-Adds 159 new items (91 base + 68 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Adds 163 new items (94 base + 69 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]This mod supports custom item values, custom item builds, and a way to add another item slot. See instructions below![/b]  
@@ -46,7 +46,7 @@ Mod v0.7.0+ - v0.5.3
 Mod v0.5.7+ - v0.5.1 & v0.5.2
 Mod v0.5.6 - versions up to 0.5.0
 
-If you are playing the beta, check the Git repository for a manual release for branch 0.6.0-beta. https://github.com/shirograhm/riot-items-tfm2/releases
+If you are playing the beta, check the Git repository for a manual release for branch 0.6.0-beta2. https://github.com/shirograhm/riot-items-tfm2/releases
 
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box!  
@@ -74,13 +74,12 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 
 Builds are saved automatically when changed to [b]item-builds.json[/b] as you make them, so they carry across sessions. Click [b]Save Item Builds[/b] to run a manual save.  
 
-[h1] 4 Item Mode [/h1]
-This mod can be used with a 4th item slot. To enable/disable this slot:
+[h1] 4 Item Slots [/h1]
+Teamfight Manager 2 [b]0.6.0[/b] adds a fourth item slot to the base game, so there is nothing to turn on any more.
+The Builds editor shows four slots automatically and the game sim fills them.
 
-1. In the mod's folder, locate the file [b]4items.cfg[/b] and open it with your preferred text editor.
-2. Set [b]slots = 3[/b] (disable) or [b]slots = 4[/b] (enable) and save. Then restart your game.
-
-Next time you play a match, you should notice a 4th item slot both in your Builds editor and in the game sim.  
+If you used the old [b]4items.cfg[/b] file, it no longer does anything and can be deleted — this mod no longer patches the
+game to add the slot, because the game ships it.  
 
 [h1] Planned Features [/h1]
 - More support items
@@ -91,7 +90,7 @@ Next time you play a match, you should notice a 4th item slot both in your Build
 Check the Item/Feature Requests forum in the mod for the most up-to-date information.
 
 [h2] Credits [/h2]
-Thank you to @SUB from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one.
+Thank you to @SUB from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
 
 Thank you to @Formula Piggy and @Yuuroo on discord for Vietnamese translations!
 Thank you to @GeoStelar on discord for the Portuguese (BR) translations!

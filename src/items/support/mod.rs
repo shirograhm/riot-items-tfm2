@@ -2,6 +2,7 @@
 
 items! {
     ardent_censer,
+    bandlepipes,
     bloodsong,
     echoes_of_helia,
     locket_of_the_iron_solari,

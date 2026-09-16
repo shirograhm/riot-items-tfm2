@@ -7,6 +7,10 @@
     "remapping": "asset/riot_items_tfm2/text/ui",
     "type": "merge"
   },
+  "asset/base/setting/item_setting": {
+    "remapping": "asset/riot_items_tfm2/setting/item_setting",
+    "type": "merge"
+  },
   "asset/base/aseprite_resources/ingame/item_icons_18x18#sheet": {
     "remapping": "asset/riot_items_tfm2/aseprite_resources/ingame/item_icons_640X640#sheet",
     "type": "override"
@@ -35,8 +39,8 @@
     "remapping": "asset/riot_items_tfm2/ui/layout/statistics",
     "type": "override"
   },
-  "asset/base/ui/layout/solo_rank_component/view_slot": {
-    "remapping": "asset/riot_items_tfm2/ui/layout/solo_rank_component/view_slot",
+  "asset/base/ui/layout/match_result": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/match_result",
     "type": "override"
   }
 }

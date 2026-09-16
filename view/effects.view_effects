@@ -15,6 +15,14 @@
             "tag": "cleave",
             "z": 1,
             "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_night_harvester_soulrend",
+            "anim": "asset/riot_items_tfm2/effects/night_harvester_soulrend",
+            "tag": "rend",
+            "z": 1,
+            "is_follow": false
         }
     ],
     "view_projectiles": [],

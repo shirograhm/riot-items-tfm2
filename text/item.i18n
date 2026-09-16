@@ -177,11 +177,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Sunfire Cape",
-            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second."
+            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         },
         "giants_horn_shard": {
             "name": "Radiant Sunfire Cape",
-            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Disdain<>: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
         },
         "bf_sword": {
             "name": "B.F. Sword",
@@ -749,11 +749,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Sword of Blossoming Dawn",
-            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Basic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Radiant Sword of Blossoming Dawn",
-            "option": "\nBasic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Basic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Ardent Censer",
@@ -810,6 +810,30 @@
         "radiant_ravenous_hydra": {
             "name": "Radiant Ravenous Hydra",
             "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "bamis_cinder": {
+            "name": "Bami's Cinder",
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>5<> + <#60e84dff>0.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+        },
+        "bandlepipes": {
+            "name": "Bandlepipes",
+            "option": "\n<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+        },
+        "radiant_bandlepipes": {
+            "name": "Radiant Bandlepipes",
+            "option": "\n<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+        },
+        "seryldas_grudge": {
+            "name": "Seryldas Grudge",
+            "option": ""
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Radiant Serylda's Grudge",
+            "option": ""
+        },
+        "tiamat": {
+            "name": "Tiamat",
+            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
         }
     },
     "vi": {
@@ -990,11 +1014,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Áo Choàng Lửa Mặt Trời",
-            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây."
+            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
         },
         "giants_horn_shard": {
             "name": "Áo Choàng Lửa Mặt Trời Ánh Sáng",
-            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Khinh Miệt<>: Gây <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{Range}<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{Range}<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
         },
         "bf_sword": {
             "name": "Kiếm B.F.",
@@ -1562,11 +1586,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ",
-            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ Ánh Sáng",
-            "option": "\nĐòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
         },
         "ardent_censer": {
             "name": "Lư Hương Sôi Sục",
@@ -1623,6 +1647,22 @@
         "radiant_ravenous_hydra": {
             "name": "Rìu Mãng Xà Ánh Sáng",
             "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "bamis_cinder": {
+            "name": "Tàn Tích Bami",
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>5<> + <#60e84dff>0.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+        },
+        "tiamat": {
+            "name": "Rìu Tiamat",
+            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "bandlepipes": {
+            "name": "Kèn Túi Bandle",
+            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Đánh trúng một kỹ năng lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
+        },
+        "radiant_bandlepipes": {
+            "name": "Kèn Túi Bandle Ánh Sáng",
+            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Đánh trúng một kỹ năng lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
         }
     },
     "zh-hans": {
@@ -1803,11 +1843,11 @@
         },
         "hourglass_of_eternity": {
             "name": "日炎斗篷",
-            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{Flat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
+            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{Flat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。"
         },
         "giants_horn_shard": {
             "name": "光明版日炎斗篷",
-            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{RegenFlat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>蔑视<>：对 <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>{DmgFlat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>{DmgRatio}%<> 的<#a974ffff>魔法伤害<>。"
+            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{RegenFlat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>{DmgFlat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>{DmgRatio}%<> 的<#a974ffff>魔法伤害<>。"
         },
         "bf_sword": {
             "name": "暴风之剑",
@@ -2375,11 +2415,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "花晓之剑",
-            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
+            "option": "\n<#ff7a3eff>Peppermint<>：普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "光明版花晓之剑",
-            "option": "\n普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
+            "option": "\n<#ff7a3eff>Peppermint<>：普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
         },
         "ardent_censer": {
             "name": "炽热香炉",
@@ -2436,6 +2476,22 @@
         "radiant_ravenous_hydra": {
             "name": "光明版贪欲九头蛇",
             "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>40%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "bamis_cinder": {
+            "name": "斑比的熔渣",
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>5<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>0.5%<> 的<#a974ffff>魔法伤害<>。"
+        },
+        "tiamat": {
+            "name": "提亚马特",
+            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "bandlepipes": {
+            "name": "班德尔音管",
+            "option": "\n<#ff7a3eff>嘹亮旋律<>：技能命中敌方英雄时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
+        },
+        "radiant_bandlepipes": {
+            "name": "光明版班德尔音管",
+            "option": "\n<#ff7a3eff>嘹亮旋律<>：技能命中敌方英雄时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
         }
     },
     "pt-BR": {
@@ -2616,7 +2672,7 @@
         },
         "hourglass_of_eternity": {
             "name": "Capa do Sol Nascente",
-            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{Flat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo."
+            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{Flat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
         },
         "giants_horn_shard": {
             "name": "Capa do Sol Nascente Radiante",
@@ -3188,11 +3244,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Espada da Alvorada Florescente",
-            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Espada da Alvorada Florescente Radiante",
-            "option": "\nAtaques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
         },
         "ardent_censer": {
             "name": "Turíbulo Ardente",
@@ -3249,6 +3305,22 @@
         "radiant_ravenous_hydra": {
             "name": "Hidra Raivosa Radiante",
             "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>40%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "bamis_cinder": {
+            "name": "Brasa de Bami",
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>5<> + <#60e84dff>0.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+        },
+        "tiamat": {
+            "name": "Tiamat",
+            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "bandlepipes": {
+            "name": "Bandocanos",
+            "option": "\n<#ff7a3eff>Fanfarra<>: Acertar uma Habilidade em um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
+        },
+        "radiant_bandlepipes": {
+            "name": "Bandocanos Radiante",
+            "option": "\n<#ff7a3eff>Fanfarra<>: Acertar uma Habilidade em um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
         }
     },
     "ru": {
@@ -3429,11 +3501,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Плащ солнечного пламени",
-            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду."
+            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "giants_horn_shard": {
             "name": "Светоносный плащ солнечного пламени",
-            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Disdain<>: Наносит <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
         },
         "bf_sword": {
             "name": "Самый Лучший Меч",
@@ -4001,11 +4073,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Меч сияющего рассвета",
-            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Автоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Лучезарный Меч сияющего рассвета",
-            "option": "\nАвтоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Автоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
         },
         "ardent_censer": {
             "name": "Пылающая кадильница",
@@ -4062,6 +4134,22 @@
         "radiant_ravenous_hydra": {
             "name": "Лучезарная Ненасытная гидра",
             "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>40%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "bamis_cinder": {
+            "name": "Пепел Бами",
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>5<> + <#60e84dff>0.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+        },
+        "tiamat": {
+            "name": "Тиамат",
+            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "bandlepipes": {
+            "name": "Бандл-трубы",
+            "option": "\n<#ff7a3eff>Фанфары<>: Попадание умением по вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
+        },
+        "radiant_bandlepipes": {
+            "name": "Лучезарные Бандл-трубы",
+            "option": "\n<#ff7a3eff>Фанфары<>: Попадание умением по вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
         }
     },
     "ko": {
@@ -4242,11 +4330,11 @@
         },
         "hourglass_of_eternity": {
             "name": "태양불꽃 망토",
-            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{Flat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{Flat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
         },
         "giants_horn_shard": {
             "name": "찬란한 태양불꽃 망토",
-            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{RegenFlat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>경멸<>: <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>{DmgFlat}<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>{DmgRatio}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{RegenFlat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>{DmgFlat}<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>{DmgRatio}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
         },
         "bf_sword": {
             "name": "B.F. 대검",
@@ -4814,11 +4902,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "꽃피는 새벽의 검",
-            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n<#ff7a3eff>Peppermint<>: 기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "찬란한 꽃피는 새벽의 검",
-            "option": "\n기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n<#ff7a3eff>Peppermint<>: 기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "ardent_censer": {
             "name": "불타는 향로",
@@ -4875,6 +4963,22 @@
         "radiant_ravenous_hydra": {
             "name": "찬란한 굶주린 히드라",
             "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 40%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "bamis_cinder": {
+            "name": "바미의 불씨",
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>5<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>0.5%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+        },
+        "tiamat": {
+            "name": "티아맷",
+            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "bandlepipes": {
+            "name": "밴들파이프",
+            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
+        },
+        "radiant_bandlepipes": {
+            "name": "찬란한 밴들파이프",
+            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
         }
     }
 }

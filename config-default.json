@@ -1339,5 +1339,198 @@
     "effect_max_distance": 35,
     "effect_melee_distance": 35,
     "effect_ranged_percent": 50.0
+  },
+  "bamis_cinder": {
+    "price": 800,
+    "hp": 300,
+    "effect_bonus_flat_damage": 5,
+    "effect_caster_hp_percent_damage": 0.5,
+    "effect_max_distance": 30
+  },
+  "long_sword": {
+    "price": 500,
+    "attack": 15
+  },
+  "pickaxe": {
+    "price": 500,
+    "attack": 30
+  },
+  "vampiric_scepter": {
+    "price": 800,
+    "attack": 50,
+    "vamp": 5
+  },
+  "bloodthirster": {
+    "price": 1400,
+    "attack": 75,
+    "vamp": 10
+  },
+  "radiant_bloodthirster": {
+    "price": 2000,
+    "attack": 100,
+    "vamp": 15,
+    "defence_penetration": 20
+  },
+  "dagger": {
+    "price": 500,
+    "attack_speed_mult": 10
+  },
+  "recurve_bow": {
+    "price": 500,
+    "attack_speed_mult": 20
+  },
+  "zeal": {
+    "price": 800,
+    "attack_speed_mult": 30,
+    "crit_chance": 10
+  },
+  "phantom_dancer": {
+    "price": 1400,
+    "attack_speed_mult": 45,
+    "crit_chance": 20
+  },
+  "radiant_phantom_dancer": {
+    "price": 2000,
+    "move_speed_mult": 10,
+    "attack_speed_mult": 60,
+    "crit_chance": 25
+  },
+  "cloth_armor": {
+    "price": 500,
+    "defence": 20
+  },
+  "chain_vest": {
+    "price": 500,
+    "defence": 40
+  },
+  "bramble_vest": {
+    "price": 800,
+    "defence": 70,
+    "base_attack_damaged_reduce": 5
+  },
+  "thornmail": {
+    "price": 1400,
+    "defence": 100,
+    "base_attack_damaged_reduce": 8
+  },
+  "radiant_thornmail": {
+    "price": 2000,
+    "defence": 130,
+    "base_attack_damaged_reduce": 12,
+    "effect_bonus_flat_damage": 10,
+    "effect_caster_defence_percent_damage": 2
+  },
+  "null_magic_mantle": {
+    "price": 500,
+    "hp": 50,
+    "magic_resistance": 30
+  },
+  "negatron_cloak": {
+    "price": 500,
+    "hp": 150,
+    "magic_resistance": 60
+  },
+  "spectres_cowl": {
+    "price": 800,
+    "hp": 200,
+    "magic_resistance": 100,
+    "skill_damaged_reduce": 5
+  },
+  "dragons_claw": {
+    "price": 1400,
+    "hp": 300,
+    "magic_resistance": 150,
+    "toughness": 30,
+    "skill_damaged_reduce": 15
+  },
+  "radiant_dragons_claw": {
+    "price": 2000,
+    "hp": 400,
+    "magic_resistance": 200,
+    "toughness": 50,
+    "skill_damaged_reduce": 20
+  },
+  "amplifying_tome": {
+    "price": 500,
+    "magic_power": 30
+  },
+  "blasting_wand": {
+    "price": 500,
+    "magic_power": 60
+  },
+  "lost_chapter": {
+    "price": 800,
+    "magic_power": 100,
+    "skill_cooldown_mult": 10
+  },
+  "ludens_tempest": {
+    "price": 1400,
+    "magic_power": 150,
+    "skill_cooldown_mult": 10
+  },
+  "radiant_ludens_tempest": {
+    "price": 2000,
+    "magic_power": 200,
+    "skill_cooldown_mult": 15,
+    "magic_resistance_penetration": 15
+  },
+  "ruby_crystal": {
+    "price": 500,
+    "hp": 100
+  },
+  "kindlegem": {
+    "price": 500,
+    "hp": 200
+  },
+  "giants_belt": {
+    "price": 800,
+    "hp": 300,
+    "effect_bonus_hp_regen": 5
+  },
+  "sunfire_cape": {
+    "price": 1400,
+    "hp": 500,
+    "effect_bonus_hp_regen": 20,
+    "effect_bonus_flat_damage": 10,
+    "effect_caster_hp_percent_damage": 1.0,
+    "effect_max_distance": 30
+  },
+  "radiant_sunfire_cape": {
+    "price": 2000,
+    "hp": 800,
+    "effect_bonus_hp_regen": 40,
+    "effect_bonus_flat_damage": 10,
+    "effect_caster_hp_percent_damage": 1,
+    "effect_max_distance": 30
+  },
+  "tiamat": {
+    "price": 800,
+    "attack": 50,
+    "effect_ad_percent_damage": 20.0,
+    "effect_max_distance": 35,
+    "effect_melee_distance": 35,
+    "effect_ranged_percent": 50.0
+  },
+  "bandlepipes": {
+    "price": 1000,
+    "hp": 200,
+    "defence": 40,
+    "magic_resistance": 60,
+    "skill_cooldown_mult": 15,
+    "effect_duration_seconds": 4,
+    "effect_move_speed_mult": 12,
+    "effect_attack_speed_mult": 20,
+    "effect_max_distance": 100
+  },
+  "radiant_bandlepipes": {
+    "price": 1500,
+    "hp": 400,
+    "defence": 60,
+    "magic_resistance": 100,
+    "skill_cooldown_mult": 20,
+    "effect_duration_seconds": 4,
+    "effect_move_speed_mult": 12,
+    "effect_attack_speed_mult": 20,
+    "effect_max_distance": 100
   }
 }

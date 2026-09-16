@@ -1,5 +1,24 @@
 //! Solo-rank match history: makes the item row match the configured slot count.
 //!
+//! # Inert as of game 0.6.0 (release) — and its override is gone
+//!
+//! Everything below describes a choice between a three- and a four-slot
+//! layout. 0.6.0 settled it: the base game's own `view_slot.ui` ships four
+//! item slots, so the mod's override of it was deleted and
+//! `mod.override_info` no longer remaps it. Keeping it would have forced this
+//! mod's older styling (40px slots, rounding 6, 23px icons) over the row 0.6.0
+//! redesigned (29px, rounding 8, 24px icons).
+//!
+//! [`sync`] returns on its first line whenever the count is four, and
+//! `build_config::picker_slots` now answers four unconditionally, so this
+//! module does nothing but one atomic load per frame. It is kept, rather than
+//! deleted, because it is the whole of the 3-slot restoration and costs
+//! nothing — if a future game build ever makes the count variable again, it
+//! works as written. The `VANILLA_*` constants below are 0.5.x's geometry and
+//! would need re-measuring first.
+//!
+//! The historical reasoning is preserved as written:
+//!
 //! # Why the layout cannot just be the right one
 //!
 //! `ui/layout/solo_rank_component/view_slot.ui` is an asset override, and

@@ -2129,6 +2129,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2200,6 +2201,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2276,6 +2278,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2347,6 +2350,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2423,6 +2427,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2494,6 +2499,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2570,6 +2576,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2641,6 +2648,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2717,6 +2725,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2788,6 +2797,7 @@ main:strategy_ui {
               }
 
               #champion:color {
+                focusable: true;
                 x: 5px;
                 width: 40px;
                 height: 40px;
@@ -2830,7 +2840,7 @@ main:strategy_ui {
         }
       }
       #personal:color {
-        width: 1364px;
+        width: 1824px;
         height: 645px;
 
         color: #1d1f2cff;
@@ -2855,7 +2865,7 @@ main:strategy_ui {
         }
 
         #personal_header:empty {
-          width: 1326px;
+          width: 1786px;
           height: 30px;
 
           #col_player:label {
@@ -2899,11 +2909,20 @@ main:strategy_ui {
             size: 16;
             text: "#asset/base/text/strategy?personal.header_item3";
           }
-
+          #col_item4:label {
+            @"asset/base/style/main#label";
+            x: 1050px;
+            width: 250px;
+            height: 30px;
+            align_x: Center;
+            align_y: Center;
+            size: 16;
+            text: "#asset/base/text/strategy?personal.header_item4";
+          }
         }
 
         #row0:empty {
-          width: 1326px;
+          width: 1786px;
           height: 50px;
 
           #position:image {
@@ -2924,6 +2943,7 @@ main:strategy_ui {
           }
 
           #champion:color {
+            focusable: true;
             x: 47px;
             width: 40px;
             height: 40px;
@@ -3053,11 +3073,44 @@ main:strategy_ui {
               height: 28px;
             }
           }
+          #item3:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 1065px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
 
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
         }
 
         #row1:empty {
-          width: 1326px;
+          width: 1786px;
           height: 50px;
 
           #position:image {
@@ -3078,6 +3131,7 @@ main:strategy_ui {
           }
 
           #champion:color {
+            focusable: true;
             x: 47px;
             width: 40px;
             height: 40px;
@@ -3207,11 +3261,44 @@ main:strategy_ui {
               height: 28px;
             }
           }
+          #item3:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 1065px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
 
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
         }
 
         #row2:empty {
-          width: 1326px;
+          width: 1786px;
           height: 50px;
 
           #position:image {
@@ -3232,6 +3319,7 @@ main:strategy_ui {
           }
 
           #champion:color {
+            focusable: true;
             x: 47px;
             width: 40px;
             height: 40px;
@@ -3361,11 +3449,44 @@ main:strategy_ui {
               height: 28px;
             }
           }
+          #item3:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 1065px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
 
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
         }
 
         #row3:empty {
-          width: 1326px;
+          width: 1786px;
           height: 50px;
 
           #position:image {
@@ -3386,6 +3507,7 @@ main:strategy_ui {
           }
 
           #champion:color {
+            focusable: true;
             x: 47px;
             width: 40px;
             height: 40px;
@@ -3515,11 +3637,44 @@ main:strategy_ui {
               height: 28px;
             }
           }
+          #item3:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 1065px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
 
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
         }
 
         #row4:empty {
-          width: 1326px;
+          width: 1786px;
           height: 50px;
 
           #position:image {
@@ -3540,6 +3695,7 @@ main:strategy_ui {
           }
 
           #champion:color {
+            focusable: true;
             x: 47px;
             width: 40px;
             height: 40px;
@@ -3669,7 +3825,40 @@ main:strategy_ui {
               height: 28px;
             }
           }
+          #item3:dropdown {
+            @"asset/base/style/main#dropdown";
+            x: 1065px;
+            width: 220px;
+            height: 40px;
+            y: 5px;
 
+            text: {
+              size: 15;
+            }
+
+            item_text: {
+              size: 15;
+            }
+
+            text_layout: {
+              x: 10px;
+              y: 6px;
+              width: 100%;
+              height: 28px;
+            }
+
+            item_layout: {
+              height: 36px;
+              width: 216px;
+              x: 10px;
+            }
+
+            item_text_layout: {
+              y: 4px;
+              width: 216px;
+              height: 28px;
+            }
+          }
         }
       }
     }

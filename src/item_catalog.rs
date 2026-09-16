@@ -5,6 +5,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("ardent_censer", "Support"),
     ("atmas_reckoning", "Tank"),
     ("axiom_arc", "Assassin"),
+    ("bandlepipes", "Support"),
     ("bastionbreaker", "Assassin"),
     ("black_cleaver", "Fighter"),
     ("blackfire_torch", "Mage"),

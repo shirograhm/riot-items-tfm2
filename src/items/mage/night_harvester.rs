@@ -8,6 +8,7 @@ pub struct NightHarvester {
     meta: ItemMeta,
     cooldown_buff: &'static str,
     soulrend_buff: &'static str,
+    rend_effect: &'static str,
     price: usize,
     hp: i32,
     magic_power: i32,
@@ -31,6 +32,7 @@ impl NightHarvester {
             ),
             cooldown_buff: "night_harvester_cooldown",
             soulrend_buff: "night_harvester_soulrend",
+            rend_effect: "riot_night_harvester_soulrend",
             price: 1400,
             hp: 300,
             magic_power: 100,
@@ -167,6 +169,14 @@ impl StableItem for NightHarvester {
         // Soulrend's haste is the carrier's reward for the cast and lands with
         // it; only the Soulrend damage waits out the delay.
         self.procs.push_magic(ctx, target, bonus_damage);
+        ctx.play_view_effect(
+            self.rend_effect,
+            caster,
+            &InputTargetV1::target(target),
+            0,
+            0,
+            0,
+        );
         ctx.add_buff(
             caster,
             &BuffV1 {

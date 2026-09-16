@@ -1778,6 +1778,11 @@ fn clear_saved(ctx: &mut StableClient<'_>) {
 }
 
 /// Paints which half of the build-scope toggle is the live setting.
+///
+/// The control was hidden on 2026-09-15, while `own_team_only` could not be
+/// honoured. The native team gate is back (see
+/// [`build_config::own_team_only_enabled`]), so it is shown and painted
+/// normally again.
 fn refresh_scope(ctx: &mut StableClient<'_>) {
     if build_config::own_team_only_enabled() {
         paint_toggle(ctx, scope_own_path(), scope_all_path());

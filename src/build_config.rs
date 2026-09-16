@@ -180,20 +180,27 @@ pub fn load_cached() -> Arc<BuildConfig> {
 }
 
 /// Item slots the editor exposes per champion, matching the columns the
-/// strategy screen shows: the vanilla three, or four when the tactics half is
-/// active and `4items.cfg` asks for four.
+/// strategy screen shows.
 ///
-/// This is a first-hand answer, not a detection: the tactics half is the code
-/// that installs the byte patches making a fourth slot exist, so if it says
-/// four there are four.
+/// **Four, from game 0.6.0 (release).** This used to forward to
+/// `tactics::driver`, because a fourth slot existed only where that half's byte
+/// patches had put one — so the count was a property of *this mod*. 0.6.0 ships
+/// four slots itself and that half is retired, so the count is a property of
+/// the *game*, and asking a retired module for it was how the editor ended up
+/// offering three on a four-slot game.
 ///
-/// A build written with four slots and later opened in 3-slot mode keeps its
-/// fourth item in `item-builds.json` — [`load_champion_rows`] only pads short
-/// builds, never truncates long ones, so switching back restores the build
-/// intact — but the editor stops showing that item and [`apply`] stops sending
-/// it, because the game has nowhere to put it.
+/// It stays a function rather than becoming a bare `4` at each of its ~17 call
+/// sites — loop bounds, `resize`, and `min()` clamps across the editor and this
+/// module — so there is still exactly one place to change if a future build
+/// makes the count vary again. `mod.mod_info` pins the base to `=0.6.0`, so
+/// there is no older game left to answer three for.
+///
+/// A build written with more slots than are shown keeps its tail in
+/// `item-builds.json` — [`load_champion_rows`] only pads short builds, never
+/// truncates long ones — but the editor stops showing that item and [`apply`]
+/// stops sending it, because the game has nowhere to put it.
 pub fn picker_slots() -> usize {
-    crate::tactics::driver::picker_slots()
+    4
 }
 
 /// The role a build is written for.
@@ -795,6 +802,23 @@ pub fn unique_items_enabled() -> bool {
 /// injector, which holds the athlete pointer and therefore the `is_my_athlete`
 /// gate that already works — see `tactics::SPAWN_INJECT_ENABLED`, currently off
 /// pending re-derivation.
+/// # Restored 2026-09-16
+///
+/// This was forced to `false` on 2026-09-15, when `src/tactics` was retired
+/// and took the buy detour with it: honouring the setting then would have
+/// meant `decide_build` handing off to something that no longer existed, and
+/// configured builds would have stopped applying with no evidence anywhere.
+///
+/// The team gate is back -- `RVA_BUY_ITEM`, `SEEDCTOR_RVA` and
+/// `CL_LAUNCHER_RVA` were re-derived for the 0.6.0 release and
+/// `tactics::driver::RETIRED` is `false` again -- so the setting means
+/// something again and is read normally.
+///
+/// The slot-0 caveat above still stands, and for a sharper reason than
+/// before: `SPAWN_RVA` turned out to be a beta1 address that never matched
+/// on beta2 either, so the spawn-time injector has not run in a long time.
+/// Under this toggle the first item is the engine's pick and slots 1 and 2
+/// apply, which is the behaviour this has actually had all along.
 pub fn own_team_only_enabled() -> bool {
     setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, false)
 }
