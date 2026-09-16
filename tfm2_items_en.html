@@ -606,7 +606,7 @@
     <div class="app-header">
       <h1>TFM2 — Item Builder</h1>
       <p>Pick your role and situation → get the right build</p>
-      <div class="patch-badge">🆕 Patch 0.9.9 — Ability haste update · a build for every item</div>
+      <div class="patch-badge">🆕 Patch 0.9.10 — Game 0.6.0 support · 4th item slot now built into the game · Tiamat &amp; Bandlepipes</div>
       <div class="tabs">
         <button class="tab active" onclick="switchTab('build',this)">🎯 Build Picker</button>
         <button class="tab" onclick="switchTab('new',this)">🆕 New Items</button>
@@ -1381,6 +1381,41 @@
 
     const NEW_ITEMS = [
       {
+        name: "Bandlepipes",
+        patch: "0.9.10",
+        type: "Tank / Support / Team aura",
+        role: "Support · Tank",
+        icon: "🎺",
+        stats: [
+          { s: "Health", v: "200 HP" },
+          { s: "Armor", v: "40" },
+          { s: "Magic Resistance", v: "60" },
+          { s: "Ability Haste", v: "15" }
+        ],
+        passive: { name: "Fanfare", text: "Landing an ability on an enemy champion empowers you with Fanfare for 4 seconds, granting 12% movement speed. While empowered, you and allied champions within 100 range also gain 20% attack speed." },
+        use: "The only item in the mod that hands attack speed to your whole team. It is an aura, not a snapshot — allies who walk into the 100 range during the 4 seconds pick it up, and allies who leave lose it, so it rewards fighting as a group. The trigger is any ability landing on an enemy champion, so a support with a short cooldown keeps it up almost permanently. Note what the stat line is: 200 HP, 40 armor, 60 MR and 15 haste for 1000 gold is a pure durability line with no damage at all — you are buying it for the team, not for yourself. The Radiant version (1500g) doubles the defences to 400 HP / 60 armor / 100 MR / 20 haste and keeps the same Fanfare.",
+        best: ["Supports and tanks who land an ability every few seconds", "Teams built around attack speed carries — the 20% is multiplied across everyone in range", "Frontliners who stand where the carries are anyway"],
+        avoid: ["Split-pushers and solo laners — the aura is wasted with nobody in 100 range", "Ability-power carries who want damage from the slot", "Teams with no auto-attack damage — 20% attack speed on an ability-based comp does very little"],
+        synergy: ["Ardent Censer — Sanctify gives one ally 20% attack speed, Fanfare gives everyone nearby another 20%, and they stack", "Locket of the Iron Solari — the other aura item, same 100 range, so one positioning choice powers both", "Any attack-speed carry (Guinsoo's, Nashor's Tooth) — they gain the most from a flat 20%"]
+      },
+      {
+        name: "Tiamat",
+        patch: "0.9.10",
+        type: "AD / Cleave component",
+        role: "Bruiser · Fighter",
+        icon: "🪓",
+        stats: [
+          { s: "Attack Damage", v: "50 AD" },
+          { s: "Cost", v: "800 gold" },
+          { s: "Builds into", v: "Ravenous Hydra" }
+        ],
+        passive: { name: "Cleave", text: "Basic attacks deal 20% of your attack damage as physical damage to nearby enemies. Attacks from beyond 35 range apply this effect at 50% effectiveness." },
+        use: "Tiamat is Ravenous Hydra's cleave at two thirds strength, available at Tier 3 for 800 gold. That matters because it is a component that already does its job: most components are a pile of stats waiting to become an item, but Tiamat clears waves and chips grouped enemies from the moment you buy it. It is also a second route into Ravenous Hydra beside Caulfield's Warhammer — Tiamat is 150 gold cheaper and keeps the cleave going, Caulfield's brings 10 ability haste instead. Pick the route by what the champion actually wants.",
+        best: ["Any melee bruiser heading for Ravenous Hydra", "Champions who need wave clear early", "Builds where the cleave matters more than the ability haste on the Caulfield's route"],
+        avoid: ["Ranged carries — beyond 35 range the cleave is halved", "Ability-based champions who never auto-attack", "Builds that want Caulfield's 10 ability haste on the way to Hydra instead"],
+        synergy: ["Ravenous Hydra — the natural upgrade, 20% cleave becomes 30% (40% Radiant)", "Frozen Mallet — slowed enemies stay inside the 35 range where cleave is full strength", "Attack speed items — every extra attack is another cleave"]
+      },
+      {
         name: "Radiant Ravenous Hydra",
         patch: "0.9.7",
         type: "AD / Omnivamp",
@@ -1623,7 +1658,7 @@
   </div></div>${b.impact ? `<div class="impact"><strong>Impact:</strong> ${b.impact}<span class="impact-note">Baseline: An unbuilt champion (100 AD, 1.00 AS, 2,000 HP, 25 armor/MR) in a 10s fight with an 8,000 HP / 100 armor / 100 MR target. Ults, stacks, cleave and auras not counted.</span></div>` : ''}<div class="items-list">`;
       b.items.forEach((item, i) => {
         const newCls = item.isNew ? ' is-new' : '';
-        const newBadge = item.isNew ? `<span class="new-badge">NEW 0.9.7</span>` : '';
+        const newBadge = item.isNew ? `<span class="new-badge">NEW ${item.patch || '0.9.7'}</span>` : '';
         h += `<div class="item-row${newCls}"><div class="item-num">${i + 1}</div><div>
       <div class="item-name">${item.name}${newBadge}</div>
       ${item.cost ? `<div class="item-cost">${fmtGold(item.cost)} gold</div>` : ''}
@@ -1657,7 +1692,7 @@
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:.625rem">
         <span style="font-size:24px">${item.icon}</span>
         <div>
-          <div style="font-size:15px;font-weight:600;color:var(--text)">${item.name} <span class="new-badge">NEW 0.9.7</span></div>
+          <div style="font-size:15px;font-weight:600;color:var(--text)">${item.name} <span class="new-badge">NEW ${item.patch}</span></div>
           <div style="font-size:12px;color:var(--muted)">${item.type} · ${item.role}</div>
         </div>
       </div>
@@ -1702,7 +1737,7 @@
           const isNew = i.includes('NEW');
           return `<span class="combo-item${isNew ? ' new' : ''}">${i}</span>`;
         }).join('');
-        const newBadge = cb.newCombo ? `<span class="new-badge" style="margin-left:6px">NEW 0.9.7</span>` : '';
+        const newBadge = cb.newCombo ? `<span class="new-badge" style="margin-left:6px">NEW ${cb.patch || '0.9.7'}</span>` : '';
         return `<div class="combo-card${cb.newCombo ? ' is-new' : ''}">
       <div class="combo-head">
         <span style="font-size:20px">${cb.icon}</span>
