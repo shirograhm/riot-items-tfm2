@@ -300,12 +300,14 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
     reg.add_item(configured!("serrated_dirk" => SerratedDirk));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
+    reg.add_item(configured!("tiamat" => Tiamat));
     reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4
     reg.add_item(configured!("ardent_censer" => ArdentCenser));
     reg.add_item(configured!("atmas_reckoning" => AtmasReckoning));
     reg.add_item(configured!("axiom_arc" => AxiomArc));
+    reg.add_item(configured!("bandlepipes" => Bandlepipes));
     reg.add_item(configured!("bastionbreaker" => Bastionbreaker));
     reg.add_item(configured!("black_cleaver" => BlackCleaver));
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
@@ -376,6 +378,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_ardent_censer" => ArdentCenser));
     reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning));
     reg.add_item(configured_radiant!("radiant_axiom_arc" => AxiomArc));
+    reg.add_item(configured_radiant!("radiant_bandlepipes" => Bandlepipes));
     reg.add_item(configured_radiant!("radiant_bastionbreaker" => Bastionbreaker));
     reg.add_item(configured_radiant!("radiant_black_cleaver" => BlackCleaver));
     reg.add_item(configured_radiant!("radiant_blackfire_torch" => BlackfireTorch));

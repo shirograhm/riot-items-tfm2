@@ -58,6 +58,7 @@ impl StableItem for AegisOfTheLegion {
         vec![
             "jaksho_the_protean".to_string(),
             "locket_of_the_iron_solari".to_string(),
+            "bandlepipes".to_string(),
         ]
     }
 

@@ -1502,5 +1502,35 @@
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1,
     "effect_max_distance": 30
+  },
+  "tiamat": {
+    "price": 800,
+    "attack": 50,
+    "effect_ad_percent_damage": 20.0,
+    "effect_max_distance": 35,
+    "effect_melee_distance": 35,
+    "effect_ranged_percent": 50.0
+  },
+  "bandlepipes": {
+    "price": 1000,
+    "hp": 200,
+    "defence": 40,
+    "magic_resistance": 60,
+    "skill_cooldown_mult": 15,
+    "effect_duration_seconds": 4,
+    "effect_move_speed_mult": 12,
+    "effect_attack_speed_mult": 20,
+    "effect_max_distance": 100
+  },
+  "radiant_bandlepipes": {
+    "price": 1500,
+    "hp": 400,
+    "defence": 60,
+    "magic_resistance": 100,
+    "skill_cooldown_mult": 20,
+    "effect_duration_seconds": 4,
+    "effect_move_speed_mult": 12,
+    "effect_attack_speed_mult": 20,
+    "effect_max_distance": 100
   }
 }

@@ -3675,11 +3675,10 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                 }
                 // What the Builds editor and the item-build hook's
                 // `usable = build.len().min(picker_slots())` are working from.
-                // `driver::picker_slots` reports 3 unless `tactics_init`
-                // returned true, so this differing from `mode` above means the
-                // version gate failed and no patch is in: the symptom on screen
-                // is a 3-slot layout, not a 4th slot nothing ever fills.
-                s.push_str(&format!("  picker slots: {}\n", driver::picker_slots()));
+                // `build_config::picker_slots` is a flat 4 since game 0.6.0
+                // ships the slot itself; it no longer reports anything about
+                // this half, so it can no longer disagree with `mode` above.
+                s.push_str(&format!("  picker slots: {}\n", crate::build_config::picker_slots()));
                 // Whether the loader hook ever delivered the 4-slot templates.
                 // These used to arrive through `mod.override_info` as well,
                 // which cannot miss; the hook can, if a template is loaded

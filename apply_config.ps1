@@ -371,6 +371,18 @@ $rhReach = [int]$config.ravenous_hydra.effect_melee_distance
 $rhStrength = [double]$config.ravenous_hydra.effect_ranged_percent
 $rrhReach = [int]$config.radiant_ravenous_hydra.effect_melee_distance
 $rrhStrength = [double]$config.radiant_ravenous_hydra.effect_ranged_percent
+$tiaAdPct = [double]$config.tiamat.effect_ad_percent_damage
+$tiaRange = [int]$config.tiamat.effect_max_distance
+$tiaReach = [int]$config.tiamat.effect_melee_distance
+$tiaStrength = [double]$config.tiamat.effect_ranged_percent
+$bpDuration = [double]$config.bandlepipes.effect_duration_seconds
+$bpMoveSpeed = [int]$config.bandlepipes.effect_move_speed_mult
+$bpRange = [int]$config.bandlepipes.effect_max_distance
+$bpAttackSpeed = [int]$config.bandlepipes.effect_attack_speed_mult
+$rbpDuration = [double]$config.radiant_bandlepipes.effect_duration_seconds
+$rbpMoveSpeed = [int]$config.radiant_bandlepipes.effect_move_speed_mult
+$rbpRange = [int]$config.radiant_bandlepipes.effect_max_distance
+$rbpAttackSpeed = [int]$config.radiant_bandlepipes.effect_attack_speed_mult
 $bamiFlat = [int]$config.bamis_cinder.effect_bonus_flat_damage
 $bamiHpPct = [double]$config.bamis_cinder.effect_caster_hp_percent_damage
 $bamiRange = [int]$config.bamis_cinder.effect_max_distance
@@ -690,6 +702,10 @@ $i18n.en.radiant_trinity_force.option = $tfTemplate -f $rtfFlat, $rtfAdPct, $rtf
 $rhTemplate = "<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>{0}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>{1} <$rangeIcon> range<> apply this effect at <#d94c49ff>{2}% strength<>."
 $i18n.en.ravenous_hydra.option = $rhTemplate -f $rhAdPct, $rhReach, $rhStrength
 $i18n.en.radiant_ravenous_hydra.option = $rhTemplate -f $rrhAdPct, $rrhReach, $rrhStrength
+$i18n.en.tiamat.option = $rhTemplate -f $tiaAdPct, $tiaReach, $tiaStrength
+$bpTemplate = "<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>{0} seconds<>, granting you <#ffffffff>{1}%<> bonus <$speedIcon> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>{2} <$rangeIcon> range<> also gain <#ceff99ff>{3}%<> bonus <$asIcon> <#ceff99ff>attack speed<>."
+$i18n.en.bandlepipes.option = $bpTemplate -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
+$i18n.en.radiant_bandlepipes.option = $bpTemplate -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
 
 $bamiTemplate = "<#ff7a3eff>Immolate<>: Deal <#60e84dff>{0}<> + <#60e84dff>{1}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{2} <$rangeIcon> range<>."
 $i18n.en.bamis_cinder.option = $bamiTemplate -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -881,6 +897,10 @@ $i18n.vi.radiant_trinity_force.option = $tfTemplateVi -f $rtfFlat, $rtfAdPct, $r
 $rhTemplateVi = "<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>{0}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>{1}<> <$rangeIcon> chỉ áp dụng hiệu ứng này ở <#d94c49ff>{2}% sức mạnh<>."
 $i18n.vi.ravenous_hydra.option = $rhTemplateVi -f $rhAdPct, $rhReach, $rhStrength
 $i18n.vi.radiant_ravenous_hydra.option = $rhTemplateVi -f $rrhAdPct, $rrhReach, $rrhStrength
+$i18n.vi.tiamat.option = $rhTemplateVi -f $tiaAdPct, $tiaReach, $tiaStrength
+$bpTemplateVi = "<#ff7a3eff>Khúc Khải Hoàn<>: Đánh trúng một kỹ năng lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>{0} giây<>, tăng <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>{2}<> <$rangeIcon> cũng nhận thêm <#ceff99ff>{3}%<> <$asIcon> <#ceff99ff>tốc độ đánh<>."
+$i18n.vi.bandlepipes.option = $bpTemplateVi -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
+$i18n.vi.radiant_bandlepipes.option = $bpTemplateVi -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
 
 $bamiTemplateVi = "<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>{0}<> + <#60e84dff>{1}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{2}<> <$rangeIcon> ."
 $i18n.vi.bamis_cinder.option = $bamiTemplateVi -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1072,6 +1092,10 @@ $i18n.'zh-hans'.radiant_trinity_force.option = $tfTemplateZh -f $rtfFlat, $rtfAd
 $rhTemplateZh = "<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{0}%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>{1} <$rangeIcon> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>{2}% 强度<>触发。"
 $i18n.'zh-hans'.ravenous_hydra.option = $rhTemplateZh -f $rhAdPct, $rhReach, $rhStrength
 $i18n.'zh-hans'.radiant_ravenous_hydra.option = $rhTemplateZh -f $rrhAdPct, $rrhReach, $rrhStrength
+$i18n.'zh-hans'.tiamat.option = $rhTemplateZh -f $tiaAdPct, $tiaReach, $tiaStrength
+$bpTemplateZh = "<#ff7a3eff>嘹亮旋律<>：技能命中敌方英雄时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>{0}秒<>，并获得 <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>{2} <$rangeIcon> 射程<>范围内的友方英雄还会获得 <#ceff99ff>{3}%<> <$asIcon> <#ceff99ff>攻击速度<>。"
+$i18n.'zh-hans'.bandlepipes.option = $bpTemplateZh -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
+$i18n.'zh-hans'.radiant_bandlepipes.option = $bpTemplateZh -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
 
 $bamiTemplateZh = "<#ff7a3eff>献祭<>：对 <#ff86c2ff>{2} <$rangeIcon> 射程<>内的所有敌人造成 <#60e84dff>{0}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{1}%<> 的<#a974ffff>魔法伤害<>。"
 $i18n.'zh-hans'.bamis_cinder.option = $bamiTemplateZh -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1263,6 +1287,10 @@ $i18n.'pt-BR'.radiant_trinity_force.option = $tfTemplatePt -f $rtfFlat, $rtfAdPc
 $rhTemplatePt = "<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>{0}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>{1} <$rangeIcon> alcance<> aplicam este efeito com <#d94c49ff>{2}% de intensidade<>."
 $i18n.'pt-BR'.ravenous_hydra.option = $rhTemplatePt -f $rhAdPct, $rhReach, $rhStrength
 $i18n.'pt-BR'.radiant_ravenous_hydra.option = $rhTemplatePt -f $rrhAdPct, $rrhReach, $rrhStrength
+$i18n.'pt-BR'.tiamat.option = $rhTemplatePt -f $tiaAdPct, $tiaReach, $tiaStrength
+$bpTemplatePt = "<#ff7a3eff>Fanfarra<>: Acertar uma Habilidade em um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>{0} segundos<>, concedendo a você <#ffffffff>{1}%<> de <$speedIcon> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>{2} <$rangeIcon> alcance<> também recebem <#ceff99ff>{3}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<>."
+$i18n.'pt-BR'.bandlepipes.option = $bpTemplatePt -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
+$i18n.'pt-BR'.radiant_bandlepipes.option = $bpTemplatePt -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
 
 $bamiTemplatePt = "<#ff7a3eff>Imolar<>: Causa <#60e84dff>{0}<> + <#60e84dff>{1}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>{2} <$rangeIcon> alcance<>."
 $i18n.'pt-BR'.bamis_cinder.option = $bamiTemplatePt -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1454,6 +1482,10 @@ $i18n.ru.radiant_trinity_force.option = $tfTemplateRu -f $rtfFlat, $rtfAdPct, $r
 $rhTemplateRu = "<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>{0}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>{1} <$rangeIcon> дальности<> применяют этот эффект с <#d94c49ff>{2}% силы<>."
 $i18n.ru.ravenous_hydra.option = $rhTemplateRu -f $rhAdPct, $rhReach, $rhStrength
 $i18n.ru.radiant_ravenous_hydra.option = $rhTemplateRu -f $rrhAdPct, $rrhReach, $rrhStrength
+$i18n.ru.tiamat.option = $rhTemplateRu -f $tiaAdPct, $tiaReach, $tiaStrength
+$bpTemplateRu = "<#ff7a3eff>Фанфары<>: Попадание умением по вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>{0} секунды<> и <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>{2} <$rangeIcon> дальности<> также получаете <#ceff99ff>{3}%<> <$asIcon> <#ceff99ff>скорости атаки<>."
+$i18n.ru.bandlepipes.option = $bpTemplateRu -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
+$i18n.ru.radiant_bandlepipes.option = $bpTemplateRu -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
 
 $bamiTemplateRu = "<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>{0}<> + <#60e84dff>{1}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{2} <$rangeIcon> дальности<>."
 $i18n.ru.bamis_cinder.option = $bamiTemplateRu -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1644,6 +1676,10 @@ $i18n.ko.radiant_trinity_force.option = $tfTemplateKo -f $rtfFlat, $rtfAdPct, $r
 $rhTemplateKo = "<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <$adIcon> <#ff9028ff>공격력의 {0}%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <$rangeIcon> <#ff86c2ff>사거리 {1}<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>{2}% 위력<>으로 적용됩니다."
 $i18n.ko.ravenous_hydra.option = $rhTemplateKo -f $rhAdPct, $rhReach, $rhStrength
 $i18n.ko.radiant_ravenous_hydra.option = $rhTemplateKo -f $rrhAdPct, $rrhReach, $rrhStrength
+$i18n.ko.tiamat.option = $rhTemplateKo -f $tiaAdPct, $tiaReach, $tiaStrength
+$bpTemplateKo = "<#ff7a3eff>팡파르<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>{0}초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>{1}%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <$rangeIcon> <#ff86c2ff>사거리 {2}<> 안의 아군 챔피언의 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>{3}%<> 증가합니다."
+$i18n.ko.bandlepipes.option = $bpTemplateKo -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
+$i18n.ko.radiant_bandlepipes.option = $bpTemplateKo -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
 
 $bamiTemplateKo = "<#ff7a3eff>불사르기<>: <#ff86c2ff>{2} <$rangeIcon> 사거리<> 안의 모든 적에게 <#60e84dff>{0}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>{1}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
 $i18n.ko.bamis_cinder.option = $bamiTemplateKo -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1897,6 +1933,9 @@ Write-Host "  Randuin's Omen:              heals ${rndHeal}% of damage taken fro
 Write-Host "  Radiant Randuin's Omen:      heals ${rrndHeal}% of damage taken from critical strikes"
 Write-Host "  Ravenous Hydra:              ${rhAdPct}% AD cleave within ${rhRange} range / ${rhStrength}% strength beyond ${rhReach} range"
 Write-Host "  Radiant Ravenous Hydra:      ${rrhAdPct}% AD cleave within ${rrhRange} range / ${rrhStrength}% strength beyond ${rrhReach} range"
+Write-Host "  Tiamat:                      ${tiaAdPct}% AD cleave within ${tiaRange} range / ${tiaStrength}% strength beyond ${tiaReach} range"
+Write-Host "  Bandlepipes:                 ${bpMoveSpeed}% MS ${bpDuration}s / ${bpAttackSpeed}% AS to allies within ${bpRange} range"
+Write-Host "  Radiant Bandlepipes:         ${rbpMoveSpeed}% MS ${rbpDuration}s / ${rbpAttackSpeed}% AS to allies within ${rbpRange} range"
 Write-Host "  Bami's Cinder:               ${bamiFlat} + ${bamiHpPct}% max HP magic dmg/s within ${bamiRange} range"
 Write-Host "  Sunfire Cape:                ${sunFlat} + ${sunHpPct}% max HP magic dmg/s within ${sunRange} range"
 Write-Host "  Radiant Sunfire Cape:        $($config.radiant_sunfire_cape.effect_bonus_flat_damage) + $($config.radiant_sunfire_cape.effect_caster_hp_percent_damage)% max HP magic dmg/s within $($config.radiant_sunfire_cape.effect_max_distance) range"

@@ -24,5 +24,6 @@ items! {
     serrated_dirk,
     sheen,
     steel_sigil,
+    tiamat,
     winged_moonplate,
 }

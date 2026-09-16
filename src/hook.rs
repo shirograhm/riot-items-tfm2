@@ -37,7 +37,7 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.6.0_beta2.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.6.0 (release).
 //!
 //! The finder identifies the target by its **argument shape** rather than by
 //! anything in its body: the return type is 24 bytes so it comes back via `sret`
@@ -197,6 +197,20 @@ const ABSOLUTE_JUMP_LEN: usize = 12;
 /// Symptom when this is stale: league matches are fine and the lane/comp test silently ignores
 /// `item-builds.json`, because training mode is the one path the engine never asks the stable
 /// hook about — `apply_training_builds` runs in this detour or not at all.
+/// 0.6.0_beta2 -> 0.6.0 release (2026-09-15): the target moved `0x2039c00` -> **`0x24b15a0`**,
+/// and **these 48 bytes did not change** — the frame is still `0x228` and both rbp
+/// displacements are still `0x190`/`0x188`, so this constant was re-confirmed rather than
+/// edited and a mod built against beta2 still finds the function without a rebuild.
+/// Confirmed the same two independent ways the beta2 note used:
+///
+///   * these 48 bytes occur **exactly once** in `.text` on the release image, at
+///     `0x24b15a0` — a `.pdata` function start of size 2270;
+///   * `tools/find_item_build_hook.py` returns 4 candidates, and the target fingerprint
+///     **2270/14/7** that has identified this function since 0.5.4 belongs to `0x24b15a0`
+///     alone. The other three are the recorded decoys: 1489/23/10 (seen since 0.5.4),
+///     1497/11/8, and the beta2 extra candidate, here 1533/11/10.
+///
+/// Nothing in this file changed for the release; only this note was added.
 const FALLBACK_SIGNATURE: [u8; 48] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x28,
     0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x90, 0x01,

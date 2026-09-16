@@ -45,6 +45,12 @@ static DB_PROBED: AtomicBool = AtomicBool::new(false);
 /// dereferencing it inside `forward` is an access violation no `catch_unwind`
 /// can catch.
 pub fn record_item_net(agent: usize) {
+    // Nothing reads `db()` while this half is retired, and settling a
+    // `Database` base costs a `VirtualQuery` plus a 64KB `readable` probe
+    // on the weight array, on the detour's hot path.
+    if RETIRED {
+        return;
+    }
     if DB_ADDR.load(Ordering::Relaxed) != 0 || agent < ITEM_NET_DB_OFFSET {
         return;
     }
@@ -100,45 +106,71 @@ pub unsafe fn ui_root() -> Option<&'static mut Node> {
     (addr > 0x10000).then(|| &mut *(addr as *mut Node))
 }
 
+/// **This half is retired as of game 0.6.0 (release, 2026-09-15).**
+///
+/// Everything `super` exists to do was the fourth item slot, and 0.6.0 ships
+/// that natively: the game's own slot-count clamps are already 4 (both sites
+/// this mod used to byte-patch read `cmp rax,5 / mov ecx,4` and `cmp rdx,5 /
+/// mov ecx,4` on the release image, against `4`/`3` on 0.6.0_beta2), and every
+/// build row in the shipped UI carries `#item3` beside `#item0..2`. The four
+/// 3 -> 4 byte patches, the in-match slot widening and the auto-4th pick are
+/// therefore all redundant, so none of `super`'s RVAs were re-derived for the
+/// release and none of them may be used against it.
+///
+/// This is deliberately a hard switch rather than a stale version gate. The
+/// gate in `super::check_game_version` would already refuse the release on exe
+/// size, and every detour installer validates its prologue before writing, so
+/// nothing patches today either way — but the gate is *incidental* protection
+/// that re-opens the moment someone updates `GAME_EXE_SIZE_060` without
+/// re-deriving the ~15 addresses behind it. This constant does not.
+///
+/// What did NOT move: `src/hook.rs`. Its detour is installed from
+/// `lib.rs::on_server_start` independently of this half and its signature is
+/// unchanged on the release, so the three data taps it feeds — the training /
+/// comp-test builds, the 60-champion roster and the item catalog — all still
+/// work. Training mode is the one path the engine never asks
+/// `StableItemBuildHook` about, so that detour is still the only way
+/// `item-builds.json` reaches a lane or comp test.
+///
+/// To revive this half: re-derive every RVA and struct offset in `super`
+/// against the target executable (`tools/rederive.py`, then
+/// `tools/verify_rvas.py` must pass clean), update `GAME_EXE_SIZE_060`, and
+/// flip this back. Do not flip it without that.
+const RETIRED: bool = true;
+
 // ---------------------------------------------------------------------------
 // Entry points — called from the host's stable extensions in `src/lib.rs`.
 // ---------------------------------------------------------------------------
 
-/// Was `init()` + `declare_mod!`. Runs the version gate and, in 4-slot mode, the
-/// byte patches, and records whether this half came up at all — which is what
-/// [`picker_slots`] answers from.
+/// Was `init()` + `declare_mod!`. Ran the version gate and, in 4-slot mode, the
+/// byte patches, and recorded whether this half came up at all.
+///
+/// `ACTIVE` is all that record is now. Nothing outside reads it: the slot count
+/// moved to `build_config::picker_slots` when this half was retired, because it
+/// is a property of the game rather than of this mod.
 pub fn on_mod_init() {
+    if RETIRED {
+        return;
+    }
     ACTIVE.store(super::tactics_init(), Ordering::Relaxed);
 }
 
 /// Whether [`on_mod_init`] ran and its version gate passed.
 static ACTIVE: AtomicBool = AtomicBool::new(false);
 
-/// Item slots a build has, for the host half's editor and item-build hook: 4
-/// when this half is active and `4items.cfg` asks for four, otherwise the three
-/// the game ships with.
-///
-/// The active flag is what makes this safe to call at any time. `slot_count`
-/// reads `ITEM_MODE`, which starts at its optimistic default of 4 and is only
-/// corrected once `load_mode` runs — which happens inside [`on_mod_init`], and
-/// not at all when the version gate fails. Asking before then, or on a game
-/// version this half is disabled for, would otherwise offer a fourth slot no
-/// byte patch exists to fill.
-pub fn picker_slots() -> usize {
-    if ACTIVE.load(Ordering::Relaxed) {
-        super::slot_count()
-    } else {
-        3
-    }
-}
-
 /// Was `ModServerExtension::on_server_start`.
 pub fn on_server_start() {
+    if RETIRED {
+        return;
+    }
     super::tactics_on_server_start();
 }
 
 /// Was `ModServerExtension::before_management_tick`.
 pub fn before_management_tick() {
+    if RETIRED {
+        return;
+    }
     super::tactics_before_management_tick();
 }
 
@@ -146,6 +178,11 @@ pub fn before_management_tick() {
 /// payload used to; the UI root is fetched from `TIP_ROOT` rather than passed
 /// in.
 pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
+    // Also the per-frame cost: this retried four detour installs every
+    // frame, each of which can only fail on the release image.
+    if RETIRED {
+        return;
+    }
     let in_game = client.is_in_game();
     super::tactics_post_update(client, in_game);
 }
@@ -160,6 +197,9 @@ pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
 ///
 /// Idempotent — every call after the first that sticks is ignored.
 pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
+    if RETIRED {
+        return;
+    }
     super::record_item_catalog(catalog);
 }
 
@@ -167,6 +207,13 @@ pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
 /// building the argument for [`record_item_catalog`] — which would otherwise be
 /// two `String` allocations per item, discarded, on every call after the first.
 pub fn item_catalog_recorded() -> bool {
+    // While retired, claim the catalog is already in hand. Nothing consumes
+    // one, and the honest `false` would make `hook::detour` rebuild the
+    // argument on EVERY call — two `String` allocations per item, per call,
+    // immediately discarded — instead of only on the first.
+    if RETIRED {
+        return true;
+    }
     super::item_catalog_recorded()
 }
 
