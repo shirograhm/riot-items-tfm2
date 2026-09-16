@@ -106,37 +106,40 @@ pub unsafe fn ui_root() -> Option<&'static mut Node> {
     (addr > 0x10000).then(|| &mut *(addr as *mut Node))
 }
 
-/// **This half is retired as of game 0.6.0 (release, 2026-09-15).**
+/// **Partly revived, 2026-09-16, for the team gate only.**
 ///
-/// Everything `super` exists to do was the fourth item slot, and 0.6.0 ships
-/// that natively: the game's own slot-count clamps are already 4 (both sites
-/// this mod used to byte-patch read `cmp rax,5 / mov ecx,4` and `cmp rdx,5 /
-/// mov ecx,4` on the release image, against `4`/`3` on 0.6.0_beta2), and every
-/// build row in the shipped UI carries `#item3` beside `#item0..2`. The four
-/// 3 -> 4 byte patches, the in-match slot widening and the auto-4th pick are
-/// therefore all redundant, so none of `super`'s RVAs were re-derived for the
-/// release and none of them may be used against it.
+/// This half existed for the fourth item slot, and 0.6.0 ships that natively
+/// -- the game's own slot-count clamps already read 4 and every build row
+/// carries `#item3`. So it was retired on 2026-09-15 and none of its RVAs
+/// were re-derived.
 ///
-/// This is deliberately a hard switch rather than a stale version gate. The
-/// gate in `super::check_game_version` would already refuse the release on exe
-/// size, and every detour installer validates its prologue before writing, so
-/// nothing patches today either way — but the gate is *incidental* protection
-/// that re-opens the moment someone updates `GAME_EXE_SIZE_060` without
-/// re-deriving the ~15 addresses behind it. This constant does not.
+/// One thing came back with it that is not about slots at all:
+/// **`own_team_only`**. Restricting configured builds to the player's own
+/// athletes needs `is_my_athlete`, and the stable API cannot express it --
+/// `StableItemBuildContext` (re-checked at ABI 9) offers only a 0/1 lineup
+/// index that says neither which side is the player's nor whether the player
+/// is in the match at all. The native buy detour is the only thing that can,
+/// because it is handed the athlete pointer.
 ///
-/// What did NOT move: `src/hook.rs`. Its detour is installed from
-/// `lib.rs::on_server_start` independently of this half and its signature is
-/// unchanged on the release, so the three data taps it feeds — the training /
-/// comp-test builds, the 60-champion roster and the item catalog — all still
-/// work. Training mode is the one path the engine never asks
-/// `StableItemBuildHook` about, so that detour is still the only way
-/// `item-builds.json` reaches a lane or comp test.
+/// So the three addresses that path needs were re-derived against the
+/// release and this is `false` again. **Everything else stays inert**, and
+/// through gates that already existed rather than new ones: `slot_count()`
+/// is pinned at 3, which is what the four 3 -> 4 byte patches, the build
+/// extension, the slot-3 icon and `uinj::MODE4` are all keyed on;
+/// `UI_INJECT_ENABLED` and `SPAWN_INJECT_ENABLED` are off in `super`, each
+/// with its reason recorded there.
 ///
-/// To revive this half: re-derive every RVA and struct offset in `super`
-/// against the target executable (`tools/rederive.py`, then
-/// `tools/verify_rvas.py` must pass clean), update `GAME_EXE_SIZE_060`, and
-/// flip this back. Do not flip it without that.
-const RETIRED: bool = true;
+/// Live, and therefore re-derived and covered by `tools/verify_rvas.py`:
+/// `RVA_BUY_ITEM`, `SEEDCTOR_RVA`, `CL_LAUNCHER_RVA` and the athlete/provider
+/// offsets (`O_ATHLETE_ID`, `ATH_STRIDE`, `O_PROVIDER_SEED` -- all three
+/// unchanged from beta2, confirmed by a STRICT exe2exe match of the 286-byte
+/// roster walk). Not re-derived, and not reachable: LOADER/PARSER/ALLOC,
+/// GV_UPDATE, REALLOC, ITEMNET_FORWARD, SPAWN, PV_*.
+///
+/// `src/hook.rs` is unaffected either way -- it installs from
+/// `lib.rs::on_server_start` independently, and is still the only route to
+/// training/comp-test builds and the 60-champion roster.
+const RETIRED: bool = false;
 
 // ---------------------------------------------------------------------------
 // Entry points — called from the host's stable extensions in `src/lib.rs`.

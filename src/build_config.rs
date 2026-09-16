@@ -802,26 +802,25 @@ pub fn unique_items_enabled() -> bool {
 /// injector, which holds the athlete pointer and therefore the `is_my_athlete`
 /// gate that already works — see `tactics::SPAWN_INJECT_ENABLED`, currently off
 /// pending re-derivation.
-/// # Forced off from game 0.6.0 (release, 2026-09-15)
+/// # Restored 2026-09-16
 ///
-/// Everything above describes a split between two halves of the mod, and the
-/// half this toggle hands the work to no longer exists: `src/tactics` is
-/// retired (see `tactics::driver::RETIRED`), so there is no buy detour and no
-/// spawn injector to pin anything per athlete.
+/// This was forced to `false` on 2026-09-15, when `src/tactics` was retired
+/// and took the buy detour with it: honouring the setting then would have
+/// meant `decide_build` handing off to something that no longer existed, and
+/// configured builds would have stopped applying with no evidence anywhere.
 ///
-/// Honouring the setting now would mean `decide_build` returns the engine's
-/// build and hands off to nobody — configured builds would stop applying
-/// entirely, silently, for anyone who had the toggle on. That is strictly
-/// worse than the thing the toggle exists to avoid (a build reaching the enemy
-/// team too), and it fails in the direction that produces no evidence: the
-/// editor still shows the builds, the mod still loads, the items still load.
+/// The team gate is back -- `RVA_BUY_ITEM`, `SEEDCTOR_RVA` and
+/// `CL_LAUNCHER_RVA` were re-derived for the 0.6.0 release and
+/// `tactics::driver::RETIRED` is `false` again -- so the setting means
+/// something again and is read normally.
 ///
-/// So this reports `false` regardless of what `mod-settings.json` says. The
-/// stored value is left alone rather than rewritten, so an existing config is
-/// not clobbered and the setting resumes meaning something if the native half
-/// is ever revived.
+/// The slot-0 caveat above still stands, and for a sharper reason than
+/// before: `SPAWN_RVA` turned out to be a beta1 address that never matched
+/// on beta2 either, so the spawn-time injector has not run in a long time.
+/// Under this toggle the first item is the engine's pick and slots 1 and 2
+/// apply, which is the behaviour this has actually had all along.
 pub fn own_team_only_enabled() -> bool {
-    false
+    setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, false)
 }
 
 /// The configured build for one champion, as item indices.

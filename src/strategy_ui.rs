@@ -1777,22 +1777,13 @@ fn clear_saved(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(saved_path(), false);
 }
 
-/// Paints which half of the build-scope toggle is the live setting — and, since
-/// game 0.6.0, hides the control instead.
+/// Paints which half of the build-scope toggle is the live setting.
 ///
-/// `own_team_only` handed the work to the native buy detour in `src/tactics`,
-/// which is retired (see `tactics::driver::RETIRED`), so
-/// [`build_config::own_team_only_enabled`] now reports `false` whatever the
-/// setting says. Leaving the toggle up would give the player a control that
-/// writes a setting, never moves, and changes nothing — so the whole `#scope`
-/// block goes away and builds are documented as applying to both teams.
-///
-/// The two halves are still painted underneath, so the control comes back
-/// correct by itself if the native half is ever revived.
+/// The control was hidden on 2026-09-15, while `own_team_only` could not be
+/// honoured. The native team gate is back (see
+/// [`build_config::own_team_only_enabled`]), so it is shown and painted
+/// normally again.
 fn refresh_scope(ctx: &mut StableClient<'_>) {
-    if let Some(scope) = scope_all_path().strip_suffix(".all") {
-        ctx.ui_set_visible(scope, false);
-    }
     if build_config::own_team_only_enabled() {
         paint_toggle(ctx, scope_own_path(), scope_all_path());
     } else {
