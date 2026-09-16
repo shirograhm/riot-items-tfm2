@@ -5425,16 +5425,21 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 }
             }));
         }
-        // * mode=3 stops here (slot 0/1/2 designation injection only). The 4th item (build extension, network, forced purchase) is mode=4 only -> 3 slots keep vanilla behaviour.
-        if slot_count() != 4 {
+        // * This used to read `if slot_count() != 4 { return 0 }` -- "did this
+        //   half manufacture a fourth slot". From 0.6.0 that is the wrong
+        //   question and it answers no: the game ships the slot, so
+        //   `slot_count()` is pinned at 3 and this returned before ever
+        //   designating a 4th item. The symptom was precise -- under
+        //   `own_team_only` slots 0/1/2 followed the configured build and the
+        //   4th did not, while with the toggle off all four worked, because
+        //   that path is `crate::item_build_hook` on the stable API.
+        //
+        //   The question that matters now is whether a fourth slot EXISTS to
+        //   write, which is what `picker_slots` answers.
+        if crate::build_config::picker_slots() != 4 {
             return 0;
         }
         if !SHADOW_CALL_NAMES {
-            return 0;
-        }
-        // * 0.5.0: build extension (calls __rust_realloc @0x25a56c0 below). RVA_REALLOC confirmed -> BUILD_EXTEND_ENABLED=true.
-        //   Passthrough (the original 3 purchases) only when OFF. Currently ON = build Vec 3->4 and real purchases.
-        if !BUILD_EXTEND_ENABLED {
             return 0;
         }
         // Realloc the build Vec 3->4 + build[3] = catalog index. At owned==3 the resolver targets build[3] and builds up from t1.
@@ -5457,15 +5462,31 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 BE_CNT[2].fetch_add(1, Ordering::Relaxed);
             }
         }
-        if build_len == 3 && rd_u64(athlete + 0x550) == 3 {
-            // 0.5.0 build cap (was 0x408)
+        let cap_now = rd_u64(athlete + 0x550); // 0.5.0 build cap (was 0x408)
+        // Two shapes, and 0.6.0 is the first one:
+        //   in_place -- the Vec already holds four, so only build[3] is set;
+        //   extend   -- the pre-0.6.0 three, grown to four first.
+        // `extend` is the ONLY path that reaches `RVA_REALLOC`, which was not
+        // re-derived for the release and is called through a raw transmute with
+        // no prologue check. On a four-slot game it is unreachable, which is why
+        // opening this gate is safe; do not make it reachable without re-deriving
+        // that address.
+        let in_place = build_len >= 4 && cap_now >= 4;
+        let extend = build_len == 3 && cap_now == 3 && BUILD_EXTEND_ENABLED;
+        if in_place || extend {
             let ptr = rd_u64(athlete + 0x558) as usize; // 0.5.0 build ptr (was 0x410)
-            if !(ptr >= 0x10000 && readable(ptr, 24) && writable(athlete + 0x550, 0x18)) {
+            // in place needs the fourth element readable and writable too.
+            let span = if in_place { 32 } else { 24 };
+            let ok = ptr >= 0x10000
+                && readable(ptr, span)
+                && writable(athlete + 0x550, 0x18)
+                && (!in_place || writable(ptr, 32));
+            if !ok {
                 if BUILD_EXT_DIAG {
                     BE_CNT[3].fetch_add(1, Ordering::Relaxed);
                 } // ptr/writable failure
             }
-            if ptr >= 0x10000 && readable(ptr, 24) && writable(athlete + 0x550, 0x18) {
+            if ok {
                 let (b0, b1, b2) = (rd_u64(ptr), rd_u64(ptr + 8), rd_u64(ptr + 16));
                 // * build[3] = (1) manual personal-tactics designation -> (2) neural recommendation -> (3) a distinct vanilla fallback.
                 //   (1) and (2) scan the catalog by item "name" for an index + recipe validation (mod item ids != index, so a name scan is mandatory).
@@ -5539,12 +5560,20 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         // category comes from. `u64::MAX` as `wanted` means "no
                         // item is being replaced" — unlike the duplicate swap
                         // above there is nothing to avoid here but build[0..2].
+                        // See the note on `designate` above: an athlete the
+                        // player excluded keeps the engine's own 4th item.
+                        if !designate {
+                            return None;
+                        }
                         let category = third_category?;
                         pick_candidate(ctx, u64::MAX, [b0, b1, b2], champ, |candidate| {
                             engine_category(candidate) == Some(category)
                         })
                     })
                     .or_else(|| {
+                        if !designate {
+                            return None;
+                        }
                         let start = champ_spread(champ, 6);
                         (0..6)
                             .map(|k| VANILLA_FINAL[(start + k) % 6])
@@ -5554,6 +5583,17 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     BE_CNT[4].fetch_add(1, Ordering::Relaxed);
                 } // failed to obtain the target index
                 if let Some(t) = t4 {
+                    if in_place {
+                        // The common 0.6.0 case: overwrite the fourth element the
+                        // game already allocated. No realloc, so ptr/cap/len are
+                        // all still the game's own and must not be rewritten.
+                        wr_u64(ptr + 24, t);
+                        if BUILD_EXT_DIAG {
+                            BE_CNT[6].fetch_add(1, Ordering::Relaxed);
+                            BE_LAST_T.store(t, Ordering::Relaxed);
+                        }
+                        return 0;
+                    }
                     let realloc: ReallocFn = core::mem::transmute(exe_base_addr() + RVA_REALLOC);
                     let np = realloc(ptr, 24, 8, 32);
                     if BUILD_EXT_DIAG && !(np >= 0x10000 && writable(np, 32)) {

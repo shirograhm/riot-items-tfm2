@@ -703,7 +703,7 @@ $rhTemplate = "<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>{0}%<> of your
 $i18n.en.ravenous_hydra.option = $rhTemplate -f $rhAdPct, $rhReach, $rhStrength
 $i18n.en.radiant_ravenous_hydra.option = $rhTemplate -f $rrhAdPct, $rrhReach, $rrhStrength
 $i18n.en.tiamat.option = $rhTemplate -f $tiaAdPct, $tiaReach, $tiaStrength
-$bpTemplate = "<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>{0} seconds<>, granting you <#ffffffff>{1}%<> bonus <$speedIcon> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>{2} <$rangeIcon> range<> also gain <#ceff99ff>{3}%<> bonus <$asIcon> <#ceff99ff>attack speed<>."
+$bpTemplate = "<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>{0} seconds<>, granting you <#ffffffff>{1}%<> bonus <$speedIcon> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>{2} <$rangeIcon> range<> also gain <#ceff99ff>{3}%<> <$asIcon> <#ceff99ff>attack speed<>."
 $i18n.en.bandlepipes.option = $bpTemplate -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
 $i18n.en.radiant_bandlepipes.option = $bpTemplate -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
 

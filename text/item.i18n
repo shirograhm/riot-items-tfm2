@@ -817,11 +817,11 @@
         },
         "bandlepipes": {
             "name": "Bandlepipes",
-            "option": "\n<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+            "option": "\n<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
         },
         "radiant_bandlepipes": {
             "name": "Radiant Bandlepipes",
-            "option": "\n<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+            "option": "\n<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
         },
         "seryldas_grudge": {
             "name": "Seryldas Grudge",
