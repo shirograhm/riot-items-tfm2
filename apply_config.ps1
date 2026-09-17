@@ -383,6 +383,12 @@ $rbpDuration = [double]$config.radiant_bandlepipes.effect_duration_seconds
 $rbpMoveSpeed = [int]$config.radiant_bandlepipes.effect_move_speed_mult
 $rbpRange = [int]$config.radiant_bandlepipes.effect_max_distance
 $rbpAttackSpeed = [int]$config.radiant_bandlepipes.effect_attack_speed_mult
+$seryThreshold = [double]$config.seryldas_grudge.effect_hp_percent_threshold
+$serySlow = [int]$config.seryldas_grudge.effect_slow_amount
+$seryDur = [double]$config.seryldas_grudge.effect_duration_seconds
+$rseryThreshold = [double]$config.radiant_seryldas_grudge.effect_hp_percent_threshold
+$rserySlow = [int]$config.radiant_seryldas_grudge.effect_slow_amount
+$rseryDur = [double]$config.radiant_seryldas_grudge.effect_duration_seconds
 $bamiFlat = [int]$config.bamis_cinder.effect_bonus_flat_damage
 $bamiHpPct = [double]$config.bamis_cinder.effect_caster_hp_percent_damage
 $bamiRange = [int]$config.bamis_cinder.effect_max_distance
@@ -706,6 +712,9 @@ $i18n.en.tiamat.option = $rhTemplate -f $tiaAdPct, $tiaReach, $tiaStrength
 $bpTemplate = "<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>{0} seconds<>, granting you <#ffffffff>{1}%<> bonus <$speedIcon> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>{2} <$rangeIcon> range<> also gain <#ceff99ff>{3}%<> <$asIcon> <#ceff99ff>attack speed<>."
 $i18n.en.bandlepipes.option = $bpTemplate -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
 $i18n.en.radiant_bandlepipes.option = $bpTemplate -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
+$seryTemplate = "<#ff7a3eff>Bitter Cold<>: Dealing Ability damage to an enemy <#d94c49ff>at or below {0}% maximum health<> applies a <#d94c49ff>{1}% slow<> for <#e8a800ff>{2} seconds<>."
+$i18n.en.seryldas_grudge.option = $seryTemplate -f $seryThreshold, $serySlow, $seryDur
+$i18n.en.radiant_seryldas_grudge.option = $seryTemplate -f $rseryThreshold, $rserySlow, $rseryDur
 
 $bamiTemplate = "<#ff7a3eff>Immolate<>: Deal <#60e84dff>{0}<> + <#60e84dff>{1}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{2} <$rangeIcon> range<>."
 $i18n.en.bamis_cinder.option = $bamiTemplate -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -901,6 +910,9 @@ $i18n.vi.tiamat.option = $rhTemplateVi -f $tiaAdPct, $tiaReach, $tiaStrength
 $bpTemplateVi = "<#ff7a3eff>Khúc Khải Hoàn<>: Đánh trúng một kỹ năng lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>{0} giây<>, tăng <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>{2}<> <$rangeIcon> cũng nhận thêm <#ceff99ff>{3}%<> <$asIcon> <#ceff99ff>tốc độ đánh<>."
 $i18n.vi.bandlepipes.option = $bpTemplateVi -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
 $i18n.vi.radiant_bandlepipes.option = $bpTemplateVi -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
+$seryTemplateVi = "<#ff7a3eff>Giá Lạnh<>: Gây sát thương kĩ năng lên kẻ địch <#d94c49ff>còn từ {0}% Máu tối đa trở xuống<> sẽ gây <#d94c49ff>{1}% kiệt sức<> trong <#e8a800ff>{2} giây<>."
+$i18n.vi.seryldas_grudge.option = $seryTemplateVi -f $seryThreshold, $serySlow, $seryDur
+$i18n.vi.radiant_seryldas_grudge.option = $seryTemplateVi -f $rseryThreshold, $rserySlow, $rseryDur
 
 $bamiTemplateVi = "<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>{0}<> + <#60e84dff>{1}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{2}<> <$rangeIcon> ."
 $i18n.vi.bamis_cinder.option = $bamiTemplateVi -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1096,6 +1108,9 @@ $i18n.'zh-hans'.tiamat.option = $rhTemplateZh -f $tiaAdPct, $tiaReach, $tiaStren
 $bpTemplateZh = "<#ff7a3eff>嘹亮旋律<>：技能命中敌方英雄时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>{0}秒<>，并获得 <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>{2} <$rangeIcon> 射程<>范围内的友方英雄还会获得 <#ceff99ff>{3}%<> <$asIcon> <#ceff99ff>攻击速度<>。"
 $i18n.'zh-hans'.bandlepipes.option = $bpTemplateZh -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
 $i18n.'zh-hans'.radiant_bandlepipes.option = $bpTemplateZh -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
+$seryTemplateZh = "<#ff7a3eff>严寒<>：技能对<#d94c49ff>生命值不高于{0}%最大生命值<>的敌人造成伤害时，对其施加 <#d94c49ff>{1}%减速<>，持续 <#e8a800ff>{2}秒<>。"
+$i18n.'zh-hans'.seryldas_grudge.option = $seryTemplateZh -f $seryThreshold, $serySlow, $seryDur
+$i18n.'zh-hans'.radiant_seryldas_grudge.option = $seryTemplateZh -f $rseryThreshold, $rserySlow, $rseryDur
 
 $bamiTemplateZh = "<#ff7a3eff>献祭<>：对 <#ff86c2ff>{2} <$rangeIcon> 射程<>内的所有敌人造成 <#60e84dff>{0}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{1}%<> 的<#a974ffff>魔法伤害<>。"
 $i18n.'zh-hans'.bamis_cinder.option = $bamiTemplateZh -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1291,6 +1306,9 @@ $i18n.'pt-BR'.tiamat.option = $rhTemplatePt -f $tiaAdPct, $tiaReach, $tiaStrengt
 $bpTemplatePt = "<#ff7a3eff>Fanfarra<>: Acertar uma Habilidade em um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>{0} segundos<>, concedendo a você <#ffffffff>{1}%<> de <$speedIcon> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>{2} <$rangeIcon> alcance<> também recebem <#ceff99ff>{3}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<>."
 $i18n.'pt-BR'.bandlepipes.option = $bpTemplatePt -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
 $i18n.'pt-BR'.radiant_bandlepipes.option = $bpTemplatePt -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
+$seryTemplatePt = "<#ff7a3eff>Frio Agonizante<>: Causar dano de Habilidade a um inimigo <#d94c49ff>com {0}% da Vida Máxima ou menos<> aplica <#d94c49ff>{1}% de lentidão<> por <#e8a800ff>{2} segundos<>."
+$i18n.'pt-BR'.seryldas_grudge.option = $seryTemplatePt -f $seryThreshold, $serySlow, $seryDur
+$i18n.'pt-BR'.radiant_seryldas_grudge.option = $seryTemplatePt -f $rseryThreshold, $rserySlow, $rseryDur
 
 $bamiTemplatePt = "<#ff7a3eff>Imolar<>: Causa <#60e84dff>{0}<> + <#60e84dff>{1}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>{2} <$rangeIcon> alcance<>."
 $i18n.'pt-BR'.bamis_cinder.option = $bamiTemplatePt -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1486,6 +1504,9 @@ $i18n.ru.tiamat.option = $rhTemplateRu -f $tiaAdPct, $tiaReach, $tiaStrength
 $bpTemplateRu = "<#ff7a3eff>Фанфары<>: Попадание умением по вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>{0} секунды<> и <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>{2} <$rangeIcon> дальности<> также получаете <#ceff99ff>{3}%<> <$asIcon> <#ceff99ff>скорости атаки<>."
 $i18n.ru.bandlepipes.option = $bpTemplateRu -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
 $i18n.ru.radiant_bandlepipes.option = $bpTemplateRu -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
+$seryTemplateRu = "<#ff7a3eff>Лютый холод<>: Нанесение урона умением противнику <#d94c49ff>с {0}% максимального здоровья или меньше<> замедляет его на <#d94c49ff>{1}%<> на <#e8a800ff>{2} секунды<>."
+$i18n.ru.seryldas_grudge.option = $seryTemplateRu -f $seryThreshold, $serySlow, $seryDur
+$i18n.ru.radiant_seryldas_grudge.option = $seryTemplateRu -f $rseryThreshold, $rserySlow, $rseryDur
 
 $bamiTemplateRu = "<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>{0}<> + <#60e84dff>{1}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{2} <$rangeIcon> дальности<>."
 $i18n.ru.bamis_cinder.option = $bamiTemplateRu -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1680,6 +1701,9 @@ $i18n.ko.tiamat.option = $rhTemplateKo -f $tiaAdPct, $tiaReach, $tiaStrength
 $bpTemplateKo = "<#ff7a3eff>팡파르<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>{0}초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>{1}%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <$rangeIcon> <#ff86c2ff>사거리 {2}<> 안의 아군 챔피언의 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>{3}%<> 증가합니다."
 $i18n.ko.bandlepipes.option = $bpTemplateKo -f $bpDuration, $bpMoveSpeed, $bpRange, $bpAttackSpeed
 $i18n.ko.radiant_bandlepipes.option = $bpTemplateKo -f $rbpDuration, $rbpMoveSpeed, $rbpRange, $rbpAttackSpeed
+$seryTemplateKo = "<#ff7a3eff>매서운 추위<>: <#d94c49ff>최대 체력이 {0}% 이하인<> 적에게 스킬로 피해를 입히면 <#e8a800ff>{2}초<> 동안 <#d94c49ff>{1}% 둔화<>시킵니다."
+$i18n.ko.seryldas_grudge.option = $seryTemplateKo -f $seryThreshold, $serySlow, $seryDur
+$i18n.ko.radiant_seryldas_grudge.option = $seryTemplateKo -f $rseryThreshold, $rserySlow, $rseryDur
 
 $bamiTemplateKo = "<#ff7a3eff>불사르기<>: <#ff86c2ff>{2} <$rangeIcon> 사거리<> 안의 모든 적에게 <#60e84dff>{0}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>{1}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
 $i18n.ko.bamis_cinder.option = $bamiTemplateKo -f $bamiFlat, $bamiHpPct, $bamiRange
@@ -1936,6 +1960,8 @@ Write-Host "  Radiant Ravenous Hydra:      ${rrhAdPct}% AD cleave within ${rrhRa
 Write-Host "  Tiamat:                      ${tiaAdPct}% AD cleave within ${tiaRange} range / ${tiaStrength}% strength beyond ${tiaReach} range"
 Write-Host "  Bandlepipes:                 ${bpMoveSpeed}% MS ${bpDuration}s / ${bpAttackSpeed}% AS to allies within ${bpRange} range"
 Write-Host "  Radiant Bandlepipes:         ${rbpMoveSpeed}% MS ${rbpDuration}s / ${rbpAttackSpeed}% AS to allies within ${rbpRange} range"
+Write-Host "  Serylda's Grudge:            ${serySlow}% slow ${seryDur}s on ability damage at or below ${seryThreshold}% health"
+Write-Host "  Radiant Serylda's Grudge:    ${rserySlow}% slow ${rseryDur}s on ability damage at or below ${rseryThreshold}% health"
 Write-Host "  Bami's Cinder:               ${bamiFlat} + ${bamiHpPct}% max HP magic dmg/s within ${bamiRange} range"
 Write-Host "  Sunfire Cape:                ${sunFlat} + ${sunHpPct}% max HP magic dmg/s within ${sunRange} range"
 Write-Host "  Radiant Sunfire Cape:        $($config.radiant_sunfire_cape.effect_bonus_flat_damage) + $($config.radiant_sunfire_cape.effect_caster_hp_percent_damage)% max HP magic dmg/s within $($config.radiant_sunfire_cape.effect_max_distance) range"

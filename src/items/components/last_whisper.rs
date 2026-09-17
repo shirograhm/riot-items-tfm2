@@ -56,6 +56,7 @@ impl StableItem for LastWhisper {
         vec![
             "lord_dominiks_regards".to_string(),
             "mortal_reminder".to_string(),
+            "seryldas_grudge".to_string(),
         ]
     }
 

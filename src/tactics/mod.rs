@@ -2604,7 +2604,7 @@ static FIRE: [AtomicU64; 4] = [
     AtomicU64::new(0),
 ];
 static NN_ID_NAME: Mutex<Option<HashMap<u64, String>>> = Mutex::new(None);
-// Catalog index -> item name (evt[0x50] shadow-call). The inverse of scan_recipe_safe_index.
+// Catalog index -> item name (evt[0x50] shadow-call). The inverse of scan_recipe_safe_in.
 unsafe fn catalog_name_at(ctx: usize, idx: u64) -> Option<String> {
     if ctx < 0x10000 || !readable(ctx, 0x38) {
         return None;
@@ -2613,8 +2613,13 @@ unsafe fn catalog_name_at(ctx: usize, idx: u64) -> Option<String> {
     if coll < 0x10000 || !readable(coll, 0x18) {
         return None;
     }
-    let data = rd_u64(coll + 8) as usize;
-    let len = rd_u64(coll + 0x10);
+    catalog_name_in(rd_u64(coll + 8) as usize, rd_u64(coll + 0x10), idx)
+}
+
+/// [`catalog_name_at`] against a catalog array already read out of its
+/// collection (`data`/`len`), which is what the index cache needs to re-check a
+/// cached index without going back through a context.
+unsafe fn catalog_name_in(data: usize, len: u64, idx: u64) -> Option<String> {
     if idx >= len || data < 0x10000 || !readable(data + (idx as usize) * 16, 16) {
         return None;
     }
@@ -3152,13 +3157,11 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             }
             // (The `Scope::Plain` argument these took is gone with `SEL`; a pin
             // has no scope, so there is nothing left to disambiguate.)
-            let idx: Option<u64> = if let Some(vid) = slotN_vanilla_id(champ, si) {
-                Some(vid) // vanilla: id == catalog index
-            } else if let Some(mk) = slotN_item_key(champ, si) {
-                scan_catalog_index(cat_base, cat_len, mk.as_bytes()) // mod item: name scan + recipe validation
-            } else {
+            if crate::build_config::pinned_key_raw(champ, si as usize).is_none() {
                 continue;
-            };
+            }
+            // By key, vanilla included: name scan + recipe validation.
+            let idx = slotN_catalog_index(champ, si, |key| scan_catalog_index(cat_base, cat_len, key));
             let Some(t) = idx else {
                 SP4_NOIDX.fetch_add(1, Ordering::Relaxed);
                 continue;
@@ -4924,20 +4927,25 @@ fn slot3_item_key(champ: &str) -> Option<String> {
     slotN_item_key(champ, 3)
 }
 
-/// Catalog index of a slot's pinned item, when that item is a vanilla one.
+/// Catalog index of a slot's pinned item, looked up by key through `lookup`
+/// (a name scan of the live catalog).
 ///
-/// Vanilla items only, and by the verbatim key: for those the id *is* the
-/// catalog index, so no name scan is needed. A mod item returns `None` and goes
-/// down the scan path, which is what [`slotN_item_key`] is for.
-fn slotN_vanilla_id(champ: &str, si: u8) -> Option<u64> {
+/// Never by id. This used to short-cut vanilla items as "id == catalog index",
+/// but the catalog grows and reorders with the enabled mods and the save, so a
+/// position in `VANILLA_KEYS` names whatever happens to sit there — often a
+/// component with no recipe, which the game then never builds. Every item goes
+/// through the scan, the way the stable hook goes through
+/// `StableItemBuildContext::item_index`.
+///
+/// Tries keys in `build_config::resolve_key`'s order: the normalized key first
+/// (`radiant_` + alias, so `"bloodthirster"` finds `warlords_final_judgement`),
+/// then the key exactly as written, which is how a game-internal key like
+/// `"warlords_final_judgement"` resolves.
+fn slotN_catalog_index(champ: &str, si: u8, lookup: impl Fn(&[u8]) -> Option<u64>) -> Option<u64> {
     let raw = crate::build_config::pinned_key_raw(champ, si as usize)?;
-    VANILLA_KEYS
-        .iter()
-        .position(|key| *key == raw)
-        .map(|id| id as u64)
-}
-fn slot3_vanilla_id(champ: &str) -> Option<u64> {
-    slotN_vanilla_id(champ, 3)
+    slotN_item_key(champ, si)
+        .and_then(|key| lookup(key.as_bytes()))
+        .or_else(|| lookup(raw.as_bytes()))
 }
 // * How the 4th is acquired: true = plant only the target in build[3] and let the game build up naturally from t1 (paying full gold). false = force-inject the final item immediately.
 const AUTO4_NATURAL: bool = true; // * natural build-up (user decision): plant only the target in build[3] and let the game build up from t1 at full price. Higher starting gold is expected to raise the completion rate.
@@ -4952,45 +4960,25 @@ unsafe fn scan_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<u64> 
     if want.is_empty() || base < 0x10000 || len == 0 || len > 100000 {
         return None;
     }
-    {
-        let g = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner());
-        if let Some(outer) = g.as_ref() {
-            if let Some(m) = outer.get(&base) {
-                if let Some(&v) = m.get(want) {
-                    return if v >= 0 { Some(v as u64) } else { None };
-                }
-            }
-        }
+    if let Some(index) = cached_catalog_index(base, len, want) {
+        return index;
     }
     let res = scan_recipe_safe_in(base, len, want);
-    {
-        let mut g = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner());
-        if g.is_none() {
-            *g = Some(HashMap::new());
-        }
-        if let Some(outer) = g.as_mut() {
-            if !outer.contains_key(&base) && outer.len() >= 16 {
-                outer.clear();
-            }
-            let m = outer.entry(base).or_insert_with(HashMap::new);
-            if m.len() < 256 {
-                m.insert(want.to_vec(), res.map(|i| i as i64).unwrap_or(-1));
-            }
-        }
+    // Read outside the lock: it calls into the game.
+    let last = catalog_name_in(base, len, len - 1);
+    let mut g = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner());
+    let outer = g.get_or_insert_with(HashMap::new);
+    if !outer.contains_key(&(base, len)) && outer.len() >= 16 {
+        outer.clear(); // reset when too many catalogs (memory cap)
+    }
+    let cache = outer.entry((base, len)).or_insert_with(|| CatalogCache {
+        last,
+        found: HashMap::new(),
+    });
+    if cache.found.len() < 256 {
+        cache.found.insert(want.to_vec(), res.map(|i| i as i64).unwrap_or(-1));
     }
     res
-}
-unsafe fn scan_recipe_safe_index(ctx: usize, want: &[u8]) -> Option<u64> {
-    if want.is_empty() || ctx < 0x10000 || !readable(ctx, 0x28) {
-        return None;
-    }
-    let coll = rd_u64(ctx + 0x30) as usize; // * 0.5.0: the catalog collection offset moved ctx+0x20 -> +0x30 (RE confirmed, the only change)
-    if coll < 0x10000 || !readable(coll, 0x18) {
-        return None;
-    }
-    let data = rd_u64(coll + 8) as usize;
-    let len = rd_u64(coll + 0x10);
-    scan_recipe_safe_in(data, len, want)
 }
 // Shared scan core: find the index in the catalog array (element{elem_ptr@0, vtable@8}, stride 0x10) whose name matches and which has a recipe.
 unsafe fn scan_recipe_safe_in(data: usize, len: u64, want: &[u8]) -> Option<u64> {
@@ -5064,40 +5052,121 @@ unsafe fn scan_recipe_safe_in(data: usize, len: u64, want: &[u8]) -> Option<u64>
 }
 
 // * Performance: scan cache (name -> index). Reduces the 96-element shadow-call scan to once per name. Value -1 = not found / no recipe.
-//   * Multi-collection (keyed by coll base): parallel background sims using different ctx collections do not thrash. Collection cap 16.
-static SCAN_CACHE: Mutex<Option<HashMap<usize, HashMap<Vec<u8>, i64>>>> = Mutex::new(None);
+//   * Multi-catalog (keyed by the catalog array's base + len): parallel background sims do not thrash. Catalog cap 16.
+//
+// A catalog index is only meaningful against the catalog it was read from. The
+// list grows and reorders with the enabled mods, and a save load or a new match
+// can rebuild it at the address the old one had, so an address match is not
+// proof the index still names the same item. This cache used to trust that, and
+// a stale hit put the wrong item — or one with no recipe — into a build slot,
+// which the game then never built. Every positive hit is re-read by name before
+// it is returned, the way `StableItemBuildContext::item_index` looks items up by
+// key on every call; a mismatch falls through to a fresh scan.
+static SCAN_CACHE: Mutex<Option<HashMap<(usize, u64), CatalogCache>>> = Mutex::new(None);
+
+/// Cached lookups against one catalog array.
+struct CatalogCache {
+    /// Name of the catalog's last entry when this cache was started — what a
+    /// cached miss is checked against.
+    last: Option<String>,
+    /// Key -> catalog index, `-1` = not found / no recipe.
+    found: HashMap<Vec<u8>, i64>,
+}
+
+/// A cached answer for `want` in this catalog, re-checked against it.
+///
+/// `Some(Some(i))` is a verified index and `Some(None)` a cached miss; `None`
+/// means there is nothing usable and the caller has to scan.
+///
+/// A miss is re-checked more cheaply than a hit, because proving absence would
+/// be the full scan again: it is trusted only while the last entry still has the
+/// name it had when the cache was started. A rebuilt catalog with a different
+/// item set essentially never keeps its last entry. Any failed check drops every
+/// cached answer for the catalog, so one stale hit cannot leave stale misses
+/// behind.
+unsafe fn cached_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<Option<u64>> {
+    let (cached, last) = {
+        let g = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner());
+        let cache = g.as_ref()?.get(&(base, len))?;
+        (*cache.found.get(want)?, cache.last.clone())
+    };
+    let verified = if cached >= 0 {
+        catalog_entry_named(base, len, cached as u64, want).then_some(Some(cached as u64))
+    } else {
+        last.is_some_and(|name| catalog_entry_named(base, len, len - 1, name.as_bytes()))
+            .then_some(None)
+    };
+    if verified.is_none() {
+        forget_catalog(base, len);
+    }
+    verified
+}
+
+/// Whether catalog entry `idx` is named `want`.
+///
+/// The re-check behind every cache hit, so it runs on the buy hot path — the
+/// fallback 4th-item search can make dozens of lookups per decision, for every
+/// athlete. It therefore reads through the VEH-guarded `safe_read_*` rather
+/// than [`catalog_name_in`]'s `readable`, which is a `VirtualQuery` syscall per
+/// check. The one thing a protected read cannot prove is that the name getter is
+/// code, so each getter is validated once with `code_ptr_ok` and remembered;
+/// the catalog holds only a handful of item types.
+unsafe fn catalog_entry_named(data: usize, len: u64, idx: u64, want: &[u8]) -> bool {
+    if idx >= len || data < 0x10000 {
+        return false;
+    }
+    let e = data + (idx as usize) * 16;
+    let (Some(edata), Some(evt)) = (safe_read_u64(e), safe_read_u64(e + 8)) else {
+        return false;
+    };
+    let (edata, evt) = (edata as usize, evt as usize);
+    if edata < 0x10000 || evt < 0x10000 {
+        return false;
+    }
+    let Some(namefn) = safe_read_u64(evt + 0x58).map(|f| f as usize) else {
+        return false;
+    };
+    if !NAME_GETTERS.iter().any(|g| g.load(Ordering::Relaxed) == namefn) {
+        if !code_ptr_ok(namefn) {
+            return false;
+        }
+        let slot = NAME_GETTER_NEXT.fetch_add(1, Ordering::Relaxed) % NAME_GETTERS.len();
+        NAME_GETTERS[slot].store(namefn, Ordering::Relaxed);
+    }
+    let f: unsafe extern "win64" fn(usize) -> usize = core::mem::transmute(namefn);
+    let nobj = f(edata);
+    if nobj < 0x10000 {
+        return false;
+    }
+    let (Some(chars), Some(nlen)) = (safe_read_u64(nobj + 8), safe_read_u64(nobj + 0x10)) else {
+        return false;
+    };
+    if chars < 0x10000 || nlen as usize != want.len() {
+        return false;
+    }
+    let mut name = Vec::new();
+    safe_read_bytes(chars as usize, want.len(), &mut name) && name == want
+}
+
+/// Name-getter addresses [`catalog_entry_named`] has already proven are code.
+static NAME_GETTERS: [AtomicUsize; 8] = [const { AtomicUsize::new(0) }; 8];
+static NAME_GETTER_NEXT: AtomicUsize = AtomicUsize::new(0);
+
+fn forget_catalog(base: usize, len: u64) {
+    if let Some(outer) = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner()).as_mut() {
+        outer.remove(&(base, len));
+    }
+}
+
 unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
-    if ctx < 0x10000 || !readable(ctx, 0x28) {
+    if ctx < 0x10000 || !readable(ctx, 0x38) {
         return None;
     }
     let coll = rd_u64(ctx + 0x30) as usize; // * 0.5.0: the catalog collection offset moved ctx+0x20 -> +0x30 (RE confirmed, the only change)
-    {
-        let g = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner());
-        if let Some(outer) = g.as_ref() {
-            if let Some(m) = outer.get(&coll) {
-                if let Some(&v) = m.get(want) {
-                    return if v >= 0 { Some(v as u64) } else { None };
-                }
-            }
-        }
+    if coll < 0x10000 || !readable(coll, 0x18) {
+        return None;
     }
-    let res = scan_recipe_safe_index(ctx, want);
-    {
-        let mut g = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner());
-        if g.is_none() {
-            *g = Some(HashMap::new());
-        }
-        if let Some(outer) = g.as_mut() {
-            if !outer.contains_key(&coll) && outer.len() >= 16 {
-                outer.clear();
-            } // reset when too many collections (memory cap)
-            let m = outer.entry(coll).or_insert_with(HashMap::new);
-            if m.len() < 256 {
-                m.insert(want.to_vec(), res.map(|i| i as i64).unwrap_or(-1));
-            }
-        }
-    }
-    res
+    scan_catalog_index(rd_u64(coll + 8) as usize, rd_u64(coll + 0x10), want)
 }
 // * buy_item replace-detour: when owned==3 and the champion designates a mod item as its 4th, scan the clone source collection (ctx+0x20)
 //   by name (vtable[0x50]) -> return that mod item's index i as rax=1/rdx=i -> run_tick_ext clones/pushes it
@@ -5373,13 +5442,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     if owned > si as u64 {
                         continue;
                     } // slot already purchased -> too late
-                    let idx: Option<u64> = if let Some(vid) = slotN_vanilla_id(champ, si) {
-                        Some(vid) // vanilla: id == catalog index (no scan needed)
-                    } else if let Some(mk) = slotN_item_key(champ, si) {
-                        scan_idx_cached(ctx012, mk.as_bytes()) // mod item: name scan + recipe validation
-                    } else {
-                        None
-                    };
+                    // By key, vanilla included: name scan + recipe validation.
+                    let idx = slotN_catalog_index(champ, si, |key| scan_idx_cached(ctx012, key));
                     if let Some(t) = idx {
                         // * Idempotence guard (07-19): skip the write if the target value is already there. Measured, the vast majority of 53,890 writes
                         //   were rewrites of the same value on the same athlete and slot -> a value comparison cut it to about 10 (removing the hot-path cost).
@@ -5518,11 +5582,9 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   stops the enemy building three engine items and one of mine.
                 let designate = !own_team_only || is_player;
                 let manual = designate.then(|| slot3_item_key(champ)).flatten();
-                let van = designate.then(|| slot3_vanilla_id(champ)).flatten();
-                let picked = if let Some(vid) = van {
-                    Some(vid) // * vanilla designation: id == catalog index -> no scan needed (robust, 0.5.0)
-                } else if let Some(mk) = manual.as_ref() {
-                    scan_idx_cached(ctx, mk.as_bytes()) // mod item: name scan (works thanks to the ctx+0x30 fix)
+                let picked = if manual.is_some() {
+                    // By key, vanilla included (works thanks to the ctx+0x30 fix).
+                    slotN_catalog_index(champ, 3, |key| scan_idx_cached(ctx, key))
                 } else {
                     // * Enemy team or no designation: a fresh network call (our 5 + their 5 + position ctx). Not cached (ignoring the lineup = wrong answer).
                     compute_auto_4th_id(athlete, champ, third_category)
@@ -5554,7 +5616,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     }
                     same_category_swap(ctx, t4, [b0, b1, b2], champ)
                 });
-                // (3) Fallback: a vanilla final item different from build[0..2] (recipe guaranteed; for vanilla, id == index for sure).
+                // (3) Fallback: a vanilla final item different from build[0..2], resolved by key like every other pick —
+                //   `VANILLA_FINAL` holds ids, and an id is not a catalog index once mods or a save reorder the catalog.
                 //   * Attack-damage bias fix: the implementation always scanned from [0] = attack damage (id 4) -> when the network failed, every enemy 4th was attack damage.
                 //   -> the starting point is now spread by an FNV hash of the champion name (deterministic per champion = replay safe, and categories are distributed evenly).
                 let t4 = picked
@@ -5583,7 +5646,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         }
                         let start = champ_spread(champ, 6);
                         (0..6)
-                            .map(|k| VANILLA_FINAL[(start + k) % 6])
+                            .filter_map(|k| item_id_to_key(VANILLA_FINAL[(start + k) % 6]))
+                            .filter_map(|key| scan_idx_cached(ctx, key.as_bytes()))
                             .find(|&v| v != b0 && v != b1 && v != b2)
                     });
                 if t4.is_none() && BUILD_EXT_DIAG {

@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, ItemMeta};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct RylaisCrystalScepter {
@@ -126,19 +126,18 @@ impl StableItem for RylaisCrystalScepter {
             return;
         }
 
-        let already_slowed = has_buff(&target_ref, "rylais_crystal_scepter_slow");
-        if !already_slowed {
-            ctx.add_buff(
-                target,
-                &BuffV1 {
-                    move_speed_mult: -self.effect_slow_amount,
-                    ..BuffV1::timed(
-                        "rylais_crystal_scepter_slow",
-                        ticks(self.effect_duration_seconds),
-                    )
-                },
-            );
-        }
+        refresh_buff(
+            ctx,
+            target,
+            "rylais_crystal_scepter_slow",
+            &BuffV1 {
+                move_speed_mult: -self.effect_slow_amount,
+                ..BuffV1::timed(
+                    "rylais_crystal_scepter_slow",
+                    ticks(self.effect_duration_seconds),
+                )
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

@@ -1,6 +1,7 @@
 use mod_api_stable::*;
 use std::cell::Cell;
 
+mod buffs;
 mod build_config;
 mod config;
 mod constants;
@@ -20,6 +21,7 @@ mod tactics;
 
 use items::*;
 
+pub(crate) use buffs::{refresh_buff, Stacks};
 pub(crate) use constants::*;
 pub(crate) use item_meta::ItemMeta;
 pub(crate) use proc_queue::ProcQueue;
@@ -87,12 +89,6 @@ fn total_lethality(ctx: &mut StableSim<'_>, player: usize) -> usize {
 
 fn has_buff(entity: &StableEntity<'_, '_>, name: &str) -> bool {
     (0..entity.buff_count()).any(|i| entity.buff_at(i).is_some_and(|b| b.name() == name))
-}
-
-fn buff_stacks(entity: &StableEntity<'_, '_>, name: &str) -> usize {
-    (0..entity.buff_count())
-        .filter(|&i| entity.buff_at(i).is_some_and(|b| b.name() == name))
-        .count()
 }
 
 fn lethality_multiplier(armor: i32, lethality: i32) -> f64 {
@@ -356,6 +352,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
+    reg.add_item(configured!("seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured!("shadowflame" => Shadowflame));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
@@ -427,6 +424,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
+    reg.add_item(configured_radiant!("radiant_seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));

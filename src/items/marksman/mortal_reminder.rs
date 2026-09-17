@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, ItemMeta};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct MortalReminder {
@@ -131,16 +131,15 @@ impl StableItem for MortalReminder {
             return;
         }
 
-        let already_reduced = has_buff(&entity_ref, "40_percent_heal_cut");
-        if !already_reduced {
-            ctx.add_buff(
-                target,
-                &BuffV1 {
-                    heal_reduce: self.effect_heal_reduce,
-                    ..BuffV1::timed("40_percent_heal_cut", ticks(self.effect_duration_seconds))
-                },
-            );
-        }
+        refresh_buff(
+            ctx,
+            target,
+            "40_percent_heal_cut",
+            &BuffV1 {
+                heal_reduce: self.effect_heal_reduce,
+                ..BuffV1::timed("40_percent_heal_cut", ticks(self.effect_duration_seconds))
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

@@ -3,42 +3,48 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta};
 
+const SLOW_BUFF: &str = "seryldas_grudge_slow";
+
 #[derive(Clone, Debug)]
-pub struct FrozenMallet {
+pub struct SeryldasGrudge {
     meta: ItemMeta,
     price: usize,
-    hp: i32,
     attack: i32,
+    skill_cooldown_mult: i32,
+    defence_penetration: usize,
+    effect_hp_percent_threshold: f64,
     effect_slow_amount: i32,
     effect_duration_seconds: f64,
-    effect_bonus_flat_damage: usize,
-    effect_caster_hp_percent_damage: f64,
 }
 
-impl FrozenMallet {
+impl SeryldasGrudge {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("frozen_mallet", &["phage"], &["radiant_frozen_mallet"]),
+            meta: ItemMeta::base(
+                "seryldas_grudge",
+                &["last_whisper", "caulfields_warhammer"],
+                &["radiant_seryldas_grudge"],
+            ),
             price: 1400,
-            hp: 400,
-            attack: 40,
-            effect_slow_amount: 15,
-            effect_duration_seconds: 2.0,
-            effect_bonus_flat_damage: 0,
-            effect_caster_hp_percent_damage: 0.0,
+            attack: 45,
+            skill_cooldown_mult: 10,
+            defence_penetration: 25,
+            effect_hp_percent_threshold: 50.0,
+            effect_slow_amount: 30,
+            effect_duration_seconds: 1.5,
         }
     }
 
     pub fn radiant() -> Self {
         Self {
-            meta: ItemMeta::radiant("radiant_frozen_mallet", &["frozen_mallet"]),
-            price: 2000,
-            hp: 600,
-            attack: 60,
-            effect_slow_amount: 15,
-            effect_duration_seconds: 2.0,
-            effect_bonus_flat_damage: 20,
-            effect_caster_hp_percent_damage: 3.0,
+            meta: ItemMeta::radiant("radiant_seryldas_grudge", &["seryldas_grudge"]),
+            price: 2100,
+            attack: 85,
+            skill_cooldown_mult: 15,
+            defence_penetration: 35,
+            effect_hp_percent_threshold: 50.0,
+            effect_slow_amount: 30,
+            effect_duration_seconds: 1.5,
             ..Self::base()
         }
     }
@@ -57,25 +63,25 @@ impl FrozenMallet {
             cfg,
             [
                 price,
-                hp,
                 attack,
+                skill_cooldown_mult,
+                defence_penetration,
+                effect_hp_percent_threshold,
                 effect_slow_amount,
-                effect_duration_seconds,
-                effect_bonus_flat_damage,
-                effect_caster_hp_percent_damage,
+                effect_duration_seconds
             ]
         );
         self
     }
 }
 
-impl Default for FrozenMallet {
+impl Default for SeryldasGrudge {
     fn default() -> Self {
         Self::base()
     }
 }
 
-impl StableItem for FrozenMallet {
+impl StableItem for SeryldasGrudge {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
@@ -106,59 +112,62 @@ impl StableItem for FrozenMallet {
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
-            hp: self.hp,
             attack: self.attack,
+            skill_cooldown_mult: self.skill_cooldown_mult,
+            defence_penetration: self.defence_penetration,
             ..Default::default()
         }
     }
 
+    // Bitter Cold. `on_attack` fires before the hit lands (`damage` is still
+    // adjustable), so the threshold is checked against the health the target is
+    // left with — the hit that takes an enemy to 50% slows it too.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        caster: usize,
+        _caster: usize,
         target: usize,
-        _damage: &mut usize,
+        damage: &mut usize,
         _damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        let Some(caster_ref) = ctx.get_entity(caster) else {
+        if attack_type != AttackTypeV1::Skill {
             return;
-        };
+        }
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
+        if target_ref.is_tower() {
             return;
         }
 
-        let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_ref.hp().1, self.effect_caster_hp_percent_damage);
+        let (target_curr_hp, target_max_hp) = target_ref.hp();
+        let remaining = target_curr_hp.saturating_sub(*damage);
+        if remaining > percent_of(target_max_hp, self.effect_hp_percent_threshold) {
+            return;
+        }
 
         refresh_buff(
             ctx,
             target,
-            "frozen_mallet_slow",
+            SLOW_BUFF,
             &BuffV1 {
                 move_speed_mult: -self.effect_slow_amount,
-                ..BuffV1::timed("frozen_mallet_slow", ticks(self.effect_duration_seconds))
+                ..BuffV1::timed(SLOW_BUFF, ticks(self.effect_duration_seconds))
             },
         );
-        if bonus_damage > 0 {
-            ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
-        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![
-            ItemTagV1::Hp,
             ItemTagV1::Ad,
-            ItemTagV1::MyHpPercentDamage,
-            ItemTagV1::MoveSpeed,
+            ItemTagV1::CooltimeReduce,
+            ItemTagV1::DefensePenetration,
         ]
     }
 
     fn category(&self) -> ItemCategoryV1 {
-        ItemCategoryV1::Hp
+        ItemCategoryV1::Ad
     }
 }

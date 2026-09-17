@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks};
+use crate::{apply_config, refresh_buff, ticks};
 
 #[derive(Clone, Debug)]
 pub struct ExecutionersCalling {
@@ -88,16 +88,15 @@ impl StableItem for ExecutionersCalling {
             return;
         }
 
-        let already_reduced = has_buff(&entity_ref, "25_percent_heal_cut");
-        if !already_reduced {
-            ctx.add_buff(
-                target,
-                &BuffV1 {
-                    heal_reduce: self.effect_heal_reduce,
-                    ..BuffV1::timed("25_percent_heal_cut", ticks(self.effect_duration_seconds))
-                },
-            );
-        }
+        refresh_buff(
+            ctx,
+            target,
+            "25_percent_heal_cut",
+            &BuffV1 {
+                heal_reduce: self.effect_heal_reduce,
+                ..BuffV1::timed("25_percent_heal_cut", ticks(self.effect_duration_seconds))
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

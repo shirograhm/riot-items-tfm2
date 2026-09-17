@@ -2,7 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, has_buff, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, has_buff, percent_of, refresh_buff, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS,
 };
 
@@ -198,8 +198,10 @@ impl StableItem for WarmogsArmor {
         _attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        ctx.add_buff(
+        refresh_buff(
+            ctx,
             entity,
+            self.recently_damaged_buff,
             &BuffV1::timed(
                 self.recently_damaged_buff,
                 ticks(self.effect_duration_seconds),
