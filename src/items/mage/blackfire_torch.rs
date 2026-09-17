@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, Stacks};
 
 // Landing an Ability on an enemy champion grants 10 AP for 4 seconds (max 4 stacks).
 #[derive(Clone, Debug)]
@@ -14,6 +14,7 @@ pub struct BlackfireTorch {
     effect_stack_magic_power: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
+    stacks: Stacks,
 }
 
 impl BlackfireTorch {
@@ -31,6 +32,7 @@ impl BlackfireTorch {
             effect_stack_magic_power: 10,
             effect_max_stacks: 4,
             effect_duration_seconds: 4.0,
+            stacks: Stacks::new(),
         }
     }
 
@@ -116,6 +118,14 @@ impl StableItem for BlackfireTorch {
         }
     }
 
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.stacks.clear();
+    }
+
+    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
+        self.stacks.tick();
+    }
+
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -124,9 +134,9 @@ impl StableItem for BlackfireTorch {
         target: usize,
         is_ally: bool,
     ) {
-        let Some(entity_ref) = ctx.get_entity(caster) else {
+        if ctx.get_entity(caster).is_none() {
             return;
-        };
+        }
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
@@ -134,16 +144,20 @@ impl StableItem for BlackfireTorch {
             return;
         }
 
-        let stack_count = buff_stacks(&entity_ref, self.stack_buff);
-        if stack_count < self.effect_max_stacks {
-            ctx.add_buff(
-                caster,
-                &BuffV1 {
-                    magic_power: self.effect_stack_magic_power,
-                    ..BuffV1::timed(self.stack_buff, ticks(self.effect_duration_seconds))
-                },
-            );
+        let duration = ticks(self.effect_duration_seconds);
+        let stacks = self.stacks.add(caster, self.effect_max_stacks, duration) as i32;
+        if stacks == 0 {
+            return;
         }
+        refresh_buff(
+            ctx,
+            caster,
+            self.stack_buff,
+            &BuffV1 {
+                magic_power: self.effect_stack_magic_power * stacks,
+                ..BuffV1::timed(self.stack_buff, duration)
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

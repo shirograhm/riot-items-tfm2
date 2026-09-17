@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta};
 
 const SLOW_BUFF: &str = "seryldas_grudge_slow";
 
@@ -148,16 +148,15 @@ impl StableItem for SeryldasGrudge {
             return;
         }
 
-        // Same-name buffs stack, so a slow already running is left to expire.
-        if !has_buff(&target_ref, SLOW_BUFF) {
-            ctx.add_buff(
-                target,
-                &BuffV1 {
-                    move_speed_mult: -self.effect_slow_amount,
-                    ..BuffV1::timed(SLOW_BUFF, ticks(self.effect_duration_seconds))
-                },
-            );
-        }
+        refresh_buff(
+            ctx,
+            target,
+            SLOW_BUFF,
+            &BuffV1 {
+                move_speed_mult: -self.effect_slow_amount,
+                ..BuffV1::timed(SLOW_BUFF, ticks(self.effect_duration_seconds))
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

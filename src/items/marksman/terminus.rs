@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, Stacks};
 
 #[derive(Clone, Debug)]
 pub struct Terminus {
@@ -17,6 +17,8 @@ pub struct Terminus {
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
     flip_flop: bool,
+    armor_pen_stacks: Stacks,
+    magic_pen_stacks: Stacks,
 }
 
 impl Terminus {
@@ -39,6 +41,8 @@ impl Terminus {
             effect_duration_seconds: 4.0,
             // Non-vital stats (internals)
             flip_flop: false,
+            armor_pen_stacks: Stacks::new(),
+            magic_pen_stacks: Stacks::new(),
         }
     }
 
@@ -131,7 +135,14 @@ impl StableItem for Terminus {
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.armor_pen_stacks.clear();
+        self.magic_pen_stacks.clear();
         self.flip_flop = true;
+    }
+
+    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
+        self.armor_pen_stacks.tick();
+        self.magic_pen_stacks.tick();
     }
 
     fn on_attack(
@@ -148,36 +159,34 @@ impl StableItem for Terminus {
             return;
         }
 
-        let Some(caster_entity_ref) = ctx.get_entity(caster) else {
+        if ctx.get_entity(caster).is_none() {
             return;
-        };
-        let defenses_stack_count = buff_stacks(&caster_entity_ref, self.armor_pen_buff_buff);
-        let resistance_stack_count =
-            buff_stacks(&caster_entity_ref, self.magic_resistance_pen_buff_buff);
+        }
+        let duration = ticks(self.effect_duration_seconds);
         if self.flip_flop {
-            if defenses_stack_count < self.effect_max_stacks {
-                ctx.add_buff(
+            let stacks = self.armor_pen_stacks.add(caster, self.effect_max_stacks, duration);
+            if stacks > 0 {
+                refresh_buff(
+                    ctx,
                     caster,
+                    self.armor_pen_buff_buff,
                     &BuffV1 {
-                        defence_penetration: self.effect_armor_pen_per_stack,
-                        ..BuffV1::timed(
-                            self.armor_pen_buff_buff,
-                            ticks(self.effect_duration_seconds),
-                        )
+                        defence_penetration: self.effect_armor_pen_per_stack * stacks,
+                        ..BuffV1::timed(self.armor_pen_buff_buff, duration)
                     },
                 );
             }
             self.flip_flop = false;
         } else {
-            if resistance_stack_count < self.effect_max_stacks {
-                ctx.add_buff(
+            let stacks = self.magic_pen_stacks.add(caster, self.effect_max_stacks, duration);
+            if stacks > 0 {
+                refresh_buff(
+                    ctx,
                     caster,
+                    self.magic_resistance_pen_buff_buff,
                     &BuffV1 {
-                        magic_resistance_penetration: self.effect_magic_pen_per_stack,
-                        ..BuffV1::timed(
-                            self.magic_resistance_pen_buff_buff,
-                            ticks(self.effect_duration_seconds),
-                        )
+                        magic_resistance_penetration: self.effect_magic_pen_per_stack * stacks,
+                        ..BuffV1::timed(self.magic_resistance_pen_buff_buff, duration)
                     },
                 );
             }

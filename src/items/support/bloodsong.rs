@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, ItemMeta, ProcQueue};
+use crate::{apply_config, has_buff, refresh_buff, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
@@ -207,16 +207,15 @@ impl StableItem for Bloodsong {
         if !target_ref.is_champion() {
             return;
         }
-        let already_vulnerable = has_buff(&target_ref, self.vulnerable_buff);
-        if !already_vulnerable {
-            ctx.add_buff(
-                target,
-                &BuffV1 {
-                    damaged_amplify: self.effect_damaged_amplify,
-                    ..BuffV1::timed(self.vulnerable_buff, ticks(self.effect_duration_seconds))
-                },
-            );
-        }
+        refresh_buff(
+            ctx,
+            target,
+            self.vulnerable_buff,
+            &BuffV1 {
+                damaged_amplify: self.effect_damaged_amplify,
+                ..BuffV1::timed(self.vulnerable_buff, ticks(self.effect_duration_seconds))
+            },
+        );
     }
 
     /// Lands the Spellblade damage whose delay has run out.

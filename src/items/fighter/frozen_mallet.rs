@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct FrozenMallet {
@@ -135,16 +135,15 @@ impl StableItem for FrozenMallet {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.hp().1, self.effect_caster_hp_percent_damage);
 
-        let already_slowed = has_buff(&target_ref, "frozen_mallet_slow");
-        if !already_slowed {
-            ctx.add_buff(
-                target,
-                &BuffV1 {
-                    move_speed_mult: -self.effect_slow_amount,
-                    ..BuffV1::timed("frozen_mallet_slow", ticks(self.effect_duration_seconds))
-                },
-            );
-        }
+        refresh_buff(
+            ctx,
+            target,
+            "frozen_mallet_slow",
+            &BuffV1 {
+                move_speed_mult: -self.effect_slow_amount,
+                ..BuffV1::timed("frozen_mallet_slow", ticks(self.effect_duration_seconds))
+            },
+        );
         if bonus_damage > 0 {
             ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
         }

@@ -1,6 +1,7 @@
 use mod_api_stable::*;
 use std::cell::Cell;
 
+mod buffs;
 mod build_config;
 mod config;
 mod constants;
@@ -20,6 +21,7 @@ mod tactics;
 
 use items::*;
 
+pub(crate) use buffs::{refresh_buff, Stacks};
 pub(crate) use constants::*;
 pub(crate) use item_meta::ItemMeta;
 pub(crate) use proc_queue::ProcQueue;
@@ -87,12 +89,6 @@ fn total_lethality(ctx: &mut StableSim<'_>, player: usize) -> usize {
 
 fn has_buff(entity: &StableEntity<'_, '_>, name: &str) -> bool {
     (0..entity.buff_count()).any(|i| entity.buff_at(i).is_some_and(|b| b.name() == name))
-}
-
-fn buff_stacks(entity: &StableEntity<'_, '_>, name: &str) -> usize {
-    (0..entity.buff_count())
-        .filter(|&i| entity.buff_at(i).is_some_and(|b| b.name() == name))
-        .count()
 }
 
 fn lethality_multiplier(armor: i32, lethality: i32) -> f64 {

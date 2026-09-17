@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ticks, ItemMeta, ProcQueue};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct Stormrazor {
@@ -149,8 +149,10 @@ impl StableItem for Stormrazor {
         if self.energized_stacks >= self.effect_max_stacks {
             self.procs
                 .push_magic(ctx, target, self.effect_bonus_flat_damage);
-            ctx.add_buff(
+            refresh_buff(
+                ctx,
                 caster,
+                "stormrazor_move_speed",
                 &BuffV1 {
                     move_speed_mult: self.effect_move_speed_mult,
                     ..BuffV1::timed("stormrazor_move_speed", ticks(self.effect_duration_seconds))

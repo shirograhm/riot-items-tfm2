@@ -2,7 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, buff_stacks, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, percent_of, refresh_buff, ticks, ItemMeta, Stacks, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS,
 };
 
@@ -19,6 +19,7 @@ pub struct Riftmaker {
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
     refresh_cooldown: usize,
+    stacks: Stacks,
 }
 
 impl Riftmaker {
@@ -36,6 +37,7 @@ impl Riftmaker {
             effect_duration_seconds: 3.0,
             // Non-vital stats (internals)
             refresh_cooldown: 0,
+            stacks: Stacks::new(),
         }
     }
 
@@ -155,11 +157,13 @@ impl StableItem for Riftmaker {
     }
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        self.stacks.clear();
         self.refresh_cooldown = 0;
         self.apply_infusion(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.stacks.tick();
         self.apply_infusion(ctx, player);
     }
 
@@ -171,24 +175,24 @@ impl StableItem for Riftmaker {
         _target: usize,
         is_ally: bool,
     ) {
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-
-        if is_ally {
+        if is_ally || ctx.get_entity(caster).is_none() {
             return;
         }
 
-        let stack_count = buff_stacks(&caster_ref, self.corruption_buff);
-        if stack_count < self.effect_max_stacks {
-            ctx.add_buff(
-                caster,
-                &BuffV1 {
-                    vamp: self.effect_vamp,
-                    ..BuffV1::timed(self.corruption_buff, ticks(self.effect_duration_seconds))
-                },
-            );
+        let duration = ticks(self.effect_duration_seconds);
+        let stacks = self.stacks.add(caster, self.effect_max_stacks, duration) as i32;
+        if stacks == 0 {
+            return;
         }
+        refresh_buff(
+            ctx,
+            caster,
+            self.corruption_buff,
+            &BuffV1 {
+                vamp: self.effect_vamp * stacks,
+                ..BuffV1::timed(self.corruption_buff, duration)
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

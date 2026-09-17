@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, DOT_TICK_RATE};
+use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta, DOT_TICK_RATE};
 
 const LEVEL_STEPS: f64 = 11.0;
 
@@ -231,11 +231,10 @@ impl StableItem for Hamstringer {
 
         self.apply_bleed(target, level, crit_chance);
 
-        if has_buff(&target_ref, self.slow_buff) {
-            return;
-        }
-        ctx.add_buff(
+        refresh_buff(
+            ctx,
             target,
+            self.slow_buff,
             &BuffV1 {
                 move_speed_mult: -self.effect_slow_amount,
                 ..BuffV1::timed(self.slow_buff, ticks(self.effect_duration_seconds))

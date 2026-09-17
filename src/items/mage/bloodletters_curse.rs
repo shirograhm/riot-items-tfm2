@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, buff_stacks, ticks, ItemMeta};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, Stacks};
 
 #[derive(Clone, Debug)]
 pub struct BloodlettersCurse {
@@ -13,6 +13,7 @@ pub struct BloodlettersCurse {
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
     effect_percent_mr_shred: i32,
+    stacks: Stacks,
 }
 
 impl BloodlettersCurse {
@@ -30,6 +31,7 @@ impl BloodlettersCurse {
             effect_max_stacks: 5,
             effect_duration_seconds: 6.0,
             effect_percent_mr_shred: 6,
+            stacks: Stacks::new(),
         }
     }
 
@@ -117,6 +119,14 @@ impl StableItem for BloodlettersCurse {
         }
     }
 
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.stacks.clear();
+    }
+
+    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
+        self.stacks.tick();
+    }
+
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -138,19 +148,20 @@ impl StableItem for BloodlettersCurse {
             return;
         }
 
-        let stack_count = buff_stacks(&entity_ref, "bloodletters_curse_mr_shred");
-        if stack_count < self.effect_max_stacks {
-            ctx.add_buff(
-                target,
-                &BuffV1 {
-                    magic_resistance_mult: -self.effect_percent_mr_shred,
-                    ..BuffV1::timed(
-                        "bloodletters_curse_mr_shred",
-                        ticks(self.effect_duration_seconds),
-                    )
-                },
-            );
+        let duration = ticks(self.effect_duration_seconds);
+        let stacks = self.stacks.add(target, self.effect_max_stacks, duration) as i32;
+        if stacks == 0 {
+            return;
         }
+        refresh_buff(
+            ctx,
+            target,
+            "bloodletters_curse_mr_shred",
+            &BuffV1 {
+                magic_resistance_mult: -self.effect_percent_mr_shred * stacks,
+                ..BuffV1::timed("bloodletters_curse_mr_shred", duration)
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
