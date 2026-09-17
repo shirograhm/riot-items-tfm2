@@ -4615,7 +4615,13 @@ const AUTO4_FORWARD_SCORE: bool = true; // * Re-enabled (07-17): the crash cause
                                         // forward scoring at c6 (personal tactics application) time - abandoned (never fires for enemy/background). AUTO is handled at buy time (compute_auto_4th_id).
 const AUTO4_C6_SCORE: bool = false;
 // * 0.5.0 build extension: RVA_REALLOC (the real function 0x25a56c0) confirmed -> ON. Real purchases via the buy build Vec 3->4 are back.
-const BUILD_EXTEND_ENABLED: bool = true;
+// ** OFF for game 0.6.0 (2026-09-16) -- this crashed users mid-match. `RVA_REALLOC` is still the beta2
+//    address and was never re-derived. On the release image 0x2f1b320 is unrelated SIMD code, so the call
+//    faults (ACCESS_VIOLATION at exe+0x2f1b2c0, return address riot_items_tfm2+0x389e5, args ptr/0x18/8/0x20).
+//    f8f71ad made the path reachable: it replaced the `slot_count() != 4` early return with `picker_slots()`,
+//    which is always 4, and dropped the separate `!BUILD_EXTEND_ENABLED` return. The game allocates
+//    four slots itself now, so only the in-place write is needed. Re-derive RVA_REALLOC before turning this back on.
+const BUILD_EXTEND_ENABLED: bool = false;
 // * 0.5.0 ui_inject (#item3 dropdown + #slot3 node): loader hook RVAs (LOADER 0x4d8fb0 / PARSER 0x2493b90 /
 //   ALLOC 0x25a5620) confirmed -> ON. Strategy-screen 4th dropdown / in-match slot3 node injection are back.
 // ** OFF for game 0.6.0 (2026-09-16). Two independent reasons, either
@@ -5468,9 +5474,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   extend   -- the pre-0.6.0 three, grown to four first.
         // `extend` is the ONLY path that reaches `RVA_REALLOC`, which was not
         // re-derived for the release and is called through a raw transmute with
-        // no prologue check. On a four-slot game it is unreachable, which is why
-        // opening this gate is safe; do not make it reachable without re-deriving
-        // that address.
+        // no prologue check. It is NOT unreachable on a four-slot game: builds
+        // with len == cap == 3 still reach this point, and on 0.6.0 that call
+        // crashed users mid-match. `BUILD_EXTEND_ENABLED` is what keeps it closed.
+        // Do not reopen it without re-deriving that address.
         let in_place = build_len >= 4 && cap_now >= 4;
         let extend = build_len == 3 && cap_now == 3 && BUILD_EXTEND_ENABLED;
         if in_place || extend {

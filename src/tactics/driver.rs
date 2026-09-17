@@ -148,9 +148,9 @@ const RETIRED: bool = false;
 /// Was `init()` + `declare_mod!`. Ran the version gate and, in 4-slot mode, the
 /// byte patches, and recorded whether this half came up at all.
 ///
-/// `ACTIVE` is all that record is now. Nothing outside reads it: the slot count
-/// moved to `build_config::picker_slots` when this half was retired, because it
-/// is a property of the game rather than of this mod.
+/// `ACTIVE` is all that record is now, and only this file's entry points read it
+/// (see [`inert`]). The slot count moved to `build_config::picker_slots` when this
+/// half was retired, because it is a property of the game rather than of this mod.
 pub fn on_mod_init() {
     if RETIRED {
         return;
@@ -159,11 +159,22 @@ pub fn on_mod_init() {
 }
 
 /// Whether [`on_mod_init`] ran and its version gate passed.
+///
+/// The runtime entry points below check it too. The gate used to only decide what
+/// `tactics_init` did, while `on_server_start` and `post_update` still went on to
+/// install the buy, launcher, seed-ctor and game-view detours on any build. Each
+/// of those checks its own prologue, but the gate is the promise in
+/// `tactics_init`'s docs: on an unrecognised game build, nothing gets patched.
 static ACTIVE: AtomicBool = AtomicBool::new(false);
+
+/// Retired, or the version gate did not pass: the runtime entry points do nothing.
+fn inert() -> bool {
+    RETIRED || !ACTIVE.load(Ordering::Relaxed)
+}
 
 /// Was `ModServerExtension::on_server_start`.
 pub fn on_server_start() {
-    if RETIRED {
+    if inert() {
         return;
     }
     super::tactics_on_server_start();
@@ -171,7 +182,7 @@ pub fn on_server_start() {
 
 /// Was `ModServerExtension::before_management_tick`.
 pub fn before_management_tick() {
-    if RETIRED {
+    if inert() {
         return;
     }
     super::tactics_before_management_tick();
@@ -183,7 +194,7 @@ pub fn before_management_tick() {
 pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
     // Also the per-frame cost: this retried four detour installs every
     // frame, each of which can only fail on the release image.
-    if RETIRED {
+    if inert() {
         return;
     }
     let in_game = client.is_in_game();
