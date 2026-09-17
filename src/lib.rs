@@ -356,6 +356,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
+    reg.add_item(configured!("seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured!("shadowflame" => Shadowflame));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
@@ -427,6 +428,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin));
     reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
+    reg.add_item(configured_radiant!("radiant_seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));

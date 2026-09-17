@@ -823,17 +823,17 @@
             "name": "Radiant Bandlepipes",
             "option": "\n<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
         },
-        "seryldas_grudge": {
-            "name": "Seryldas Grudge",
-            "option": ""
-        },
-        "radiant_seryldas_grudge": {
-            "name": "Radiant Serylda's Grudge",
-            "option": ""
-        },
         "tiamat": {
             "name": "Tiamat",
             "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "seryldas_grudge": {
+            "name": "Serylda's Grudge",
+            "option": "\n<#ff7a3eff>Bitter Cold<>: Dealing Ability damage to an enemy <#d94c49ff>at or below 50% maximum health<> applies a <#d94c49ff>30% slow<> for <#e8a800ff>1.5 seconds<>."
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Radiant Serylda's Grudge",
+            "option": "\n<#ff7a3eff>Bitter Cold<>: Dealing Ability damage to an enemy <#d94c49ff>at or below 50% maximum health<> applies a <#d94c49ff>30% slow<> for <#e8a800ff>1.5 seconds<>."
         }
     },
     "vi": {
@@ -1663,6 +1663,14 @@
         "radiant_bandlepipes": {
             "name": "Kèn Túi Bandle Ánh Sáng",
             "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Đánh trúng một kỹ năng lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
+        },
+        "seryldas_grudge": {
+            "name": "Thương Phục Hận Serylda",
+            "option": "\n<#ff7a3eff>Giá Lạnh<>: Gây sát thương kĩ năng lên kẻ địch <#d94c49ff>còn từ 50% Máu tối đa trở xuống<> sẽ gây <#d94c49ff>30% kiệt sức<> trong <#e8a800ff>1.5 giây<>."
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Thương Phục Hận Serylda Ánh Sáng",
+            "option": "\n<#ff7a3eff>Giá Lạnh<>: Gây sát thương kĩ năng lên kẻ địch <#d94c49ff>còn từ 50% Máu tối đa trở xuống<> sẽ gây <#d94c49ff>30% kiệt sức<> trong <#e8a800ff>1.5 giây<>."
         }
     },
     "zh-hans": {
@@ -2492,6 +2500,14 @@
         "radiant_bandlepipes": {
             "name": "光明版班德尔音管",
             "option": "\n<#ff7a3eff>嘹亮旋律<>：技能命中敌方英雄时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
+        },
+        "seryldas_grudge": {
+            "name": "赛瑞尔达的怨恨",
+            "option": "\n<#ff7a3eff>严寒<>：技能对<#d94c49ff>生命值不高于50%最大生命值<>的敌人造成伤害时，对其施加 <#d94c49ff>30%减速<>，持续 <#e8a800ff>1.5秒<>。"
+        },
+        "radiant_seryldas_grudge": {
+            "name": "光明版赛瑞尔达的怨恨",
+            "option": "\n<#ff7a3eff>严寒<>：技能对<#d94c49ff>生命值不高于50%最大生命值<>的敌人造成伤害时，对其施加 <#d94c49ff>30%减速<>，持续 <#e8a800ff>1.5秒<>。"
         }
     },
     "pt-BR": {
@@ -3321,6 +3337,14 @@
         "radiant_bandlepipes": {
             "name": "Bandocanos Radiante",
             "option": "\n<#ff7a3eff>Fanfarra<>: Acertar uma Habilidade em um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
+        },
+        "seryldas_grudge": {
+            "name": "Rancor de Serylda",
+            "option": "\n<#ff7a3eff>Frio Agonizante<>: Causar dano de Habilidade a um inimigo <#d94c49ff>com 50% da Vida Máxima ou menos<> aplica <#d94c49ff>30% de lentidão<> por <#e8a800ff>1.5 segundos<>."
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Rancor de Serylda Radiante",
+            "option": "\n<#ff7a3eff>Frio Agonizante<>: Causar dano de Habilidade a um inimigo <#d94c49ff>com 50% da Vida Máxima ou menos<> aplica <#d94c49ff>30% de lentidão<> por <#e8a800ff>1.5 segundos<>."
         }
     },
     "ru": {
@@ -4150,6 +4174,14 @@
         "radiant_bandlepipes": {
             "name": "Лучезарные Бандл-трубы",
             "option": "\n<#ff7a3eff>Фанфары<>: Попадание умением по вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
+        },
+        "seryldas_grudge": {
+            "name": "Злоба Серильды",
+            "option": "\n<#ff7a3eff>Лютый холод<>: Нанесение урона умением противнику <#d94c49ff>с 50% максимального здоровья или меньше<> замедляет его на <#d94c49ff>30%<> на <#e8a800ff>1.5 секунды<>."
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Лучезарная Злоба Серильды",
+            "option": "\n<#ff7a3eff>Лютый холод<>: Нанесение урона умением противнику <#d94c49ff>с 50% максимального здоровья или меньше<> замедляет его на <#d94c49ff>30%<> на <#e8a800ff>1.5 секунды<>."
         }
     },
     "ko": {
@@ -4979,6 +5011,14 @@
         "radiant_bandlepipes": {
             "name": "찬란한 밴들파이프",
             "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
+        },
+        "seryldas_grudge": {
+            "name": "세릴다의 원한",
+            "option": "\n<#ff7a3eff>매서운 추위<>: <#d94c49ff>최대 체력이 50% 이하인<> 적에게 스킬로 피해를 입히면 <#e8a800ff>1.5초<> 동안 <#d94c49ff>30% 둔화<>시킵니다."
+        },
+        "radiant_seryldas_grudge": {
+            "name": "찬란한 세릴다의 원한",
+            "option": "\n<#ff7a3eff>매서운 추위<>: <#d94c49ff>최대 체력이 50% 이하인<> 적에게 스킬로 피해를 입히면 <#e8a800ff>1.5초<> 동안 <#d94c49ff>30% 둔화<>시킵니다."
         }
     }
 }

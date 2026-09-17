@@ -1532,5 +1532,23 @@
     "effect_move_speed_mult": 12,
     "effect_attack_speed_mult": 20,
     "effect_max_distance": 100
+  },
+  "seryldas_grudge": {
+    "price": 1400,
+    "attack": 45,
+    "skill_cooldown_mult": 10,
+    "defence_penetration": 25,
+    "effect_hp_percent_threshold": 50.0,
+    "effect_slow_amount": 30,
+    "effect_duration_seconds": 1.5
+  },
+  "radiant_seryldas_grudge": {
+    "price": 2100,
+    "attack": 85,
+    "skill_cooldown_mult": 15,
+    "defence_penetration": 35,
+    "effect_hp_percent_threshold": 50.0,
+    "effect_slow_amount": 30,
+    "effect_duration_seconds": 1.5
   }
 }

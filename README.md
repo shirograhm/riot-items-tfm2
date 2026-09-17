@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 163 new items (94 base + 69 Radiant) to the game.
+Reskins the 30 existing items and also adds 165 new items (95 base + 70 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -122,6 +122,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Rite of Ruin** | 1400G | +105 AP<br>+10 Ability Haste<br>+20% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
 | **Rylai's Crystal Scepter** | 1350G | +250 HP<br>+125 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |
 | **Serpent's Fang** | 1200G | +60 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 50 + 10% of your Attack Damage as bonus physical damage. |
+| **Serylda's Grudge** | 1400G | +45 AD<br>+10 Ability Haste<br>+25% Armor Pen | Bitter Cold: Dealing Ability damage to an enemy at or below 50% maximum health applies a 30% slow for 1.5 seconds. |
 | **Shadowflame** | 1350G | +115 AP<br>+15% Magic Pen | Cinderbloom: Your magic and true damage is 20% stronger against enemies below 40% maximum health. |
 | **Spear of Shojin** | 1400G | +350 HP<br>+35 AD<br>+10 Ability Haste | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 1400G | +400 HP<br>+100 MR | Vitality: Increase all healing received by 20%. |
@@ -196,6 +197,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Rite of Ruin** | 2000G | +185 AP<br>+15 Ability Haste<br>+25% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
 | **Radiant Rylai's Crystal Scepter** | 1900G | +400 HP<br>+200 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |
 | **Radiant Serpent's Fang** | 1800G | +100 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 85 + 15% of your Attack Damage as bonus physical damage. |
+| **Radiant Serylda's Grudge** | 2100G | +85 AD<br>+15 Ability Haste<br>+35% Armor Pen | Bitter Cold: Dealing Ability damage to an enemy at or below 50% maximum health applies a 30% slow for 1.5 seconds. |
 | **Radiant Shadowflame** | 1800G | +210 AP<br>+15% Magic Pen | Cinderbloom: Your magic and true damage is 20% stronger against enemies below 40% maximum health. |
 | **Radiant Spear of Shojin** | 2200G | +600 HP<br>+60 AD<br>+20 Ability Haste | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Radiant Spirit Visage** | 1900G | +600 HP<br>+150 MR | Vitality: Increase all healing received by 20%. |

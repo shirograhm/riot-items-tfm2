@@ -1,4 +1,4 @@
-Adds 163 new items (94 base + 69 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Adds 165 new items (95 base + 70 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]This mod supports custom item values, custom item builds, and a way to add another item slot. See instructions below![/b]  

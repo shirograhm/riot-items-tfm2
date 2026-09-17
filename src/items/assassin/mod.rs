@@ -7,5 +7,6 @@ items! {
     hubris,
     opportunity,
     serpents_fang,
+    seryldas_grudge,
     voltaic_cyclosword,
 }

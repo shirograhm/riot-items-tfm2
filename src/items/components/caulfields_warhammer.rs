@@ -57,6 +57,7 @@ impl StableItem for CaulfieldsWarhammer {
             "eclipse".to_string(),
             "deaths_dance".to_string(),
             "ravenous_hydra".to_string(),
+            "seryldas_grudge".to_string(),
         ]
     }
 
