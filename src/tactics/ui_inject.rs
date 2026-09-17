@@ -48,6 +48,11 @@ use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 //   instruction-isomorphic with zero differing displacements, so the entry is still the eight pushes: the 12B
 //   chained install is unchanged and STRAT_LOADER stays equal to LOADER (second hook still skipped).
 const LOADER_RVA: usize = 0x336ad0; // 0.6.0-beta2 (0.6.0-beta was 0x2f7090, 0.5.7 0x2ea930, 0.5.6 0x2e6f60, 0.5.5 0x2e42d0, 0.5.4 0x2e35d0, 0.5.3 0x2e1550, 0.5.2 0x5ac950).
+/// `push rbp; push r15; push r14; push r13; push r12; push rsi; push rdi; push rbx` -- the loader's entry
+/// on every build since 0.5.3 (re-read from the kept beta2 exe at 0x336ad0). `install_one` refuses to patch
+/// anything else. Without this check a stale `LOADER_RVA` crashed the game at startup on 0.6.0 release
+/// (ILLEGAL_INSTRUCTION at exe+0x336ad6): the jump landed mid-function in the title-layout loader.
+const LOADER_PROLOGUE: [u8; 12] = [0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53];
 // ** 0.5.4 (2026-08-04): exe2exe `match` against the kept 0.5.3 binary - **1 hit at 320 and at 640 bytes**
 //   of masked signature, size 2192. Three first-principles attempts had failed on this one (error-marker
 //   store, 0x90 stride as imul, node-type string xref); with the old exe it took a single command.
@@ -297,14 +302,22 @@ unsafe fn find_tmpl(node: usize, target: &[u8], depth: usize) -> usize {
     0
 }
 // Append a fragment node at the end of the container container_id.
-unsafe fn install_one(base: usize, rva: usize, tramp_slot: &AtomicUsize, detour_addr: usize) -> bool {
+unsafe fn install_one(base: usize, rva: usize, prologue: &[u8; 12], tramp_slot: &AtomicUsize, detour_addr: usize) -> bool {
     let fn_addr = base + rva;
     // Skip if it is already our hook (a reinstall) - i.e. if the entry point is a movabs to our detour (0x48 0xb8 + the detour address).
     let mut cur = [0u8; 12];
     core::ptr::copy_nonoverlapping(fn_addr as *const u8, cur.as_mut_ptr(), 12);
-    if cur[0] == 0x48 && cur[1] == 0xb8 {
+    let hooked = cur[0] == 0x48 && cur[1] == 0xb8 && cur[10] == 0xff && cur[11] == 0xe0;
+    if hooked {
         let tgt = usize::from_le_bytes(cur[2..10].try_into().unwrap());
         if tgt == detour_addr { logln(&format!("already my hook fn={:#x}", fn_addr)); return true; }
+    }
+    // Fail closed, as `install_detour_generic` does: patch only the expected prologue, or chain behind another
+    // mod's complete `movabs rax, imm64; jmp rax`. Anything else means the RVA is stale for this game build, and
+    // writing 12 bytes there corrupts live code instead of just leaving the hook uninstalled.
+    if !hooked && cur != *prologue {
+        logln(&format!("prologue mismatch fn={:#x} found={:02x?} - not patching", fn_addr, cur));
+        return false;
     }
     let stub = VirtualAlloc(0, 64, MEM_CR, RWX);
     if stub == 0 { return false; }
@@ -337,7 +350,7 @@ pub unsafe fn install() -> bool {
     // 0xeb17d0). It has been the same function as `LOADER` since 0.5.2, so the
     // second install was already being skipped — and the only path that needed
     // it, the strategy template, is no longer injected at all.
-    let a = install_one(base, LOADER_RVA, &TRAMP, detour as usize);
+    let a = install_one(base, LOADER_RVA, &LOADER_PROLOGUE, &TRAMP, detour as usize);
     if !a { INSTALLED.store(false, Ordering::Relaxed); return false; }
     true
 }
