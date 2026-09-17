@@ -606,7 +606,7 @@
     <div class="app-header">
       <h1>TFM2 — Item Builder</h1>
       <p>Pick your role and situation → get the right build</p>
-      <div class="patch-badge">🆕 Patch 0.9.10 — Game 0.6.0 support · 4th item slot now built into the game · Tiamat &amp; Bandlepipes</div>
+      <div class="patch-badge">🆕 Patch 0.9.11 — Bandlepipes</div>
       <div class="tabs">
         <button class="tab active" onclick="switchTab('build',this)">🎯 Build Picker</button>
         <button class="tab" onclick="switchTab('new',this)">🆕 New Items</button>
@@ -702,18 +702,20 @@
         ]
       },
       adc_melee: {
-        label: "Melee ADC (Yasuo/Yone)", sub: "Melee carry on bot lane", role: "sword", icon: "⚔️",
-        impact: "~9.1× damage · no extra durability",
+        label: "Melee ADC (Yasuo/Yone)", sub: "Melee carry on bot lane — crit, sustain and chase", role: "sword", icon: "⚔️",
+        impact: "~11× damage · 1.3× effective HP",
         items: [
-          { name: "Eclipse", cost: 5200, why: "Double-hit every 6s: mark → second hit = 8% max HP + shield for 120 + 20% AD. Perfect rhythm for melee" },
-          { name: "Infinity Edge", cost: 5050, why: "120 AD + 50% crit + 30% crit damage. A lane carry needs crit — this is where the damage comes from" },
-          { name: "Phantom Dancer", cost: 5200, why: "+25% crit (75% total) + 60% AS + 10% MS. Attack speed multiplies every crit and every Eclipse proc" },
-          { name: "Death's Dance", cost: 5500, why: "75 AD + 75 armor + 25% damage spread over time + heals on takedown. Last, to survive melee range fights once the damage is in place" }
+          { name: "Sundered Sky", cost: 5350, why: "65 AD + 550 HP. Every 20s per target your next attack is an item crit: +60% damage and heal 60 + 10% missing HP. First — damage and sustain before you have any crit" },
+          { name: "Infinity Edge", cost: 5050, why: "120 AD + 50% real crit + 30% crit damage. Sundered Sky's item crit doesn't count as a crit, so this is where your crit actually starts" },
+          { name: "Hamstringer", cost: 5400, why: "75% crit with IE. Real crits bleed and slow 7% — the enemy can't walk away from a melee champion" },
+          { name: "Bloodthirster", cost: 5200, why: "100 AD + 15% omnivamp + 20% armor pen. Last, so the omnivamp heals off a full crit build — sustain through the fight instead of buying armor" }
         ],
         swaps: [
-          { cond: "Enemies heavy AP", action: "4th: Dragon's Claw instead of Death's Dance" },
-          { cond: "Enemies very tanky", action: "3rd: Voltaic Cyclosword instead of Phantom Dancer (10% current HP)" },
-          { cond: "Want more damage", action: "4th: Deathblade instead of Death's Dance" }
+          { cond: "Enemy comp has burst or divers", action: "4th: Death's Dance instead of Bloodthirster (75 armor + damage spread over time)" },
+          { cond: "Enemies heavy AP", action: "4th: Dragon's Claw instead of Bloodthirster" },
+          { cond: "Enemy comp is tank-heavy (Randuin's likely)", action: "3rd: Kraken Slayer instead of Hamstringer" },
+          { cond: "Need to stick to kiting targets", action: "3rd: Phantom Dancer instead of Hamstringer (+60% AS + 10% MS)" },
+          { cond: "Want more damage", action: "4th: Deathblade instead of Bloodthirster" }
         ]
       },
       // ASSASSIN
@@ -800,21 +802,6 @@
           { cond: "Enemies heavy AP", action: "3rd: Dragon's Claw instead of Phantom Dancer" }
         ]
       },
-      sword_adc: {
-        label: "Swordsman ADC", sub: "Melee carry with crit and speed", role: "sword", icon: "🗡️",
-        impact: "~9.7× damage · 1.6× effective HP (2.0× phys / 1.3× magic)",
-        items: [
-          { name: "Sundered Sky", cost: 5350, why: "Every 20s per target your next attack is an item crit: +60% damage and heal 60 + 10% missing HP. First item — instant damage and sustain" },
-          { name: "Infinity Edge", cost: 5050, why: "50% real crit chance + 30% crit damage. Sundered Sky's item crit doesn't count as a crit, so this is where your crit actually starts" },
-          { name: "Hamstringer", cost: 5400, why: "75% crit with IE. Real crits bleed and slow 7% — enemy can't flee from a melee champ" },
-          { name: "Death's Dance", cost: 5500, why: "75 armor + damage spread over time. Melee carry must survive face-to-face fights" }
-        ],
-        swaps: [
-          { cond: "Enemies many tanks", action: "4th: Blade of the Ruined King instead of Death's Dance" },
-          { cond: "Enemy comp is tank-heavy (Randuin's likely)", action: "3rd: Kraken Slayer instead of Hamstringer" },
-          { cond: "Want more damage", action: "4th: Deathblade instead of Death's Dance" }
-        ]
-      },
       sword_jungle: {
         label: "Swordsman Jungle", sub: "Duelist in the jungle, ganks, fights", role: "sword", icon: "🌲",
         impact: "~9.2× damage · 1.6× effective HP (2.0× phys / 1.3× magic)",
@@ -846,10 +833,10 @@
         ]
       },
       mag_nuke_surge: {
-        label: "Burst Mage + Stormsurge", sub: "New item: burst into lightning", role: "mag", icon: "⚡",
+        label: "Burst Mage + Stormsurge", sub: "Burst combo into delayed lightning", role: "mag", icon: "⚡",
         impact: "~2.5× ability damage · no extra durability",
         items: [
-          { name: "Stormsurge", cost: 5200, why: "NEW 0.9.7: 200 AP + 5% MS + 15% magic pen. Stormraider: deal 25% max HP damage in 2.5s → enemy gets struck by lightning 2s later for 125 + 15% AP. 30s cooldown per target", isNew: true },
+          { name: "Stormsurge", cost: 5200, why: "200 AP + 5% MS + 15% magic pen. Stormraider: deal 25% max HP damage in 2.5s → enemy gets struck by lightning 2s later for 125 + 15% AP. 30s cooldown per target" },
           { name: "Blackfire Torch", cost: [5000, 5050], why: "175 AP + burst stacks during combo. Combine with Stormsurge: deal combo → trigger Stormraider lightning" },
           { name: "Rabadon's Deathcap", cost: 5650, why: "×1.35 amplifies both your AP and Stormsurge's lightning (15% AP scaling)" },
           { name: "Void Staff", cost: 5500, why: "40% magic pen — ensures both Blackfire and Stormsurge lightning cut through MR" }
@@ -877,7 +864,7 @@
           { name: "Liandry's Torment", cost: [4850, 5350], why: "150 AP + 550 HP — damage and tankiness together" },
           { name: "Riftmaker", cost: [4650, 5150], why: "120 AP + 600 HP + omnivamp — you heal from your damage" },
           { name: "Night Harvester", cost: 5200, why: "160 AP + 500 HP + 40% MS — hit and reposition" },
-          { name: "Rabadon's Deathcap", cost: 5650, why: "×1.35 — ~891 AP while sitting at 1650 HP" }
+          { name: "Rabadon's Deathcap", cost: 5650, why: "×1.35 — ~990 AP at 3650 HP (Riftmaker turns 2% of that HP into AP first)" }
         ],
         swaps: [{ cond: "Enemy comp has heavy dive or burst", action: "3rd: Unending Despair instead of Night Harvester (heal from abilities)" }]
       },
@@ -919,7 +906,7 @@
         ],
         swaps: [
           { cond: "Need more survivability", action: "3rd: Riftmaker instead of Liandry's" },
-          { cond: "Enemies are very tanky", action: "Keep Liandry's — it's mandatory here" }
+          { cond: "Enemy comp is squishy", action: "3rd: Shadowflame instead of Liandry's — the burn is weak on low-HP targets" }
         ]
       },
       // TANK
@@ -941,8 +928,8 @@
         label: "ADC Counter Tank", sub: "Enemy comp has a hyper-carry ADC", role: "tank", icon: "🎯",
         impact: "~6.4× effective HP (11× phys / 4.4× magic) · little damage",
         items: [
-          { name: "Frozen Heart", cost: 5000, why: "−30% attack speed to all nearby enemies. ADC attacks one third slower" },
-          { name: "Thornmail", cost: 5200, why: "130 armor + thorns: each attacker takes 10 + 2% armor as magic damage per hit" },
+          { name: "Frozen Heart", cost: 5000, why: "−30% attack speed to enemy champions within 100 range. The ADC attacks 30% slower" },
+          { name: "Thornmail", cost: 5200, why: "130 armor + 12% less damage from basic attacks. Thorns: each attacker takes 10 + 2% armor as magic damage per hit" },
           { name: "Randuin's Omen", cost: 5300, why: "90 armor + 550 HP. Heal for 30% of damage taken from crits — an Infinity Edge ADC ends up healing you" },
           { name: "Jak'Sho, The Protean", cost: 5350, why: "Stacking armor + MR — final layer of protection" }
         ],
@@ -958,7 +945,7 @@
           { name: "Heartsteel", cost: 5400, why: "800 HP + every 20s your next attack deals 15 + 6% max HP and keeps 12% of it as permanent HP. First so it stacks all game" },
           { name: "Sunfire Cape", cost: 5200, why: "800 HP + 1% max HP magic damage per second to all nearby enemies + regen" },
           { name: "Dead Man's Plate", cost: 5350, why: "650 HP + movement charges up → next attack deals up to 200 bonus physical damage" },
-          { name: "Warmog's Armor", cost: 5350, why: "1000 HP + regen. Total 3250 HP — keep pressing objectives" }
+          { name: "Warmog's Armor", cost: 5350, why: "1000 HP + regen. 3,250 HP from items — keep pressing objectives" }
         ],
         swaps: [{ cond: "Enemies heavy AP", action: "3rd: Dragon's Claw instead of Dead Man's Plate" }]
       },
@@ -984,7 +971,7 @@
           { name: "Sundered Sky", cost: 5350, why: "65 AD + 550 HP + item crit every 20s per target (+60% damage) + healing. Damage and sustain from the first fight" },
           { name: "Frozen Mallet", cost: 5350, why: "60 AD + 600 HP + every attack deals 20 + 3% max HP and slows 15%. At 3000 HP = +110 bonus damage per attack" },
           { name: "Warmog's Armor", cost: 5350, why: "1000 HP + regen. Pushes Mallet's damage up and sets up Bloodmail" },
-          { name: "Overlord's Bloodmail", cost: 5350, why: "40 AD + 650 HP + 2.5% max HP as bonus AD. Last, so every HP item counts: at 3800 HP → +95 bonus AD" }
+          { name: "Overlord's Bloodmail", cost: 5350, why: "40 AD + 650 HP + 2.5% max HP as bonus AD. Last, so every HP item counts: at 4800 HP → +120 bonus AD" }
         ],
         swaps: [
           { cond: "Need more defense", action: "1st: Death's Dance instead of Sundered Sky" },
@@ -1006,13 +993,13 @@
         ]
       },
       bruiser_hydra: {
-        label: "Bruiser + Ravenous Hydra", sub: "New item: HP + AOE cleave on attacks", role: "bruiser", icon: "🌊",
+        label: "Bruiser + Ravenous Hydra", sub: "HP + AOE cleave on attacks", role: "bruiser", icon: "🌊",
         impact: "~2.1× effective HP · 4.4× damage",
         items: [
-          { name: "Ravenous Hydra", cost: 5200, why: "NEW 0.9.7: 90 AD + 15% omnivamp + 15 ability haste. Passive Cleave: basic attacks deal 40% AD as physical damage to nearby enemies. Attacks from beyond 35 range apply this at 50% effectiveness", isNew: true },
+          { name: "Ravenous Hydra", cost: [5050, 5200], why: "90 AD + 15% omnivamp + 15 ability haste. Passive Cleave: basic attacks deal 40% AD as physical damage to nearby enemies. Attacks from beyond 35 range apply this at 50% effectiveness" },
           { name: "Frozen Mallet", cost: 5350, why: "600 HP + every attack slows 15%. Slow + Hydra Cleave = enemies can't escape the cleave" },
           { name: "Warmog's Armor", cost: 5350, why: "1000 HP + regen. Survive in the middle of the fight and set up Bloodmail" },
-          { name: "Overlord's Bloodmail", cost: 5350, why: "650 HP + 2.5% max HP as bonus AD. Last, so every HP item counts: at 3250 HP → +81 AD, Hydra cleaves even harder" }
+          { name: "Overlord's Bloodmail", cost: 5350, why: "650 HP + 2.5% max HP as bonus AD. Last, so every HP item counts: at 4250 HP → +106 AD, Hydra cleaves even harder" }
         ],
         swaps: [
           { cond: "Need more defense", action: "3rd: Jak'Sho instead of Warmog's" },
@@ -1050,15 +1037,16 @@
       // SUPPORT
       sup_aura: {
         label: "Aura Machine", sub: "Buff your entire team", role: "sup", icon: "✨",
-        impact: "~3.4× effective HP · ally value not counted",
+        impact: "~4.6× effective HP · ally value not counted",
         items: [
-          { name: "Echoes of Helia", cost: 4250, why: "One of the cheapest items (4,250). Stores 30% of damage dealt or taken as charges → dumps all into ally healing" },
+          { name: "Bandlepipes", cost: 4450, isNew: true, patch: "0.9.11", why: "400 HP + 60 armor + 100 MR + 20 ability haste. Land an ability on an enemy → Fanfare for 4s: +12% MS, and you and allies within 100 range gain +20% AS" },
           { name: "Zeke's Herald", cost: 4200, why: "Tied for cheapest item in the game (4,200). Aura: +50 adaptive force + 10% omnivamp to all nearby allies" },
-          { name: "Ardent Censer", cost: 4350, why: "Heal an ally → they get +20% AS and 2% HP as physical damage for 6s" },
+          { name: "Ardent Censer", cost: 4350, why: "Heal an ally → they get +20% AS and on-hit damage equal to 2% of their max HP for 6s. Stacks with Fanfare's 20% AS" },
           { name: "Locket of the Iron Solari", cost: 4700, why: "Aura: +6 armor, +12 MR, +3 HP regen + shield passive to all nearby allies" }
         ],
         swaps: [
-          { cond: "Enemies have heavy burst", action: "Swap the order: Locket of the Iron Solari 1st, Echoes of Helia 4th — shield the team first" },
+          { cond: "Enemies have heavy burst", action: "Swap the order: Locket of the Iron Solari 1st, Bandlepipes 4th — shield the team first" },
+          { cond: "Your team has no auto-attackers", action: "1st: Echoes of Helia instead of Bandlepipes — attack speed does nothing for an ability comp" },
           { cond: "Your comp plays around one ADC", action: "3rd: Sword of Blossoming Dawn instead of Ardent (attacks heal the ADC)" }
         ]
       },
@@ -1317,7 +1305,7 @@
       sword_q1: {
         q: "Where are you playing?", choices: [
           { l: "Midlane", d: "Yasuo / Yone style", n: "sword_mid" },
-          { l: "Bot lane (ADC position)", d: "Melee carry in bot", n: "sword_adc" },
+          { l: "Bot lane (ADC position)", d: "Melee carry in bot", n: "adc_melee" },
           { l: "Jungle", d: "Duelist, ganks", n: "sword_jungle" }
         ]
       },
@@ -1362,14 +1350,14 @@
         q: "How do you want to fight?", choices: [
           { l: "HP + regen", d: "High HP, self-sustain", n: "bruiser_sustain" },
           { l: "HP + physical damage", d: "Bloodmail + Mallet", n: "bruiser_dmg" },
-          { l: "Ravenous Hydra cleave", d: "New item: AOE cleave on attacks", n: "bruiser_hydra" },
+          { l: "Ravenous Hydra cleave", d: "AOE cleave on attacks", n: "bruiser_hydra" },
           { l: "Cut enemy healing", d: "Grievous wounds in melee", n: "bruiser_antiheal" },
           { l: "Abilities into attacks", d: "Trinity Force + Black Cleaver", n: "fighter_spellblade" }
         ]
       },
       sup_q1: {
         q: "What's your support style?", choices: [
-          { l: "Buff everyone", d: "Auras, team buffs", n: "sup_aura" },
+          { l: "Buff everyone", d: "New: Bandlepipes + team auras", n: "sup_aura" },
           { l: "Protect allies", d: "Shields, healing", n: "sup_protect" },
           { l: "Heavy tank initiator", d: "Initiate + absorb damage", n: "sup_tank" },
           { l: "Pure healer", d: "Maximum healing", n: "sup_heal" },
@@ -1382,72 +1370,21 @@
     const NEW_ITEMS = [
       {
         name: "Bandlepipes",
-        patch: "0.9.10",
+        patch: "0.9.11",
         type: "Tank / Support / Team aura",
         role: "Support · Tank",
         icon: "🎺",
         stats: [
-          { s: "Health", v: "200 HP" },
-          { s: "Armor", v: "40" },
-          { s: "Magic Resistance", v: "60" },
-          { s: "Ability Haste", v: "15" }
+          { s: "Health", v: "400 HP" },
+          { s: "Armor", v: "60" },
+          { s: "Magic Resistance", v: "100" },
+          { s: "Ability Haste", v: "20" }
         ],
         passive: { name: "Fanfare", text: "Landing an ability on an enemy champion empowers you with Fanfare for 4 seconds, granting 12% movement speed. While empowered, you and allied champions within 100 range also gain 20% attack speed." },
-        use: "The only item in the mod that hands attack speed to your whole team. It is an aura, not a snapshot — allies who walk into the 100 range during the 4 seconds pick it up, and allies who leave lose it, so it rewards fighting as a group. The trigger is any ability landing on an enemy champion, so a support with a short cooldown keeps it up almost permanently. Note what the stat line is: 200 HP, 40 armor, 60 MR and 15 haste for 1000 gold is a pure durability line with no damage at all — you are buying it for the team, not for yourself. The Radiant version (1500g) doubles the defences to 400 HP / 60 armor / 100 MR / 20 haste and keeps the same Fanfare.",
+        use: "The only item in the mod that hands attack speed to your whole team. It is an aura, not a snapshot — allies who walk into the 100 range during the 4 seconds pick it up, and allies who leave lose it, so it rewards fighting as a group. The trigger is any ability landing on an enemy champion, so a support with a short cooldown keeps it up almost permanently. Note what the stat line is: 400 HP, 60 armor, 100 MR and 20 haste for 4,450 gold is a pure durability line with no damage at all — you are buying it for the team, not for yourself.",
         best: ["Supports and tanks who land an ability every few seconds", "Teams built around attack speed carries — the 20% is multiplied across everyone in range", "Frontliners who stand where the carries are anyway"],
         avoid: ["Split-pushers and solo laners — the aura is wasted with nobody in 100 range", "Ability-power carries who want damage from the slot", "Teams with no auto-attack damage — 20% attack speed on an ability-based comp does very little"],
         synergy: ["Ardent Censer — Sanctify gives one ally 20% attack speed, Fanfare gives everyone nearby another 20%, and they stack", "Locket of the Iron Solari — the other aura item, same 100 range, so one positioning choice powers both", "Any attack-speed carry (Guinsoo's, Nashor's Tooth) — they gain the most from a flat 20%"]
-      },
-      {
-        name: "Tiamat",
-        patch: "0.9.10",
-        type: "AD / Cleave component",
-        role: "Bruiser · Fighter",
-        icon: "🪓",
-        stats: [
-          { s: "Attack Damage", v: "50 AD" },
-          { s: "Cost", v: "800 gold" },
-          { s: "Builds into", v: "Ravenous Hydra" }
-        ],
-        passive: { name: "Cleave", text: "Basic attacks deal 20% of your attack damage as physical damage to nearby enemies. Attacks from beyond 35 range apply this effect at 50% effectiveness." },
-        use: "Tiamat is Ravenous Hydra's cleave at two thirds strength, available at Tier 3 for 800 gold. That matters because it is a component that already does its job: most components are a pile of stats waiting to become an item, but Tiamat clears waves and chips grouped enemies from the moment you buy it. It is also a second route into Ravenous Hydra beside Caulfield's Warhammer — Tiamat is 150 gold cheaper and keeps the cleave going, Caulfield's brings 10 ability haste instead. Pick the route by what the champion actually wants.",
-        best: ["Any melee bruiser heading for Ravenous Hydra", "Champions who need wave clear early", "Builds where the cleave matters more than the ability haste on the Caulfield's route"],
-        avoid: ["Ranged carries — beyond 35 range the cleave is halved", "Ability-based champions who never auto-attack", "Builds that want Caulfield's 10 ability haste on the way to Hydra instead"],
-        synergy: ["Ravenous Hydra — the natural upgrade, 20% cleave becomes 30% (40% Radiant)", "Frozen Mallet — slowed enemies stay inside the 35 range where cleave is full strength", "Attack speed items — every extra attack is another cleave"]
-      },
-      {
-        name: "Radiant Ravenous Hydra",
-        patch: "0.9.7",
-        type: "AD / Omnivamp",
-        role: "Bruiser · Fighter · ADC",
-        icon: "🌊",
-        stats: [
-          { s: "Attack Damage", v: "90 AD" },
-          { s: "Omnivamp", v: "15%" },
-          { s: "Ability Haste", v: "15" }
-        ],
-        passive: { name: "Cleave", text: "Basic attacks deal 40% of your attack damage as physical damage to nearby enemies. Attacks from beyond 35 range apply this effect at 50% effectiveness." },
-        use: "The key to Ravenous Hydra is the 90 AD base — extremely high. With 15% omnivamp, every bit of that AoE cleave heals you. Ideal for bruisers who fight in melee range where all enemies are within 35 units. The 50% reduction at range matters for ADC: you still get the cleave but at half value, so melee champions benefit much more.",
-        best: ["Physical Bruiser build (Bloodmail + Hydra + Frozen Mallet)", "Any frontliner who fights in the middle of enemies", "Champions with high attack speed — more attacks = more cleave = more heal"],
-        avoid: ["Long-range ADC — you'll mostly get the 50% version", "Full AP mages — AD scaling doesn't help"],
-        synergy: ["Frozen Mallet — slow enemies, they stay in cleave range", "Bloodmail — more HP = more AD from Bloodmail = stronger Hydra cleave", "Death's Dance — 15 ability haste from Hydra + 10 from Death's Dance = 25 haste, abilities and ult cooldowns 20% shorter"]
-      },
-      {
-        name: "Radiant Stormsurge",
-        patch: "0.9.7",
-        type: "AP / Magic Penetration / Burst",
-        role: "Mage · Burst Assassin Mage",
-        icon: "⚡",
-        stats: [
-          { s: "Ability Power", v: "200 AP" },
-          { s: "Magic Penetration", v: "15%" },
-          { s: "Movement Speed", v: "+5%" }
-        ],
-        passive: { name: "Stormraider", text: "Dealing magic damage equivalent to 25% of an enemy champion's max HP within 2.5 seconds inflicts Squall on them (30s cooldown per target). After 2 seconds, Squall strikes the target with lightning dealing 125 + 15% of your AP as magic damage." },
-        use: "Stormsurge is a delayed execute. You need to deal 25% max HP in 2.5s to proc the lightning — this works naturally with a full burst combo (Blackfire Torch at 4 stacks + big ability). 2 seconds later, 125 + 15% AP additional magic damage lands. At 500 AP that's +200 delayed magic damage on top of your combo. The 200 AP base + 15% magic pen makes it comparable to Void Staff for pure AP, but trades 40% pen for the delayed lightning burst.",
-        best: ["Burst mage (Stormsurge → Blackfire Torch → Rabadon's)", "Any mage that can dump 25% HP in one combo window", "Champions with strong single-target combos"],
-        avoid: ["DoT mages (Liandry's build) — you won't hit 25% HP in 2.5s with ticks", "Auto-attack mages — the window is too short for attack-based damage"],
-        synergy: ["Blackfire Torch — 4 stacks during combo easily clears the 25% HP threshold", "Rabadon's Deathcap — ×1.35 multiplies your AP, making Stormsurge lightning hit harder", "Void Staff vs Stormsurge: both give ~same base AP. Void Staff → better vs high MR tanks. Stormsurge → better vs squishy targets where the 25% HP proc is easy"]
       }
     ];
 
@@ -1455,7 +1392,7 @@
       {
         title: "vs Crit ADC", tag: "t-tank", label: "Defense", items: [
           { t: "Randuin's Omen", d: "If the enemy ADC is a crit champion — heal for 30% of crit damage taken. If they're on-hit instead, take Thornmail" },
-          { t: "Frozen Heart", d: "Always vs any ADC. −30% attack speed to all nearby enemies = ADC deals one third less DPS per second" },
+          { t: "Frozen Heart", d: "Always vs any ADC. −30% attack speed to enemy champions within 100 range = the ADC deals 30% less auto-attack DPS" },
           { t: "Thornmail", d: "ADC takes damage from their own attacks. At 130 armor: thorns deal 10+2.6 = 12.6 per hit" },
           { t: "Jak'Sho, The Protean", d: "70 armor, and +10% armor per stack while the ADC keeps hitting you (max 4)" }
         ]
@@ -1468,17 +1405,25 @@
         ]
       },
       {
-        title: "New: When to pick Ravenous Hydra", tag: "t-new", label: "0.9.7", items: [
-          { t: "Physical Bruiser", d: "Hydra's 90 AD + 15% omnivamp + Bloodmail synergy = each cleave tick heals you. Best in class for melee range fighting" },
+        title: "When to pick Ravenous Hydra", tag: "t-bruiser", label: "Bruiser", items: [
+          { t: "Bruiser + Ravenous Hydra", d: "Hydra's 90 AD + 15% omnivamp + Bloodmail synergy = each cleave tick heals you. Best in class for melee range fighting" },
           { t: "vs Thornmail tanks", d: "Thorns only triggers on basic attacks against the Thornmail holder — Cleave splash doesn't proc it. Your attacks on that tank still do, and its 12% basic-attack reduction still applies" },
-          { t: "Hydra vs Ravenous Hydra (LoL comparison)", d: "In TFM2 the Radiant version gives 90 AD — much higher than standard. The 15% omnivamp means you're healing from AoE, which is strong in extended team fights" }
+          { t: "Hydra vs Ravenous Hydra (LoL comparison)", d: "In TFM2 Ravenous Hydra gives 90 AD — much higher than in LoL. The 15% omnivamp means you're healing from AoE, which is strong in extended team fights" }
         ]
       },
       {
-        title: "New: When to pick Stormsurge", tag: "t-new", label: "0.9.7", items: [
+        title: "When to pick Stormsurge", tag: "t-mag", label: "Mage", items: [
           { t: "vs Void Staff", d: "Similar AP base (200 vs 160). Void Staff: better vs high MR (40% pen vs 15%). Stormsurge: better vs squishy targets where the 25% HP threshold is easy to hit — adds delayed lightning burst" },
           { t: "Vs Luden's Tempest", d: "Luden's: consistent poke + 15% pen. Stormsurge: higher burst threshold but bigger payoff when triggered. Use Luden's for sustained poke, Stormsurge for all-in combos" },
           { t: "Who should NOT buy Stormsurge", d: "DoT mages (Liandry's build), auto-attack mages, champions that don't deal 25% HP in 2.5s burst windows" }
+        ]
+      },
+      {
+        title: "New: When to pick Bandlepipes", tag: "t-new", label: "0.9.11", items: [
+          { t: "Who should buy it", d: "A support or tank who lands an ability every few seconds and stands next to the carries. Fanfare lasts 4s, so a short cooldown keeps the 20% AS aura up almost permanently" },
+          { t: "vs Ardent Censer", d: "Censer: 20% AS for one ally you heal or shield. Bandlepipes: 20% AS for everyone within 100 range after you hit an enemy. They stack — buy both on an attack-speed comp" },
+          { t: "vs Locket of the Iron Solari", d: "Same 100 range. Locket keeps allies alive, Bandlepipes makes them hit faster. Bandlepipes is 250 gold cheaper (4,450 vs 4,700): more HP (400 vs 300), less armor (60 vs 75), same 100 MR" },
+          { t: "Who should NOT buy it", d: "Split-pushers and solo laners with nobody in range, and ability-power comps where 20% attack speed adds little" }
         ]
       },
       {
@@ -1519,6 +1464,7 @@
           { t: "Zeke's Herald — 4,200", d: "Support. Tied for cheapest item in the game — powerful team aura" },
           { t: "Bloodsong — 4,200–4,350", d: "Support/hybrid. Tied for cheapest via Forbidden Idol. Spellblade attacks make the target take 7% more damage" },
           { t: "Echoes of Helia — 4,250", d: "Support. Heals allies from stored damage" },
+          { t: "Bandlepipes — 4,450", d: "Support-tank. 400 HP + 60 armor + 100 MR, and a team attack speed aura after every ability hit" },
           { t: "Locket of the Iron Solari — 4,700", d: "Support-tank. Team-wide armor + MR + shield aura" },
           { t: "Rylai's Crystal Scepter — 4,700–5,200", d: "Mage. 200 AP + 400 HP — the cheapest big AP item via Haunting Guise" },
           { t: "Serpent's Fang — 4,800", d: "Assassin. Cheapest AD item. 100 AD + 15 lethality + shield-break" }
@@ -1534,17 +1480,15 @@
         why: "Sundered Sky: item crit every 20s per target (+60% damage) + heals 60 + 10% of missing HP — the lower your HP, the more you heal. Warmog's: 1000 HP + 3% HP/s regen out of combat. Death's Dance: 25% of incoming damage spread over time, and on kill — clears all stored damage + heals 75 + 25% missing HP. Result: extremely hard to kill, basically full HP after each kill."
       },
       {
-        role: "bruiser", icon: "🌊", title: "Cleave Bruiser [NEW 0.9.7]",
+        role: "bruiser", icon: "🌊", title: "Cleave Bruiser",
         sub: "Ravenous Hydra + Frozen Mallet + Bloodmail",
-        items: ["Ravenous Hydra (NEW)", "Frozen Mallet", "Warmog's", "Bloodmail"],
-        newCombo: true,
-        why: "Ravenous Hydra: 90 AD + 15% omnivamp + 40% AD cleave on attacks. Frozen Mallet: slows every hit — enemies stay in cleave range. Warmog's: 1000 HP to survive in the middle of the fight. Bloodmail last: every HP item is already bought, so at 3250 HP it gives +81 bonus AD. Every basic attack hits the main target AND nearby enemies for 40% AD, and you heal from all of it via 15% omnivamp."
+        items: ["Ravenous Hydra", "Frozen Mallet", "Warmog's", "Bloodmail"],
+        why: "Ravenous Hydra: 90 AD + 15% omnivamp + 40% AD cleave on attacks. Frozen Mallet: slows every hit — enemies stay in cleave range. Warmog's: 1000 HP to survive in the middle of the fight. Bloodmail last: every HP item is already bought, so at 4250 HP it gives +106 bonus AD. Every basic attack hits the main target AND nearby enemies for 40% AD, and you heal from all of it via 15% omnivamp."
       },
       {
-        role: "mag", icon: "⚡", title: "Lightning Burst Mage [NEW 0.9.7]",
+        role: "mag", icon: "⚡", title: "Lightning Burst Mage",
         sub: "Stormsurge + Blackfire Torch + Rabadon's",
-        items: ["Stormsurge (NEW)", "Blackfire Torch", "Rabadon's Deathcap", "Void Staff"],
-        newCombo: true,
+        items: ["Stormsurge", "Blackfire Torch", "Rabadon's Deathcap", "Void Staff"],
         why: "Blackfire Torch 4 stacks during combo → deal 25% HP in 2.5s → Stormsurge triggers Stormraider. After 2s the target gets struck by lightning for 125 + 15% AP additional damage. At 500 AP: +200 delayed magic damage after your full combo. Rabadon's ×1.35 amplifies everything. Void Staff makes even MR tanks eat the full combo. The combo window: Torch stacks → big ability → trigger Squall → lightning finalizes the kill."
       },
       {
@@ -1564,6 +1508,13 @@
         sub: "Death's Dance + Hubris + Collector",
         items: ["Death's Dance", "Hubris", "Collector", "Axiom Arc"],
         why: "Non-standard assassin. Death's Dance: 75 armor + damage spread over time + heal on kill. Lets you dive into a group, survive the initial burst, get a kill, and heal back up. Hubris stacks AD with kills. Collector finishes fleeing enemies. Plays like a fighter-assassin that doesn't die immediately."
+      },
+      {
+        role: "sup", icon: "🎺", title: "Attack Speed Rally [NEW 0.9.11]",
+        sub: "Bandlepipes + Ardent Censer + Zeke's Herald",
+        items: ["Bandlepipes (NEW)", "Ardent Censer", "Zeke's Herald", "Locket of the Iron Solari"],
+        newCombo: true, patch: "0.9.11",
+        why: "Bandlepipes: land an ability on an enemy → you and every ally within 100 range gain 20% attack speed for 4s. Ardent Censer: heal or shield an ally → another 20% attack speed and on-hit damage equal to 2% of their max HP. Zeke's Herald: +50 adaptive force and 10% omnivamp in the same 100 range. Locket keeps the group alive while it stands together. Result: your carries attack 40% faster with extra AD and healing — build it next to a Guinsoo's, Nashor's or crit marksman."
       },
       {
         role: "sup", icon: "✨", title: "Fast Double Support",
@@ -1658,7 +1609,7 @@
   </div></div>${b.impact ? `<div class="impact"><strong>Impact:</strong> ${b.impact}<span class="impact-note">Baseline: An unbuilt champion (100 AD, 1.00 AS, 2,000 HP, 25 armor/MR) in a 10s fight with an 8,000 HP / 100 armor / 100 MR target. Ults, stacks, cleave and auras not counted.</span></div>` : ''}<div class="items-list">`;
       b.items.forEach((item, i) => {
         const newCls = item.isNew ? ' is-new' : '';
-        const newBadge = item.isNew ? `<span class="new-badge">NEW ${item.patch || '0.9.7'}</span>` : '';
+        const newBadge = item.isNew ? `<span class="new-badge">NEW ${item.patch || '0.9.11'}</span>` : '';
         h += `<div class="item-row${newCls}"><div class="item-num">${i + 1}</div><div>
       <div class="item-name">${item.name}${newBadge}</div>
       ${item.cost ? `<div class="item-cost">${fmtGold(item.cost)} gold</div>` : ''}
@@ -1737,7 +1688,7 @@
           const isNew = i.includes('NEW');
           return `<span class="combo-item${isNew ? ' new' : ''}">${i}</span>`;
         }).join('');
-        const newBadge = cb.newCombo ? `<span class="new-badge" style="margin-left:6px">NEW ${cb.patch || '0.9.7'}</span>` : '';
+        const newBadge = cb.newCombo ? `<span class="new-badge" style="margin-left:6px">NEW ${cb.patch || '0.9.11'}</span>` : '';
         return `<div class="combo-card${cb.newCombo ? ' is-new' : ''}">
       <div class="combo-head">
         <span style="font-size:20px">${cb.icon}</span>
