@@ -37,7 +37,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 
 [h1] Versioning [/h1]
 Currently updated for game version 0.6.0. Also supports previous versions using an older build of the mod. See below for reference:  
-Mod v0.9.10+ - 0.6.0
+Mod v0.9.11+ - 0.6.0
 Mod v0.9.6-9 - v0.5.8
 Mod v0.9.3-5 - v0.5.7
 Mod v0.9.2 - v0.5.6
@@ -83,8 +83,8 @@ If you used the old [b]4items.cfg[/b] file, it no longer does anything and can b
 game to add the slot, because the game ships it.  
 
 [h1] Planned Features [/h1]
-- More support items
-- Ability to edit values on the 30 base game items, in addition to the current config.json.
+- 5th and 6th item slots.
+- More support items.
 - Translations for other locales.
 - Various bugfixes.
 
@@ -93,17 +93,19 @@ Check the Item/Feature Requests forum in the mod for the most up-to-date informa
 [h2] Credits [/h2]
 Thank you to @SUB from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
 
-Thank you to @Formula Piggy and @Yuuroo on discord for Vietnamese translations!
-Thank you to @GeoStelar on discord for the Portuguese (BR) translations!
-Thank you to @Monsoon on discord for the Chinese (Simplified) translations!
-Thank you to @Dushnerd on discord for the Russian translations!
-Thank you to @Flover on discord for the Korean translations!
+Special thanks to all the playtesters that helped me out along the way by sending me crash dumps and testing beta builds:
+[b]@toxicsnek[/b] for helping with custom item creation & code!
+[b]@Monsoon[/b] for helping with the custom item builds functionality!  
+[b]@blasé[/b] for helping playtest the 4 Item Mod compatibility!  
+[b]@Guardsman C[/b] & [b]@kmrn[/b] for helping playtest the new item hook on 0.6.0!
 
-Special thanks to @toxicsnek for helping with custom item creation & code!
-Special thanks to @Monsoon for helping with the custom item builds functionality!  
-Special thanks to @blasé for helping playtest the 4 Item Mod compatibility!  
+Thank you to [b]@Formula Piggy[/b] & [b]@Yuuroo[/b] on discord for Vietnamese translations!
+Thank you to [b]@GeoStelar[/b] on discord for the Portuguese (BR) translations!
+Thank you to [b]@Monsoon[/b] on discord for the Chinese (Simplified) translations!
+Thank you to [b]@Dushnerd[/b] on discord for the Russian translations!
+Thank you to [b]@Flover[/b] on discord for the Korean translations!
 
-Thank you to the people in the modding discord for their help with the mod-sdk setup, documentation, and general coolness.
+And finally, thank you to the people in the modding discord for their help with the mod-sdk setup, documentation, and general coolness.
 
 If you would like to support my endeavors and buy me a coffee, you can find me on ko-fi: https://ko-fi.com/shirograhm
 
