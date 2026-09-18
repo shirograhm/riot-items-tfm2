@@ -606,7 +606,7 @@
     <div class="app-header">
       <h1>TFM2 — Item Builder</h1>
       <p>Pick your role and situation → get the right build</p>
-      <div class="patch-badge">🆕 Patch 0.9.11 — Bandlepipes</div>
+      <div class="patch-badge">🆕 Patch 0.9.12 — Serylda's Grudge</div>
       <div class="tabs">
         <button class="tab active" onclick="switchTab('build',this)">🎯 Build Picker</button>
         <button class="tab" onclick="switchTab('new',this)">🆕 New Items</button>
@@ -725,7 +725,7 @@
         items: [
           { name: "Hubris", cost: 5050, why: "Buy FIRST. Each takedown adds a permanent stack and grants 12 (+3 per stack) bonus AD for 90s" },
           { name: "Axiom Arc", cost: 5000, why: "15 ability haste + 10 ult haste (+0.2 per lethality) — about −22% ult cooldown on its own. More ult = more kills" },
-          { name: "Bastionbreaker", cost: 5050, why: "Kill → next tower attack deals 200 + 20% AD true damage for free" },
+          { name: "Bastionbreaker", cost: 5050, why: "Takedown → next tower attack deals 200 + 20% AD true damage for free" },
           { name: "Collector", cost: 5350, why: "Executes below 6% HP + 25 bonus gold per kill. No one escapes" }
         ],
         swaps: [
@@ -752,32 +752,36 @@
         impact: "~7.4× damage · no extra durability",
         items: [
           { name: "Axiom Arc", cost: 5000, why: "15 ability haste + 10 ult haste (+0.2 per lethality) — about −22% ult cooldown, more as lethality stacks" },
-          { name: "Hubris", cost: 5050, why: "115 AD + kill stacks + more lethality = lower ult CD" },
+          { name: "Hubris", cost: 5050, why: "115 AD + takedown stacks + more lethality = lower ult CD" },
           { name: "Voltaic Cyclosword", cost: 5050, why: "Charges → 10% current HP bonus damage. Kills tanks where ult alone can't" },
-          { name: "Bastionbreaker", cost: 5050, why: "Kill → free tower damage after every ult" }
+          { name: "Bastionbreaker", cost: 5050, why: "Takedown → free tower damage after every ult" }
         ],
-        swaps: [{ cond: "Enemies have huge HP pools", action: "3rd: Blade of the Ruined King instead of Cyclosword" }]
+        swaps: [
+          { cond: "Enemies have huge HP pools", action: "3rd: Blade of the Ruined King instead of Cyclosword" },
+          { cond: "Enemy comp stacks armor", action: "3rd: Serylda's Grudge instead of Cyclosword — 35% armor penetration beats flat lethality once targets build armor, and 15 ability haste means the ult comes back faster too" }
+        ]
       },
       ass_burst: {
         label: "Pure Burst", sub: "One or two hits = death", role: "phys", icon: "💀",
         impact: "~9.1× damage · no extra durability",
         items: [
           { name: "Opportunity", cost: 5050, why: "7s in shadows → +7 lethality. First hit from bushes is maximally lethal" },
-          { name: "Hubris", cost: 5050, why: "Permanent kill stacks — 2nd so they build up all game. After 3 takedowns nearly anything dies" },
+          { name: "Hubris", cost: 5050, why: "Permanent takedown stacks — 2nd so they build up all game. After 3 takedowns nearly anything dies" },
           { name: "Collector", cost: 5350, why: "Execute at <6% HP. No one will survive with 1 HP" },
           { name: "Deathblade", cost: 5250, why: "×1.25 AD — last, when there is the most AD to multiply" }
         ],
         swaps: [
           { cond: "Enemies have shields in kit", action: "1st: Serpent's Fang instead of Opportunity" },
-          { cond: "Need more ability haste", action: "4th: Axiom Arc instead of Deathblade" }
+          { cond: "Need more ability haste", action: "4th: Axiom Arc instead of Deathblade" },
+          { cond: "Targets keep escaping at low health", action: "4th: Serylda's Grudge instead of Deathblade — Bitter Cold slows them 30% the moment they drop below half HP, keeping them inside Collector's execute range" }
         ]
       },
       ass_jungle: {
         label: "Jungle Assassin", sub: "Ganks, pressure, tower kills", role: "phys", icon: "🌲",
         impact: "~7.8× damage · no extra durability",
         items: [
-          { name: "Bastionbreaker", cost: 5050, why: "Kill at gank → free tower. Ideal jungler: gank + tower = map pressure" },
-          { name: "Hubris", cost: 5050, why: "AD stacks through all kills and ganks. Snowball across the whole map" },
+          { name: "Bastionbreaker", cost: 5050, why: "Takedown at gank → free tower. Ideal jungler: gank + tower = map pressure" },
+          { name: "Hubris", cost: 5050, why: "AD stacks through every takedown and gank. Snowball across the whole map" },
           { name: "Axiom Arc", cost: 5000, why: "Ult more often = gank more often. Ult cooldown is critical for junglers" },
           { name: "Collector", cost: 5350, why: "Execute below 6% HP — no one walks away from a gank alive. +25 gold per kill" }
         ],
@@ -807,7 +811,7 @@
         impact: "~9.2× damage · 1.6× effective HP (2.0× phys / 1.3× magic)",
         items: [
           { name: "Eclipse", cost: 5200, why: "Double-hit + shield — jungler survives early 1v1 fights in the jungle" },
-          { name: "Blade of the Ruined King", cost: [5350, 5500], why: "60 AD + 50% AS + 10% omnivamp. Attacks deal 8% of the target's current HP — wins jungle duels against champions (capped at 50 vs monsters)" },
+          { name: "Blade of the Ruined King", cost: [5350, 5500], why: "60 AD + 50% AS + 10% omnivamp. Attacks deal 8% of the target's current HP — wins jungle duels against champions (capped at 50 vs minions and monsters)" },
           { name: "Sundered Sky", cost: 5350, why: "Item crit every 20s per target (+60% damage) + heals 60 + 10% missing HP. Can't back to base between camps — the heal compensates" },
           { name: "Death's Dance", cost: 5500, why: "Survivability: 75 armor + damage over time + healing on takedown — stay in the fight" }
         ],
@@ -917,7 +921,7 @@
           { name: "Jak'Sho, The Protean", cost: 5350, why: "70 armor + 120 MR + 550 HP + stacking defense from taking damage. Covers all damage types" },
           { name: "Warmog's Armor", cost: 5350, why: "1000 HP + 3% HP/s regen out of combat + 4% MS. Maximum survivability" },
           { name: "Sterak's Gage", cost: 5350, why: "650 HP + shield = 60% max HP at 30% health. Saves you from burst" },
-          { name: "Death's Dance", cost: 5500, why: "25% damage spread over time + heal on kill. Nearly unkillable in long fights" }
+          { name: "Death's Dance", cost: 5500, why: "25% damage spread over time + heal on takedown. Nearly unkillable in long fights" }
         ],
         swaps: [
           { cond: "Your team has another frontliner", action: "4th: Sunfire Cape instead of Death's Dance — add damage instead of more tankiness" },
@@ -956,7 +960,7 @@
         items: [
           { name: "Sundered Sky", cost: 5350, why: "65 AD + 550 HP + item crit every 20s per target (+60% damage) + heal 60 + 10% missing HP. Survives through combat" },
           { name: "Warmog's Armor", cost: 5350, why: "1000 HP + 3% HP/s regen out of combat + 4% MS. Recover between fights" },
-          { name: "Death's Dance", cost: 5500, why: "75 armor + 25% damage over time + on kill: clear stored damage + heal 75+25% missing HP" },
+          { name: "Death's Dance", cost: 5500, why: "75 armor + 25% damage over time + on takedown: clear stored damage + heal 75+25% missing HP" },
           { name: "Jak'Sho, The Protean", cost: 5350, why: "70 armor + 120 MR + 550 HP + growing defense. Universal shield against everything" }
         ],
         swaps: [
@@ -1039,9 +1043,9 @@
         label: "Aura Machine", sub: "Buff your entire team", role: "sup", icon: "✨",
         impact: "~4.6× effective HP · ally value not counted",
         items: [
-          { name: "Bandlepipes", cost: 4450, isNew: true, patch: "0.9.11", why: "400 HP + 60 armor + 100 MR + 20 ability haste. Land an ability on an enemy → Fanfare for 4s: +12% MS, and you and allies within 100 range gain +20% AS" },
+          { name: "Bandlepipes", cost: 4450, why: "400 HP + 60 armor + 100 MR + 20 ability haste. Land an ability on an enemy → Fanfare for 4s: +12% MS, and you and allies within 100 range gain +20% AS" },
           { name: "Zeke's Herald", cost: 4200, why: "Tied for cheapest item in the game (4,200). Aura: +50 adaptive force + 10% omnivamp to all nearby allies" },
-          { name: "Ardent Censer", cost: 4350, why: "Heal an ally → they get +20% AS and on-hit damage equal to 2% of their max HP for 6s. Stacks with Fanfare's 20% AS" },
+          { name: "Ardent Censer", cost: 4350, why: "Heal an ally → they get +20% AS and on-hit damage equal to 2% of the enemy's max HP for 6s. Stacks with Fanfare's 20% AS" },
           { name: "Locket of the Iron Solari", cost: 4700, why: "Aura: +6 armor, +12 MR, +3 HP regen + shield passive to all nearby allies" }
         ],
         swaps: [
@@ -1082,7 +1086,7 @@
         label: "Healer Support", sub: "Maximum team healing", role: "sup", icon: "💊",
         impact: "~2.7× effective HP (2.0× phys / 4.3× magic) · ally value not counted",
         items: [
-          { name: "Echoes of Helia", cost: 4250, why: "Core: passively stacks charges and heals allies" },
+          { name: "Echoes of Helia", cost: 4250, why: "Core: banks 30% of damage dealt or taken as charges, then dumps them as a heal when you heal, shield or buff an ally" },
           { name: "Ardent Censer", cost: 4350, why: "Heal → ally gets +20% AS and bonus physical damage for 6s" },
           { name: "Zeke's Herald", cost: 4200, why: "Aura: +50 adaptive force to all nearby + 10% omnivamp" },
           { name: "Spirit Visage", cost: 5100, why: "150 MR + 600 HP + healing you receive ×1.20. It doesn't boost your heals on allies — it keeps the healer alive" }
@@ -1154,7 +1158,7 @@
         impact: "~10× damage · 1.6× effective HP (2.4× phys / 1.2× magic)",
         items: [
           { name: "Feral Flare", cost: 5350, why: "55 AD + 40% AS + 40 armor. Every takedown and monster kill adds a stack (max 50). Attacks deal 25 (+1 per stack) magic damage and heal 10 — 150% vs monsters and minions" },
-          { name: "Blade of the Ruined King", cost: [5350, 5500], why: "60 AD + 50% AS + 10% omnivamp. Attacks deal 8% of the target's current HP — another on-hit that Hexplate's attack speed multiplies (capped at 50 vs monsters)" },
+          { name: "Blade of the Ruined King", cost: [5350, 5500], why: "60 AD + 50% AS + 10% omnivamp. Attacks deal 8% of the target's current HP — another on-hit that Hexplate's attack speed multiplies (capped at 50 vs minions and monsters)" },
           { name: "Experimental Hexplate", cost: 4850, why: "500 HP + 50% AS + 5% MS + 25 ultimate haste (≈20% shorter ult cooldown). More attacks = more Feral Flare procs" },
           { name: "Death's Dance", cost: 5500, why: "75 armor + damage spread over time + heal on takedown. Stay in the fight you started" }
         ],
@@ -1210,7 +1214,7 @@
         label: "Hit-and-Run Assassin", sub: "Attack-speed assassin that charges up and resets", role: "phys", icon: "💨",
         impact: "~11× damage · no extra durability",
         items: [
-          { name: "Mirage Blade", cost: 5400, why: "Marksman item on an assassin: 100 adaptive force (= 60 AD) + 65% AS + 15% MS. Takedowns grant +20% MS for 2s — get out, find the next target" },
+          { name: "Mirage Blade", cost: 5400, why: "Marksman item on an assassin: 100 adaptive force (= 60 AD) + 65% AS + 15% MS. Kills grant +20% MS for 2s — get out, find the next target" },
           { name: "Hubris", cost: 5050, why: "Permanent takedown stacks — 2nd so they build up all game. Each stack adds to a 12 (+3 per stack) AD bonus for 90s" },
           { name: "Voltaic Cyclosword", cost: 5050, why: "Energize gains +5 per basic attack on top of +1 every 0.2s, so Mirage Blade's attack speed charges it much faster. Charged hit: +10 lethality and 10% current HP bonus damage" },
           { name: "Stormrazor", cost: 5550, why: "Second Energize item from the marksman list: 100 AD + 40% AS + 25% crit. Fully charged → 100 magic damage + 35% MS for 1.5s. Two charged hits back to back" }
@@ -1369,6 +1373,23 @@
 
     const NEW_ITEMS = [
       {
+        name: "Serylda's Grudge",
+        patch: "0.9.12",
+        type: "Lethality / Armor penetration / Ability caster",
+        role: "Assassin · Bruiser",
+        icon: "🥶",
+        stats: [
+          { s: "Attack Damage", v: "85" },
+          { s: "Ability Haste", v: "15" },
+          { s: "Armor Penetration", v: "35%" }
+        ],
+        passive: { name: "Bitter Cold", text: "Dealing Ability damage to an enemy at or below 50% maximum health applies a 30% slow for 1.5 seconds." },
+        use: "An armor penetration item that pays off only if your damage comes from abilities. The 35% penetration is percentage-based, so it scales with how much armor the target actually has — it is worth the most against the enemy frontline and nearly nothing against a squishy. Bitter Cold is the reason to buy it over a flat-lethality item: the slow arms itself exactly when a target drops to half health and tries to disengage, and 1.5 seconds of 30% slow is usually the difference between a kill and a chase. Note the trigger is Ability damage only — basic attacks never apply it, so an auto-attack assassin gets a worse version of the same gold.",
+        best: ["Ability-based assassins and AD casters whose damage sits in their skills", "Comps that keep losing kills to enemies walking away at low health", "Lineups facing one or two armor stackers, where 25% penetration beats flat lethality"],
+        avoid: ["Auto-attack carries — Bitter Cold cannot proc off basic attacks", "Full-squishy enemy comps, where percentage armor penetration has little armor to cut", "Champions who already have a reliable slow or hard crowd control in kit"],
+        synergy: ["Axiom Arc — 15 ability haste here plus its ult haste means more casts, and every cast is another Bitter Cold check", "Collector — the slow holds the target inside execute range instead of letting it flee above 6% HP", "Hubris — 85 AD to start with, and every takedown the slow secures adds another permanent stack on top"]
+      },
+      {
         name: "Bandlepipes",
         patch: "0.9.11",
         type: "Tank / Support / Team aura",
@@ -1419,7 +1440,16 @@
         ]
       },
       {
-        title: "New: When to pick Bandlepipes", tag: "t-new", label: "0.9.11", items: [
+        title: "New: When to pick Serylda's Grudge", tag: "t-new", label: "0.9.12", items: [
+          { t: "Who should buy it", d: "An ability-based assassin or AD caster. Bitter Cold only checks Ability damage, so a champion who deals most of its damage with basic attacks gets the stats and none of the passive" },
+          { t: "vs Lord Dominik's Regards", d: "Identical on paper — both give 85 AD and 35% armor penetration for a similar price. The split is what rides on top: Dominik's adds 25% crit and Giant Slayer (up to 15% bonus damage vs high-HP targets), Serylda's adds 15 ability haste and the slow. Take Dominik's on an auto-attack carry, Serylda's on an ability champion. There is little reason to own both" },
+          { t: "vs flat lethality (Opportunity, Serrated Dirk)", d: "Lethality is flat armor reduction and is strongest against squishies. Serylda's 35% is percentage-based, so it overtakes lethality as the target's armor climbs. Against 2+ armor stackers, Serylda's wins" },
+          { t: "What the slow is for", d: "It arms at 50% target health — the moment an enemy decides to leave. 30% for 1.5s is normally enough for your team to finish the target, which is why it pairs so well with an execute like Collector" },
+          { t: "Who should NOT buy it", d: "Marksmen and on-hit champions, and comps facing all-squishy enemy teams where percentage penetration has little armor to work with" }
+        ]
+      },
+      {
+        title: "When to pick Bandlepipes", tag: "t-sup", label: "Support", items: [
           { t: "Who should buy it", d: "A support or tank who lands an ability every few seconds and stands next to the carries. Fanfare lasts 4s, so a short cooldown keeps the 20% AS aura up almost permanently" },
           { t: "vs Ardent Censer", d: "Censer: 20% AS for one ally you heal or shield. Bandlepipes: 20% AS for everyone within 100 range after you hit an enemy. They stack — buy both on an attack-speed comp" },
           { t: "vs Locket of the Iron Solari", d: "Same 100 range. Locket keeps allies alive, Bandlepipes makes them hit faster. Bandlepipes is 250 gold cheaper (4,450 vs 4,700): more HP (400 vs 300), less armor (60 vs 75), same 100 MR" },
@@ -1438,7 +1468,7 @@
         title: "Swordsman situational items", tag: "t-sword", label: "Swordsman", items: [
           { t: "Eclipse", d: "Double-hit every 6s: 8% max HP + shield. Best first item for any swordsman" },
           { t: "Sundered Sky", d: "Item crit every 20s per target (+60% damage) + healing. Not a real crit — it won't trigger crit items like Hamstringer" },
-          { t: "Death's Dance", d: "75 armor + damage over time + heal on kill. Swordsman survives melee fights" },
+          { t: "Death's Dance", d: "75 armor + damage over time + heal on takedown. Swordsman survives melee fights" },
           { t: "Blade of the Ruined King", d: "8% current HP per attack + omnivamp. Best against tanky enemies" },
           { t: "Trinity Force", d: "Ability → empowered attack 33% AD. Cycle of ability+attack = constant bonus damage" }
         ]
@@ -1477,7 +1507,7 @@
         role: "bruiser", icon: "💚", title: "Sustain Bruiser",
         sub: "Sundered Sky + Warmog's + Death's Dance",
         items: ["Sundered Sky", "Warmog's Armor", "Death's Dance", "Jak'Sho / Sterak's"],
-        why: "Sundered Sky: item crit every 20s per target (+60% damage) + heals 60 + 10% of missing HP — the lower your HP, the more you heal. Warmog's: 1000 HP + 3% HP/s regen out of combat. Death's Dance: 25% of incoming damage spread over time, and on kill — clears all stored damage + heals 75 + 25% missing HP. Result: extremely hard to kill, basically full HP after each kill."
+        why: "Sundered Sky: item crit every 20s per target (+60% damage) + heals 60 + 10% of missing HP — the lower your HP, the more you heal. Warmog's: 1000 HP + 3% HP/s regen out of combat. Death's Dance: 25% of incoming damage spread over time, and on takedown — clears all stored damage + heals 75 + 25% missing HP. Result: extremely hard to kill, basically full HP after each takedown."
       },
       {
         role: "bruiser", icon: "🌊", title: "Cleave Bruiser",
@@ -1501,26 +1531,32 @@
         role: "sword", icon: "⚔️", title: "Swordsman Duelist",
         sub: "Eclipse + Sundered Sky + Death's Dance",
         items: ["Eclipse", "Sundered Sky", "Death's Dance", "Deathblade"],
-        why: "Eclipse: double-hit every 6s = 8% max HP + shield for 120 + 20% AD. Sundered Sky: item crit every 20s + healing. Death's Dance: damage spread over time + heal on kill. A swordsman who doesn't die in melee range and constantly heals through item mechanics."
+        why: "Eclipse: double-hit every 6s = 8% max HP + shield for 120 + 20% AD. Sundered Sky: item crit every 20s + healing. Death's Dance: damage spread over time + heal on takedown. A swordsman who doesn't die in melee range and constantly heals through item mechanics."
       },
       {
         role: "phys", icon: "🗡️", title: "Tanky Assassin",
         sub: "Death's Dance + Hubris + Collector",
         items: ["Death's Dance", "Hubris", "Collector", "Axiom Arc"],
-        why: "Non-standard assassin. Death's Dance: 75 armor + damage spread over time + heal on kill. Lets you dive into a group, survive the initial burst, get a kill, and heal back up. Hubris stacks AD with kills. Collector finishes fleeing enemies. Plays like a fighter-assassin that doesn't die immediately."
+        why: "Non-standard assassin. Death's Dance: 75 armor + damage spread over time + heal on takedown. Lets you dive into a group, survive the initial burst, get a kill, and heal back up. Hubris stacks AD with takedowns. Collector finishes fleeing enemies. Plays like a fighter-assassin that doesn't die immediately."
       },
       {
-        role: "sup", icon: "🎺", title: "Attack Speed Rally [NEW 0.9.11]",
+        role: "phys", icon: "🥶", title: "Slow-Lock Assassin",
+        sub: "Serylda's Grudge + Axiom Arc + Hubris",
+        items: ["Serylda's Grudge (NEW)", "Axiom Arc", "Hubris", "Collector"],
+        newCombo: true, patch: "0.9.12",
+        why: "Built for an assassin whose damage comes from abilities rather than autos. Serylda's Grudge opens with 85 AD, 35% armor penetration and 15 ability haste, and its Bitter Cold arms the moment a target drops to half health — 30% slow for 1.5s, exactly when they try to walk away. Axiom Arc adds another 15 ability haste plus ult haste scaling with lethality, so you cast more often and every cast re-checks the slow. Hubris stacks permanent AD off each takedown. Collector finishes the job: the slow keeps the target inside the 6% execute threshold instead of letting it escape. The whole combo is an answer to the single most common way assassins lose kills — the enemy leaving at low health."
+      },
+      {
+        role: "sup", icon: "🎺", title: "Attack Speed Rally",
         sub: "Bandlepipes + Ardent Censer + Zeke's Herald",
-        items: ["Bandlepipes (NEW)", "Ardent Censer", "Zeke's Herald", "Locket of the Iron Solari"],
-        newCombo: true, patch: "0.9.11",
-        why: "Bandlepipes: land an ability on an enemy → you and every ally within 100 range gain 20% attack speed for 4s. Ardent Censer: heal or shield an ally → another 20% attack speed and on-hit damage equal to 2% of their max HP. Zeke's Herald: +50 adaptive force and 10% omnivamp in the same 100 range. Locket keeps the group alive while it stands together. Result: your carries attack 40% faster with extra AD and healing — build it next to a Guinsoo's, Nashor's or crit marksman."
+        items: ["Bandlepipes", "Ardent Censer", "Zeke's Herald", "Locket of the Iron Solari"],
+        why: "Bandlepipes: land an ability on an enemy → you and every ally within 100 range gain 20% attack speed for 4s. Ardent Censer: heal, shield or buff an ally → another 20% attack speed and bonus on-hit damage equal to 2% of the enemy's max HP. Zeke's Herald: +50 adaptive force and 10% omnivamp in the same 100 range. Locket keeps the group alive while it stands together. Result: your carries attack 40% faster with extra AD and healing — build it next to a Guinsoo's, Nashor's or crit marksman."
       },
       {
         role: "sup", icon: "✨", title: "Fast Double Support",
         sub: "Echoes + Zeke's — two of the cheapest items",
         items: ["Echoes of Helia (4,250)", "Zeke's Herald (4,200)", "Ardent Censer", "Locket of the Iron Solari"],
-        why: "Echoes + Zeke's = 8,450 gold for two finished items — only Zeke's + Bloodsong is cheaper. Zeke's gives every nearby ally +50 adaptive force = free +30 AD or +50 AP. Echoes passively heals through charges. Already with two cheap items your team gets a significant power spike. Perfect when you want to be strong mid-game on support income."
+        why: "Echoes + Zeke's = 8,450 gold for two finished items — only Zeke's + Bloodsong is cheaper. Zeke's gives every nearby ally +50 adaptive force = free +30 AD or +50 AP. Echoes banks 30% of the damage you deal or take as Soul Charges, then dumps the whole stack as a heal the moment you heal, shield or buff an ally. Already with two cheap items your team gets a significant power spike. Perfect when you want to be strong mid-game on support income."
       },
       {
         role: "tank", icon: "⚔️", title: "Crit Tank",
