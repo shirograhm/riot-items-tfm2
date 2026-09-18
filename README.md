@@ -53,7 +53,6 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Glacial Buckler** | 800G | +50 Armor<br>+5 Ability Haste | — |
 | **Haunting Guise** | 950G | +200 HP<br>+60 AP | Madness: For each second in combat with enemy champions, deal 2% bonus damage, stacking up to 3 times for a total of 6%. |
 | **Hearthbound Axe** | 950G | +30 AD<br>+20% AS | — |
-
 | **Hextech Alternator** | 800G | +100 AP | Revved: Damaging an enemy champion deals 65 bonus magic damage (40 second cooldown). |
 | **Last Whisper** | 950G | +45 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 850G | +115 Ability Power | — |
