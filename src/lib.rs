@@ -21,7 +21,7 @@ mod tactics;
 
 use items::*;
 
-pub(crate) use buffs::{refresh_buff, Stacks};
+pub(crate) use buffs::{add_stack, refresh_buff};
 pub(crate) use constants::*;
 pub(crate) use item_meta::ItemMeta;
 pub(crate) use proc_queue::ProcQueue;

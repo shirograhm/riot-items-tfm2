@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, Stacks};
+use crate::{add_stack, apply_config, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct SpearOfShojin {
@@ -14,7 +14,6 @@ pub struct SpearOfShojin {
     effect_stack_attack_mult: i32,
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
-    stacks: Stacks,
 }
 
 impl SpearOfShojin {
@@ -29,7 +28,6 @@ impl SpearOfShojin {
             effect_stack_attack_mult: 3,
             effect_max_stacks: 4,
             effect_duration_seconds: 5.0,
-            stacks: Stacks::new(),
         }
     }
 
@@ -82,18 +80,14 @@ impl SpearOfShojin {
         }
 
         let duration = ticks(self.effect_duration_seconds);
-        let stacks = self.stacks.add(caster, self.effect_max_stacks, duration) as i32;
-        if stacks == 0 {
-            return;
-        }
-        refresh_buff(
+        add_stack(
             ctx,
             caster,
-            self.stack_buff,
             &BuffV1 {
-                attack_mult: self.effect_stack_attack_mult * stacks,
+                attack_mult: self.effect_stack_attack_mult,
                 ..BuffV1::timed(self.stack_buff, duration)
             },
+            self.effect_max_stacks,
         );
     }
 }
@@ -140,14 +134,6 @@ impl StableItem for SpearOfShojin {
             skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
-    }
-
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.stacks.clear();
-    }
-
-    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
-        self.stacks.tick();
     }
 
     fn on_skill_hit(

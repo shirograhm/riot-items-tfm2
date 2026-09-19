@@ -199,7 +199,24 @@ pub fn load_cached() -> Arc<BuildConfig> {
 /// `item-builds.json` — [`load_champion_rows`] only pads short builds, never
 /// truncates long ones — but the editor stops showing that item and [`apply`]
 /// stops sending it, because the game has nowhere to put it.
+///
+/// # Six, from 2026-09-18
+///
+/// The game still ships four. The fifth and sixth are this mod's: the native
+/// buy detour grows every athlete's build `Vec` from four to this many and
+/// fills the new slots (`tactics::buy_replace_ctx`), and three byte patches
+/// let the engine buy past four finals and draw the longer row
+/// (`tactics::patch_final_gate`, `patch_row_floor`, `patch_result_row_floor`).
+/// The stable API cannot express any of that — see [`game_slots`].
 pub fn picker_slots() -> usize {
+    6
+}
+
+/// Item slots the *game* allocates per build: the most the stable item-build
+/// hook can hand back, because `decide_build` only fills the engine's own
+/// `Vec`. Slots past this one exist only once the buy detour has grown that
+/// `Vec` to [`picker_slots`].
+pub fn game_slots() -> usize {
     4
 }
 
@@ -850,7 +867,10 @@ pub fn build_for_champion(
     // fourth item while 3-slot mode is on, so that switching back restores the
     // build. Sending that item anyway would hand the game a slot it cannot put
     // anywhere.
-    let usable = build.len().min(picker_slots());
+    //
+    // `game_slots`, not `picker_slots`: the 5th and 6th slots do not exist yet
+    // when the engine asks, and the buy detour fills them from the same pins.
+    let usable = build.len().min(game_slots());
     Some(merge_build(&build[..usable], ai_build, &resolve))
 }
 

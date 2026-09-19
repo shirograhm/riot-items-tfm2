@@ -3,7 +3,7 @@ use rand::rngs::StdRng;
 use rand::{RngExt, SeedableRng};
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, Stacks};
+use crate::{add_stack, apply_config, ticks, ItemMeta};
 
 // Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).
 // Salvage the Wreckage: Landing an Ability on an enemy champion has a <crit_icon> chance to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage.
@@ -21,7 +21,6 @@ pub struct RiteOfRuin {
     effect_shield_seconds: f64,
     effect_min_shield: usize,
     effect_max_shield: usize,
-    stacks: Stacks,
 }
 
 impl RiteOfRuin {
@@ -43,7 +42,6 @@ impl RiteOfRuin {
             effect_shield_seconds: 3.0,
             effect_min_shield: 35,
             effect_max_shield: 90,
-            stacks: Stacks::new(),
         }
     }
 
@@ -144,14 +142,6 @@ impl StableItem for RiteOfRuin {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.stacks.clear();
-    }
-
-    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
-        self.stacks.tick();
-    }
-
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -182,18 +172,14 @@ impl StableItem for RiteOfRuin {
         }
 
         let duration = ticks(self.effect_duration_seconds);
-        let stacks = self.stacks.add(caster, self.effect_max_stacks, duration) as i32;
-        if stacks == 0 {
-            return;
-        }
-        refresh_buff(
+        add_stack(
             ctx,
             caster,
-            self.stack_crit_buff,
             &BuffV1 {
-                crit_chance: self.effect_stack_crit_chance * stacks,
+                crit_chance: self.effect_stack_crit_chance,
                 ..BuffV1::timed(self.stack_crit_buff, duration)
             },
+            self.effect_max_stacks,
         );
     }
 

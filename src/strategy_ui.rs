@@ -179,7 +179,7 @@ struct Strings {
     col_champion: String,
     col_role: String,
     /// One complete label per column — LabelRunner cannot compose `"ITEM " + n`.
-    col_items: [String; 4],
+    col_items: [String; 6],
     /// The two cells of each footer toggle. Both are on screen at once, so these
     /// name the choice a cell makes rather than describing the current state.
     unique_on: String,
@@ -200,7 +200,14 @@ impl Default for Strings {
             hint: "Builds are per champion. A blank slot is filled by the game, in the AI's own pick order.".into(),
             col_champion: "CHAMPION".into(),
             col_role: "ROLE".into(),
-            col_items: ["ITEM 1".into(), "ITEM 2".into(), "ITEM 3".into(), "ITEM 4".into()],
+            col_items: [
+                "ITEM 1".into(),
+                "ITEM 2".into(),
+                "ITEM 3".into(),
+                "ITEM 4".into(),
+                "ITEM 5".into(),
+                "ITEM 6".into(),
+            ],
             unique_on: "Unique Items Enforced".into(),
             unique_off: "Duplicates Allowed".into(),
             scope_all: "Apply To All Players".into(),
@@ -2178,7 +2185,7 @@ fn header_source(slot: usize) -> String {
     let x = combo_x(slot);
     let w = combo_w();
     let number = slot + 1;
-    let label = strings().col_items[slot.min(3)].clone();
+    let label = strings().col_items[slot.min(5)].clone();
     format!(
         "c_item{number}:label {{\n\
          @\"asset/base/style/main#label\";\n\
@@ -2209,7 +2216,7 @@ fn sync_column_headers(ctx: &mut StableClient<'_>) {
             // Text as well as geometry: the first three are authored in
             // `build_editor.ui` with their English labels, so this is the only
             // thing that translates them.
-            let label = strings().col_items[slot.min(3)].clone();
+            let label = strings().col_items[slot.min(5)].clone();
             ctx.ui_set_properties(
                 &path,
                 &format!(

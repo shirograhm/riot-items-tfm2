@@ -5,60 +5,29 @@ pub(crate) fn refresh_buff(ctx: &mut StableSim<'_>, entity: usize, name: &str, b
     ctx.add_buff(entity, buff);
 }
 
-#[derive(Clone, Debug, Default)]
-pub(crate) struct Stacks {
-    entries: Vec<StackEntry>,
-}
-
-#[derive(Clone, Copy, Debug)]
-struct StackEntry {
-    entity: usize,
-    count: usize,
-    remaining: usize,
-}
-
-impl Stacks {
-    pub(crate) const fn new() -> Self {
-        Self {
-            entries: Vec::new(),
-        }
+/// Adds one stack of `buff` to `entity`, capped at `max`, and restarts the
+/// duration of every stack already there. `buff` carries the value of ONE
+/// stack; the engine counts same-name buffs as stacks and sums them.
+///
+/// The stacks live on the entity, not on the item. This replaces an item-side
+/// counter that fed one buff of `per_stack * count`, which in game (2026-09-19,
+/// Black Cleaver) only ever showed a single stack. On the entity the engine
+/// owns the count and the expiry, and two holders of the same item share one
+/// stack pool on a target instead of overwriting each other's buff -- the way
+/// LoL caps a shred.
+///
+/// Returns the stack count after adding; 0 when `max` is 0. On a host older
+/// than ABI level 8 (no `entity_stack_buff`) it falls back to one refreshed
+/// stack.
+pub(crate) fn add_stack(ctx: &mut StableSim<'_>, entity: usize, buff: &BuffV1, max: usize) -> usize {
+    if max == 0 {
+        return 0;
     }
-
-    /// Adds one stack on `entity` (capped at `max`) and restarts the shared
-    /// duration. Returns the new count; `0` only when `max` is `0`.
-    pub(crate) fn add(&mut self, entity: usize, max: usize, duration: usize) -> usize {
-        if max == 0 {
-            return 0;
+    match ctx.entity_stack_buff(entity, buff, max, true) {
+        0 => {
+            refresh_buff(ctx, entity, buff.name(), buff);
+            1
         }
-        match self.entries.iter_mut().find(|e| e.entity == entity) {
-            Some(entry) => {
-                entry.count = (entry.count + 1).min(max);
-                entry.remaining = duration;
-                entry.count
-            }
-            None => {
-                self.entries.push(StackEntry {
-                    entity,
-                    count: 1,
-                    remaining: duration,
-                });
-                1
-            }
-        }
-    }
-
-    /// Advances every entry by one tick and drops the ones that ran out.
-    pub(crate) fn tick(&mut self) {
-        if self.entries.is_empty() {
-            return;
-        }
-        self.entries.retain_mut(|entry| {
-            entry.remaining = entry.remaining.saturating_sub(1);
-            entry.remaining > 0
-        });
-    }
-
-    pub(crate) fn clear(&mut self) {
-        self.entries.clear();
+        count => count,
     }
 }
