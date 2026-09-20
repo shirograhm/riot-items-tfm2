@@ -1,7 +1,7 @@
 Adds 165 new items (95 base + 70 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
-[b]This mod supports custom item values, custom item builds, and a way to add another item slot. See instructions below![/b]  
+[b]This mod supports custom item values, custom item builds, and 6 item slots. See instructions below![/b]  
 
 Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for another item of the same category, 4th item included. Toggle it in the in-game Build Editor.  
 
@@ -75,15 +75,10 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 
 Builds are saved automatically when changed to [b]item-builds.json[/b] as you make them, so they carry across sessions. Click [b]Save Item Builds[/b] to run a manual save.  
 
-[h1] 4 Item Slots [/h1]
-Teamfight Manager 2 [b]0.6.0[/b] adds a fourth item slot to the base game, so there is nothing to turn on any more.
-The Builds editor shows four slots automatically and the game sim fills them.
-
-If you used the old [b]4items.cfg[/b] file, it no longer does anything and can be deleted — this mod no longer patches the
-game to add the slot, because the game ships it.  
+[h1] 6 Item Slots [/h1]
+This mod enables 6 item slots by default. No config needed!
 
 [h1] Planned Features [/h1]
-- 5th and 6th item slots.
 - More support items.
 - Translations for other locales.
 - Various bugfixes.
@@ -96,8 +91,8 @@ Thank you to @SUB from the Korean modding community for your help with the updat
 Special thanks to all the playtesters that helped me out along the way by sending me crash dumps and testing beta builds:
 [b]@toxicsnek[/b] for helping with custom item creation & code!
 [b]@Monsoon[/b] for helping with the custom item builds functionality!  
-[b]@blasé[/b] for helping playtest the 4 Item Mod compatibility!  
-[b]@Guardsman C[/b] & [b]@kmrn[/b] for helping playtest the new item hook on 0.6.0!
+[b]@blasé[/b] for helping playtest the 4 Item Mode compatibility!  
+[b]@Guardsman C[/b] & [b]@kmrn[/b] for helping playtest the new item hooks on 0.6.0!
 
 Thank you to [b]@Formula Piggy[/b] & [b]@Yuuroo[/b] on discord for Vietnamese translations!
 Thank you to [b]@GeoStelar[/b] on discord for the Portuguese (BR) translations!
