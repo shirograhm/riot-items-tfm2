@@ -1,6 +1,6 @@
 use mod_api_stable::{StableDraftDecision, StableItemBuildContext, StableItemBuildHook};
 
-use crate::build_config;
+use crate::{build_config, smart_builds};
 
 const MOD_ITEM_SCORE_BONUS: f32 = 0.5;
 
@@ -56,7 +56,7 @@ impl StableItemBuildHook for ConfiguredBuilds {
         // here would still reach both sides, which is exactly what the toggle
         // is off for.
         //
-        // Unique enforcement below still runs: it is about the shape of a
+        // The Smart Builds pass below still runs: it is about the shape of a
         // build, not about whose it is, and it applies to the engine's own
         // picks too.
         let own_team_only = build_config::own_team_only_enabled();
@@ -67,8 +67,8 @@ impl StableItemBuildHook for ConfiguredBuilds {
         };
         let mut build = configured.unwrap_or_else(|| base.to_vec());
 
-        if build_config::unique_items_enabled() {
-            enforce_unique_items(ctx, &mut build);
+        if build_config::smart_builds_enabled() {
+            enforce_smart_build(ctx, &mut build);
         }
 
         if build.is_empty() || build == base {
@@ -115,30 +115,16 @@ fn is_selectable_final(ctx: &StableItemBuildContext<'_>, index: usize) -> bool {
         .is_some_and(|tier| tier >= SELECTABLE_FINAL_TIER)
 }
 
-fn enforce_unique_items(ctx: &StableItemBuildContext<'_>, build: &mut [usize]) {
-    let count = ctx.item_count();
-    if count == 0 {
-        return;
-    }
-    let mut seen = std::collections::HashSet::new();
-    for slot in build.iter_mut() {
-        if seen.insert(*slot) {
-            continue;
-        }
-        // Must be known: matching `None` against `None` would swap a duplicate
-        // for any item the host could not classify.
-        let Some(category) = ctx.item_category(*slot) else {
-            continue;
-        };
-        let duplicate = *slot;
-        let replacement = (1..count).map(|step| (duplicate + step) % count).find(|c| {
-            !seen.contains(c)
-                && ctx.item_category(*c) == Some(category)
-                && is_selectable_final(ctx, *c)
-        });
-        if let Some(index) = replacement {
-            *slot = index;
-            seen.insert(index);
-        }
-    }
+/// The Smart Builds pass over a build the host handed us, with the catalog seen
+/// through `StableItemBuildContext`. The rules themselves live in
+/// [`crate::smart_builds`], which the training-screen detour in `crate::hook`
+/// drives over the same build with its own accessors.
+fn enforce_smart_build(ctx: &StableItemBuildContext<'_>, build: &mut [usize]) {
+    smart_builds::enforce(
+        ctx.item_count(),
+        build,
+        |index| ctx.item_key(index).map(str::to_string),
+        |index| ctx.item_category(index),
+        |index| is_selectable_final(ctx, index),
+    );
 }

@@ -266,7 +266,7 @@ build_editor:empty {
             align_x: Center;
           }
 
-          text: "Unique Items Enforced";
+          text: "Enforce Smart Builds";
         }
 
         #off:color_selectable {
@@ -284,7 +284,7 @@ build_editor:empty {
             align_x: Center;
           }
 
-          text: "Duplicates Allowed";
+          text: "Allow Any Builds";
         }
       }
 

@@ -566,7 +566,7 @@ unsafe fn patch_target(target: *mut u8) -> Result<Vec<String>, String> {
 ///
 /// `key` and `next_tier` happen to sit ahead of it, which is why the catalog
 /// snapshot below has always worked. `category` and `tier` do not. Calling
-/// `category()` (2026-09-19, from `enforce_unique_items`) dispatched into some
+/// `category()` (2026-09-19, from the unique-items pass) dispatched into some
 /// other trait method with nonsense arguments; the game's own Rust code
 /// panicked and aborted the process with `0xc0000409` /
 /// `FAST_FAIL_FATAL_APP_EXIT` as soon as a 5v5 test began.
@@ -661,7 +661,7 @@ unsafe fn detour(
     routes
 }
 
-/// Applies the editor's builds *and* unique-item enforcement to a
+/// Applies the editor's builds *and* the Smart Builds pass to a
 /// training-screen match, which is the one place the stable hook never runs.
 ///
 /// # Why this exists again
@@ -706,8 +706,8 @@ fn apply_training_builds(
     // Unique enforcement is not a property of the editor's builds - the stable
     // hook runs it over the engine's own `base_build` too - so an empty config
     // is only a reason to skip the rewrite below, not a reason to return.
-    let unique = build_config::unique_items_enabled();
-    if config.is_empty() && !unique {
+    let smart = build_config::smart_builds_enabled();
+    if config.is_empty() && !smart {
         return;
     }
 
@@ -730,20 +730,16 @@ fn apply_training_builds(
                 route[slot] = *item;
             }
         }
-        if unique {
-            enforce_unique_items(items, route);
+        if smart {
+            enforce_smart_build(items, route);
         }
     }
 }
 
-/// The training-screen twin of `crate::item_build_hook::enforce_unique_items`,
-/// kept deliberately identical in behaviour: a duplicate is swapped for the
-/// next unused final item of the same category, wrapping around the catalog,
-/// and left alone when no such item exists.
-///
-/// It has to be written twice because the two halves see the catalog through
-/// different APIs - `StableItemBuildContext`'s flat index arrays there, the
-/// game's own `Vec<Box<dyn ItemInfo>>` here - and the indices in `route` are
+/// The training-screen twin of `crate::item_build_hook::enforce_smart_build`:
+/// the same [`crate::smart_builds`] pass, over the same build, with the catalog
+/// seen through the game's own `Vec<Box<dyn ItemInfo>>` instead of
+/// `StableItemBuildContext`'s flat index arrays. The indices in `route` are
 /// positions in *this* list, the same ones `index_of` above produces.
 ///
 /// # Why it does not ask `ItemInfo` for the category or the tier
@@ -774,40 +770,23 @@ fn apply_training_builds(
 /// editor's finer class. Both keep a stand-in "the same kind of item", which is
 /// what the rule is for, and the finer one is the better answer where it has
 /// one.
-fn enforce_unique_items(items: &[Box<dyn ItemInfo>], build: &mut [usize]) {
-    let count = items.len();
-    if count == 0 {
-        return;
-    }
-    let category = |index: usize| {
-        let item = items.get(index)?;
-        // Bound rather than chained: `base_slug` borrows the key, and only the
-        // `&'static str` that `category_of` returns outlives this block.
-        let key = item.key().to_string();
-        crate::item_catalog::category_of(build_config::base_slug(&key))
-    };
-    let is_selectable_final =
-        |index: usize| items.get(index).is_some_and(|item| item.next_tier().is_empty());
-
-    let mut seen = std::collections::HashSet::new();
-    for slot in build.iter_mut() {
-        if seen.insert(*slot) {
-            continue;
-        }
-        // Must be known: matching `None` against `None` would swap a duplicate
-        // for any item that is not in the list at all.
-        let Some(wanted) = category(*slot) else {
-            continue;
-        };
-        let duplicate = *slot;
-        let replacement = (1..count)
-            .map(|step| (duplicate + step) % count)
-            .find(|c| !seen.contains(c) && category(*c) == Some(wanted) && is_selectable_final(*c));
-        if let Some(index) = replacement {
-            *slot = index;
-            seen.insert(index);
-        }
-    }
+fn enforce_smart_build(items: &[Box<dyn ItemInfo>], build: &mut [usize]) {
+    crate::smart_builds::enforce(
+        items.len(),
+        build,
+        |index| items.get(index).map(|item| item.key().to_string()),
+        |index| {
+            // Bound rather than chained: `base_slug` borrows the key, and only
+            // the `&'static str` that `category_of` returns outlives this block.
+            let key = items.get(index)?.key().to_string();
+            crate::item_catalog::category_of(build_config::base_slug(&key))
+        },
+        |index| {
+            items
+                .get(index)
+                .is_some_and(|item| item.next_tier().is_empty())
+        },
+    );
 }
 
 pub fn install_hook() -> Result<usize, String> {

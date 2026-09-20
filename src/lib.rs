@@ -14,6 +14,7 @@ mod item_stats_sim;
 mod item_stats_ui;
 mod items;
 mod proc_queue;
+mod smart_builds;
 mod solo_rank_ui;
 mod strategy_ui;
 mod sunfire;
@@ -253,6 +254,7 @@ fn init(host: &StableHost) -> StableMod {
         ($key:literal => $T:ty) => {{
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
             item_stats::note_registered($key, StableItem::tier(&item));
+            smart_builds::note_mod_item($key, &item);
             item
         }};
     }
@@ -263,6 +265,7 @@ fn init(host: &StableHost) -> StableMod {
                 .map(<$T>::radiant_with_config)
                 .unwrap_or_else(<$T>::radiant);
             item_stats::note_registered($key, StableItem::tier(&item));
+            smart_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key, StableItem::category(&item));
             item
         }};

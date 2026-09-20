@@ -25,6 +25,9 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 ##### Pregame Item Builds Editor
 <img width="2024" height="1037" alt="image" src="https://github.com/user-attachments/assets/751df47e-8ed1-43a1-ac9c-168e42f15962" />
 
+##### Smart Builds
+The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. It cleans up what the AI picks: a duplicate item, a second Grievous Wounds item, or a crit item that would push the build past 100% crit chance is swapped for another final item of the same category. It covers all six slots, and it applies to the engine's own picks as well as to builds set in the editor. Switch it to **Allow Any Builds** to leave every pick alone.
+
 ### Added Items
 
 Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste), so 20 Ability Haste is a 16.7% shorter cooldown. It applies to every skill, ultimate included; Ultimate Ability Haste stacks on top for the ultimate only.

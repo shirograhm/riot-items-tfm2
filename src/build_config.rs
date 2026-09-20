@@ -89,7 +89,7 @@ fn config_path() -> Result<PathBuf, String> {
 //  File caches for the route hook
 // ---------------------------------------------------------------------------
 //
-// `load` and `unique_items_enabled` were called straight off `hook::detour`, on
+// `load` and `smart_builds_enabled` were called straight off `hook::detour`, on
 // the assumption noted at `PINS` that the route hook "fires a couple of times a
 // match". It does not: the game builds routes as *every* match starts, and a
 // league day's other fixtures sim on parallel rayon workers — so on a save with
@@ -696,7 +696,7 @@ pub fn pinned_key(champion: &str, slot: usize) -> Option<String> {
 /// a partial write would silently reset the other toggle to its default.
 fn save_settings(apply: impl FnOnce(&mut ModSettings)) -> bool {
     let mut settings = ModSettings {
-        unique_items: unique_items_enabled(),
+        unique_items: smart_builds_enabled(),
         own_team_only: own_team_only_enabled(),
     };
     apply(&mut settings);
@@ -713,8 +713,8 @@ fn save_settings(apply: impl FnOnce(&mut ModSettings)) -> bool {
 }
 
 /// Writes `unique_items` to `mod-settings.json`, the toggle
-/// [`unique_items_enabled`] reads back on every hook call.
-pub fn set_unique_items(enabled: bool) -> bool {
+/// [`smart_builds_enabled`] reads back on every hook call.
+pub fn set_smart_builds(enabled: bool) -> bool {
     save_settings(|settings| settings.unique_items = enabled)
 }
 
@@ -766,10 +766,14 @@ fn setting(cache: &AtomicU8, read: impl Fn(&ModSettings) -> bool, default: bool)
     value
 }
 
-/// Whether unique-build enforcement is enabled: `unique_items` in
+/// Whether the Smart Builds pass is enabled: `unique_items` in
 /// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
 /// is absent or malformed, so players opt *out* via the editor toggle.
-pub fn unique_items_enabled() -> bool {
+///
+/// The stored key is still `unique_items`, from when unique items were the
+/// only rule: renaming it would silently reset the toggle for every player
+/// who has already set it. See [`crate::smart_builds`] for what it gates now.
+pub fn smart_builds_enabled() -> bool {
     setting(&UNIQUE_ITEMS, |settings| settings.unique_items, true)
 }
 

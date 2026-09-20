@@ -4514,7 +4514,7 @@ fn editor_class(key: &str) -> Option<&'static str> {
 }
 
 /// The engine category of an item, as an `ItemCategoryV1` code — the coarser of
-/// the two groupings, and the one the stable hook's `enforce_unique_items`
+/// the two groupings, and the one the stable hook's `enforce_smart_build`
 /// substitutes within.
 ///
 /// The safety net under [`editor_class`]: an item added to the mod but not yet
@@ -4605,18 +4605,31 @@ fn id_in_category(id: u64, category: Option<u32>) -> bool {
 /// neither grouping or every item in both is already taken, which leaves the
 /// caller's existing fallback to answer — a cross-category item still beats no
 /// fourth item.
-unsafe fn same_category_swap(ctx: usize, wanted: u64, taken: &[u64], champ: &str) -> Option<u64> {
+///
+/// `budget`/`reason` are what the stand-in has to respect: the rules the
+/// replaced item broke are not worth re-breaking one slot later, and a crit
+/// overflow specifically asks for an item that adds no crit — the same test
+/// `crate::smart_builds::enforce` applies to slots 0/1/2.
+unsafe fn same_category_swap(
+    ctx: usize,
+    wanted: u64,
+    taken: &[u64],
+    champ: &str,
+    budget: &crate::smart_builds::Budget,
+    reason: crate::smart_builds::Reason,
+) -> Option<u64> {
     let key = catalog_name_at(ctx, wanted)?;
+    let allowed = |candidate: &str| budget.accepts_instead(candidate, reason);
     if let Some(class) = editor_class(&key) {
         if let Some(index) = pick_candidate(ctx, wanted, taken, champ, |candidate| {
-            editor_class(candidate) == Some(class)
+            editor_class(candidate) == Some(class) && allowed(candidate)
         }) {
             return Some(index);
         }
     }
     let category = engine_category(&key)?;
     pick_candidate(ctx, wanted, taken, champ, |candidate| {
-        engine_category(candidate) == Some(category)
+        engine_category(candidate) == Some(category) && allowed(candidate)
     })
 }
 
@@ -5253,15 +5266,44 @@ unsafe fn extra_slot_pick(
         .or_else(|| auto_extra_pick(ctx, champ, si, taken))
 }
 
-/// The pinned item for build slot `si`, as a catalog index, with the unique
-/// items rule applied the way slot 3 applies it: a duplicate of an earlier
-/// slot becomes another final of the same category, or nothing.
+/// The pinned item for build slot `si`, as a catalog index, with the Smart
+/// Builds rules applied the way slot 3 applies them: an item that duplicates
+/// an earlier slot, cuts healing a second time, or overflows the crit cap
+/// becomes another final of the same category, or nothing.
 unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize, taken: &[u64]) -> Option<u64> {
     let t = slotN_catalog_index(champ, si as u8, |key| scan_idx_cached(ctx, key))?;
-    if !crate::build_config::unique_items_enabled() || !taken.contains(&t) {
+    if !crate::build_config::smart_builds_enabled() {
         return Some(t);
     }
-    same_category_swap(ctx, t, taken, champ)
+    let budget = spent_budget(ctx, taken);
+    let Some(reason) = rejection(ctx, &budget, t, taken) else {
+        return Some(t);
+    };
+    same_category_swap(ctx, t, taken, champ, &budget, reason)
+}
+
+/// What the build slots before this one have spent of the Smart Builds budgets.
+/// An index the catalog scan cannot name contributes nothing — the same way an
+/// unclassifiable item is passed over on the other two paths.
+unsafe fn spent_budget(ctx: usize, taken: &[u64]) -> crate::smart_builds::Budget {
+    let keys: Vec<String> = taken
+        .iter()
+        .filter_map(|&index| catalog_name_at(ctx, index))
+        .collect();
+    crate::smart_builds::Budget::spent(keys.iter().map(String::as_str))
+}
+
+/// Why catalog index `t` cannot take this slot, or `None` when it can.
+unsafe fn rejection(
+    ctx: usize,
+    budget: &crate::smart_builds::Budget,
+    t: u64,
+    taken: &[u64],
+) -> Option<crate::smart_builds::Reason> {
+    if taken.contains(&t) {
+        return Some(crate::smart_builds::Reason::Duplicate);
+    }
+    budget.rejects(&catalog_name_at(ctx, t)?)
 }
 
 /// The automatic 5th and 6th item.
@@ -5279,21 +5321,34 @@ unsafe fn auto_extra_pick(ctx: usize, champ: &str, si: usize, taken: &[u64]) -> 
     } else {
         None
     };
+    // Smart Builds applies to a pick the mod made as much as to a pinned one: a
+    // 5th item that cuts healing a second time, or pushes the build past the crit
+    // cap, is the same wasted slot either way. `None` while the toggle is off,
+    // which makes the test below pass for every candidate.
+    let budget = crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, taken));
+    let allowed = |candidate: &str| {
+        budget
+            .as_ref()
+            .is_none_or(|budget| budget.rejects(candidate).is_none())
+    };
     anchor
         .as_deref()
         .and_then(engine_category)
         .and_then(|category| {
             pick_candidate(ctx, u64::MAX, taken, champ, |candidate| {
-                engine_category(candidate) == Some(category)
+                engine_category(candidate) == Some(category) && allowed(candidate)
             })
         })
         .or_else(|| {
             let start = champ_spread(champ, 6);
             (0..6)
                 .filter_map(|k| item_id_to_key(VANILLA_FINAL[(start + k) % 6]))
+                .filter(|key| allowed(key))
                 .filter_map(|key| scan_idx_cached(ctx, key.as_bytes()))
                 .find(|index| !taken.contains(index))
         })
+        // Last resort, deliberately unconstrained: a 5th item that breaks a rule
+        // still beats an empty slot, which is what the other two answered with.
         .or_else(|| pick_candidate(ctx, u64::MAX, taken, champ, |_| true))
 }
 
@@ -5760,7 +5815,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         .and_then(item_id_to_key)
                         .and_then(|k| scan_idx_cached(ctx, k.as_bytes()))
                 };
-                // * Unique-item enforcement for the 4th slot. `enforce_unique_items`
+                // * Unique-item enforcement for the 4th slot. `enforce_smart_build`
                 //   in `crate::item_build_hook` only ever sees the three slots the
                 //   engine's build Vec holds, so a build that pins the same item
                 //   four times came out de-duplicated in slots 0/1/2 and duplicated
@@ -5778,12 +5833,15 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   against what slots 0/1/2 *ended up* being — after the stable
                 //   hook's own de-duplication, or after the injection above.
                 let picked = picked.and_then(|t4| {
-                    if !crate::build_config::unique_items_enabled()
-                        || (t4 != b0 && t4 != b1 && t4 != b2)
-                    {
+                    if !crate::build_config::smart_builds_enabled() {
                         return Some(t4);
                     }
-                    same_category_swap(ctx, t4, &[b0, b1, b2], champ)
+                    let taken = [b0, b1, b2];
+                    let budget = spent_budget(ctx, &taken);
+                    let Some(reason) = rejection(ctx, &budget, t4, &taken) else {
+                        return Some(t4);
+                    };
+                    same_category_swap(ctx, t4, &taken, champ, &budget, reason)
                 });
                 // (3) Fallback: a vanilla final item different from build[0..2], resolved by key like every other pick —
                 //   `VANILLA_FINAL` holds ids, and an id is not a catalog index once mods or a save reorder the catalog.

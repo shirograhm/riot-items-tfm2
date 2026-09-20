@@ -208,8 +208,8 @@ impl Default for Strings {
                 "ITEM 5".into(),
                 "ITEM 6".into(),
             ],
-            unique_on: "Unique Items Enforced".into(),
-            unique_off: "Duplicates Allowed".into(),
+            unique_on: "Enforce Smart Builds".into(),
+            unique_off: "Allow Any Builds".into(),
             scope_all: "Apply To All Players".into(),
             scope_own: "Apply To Your Players Only".into(),
             save: "Save Item Builds".into(),
@@ -1695,7 +1695,7 @@ fn toggle_style(lit: bool) -> String {
 
 /// Paints which half of the unique-items toggle is the live setting.
 fn refresh_unique(ctx: &mut StableClient<'_>) {
-    if build_config::unique_items_enabled() {
+    if build_config::smart_builds_enabled() {
         paint_toggle(ctx, unique_on_path(), unique_off_path());
     } else {
         paint_toggle(ctx, unique_off_path(), unique_on_path());
@@ -3214,7 +3214,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     // builds: a pinned duplicate is the player's, and enforcement is something
     // the match does to a build, not something the editor does to the config.
     if path == unique_on_path() || path == unique_off_path() {
-        if build_config::set_unique_items(path == unique_on_path()) {
+        if build_config::set_smart_builds(path == unique_on_path()) {
             refresh_unique(ctx);
         }
         return;

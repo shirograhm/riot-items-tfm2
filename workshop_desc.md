@@ -1,9 +1,9 @@
-Adds 169 new items (97 base + 72 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Adds 6 item slots & 169 new items (97 base + 72 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
-[b]This mod supports custom item values, custom item builds, and 6 item slots. See instructions below![/b]  
+[b]This mod supports custom item values and custom item builds. See instructions below![/b]  
 
-Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for another item of the same category, 4th item included. Toggle it in the in-game Build Editor.  
+Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for another item of the same category. Toggle it in the in-game Build Editor.  
 
 [h1] Important [/h1]
 This mod currently supports English, Vietnamese, Portuguese (BR), Russian, Chinese (Simplified), and Korean locales. You can use it with other languages, but the names and descriptions of the items will be broken.  
@@ -52,7 +52,7 @@ You can also check the github repository for manual releases. https://github.com
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box!  
 
-However, if any of the modded items feel too strong/weak, this mod supports full customization on all modded item values. To do so:
+However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:
 
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
 2. Edit the new [b]config.json[/b] with the custom values that you want.
@@ -75,9 +75,6 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 
 Builds are saved automatically when changed to [b]item-builds.json[/b] as you make them, so they carry across sessions. Click [b]Save Item Builds[/b] to run a manual save.  
 
-[h1] 6 Item Slots [/h1]
-This mod enables 6 item slots by default. No config needed!
-
 [h1] Planned Features [/h1]
 - More support items.
 - Translations for other locales.
@@ -94,7 +91,7 @@ Special thanks to all the playtesters that helped me out along the way by sendin
 [b]@blasé[/b] for helping playtest the 4 Item Mode compatibility!  
 [b]@Guardsman C[/b] & [b]@kmrn[/b] for helping playtest the new item hooks on 0.6.0!
 
-Thank you to [b]@Formula Piggy[/b] & [b]@Yuuroo[/b] on discord for Vietnamese translations!
+Thank you to [b]@Formula Piggy[/b] & [b]@Yuuroo[/b] on discord for Vietnamese translations!s
 Thank you to [b]@GeoStelar[/b] on discord for the Portuguese (BR) translations!
 Thank you to [b]@Monsoon[/b] on discord for the Chinese (Simplified) translations!
 Thank you to [b]@Dushnerd[/b] on discord for the Russian translations!
