@@ -134,7 +134,12 @@ pub unsafe fn ui_root() -> Option<&'static mut Node> {
 /// offsets (`O_ATHLETE_ID`, `ATH_STRIDE`, `O_PROVIDER_SEED` -- all three
 /// unchanged from beta2, confirmed by a STRICT exe2exe match of the 286-byte
 /// roster walk). Not re-derived, and not reachable: LOADER/PARSER/ALLOC,
-/// GV_UPDATE, REALLOC, ITEMNET_FORWARD, SPAWN, PV_*.
+/// GV_UPDATE, ITEMNET_FORWARD, SPAWN, PV_*.
+///
+/// **Added 2026-09-18, for the 5th and 6th item slots:** `RVA_REALLOC`
+/// (re-derived, and prologue-checked before every call by `realloc_ok`) and
+/// the three release byte patches `patch_final_gate`, `patch_row_floor` and
+/// `patch_result_row_floor`. All four are covered by `tools/verify_rvas.py`.
 ///
 /// `src/hook.rs` is unaffected either way -- it installs from
 /// `lib.rs::on_server_start` independently, and is still the only route to

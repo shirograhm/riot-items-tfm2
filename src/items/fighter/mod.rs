@@ -2,6 +2,7 @@
 
 items! {
     black_cleaver,
+    chempunk_chainsword,
     deaths_dance,
     eclipse,
     experimental_hexplate,

@@ -4,6 +4,7 @@ items! {
     ardent_censer,
     bandlepipes,
     bloodsong,
+    chemtech_putrifier,
     echoes_of_helia,
     locket_of_the_iron_solari,
     protoplasm_harness,

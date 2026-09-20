@@ -1,5 +1,17 @@
 //! Solo-rank match history: makes the item row match the configured slot count.
 //!
+//! # The override is back, with six slots (2026-09-19)
+//!
+//! The mod's 5th and 6th item slots put six-item records into solo rank, and
+//! the game asks this row for `item.item_slot{i}` once per owned item — so a
+//! four-slot row would take the tab down (see below). `mod.override_info`
+//! remaps `solo_rank_component/view_slot` again, to a copy of 0.6.0's own file
+//! with `item_slot4`/`item_slot5` added. It is 0.6.0's styling, compacted to fit
+//! the 1600px row with no other column moving: slots 29 -> 26px, icons 24 ->
+//! 22px, gaps 4 -> 2px (`#item` 128 -> 166px), and `#replay_wrap` 79 -> 41px to
+//! pay for it. Rebase it onto vanilla after any game update that touches the
+//! row. [`sync`] still does nothing at more than three slots.
+//!
 //! # Inert as of game 0.6.0 (release) — and its override is gone
 //!
 //! Everything below describes a choice between a three- and a four-slot

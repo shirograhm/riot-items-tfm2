@@ -834,6 +834,22 @@
         "radiant_seryldas_grudge": {
             "name": "Radiant Serylda's Grudge",
             "option": "\n<#ff7a3eff>Bitter Cold<>: Dealing Ability damage to an enemy <#d94c49ff>at or below 50% maximum health<> applies a <#d94c49ff>30% slow<> for <#e8a800ff>1.5 seconds<>."
+        },
+        "chemtech_putrifier": {
+            "name": "Chemtech Putrifier",
+            "option": "\n<#ff7a3eff>Grievous Wounds<>: Dealing damage to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Radiant Chemtech Putrifier",
+            "option": "\n<#ff7a3eff>Grievous Wounds<>: Dealing damage to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+        },
+        "chempunk_chainsword": {
+            "name": "Chempunk Chainsword",
+            "option": "\n<#ff7a3eff>Grievous Wounds<>: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Radiant Chempunk Chainsword",
+            "option": "\n<#ff7a3eff>Grievous Wounds<>: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
         }
     },
     "vi": {
@@ -1671,6 +1687,22 @@
         "radiant_seryldas_grudge": {
             "name": "Thương Phục Hận Serylda Ánh Sáng",
             "option": "\n<#ff7a3eff>Giá Lạnh<>: Gây sát thương kĩ năng lên kẻ địch <#d94c49ff>còn từ 50% Máu tối đa trở xuống<> sẽ gây <#d94c49ff>30% kiệt sức<> trong <#e8a800ff>1.5 giây<>."
+        },
+        "chemtech_putrifier": {
+            "name": "Bình Thải Hóa Dược",
+            "option": "\n<#ff7a3eff>Vết thương chí mạng<>: Gây sát thương lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Bình Thải Hóa Dược Ánh Sáng",
+            "option": "\n<#ff7a3eff>Vết thương chí mạng<>: Gây sát thương lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+        },
+        "chempunk_chainsword": {
+            "name": "Cưa Xích Hóa Kỹ",
+            "option": "\n<#ff7a3eff>Vết thương chí mạng<>: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Cưa Xích Hóa Kỹ Ánh Sáng",
+            "option": "\n<#ff7a3eff>Vết thương chí mạng<>: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
         }
     },
     "zh-hans": {
@@ -2508,6 +2540,22 @@
         "radiant_seryldas_grudge": {
             "name": "光明版赛瑞尔达的怨恨",
             "option": "\n<#ff7a3eff>严寒<>：技能对<#d94c49ff>生命值不高于50%最大生命值<>的敌人造成伤害时，对其施加 <#d94c49ff>30%减速<>，持续 <#e8a800ff>1.5秒<>。"
+        },
+        "chemtech_putrifier": {
+            "name": "炼金科技纯化器",
+            "option": "\n<#ff7a3eff>重伤<>：对敌方英雄造成伤害会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "光明版炼金科技纯化器",
+            "option": "\n<#ff7a3eff>重伤<>：对敌方英雄造成伤害会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+        },
+        "chempunk_chainsword": {
+            "name": "炼金朋克链锯剑",
+            "option": "\n<#ff7a3eff>重伤<>：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "光明版炼金朋克链锯剑",
+            "option": "\n<#ff7a3eff>重伤<>：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
         }
     },
     "pt-BR": {
@@ -3345,6 +3393,22 @@
         "radiant_seryldas_grudge": {
             "name": "Rancor de Serylda Radiante",
             "option": "\n<#ff7a3eff>Frio Agonizante<>: Causar dano de Habilidade a um inimigo <#d94c49ff>com 50% da Vida Máxima ou menos<> aplica <#d94c49ff>30% de lentidão<> por <#e8a800ff>1.5 segundos<>."
+        },
+        "chemtech_putrifier": {
+            "name": "Putrificador Quimtec",
+            "option": "\n<#ff7a3eff>Ferimentos Graves<>: Causar dano a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Putrificador Quimtec Radiante",
+            "option": "\n<#ff7a3eff>Ferimentos Graves<>: Causar dano a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+        },
+        "chempunk_chainsword": {
+            "name": "Serrespada Quimiopunk",
+            "option": "\n<#ff7a3eff>Ferimentos Graves<>: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Serrespada Quimiopunk Radiante",
+            "option": "\n<#ff7a3eff>Ferimentos Graves<>: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
         }
     },
     "ru": {
@@ -4182,6 +4246,22 @@
         "radiant_seryldas_grudge": {
             "name": "Лучезарная Злоба Серильды",
             "option": "\n<#ff7a3eff>Лютый холод<>: Нанесение урона умением противнику <#d94c49ff>с 50% максимального здоровья или меньше<> замедляет его на <#d94c49ff>30%<> на <#e8a800ff>1.5 секунды<>."
+        },
+        "chemtech_putrifier": {
+            "name": "Химтековый разъедатель",
+            "option": "\n<#ff7a3eff>Тяжёлые раны<>: Нанесение урона вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Лучезарный Химтековый разъедатель",
+            "option": "\n<#ff7a3eff>Тяжёлые раны<>: Нанесение урона вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+        },
+        "chempunk_chainsword": {
+            "name": "Нож-пила химпанка",
+            "option": "\n<#ff7a3eff>Тяжёлые раны<>: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Лучезарный Нож-пила химпанка",
+            "option": "\n<#ff7a3eff>Тяжёлые раны<>: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
         }
     },
     "ko": {
@@ -5019,6 +5099,22 @@
         "radiant_seryldas_grudge": {
             "name": "찬란한 세릴다의 원한",
             "option": "\n<#ff7a3eff>매서운 추위<>: <#d94c49ff>최대 체력이 50% 이하인<> 적에게 스킬로 피해를 입히면 <#e8a800ff>1.5초<> 동안 <#d94c49ff>30% 둔화<>시킵니다."
+        },
+        "chemtech_putrifier": {
+            "name": "화학공학 부패기",
+            "option": "\n<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "찬란한 화학공학 부패기",
+            "option": "\n<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
+        },
+        "chempunk_chainsword": {
+            "name": "화공 펑크 사슬검",
+            "option": "\n<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "찬란한 화공 펑크 사슬검",
+            "option": "\n<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
         }
     }
 }

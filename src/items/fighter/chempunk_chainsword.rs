@@ -1,44 +1,43 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{add_stack, apply_config, ticks, ItemMeta};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
-pub struct BlackCleaver {
+pub struct ChempunkChainsword {
     meta: ItemMeta,
     price: usize,
     attack: i32,
     hp: i32,
     skill_cooldown_mult: i32,
-    effect_max_stacks: usize,
+    effect_heal_reduce: usize,
     effect_duration_seconds: f64,
-    effect_percent_armor_shred: i32,
 }
 
-impl BlackCleaver {
+impl ChempunkChainsword {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("black_cleaver", &["phage"], &["radiant_black_cleaver"]),
-            price: 1500,
-            attack: 45,
-            hp: 300,
-            skill_cooldown_mult: 5,
-            effect_max_stacks: 5,
-            effect_duration_seconds: 6.0,
-            effect_percent_armor_shred: 6,
+            meta: ItemMeta::base(
+                "chempunk_chainsword",
+                &["phage"],
+                &["radiant_chempunk_chainsword"],
+            ),
+            price: 1300,
+            attack: 35,
+            hp: 350,
+            skill_cooldown_mult: 10,
+            effect_heal_reduce: 40,
+            effect_duration_seconds: 2.0,
         }
     }
 
     pub fn radiant() -> Self {
         Self {
-            meta: ItemMeta::radiant("radiant_black_cleaver", &["black_cleaver"]),
-            price: 2200,
-            attack: 70,
-            hp: 500,
-            skill_cooldown_mult: 10,
-            effect_max_stacks: 5,
-            effect_duration_seconds: 6.0,
-            effect_percent_armor_shred: 6,
+            meta: ItemMeta::radiant("radiant_chempunk_chainsword", &["chempunk_chainsword"]),
+            price: 1850,
+            attack: 55,
+            hp: 550,
+            skill_cooldown_mult: 15,
             ..Self::base()
         }
     }
@@ -60,22 +59,21 @@ impl BlackCleaver {
                 attack,
                 hp,
                 skill_cooldown_mult,
-                effect_max_stacks,
-                effect_duration_seconds,
-                effect_percent_armor_shred
+                effect_heal_reduce,
+                effect_duration_seconds
             ]
         );
         self
     }
 }
 
-impl Default for BlackCleaver {
+impl Default for ChempunkChainsword {
     fn default() -> Self {
         Self::base()
     }
 }
 
-impl StableItem for BlackCleaver {
+impl StableItem for ChempunkChainsword {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
@@ -123,31 +121,32 @@ impl StableItem for BlackCleaver {
         _attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        let Some(entity_ref) = ctx.get_entity(target) else {
+        let Some(_entity_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !entity_ref.is_champion() {
-            return;
-        }
 
         if damage_type != DamageTypeV1::Ad {
             return;
         }
 
-        let duration = ticks(self.effect_duration_seconds);
-        add_stack(
+        refresh_buff(
             ctx,
             target,
+            "40_percent_heal_cut",
             &BuffV1 {
-                defence_mult: -self.effect_percent_armor_shred,
-                ..BuffV1::timed("black_cleaver_armor_shred", duration)
+                heal_reduce: self.effect_heal_reduce,
+                ..BuffV1::timed("40_percent_heal_cut", ticks(self.effect_duration_seconds))
             },
-            self.effect_max_stacks,
         );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Hp, ItemTagV1::Ad]
+        vec![
+            ItemTagV1::Ad,
+            ItemTagV1::Hp,
+            ItemTagV1::CooltimeReduce,
+            ItemTagV1::HealReduce,
+        ]
     }
 
     fn category(&self) -> ItemCategoryV1 {

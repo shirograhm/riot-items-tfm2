@@ -1,0 +1,40 @@
+item_slot:color {
+  focusable: true;
+  width: 42px;
+  height: 42px;
+
+  color: #e8e8e800;
+  hover: {
+    color: #e8e8e8ff;
+  }
+
+  active: {
+    color: #e8e8e8ff;
+  }
+
+  #bg:color {
+    anchor_x: 0.5;
+    pivot_x: 0.5;
+    anchor_y: 0.5;
+    pivot_y: 0.5;
+
+    width: 95%;
+    height: 95%;
+
+    color: #4a4c56ff;
+
+    ignore_event: true;
+
+    #icon:image {
+      width: 90%;
+      height: 90%;
+
+      anchor_x: 0.5;
+      anchor_y: 0.5;
+      pivot_x: 0.5;
+      pivot_y: 0.5;
+
+      ignore_event: true;
+    }
+  }
+}

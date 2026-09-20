@@ -522,6 +522,15 @@ $rhamCrit = [int]$config.radiant_hamstringer.effect_crit_percent_damage
 $rhamSlow = [int]$config.radiant_hamstringer.effect_slow_amount
 $rhamDur = [int]$config.radiant_hamstringer.effect_duration_seconds
 
+$cptHeal = [int]$config.chemtech_putrifier.effect_heal_reduce
+$cptDur = [int]$config.chemtech_putrifier.effect_duration_seconds
+$rcptHeal = [int]$config.radiant_chemtech_putrifier.effect_heal_reduce
+$rcptDur = [int]$config.radiant_chemtech_putrifier.effect_duration_seconds
+$ccsHeal = [int]$config.chempunk_chainsword.effect_heal_reduce
+$ccsDur = [int]$config.chempunk_chainsword.effect_duration_seconds
+$rccsHeal = [int]$config.radiant_chempunk_chainsword.effect_heal_reduce
+$rccsDur = [int]$config.radiant_chempunk_chainsword.effect_duration_seconds
+
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
 # Effect text renders straight under the stat block with nothing between them,
@@ -769,6 +778,10 @@ $i18n.en.radiant_cloak_of_starry_night.option = $cosnEn -f $rcosnMr, $rcosnSdr, 
 $hamEn = "<#ff7a3eff>Scour<>: Your <$critIcon> <#d45656ff>critical strikes<> bleed the target, dealing <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#d45656ff>(+{3}% <$critIcon>)<> <#ff9028ff>physical damage<> over <#e8a800ff>{2} seconds<> and applying a <#d94c49ff>{4}% slow<>."
 $i18n.en.hamstringer.option = $hamEn -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
 $i18n.en.radiant_hamstringer.option = $hamEn -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
+$i18n.en.chemtech_putrifier.option = "<#ff7a3eff>Grievous Wounds<>: Dealing damage to an enemy champion <#d94c49ff>reduces their healing by ${cptHeal}%<> for <#e8a800ff>${cptDur} seconds<>."
+$i18n.en.radiant_chemtech_putrifier.option = "<#ff7a3eff>Grievous Wounds<>: Dealing damage to an enemy champion <#d94c49ff>reduces their healing by ${rcptHeal}%<> for <#e8a800ff>${rcptDur} seconds<>."
+$i18n.en.chempunk_chainsword.option = "<#ff7a3eff>Grievous Wounds<>: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${ccsHeal}%<> for <#e8a800ff>${ccsDur} seconds<>."
+$i18n.en.radiant_chempunk_chainsword.option = "<#ff7a3eff>Grievous Wounds<>: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rccsHeal}%<> for <#e8a800ff>${rccsDur} seconds<>."
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -967,6 +980,10 @@ $i18n.vi.radiant_cloak_of_starry_night.option = $cosnVi -f $rcosnMr, $rcosnSdr, 
 $hamVi = "<#ff7a3eff>Khám Xét<>: <$critIcon> <#d45656ff>Đòn Chí Mạng<> của bạn gây chảy máu lên mục tiêu, gây <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#d45656ff>(+{3}% <$critIcon>)<> <#ff9028ff>sát thương vật lí<> trong <#e8a800ff>{2} giây<> và gây <#d94c49ff>{4}% kiệt sức<>."
 $i18n.vi.hamstringer.option = $hamVi -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
 $i18n.vi.radiant_hamstringer.option = $hamVi -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
+$i18n.vi.chemtech_putrifier.option = "<#ff7a3eff>Vết thương chí mạng<>: Gây sát thương lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${cptHeal}%<> trong <#e8a800ff>${cptDur} giây<>."
+$i18n.vi.radiant_chemtech_putrifier.option = "<#ff7a3eff>Vết thương chí mạng<>: Gây sát thương lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rcptHeal}%<> trong <#e8a800ff>${rcptDur} giây<>."
+$i18n.vi.chempunk_chainsword.option = "<#ff7a3eff>Vết thương chí mạng<>: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${ccsHeal}%<> trong <#e8a800ff>${ccsDur} giây<>."
+$i18n.vi.radiant_chempunk_chainsword.option = "<#ff7a3eff>Vết thương chí mạng<>: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rccsHeal}%<> trong <#e8a800ff>${rccsDur} giây<>."
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1165,6 +1182,10 @@ $i18n.'zh-hans'.radiant_cloak_of_starry_night.option = $cosnZh -f $rcosnMr, $rco
 $hamZh = "<#ff7a3eff>冲洗<>：你的<$critIcon> <#d45656ff>暴击<>会使目标流血，在 <#e8a800ff>{2}秒<>内造成 <#ff9028ff>{0}<> - <#ff9028ff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#d45656ff>（+{3}% <$critIcon>）<>的<#ff9028ff>物理伤害<>，并施加 <#d94c49ff>{4}%减速<>。"
 $i18n.'zh-hans'.hamstringer.option = $hamZh -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
 $i18n.'zh-hans'.radiant_hamstringer.option = $hamZh -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
+$i18n.'zh-hans'.chemtech_putrifier.option = "<#ff7a3eff>重伤<>：对敌方英雄造成伤害会使其<#d94c49ff>治疗效果降低${cptHeal}%<>，持续 <#e8a800ff>${cptDur}秒<>。"
+$i18n.'zh-hans'.radiant_chemtech_putrifier.option = "<#ff7a3eff>重伤<>：对敌方英雄造成伤害会使其<#d94c49ff>治疗效果降低${rcptHeal}%<>，持续 <#e8a800ff>${rcptDur}秒<>。"
+$i18n.'zh-hans'.chempunk_chainsword.option = "<#ff7a3eff>重伤<>：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${ccsHeal}%<>，持续 <#e8a800ff>${ccsDur}秒<>。"
+$i18n.'zh-hans'.radiant_chempunk_chainsword.option = "<#ff7a3eff>重伤<>：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${rccsHeal}%<>，持续 <#e8a800ff>${rccsDur}秒<>。"
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1363,6 +1384,10 @@ $i18n.'pt-BR'.radiant_cloak_of_starry_night.option = $cosnPt -f $rcosnMr, $rcosn
 $hamPt = "<#ff7a3eff>Erosão<>: Seus <$critIcon> <#d45656ff>Acertos Críticos<> causam sangramento no alvo, infligindo <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) <#d45656ff>(+{3}% <$critIcon>)<> de <#ff9028ff>dano físico<> ao longo de <#e8a800ff>{2} segundos<> e aplicando <#d94c49ff>{4}% de lentidão<>."
 $i18n.'pt-BR'.hamstringer.option = $hamPt -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
 $i18n.'pt-BR'.radiant_hamstringer.option = $hamPt -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
+$i18n.'pt-BR'.chemtech_putrifier.option = "<#ff7a3eff>Ferimentos Graves<>: Causar dano a um campeão inimigo <#d94c49ff>reduz a cura dele em ${cptHeal}%<> por <#e8a800ff>${cptDur} segundos<>."
+$i18n.'pt-BR'.radiant_chemtech_putrifier.option = "<#ff7a3eff>Ferimentos Graves<>: Causar dano a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rcptHeal}%<> por <#e8a800ff>${rcptDur} segundos<>."
+$i18n.'pt-BR'.chempunk_chainsword.option = "<#ff7a3eff>Ferimentos Graves<>: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${ccsHeal}%<> por <#e8a800ff>${ccsDur} segundos<>."
+$i18n.'pt-BR'.radiant_chempunk_chainsword.option = "<#ff7a3eff>Ferimentos Graves<>: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rccsHeal}%<> por <#e8a800ff>${rccsDur} segundos<>."
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1561,6 +1586,10 @@ $i18n.ru.radiant_cloak_of_starry_night.option = $cosnRu -f $rcosnMr, $rcosnSdr, 
 $hamRu = "<#ff7a3eff>Разъедание<>: Ваши <$critIcon> <#d45656ff>критические удары<> вызывают у цели кровотечение, нанося <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#d45656ff>(+{3}% <$critIcon>)<> <#ff9028ff>физического урона<> в течение <#e8a800ff>{2} секунд<> и накладывая <#d94c49ff>замедление на {4}%<>."
 $i18n.ru.hamstringer.option = $hamRu -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
 $i18n.ru.radiant_hamstringer.option = $hamRu -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
+$i18n.ru.chemtech_putrifier.option = "<#ff7a3eff>Тяжёлые раны<>: Нанесение урона вражескому чемпиону <#d94c49ff>снижает его лечение на ${cptHeal}%<> на <#e8a800ff>${cptDur} секунды<>."
+$i18n.ru.radiant_chemtech_putrifier.option = "<#ff7a3eff>Тяжёлые раны<>: Нанесение урона вражескому чемпиону <#d94c49ff>снижает его лечение на ${rcptHeal}%<> на <#e8a800ff>${rcptDur} секунды<>."
+$i18n.ru.chempunk_chainsword.option = "<#ff7a3eff>Тяжёлые раны<>: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${ccsHeal}%<> на <#e8a800ff>${ccsDur} секунды<>."
+$i18n.ru.radiant_chempunk_chainsword.option = "<#ff7a3eff>Тяжёлые раны<>: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rccsHeal}%<> на <#e8a800ff>${rccsDur} секунды<>."
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -1758,6 +1787,10 @@ $i18n.ko.radiant_cloak_of_starry_night.option = $cosnKo -f $rcosnMr, $rcosnSdr, 
 $hamKo = "<#ff7a3eff>전소<>: <$critIcon> <#d45656ff>치명타<>가 대상에게 출혈을 입혀 <#e8a800ff>{2}초<>에 걸쳐 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>{0}<>~<#ff9028ff>{1}<> <#d45656ff>(+{3}% <$critIcon>)<>의 <#ff9028ff>물리 피해<>를 입히고 <#d94c49ff>{4}% 둔화<>시킵니다."
 $i18n.ko.hamstringer.option = $hamKo -f $hamMin, $hamMax, $hamDur, $hamCrit, $hamSlow
 $i18n.ko.radiant_hamstringer.option = $hamKo -f $rhamMin, $rhamMax, $rhamDur, $rhamCrit, $rhamSlow
+$i18n.ko.chemtech_putrifier.option = "<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>${cptDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${cptHeal}% 감소<>합니다."
+$i18n.ko.radiant_chemtech_putrifier.option = "<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>${rcptDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${rcptHeal}% 감소<>합니다."
+$i18n.ko.chempunk_chainsword.option = "<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${ccsDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${ccsHeal}% 감소<>합니다."
+$i18n.ko.radiant_chempunk_chainsword.option = "<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${rccsDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${rccsHeal}% 감소<>합니다."
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {

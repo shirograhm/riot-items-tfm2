@@ -1169,6 +1169,30 @@
             "y": 0.45,
             "w": 0.05,
             "h": 0.05
+        },
+        "chemtech_putrifier": {
+            "x": 0.75,
+            "y": 0.45,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_chemtech_putrifier": {
+            "x": 0.80,
+            "y": 0.45,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "chempunk_chainsword": {
+            "x": 0.85,
+            "y": 0.45,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_chempunk_chainsword": {
+            "x": 0.90,
+            "y": 0.45,
+            "w": 0.05,
+            "h": 0.05
         }
     }
 }

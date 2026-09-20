@@ -39,6 +39,26 @@
     "remapping": "asset/riot_items_tfm2/ui/layout/statistics",
     "type": "override"
   },
+  "asset/base/ui/layout/solo_rank_component/view_slot": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/solo_rank_component/view_slot",
+    "type": "override"
+  },
+  "asset/base/ui/layout/ingame": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/ingame",
+    "type": "override"
+  },
+  "asset/base/ui/layout/ingame_component/player_info": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/ingame_component/player_info",
+    "type": "override"
+  },
+  "asset/base/ui/layout/ingame_component/wide_player_info": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/ingame_component/wide_player_info",
+    "type": "override"
+  },
+  "asset/base/ui/layout/ingame_component/item_slot": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/ingame_component/item_slot",
+    "type": "override"
+  },
   "asset/base/ui/layout/match_result": {
     "remapping": "asset/riot_items_tfm2/ui/layout/match_result",
     "type": "override"
