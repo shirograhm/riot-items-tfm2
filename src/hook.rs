@@ -555,6 +555,27 @@ unsafe fn patch_target(target: *mut u8) -> Result<Vec<String>, String> {
     Ok(warnings)
 }
 
+/// # Only `ItemInfo::key` and `ItemInfo::next_tier` may be called here
+///
+/// `items` is a slice of **trait objects**, and a trait object's vtable is laid
+/// out in the order the trait declares its methods. This crate links the 0.5.2
+/// `game_core` rlib (see `.cargo/config.toml` for why no later one links), and
+/// `ItemInfo` has grown since: 0.5.6 declares `on_assist`, `on_base_attack` and
+/// `on_dead`, which 0.5.2 does not. Every slot at or past the first insertion
+/// point therefore points at the *wrong function* in the running game.
+///
+/// `key` and `next_tier` happen to sit ahead of it, which is why the catalog
+/// snapshot below has always worked. `category` and `tier` do not. Calling
+/// `category()` (2026-09-19, from `enforce_unique_items`) dispatched into some
+/// other trait method with nonsense arguments; the game's own Rust code
+/// panicked and aborted the process with `0xc0000409` /
+/// `FAST_FAIL_FATAL_APP_EXIT` as soon as a 5v5 test began.
+///
+/// The `repr(Rust)` *layout* argument in `.cargo/config.toml` is sound and is
+/// not what this is about - layout is fixed by the compiler, vtable order is
+/// fixed by the SDK's trait declaration. Needing another fact about an item
+/// means deriving it from a key, not adding a call: `item_catalog`,
+/// `build_config` and `strategy_ui` all index by key and cost nothing.
 unsafe fn detour(
     agent: &LogisticSGDAgent,
     items: &Vec<Box<dyn ItemInfo>>,
@@ -640,8 +661,8 @@ unsafe fn detour(
     routes
 }
 
-/// Applies the editor's builds to a training-screen match, which is the one
-/// place the stable hook never runs.
+/// Applies the editor's builds *and* unique-item enforcement to a
+/// training-screen match, which is the one place the stable hook never runs.
 ///
 /// # Why this exists again
 ///
@@ -682,7 +703,11 @@ fn apply_training_builds(
     team1: &[(Position, String)],
 ) {
     let config = build_config::load_cached();
-    if config.is_empty() {
+    // Unique enforcement is not a property of the editor's builds - the stable
+    // hook runs it over the engine's own `base_build` too - so an empty config
+    // is only a reason to skip the rewrite below, not a reason to return.
+    let unique = build_config::unique_items_enabled();
+    if config.is_empty() && !unique {
         return;
     }
 
@@ -697,13 +722,90 @@ fn apply_training_builds(
             break;
         };
         let role = build_config::Role::from_lane_code(position);
-        let Some(build) =
-            build_config::build_for_champion(&config, champion, role, &index_of, route)
-        else {
+        if let Some(build) = (!config.is_empty())
+            .then(|| build_config::build_for_champion(&config, champion, role, &index_of, route))
+            .flatten()
+        {
+            for (slot, item) in build.iter().enumerate().take(route.len()) {
+                route[slot] = *item;
+            }
+        }
+        if unique {
+            enforce_unique_items(items, route);
+        }
+    }
+}
+
+/// The training-screen twin of `crate::item_build_hook::enforce_unique_items`,
+/// kept deliberately identical in behaviour: a duplicate is swapped for the
+/// next unused final item of the same category, wrapping around the catalog,
+/// and left alone when no such item exists.
+///
+/// It has to be written twice because the two halves see the catalog through
+/// different APIs - `StableItemBuildContext`'s flat index arrays there, the
+/// game's own `Vec<Box<dyn ItemInfo>>` here - and the indices in `route` are
+/// positions in *this* list, the same ones `index_of` above produces.
+///
+/// # Why it does not ask `ItemInfo` for the category or the tier
+///
+/// **Only `key()` and `next_tier()` may be called on a `dyn ItemInfo` here.**
+/// See the warning above `detour` for the whole story; the short version is
+/// that this crate links the 0.5.2 `game_core` rlib, whose `ItemInfo` is
+/// missing three methods the current game's trait has, so vtable slots past the
+/// insertion point resolve to the wrong function. `category()` and `tier()` are
+/// past it. Calling `category()` dispatched into an unrelated game method with
+/// nonsense arguments, which panicked inside the game's own Rust code and
+/// took the process down with `__fastfail(FAST_FAIL_FATAL_APP_EXIT)` the
+/// moment a 5v5 test started with a duplicate in a configured build.
+///
+/// Both facts are available without the vtable:
+///
+/// * **Category** - `item_catalog::category_of` on the normalized slug, which
+///   is the hand-kept grouping the build editor shows and covers vanilla finals
+///   too (`base_slug` maps the six reskins back onto their LoL slug). An item
+///   nobody classified comes back `None` and is left alone, exactly as an
+///   unclassifiable item is on the stable path.
+/// * **Final** - an item is final iff it upgrades into nothing, and
+///   `next_tier()` is one of the two slots that is safe to call. This is the
+///   same test `record_item_catalog` above already relies on.
+///
+/// Note the two paths therefore substitute within *different* groupings: the
+/// stable hook uses the engine's coarse `ItemCategoryV1`, this uses the
+/// editor's finer class. Both keep a stand-in "the same kind of item", which is
+/// what the rule is for, and the finer one is the better answer where it has
+/// one.
+fn enforce_unique_items(items: &[Box<dyn ItemInfo>], build: &mut [usize]) {
+    let count = items.len();
+    if count == 0 {
+        return;
+    }
+    let category = |index: usize| {
+        let item = items.get(index)?;
+        // Bound rather than chained: `base_slug` borrows the key, and only the
+        // `&'static str` that `category_of` returns outlives this block.
+        let key = item.key().to_string();
+        crate::item_catalog::category_of(build_config::base_slug(&key))
+    };
+    let is_selectable_final =
+        |index: usize| items.get(index).is_some_and(|item| item.next_tier().is_empty());
+
+    let mut seen = std::collections::HashSet::new();
+    for slot in build.iter_mut() {
+        if seen.insert(*slot) {
+            continue;
+        }
+        // Must be known: matching `None` against `None` would swap a duplicate
+        // for any item that is not in the list at all.
+        let Some(wanted) = category(*slot) else {
             continue;
         };
-        for (slot, item) in build.iter().enumerate().take(route.len()) {
-            route[slot] = *item;
+        let duplicate = *slot;
+        let replacement = (1..count)
+            .map(|step| (duplicate + step) % count)
+            .find(|c| !seen.contains(c) && category(*c) == Some(wanted) && is_selectable_final(*c));
+        if let Some(index) = replacement {
+            *slot = index;
+            seen.insert(index);
         }
     }
 }

@@ -323,6 +323,12 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
 
 const AI_SLOT_LABEL_FALLBACK: &str = "Let Player Decide";
 
+/// What an unpinned slot button shows. The same in every language, and padded
+/// so the dash sits where a pinned slot's icon is centred (x = 20px); the
+/// descriptive [`AI_SLOT_LABEL_FALLBACK`] wording stays on the list row that
+/// clears a slot.
+const EMPTY_SLOT_LABEL: &str = "     -";
+
 /// Shown for a row whose champion has not been chosen yet. Such a row is kept in
 /// the editor but never written.
 const NO_CHAMPION_LABEL_FALLBACK: &str = "(champion)";
@@ -593,12 +599,20 @@ const ROLE_W: u32 = 100;
 const COLUMNS_LEFT: u32 = 348;
 const COLUMN_GAP: u32 = 44;
 
-/// Width of one item column: the shared band split evenly, gaps removed. Three
-/// slots give 266px, four give 188px. The champion and Role columns were
-/// trimmed to hand the difference here, since item names are what truncate.
+/// Widest an item column gets. A slot button shows only the item's icon (or
+/// [`EMPTY_SLOT_LABEL`]), so it needs room for the icon at 8px (24px wide),
+/// the clear button at `combo_w - 52` (22px) and the drop arrow at
+/// `combo_w - 24` (12px) -- 88px holds all three with air between them.
+const COMBO_MAX_W: u32 = 88;
+
+/// Width of one item column: [`COMBO_MAX_W`], or less if the shared band split
+/// evenly (gaps removed) is narrower than that on a small host. Item names are
+/// no longer drawn in the button, so there is nothing to spend a wider column
+/// on; the unused band is left empty before the delete button.
 fn combo_w() -> u32 {
     let slots = picker_slots() as u32;
-    (columns_right() - COLUMNS_LEFT - (slots - 1) * COLUMN_GAP) / slots
+    let split = (columns_right() - COLUMNS_LEFT - (slots - 1) * COLUMN_GAP) / slots;
+    split.min(COMBO_MAX_W)
 }
 
 /// Left edge of an item column. The band starts after the Role column, so the
@@ -1170,72 +1184,6 @@ fn sanitize(text: &str) -> String {
         .collect()
 }
 
-/// Approximate width, in canvas px, of one character of the 14px label text the
-/// rows use.
-///
-/// The UI layer exposes no text measurement, so a label that has to be made to
-/// fit is estimated instead. Three buckets — narrow, wide, and everything else —
-/// are enough for the job: item names are ordinary Latin words, and the cost of
-/// being a few px out is one character more or less before the ellipsis.
-///
-/// Calibrated against names measured off a rendered 199px column ("Frozen
-/// Mallet", "Zeke's Herald", "Infinity Edge", "Liandry's Torment"), and rounded
-/// *up* from there on purpose: over-estimating costs a character before the
-/// ellipsis, while under-estimating puts the name back under the clear button,
-/// which is the bug this is here to fix.
-fn char_width(character: char) -> f32 {
-    match character {
-        ' ' | '\'' | '.' | ',' | ':' | ';' | '!' | '|' | 'i' | 'j' | 'l' | 't' | 'f' | 'r'
-        | 'I' => 4.0,
-        'm' | 'w' | 'M' | 'W' | '@' => 12.0,
-        _ => 8.0,
-    }
-}
-
-fn text_width(text: &str) -> f32 {
-    text.chars().map(char_width).sum()
-}
-
-/// Shortens `text` until it fits `max_width`, marking the cut with an ellipsis.
-///
-/// Returns `text` untouched when it already fits, which is every name in the
-/// three-slot layout — the columns only get tight enough to need this when
-/// 4-slot mode splits the same band four ways.
-fn fit_text(text: &str, max_width: f32) -> String {
-    const ELLIPSIS: &str = "...";
-    if text_width(text) <= max_width {
-        return text.to_string();
-    }
-
-    let budget = max_width - text_width(ELLIPSIS);
-    let mut fitted = String::new();
-    let mut used = 0.0;
-    for character in text.chars() {
-        let width = char_width(character);
-        if used + width > budget {
-            break;
-        }
-        fitted.push(character);
-        used += width;
-    }
-    // "Locket of ..." reads better than "Locket of ...", so drop the space the
-    // cut landed on rather than spacing the ellipsis off the last word.
-    while fitted.ends_with(' ') {
-        fitted.pop();
-    }
-    fitted.push_str(ELLIPSIS);
-    fitted
-}
-
-/// Width a pinned item's name has inside its slot button.
-///
-/// The name starts after [`ICON_PAD`] clears the icon and has to stop before the
-/// clear button that sits at `combo_w - 52`, with a few px of air so the last
-/// glyph does not touch it.
-fn slot_label_width() -> f32 {
-    combo_w() as f32 - 52.0 - 4.0 - text_width(ICON_PAD)
-}
-
 // -- item list ----------------------------------------------------------
 
 /// Every final item (one with no further upgrades) the game currently knows,
@@ -1406,18 +1354,6 @@ fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
 /// Copy of the cached list, for use outside the state lock.
 fn snapshot_entries() -> Vec<ListEntry> {
     with_state(|state| state.entries.clone()).unwrap_or_default()
-}
-
-/// Display name for a pinned key, falling back to the raw key for an item the
-/// current pool does not contain (a build authored against another mod set).
-fn name_of(entries: &[ListEntry], key: &str) -> String {
-    entries
-        .iter()
-        .find_map(|entry| match entry {
-            ListEntry::Item(item) if item.key == key => Some(item.name.clone()),
-            _ => None,
-        })
-        .unwrap_or_else(|| key.to_string())
 }
 
 fn choice_of<'a>(entries: &'a [ListEntry], key: &str) -> Option<&'a ItemChoice> {
@@ -1626,17 +1562,13 @@ fn refresh_combo(
     slot: usize,
 ) {
     let pinned = pinned_key(rows, row, slot);
-    // A pinned slot shows an icon and needs the wider inset; an unpinned one has
-    // no icon, so it takes the plain margin.
+    // A pinned slot is its icon alone; the name is on the list it was picked
+    // from. Button text is not clipped to the button,
+    // so anything longer than a few characters spills over the swap button on
+    // a narrow host -- which is why the empty slot is a dash, not a sentence.
     let (label, color) = match &pinned {
-        Some(key) => (
-            format!(
-                "{ICON_PAD}{}",
-                fit_text(&name_of(entries, key), slot_label_width())
-            ),
-            "#e8e8e8ff",
-        ),
-        None => (format!("{PLAIN_PAD}{}", strings().ai_slot), "#a5a5abff"),
+        Some(_) => (String::new(), "#e8e8e8ff"),
+        None => (EMPTY_SLOT_LABEL.to_string(), "#a5a5abff"),
     };
     ctx.ui_set_properties(
         &combo_path(row, slot),
@@ -1806,7 +1738,6 @@ fn row_source(row: usize) -> String {
     // this is where the editor's language reaches a freshly built row.
     let strings = strings();
     let no_champion = &strings.no_champion;
-    let ai_slot = &strings.ai_slot;
     // Both follow the panel width, so a row built for one host is the wrong
     // shape for the other -- see `set_panel_size`, which rebuilds them.
     let row_w = row_width();
@@ -1892,7 +1823,7 @@ fn row_source(row: usize) -> String {
              height: {COMBO_H}px;\n\
              \n\
              text: {{\n\
-             text: \"{ai_slot}\";\n\
+             text: \"{EMPTY_SLOT_LABEL}\";\n\
              align_x: Left;\n\
              align_y: Center;\n\
              size: 14;\n\
