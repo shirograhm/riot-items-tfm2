@@ -65,6 +65,7 @@ impl StableItem for BandleglassMirror {
             "ardent_censer".to_string(),
             "zekes_herald".to_string(),
             "echoes_of_helia".to_string(),
+            "chemtech_putrifier".to_string(),
         ]
     }
 

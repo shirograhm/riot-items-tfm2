@@ -13,6 +13,8 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("bloodletters_curse", "Mage"),
     ("bloodsong", "Support"),
     ("bloodthirster", "Fighter"),
+    ("chempunk_chainsword", "Fighter"),
+    ("chemtech_putrifier", "Support"),
     ("cloak_of_starry_night", "Tank"),
     ("collector", "Assassin"),
     ("dead_mans_plate", "Tank"),

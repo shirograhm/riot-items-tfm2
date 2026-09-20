@@ -65,7 +65,10 @@ impl StableItem for OblivionOrb {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["morellonomicon".to_string()]
+        vec![
+            "morellonomicon".to_string(),
+            "chemtech_putrifier".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffV1 {
