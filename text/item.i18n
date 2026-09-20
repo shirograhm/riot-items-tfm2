@@ -837,11 +837,11 @@
         },
         "chemtech_putrifier": {
             "name": "Chemtech Putrifier",
-            "option": "\n<#ff7a3eff>Grievous Wounds<>: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+            "option": "\n<#ff7a3eff>Grievous Wounds<>: Dealing damage to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
         },
         "radiant_chemtech_putrifier": {
             "name": "Radiant Chemtech Putrifier",
-            "option": "\n<#ff7a3eff>Grievous Wounds<>: Dealing <#a974ffff>magic damage<> to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
+            "option": "\n<#ff7a3eff>Grievous Wounds<>: Dealing damage to an enemy champion <#d94c49ff>reduces their healing by 40%<> for <#e8a800ff>2 seconds<>."
         },
         "chempunk_chainsword": {
             "name": "Chempunk Chainsword",
@@ -1690,11 +1690,11 @@
         },
         "chemtech_putrifier": {
             "name": "Bình Thải Hóa Dược",
-            "option": "\n<#ff7a3eff>Vết thương chí mạng<>: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+            "option": "\n<#ff7a3eff>Vết thương chí mạng<>: Gây sát thương lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
         },
         "radiant_chemtech_putrifier": {
             "name": "Bình Thải Hóa Dược Ánh Sáng",
-            "option": "\n<#ff7a3eff>Vết thương chí mạng<>: Gây <#a974ffff>sát thương phép<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
+            "option": "\n<#ff7a3eff>Vết thương chí mạng<>: Gây sát thương lên tướng địch <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>2 giây<>."
         },
         "chempunk_chainsword": {
             "name": "Cưa Xích Hóa Kỹ",
@@ -2543,11 +2543,11 @@
         },
         "chemtech_putrifier": {
             "name": "炼金科技纯化器",
-            "option": "\n<#ff7a3eff>重伤<>：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+            "option": "\n<#ff7a3eff>重伤<>：对敌方英雄造成伤害会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
         },
         "radiant_chemtech_putrifier": {
             "name": "光明版炼金科技纯化器",
-            "option": "\n<#ff7a3eff>重伤<>：对敌方英雄造成<#a974ffff>魔法伤害<>会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
+            "option": "\n<#ff7a3eff>重伤<>：对敌方英雄造成伤害会使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>2秒<>。"
         },
         "chempunk_chainsword": {
             "name": "炼金朋克链锯剑",
@@ -3396,11 +3396,11 @@
         },
         "chemtech_putrifier": {
             "name": "Putrificador Quimtec",
-            "option": "\n<#ff7a3eff>Ferimentos Graves<>: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+            "option": "\n<#ff7a3eff>Ferimentos Graves<>: Causar dano a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
         },
         "radiant_chemtech_putrifier": {
             "name": "Putrificador Quimtec Radiante",
-            "option": "\n<#ff7a3eff>Ferimentos Graves<>: Causar <#a974ffff>dano mágico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
+            "option": "\n<#ff7a3eff>Ferimentos Graves<>: Causar dano a um campeão inimigo <#d94c49ff>reduz a cura dele em 40%<> por <#e8a800ff>2 segundos<>."
         },
         "chempunk_chainsword": {
             "name": "Serrespada Quimiopunk",
@@ -4249,11 +4249,11 @@
         },
         "chemtech_putrifier": {
             "name": "Химтековый разъедатель",
-            "option": "\n<#ff7a3eff>Тяжёлые раны<>: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+            "option": "\n<#ff7a3eff>Тяжёлые раны<>: Нанесение урона вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
         },
         "radiant_chemtech_putrifier": {
             "name": "Лучезарный Химтековый разъедатель",
-            "option": "\n<#ff7a3eff>Тяжёлые раны<>: Нанесение <#a974ffff>магического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
+            "option": "\n<#ff7a3eff>Тяжёлые раны<>: Нанесение урона вражескому чемпиону <#d94c49ff>снижает его лечение на 40%<> на <#e8a800ff>2 секунды<>."
         },
         "chempunk_chainsword": {
             "name": "Нож-пила химпанка",
@@ -5102,11 +5102,11 @@
         },
         "chemtech_putrifier": {
             "name": "화학공학 부패기",
-            "option": "\n<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
+            "option": "\n<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
         },
         "radiant_chemtech_putrifier": {
             "name": "찬란한 화학공학 부패기",
-            "option": "\n<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 <#a974ffff>마법 피해<>를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
+            "option": "\n<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>2초<> 동안 대상의 <#d94c49ff>회복량이 40% 감소<>합니다."
         },
         "chempunk_chainsword": {
             "name": "화공 펑크 사슬검",

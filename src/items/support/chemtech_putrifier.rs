@@ -122,17 +122,13 @@ impl StableItem for ChemtechPutrifier {
         _caster: usize,
         target: usize,
         _damage: &mut usize,
-        damage_type: DamageTypeV1,
+        _damage_type: DamageTypeV1,
         _attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
         let Some(_entity_ref) = ctx.get_entity(target) else {
             return;
         };
-
-        if damage_type != DamageTypeV1::Ap {
-            return;
-        }
 
         refresh_buff(
             ctx,
