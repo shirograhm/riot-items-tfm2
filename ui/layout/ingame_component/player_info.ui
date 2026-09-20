@@ -1,10 +1,10 @@
 player_info:empty {
-  width: 1035px;
+  width: 887px;
   height: 40px;
 
   #blue_player:empty {
     source: "asset/base/ui/ingame/blue_player";
-    width: 486px;
+    width: 410px;
     height: 40px;
 
     #position:image {
@@ -18,7 +18,7 @@ player_info:empty {
     }
 
     #champion:color {
-      x: 446px;
+      x: 370px;
 
       width: 40px;
       height: 40px;
@@ -39,7 +39,7 @@ player_info:empty {
 
     #kda:label {
       @"asset/base/style/main#bold_label";
-      x: 278px;
+      x: 202px;
       y: 6px;
 
       width: 84px;
@@ -53,7 +53,7 @@ player_info:empty {
     }
 
     #cs:color {
-      x: 359px;
+      x: 283px;
       y: 5px;
 
       width: 76px;
@@ -101,18 +101,19 @@ player_info:empty {
     }
 
     #items:empty {
-      x: 45px;
-      width: 215px;
-      height: 42px;
+      x: 41px;
+      y: 8px;
+      width: 154px;
+      height: 24px;
     }
 
   }
 
   #red_player:empty {
-    width: 426px;
+    width: 365px;
     height: 40px;
 
-    x: 609px;
+    x: 522px;
 
     #champion:color {
       width: 40px;
@@ -196,9 +197,10 @@ player_info:empty {
     }
 
     #items:empty {
-      x: 211px;
-      width: 215px;
-      height: 42px;
+      x: 209px;
+      y: 8px;
+      width: 154px;
+      height: 24px;
     }
 
   }
@@ -208,7 +210,7 @@ player_info:empty {
     pivot_y: 0.5;
     width: 85px;
     height: 28px;
-    x: 505px;
+    x: 423px;
 
     #gold_diff:label {
       @"asset/base/style/main#bold_label";

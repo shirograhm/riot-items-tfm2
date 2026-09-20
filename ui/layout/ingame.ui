@@ -677,10 +677,10 @@ ingame:ingame_ui {
   }
 
   #player_info:color {
-    x: 846px;
+    x: 994px;
     y: 64px;
 
-    width: 1055px;
+    width: 907px;
     height: 300px;
 
     color: #161721ff;

@@ -92,9 +92,9 @@ player_info:empty {
 
     #items:empty {
       x: 0px;
-      y: -1px;
+      y: 2px;
       width: 160px;
-      height: 32px;
+      height: 25px;
     }
 
   }
@@ -188,9 +188,9 @@ player_info:empty {
 
     #items:empty {
       x: 172px;
-      y: -1px;
+      y: 2px;
       width: 160px;
-      height: 32px;
+      height: 25px;
     }
 
   }
