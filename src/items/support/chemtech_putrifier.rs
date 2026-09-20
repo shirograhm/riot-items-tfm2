@@ -20,7 +20,7 @@ impl ChemtechPutrifier {
         Self {
             meta: ItemMeta::base(
                 "chemtech_putrifier",
-                &["oblivion_orb", "bandleglass_mirror"],
+                &["bandleglass_mirror"],
                 &["radiant_chemtech_putrifier"],
             ),
             price: 1000,

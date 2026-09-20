@@ -60,10 +60,7 @@ impl StableItem for ExecutionersCalling {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec![
-            "mortal_reminder".to_string(),
-            "chempunk_chainsword".to_string(),
-        ]
+        vec!["mortal_reminder".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {

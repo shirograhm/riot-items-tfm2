@@ -19,7 +19,7 @@ impl ChempunkChainsword {
         Self {
             meta: ItemMeta::base(
                 "chempunk_chainsword",
-                &["executioners_calling", "caulfields_warhammer"],
+                &["phage"],
                 &["radiant_chempunk_chainsword"],
             ),
             price: 1300,
