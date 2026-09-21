@@ -1928,6 +1928,46 @@ statistics:statistics_ui {
           }
         }
 
+        #play_rate:color_icon_button {
+          width: 150px;
+          height: 56px;
+
+          #text:label {
+            @"asset/base/style/main#label";
+            x: 21px;
+            y: 18px;
+
+            height: 20px;
+            align_y: Center;
+
+            size: 16;
+            text: "#asset/base/text/ui?item_stats.play_rate";
+          }
+
+          btn: {
+            color: #00000000;
+          }
+
+          icon: {
+            source: "asset/base/ui/icons/dropdown";
+
+            rect: {
+              x: 130;
+              y: 25.47;
+              w: 8.78;
+              h: 5.06;
+            }
+
+            color: #00000000;
+          }
+
+          hover: {
+            icon: {
+              color: #c2c6ceff;
+            }
+          }
+        }
+
         #first_rate:color_icon_button {
           width: 160px;
           height: 56px;

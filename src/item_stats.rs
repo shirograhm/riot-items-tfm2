@@ -112,6 +112,17 @@ impl Totals {
     pub fn first_rate(&self) -> Option<f64> {
         (self.games > 0).then(|| self.firsts as f64 * 100.0 / self.games as f64)
     }
+
+    /// Times this item was built per match, in percent: `games` counts one per
+    /// player who finished with it, so 200% means two players a match on
+    /// average. `None` when no match has been counted, which is no rate at all
+    /// rather than 0%.
+    ///
+    /// `matches` is every match in the patch filter, whatever the lane filter —
+    /// with a lane picked this reads "built in that lane, per match".
+    pub fn play_rate(&self, matches: u32) -> Option<f64> {
+        (matches > 0).then(|| self.games as f64 * 100.0 / matches as f64)
+    }
 }
 
 #[derive(Default)]

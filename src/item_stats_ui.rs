@@ -126,6 +126,7 @@ const COL_GAMES: u32 = 140;
 const COL_WIN: u32 = 130;
 const COL_LOSE: u32 = 130;
 const COL_RATE: u32 = 150;
+const COL_PLAY: u32 = 150;
 /// Wider than the other percentage column because its heading is the longest on
 /// the table — "Primeiro Item" and "Первый предмет" both run past 130px, and a
 /// heading that reaches the sort arrow looks like a rendering fault.
@@ -307,6 +308,8 @@ enum SortBy {
     Losses,
     #[default]
     WinRate,
+    /// Times built per match.
+    PlayRate,
     /// Share of this item's buys where it went in the first slot.
     FirstRate,
 }
@@ -320,6 +323,7 @@ impl SortBy {
             SortBy::Wins => "win",
             SortBy::Losses => "lose",
             SortBy::WinRate => "win_rate",
+            SortBy::PlayRate => "play_rate",
             SortBy::FirstRate => "first_rate",
         }
     }
@@ -333,12 +337,13 @@ impl SortBy {
         self != SortBy::Item
     }
 
-    const ALL: [SortBy; 6] = [
+    const ALL: [SortBy; 7] = [
         SortBy::Item,
         SortBy::Games,
         SortBy::Wins,
         SortBy::Losses,
         SortBy::WinRate,
+        SortBy::PlayRate,
         SortBy::FirstRate,
     ];
 }
@@ -1430,7 +1435,9 @@ fn order_rows(
     rows.sort_by(|(a_key, a), (b_key, b)| {
         let ordering = match sort {
             SortBy::Item => name_of(a_key).cmp(&name_of(b_key)),
-            SortBy::Games => a.games.cmp(&b.games),
+            // Every row shares the one match count, so play rate orders
+            // exactly as games do.
+            SortBy::Games | SortBy::PlayRate => a.games.cmp(&b.games),
             SortBy::Wins => a.wins.cmp(&b.wins),
             SortBy::Losses => a.losses().cmp(&b.losses()),
             SortBy::WinRate => a
@@ -1513,7 +1520,16 @@ fn repaint(ctx: &mut StableClient<'_>, screen: &str) {
             .get(key)
             .map(Vec::as_slice)
             .unwrap_or_default();
-        write_row(ctx, &contents, index, index + 1, &info, totals, champions);
+        write_row(
+            ctx,
+            &contents,
+            index,
+            index + 1,
+            &info,
+            totals,
+            snapshot.matches,
+            champions,
+        );
     }
 
     // A shrinking table (a fresh sweep after a save change) has to put its tail
@@ -1548,6 +1564,7 @@ fn write_row(
     rank: usize,
     info: &ItemInfo,
     totals: &Totals,
+    matches: u32,
     champions: &[String],
 ) {
     let row = format!("{contents}.row{index}");
@@ -1563,6 +1580,15 @@ fn write_row(
         &cell("win_rate"),
         &totals
             .win_rate()
+            .map(|rate| format!("{rate:.1}%"))
+            .unwrap_or_else(|| "-".into()),
+    );
+    // Times built per match. Whole percent past 100 would still read fine, but
+    // one decimal matches the other two rate columns.
+    ctx.ui_set_text(
+        &cell("play_rate"),
+        &totals
+            .play_rate(matches)
             .map(|rate| format!("{rate:.1}%"))
             .unwrap_or_else(|| "-".into()),
     );
@@ -1707,7 +1733,7 @@ fn row_source(index: usize) -> String {
          }}\n\
          }}\n\
          \n\
-         {games}{win}{lose}{rate}{first}\
+         {games}{win}{lose}{rate}{play}{first}\
          \n\
          #most_used:empty {{\n\
          width: {COL_CHAMPS}px;\n\
@@ -1740,6 +1766,7 @@ fn row_source(index: usize) -> String {
         win = value_cell("win", COL_WIN),
         lose = value_cell("lose", COL_LOSE),
         rate = value_cell("win_rate", COL_RATE),
+        play = value_cell("play_rate", COL_PLAY),
         first = value_cell("first_rate", COL_FIRST),
         // Three fixed slots rather than one spawn per row: the count never
         // changes, and the vanilla cell this copies is 132px wide — three 40px
