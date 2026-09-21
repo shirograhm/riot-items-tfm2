@@ -1,16 +1,20 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Three of them:
+//! Four of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
 //! 2. **One Grievous Wounds item** — a second heal cut does not deepen the
 //!    first. Re-applying refreshes the same buff.
-//! 3. **Crit chance at or under 100%** — crit caps at 100, so flat crit past it
-//!    buys nothing. A slot that overflows the cap is replaced by an item that
-//!    adds no crit at all, rather than one that merely fits: a stand-in worth
-//!    having is one whose stats the champion can use.
+//! 3. **Crit chance at or under 100%** — crit caps at 100, so crit past it
+//!    buys nothing. Crit from a stacking passive counts as if fully stacked.
+//!    A slot that overflows the cap is replaced by an item that adds no crit
+//!    at all, rather than one that merely fits: a stand-in worth having is one
+//!    whose stats the champion can use.
+//! 4. **Support items stay on supports** — the Support class (bar Protoplasm
+//!    Harness) is only kept on a support champion or in the support role; see
+//!    [`support_items_allowed`].
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
 //! crit the build can still afford, and replaces what comes after. That matches
@@ -35,6 +39,8 @@ use std::sync::{Arc, Mutex};
 
 use mod_api_stable::{ItemTagV1, StableItem};
 
+use crate::build_config::Role;
+
 /// Flat crit chance a build may total before the rules start replacing crit
 /// items. The engine caps crit chance at 100%, so a build summing to exactly 100
 /// is the goal, not a violation.
@@ -43,9 +49,10 @@ const CRIT_CAP: i32 = 100;
 /// What the rules need to know about one item.
 #[derive(Clone, Copy, Default)]
 struct ItemTraits {
-    /// Flat crit chance from the item's own stats. Conditional crit — Atma's
-    /// Reckoning scaling off health, Rite of Ruin stacking in combat — is not
-    /// here and cannot be: it does not exist at draft time.
+    /// Crit chance from the item's own stats, plus what its passive grants at
+    /// full stacks (Atma's Reckoning, Rite of Ruin, Yun Tal Wildarrows). A
+    /// passive is counted as maxed because a build is meant to hold up once
+    /// the stacks are there, which is when an overflow wastes crit.
     crit_chance: i32,
     /// Whether the item applies Grievous Wounds.
     cuts_healing: bool,
@@ -106,6 +113,19 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
     });
 }
 
+/// Adds the crit chance an item's passive grants at full stacks to what
+/// [`note_mod_item`] recorded from its flat stats. Called right after it, from
+/// the `passive_crit` arm of the registration macros in `lib.rs`.
+pub(crate) fn note_passive_crit(key: &str, crit_chance: i32) {
+    edit_table(|table| {
+        table
+            .mod_items
+            .entry(key.to_string())
+            .or_default()
+            .crit_chance += crit_chance;
+    });
+}
+
 /// Records one of the game's items, from the settings document
 /// [`crate::item_stats`] already parses. Zero is recorded too: it says the item
 /// is described, which is cheaper to keep than to special-case.
@@ -123,30 +143,73 @@ pub(crate) enum Reason {
     Duplicate,
     Grievous,
     Crit,
+    SupportOnly,
+}
+
+/// The game's `Util` champions, from `setting/champion_info` (`category`).
+/// Hardcoded because nothing on the build paths can ask: the item-build context
+/// carries only the champion's key, and the client's champion queries have not
+/// been shown to answer on this host (`champion_names()` returns nothing).
+/// No mod champion the game ships is `Util`.
+const SUPPORT_CHAMPIONS: &[&str] = &[
+    "bard",
+    "barrier_magician",
+    "chef",
+    "enchanter",
+    "exorcist",
+    "guardian_spirit",
+    "monk",
+    "plague_doctor",
+    "priest",
+    "pythoness",
+    "spirit_caller",
+    "taoist",
+];
+
+/// The one Support-class item any champion may build.
+const SUPPORT_ITEM_EXCEPTION: &str = "protoplasm_harness";
+
+/// Whether a champion may hold support items: a support champion wherever it
+/// plays, or anyone in the support role. An unknown role ([`Role::Any`]) also
+/// allows them — the buy detour infers the role from the last lineup it saw,
+/// and a guess is no ground to strip an item from a build.
+pub(crate) fn support_items_allowed(champion: &str, role: Role) -> bool {
+    matches!(role, Role::Support | Role::Any) || SUPPORT_CHAMPIONS.contains(&champion)
+}
+
+/// Whether `key` is an item only supports may build: the editor's Support
+/// class, base or radiant, less [`SUPPORT_ITEM_EXCEPTION`].
+fn is_support_item(key: &str) -> bool {
+    let slug = crate::build_config::base_slug(key);
+    slug != SUPPORT_ITEM_EXCEPTION && crate::item_catalog::category_of(slug) == Some("Support")
 }
 
 /// What the items a build already holds have spent of the two budgets the rules
-/// police. Carries the trait table with it, so a scan across the catalog is a run
-/// of hash lookups rather than a run of lock acquisitions.
+/// police, and whether this champion may take support items at all. Carries the
+/// trait table with it, so a scan across the catalog is a run of hash lookups
+/// rather than a run of lock acquisitions.
 pub(crate) struct Budget {
     table: Arc<Table>,
     cuts_healing: bool,
     crit_chance: i32,
+    support_items: bool,
 }
 
 impl Budget {
-    /// An empty budget: a build with nothing in it yet.
-    pub(crate) fn empty() -> Self {
+    /// An empty budget: a build with nothing in it yet. `support_items` is
+    /// [`support_items_allowed`] for the champion the build is for.
+    pub(crate) fn empty(support_items: bool) -> Self {
         Self {
             table: table(),
             cuts_healing: false,
             crit_chance: 0,
+            support_items,
         }
     }
 
     /// The budget the given items have already spent.
-    pub(crate) fn spent<'a>(keys: impl IntoIterator<Item = &'a str>) -> Self {
-        let mut budget = Self::empty();
+    pub(crate) fn spent<'a>(keys: impl IntoIterator<Item = &'a str>, support_items: bool) -> Self {
+        let mut budget = Self::empty(support_items);
         for key in keys {
             budget.take(key);
         }
@@ -159,7 +222,9 @@ impl Budget {
     /// not which slots spent it.
     pub(crate) fn rejects(&self, key: &str) -> Option<Reason> {
         let traits = self.table.traits(key);
-        if self.cuts_healing && traits.cuts_healing {
+        if !self.support_items && is_support_item(key) {
+            Some(Reason::SupportOnly)
+        } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
         } else if self.crit_chance + traits.crit_chance > CRIT_CAP {
             Some(Reason::Crit)
@@ -187,7 +252,7 @@ impl Budget {
     }
 }
 
-/// Rewrites `build` in place so that it breaks none of the three rules, as far as
+/// Rewrites `build` in place so that it breaks none of the four rules, as far as
 /// the catalog allows.
 ///
 /// A slot that breaks one is swapped for the next item that fixes it: unused, of
@@ -199,10 +264,12 @@ impl Budget {
 ///
 /// `count` is the size of the catalog the indices in `build` refer to; `category`
 /// and `is_final` are the caller's view of it, and `key` is what ties an index to
-/// the trait table.
+/// the trait table. `support_items` is [`support_items_allowed`] for the
+/// champion the build is for.
 pub(crate) fn enforce<C, K, G, F>(
     count: usize,
     build: &mut [usize],
+    support_items: bool,
     key: K,
     category: G,
     is_final: F,
@@ -215,7 +282,7 @@ pub(crate) fn enforce<C, K, G, F>(
     if count == 0 {
         return;
     }
-    let mut budget = Budget::empty();
+    let mut budget = Budget::empty(support_items);
     let mut seen: HashSet<usize> = HashSet::new();
 
     for slot in build.iter_mut() {

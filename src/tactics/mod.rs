@@ -5275,7 +5275,7 @@ unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize, taken: &[u64]) -
     if !crate::build_config::smart_builds_enabled() {
         return Some(t);
     }
-    let budget = spent_budget(ctx, taken);
+    let budget = spent_budget(ctx, champ, taken);
     let Some(reason) = rejection(ctx, &budget, t, taken) else {
         return Some(t);
     };
@@ -5285,12 +5285,19 @@ unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize, taken: &[u64]) -
 /// What the build slots before this one have spent of the Smart Builds budgets.
 /// An index the catalog scan cannot name contributes nothing — the same way an
 /// unclassifiable item is passed over on the other two paths.
-unsafe fn spent_budget(ctx: usize, taken: &[u64]) -> crate::smart_builds::Budget {
+///
+/// `champ` decides whether support items are allowed at all; its role is the one
+/// the last lineup gave it, since this path is not told the lane.
+unsafe fn spent_budget(ctx: usize, champ: &str, taken: &[u64]) -> crate::smart_builds::Budget {
     let keys: Vec<String> = taken
         .iter()
         .filter_map(|&index| catalog_name_at(ctx, index))
         .collect();
-    crate::smart_builds::Budget::spent(keys.iter().map(String::as_str))
+    let support_items = crate::smart_builds::support_items_allowed(
+        champ,
+        crate::build_config::role_for_champion(champ),
+    );
+    crate::smart_builds::Budget::spent(keys.iter().map(String::as_str), support_items)
 }
 
 /// Why catalog index `t` cannot take this slot, or `None` when it can.
@@ -5325,7 +5332,7 @@ unsafe fn auto_extra_pick(ctx: usize, champ: &str, si: usize, taken: &[u64]) -> 
     // 5th item that cuts healing a second time, or pushes the build past the crit
     // cap, is the same wasted slot either way. `None` while the toggle is off,
     // which makes the test below pass for every candidate.
-    let budget = crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, taken));
+    let budget = crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, champ, taken));
     let allowed = |candidate: &str| {
         budget
             .as_ref()
@@ -5837,7 +5844,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         return Some(t4);
                     }
                     let taken = [b0, b1, b2];
-                    let budget = spent_budget(ctx, &taken);
+                    let budget = spent_budget(ctx, champ, &taken);
                     let Some(reason) = rejection(ctx, &budget, t4, &taken) else {
                         return Some(t4);
                     };

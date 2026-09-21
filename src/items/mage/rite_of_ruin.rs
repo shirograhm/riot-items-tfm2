@@ -96,6 +96,11 @@ impl RiteOfRuin {
             ((self.effect_max_shield - self.effect_min_shield) as f64 / 11.0).round() as usize;
         self.effect_min_shield + level.saturating_sub(1) * per_level
     }
+
+    /// Crit chance Wrath and Ruin grants at full stacks, for Smart Builds.
+    pub fn max_passive_crit(&self) -> i32 {
+        self.effect_stack_crit_chance * self.effect_max_stacks as i32
+    }
 }
 
 impl Default for RiteOfRuin {

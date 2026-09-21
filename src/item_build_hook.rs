@@ -120,9 +120,14 @@ fn is_selectable_final(ctx: &StableItemBuildContext<'_>, index: usize) -> bool {
 /// [`crate::smart_builds`], which the training-screen detour in `crate::hook`
 /// drives over the same build with its own accessors.
 fn enforce_smart_build(ctx: &StableItemBuildContext<'_>, build: &mut [usize]) {
+    let role = ctx
+        .lane()
+        .map(|lane| build_config::Role::from_lane_code(lane.code() as usize))
+        .unwrap_or(build_config::Role::Any);
     smart_builds::enforce(
         ctx.item_count(),
         build,
+        smart_builds::support_items_allowed(ctx.champion_key(), role),
         |index| ctx.item_key(index).map(str::to_string),
         |index| ctx.item_category(index),
         |index| is_selectable_final(ctx, index),
