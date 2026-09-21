@@ -850,6 +850,18 @@ pub fn own_team_only_enabled() -> bool {
     setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, false)
 }
 
+/// A configured build merged with the AI's, as item indices, with a record of
+/// which slots the player pinned. Smart Builds may only rewrite the others.
+pub struct MergedBuild {
+    pub items: Vec<usize>,
+    /// Parallel to `items`: `true` where the slot holds the player's pin.
+    pub pinned: Vec<bool>,
+    /// The player's pins for slots past the ones `items` covers — the 5th and
+    /// 6th, which the buy detour fills later. Not placed here, but already
+    /// spoken for: the AI's picks in `items` must not duplicate them.
+    pub reserved: Vec<usize>,
+}
+
 /// The configured build for one champion, as item indices.
 ///
 /// `resolve` turns an item key into an index in whatever list the caller is
@@ -871,7 +883,7 @@ pub fn build_for_champion(
     role: Role,
     resolve: impl Fn(&str) -> Option<usize>,
     ai_build: &[usize],
-) -> Option<Vec<usize>> {
+) -> Option<MergedBuild> {
     let build = build_entry(config, champion, role)?;
     // A build may be longer than the game has slots for — the file keeps a
     // fourth item while 3-slot mode is on, so that switching back restores the
@@ -881,7 +893,17 @@ pub fn build_for_champion(
     // `game_slots`, not `picker_slots`: the 5th and 6th slots do not exist yet
     // when the engine asks, and the buy detour fills them from the same pins.
     let usable = build.len().min(game_slots());
-    Some(merge_build(&build[..usable], ai_build, &resolve))
+    let (items, pinned) = merge_build(&build[..usable], ai_build, &resolve);
+    let reserved = build[usable..]
+        .iter()
+        .flatten()
+        .filter_map(|key| resolve_key(key, &resolve))
+        .collect();
+    Some(MergedBuild {
+        items,
+        pinned,
+        reserved,
+    })
 }
 
 /// The build a champion uses in `role`: the role's own if one is written, and
@@ -932,12 +954,12 @@ pub(crate) fn resolve_key<T>(key: &str, resolve: &impl Fn(&str) -> Option<T>) ->
 /// item; blank slots (`None`) are filled, in order, with the AI's own picks that
 /// the player did not already pin. Unresolvable pinned keys and exhausted AI
 /// picks simply drop their slot, so one typo or an over-long build never aborts
-/// the rest.
+/// the rest. The second vector says, per slot of the route, whether it is a pin.
 fn merge_build(
     build: &[Option<String>],
     ai_route: &[usize],
     resolve: &impl Fn(&str) -> Option<usize>,
-) -> Vec<usize> {
+) -> (Vec<usize>, Vec<bool>) {
     let pinned: std::collections::HashSet<usize> = build
         .iter()
         .flatten()
@@ -946,21 +968,24 @@ fn merge_build(
     let mut ai_fill = ai_route.iter().copied().filter(|i| !pinned.contains(i));
 
     let mut route = Vec::with_capacity(build.len());
+    let mut is_pin = Vec::with_capacity(build.len());
     for slot in build {
         match slot {
             Some(key) => {
                 if let Some(index) = resolve_key(key, resolve) {
                     route.push(index);
+                    is_pin.push(true);
                 }
             }
             None => {
                 if let Some(index) = ai_fill.next() {
                     route.push(index);
+                    is_pin.push(false);
                 }
             }
         }
     }
-    route
+    (route, is_pin)
 }
 
 /// Resolves a configured item key to its `radiant_` (tier 5) variant: keys that

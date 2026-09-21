@@ -33,7 +33,9 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 - a support item (except Protoplasm Harness) on any champion not playing the support role
 - an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion (hybrid champions and hybrid items are left alone)
 
-It covers all six slots, and it applies to the engine's own picks as well as to builds set in the editor. Switch it to **Allow Any Builds** to leave every pick alone.
+For the last two, the replacement follows the rest of the build instead of the removed item: it comes from the same category as the build's other items, starting with the first slot.
+
+It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items are exempt from the damage-type check in the support role, since they're built for their effect on allies. Switch it to **Allow Any Builds** to leave every pick alone.
 
 ### Added Items
 

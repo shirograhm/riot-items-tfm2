@@ -74,10 +74,16 @@ impl StableItemBuildHook for ConfiguredBuilds {
         } else {
             self.configured_build(ctx)
         };
-        let mut build = configured.unwrap_or_else(|| base.to_vec());
+        // With no configured build every slot is the engine's, so none is pinned.
+        let merged = configured.unwrap_or_else(|| build_config::MergedBuild {
+            items: base.to_vec(),
+            pinned: Vec::new(),
+            reserved: Vec::new(),
+        });
+        let mut build = merged.items;
 
         if build_config::smart_builds_enabled() {
-            enforce_smart_build(ctx, &mut build);
+            enforce_smart_build(ctx, &mut build, &merged.pinned, &merged.reserved);
         }
 
         if build.is_empty() || build == base {
@@ -94,7 +100,10 @@ impl ConfiguredBuilds {
     // included. A player who does not want that turns on `own_team_only`, which
     // stops `decide_build` calling this at all — see there for what `ctx.team()`
     // turned out to be and why it does not close the gap.
-    fn configured_build(&self, ctx: &StableItemBuildContext<'_>) -> Option<Vec<usize>> {
+    fn configured_build(
+        &self,
+        ctx: &StableItemBuildContext<'_>,
+    ) -> Option<build_config::MergedBuild> {
         let config = build_config::load_cached();
         if config.is_empty() {
             return None;
@@ -138,10 +147,17 @@ fn champion_fit(ctx: &StableItemBuildContext<'_>) -> smart_builds::Fit {
 /// through `StableItemBuildContext`. The rules themselves live in
 /// [`crate::smart_builds`], which the training-screen detour in `crate::hook`
 /// drives over the same build with its own accessors.
-fn enforce_smart_build(ctx: &StableItemBuildContext<'_>, build: &mut [usize]) {
+fn enforce_smart_build(
+    ctx: &StableItemBuildContext<'_>,
+    build: &mut [usize],
+    pinned: &[bool],
+    reserved: &[usize],
+) {
     smart_builds::enforce(
         ctx.item_count(),
         build,
+        pinned,
+        reserved,
         champion_fit(ctx),
         |index| ctx.item_key(index).map(str::to_string),
         |index| ctx.item_category(index),

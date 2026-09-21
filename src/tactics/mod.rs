@@ -4620,11 +4620,35 @@ unsafe fn same_category_swap(
 ) -> Option<u64> {
     let key = catalog_name_at(ctx, wanted)?;
     let allowed = |candidate: &str| budget.accepts_instead(candidate, reason);
-    // Every other item in a support item's class and category is a support item
-    // too, so the same-kind search below can never answer this one. Any final
-    // the rules accept will do — the same exception `smart_builds::enforce`
-    // makes for slots 0/1/2.
-    if reason == crate::smart_builds::Reason::SupportOnly {
+    // For a support item, or one the champion does not scale with, the item's
+    // own kind is the wrong place to look (see `Reason::restyles`). The stand-in
+    // follows the build instead: the kind of each earlier slot that suits the
+    // champion, first slot first — finer class, then engine category — and only
+    // then any final the rules accept. The same order `smart_builds::enforce`
+    // uses for slots 0/1/2.
+    if reason.restyles() {
+        for &index in taken {
+            let Some(anchor) = catalog_name_at(ctx, index) else {
+                continue;
+            };
+            if !budget.suits_champion(&anchor) {
+                continue;
+            }
+            if let Some(class) = editor_class(&anchor) {
+                if let Some(index) = pick_candidate(ctx, wanted, taken, champ, |candidate| {
+                    editor_class(candidate) == Some(class) && allowed(candidate)
+                }) {
+                    return Some(index);
+                }
+            }
+            if let Some(category) = engine_category(&anchor) {
+                if let Some(index) = pick_candidate(ctx, wanted, taken, champ, |candidate| {
+                    engine_category(candidate) == Some(category) && allowed(candidate)
+                }) {
+                    return Some(index);
+                }
+            }
+        }
         return pick_candidate(ctx, wanted, taken, champ, allowed);
     }
     if let Some(class) = editor_class(&key) {
@@ -5268,25 +5292,31 @@ unsafe fn extra_slot_pick(
     designate: bool,
 ) -> Option<u64> {
     designate
-        .then(|| pinned_extra_slot(ctx, champ, si, taken))
+        .then(|| pinned_extra_slot(ctx, champ, si))
         .flatten()
-        .or_else(|| auto_extra_pick(ctx, champ, si, taken))
+        .or_else(|| {
+            let reserved = if designate {
+                later_pins(ctx, champ, si + 1)
+            } else {
+                Vec::new()
+            };
+            auto_extra_pick(ctx, champ, si, taken, &reserved)
+        })
 }
 
-/// The pinned item for build slot `si`, as a catalog index, with the Smart
-/// Builds rules applied the way slot 3 applies them: an item that duplicates
-/// an earlier slot, cuts healing a second time, or overflows the crit cap
-/// becomes another final of the same category, or nothing.
-unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize, taken: &[u64]) -> Option<u64> {
-    let t = slotN_catalog_index(champ, si as u8, |key| scan_idx_cached(ctx, key))?;
-    if !crate::build_config::smart_builds_enabled() {
-        return Some(t);
-    }
-    let budget = spent_budget(ctx, champ, taken);
-    let Some(reason) = rejection(ctx, &budget, t, taken) else {
-        return Some(t);
-    };
-    same_category_swap(ctx, t, taken, champ, &budget, reason)
+/// The pinned item for build slot `si`, as a catalog index. Planted exactly as
+/// written: Smart Builds only ever rewrites the AI's picks, never the player's.
+unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize) -> Option<u64> {
+    slotN_catalog_index(champ, si as u8, |key| scan_idx_cached(ctx, key))
+}
+
+/// The player's pins for build slots `from` onward, as catalog indices — slots
+/// not planted yet but already spoken for, which an automatic pick for an
+/// earlier slot must not duplicate or crowd out.
+unsafe fn later_pins(ctx: usize, champ: &str, from: usize) -> Vec<u64> {
+    (from..crate::build_config::picker_slots())
+        .filter_map(|si| slotN_catalog_index(champ, si as u8, |key| scan_idx_cached(ctx, key)))
+        .collect()
 }
 
 /// What the build slots before this one have spent of the Smart Builds budgets.
@@ -5324,8 +5354,15 @@ unsafe fn rejection(
 /// item and the 6th the 2nd, the way the 4th follows the 3rd
 /// (`third_slot_category`), so an attack-damage build stays one. Then a
 /// vanilla final the build does not hold, then any final at all. Never a
-/// duplicate: `taken` is every slot before this one.
-unsafe fn auto_extra_pick(ctx: usize, champ: &str, si: usize, taken: &[u64]) -> Option<u64> {
+/// duplicate: `taken` is every slot before this one, and `reserved` the
+/// player's pins for the slots after it, which count exactly as if placed.
+unsafe fn auto_extra_pick(
+    ctx: usize,
+    champ: &str,
+    si: usize,
+    taken: &[u64],
+    reserved: &[u64],
+) -> Option<u64> {
     let anchor = if AUTO4_MATCH_3RD_CATEGORY {
         si.checked_sub(4)
             .and_then(|i| taken.get(i))
@@ -5337,6 +5374,10 @@ unsafe fn auto_extra_pick(ctx: usize, champ: &str, si: usize, taken: &[u64]) -> 
     // 5th item that cuts healing a second time, or pushes the build past the crit
     // cap, is the same wasted slot either way. `None` while the toggle is off,
     // which makes the test below pass for every candidate.
+    // `taken` stays positional for the anchor above; everything below works
+    // from the whole build, pins still to come included.
+    let spoken = [taken, reserved].concat();
+    let taken = spoken.as_slice();
     let budget = crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, champ, taken));
     let allowed = |candidate: &str| {
         budget
@@ -5844,11 +5885,20 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   `b0`/`b1`/`b2` are the live build targets, so this compares
                 //   against what slots 0/1/2 *ended up* being — after the stable
                 //   hook's own de-duplication, or after the injection above.
+                //
+                //   A pin is exempt: the player's choice takes precedence over
+                //   every rule, so a pinned 4th is planted exactly as written.
+                //   Only the network's pick is checked — against slots 0/1/2 and
+                //   against the player's pins for the 5th and 6th, which are
+                //   already spoken for even though they are not planted yet.
                 let picked = picked.and_then(|t4| {
-                    if !crate::build_config::smart_builds_enabled() {
+                    if manual.is_some() || !crate::build_config::smart_builds_enabled() {
                         return Some(t4);
                     }
-                    let taken = [b0, b1, b2];
+                    let mut taken = vec![b0, b1, b2];
+                    if designate {
+                        taken.extend(later_pins(ctx, champ, 4));
+                    }
                     let budget = spent_budget(ctx, champ, &taken);
                     let Some(reason) = rejection(ctx, &budget, t4, &taken) else {
                         return Some(t4);
@@ -5924,7 +5974,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         if owned > si as u64 {
                             continue;
                         }
-                        let Some(t) = pinned_extra_slot(ctx, champ, si, &slots[..si]) else {
+                        let Some(t) = pinned_extra_slot(ctx, champ, si) else {
                             continue;
                         };
                         if slots[si] != t && writable(ptr + si * 8, 8) {

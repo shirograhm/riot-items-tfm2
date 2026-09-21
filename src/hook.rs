@@ -722,17 +722,21 @@ fn apply_training_builds(
             break;
         };
         let role = build_config::Role::from_lane_code(position);
+        let mut pinned = Vec::new();
+        let mut reserved = Vec::new();
         if let Some(build) = (!config.is_empty())
             .then(|| build_config::build_for_champion(&config, champion, role, &index_of, route))
             .flatten()
         {
-            for (slot, item) in build.iter().enumerate().take(route.len()) {
+            for (slot, item) in build.items.iter().enumerate().take(route.len()) {
                 route[slot] = *item;
             }
+            pinned = build.pinned;
+            reserved = build.reserved;
         }
         if smart {
             let fit = crate::smart_builds::fit(champion, role);
-            enforce_smart_build(items, route, fit);
+            enforce_smart_build(items, route, &pinned, &reserved, fit);
         }
     }
 }
@@ -774,11 +778,15 @@ fn apply_training_builds(
 fn enforce_smart_build(
     items: &[Box<dyn ItemInfo>],
     build: &mut [usize],
+    pinned: &[bool],
+    reserved: &[usize],
     fit: crate::smart_builds::Fit,
 ) {
     crate::smart_builds::enforce(
         items.len(),
         build,
+        pinned,
+        reserved,
         fit,
         |index| items.get(index).map(|item| item.key().to_string()),
         |index| {

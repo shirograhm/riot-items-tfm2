@@ -18,7 +18,13 @@
 //! 5. **Items the champion scales with** — an AP-only champion keeps no item
 //!    whose only offence is physical (attack, attack speed or crit), and an
 //!    AD-only champion no item whose only offence is magic power. Hybrid items,
-//!    hybrid champions and items with no offensive stat are never touched.
+//!    hybrid champions and items with no offensive stat are never touched, and
+//!    neither are support items in the support role.
+//!
+//! The rules only ever replace what the AI picked. A slot the player pinned in
+//! the editor is kept whatever it holds, and counts toward the budgets like any
+//! other item, so the AI's picks around it make way for it rather than the
+//! other way round.
 //!
 //! Rules 4 and 5 are about the champion, not the build, and come in as a
 //! [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
@@ -181,6 +187,17 @@ pub(crate) enum Reason {
     Scaling,
 }
 
+impl Reason {
+    /// Whether the offending item's own category is the wrong place to look
+    /// for its stand-in. A support item's category holds nothing but support
+    /// items, and an item the champion does not scale with sits among others
+    /// it does not scale with, so for these two the stand-in is taken from the
+    /// categories the rest of the build uses instead.
+    pub(crate) fn restyles(self) -> bool {
+        matches!(self, Reason::SupportOnly | Reason::Scaling)
+    }
+}
+
 /// The one Support-class item any champion may build.
 const SUPPORT_ITEM_EXCEPTION: &str = "protoplasm_harness";
 
@@ -216,6 +233,14 @@ impl Fit {
             Some(Scaling::Ad) => item.magic && !item.physical,
             Some(Scaling::Hybrid) | None => false,
         }
+    }
+
+    /// Rule 5 for one item. A support item in the support role is exempt: its
+    /// worth is what it does for allies — auras, heals, shields — not the
+    /// holder's own damage, so an AD support (Exorcist, Plague Doctor) still
+    /// takes Echoes of Helia or Zeke's Herald.
+    fn mismatches_item(&self, key: &str, item: &ItemTraits) -> bool {
+        !(self.support_items && is_support_item(key)) && self.mismatches(item)
     }
 }
 
@@ -265,7 +290,7 @@ impl Budget {
         let traits = self.table.traits(key);
         if !self.fit.support_items && is_support_item(key) {
             Some(Reason::SupportOnly)
-        } else if self.fit.mismatches(&traits) {
+        } else if self.fit.mismatches_item(key, &traits) {
             Some(Reason::Scaling)
         } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
@@ -274,6 +299,14 @@ impl Budget {
         } else {
             None
         }
+    }
+
+    /// Whether `key` is an item this champion may hold at all — rules 4 and 5,
+    /// which do not depend on what else is in the build. An item that fails is
+    /// no guide to the build's style.
+    pub(crate) fn suits_champion(&self, key: &str) -> bool {
+        !(!self.fit.support_items && is_support_item(key))
+            && !self.fit.mismatches_item(key, &self.table.traits(key))
     }
 
     /// Whether `key` brings any crit chance — what the stand-in for a crit
@@ -305,12 +338,26 @@ impl Budget {
 /// category with nothing left in it — is left alone and counted, because it is in
 /// the build either way.
 ///
+/// For the two rules about the champion ([`Reason::restyles`]) "the same
+/// category" is the build's, not the item's: the categories of the build's other
+/// items that suit the champion, earliest slot first, and only then any category
+/// at all. That keeps a stand-in in the style of the build — an attack-damage
+/// build that loses a support item gets another attack-damage item.
+///
 /// `count` is the size of the catalog the indices in `build` refer to; `category`
 /// and `is_final` are the caller's view of it, and `key` is what ties an index to
 /// the trait table. `fit` is [`fit`] for the champion the build is for.
+///
+/// `pinned` says, per slot, whether the player pinned it (a missing entry is
+/// an AI slot). A pinned slot is never rewritten. Pins — and `reserved`, the
+/// player's pins for slots past the end of `build` — are counted before any AI
+/// slot is looked at, so an AI pick that clashes with a pin is the one that
+/// goes, wherever the two sit in the build.
 pub(crate) fn enforce<C, K, G, F>(
     count: usize,
     build: &mut [usize],
+    pinned: &[bool],
+    reserved: &[usize],
     fit: Fit,
     key: K,
     category: G,
@@ -326,8 +373,40 @@ pub(crate) fn enforce<C, K, G, F>(
     }
     let mut budget = Budget::empty(fit);
     let mut seen: HashSet<usize> = HashSet::new();
+    let is_pinned = |slot: usize| pinned.get(slot).copied().unwrap_or(false);
 
-    for slot in build.iter_mut() {
+    let pins = build
+        .iter()
+        .enumerate()
+        .filter(|&(slot, _)| is_pinned(slot))
+        .map(|(_, &index)| index)
+        .chain(reserved.iter().copied());
+    for index in pins {
+        seen.insert(index);
+        if let Some(key) = key(index) {
+            budget.take(&key);
+        }
+    }
+
+    // The build's style: the categories of the items that suit the champion,
+    // earliest slot first, each once. Taken before any slot changes, from the
+    // whole build, so a support item in slot 0 still follows the IE in slot 1.
+    let mut styles: Vec<C> = Vec::new();
+    for &index in build.iter() {
+        if !key(index).is_some_and(|key| budget.suits_champion(&key)) {
+            continue;
+        }
+        if let Some(style) = category(index) {
+            if !styles.contains(&style) {
+                styles.push(style);
+            }
+        }
+    }
+
+    for (position, slot) in build.iter_mut().enumerate() {
+        if is_pinned(position) {
+            continue;
+        }
         let current = key(*slot);
         let reason = if seen.contains(slot) {
             Some(Reason::Duplicate)
@@ -342,30 +421,39 @@ pub(crate) fn enforce<C, K, G, F>(
             None => *slot,
             Some(reason) => {
                 let offender = *slot;
-                // A support item's stand-in cannot come from its own category:
-                // every other item there is a support item too, so the search
-                // found nothing and the slot kept the item it was meant to lose.
-                // Any category will do, as long as the rest of the rules pass.
-                let any_category = reason == Reason::SupportOnly;
-                let wanted = category(offender);
-                // Otherwise the category must be known: matching `None` against
-                // `None` would swap the slot for any item the caller could not
-                // classify.
-                if wanted.is_none() && !any_category {
-                    offender
-                } else {
+                let search = |matches: &dyn Fn(usize) -> bool| {
                     (1..count)
                         .map(|step| (offender + step) % count)
-                        .find(|candidate| {
-                            !seen.contains(candidate)
-                                && (any_category
-                                    || category(*candidate).as_ref() == wanted.as_ref())
-                                && is_final(*candidate)
-                                && key(*candidate).is_some_and(|candidate| {
+                        .find(|&candidate| {
+                            !seen.contains(&candidate)
+                                && matches(candidate)
+                                && is_final(candidate)
+                                && key(candidate).is_some_and(|candidate| {
                                     budget.accepts_instead(&candidate, reason)
                                 })
                         })
+                };
+                if reason.restyles() {
+                    styles
+                        .iter()
+                        .find_map(|style| {
+                            search(&|candidate| category(candidate).as_ref() == Some(style))
+                        })
+                        // A build with no usable style at all — every other
+                        // item broke these rules too — still loses the item.
+                        .or_else(|| search(&|_| true))
                         .unwrap_or(offender)
+                } else {
+                    // The category must be known: matching `None` against
+                    // `None` would swap the slot for any item the caller could
+                    // not classify.
+                    match category(offender) {
+                        None => offender,
+                        Some(wanted) => search(&|candidate| {
+                            category(candidate).as_ref() == Some(&wanted)
+                        })
+                        .unwrap_or(offender),
+                    }
                 }
             }
         };
