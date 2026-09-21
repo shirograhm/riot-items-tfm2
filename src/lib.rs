@@ -3,6 +3,7 @@ use std::cell::Cell;
 
 mod buffs;
 mod build_config;
+mod champion_traits;
 mod config;
 mod constants;
 mod hook;

@@ -26,7 +26,14 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWp
 <img width="2024" height="1037" alt="image" src="https://github.com/user-attachments/assets/751df47e-8ed1-43a1-ac9c-168e42f15962" />
 
 ##### Smart Builds
-The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. It cleans up what the AI picks: a duplicate item, a second Grievous Wounds item, or a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked), or a support item (except Protoplasm Harness) on a champion that is neither a support champion nor playing support, is swapped for another final item of the same category. It covers all six slots, and it applies to the engine's own picks as well as to builds set in the editor. Switch it to **Allow Any Builds** to leave every pick alone.
+The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. It cleans up what the AI picks. Any of these is swapped for another final item of the same category:
+- a duplicate item
+- a second Grievous Wounds item
+- a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked)
+- a support item (except Protoplasm Harness) on any champion not playing the support role
+- an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion (hybrid champions and hybrid items are left alone)
+
+It covers all six slots, and it applies to the engine's own picks as well as to builds set in the editor. Switch it to **Allow Any Builds** to leave every pick alone.
 
 ### Added Items
 

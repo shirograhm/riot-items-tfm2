@@ -3436,6 +3436,12 @@ impl StableExtension for StrategyPicker {
         // somewhere this early return would have skipped.
         crate::item_stats::sync(ctx);
 
+        // Champion facts for the Smart Builds rules, which only the client can
+        // ask the host for. Unconditional: the build paths need them in every
+        // match, and it returns at once when there is no champion it has not
+        // asked about.
+        crate::champion_traits::learn(ctx);
+
         // Same again, for the statistics screen and its Item Stats tab. Inert
         // anywhere else: it returns on its first line unless that screen is up.
         crate::item_stats_ui::sync(ctx);

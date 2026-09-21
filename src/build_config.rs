@@ -493,6 +493,12 @@ pub fn champion_roster() -> Vec<String> {
         .unwrap_or_default()
 }
 
+/// Size of the recorded roster, for a per-frame caller that only needs to
+/// know whether it grew and should not copy it to find out.
+pub fn champion_roster_len() -> usize {
+    CHAMPION_ROSTER.lock().map(|roster| roster.len()).unwrap_or(0)
+}
+
 /// The buy detour's view of `item-builds.json`: the file's keys exactly as
 /// written, plus an index that survives the detour not knowing the lane.
 struct PinSnapshot {

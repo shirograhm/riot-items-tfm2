@@ -31,6 +31,15 @@ impl StableItemBuildHook for ConfiguredBuilds {
         if !crate::strategy_ui::is_mod_final_item(key) {
             return StableDraftDecision::Pass;
         }
+        // The bonus exists because the engine's scoring model does not know
+        // the mod's items, not because every one suits every champion: pushing
+        // Death's Dance on an Ice Mage as hard as on a Swordsman is how mages
+        // ended up building it. An item the champion could not keep under the
+        // Smart Builds rules gets no push, toggle or not — declining to promote
+        // an item is not overriding a pick.
+        if smart_builds::Budget::empty(champion_fit(ctx)).rejects(key).is_some() {
+            return StableDraftDecision::Pass;
+        }
         StableDraftDecision::Add(MOD_ITEM_SCORE_BONUS)
     }
 
@@ -115,19 +124,25 @@ fn is_selectable_final(ctx: &StableItemBuildContext<'_>, index: usize) -> bool {
         .is_some_and(|tier| tier >= SELECTABLE_FINAL_TIER)
 }
 
+/// The Smart Builds [`smart_builds::Fit`] of the champion this build is for, in
+/// the lane the host states.
+fn champion_fit(ctx: &StableItemBuildContext<'_>) -> smart_builds::Fit {
+    let role = ctx
+        .lane()
+        .map(|lane| build_config::Role::from_lane_code(lane.code() as usize))
+        .unwrap_or(build_config::Role::Any);
+    smart_builds::fit(ctx.champion_key(), role)
+}
+
 /// The Smart Builds pass over a build the host handed us, with the catalog seen
 /// through `StableItemBuildContext`. The rules themselves live in
 /// [`crate::smart_builds`], which the training-screen detour in `crate::hook`
 /// drives over the same build with its own accessors.
 fn enforce_smart_build(ctx: &StableItemBuildContext<'_>, build: &mut [usize]) {
-    let role = ctx
-        .lane()
-        .map(|lane| build_config::Role::from_lane_code(lane.code() as usize))
-        .unwrap_or(build_config::Role::Any);
     smart_builds::enforce(
         ctx.item_count(),
         build,
-        smart_builds::support_items_allowed(ctx.champion_key(), role),
+        champion_fit(ctx),
         |index| ctx.item_key(index).map(str::to_string),
         |index| ctx.item_category(index),
         |index| is_selectable_final(ctx, index),

@@ -731,8 +731,8 @@ fn apply_training_builds(
             }
         }
         if smart {
-            let support_items = crate::smart_builds::support_items_allowed(champion, role);
-            enforce_smart_build(items, route, support_items);
+            let fit = crate::smart_builds::fit(champion, role);
+            enforce_smart_build(items, route, fit);
         }
     }
 }
@@ -771,11 +771,15 @@ fn apply_training_builds(
 /// editor's finer class. Both keep a stand-in "the same kind of item", which is
 /// what the rule is for, and the finer one is the better answer where it has
 /// one.
-fn enforce_smart_build(items: &[Box<dyn ItemInfo>], build: &mut [usize], support_items: bool) {
+fn enforce_smart_build(
+    items: &[Box<dyn ItemInfo>],
+    build: &mut [usize],
+    fit: crate::smart_builds::Fit,
+) {
     crate::smart_builds::enforce(
         items.len(),
         build,
-        support_items,
+        fit,
         |index| items.get(index).map(|item| item.key().to_string()),
         |index| {
             // Bound rather than chained: `base_slug` borrows the key, and only

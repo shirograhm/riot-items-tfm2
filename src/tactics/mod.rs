@@ -5286,18 +5286,16 @@ unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize, taken: &[u64]) -
 /// An index the catalog scan cannot name contributes nothing — the same way an
 /// unclassifiable item is passed over on the other two paths.
 ///
-/// `champ` decides whether support items are allowed at all; its role is the one
-/// the last lineup gave it, since this path is not told the lane.
+/// `champ` decides what the champion may hold at all (support items, what it
+/// scales with); its role is the one the last lineup gave it, since this path
+/// is not told the lane.
 unsafe fn spent_budget(ctx: usize, champ: &str, taken: &[u64]) -> crate::smart_builds::Budget {
     let keys: Vec<String> = taken
         .iter()
         .filter_map(|&index| catalog_name_at(ctx, index))
         .collect();
-    let support_items = crate::smart_builds::support_items_allowed(
-        champ,
-        crate::build_config::role_for_champion(champ),
-    );
-    crate::smart_builds::Budget::spent(keys.iter().map(String::as_str), support_items)
+    let fit = crate::smart_builds::fit(champ, crate::build_config::role_for_champion(champ));
+    crate::smart_builds::Budget::spent(keys.iter().map(String::as_str), fit)
 }
 
 /// Why catalog index `t` cannot take this slot, or `None` when it can.

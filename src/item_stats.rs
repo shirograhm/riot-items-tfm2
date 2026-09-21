@@ -575,15 +575,22 @@ fn collect_items(
             .and_then(Value::as_str)
             .filter(|inner| !inner.is_empty())
             .unwrap_or(key);
-        // Flat crit for the Smart Builds pass. This mod's own items report
-        // theirs at registration; the game's are described only here.
-        crate::smart_builds::note_engine_crit(
-            key,
+        // Crit and offensive stats for the Smart Builds pass. This mod's own
+        // items report theirs at registration; the game's are described only
+        // here.
+        let stat = |name: &str| {
             object
                 .get("stat")
-                .and_then(|stat| stat.get("crit_chance"))
+                .and_then(|stat| stat.get(name))
                 .and_then(Value::as_i64)
-                .unwrap_or(0) as i32,
+                .unwrap_or(0) as i32
+        };
+        crate::smart_builds::note_engine_item(
+            key,
+            stat("crit_chance"),
+            stat("attack"),
+            stat("attack_speed_mult"),
+            stat("magic_power"),
         );
         out.insert(
             key.to_string(),
