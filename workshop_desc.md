@@ -56,7 +56,7 @@ However, if any of the items feel too strong/weak, this mod supports full custom
 
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
 2. Edit the new [b]config.json[/b] with the custom values that you want.
-3. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the item effect's text may not match.  
+3. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod may not update the values correctly.  
 4. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!
 
 Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.
@@ -83,7 +83,7 @@ Builds are saved automatically when changed to [b]item-builds.json[/b] as you ma
 Check the Item/Feature Requests forum in the mod for the most up-to-date information.
 
 [h2] Credits [/h2]
-Thank you to @SUB from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
+Thank you to [b]@SUB[/b] from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
 
 Special thanks to all the playtesters that helped me out along the way by sending me crash dumps and testing beta builds:
 [b]@toxicsnek[/b] for helping with custom item creation & code!
@@ -91,7 +91,7 @@ Special thanks to all the playtesters that helped me out along the way by sendin
 [b]@blasé[/b] for helping playtest the 4 Item Mode compatibility!  
 [b]@Guardsman C[/b] & [b]@kmrn[/b] for helping playtest the new item hooks on 0.6.0!
 
-Thank you to [b]@Formula Piggy[/b] & [b]@Yuuroo[/b] on discord for Vietnamese translations!s
+Thank you to [b]@Formula Piggy[/b] & [b]@Yuuroo[/b] on discord for Vietnamese translations!
 Thank you to [b]@GeoStelar[/b] on discord for the Portuguese (BR) translations!
 Thank you to [b]@Monsoon[/b] on discord for the Chinese (Simplified) translations!
 Thank you to [b]@Dushnerd[/b] on discord for the Russian translations!
