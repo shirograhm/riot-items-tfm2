@@ -4620,6 +4620,13 @@ unsafe fn same_category_swap(
 ) -> Option<u64> {
     let key = catalog_name_at(ctx, wanted)?;
     let allowed = |candidate: &str| budget.accepts_instead(candidate, reason);
+    // Every other item in a support item's class and category is a support item
+    // too, so the same-kind search below can never answer this one. Any final
+    // the rules accept will do — the same exception `smart_builds::enforce`
+    // makes for slots 0/1/2.
+    if reason == crate::smart_builds::Reason::SupportOnly {
+        return pick_candidate(ctx, wanted, taken, champ, allowed);
+    }
     if let Some(class) = editor_class(&key) {
         if let Some(index) = pick_candidate(ctx, wanted, taken, champ, |candidate| {
             editor_class(candidate) == Some(class) && allowed(candidate)

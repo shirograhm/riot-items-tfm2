@@ -340,17 +340,26 @@ pub(crate) fn enforce<C, K, G, F>(
         // so the budget cannot drift from the build it is meant to describe.
         let chosen = match reason {
             None => *slot,
-            // Must be known: matching `None` against `None` would swap the slot
-            // for any item the caller could not classify.
-            Some(reason) => match category(*slot) {
-                None => *slot,
-                Some(wanted) => {
-                    let offender = *slot;
+            Some(reason) => {
+                let offender = *slot;
+                // A support item's stand-in cannot come from its own category:
+                // every other item there is a support item too, so the search
+                // found nothing and the slot kept the item it was meant to lose.
+                // Any category will do, as long as the rest of the rules pass.
+                let any_category = reason == Reason::SupportOnly;
+                let wanted = category(offender);
+                // Otherwise the category must be known: matching `None` against
+                // `None` would swap the slot for any item the caller could not
+                // classify.
+                if wanted.is_none() && !any_category {
+                    offender
+                } else {
                     (1..count)
                         .map(|step| (offender + step) % count)
                         .find(|candidate| {
                             !seen.contains(candidate)
-                                && category(*candidate).as_ref() == Some(&wanted)
+                                && (any_category
+                                    || category(*candidate).as_ref() == wanted.as_ref())
                                 && is_final(*candidate)
                                 && key(*candidate).is_some_and(|candidate| {
                                     budget.accepts_instead(&candidate, reason)
@@ -358,7 +367,7 @@ pub(crate) fn enforce<C, K, G, F>(
                         })
                         .unwrap_or(offender)
                 }
-            },
+            }
         };
 
         *slot = chosen;
