@@ -910,7 +910,10 @@ fn build_entry<'a>(
 /// verbatim first would silently downgrade every build in that file to its base
 /// tier. The fallback exists only for keys with no radiant variant — the vanilla
 /// tier 5s the in-game picker offers, like `"warlords_final_judgement"`.
-fn resolve_key(key: &str, resolve: &impl Fn(&str) -> Option<usize>) -> Option<usize> {
+///
+/// Generic over the result so the in-game editor can resolve a key to its own
+/// list entry with exactly the same rules the hook uses.
+pub(crate) fn resolve_key<T>(key: &str, resolve: &impl Fn(&str) -> Option<T>) -> Option<T> {
     let radiant = radiant_key(key);
     if let Some(index) = resolve(alias_key(radiant.as_ref())) {
         return Some(index);

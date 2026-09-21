@@ -1363,6 +1363,24 @@ fn choice_of<'a>(entries: &'a [ListEntry], key: &str) -> Option<&'a ItemChoice> 
     })
 }
 
+/// Rewrites every pinned key to the spelling of the list entry it means.
+///
+/// `item-builds.json` accepts any spelling the hook can resolve — the original
+/// format was plain LoL names (`"collector"`), and renamed items can be written
+/// by their LoL name (`"radiant_bloodthirster"`) — but the editor compares keys
+/// exactly. Without this, such a slot reads as pinned (clear X shown, no dash)
+/// yet finds no entry, so it shows no icon and cannot be ticked or unpinned by
+/// clicking it. Keys no entry matches are left as written.
+fn canonicalize_rows(entries: &[ListEntry], rows: &mut [ChampionRow]) {
+    for key in rows.iter_mut().flat_map(|row| row.slots.iter_mut().flatten()) {
+        if let Some(item) = build_config::resolve_key(key, &|k: &str| choice_of(entries, k)) {
+            if item.key != *key {
+                *key = item.key.clone();
+            }
+        }
+    }
+}
+
 /// Champion list, in display order. Cached on first use.
 ///
 /// The ids come from the hook's roster file, because the client cannot
@@ -2643,6 +2661,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     // while the game sits on this screen is picked up.
     let _ = with_state(|state| {
         state.rows = build_config::load_champion_rows();
+        canonicalize_rows(&entries, &mut state.rows);
         state.spawned_rows.clear();
         // The subtree was just spawned, so its filter box is empty whatever the
         // last screen was left filtered by.
