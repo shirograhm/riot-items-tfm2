@@ -52,7 +52,7 @@ struct ItemTraits {
 }
 
 /// Item traits by key, filled from the two places items are described.
-#[derive(Default)]
+#[derive(Clone, Default)]
 struct Table {
     /// This mod's items, recorded as `init` registers them. Authoritative for
     /// its own keys, because the values there are the configured ones.
@@ -241,7 +241,7 @@ pub(crate) fn enforce<C, K, G, F>(
                         .map(|step| (offender + step) % count)
                         .find(|candidate| {
                             !seen.contains(candidate)
-                                && category(*candidate) == Some(wanted)
+                                && category(*candidate).as_ref() == Some(&wanted)
                                 && is_final(*candidate)
                                 && key(*candidate).is_some_and(|candidate| {
                                     budget.accepts_instead(&candidate, reason)
