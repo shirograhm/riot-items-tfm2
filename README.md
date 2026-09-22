@@ -35,7 +35,9 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 
 For the last two, the replacement follows the rest of the build instead of the removed item: it comes from the same category as the build's other items, starting with the first slot.
 
-It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items are exempt from the damage-type check in the support role, since they're built for their effect on allies. Switch it to **Allow Any Builds** to leave every pick alone.
+It also decides the order the AI buys its picks in. Items that get stronger the longer you own them are bought first: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern and Collector. Items that scale off stats from the rest of the build are bought last: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards. Everything else keeps the AI's order.
+
+It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, in the slot you put it in, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items are exempt from the damage-type check in the support role, since they're built for their effect on allies. Switch it to **Allow Any Builds** to leave every pick alone.
 
 ### Added Items
 

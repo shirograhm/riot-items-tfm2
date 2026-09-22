@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Five of them:
+//! Six of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -20,6 +20,12 @@
 //!    AD-only champion no item whose only offence is magic power. Hybrid items,
 //!    hybrid champions and items with no offensive stat are never touched, and
 //!    neither are support items in the support role.
+//! 6. **Items bought when they pay off** — an item whose value accumulates
+//!    the longer it is owned ([`EARLY_ITEMS`]: Heartsteel's permanent health,
+//!    Hubris's takedown stacks) is bought before the AI's other picks, and one
+//!    that scales with stats the rest of the build brings ([`LATE_ITEMS`]:
+//!    Riftmaker's health-to-AP, Rabadon's multiplier) after them. This rule
+//!    only reorders; the other five decide what is in the build.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
@@ -31,7 +37,9 @@
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
 //! crit the build can still afford, and replaces what comes after. That matches
-//! how the engine orders a build — slot 0 is the item it wanted most.
+//! how the engine orders a build — slot 0 is the item it wanted most. Rule 6
+//! runs after that walk, so it is the engine's preference that decides which
+//! items stay, and only then the timing that decides when each is bought.
 //!
 //! # Why the rules live here and not in their callers
 //!
@@ -244,6 +252,51 @@ impl Fit {
     }
 }
 
+/// Rule 6: items worth more the longer they are owned, because their passive
+/// builds permanent stacks over the match. By base slug, so the radiant tier
+/// follows.
+const EARLY_ITEMS: [&str; 6] = [
+    "heartsteel",             // permanent bonus health every 20 seconds
+    "yun_tal_wildarrows",     // permanent crit chance per basic attack
+    "hubris",                 // permanent stack per takedown
+    "feral_flare",            // a stack per takedown and monster killed
+    "grezs_spectral_lantern", // ability power per takedown and monster killed
+    "collector",              // bonus gold per kill, worth more the earlier it comes
+];
+
+/// Rule 6: items whose passive scales with a stat the rest of the build
+/// provides, so they are worth most once the others are in.
+const LATE_ITEMS: [&str; 9] = [
+    "riftmaker",             // ability power from maximum health
+    "overlords_bloodmail",   // attack damage from maximum health
+    "atmas_reckoning",       // crit chance from maximum health
+    "protectors_vow",        // maximum health from armor
+    "cloak_of_starry_night", // multiplies magic resistance
+    "rabadons_deathcap",     // multiplies ability power
+    "deathblade",            // multiplies attack damage
+    "infinity_edge",         // crit damage, worth nothing without crit chance
+    "lord_dominiks_regards", // grows with the target's health, which grows late
+];
+
+/// When an item pays off, in the order rule 6 buys them.
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+enum Timing {
+    Early,
+    Any,
+    Late,
+}
+
+fn timing(key: &str) -> Timing {
+    let slug = crate::build_config::base_slug(key);
+    if EARLY_ITEMS.contains(&slug) {
+        Timing::Early
+    } else if LATE_ITEMS.contains(&slug) {
+        Timing::Late
+    } else {
+        Timing::Any
+    }
+}
+
 /// Whether `key` is an item only the support role may build: the editor's Support
 /// class, base or radiant, less [`SUPPORT_ITEM_EXCEPTION`].
 fn is_support_item(key: &str) -> bool {
@@ -328,7 +381,7 @@ impl Budget {
     }
 }
 
-/// Rewrites `build` in place so that it breaks none of the five rules, as far as
+/// Rewrites `build` in place so that it breaks none of the six rules, as far as
 /// the catalog allows.
 ///
 /// A slot that breaks one is swapped for the next item that fixes it: unused, of
@@ -353,6 +406,12 @@ impl Budget {
 /// player's pins for slots past the end of `build` — are counted before any AI
 /// slot is looked at, so an AI pick that clashes with a pin is the one that
 /// goes, wherever the two sit in the build.
+///
+/// Last, rule 6 reorders the AI's slots among themselves: early items first,
+/// late items last, and the engine's order within each group. A pinned slot
+/// keeps its position and its item, so the player's buy order is never moved.
+/// Every caller decides the build before the match, when nothing is bought
+/// yet, so no owned item can end up in a later slot.
 pub(crate) fn enforce<C, K, G, F>(
     count: usize,
     build: &mut [usize],
@@ -463,5 +522,14 @@ pub(crate) fn enforce<C, K, G, F>(
         if let Some(key) = key(chosen) {
             budget.take(&key);
         }
+    }
+
+    // Rule 6. A stable sort, so items of the same timing keep the engine's
+    // order.
+    let open: Vec<usize> = (0..build.len()).filter(|&slot| !is_pinned(slot)).collect();
+    let mut picks: Vec<usize> = open.iter().map(|&slot| build[slot]).collect();
+    picks.sort_by_key(|&index| key(index).map_or(Timing::Any, |key| timing(&key)));
+    for (&slot, index) in open.iter().zip(picks) {
+        build[slot] = index;
     }
 }
