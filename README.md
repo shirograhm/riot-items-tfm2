@@ -17,7 +17,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3739984076
 https://github.com/shirograhm/item-scroller-tfm2/releases
 
 ##### Gold Efficiency Stats - For Base Values
-https://docs.google.com/spreadsheets/d/e/2PACX-1vRnFUzULF0sIUQt4UwlOf0CGtuc9nJWpGO02nyy00m7mcyySuxhGvUaU8HGrvljAChaHQx2n_yO5V8S/pubhtml
+https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 
 ##### Item Info Screen
 <img width="1748" height="1133" alt="image" src="https://github.com/user-attachments/assets/b19e829d-15d2-4010-aa7d-1839138eb8e5" />
