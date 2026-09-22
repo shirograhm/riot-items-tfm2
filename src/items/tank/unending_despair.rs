@@ -21,9 +21,9 @@ impl UnendingDespair {
                 &["ring_of_reincarnation"],
                 &["radiant_unending_despair"],
             ),
-            price: 1450,
-            hp: 450,
-            defence: 30,
+            price: 750,
+            hp: 250,
+            defence: 15,
             effect_bonus_flat_heal: 35,
             effect_caster_hp_percent_heal: 1.0,
         }
@@ -32,9 +32,9 @@ impl UnendingDespair {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_unending_despair", &["unending_despair"]),
-            price: 2100,
-            hp: 700,
-            defence: 50,
+            price: 1050,
+            hp: 350,
+            defence: 25,
             effect_bonus_flat_heal: 50,
             effect_caster_hp_percent_heal: 2.5,
             ..Self::base()

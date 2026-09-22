@@ -55,8 +55,8 @@ impl KrakenSlayer {
                 &["scouts_slingshot"],
                 &["radiant_kraken_slayer"],
             ),
-            price: 1400,
-            attack: 45,
+            price: 700,
+            attack: 25,
             attack_speed_mult: 25,
             move_speed_mult: 4,
             effect_bonus_flat_damage: 150,
@@ -72,8 +72,8 @@ impl KrakenSlayer {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_kraken_slayer", &["kraken_slayer"]),
-            price: 2000,
-            attack: 75,
+            price: 1000,
+            attack: 40,
             attack_speed_mult: 45,
             move_speed_mult: 4,
             effect_bonus_flat_damage: 150,

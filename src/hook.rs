@@ -37,7 +37,7 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.6.0 (release).
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.6.1.
 //!
 //! The finder identifies the target by its **argument shape** rather than by
 //! anything in its body: the return type is 24 bytes so it comes back via `sret`
@@ -211,10 +211,26 @@ const ABSOLUTE_JUMP_LEN: usize = 12;
 ///     1497/11/8, and the beta2 extra candidate, here 1533/11/10.
 ///
 /// Nothing in this file changed for the release; only this note was added.
+///
+/// 0.6.0 -> 0.6.1 (2026-09-21): the target moved `0x24b15a0` -> **`0x26ab650`** (size
+/// 2270 -> 2709) and **the bytes changed**: the frame grew `0x228` -> `0x238` and both rbp
+/// displacements moved by that same `0x10` (`0x190` -> `0x1a0`, `0x188` -> `0x198`), the
+/// uniform shift every earlier recompile showed; r8/r9 are now kept in r13/r14 instead of
+/// spilled, which is where the last three bytes changed. Confirmed three ways:
+///
+///   * `tools/find_item_build_hook.py` returns 4 candidates on each build, and three of
+///     0.6.1's are the recorded decoys at identical sizes (1533, 1497, 1489), leaving
+///     `0x26ab650` as the only counterpart of `0x24b15a0`;
+///   * 8 caller sites in 4 functions, 2 each, with caller sizes 30700/3037/1239 identical
+///     and the match-sim megafunction 79937 -> 79985 (the same function `CL_LAUNCHER`'s
+///     caller list ties across the two builds independently);
+///   * it still calls the 6354-byte item-network helper, identical size on both sides.
+///
+/// These 48 bytes are unique in `.text`; 44 bytes still hit 4 functions, so do not shorten.
 const FALLBACK_SIGNATURE: [u8; 48] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x28,
-    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x90, 0x01,
-    0x00, 0x00, 0x48, 0xC7, 0x85, 0x88, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0x4D,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x38,
+    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0xA0, 0x01,
+    0x00, 0x00, 0x48, 0xC7, 0x85, 0x98, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4D, 0x89, 0xCE,
 ];
 
 /// Plausible size range for the target in bytes (1869 in SDK 0.5.2). Narrows the
@@ -449,7 +465,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.6.0-beta and this build differs — \
+            "{error}; the built-in signature is for game 0.6.1 and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;
@@ -566,7 +582,7 @@ unsafe fn patch_target(target: *mut u8) -> Result<Vec<String>, String> {
 ///
 /// `key` and `next_tier` happen to sit ahead of it, which is why the catalog
 /// snapshot below has always worked. `category` and `tier` do not. Calling
-/// `category()` (2026-09-19, from `enforce_unique_items`) dispatched into some
+/// `category()` (2026-09-19, from the unique-items pass) dispatched into some
 /// other trait method with nonsense arguments; the game's own Rust code
 /// panicked and aborted the process with `0xc0000409` /
 /// `FAST_FAIL_FATAL_APP_EXIT` as soon as a 5v5 test began.
@@ -661,7 +677,7 @@ unsafe fn detour(
     routes
 }
 
-/// Applies the editor's builds *and* unique-item enforcement to a
+/// Applies the editor's builds *and* the Smart Builds pass to a
 /// training-screen match, which is the one place the stable hook never runs.
 ///
 /// # Why this exists again
@@ -706,8 +722,8 @@ fn apply_training_builds(
     // Unique enforcement is not a property of the editor's builds - the stable
     // hook runs it over the engine's own `base_build` too - so an empty config
     // is only a reason to skip the rewrite below, not a reason to return.
-    let unique = build_config::unique_items_enabled();
-    if config.is_empty() && !unique {
+    let smart = build_config::smart_builds_enabled();
+    if config.is_empty() && !smart {
         return;
     }
 
@@ -722,28 +738,29 @@ fn apply_training_builds(
             break;
         };
         let role = build_config::Role::from_lane_code(position);
+        let mut pinned = Vec::new();
+        let mut reserved = Vec::new();
         if let Some(build) = (!config.is_empty())
             .then(|| build_config::build_for_champion(&config, champion, role, &index_of, route))
             .flatten()
         {
-            for (slot, item) in build.iter().enumerate().take(route.len()) {
+            for (slot, item) in build.items.iter().enumerate().take(route.len()) {
                 route[slot] = *item;
             }
+            pinned = build.pinned;
+            reserved = build.reserved;
         }
-        if unique {
-            enforce_unique_items(items, route);
+        if smart {
+            let fit = crate::smart_builds::fit(champion, role);
+            enforce_smart_build(items, route, &pinned, &reserved, fit);
         }
     }
 }
 
-/// The training-screen twin of `crate::item_build_hook::enforce_unique_items`,
-/// kept deliberately identical in behaviour: a duplicate is swapped for the
-/// next unused final item of the same category, wrapping around the catalog,
-/// and left alone when no such item exists.
-///
-/// It has to be written twice because the two halves see the catalog through
-/// different APIs - `StableItemBuildContext`'s flat index arrays there, the
-/// game's own `Vec<Box<dyn ItemInfo>>` here - and the indices in `route` are
+/// The training-screen twin of `crate::item_build_hook::enforce_smart_build`:
+/// the same [`crate::smart_builds`] pass, over the same build, with the catalog
+/// seen through the game's own `Vec<Box<dyn ItemInfo>>` instead of
+/// `StableItemBuildContext`'s flat index arrays. The indices in `route` are
 /// positions in *this* list, the same ones `index_of` above produces.
 ///
 /// # Why it does not ask `ItemInfo` for the category or the tier
@@ -774,40 +791,32 @@ fn apply_training_builds(
 /// editor's finer class. Both keep a stand-in "the same kind of item", which is
 /// what the rule is for, and the finer one is the better answer where it has
 /// one.
-fn enforce_unique_items(items: &[Box<dyn ItemInfo>], build: &mut [usize]) {
-    let count = items.len();
-    if count == 0 {
-        return;
-    }
-    let category = |index: usize| {
-        let item = items.get(index)?;
-        // Bound rather than chained: `base_slug` borrows the key, and only the
-        // `&'static str` that `category_of` returns outlives this block.
-        let key = item.key().to_string();
-        crate::item_catalog::category_of(build_config::base_slug(&key))
-    };
-    let is_selectable_final =
-        |index: usize| items.get(index).is_some_and(|item| item.next_tier().is_empty());
-
-    let mut seen = std::collections::HashSet::new();
-    for slot in build.iter_mut() {
-        if seen.insert(*slot) {
-            continue;
-        }
-        // Must be known: matching `None` against `None` would swap a duplicate
-        // for any item that is not in the list at all.
-        let Some(wanted) = category(*slot) else {
-            continue;
-        };
-        let duplicate = *slot;
-        let replacement = (1..count)
-            .map(|step| (duplicate + step) % count)
-            .find(|c| !seen.contains(c) && category(*c) == Some(wanted) && is_selectable_final(*c));
-        if let Some(index) = replacement {
-            *slot = index;
-            seen.insert(index);
-        }
-    }
+fn enforce_smart_build(
+    items: &[Box<dyn ItemInfo>],
+    build: &mut [usize],
+    pinned: &[bool],
+    reserved: &[usize],
+    fit: crate::smart_builds::Fit,
+) {
+    crate::smart_builds::enforce(
+        items.len(),
+        build,
+        pinned,
+        reserved,
+        fit,
+        |index| items.get(index).map(|item| item.key().to_string()),
+        |index| {
+            // Bound rather than chained: `base_slug` borrows the key, and only
+            // the `&'static str` that `category_of` returns outlives this block.
+            let key = items.get(index)?.key().to_string();
+            crate::item_catalog::category_of(build_config::base_slug(&key))
+        },
+        |index| {
+            items
+                .get(index)
+                .is_some_and(|item| item.next_tier().is_empty())
+        },
+    );
 }
 
 pub fn install_hook() -> Result<usize, String> {

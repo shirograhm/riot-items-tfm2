@@ -16,8 +16,8 @@ impl InfinityEdge {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("infinity_edge", &["bf_sword"], &["radiant_infinity_edge"]),
-            price: 1500,
-            attack: 75,
+            price: 750,
+            attack: 40,
             crit_chance: 20,
             effect_crit_damage_bonus: 30,
         }
@@ -26,8 +26,8 @@ impl InfinityEdge {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_infinity_edge", &["infinity_edge"]),
-            price: 2300,
-            attack: 130,
+            price: 1150,
+            attack: 65,
             crit_chance: 25,
             effect_crit_damage_bonus: 30,
         }

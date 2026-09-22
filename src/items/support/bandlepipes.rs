@@ -68,10 +68,10 @@ impl Bandlepipes {
             ),
             fanfare_buff: "bandlepipes_fanfare",
             anthem_buff: "bandlepipes_anthem",
-            price: 1000,
-            hp: 200,
-            defence: 40,
-            magic_resistance: 60,
+            price: 500,
+            hp: 100,
+            defence: 20,
+            magic_resistance: 30,
             skill_cooldown_mult: 15,
             effect_duration_seconds: 4.0,
             effect_move_speed_mult: 12,
@@ -86,10 +86,10 @@ impl Bandlepipes {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_bandlepipes", &["bandlepipes"]),
-            price: 1500,
-            hp: 400,
-            defence: 60,
-            magic_resistance: 100,
+            price: 750,
+            hp: 200,
+            defence: 30,
+            magic_resistance: 50,
             skill_cooldown_mult: 20,
             // Fanfare itself is unchanged — Radiant buys the stat line only.
             ..Self::base()

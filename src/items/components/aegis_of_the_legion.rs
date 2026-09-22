@@ -13,10 +13,10 @@ pub struct AegisOfTheLegion {
 impl Default for AegisOfTheLegion {
     fn default() -> Self {
         Self {
-            price: 950,
-            hp: 150,
-            defence: 40,
-            magic_resistance: 60,
+            price: 500,
+            hp: 100,
+            defence: 20,
+            magic_resistance: 30,
         }
     }
 }

@@ -14,8 +14,8 @@ pub struct ExecutionersCalling {
 impl Default for ExecutionersCalling {
     fn default() -> Self {
         Self {
-            price: 1300,
-            attack: 45,
+            price: 650,
+            attack: 25,
             effect_heal_reduce: 25,
             effect_duration_seconds: 2.0,
         }

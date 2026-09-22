@@ -208,8 +208,8 @@ impl Default for Strings {
                 "ITEM 5".into(),
                 "ITEM 6".into(),
             ],
-            unique_on: "Unique Items Enforced".into(),
-            unique_off: "Duplicates Allowed".into(),
+            unique_on: "Enforce Smart Builds".into(),
+            unique_off: "Allow Any Builds".into(),
             scope_all: "Apply To All Players".into(),
             scope_own: "Apply To Your Players Only".into(),
             save: "Save Item Builds".into(),
@@ -1363,6 +1363,24 @@ fn choice_of<'a>(entries: &'a [ListEntry], key: &str) -> Option<&'a ItemChoice> 
     })
 }
 
+/// Rewrites every pinned key to the spelling of the list entry it means.
+///
+/// `item-builds.json` accepts any spelling the hook can resolve — the original
+/// format was plain LoL names (`"collector"`), and renamed items can be written
+/// by their LoL name (`"radiant_bloodthirster"`) — but the editor compares keys
+/// exactly. Without this, such a slot reads as pinned (clear X shown, no dash)
+/// yet finds no entry, so it shows no icon and cannot be ticked or unpinned by
+/// clicking it. Keys no entry matches are left as written.
+fn canonicalize_rows(entries: &[ListEntry], rows: &mut [ChampionRow]) {
+    for key in rows.iter_mut().flat_map(|row| row.slots.iter_mut().flatten()) {
+        if let Some(item) = build_config::resolve_key(key, &|k: &str| choice_of(entries, k)) {
+            if item.key != *key {
+                *key = item.key.clone();
+            }
+        }
+    }
+}
+
 /// Champion list, in display order. Cached on first use.
 ///
 /// The ids come from the hook's roster file, because the client cannot
@@ -1695,7 +1713,7 @@ fn toggle_style(lit: bool) -> String {
 
 /// Paints which half of the unique-items toggle is the live setting.
 fn refresh_unique(ctx: &mut StableClient<'_>) {
-    if build_config::unique_items_enabled() {
+    if build_config::smart_builds_enabled() {
         paint_toggle(ctx, unique_on_path(), unique_off_path());
     } else {
         paint_toggle(ctx, unique_off_path(), unique_on_path());
@@ -2643,6 +2661,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     // while the game sits on this screen is picked up.
     let _ = with_state(|state| {
         state.rows = build_config::load_champion_rows();
+        canonicalize_rows(&entries, &mut state.rows);
         state.spawned_rows.clear();
         // The subtree was just spawned, so its filter box is empty whatever the
         // last screen was left filtered by.
@@ -3214,7 +3233,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     // builds: a pinned duplicate is the player's, and enforcement is something
     // the match does to a build, not something the editor does to the config.
     if path == unique_on_path() || path == unique_off_path() {
-        if build_config::set_unique_items(path == unique_on_path()) {
+        if build_config::set_smart_builds(path == unique_on_path()) {
             refresh_unique(ctx);
         }
         return;
@@ -3416,6 +3435,12 @@ impl StableExtension for StrategyPicker {
         // that do — the statistics screen and the management tick — are both
         // somewhere this early return would have skipped.
         crate::item_stats::sync(ctx);
+
+        // Champion facts for the Smart Builds rules, which only the client can
+        // ask the host for. Unconditional: the build paths need them in every
+        // match, and it returns at once when there is no champion it has not
+        // asked about.
+        crate::champion_traits::learn(ctx);
 
         // Same again, for the statistics screen and its Item Stats tab. Inert
         // anywhere else: it returns on its first line unless that screen is up.

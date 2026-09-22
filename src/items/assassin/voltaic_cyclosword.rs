@@ -30,8 +30,8 @@ impl VoltaicCyclosword {
                 &["serrated_dirk"],
                 &["radiant_voltaic_cyclosword"],
             ),
-            price: 1300,
-            attack: 60,
+            price: 650,
+            attack: 30,
             skill_cooldown_mult: 10,
             effect_lethality: 12,
             effect_bonus_lethality: 6,
@@ -50,8 +50,8 @@ impl VoltaicCyclosword {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_voltaic_cyclosword", &["voltaic_cyclosword"]),
-            price: 1950,
-            attack: 100,
+            price: 1000,
+            attack: 50,
             skill_cooldown_mult: 15,
             effect_lethality: 12,
             effect_bonus_lethality: 10,

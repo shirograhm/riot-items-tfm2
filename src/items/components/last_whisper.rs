@@ -12,8 +12,8 @@ pub struct LastWhisper {
 impl Default for LastWhisper {
     fn default() -> Self {
         Self {
-            price: 950,
-            attack: 45,
+            price: 500,
+            attack: 25,
             defence_penetration: 10,
         }
     }

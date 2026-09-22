@@ -11,8 +11,8 @@ pub struct BFSword {
 impl Default for BFSword {
     fn default() -> Self {
         Self {
-            price: 850,
-            attack: 65,
+            price: 450,
+            attack: 35,
         }
     }
 }

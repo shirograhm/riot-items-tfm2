@@ -16,7 +16,7 @@ pub struct ScoutsSlingshot {
 impl Default for ScoutsSlingshot {
     fn default() -> Self {
         Self {
-            price: 800,
+            price: 400,
             attack_speed_mult: 30,
             effect_bonus_flat_damage: 40,
             effect_cooldown_seconds: 20.0,

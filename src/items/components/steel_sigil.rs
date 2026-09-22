@@ -12,9 +12,9 @@ pub struct SteelSigil {
 impl Default for SteelSigil {
     fn default() -> Self {
         Self {
-            price: 950,
-            attack: 30,
-            defence: 50,
+            price: 500,
+            attack: 15,
+            defence: 25,
         }
     }
 }

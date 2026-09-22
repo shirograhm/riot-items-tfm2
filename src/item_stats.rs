@@ -112,6 +112,17 @@ impl Totals {
     pub fn first_rate(&self) -> Option<f64> {
         (self.games > 0).then(|| self.firsts as f64 * 100.0 / self.games as f64)
     }
+
+    /// Times this item was built per match, in percent: `games` counts one per
+    /// player who finished with it, so 200% means two players a match on
+    /// average. `None` when no match has been counted, which is no rate at all
+    /// rather than 0%.
+    ///
+    /// `matches` is every match in the patch filter, whatever the lane filter —
+    /// with a lane picked this reads "built in that lane, per match".
+    pub fn play_rate(&self, matches: u32) -> Option<f64> {
+        (matches > 0).then(|| self.games as f64 * 100.0 / matches as f64)
+    }
 }
 
 #[derive(Default)]
@@ -575,6 +586,23 @@ fn collect_items(
             .and_then(Value::as_str)
             .filter(|inner| !inner.is_empty())
             .unwrap_or(key);
+        // Crit and offensive stats for the Smart Builds pass. This mod's own
+        // items report theirs at registration; the game's are described only
+        // here.
+        let stat = |name: &str| {
+            object
+                .get("stat")
+                .and_then(|stat| stat.get(name))
+                .and_then(Value::as_i64)
+                .unwrap_or(0) as i32
+        };
+        crate::smart_builds::note_engine_item(
+            key,
+            stat("crit_chance"),
+            stat("attack"),
+            stat("attack_speed_mult"),
+            stat("magic_power"),
+        );
         out.insert(
             key.to_string(),
             ItemInfo {

@@ -21,8 +21,8 @@ impl Shadowflame {
                 &["needlessly_large_rod", "hextech_alternator"],
                 &["radiant_shadowflame"],
             ),
-            price: 1350,
-            magic_power: 115,
+            price: 700,
+            magic_power: 60,
             magic_resistance_penetration: 15,
             effect_hp_percent_threshold: 40.0,
             effect_bonus_damage_when_low: 20.0,
@@ -32,8 +32,8 @@ impl Shadowflame {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_shadowflame", &["shadowflame"]),
-            price: 1800,
-            magic_power: 210,
+            price: 900,
+            magic_power: 105,
             magic_resistance_penetration: 15,
             effect_hp_percent_threshold: 40.0,
             effect_bonus_damage_when_low: 20.0,

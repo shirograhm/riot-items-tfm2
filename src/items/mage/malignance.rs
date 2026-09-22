@@ -19,8 +19,8 @@ impl Malignance {
                 &["staff_of_rapture", "needlessly_large_rod"],
                 &["radiant_malignance"],
             ),
-            price: 1250,
-            magic_power: 120,
+            price: 650,
+            magic_power: 60,
             skill_cooldown_mult: 12,
             ult_cooldown_mult: 12,
         }
@@ -29,8 +29,8 @@ impl Malignance {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_malignance", &["malignance"]),
-            price: 1900,
-            magic_power: 200,
+            price: 950,
+            magic_power: 100,
             skill_cooldown_mult: 20,
             ult_cooldown_mult: 20,
             ..Self::base()

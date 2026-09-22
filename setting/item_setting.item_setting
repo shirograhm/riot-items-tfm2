@@ -2,12 +2,12 @@
   "iron_blade": {
     "key": "ironsword",
     "icon": "t1_0",
-    "price": 500,
+    "price": 250,
     "tier": 0,
     "stat": {
       "name": "",
       "duration": "Permanent",
-      "attack": 15,
+      "attack": 10,
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
@@ -54,12 +54,12 @@
   "soldiers_longsword": {
     "key": "soldiers_longsword",
     "icon": "t2_0",
-    "price": 500,
+    "price": 250,
     "tier": 1,
     "stat": {
       "name": "",
       "duration": "Permanent",
-      "attack": 30,
+      "attack": 15,
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
@@ -106,12 +106,12 @@
   "ruinous_blade": {
     "key": "ruinous_blade",
     "icon": "t3_0",
-    "price": 800,
+    "price": 400,
     "tier": 2,
     "stat": {
       "name": "",
       "duration": "Permanent",
-      "attack": 50,
+      "attack": 25,
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
@@ -159,12 +159,12 @@
   "conquerors_greatsword": {
     "key": "conquerors_greatsword",
     "icon": "t4_0",
-    "price": 1400,
+    "price": 700,
     "tier": 3,
     "stat": {
       "name": "",
       "duration": "Permanent",
-      "attack": 75,
+      "attack": 40,
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
@@ -212,12 +212,12 @@
   "warlords_final_judgement": {
     "key": "warlords_final_judgement",
     "icon": "t5_0",
-    "price": 2000,
+    "price": 1000,
     "tier": 4,
     "stat": {
       "name": "",
       "duration": "Permanent",
-      "attack": 100,
+      "attack": 50,
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
@@ -264,7 +264,7 @@
   "dagger": {
     "key": "dagger",
     "icon": "t1_1",
-    "price": 500,
+    "price": 250,
     "tier": 0,
     "stat": {
       "name": "",
@@ -316,7 +316,7 @@
   "wind_dagger": {
     "key": "wind_dagger",
     "icon": "t2_1",
-    "price": 500,
+    "price": 250,
     "tier": 1,
     "stat": {
       "name": "",
@@ -368,7 +368,7 @@
   "twin_stormblade": {
     "key": "twin_stormblade",
     "icon": "t3_1",
-    "price": 800,
+    "price": 400,
     "tier": 2,
     "stat": {
       "name": "",
@@ -420,7 +420,7 @@
   "thunderclaw": {
     "key": "thunderclaw",
     "icon": "t4_1",
-    "price": 1400,
+    "price": 700,
     "tier": 3,
     "stat": {
       "name": "",
@@ -472,7 +472,7 @@
   "storm_sovereign": {
     "key": "storm_sovereign",
     "icon": "t5_1",
-    "price": 2000,
+    "price": 1000,
     "tier": 4,
     "stat": {
       "name": "",
@@ -523,7 +523,7 @@
   "steel_armor": {
     "key": "steel_armor",
     "icon": "t1_2",
-    "price": 500,
+    "price": 250,
     "tier": 0,
     "stat": {
       "name": "",
@@ -532,7 +532,7 @@
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
-      "defence": 20,
+      "defence": 10,
       "defence_mult": 0,
       "hp": 0,
       "hp_regen": 0,
@@ -575,7 +575,7 @@
   "gatekeepers_armor": {
     "key": "gatekeepers_armor",
     "icon": "t2_2",
-    "price": 500,
+    "price": 250,
     "tier": 1,
     "stat": {
       "name": "",
@@ -584,7 +584,7 @@
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
-      "defence": 40,
+      "defence": 20,
       "defence_mult": 0,
       "hp": 0,
       "hp_regen": 0,
@@ -627,7 +627,7 @@
   "black_knights_heavy_plate": {
     "key": "black_knights_heavy_plate",
     "icon": "t3_2",
-    "price": 800,
+    "price": 400,
     "tier": 2,
     "stat": {
       "name": "",
@@ -636,7 +636,7 @@
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
-      "defence": 70,
+      "defence": 35,
       "defence_mult": 0,
       "hp": 0,
       "hp_regen": 0,
@@ -679,7 +679,7 @@
   "eternal_iron_plate": {
     "key": "eternal_iron_plate",
     "icon": "t4_2",
-    "price": 1400,
+    "price": 700,
     "tier": 3,
     "stat": {
       "name": "",
@@ -688,7 +688,7 @@
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
-      "defence": 100,
+      "defence": 50,
       "defence_mult": 0,
       "hp": 0,
       "hp_regen": 0,
@@ -731,7 +731,7 @@
   "impregnable_fortress": {
     "key": "impregnable_fortress",
     "icon": "t5_2",
-    "price": 2000,
+    "price": 1000,
     "tier": 4,
     "stat": {
       "name": "",
@@ -740,7 +740,7 @@
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
-      "defence": 130,
+      "defence": 65,
       "defence_mult": 0,
       "hp": 0,
       "hp_regen": 0,
@@ -784,7 +784,7 @@
   "mystic_cloak": {
     "key": "mystic_cloak",
     "icon": "t1_3",
-    "price": 500,
+    "price": 250,
     "tier": 0,
     "stat": {
       "name": "",
@@ -797,7 +797,7 @@
       "defence_mult": 0,
       "hp": 50,
       "hp_regen": 0,
-      "magic_resistance": 30,
+      "magic_resistance": 15,
       "magic_resistance_mult": 0,
       "vamp": 0,
       "hp_mult": 0,
@@ -836,7 +836,7 @@
   "night_hood": {
     "key": "night_hood",
     "icon": "t2_3",
-    "price": 500,
+    "price": 250,
     "tier": 1,
     "stat": {
       "name": "",
@@ -847,9 +847,9 @@
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
-      "hp": 150,
+      "hp": 100,
       "hp_regen": 0,
-      "magic_resistance": 60,
+      "magic_resistance": 30,
       "magic_resistance_mult": 0,
       "vamp": 0,
       "hp_mult": 0,
@@ -888,7 +888,7 @@
   "dusk_raven": {
     "key": "dusk_raven",
     "icon": "t3_3",
-    "price": 800,
+    "price": 400,
     "tier": 2,
     "stat": {
       "name": "",
@@ -899,9 +899,9 @@
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
-      "hp": 200,
+      "hp": 100,
       "hp_regen": 0,
-      "magic_resistance": 100,
+      "magic_resistance": 50,
       "magic_resistance_mult": 0,
       "vamp": 0,
       "hp_mult": 0,
@@ -940,7 +940,7 @@
   "souls_edge": {
     "key": "souls_edge",
     "icon": "t4_3",
-    "price": 1400,
+    "price": 700,
     "tier": 3,
     "stat": {
       "name": "",
@@ -951,9 +951,9 @@
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
-      "hp": 300,
+      "hp": 150,
       "hp_regen": 0,
-      "magic_resistance": 150,
+      "magic_resistance": 75,
       "magic_resistance_mult": 0,
       "vamp": 0,
       "hp_mult": 0,
@@ -992,7 +992,7 @@
   "veil_of_annihilation": {
     "key": "veil_of_annihilation",
     "icon": "t5_3",
-    "price": 2000,
+    "price": 1000,
     "tier": 4,
     "stat": {
       "name": "",
@@ -1003,9 +1003,9 @@
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
-      "hp": 400,
+      "hp": 200,
       "hp_regen": 0,
-      "magic_resistance": 200,
+      "magic_resistance": 100,
       "magic_resistance_mult": 0,
       "vamp": 0,
       "hp_mult": 0,
@@ -1043,14 +1043,14 @@
   "arcane_crystal": {
     "key": "arcane_crystal",
     "icon": "t1_4",
-    "price": 500,
+    "price": 250,
     "tier": 0,
     "stat": {
       "name": "",
       "duration": "Permanent",
       "attack": 0,
       "attack_mult": 0,
-      "magic_power": 30,
+      "magic_power": 15,
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
@@ -1095,14 +1095,14 @@
   "spirit_crystal": {
     "key": "spirit_crystal",
     "icon": "t2_4",
-    "price": 500,
+    "price": 250,
     "tier": 1,
     "stat": {
       "name": "",
       "duration": "Permanent",
       "attack": 0,
       "attack_mult": 0,
-      "magic_power": 60,
+      "magic_power": 30,
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
@@ -1147,14 +1147,14 @@
   "staff_of_rapture": {
     "key": "staff_of_rapture",
     "icon": "t3_4",
-    "price": 800,
+    "price": 400,
     "tier": 2,
     "stat": {
       "name": "",
       "duration": "Permanent",
       "attack": 0,
       "attack_mult": 0,
-      "magic_power": 100,
+      "magic_power": 50,
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
@@ -1200,14 +1200,14 @@
   "angels_fang": {
     "key": "angels_fang",
     "icon": "t4_4",
-    "price": 1400,
+    "price": 700,
     "tier": 3,
     "stat": {
       "name": "",
       "duration": "Permanent",
       "attack": 0,
       "attack_mult": 0,
-      "magic_power": 150,
+      "magic_power": 75,
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
@@ -1253,14 +1253,14 @@
   "prophet_of_the_abyss": {
     "key": "prophet_of_the_abyss",
     "icon": "t5_4",
-    "price": 2000,
+    "price": 1000,
     "tier": 4,
     "stat": {
       "name": "",
       "duration": "Permanent",
       "attack": 0,
       "attack_mult": 0,
-      "magic_power": 200,
+      "magic_power": 100,
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
@@ -1305,7 +1305,7 @@
   "vital_orb": {
     "key": "vital_orb",
     "icon": "t1_5",
-    "price": 500,
+    "price": 250,
     "tier": 0,
     "stat": {
       "name": "",
@@ -1316,7 +1316,7 @@
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
-      "hp": 100,
+      "hp": 50,
       "hp_regen": 0,
       "magic_resistance": 0,
       "magic_resistance_mult": 0,
@@ -1357,7 +1357,7 @@
   "hardened_heart": {
     "key": "hardened_heart",
     "icon": "t2_5",
-    "price": 500,
+    "price": 250,
     "tier": 1,
     "stat": {
       "name": "",
@@ -1368,7 +1368,7 @@
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
-      "hp": 200,
+      "hp": 100,
       "hp_regen": 0,
       "magic_resistance": 0,
       "magic_resistance_mult": 0,
@@ -1409,7 +1409,7 @@
   "ring_of_reincarnation": {
     "key": "ring_of_reincarnation",
     "icon": "t3_5",
-    "price": 800,
+    "price": 400,
     "tier": 2,
     "stat": {
       "name": "",
@@ -1420,7 +1420,7 @@
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
-      "hp": 300,
+      "hp": 150,
       "hp_regen": 0,
       "magic_resistance": 0,
       "magic_resistance_mult": 0,
@@ -1464,7 +1464,7 @@
   "hourglass_of_eternity": {
     "key": "hourglass_of_eternity",
     "icon": "t4_5",
-    "price": 1400,
+    "price": 700,
     "tier": 3,
     "stat": {
       "name": "",
@@ -1475,7 +1475,7 @@
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
-      "hp": 500,
+      "hp": 250,
       "hp_regen": 0,
       "magic_resistance": 0,
       "magic_resistance_mult": 0,
@@ -1519,7 +1519,7 @@
   "giants_horn_shard": {
     "key": "giants_horn_shard",
     "icon": "t5_5",
-    "price": 2000,
+    "price": 1000,
     "tier": 4,
     "stat": {
       "name": "",
@@ -1530,7 +1530,7 @@
       "magic_power_mult": 0,
       "defence": 0,
       "defence_mult": 0,
-      "hp": 800,
+      "hp": 400,
       "hp_regen": 0,
       "magic_resistance": 0,
       "magic_resistance_mult": 0,

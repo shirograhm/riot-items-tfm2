@@ -18,8 +18,8 @@ pub struct BamisCinder {
 impl Default for BamisCinder {
     fn default() -> Self {
         Self {
-            price: 800,
-            hp: 300,
+            price: 400,
+            hp: 150,
             effect_bonus_flat_damage: 5,
             effect_caster_hp_percent_damage: 0.5,
             effect_max_distance: 30,

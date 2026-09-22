@@ -32,8 +32,8 @@ impl RiteOfRuin {
                 &["radiant_rite_of_ruin"],
             ),
             stack_crit_buff: "rite_of_ruin_crit_buff",
-            price: 1400,
-            magic_power: 105,
+            price: 700,
+            magic_power: 55,
             skill_cooldown_mult: 10,
             crit_chance: 20,
             effect_stack_crit_chance: 5,
@@ -49,8 +49,8 @@ impl RiteOfRuin {
         Self {
             meta: ItemMeta::radiant("radiant_rite_of_ruin", &["rite_of_ruin"]),
             stack_crit_buff: "rite_of_ruin_crit_buff",
-            price: 2000,
-            magic_power: 185,
+            price: 1000,
+            magic_power: 95,
             skill_cooldown_mult: 15,
             crit_chance: 25,
             effect_stack_crit_chance: 5,
@@ -95,6 +95,11 @@ impl RiteOfRuin {
         let per_level =
             ((self.effect_max_shield - self.effect_min_shield) as f64 / 11.0).round() as usize;
         self.effect_min_shield + level.saturating_sub(1) * per_level
+    }
+
+    /// Crit chance Wrath and Ruin grants at full stacks, for Smart Builds.
+    pub fn max_passive_crit(&self) -> i32 {
+        self.effect_stack_crit_chance * self.effect_max_stacks as i32
     }
 }
 

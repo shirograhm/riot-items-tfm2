@@ -3,6 +3,7 @@ use std::cell::Cell;
 
 mod buffs;
 mod build_config;
+mod champion_traits;
 mod config;
 mod constants;
 mod hook;
@@ -14,6 +15,7 @@ mod item_stats_sim;
 mod item_stats_ui;
 mod items;
 mod proc_queue;
+mod smart_builds;
 mod solo_rank_ui;
 mod strategy_ui;
 mod sunfire;
@@ -239,6 +241,9 @@ impl StableServerExtension for NativeTapExtension {
 
 fn init(host: &StableHost) -> StableMod {
     let mut reg = StableMod::new("riot_items_tfm2");
+    // Before any build path can ask: modded champions' AD/AP tags, from their
+    // own files. See `champion_traits::MOD_CHAMPIONS`.
+    champion_traits::load_mod_champions();
     let configs = config::load();
     record_lethality_table(&configs);
 
@@ -249,20 +254,34 @@ fn init(host: &StableHost) -> StableMod {
     // decoded by it. Nothing reads them that way now — loadouts come from the
     // simulation as real keys, and the statistics are stored under those keys — so
     // the order below is for people, grouped by tier and alphabetical within it.
+    // The `, passive_crit` arm is for items whose passive grants crit chance:
+    // Smart Builds counts it at full stacks on top of the flat stat.
     macro_rules! configured {
+        ($key:literal => $T:ty, passive_crit) => {{
+            let item = configured!($key => $T);
+            smart_builds::note_passive_crit($key, item.max_passive_crit());
+            item
+        }};
         ($key:literal => $T:ty) => {{
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
             item_stats::note_registered($key, StableItem::tier(&item));
+            smart_builds::note_mod_item($key, &item);
             item
         }};
     }
     macro_rules! configured_radiant {
+        ($key:literal => $T:ty, passive_crit) => {{
+            let item = configured_radiant!($key => $T);
+            smart_builds::note_passive_crit($key, item.max_passive_crit());
+            item
+        }};
         ($key:literal => $T:ty) => {{
             let item = configs
                 .get($key)
                 .map(<$T>::radiant_with_config)
                 .unwrap_or_else(<$T>::radiant);
             item_stats::note_registered($key, StableItem::tier(&item));
+            smart_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key, StableItem::category(&item));
             item
         }};
@@ -301,7 +320,7 @@ fn init(host: &StableHost) -> StableMod {
 
     // Tier 4
     reg.add_item(configured!("ardent_censer" => ArdentCenser));
-    reg.add_item(configured!("atmas_reckoning" => AtmasReckoning));
+    reg.add_item(configured!("atmas_reckoning" => AtmasReckoning, passive_crit));
     reg.add_item(configured!("axiom_arc" => AxiomArc));
     reg.add_item(configured!("bandlepipes" => Bandlepipes));
     reg.add_item(configured!("bastionbreaker" => Bastionbreaker));
@@ -351,7 +370,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("randuins_omen" => RanduinsOmen));
     reg.add_item(configured!("ravenous_hydra" => RavenousHydra));
     reg.add_item(configured!("riftmaker" => Riftmaker));
-    reg.add_item(configured!("rite_of_ruin" => RiteOfRuin));
+    reg.add_item(configured!("rite_of_ruin" => RiteOfRuin, passive_crit));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
     reg.add_item(configured!("seryldas_grudge" => SeryldasGrudge));
@@ -370,12 +389,12 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("wits_end" => WitsEnd));
-    reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows));
+    reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
 
     // Tier 5
     reg.add_item(configured_radiant!("radiant_ardent_censer" => ArdentCenser));
-    reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning));
+    reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning, passive_crit));
     reg.add_item(configured_radiant!("radiant_axiom_arc" => AxiomArc));
     reg.add_item(configured_radiant!("radiant_bandlepipes" => Bandlepipes));
     reg.add_item(configured_radiant!("radiant_bastionbreaker" => Bastionbreaker));
@@ -425,7 +444,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_randuins_omen" => RanduinsOmen));
     reg.add_item(configured_radiant!("radiant_ravenous_hydra" => RavenousHydra));
     reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
-    reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin));
+    reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin, passive_crit));
     reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
     reg.add_item(configured_radiant!("radiant_seryldas_grudge" => SeryldasGrudge));
@@ -444,7 +463,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
     reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
-    reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows));
+    reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
 
     // `item-builds.json` hook

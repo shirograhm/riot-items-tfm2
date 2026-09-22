@@ -33,8 +33,8 @@ impl Bastionbreaker {
                 &["radiant_bastionbreaker"],
             ),
             sabotage_buff: "sabotage_charge",
-            price: 1300,
-            attack: 65,
+            price: 650,
+            attack: 35,
             skill_cooldown_mult: 15,
             effect_lethality: 22,
             effect_bonus_flat_damage: 150,
@@ -46,8 +46,8 @@ impl Bastionbreaker {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_bastionbreaker", &["bastionbreaker"]),
-            price: 1950,
-            attack: 110,
+            price: 1000,
+            attack: 55,
             skill_cooldown_mult: 20,
             effect_lethality: 22,
             effect_bonus_flat_damage: 200,

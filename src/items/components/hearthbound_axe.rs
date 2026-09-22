@@ -12,8 +12,8 @@ pub struct HearthboundAxe {
 impl Default for HearthboundAxe {
     fn default() -> Self {
         Self {
-            price: 950,
-            attack: 30,
+            price: 500,
+            attack: 15,
             attack_speed_mult: 20,
         }
     }

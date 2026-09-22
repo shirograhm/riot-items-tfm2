@@ -89,7 +89,7 @@ fn config_path() -> Result<PathBuf, String> {
 //  File caches for the route hook
 // ---------------------------------------------------------------------------
 //
-// `load` and `unique_items_enabled` were called straight off `hook::detour`, on
+// `load` and `smart_builds_enabled` were called straight off `hook::detour`, on
 // the assumption noted at `PINS` that the route hook "fires a couple of times a
 // match". It does not: the game builds routes as *every* match starts, and a
 // league day's other fixtures sim on parallel rayon workers — so on a save with
@@ -493,6 +493,12 @@ pub fn champion_roster() -> Vec<String> {
         .unwrap_or_default()
 }
 
+/// Size of the recorded roster, for a per-frame caller that only needs to
+/// know whether it grew and should not copy it to find out.
+pub fn champion_roster_len() -> usize {
+    CHAMPION_ROSTER.lock().map(|roster| roster.len()).unwrap_or(0)
+}
+
 /// The buy detour's view of `item-builds.json`: the file's keys exactly as
 /// written, plus an index that survives the detour not knowing the lane.
 struct PinSnapshot {
@@ -696,7 +702,7 @@ pub fn pinned_key(champion: &str, slot: usize) -> Option<String> {
 /// a partial write would silently reset the other toggle to its default.
 fn save_settings(apply: impl FnOnce(&mut ModSettings)) -> bool {
     let mut settings = ModSettings {
-        unique_items: unique_items_enabled(),
+        unique_items: smart_builds_enabled(),
         own_team_only: own_team_only_enabled(),
     };
     apply(&mut settings);
@@ -713,8 +719,8 @@ fn save_settings(apply: impl FnOnce(&mut ModSettings)) -> bool {
 }
 
 /// Writes `unique_items` to `mod-settings.json`, the toggle
-/// [`unique_items_enabled`] reads back on every hook call.
-pub fn set_unique_items(enabled: bool) -> bool {
+/// [`smart_builds_enabled`] reads back on every hook call.
+pub fn set_smart_builds(enabled: bool) -> bool {
     save_settings(|settings| settings.unique_items = enabled)
 }
 
@@ -766,10 +772,14 @@ fn setting(cache: &AtomicU8, read: impl Fn(&ModSettings) -> bool, default: bool)
     value
 }
 
-/// Whether unique-build enforcement is enabled: `unique_items` in
+/// Whether the Smart Builds pass is enabled: `unique_items` in
 /// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
 /// is absent or malformed, so players opt *out* via the editor toggle.
-pub fn unique_items_enabled() -> bool {
+///
+/// The stored key is still `unique_items`, from when unique items were the
+/// only rule: renaming it would silently reset the toggle for every player
+/// who has already set it. See [`crate::smart_builds`] for what it gates now.
+pub fn smart_builds_enabled() -> bool {
     setting(&UNIQUE_ITEMS, |settings| settings.unique_items, true)
 }
 
@@ -840,6 +850,18 @@ pub fn own_team_only_enabled() -> bool {
     setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, false)
 }
 
+/// A configured build merged with the AI's, as item indices, with a record of
+/// which slots the player pinned. Smart Builds may only rewrite the others.
+pub struct MergedBuild {
+    pub items: Vec<usize>,
+    /// Parallel to `items`: `true` where the slot holds the player's pin.
+    pub pinned: Vec<bool>,
+    /// The player's pins for slots past the ones `items` covers — the 5th and
+    /// 6th, which the buy detour fills later. Not placed here, but already
+    /// spoken for: the AI's picks in `items` must not duplicate them.
+    pub reserved: Vec<usize>,
+}
+
 /// The configured build for one champion, as item indices.
 ///
 /// `resolve` turns an item key into an index in whatever list the caller is
@@ -861,7 +883,7 @@ pub fn build_for_champion(
     role: Role,
     resolve: impl Fn(&str) -> Option<usize>,
     ai_build: &[usize],
-) -> Option<Vec<usize>> {
+) -> Option<MergedBuild> {
     let build = build_entry(config, champion, role)?;
     // A build may be longer than the game has slots for — the file keeps a
     // fourth item while 3-slot mode is on, so that switching back restores the
@@ -871,7 +893,17 @@ pub fn build_for_champion(
     // `game_slots`, not `picker_slots`: the 5th and 6th slots do not exist yet
     // when the engine asks, and the buy detour fills them from the same pins.
     let usable = build.len().min(game_slots());
-    Some(merge_build(&build[..usable], ai_build, &resolve))
+    let (items, pinned) = merge_build(&build[..usable], ai_build, &resolve);
+    let reserved = build[usable..]
+        .iter()
+        .flatten()
+        .filter_map(|key| resolve_key(key, &resolve))
+        .collect();
+    Some(MergedBuild {
+        items,
+        pinned,
+        reserved,
+    })
 }
 
 /// The build a champion uses in `role`: the role's own if one is written, and
@@ -906,7 +938,10 @@ fn build_entry<'a>(
 /// verbatim first would silently downgrade every build in that file to its base
 /// tier. The fallback exists only for keys with no radiant variant — the vanilla
 /// tier 5s the in-game picker offers, like `"warlords_final_judgement"`.
-fn resolve_key(key: &str, resolve: &impl Fn(&str) -> Option<usize>) -> Option<usize> {
+///
+/// Generic over the result so the in-game editor can resolve a key to its own
+/// list entry with exactly the same rules the hook uses.
+pub(crate) fn resolve_key<T>(key: &str, resolve: &impl Fn(&str) -> Option<T>) -> Option<T> {
     let radiant = radiant_key(key);
     if let Some(index) = resolve(alias_key(radiant.as_ref())) {
         return Some(index);
@@ -919,12 +954,12 @@ fn resolve_key(key: &str, resolve: &impl Fn(&str) -> Option<usize>) -> Option<us
 /// item; blank slots (`None`) are filled, in order, with the AI's own picks that
 /// the player did not already pin. Unresolvable pinned keys and exhausted AI
 /// picks simply drop their slot, so one typo or an over-long build never aborts
-/// the rest.
+/// the rest. The second vector says, per slot of the route, whether it is a pin.
 fn merge_build(
     build: &[Option<String>],
     ai_route: &[usize],
     resolve: &impl Fn(&str) -> Option<usize>,
-) -> Vec<usize> {
+) -> (Vec<usize>, Vec<bool>) {
     let pinned: std::collections::HashSet<usize> = build
         .iter()
         .flatten()
@@ -933,21 +968,24 @@ fn merge_build(
     let mut ai_fill = ai_route.iter().copied().filter(|i| !pinned.contains(i));
 
     let mut route = Vec::with_capacity(build.len());
+    let mut is_pin = Vec::with_capacity(build.len());
     for slot in build {
         match slot {
             Some(key) => {
                 if let Some(index) = resolve_key(key, resolve) {
                     route.push(index);
+                    is_pin.push(true);
                 }
             }
             None => {
                 if let Some(index) = ai_fill.next() {
                     route.push(index);
+                    is_pin.push(false);
                 }
             }
         }
     }
-    route
+    (route, is_pin)
 }
 
 /// Resolves a configured item key to its `radiant_` (tier 5) variant: keys that

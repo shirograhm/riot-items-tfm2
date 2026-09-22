@@ -13,8 +13,8 @@ pub struct SerratedDirk {
 impl Default for SerratedDirk {
     fn default() -> Self {
         Self {
-            price: 800,
-            attack: 45,
+            price: 400,
+            attack: 25,
             effect_lethality: 10,
         }
     }

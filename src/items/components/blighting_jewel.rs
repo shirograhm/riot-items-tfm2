@@ -12,8 +12,8 @@ pub struct BlightingJewel {
 impl Default for BlightingJewel {
     fn default() -> Self {
         Self {
-            price: 800,
-            magic_power: 80,
+            price: 400,
+            magic_power: 40,
             magic_resistance_penetration: 10,
         }
     }

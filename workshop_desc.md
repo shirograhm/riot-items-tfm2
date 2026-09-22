@@ -1,9 +1,9 @@
-Adds 169 new items (97 base + 72 Radiant) inspired by Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.  
+Adds 6 item slots & 169 new items (97 base + 72 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
-[b]This mod supports custom item values, custom item builds, and 6 item slots. See instructions below![/b]  
+[b]This mod supports custom item values and custom item builds. See instructions below![/b]  
 
-Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for another item of the same category, 4th item included. Toggle it in the in-game Build Editor.  
+Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for another item of the same category. Toggle it in the in-game Build Editor.  
 
 [h1] Important [/h1]
 This mod currently supports English, Vietnamese, Portuguese (BR), Russian, Chinese (Simplified), and Korean locales. You can use it with other languages, but the names and descriptions of the items will be broken.  
@@ -36,8 +36,9 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 4. Play as you would normally!
 
 [h1] Versioning [/h1]
-Currently updated for game version 0.6.0. Also supports previous versions using an older build of the mod. See below for reference:  
-Mod v0.9.11+ - 0.6.0
+Currently updated for game version 0.6.1. Also supports previous versions using an older build of the mod. See below for reference:  
+Mod v0.10.1+ - 0.6.1
+Mod v0.9.11-0.10.0 - 0.6.0
 Mod v0.9.6-9 - v0.5.8
 Mod v0.9.3-5 - v0.5.7
 Mod v0.9.2 - v0.5.6
@@ -52,11 +53,11 @@ You can also check the github repository for manual releases. https://github.com
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box!  
 
-However, if any of the modded items feel too strong/weak, this mod supports full customization on all modded item values. To do so:
+However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:
 
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
 2. Edit the new [b]config.json[/b] with the custom values that you want.
-3. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod will still use your custom values, but the item effect's text may not match.  
+3. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod may not update the values correctly.  
 4. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!
 
 Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.
@@ -75,9 +76,6 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 
 Builds are saved automatically when changed to [b]item-builds.json[/b] as you make them, so they carry across sessions. Click [b]Save Item Builds[/b] to run a manual save.  
 
-[h1] 6 Item Slots [/h1]
-This mod enables 6 item slots by default. No config needed!
-
 [h1] Planned Features [/h1]
 - More support items.
 - Translations for other locales.
@@ -86,7 +84,7 @@ This mod enables 6 item slots by default. No config needed!
 Check the Item/Feature Requests forum in the mod for the most up-to-date information.
 
 [h2] Credits [/h2]
-Thank you to @SUB from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
+Thank you to [b]@SUB[/b] from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
 
 Special thanks to all the playtesters that helped me out along the way by sending me crash dumps and testing beta builds:
 [b]@toxicsnek[/b] for helping with custom item creation & code!

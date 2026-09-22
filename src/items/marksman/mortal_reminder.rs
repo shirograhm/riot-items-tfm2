@@ -22,8 +22,8 @@ impl MortalReminder {
                 &["executioners_calling", "last_whisper"],
                 &["radiant_mortal_reminder"],
             ),
-            price: 1400,
-            attack: 45,
+            price: 700,
+            attack: 25,
             defence_penetration: 20,
             crit_chance: 20,
             effect_heal_reduce: 40,
@@ -34,8 +34,8 @@ impl MortalReminder {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_mortal_reminder", &["mortal_reminder"]),
-            price: 2000,
-            attack: 85,
+            price: 1000,
+            attack: 45,
             defence_penetration: 30,
             crit_chance: 25,
             effect_heal_reduce: 40,

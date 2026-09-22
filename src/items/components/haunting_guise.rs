@@ -23,9 +23,9 @@ pub struct HauntingGuise {
 impl Default for HauntingGuise {
     fn default() -> Self {
         Self {
-            price: 950,
-            magic_power: 60,
-            hp: 200,
+            price: 500,
+            magic_power: 30,
+            hp: 100,
             effect_stack_percent_damage: 2.0,
             effect_stacks_per_second: 1,
             effect_max_stacks: 3,

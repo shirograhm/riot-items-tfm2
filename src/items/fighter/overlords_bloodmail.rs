@@ -25,9 +25,9 @@ impl OverlordsBloodmail {
                 &["radiant_overlords_bloodmail"],
             ),
             tyranny_buff: "overlords_bloodmail_tyranny",
-            price: 1400,
-            attack: 25,
-            hp: 400,
+            price: 700,
+            attack: 15,
+            hp: 200,
             effect_caster_hp_percent_attack: 2.5,
             // Non-vital stats (internals)
             refresh_cooldown: 0,
@@ -38,9 +38,9 @@ impl OverlordsBloodmail {
         Self {
             meta: ItemMeta::radiant("radiant_overlords_bloodmail", &["overlords_bloodmail"]),
             tyranny_buff: "overlords_bloodmail_tyranny",
-            price: 2000,
-            attack: 40,
-            hp: 650,
+            price: 1000,
+            attack: 20,
+            hp: 350,
             effect_caster_hp_percent_attack: 2.5,
             ..Self::base()
         }

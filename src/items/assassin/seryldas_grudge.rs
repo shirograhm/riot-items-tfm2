@@ -25,8 +25,8 @@ impl SeryldasGrudge {
                 &["last_whisper", "caulfields_warhammer"],
                 &["radiant_seryldas_grudge"],
             ),
-            price: 1400,
-            attack: 45,
+            price: 700,
+            attack: 25,
             skill_cooldown_mult: 10,
             defence_penetration: 25,
             effect_hp_percent_threshold: 50.0,
@@ -38,8 +38,8 @@ impl SeryldasGrudge {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_seryldas_grudge", &["seryldas_grudge"]),
-            price: 2100,
-            attack: 85,
+            price: 1050,
+            attack: 45,
             skill_cooldown_mult: 15,
             defence_penetration: 35,
             effect_hp_percent_threshold: 50.0,

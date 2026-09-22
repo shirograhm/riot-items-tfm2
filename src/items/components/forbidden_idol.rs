@@ -13,9 +13,9 @@ pub struct ForbiddenIdol {
 impl Default for ForbiddenIdol {
     fn default() -> Self {
         Self {
-            price: 650,
-            hp: 200,
-            magic_power: 20,
+            price: 350,
+            hp: 100,
+            magic_power: 10,
             skill_cooldown_mult: 10,
         }
     }

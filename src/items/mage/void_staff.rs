@@ -14,8 +14,8 @@ impl VoidStaff {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("void_staff", &["blighting_jewel"], &["radiant_void_staff"]),
-            price: 1500,
-            magic_power: 95,
+            price: 750,
+            magic_power: 50,
             magic_resistance_penetration: 25,
         }
     }
@@ -23,8 +23,8 @@ impl VoidStaff {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_void_staff", &["void_staff"]),
-            price: 2200,
-            magic_power: 160,
+            price: 1100,
+            magic_power: 80,
             magic_resistance_penetration: 40,
             ..Self::base()
         }

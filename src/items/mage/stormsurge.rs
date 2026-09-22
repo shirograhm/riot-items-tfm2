@@ -68,8 +68,8 @@ impl Stormsurge {
             // only searches the view-effect table. An unknown name is not an
             // error — it silently draws nothing. See the note in `update`.
             strike_effect: "riot_stormsurge_squall",
-            price: 1400,
-            magic_power: 110,
+            price: 700,
+            magic_power: 55,
             move_speed_mult: 5,
             magic_resistance_penetration: 10,
             effect_hp_percent_threshold: 25.0,
@@ -86,8 +86,8 @@ impl Stormsurge {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_stormsurge", &["stormsurge"]),
-            price: 2000,
-            magic_power: 200,
+            price: 1000,
+            magic_power: 100,
             magic_resistance_penetration: 15,
             effect_ap_percent_damage: 15.0,
             ..Self::base()

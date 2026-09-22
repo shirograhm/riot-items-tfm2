@@ -11,8 +11,8 @@ pub struct NeedlesslyLargeRod {
 impl Default for NeedlesslyLargeRod {
     fn default() -> Self {
         Self {
-            price: 850,
-            magic_power: 115,
+            price: 450,
+            magic_power: 60,
         }
     }
 }

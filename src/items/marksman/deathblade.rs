@@ -14,8 +14,8 @@ impl DeathBlade {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("deathblade", &["bf_sword"], &["radiant_deathblade"]),
-            price: 1400,
-            attack: 90,
+            price: 700,
+            attack: 45,
             attack_mult: 15,
         }
     }
@@ -23,8 +23,8 @@ impl DeathBlade {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_deathblade", &["deathblade"]),
-            price: 2000,
-            attack: 140,
+            price: 1000,
+            attack: 70,
             attack_mult: 25,
             ..Self::base()
         }

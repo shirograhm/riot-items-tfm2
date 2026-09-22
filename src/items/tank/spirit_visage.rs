@@ -20,9 +20,9 @@ impl SpiritVisage {
                 &["dusk_raven"],
                 &["radiant_spirit_visage"],
             ),
-            price: 1400,
-            hp: 400,
-            magic_resistance: 100,
+            price: 700,
+            hp: 200,
+            magic_resistance: 50,
             effect_heal_mult: 20.0,
         }
     }
@@ -30,9 +30,9 @@ impl SpiritVisage {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_spirit_visage", &["spirit_visage"]),
-            price: 1900,
-            hp: 600,
-            magic_resistance: 150,
+            price: 950,
+            hp: 300,
+            magic_resistance: 75,
             effect_heal_mult: 20.0,
             ..Self::base()
         }
