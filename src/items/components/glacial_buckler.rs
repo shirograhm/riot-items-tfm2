@@ -12,8 +12,8 @@ pub struct GlacialBuckler {
 impl Default for GlacialBuckler {
     fn default() -> Self {
         Self {
-            price: 800,
-            defence: 50,
+            price: 400,
+            defence: 25,
             skill_cooldown_mult: 5,
         }
     }

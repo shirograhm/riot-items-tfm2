@@ -23,10 +23,10 @@ impl ChemtechPutrifier {
                 &["bandleglass_mirror"],
                 &["radiant_chemtech_putrifier"],
             ),
-            price: 1000,
-            hp: 250,
-            hp_regen: 3,
-            magic_power: 25,
+            price: 500,
+            hp: 150,
+            hp_regen: 2,
+            magic_power: 15,
             skill_cooldown_mult: 15,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2.0,
@@ -36,10 +36,10 @@ impl ChemtechPutrifier {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_chemtech_putrifier", &["chemtech_putrifier"]),
-            price: 1500,
-            hp: 450,
-            hp_regen: 5,
-            magic_power: 45,
+            price: 750,
+            hp: 250,
+            hp_regen: 3,
+            magic_power: 25,
             skill_cooldown_mult: 15,
             ..Self::base()
         }

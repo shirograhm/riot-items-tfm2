@@ -24,8 +24,8 @@ impl Opportunity {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("opportunity", &["serrated_dirk"], &["radiant_opportunity"]),
-            price: 1300,
-            attack: 70,
+            price: 650,
+            attack: 35,
             move_speed_mult: 0,
             effect_lethality: 18,
             effect_bonus_lethality: 7,
@@ -40,8 +40,8 @@ impl Opportunity {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_opportunity", &["opportunity"]),
-            price: 1950,
-            attack: 100,
+            price: 1000,
+            attack: 50,
             move_speed_mult: 5,
             effect_lethality: 18,
             effect_bonus_lethality: 7,

@@ -18,9 +18,9 @@ impl WitsEnd {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("wits_end", &["scouts_slingshot"], &["radiant_wits_end"]),
-            price: 1400,
+            price: 700,
             attack_speed_mult: 40,
-            magic_resistance: 80,
+            magic_resistance: 40,
             toughness: 20,
             effect_bonus_magic_damage: 45,
             // Non-vital stats (internals)
@@ -31,9 +31,9 @@ impl WitsEnd {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_wits_end", &["wits_end"]),
-            price: 2000,
+            price: 1000,
             attack_speed_mult: 65,
-            magic_resistance: 130,
+            magic_resistance: 65,
             toughness: 30,
             effect_bonus_magic_damage: 45,
             ..Self::base()

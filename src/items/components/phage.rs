@@ -16,9 +16,9 @@ pub struct Phage {
 impl Default for Phage {
     fn default() -> Self {
         Self {
-            price: 950,
-            hp: 200,
-            attack: 30,
+            price: 500,
+            hp: 100,
+            attack: 15,
             effect_move_speed_mult: 5,
             effect_duration_seconds: 2.0,
         }

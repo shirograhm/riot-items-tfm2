@@ -30,8 +30,8 @@ impl Default for Tiamat {
     fn default() -> Self {
         Self {
             cleave_effect: "riot_ravenous_hydra_cleave",
-            price: 800,
-            attack: 50,
+            price: 400,
+            attack: 25,
             effect_ad_percent_damage: 20.0,
             effect_max_distance: 35,
             effect_melee_distance: 35,

@@ -16,8 +16,8 @@ pub struct FatedAshes {
 impl Default for FatedAshes {
     fn default() -> Self {
         Self {
-            price: 500,
-            magic_power: 55,
+            price: 250,
+            magic_power: 30,
             effect_bonus_flat_damage: 15,
             effect_duration_seconds: 3.0,
             effect_minion_percent: 400.0,

@@ -14,10 +14,10 @@ pub struct BandleglassMirror {
 impl Default for BandleglassMirror {
     fn default() -> Self {
         Self {
-            price: 650,
-            hp: 200,
-            hp_regen: 2,
-            magic_power: 20,
+            price: 350,
+            hp: 100,
+            hp_regen: 1,
+            magic_power: 10,
             skill_cooldown_mult: 5,
         }
     }

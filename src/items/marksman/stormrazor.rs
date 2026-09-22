@@ -23,8 +23,8 @@ impl Stormrazor {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("stormrazor", &["noonquiver"], &["radiant_stormrazor"]),
-            price: 1550,
-            attack: 65,
+            price: 800,
+            attack: 35,
             attack_speed_mult: 20,
             crit_chance: 20,
             effect_max_stacks: 100,
@@ -41,8 +41,8 @@ impl Stormrazor {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_stormrazor", &["stormrazor"]),
-            price: 2200,
-            attack: 100,
+            price: 1100,
+            attack: 50,
             attack_speed_mult: 40,
             crit_chance: 25,
             effect_max_stacks: 100,

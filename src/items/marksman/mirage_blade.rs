@@ -30,10 +30,10 @@ impl MirageBlade {
             ),
             adaptive_force_buff: "mirage_blade_adaptive_force",
             upgrades_from: None,
-            price: 1500,
+            price: 750,
             attack_speed_mult: 40,
             move_speed_mult: 10,
-            adaptive_force: 60,
+            adaptive_force: 30,
             effect_move_speed_mult: 20,
             effect_duration_seconds: 2.0,
         }
@@ -43,11 +43,11 @@ impl MirageBlade {
         Self {
             meta: ItemMeta::radiant("radiant_mirage_blade", &["mirage_blade"]),
             adaptive_force_buff: "radiant_mirage_blade_adaptive_force",
-            upgrades_from: Some(("mirage_blade_adaptive_force", 60)),
-            price: 2100,
+            upgrades_from: Some(("mirage_blade_adaptive_force", 30)),
+            price: 1050,
             attack_speed_mult: 65,
             move_speed_mult: 15,
-            adaptive_force: 100,
+            adaptive_force: 50,
             ..Self::base()
         }
     }

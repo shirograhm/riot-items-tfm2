@@ -76,24 +76,6 @@ const VISIT_BUDGET: usize = 512;
 /// leaves the question open for the next frame rather than poisoning it.
 static UI_ROOT: AtomicUsize = AtomicUsize::new(0);
 
-/// What the last scan actually saw, for `build_ext_diag.txt`.
-///
-/// "budget exhausted, found nothing" is the same report whether the window is
-/// wrong, `Node.id` no longer reads as a string, or the marker moved deeper than
-/// [`MARKER_DEPTH`] — three different fixes. This records the evidence that
-/// separates them: how many slots read as a node at all, a sample of the ids
-/// seen, and whether a deeper/larger search *would* have found the marker.
-static SCAN_DIAG: std::sync::Mutex<String> = std::sync::Mutex::new(String::new());
-
-/// Depth and budget for the diagnostic-only retry. Deliberately far past what
-/// the real check uses, to answer "is the marker simply deeper now?".
-const PROBE_DEPTH: usize = 12;
-const PROBE_BUDGET: usize = 8192;
-/// Cap on diagnostic deep-searches per scan, so the probe cannot dominate a
-/// frame when thousands of slots read as plausible nodes.
-const PROBE_LIMIT: usize = 96;
-/// Failed scans instrumented so far; see the `diag` binding in [`resolve`].
-static DIAG_RUNS: AtomicUsize = AtomicUsize::new(0);
 /// Bounded retries, so a game that never produces a resolvable root does not
 /// pay for a full window scan on every frame forever.
 ///
@@ -113,8 +95,6 @@ const MAX_ATTEMPTS: usize = 600;
 /// different object graph, so failures against the old one say nothing about
 /// this one and the budget starts over.
 static LAST_ANCHOR: AtomicUsize = AtomicUsize::new(0);
-/// How the resolved root was found, for the diagnostic report.
-static SOURCE: AtomicUsize = AtomicUsize::new(0);
 
 /// Reads the engine string at `addr` — `{len@0, ptr@8, cap@16}`, the layout
 /// `set_img_src` documents. Rejects anything that is not a short ASCII
@@ -222,7 +202,6 @@ pub fn invalidate() {
     UI_ROOT.store(0, Ordering::Relaxed);
     ATTEMPTS.store(0, Ordering::Relaxed);
     LAST_ANCHOR.store(0, Ordering::Relaxed);
-    SOURCE.store(0, Ordering::Relaxed);
 }
 
 /// Whether `addr` is a `Node` that roots the tree the handlers expect.
@@ -277,16 +256,6 @@ pub fn resolve() -> Option<usize> {
     let anchor = if has_app { game_view } else { tip };
     if LAST_ANCHOR.swap(anchor, Ordering::Relaxed) != anchor {
         ATTEMPTS.store(0, Ordering::Relaxed);
-        // Re-arm the scan probe too. It is capped at a few runs to keep its cost
-        // off the frame path, and without this reset those runs are spent on
-        // whichever anchor appeared first — which is not the anchor the failing
-        // scans end up using. `GAME_VIEW` is republished on every `gv_update`
-        // call and does change during a session (menu vs match), so the first
-        // window scanned and the last can be in unrelated regions entirely: the
-        // 0.5.5 report showed a probe window around 0xa3c75e6a10 while the
-        // anchor being scanned was 0x280524ccab8. Evidence has to come from the
-        // anchor that is actually failing.
-        DIAG_RUNS.store(0, Ordering::Relaxed);
     }
     if ATTEMPTS.fetch_add(1, Ordering::Relaxed) >= MAX_ATTEMPTS {
         return None;
@@ -295,7 +264,6 @@ pub fn resolve() -> Option<usize> {
     // 1. TIP_ROOT. Free to test, and the validator — not an assumption — decides.
     if tip > 0x10000 && unsafe { is_ui_root(tip) } {
         UI_ROOT.store(tip, Ordering::Relaxed);
-        SOURCE.store(1, Ordering::Relaxed);
         return Some(tip);
     }
 
@@ -320,127 +288,23 @@ pub fn resolve() -> Option<usize> {
     let start = nominal_app.saturating_sub(SCAN_BACK);
     let span = SCAN_BACK + SCAN_WINDOW;
 
-    // Diagnostic tallies for this scan. All work is gated on BUILD_EXT_DIAG so
-    // the production path is unchanged.
-    // Only the first few failed scans are instrumented. The probe allocates a
-    // `String` per plausible node across a 160KB window, which is fine once but
-    // would be a per-frame cost repeated for the whole 600-scan budget.
-    let diag = super::BUILD_EXT_DIAG && DIAG_RUNS.load(Ordering::Relaxed) < 3;
-    let mut n_nodes = 0usize; // slots that read as a Node (id + children)
-    let mut ids: Vec<String> = Vec::new(); // distinct ids seen, sampled
-    let mut probes = 0usize; // deep searches spent
-    let mut deep_hit: usize = 0; // candidate where a deeper search found the marker
-
     let mut offset = 0usize;
     while offset < span {
         let slot = start + offset;
-        if diag {
-            for cand in [
-                unsafe { safe_read_u64(slot) }.map(|p| p as usize).unwrap_or(0),
-                slot,
-            ] {
-                if cand <= 0x10000 || cand % 8 != 0 {
-                    continue;
-                }
-                let Some(id) = (unsafe { node_id(cand) }) else {
-                    continue;
-                };
-                if unsafe { node_children(cand) }.is_none() {
-                    continue;
-                }
-                n_nodes += 1;
-                if ids.len() < 16 && !ids.contains(&id) {
-                    ids.push(id);
-                }
-                if deep_hit == 0 && probes < PROBE_LIMIT {
-                    probes += 1;
-                    let mut b = PROBE_BUDGET;
-                    if unsafe { subtree_has_id(cand, ROOT_MARKER_ID, PROBE_DEPTH, &mut b) } {
-                        deep_hit = cand;
-                    }
-                }
-            }
-        }
         // The UI may be boxed (a pointer in the slot) or embedded (the slot is
         // the node). Both are cheap to test, so neither is assumed.
         if let Some(pointee) = unsafe { safe_read_u64(slot) } {
             let pointee = pointee as usize;
             if unsafe { is_ui_root(pointee) } {
                 UI_ROOT.store(pointee, Ordering::Relaxed);
-                SOURCE.store(2, Ordering::Relaxed);
                 return Some(pointee);
             }
         }
         if unsafe { is_ui_root(slot) } {
             UI_ROOT.store(slot, Ordering::Relaxed);
-            SOURCE.store(3, Ordering::Relaxed);
             return Some(slot);
         }
         offset += 8;
     }
-    if diag {
-        DIAG_RUNS.fetch_add(1, Ordering::Relaxed);
-        // Reached only when the whole window failed, which is exactly when the
-        // evidence is wanted. How to read it:
-        //   nodes=0            -> nothing in the window reads as a Node: either
-        //                         the window is wrong, or `Node.id` / the engine
-        //                         string layout no longer match the 0.5.2 rlib.
-        //   nodes>0, ids listed, marker_at_depth<=12 = 0
-        //                      -> the tree is there but contains no `main` at
-        //                         all: ROOT_MARKER_ID is stale.
-        //   marker_at_depth<=12 = <addr>
-        //                      -> the marker exists but sits deeper than
-        //                         MARKER_DEPTH (3) or past VISIT_BUDGET (512);
-        //                         raise those rather than touching the window.
-        // The anchor is recorded here, not just in `report()`: the two can
-        // disagree, and when they do the whole line is about a window nobody is
-        // scanning any more. Compare it against the anchor on the line above.
-        *SCAN_DIAG.lock().unwrap_or_else(|e| e.into_inner()) = format!(
-            "anchor={game_view:#x} window [{start:#x}..{:#x}) nodes={n_nodes} probes={probes} \
-             marker_at_depth<={PROBE_DEPTH} = {deep_hit:#x}; ids seen: {}",
-            start + span,
-            if ids.is_empty() {
-                "(none)".to_string()
-            } else {
-                ids.join(", ")
-            }
-        );
-    }
     None
-}
-
-/// One line on how the root was resolved, for `build_ext_diag.txt`.
-pub fn report() -> String {
-    let root = UI_ROOT.load(Ordering::Relaxed);
-    if root == 0 {
-        // `scans` counts real scans now, so 0 with a live anchor means the
-        // budget was exhausted against an *earlier* anchor, and anything else
-        // is a scan that ran and found nothing — two different bugs that the
-        // old single "attempts" number could not tell apart.
-        let scans = ATTEMPTS.load(Ordering::Relaxed);
-        let anchor = LAST_ANCHOR.load(Ordering::Relaxed);
-        let state = if anchor == 0 {
-            "no anchor yet (TIP_ROOT and GAME_VIEW both unpublished)".to_string()
-        } else if scans > MAX_ATTEMPTS {
-            format!("budget exhausted against anchor {anchor:#x}")
-        } else {
-            format!("scanned from anchor {anchor:#x} and found nothing")
-        };
-        return format!(
-            "UI root: NOT RESOLVED, {scans} scans, {state} (in-match 4th slot icon is off)\n  \
-             last scan: {}",
-            SCAN_DIAG
-                .lock()
-                .unwrap_or_else(|e| e.into_inner())
-                .clone()
-                .as_str()
-        );
-    }
-    let how = match SOURCE.load(Ordering::Relaxed) {
-        1 => "TIP_ROOT",
-        2 => "pointer in App window",
-        _ => "inline in App window",
-    };
-    let id = unsafe { node_id(root) }.unwrap_or_else(|| "<unreadable>".into());
-    format!("UI root: {root:#x} via {how}, id={id:?}")
 }

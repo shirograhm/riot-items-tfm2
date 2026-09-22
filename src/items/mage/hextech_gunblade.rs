@@ -20,9 +20,9 @@ impl HextechGunblade {
                 &["ruinous_blade", "hextech_alternator"],
                 &["radiant_hextech_gunblade"],
             ),
-            price: 1500,
-            attack: 50,
-            magic_power: 100,
+            price: 750,
+            attack: 25,
+            magic_power: 50,
             vamp: 10,
         }
     }
@@ -30,9 +30,9 @@ impl HextechGunblade {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_hextech_gunblade", &["hextech_gunblade"]),
-            price: 2100,
-            attack: 85,
-            magic_power: 150,
+            price: 1050,
+            attack: 45,
+            magic_power: 75,
             vamp: 15,
             ..Self::base()
         }

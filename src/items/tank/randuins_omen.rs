@@ -21,9 +21,9 @@ impl RanduinsOmen {
                 &["black_knights_heavy_plate", "ring_of_reincarnation"],
                 &["radiant_randuins_omen"],
             ),
-            price: 1500,
-            hp: 300,
-            defence: 70,
+            price: 750,
+            hp: 150,
+            defence: 35,
             effect_crit_damage_percent_heal: 30.0,
         }
     }
@@ -31,9 +31,9 @@ impl RanduinsOmen {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_randuins_omen", &["randuins_omen"]),
-            price: 2000,
-            hp: 550,
-            defence: 90,
+            price: 1000,
+            hp: 300,
+            defence: 45,
             effect_crit_damage_percent_heal: 30.0,
             ..Self::base()
         }

@@ -18,7 +18,7 @@ pub struct Sheen {
 impl Default for Sheen {
     fn default() -> Self {
         Self {
-            price: 1300,
+            price: 650,
             attack_speed_mult: 25,
             skill_cooldown_mult: 10,
             effect_min_bonus_damage: 30,

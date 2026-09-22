@@ -21,8 +21,8 @@ impl AxiomArc {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("axiom_arc", &["serrated_dirk"], &["radiant_axiom_arc"]),
-            price: 1300,
-            attack: 70,
+            price: 650,
+            attack: 35,
             skill_cooldown_mult: 10,
             effect_lethality: 18,
             effect_ult_cooldown_mult: 10,
@@ -34,8 +34,8 @@ impl AxiomArc {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_axiom_arc", &["axiom_arc"]),
-            price: 1900,
-            attack: 105,
+            price: 950,
+            attack: 55,
             skill_cooldown_mult: 15,
             effect_lethality: 18,
             effect_ult_cooldown_mult: 10,

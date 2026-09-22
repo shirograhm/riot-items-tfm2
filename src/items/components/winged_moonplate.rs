@@ -12,8 +12,8 @@ pub struct WingedMoonplate {
 impl Default for WingedMoonplate {
     fn default() -> Self {
         Self {
-            price: 800,
-            hp: 250,
+            price: 400,
+            hp: 150,
             move_speed_mult: 4,
         }
     }

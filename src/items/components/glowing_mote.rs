@@ -11,7 +11,7 @@ pub struct GlowingMote {
 impl Default for GlowingMote {
     fn default() -> Self {
         Self {
-            price: 500,
+            price: 250,
             skill_cooldown_mult: 10,
         }
     }

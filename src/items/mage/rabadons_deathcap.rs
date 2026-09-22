@@ -18,8 +18,8 @@ impl RabadonsDeathcap {
                 &["needlessly_large_rod"],
                 &["radiant_rabadons_deathcap"],
             ),
-            price: 1500,
-            magic_power: 165,
+            price: 750,
+            magic_power: 85,
             magic_power_mult: 20,
         }
     }
@@ -27,8 +27,8 @@ impl RabadonsDeathcap {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_rabadons_deathcap", &["rabadons_deathcap"]),
-            price: 2300,
-            magic_power: 230,
+            price: 1150,
+            magic_power: 115,
             magic_power_mult: 35,
             ..Self::base()
         }

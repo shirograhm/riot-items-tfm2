@@ -22,9 +22,9 @@ impl ChempunkChainsword {
                 &["phage"],
                 &["radiant_chempunk_chainsword"],
             ),
-            price: 1300,
-            attack: 35,
-            hp: 350,
+            price: 650,
+            attack: 20,
+            hp: 200,
             skill_cooldown_mult: 10,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2.0,
@@ -34,9 +34,9 @@ impl ChempunkChainsword {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_chempunk_chainsword", &["chempunk_chainsword"]),
-            price: 1850,
-            attack: 55,
-            hp: 550,
+            price: 950,
+            attack: 30,
+            hp: 300,
             skill_cooldown_mult: 15,
             ..Self::base()
         }

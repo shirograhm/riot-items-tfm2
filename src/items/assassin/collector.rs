@@ -23,8 +23,8 @@ impl Collector {
                 &["serrated_dirk", "noonquiver"],
                 &["radiant_collector"],
             ),
-            price: 1450,
-            attack: 60,
+            price: 750,
+            attack: 30,
             crit_chance: 20,
             effect_lethality: 10,
             effect_hp_percent_threshold: 6.0,
@@ -37,8 +37,8 @@ impl Collector {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_collector", &["collector"]),
-            price: 2100,
-            attack: 105,
+            price: 1050,
+            attack: 55,
             crit_chance: 25,
             effect_lethality: 10,
             effect_hp_percent_threshold: 6.0,

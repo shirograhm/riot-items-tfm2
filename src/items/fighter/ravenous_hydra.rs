@@ -26,8 +26,8 @@ impl RavenousHydra {
                 &["radiant_ravenous_hydra"],
             ),
             cleave_effect: "riot_ravenous_hydra_cleave",
-            price: 1350,
-            attack: 55,
+            price: 700,
+            attack: 30,
             vamp: 10,
             skill_cooldown_mult: 10,
             effect_ad_percent_damage: 30.0,
@@ -40,8 +40,8 @@ impl RavenousHydra {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_ravenous_hydra", &["ravenous_hydra"]),
-            price: 1900,
-            attack: 90,
+            price: 950,
+            attack: 45,
             vamp: 15,
             skill_cooldown_mult: 15,
             effect_ad_percent_damage: 40.0,

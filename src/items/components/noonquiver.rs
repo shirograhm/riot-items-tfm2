@@ -12,8 +12,8 @@ pub struct Noonquiver {
 impl Default for Noonquiver {
     fn default() -> Self {
         Self {
-            price: 800,
-            attack: 45,
+            price: 400,
+            attack: 25,
             crit_chance: 10,
         }
     }

@@ -43,8 +43,8 @@ impl LordDominiksRegards {
                 &["last_whisper", "noonquiver"],
                 &["radiant_lord_dominiks_regards"],
             ),
-            price: 1450,
-            attack: 45,
+            price: 750,
+            attack: 25,
             crit_chance: 20,
             defence_penetration: 25,
             effect_percent_bonus_damage: 3.0,
@@ -56,8 +56,8 @@ impl LordDominiksRegards {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_lord_dominiks_regards", &["lord_dominiks_regards"]),
-            price: 2000,
-            attack: 85,
+            price: 1000,
+            attack: 45,
             crit_chance: 25,
             defence_penetration: 35,
             effect_percent_bonus_damage: 3.0,

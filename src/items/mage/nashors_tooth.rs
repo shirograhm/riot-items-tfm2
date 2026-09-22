@@ -23,8 +23,8 @@ impl NashorsTooth {
                 &["needlessly_large_rod"],
                 &["radiant_nashors_tooth"],
             ),
-            price: 1450,
-            magic_power: 115,
+            price: 750,
+            magic_power: 60,
             attack_speed_mult: 25,
             effect_bonus_flat_damage: 35,
             effect_ap_percent_damage: 3.0,
@@ -36,8 +36,8 @@ impl NashorsTooth {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_nashors_tooth", &["nashors_tooth"]),
-            price: 2050,
-            magic_power: 180,
+            price: 1050,
+            magic_power: 90,
             attack_speed_mult: 40,
             effect_bonus_flat_damage: 50,
             effect_ap_percent_damage: 5.0,

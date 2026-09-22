@@ -27,8 +27,8 @@ impl Hamstringer {
         Self {
             meta: ItemMeta::base("hamstringer", &["noonquiver"], &["radiant_hamstringer"]),
             slow_buff: "hamstringer_slow",
-            price: 1450,
-            attack: 45,
+            price: 750,
+            attack: 25,
             attack_speed_mult: 25,
             crit_chance: 20,
             effect_min_bonus_damage: 55,
@@ -44,8 +44,8 @@ impl Hamstringer {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_hamstringer", &["hamstringer"]),
-            price: 2150,
-            attack: 75,
+            price: 1100,
+            attack: 40,
             attack_speed_mult: 45,
             crit_chance: 25,
             effect_min_bonus_damage: 70,

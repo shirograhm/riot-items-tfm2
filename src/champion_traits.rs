@@ -14,14 +14,13 @@
 //! (its sibling `champion_names()` returns nothing), so it is not trusted to
 //! answer. [`VANILLA`] backs it up for the base game's champions, and a
 //! champion neither source knows gets no restriction at all: a missing tag must
-//! never cost a build an item. `champion_traits.txt` beside the DLL records how
-//! many champions the host actually answered for.
+//! never cost a build an item.
 
 use std::collections::{HashMap, HashSet};
-use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Mutex, RwLock};
 
-use mod_api_stable::{ChampionCategoryV1, ChampionTagV1, StableClient};
+use mod_api_stable::{ChampionTagV1, StableClient};
 
 /// What a champion's damage scales with, from its `AD`/`AP` tags.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -213,7 +212,7 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
                         brief.tags.contains(&ChampionTagV1::Ap),
                     ),
                 };
-                answered.push((key, traits, brief.category, brief.tags));
+                answered.push((key, traits));
             }
             None => unanswered.push(key),
         }
@@ -221,63 +220,11 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
 
     if let Ok(mut learned) = LEARNED.write() {
         let learned = learned.get_or_insert_with(HashMap::new);
-        for (key, traits, _, _) in &answered {
+        for (key, traits) in &answered {
             learned.insert(key.clone(), Some(*traits));
         }
         for key in &unanswered {
             learned.insert(key.clone(), vanilla(key));
         }
-    }
-    report(&answered, &unanswered);
-}
-
-/// Writes one batch to `champion_traits.txt`: how many champions the host
-/// answered for, what it said, and which it did not know.
-fn report(
-    answered: &[(
-        String,
-        ChampionTraits,
-        Option<ChampionCategoryV1>,
-        Vec<ChampionTagV1>,
-    )],
-    unanswered: &[String],
-) {
-    use std::fmt::Write as _;
-    use std::io::Write as _;
-
-    let mut text = format!(
-        "champion_brief: answered {} of {}\n",
-        answered.len(),
-        answered.len() + unanswered.len()
-    );
-    for (key, traits, category, tags) in answered {
-        let _ = writeln!(
-            text,
-            "  {key}: {category:?} {tags:?} -> scaling={:?}",
-            traits.scaling
-        );
-    }
-    for key in unanswered {
-        let known = if vanilla(key).is_some() {
-            "vanilla fallback"
-        } else {
-            "no restriction"
-        };
-        let _ = writeln!(text, "  {key}: no answer ({known})");
-    }
-
-    // Fresh each session, appended to within one: the first batch is the
-    // roster, later ones are champions the build paths queued.
-    static STARTED: AtomicBool = AtomicBool::new(false);
-    let first = !STARTED.swap(true, Ordering::Relaxed);
-    let path = crate::config::mod_dir().join("champion_traits.txt");
-    if let Ok(mut file) = std::fs::OpenOptions::new()
-        .create(true)
-        .write(true)
-        .append(!first)
-        .truncate(first)
-        .open(path)
-    {
-        let _ = file.write_all(text.as_bytes());
     }
 }

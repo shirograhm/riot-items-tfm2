@@ -19,9 +19,9 @@ impl BlackCleaver {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("black_cleaver", &["phage"], &["radiant_black_cleaver"]),
-            price: 1500,
-            attack: 45,
-            hp: 300,
+            price: 750,
+            attack: 25,
+            hp: 150,
             skill_cooldown_mult: 5,
             effect_max_stacks: 5,
             effect_duration_seconds: 6.0,
@@ -32,9 +32,9 @@ impl BlackCleaver {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_black_cleaver", &["black_cleaver"]),
-            price: 2200,
-            attack: 70,
-            hp: 500,
+            price: 1100,
+            attack: 35,
+            hp: 250,
             skill_cooldown_mult: 10,
             effect_max_stacks: 5,
             effect_duration_seconds: 6.0,

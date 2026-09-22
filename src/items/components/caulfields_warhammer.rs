@@ -12,8 +12,8 @@ pub struct CaulfieldsWarhammer {
 impl Default for CaulfieldsWarhammer {
     fn default() -> Self {
         Self {
-            price: 950,
-            attack: 45,
+            price: 500,
+            attack: 25,
             skill_cooldown_mult: 10,
         }
     }

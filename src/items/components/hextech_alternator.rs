@@ -15,8 +15,8 @@ pub struct HextechAlternator {
 impl Default for HextechAlternator {
     fn default() -> Self {
         Self {
-            price: 800,
-            magic_power: 100,
+            price: 400,
+            magic_power: 50,
             effect_bonus_flat_damage: 65,
             effect_cooldown_seconds: 40.0,
             // Non-vital stats (internals)
