@@ -3,7 +3,7 @@ Also re-skins the 30 existing items and adds some custom icons for Armor Penetra
 
 [b]This mod supports custom item values and custom item builds. See instructions below![/b]  
 
-Lastly, this mod also offers the ability to force unique item builds. Duplicates chosen by the AI are swapped for another item of the same category. Toggle it in the in-game Build Editor.  
+Lastly, this mod can enforce [b]Smart Builds[/b] on the AI's item picks: no duplicates, no items the champion can't use, and a sensible buy order. Toggle it in the in-game Build Editor. See [b]Smart Builds[/b] below.  
 
 [h1] Important [/h1]
 This mod currently supports English, Vietnamese, Portuguese (BR), Russian, Chinese (Simplified), and Korean locales. You can use it with other languages, but the names and descriptions of the items will be broken.  
@@ -16,7 +16,7 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 [h1] Known Issues [/h1]
 
-Some AI champions seem to prefer the wrong stats when given deference of item selection.  
+Some AI champions seem to prefer the wrong stats when given deference of item selection. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
 
 The SoloQ page may sometimes show incorrect item builds.  
 
@@ -75,6 +75,21 @@ This mod lets you override the in-game Item Strategy Screen and choose any item 
 3. Start the simulated match!
 
 Builds are saved automatically when changed to [b]item-builds.json[/b] as you make them, so they carry across sessions. Click [b]Save Item Builds[/b] to run a manual save.  
+
+[h1] Smart Builds [/h1]
+The Build Editor footer has a toggle, [b]Enforce Smart Builds[/b], on by default. It cleans up what the AI picks. Any of these is swapped for another final item of the same category:
+- a duplicate item
+- a second Grievous Wounds item
+- a crit item that would push the build past 100% crit chance (crit from item passives counts as fully stacked)
+- a support item (except Protoplasm Harness) on any champion not playing the support role
+- an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion. Hybrid champions, hybrid items, and support items in the support role are left alone. Champions from other mods are covered too, using the AD/AP tags from their own files.
+
+It also sets the order the AI buys its items in. Items that get stronger the longer you own them are bought first: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern and Collector. Items that scale off stats from the rest of the build are bought last: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards.
+
+Items you pin in the editor are never overridden. The AI's picks make way for them instead (for example, the AI won't also build an item you pinned elsewhere in the build). Switch the toggle to [b]Allow Any Builds[/b] to let the AI roam free.
+
+[h1] Item Stats [/h1]
+The in-game Statistics screen has an [b]Item Stats[/b] tab showing each item's games, wins, losses, win rate, playrate and first-item rate across the matches in your save. Click a column heading to sort by it, and filter by class, tier or lane.
 
 [h1] Planned Features [/h1]
 - More support items.
