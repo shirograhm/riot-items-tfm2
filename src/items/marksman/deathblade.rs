@@ -15,7 +15,7 @@ impl DeathBlade {
         Self {
             meta: ItemMeta::base("deathblade", &["bf_sword"], &["radiant_deathblade"]),
             price: 700,
-            attack: 45,
+            attack: 50,
             attack_mult: 15,
         }
     }
@@ -24,7 +24,7 @@ impl DeathBlade {
         Self {
             meta: ItemMeta::radiant("radiant_deathblade", &["deathblade"]),
             price: 1000,
-            attack: 70,
+            attack: 80,
             attack_mult: 25,
             ..Self::base()
         }

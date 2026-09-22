@@ -47,7 +47,7 @@ impl SwordOfBlossomingDawn {
             ),
             price: 850,
             attack_speed_mult: 35,
-            hp: 200,
+            hp: 150,
             magic_power: 35,
             skill_cooldown_mult: 15,
             ..Self::base()

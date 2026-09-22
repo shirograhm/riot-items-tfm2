@@ -120,7 +120,7 @@ impl StableItem for FatedAshes {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec![]
+        vec!["arcane_crystal".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

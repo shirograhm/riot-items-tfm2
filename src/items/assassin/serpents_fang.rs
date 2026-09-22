@@ -46,7 +46,7 @@ impl SerpentsFang {
                 &["radiant_serpents_fang"],
             ),
             price: 600,
-            attack: 30,
+            attack: 45,
             effect_lethality: 15,
             effect_bonus_flat_damage: 50,
             effect_ad_percent_damage: 10.0,
@@ -59,7 +59,7 @@ impl SerpentsFang {
         Self {
             meta: ItemMeta::radiant("radiant_serpents_fang", &["serpents_fang"]),
             price: 900,
-            attack: 50,
+            attack: 70,
             effect_lethality: 15,
             effect_bonus_flat_damage: 85,
             effect_ad_percent_damage: 15.0,
