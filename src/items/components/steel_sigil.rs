@@ -13,8 +13,8 @@ impl Default for SteelSigil {
     fn default() -> Self {
         Self {
             price: 500,
-            attack: 15,
-            defence: 25,
+            attack: 20,
+            defence: 20,
         }
     }
 }

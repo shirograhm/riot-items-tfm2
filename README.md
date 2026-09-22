@@ -66,7 +66,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Forbidden Idol** | 350G | +100 HP<br>+10 AP<br>+10 Ability Haste | — |
 | **Glacial Buckler** | 400G | +25 Armor<br>+5 Ability Haste | — |
 | **Haunting Guise** | 500G | +100 HP<br>+30 AP | Madness: For each second in combat with enemy champions, deal 2% bonus damage, stacking up to 3 times for a total of 6%. |
-| **Hearthbound Axe** | 500G | +15 AD<br>+20% AS | — |
+| **Hearthbound Axe** | 500G | +20 AD<br>+20% AS | — |
 | **Hextech Alternator** | 400G | +50 AP | Revved: Damaging an enemy champion deals 65 bonus magic damage (40 second cooldown). |
 | **Last Whisper** | 500G | +25 AD<br>+10% Armor Pen | — |
 | **Needlessly Large Rod** | 450G | +60 Ability Power | — |
@@ -76,7 +76,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Scout's Slingshot** | 400G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Serrated Dirk** | 400G | +25 AD | Gain 10 Lethality. |
 | **Sheen** | 650G | +20% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
-| **Steel Sigil** | 500G | +15 AD<br>+25 Armor | — |
+| **Steel Sigil** | 500G | +20 AD<br>+20 Armor | — |
 | **Tiamat** | 400G | +25 AD | Cleave: Basic attacks deal 20% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Winged Moonplate** | 400G | +150 HP<br>+4% MS | — |
 
@@ -99,7 +99,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Collector** | 750G | +35 AD<br>+20% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Dead Man's Plate** | 750G | +150 HP<br>+30 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Deathblade** | 700G | +50 AD | Apex: Increase your total Attack Damage by 15%. |
-| **Death's Dance** | 750G | +25 AD<br>+25 Armor<br>+10 Ability Haste | Ignore Pain: 25% of the damage you take is dealt over time as true damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 45 + 15% of your missing health. |
+| **Death's Dance** | 750G | +30 AD<br>+30 Armor<br>+10 Ability Haste | Ignore Pain: 25% of the damage you take is dealt over time as true damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 45 + 15% of your missing health. |
 | **Diamond Tipped Spear** | 750G | +35% AS<br>+10 Ability Haste | Pierce: Gain 30 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
 | **Dusk and Dawn** | 700G | +100 HP<br>+30 AP<br>+15% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Echoes of Helia** | 550G | +150 HP<br>+2 HP Regen<br>+25 AP<br>+15 Ability Haste | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion (excluding yourself) consumes all Soul Charges and heals them equal to the consumed amount. |
@@ -116,7 +116,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Hubris** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Infinity Edge** | 750G | +50 AD<br>+20% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Jak'Sho, The Protean** | 700G | +150 HP<br>+25 Armor<br>+40 MR | Resilience: Taking damage from an enemy champion grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks). |
-| **Kraken Slayer** | 700G | +25 AD<br>+25% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
+| **Kraken Slayer** | 700G | +30 AD<br>+30% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Liandry's Torment** | 700G | +200 HP<br>+40 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
 | **Locket of the Iron Solari** | 550G | +100 HP<br>+20 Armor<br>+30 MR<br>+10 Ability Haste | Devotion: Falling below 50% health grants you and all nearby allied champions a shield that absorbs damage equal to 170 - 225 (based on level) health over 2.5 seconds (90 second cooldown).<br>Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Lord Dominik's Regards** | 750G | +25 AD<br>+20% Crit Chance<br>+25% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
@@ -130,7 +130,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Overlord's Bloodmail** | 700G | +15 AD<br>+200 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Protector's Vow** | 650G | +200 HP<br>+25 Armor | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Protoplasm Harness** | 600G | +200 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
-| **Rabadon's Deathcap** | 750G | +85 AP | Opus: Increase your total Ability Power by 20%. |
+| **Rabadon's Deathcap** | 750G | +80 AP | Opus: Increase your total Ability Power by 20%. |
 | **Randuin's Omen** | 750G | +150 HP<br>+35 Armor | Resilience: Heal for 30% of the damage taken from critical strikes. |
 | **Ravenous Hydra** | 700G | +30 AD<br>+10% Omnivamp<br>+10 Ability Haste | Cleave: Basic attacks deal 30% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Riftmaker** | 650G | +200 HP<br>+30 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
@@ -176,7 +176,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Collector** | 1050G | +65 AD<br>+25% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Radiant Dead Man's Plate** | 1050G | +350 HP<br>+35 Armor<br>+4% MS | Shipwrecker: While moving, generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage, scaling with stacks consumed. |
 | **Radiant Deathblade** | 1000G | +80 AD | Apex: Increase your total Attack Damage by 25%. |
-| **Radiant Death's Dance** | 1050G | +40 AD<br>+40 Armor<br>+10 Ability Haste | Ignore Pain: 25% of the damage you take is dealt over time as true damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 75 + 25% of your missing health. |
+| **Radiant Death's Dance** | 1050G | +45 AD<br>+45 Armor<br>+15 Ability Haste | Ignore Pain: 25% of the damage you take is dealt over time as true damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 75 + 25% of your missing health. |
 | **Radiant Diamond Tipped Spear** | 1150G | +60% AS<br>+10 Ability Haste | Pierce: Gain 50 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
 | **Radiant Dusk and Dawn** | 1000G | +150 HP<br>+75 AP<br>+25% AS<br>+20 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Radiant Echoes of Helia** | 750G | +250 HP<br>+3 HP Regen<br>+35 AP<br>+20 Ability Haste | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion (excluding yourself) consumes all Soul Charges and heals them equal to the consumed amount. |
@@ -193,7 +193,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Hubris** | 1000G | +60 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Radiant Infinity Edge** | 1150G | +75 AD<br>+25% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Radiant Jak'Sho, The Protean** | 1000G | +300 HP<br>+35 Armor<br>+60 MR | Resilience: Taking damage from an enemy champion grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks). |
-| **Radiant Kraken Slayer** | 1000G | +40 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
+| **Radiant Kraken Slayer** | 1000G | +45 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Radiant Liandry's Torment** | 1000G | +300 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
 | **Radiant Locket of the Iron Solari** | 850G | +150 HP<br>+40 Armor<br>+50 MR<br>+15 Ability Haste | Devotion: Falling below 50% health grants you and all nearby allied champions a shield that absorbs damage equal to 295 - 350 (based on level) health over 2.5 seconds (90 second cooldown).<br>Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Radiant Lord Dominik's Regards** | 1000G | +45 AD<br>+25% Crit Chance<br>+35% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
@@ -207,7 +207,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Overlord's Bloodmail** | 1000G | +20 AD<br>+350 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Radiant Protector's Vow** | 900G | +300 HP<br>+40 Armor<br>+15 Ability Haste | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Radiant Protoplasm Harness** | 850G | +350 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
-| **Radiant Rabadon's Deathcap** | 1150G | +115 AP | Opus: Increase your total Ability Power by 35%. |
+| **Radiant Rabadon's Deathcap** | 1150G | +130 AP | Opus: Increase your total Ability Power by 35%. |
 | **Radiant Randuin's Omen** | 1000G | +300 HP<br>+45 Armor | Resilience: Heal for 30% of the damage taken from critical strikes. |
 | **Radiant Ravenous Hydra** | 950G | +45 AD<br>+15% Omnivamp<br>+15 Ability Haste | Cleave: Basic attacks deal 40% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Radiant Riftmaker** | 950G | +300 HP<br>+60 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |

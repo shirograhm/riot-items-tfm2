@@ -90,8 +90,8 @@
   },
   "deaths_dance": {
     "price": 750,
-    "attack": 25,
-    "defence": 25,
+    "attack": 30,
+    "defence": 30,
     "skill_cooldown_mult": 10,
     "effect_delayed_damage_percent": 25.0,
     "effect_burn_hp_percent_cap": 2.5,
@@ -272,7 +272,7 @@
   },
   "rabadons_deathcap": {
     "price": 750,
-    "magic_power": 85,
+    "magic_power": 80,
     "magic_power_mult": 20
   },
   "spirit_visage": {
@@ -384,9 +384,9 @@
   },
   "radiant_deaths_dance": {
     "price": 1050,
-    "attack": 40,
-    "defence": 40,
-    "skill_cooldown_mult": 10,
+    "attack": 45,
+    "defence": 45,
+    "skill_cooldown_mult": 15,
     "effect_delayed_damage_percent": 25.0,
     "effect_burn_hp_percent_cap": 2.5,
     "effect_bonus_flat_heal": 75,
@@ -522,7 +522,7 @@
   },
   "radiant_rabadons_deathcap": {
     "price": 1150,
-    "magic_power": 115,
+    "magic_power": 130,
     "magic_power_mult": 35
   },
   "radiant_spirit_visage": {
@@ -573,8 +573,8 @@
   },
   "kraken_slayer": {
     "price": 700,
-    "attack": 25,
-    "attack_speed_mult": 25,
+    "attack": 30,
+    "attack_speed_mult": 30,
     "move_speed_mult": 4,
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
@@ -583,7 +583,7 @@
   },
   "radiant_kraken_slayer": {
     "price": 1000,
-    "attack": 40,
+    "attack": 45,
     "attack_speed_mult": 45,
     "move_speed_mult": 4,
     "effect_bonus_flat_damage": 150,
@@ -730,8 +730,8 @@
   },
   "steel_sigil": {
     "price": 500,
-    "attack": 15,
-    "defence": 25
+    "attack": 20,
+    "defence": 20
   },
   "aegis_of_the_legion": {
     "price": 700,
@@ -1152,7 +1152,7 @@
   },
   "hearthbound_axe": {
     "price": 500,
-    "attack": 15,
+    "attack": 20,
     "attack_speed_mult": 20
   },
   "axiom_arc": {

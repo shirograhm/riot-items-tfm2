@@ -13,7 +13,7 @@ impl Default for HearthboundAxe {
     fn default() -> Self {
         Self {
             price: 500,
-            attack: 15,
+            attack: 20,
             attack_speed_mult: 20,
         }
     }

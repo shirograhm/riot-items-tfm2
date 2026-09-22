@@ -19,7 +19,7 @@ impl RabadonsDeathcap {
                 &["radiant_rabadons_deathcap"],
             ),
             price: 750,
-            magic_power: 85,
+            magic_power: 80,
             magic_power_mult: 20,
         }
     }
@@ -28,7 +28,7 @@ impl RabadonsDeathcap {
         Self {
             meta: ItemMeta::radiant("radiant_rabadons_deathcap", &["rabadons_deathcap"]),
             price: 1150,
-            magic_power: 115,
+            magic_power: 130,
             magic_power_mult: 35,
             ..Self::base()
         }
