@@ -2026,12 +2026,30 @@ statistics:statistics_ui {
         }
       }
 
+      #footer:color {
+        y: 884px;
+        width: 1600px;
+        height: 32px;
+        color: #0f1016ff;
+
+        rounding: Individual {
+          bottom_left: 12;
+          bottom_right: 12;
+        }
+
+        #line:color {
+          width: 100%;
+          height: 1px;
+          color: #1d1f2cff;
+        }
+      }
+
       #status:label {
         @"asset/base/style/main#label";
         anchor_x: 1;
         pivot_x: 1;
         x: -21px;
-        y: 18px;
+        y: 890px;
 
         width: 520px;
         height: 20px;
@@ -2045,7 +2063,7 @@ statistics:statistics_ui {
 
       #data:scroll_view {
         width: 1600px;
-        height: 860px;
+        height: 828px;
         y: 56px;
 
         speed: 100;
