@@ -12,13 +12,21 @@
 //!
 //! `champion_brief` had never been called on this host when this was written
 //! (its sibling `champion_names()` returns nothing), so it is not trusted to
-//! answer. [`VANILLA`] backs it up for the base game's champions, and a
-//! champion neither source knows gets no restriction at all: a missing tag must
-//! never cost a build an item.
+//! answer. Two fallbacks back it up: [`VANILLA`] for the base game's
+//! champions, and [`MOD_CHAMPIONS`] for everyone else's, read from the other
+//! mods' own `.data_champion` files at startup. A champion none of the three
+//! knows gets no restriction at all: a missing tag must never cost a build an
+//! item.
+//!
+//! The file fallback is also what covers a champion's *first* build. The host
+//! is only asked on the client frame after a build path wants the answer, so
+//! with the host alone the first build decided for a modded champion (a
+//! Twitch from another mod, 2026-09-21, building pure AP) went unchecked.
 
 use std::collections::{HashMap, HashSet};
+use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::{Mutex, RwLock};
+use std::sync::{Mutex, OnceLock, RwLock};
 
 use mod_api_stable::{ChampionTagV1, StableClient};
 
@@ -130,8 +138,96 @@ const VANILLA: &[(&str, u8)] = &[
     ("wind_mage", AP),
 ];
 
+/// Champions other mods add, by id, as `AD`/`AP` flags from the `tags` in
+/// their `.data_champion` files. Filled once by [`load_mod_champions`].
+static MOD_CHAMPIONS: OnceLock<HashMap<String, u8>> = OnceLock::new();
+
+/// Steam app id, which names the game's Workshop content folder.
+const STEAM_APP_ID: &str = "3009300";
+
+/// How far below a mods root a `.data_champion` file may sit: `<mod>/champion/`
+/// is the usual place, and a Workshop item may nest its mod one folder deeper.
+const SCAN_DEPTH: usize = 4;
+
+/// Reads every `.data_champion` file under the game's `mods` folder and its
+/// Workshop content folder into [`MOD_CHAMPIONS`]. Called once from `init`, on
+/// the main thread, because the build paths that read the result run on sim
+/// workers, where file IO has no business. About 50 files and under 1 MB with
+/// the usual champion mods installed.
+///
+/// Disabled mods are read too. That costs nothing, because a champion no
+/// enabled mod adds never reaches a build, and ids are unique across mods.
+pub(crate) fn load_mod_champions() {
+    MOD_CHAMPIONS.get_or_init(|| {
+        let mut found = HashMap::new();
+        for root in mod_roots() {
+            scan(&root, SCAN_DEPTH, &mut found);
+        }
+        found
+    });
+}
+
+fn mod_roots() -> Vec<PathBuf> {
+    let Some(game) = std::env::current_exe()
+        .ok()
+        .and_then(|exe| exe.parent().map(Path::to_path_buf))
+    else {
+        return Vec::new();
+    };
+    let mut roots = vec![game.join("mods")];
+    // steamapps/common/<game> -> steamapps/workshop/content/<app id>
+    if let Some(steamapps) = game.parent().and_then(Path::parent) {
+        roots.push(steamapps.join("workshop").join("content").join(STEAM_APP_ID));
+    }
+    roots
+}
+
+fn scan(dir: &Path, depth: usize, found: &mut HashMap<String, u8>) {
+    let Ok(entries) = std::fs::read_dir(dir) else {
+        return;
+    };
+    for path in entries.flatten().map(|entry| entry.path()) {
+        if path.is_dir() {
+            if depth > 0 {
+                scan(&path, depth - 1, found);
+            }
+        } else if path.extension().is_some_and(|ext| ext == "data_champion") {
+            if let Some((id, flags)) = read_champion(&path) {
+                found.entry(id).or_insert(flags);
+            }
+        }
+    }
+}
+
+/// The two fields of a `.data_champion` file this needs; serde skips the rest.
+#[derive(serde::Deserialize)]
+struct ChampionFile {
+    id: String,
+    #[serde(default)]
+    tags: Vec<String>,
+}
+
+fn read_champion(path: &Path) -> Option<(String, u8)> {
+    let text = std::fs::read_to_string(path).ok()?;
+    let file: ChampionFile = serde_json::from_str(text.trim_start_matches('\u{feff}')).ok()?;
+    let has = |tag: &str| file.tags.iter().any(|t| t.eq_ignore_ascii_case(tag));
+    let flags = (if has("AD") { AD } else { 0 }) | (if has("AP") { AP } else { 0 });
+    Some((file.id, flags))
+}
+
+/// What is known about `champion` without the host: [`VANILLA`] for the base
+/// game, then [`MOD_CHAMPIONS`].
+fn fallback(champion: &str) -> Option<ChampionTraits> {
+    vanilla(champion).or_else(|| {
+        MOD_CHAMPIONS
+            .get()?
+            .get(champion)
+            .map(|&flags| ChampionTraits::from_flags(flags))
+    })
+}
+
 /// Settled answers, by champion key: the host's where it gave one, otherwise
-/// the [`VANILLA`] entry or `None`. Misses are settled too, so a champion the
+/// the [`fallback`] or `None`. Misses are settled too, so a champion the
 /// host does not know costs one lookup here rather than a trip to [`PENDING`]
 /// on every item the build hook scores.
 static LEARNED: RwLock<Option<HashMap<String, Option<ChampionTraits>>>> = RwLock::new(None);
@@ -159,7 +255,7 @@ pub(crate) fn traits(champion: &str) -> Option<ChampionTraits> {
             .get_or_insert_with(HashSet::new)
             .insert(champion.to_string());
     }
-    vanilla(champion)
+    fallback(champion)
 }
 
 fn vanilla(champion: &str) -> Option<ChampionTraits> {
@@ -224,7 +320,7 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
             learned.insert(key.clone(), Some(*traits));
         }
         for key in &unanswered {
-            learned.insert(key.clone(), vanilla(key));
+            learned.insert(key.clone(), fallback(key));
         }
     }
 }

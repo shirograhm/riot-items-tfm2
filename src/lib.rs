@@ -241,6 +241,9 @@ impl StableServerExtension for NativeTapExtension {
 
 fn init(host: &StableHost) -> StableMod {
     let mut reg = StableMod::new("riot_items_tfm2");
+    // Before any build path can ask: modded champions' AD/AP tags, from their
+    // own files. See `champion_traits::MOD_CHAMPIONS`.
+    champion_traits::load_mod_champions();
     let configs = config::load();
     record_lethality_table(&configs);
 
