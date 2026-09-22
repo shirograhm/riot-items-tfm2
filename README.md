@@ -72,10 +72,10 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Needlessly Large Rod** | 450G | +60 Ability Power | — |
 | **Noonquiver** | 400G | +25 AD<br>+10% Crit Chance | — |
 | **Oblivion Orb** | 650G | +45 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
-| **Phage** | 500G | +100 HP<br>+15 AD | Rage: Basic attacks against enemy champions grant 5% movement speed for 2 seconds. |
+| **Phage** | 500G | +100 HP<br>+20 AD | Rage: Basic attacks against enemy champions grant 5% movement speed for 2 seconds. |
 | **Scout's Slingshot** | 400G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Serrated Dirk** | 400G | +25 AD | Gain 10 Lethality. |
-| **Sheen** | 650G | +25% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
+| **Sheen** | 650G | +20% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
 | **Steel Sigil** | 500G | +15 AD<br>+25 Armor | — |
 | **Tiamat** | 400G | +25 AD | Cleave: Basic attacks deal 20% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Winged Moonplate** | 400G | +150 HP<br>+4% MS | — |
@@ -141,13 +141,13 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Shadowflame** | 700G | +60 AP<br>+15% Magic Pen | Cinderbloom: Your magic and true damage is 20% stronger against enemies below 40% maximum health. |
 | **Spear of Shojin** | 700G | +200 HP<br>+20 AD<br>+10 Ability Haste | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 700G | +200 HP<br>+50 MR | Vitality: Increase all healing received by 20%. |
-| **Sterak's Gage** | 700G | +200 HP<br>+15 AD<br>+15% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
+| **Sterak's Gage** | 700G | +200 HP<br>+20 AD<br>+15% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Stormrazor** | 800G | +35 AD<br>+20% AS<br>+20% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Stormsurge** | 700G | +55 AP<br>+5% MS<br>+10% Magic Pen | Stormraider: Dealing damage to an enemy champion equal to 25% of their maximum health within 2.5 seconds inflicts them with Squall (30 second cooldown per target). Squall: After 2 seconds, strike the target, dealing 125 + 10% of your Ability Power as magic damage. |
-| **Sundered Sky** | 700G | +200 HP<br>+15 AD<br>+10 Ability Haste | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
+| **Sundered Sky** | 700G | +200 HP<br>+20 AD<br>+10 Ability Haste | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
 | **Sword of Blossoming Dawn** | 500G | +100 HP<br>+20 AP<br>+20% AS<br>+10 Ability Haste | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Terminus** | 700G | +15 AD<br>+35% AS<br>+20% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
-| **Trinity Force** | 750G | +100 HP<br>+15 AD<br>+15% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
+| **Trinity Force** | 750G | +100 HP<br>+20 AD<br>+20% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
 | **Unending Despair** | 750G | +250 HP<br>+15 Armor | Anguish: Landing an Ability on an enemy champion heals you for 35 + 1% of your maximum health. |
 | **Void Staff** | 750G | +50 AP<br>+25% Magic Pen | — |
 | **Voltaic Cyclosword** | 650G | +35 AD<br>+10 Ability Haste | Gain 12 Lethality.<br>Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Firmament: When fully Energized, your next instance of physical damage grants you 6 Lethality for 4 seconds and deals bonus physical damage equal to 6% of the target's current health. Deals a maximum of 200 physical damage against minions and monsters. |

@@ -18,7 +18,7 @@ impl Default for Phage {
         Self {
             price: 500,
             hp: 100,
-            attack: 15,
+            attack: 20,
             effect_move_speed_mult: 5,
             effect_duration_seconds: 2.0,
         }

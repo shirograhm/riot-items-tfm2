@@ -25,7 +25,7 @@
   "phage": {
     "price": 500,
     "hp": 100,
-    "attack": 15,
+    "attack": 20,
     "effect_move_speed_mult": 5,
     "effect_duration_seconds": 2
   },
@@ -782,7 +782,7 @@
   "sundered_sky": {
     "price": 700,
     "hp": 200,
-    "attack": 15,
+    "attack": 20,
     "skill_cooldown_mult": 10,
     "effect_percent_bonus_damage": 60.0,
     "effect_bonus_flat_heal": 60,
@@ -801,7 +801,7 @@
   },
   "sheen": {
     "price": 650,
-    "attack_speed_mult": 25,
+    "attack_speed_mult": 20,
     "skill_cooldown_mult": 10,
     "effect_min_bonus_damage": 30,
     "effect_max_bonus_damage": 85,
@@ -810,8 +810,8 @@
   "trinity_force": {
     "price": 750,
     "hp": 100,
-    "attack": 15,
-    "attack_speed_mult": 25,
+    "attack": 20,
+    "attack_speed_mult": 20,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 33,
     "effect_ad_percent_damage": 33.0,
@@ -1076,7 +1076,7 @@
   },
   "steraks_gage": {
     "price": 700,
-    "attack": 15,
+    "attack": 20,
     "hp": 200,
     "toughness": 15,
     "effect_hp_percent_threshold": 30.0,

@@ -19,7 +19,7 @@ impl Default for Sheen {
     fn default() -> Self {
         Self {
             price: 650,
-            attack_speed_mult: 25,
+            attack_speed_mult: 20,
             skill_cooldown_mult: 10,
             effect_min_bonus_damage: 30,
             effect_max_bonus_damage: 85,

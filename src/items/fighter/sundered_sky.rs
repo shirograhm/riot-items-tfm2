@@ -23,7 +23,7 @@ impl SunderedSky {
             cooldown_buff: "sundered_sky_cooldown",
             price: 700,
             hp: 200,
-            attack: 15,
+            attack: 20,
             skill_cooldown_mult: 10,
             effect_percent_bonus_damage: 60.0,
             effect_bonus_flat_heal: 60,
