@@ -26,7 +26,7 @@ impl SteraksGage {
             meta: ItemMeta::base("steraks_gage", &["phage"], &["radiant_steraks_gage"]),
             cooldown_buff: "steraks_gage_cooldown_buff",
             price: 700,
-            attack: 15,
+            attack: 20,
             hp: 200,
             toughness: 15,
             effect_hp_percent_threshold: 30.0,

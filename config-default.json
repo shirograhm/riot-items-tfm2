@@ -25,7 +25,7 @@
   "phage": {
     "price": 500,
     "hp": 100,
-    "attack": 15,
+    "attack": 20,
     "effect_move_speed_mult": 5,
     "effect_duration_seconds": 2
   },
@@ -71,7 +71,7 @@
   },
   "collector": {
     "price": 750,
-    "attack": 30,
+    "attack": 35,
     "crit_chance": 20,
     "effect_lethality": 10,
     "effect_hp_percent_threshold": 6.0,
@@ -79,19 +79,19 @@
   },
   "experimental_hexplate": {
     "price": 600,
-    "hp": 200,
-    "attack_speed_mult": 35,
+    "hp": 150,
+    "attack_speed_mult": 30,
     "ult_cooldown_mult": 15
   },
   "deathblade": {
     "price": 700,
-    "attack": 45,
+    "attack": 50,
     "attack_mult": 15
   },
   "deaths_dance": {
     "price": 750,
-    "attack": 25,
-    "defence": 25,
+    "attack": 30,
+    "defence": 30,
     "skill_cooldown_mult": 10,
     "effect_delayed_damage_percent": 25.0,
     "effect_burn_hp_percent_cap": 2.5,
@@ -138,7 +138,7 @@
   },
   "infinity_edge": {
     "price": 750,
-    "attack": 40,
+    "attack": 50,
     "crit_chance": 20,
     "effect_crit_damage_bonus": 30
   },
@@ -272,7 +272,7 @@
   },
   "rabadons_deathcap": {
     "price": 750,
-    "magic_power": 85,
+    "magic_power": 80,
     "magic_power_mult": 20
   },
   "spirit_visage": {
@@ -307,7 +307,7 @@
   },
   "radiant_experimental_hexplate": {
     "price": 950,
-    "hp": 250,
+    "hp": 200,
     "attack_speed_mult": 50,
     "move_speed_mult": 5,
     "ult_cooldown_mult": 25
@@ -379,14 +379,14 @@
   },
   "radiant_deathblade": {
     "price": 1000,
-    "attack": 70,
+    "attack": 80,
     "attack_mult": 25
   },
   "radiant_deaths_dance": {
     "price": 1050,
-    "attack": 40,
-    "defence": 40,
-    "skill_cooldown_mult": 10,
+    "attack": 45,
+    "defence": 45,
+    "skill_cooldown_mult": 15,
     "effect_delayed_damage_percent": 25.0,
     "effect_burn_hp_percent_cap": 2.5,
     "effect_bonus_flat_heal": 75,
@@ -394,7 +394,7 @@
   },
   "radiant_infinity_edge": {
     "price": 1150,
-    "attack": 65,
+    "attack": 75,
     "crit_chance": 25,
     "effect_crit_damage_bonus": 30
   },
@@ -432,7 +432,7 @@
   },
   "radiant_collector": {
     "price": 1050,
-    "attack": 55,
+    "attack": 65,
     "crit_chance": 25,
     "effect_lethality": 10,
     "effect_hp_percent_threshold": 6.0,
@@ -522,7 +522,7 @@
   },
   "radiant_rabadons_deathcap": {
     "price": 1150,
-    "magic_power": 115,
+    "magic_power": 130,
     "magic_power_mult": 35
   },
   "radiant_spirit_visage": {
@@ -573,8 +573,8 @@
   },
   "kraken_slayer": {
     "price": 700,
-    "attack": 25,
-    "attack_speed_mult": 25,
+    "attack": 30,
+    "attack_speed_mult": 30,
     "move_speed_mult": 4,
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
@@ -583,7 +583,7 @@
   },
   "radiant_kraken_slayer": {
     "price": 1000,
-    "attack": 40,
+    "attack": 45,
     "attack_speed_mult": 45,
     "move_speed_mult": 4,
     "effect_bonus_flat_damage": 150,
@@ -643,7 +643,7 @@
   },
   "voltaic_cyclosword": {
     "price": 650,
-    "attack": 30,
+    "attack": 35,
     "skill_cooldown_mult": 10,
     "effect_lethality": 12,
     "effect_bonus_lethality": 6,
@@ -654,7 +654,7 @@
   },
   "radiant_voltaic_cyclosword": {
     "price": 1000,
-    "attack": 50,
+    "attack": 60,
     "skill_cooldown_mult": 15,
     "effect_lethality": 12,
     "effect_bonus_lethality": 10,
@@ -730,11 +730,11 @@
   },
   "steel_sigil": {
     "price": 500,
-    "attack": 15,
-    "defence": 25
+    "attack": 20,
+    "defence": 20
   },
   "aegis_of_the_legion": {
-    "price": 500,
+    "price": 700,
     "hp": 100,
     "defence": 20,
     "magic_resistance": 30
@@ -782,7 +782,7 @@
   "sundered_sky": {
     "price": 700,
     "hp": 200,
-    "attack": 15,
+    "attack": 20,
     "skill_cooldown_mult": 10,
     "effect_percent_bonus_damage": 60.0,
     "effect_bonus_flat_heal": 60,
@@ -801,7 +801,7 @@
   },
   "sheen": {
     "price": 650,
-    "attack_speed_mult": 25,
+    "attack_speed_mult": 20,
     "skill_cooldown_mult": 10,
     "effect_min_bonus_damage": 30,
     "effect_max_bonus_damage": 85,
@@ -810,8 +810,8 @@
   "trinity_force": {
     "price": 750,
     "hp": 100,
-    "attack": 15,
-    "attack_speed_mult": 25,
+    "attack": 20,
+    "attack_speed_mult": 20,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 33,
     "effect_ad_percent_damage": 33.0,
@@ -923,21 +923,21 @@
   },
   "serpents_fang": {
     "price": 600,
-    "attack": 30,
+    "attack": 45,
     "effect_lethality": 15,
     "effect_bonus_flat_damage": 50,
     "effect_ad_percent_damage": 10.0
   },
   "radiant_serpents_fang": {
     "price": 900,
-    "attack": 50,
+    "attack": 70,
     "effect_lethality": 15,
     "effect_bonus_flat_damage": 85,
     "effect_ad_percent_damage": 15.0
   },
   "opportunity": {
     "price": 650,
-    "attack": 35,
+    "attack": 45,
     "effect_lethality": 18,
     "effect_bonus_lethality": 7,
     "effect_out_of_combat_seconds": 7.0,
@@ -945,7 +945,7 @@
   },
   "radiant_opportunity": {
     "price": 1000,
-    "attack": 50,
+    "attack": 65,
     "move_speed_mult": 5,
     "effect_lethality": 18,
     "effect_bonus_lethality": 7,
@@ -1076,7 +1076,7 @@
   },
   "steraks_gage": {
     "price": 700,
-    "attack": 15,
+    "attack": 20,
     "hp": 200,
     "toughness": 15,
     "effect_hp_percent_threshold": 30.0,
@@ -1108,7 +1108,7 @@
   },
   "eclipse": {
     "price": 650,
-    "attack": 30,
+    "attack": 40,
     "skill_cooldown_mult": 15,
     "effect_hp_percent_damage": 5.0,
     "effect_bonus_flat_shield": 100,
@@ -1119,7 +1119,7 @@
   },
   "radiant_eclipse": {
     "price": 1000,
-    "attack": 50,
+    "attack": 65,
     "skill_cooldown_mult": 15,
     "effect_hp_percent_damage": 8.0,
     "effect_bonus_flat_shield": 120,
@@ -1152,7 +1152,7 @@
   },
   "hearthbound_axe": {
     "price": 500,
-    "attack": 15,
+    "attack": 20,
     "attack_speed_mult": 20
   },
   "axiom_arc": {
@@ -1192,7 +1192,7 @@
   "radiant_sword_of_blossoming_dawn": {
     "price": 850,
     "attack_speed_mult": 35,
-    "hp": 200,
+    "hp": 150,
     "magic_power": 35,
     "skill_cooldown_mult": 15,
     "effect_min_heal": 15,
@@ -1353,7 +1353,7 @@
   },
   "pickaxe": {
     "price": 250,
-    "attack": 15
+    "attack": 20
   },
   "vampiric_scepter": {
     "price": 400,
@@ -1386,6 +1386,7 @@
   },
   "phantom_dancer": {
     "price": 700,
+    "move_speed_mult": 5,
     "attack_speed_mult": 45,
     "crit_chance": 20
   },
@@ -1415,40 +1416,40 @@
   },
   "radiant_thornmail": {
     "price": 1000,
-    "defence": 65,
+    "defence": 70,
     "base_attack_damaged_reduce": 12,
     "effect_bonus_flat_damage": 10,
     "effect_caster_defence_percent_damage": 2
   },
   "null_magic_mantle": {
     "price": 250,
-    "hp": 50,
-    "magic_resistance": 15
+    "hp": 0,
+    "magic_resistance": 30
   },
   "negatron_cloak": {
     "price": 250,
-    "hp": 100,
+    "hp": 50,
     "magic_resistance": 30
   },
   "spectres_cowl": {
     "price": 400,
     "hp": 100,
     "magic_resistance": 50,
-    "skill_damaged_reduce": 5
+    "skill_damaged_reduce": 4
   },
   "dragons_claw": {
     "price": 700,
     "hp": 150,
     "magic_resistance": 75,
-    "toughness": 30,
-    "skill_damaged_reduce": 15
+    "toughness": 15,
+    "skill_damaged_reduce": 8
   },
   "radiant_dragons_claw": {
     "price": 1000,
     "hp": 200,
     "magic_resistance": 100,
-    "toughness": 50,
-    "skill_damaged_reduce": 20
+    "toughness": 25,
+    "skill_damaged_reduce": 10
   },
   "amplifying_tome": {
     "price": 250,

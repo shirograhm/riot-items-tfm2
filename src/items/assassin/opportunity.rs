@@ -25,7 +25,7 @@ impl Opportunity {
         Self {
             meta: ItemMeta::base("opportunity", &["serrated_dirk"], &["radiant_opportunity"]),
             price: 650,
-            attack: 35,
+            attack: 45,
             move_speed_mult: 0,
             effect_lethality: 18,
             effect_bonus_lethality: 7,
@@ -41,7 +41,7 @@ impl Opportunity {
         Self {
             meta: ItemMeta::radiant("radiant_opportunity", &["opportunity"]),
             price: 1000,
-            attack: 50,
+            attack: 65,
             move_speed_mult: 5,
             effect_lethality: 18,
             effect_bonus_lethality: 7,

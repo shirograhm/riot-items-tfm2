@@ -69,7 +69,7 @@ It also sets the buy order: items that get stronger the longer you own them come
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
 [h1] Item Stats [/h1]
-The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, playrate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  
+The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, pick rate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  
 
 [h1] Planned Features [/h1]
 - More support items.

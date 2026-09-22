@@ -31,7 +31,7 @@ impl VoltaicCyclosword {
                 &["radiant_voltaic_cyclosword"],
             ),
             price: 650,
-            attack: 30,
+            attack: 35,
             skill_cooldown_mult: 10,
             effect_lethality: 12,
             effect_bonus_lethality: 6,
@@ -51,7 +51,7 @@ impl VoltaicCyclosword {
         Self {
             meta: ItemMeta::radiant("radiant_voltaic_cyclosword", &["voltaic_cyclosword"]),
             price: 1000,
-            attack: 50,
+            attack: 60,
             skill_cooldown_mult: 15,
             effect_lethality: 12,
             effect_bonus_lethality: 10,

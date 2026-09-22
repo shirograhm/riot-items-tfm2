@@ -17,7 +17,7 @@ impl InfinityEdge {
         Self {
             meta: ItemMeta::base("infinity_edge", &["bf_sword"], &["radiant_infinity_edge"]),
             price: 750,
-            attack: 40,
+            attack: 50,
             crit_chance: 20,
             effect_crit_damage_bonus: 30,
         }
@@ -27,7 +27,7 @@ impl InfinityEdge {
         Self {
             meta: ItemMeta::radiant("radiant_infinity_edge", &["infinity_edge"]),
             price: 1150,
-            attack: 65,
+            attack: 75,
             crit_chance: 25,
             effect_crit_damage_bonus: 30,
         }

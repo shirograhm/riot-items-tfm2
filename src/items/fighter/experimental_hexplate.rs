@@ -22,8 +22,8 @@ impl ExperimentalHexplate {
                 &["radiant_experimental_hexplate"],
             ),
             price: 600,
-            hp: 200,
-            attack_speed_mult: 35,
+            hp: 150,
+            attack_speed_mult: 30,
             move_speed_mult: 0,
             ult_cooldown_mult: 15,
         }
@@ -33,7 +33,7 @@ impl ExperimentalHexplate {
         Self {
             meta: ItemMeta::radiant("radiant_experimental_hexplate", &["experimental_hexplate"]),
             price: 950,
-            hp: 250,
+            hp: 200,
             attack_speed_mult: 50,
             move_speed_mult: 5,
             ult_cooldown_mult: 25,
