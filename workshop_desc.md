@@ -1,9 +1,7 @@
 Adds 6 item slots & 169 new items (97 base + 72 Radiant) to Teamfight Manager 2.  
-Also re-skins the 30 existing items and adds some custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
+Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
-[b]This mod supports custom item values and custom item builds. See instructions below![/b]  
-
-Lastly, this mod can enforce [b]Smart Builds[/b] on the AI's item picks: no duplicates, no items the champion can't use, and a sensible buy order. Toggle it in the in-game Build Editor. See [b]Smart Builds[/b] below.  
+[b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
 
 [h1] Important [/h1]
 This mod currently supports English, Vietnamese, Portuguese (BR), Russian, Chinese (Simplified), and Korean locales. You can use it with other languages, but the names and descriptions of the items will be broken.  
@@ -15,16 +13,11 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 [h3][i] THIS MOD WILL CHANGE THE BALANCE OF YOUR GAME. USE WITH CAUTION. [/i][/h3]
 
 [h1] Known Issues [/h1]
-
-Some AI champions seem to prefer the wrong stats when given deference of item selection. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
-
-The SoloQ page may sometimes show incorrect item builds.  
-
-The item build editor currently only supports EN language for item and champion names at the moment.  
-
-Older saves that were using older version of this mod may experience lag spikes during the BP phase and in-game. This is being investigated, for now, current workaround for this is to use a new save.  
-
-This mod is largely untested in multiplayer. It should work, but the custom item builds will only follow the host's choices.  
+- Some AI champions prefer the wrong stats when picking their own items. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
+- The SoloQ page may sometimes show incorrect item builds.  
+- The build editor only shows item and champion names in English.  
+- Saves from older versions of this mod may lag during the BP phase and in-game. For now, use a new save.  
+- Largely untested in multiplayer. It should work, but custom item builds only follow the host's choices.  
 
 [h1] Instructions [/h1]
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -36,60 +29,47 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 4. Play as you would normally!
 
 [h1] Versioning [/h1]
-Currently updated for game version 0.6.1. Also supports previous versions using an older build of the mod. See below for reference:  
-Mod v0.10.1+ - 0.6.1
-Mod v0.9.11-0.10.0 - 0.6.0
-Mod v0.9.6-9 - v0.5.8
-Mod v0.9.3-5 - v0.5.7
-Mod v0.9.2 - v0.5.6
-Mod v0.9.0-1 - v0.5.5
-Mod v0.8.0+ - v0.5.4
-Mod v0.7.0+ - v0.5.3
-Mod v0.5.7+ - v0.5.1 & v0.5.2
-Mod v0.5.6 - versions up to 0.5.0
+Currently updated for game version 0.6.1. Older game versions need an older build of the mod:  
+Mod v0.10.1+ - 0.6.1  
+Mod v0.9.11-0.10.0 - 0.6.0  
+Mod v0.9.6-9 - v0.5.8  
 
-You can also check the github repository for manual releases. https://github.com/shirograhm/riot-items-tfm2/releases
+Manual releases: https://github.com/shirograhm/riot-items-tfm2/releases
 
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box!  
 
-However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:
+However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:  
 
-1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]
-2. Edit the new [b]config.json[/b] with the custom values that you want.
+1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]  
+2. Edit the new [b]config.json[/b] with the custom values that you want.  
 3. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod may not update the values correctly.  
-4. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!
+4. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!  
 
-Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.
+Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.  
 
 Both files (config-default & apply_config.bat) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
 
 [h1] Custom Item Builds [/h1]
-This mod lets you override the in-game Item Strategy Screen and choose any item in the game. It is all done in-game, no external tools:
+Pick any item for any champion, in-game:
+1. After draft, on the Item Strategy Screen, click [b]Builds[/b] at the top.  
+2. Press [b]+ Add Champion[/b], pick a champion (modded champions included), and set its item slots. Any slot left on [b]Let Player Decide (-)[/b] is filled by the AI.  
+3. Start the match!  
 
-1. After draft, on the Item Strategy Screen, click [b]Builds[/b] at the top.
-2. Press [b]+ Add Champion[/b], pick a champion, then set its item slots.
-  a. Modded champions are listed too, so long as their mod is loaded.
-  b. If you only want to decide [i]some[/i] items, set the slots you care about and leave the rest on [b]Let Player Decide[/b] (the default). The mod keeps your chosen items and lets the game's AI fill the remaining slots.
-  c. Use the [b]filter by champion[/b] box in the toolbar to find a champion once the list gets long. You can list multiple champions here using commas. 
-3. Start the simulated match!
-
-Builds are saved automatically when changed to [b]item-builds.json[/b] as you make them, so they carry across sessions. Click [b]Save Item Builds[/b] to run a manual save.  
+Use the [b]filter by champion[/b] box to find champions in a long list (separate several with commas). Builds save automatically to [b]item-builds.json[/b] and carry across sessions. [b]Save Item Builds[/b] saves manually.  
 
 [h1] Smart Builds [/h1]
-The Build Editor footer has a toggle, [b]Enforce Smart Builds[/b], on by default. It cleans up what the AI picks. Any of these is swapped for another final item of the same category:
-- a duplicate item
-- a second Grievous Wounds item
-- a crit item that would push the build past 100% crit chance (crit from item passives counts as fully stacked)
-- a support item (except Protoplasm Harness) on any champion not playing the support role
-- an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion. Hybrid champions, hybrid items, and support items in the support role are left alone. Champions from other mods are covered too, using the AD/AP tags from their own files.
+[b]Enforce Smart Builds[/b] (Build Editor footer, on by default) cleans up the AI's picks. These get swapped for another item of the same category:
+- duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
+- support items (except Protoplasm Harness) outside the support role
+- items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone). Champions from other mods are covered too.
 
-It also sets the order the AI buys its items in. Items that get stronger the longer you own them are bought first: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern and Collector. Items that scale off stats from the rest of the build are bought last: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards.
+It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
 
-Items you pin in the editor are never overridden. The AI's picks make way for them instead (for example, the AI won't also build an item you pinned elsewhere in the build). Switch the toggle to [b]Allow Any Builds[/b] to let the AI roam free.
+Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
 [h1] Item Stats [/h1]
-The in-game Statistics screen has an [b]Item Stats[/b] tab showing each item's games, wins, losses, win rate, playrate and first-item rate across the matches in your save. Click a column heading to sort by it, and filter by class, tier or lane.
+The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, playrate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  
 
 [h1] Planned Features [/h1]
 - More support items.
