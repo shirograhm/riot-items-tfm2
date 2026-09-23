@@ -561,13 +561,14 @@ fn pins() -> Option<Arc<PinSnapshot>> {
 /// Whether this champion has any pinned item in the role it is being played,
 /// which is what makes it worth looking up slot by slot.
 ///
-/// The role comes from [`role_for_champion`] rather than from the caller: the
-/// buy detour reads this from inside an athlete hook that has the champion key
-/// and nothing else, so the lineup snapshot is what supplies the missing half.
+/// The role comes from [`lane_for_champion`] rather than from the caller: the
+/// detours read this from inside an athlete hook, which hands the lane over
+/// through [`set_athlete_lane`] instead of an argument.
 pub fn has_pins(champion: &str) -> bool {
-    let role = role_for_champion(champion);
+    let (role, known) = lane_for_champion(champion);
     pins().is_some_and(|pins| {
-        pin_entry(&pins, champion, role).is_some_and(|build| build.iter().any(Option::is_some))
+        pin_entry(&pins, champion, role, known)
+            .is_some_and(|build| build.iter().any(Option::is_some))
     })
 }
 
@@ -579,11 +580,12 @@ pub fn has_pins(champion: &str) -> bool {
 /// the pins over those slots later, and boots are cheap enough to be finished
 /// before the buy path gets to write the pin, which then loses the slot for
 /// the match. Both sides know the real lane — the hook is told it, the
-/// detours read it off the lineup ([`set_athlete_lane`]) — so they pick the
-/// same row.
+/// detours read it off the athlete ([`set_athlete_lane`]) — so they pick the
+/// same row. `role` is [`Role::Any`] when the host did not say, and then the
+/// lane is not known.
 pub fn pin_row(champion: &str, role: Role) -> Vec<Option<String>> {
     pins()
-        .and_then(|pins| pin_entry(&pins, champion, role).cloned())
+        .and_then(|pins| pin_entry(&pins, champion, role, role != Role::Any).cloned())
         .unwrap_or_default()
 }
 
@@ -615,10 +617,16 @@ pub fn pin_row(champion: &str, role: Role) -> Vec<Option<String>> {
 /// When the file gives a champion exactly one build, the guess is not needed:
 /// there is one build it could mean. Two or more and this arm stays out of it —
 /// a wrong role is better answered by no build than by another role's.
+///
+/// Only while the role *is* a guess (`known` false). The detours now read the
+/// athlete's lane off the athlete ([`set_athlete_lane`]), and with the lane
+/// known this arm would be the one thing putting a jungle build on a champion
+/// played top — which `build_entry`, on the stable hook, rightly never does.
 fn pin_entry<'a>(
     pins: &'a PinSnapshot,
     champion: &str,
     role: Role,
+    known: bool,
 ) -> Option<&'a Vec<Option<String>>> {
     if role != Role::Any {
         if let Some(build) = pins.by_key.get(&build_key(champion, role)) {
@@ -627,6 +635,9 @@ fn pin_entry<'a>(
     }
     if let Some(build) = pins.by_key.get(champion) {
         return Some(build);
+    }
+    if known {
+        return None;
     }
     pins.by_key.get(pins.sole_key.get(champion)?)
 }
@@ -649,10 +660,10 @@ fn pin_entry<'a>(
 // was recorded last. The cost of losing that race is one build applied at the
 // wrong role, in a match the player is not watching.
 //
-// For the player's own starters there is no race: their lane is their slot in
-// the team's `last_starting` lineup, which the detours look up by athlete id
-// and hand over through `set_athlete_lane`. This map is the fallback for
-// everyone else.
+// That premise no longer holds: the position *is* on the athlete, at the
+// offset the neural 4th-item context already reads (`O_ATHLETE_POS` in
+// `tactics`), and the detours hand it over through `set_athlete_lane`. This
+// map is only the fallback for an athlete whose lane cannot be read.
 
 static LINEUP_ROLES: Mutex<Option<Arc<HashMap<String, Role>>>> = Mutex::new(None);
 
@@ -686,15 +697,15 @@ pub fn record_lineup_roles(champions: &[String]) {
 
 thread_local! {
     /// The lane of the athlete the spawn or buy detour is handling on this
-    /// thread, when it is one of the player's starters — read off the lineup,
-    /// so [`role_for_champion`] need not guess. Every lookup of a lane happens
-    /// inside those detours, for the athlete they are handling, and each sets
-    /// this first thing (see [`set_athlete_lane`]).
+    /// thread, read off the athlete itself, so [`role_for_champion`] need not
+    /// guess. Every lookup of a lane happens inside those detours, for the
+    /// athlete they are handling, and each sets this first thing (see
+    /// [`set_athlete_lane`]).
     static ATHLETE_LANE: std::cell::Cell<Option<Role>> = const { std::cell::Cell::new(None) };
 }
 
 /// Tells [`role_for_champion`] the lane of the athlete this thread is about to
-/// resolve pins for, or `None` for one that is not the player's (the guess then
+/// resolve pins for, or `None` when it could not be read (the guess then
 /// stands). Set on every detour call, never left from the last athlete.
 pub fn set_athlete_lane(lane: Option<Role>) {
     ATHLETE_LANE.with(|cell| cell.set(lane));
@@ -704,15 +715,23 @@ fn lineup_roles() -> Option<Arc<HashMap<String, Role>>> {
     LINEUP_ROLES.lock().ok()?.clone()
 }
 
-/// The role a champion was last seen playing, or [`Role::Any`] when no lineup
-/// has named it — which is also what makes the `Any` build the answer.
-pub fn role_for_champion(champion: &str) -> Role {
+/// The lane pins for `champion` resolve in, and whether it is known: the
+/// athlete's own (see [`set_athlete_lane`]), else the lane the champion was
+/// last seen playing, else [`Role::Any`] — which is also what makes the `Any`
+/// build the answer.
+fn lane_for_champion(champion: &str) -> (Role, bool) {
     if let Some(lane) = ATHLETE_LANE.with(std::cell::Cell::get) {
-        return lane;
+        return (lane, true);
     }
-    lineup_roles()
+    let guess = lineup_roles()
         .and_then(|roles| roles.get(champion).copied())
-        .unwrap_or(Role::Any)
+        .unwrap_or(Role::Any);
+    (guess, false)
+}
+
+/// The role `champion` is played in, as [`lane_for_champion`] finds it.
+pub fn role_for_champion(champion: &str) -> Role {
+    lane_for_champion(champion).0
 }
 
 /// The pinned item for one slot, exactly as written in the file.
@@ -722,8 +741,8 @@ pub fn role_for_champion(champion: &str) -> Role {
 /// item that has to be found by name.
 pub fn pinned_key_raw(champion: &str, slot: usize) -> Option<String> {
     let pins = pins()?;
-    let role = role_for_champion(champion);
-    pin_entry(&pins, champion, role)?.get(slot)?.clone()
+    let (role, known) = lane_for_champion(champion);
+    pin_entry(&pins, champion, role, known)?.get(slot)?.clone()
 }
 
 /// The pinned item for one slot, normalized the way [`resolve_key`] normalizes
