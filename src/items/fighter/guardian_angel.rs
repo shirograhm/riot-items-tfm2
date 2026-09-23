@@ -245,11 +245,12 @@ impl StableItem for GuardianAngel {
             return;
         };
         let (current_hp, _) = entity_ref.hp();
-        if current_hp > 1 || !entity_ref.is_alive() || !has_buff(&entity_ref, UNDYING_BUFF) {
-            return;
-        }
+        // Only a hit the undying buff caught: without it she is already dead, and
+        // bringing her back from there leaves the death (and `on_dead`) standing.
+        let guarded = entity_ref.is_alive() && has_buff(&entity_ref, UNDYING_BUFF);
+        let lethal = current_hp <= 1;
         let tick = ctx.tick();
-        if !self.is_ready(tick) {
+        if !guarded || !lethal || !self.is_ready(tick) {
             return;
         }
 
@@ -264,7 +265,7 @@ impl StableItem for GuardianAngel {
                 ..BuffV1::timed(STASIS_BUFF, stasis + 1)
             },
         );
-        ctx.entity_set_hp(entity, current_hp.max(1));
+        ctx.entity_set_hp(entity, 1);
         ctx.entity_clear_cc(entity);
         ctx.entity_banish(entity, entity, stasis, STASIS_EFFECT, REVIVE_EFFECT);
         self.stasis = Some((entity, tick + self.interval_ticks(), tick + stasis));
