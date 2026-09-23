@@ -85,19 +85,26 @@ impl StableItemBuildHook for ConfiguredBuilds {
         let mut build = merged.items;
 
         if build_config::smart_builds_enabled() {
-            let (boots_avoid, pinned_boots) = if own_team_only {
+            let pending = if own_team_only {
                 pending_pins(ctx)
             } else {
-                (Vec::new(), None)
+                PendingPins::default()
             };
-            enforce_smart_build(
-                ctx,
-                &mut build,
-                &merged.pinned,
-                &merged.reserved,
-                &boots_avoid,
-                pinned_boots,
-            );
+            let reserved: Vec<usize> = merged
+                .reserved
+                .iter()
+                .chain(&pending.spoken_for)
+                .copied()
+                .collect();
+            enforce_smart_build(ctx, &mut build, &merged.pinned, &reserved, &pending.slots);
+            // The player's pair in the player's slot, not wherever the rule
+            // would have put a pair: pins stay where they are. (A pin past the
+            // game's slots is planted by the buy detour when it grows the build.)
+            if let Some((slot, boots)) = pending.boots {
+                if let Some(held) = build.get_mut(slot) {
+                    *held = boots;
+                }
+            }
         }
 
         if build.is_empty() || build == base {
@@ -160,51 +167,71 @@ fn champion_fit(ctx: &StableItemBuildContext<'_>) -> smart_builds::Fit {
     smart_builds::fit(ctx.champion_key(), champion_role(ctx))
 }
 
-/// What Smart Builds' boots rule must know about the pins under
-/// `own_team_only`, where the detours paste them over this build later: the
-/// game slots the champion's row pins in this lane (the boots stay out of
-/// them, or the engine can finish the pair before the buy detour writes the
-/// pin), and the pair the player pinned, if any.
-///
-/// The pinned pair goes in as the rule's choice so that the one pair the
-/// engine plans is the player's. Any other pair clashes with the pin, and when
-/// the spawn injector misses the athlete the buy path settles that clash by
-/// keeping the engine's pair: the pin lands too late to replace it.
-fn pending_pins(ctx: &StableItemBuildContext<'_>) -> (Vec<bool>, Option<usize>) {
+/// The player's pins as the Smart Builds pass must see them under
+/// `own_team_only`, where this hook leaves them out and the detours paste them
+/// over the build later. See [`pending_pins`].
+#[derive(Default)]
+struct PendingPins {
+    /// Per game slot, whether a pin will land there. The boots rule stays out
+    /// of these, or the engine can finish the pair before the buy detour
+    /// writes the pin.
+    slots: Vec<bool>,
+    /// Every pinned item, 5th and 6th slots included. The engine's picks must
+    /// not take them: an item the engine plans early is one the detours treat
+    /// as already placed, and they drop the pin — so the item would end up in
+    /// the engine's slot rather than the player's.
+    spoken_for: Vec<usize>,
+    /// The pinned pair of boots, as (slot, catalog index).
+    boots: Option<(usize, usize)>,
+}
+
+/// The champion's pins in this lane, picked the way the detours pick them
+/// ([`build_config::pin_row`]). Counting them as the toggle-off path counts its
+/// pins is what keeps each pin where the player put it: no engine pick takes
+/// a pinned item, and a pinned pair switches the boots rule off (it only adds
+/// boots to a build that has none).
+fn pending_pins(ctx: &StableItemBuildContext<'_>) -> PendingPins {
     // Publishes the pin snapshot `pin_row` reads.
     build_config::load_cached();
     let row = build_config::pin_row(ctx.champion_key(), champion_role(ctx));
-    let avoid = row
-        .iter()
-        .take(build_config::game_slots())
-        .map(Option::is_some)
-        .collect();
-    let pinned_boots = row.iter().flatten().find_map(|key| {
-        build_config::resolve_key(key, &|key: &str| ctx.item_index(key))
-            .filter(|&index| ctx.item_key(index).is_some_and(smart_builds::is_boots))
-    });
-    (avoid, pinned_boots)
+    let mut pending = PendingPins {
+        slots: row
+            .iter()
+            .take(build_config::game_slots())
+            .map(Option::is_some)
+            .collect(),
+        ..PendingPins::default()
+    };
+    for (slot, key) in row.iter().enumerate() {
+        let Some(index) = key
+            .as_deref()
+            .and_then(|key| build_config::resolve_key(key, &|key: &str| ctx.item_index(key)))
+        else {
+            continue;
+        };
+        pending.spoken_for.push(index);
+        if pending.boots.is_none() && ctx.item_key(index).is_some_and(smart_builds::is_boots) {
+            pending.boots = Some((slot, index));
+        }
+    }
+    pending
 }
 
 /// The Smart Builds pass over a build the host handed us, with the catalog seen
 /// through `StableItemBuildContext`. The rules themselves live in
 /// [`crate::smart_builds`], which the training-screen detour in `crate::hook`
-/// drives over the same build with its own accessors. `pinned_boots` replaces
-/// the boots rule's own choice (see [`pending_pins`]).
+/// drives over the same build with its own accessors.
 fn enforce_smart_build(
     ctx: &StableItemBuildContext<'_>,
     build: &mut [usize],
     pinned: &[bool],
     reserved: &[usize],
     boots_avoid: &[bool],
-    pinned_boots: Option<usize>,
 ) {
     // This is the one path that sees the enemy lineup, which is what picks a
     // tank's boots.
-    let boots = pinned_boots.or_else(|| {
-        let enemies = ctx.enemy_champions();
-        ctx.item_index(smart_builds::boots_for(ctx.champion_key(), champion_role(ctx), &enemies))
-    });
+    let enemies = ctx.enemy_champions();
+    let boots = smart_builds::boots_for(ctx.champion_key(), champion_role(ctx), &enemies);
     smart_builds::enforce(
         ctx.item_count(),
         build,
@@ -212,7 +239,7 @@ fn enforce_smart_build(
         reserved,
         boots_avoid,
         champion_fit(ctx),
-        boots,
+        ctx.item_index(boots),
         |index| ctx.item_key(index).map(str::to_string),
         |index| ctx.item_category(index),
         |index| is_selectable_final(ctx, index),
