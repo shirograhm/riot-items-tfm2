@@ -5,7 +5,7 @@ use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 
 // Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for
 // 40% of your maximum health. During the duration, you are untargetable,
-// invulnerable, and unable to act (150 second cooldown).
+// invulnerable, and unable to act (300 second cooldown).
 //
 // The heal lands in equal pulses every `effect_heal_interval_seconds` across the
 // stasis; `effect_caster_hp_percent_heal` is the total.
@@ -67,7 +67,7 @@ impl GuardianAngel {
             effect_caster_hp_percent_heal: 40.0,
             effect_duration_seconds: 4.0,
             effect_heal_interval_seconds: 0.25,
-            effect_cooldown_seconds: 150.0,
+            effect_cooldown_seconds: 300.0,
             stasis: None,
             ready_at_tick: 0,
             undying_added_tick: None,

@@ -853,11 +853,11 @@
         },
         "guardian_angel": {
             "name": "Guardian Angel",
-            "option": "\n<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>4 seconds<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing<> for <#60e84dff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>. During the duration, you are untargetable, invulnerable, and unable to act (<#e8a800ff>150 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>4 seconds<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing<> for <#60e84dff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>. During the duration, you are untargetable, invulnerable, and unable to act (<#e8a800ff>300 second<> cooldown)."
         },
         "radiant_guardian_angel": {
             "name": "Radiant Guardian Angel",
-            "option": "\n<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>4 seconds<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing<> for <#60e84dff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>. During the duration, you are untargetable, invulnerable, and unable to act (<#e8a800ff>150 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>4 seconds<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing<> for <#60e84dff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>. During the duration, you are untargetable, invulnerable, and unable to act (<#e8a800ff>300 second<> cooldown)."
         }
     },
     "vi": {
@@ -1714,11 +1714,11 @@
         },
         "guardian_angel": {
             "name": "Giáp Thiên Thần",
-            "option": "\n<#ff7a3eff>Tái Sinh<>: Khi nhận sát thương kết liễu, bạn sẽ <#92dc7bff>hồi sinh<> trong <#e8a800ff>4 giây<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#60e84dff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn. Trong thời gian này, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>150 giây<> hồi chiêu)."
+            "option": "\n<#ff7a3eff>Tái Sinh<>: Khi nhận sát thương kết liễu, bạn sẽ <#92dc7bff>hồi sinh<> trong <#e8a800ff>4 giây<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#60e84dff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn. Trong thời gian này, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>300 giây<> hồi chiêu)."
         },
         "radiant_guardian_angel": {
             "name": "Giáp Thiên Thần Ánh Sáng",
-            "option": "\n<#ff7a3eff>Tái Sinh<>: Khi nhận sát thương kết liễu, bạn sẽ <#92dc7bff>hồi sinh<> trong <#e8a800ff>4 giây<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#60e84dff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn. Trong thời gian này, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>150 giây<> hồi chiêu)."
+            "option": "\n<#ff7a3eff>Tái Sinh<>: Khi nhận sát thương kết liễu, bạn sẽ <#92dc7bff>hồi sinh<> trong <#e8a800ff>4 giây<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#60e84dff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn. Trong thời gian này, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>300 giây<> hồi chiêu)."
         }
     },
     "zh-hans": {
@@ -2575,11 +2575,11 @@
         },
         "guardian_angel": {
             "name": "守护天使",
-            "option": "\n<#ff7a3eff>重生<>：受到致命伤害时，改为在 <#e8a800ff>4秒<> 内<#92dc7bff>复活<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的 <#60e84dff>40%<> 的生命值。在此期间，你无法被选取、无敌且无法行动（冷却时间150秒）。"
+            "option": "\n<#ff7a3eff>重生<>：受到致命伤害时，改为在 <#e8a800ff>4秒<> 内<#92dc7bff>复活<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的 <#60e84dff>40%<> 的生命值。在此期间，你无法被选取、无敌且无法行动（冷却时间300秒）。"
         },
         "radiant_guardian_angel": {
             "name": "光明版守护天使",
-            "option": "\n<#ff7a3eff>重生<>：受到致命伤害时，改为在 <#e8a800ff>4秒<> 内<#92dc7bff>复活<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的 <#60e84dff>60%<> 的生命值。在此期间，你无法被选取、无敌且无法行动（冷却时间150秒）。"
+            "option": "\n<#ff7a3eff>重生<>：受到致命伤害时，改为在 <#e8a800ff>4秒<> 内<#92dc7bff>复活<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的 <#60e84dff>60%<> 的生命值。在此期间，你无法被选取、无敌且无法行动（冷却时间300秒）。"
         }
     },
     "pt-BR": {
@@ -3436,11 +3436,11 @@
         },
         "guardian_angel": {
             "name": "Anjo Guardião",
-            "option": "\n<#ff7a3eff>Renascimento<>: Ao sofrer dano letal, em vez disso você <#92dc7bff>ressuscita<> ao longo de <#e8a800ff>4 segundos<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando<> <#60e84dff>40%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>. Durante esse tempo, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>150 segundos<>)."
+            "option": "\n<#ff7a3eff>Renascimento<>: Ao sofrer dano letal, em vez disso você <#92dc7bff>ressuscita<> ao longo de <#e8a800ff>4 segundos<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando<> <#60e84dff>40%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>. Durante esse tempo, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>300 segundos<>)."
         },
         "radiant_guardian_angel": {
             "name": "Anjo Guardião Radiante",
-            "option": "\n<#ff7a3eff>Renascimento<>: Ao sofrer dano letal, em vez disso você <#92dc7bff>ressuscita<> ao longo de <#e8a800ff>4 segundos<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando<> <#60e84dff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>. Durante esse tempo, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>150 segundos<>)."
+            "option": "\n<#ff7a3eff>Renascimento<>: Ao sofrer dano letal, em vez disso você <#92dc7bff>ressuscita<> ao longo de <#e8a800ff>4 segundos<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando<> <#60e84dff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>. Durante esse tempo, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>300 segundos<>)."
         }
     },
     "ru": {
@@ -4297,11 +4297,11 @@
         },
         "guardian_angel": {
             "name": "Ангел-хранитель",
-            "option": "\n<#ff7a3eff>Перерождение<>: При получении смертельного урона вы вместо этого <#92dc7bff>воскрешаетесь<> в течение <#e8a800ff>4 секунд<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая<> <#60e84dff>40%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>. В течение этого времени вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 150 секунд)."
+            "option": "\n<#ff7a3eff>Перерождение<>: При получении смертельного урона вы вместо этого <#92dc7bff>воскрешаетесь<> в течение <#e8a800ff>4 секунд<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая<> <#60e84dff>40%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>. В течение этого времени вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 300 секунд)."
         },
         "radiant_guardian_angel": {
             "name": "Лучезарный Ангел-хранитель",
-            "option": "\n<#ff7a3eff>Перерождение<>: При получении смертельного урона вы вместо этого <#92dc7bff>воскрешаетесь<> в течение <#e8a800ff>4 секунд<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая<> <#60e84dff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>. В течение этого времени вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 150 секунд)."
+            "option": "\n<#ff7a3eff>Перерождение<>: При получении смертельного урона вы вместо этого <#92dc7bff>воскрешаетесь<> в течение <#e8a800ff>4 секунд<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая<> <#60e84dff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>. В течение этого времени вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 300 секунд)."
         }
     },
     "ko": {
@@ -5158,11 +5158,11 @@
         },
         "guardian_angel": {
             "name": "수호 천사",
-            "option": "\n<#ff7a3eff>환생<>: 치명적인 피해를 입으면 대신 <#e8a800ff>4초<> 동안 <#92dc7bff>부활<>하며 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>40%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. 지속시간 동안 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>150초<>입니다."
+            "option": "\n<#ff7a3eff>환생<>: 치명적인 피해를 입으면 대신 <#e8a800ff>4초<> 동안 <#92dc7bff>부활<>하며 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>40%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. 지속시간 동안 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>300초<>입니다."
         },
         "radiant_guardian_angel": {
             "name": "찬란한 수호 천사",
-            "option": "\n<#ff7a3eff>환생<>: 치명적인 피해를 입으면 대신 <#e8a800ff>4초<> 동안 <#92dc7bff>부활<>하며 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>60%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. 지속시간 동안 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>150초<>입니다."
+            "option": "\n<#ff7a3eff>환생<>: 치명적인 피해를 입으면 대신 <#e8a800ff>4초<> 동안 <#92dc7bff>부활<>하며 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>60%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. 지속시간 동안 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>300초<>입니다."
         }
     }
 }
