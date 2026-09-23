@@ -571,6 +571,28 @@ pub fn has_pins(champion: &str) -> bool {
     })
 }
 
+/// Which of the game's build slots hold one of the player's pins for `champion`
+/// played in `role`, resolved the way the buy detour resolves them.
+///
+/// For the stable hook under `own_team_only`: it does not apply the pins, but
+/// it must not put Smart Builds' boots where one will land. The detours paste
+/// the pins over those slots later, and boots are cheap enough to be finished
+/// before the buy path gets to write the pin, which then loses the slot for
+/// the match.
+pub fn pinned_slots(champion: &str, role: Role) -> Vec<bool> {
+    pins()
+        .and_then(|pins| {
+            pin_entry(&pins, champion, role).map(|build| {
+                build
+                    .iter()
+                    .take(game_slots())
+                    .map(Option::is_some)
+                    .collect()
+            })
+        })
+        .unwrap_or_default()
+}
+
 /// [`build_entry`] over the pin snapshot: the role's build first, `Any` second,
 /// and — unlike `build_entry` — the champion's only build third.
 ///

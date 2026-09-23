@@ -85,7 +85,17 @@ impl StableItemBuildHook for ConfiguredBuilds {
         let mut build = merged.items;
 
         if build_config::smart_builds_enabled() {
-            enforce_smart_build(ctx, &mut build, &merged.pinned, &merged.reserved);
+            // Under `own_team_only` the pins land later, over whatever this
+            // puts in their slots — so the boots must go elsewhere, or the
+            // engine can finish them before the buy detour writes the pin.
+            // `load_cached` publishes the pin snapshot `pinned_slots` reads.
+            let boots_avoid = if own_team_only {
+                build_config::load_cached();
+                build_config::pinned_slots(ctx.champion_key(), champion_role(ctx))
+            } else {
+                Vec::new()
+            };
+            enforce_smart_build(ctx, &mut build, &merged.pinned, &merged.reserved, &boots_avoid);
         }
 
         if build.is_empty() || build == base {
@@ -157,6 +167,7 @@ fn enforce_smart_build(
     build: &mut [usize],
     pinned: &[bool],
     reserved: &[usize],
+    boots_avoid: &[bool],
 ) {
     // This is the one path that sees the enemy lineup, which is what picks a
     // tank's boots.
@@ -167,6 +178,7 @@ fn enforce_smart_build(
         build,
         pinned,
         reserved,
+        boots_avoid,
         champion_fit(ctx),
         ctx.item_index(boots),
         |index| ctx.item_key(index).map(str::to_string),

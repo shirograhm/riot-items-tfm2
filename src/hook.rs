@@ -808,6 +808,7 @@ fn enforce_smart_build(
         build,
         pinned,
         reserved,
+        &[],
         fit,
         boots,
         |index| items.get(index).map(|item| item.key().to_string()),
