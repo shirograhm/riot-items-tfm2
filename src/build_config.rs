@@ -827,8 +827,8 @@ pub fn smart_builds_enabled() -> bool {
 /// So the pre-match route needs a live-match/side signal this context does not
 /// have, and the remaining candidate for slot 0 is the native spawn-time
 /// injector, which holds the athlete pointer and therefore the `is_my_athlete`
-/// gate that already works — see `tactics::SPAWN_INJECT_ENABLED`, currently off
-/// pending re-derivation.
+/// gate that already works — see `tactics::SPAWN_INJECT_ENABLED`, which is what
+/// now sets slot 0 (below).
 /// # Restored 2026-09-16
 ///
 /// This was forced to `false` on 2026-09-15, when `src/tactics` was retired
@@ -841,11 +841,15 @@ pub fn smart_builds_enabled() -> bool {
 /// `tactics::driver::RETIRED` is `false` again -- so the setting means
 /// something again and is read normally.
 ///
-/// The slot-0 caveat above still stands, and for a sharper reason than
-/// before: `SPAWN_RVA` turned out to be a beta1 address that never matched
-/// on beta2 either, so the spawn-time injector has not run in a long time.
-/// Under this toggle the first item is the engine's pick and slots 1 and 2
-/// apply, which is the behaviour this has actually had all along.
+/// # Slot 0 fixed 2026-09-23
+///
+/// `SPAWN_RVA` had been a beta1 address that never matched on beta2 or the
+/// release, so the spawn-time injector had not run on any 0.6.x build and the
+/// first item under this toggle was always the engine's pick. It was
+/// re-derived for 0.6.1 and `tactics::SPAWN_INJECT_ENABLED` is on again, so
+/// all configured slots apply. The one remaining gap is the first match of a
+/// session, before the roster is published (see `cap_spawn`): slot 0 is then
+/// the engine's, and the buy path swaps rather than duplicates a pin.
 pub fn own_team_only_enabled() -> bool {
     setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, false)
 }

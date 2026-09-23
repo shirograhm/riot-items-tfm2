@@ -2842,22 +2842,31 @@ fn install_seed_ctor_hook() {
 //   function that reads the athlete id, which is a second, unrelated route to the same address.
 //   Direct callers fell 15 -> 2, which is the documented trend, not a mismatch: 0.5.3 already noted the
 //   callers moving to an indirect call through a global function pointer.
-const SPAWN_RVA: usize = 0x118c260; // 0.6.0-beta (0.5.8 was 0x1819300, 0.5.3 0xebfe50, 0.5.2 0x1d9e0e0, 0.5.1 0x2060280).
+// * 0.6.1 re-derivation (2026-09-23). exe2exe `match` from beta's 0x118c260 gets 0 hits strict and
+//   `--loose`: beta2 grew the body 1150 -> 1914 and the frame 0xf8 -> 0x108 (one inserted block
+//   mid-body; the head and the call sequence around it are unchanged). The validated structural
+//   filter above still returns **exactly one** function in every build, and reproduces both earlier
+//   answers first: 0.5.8 0x1819300, beta 0x118c260, beta2 0x16ff930, 0.6.0 0x16dcdd0,
+//   **0.6.1 0x1a8c100** (size 1914, frame 0x108, 2 direct callers like beta).
+//   Contract re-proved on 0.6.1, not carried:
+//     [rdx+0xa28] -> [rdx+0xa68]   athlete gold, beta +0x40 = the beta2 layout shift that
+//     [rdx+0x618] -> [rdx+0x658]   O_ATHLETE_ID (0x9b0 -> 0x9f0) and ATH_STRIDE record
+//     [rcx+0x2060], [rcx+0x1dc0..0x1dd8], [rsi+0x1fe8/0x1ff0]  Game fields byte-identical to beta,
+//                                  so the catalog at Game+0x1fd0/+0x1fd8 has not moved either
+//   The caller (0x1a8b750, site +0x24a) still memcpys the athlete into a stack slot of **0xa98**
+//   bytes (beta 0xa58, +0x40) and passes it as rdx -> exactly `cap_spawn`'s `readable(athlete,
+//   0xa98)` guard. Prologue: the same 12 push bytes, so SPAWN_PROLOGUE / ORIG_LEN are unchanged.
+const SPAWN_RVA: usize = 0x1a8c100; // 0.6.1 (0.6.0 0x16dcdd0, beta2 0x16ff930, beta 0x118c260, 0.5.8 0x1819300, 0.5.3 0xebfe50, 0.5.2 0x1d9e0e0, 0.5.1 0x2060280).
 const SPAWN_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ]; // 0.5.8: unchanged since 0.5.3 - 8 push (12B) + sub rsp,0xf8, byte-identical at the new address (0.5.2 was 7 push + mov eax,0x4d20)
 const SPAWN_ORIG_LEN: usize = 12; // 0.5.8: unchanged - relocate the 8 pushes only (12B = exactly an instruction boundary) => install_detour_r11 is unnecessary on re-enable (generic suffices).
-// ** OFF for game 0.6.0 (2026-09-16), and it was never on in practice.
-// `SPAWN_RVA` below is a 0.6.0-**beta1** address that was carried into
-// beta2 without being re-validated: on the beta2 binary those bytes are
-// `00 00 74 3b ...`, not the 8-push prologue, and the address is 0x40
-// into fn 0x118c220 rather than at a function start. So
-// `install_spawn_hook` has been refusing on its prologue check ever since,
-// and slot 0 under `own_team_only` has always been the engine's pick --
-// exactly the limitation `build_config::own_team_only_enabled` documents.
-// Left off rather than left retrying every frame for an address that
-// cannot match. Re-derive SPAWN_RVA before setting this true.
-const SPAWN_INJECT_ENABLED: bool = false; // was true (2026-09-08), confirmed in game: with this closed the first item was always the engine's pick, and with it open all four slots hold the configured build. ON after the 0.5.8 re-derivation above re-confirmed both sealing reasons: the prologue is unchanged (warning 1) and the r8/r9 contract change (warning 2) never applied to `cap_spawn`, which reads only rcx/rdx. This is the only path that can set build slot 0 under `own_team_only` — see `build_config::own_team_only_enabled`. History: OFF from 0.5.2 (logic change unconfirmed) through 0.5.7; 0.5.1 had true. ~~resumed (07-19)~~ the sealing reason "no catalog at spawn time" turned out to be an offset error.
+// ** ON again for game 0.6.1 (2026-09-23), with SPAWN_RVA re-derived above.
+// It had been OFF since 2026-09-16 and dead since beta2: the beta1 address
+// was carried forward unvalidated, `install_spawn_hook` refused it on the
+// prologue check, and slot 0 under `own_team_only` was always the engine's
+// pick. This is the only path that can set slot 0 in that mode.
+const SPAWN_INJECT_ENABLED: bool = true; // was false 2026-09-16..09-23; was true (2026-09-08), confirmed in game: with this closed the first item was always the engine's pick, and with it open all four slots hold the configured build. ON after the 0.5.8 re-derivation above re-confirmed both sealing reasons: the prologue is unchanged (warning 1) and the r8/r9 contract change (warning 2) never applied to `cap_spawn`, which reads only rcx/rdx. This is the only path that can set build slot 0 under `own_team_only` — see `build_config::own_team_only_enabled`. History: OFF from 0.5.2 (logic change unconfirmed) through 0.5.7; 0.5.1 had true. ~~resumed (07-19)~~ the sealing reason "no catalog at spawn time" turned out to be an offset error.
                                          //   The old 0x1fe8/0x1ff0 = a neighbouring empty Vec (always len=0) -> the real catalog is Game+0x1fd0/+0x1fd8 (ghidra-re confirmed).
                                          //   The v15 team decision (athlete_id membership) is verified (aid valid 10/10, my team 5/10 correct) -> (4) injection expected to complete.
 static SPAWN_INSTALLED: AtomicU64 = AtomicU64::new(0);
@@ -2868,7 +2877,13 @@ static SPAWN_WROTE: AtomicU64 = AtomicU64::new(0); // actual build[] writes
 static SPAWN_NOSIDE: AtomicU64 = AtomicU64::new(0); // skipped because the side was undecided (= covered by the buy path)
 unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-        if !SPAWN_INJECT_ENABLED || saved.is_null() {
+        // Only under `own_team_only`: otherwise `item_build_hook::decide_build`
+        // has already set these slots on the stable API, and two writers would
+        // fight over them.
+        if !SPAWN_INJECT_ENABLED
+            || saved.is_null()
+            || !crate::build_config::own_team_only_enabled()
+        {
             return;
         }
         SPAWN_N.fetch_add(1, Ordering::Relaxed);
@@ -3031,6 +3046,24 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             };
             if cat_len > 0 && t < cat_len {
                 if rd_u64(bptr + (si as usize) * 8) != t {
+                    // The engine may already target the pinned item in another
+                    // slot. Nothing is bought at spawn, so swap rather than
+                    // duplicate: the engine's item for this slot moves to
+                    // where the pin was. (The buy path does the same for the
+                    // slots it can still reach; see there.) A slot the player
+                    // pinned to this same item is a deliberate duplicate and
+                    // is left alone.
+                    let elsewhere = (0..blen as usize)
+                        .filter(|&j| j != si as usize)
+                        .find(|&j| {
+                            rd_u64(bptr + j * 8) == t
+                                && slotN_catalog_index(champ, j as u8, |key| {
+                                    scan_catalog_index(cat_base, cat_len, key)
+                                }) != Some(t)
+                        });
+                    if let Some(j) = elsewhere {
+                        wr_u64(bptr + j * 8, rd_u64(bptr + (si as usize) * 8));
+                    }
                     wr_u64(bptr + (si as usize) * 8, t);
                     SPAWN_WROTE.fetch_add(1, Ordering::Relaxed);
                 }
@@ -4973,7 +5006,7 @@ unsafe fn extra_slot_pick(
     designate: bool,
 ) -> Option<u64> {
     designate
-        .then(|| pinned_extra_slot(ctx, champ, si))
+        .then(|| pinned_extra_slot(ctx, champ, si, taken))
         .flatten()
         .or_else(|| {
             let reserved = if designate {
@@ -4987,8 +5020,22 @@ unsafe fn extra_slot_pick(
 
 /// The pinned item for build slot `si`, as a catalog index. Planted exactly as
 /// written: Smart Builds only ever rewrites the AI's picks, never the player's.
-unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize) -> Option<u64> {
+unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize, taken: &[u64]) -> Option<u64> {
     slotN_catalog_index(champ, si as u8, |key| scan_idx_cached(ctx, key))
+        .filter(|&t| !pin_placed_by_engine(ctx, champ, t, taken))
+}
+
+/// Whether pinned item `t` already sits in one of the earlier slots `taken`
+/// because the ENGINE put it there, not the player. Under `own_team_only` slot 0
+/// (and any blank slot) is the engine's pick, made without seeing the pins, so it
+/// can be the very item pinned later. Planting the pin anyway builds it twice;
+/// it is honoured already, just sooner, so the later slot is freed for an
+/// automatic pick instead. A slot whose own pin is `t` is the player duplicating
+/// on purpose, and that is still planted as written.
+unsafe fn pin_placed_by_engine(ctx: usize, champ: &str, t: u64, taken: &[u64]) -> bool {
+    taken.iter().enumerate().any(|(j, &v)| {
+        v == t && slotN_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx, key)) != Some(t)
+    })
 }
 
 /// The player's pins for build slots `from` onward, as catalog indices — slots
@@ -5384,6 +5431,39 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         if rd_u64(bptr + (si as usize) * 8) == t {
                             continue;
                         }
+                        // Never plant a second copy of an item the build already
+                        // targets. The engine chose slot 0 (and any slot without a
+                        // pin) knowing nothing of the pins, so it can pick the very
+                        // item pinned here: K'Sante with Jak'Sho pinned 2nd bought
+                        // the engine's Jak'Sho 1st and then the pin's 2nd. Same
+                        // rule `merge_build` applies on the stable path, where AI
+                        // fill skips pinned items.
+                        //   - Earlier slot: it is bought or being built, so the pin
+                        //     is already honoured, only sooner. Moving it would
+                        //     throw away components; this slot keeps the engine's
+                        //     item.
+                        //   - Later slot: swap, so the pin lands where the player
+                        //     put it and the engine's item moves back.
+                        // A slot the player pinned to this same item is a
+                        // deliberate duplicate, not a clash.
+                        let elsewhere = (0..blen as usize)
+                            .filter(|&j| j != si as usize)
+                            .find(|&j| {
+                                rd_u64(bptr + j * 8) == t
+                                    && slotN_catalog_index(champ, j as u8, |key| {
+                                        scan_idx_cached(ctx012, key)
+                                    }) != Some(t)
+                            });
+                        if let Some(j) = elsewhere {
+                            if j < si as usize {
+                                continue;
+                            }
+                            if writable(bptr, (blen as usize) * 8) {
+                                wr_u64(bptr + j * 8, rd_u64(bptr + (si as usize) * 8));
+                                wr_u64(bptr + (si as usize) * 8, t);
+                            }
+                            continue;
+                        }
                         if writable(bptr + (si as usize) * 8, 8) {
                             wr_u64(bptr + (si as usize) * 8, t);
                         }
@@ -5505,7 +5585,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 let manual = designate.then(|| slot3_item_key(champ)).flatten();
                 let picked = if manual.is_some() {
                     // By key, vanilla included (works thanks to the ctx+0x30 fix).
+                    // Dropped when the engine already put it in slots 0/1/2 (see
+                    // `pin_placed_by_engine`); the fallbacks below then pick a
+                    // 4th that duplicates nothing.
                     slotN_catalog_index(champ, 3, |key| scan_idx_cached(ctx, key))
+                        .filter(|&t| !pin_placed_by_engine(ctx, champ, t, &[b0, b1, b2]))
                 } else {
                     // * Enemy team or no designation: a fresh network call (our 5 + their 5 + position ctx). Not cached (ignoring the lineup = wrong answer).
                     compute_auto_4th_id(athlete, champ, third_category)
@@ -5611,7 +5695,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         if owned > si as u64 {
                             continue;
                         }
-                        let Some(t) = pinned_extra_slot(ctx, champ, si) else {
+                        let Some(t) = pinned_extra_slot(ctx, champ, si, &slots[..si]) else {
                             continue;
                         };
                         if slots[si] != t && writable(ptr + si * 8, 8) {
