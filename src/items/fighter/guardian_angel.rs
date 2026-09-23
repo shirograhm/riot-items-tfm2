@@ -15,12 +15,6 @@ use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 // the match view has played the death by then. So the carrier never reaches 0 HP
 // while Rebirth is ready: she holds an `undying` buff, and the hit that pins her
 // at the HP floor is the "lethal" one.
-//
-// PROBE BUILD: `DIAGNOSTIC` logs the carrier's state around Rebirth to
-// `<mod dir>/logs/guardian_angel_probe.log`; turn it off once confirmed in game.
-const DIAGNOSTIC: bool = true;
-const WATCH_TICKS: usize = 600;
-const WATCH_EVERY: usize = 10;
 
 /// Held while Rebirth is ready. Shared by both tiers, so an upgrade keeps it.
 const UNDYING_BUFF: &str = "guardian_angel_undying";
@@ -50,11 +44,6 @@ pub struct GuardianAngel {
     ready_at_tick: usize,
     /// Tick the undying buff was last added, for `REAPPLY_GUARD_TICKS`.
     undying_added_tick: Option<usize>,
-    /// Diagnostic: log the carrier's state every few ticks until this tick.
-    watch_until_tick: usize,
-    /// Diagnostic: last seen player state, to log every death and respawn.
-    was_alive: bool,
-    last_deaths: usize,
 }
 
 impl GuardianAngel {
@@ -75,9 +64,6 @@ impl GuardianAngel {
             stasis: None,
             ready_at_tick: 0,
             undying_added_tick: None,
-            watch_until_tick: 0,
-            was_alive: true,
-            last_deaths: 0,
         }
     }
 
@@ -164,101 +150,6 @@ impl GuardianAngel {
         };
         let heal = percent_of(max_hp, self.pulse_percent()) * pulses;
         ctx.entity_set_hp(entity, (hp + heal).min(max_hp));
-        self.log(ctx, entity, &format!("heal pulse +{heal}"));
-    }
-
-    fn log(&self, ctx: &StableSim<'_>, entity: usize, event: &str) {
-        if !DIAGNOSTIC {
-            return;
-        }
-        let state = match ctx.get_entity(entity) {
-            Some(e) => {
-                let (hp, max) = e.hp();
-                let (x, y) = e.pos();
-                format!(
-                    "{} hp={hp}/{max} alive={} undying={} stasis={} pos=({x},{y})",
-                    e.name().unwrap_or_default(),
-                    e.is_alive(),
-                    has_buff(&e, UNDYING_BUFF),
-                    has_buff(&e, STASIS_BUFF)
-                )
-            }
-            None => "entity=None".to_string(),
-        };
-        let kills = ctx.kill_log_count();
-        let last_kill = kills
-            .checked_sub(1)
-            .and_then(|i| ctx.kill_log_at(i))
-            .map(|k| {
-                format!(
-                    "last_kill(tick={} killer_team={} victim_lane={})",
-                    k.tick, k.killer_team, k.killed_position
-                )
-            })
-            .unwrap_or_default();
-        let line = format!(
-            "[{}] tick={} entity={entity} {event} | {state} | kill_log={kills} {last_kill}",
-            self.meta.key,
-            ctx.tick()
-        );
-        let dir = crate::config::mod_dir().join("logs");
-        let _ = std::fs::create_dir_all(&dir);
-        use std::io::Write;
-        if let Ok(mut f) = std::fs::OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(dir.join("guardian_angel_probe.log"))
-        {
-            let _ = writeln!(f, "{line}");
-        }
-    }
-
-    fn player_state(ctx: &StableSim<'_>, player: usize) -> String {
-        match ctx.get_player(player) {
-            Some(p) => format!(
-                "player={player} champ={:?} player_alive={} respawn_time={} deaths={}",
-                p.champion().map(|c| c.id()),
-                p.is_alive(),
-                p.respawn_time(),
-                p.deaths()
-            ),
-            None => "player=None".to_string(),
-        }
-    }
-
-    fn log_diagnostics(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        // Catch every death of the carrier, including ones Rebirth never saw.
-        let (alive, deaths, champ) = match ctx.get_player(player) {
-            Some(p) => (p.is_alive(), p.deaths(), p.champion().map(|c| c.id())),
-            None => return,
-        };
-        let entity = champ.unwrap_or(usize::MAX);
-        if alive != self.was_alive || deaths != self.last_deaths {
-            self.log(
-                ctx,
-                entity,
-                &format!(
-                    "STATE CHANGE alive {}->{alive} deaths {}->{deaths} | {}",
-                    self.was_alive,
-                    self.last_deaths,
-                    Self::player_state(ctx, player)
-                ),
-            );
-            self.was_alive = alive;
-            self.last_deaths = deaths;
-        }
-        let tick = ctx.tick();
-        if tick >= self.watch_until_tick {
-            return;
-        }
-        let remaining = self.watch_until_tick - tick;
-        if remaining % WATCH_EVERY == 0 {
-            self.log(
-                ctx,
-                entity,
-                &format!("watch -{remaining} | {}", Self::player_state(ctx, player)),
-            );
-        }
     }
 }
 
@@ -308,10 +199,6 @@ impl StableItem for GuardianAngel {
     // Keeps the undying buff on the carrier whenever Rebirth is ready. Buffs are
     // lost on death, so this also restores it after a respawn.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        if DIAGNOSTIC {
-            self.log_diagnostics(ctx, player);
-        }
-
         let tick = ctx.tick();
         self.pulse_heal(ctx, tick);
         if !self.is_ready(tick) {
@@ -338,7 +225,6 @@ impl StableItem for GuardianAngel {
             },
         );
         self.undying_added_tick = Some(tick);
-        self.log(ctx, entity, "undying buff added");
     }
 
     // The engine lowers HP before this runs. With the undying buff up, a hit that
@@ -347,10 +233,10 @@ impl StableItem for GuardianAngel {
     fn on_damaged(
         &mut self,
         ctx: &mut StableSim<'_>,
-        player: usize,
+        _player: usize,
         entity: usize,
         _attacker: usize,
-        damage: usize,
+        _damage: usize,
         _damage_type: DamageTypeV1,
         _attack_type: AttackTypeV1,
         _is_crit: bool,
@@ -359,27 +245,11 @@ impl StableItem for GuardianAngel {
             return;
         };
         let (current_hp, _) = entity_ref.hp();
-        let alive = entity_ref.is_alive();
-        let guarded = has_buff(&entity_ref, UNDYING_BUFF);
-        let tick = ctx.tick();
-
-        if current_hp > 1 && alive {
-            if DIAGNOSTIC && tick < self.watch_until_tick {
-                self.log(ctx, entity, &format!("on_damaged during watch dmg={damage}"));
-            }
+        if current_hp > 1 || !entity_ref.is_alive() || !has_buff(&entity_ref, UNDYING_BUFF) {
             return;
         }
-
-        self.log(
-            ctx,
-            entity,
-            &format!(
-                "FLOOR on_damaged dmg={damage} guarded={guarded} ready_at={} | {}",
-                self.ready_at_tick,
-                Self::player_state(ctx, player)
-            ),
-        );
-        if !alive || !guarded || !self.is_ready(tick) {
+        let tick = ctx.tick();
+        if !self.is_ready(tick) {
             return;
         }
 
@@ -396,51 +266,10 @@ impl StableItem for GuardianAngel {
         );
         ctx.entity_set_hp(entity, current_hp.max(1));
         ctx.entity_clear_cc(entity);
-        let banished = ctx.entity_banish(entity, entity, stasis, STASIS_EFFECT, REVIVE_EFFECT);
+        ctx.entity_banish(entity, entity, stasis, STASIS_EFFECT, REVIVE_EFFECT);
         self.stasis = Some((entity, tick + self.interval_ticks(), tick + stasis));
         self.ready_at_tick = tick + ticks(self.effect_cooldown_seconds);
         self.undying_added_tick = None;
-        self.watch_until_tick = tick + WATCH_TICKS;
-        self.log(
-            ctx,
-            entity,
-            &format!(
-                "REBIRTH banish={banished} | {}",
-                Self::player_state(ctx, player)
-            ),
-        );
-    }
-
-    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        if !DIAGNOSTIC {
-            return;
-        }
-        let entity = ctx
-            .get_player(player)
-            .and_then(|p| p.champion())
-            .map(|c| c.id())
-            .unwrap_or(usize::MAX);
-        self.log(
-            ctx,
-            entity,
-            &format!("on_spawn | {}", Self::player_state(ctx, player)),
-        );
-    }
-
-    fn on_dead(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        if !DIAGNOSTIC {
-            return;
-        }
-        let entity = ctx
-            .get_player(player)
-            .and_then(|p| p.champion())
-            .map(|c| c.id())
-            .unwrap_or(usize::MAX);
-        self.log(
-            ctx,
-            entity,
-            &format!("on_dead | {}", Self::player_state(ctx, player)),
-        );
     }
 
     // The cooldown carries into Radiant Guardian Angel.
