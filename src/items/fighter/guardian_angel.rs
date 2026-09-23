@@ -27,6 +27,10 @@ const UNDYING_BUFF: &str = "guardian_angel_undying";
 /// Invulnerability for the stasis (and the tick after it, for the last heal
 /// pulse): the banish stops targeting, this stops damage-over-time.
 const STASIS_BUFF: &str = "guardian_angel_stasis";
+/// Wisps for the length of the stasis, then a flash as she gets up. Both are
+/// bound in `view/effects.view_effects`; the stasis sheet is drawn 4 seconds long.
+const STASIS_EFFECT: &str = "riot_guardian_angel_stasis";
+const REVIVE_EFFECT: &str = "riot_guardian_angel_revive";
 /// `has_buff` misses a new buff for ~3 ticks; don't re-add inside this window.
 const REAPPLY_GUARD_TICKS: usize = 10;
 
@@ -392,7 +396,7 @@ impl StableItem for GuardianAngel {
         );
         ctx.entity_set_hp(entity, current_hp.max(1));
         ctx.entity_clear_cc(entity);
-        let banished = ctx.entity_banish(entity, entity, stasis, "", "");
+        let banished = ctx.entity_banish(entity, entity, stasis, STASIS_EFFECT, REVIVE_EFFECT);
         self.stasis = Some((entity, tick + self.interval_ticks(), tick + stasis));
         self.ready_at_tick = tick + ticks(self.effect_cooldown_seconds);
         self.undying_added_tick = None;
