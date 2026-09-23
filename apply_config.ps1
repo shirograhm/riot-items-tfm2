@@ -398,6 +398,7 @@ $sunRange = [int]$config.sunfire_cape.effect_max_distance
 $bvPlating = [int]$config.bramble_vest.base_attack_damaged_reduce
 $tmPlating = [int]$config.thornmail.base_attack_damaged_reduce
 $rtmPlating = [int]$config.radiant_thornmail.base_attack_damaged_reduce
+$psPlating = [int]$config.plated_steelcaps.base_attack_damaged_reduce
 $dndFlat = [int]$config.dusk_and_dawn.effect_bonus_flat_damage
 $dndApPct = [double]$config.dusk_and_dawn.effect_ap_percent_damage
 $dndApHeal = [double]$config.dusk_and_dawn.effect_caster_ap_percent_heal
@@ -738,6 +739,7 @@ $platingTemplate = "<#ff7a3eff>Plating<>: Reduce damage taken from basic attacks
 $i18n.en.black_knights_heavy_plate.option = $platingTemplate -f $bvPlating
 $i18n.en.eternal_iron_plate.option = $platingTemplate -f $tmPlating
 $i18n.en.impregnable_fortress.option = ($platingTemplate -f $rtmPlating) + "`n`n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <$armorIcon> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
+$i18n.en.plated_steelcaps.option = $platingTemplate -f $psPlating
 
 $dndTemplate = "<#ff7a3eff>Spellblade<>: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <$hpRegenIcon> <#60e84dff>heal you<> for <#a974ffff>{2}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>{3}%<> of your <$hpIcon> <#60e84dff>maximum health<> (<#e8a800ff>{4} second<> cooldown)."
 $i18n.en.dusk_and_dawn.option = $dndTemplate -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -943,6 +945,7 @@ $platingTemplateVi = "<#ff7a3eff>Giáp Cứng<>: Giảm <#e8a800ff>{0}%<> sát t
 $i18n.vi.black_knights_heavy_plate.option = $platingTemplateVi -f $bvPlating
 $i18n.vi.eternal_iron_plate.option = $platingTemplateVi -f $tmPlating
 $i18n.vi.impregnable_fortress.option = ($platingTemplateVi -f $rtmPlating) + "`n`n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <$armorIcon> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
+$i18n.vi.plated_steelcaps.option = $platingTemplateVi -f $psPlating
 
 $dndTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <$hpRegenIcon> <#60e84dff>hồi máu cho bạn<> <#a974ffff>{2}%<> <$apIcon> <#a974ffff>SMPT<> và <#60e84dff>{3}%<> <$hpIcon> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>{4} giây<>)."
 $i18n.vi.dusk_and_dawn.option = $dndTemplateVi -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1148,6 +1151,7 @@ $platingTemplateZh = "<#ff7a3eff>镀层<>：受到的普通攻击伤害降低 <#
 $i18n.'zh-hans'.black_knights_heavy_plate.option = $platingTemplateZh -f $bvPlating
 $i18n.'zh-hans'.eternal_iron_plate.option = $platingTemplateZh -f $tmPlating
 $i18n.'zh-hans'.impregnable_fortress.option = ($platingTemplateZh -f $rtmPlating) + "`n`n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <$armorIcon> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
+$i18n.'zh-hans'.plated_steelcaps.option = $platingTemplateZh -f $psPlating
 
 $dndTemplateZh = "<#ff7a3eff>咒刃<>：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>，并<$hpRegenIcon> <#60e84dff>为你回复<>相当于<$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{2}%<> 与<$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{3}%<> 的生命值（冷却 <#e8a800ff>{4}秒<>）。"
 $i18n.'zh-hans'.dusk_and_dawn.option = $dndTemplateZh -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1353,6 +1357,7 @@ $platingTemplatePt = "<#ff7a3eff>Revestimento<>: Reduz o dano recebido de ataque
 $i18n.'pt-BR'.black_knights_heavy_plate.option = $platingTemplatePt -f $bvPlating
 $i18n.'pt-BR'.eternal_iron_plate.option = $platingTemplatePt -f $tmPlating
 $i18n.'pt-BR'.impregnable_fortress.option = ($platingTemplatePt -f $rtmPlating) + "`n`n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <$armorIcon> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
+$i18n.'pt-BR'.plated_steelcaps.option = $platingTemplatePt -f $psPlating
 
 $dndTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <$hpRegenIcon> <#60e84dff>curar você<> em <#a974ffff>{2}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> e <#60e84dff>{3}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>{4} segundos<>)."
 $i18n.'pt-BR'.dusk_and_dawn.option = $dndTemplatePt -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1558,6 +1563,7 @@ $platingTemplateRu = "<#ff7a3eff>Обшивка<>: Уменьшает получ
 $i18n.ru.black_knights_heavy_plate.option = $platingTemplateRu -f $bvPlating
 $i18n.ru.eternal_iron_plate.option = $platingTemplateRu -f $tmPlating
 $i18n.ru.impregnable_fortress.option = ($platingTemplateRu -f $rtmPlating) + "`n`n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <$armorIcon> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
+$i18n.ru.plated_steelcaps.option = $platingTemplateRu -f $psPlating
 
 $dndTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <$hpRegenIcon> <#60e84dff>восстановить вам<> <#a974ffff>{2}%<> вашей <$apIcon> <#a974ffff>силы умений<> и <#60e84dff>{3}%<> вашего <$hpIcon> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>{4} секунд<>)."
 $i18n.ru.dusk_and_dawn.option = $dndTemplateRu -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
@@ -1762,6 +1768,7 @@ $platingTemplateKo = "<#ff7a3eff>장갑<>: 기본 공격으로 받는 피해가 
 $i18n.ko.black_knights_heavy_plate.option = $platingTemplateKo -f $bvPlating
 $i18n.ko.eternal_iron_plate.option = $platingTemplateKo -f $tmPlating
 $i18n.ko.impregnable_fortress.option = ($platingTemplateKo -f $rtmPlating) + "`n`n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <$armorIcon> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
+$i18n.ko.plated_steelcaps.option = $platingTemplateKo -f $psPlating
 
 $dndTemplateKo = "<#ff7a3eff>주문 검<>: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <$apIcon> <#60e84dff>주문력의 {2}%<>와 <$hpIcon> <#60e84dff>최대 체력의 {3}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>{4}초<>)"
 $i18n.ko.dusk_and_dawn.option = $dndTemplateKo -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd

@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Six of them:
+//! Seven of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -26,6 +26,11 @@
 //!    that scales with stats the rest of the build brings ([`LATE_ITEMS`]:
 //!    Riftmaker's health-to-AP, Rabadon's multiplier) after them. This rule
 //!    only reorders; the other five decide what is in the build.
+//! 7. **One pair of boots** — a build with no boots gets the pair
+//!    [`boots_for`] picks for its champion, as its second AI pick. The engine
+//!    never plans toward a tier-3 item, so without this no AI build holds any.
+//!    Boots the player pinned anywhere, the 5th and 6th slots included, count,
+//!    and no AI pick is ever swapped *for* boots by the other rules.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
@@ -297,6 +302,79 @@ fn timing(key: &str) -> Timing {
     }
 }
 
+/// The tier-1 boots every upgraded pair builds from.
+const BASE_BOOTS: &str = "boots";
+const BERSERKERS_GREAVES: &str = "berserkers_greaves";
+const BOOTS_OF_SWIFTNESS: &str = "boots_of_swiftness";
+const GLUTTONOUS_GREAVES: &str = "gluttonous_greaves";
+const IONIAN_BOOTS: &str = "ionian_boots_of_lucidity";
+const MERCURYS_TREADS: &str = "mercurys_treads";
+const PLATED_STEELCAPS: &str = "plated_steelcaps";
+const SORCERERS_SHOES: &str = "sorcerers_shoes";
+
+/// Every upgraded pair.
+const UPGRADED_BOOTS: [&str; 7] = [
+    BERSERKERS_GREAVES,
+    BOOTS_OF_SWIFTNESS,
+    GLUTTONOUS_GREAVES,
+    IONIAN_BOOTS,
+    MERCURYS_TREADS,
+    PLATED_STEELCAPS,
+    SORCERERS_SHOES,
+];
+
+/// The AI slot rule 7 puts boots in: the second, which is where League players
+/// finish theirs. Counted among the AI's slots, so a pin before it pushes the
+/// boots later rather than displacing the pin.
+const BOOTS_SLOT: usize = 1;
+
+/// Whether `key` is a pair of boots, tier 1 or upgraded.
+pub(crate) fn is_boots(key: &str) -> bool {
+    key == BASE_BOOTS || UPGRADED_BOOTS.contains(&key)
+}
+
+/// The boots rule 7 gives `champion` playing `role`, against `enemies` (empty
+/// when the caller cannot see them).
+///
+/// In order: a tank answers the enemy's main damage type (Mercury's against
+/// more magic than physical, Steelcaps otherwise, which also covers not
+/// knowing), whatever its role; any other support takes haste (Lucidity),
+/// since it wins through its abilities' uptime rather than their damage; then
+/// the champion's own damage: ability power takes magic
+/// penetration, and a physical champion follows its class — attack speed for
+/// the ranged, haste for assassins, omnivamp for fighters. A utility champion
+/// that heals or shields takes haste (Lucidity), and one that does neither, or
+/// one nothing is known about, the plain speed of Swiftness.
+pub(crate) fn boots_for(champion: &str, role: Role, enemies: &[&str]) -> &'static str {
+    use champion_traits::Class;
+    let traits = champion_traits::traits(champion).unwrap_or_default();
+    if traits.tank {
+        let (physical, magic) = enemies.iter().fold((0, 0), |(physical, magic), enemy| {
+            match champion_traits::traits(enemy).and_then(|traits| traits.scaling) {
+                Some(Scaling::Ad) => (physical + 1, magic),
+                Some(Scaling::Ap) => (physical, magic + 1),
+                Some(Scaling::Hybrid) => (physical + 1, magic + 1),
+                None => (physical, magic),
+            }
+        });
+        return if magic > physical { MERCURYS_TREADS } else { PLATED_STEELCAPS };
+    }
+    if role == Role::Support {
+        return IONIAN_BOOTS;
+    }
+    if traits.scaling == Some(Scaling::Ap) {
+        return SORCERERS_SHOES;
+    }
+    match traits.class {
+        Some(Class::Range) => BERSERKERS_GREAVES,
+        Some(Class::Assassin) => IONIAN_BOOTS,
+        Some(Class::Melee) => GLUTTONOUS_GREAVES,
+        Some(Class::Magician) => SORCERERS_SHOES,
+        Some(Class::Util) if traits.sustains => IONIAN_BOOTS,
+        Some(Class::Util) | None => BOOTS_OF_SWIFTNESS,
+    }
+}
+
 /// Whether `key` is an item only the support role may build: the editor's Support
 /// class, base or radiant, less [`SUPPORT_ITEM_EXCEPTION`].
 fn is_support_item(key: &str) -> bool {
@@ -381,7 +459,7 @@ impl Budget {
     }
 }
 
-/// Rewrites `build` in place so that it breaks none of the six rules, as far as
+/// Rewrites `build` in place so that it breaks none of the seven rules, as far as
 /// the catalog allows.
 ///
 /// A slot that breaks one is swapped for the next item that fixes it: unused, of
@@ -412,12 +490,19 @@ impl Budget {
 /// keeps its position and its item, so the player's buy order is never moved.
 /// Every caller decides the build before the match, when nothing is bought
 /// yet, so no owned item can end up in a later slot.
+///
+/// Then rule 7: `boots` is the catalog index of the pair [`boots_for`] picked
+/// (`None` when the catalog has none). A build with no boots in any slot or in
+/// `reserved` gets them as its second AI pick (the only one, if it has one); the
+/// AI picks from there on move one AI slot later and the last one drops off. Boots are never a
+/// stand-in for the other rules, whatever `is_final` says about them.
 pub(crate) fn enforce<C, K, G, F>(
     count: usize,
     build: &mut [usize],
     pinned: &[bool],
     reserved: &[usize],
     fit: Fit,
+    boots: Option<usize>,
     key: K,
     category: G,
     is_final: F,
@@ -488,7 +573,8 @@ pub(crate) fn enforce<C, K, G, F>(
                                 && matches(candidate)
                                 && is_final(candidate)
                                 && key(candidate).is_some_and(|candidate| {
-                                    budget.accepts_instead(&candidate, reason)
+                                    !is_boots(&candidate)
+                                        && budget.accepts_instead(&candidate, reason)
                                 })
                         })
                 };
@@ -529,6 +615,18 @@ pub(crate) fn enforce<C, K, G, F>(
     let open: Vec<usize> = (0..build.len()).filter(|&slot| !is_pinned(slot)).collect();
     let mut picks: Vec<usize> = open.iter().map(|&slot| build[slot]).collect();
     picks.sort_by_key(|&index| key(index).map_or(Timing::Any, |key| timing(&key)));
+
+    // Rule 7.
+    let has_boots = build
+        .iter()
+        .chain(reserved)
+        .any(|&index| key(index).is_some_and(|key| is_boots(&key)));
+    if let Some(boots) = boots.filter(|_| !has_boots && !open.is_empty()) {
+        // `open` is not empty, so neither is `picks`: a lone AI slot takes them.
+        picks.insert(BOOTS_SLOT.min(picks.len() - 1), boots);
+        picks.truncate(open.len());
+    }
+
     for (&slot, index) in open.iter().zip(picks) {
         build[slot] = index;
     }

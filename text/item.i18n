@@ -20,7 +20,8 @@
             "2": "Basic Items",
             "3": "Epic Items",
             "4": "Legendary Items",
-            "5": "Radiant Items"
+            "5": "Radiant Items",
+            "boots": "Boots"
         },
         "related": {
             "sub_items": "Builds From",
@@ -858,6 +859,38 @@
         "radiant_guardian_angel": {
             "name": "Radiant Guardian Angel",
             "option": "\n<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>4 seconds<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing<> for <#60e84dff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>. During the duration, you are untargetable, invulnerable, and unable to act (<#e8a800ff>300 second<> cooldown)."
+        },
+        "boots": {
+            "name": "Boots",
+            "option": ""
+        },
+        "berserkers_greaves": {
+            "name": "Berserker's Greaves",
+            "option": ""
+        },
+        "boots_of_swiftness": {
+            "name": "Boots of Swiftness",
+            "option": ""
+        },
+        "gluttonous_greaves": {
+            "name": "Gluttonous Greaves",
+            "option": ""
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Ionian Boots of Lucidity",
+            "option": ""
+        },
+        "mercurys_treads": {
+            "name": "Mercury's Treads",
+            "option": ""
+        },
+        "plated_steelcaps": {
+            "name": "Plated Steelcaps",
+            "option": "\n<#ff7a3eff>Plating<>: Reduce damage taken from basic attacks by <#e8a800ff>5%<>."
+        },
+        "sorcerers_shoes": {
+            "name": "Sorcerer's Shoes",
+            "option": ""
         }
     },
     "vi": {
@@ -881,7 +914,8 @@
             "2": "Trang Bị Cơ Bản",
             "3": "Trang Bị Sử Thi",
             "4": "Trang Bị Huyền Thoại",
-            "5": "Trang Bị Ánh Sáng"
+            "5": "Trang Bị Ánh Sáng",
+            "boots": "Giày"
         },
         "related": {
             "sub_items": "Ghép từ",
@@ -1719,6 +1753,38 @@
         "radiant_guardian_angel": {
             "name": "Giáp Thiên Thần Ánh Sáng",
             "option": "\n<#ff7a3eff>Tái Sinh<>: Khi nhận sát thương kết liễu, bạn sẽ <#92dc7bff>hồi sinh<> trong <#e8a800ff>4 giây<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng <#60e84dff>60%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn. Trong thời gian này, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>300 giây<> hồi chiêu)."
+        },
+        "boots": {
+            "name": "Giày",
+            "option": ""
+        },
+        "berserkers_greaves": {
+            "name": "Giày Cuồng Nộ",
+            "option": ""
+        },
+        "boots_of_swiftness": {
+            "name": "Giày Bạc",
+            "option": ""
+        },
+        "gluttonous_greaves": {
+            "name": "Giày Phàm Ăn",
+            "option": ""
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Giày Khai Sáng Ionia",
+            "option": ""
+        },
+        "mercurys_treads": {
+            "name": "Giày Thủy Ngân",
+            "option": ""
+        },
+        "plated_steelcaps": {
+            "name": "Giày Thép Gai",
+            "option": "\n<#ff7a3eff>Giáp Cứng<>: Giảm <#e8a800ff>5%<> sát thương nhận vào từ đòn đánh thường."
+        },
+        "sorcerers_shoes": {
+            "name": "Giày Pháp Sư",
+            "option": ""
         }
     },
     "zh-hans": {
@@ -1742,7 +1808,8 @@
             "2": "基础装备",
             "3": "史诗装备",
             "4": "传说装备",
-            "5": "光明装备"
+            "5": "光明装备",
+            "boots": "鞋子"
         },
         "related": {
             "sub_items": "合成配方",
@@ -2580,6 +2647,38 @@
         "radiant_guardian_angel": {
             "name": "光明版守护天使",
             "option": "\n<#ff7a3eff>重生<>：受到致命伤害时，改为在 <#e8a800ff>4秒<> 内<#92dc7bff>复活<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<> 的 <#60e84dff>60%<> 的生命值。在此期间，你无法被选取、无敌且无法行动（冷却时间300秒）。"
+        },
+        "boots": {
+            "name": "鞋子",
+            "option": ""
+        },
+        "berserkers_greaves": {
+            "name": "狂战士胫甲",
+            "option": ""
+        },
+        "boots_of_swiftness": {
+            "name": "轻灵之靴",
+            "option": ""
+        },
+        "gluttonous_greaves": {
+            "name": "暴食胫甲",
+            "option": ""
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "明朗之靴",
+            "option": ""
+        },
+        "mercurys_treads": {
+            "name": "水银之靴",
+            "option": ""
+        },
+        "plated_steelcaps": {
+            "name": "铁板靴",
+            "option": "\n<#ff7a3eff>镀层<>：受到的普通攻击伤害降低 <#e8a800ff>5%<>。"
+        },
+        "sorcerers_shoes": {
+            "name": "法师之靴",
+            "option": ""
         }
     },
     "pt-BR": {
@@ -2603,7 +2702,8 @@
             "2": "Itens Básicos",
             "3": "Itens Épicos",
             "4": "Itens Lendários",
-            "5": "Itens Radiantes"
+            "5": "Itens Radiantes",
+            "boots": "Botas"
         },
         "related": {
             "sub_items": "Componentes",
@@ -3441,6 +3541,38 @@
         "radiant_guardian_angel": {
             "name": "Anjo Guardião Radiante",
             "option": "\n<#ff7a3eff>Renascimento<>: Ao sofrer dano letal, em vez disso você <#92dc7bff>ressuscita<> ao longo de <#e8a800ff>4 segundos<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando<> <#60e84dff>60%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>. Durante esse tempo, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>300 segundos<>)."
+        },
+        "boots": {
+            "name": "Botas",
+            "option": ""
+        },
+        "berserkers_greaves": {
+            "name": "Grevas do Berserker",
+            "option": ""
+        },
+        "boots_of_swiftness": {
+            "name": "Botas da Rapidez",
+            "option": ""
+        },
+        "gluttonous_greaves": {
+            "name": "Grevas Vorazes",
+            "option": ""
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Botas Ionianas da Lucidez",
+            "option": ""
+        },
+        "mercurys_treads": {
+            "name": "Passos de Mercúrio",
+            "option": ""
+        },
+        "plated_steelcaps": {
+            "name": "Botas Galvanizadas de Aço",
+            "option": "\n<#ff7a3eff>Revestimento<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>5%<>."
+        },
+        "sorcerers_shoes": {
+            "name": "Sapatos do Feiticeiro",
+            "option": ""
         }
     },
     "ru": {
@@ -3464,7 +3596,8 @@
             "2": "Базовые Предметы",
             "3": "Эпические Предметы",
             "4": "Легендарные Предметы",
-            "5": "Лучезарные Предметы"
+            "5": "Лучезарные Предметы",
+            "boots": "Ботинки"
         },
         "related": {
             "sub_items": "Компоненты",
@@ -4302,6 +4435,38 @@
         "radiant_guardian_angel": {
             "name": "Лучезарный Ангел-хранитель",
             "option": "\n<#ff7a3eff>Перерождение<>: При получении смертельного урона вы вместо этого <#92dc7bff>воскрешаетесь<> в течение <#e8a800ff>4 секунд<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливая<> <#60e84dff>60%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>. В течение этого времени вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 300 секунд)."
+        },
+        "boots": {
+            "name": "Ботинки",
+            "option": ""
+        },
+        "berserkers_greaves": {
+            "name": "Наголенники берсерка",
+            "option": ""
+        },
+        "boots_of_swiftness": {
+            "name": "Ботинки стремительности",
+            "option": ""
+        },
+        "gluttonous_greaves": {
+            "name": "Алчные наголенники",
+            "option": ""
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Ионийские сапоги просветления",
+            "option": ""
+        },
+        "mercurys_treads": {
+            "name": "Поступь Меркурия",
+            "option": ""
+        },
+        "plated_steelcaps": {
+            "name": "Бронированные сапоги",
+            "option": "\n<#ff7a3eff>Обшивка<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>5%<>."
+        },
+        "sorcerers_shoes": {
+            "name": "Сапоги чародея",
+            "option": ""
         }
     },
     "ko": {
@@ -4325,7 +4490,8 @@
             "2": "기본 아이템",
             "3": "서사 아이템",
             "4": "전설 아이템",
-            "5": "찬란한 아이템"
+            "5": "찬란한 아이템",
+            "boots": "장화"
         },
         "related": {
             "sub_items": "조합 재료",
@@ -5163,6 +5329,38 @@
         "radiant_guardian_angel": {
             "name": "찬란한 수호 천사",
             "option": "\n<#ff7a3eff>환생<>: 치명적인 피해를 입으면 대신 <#e8a800ff>4초<> 동안 <#92dc7bff>부활<>하며 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>60%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. 지속시간 동안 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>300초<>입니다."
+        },
+        "boots": {
+            "name": "장화",
+            "option": ""
+        },
+        "berserkers_greaves": {
+            "name": "광전사의 군화",
+            "option": ""
+        },
+        "boots_of_swiftness": {
+            "name": "신속의 장화",
+            "option": ""
+        },
+        "gluttonous_greaves": {
+            "name": "탐욕의 군화",
+            "option": ""
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "명석함의 아이오니아 장화",
+            "option": ""
+        },
+        "mercurys_treads": {
+            "name": "헤르메스의 발걸음",
+            "option": ""
+        },
+        "plated_steelcaps": {
+            "name": "판금 장화",
+            "option": "\n<#ff7a3eff>장갑<>: 기본 공격으로 받는 피해가 <#e8a800ff>5%<> 감소합니다."
+        },
+        "sorcerers_shoes": {
+            "name": "마법사의 신발",
+            "option": ""
         }
     }
 }

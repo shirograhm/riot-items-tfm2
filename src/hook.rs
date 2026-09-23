@@ -671,7 +671,7 @@ unsafe fn detour(
     );
 
     if mode {
-        apply_training_builds(&mut routes, items, team1);
+        apply_training_builds(&mut routes, items, team1, team2);
     }
 
     routes
@@ -712,11 +712,13 @@ unsafe fn detour(
 ///
 /// Routes come back in `team1` order, position-ordered from Top, which is the
 /// same correspondence `record_lineup_roles` above relies on. So route `i`
-/// takes both its champion and its role from `team1[i]`.
+/// takes both its champion and its role from `team1[i]`. `team2` is only read
+/// as the enemy lineup, which picks a tank's boots.
 fn apply_training_builds(
     routes: &mut [Vec<usize>],
     items: &[Box<dyn ItemInfo>],
     team1: &[(Position, String)],
+    team2: &[(Position, String)],
 ) {
     let config = build_config::load_cached();
     // Unique enforcement is not a property of the editor's builds - the stable
@@ -732,6 +734,7 @@ fn apply_training_builds(
     // - so an allocation per comparison is not worth pinning the return type
     // over.
     let index_of = |key: &str| items.iter().position(|item| item.key().to_string() == key);
+    let enemies: Vec<&str> = team2.iter().map(|(_, champion)| champion.as_str()).collect();
 
     for (position, route) in routes.iter_mut().enumerate() {
         let Some((_, champion)) = team1.get(position) else {
@@ -752,7 +755,8 @@ fn apply_training_builds(
         }
         if smart {
             let fit = crate::smart_builds::fit(champion, role);
-            enforce_smart_build(items, route, &pinned, &reserved, fit);
+            let boots = index_of(crate::smart_builds::boots_for(champion, role, &enemies));
+            enforce_smart_build(items, route, &pinned, &reserved, fit, boots);
         }
     }
 }
@@ -797,6 +801,7 @@ fn enforce_smart_build(
     pinned: &[bool],
     reserved: &[usize],
     fit: crate::smart_builds::Fit,
+    boots: Option<usize>,
 ) {
     crate::smart_builds::enforce(
         items.len(),
@@ -804,6 +809,7 @@ fn enforce_smart_build(
         pinned,
         reserved,
         fit,
+        boots,
         |index| items.get(index).map(|item| item.key().to_string()),
         |index| {
             // Bound rather than chained: `base_slug` borrows the key, and only

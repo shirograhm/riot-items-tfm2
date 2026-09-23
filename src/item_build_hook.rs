@@ -28,7 +28,9 @@ impl StableItemBuildHook for ConfiguredBuilds {
         let Some(key) = ctx.item_key(candidate) else {
             return StableDraftDecision::Pass;
         };
-        if !crate::strategy_ui::is_mod_final_item(key) {
+        // Boots are listed with the finals for the editor's picker, but they
+        // reach a build through Smart Builds' boots rule, never the ranking.
+        if !crate::strategy_ui::is_mod_final_item(key) || smart_builds::is_boots(key) {
             return StableDraftDecision::Pass;
         }
         // The bonus exists because the engine's scoring model does not know
@@ -133,14 +135,17 @@ fn is_selectable_final(ctx: &StableItemBuildContext<'_>, index: usize) -> bool {
         .is_some_and(|tier| tier >= SELECTABLE_FINAL_TIER)
 }
 
+/// The lane the host states, as a build role.
+fn champion_role(ctx: &StableItemBuildContext<'_>) -> build_config::Role {
+    ctx.lane()
+        .map(|lane| build_config::Role::from_lane_code(lane.code() as usize))
+        .unwrap_or(build_config::Role::Any)
+}
+
 /// The Smart Builds [`smart_builds::Fit`] of the champion this build is for, in
 /// the lane the host states.
 fn champion_fit(ctx: &StableItemBuildContext<'_>) -> smart_builds::Fit {
-    let role = ctx
-        .lane()
-        .map(|lane| build_config::Role::from_lane_code(lane.code() as usize))
-        .unwrap_or(build_config::Role::Any);
-    smart_builds::fit(ctx.champion_key(), role)
+    smart_builds::fit(ctx.champion_key(), champion_role(ctx))
 }
 
 /// The Smart Builds pass over a build the host handed us, with the catalog seen
@@ -153,12 +158,17 @@ fn enforce_smart_build(
     pinned: &[bool],
     reserved: &[usize],
 ) {
+    // This is the one path that sees the enemy lineup, which is what picks a
+    // tank's boots.
+    let enemies = ctx.enemy_champions();
+    let boots = smart_builds::boots_for(ctx.champion_key(), champion_role(ctx), &enemies);
     smart_builds::enforce(
         ctx.item_count(),
         build,
         pinned,
         reserved,
         champion_fit(ctx),
+        ctx.item_index(boots),
         |index| ctx.item_key(index).map(str::to_string),
         |index| ctx.item_category(index),
         |index| is_selectable_final(ctx, index),

@@ -1,3 +1,6 @@
+/// The six legendary classes, in picker order. The picker also has a `Boots`
+/// group, which [`category_rank`] sorts after these; it is left out of this
+/// array because the Item Stats tab builds one filter row per entry.
 pub const CATEGORY_ORDER: [&str; 6] =
     ["Assassin", "Fighter", "Marksman", "Mage", "Tank", "Support"];
 
@@ -7,12 +10,14 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("axiom_arc", "Assassin"),
     ("bandlepipes", "Support"),
     ("bastionbreaker", "Assassin"),
+    ("berserkers_greaves", "Boots"),
     ("black_cleaver", "Fighter"),
     ("blackfire_torch", "Mage"),
     ("blade_of_the_ruined_king", "Marksman"),
     ("bloodletters_curse", "Mage"),
     ("bloodsong", "Support"),
     ("bloodthirster", "Fighter"),
+    ("boots_of_swiftness", "Boots"),
     ("chempunk_chainsword", "Fighter"),
     ("chemtech_putrifier", "Support"),
     ("cloak_of_starry_night", "Tank"),
@@ -29,6 +34,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("feral_flare", "Fighter"),
     ("frozen_heart", "Tank"),
     ("frozen_mallet", "Fighter"),
+    ("gluttonous_greaves", "Boots"),
     ("grezs_spectral_lantern", "Mage"),
     ("guardian_angel", "Fighter"),
     ("guinsoos_rageblade", "Marksman"),
@@ -37,6 +43,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("hextech_gunblade", "Mage"),
     ("hubris", "Assassin"),
     ("infinity_edge", "Marksman"),
+    ("ionian_boots_of_lucidity", "Boots"),
     ("jaksho_the_protean", "Tank"),
     ("kraken_slayer", "Marksman"),
     ("liandrys_torment", "Mage"),
@@ -44,6 +51,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("lord_dominiks_regards", "Marksman"),
     ("ludens_tempest", "Mage"),
     ("malignance", "Mage"),
+    ("mercurys_treads", "Boots"),
     ("mirage_blade", "Marksman"),
     ("morellonomicon", "Mage"),
     ("mortal_reminder", "Marksman"),
@@ -52,6 +60,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("opportunity", "Assassin"),
     ("overlords_bloodmail", "Fighter"),
     ("phantom_dancer", "Marksman"),
+    ("plated_steelcaps", "Boots"),
     ("protectors_vow", "Tank"),
     ("protoplasm_harness", "Support"),
     ("rabadons_deathcap", "Mage"),
@@ -63,6 +72,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("serpents_fang", "Assassin"),
     ("seryldas_grudge", "Assassin"),
     ("shadowflame", "Mage"),
+    ("sorcerers_shoes", "Boots"),
     ("spear_of_shojin", "Fighter"),
     ("spirit_visage", "Tank"),
     ("steraks_gage", "Fighter"),

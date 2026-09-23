@@ -1603,5 +1603,46 @@
     "effect_duration_seconds": 4,
     "effect_heal_interval_seconds": 0.25,
     "effect_cooldown_seconds": 300
+  },
+  "boots": {
+    "price": 250,
+    "move_speed_mult": 7
+  },
+  "berserkers_greaves": {
+    "price": 650,
+    "attack_speed_mult": 15,
+    "move_speed_mult": 10
+  },
+  "boots_of_swiftness": {
+    "price": 650,
+    "toughness": 25,
+    "move_speed_mult": 12
+  },
+  "gluttonous_greaves": {
+    "price": 650,
+    "vamp": 8,
+    "move_speed_mult": 10
+  },
+  "ionian_boots_of_lucidity": {
+    "price": 650,
+    "skill_cooldown_mult": 15,
+    "move_speed_mult": 10
+  },
+  "mercurys_treads": {
+    "price": 650,
+    "magic_resistance": 20,
+    "toughness": 20,
+    "move_speed_mult": 10
+  },
+  "plated_steelcaps": {
+    "price": 650,
+    "defence": 15,
+    "base_attack_damaged_reduce": 5,
+    "move_speed_mult": 10
+  },
+  "sorcerers_shoes": {
+    "price": 650,
+    "magic_resistance_penetration": 15,
+    "move_speed_mult": 10
   }
 }

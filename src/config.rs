@@ -26,6 +26,7 @@ pub struct ItemConfig {
     pub skill_cooldown_mult: Option<i32>,
     pub ult_cooldown_mult: Option<i32>,
     pub skill_damaged_reduce: Option<usize>,
+    pub base_attack_damaged_reduce: Option<usize>,
     pub vamp: Option<i32>,
 
     pub effect_adaptive_force: Option<i32>,

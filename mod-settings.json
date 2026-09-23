@@ -1,4 +1,4 @@
 {
   "unique_items": true,
-  "own_team_only": false
+  "own_team_only": true
 }

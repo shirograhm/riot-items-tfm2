@@ -1,4 +1,4 @@
-Adds 6 item slots & 171 new items (98 base + 73 Radiant) to Teamfight Manager 2.  
+Adds 6 item slots & 179 new items (106 base + 73 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
@@ -65,6 +65,8 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone). Champions from other mods are covered too.
 
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
+
+And it gives every AI build a pair of boots as its second pick, matched to the champion: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (against the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity, and tank supports get tank boots. Boots of Swiftness goes to champions none of that fits. Pin boots yourself and the AI leaves them to you.  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
