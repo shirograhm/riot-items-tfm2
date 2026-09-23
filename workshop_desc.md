@@ -61,12 +61,11 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 [h1] Smart Builds [/h1]
 [b]Enforce Smart Builds[/b] (Build Editor footer, on by default) cleans up the AI's picks. These get swapped for another item of the same category:
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
+- 1 boots item per player in the second slot (unless pinned elsewhere in the build)
 - support items (except Protoplasm Harness) outside the support role
 - items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone). Champions from other mods are covered too.
 
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
-
-And it gives every AI build a pair of boots as its second pick, matched to the champion: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (against the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity, and tank supports get tank boots. Boots of Swiftness goes to champions none of that fits. Pin boots yourself and the AI leaves them to you.  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
