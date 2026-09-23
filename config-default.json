@@ -1585,5 +1585,23 @@
     "skill_cooldown_mult": 15,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
+  },
+  "guardian_angel": {
+    "price": 750,
+    "attack": 35,
+    "defence": 30,
+    "effect_caster_hp_percent_heal": 40.0,
+    "effect_duration_seconds": 4,
+    "effect_heal_interval_seconds": 0.25,
+    "effect_cooldown_seconds": 300
+  },
+  "radiant_guardian_angel": {
+    "price": 1100,
+    "attack": 50,
+    "defence": 45,
+    "effect_caster_hp_percent_heal": 60.0,
+    "effect_duration_seconds": 4,
+    "effect_heal_interval_seconds": 0.25,
+    "effect_cooldown_seconds": 300
   }
 }

@@ -8,6 +8,7 @@ items! {
     experimental_hexplate,
     feral_flare,
     frozen_mallet,
+    guardian_angel,
     overlords_bloodmail,
     ravenous_hydra,
     spear_of_shojin,

@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 169 new items (97 base + 72 Radiant) to the game.
+Reskins the 30 existing items and also adds 171 new items (98 base + 73 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -109,6 +109,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Frozen Heart** | 650G | +35 Armor<br>+10 Ability Haste<br>+10% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Frozen Mallet** | 700G | +200 HP<br>+20 AD | Icy: Basic attacks apply a 15% slow for 2 seconds. |
 | **Grez's Spectral Lantern** | 700G | +150 HP<br>+30 AP<br>+10 Ability Haste | Spirit Drain: Gain 2 Ability Power for each champion takedown and monster killed, up to 40.<br>Butcher: Against monsters, deal 20% bonus magic damage and restore health equal to 4% of your damage dealt. |
+| **Guardian Angel** | 750G | +35 AD<br>+30 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 40% of your maximum health. During the duration, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
 | **Guinsoo's Rageblade** | 700G | +15 AD<br>+15 AP<br>+30% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Hamstringer** | 750G | +25 AD<br>+25% AS<br>+20% Crit Chance | Scour: Your critical strikes bleed the target, dealing 70 - 180 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
 | **Heartsteel** | 750G | +250 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
@@ -186,6 +187,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Frozen Heart** | 950G | +55 Armor<br>+15 Ability Haste<br>+15% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Radiant Frozen Mallet** | 1000G | +300 HP<br>+30 AD | Icy: Basic attacks deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
 | **Radiant Grez's Spectral Lantern** | 1000G | +200 HP<br>+60 AP<br>+10 Ability Haste | Spirit Drain: Gain 2 Ability Power for each champion takedown and monster killed, up to 60.<br>Butcher: Against monsters, deal 30% bonus magic damage and restore health equal to 6% of your damage dealt. |
+| **Radiant Guardian Angel** | 1100G | +50 AD<br>+45 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 60% of your maximum health. During the duration, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
 | **Radiant Guinsoo's Rageblade** | 950G | +25 AD<br>+25 AP<br>+50% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Hamstringer** | 1100G | +40 AD<br>+45% AS<br>+25% Crit Chance | Scour: Your critical strikes bleed the target, dealing 125 - 290 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
 | **Radiant Heartsteel** | 1050G | +400 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |

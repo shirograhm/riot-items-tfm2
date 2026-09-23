@@ -23,6 +23,22 @@
             "tag": "rend",
             "z": 1,
             "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_guardian_angel_stasis",
+            "anim": "asset/riot_items_tfm2/effects/guardian_angel_stasis",
+            "tag": "stasis",
+            "z": 1,
+            "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_guardian_angel_revive",
+            "anim": "asset/riot_items_tfm2/effects/guardian_angel_revive",
+            "tag": "revive",
+            "z": 1,
+            "is_follow": true
         }
     ],
     "view_projectiles": [],
