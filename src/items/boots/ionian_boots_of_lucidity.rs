@@ -14,7 +14,7 @@ impl Default for IonianBootsOfLucidity {
         Self {
             price: 650,
             skill_cooldown_mult: 15,
-            move_speed_mult: 10,
+            move_speed_mult: 8,
         }
     }
 }

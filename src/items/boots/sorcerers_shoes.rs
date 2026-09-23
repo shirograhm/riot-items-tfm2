@@ -14,7 +14,7 @@ impl Default for SorcerersShoes {
         Self {
             price: 650,
             magic_resistance_penetration: 15,
-            move_speed_mult: 10,
+            move_speed_mult: 8,
         }
     }
 }

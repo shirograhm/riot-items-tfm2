@@ -13,7 +13,7 @@ impl Default for Boots {
     fn default() -> Self {
         Self {
             price: 250,
-            move_speed_mult: 7,
+            move_speed_mult: 5,
         }
     }
 }

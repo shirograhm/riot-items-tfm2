@@ -13,8 +13,8 @@ impl Default for BootsOfSwiftness {
     fn default() -> Self {
         Self {
             price: 650,
-            toughness: 10,
-            move_speed_mult: 20,
+            toughness: 25,
+            move_speed_mult: 12,
         }
     }
 }

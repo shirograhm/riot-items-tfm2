@@ -16,7 +16,7 @@ impl Default for PlatedSteelcaps {
             price: 650,
             defence: 15,
             base_attack_damaged_reduce: 5,
-            move_speed_mult: 10,
+            move_speed_mult: 8,
         }
     }
 }

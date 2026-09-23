@@ -40,7 +40,7 @@ It also decides the order the AI buys its picks in. Items that get stronger the 
 
 It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, in the slot you put it in, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items are exempt from the damage-type check in the support role, since they're built for their effect on allies. Switch it to **Allow Any Builds** to leave every pick alone.
 
-It also gives every AI build a pair of boots, as its second pick, unless you pinned boots yourself: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (whichever answers the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity too, unless they're tanks, who get tank boots. Boots of Swiftness goes to champions none of that fits. Boots are also in the Build Editor under their own **Boots** group.
+It also gives every AI build a pair of boots, as its second pick, unless you pinned boots yourself: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (whichever answers the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity too, unless they're tanks, who get tank boots. Slower champions may take Boots of Swiftness instead, whatever their role: a 30% chance at 900 base movement speed, 20% at 1000 and 10% at 1100. The roll comes from the match's lineup, so a given match always gets the same boots. Boots are also in the Build Editor under their own **Boots** group.
 
 ### Added Items
 
@@ -49,7 +49,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 #### Tier 1
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Boots** | 250G | +7% MS | — |
+| **Boots** | 250G | +5% MS | — |
 | **Glowing Mote** | 250G | +10 Ability Haste | — |
 
 #### Tier 2
@@ -63,30 +63,30 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Aegis of the Legion** | 700G | +100 HP<br>+20 Armor<br>+30 MR | — |
 | **Bami's Cinder** | 400G | +150 HP | Immolate: Deal 5 + 0.5% of your maximum health as magic damage to all enemies within 30 range. |
 | **Bandleglass Mirror** | 350G | +100 HP<br>+1 HP Regen<br>+10 AP<br>+5 Ability Haste | — |
-| **Berserker's Greaves** | 650G | +20% AS<br>+10% MS | — |
+| **Berserker's Greaves** | 650G | +20% AS<br>+8% MS | — |
 | **B.F. Sword** | 450G | +35 Attack Damage | — |
 | **Blighting Jewel** | 400G | +40 AP<br>+10% Magic Pen | — |
-| **Boots of Swiftness** | 650G | +10% Tenacity<br>+20% MS | — |
+| **Boots of Swiftness** | 650G | +25% Tenacity<br>+12% MS | — |
 | **Caulfield's Warhammer** | 500G | +25 AD<br>+10 Ability Haste | — |
 | **Executioner's Calling** | 650G | +25 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Forbidden Idol** | 350G | +100 HP<br>+10 AP<br>+10 Ability Haste | — |
 | **Glacial Buckler** | 400G | +25 Armor<br>+5 Ability Haste | — |
-| **Gluttonous Greaves** | 650G | +8% Omnivamp<br>+10% MS | — |
+| **Gluttonous Greaves** | 650G | +8% Omnivamp<br>+8% MS | — |
 | **Haunting Guise** | 500G | +100 HP<br>+30 AP | Madness: For each second in combat with enemy champions, deal 2% bonus damage, stacking up to 3 times for a total of 6%. |
 | **Hearthbound Axe** | 500G | +20 AD<br>+20% AS | — |
 | **Hextech Alternator** | 400G | +50 AP | Revved: Damaging an enemy champion deals 65 bonus magic damage (40 second cooldown). |
-| **Ionian Boots of Lucidity** | 650G | +15 Ability Haste<br>+10% MS | — |
+| **Ionian Boots of Lucidity** | 650G | +15 Ability Haste<br>+8% MS | — |
 | **Last Whisper** | 500G | +25 AD<br>+10% Armor Pen | — |
-| **Mercury's Treads** | 650G | +30 MR<br>+20% Tenacity<br>+10% MS | — |
+| **Mercury's Treads** | 650G | +20 MR<br>+20% Tenacity<br>+8% MS | — |
 | **Needlessly Large Rod** | 450G | +60 Ability Power | — |
 | **Noonquiver** | 400G | +25 AD<br>+10% Crit Chance | — |
 | **Oblivion Orb** | 650G | +45 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Phage** | 500G | +100 HP<br>+20 AD | Rage: Basic attacks against enemy champions grant 5% movement speed for 2 seconds. |
-| **Plated Steelcaps** | 650G | +15 Armor<br>+10% MS | Plating: Reduce damage taken from basic attacks by 5%. |
+| **Plated Steelcaps** | 650G | +15 Armor<br>+8% MS | Plating: Reduce damage taken from basic attacks by 5%. |
 | **Scout's Slingshot** | 400G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Serrated Dirk** | 400G | +25 AD | Gain 10 Lethality. |
 | **Sheen** | 650G | +20% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
-| **Sorcerer's Shoes** | 650G | +15% Magic Pen<br>+10% MS | — |
+| **Sorcerer's Shoes** | 650G | +15% Magic Pen<br>+8% MS | — |
 | **Steel Sigil** | 500G | +20 AD<br>+20 Armor | — |
 | **Tiamat** | 400G | +25 AD | Cleave: Basic attacks deal 20% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Winged Moonplate** | 400G | +150 HP<br>+4% MS | — |

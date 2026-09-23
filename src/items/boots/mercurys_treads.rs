@@ -14,9 +14,9 @@ impl Default for MercurysTreads {
     fn default() -> Self {
         Self {
             price: 650,
-            magic_resistance: 30,
+            magic_resistance: 20,
             toughness: 20,
-            move_speed_mult: 10,
+            move_speed_mult: 8,
         }
     }
 }

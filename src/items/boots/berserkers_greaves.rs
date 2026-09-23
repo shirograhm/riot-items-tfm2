@@ -14,7 +14,7 @@ impl Default for BerserkersGreaves {
         Self {
             price: 650,
             attack_speed_mult: 20,
-            move_speed_mult: 10,
+            move_speed_mult: 8,
         }
     }
 }
