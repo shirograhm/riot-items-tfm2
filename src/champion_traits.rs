@@ -82,19 +82,15 @@ pub(crate) struct ChampionTraits {
     pub tank: bool,
     /// Tagged `Heal` or `Shield`: it keeps allies alive.
     pub sustains: bool,
-    /// Base movement speed (`stat.move_speed`, 900-1200 in the base game).
-    /// `None` when the source did not say.
-    pub move_speed: Option<u32>,
 }
 
 impl ChampionTraits {
-    fn from_flags(flags: u8, class: Option<Class>, move_speed: Option<u32>) -> Self {
+    fn from_flags(flags: u8, class: Option<Class>) -> Self {
         Self {
             scaling: scaling_of(flags & AD != 0, flags & AP != 0),
             class,
             tank: flags & TANK != 0,
             sustains: flags & (HEAL | SHIELD) != 0,
-            move_speed,
         }
     }
 }
@@ -129,84 +125,82 @@ fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
     })
 }
 
-/// The base game's champions, from `setting/champion_info` (`category`, `tags`
-/// and `stat.move_speed`),
+/// The base game's champions, from `setting/champion_info` (`category` and `tags`),
 /// including the eight it ships under `mod_champions`. Only a
 /// fallback: an answer from the host always wins.
-const VANILLA: &[(&str, u8, Class, u32)] = &[
-    ("alchemist", AP, Class::Magician, 900),
-    ("android", AD | TANK, Class::Melee, 1000),
-    ("archer", AD, Class::Range, 900),
-    ("astrologer", AP, Class::Magician, 900),
-    ("bard", AP, Class::Util, 1000),
-    ("barrier_magician", AP | SHIELD, Class::Util, 1000),
-    ("berserker", AD, Class::Melee, 1100),
-    ("bomber", AD, Class::Range, 900),
-    ("boomerang_hunter", AD, Class::Range, 900),
-    ("cavalry_knight", AD, Class::Melee, 1200),
-    ("chef", AP | TANK | HEAL, Class::Util, 1000),
-    ("circus_blade", AD, Class::Assassin, 1100),
-    ("clown", AD, Class::Assassin, 900),
-    ("crossbowman", AD, Class::Range, 900),
-    ("dancer", AD, Class::Range, 900),
-    ("dark_mage", AP, Class::Magician, 1000),
-    ("demon", AD, Class::Assassin, 1100),
-    ("dokkaebi", AD | TANK | SHIELD, Class::Melee, 1000),
-    ("druid", AP, Class::Magician, 1000),
-    ("dual_blader", AD, Class::Melee, 1100),
-    ("enchanter", AP, Class::Util, 1000),
-    ("executioner", AD, Class::Melee, 1000),
-    ("exorcist", AD | TANK, Class::Util, 1000),
-    ("fighter", AD | TANK, Class::Melee, 1000),
-    ("gambler", AD, Class::Range, 900),
-    ("ghost", AD, Class::Assassin, 1100),
-    ("guardian_spirit", AP | HEAL | SHIELD, Class::Util, 1000),
-    ("gunner", AD, Class::Range, 900),
-    ("hammerer", AD | TANK, Class::Melee, 1000),
-    ("harpooner", AD, Class::Range, 900),
-    ("hitman", AD, Class::Assassin, 900),
-    ("hunter", AD, Class::Assassin, 1100),
-    ("ice_mage", AP, Class::Magician, 900),
-    ("illusionist", AP, Class::Magician, 900),
-    ("inquisitor", AD, Class::Assassin, 1100),
-    ("jiangshi", AD | TANK, Class::Melee, 1000),
-    ("knight", AD | TANK | SHIELD, Class::Melee, 1000),
-    ("lancer", AD, Class::Melee, 1000),
-    ("lightning_mage", AP, Class::Magician, 900),
-    ("magic_knight", AD | AP, Class::Melee, 1100),
-    ("monk", AP | TANK | HEAL | SHIELD, Class::Util, 1000),
-    ("necromancer", AP, Class::Magician, 900),
-    ("nightmare", AD, Class::Assassin, 1100),
-    ("ninja", AD, Class::Assassin, 1100),
-    ("ogre", AD | TANK, Class::Melee, 1000),
-    ("plague_doctor", AD | TANK, Class::Util, 1000),
-    ("poison_dart_hunter", AD, Class::Range, 900),
-    ("pole_warrior", AD, Class::Melee, 1000),
-    ("priest", AP | HEAL | SHIELD, Class::Util, 1000),
-    ("prisoner", AD | TANK, Class::Melee, 1000),
-    ("pyromancer", AP, Class::Magician, 900),
-    ("pythoness", AP | HEAL, Class::Util, 1000),
-    ("sand_mage", AP, Class::Magician, 900),
-    ("shadowmancer", AP, Class::Magician, 900),
-    ("shield_bearer", AD | TANK | SHIELD, Class::Melee, 1000),
-    ("siege_breaker", AD | TANK, Class::Melee, 1000),
-    ("soldier", AD, Class::Range, 900),
-    ("spellbreaker", AD | AP, Class::Melee, 1000),
-    ("spirit_caller", AP | HEAL, Class::Util, 1000),
-    ("strongman", AD | TANK | SHIELD, Class::Melee, 1000),
-    ("swordman", AD, Class::Melee, 1100),
-    ("taoist", AP, Class::Util, 1000),
-    ("vampire", AP | HEAL, Class::Magician, 1000),
-    ("voodoo_shaman", AP, Class::Magician, 1000),
-    ("werewolf", AD | HEAL, Class::Assassin, 1100),
-    ("whip_master", AD, Class::Range, 900),
-    ("white_mage", AP, Class::Magician, 900),
-    ("wind_mage", AP, Class::Magician, 900),
+const VANILLA: &[(&str, u8, Class)] = &[
+    ("alchemist", AP, Class::Magician),
+    ("android", AD | TANK, Class::Melee),
+    ("archer", AD, Class::Range),
+    ("astrologer", AP, Class::Magician),
+    ("bard", AP, Class::Util),
+    ("barrier_magician", AP | SHIELD, Class::Util),
+    ("berserker", AD, Class::Melee),
+    ("bomber", AD, Class::Range),
+    ("boomerang_hunter", AD, Class::Range),
+    ("cavalry_knight", AD, Class::Melee),
+    ("chef", AP | TANK | HEAL, Class::Util),
+    ("circus_blade", AD, Class::Assassin),
+    ("clown", AD, Class::Assassin),
+    ("crossbowman", AD, Class::Range),
+    ("dancer", AD, Class::Range),
+    ("dark_mage", AP, Class::Magician),
+    ("demon", AD, Class::Assassin),
+    ("dokkaebi", AD | TANK | SHIELD, Class::Melee),
+    ("druid", AP, Class::Magician),
+    ("dual_blader", AD, Class::Melee),
+    ("enchanter", AP, Class::Util),
+    ("executioner", AD, Class::Melee),
+    ("exorcist", AD | TANK, Class::Util),
+    ("fighter", AD | TANK, Class::Melee),
+    ("gambler", AD, Class::Range),
+    ("ghost", AD, Class::Assassin),
+    ("guardian_spirit", AP | HEAL | SHIELD, Class::Util),
+    ("gunner", AD, Class::Range),
+    ("hammerer", AD | TANK, Class::Melee),
+    ("harpooner", AD, Class::Range),
+    ("hitman", AD, Class::Assassin),
+    ("hunter", AD, Class::Assassin),
+    ("ice_mage", AP, Class::Magician),
+    ("illusionist", AP, Class::Magician),
+    ("inquisitor", AD, Class::Assassin),
+    ("jiangshi", AD | TANK, Class::Melee),
+    ("knight", AD | TANK | SHIELD, Class::Melee),
+    ("lancer", AD, Class::Melee),
+    ("lightning_mage", AP, Class::Magician),
+    ("magic_knight", AD | AP, Class::Melee),
+    ("monk", AP | TANK | HEAL | SHIELD, Class::Util),
+    ("necromancer", AP, Class::Magician),
+    ("nightmare", AD, Class::Assassin),
+    ("ninja", AD, Class::Assassin),
+    ("ogre", AD | TANK, Class::Melee),
+    ("plague_doctor", AD | TANK, Class::Util),
+    ("poison_dart_hunter", AD, Class::Range),
+    ("pole_warrior", AD, Class::Melee),
+    ("priest", AP | HEAL | SHIELD, Class::Util),
+    ("prisoner", AD | TANK, Class::Melee),
+    ("pyromancer", AP, Class::Magician),
+    ("pythoness", AP | HEAL, Class::Util),
+    ("sand_mage", AP, Class::Magician),
+    ("shadowmancer", AP, Class::Magician),
+    ("shield_bearer", AD | TANK | SHIELD, Class::Melee),
+    ("siege_breaker", AD | TANK, Class::Melee),
+    ("soldier", AD, Class::Range),
+    ("spellbreaker", AD | AP, Class::Melee),
+    ("spirit_caller", AP | HEAL, Class::Util),
+    ("strongman", AD | TANK | SHIELD, Class::Melee),
+    ("swordman", AD, Class::Melee),
+    ("taoist", AP, Class::Util),
+    ("vampire", AP | HEAL, Class::Magician),
+    ("voodoo_shaman", AP, Class::Magician),
+    ("werewolf", AD | HEAL, Class::Assassin),
+    ("whip_master", AD, Class::Range),
+    ("white_mage", AP, Class::Magician),
+    ("wind_mage", AP, Class::Magician),
 ];
 
-/// Champions other mods add, by id, from the `tags`, `category` and
-/// `stat.move_speed` in their `.data_champion` files. Filled once by
-/// [`load_mod_champions`].
+/// Champions other mods add, by id, from the `tags` and `category` in their
+/// `.data_champion` files. Filled once by [`load_mod_champions`].
 static MOD_CHAMPIONS: OnceLock<HashMap<String, ChampionTraits>> = OnceLock::new();
 
 /// Steam app id, which names the game's Workshop content folder.
@@ -274,26 +268,13 @@ struct ChampionFile {
     category: String,
     #[serde(default)]
     tags: Vec<String>,
-    #[serde(default)]
-    stat: ChampionFileStat,
-}
-
-#[derive(serde::Deserialize, Default)]
-struct ChampionFileStat {
-    #[serde(default)]
-    move_speed: Option<u32>,
 }
 
 fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
     let text = std::fs::read_to_string(path).ok()?;
     let file: ChampionFile = serde_json::from_str(text.trim_start_matches('\u{feff}')).ok()?;
     let flags = flags_of(file.tags.iter().map(String::as_str));
-    let traits = ChampionTraits::from_flags(
-        flags,
-        Class::from_name(&file.category),
-        file.stat.move_speed.filter(|&speed| speed > 0),
-    );
-    Some((file.id, traits))
+    Some((file.id, ChampionTraits::from_flags(flags, Class::from_name(&file.category))))
 }
 
 /// What is known about `champion` without the host: [`VANILLA`] for the base
@@ -341,11 +322,11 @@ pub(crate) fn traits(champion: &str) -> Option<ChampionTraits> {
 
 fn vanilla(champion: &str) -> Option<ChampionTraits> {
     VANILLA
-        .binary_search_by_key(&champion, |(key, _, _, _)| key)
+        .binary_search_by_key(&champion, |(key, _, _)| key)
         .ok()
         .map(|index| {
-            let (_, flags, class, move_speed) = VANILLA[index];
-            ChampionTraits::from_flags(flags, Some(class), Some(move_speed))
+            let (_, flags, class) = VANILLA[index];
+            ChampionTraits::from_flags(flags, Some(class))
         })
 }
 
@@ -392,9 +373,6 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
                     class: brief.category.map(Class::from_category),
                     tank: has(ChampionTagV1::Tank),
                     sustains: has(ChampionTagV1::Heal) || has(ChampionTagV1::Shield),
-                    move_speed: u32::try_from(brief.stat.move_speed)
-                        .ok()
-                        .filter(|&speed| speed > 0),
                 };
                 answered.push((key, traits));
             }

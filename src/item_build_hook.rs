@@ -158,11 +158,10 @@ fn enforce_smart_build(
     pinned: &[bool],
     reserved: &[usize],
 ) {
-    // The lineups pick a tank's boots and seed the Swiftness roll.
-    let allies = ctx.ally_champions();
+    // This is the one path that sees the enemy lineup, which is what picks a
+    // tank's boots.
     let enemies = ctx.enemy_champions();
-    let boots =
-        smart_builds::boots_for(ctx.champion_key(), champion_role(ctx), &allies, &enemies);
+    let boots = smart_builds::boots_for(ctx.champion_key(), champion_role(ctx), &enemies);
     smart_builds::enforce(
         ctx.item_count(),
         build,

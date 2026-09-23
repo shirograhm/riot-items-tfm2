@@ -333,53 +333,10 @@ pub(crate) fn is_boots(key: &str) -> bool {
     key == BASE_BOOTS || UPGRADED_BOOTS.contains(&key)
 }
 
-/// Base movement speed at and above which a champion never rolls for Boots of
-/// Swiftness. The fastest base-game champion, Cavalry Knight, sits exactly here.
-const SWIFTNESS_SPEED_CEILING: u32 = 1200;
-
-/// Percent chance of Boots of Swiftness per 100 base movement speed below
-/// [`SWIFTNESS_SPEED_CEILING`]: 10% at 1100, 20% at 1000, 30% at 900.
-const SWIFTNESS_CHANCE_PER_100_SPEED: u32 = 10;
-
-/// The percent chance a champion with this base speed takes Swiftness. No
-/// chance when the speed is unknown.
-fn swiftness_chance(move_speed: Option<u32>) -> u32 {
-    move_speed.map_or(0, |speed| {
-        (SWIFTNESS_SPEED_CEILING.saturating_sub(speed) * SWIFTNESS_CHANCE_PER_100_SPEED / 100)
-            .min(100)
-    })
-}
-
-/// A roll in `0..100` for `champion` in this lineup.
+/// The boots rule 7 gives `champion` playing `role`, against `enemies` (empty
+/// when the caller cannot see them).
 ///
-/// Not random, on purpose: a match is simulated in the background and again
-/// when the player watches it, and both must build the same boots. So the
-/// roll is a hash of the lineup — the same match always rolls the same, a new
-/// draft rolls again. Each side is sorted first, so the order a caller lists
-/// the champions in cannot change the answer.
-fn lineup_roll(champion: &str, allies: &[&str], enemies: &[&str]) -> u32 {
-    let mut allies = allies.to_vec();
-    let mut enemies = enemies.to_vec();
-    allies.sort_unstable();
-    enemies.sort_unstable();
-    // FNV-1a, 64-bit.
-    let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
-    let parts = std::iter::once(champion).chain(allies).chain(["|"]).chain(enemies);
-    for part in parts {
-        for byte in part.bytes().chain([0]) {
-            hash ^= u64::from(byte);
-            hash = hash.wrapping_mul(0x0000_0100_0000_01b3);
-        }
-    }
-    (hash % 100) as u32
-}
-
-/// The boots rule 7 gives `champion` playing `role`, beside `allies` and
-/// against `enemies` (either empty when the caller cannot see them).
-///
-/// First, slower champions may take Boots of Swiftness: the chance is
-/// [`swiftness_chance`] of the champion's base speed, and [`lineup_roll`]
-/// decides it. Otherwise, in order: a tank answers the enemy's main damage type (Mercury's against
+/// In order: a tank answers the enemy's main damage type (Mercury's against
 /// more magic than physical, Steelcaps otherwise, which also covers not
 /// knowing), whatever its role; any other support takes haste (Lucidity),
 /// since it wins through its abilities' uptime rather than their damage; then
@@ -388,17 +345,9 @@ fn lineup_roll(champion: &str, allies: &[&str], enemies: &[&str]) -> u32 {
 /// the ranged, haste for assassins, omnivamp for fighters. A utility champion
 /// that heals or shields takes haste (Lucidity), and one that does neither, or
 /// one nothing is known about, the plain speed of Swiftness.
-pub(crate) fn boots_for(
-    champion: &str,
-    role: Role,
-    allies: &[&str],
-    enemies: &[&str],
-) -> &'static str {
+pub(crate) fn boots_for(champion: &str, role: Role, enemies: &[&str]) -> &'static str {
     use champion_traits::Class;
     let traits = champion_traits::traits(champion).unwrap_or_default();
-    if lineup_roll(champion, allies, enemies) < swiftness_chance(traits.move_speed) {
-        return BOOTS_OF_SWIFTNESS;
-    }
     if traits.tank {
         let (physical, magic) = enemies.iter().fold((0, 0), |(physical, magic), enemy| {
             match champion_traits::traits(enemy).and_then(|traits| traits.scaling) {

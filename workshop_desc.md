@@ -66,7 +66,7 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
 
-And it gives every AI build a pair of boots as its second pick, matched to the champion: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (against the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity, and tank supports get tank boots. Slower champions may take Boots of Swiftness instead (30% at 900 base speed, 20% at 1000, 10% at 1100). Pin boots yourself and the AI leaves them to you.  
+And it gives every AI build a pair of boots as its second pick, matched to the champion: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (against the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity, and tank supports get tank boots. Boots of Swiftness goes to champions none of that fits. Pin boots yourself and the AI leaves them to you.  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
