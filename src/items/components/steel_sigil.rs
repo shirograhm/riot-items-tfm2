@@ -53,7 +53,7 @@ impl StableItem for SteelSigil {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["deaths_dance".to_string()]
+        vec!["deaths_dance".to_string(), "guardian_angel".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {

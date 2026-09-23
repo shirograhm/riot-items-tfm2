@@ -1,4 +1,4 @@
-Adds 6 item slots & 169 new items (97 base + 72 Radiant) to Teamfight Manager 2.  
+Adds 6 item slots & 171 new items (98 base + 73 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  

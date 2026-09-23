@@ -51,7 +51,11 @@ impl StableItem for BFSword {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["infinity_edge".to_string(), "deathblade".to_string()]
+        vec![
+            "infinity_edge".to_string(),
+            "deathblade".to_string(),
+            "guardian_angel".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffV1 {

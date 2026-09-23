@@ -530,6 +530,12 @@ $ccsHeal = [int]$config.chempunk_chainsword.effect_heal_reduce
 $ccsDur = [int]$config.chempunk_chainsword.effect_duration_seconds
 $rccsHeal = [int]$config.radiant_chempunk_chainsword.effect_heal_reduce
 $rccsDur = [int]$config.radiant_chempunk_chainsword.effect_duration_seconds
+$gaHeal = [double]$config.guardian_angel.effect_caster_hp_percent_heal
+$gaDur = [int]$config.guardian_angel.effect_duration_seconds
+$gaCd = [int]$config.guardian_angel.effect_cooldown_seconds
+$rgaHeal = [double]$config.radiant_guardian_angel.effect_caster_hp_percent_heal
+$rgaDur = [int]$config.radiant_guardian_angel.effect_duration_seconds
+$rgaCd = [int]$config.radiant_guardian_angel.effect_cooldown_seconds
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -782,6 +788,9 @@ $i18n.en.chemtech_putrifier.option = "<#ff7a3eff>Grievous Wounds<>: Dealing dama
 $i18n.en.radiant_chemtech_putrifier.option = "<#ff7a3eff>Grievous Wounds<>: Dealing damage to an enemy champion <#d94c49ff>reduces their healing by ${rcptHeal}%<> for <#e8a800ff>${rcptDur} seconds<>."
 $i18n.en.chempunk_chainsword.option = "<#ff7a3eff>Grievous Wounds<>: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${ccsHeal}%<> for <#e8a800ff>${ccsDur} seconds<>."
 $i18n.en.radiant_chempunk_chainsword.option = "<#ff7a3eff>Grievous Wounds<>: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rccsHeal}%<> for <#e8a800ff>${rccsDur} seconds<>."
+$gaTemplate = "<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>{1} seconds<>, <$hpRegenIcon> <#60e84dff>healing<> for <#60e84dff>{0}%<> of your <$hpIcon> <#60e84dff>maximum health<>. During the duration, you are untargetable, invulnerable, and unable to act (<#e8a800ff>{2} second<> cooldown)."
+$i18n.en.guardian_angel.option = $gaTemplate -f $gaHeal, $gaDur, $gaCd
+$i18n.en.radiant_guardian_angel.option = $gaTemplate -f $rgaHeal, $rgaDur, $rgaCd
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -984,6 +993,9 @@ $i18n.vi.chemtech_putrifier.option = "<#ff7a3eff>Vết thương chí mạng<>: G
 $i18n.vi.radiant_chemtech_putrifier.option = "<#ff7a3eff>Vết thương chí mạng<>: Gây sát thương lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rcptHeal}%<> trong <#e8a800ff>${rcptDur} giây<>."
 $i18n.vi.chempunk_chainsword.option = "<#ff7a3eff>Vết thương chí mạng<>: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${ccsHeal}%<> trong <#e8a800ff>${ccsDur} giây<>."
 $i18n.vi.radiant_chempunk_chainsword.option = "<#ff7a3eff>Vết thương chí mạng<>: Gây <#ff9028ff>sát thương vật lý<> lên tướng địch <#d94c49ff>giảm hồi máu của chúng ${rccsHeal}%<> trong <#e8a800ff>${rccsDur} giây<>."
+$gaTemplateVi = "<#ff7a3eff>Tái Sinh<>: Khi nhận sát thương kết liễu, bạn sẽ <#92dc7bff>hồi sinh<> trong <#e8a800ff>{1} giây<>, <$hpRegenIcon> <#60e84dff>hồi máu<> bằng <#60e84dff>{0}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bạn. Trong thời gian này, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>{2} giây<> hồi chiêu)."
+$i18n.vi.guardian_angel.option = $gaTemplateVi -f $gaHeal, $gaDur, $gaCd
+$i18n.vi.radiant_guardian_angel.option = $gaTemplateVi -f $rgaHeal, $rgaDur, $rgaCd
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1186,6 +1198,9 @@ $i18n.'zh-hans'.chemtech_putrifier.option = "<#ff7a3eff>重伤<>：对敌方英�
 $i18n.'zh-hans'.radiant_chemtech_putrifier.option = "<#ff7a3eff>重伤<>：对敌方英雄造成伤害会使其<#d94c49ff>治疗效果降低${rcptHeal}%<>，持续 <#e8a800ff>${rcptDur}秒<>。"
 $i18n.'zh-hans'.chempunk_chainsword.option = "<#ff7a3eff>重伤<>：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${ccsHeal}%<>，持续 <#e8a800ff>${ccsDur}秒<>。"
 $i18n.'zh-hans'.radiant_chempunk_chainsword.option = "<#ff7a3eff>重伤<>：对敌方英雄造成<#ff9028ff>物理伤害<>会使其<#d94c49ff>治疗效果降低${rccsHeal}%<>，持续 <#e8a800ff>${rccsDur}秒<>。"
+$gaTemplateZh = "<#ff7a3eff>重生<>：受到致命伤害时，改为在 <#e8a800ff>{1}秒<> 内<#92dc7bff>复活<>，并<$hpRegenIcon> <#60e84dff>回复<>相当于你 <$hpIcon> <#60e84dff>最大生命值<> 的 <#60e84dff>{0}%<> 的生命值。在此期间，你无法被选取、无敌且无法行动（冷却时间{2}秒）。"
+$i18n.'zh-hans'.guardian_angel.option = $gaTemplateZh -f $gaHeal, $gaDur, $gaCd
+$i18n.'zh-hans'.radiant_guardian_angel.option = $gaTemplateZh -f $rgaHeal, $rgaDur, $rgaCd
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1388,6 +1403,9 @@ $i18n.'pt-BR'.chemtech_putrifier.option = "<#ff7a3eff>Ferimentos Graves<>: Causa
 $i18n.'pt-BR'.radiant_chemtech_putrifier.option = "<#ff7a3eff>Ferimentos Graves<>: Causar dano a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rcptHeal}%<> por <#e8a800ff>${rcptDur} segundos<>."
 $i18n.'pt-BR'.chempunk_chainsword.option = "<#ff7a3eff>Ferimentos Graves<>: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${ccsHeal}%<> por <#e8a800ff>${ccsDur} segundos<>."
 $i18n.'pt-BR'.radiant_chempunk_chainsword.option = "<#ff7a3eff>Ferimentos Graves<>: Causar <#ff9028ff>dano físico<> a um campeão inimigo <#d94c49ff>reduz a cura dele em ${rccsHeal}%<> por <#e8a800ff>${rccsDur} segundos<>."
+$gaTemplatePt = "<#ff7a3eff>Renascimento<>: Ao sofrer dano letal, em vez disso você <#92dc7bff>ressuscita<> ao longo de <#e8a800ff>{1} segundos<>, <$hpRegenIcon> <#60e84dff>curando<> <#60e84dff>{0}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>. Durante esse tempo, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>{2} segundos<>)."
+$i18n.'pt-BR'.guardian_angel.option = $gaTemplatePt -f $gaHeal, $gaDur, $gaCd
+$i18n.'pt-BR'.radiant_guardian_angel.option = $gaTemplatePt -f $rgaHeal, $rgaDur, $rgaCd
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1590,6 +1608,9 @@ $i18n.ru.chemtech_putrifier.option = "<#ff7a3eff>Тяжёлые раны<>: На
 $i18n.ru.radiant_chemtech_putrifier.option = "<#ff7a3eff>Тяжёлые раны<>: Нанесение урона вражескому чемпиону <#d94c49ff>снижает его лечение на ${rcptHeal}%<> на <#e8a800ff>${rcptDur} секунды<>."
 $i18n.ru.chempunk_chainsword.option = "<#ff7a3eff>Тяжёлые раны<>: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${ccsHeal}%<> на <#e8a800ff>${ccsDur} секунды<>."
 $i18n.ru.radiant_chempunk_chainsword.option = "<#ff7a3eff>Тяжёлые раны<>: Нанесение <#ff9028ff>физического урона<> вражескому чемпиону <#d94c49ff>снижает его лечение на ${rccsHeal}%<> на <#e8a800ff>${rccsDur} секунды<>."
+$gaTemplateRu = "<#ff7a3eff>Перерождение<>: При получении смертельного урона вы вместо этого <#92dc7bff>воскрешаетесь<> в течение <#e8a800ff>{1} секунд<>, <$hpRegenIcon> <#60e84dff>восстанавливая<> <#60e84dff>{0}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<>. В течение этого времени вы не можете быть целью, неуязвимы и не можете действовать (перезарядка {2} секунд)."
+$i18n.ru.guardian_angel.option = $gaTemplateRu -f $gaHeal, $gaDur, $gaCd
+$i18n.ru.radiant_guardian_angel.option = $gaTemplateRu -f $rgaHeal, $rgaDur, $rgaCd
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -1791,6 +1812,9 @@ $i18n.ko.chemtech_putrifier.option = "<#ff7a3eff>고통스러운 상처<>: 적 �
 $i18n.ko.radiant_chemtech_putrifier.option = "<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>${rcptDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${rcptHeal}% 감소<>합니다."
 $i18n.ko.chempunk_chainsword.option = "<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${ccsDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${ccsHeal}% 감소<>합니다."
 $i18n.ko.radiant_chempunk_chainsword.option = "<#ff7a3eff>고통스러운 상처<>: 적 챔피언에게 <#ff9028ff>물리 피해<>를 입히면 <#e8a800ff>${rccsDur}초<> 동안 대상의 <#d94c49ff>회복량이 ${rccsHeal}% 감소<>합니다."
+$gaTemplateKo = "<#ff7a3eff>환생<>: 치명적인 피해를 입으면 대신 <#e8a800ff>{1}초<> 동안 <#92dc7bff>부활<>하며 <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>{0}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>합니다. 지속시간 동안 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>{2}초<>입니다."
+$i18n.ko.guardian_angel.option = $gaTemplateKo -f $gaHeal, $gaDur, $gaCd
+$i18n.ko.radiant_guardian_angel.option = $gaTemplateKo -f $rgaHeal, $rgaDur, $rgaCd
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {
