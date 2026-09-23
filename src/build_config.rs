@@ -571,25 +571,19 @@ pub fn has_pins(champion: &str) -> bool {
     })
 }
 
-/// Which of the game's build slots hold one of the player's pins for `champion`
-/// played in `role`, resolved the way the buy detour resolves them.
+/// The pin row the detours apply to `champion` played in `role`, picked the
+/// way they pick it ([`pin_entry`]); empty when there is none.
 ///
-/// For the stable hook under `own_team_only`: it does not apply the pins, but
-/// it must not put Smart Builds' boots where one will land. The detours paste
+/// For the stable hook under `own_team_only`. It does not apply the pins, but
+/// it must not put Smart Builds' boots where one will land: the detours paste
 /// the pins over those slots later, and boots are cheap enough to be finished
 /// before the buy path gets to write the pin, which then loses the slot for
-/// the match.
-pub fn pinned_slots(champion: &str, role: Role) -> Vec<bool> {
+/// the match. Both sides know the real lane — the hook is told it, the
+/// detours read it off the lineup ([`set_athlete_lane`]) — so they pick the
+/// same row.
+pub fn pin_row(champion: &str, role: Role) -> Vec<Option<String>> {
     pins()
-        .and_then(|pins| {
-            pin_entry(&pins, champion, role).map(|build| {
-                build
-                    .iter()
-                    .take(game_slots())
-                    .map(Option::is_some)
-                    .collect()
-            })
-        })
+        .and_then(|pins| pin_entry(&pins, champion, role).cloned())
         .unwrap_or_default()
 }
 
@@ -654,6 +648,11 @@ fn pin_entry<'a>(
 // champion played in two simultaneous matches at two positions keeps whichever
 // was recorded last. The cost of losing that race is one build applied at the
 // wrong role, in a match the player is not watching.
+//
+// For the player's own starters there is no race: their lane is their slot in
+// the team's `last_starting` lineup, which the detours look up by athlete id
+// and hand over through `set_athlete_lane`. This map is the fallback for
+// everyone else.
 
 static LINEUP_ROLES: Mutex<Option<Arc<HashMap<String, Role>>>> = Mutex::new(None);
 
@@ -685,6 +684,22 @@ pub fn record_lineup_roles(champions: &[String]) {
     }
 }
 
+thread_local! {
+    /// The lane of the athlete the spawn or buy detour is handling on this
+    /// thread, when it is one of the player's starters — read off the lineup,
+    /// so [`role_for_champion`] need not guess. Every lookup of a lane happens
+    /// inside those detours, for the athlete they are handling, and each sets
+    /// this first thing (see [`set_athlete_lane`]).
+    static ATHLETE_LANE: std::cell::Cell<Option<Role>> = const { std::cell::Cell::new(None) };
+}
+
+/// Tells [`role_for_champion`] the lane of the athlete this thread is about to
+/// resolve pins for, or `None` for one that is not the player's (the guess then
+/// stands). Set on every detour call, never left from the last athlete.
+pub fn set_athlete_lane(lane: Option<Role>) {
+    ATHLETE_LANE.with(|cell| cell.set(lane));
+}
+
 fn lineup_roles() -> Option<Arc<HashMap<String, Role>>> {
     LINEUP_ROLES.lock().ok()?.clone()
 }
@@ -692,6 +707,9 @@ fn lineup_roles() -> Option<Arc<HashMap<String, Role>>> {
 /// The role a champion was last seen playing, or [`Role::Any`] when no lineup
 /// has named it — which is also what makes the `Any` build the answer.
 pub fn role_for_champion(champion: &str) -> Role {
+    if let Some(lane) = ATHLETE_LANE.with(std::cell::Cell::get) {
+        return lane;
+    }
     lineup_roles()
         .and_then(|roles| roles.get(champion).copied())
         .unwrap_or(Role::Any)
@@ -980,9 +998,10 @@ pub(crate) fn resolve_key<T>(key: &str, resolve: &impl Fn(&str) -> Option<T>) ->
 /// Builds the final route from a configured build and the route the AI generated
 /// for the same champion (`ai_route`). Pinned slots (`Some`) use the player's
 /// item; blank slots (`None`) are filled, in order, with the AI's own picks that
-/// the player did not already pin. Unresolvable pinned keys and exhausted AI
-/// picks simply drop their slot, so one typo or an over-long build never aborts
-/// the rest. The second vector says, per slot of the route, whether it is a pin.
+/// the player did not already pin. An unresolvable pinned key is treated as a
+/// blank slot, so one typo neither aborts the rest nor moves the pins after it;
+/// the route ends where the AI's has no pick left to fill a slot. The second
+/// vector says, per slot of the route, whether it is a pin.
 fn merge_build(
     build: &[Option<String>],
     ai_route: &[usize],
@@ -997,21 +1016,23 @@ fn merge_build(
 
     let mut route = Vec::with_capacity(build.len());
     let mut is_pin = Vec::with_capacity(build.len());
-    for slot in build {
-        match slot {
-            Some(key) => {
-                if let Some(index) = resolve_key(key, resolve) {
-                    route.push(index);
-                    is_pin.push(true);
-                }
-            }
-            None => {
-                if let Some(index) = ai_fill.next() {
-                    route.push(index);
-                    is_pin.push(false);
-                }
-            }
+    for (position, slot) in build.iter().enumerate() {
+        if let Some(index) = slot.as_deref().and_then(|key| resolve_key(key, resolve)) {
+            route.push(index);
+            is_pin.push(true);
+            continue;
         }
+        // A blank slot, or a pin that does not resolve: the AI's. It must still
+        // take up its slot, or every pin after it lands one slot early. With
+        // the AI's unpinned picks used up, the engine's own pick for this
+        // position stands in (a duplicate is Smart Builds' to fix); past the
+        // end of the engine's build there is nothing to stand in, and nothing
+        // the host would take anyway.
+        let Some(index) = ai_fill.next().or_else(|| ai_route.get(position).copied()) else {
+            break;
+        };
+        route.push(index);
+        is_pin.push(false);
     }
     (route, is_pin)
 }

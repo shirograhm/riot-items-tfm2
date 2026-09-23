@@ -2375,6 +2375,23 @@ fn publish_my_athletes(set: std::collections::HashSet<u64>) {
         }
     }
 }
+/// My starters' athlete ids by lane (Top = 0), `u64::MAX` where the lineup has
+/// nobody. Published with [`MY_ATHLETES`], from the same read.
+static MY_ATH_LANES: [AtomicU64; 5] = [const { AtomicU64::new(u64::MAX) }; 5];
+fn publish_my_lanes(lanes: &[Option<u64>]) {
+    for (lane, slot) in MY_ATH_LANES.iter().enumerate() {
+        slot.store(lanes.get(lane).copied().flatten().unwrap_or(u64::MAX), Ordering::Relaxed);
+    }
+}
+/// The lane `athlete` starts in, when it is one of my starters: the lineup
+/// screen's answer, where `build_config::role_for_champion` can only guess.
+unsafe fn my_athlete_lane(athlete: usize) -> Option<crate::build_config::Role> {
+    let aid = safe_read_u64(athlete + O_ATHLETE_ID)?;
+    MY_ATH_LANES
+        .iter()
+        .position(|slot| slot.load(Ordering::Relaxed) == aid)
+        .map(crate::build_config::Role::from_lane_code)
+}
 // Is this athlete_id one of my starters? If the roster is not obtained yet (before visiting the management screen), None = undecided (the caller decides).
 #[inline]
 unsafe fn is_my_athlete(athlete: usize) -> Option<bool> {
@@ -2964,6 +2981,8 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         let champ_cow =
             String::from_utf8_lossy(std::slice::from_raw_parts(cptr as *const u8, clen));
         let champ: &str = champ_cow.as_ref();
+        // Before any pin is looked up: the lane every lookup below resolves in.
+        crate::build_config::set_athlete_lane(my_athlete_lane(athlete));
         // Was `is_champ_designated`, which OR-ed the pin set with the `SEL`
         // dropdown keys. `SEL` is gone, so the pin set is the whole answer.
         if !crate::build_config::has_pins(champ) {
@@ -3674,7 +3693,8 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                 let known = PLAYER_TEAM_ID.load(Ordering::Relaxed);
                 if n % ROSTER_POLL == 0 && known != u64::MAX && known < 10000 {
                     // (was `db.team(known).last_starting` / `.champion_personal_tactics`)
-                    let my = stable_last_starting(client, known as usize);
+                    let lanes = stable_last_starting(client, known as usize);
+                    let my: std::collections::HashSet<u64> = lanes.iter().flatten().copied().collect();
                     let pt_n = stable_personal_tactics(client, known as usize).len();
                     MY_PT_N.store(pt_n as u64, Ordering::Relaxed);
                     // NO **PT-count cross-check abandoned (refuted by measurement 2026-07-30)**: based on an old note that "my team has dozens of PT entries
@@ -3688,6 +3708,7 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                     let trust = known != 0 || PID_ZERO_CLEAN.load(Ordering::Relaxed) >= 600;
                     if !my.is_empty() && trust {
                         publish_my_athletes(my);
+                        publish_my_lanes(&lanes);
                     } else if !trust {
                         MY_TRUST_SKIP.fetch_add(1, Ordering::Relaxed);
                     }
@@ -3824,31 +3845,27 @@ unsafe fn itemnet_header_ok(a: usize) -> bool {
 // tactics snapshot every 20), which is what makes a JSON round-trip per call
 // acceptable where a field read was before.
 
-/// Athlete ids of `team_id`'s starting five — was `team.last_starting`.
+/// Athlete ids of `team_id`'s starting five — was `team.last_starting` — by
+/// lane, Top first.
 ///
-/// That field is `[Option<usize>; 5]`, so the JSON has nulls in it for an
-/// incomplete lineup; those slots are skipped exactly as the `if let Some(aid)`
-/// did. An empty set means "could not read it", which the caller already
-/// handles by not publishing (`!my.is_empty()`).
-fn stable_last_starting(
-    client: &StableClient<'_>,
-    team_id: usize,
-) -> std::collections::HashSet<u64> {
-    let mut out = std::collections::HashSet::new();
+/// That field is `[Option<usize>; 5]`, one entry per lineup position, so the
+/// JSON has nulls in it for an incomplete lineup; those slots come back `None`.
+/// Empty means "could not read it", which the caller already handles by not
+/// publishing.
+fn stable_last_starting(client: &StableClient<'_>, team_id: usize) -> Vec<Option<u64>> {
     let Some(json) = client.record_get_json(RecordKindV1::Team, team_id, "last_starting") else {
-        return out;
+        return Vec::new();
     };
     let Some(JsonValue::Arr(slots)) = JsonParser::new(&json).parse_value() else {
-        return out;
+        return Vec::new();
     };
-    for slot in slots {
-        if let JsonValue::Num(id) = slot {
-            if id >= 0.0 {
-                out.insert(id as u64);
-            }
-        }
-    }
-    out
+    slots
+        .into_iter()
+        .map(|slot| match slot {
+            JsonValue::Num(id) if id >= 0.0 => Some(id as u64),
+            _ => None,
+        })
+        .collect()
 }
 
 /// Per-champion vanilla item categories — was `team.champion_personal_tactics`,
@@ -5356,6 +5373,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let champ_cow =
             String::from_utf8_lossy(std::slice::from_raw_parts(cptr as *const u8, clen));
         let champ: &str = champ_cow.as_ref();
+        // Before any pin is looked up: the lane every lookup below resolves in.
+        crate::build_config::set_athlete_lane(my_athlete_lane(athlete));
         // (`let champ_designated = is_champ_designated(champ)` used to sit here.
         //  Nothing read it — it was the safety net described at the `by_scene`
         //  comment below, and the team gate replaced it — so every buy that got
