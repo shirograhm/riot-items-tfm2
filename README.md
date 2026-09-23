@@ -23,7 +23,8 @@ https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 <img width="1748" height="1133" alt="image" src="https://github.com/user-attachments/assets/b19e829d-15d2-4010-aa7d-1839138eb8e5" />
 
 ##### Pregame Item Builds Editor
-<img width="561" height="664" alt="image" src="https://github.com/user-attachments/assets/650b4ddf-5850-4fb4-a270-20f7ff105336" />
+<img width="2049" height="1183" alt="item build editor" src="https://github.com/user-attachments/assets/27bfd055-4eea-49c2-8736-484c56c3afe6" />
+
 
 ##### Smart Builds
 The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. It cleans up what the AI picks. Any of these is swapped for another final item of the same category:
