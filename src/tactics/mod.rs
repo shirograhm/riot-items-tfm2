@@ -2375,6 +2375,15 @@ fn publish_my_athletes(set: std::collections::HashSet<u64>) {
         }
     }
 }
+/// The lane `athlete` plays in this match, off the athlete itself
+/// (`O_ATHLETE_POS`, the game's own `Position`, Top = 0 — the order
+/// `build_config::Role::LANES` follows): the answer
+/// `build_config::role_for_champion` can otherwise only guess. `None` when it
+/// does not read as one of the five lanes.
+unsafe fn athlete_lane(athlete: usize) -> Option<crate::build_config::Role> {
+    let pos = (safe_read_u64(athlete + O_ATHLETE_POS)? & 0xffff_ffff) as usize;
+    (pos < 5).then(|| crate::build_config::Role::from_lane_code(pos))
+}
 // Is this athlete_id one of my starters? If the roster is not obtained yet (before visiting the management screen), None = undecided (the caller decides).
 #[inline]
 unsafe fn is_my_athlete(athlete: usize) -> Option<bool> {
@@ -2964,6 +2973,8 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         let champ_cow =
             String::from_utf8_lossy(std::slice::from_raw_parts(cptr as *const u8, clen));
         let champ: &str = champ_cow.as_ref();
+        // Before any pin is looked up: the lane every lookup below resolves in.
+        crate::build_config::set_athlete_lane(athlete_lane(athlete));
         // Was `is_champ_designated`, which OR-ed the pin set with the `SEL`
         // dropdown keys. `SEL` is gone, so the pin set is the whole answer.
         if !crate::build_config::has_pins(champ) {
@@ -5356,6 +5367,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let champ_cow =
             String::from_utf8_lossy(std::slice::from_raw_parts(cptr as *const u8, clen));
         let champ: &str = champ_cow.as_ref();
+        // Before any pin is looked up: the lane every lookup below resolves in.
+        crate::build_config::set_athlete_lane(athlete_lane(athlete));
         // (`let champ_designated = is_champ_designated(champ)` used to sit here.
         //  Nothing read it — it was the safety net described at the `by_scene`
         //  comment below, and the team gate replaced it — so every buy that got

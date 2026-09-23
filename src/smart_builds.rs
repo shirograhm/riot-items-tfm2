@@ -496,11 +496,16 @@ impl Budget {
 /// `reserved` gets them as its second AI pick (the only one, if it has one); the
 /// AI picks from there on move one AI slot later and the last one drops off. Boots are never a
 /// stand-in for the other rules, whatever `is_final` says about them.
+///
+/// `boots_avoid` marks AI slots the boots must not take, per slot like
+/// `pinned`: slots a pin will be pasted over later (`own_team_only`), which
+/// rule 7 counts past as if they were pinned. With no slot left, no boots.
 pub(crate) fn enforce<C, K, G, F>(
     count: usize,
     build: &mut [usize],
     pinned: &[bool],
     reserved: &[usize],
+    boots_avoid: &[bool],
     fit: Fit,
     boots: Option<usize>,
     key: K,
@@ -621,9 +626,14 @@ pub(crate) fn enforce<C, K, G, F>(
         .iter()
         .chain(reserved)
         .any(|&index| key(index).is_some_and(|key| is_boots(&key)));
-    if let Some(boots) = boots.filter(|_| !has_boots && !open.is_empty()) {
-        // `open` is not empty, so neither is `picks`: a lone AI slot takes them.
-        picks.insert(BOOTS_SLOT.min(picks.len() - 1), boots);
+    // The AI picks the boots may take, as positions in `picks`: the second, or
+    // the only one if there is one.
+    let free: Vec<usize> = (0..open.len())
+        .filter(|&pick| !boots_avoid.get(open[pick]).copied().unwrap_or(false))
+        .collect();
+    let at = free.get(BOOTS_SLOT).or(free.last()).copied();
+    if let (Some(boots), Some(at), false) = (boots, at, has_boots) {
+        picks.insert(at, boots);
         picks.truncate(open.len());
     }
 
