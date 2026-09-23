@@ -918,7 +918,12 @@ fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
         // Pass 2: final = nothing to upgrade into, AND something upgrades into
         // it. Both halves matter — "no next tier" alone also accepts a base
         // component nothing builds into, which is not a legal build goal.
-        if next_tier.is_empty() && built_into.contains(key.as_str()) {
+        // Upgraded boots pass both tests too, but they are no build goal for
+        // an automatic 4th-6th pick; Smart Builds places them.
+        if next_tier.is_empty()
+            && built_into.contains(key.as_str())
+            && !crate::smart_builds::is_boots(key)
+        {
             finals.push(id);
         }
         registry.push(key.clone());
@@ -1217,7 +1222,9 @@ unsafe fn dump_mod_items(db: usize) {
         //   excluded from finals (the old unwrap_or_default() mistook None for an empty Vec -> wrong final items. It really happened with overrides.)
         match read_nt(elem, best_off) {
             Some(nt) if nt.is_empty() => {
-                if built.contains(&k) {
+                // Upgraded boots pass both tests but are no legendary: they
+                // reach a build through Smart Builds' boots rule only.
+                if built.contains(&k) && !crate::smart_builds::is_boots(&k) {
                     finals.push(30 + i as u64);
                     tree.push_str(&format!("  {:>3} {} *FINAL\n", 30 + i, k));
                 } else {
@@ -3045,24 +3052,40 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                 continue;
             };
             if cat_len > 0 && t < cat_len {
-                if rd_u64(bptr + (si as usize) * 8) != t {
+                let here = rd_u64(bptr + (si as usize) * 8);
+                if here != t {
                     // The engine may already target the pinned item in another
-                    // slot. Nothing is bought at spawn, so swap rather than
-                    // duplicate: the engine's item for this slot moves to
-                    // where the pin was. (The buy path does the same for the
-                    // slots it can still reach; see there.) A slot the player
-                    // pinned to this same item is a deliberate duplicate and
-                    // is left alone.
+                    // slot, or, for boots, another pair. Nothing is bought at
+                    // spawn, so swap rather than duplicate: the engine's item
+                    // for this slot moves to where the clash was. (The buy
+                    // path does the same for the slots it can still reach; see
+                    // there.) A slot the player pinned to what it holds is
+                    // theirs and is left alone.
+                    let pin_boots = spawn_is_boots(cat_base, cat_len, t);
                     let elsewhere = (0..blen as usize)
                         .filter(|&j| j != si as usize)
                         .find(|&j| {
-                            rd_u64(bptr + j * 8) == t
-                                && slotN_catalog_index(champ, j as u8, |key| {
-                                    scan_catalog_index(cat_base, cat_len, key)
-                                }) != Some(t)
+                            let there = rd_u64(bptr + j * 8);
+                            (there == t || (pin_boots && spawn_is_boots(cat_base, cat_len, there)))
+                                && spawn_pin_at(champ, cat_base, cat_len, j) != Some(there)
                         });
                     if let Some(j) = elsewhere {
-                        wr_u64(bptr + j * 8, rd_u64(bptr + (si as usize) * 8));
+                        wr_u64(bptr + j * 8, here);
+                    } else if !pin_boots && spawn_is_boots(cat_base, cat_len, here) {
+                        // The pin covers the boots Smart Builds gave this
+                        // build (rule 7). Unless the player pinned a pair of
+                        // their own, move them to the next slot nobody pinned,
+                        // where they replace the engine's pick; with no such
+                        // slot the build goes without.
+                        let player_boots = (0..crate::build_config::picker_slots()).any(|j| {
+                            spawn_pin_at(champ, cat_base, cat_len, j)
+                                .is_some_and(|pin| spawn_is_boots(cat_base, cat_len, pin))
+                        });
+                        let free = (si as usize + 1..blen as usize)
+                            .find(|&j| crate::build_config::pinned_key_raw(champ, j).is_none());
+                        if let (false, Some(j)) = (player_boots, free) {
+                            wr_u64(bptr + j * 8, here);
+                        }
                     }
                     wr_u64(bptr + (si as usize) * 8, t);
                     SPAWN_WROTE.fetch_add(1, Ordering::Relaxed);
@@ -3071,9 +3094,40 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                 SP4_RANGE.fetch_add(1, Ordering::Relaxed);
             }
         }
+        // Boots the player pinned past the slots above (4th to 6th, which the
+        // buy path plants later): the engine's own pair is swapped for them now,
+        // so the build holds one pair, the player's, bought when the engine's
+        // would have been. `pin_placed_by_engine` then drops the later pin.
+        if cat_len > 0 {
+            let pinned_boots = (3..crate::build_config::picker_slots())
+                .filter_map(|j| spawn_pin_at(champ, cat_base, cat_len, j))
+                .find(|&pin| spawn_is_boots(cat_base, cat_len, pin));
+            if let Some(pin) = pinned_boots {
+                for k in 0..blen as usize {
+                    let there = rd_u64(bptr + k * 8);
+                    if there != pin
+                        && crate::build_config::pinned_key_raw(champ, k).is_none()
+                        && spawn_is_boots(cat_base, cat_len, there)
+                    {
+                        wr_u64(bptr + k * 8, pin);
+                    }
+                }
+            }
+        }
     }));
     0 // the install_detour_generic stub does not use the return value (this is an observe/modify hook)
 }
+/// Whether catalog entry `index` is a pair of boots, for `cap_spawn`, which
+/// holds the catalog base and length rather than a buy context.
+unsafe fn spawn_is_boots(cat_base: usize, cat_len: u64, index: u64) -> bool {
+    catalog_name_in(cat_base, cat_len, index).is_some_and(|name| crate::smart_builds::is_boots(&name))
+}
+
+/// The player's pin for build slot `slot`, as a catalog index, for `cap_spawn`.
+unsafe fn spawn_pin_at(champ: &str, cat_base: usize, cat_len: u64, slot: usize) -> Option<u64> {
+    slotN_catalog_index(champ, slot as u8, |key| scan_catalog_index(cat_base, cat_len, key))
+}
+
 fn install_spawn_hook() {
     if !SPAWN_INJECT_ENABLED {
         return;
@@ -5032,10 +5086,20 @@ unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize, taken: &[u64]) -
 /// it is honoured already, just sooner, so the later slot is freed for an
 /// automatic pick instead. A slot whose own pin is `t` is the player duplicating
 /// on purpose, and that is still planted as written.
+///
+/// Boots count as placed when the engine holds any pair: one pair per build,
+/// and by the time a 4th-6th slot is planted the engine's is usually bought.
 unsafe fn pin_placed_by_engine(ctx: usize, champ: &str, t: u64, taken: &[u64]) -> bool {
+    let pin_boots = buy_is_boots(ctx, t);
     taken.iter().enumerate().any(|(j, &v)| {
-        v == t && slotN_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx, key)) != Some(t)
+        (v == t || (pin_boots && buy_is_boots(ctx, v)))
+            && slotN_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx, key)) != Some(v)
     })
+}
+
+/// Whether catalog index `index` is a pair of boots, on the buy path.
+unsafe fn buy_is_boots(ctx: usize, index: u64) -> bool {
+    catalog_name_at(ctx, index).is_some_and(|name| crate::smart_builds::is_boots(&name))
 }
 
 /// The player's pins for build slots `from` onward, as catalog indices — slots
@@ -5444,15 +5508,19 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         //     item.
                         //   - Later slot: swap, so the pin lands where the player
                         //     put it and the engine's item moves back.
-                        // A slot the player pinned to this same item is a
+                        // Boots clash with any other pair, not just the same
+                        // one. A slot the player pinned to what it holds is a
                         // deliberate duplicate, not a clash.
+                        let pin_at = |j: usize| {
+                            slotN_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx012, key))
+                        };
+                        let pin_boots = buy_is_boots(ctx012, t);
                         let elsewhere = (0..blen as usize)
                             .filter(|&j| j != si as usize)
                             .find(|&j| {
-                                rd_u64(bptr + j * 8) == t
-                                    && slotN_catalog_index(champ, j as u8, |key| {
-                                        scan_idx_cached(ctx012, key)
-                                    }) != Some(t)
+                                let there = rd_u64(bptr + j * 8);
+                                (there == t || (pin_boots && buy_is_boots(ctx012, there)))
+                                    && pin_at(j) != Some(there)
                             });
                         if let Some(j) = elsewhere {
                             if j < si as usize {
@@ -5463,6 +5531,24 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                                 wr_u64(bptr + (si as usize) * 8, t);
                             }
                             continue;
+                        }
+                        // The pin covers the boots Smart Builds gave this build
+                        // (rule 7): move them to the next unbought slot nobody
+                        // pinned, as `cap_spawn` does, unless the player pinned
+                        // a pair of their own.
+                        let here = rd_u64(bptr + (si as usize) * 8);
+                        if !pin_boots
+                            && buy_is_boots(ctx012, here)
+                            && !(0..crate::build_config::picker_slots())
+                                .any(|j| pin_at(j).is_some_and(|pin| buy_is_boots(ctx012, pin)))
+                        {
+                            let free = (si as usize + 1..blen as usize)
+                                .find(|&j| crate::build_config::pinned_key_raw(champ, j).is_none());
+                            if let Some(j) = free {
+                                if writable(bptr + j * 8, 8) {
+                                    wr_u64(bptr + j * 8, here);
+                                }
+                            }
                         }
                         if writable(bptr + (si as usize) * 8, 8) {
                             wr_u64(bptr + (si as usize) * 8, t);
@@ -5590,6 +5676,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     // 4th that duplicates nothing.
                     slotN_catalog_index(champ, 3, |key| scan_idx_cached(ctx, key))
                         .filter(|&t| !pin_placed_by_engine(ctx, champ, t, &[b0, b1, b2]))
+                } else if in_place && buy_is_boots(ctx, rd_u64(ptr + 24)) {
+                    // Boots Smart Builds put in the 4th slot (rule 7, when pins
+                    // fill the slots before it) stay: the network only knows
+                    // legendaries, and would replace the build's only pair.
+                    Some(rd_u64(ptr + 24))
                 } else {
                     // * Enemy team or no designation: a fresh network call (our 5 + their 5 + position ctx). Not cached (ignoring the lineup = wrong answer).
                     compute_auto_4th_id(athlete, champ, third_category)
@@ -5620,7 +5711,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   against the player's pins for the 5th and 6th, which are
                 //   already spoken for even though they are not planted yet.
                 let picked = picked.and_then(|t4| {
-                    if manual.is_some() || !crate::build_config::smart_builds_enabled() {
+                    if manual.is_some()
+                        || !crate::build_config::smart_builds_enabled()
+                        || buy_is_boots(ctx, t4)
+                    {
                         return Some(t4);
                     }
                     let mut taken = vec![b0, b1, b2];

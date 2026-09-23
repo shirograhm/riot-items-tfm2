@@ -1,5 +1,6 @@
 //! What Smart Builds needs to know about a champion: what its damage scales
-//! with.
+//! with, and, to pick its boots, its class and whether it tanks or keeps allies
+//! alive.
 //!
 //! # Where the answer comes from
 //!
@@ -28,7 +29,7 @@ use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Mutex, OnceLock, RwLock};
 
-use mod_api_stable::{ChampionTagV1, StableClient};
+use mod_api_stable::{ChampionCategoryV1, ChampionTagV1, StableClient};
 
 /// What a champion's damage scales with, from its `AD`/`AP` tags.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -38,16 +39,58 @@ pub(crate) enum Scaling {
     Hybrid,
 }
 
+/// The champion's `category`: what the game groups it under in the draft.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum Class {
+    Melee,
+    Range,
+    Magician,
+    Util,
+    Assassin,
+}
+
+impl Class {
+    fn from_name(name: &str) -> Option<Self> {
+        match name {
+            "Melee" => Some(Class::Melee),
+            "Range" => Some(Class::Range),
+            "Magician" => Some(Class::Magician),
+            "Util" => Some(Class::Util),
+            "Assassin" => Some(Class::Assassin),
+            _ => None,
+        }
+    }
+
+    fn from_category(category: ChampionCategoryV1) -> Self {
+        match category {
+            ChampionCategoryV1::Melee => Class::Melee,
+            ChampionCategoryV1::Range => Class::Range,
+            ChampionCategoryV1::Magician => Class::Magician,
+            ChampionCategoryV1::Util => Class::Util,
+            ChampionCategoryV1::Assassin => Class::Assassin,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub(crate) struct ChampionTraits {
     /// `None` for a champion tagged neither way, which the rules leave alone.
     pub scaling: Option<Scaling>,
+    /// `None` when the source did not say.
+    pub class: Option<Class>,
+    /// Tagged `Tank`.
+    pub tank: bool,
+    /// Tagged `Heal` or `Shield`: it keeps allies alive.
+    pub sustains: bool,
 }
 
 impl ChampionTraits {
-    fn from_flags(flags: u8) -> Self {
+    fn from_flags(flags: u8, class: Option<Class>) -> Self {
         Self {
             scaling: scaling_of(flags & AD != 0, flags & AP != 0),
+            class,
+            tank: flags & TANK != 0,
+            sustains: flags & (HEAL | SHIELD) != 0,
         }
     }
 }
@@ -63,84 +106,103 @@ fn scaling_of(ad: bool, ap: bool) -> Option<Scaling> {
 
 const AD: u8 = 1;
 const AP: u8 = 2;
+const TANK: u8 = 4;
+const HEAL: u8 = 8;
+const SHIELD: u8 = 16;
 
-/// The base game's champions, from `setting/champion_info` (`tags`),
+/// The flag bits for a champion's `tags`, by tag name.
+fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
+    tags.into_iter().fold(0, |flags, tag| {
+        flags
+            | match tag.to_ascii_lowercase().as_str() {
+                "ad" => AD,
+                "ap" => AP,
+                "tank" => TANK,
+                "heal" => HEAL,
+                "shield" => SHIELD,
+                _ => 0,
+            }
+    })
+}
+
+/// The base game's champions, from `setting/champion_info` (`category` and `tags`),
 /// including the eight it ships under `mod_champions`. Only a
 /// fallback: an answer from the host always wins.
-const VANILLA: &[(&str, u8)] = &[
-    ("alchemist", AP),
-    ("android", AD),
-    ("archer", AD),
-    ("astrologer", AP),
-    ("bard", AP),
-    ("barrier_magician", AP),
-    ("berserker", AD),
-    ("bomber", AD),
-    ("boomerang_hunter", AD),
-    ("cavalry_knight", AD),
-    ("chef", AP),
-    ("circus_blade", AD),
-    ("clown", AD),
-    ("crossbowman", AD),
-    ("dancer", AD),
-    ("dark_mage", AP),
-    ("demon", AD),
-    ("dokkaebi", AD),
-    ("druid", AP),
-    ("dual_blader", AD),
-    ("enchanter", AP),
-    ("executioner", AD),
-    ("exorcist", AD),
-    ("fighter", AD),
-    ("gambler", AD),
-    ("ghost", AD),
-    ("guardian_spirit", AP),
-    ("gunner", AD),
-    ("hammerer", AD),
-    ("harpooner", AD),
-    ("hitman", AD),
-    ("hunter", AD),
-    ("ice_mage", AP),
-    ("illusionist", AP),
-    ("inquisitor", AD),
-    ("jiangshi", AD),
-    ("knight", AD),
-    ("lancer", AD),
-    ("lightning_mage", AP),
-    ("magic_knight", AD | AP),
-    ("monk", AP),
-    ("necromancer", AP),
-    ("nightmare", AD),
-    ("ninja", AD),
-    ("ogre", AD),
-    ("plague_doctor", AD),
-    ("poison_dart_hunter", AD),
-    ("pole_warrior", AD),
-    ("priest", AP),
-    ("prisoner", AD),
-    ("pyromancer", AP),
-    ("pythoness", AP),
-    ("sand_mage", AP),
-    ("shadowmancer", AP),
-    ("shield_bearer", AD),
-    ("siege_breaker", AD),
-    ("soldier", AD),
-    ("spellbreaker", AD | AP),
-    ("spirit_caller", AP),
-    ("strongman", AD),
-    ("swordman", AD),
-    ("taoist", AP),
-    ("vampire", AP),
-    ("voodoo_shaman", AP),
-    ("werewolf", AD),
-    ("whip_master", AD),
-    ("white_mage", AP),
-    ("wind_mage", AP),
+const VANILLA: &[(&str, u8, Class)] = &[
+    ("alchemist", AP, Class::Magician),
+    ("android", AD | TANK, Class::Melee),
+    ("archer", AD, Class::Range),
+    ("astrologer", AP, Class::Magician),
+    ("bard", AP, Class::Util),
+    ("barrier_magician", AP | SHIELD, Class::Util),
+    ("berserker", AD, Class::Melee),
+    ("bomber", AD, Class::Range),
+    ("boomerang_hunter", AD, Class::Range),
+    ("cavalry_knight", AD, Class::Melee),
+    ("chef", AP | TANK | HEAL, Class::Util),
+    ("circus_blade", AD, Class::Assassin),
+    ("clown", AD, Class::Assassin),
+    ("crossbowman", AD, Class::Range),
+    ("dancer", AD, Class::Range),
+    ("dark_mage", AP, Class::Magician),
+    ("demon", AD, Class::Assassin),
+    ("dokkaebi", AD | TANK | SHIELD, Class::Melee),
+    ("druid", AP, Class::Magician),
+    ("dual_blader", AD, Class::Melee),
+    ("enchanter", AP, Class::Util),
+    ("executioner", AD, Class::Melee),
+    ("exorcist", AD | TANK, Class::Util),
+    ("fighter", AD | TANK, Class::Melee),
+    ("gambler", AD, Class::Range),
+    ("ghost", AD, Class::Assassin),
+    ("guardian_spirit", AP | HEAL | SHIELD, Class::Util),
+    ("gunner", AD, Class::Range),
+    ("hammerer", AD | TANK, Class::Melee),
+    ("harpooner", AD, Class::Range),
+    ("hitman", AD, Class::Assassin),
+    ("hunter", AD, Class::Assassin),
+    ("ice_mage", AP, Class::Magician),
+    ("illusionist", AP, Class::Magician),
+    ("inquisitor", AD, Class::Assassin),
+    ("jiangshi", AD | TANK, Class::Melee),
+    ("knight", AD | TANK | SHIELD, Class::Melee),
+    ("lancer", AD, Class::Melee),
+    ("lightning_mage", AP, Class::Magician),
+    ("magic_knight", AD | AP, Class::Melee),
+    ("monk", AP | TANK | HEAL | SHIELD, Class::Util),
+    ("necromancer", AP, Class::Magician),
+    ("nightmare", AD, Class::Assassin),
+    ("ninja", AD, Class::Assassin),
+    ("ogre", AD | TANK, Class::Melee),
+    ("plague_doctor", AD | TANK, Class::Util),
+    ("poison_dart_hunter", AD, Class::Range),
+    ("pole_warrior", AD, Class::Melee),
+    ("priest", AP | HEAL | SHIELD, Class::Util),
+    ("prisoner", AD | TANK, Class::Melee),
+    ("pyromancer", AP, Class::Magician),
+    ("pythoness", AP | HEAL, Class::Util),
+    ("sand_mage", AP, Class::Magician),
+    ("shadowmancer", AP, Class::Magician),
+    ("shield_bearer", AD | TANK | SHIELD, Class::Melee),
+    ("siege_breaker", AD | TANK, Class::Melee),
+    ("soldier", AD, Class::Range),
+    ("spellbreaker", AD | AP, Class::Melee),
+    ("spirit_caller", AP | HEAL, Class::Util),
+    ("strongman", AD | TANK | SHIELD, Class::Melee),
+    ("swordman", AD, Class::Melee),
+    ("taoist", AP, Class::Util),
+    ("vampire", AP | HEAL, Class::Magician),
+    ("voodoo_shaman", AP, Class::Magician),
+    ("werewolf", AD | HEAL, Class::Assassin),
+    ("whip_master", AD, Class::Range),
+    ("white_mage", AP, Class::Magician),
+    ("wind_mage", AP, Class::Magician),
 ];
 
-/// Champions other mods add, by id, as `AD`/`AP` flags from the `tags` in
-/// their `.data_champion` files. Filled once by [`load_mod_champions`].
-static MOD_CHAMPIONS: OnceLock<HashMap<String, u8>> = OnceLock::new();
+/// Champions other mods add, by id, as tag flags and class from the `tags` and
+/// `category` in their `.data_champion` files. Filled once by
+/// [`load_mod_champions`].
+static MOD_CHAMPIONS: OnceLock<HashMap<String, (u8, Option<Class>)>> = OnceLock::new();
 
 /// Steam app id, which names the game's Workshop content folder.
 const STEAM_APP_ID: &str = "3009300";
@@ -182,7 +244,7 @@ fn mod_roots() -> Vec<PathBuf> {
     roots
 }
 
-fn scan(dir: &Path, depth: usize, found: &mut HashMap<String, u8>) {
+fn scan(dir: &Path, depth: usize, found: &mut HashMap<String, (u8, Option<Class>)>) {
     let Ok(entries) = std::fs::read_dir(dir) else {
         return;
     };
@@ -192,27 +254,28 @@ fn scan(dir: &Path, depth: usize, found: &mut HashMap<String, u8>) {
                 scan(&path, depth - 1, found);
             }
         } else if path.extension().is_some_and(|ext| ext == "data_champion") {
-            if let Some((id, flags)) = read_champion(&path) {
-                found.entry(id).or_insert(flags);
+            if let Some((id, traits)) = read_champion(&path) {
+                found.entry(id).or_insert(traits);
             }
         }
     }
 }
 
-/// The two fields of a `.data_champion` file this needs; serde skips the rest.
+/// The three fields of a `.data_champion` file this needs; serde skips the rest.
 #[derive(serde::Deserialize)]
 struct ChampionFile {
     id: String,
     #[serde(default)]
+    category: String,
+    #[serde(default)]
     tags: Vec<String>,
 }
 
-fn read_champion(path: &Path) -> Option<(String, u8)> {
+fn read_champion(path: &Path) -> Option<(String, (u8, Option<Class>))> {
     let text = std::fs::read_to_string(path).ok()?;
     let file: ChampionFile = serde_json::from_str(text.trim_start_matches('\u{feff}')).ok()?;
-    let has = |tag: &str| file.tags.iter().any(|t| t.eq_ignore_ascii_case(tag));
-    let flags = (if has("AD") { AD } else { 0 }) | (if has("AP") { AP } else { 0 });
-    Some((file.id, flags))
+    let flags = flags_of(file.tags.iter().map(String::as_str));
+    Some((file.id, (flags, Class::from_name(&file.category))))
 }
 
 /// What is known about `champion` without the host: [`VANILLA`] for the base
@@ -222,7 +285,7 @@ fn fallback(champion: &str) -> Option<ChampionTraits> {
         MOD_CHAMPIONS
             .get()?
             .get(champion)
-            .map(|&flags| ChampionTraits::from_flags(flags))
+            .map(|&(flags, class)| ChampionTraits::from_flags(flags, class))
     })
 }
 
@@ -260,9 +323,9 @@ pub(crate) fn traits(champion: &str) -> Option<ChampionTraits> {
 
 fn vanilla(champion: &str) -> Option<ChampionTraits> {
     VANILLA
-        .binary_search_by_key(&champion, |(key, _)| key)
+        .binary_search_by_key(&champion, |(key, _, _)| key)
         .ok()
-        .map(|index| ChampionTraits::from_flags(VANILLA[index].1))
+        .map(|index| ChampionTraits::from_flags(VANILLA[index].1, Some(VANILLA[index].2)))
 }
 
 /// Asks the host about every champion not asked about yet: the whole roster
@@ -302,11 +365,12 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
     for key in fresh {
         match ctx.champion_brief(&key) {
             Some(brief) => {
+                let has = |tag: ChampionTagV1| brief.tags.contains(&tag);
                 let traits = ChampionTraits {
-                    scaling: scaling_of(
-                        brief.tags.contains(&ChampionTagV1::Ad),
-                        brief.tags.contains(&ChampionTagV1::Ap),
-                    ),
+                    scaling: scaling_of(has(ChampionTagV1::Ad), has(ChampionTagV1::Ap)),
+                    class: brief.category.map(Class::from_category),
+                    tank: has(ChampionTagV1::Tank),
+                    sustains: has(ChampionTagV1::Heal) || has(ChampionTagV1::Shield),
                 };
                 answered.push((key, traits));
             }

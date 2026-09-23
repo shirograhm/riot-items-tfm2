@@ -256,7 +256,14 @@ fn init(host: &StableHost) -> StableMod {
     // the order below is for people, grouped by tier and alphabetical within it.
     // The `, passive_crit` arm is for items whose passive grants crit chance:
     // Smart Builds counts it at full stacks on top of the flat stat.
+    // The `, boots` arm is for upgraded boots: tier-3 items that are build goals
+    // of their own, so the editor's picker lists them beside the radiants.
     macro_rules! configured {
+        ($key:literal => $T:ty, boots) => {{
+            let item = configured!($key => $T);
+            strategy_ui::note_final_item($key, StableItem::category(&item));
+            item
+        }};
         ($key:literal => $T:ty, passive_crit) => {{
             let item = configured!($key => $T);
             smart_builds::note_passive_crit($key, item.max_passive_crit());
@@ -288,6 +295,7 @@ fn init(host: &StableHost) -> StableMod {
     }
 
     // Tier 1
+    reg.add_item(configured!("boots" => Boots));
     reg.add_item(configured!("glowing_mote" => GlowingMote));
 
     // Tier 2
@@ -300,20 +308,27 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("aegis_of_the_legion" => AegisOfTheLegion));
     reg.add_item(configured!("bamis_cinder" => BamisCinder));
     reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
+    reg.add_item(configured!("berserkers_greaves" => BerserkersGreaves, boots));
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
+    reg.add_item(configured!("boots_of_swiftness" => BootsOfSwiftness, boots));
     reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
     reg.add_item(configured!("forbidden_idol" => ForbiddenIdol));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
+    reg.add_item(configured!("gluttonous_greaves" => GluttonousGreaves, boots));
     reg.add_item(configured!("haunting_guise" => HauntingGuise));
     reg.add_item(configured!("hearthbound_axe" => HearthboundAxe));
     reg.add_item(configured!("hextech_alternator" => HextechAlternator));
+    reg.add_item(configured!("ionian_boots_of_lucidity" => IonianBootsOfLucidity, boots));
     reg.add_item(configured!("last_whisper" => LastWhisper));
+    reg.add_item(configured!("mercurys_treads" => MercurysTreads, boots));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("noonquiver" => Noonquiver));
     reg.add_item(configured!("phage" => Phage));
+    reg.add_item(configured!("plated_steelcaps" => PlatedSteelcaps, boots));
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
     reg.add_item(configured!("serrated_dirk" => SerratedDirk));
+    reg.add_item(configured!("sorcerers_shoes" => SorcerersShoes, boots));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
     reg.add_item(configured!("tiamat" => Tiamat));
     reg.add_item(configured!("winged_moonplate" => WingedMoonplate));

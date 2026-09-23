@@ -22,6 +22,7 @@ macro_rules! items {
 
 items! {
     assassin,
+    boots,
     components,
     fighter,
     mage,
