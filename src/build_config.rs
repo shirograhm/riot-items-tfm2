@@ -737,7 +737,7 @@ pub fn set_own_team_only(enabled: bool) -> bool {
 struct ModSettings {
     #[serde(default = "default_true")]
     unique_items: bool,
-    #[serde(default)]
+    #[serde(default = "default_true")]
     own_team_only: bool,
 }
 
@@ -784,9 +784,11 @@ pub fn smart_builds_enabled() -> bool {
 }
 
 /// Whether configured builds are restricted to the player's own team:
-/// `own_team_only` in `mod-settings.json`. Defaults to off — a build applies to
-/// whoever plays the champion, both teams — which is the behaviour every version
-/// up to now had and the only one the stable item-build hook can express.
+/// `own_team_only` in `mod-settings.json`. Defaults to on (since 2026-09-23,
+/// once the spawn injector made slot 0 work under it): a build applies only to
+/// the player's own athletes. Off, a build applies to whoever plays the
+/// champion, both teams, which is the behaviour every earlier version had and
+/// the only one the stable item-build hook can express.
 ///
 /// Turning it on moves the work to the other half of the mod: the stable hook
 /// stops setting builds entirely and the native buy detour pins the same items
@@ -851,7 +853,7 @@ pub fn smart_builds_enabled() -> bool {
 /// session, before the roster is published (see `cap_spawn`): slot 0 is then
 /// the engine's, and the buy path swaps rather than duplicates a pin.
 pub fn own_team_only_enabled() -> bool {
-    setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, false)
+    setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, true)
 }
 
 /// A configured build merged with the AI's, as item indices, with a record of

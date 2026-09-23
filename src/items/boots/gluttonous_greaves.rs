@@ -14,7 +14,7 @@ impl Default for GluttonousGreaves {
         Self {
             price: 650,
             vamp: 8,
-            move_speed_mult: 8,
+            move_speed_mult: 10,
         }
     }
 }

@@ -20,7 +20,8 @@
             "2": "Basic Items",
             "3": "Epic Items",
             "4": "Legendary Items",
-            "5": "Radiant Items"
+            "5": "Radiant Items",
+            "boots": "Boots"
         },
         "related": {
             "sub_items": "Builds From",
@@ -913,7 +914,8 @@
             "2": "Trang Bị Cơ Bản",
             "3": "Trang Bị Sử Thi",
             "4": "Trang Bị Huyền Thoại",
-            "5": "Trang Bị Ánh Sáng"
+            "5": "Trang Bị Ánh Sáng",
+            "boots": "Giày"
         },
         "related": {
             "sub_items": "Ghép từ",
@@ -1806,7 +1808,8 @@
             "2": "基础装备",
             "3": "史诗装备",
             "4": "传说装备",
-            "5": "光明装备"
+            "5": "光明装备",
+            "boots": "鞋子"
         },
         "related": {
             "sub_items": "合成配方",
@@ -2699,7 +2702,8 @@
             "2": "Itens Básicos",
             "3": "Itens Épicos",
             "4": "Itens Lendários",
-            "5": "Itens Radiantes"
+            "5": "Itens Radiantes",
+            "boots": "Botas"
         },
         "related": {
             "sub_items": "Componentes",
@@ -3592,7 +3596,8 @@
             "2": "Базовые Предметы",
             "3": "Эпические Предметы",
             "4": "Легендарные Предметы",
-            "5": "Лучезарные Предметы"
+            "5": "Лучезарные Предметы",
+            "boots": "Ботинки"
         },
         "related": {
             "sub_items": "Компоненты",
@@ -4485,7 +4490,8 @@
             "2": "기본 아이템",
             "3": "서사 아이템",
             "4": "전설 아이템",
-            "5": "찬란한 아이템"
+            "5": "찬란한 아이템",
+            "boots": "장화"
         },
         "related": {
             "sub_items": "조합 재료",

@@ -13,8 +13,8 @@ impl Default for BerserkersGreaves {
     fn default() -> Self {
         Self {
             price: 650,
-            attack_speed_mult: 20,
-            move_speed_mult: 8,
+            attack_speed_mult: 15,
+            move_speed_mult: 10,
         }
     }
 }

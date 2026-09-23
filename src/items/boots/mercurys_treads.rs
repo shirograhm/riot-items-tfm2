@@ -16,7 +16,7 @@ impl Default for MercurysTreads {
             price: 650,
             magic_resistance: 20,
             toughness: 20,
-            move_speed_mult: 8,
+            move_speed_mult: 10,
         }
     }
 }
