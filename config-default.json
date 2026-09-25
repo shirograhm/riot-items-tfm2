@@ -688,7 +688,7 @@
     "ult_cooldown_mult": 15,
     "effect_duration_seconds": 4,
     "effect_bonus_magic_damage": 30,
-    "effect_slow_amount": 20,
+    "effect_slow_amount": 30,
     "effect_max_distance": 50
   },
   "radiant_zekes_herald": {
@@ -700,7 +700,7 @@
     "ult_cooldown_mult": 15,
     "effect_duration_seconds": 4,
     "effect_bonus_magic_damage": 30,
-    "effect_slow_amount": 20,
+    "effect_slow_amount": 30,
     "effect_max_distance": 50
   },
   "scouts_slingshot": {
@@ -1713,7 +1713,7 @@
     "hp_regen": 1,
     "magic_power": 25,
     "skill_cooldown_mult": 15,
-    "effect_damaged_amplify": 7,
+    "effect_damaged_amplify": 9,
     "effect_duration_seconds": 3
   },
   "radiant_imperial_mandate": {
@@ -1722,7 +1722,7 @@
     "hp_regen": 2,
     "magic_power": 40,
     "skill_cooldown_mult": 20,
-    "effect_damaged_amplify": 7,
+    "effect_damaged_amplify": 9,
     "effect_duration_seconds": 3
   },
   "seekers_armguard": {

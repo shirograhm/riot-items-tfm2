@@ -13,12 +13,28 @@ const IMMOBILIZING: [CcKindV1; 4] = [
     CcKindV1::ForceMove,
 ];
 
-fn is_immobilized(entity: &StableEntity<'_, '_>) -> bool {
-    (0..entity.cc_count()).any(|i| {
-        entity
-            .cc_at(i)
-            .is_some_and(|cc| IMMOBILIZING.iter().any(|kind| kind.code() == cc.kind))
-    })
+/// How many immobilizing effects the entity is under right now.
+fn immobilize_count(entity: &StableEntity<'_, '_>) -> usize {
+    (0..entity.cc_count())
+        .filter(|&i| {
+            entity
+                .cc_at(i)
+                .is_some_and(|cc| IMMOBILIZING.iter().any(|kind| kind.code() == cc.kind))
+        })
+        .count()
+}
+
+/// Ticks after a skill hit in which a new immobilize still counts as that
+/// hit's: a skill's stun may land after its hit is reported, not before.
+const IMMOBILIZE_WINDOW_TICKS: usize = 2;
+
+/// A skill hit waiting to see whether it immobilized its target.
+#[derive(Clone, Copy, Debug)]
+struct PendingHit {
+    target: usize,
+    /// Immobilizing effects the target was under before the hit.
+    before: usize,
+    expires_at: usize,
 }
 
 #[derive(Clone, Debug)]
@@ -37,6 +53,11 @@ pub struct ImperialMandate {
     skill_cooldown_mult: i32,
     effect_damaged_amplify: usize,
     effect_duration_seconds: f64,
+    // Non-vital stats (internals)
+    /// Each enemy champion's immobilize count as of the last tick: the "before"
+    /// a skill hit is compared against.
+    baseline: Vec<(usize, usize)>,
+    pending: Vec<PendingHit>,
 }
 
 impl ImperialMandate {
@@ -53,8 +74,11 @@ impl ImperialMandate {
             hp_regen: 1,
             magic_power: 25,
             skill_cooldown_mult: 15,
-            effect_damaged_amplify: 7,
+            effect_damaged_amplify: 9,
             effect_duration_seconds: 3.0,
+            // Non-vital stats (internals)
+            baseline: Vec::new(),
+            pending: Vec::new(),
         }
     }
 
@@ -66,7 +90,7 @@ impl ImperialMandate {
             hp_regen: 2,
             magic_power: 40,
             skill_cooldown_mult: 20,
-            effect_damaged_amplify: 7,
+            effect_damaged_amplify: 9,
             effect_duration_seconds: 3.0,
             ..Self::base()
         }
@@ -95,6 +119,25 @@ impl ImperialMandate {
             ]
         );
         self
+    }
+
+    fn mark(&self, ctx: &mut StableSim<'_>, target: usize) {
+        refresh_buff(
+            ctx,
+            target,
+            self.vulnerable_buff,
+            &BuffV1 {
+                damaged_amplify: self.effect_damaged_amplify,
+                ..BuffV1::timed(self.vulnerable_buff, ticks(self.effect_duration_seconds))
+            },
+        );
+    }
+
+    fn baseline_of(&self, target: usize) -> usize {
+        self.baseline
+            .iter()
+            .find(|&&(id, _)| id == target)
+            .map_or(0, |&(_, count)| count)
     }
 }
 
@@ -143,9 +186,19 @@ impl StableItem for ImperialMandate {
         }
     }
 
-    // Command. The target's crowd control is read as this hook sees it: CC from
-    // anyone counts, and whether a skill's own stun is already on the target when
-    // its hit reports here is the host's ordering, not verified in game.
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.baseline.clear();
+        self.pending.clear();
+    }
+
+    // Command: immobilizing an enemy champion. The host does not say who
+    // applied a crowd control, so "you immobilized them" is read as one of your
+    // skills hitting a champion who becomes newly immobilized at that hit or
+    // within `IMMOBILIZE_WINDOW_TICKS` after it (a skill's stun may land either
+    // side of its hit report). "Newly" means more immobilizing effects than the
+    // last tick's baseline, so chaining a second stun onto a stunned target
+    // refreshes the mark too. An ally's stun landing in that same window reads
+    // the same and will be credited to you.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -157,21 +210,72 @@ impl StableItem for ImperialMandate {
         if is_ally {
             return;
         }
-        let Some(target_ref) = ctx.get_entity(target) else {
+        let Some(now) = ctx
+            .get_entity(target)
+            .filter(|t| t.is_champion() && t.is_alive())
+            .map(|t| immobilize_count(&t))
+        else {
             return;
         };
-        if !target_ref.is_champion() || !is_immobilized(&target_ref) {
+        let before = self.baseline_of(target);
+        if now > before {
+            self.mark(ctx, target);
             return;
         }
-        refresh_buff(
-            ctx,
-            target,
-            self.vulnerable_buff,
-            &BuffV1 {
-                damaged_amplify: self.effect_damaged_amplify,
-                ..BuffV1::timed(self.vulnerable_buff, ticks(self.effect_duration_seconds))
-            },
-        );
+        let expires_at = ctx.tick() + IMMOBILIZE_WINDOW_TICKS;
+        match self.pending.iter_mut().find(|p| p.target == target) {
+            Some(pending) => pending.expires_at = expires_at,
+            None => self.pending.push(PendingHit {
+                target,
+                before,
+                expires_at,
+            }),
+        }
+    }
+
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        let tick = ctx.tick();
+
+        // Hits still waiting on their stun, judged against the count from
+        // before they landed.
+        if !self.pending.is_empty() {
+            let mut marked = Vec::new();
+            self.pending.retain(|p| {
+                let now = ctx
+                    .get_entity(p.target)
+                    .filter(|t| t.is_alive())
+                    .map_or(0, |t| immobilize_count(&t));
+                if now > p.before {
+                    marked.push(p.target);
+                    return false;
+                }
+                tick < p.expires_at
+            });
+            for target in marked {
+                self.mark(ctx, target);
+            }
+        }
+
+        // This tick's counts become the next hit's "before".
+        let Some(team) = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .map(|c| c.team())
+        else {
+            return;
+        };
+        self.baseline.clear();
+        for index in 0..ctx.champion_count() {
+            let id = ctx.champion_id_at(index);
+            let Some(count) = ctx
+                .get_entity(id)
+                .filter(|e| e.team() != team && e.is_alive())
+                .map(|e| immobilize_count(&e))
+            else {
+                continue;
+            };
+            self.baseline.push((id, count));
+        }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

@@ -65,7 +65,7 @@ impl ZekesHerald {
             ult_cooldown_mult: 15,
             effect_duration_seconds: 4.0,
             effect_bonus_magic_damage: 30,
-            effect_slow_amount: 20,
+            effect_slow_amount: 30,
             effect_max_distance: 50,
             // Non-vital stats (internals)
             last_ult_cooldown: None,
@@ -86,7 +86,7 @@ impl ZekesHerald {
             ult_cooldown_mult: 15,
             effect_duration_seconds: 4.0,
             effect_bonus_magic_damage: 30,
-            effect_slow_amount: 20,
+            effect_slow_amount: 30,
             effect_max_distance: 50,
             ..Self::base()
         }
