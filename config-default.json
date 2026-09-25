@@ -48,7 +48,7 @@
     "price": 650,
     "magic_power": 65,
     "skill_cooldown_mult": 15,
-    "effect_stack_magic_power": 10,
+    "effect_stack_magic_power": 5,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 4
   },
@@ -325,7 +325,7 @@
     "price": 950,
     "magic_power": 90,
     "skill_cooldown_mult": 25,
-    "effect_stack_magic_power": 30,
+    "effect_stack_magic_power": 10,
     "effect_max_stacks": 4,
     "effect_duration_seconds": 4
   },
@@ -1229,7 +1229,7 @@
     "magic_power": 30,
     "skill_cooldown_mult": 10,
     "effect_stack_magic_power": 2,
-    "effect_max_stacks": 20,
+    "effect_max_stacks": 10,
     "effect_percent_bonus_damage": 20.0,
     "effect_bonus_hp_percent_of_damage": 4.0
   },
@@ -1239,7 +1239,7 @@
     "magic_power": 60,
     "skill_cooldown_mult": 10,
     "effect_stack_magic_power": 2,
-    "effect_max_stacks": 30,
+    "effect_max_stacks": 20,
     "effect_percent_bonus_damage": 30.0,
     "effect_bonus_hp_percent_of_damage": 6.0
   },

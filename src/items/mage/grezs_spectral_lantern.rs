@@ -34,7 +34,7 @@ impl GrezsSpectralLantern {
             magic_power: 30,
             skill_cooldown_mult: 10,
             effect_stack_magic_power: 2,
-            effect_max_stacks: 20,
+            effect_max_stacks: 10,
             effect_percent_bonus_damage: 20.0,
             effect_bonus_hp_percent_of_damage: 4.0,
             // Non-vital stats (internals)
@@ -54,7 +54,7 @@ impl GrezsSpectralLantern {
             magic_power: 60,
             skill_cooldown_mult: 10,
             effect_stack_magic_power: 2,
-            effect_max_stacks: 30,
+            effect_max_stacks: 20,
             effect_percent_bonus_damage: 30.0,
             effect_bonus_hp_percent_of_damage: 6.0,
             ..Self::base()

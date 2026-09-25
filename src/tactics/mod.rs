@@ -1405,16 +1405,16 @@ const GV_OFF_ITEMLIST_CAP: usize = 0xa8; // -1 means None
 const GV_OFF_ITEMLIST_PTR: usize = 0xb0;
 const GV_OFF_ITEMLIST_LEN: usize = 0xb8;
 const GV_OFF_PV_CTRL: usize = 0x1d8; // hashbrown RawTable ctrl. 0.6.0-beta2 (0.6.0-beta was 0x1d0)
-// ** 0.6.0_beta2 (2026-09-09): the mask is no longer a guess. `ctrl` and `items` are read straight out of
-//   `gv_update` (0x1d8 dereferenced for the group load, 0x1f0 as the element count), which brackets the
-//   RawTable into four 8-byte slots. The two unknown middle slots are told apart by what the code does to
-//   them: hashbrown decrements `growth_left` in place on every insert and never touches `bucket_mask`
-//   outside a resize. Scanning for an in-place `sub qword [reg+disp],rax` finds **6 sites for the upper
-//   slot and 0 for the lower, in BOTH builds** — beta1 `sub [r13+0x1e0],rax` @0x988510 vs beta2
-//   `sub [r13+0x1e8],rax` @0x7c50c3, byte-identical but for the displacement (49 29 85 e0/e8 01 00 00).
-//   So growth_left = 0x1e0 -> 0x1e8 and the mask is the slot below it. This also retro-confirms the
-//   beta1 value 0x1d8, which shipped from 0.5.5 on with the note that no instruction had been matched
-//   to it.
+                                     // ** 0.6.0_beta2 (2026-09-09): the mask is no longer a guess. `ctrl` and `items` are read straight out of
+                                     //   `gv_update` (0x1d8 dereferenced for the group load, 0x1f0 as the element count), which brackets the
+                                     //   RawTable into four 8-byte slots. The two unknown middle slots are told apart by what the code does to
+                                     //   them: hashbrown decrements `growth_left` in place on every insert and never touches `bucket_mask`
+                                     //   outside a resize. Scanning for an in-place `sub qword [reg+disp],rax` finds **6 sites for the upper
+                                     //   slot and 0 for the lower, in BOTH builds** — beta1 `sub [r13+0x1e0],rax` @0x988510 vs beta2
+                                     //   `sub [r13+0x1e8],rax` @0x7c50c3, byte-identical but for the displacement (49 29 85 e0/e8 01 00 00).
+                                     //   So growth_left = 0x1e0 -> 0x1e8 and the mask is the slot below it. This also retro-confirms the
+                                     //   beta1 value 0x1d8, which shipped from 0.5.5 on with the note that no instruction had been matched
+                                     //   to it.
 const GV_OFF_PV_MASK: usize = 0x1e0; // 0.6.0-beta2 (0.6.0-beta was 0x1d8) - derived, see above
 const GV_OFF_PV_ITEMS: usize = 0x1f0; // element count (0 = not in a match). 0.6.0-beta2 (0.6.0-beta was 0x1e8)
                                       // ** 0.5.5 (2026-08-12): PlayerViewInfo grew 0x260 -> 0x2c0. The simulation-side offsets were migrated and this
@@ -2425,18 +2425,18 @@ fn is_skill_key(k: &str) -> bool {
 //   The candidate build element c6 reads: [elem+8] = inner ptr, [elem+0x10] = len. [elem+0] presumed cap (confirmed by diagnostics).
 //   Writing slot3 needs the inner Vec len >= 4 (the extractor only builds 3) -> extend len to 4 here when cap allows.
 const EXTEND_BUILD: bool = false; // extending the candidate build is useless because the extractor discards slot3 -> OFF
-                                    // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
+                                  // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
 const BUY_ORDER_DIAG: bool = false; // Not needed: the question it was going to answer (can the buy path reach slot 0?) is moot now that `SPAWN_INJECT_ENABLED` sets slot 0 before any purchase. Also writes a .txt into the mod folder, which the user asked not to have.
                                     // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
                                     // * Cause identified and fixed (comp-test injection = the missing team gate bypass; all 9 launcher retaddrs confirmed) -> OFF in production.
                                     //   Set true to re-investigate = the measured list is written to launcher_retaddr.txt (it was decisive in tracking the cause down).
 static BUY_ORDER_SEEN: Mutex<Option<std::collections::HashSet<String>>> = Mutex::new(None);
 static BUY_ORDER_BUF: Mutex<String> = Mutex::new(String::new());
-                                                    // ** 0.5.4 (2026-08-04): found by its documented body rather than an exe2exe signature (no old exe - see
-                                                    //   `tools/rederive.py`). `mov rdi,r9 / mov rsi,rcx / cmp r8,0x11` is **1 hit in .text**, at +0x11 inside fn
-                                                    //   0x29a7640. The body is __rust_realloc outright: `cmp r8,0x11 / jae` splits the over-aligned path, the
-                                                    //   align<=16 path tail-jmps to HeapReAlloc(heap, 0, ptr, size), and the over-aligned path allocs (0x29bb920),
-                                                    //   memcpys, then frees. Argument contract (rcx=ptr, rdx=old, r8=align, r9=new) is unchanged.
+// ** 0.5.4 (2026-08-04): found by its documented body rather than an exe2exe signature (no old exe - see
+//   `tools/rederive.py`). `mov rdi,r9 / mov rsi,rcx / cmp r8,0x11` is **1 hit in .text**, at +0x11 inside fn
+//   0x29a7640. The body is __rust_realloc outright: `cmp r8,0x11 / jae` splits the over-aligned path, the
+//   align<=16 path tail-jmps to HeapReAlloc(heap, 0, ptr, size), and the over-aligned path allocs (0x29bb920),
+//   memcpys, then frees. Argument contract (rcx=ptr, rdx=old, r8=align, r9=new) is unchanged.
 const RVA_REALLOC: usize = 0x2f50ad0; // 0.6.1 (2026-09-21: exe2exe from 0.6.0 strict unique, FUNCTION START, size 174 both sides, pairdiff clean). 0.6.0 release was 0x2f23bf0 (2026-09-18: exe2exe from beta2 0x2f1b320 is unique, FUNCTION START, size 174 both sides; the 23-byte entry below is also unique in .text on its own). 0.6.0-beta2 was 0x2f1b320 (0.6.0-beta was 0x2dc0690, 0.5.7 0x2a9fb50, 0.5.6 0x2a9d1b0; exe2exe unique, size 174 both sides, pairdiff clean). History for 0.5.6 follows. (0.5.5 was 0x2a87a70; exe2exe unique, size 174 both sides, instruction-identical). History for 0.5.5 follows. (0.5.4 was 0x29a7640; exe2exe unique, size 174 both sides, body still the __rust_realloc shape). History for 0.5.4 follows. (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
 type ReallocFn = unsafe extern "win64" fn(usize, usize, usize, usize) -> usize;
 /// First 12 bytes of `RVA_REALLOC` (6 push + `sub rsp,0x28`), checked before
@@ -2877,11 +2877,11 @@ const SPAWN_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ]; // 0.5.8: unchanged since 0.5.3 - 8 push (12B) + sub rsp,0xf8, byte-identical at the new address (0.5.2 was 7 push + mov eax,0x4d20)
 const SPAWN_ORIG_LEN: usize = 12; // 0.5.8: unchanged - relocate the 8 pushes only (12B = exactly an instruction boundary) => install_detour_r11 is unnecessary on re-enable (generic suffices).
-// ** ON again for game 0.6.1 (2026-09-23), with SPAWN_RVA re-derived above.
-// It had been OFF since 2026-09-16 and dead since beta2: the beta1 address
-// was carried forward unvalidated, `install_spawn_hook` refused it on the
-// prologue check, and slot 0 under `own_team_only` was always the engine's
-// pick. This is the only path that can set slot 0 in that mode.
+                                  // ** ON again for game 0.6.1 (2026-09-23), with SPAWN_RVA re-derived above.
+                                  // It had been OFF since 2026-09-16 and dead since beta2: the beta1 address
+                                  // was carried forward unvalidated, `install_spawn_hook` refused it on the
+                                  // prologue check, and slot 0 under `own_team_only` was always the engine's
+                                  // pick. This is the only path that can set slot 0 in that mode.
 const SPAWN_INJECT_ENABLED: bool = true; // was false 2026-09-16..09-23; was true (2026-09-08), confirmed in game: with this closed the first item was always the engine's pick, and with it open all four slots hold the configured build. ON after the 0.5.8 re-derivation above re-confirmed both sealing reasons: the prologue is unchanged (warning 1) and the r8/r9 contract change (warning 2) never applied to `cap_spawn`, which reads only rcx/rdx. This is the only path that can set build slot 0 under `own_team_only` — see `build_config::own_team_only_enabled`. History: OFF from 0.5.2 (logic change unconfirmed) through 0.5.7; 0.5.1 had true. ~~resumed (07-19)~~ the sealing reason "no catalog at spawn time" turned out to be an offset error.
                                          //   The old 0x1fe8/0x1ff0 = a neighbouring empty Vec (always len=0) -> the real catalog is Game+0x1fd0/+0x1fd8 (ghidra-re confirmed).
                                          //   The v15 team decision (athlete_id membership) is verified (aid valid 10/10, my team 5/10 correct) -> (4) injection expected to complete.
@@ -2896,9 +2896,7 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         // Only under `own_team_only`: otherwise `item_build_hook::decide_build`
         // has already set these slots on the stable API, and two writers would
         // fight over them.
-        if !SPAWN_INJECT_ENABLED
-            || saved.is_null()
-            || !crate::build_config::own_team_only_enabled()
+        if !SPAWN_INJECT_ENABLED || saved.is_null() || !crate::build_config::own_team_only_enabled()
         {
             return;
         }
@@ -2973,6 +2971,13 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         let champ_cow =
             String::from_utf8_lossy(std::slice::from_raw_parts(cptr as *const u8, clen));
         let champ: &str = champ_cow.as_ref();
+        // Every athlete, pins or not, while a lane or 5v5 test is on: this is
+        // how the buy detour tells the test's match from the league fixtures
+        // simulating alongside it.
+        crate::build_config::note_test_spawn(
+            safe_read_u64(provider as usize + O_PROVIDER_SEED).unwrap_or(0),
+            champ,
+        );
         // Before any pin is looked up: the lane every lookup below resolves in.
         crate::build_config::set_athlete_lane(athlete_lane(athlete));
         // Was `is_champ_designated`, which OR-ed the pin set with the `SEL`
@@ -2985,6 +2990,19 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         //     If the roster is not obtained yet (before visiting the management screen), stay undecided -> skip injection (avoiding enemy-team contamination > coverage). The buy path covers it.
         //     Also run the scene side as a fallback (for early frames where the roster exists but aid is not filled in).
         let mine = is_my_athlete(athlete);
+        crate::own_team_log::line(|| {
+            format!(
+                "spawn: {} aid={:?} provider=0x{:x} seed=0x{:x} lane={:?} rendered={} mine={:?} roster_n={}",
+                champ,
+                safe_read_u64(athlete + O_ATHLETE_ID),
+                provider,
+                safe_read_u64(provider as usize + O_PROVIDER_SEED).unwrap_or(0),
+                athlete_lane(athlete),
+                rendered,
+                mine,
+                MY_ATH_N.load(Ordering::Relaxed)
+            )
+        });
         let ok = match mine {
             Some(true) => true,
             Some(false) => return, // definitely another team = do not inject
@@ -3007,6 +3025,11 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                 // fix belongs at the publish end (poll every frame until the
                 // roster is first obtained, then back off to ROSTER_POLL),
                 // not here.
+                //
+                // (2026-09-25, logged: the roster published about a second after
+                // the save loaded and 25 s before the first spawn, and every
+                // spawn of the player's athletes that session read `Some(true)`.
+                // The miss above was not reproduced, so the poll is unchanged.)
                 if !rendered {
                     return;
                 }
@@ -3046,6 +3069,22 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         }
         if cat_base < 0x10000 || cat_len == 0 || cat_len > 100000 {
             SP4_NOCAT.fetch_add(1, Ordering::Relaxed); // vanilla designations need no scan, so keep going
+        } else {
+            let held = spawn_build_names(bptr, blen, cat_base, cat_len);
+            // The stable hook gave this athlete the build it gives both teams,
+            // which does not know the pins. The player's athlete gets the
+            // pin-aware one the hook recorded next to it, before the pins
+            // below are written into it.
+            spawn_paste_pinned_build(champ, bptr, blen, cat_base, cat_len);
+            crate::own_team_log::line(|| {
+                format!(
+                    "spawn: {} held={:?} after_swap={:?} pin_row={:?}",
+                    champ,
+                    held,
+                    spawn_build_names(bptr, blen, cat_base, cat_len),
+                    crate::build_config::athlete_pin_row(champ)
+                )
+            });
         }
         for si in 0u8..3 {
             if (si as u64) >= blen {
@@ -3057,7 +3096,8 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                 continue;
             }
             // By key, vanilla included: name scan + recipe validation.
-            let idx = slotN_catalog_index(champ, si, |key| scan_catalog_index(cat_base, cat_len, key));
+            let idx =
+                slotN_catalog_index(champ, si, |key| scan_catalog_index(cat_base, cat_len, key));
             let Some(t) = idx else {
                 SP4_NOIDX.fetch_add(1, Ordering::Relaxed);
                 continue;
@@ -3073,27 +3113,25 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                     // there.) A slot the player pinned to what it holds is
                     // theirs and is left alone.
                     let pin_boots = spawn_is_boots(cat_base, cat_len, t);
-                    let elsewhere = (0..blen as usize)
-                        .filter(|&j| j != si as usize)
-                        .find(|&j| {
-                            let there = rd_u64(bptr + j * 8);
-                            (there == t || (pin_boots && spawn_is_boots(cat_base, cat_len, there)))
-                                && spawn_pin_at(champ, cat_base, cat_len, j) != Some(there)
-                        });
+                    let elsewhere = (0..blen as usize).filter(|&j| j != si as usize).find(|&j| {
+                        let there = rd_u64(bptr + j * 8);
+                        (there == t || (pin_boots && spawn_is_boots(cat_base, cat_len, there)))
+                            && spawn_pin_at(champ, cat_base, cat_len, j) != Some(there)
+                    });
                     if let Some(j) = elsewhere {
                         wr_u64(bptr + j * 8, here);
                     } else if !pin_boots && spawn_is_boots(cat_base, cat_len, here) {
                         // The pin covers the boots Smart Builds gave this
                         // build (rule 7). Unless the player pinned a pair of
-                        // their own, move them to the next slot nobody pinned,
-                        // where they replace the engine's pick; with no such
-                        // slot the build goes without.
+                        // their own, move them where the rule would have put
+                        // them (`displaced_boots_slot`), replacing the
+                        // engine's pick there. Nothing is bought yet, so the
+                        // first slot is open to them too.
                         let player_boots = (0..crate::build_config::picker_slots()).any(|j| {
                             spawn_pin_at(champ, cat_base, cat_len, j)
                                 .is_some_and(|pin| spawn_is_boots(cat_base, cat_len, pin))
                         });
-                        let free = (si as usize + 1..blen as usize)
-                            .find(|&j| crate::build_config::pinned_key_raw(champ, j).is_none());
+                        let free = displaced_boots_slot(champ, si as usize, blen as usize, true);
                         if let (false, Some(j)) = (player_boots, free) {
                             wr_u64(bptr + j * 8, here);
                         }
@@ -3125,18 +3163,95 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                 }
             }
         }
+        crate::own_team_log::line(|| {
+            format!(
+                "spawn: {} final={:?}",
+                champ,
+                spawn_build_names(bptr, blen, cat_base, cat_len)
+            )
+        });
     }));
     0 // the install_detour_generic stub does not use the return value (this is an observe/modify hook)
 }
+/// Where the boots Smart Builds put in build slot `si` go when a pin lands
+/// there, following the rule's order (`smart_builds::BOOTS_SLOT`): the first
+/// slot after `si` that no pin holds. A 5th or 6th slot the build has not
+/// grown to yet (`len` is its length now) gets them when it grows
+/// (`extra_slot_boots`), so there is nothing to move then: `None`. Failing
+/// both, the first slot, when it is not bought yet (`first_open`) and no pin
+/// holds it. `None` otherwise, and the build goes without.
+fn displaced_boots_slot(champ: &str, si: usize, len: usize, first_open: bool) -> Option<usize> {
+    let open = |j: usize| crate::build_config::pinned_key_raw(champ, j).is_none();
+    if let Some(j) = (si + 1..len).find(|&j| open(j)) {
+        return Some(j);
+    }
+    if builds_grow_past_four() && (len..crate::build_config::picker_slots()).any(open) {
+        return None;
+    }
+    (first_open && si != 0 && open(0)).then_some(0)
+}
+
 /// Whether catalog entry `index` is a pair of boots, for `cap_spawn`, which
 /// holds the catalog base and length rather than a buy context.
 unsafe fn spawn_is_boots(cat_base: usize, cat_len: u64, index: u64) -> bool {
-    catalog_name_in(cat_base, cat_len, index).is_some_and(|name| crate::smart_builds::is_boots(&name))
+    catalog_name_in(cat_base, cat_len, index)
+        .is_some_and(|name| crate::smart_builds::is_boots(&name))
+}
+
+/// The athlete's build as catalog names, for the `own_team_log` test log.
+/// `None` for an entry the catalog does not name.
+unsafe fn spawn_build_names(
+    bptr: usize,
+    blen: u64,
+    cat_base: usize,
+    cat_len: u64,
+) -> Vec<Option<String>> {
+    (0..blen as usize)
+        .map(|j| catalog_name_in(cat_base, cat_len, rd_u64(bptr + j * 8)))
+        .collect()
+}
+
+/// Swaps the pin-free build the stable hook handed this athlete for the
+/// pin-aware one it recorded under `own_team_only`
+/// (`crate::item_build_hook::remember_pinned_build`): the Smart Builds pass
+/// that counted the player's pins. Only `cap_spawn`'s player gate reaches
+/// this, so the enemy keeps the pin-free build. Nothing is written unless the
+/// athlete still holds exactly the build the hook recorded and every item of
+/// the pin-aware one resolves.
+unsafe fn spawn_paste_pinned_build(
+    champ: &str,
+    bptr: usize,
+    blen: u64,
+    cat_base: usize,
+    cat_len: u64,
+) {
+    let held: Option<Vec<String>> = (0..blen as usize)
+        .map(|j| catalog_name_in(cat_base, cat_len, rd_u64(bptr + j * 8)))
+        .collect();
+    let Some(held) = held else {
+        return;
+    };
+    let row = crate::build_config::athlete_pin_row(champ);
+    let Some(pinned) = crate::build_config::pinned_build(champ, &row, &held) else {
+        return;
+    };
+    let indices: Option<Vec<u64>> = pinned
+        .iter()
+        .map(|key| scan_catalog_index(cat_base, cat_len, key.as_bytes()))
+        .collect();
+    let Some(indices) = indices.filter(|indices| indices.len() == blen as usize) else {
+        return;
+    };
+    for (j, index) in indices.into_iter().enumerate() {
+        wr_u64(bptr + j * 8, index);
+    }
 }
 
 /// The player's pin for build slot `slot`, as a catalog index, for `cap_spawn`.
 unsafe fn spawn_pin_at(champ: &str, cat_base: usize, cat_len: u64, slot: usize) -> Option<u64> {
-    slotN_catalog_index(champ, slot as u8, |key| scan_catalog_index(cat_base, cat_len, key))
+    slotN_catalog_index(champ, slot as u8, |key| {
+        scan_catalog_index(cat_base, cat_len, key)
+    })
 }
 
 fn install_spawn_hook() {
@@ -3641,7 +3756,11 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
             //   chance to correct it), and comp test is also InGame while that screen has no notion of team membership, so
             //   `player_team_id()` **returns 0**. Publishing that 0 makes team(0).last_starting=[0,1,2,3,4] my team.
             //   => ignore 0 reports during comp test and keep the value captured in a normal match.
-            let in_comptest = COMPTEST_MATCH.load(Ordering::Relaxed);
+            // (2026-09-24: or a lane/5v5 test by the route call's `mode` —
+            //  `COMPTEST_MATCH` hangs on 0.5.3 launcher retaddrs that were never
+            //  re-derived; see `build_config::training_match`.)
+            let in_comptest =
+                COMPTEST_MATCH.load(Ordering::Relaxed) || crate::build_config::training_match();
             let pu = pid as u64;
             // * Diagnostic: pid observation history. ** Confirmed by measurement (2026-07-30) - **from the user's point of view comp test is a
             //   background brief-sim, but under the SDK `Scene` enum it is `InGame`** (proved by LIVE_DB != 0, i.e. this block did run),
@@ -3697,6 +3816,19 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                     //   comp test**, accept it as a genuine team-id-0 save and publish.
                     //   => it is never published in a comp-test-only session, and playing a normal match captures the real pid.
                     let trust = known != 0 || PID_ZERO_CLEAN.load(Ordering::Relaxed) >= 600;
+                    crate::own_team_log::on_change("roster", {
+                        let mut ids: Vec<u64> = my.iter().copied().collect();
+                        ids.sort_unstable();
+                        format!(
+                            "pid_raw={} team_id={} trust={} last_starting={:?} published_n={} comptest={}",
+                            pid,
+                            known,
+                            trust,
+                            ids,
+                            MY_ATH_N.load(Ordering::Relaxed),
+                            in_comptest
+                        )
+                    });
                     if !my.is_empty() && trust {
                         publish_my_athletes(my);
                     } else if !trust {
@@ -4517,26 +4649,26 @@ const BUILD_EXTEND_ENABLED: bool = true;
 //
 // Re-deriving LOADER_RVA is the prerequisite for ever setting this true.
 const UI_INJECT_ENABLED: bool = false; // * 0.5.0 fix: player_info/wide .ui rewritten on a 0.5.0 base with 4 slots -> re-enabled (isolated test)
-                                      // * Diagnostic: OFF gate for the slot UI patch (bounds + helper) - bisecting the crash when returning to the title (demo battle).
-                                      // * 0.5.0: helper RVA_SLOT_HELPER (0xdc2390) confirmed -> OFF (= patch_slot_ui back in service). In-match slot3 icon display.
-                                      // ** 0.5.3 (2026-07-29) forced OFF - this feature alone cannot be ported (crash prevention). Two-part evidence:
-                                      //   (1) the helper function itself **disappeared**: the 0.5.2 RVA_SLOT_HELPER (0xc5cd80) is **fully inlined** into the UI mega-function 0xa5c1e0
-                                      //      in 0.5.3 (0 "blue_pla"/"red_play" movabs in the new exe .text, 0 call sites).
-                                      //      The 4 inlined blocks (75B each) store 3 (ptr,len) pairs directly into rbp+0x10d20/+0x10d30/+0x10d40.
-                                      //   (2) merely raising the bound is **impossible** too: the slots for a 4th entry, rbp+0x10d50/+0x10d58, are in 0.5.3 **already used by
-                                      //      other locals** (measured 40 and 27 references respectively, e.g. 0xa62f9f mov [rbp+0x10d50],0 / 0xa6339f cmp rdi,[rbp+0x10d50]).
-                                      //      Changing only cmp 0x30 -> 0x40 would make the loop read those locals as a string (ptr,len) = a guaranteed crash.
-                                      //      There is no frame headroom either (the rbp limit is +0x10f88 and above that are xmm spills).
-                                      //   => resuming would require trampolines on the inlined blocks + relocating the array base disp32 = a separate redesign project.
-                                      //      What is lost while OFF is only the in-match 4th item **icon display** (purchasing, stat application and AI recommendation all still work).
-                                      // ** Resumed (2026-07-30, user instruction): (1) and (2) above mean that "the 0.5.2 approach (replace the helper + only raise the bound)" is impossible;
-                                      //   we judged that **frame extension + array relocation** surgery can work and re-enabled it. Detailed design and safeguards = the `patch_slot_ui` comment.
-                                      //   Two switches to roll it back on trouble: set this to true (skip everything) or `SLOT_UI_SURGERY=false`.
-                                      // ** 2026-07-30 final summary - this switch is exclusively for the **old byte-patch approach (SLOT_BOUNDS bound extension + SLOT_HELPER replace)**.
-                                      //   That approach failed on 0.5.3 (see `SLOT_UI_SURGERY=false`), and the 4th icon is now **verified in game** via
-                                      //   **direct view-model reading** (`handle_ingame_slot3` - GameView -> player_view -> items[3] -> node write).
-                                      //   => leaving this true (= skip the old path entirely) is correct. The icon feature's on/off switch is `SLOT3_ICON_ENABLED`.
-                                      //   WARNING do not confuse them: "DIAG_SLOT_UI_OFF=true" does not mean the icon is off (only the old path is off).
+                                       // * Diagnostic: OFF gate for the slot UI patch (bounds + helper) - bisecting the crash when returning to the title (demo battle).
+                                       // * 0.5.0: helper RVA_SLOT_HELPER (0xdc2390) confirmed -> OFF (= patch_slot_ui back in service). In-match slot3 icon display.
+                                       // ** 0.5.3 (2026-07-29) forced OFF - this feature alone cannot be ported (crash prevention). Two-part evidence:
+                                       //   (1) the helper function itself **disappeared**: the 0.5.2 RVA_SLOT_HELPER (0xc5cd80) is **fully inlined** into the UI mega-function 0xa5c1e0
+                                       //      in 0.5.3 (0 "blue_pla"/"red_play" movabs in the new exe .text, 0 call sites).
+                                       //      The 4 inlined blocks (75B each) store 3 (ptr,len) pairs directly into rbp+0x10d20/+0x10d30/+0x10d40.
+                                       //   (2) merely raising the bound is **impossible** too: the slots for a 4th entry, rbp+0x10d50/+0x10d58, are in 0.5.3 **already used by
+                                       //      other locals** (measured 40 and 27 references respectively, e.g. 0xa62f9f mov [rbp+0x10d50],0 / 0xa6339f cmp rdi,[rbp+0x10d50]).
+                                       //      Changing only cmp 0x30 -> 0x40 would make the loop read those locals as a string (ptr,len) = a guaranteed crash.
+                                       //      There is no frame headroom either (the rbp limit is +0x10f88 and above that are xmm spills).
+                                       //   => resuming would require trampolines on the inlined blocks + relocating the array base disp32 = a separate redesign project.
+                                       //      What is lost while OFF is only the in-match 4th item **icon display** (purchasing, stat application and AI recommendation all still work).
+                                       // ** Resumed (2026-07-30, user instruction): (1) and (2) above mean that "the 0.5.2 approach (replace the helper + only raise the bound)" is impossible;
+                                       //   we judged that **frame extension + array relocation** surgery can work and re-enabled it. Detailed design and safeguards = the `patch_slot_ui` comment.
+                                       //   Two switches to roll it back on trouble: set this to true (skip everything) or `SLOT_UI_SURGERY=false`.
+                                       // ** 2026-07-30 final summary - this switch is exclusively for the **old byte-patch approach (SLOT_BOUNDS bound extension + SLOT_HELPER replace)**.
+                                       //   That approach failed on 0.5.3 (see `SLOT_UI_SURGERY=false`), and the 4th icon is now **verified in game** via
+                                       //   **direct view-model reading** (`handle_ingame_slot3` - GameView -> player_view -> items[3] -> node write).
+                                       //   => leaving this true (= skip the old path entirely) is correct. The icon feature's on/off switch is `SLOT3_ICON_ENABLED`.
+                                       //   WARNING do not confuse them: "DIAG_SLOT_UI_OFF=true" does not mean the icon is off (only the old path is off).
 const DIAG_SLOT_UI_OFF: bool = true; // keep the old byte-patch path sealed (it failed). The icon works separately via direct view-model reading. History for 0.5.1~0.5.2 follows: the 4 SLOT_BOUNDS sites (0x4b4d40/50b0/5790/5b00) and SLOT_HELPER (0xd81b30) were all confirmed correct by ghidra-re's OLD<->NEW byte comparison of the mask-sig picks (HIGH confidence; the +0x8fb0 idiom in 4 places, "blue_pla" movabs). Not a misidentification -> ON.
                                      // * Performance cache (0.5.1): the result of compute_auto_4th_id. Key = (champ, build3, lineup ctx). For the same match, champion and build
                                      //   the neural 4th recommendation is always the same -> removes the 51-forward recomputation on repeated owned==3 buys (eases the load spike when gold is low).
@@ -4852,7 +4984,9 @@ unsafe fn scan_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<u64> 
         found: HashMap::new(),
     });
     if cache.found.len() < 256 {
-        cache.found.insert(want.to_vec(), res.map(|i| i as i64).unwrap_or(-1));
+        cache
+            .found
+            .insert(want.to_vec(), res.map(|i| i as i64).unwrap_or(-1));
     }
     res
 }
@@ -5002,7 +5136,10 @@ unsafe fn catalog_entry_named(data: usize, len: u64, idx: u64, want: &[u8]) -> b
     let Some(namefn) = safe_read_u64(evt + 0x58).map(|f| f as usize) else {
         return false;
     };
-    if !NAME_GETTERS.iter().any(|g| g.load(Ordering::Relaxed) == namefn) {
+    if !NAME_GETTERS
+        .iter()
+        .any(|g| g.load(Ordering::Relaxed) == namefn)
+    {
         if !code_ptr_ok(namefn) {
             return false;
         }
@@ -5029,7 +5166,11 @@ static NAME_GETTERS: [AtomicUsize; 8] = [const { AtomicUsize::new(0) }; 8];
 static NAME_GETTER_NEXT: AtomicUsize = AtomicUsize::new(0);
 
 fn forget_catalog(base: usize, len: u64) {
-    if let Some(outer) = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner()).as_mut() {
+    if let Some(outer) = SCAN_CACHE
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .as_mut()
+    {
         outer.remove(&(base, len));
     }
 }
@@ -5073,6 +5214,7 @@ unsafe fn extra_slot_pick(
     designate
         .then(|| pinned_extra_slot(ctx, champ, si, taken))
         .flatten()
+        .or_else(|| extra_slot_boots(ctx, champ, si, taken, designate))
         .or_else(|| {
             let reserved = if designate {
                 later_pins(ctx, champ, si + 1)
@@ -5081,6 +5223,40 @@ unsafe fn extra_slot_pick(
             };
             auto_extra_pick(ctx, champ, si, taken, &reserved)
         })
+}
+
+/// Smart Builds' boots for build slot `si` (the 5th or 6th), in a build that
+/// has none yet: the rule (`smart_builds::enforce`) leaves them to the first
+/// open slot here when a pin holds every slot from the second to the fourth.
+/// A slot the player pinned is not open, and a pair the player pinned
+/// anywhere is the build's only pair. The pair is the one the rule picked for
+/// the champion, which saw the enemy lineup this path does not.
+unsafe fn extra_slot_boots(
+    ctx: usize,
+    champ: &str,
+    si: usize,
+    taken: &[u64],
+    designate: bool,
+) -> Option<u64> {
+    if !crate::build_config::smart_builds_enabled()
+        || taken.iter().any(|&index| buy_is_boots(ctx, index))
+    {
+        return None;
+    }
+    if designate {
+        let player_boots = (0..crate::build_config::picker_slots()).any(|j| {
+            slotN_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx, key))
+                .is_some_and(|pin| buy_is_boots(ctx, pin))
+        });
+        if player_boots || crate::build_config::pinned_key_raw(champ, si).is_some() {
+            return None;
+        }
+    }
+    let key = crate::build_config::rule_boots(champ).unwrap_or_else(|| {
+        let role = crate::build_config::role_for_champion(champ);
+        crate::smart_builds::boots_for(champ, role, &[]).to_string()
+    });
+    scan_idx_cached(ctx, key.as_bytes())
 }
 
 /// The pinned item for build slot `si`, as a catalog index. Planted exactly as
@@ -5181,7 +5357,8 @@ unsafe fn auto_extra_pick(
     // from the whole build, pins still to come included.
     let spoken = [taken, reserved].concat();
     let taken = spoken.as_slice();
-    let budget = crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, champ, taken));
+    let budget =
+        crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, champ, taken));
     let allowed = |candidate: &str| {
         budget
             .as_ref()
@@ -5206,6 +5383,24 @@ unsafe fn auto_extra_pick(
         // Last resort, deliberately unconstrained: a 5th item that breaks a rule
         // still beats an empty slot, which is what the other two answered with.
         .or_else(|| pick_candidate(ctx, u64::MAX, taken, champ, |_| true))
+}
+
+/// Smart Builds' rule 6 over a build just grown to its 5th and 6th slots,
+/// which the stable hook's pass never saw: the automatic picks not bought yet,
+/// early items first and late items last (`smart_builds::sort_by_timing`).
+/// Fixed in place: every slot up to the one being built now (`owned`, whose
+/// components may already be bought), the player's pins (`designate`), and
+/// the boots, which rule 7 placed.
+unsafe fn reorder_unbought(ctx: usize, champ: &str, slots: &mut [u64], owned: u64, designate: bool) {
+    let movable: Vec<usize> = (owned as usize + 1..slots.len())
+        .filter(|&j| !(designate && crate::build_config::pinned_key_raw(champ, j).is_some()))
+        .filter(|&j| !buy_is_boots(ctx, slots[j]))
+        .collect();
+    let mut picks: Vec<u64> = movable.iter().map(|&j| slots[j]).collect();
+    crate::smart_builds::sort_by_timing(&mut picks, |&index| catalog_name_at(ctx, index));
+    for (&j, index) in movable.iter().zip(picks) {
+        slots[j] = index;
+    }
 }
 
 /// Grows the athlete's build `Vec` to `slots.len()` and writes every slot from
@@ -5260,6 +5455,17 @@ unsafe fn grow_build(athlete: usize, ptr: usize, cap: u64, old_len: u64, slots: 
 /// in `buy_replace_ctx`. If those two ever disagree the symptom is silent — the
 /// gate opens for an athlete the extension then declines — so they are worth
 /// changing together.
+/// Whether the buy detour grows builds past the game's four slots, so a 5th
+/// and 6th exist for Smart Builds' boots to wait for
+/// (`build_config::later_slot_open`). The same conditions `grow` tests in
+/// `buy_replace_ctx`, less the per-athlete ones, plus the detour being in.
+pub(crate) fn builds_grow_past_four() -> bool {
+    BUILD_EXTEND_ENABLED
+        && BUY_PROBE_INSTALLED.load(Ordering::Relaxed) == 1
+        && crate::build_config::picker_slots() > crate::build_config::game_slots()
+        && realloc_ok()
+}
+
 unsafe fn needs_build_extension(athlete: usize) -> bool {
     // `realloc_ok` too: an athlete whose Vec can never grow must not keep
     // taking the slow path on every buy. It is one cached atomic load.
@@ -5344,8 +5550,14 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   Scope is unaffected: `is_player` is still what gates the designation, so a
         //   non-player athlete reaching the extension takes the network/vanilla fallback
         //   the code below already had for it.
+        //   A lane or 5v5 test's athletes get through too: both of its sides
+        //   are the player's (see `is_training` below). The test is known by
+        //   its match's seed (`build_config::note_test_spawn`), so a league
+        //   fixture simulating alongside it still exits here, as cheaply as
+        //   before.
         if FIXB
             && !is_live
+            && !crate::build_config::is_test_match(seed_r9)
             && !matches!(is_my_athlete(athlete), Some(true))
             && !needs_build_extension(athlete)
         {
@@ -5357,7 +5569,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
             return 0;
         } // 0.5.0: covers build len@+0x4a0+8
         let owned = rd_u64(athlete + 0x518); // 0.5.0 owned (was 0x3d0)
-        // * Only handle target (designated) champions - everything else passes through (build untouched).
+                                             // * Only handle target (designated) champions - everything else passes through (build untouched).
         let cptr = rd_u64(athlete + 0x4e0) as usize; // 0.5.0 champ name ptr (was 0x398, derived +0x88)
         let clen = rd_u64(athlete + 0x4e8) as usize; // 0.5.0 champ name len (was 0x3a0)
         if cptr < 0x10000 || clen == 0 || clen > 48 || !readable(cptr, clen) {
@@ -5423,13 +5635,54 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   `is_live && (by_scene || COMPTEST_MATCH)` fell away with it**. Comp-test main matches and record replays are both
         //   on-screen matches (the launcher plants LIVE_SEED), so filtering by is_live keeps the feature intact.
         let is_comptest_live = COMPTEST_MATCH.load(Ordering::Relaxed) && is_live;
-        let is_player = if is_comptest_live {
+        // ** 2026-09-24: lane and 5v5 tests, from the route call's `mode` rather
+        //   than the launcher retaddrs above, which date from 0.5.3 and were
+        //   never re-derived (and never listed the lane test). Both sides of a
+        //   test are the player's, so `own_team_only` does not apply to them.
+        // ** 2026-09-25: an athlete of the test's own match, not any athlete on
+        //   one of its champions. The day's league fixtures simulate while a
+        //   test runs, and the champion gate gave the player's pins to four
+        //   league athletes during a lane test — the same leak the note above
+        //   describes for comp tests. See `build_config::note_test_spawn`.
+        let is_training = crate::build_config::is_test_match(seed_r9);
+        let is_player = if is_comptest_live || is_training {
             true // comp test = both sides user-composed -> bypass the team gate
         } else if FIXB {
             matches!(is_my_athlete(athlete), Some(true))
         } else {
             is_live && by_scene
         };
+        if crate::own_team_log::ENABLED && crate::build_config::has_pins(champ) {
+            let ctx = rd_u64(rsp_entry + 0x30) as usize;
+            let bptr = rd_u64(athlete + 0x558) as usize;
+            let blen = rd_u64(athlete + 0x560);
+            let build: Vec<Option<String>> = if ctx >= 0x10000
+                && bptr >= 0x10000
+                && blen <= 8
+                && readable(bptr, blen as usize * 8)
+            {
+                (0..blen as usize)
+                    .map(|j| catalog_name_at(ctx, rd_u64(bptr + j * 8)))
+                    .collect()
+            } else {
+                Vec::new()
+            };
+            let aid = safe_read_u64(athlete + O_ATHLETE_ID);
+            crate::own_team_log::on_change(
+                &format!("buy {champ} aid={aid:?} provider=0x{provider_now:x}"),
+                format!(
+                    "owned={} is_player={} mine={:?} training={} live={} provider=0x{:x} seed=0x{:x} build={:?}",
+                    owned,
+                    is_player,
+                    is_my_athlete(athlete),
+                    is_training,
+                    is_live,
+                    provider_now,
+                    seed_r9,
+                    build
+                ),
+            );
+        }
         // The editor's scope toggle, read once here rather than per slot: it is
         // an atomic load (see `build_config::own_team_only_enabled`), but this
         // is a per-buy-decision path and both the slot 0/1/2 injection below and
@@ -5500,7 +5753,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     if owned > si as u64 {
                         continue;
                     } // slot already purchased -> too late
-                    // By key, vanilla included: name scan + recipe validation.
+                      // By key, vanilla included: name scan + recipe validation.
                     let idx = slotN_catalog_index(champ, si, |key| scan_idx_cached(ctx012, key));
                     if let Some(t) = idx {
                         // * Idempotence guard (07-19): skip the write if the target value is already there. Measured, the vast majority of 53,890 writes
@@ -5528,9 +5781,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                             slotN_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx012, key))
                         };
                         let pin_boots = buy_is_boots(ctx012, t);
-                        let elsewhere = (0..blen as usize)
-                            .filter(|&j| j != si as usize)
-                            .find(|&j| {
+                        let elsewhere =
+                            (0..blen as usize).filter(|&j| j != si as usize).find(|&j| {
                                 let there = rd_u64(bptr + j * 8);
                                 (there == t || (pin_boots && buy_is_boots(ctx012, there)))
                                     && pin_at(j) != Some(there)
@@ -5546,17 +5798,19 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                             continue;
                         }
                         // The pin covers the boots Smart Builds gave this build
-                        // (rule 7): move them to the next unbought slot nobody
-                        // pinned, as `cap_spawn` does, unless the player pinned
-                        // a pair of their own.
+                        // (rule 7): move them where the rule would have put
+                        // them, as `cap_spawn` does (`displaced_boots_slot`),
+                        // unless the player pinned a pair of their own. Every
+                        // slot after this one is unbought; the first is only
+                        // while nothing is.
                         let here = rd_u64(bptr + (si as usize) * 8);
                         if !pin_boots
                             && buy_is_boots(ctx012, here)
                             && !(0..crate::build_config::picker_slots())
                                 .any(|j| pin_at(j).is_some_and(|pin| buy_is_boots(ctx012, pin)))
                         {
-                            let free = (si as usize + 1..blen as usize)
-                                .find(|&j| crate::build_config::pinned_key_raw(champ, j).is_none());
+                            let free =
+                                displaced_boots_slot(champ, si as usize, blen as usize, owned == 0);
                             if let Some(j) = free {
                                 if writable(bptr + j * 8, 8) {
                                     wr_u64(bptr + j * 8, here);
@@ -5632,17 +5886,17 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   Mechanism check: build[3] = a copy of build[0] (guaranteed valid). If that works, owned goes to 4. Then map the real 4th index.
         let mut build_len = rd_u64(athlete + 0x560); // 0.5.0 build len (was 0x418)
         let cap_now = rd_u64(athlete + 0x550); // 0.5.0 build cap (was 0x408)
-        // Two things can happen here, often both:
-        //   in_place -- the game's own fourth slot exists, so build[3] is
-        //               rewritten where it stands;
-        //   grow     -- the Vec is shorter than `target` (the game's 4 against
-        //               the mod's 6), so it is extended and every new slot is
-        //               filled before `len` moves. A 3-long build, which 0.6.0
-        //               still produces now and then, gets its 4th this way too.
-        // `grow` is the only path that reaches `RVA_REALLOC`. It is called
-        // through a raw transmute, so `realloc_ok` checks its entry bytes first:
-        // a stale address in that constant crashed matches on 2026-09-16.
-        // Keep this condition in step with `needs_build_extension`.
+                                               // Two things can happen here, often both:
+                                               //   in_place -- the game's own fourth slot exists, so build[3] is
+                                               //               rewritten where it stands;
+                                               //   grow     -- the Vec is shorter than `target` (the game's 4 against
+                                               //               the mod's 6), so it is extended and every new slot is
+                                               //               filled before `len` moves. A 3-long build, which 0.6.0
+                                               //               still produces now and then, gets its 4th this way too.
+                                               // `grow` is the only path that reaches `RVA_REALLOC`. It is called
+                                               // through a raw transmute, so `realloc_ok` checks its entry bytes first:
+                                               // a stale address in that constant crashed matches on 2026-09-16.
+                                               // Keep this condition in step with `needs_build_extension`.
         let in_place = build_len >= 4 && cap_now >= 4;
         let grow = BUILD_EXTEND_ENABLED
             && build_len >= 3
@@ -5651,7 +5905,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
             && realloc_ok();
         if in_place || grow {
             let ptr = rd_u64(athlete + 0x558) as usize; // 0.5.0 build ptr (was 0x410)
-            // Every live slot is read below, and in place writes build[3..].
+                                                        // Every live slot is read below, and in place writes build[3..].
             let live = build_len.min(16) as usize;
             let ok = ptr >= 0x10000
                 && readable(ptr, live * 8)
@@ -5682,6 +5936,31 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //   stops the enemy building three engine items and one of mine.
                 let designate = !own_team_only || is_player;
                 let manual = designate.then(|| slot3_item_key(champ)).flatten();
+                let smart = crate::build_config::smart_builds_enabled();
+                // What the 4th slot's automatic pick must not duplicate or
+                // break a Smart Builds rule against: slots 0/1/2, and the
+                // player's pins for the 5th and 6th, which are spoken for
+                // though not planted yet. Every automatic answer below — the
+                // kept or network pick and both fallbacks — is held to it.
+                let mut taken4 = vec![b0, b1, b2];
+                if designate {
+                    taken4.extend(later_pins(ctx, champ, 4));
+                }
+                let budget4 = smart.then(|| spent_budget(ctx, champ, &taken4));
+                // Unique across the whole build: the 5th and 6th an earlier buy
+                // grew count too, or a stand-in picked here could repeat one.
+                // Only for duplicates — for the other rules the earlier slot
+                // wins, so the budget above stays what comes before this one.
+                let avoid4: Vec<u64> = taken4
+                    .iter()
+                    .copied()
+                    .chain((4..live).map(|i| rd_u64(ptr + i * 8)))
+                    .collect();
+                let allowed4 = |candidate: &str| {
+                    budget4
+                        .as_ref()
+                        .is_none_or(|budget| budget.rejects(candidate).is_none())
+                };
                 let picked = if manual.is_some() {
                     // By key, vanilla included (works thanks to the ctx+0x30 fix).
                     // Dropped when the engine already put it in slots 0/1/2 (see
@@ -5693,6 +5972,14 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     // Boots Smart Builds put in the 4th slot (rule 7, when pins
                     // fill the slots before it) stay: the network only knows
                     // legendaries, and would replace the build's only pair.
+                    Some(rd_u64(ptr + 24))
+                } else if in_place && smart {
+                    // The 4th the stable hook decided: the engine's own since
+                    // 0.6.0, already through every Smart Builds rule and put
+                    // here by rule 6. The network would replace it knowing
+                    // neither — a late item rule 6 moved here would simply be
+                    // gone. It is still checked below, against pins planted
+                    // since.
                     Some(rd_u64(ptr + 24))
                 } else {
                     // * Enemy team or no designation: a fresh network call (our 5 + their 5 + position ctx). Not cached (ignoring the lineup = wrong answer).
@@ -5720,25 +6007,22 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 //
                 //   A pin is exempt: the player's choice takes precedence over
                 //   every rule, so a pinned 4th is planted exactly as written.
-                //   Only the network's pick is checked — against slots 0/1/2 and
-                //   against the player's pins for the 5th and 6th, which are
-                //   already spoken for even though they are not planted yet.
+                //   Only the automatic pick (kept or the network's) is checked —
+                //   against `taken4`: slots 0/1/2 and the player's pins for the
+                //   5th and 6th, already spoken for though not planted yet — and
+                //   for duplicates against `avoid4`, which adds any 5th and 6th
+                //   already grown.
                 let picked = picked.and_then(|t4| {
-                    if manual.is_some()
-                        || !crate::build_config::smart_builds_enabled()
-                        || buy_is_boots(ctx, t4)
-                    {
+                    if manual.is_some() || buy_is_boots(ctx, t4) {
                         return Some(t4);
                     }
-                    let mut taken = vec![b0, b1, b2];
-                    if designate {
-                        taken.extend(later_pins(ctx, champ, 4));
-                    }
-                    let budget = spent_budget(ctx, champ, &taken);
-                    let Some(reason) = rejection(ctx, &budget, t4, &taken) else {
+                    let Some(budget) = budget4.as_ref() else {
                         return Some(t4);
                     };
-                    same_category_swap(ctx, t4, &taken, champ, &budget, reason)
+                    let Some(reason) = rejection(ctx, budget, t4, &avoid4) else {
+                        return Some(t4);
+                    };
+                    same_category_swap(ctx, t4, &avoid4, champ, budget, reason)
                 });
                 // (3) Fallback: a vanilla final item different from build[0..2], resolved by key like every other pick —
                 //   `VANILLA_FINAL` holds ids, and an id is not a catalog index once mods or a save reorder the catalog.
@@ -5763,8 +6047,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                             return None;
                         }
                         let category = third_category?;
-                        pick_candidate(ctx, u64::MAX, &[b0, b1, b2], champ, |candidate| {
-                            engine_category(candidate) == Some(category)
+                        pick_candidate(ctx, u64::MAX, &avoid4, champ, |candidate| {
+                            engine_category(candidate) == Some(category) && allowed4(candidate)
                         })
                     })
                     .or_else(|| {
@@ -5774,8 +6058,19 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         let start = champ_spread(champ, 6);
                         (0..6)
                             .filter_map(|k| item_id_to_key(VANILLA_FINAL[(start + k) % 6]))
+                            .filter(|key| allowed4(key))
                             .filter_map(|key| scan_idx_cached(ctx, key.as_bytes()))
-                            .find(|&v| v != b0 && v != b1 && v != b2)
+                            .find(|v| !avoid4.contains(v))
+                    })
+                    // Last resort, as for the 5th and 6th (`auto_extra_pick`):
+                    // a 4th that breaks a rule beats none when a 3-long build
+                    // is being grown, which would stop the growth at three. A
+                    // 4th the game already holds is kept instead.
+                    .or_else(|| {
+                        if in_place {
+                            return None;
+                        }
+                        pick_candidate(ctx, u64::MAX, &avoid4, champ, |_| true)
                     });
                 // The whole build as it will stand, starting from the live
                 // slots. Only `slots[build_len..]` is new memory.
@@ -5820,7 +6115,42 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         }
                     }
                     if slots.len() as u64 > build_len {
+                        let old_len = build_len as usize;
+                        if smart {
+                            reorder_unbought(ctx, champ, &mut slots, owned, designate);
+                        }
                         build_len = grow_build(athlete, ptr, cap_now, build_len, &slots);
+                        if crate::own_team_log::ENABLED && crate::build_config::has_pins(champ) {
+                            crate::own_team_log::line(|| {
+                                format!(
+                                    "grown: {} aid={:?} owned={} designate={} build={:?}",
+                                    champ,
+                                    safe_read_u64(athlete + O_ATHLETE_ID),
+                                    owned,
+                                    designate,
+                                    slots
+                                        .iter()
+                                        .take(build_len as usize)
+                                        .map(|&index| catalog_name_at(ctx, index))
+                                        .collect::<Vec<_>>()
+                                )
+                            });
+                        }
+                        // `grow_build` writes only the new slots; rule 6 may
+                        // have moved the old ones too. Only once the growth
+                        // held, or an item moved into a slot that never came
+                        // would be lost. The Vec may have moved.
+                        let new_ptr = rd_u64(athlete + 0x558) as usize;
+                        if build_len as usize == slots.len()
+                            && new_ptr >= 0x10000
+                            && writable(new_ptr, old_len * 8)
+                        {
+                            for (j, &index) in slots.iter().enumerate().take(old_len) {
+                                if rd_u64(new_ptr + j * 8) != index {
+                                    wr_u64(new_ptr + j * 8, index);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -6404,8 +6734,18 @@ const EXTRA_SLOT_PATCHES: bool = true;
 
 /// Checks `expect` at `sig`, then writes `writes`, both as (offset, byte).
 /// Already-patched bytes count as a match, so a second init is a no-op.
-unsafe fn patch_bytes(name: &str, sig: usize, expect: &[(usize, u8)], writes: &[(usize, u8)]) -> String {
-    let span = expect.iter().chain(writes).map(|&(off, _)| off + 1).max().unwrap_or(0);
+unsafe fn patch_bytes(
+    name: &str,
+    sig: usize,
+    expect: &[(usize, u8)],
+    writes: &[(usize, u8)],
+) -> String {
+    let span = expect
+        .iter()
+        .chain(writes)
+        .map(|&(off, _)| off + 1)
+        .max()
+        .unwrap_or(0);
     if !readable(sig, span) {
         return format!("{name}: unreadable");
     }
@@ -6452,9 +6792,17 @@ unsafe fn patch_bytes(name: &str, sig: usize, expect: &[(usize, u8)], writes: &[
 unsafe fn patch_final_gate() -> String {
     let sig = exe_base_addr() + 0xeae541; // 0.6.1, container 0xeae220 +0x321 (0.6.0 release 0xf3d981; container a strict exe2exe match, bytes unchanged)
     const EXPECT: [(usize, u8); 11] = [
-        (0, 0x48), (1, 0x83), (2, 0xf8), (3, 0x03), //  cmp rax, 3
-        (4, 0x76), (5, 0x65), //                       jbe +0x65   <- opcode at +4
-        (6, 0x4c), (7, 0x8b), (8, 0x6c), (9, 0x24), (10, 0x68), // mov r13, [rsp+0x68]
+        (0, 0x48),
+        (1, 0x83),
+        (2, 0xf8),
+        (3, 0x03), //  cmp rax, 3
+        (4, 0x76),
+        (5, 0x65), //                       jbe +0x65   <- opcode at +4
+        (6, 0x4c),
+        (7, 0x8b),
+        (8, 0x6c),
+        (9, 0x24),
+        (10, 0x68), // mov r13, [rsp+0x68]
     ];
     patch_bytes("final_gate", sig, &EXPECT, &[(4, 0xEB)])
 }
@@ -6475,9 +6823,23 @@ unsafe fn patch_final_gate() -> String {
 unsafe fn patch_tick_finals_cap(slots: u8) -> String {
     let sig = exe_base_addr() + 0x1aff8f2; // 0.6.1, run_tick 0x1afad10 +0x4be2 (0.6.0 release 0x1752342; run_tick changed size, found by the rel32-masked 13-byte form, unique)
     const EXPECT: [(usize, u8); 17] = [
-        (0, 0x48), (1, 0x83), (2, 0xf8), (3, 0x03), //                cmp rax, 3   <- imm at +3
-        (4, 0x0f), (5, 0x87), (6, 0x44), (7, 0x02), (8, 0x00), (9, 0x00), // ja rel32
-        (10, 0x4c), (11, 0x8b), (12, 0x8d), (13, 0x18), (14, 0x4e), (15, 0x00), (16, 0x00), // mov r9, [rbp+0x4e18] (0.6.0: 0x4e20)
+        (0, 0x48),
+        (1, 0x83),
+        (2, 0xf8),
+        (3, 0x03), //                cmp rax, 3   <- imm at +3
+        (4, 0x0f),
+        (5, 0x87),
+        (6, 0x44),
+        (7, 0x02),
+        (8, 0x00),
+        (9, 0x00), // ja rel32
+        (10, 0x4c),
+        (11, 0x8b),
+        (12, 0x8d),
+        (13, 0x18),
+        (14, 0x4e),
+        (15, 0x00),
+        (16, 0x00), // mov r9, [rbp+0x4e18] (0.6.0: 0x4e20)
     ];
     patch_bytes("tick_finals_cap", sig, &EXPECT, &[(3, slots - 1)])
 }
@@ -6497,11 +6859,24 @@ unsafe fn patch_tick_finals_cap(slots: u8) -> String {
 unsafe fn patch_row_floor(slots: u8) -> String {
     let sig = exe_base_addr() + 0xb34d91; // 0.6.1, inside the ingame mega-function 0xb2e260 (0.6.0 release 0xa6a501 in 0xa63a70; the masked form is unique)
     const EXPECT: [(usize, u8); 18] = [
-        (0, 0x8a), (1, 0x9d), //                           mov bl, [rbp+disp32]
-        (6, 0x44), (7, 0x8a), (8, 0xb5), //                mov r14b, [rbp+disp32]
-        (13, 0x48), (14, 0x83), (15, 0xf8), (16, 0x05), // cmp rax, 5     <- imm at +16
-        (17, 0xb9), (18, 0x04), (19, 0x00), (20, 0x00), (21, 0x00), // mov ecx, 4 <- imm at +18
-        (22, 0x48), (23, 0x0f), (24, 0x43), (25, 0xc8), // cmovae rcx, rax
+        (0, 0x8a),
+        (1, 0x9d), //                           mov bl, [rbp+disp32]
+        (6, 0x44),
+        (7, 0x8a),
+        (8, 0xb5), //                mov r14b, [rbp+disp32]
+        (13, 0x48),
+        (14, 0x83),
+        (15, 0xf8),
+        (16, 0x05), // cmp rax, 5     <- imm at +16
+        (17, 0xb9),
+        (18, 0x04),
+        (19, 0x00),
+        (20, 0x00),
+        (21, 0x00), // mov ecx, 4 <- imm at +18
+        (22, 0x48),
+        (23, 0x0f),
+        (24, 0x43),
+        (25, 0xc8), // cmovae rcx, rax
     ];
     patch_bytes("row_floor", sig, &EXPECT, &[(16, slots + 1), (18, slots)])
 }
@@ -6515,13 +6890,32 @@ unsafe fn patch_row_floor(slots: u8) -> String {
 unsafe fn patch_result_row_floor(slots: u8) -> String {
     let sig = exe_base_addr() + 0x8bf9de; // 0.6.1, in the match-result screen builder 0x8bd560 (0.6.0 release 0xc5264e in 0xc501d0; bytes unchanged)
     const EXPECT: [(usize, u8); 19] = [
-        (0, 0x48), (1, 0x83), (2, 0xfa), (3, 0x05), //      cmp rdx, 5   <- imm at +3
-        (4, 0xb9), (5, 0x04), (6, 0x00), (7, 0x00), (8, 0x00), // mov ecx, 4 <- imm at +5
-        (9, 0x48), (10, 0x0f), (11, 0x42), (12, 0xd1), //   cmovb rdx, rcx
-        (13, 0xa8), (14, 0x01), //                          test al, 1
-        (15, 0x48), (16, 0x0f), (17, 0x44), (18, 0xd1), //  cmove rdx, rcx
+        (0, 0x48),
+        (1, 0x83),
+        (2, 0xfa),
+        (3, 0x05), //      cmp rdx, 5   <- imm at +3
+        (4, 0xb9),
+        (5, 0x04),
+        (6, 0x00),
+        (7, 0x00),
+        (8, 0x00), // mov ecx, 4 <- imm at +5
+        (9, 0x48),
+        (10, 0x0f),
+        (11, 0x42),
+        (12, 0xd1), //   cmovb rdx, rcx
+        (13, 0xa8),
+        (14, 0x01), //                          test al, 1
+        (15, 0x48),
+        (16, 0x0f),
+        (17, 0x44),
+        (18, 0xd1), //  cmove rdx, rcx
     ];
-    patch_bytes("result_row_floor", sig, &EXPECT, &[(3, slots + 1), (5, slots)])
+    patch_bytes(
+        "result_row_floor",
+        sig,
+        &EXPECT,
+        &[(3, slots + 1), (5, slots)],
+    )
 }
 
 // * AI auto-recommended 4th: raise the beam depth limit literal 2 -> 3 (0,1,2,3 = 4 iterations -> beam computes a 4-item build).

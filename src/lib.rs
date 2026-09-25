@@ -14,6 +14,7 @@ mod item_stats;
 mod item_stats_sim;
 mod item_stats_ui;
 mod items;
+mod own_team_log;
 mod proc_queue;
 mod smart_builds;
 mod solo_rank_ui;

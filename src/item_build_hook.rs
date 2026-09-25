@@ -85,25 +85,20 @@ impl StableItemBuildHook for ConfiguredBuilds {
         let mut build = merged.items;
 
         if build_config::smart_builds_enabled() {
-            let pending = if own_team_only {
-                pending_pins(ctx)
-            } else {
-                PendingPins::default()
-            };
-            let reserved: Vec<usize> = merged
-                .reserved
-                .iter()
-                .chain(&pending.spoken_for)
-                .copied()
-                .collect();
-            enforce_smart_build(ctx, &mut build, &merged.pinned, &reserved, &pending.slots);
-            // The player's pair in the player's slot, not wherever the rule
-            // would have put a pair: pins stay where they are. (A pin past the
-            // game's slots is planted by the buy detour when it grows the build.)
-            if let Some((slot, boots)) = pending.boots {
-                if let Some(held) = build.get_mut(slot) {
-                    *held = boots;
-                }
+            // Under `own_team_only` this build reaches both teams, so it must
+            // not know the pins: an enemy on a pinned champion would lose the
+            // boots slots, the pinned items and gain the player's pair. The
+            // pin-aware build goes to the spawn injector instead, which gives
+            // it to the player's athletes only. See `remember_pinned_build`.
+            // (Nor, then, whether a pin holds the 5th or 6th slot.)
+            let later_open = !own_team_only
+                && build_config::later_slot_open(&build_config::pin_row(
+                    ctx.champion_key(),
+                    champion_role(ctx),
+                ));
+            enforce_smart_build(ctx, &mut build, &merged.pinned, &merged.reserved, later_open);
+            if own_team_only {
+                remember_pinned_build(ctx, &build);
             }
         }
 
@@ -167,54 +162,56 @@ fn champion_fit(ctx: &StableItemBuildContext<'_>) -> smart_builds::Fit {
     smart_builds::fit(ctx.champion_key(), champion_role(ctx))
 }
 
-/// The player's pins as the Smart Builds pass must see them under
-/// `own_team_only`, where this hook leaves them out and the detours paste them
-/// over the build later. See [`pending_pins`].
-#[derive(Default)]
-struct PendingPins {
-    /// Per game slot, whether a pin will land there. The boots rule stays out
-    /// of these, or the engine can finish the pair before the buy detour
-    /// writes the pin.
-    slots: Vec<bool>,
-    /// Every pinned item, 5th and 6th slots included. The engine's picks must
-    /// not take them: an item the engine plans early is one the detours treat
-    /// as already placed, and they drop the pin — so the item would end up in
-    /// the engine's slot rather than the player's.
-    spoken_for: Vec<usize>,
-    /// The pinned pair of boots, as (slot, catalog index).
-    boots: Option<(usize, usize)>,
-}
-
-/// The champion's pins in this lane, picked the way the detours pick them
-/// ([`build_config::pin_row`]). Counting them as the toggle-off path counts its
-/// pins is what keeps each pin where the player put it: no engine pick takes
-/// a pinned item, and a pinned pair switches the boots rule off (it only adds
-/// boots to a build that has none).
-fn pending_pins(ctx: &StableItemBuildContext<'_>) -> PendingPins {
+/// The build the player's athlete gets under `own_team_only`, handed to the
+/// spawn injector rather than returned.
+///
+/// This hook cannot tell the teams apart (see [`build_config::own_team_only_enabled`]),
+/// so what it returns reaches the enemy too, and that is the build the Smart
+/// Builds pass makes without the pins. The player's athletes get the one the
+/// toggle-off path gives: the pins merged into the engine's build
+/// ([`build_config::merge_pin_row`]), which slides the engine's picks into the
+/// slots between them rather than under them, and the Smart Builds pass over
+/// that with the pins held in place. (Running the pass first and pasting the
+/// pins over its result, as this did until 2026-09-25, threw away whatever the
+/// pass had put in a pinned slot: a pin in the first slot cost the engine's
+/// first pick.)
+///
+/// Recorded next to `unpinned`, the build the athlete will hold, for
+/// `tactics::spawn_paste_pinned_build` to swap in — which it does only for the
+/// player's own athletes — and keyed by the pin row it was made from, the one
+/// the detours read ([`build_config::pin_row`]).
+fn remember_pinned_build(ctx: &StableItemBuildContext<'_>, unpinned: &[usize]) {
     // Publishes the pin snapshot `pin_row` reads.
     build_config::load_cached();
-    let row = build_config::pin_row(ctx.champion_key(), champion_role(ctx));
-    let mut pending = PendingPins {
-        slots: row
-            .iter()
-            .take(build_config::game_slots())
-            .map(Option::is_some)
-            .collect(),
-        ..PendingPins::default()
-    };
-    for (slot, key) in row.iter().enumerate() {
-        let Some(index) = key
-            .as_deref()
-            .and_then(|key| build_config::resolve_key(key, &|key: &str| ctx.item_index(key)))
-        else {
-            continue;
-        };
-        pending.spoken_for.push(index);
-        if pending.boots.is_none() && ctx.item_key(index).is_some_and(smart_builds::is_boots) {
-            pending.boots = Some((slot, index));
-        }
+    let mut row = build_config::pin_row(ctx.champion_key(), champion_role(ctx));
+    row.resize(build_config::picker_slots(), None);
+    let merged = build_config::merge_pin_row(&row, |key| ctx.item_index(key), ctx.base_build());
+    if !merged.pinned.contains(&true) && merged.reserved.is_empty() {
+        return;
     }
-    pending
+    let later_open = build_config::later_slot_open(&row);
+    let mut pinned = merged.items;
+    enforce_smart_build(ctx, &mut pinned, &merged.pinned, &merged.reserved, later_open);
+    let keys = |build: &[usize]| {
+        build
+            .iter()
+            .map(|&index| ctx.item_key(index).map(str::to_string))
+            .collect::<Option<Vec<String>>>()
+    };
+    if let (Some(from), Some(to)) = (keys(unpinned), keys(&pinned)) {
+        crate::own_team_log::line(|| {
+            format!(
+                "stable hook: {} lane={:?} side={:?} row={:?} shared={:?} pinned={:?}",
+                ctx.champion_key(),
+                champion_role(ctx),
+                ctx.team(),
+                row,
+                from,
+                to
+            )
+        });
+        build_config::remember_pinned_build(ctx.champion_key(), row, from, to);
+    }
 }
 
 /// The Smart Builds pass over a build the host handed us, with the catalog seen
@@ -226,18 +223,19 @@ fn enforce_smart_build(
     build: &mut [usize],
     pinned: &[bool],
     reserved: &[usize],
-    boots_avoid: &[bool],
+    later_open: bool,
 ) {
     // This is the one path that sees the enemy lineup, which is what picks a
     // tank's boots.
     let enemies = ctx.enemy_champions();
     let boots = smart_builds::boots_for(ctx.champion_key(), champion_role(ctx), &enemies);
+    build_config::remember_rule_boots(ctx.champion_key(), boots);
     smart_builds::enforce(
         ctx.item_count(),
         build,
         pinned,
         reserved,
-        boots_avoid,
+        later_open,
         champion_fit(ctx),
         ctx.item_index(boots),
         |index| ctx.item_key(index).map(str::to_string),
