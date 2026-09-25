@@ -3,7 +3,7 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{add_stack, apply_config, ticks, ItemMeta};
 
-// Landing an Ability on an enemy champion grants 10 AP for 4 seconds (max 4 stacks).
+// Landing an Ability on an enemy champion grants 5 AP for 4 seconds (max 4 stacks).
 #[derive(Clone, Debug)]
 pub struct BlackfireTorch {
     meta: ItemMeta,
@@ -28,7 +28,7 @@ impl BlackfireTorch {
             price: 650,
             magic_power: 65,
             skill_cooldown_mult: 15,
-            effect_stack_magic_power: 10,
+            effect_stack_magic_power: 5,
             effect_max_stacks: 4,
             effect_duration_seconds: 4.0,
         }
@@ -41,7 +41,7 @@ impl BlackfireTorch {
             price: 950,
             magic_power: 90,
             skill_cooldown_mult: 25,
-            effect_stack_magic_power: 30,
+            effect_stack_magic_power: 10,
             effect_max_stacks: 4,
             effect_duration_seconds: 4.0,
             ..Self::base()
