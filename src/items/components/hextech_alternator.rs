@@ -74,6 +74,7 @@ impl StableItem for HextechAlternator {
             "night_harvester".to_string(),
             "shadowflame".to_string(),
             "stormsurge".to_string(),
+            "lich_bane".to_string(),
         ]
     }
 

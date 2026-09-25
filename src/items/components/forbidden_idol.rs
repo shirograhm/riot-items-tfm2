@@ -59,6 +59,7 @@ impl StableItem for ForbiddenIdol {
             "sword_of_blossoming_dawn".to_string(),
             "bloodsong".to_string(),
             "echoes_of_helia".to_string(),
+            "staff_of_flowing_water".to_string(),
         ]
     }
 

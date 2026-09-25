@@ -59,6 +59,7 @@ impl StableItem for Noonquiver {
             "yun_tal_wildarrows".to_string(),
             "collector".to_string(),
             "lord_dominiks_regards".to_string(),
+            "immortal_shieldbow".to_string(),
         ]
     }
 

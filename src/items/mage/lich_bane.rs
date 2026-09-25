@@ -1,74 +1,100 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, ProcQueue};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
-pub struct Sheen {
+pub struct LichBane {
+    meta: ItemMeta,
     price: usize,
+    magic_power: i32,
     attack_speed_mult: i32,
     skill_cooldown_mult: i32,
-    effect_min_bonus_damage: usize,
-    effect_max_bonus_damage: usize,
+    effect_bonus_flat_damage: usize,
+    effect_ap_percent_damage: f64,
     effect_cooldown_seconds: f64,
     spellblade_ready: bool,
     procs: ProcQueue,
 }
 
-impl Default for Sheen {
-    fn default() -> Self {
+impl LichBane {
+    pub fn base() -> Self {
         Self {
-            price: 650,
+            meta: ItemMeta::base(
+                "lich_bane",
+                &["sheen", "hextech_alternator"],
+                &["radiant_lich_bane"],
+            ),
+            price: 750,
+            magic_power: 50,
             attack_speed_mult: 20,
             skill_cooldown_mult: 10,
-            effect_min_bonus_damage: 30,
-            effect_max_bonus_damage: 85,
+            effect_bonus_flat_damage: 105,
+            effect_ap_percent_damage: 30.0,
             effect_cooldown_seconds: 1.5,
             // Non-vital stats (internals)
             spellblade_ready: false,
             procs: ProcQueue::new(),
         }
     }
-}
 
-impl Sheen {
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_lich_bane", &["lich_bane"]),
+            price: 1050,
+            magic_power: 90,
+            attack_speed_mult: 25,
+            skill_cooldown_mult: 15,
+            effect_bonus_flat_damage: 105,
+            effect_ap_percent_damage: 45.0,
+            effect_cooldown_seconds: 1.5,
+            ..Self::base()
+        }
+    }
+
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let mut item = Self::default();
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
         apply_config!(
-            item,
+            self,
             cfg,
             [
                 price,
+                magic_power,
                 attack_speed_mult,
                 skill_cooldown_mult,
-                effect_min_bonus_damage,
-                effect_max_bonus_damage,
+                effect_bonus_flat_damage,
+                effect_ap_percent_damage,
                 effect_cooldown_seconds
             ]
         );
-        item
-    }
-
-    // Bonus damage scales linearly from min (level 1) to max (level 12).
-    fn spellblade_damage(&self, level: usize) -> usize {
-        let per_level = ((self.effect_max_bonus_damage - self.effect_min_bonus_damage) as f64
-            / 11.0)
-            .round() as usize;
-        self.effect_min_bonus_damage + level.saturating_sub(1) * per_level
+        self
     }
 }
 
-impl StableItem for Sheen {
+impl Default for LichBane {
+    fn default() -> Self {
+        Self::base()
+    }
+}
+
+impl StableItem for LichBane {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> String {
-        "sheen".to_string()
+        self.meta.key.to_string()
     }
 
     fn icon(&self) -> String {
-        "sheen".to_string()
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -76,24 +102,20 @@ impl StableItem for Sheen {
     }
 
     fn tier(&self) -> usize {
-        2
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["dagger".to_string(), "glowing_mote".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec![
-            "trinity_force".to_string(),
-            "dusk_and_dawn".to_string(),
-            "bloodsong".to_string(),
-            "lich_bane".to_string(),
-        ]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
+            magic_power: self.magic_power,
             attack_speed_mult: self.attack_speed_mult,
             skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
@@ -144,14 +166,15 @@ impl StableItem for Sheen {
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_damage = self.spellblade_damage(caster_ref.level());
+        let bonus_damage = self.effect_bonus_flat_damage
+            + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
 
-        self.procs.push_physical(ctx, target, bonus_damage);
+        self.procs.push_magic(ctx, target, bonus_damage);
+        self.spellblade_ready = false;
         ctx.add_buff(
             caster,
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
-        self.spellblade_ready = false;
     }
 
     /// Lands the Spellblade damage whose delay has run out.
@@ -160,10 +183,14 @@ impl StableItem for Sheen {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::AttackSpeed, ItemTagV1::CooltimeReduce]
+        vec![
+            ItemTagV1::Ap,
+            ItemTagV1::AttackSpeed,
+            ItemTagV1::CooltimeReduce,
+        ]
     }
 
     fn category(&self) -> ItemCategoryV1 {
-        ItemCategoryV1::AttackSpeed
+        ItemCategoryV1::Magic
     }
 }

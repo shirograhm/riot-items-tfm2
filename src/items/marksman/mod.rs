@@ -6,6 +6,7 @@ items! {
     diamond_tipped_spear,
     guinsoos_rageblade,
     hamstringer,
+    immortal_shieldbow,
     infinity_edge,
     kraken_slayer,
     lord_dominiks_regards,

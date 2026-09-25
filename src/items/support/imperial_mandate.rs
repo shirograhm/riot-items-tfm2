@@ -3,59 +3,68 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, ticks, ItemMeta};
 
+/// Crowd control that stops movement outright: stun, root, knock-up and
+/// knockback/pull. League's "immobilize" set; taunt, fear and charm move the
+/// target instead, and disarm, silence and ground leave it free to walk.
+const IMMOBILIZING: [CcKindV1; 4] = [
+    CcKindV1::Airborne,
+    CcKindV1::Stun,
+    CcKindV1::Bind,
+    CcKindV1::ForceMove,
+];
+
+fn is_immobilized(entity: &StableEntity<'_, '_>) -> bool {
+    (0..entity.cc_count()).any(|i| {
+        entity
+            .cc_at(i)
+            .is_some_and(|cc| IMMOBILIZING.iter().any(|kind| kind.code() == cc.kind))
+    })
+}
+
 #[derive(Clone, Debug)]
-pub struct StaffOfFlowingWater {
+pub struct ImperialMandate {
     meta: ItemMeta,
-    /// Shared by both variants: Rapids is a state on whoever holds it, and the
-    /// two variants grant the same amount.
-    rapids_buff: &'static str,
+    /// Shared by both variants: Vulnerable is a state on the target, and the
+    /// two variants grant the same amount, so a second carrier refreshes it
+    /// rather than doubling it.
+    vulnerable_buff: &'static str,
     price: usize,
     hp: i32,
     hp_regen: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
-    effect_magic_power: i32,
-    effect_skill_cooldown_mult: i32,
+    effect_damaged_amplify: usize,
     effect_duration_seconds: f64,
-    // Non-vital stats (internals)
-    carrier_refreshed_tick: Option<usize>,
 }
 
-impl StaffOfFlowingWater {
+impl ImperialMandate {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base(
-                "staff_of_flowing_water",
-                &["bandleglass_mirror", "forbidden_idol"],
-                &["radiant_staff_of_flowing_water"],
+                "imperial_mandate",
+                &["bandleglass_mirror"],
+                &["radiant_imperial_mandate"],
             ),
-            rapids_buff: "staff_of_flowing_water_rapids",
+            vulnerable_buff: "imperial_mandate_vulnerable",
             price: 550,
             hp: 100,
             hp_regen: 1,
-            magic_power: 30,
-            skill_cooldown_mult: 10,
-            effect_magic_power: 25,
-            effect_skill_cooldown_mult: 10,
+            magic_power: 25,
+            skill_cooldown_mult: 15,
+            effect_damaged_amplify: 7,
             effect_duration_seconds: 3.0,
-            // Non-vital stats (internals)
-            carrier_refreshed_tick: None,
         }
     }
 
     pub fn radiant() -> Self {
         Self {
-            meta: ItemMeta::radiant(
-                "radiant_staff_of_flowing_water",
-                &["staff_of_flowing_water"],
-            ),
+            meta: ItemMeta::radiant("radiant_imperial_mandate", &["imperial_mandate"]),
             price: 750,
             hp: 150,
             hp_regen: 2,
-            magic_power: 50,
-            skill_cooldown_mult: 15,
-            effect_magic_power: 25,
-            effect_skill_cooldown_mult: 10,
+            magic_power: 40,
+            skill_cooldown_mult: 20,
+            effect_damaged_amplify: 7,
             effect_duration_seconds: 3.0,
             ..Self::base()
         }
@@ -79,30 +88,21 @@ impl StaffOfFlowingWater {
                 hp_regen,
                 magic_power,
                 skill_cooldown_mult,
-                effect_magic_power,
-                effect_skill_cooldown_mult,
+                effect_damaged_amplify,
                 effect_duration_seconds
             ]
         );
         self
     }
-
-    fn rapids(&self) -> BuffV1 {
-        BuffV1 {
-            magic_power: self.effect_magic_power,
-            skill_cooldown_mult: self.effect_skill_cooldown_mult,
-            ..BuffV1::timed(self.rapids_buff, ticks(self.effect_duration_seconds))
-        }
-    }
 }
 
-impl Default for StaffOfFlowingWater {
+impl Default for ImperialMandate {
     fn default() -> Self {
         Self::base()
     }
 }
 
-impl StableItem for StaffOfFlowingWater {
+impl StableItem for ImperialMandate {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
@@ -141,44 +141,35 @@ impl StableItem for StaffOfFlowingWater {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.carrier_refreshed_tick = None;
-    }
-
-    // Rapids. Same trigger as `ardent_censer`'s Sanctify: `is_ally` marks an
-    // ally-targeted skill — a heal, shield or buff — and self-casts count as
-    // one, so the carrier is ruled out as a target explicitly.
-    //
-    // The target and the carrier both get the buff, refreshed rather than
-    // stacked. A cast that lands on several allies arrives here once per ally
-    // in the same tick, so the carrier's copy is refreshed only on the first of
-    // them: one application per cast, however many allies it reached.
+    // Command. The target's crowd control is read as this hook sees it: CC from
+    // anyone counts, and whether a skill's own stun is already on the target when
+    // its hit reports here is the host's ordering, not verified in game.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,
         _rng_seed: u64,
-        caster: usize,
+        _caster: usize,
         target: usize,
         is_ally: bool,
     ) {
-        if !is_ally || target == caster {
+        if is_ally {
             return;
         }
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() || !target_ref.is_alive() {
+        if !target_ref.is_champion() || !is_immobilized(&target_ref) {
             return;
         }
-
-        let buff = self.rapids();
-        refresh_buff(ctx, target, self.rapids_buff, &buff);
-
-        let tick = ctx.tick();
-        if self.carrier_refreshed_tick != Some(tick) {
-            refresh_buff(ctx, caster, self.rapids_buff, &buff);
-            self.carrier_refreshed_tick = Some(tick);
-        }
+        refresh_buff(
+            ctx,
+            target,
+            self.vulnerable_buff,
+            &BuffV1 {
+                damaged_amplify: self.effect_damaged_amplify,
+                ..BuffV1::timed(self.vulnerable_buff, ticks(self.effect_duration_seconds))
+            },
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

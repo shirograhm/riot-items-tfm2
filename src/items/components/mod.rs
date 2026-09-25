@@ -21,6 +21,7 @@ items! {
     oblivion_orb,
     phage,
     scouts_slingshot,
+    seekers_armguard,
     serrated_dirk,
     sheen,
     steel_sigil,

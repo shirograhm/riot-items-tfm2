@@ -6,6 +6,7 @@ items! {
     dusk_and_dawn,
     grezs_spectral_lantern,
     hextech_gunblade,
+    lich_bane,
     liandrys_torment,
     malignance,
     morellonomicon,
@@ -18,4 +19,5 @@ items! {
     shadowflame,
     stormsurge,
     void_staff,
+    zhonyas_hourglass,
 }

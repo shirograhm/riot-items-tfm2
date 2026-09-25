@@ -854,11 +854,11 @@
         },
         "guardian_angel": {
             "name": "Guardian Angel",
-            "option": "\n<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>4 seconds<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing<> for <#60e84dff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>. During the duration, you are untargetable, invulnerable, and unable to act (<#e8a800ff>300 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>4 seconds<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing<> for <#60e84dff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>. While <#92dc7bff>resurrecting<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>300 second<> cooldown)."
         },
         "radiant_guardian_angel": {
             "name": "Radiant Guardian Angel",
-            "option": "\n<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>4 seconds<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing<> for <#60e84dff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>. During the duration, you are untargetable, invulnerable, and unable to act (<#e8a800ff>300 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>4 seconds<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing<> for <#60e84dff>60%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>. While <#92dc7bff>resurrecting<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>300 second<> cooldown)."
         },
         "boots": {
             "name": "Boots",
@@ -891,6 +891,50 @@
         "sorcerers_shoes": {
             "name": "Sorcerer's Shoes",
             "option": ""
+        },
+        "staff_of_flowing_water": {
+            "name": "Staff of Flowing Water",
+            "option": "\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Radiant Staff of Flowing Water",
+            "option": "\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
+        },
+        "immortal_shieldbow": {
+            "name": "Immortal Shieldbow",
+            "option": "\n<#ff7a3eff>Lifeline<>: <#d94c49ff>Falling below 30% health<> grants a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#cab944ff>330<> - <#cab944ff>605<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<> (<#e8a800ff>90 second<> cooldown)."
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Radiant Immortal Shieldbow",
+            "option": "\n<#ff7a3eff>Lifeline<>: <#d94c49ff>Falling below 30% health<> grants a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#cab944ff>330<> - <#cab944ff>605<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<> (<#e8a800ff>90 second<> cooldown)."
+        },
+        "lich_bane": {
+            "name": "Lich Bane",
+            "option": "\n<#ff7a3eff>Spellblade<>: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>105<> + <#a974ffff>30%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>1.5 second<> cooldown)."
+        },
+        "radiant_lich_bane": {
+            "name": "Radiant Lich Bane",
+            "option": "\n<#ff7a3eff>Spellblade<>: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>105<> + <#a974ffff>45%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>1.5 second<> cooldown)."
+        },
+        "imperial_mandate": {
+            "name": "Imperial Mandate",
+            "option": "\n<#ff7a3eff>Command<>: Landing an Ability on an <#d94c49ff>immobilized<> enemy champion marks them as <#92dc7bff>Vulnerable<> for <#e8a800ff>3 seconds<>, <#d94c49ff>increasing their damage taken<> by <#d94c49ff>7%<>. Subsequent applications refresh this buff."
+        },
+        "radiant_imperial_mandate": {
+            "name": "Radiant Imperial Mandate",
+            "option": "\n<#ff7a3eff>Command<>: Landing an Ability on an <#d94c49ff>immobilized<> enemy champion marks them as <#92dc7bff>Vulnerable<> for <#e8a800ff>3 seconds<>, <#d94c49ff>increasing their damage taken<> by <#d94c49ff>7%<>. Subsequent applications refresh this buff."
+        },
+        "zhonyas_hourglass": {
+            "name": "Zhonya's Hourglass",
+            "option": "\n<#ff7a3eff>Time Stop<>: <#d94c49ff>Falling below 25% health<> puts you in <#92dc7bff>stasis<> for 2.5 seconds. While in <#92dc7bff>stasis<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>120 second<> cooldown)."
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Radiant Zhonya's Hourglass",
+            "option": "\n<#ff7a3eff>Time Stop<>: <#d94c49ff>Falling below 25% health<> puts you in <#92dc7bff>stasis<> for 2.5 seconds. While in <#92dc7bff>stasis<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>120 second<> cooldown)."
+        },
+        "seekers_armguard": {
+            "name": "Seeker's Armguard",
+            "option": "\n<#ff7a3eff>Witch's Path<>: Killing a unit grants <#ffdd8eff>0.5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, up to a maximum of <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>."
         }
     },
     "vi": {
@@ -1785,6 +1829,50 @@
         "sorcerers_shoes": {
             "name": "Giày Pháp Sư",
             "option": ""
+        },
+        "staff_of_flowing_water": {
+            "name": "Trượng Lưu Thủy",
+            "option": "\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Trượng Lưu Thủy Ánh Sáng",
+            "option": "\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
+        },
+        "immortal_shieldbow": {
+            "name": "Nỏ Tử Thủ",
+            "option": "\n<#ff7a3eff>Bảo Hiểm Ma Pháp<>: <#d94c49ff>Máu rơi xuống dưới 30%<> sẽ tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<> <#cab944ff>hấp thụ<> <#cab944ff>330<> - <#cab944ff>605<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<> (<#e8a800ff>90 giây<> hồi chiêu)."
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Nỏ Tử Thủ Ánh Sáng",
+            "option": "\n<#ff7a3eff>Bảo Hiểm Ma Pháp<>: <#d94c49ff>Máu rơi xuống dưới 30%<> sẽ tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<> <#cab944ff>hấp thụ<> <#cab944ff>330<> - <#cab944ff>605<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<> (<#e8a800ff>90 giây<> hồi chiêu)."
+        },
+        "lich_bane": {
+            "name": "Kiếm Tai Ương",
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>105<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
+        },
+        "radiant_lich_bane": {
+            "name": "Kiếm Tai Ương Ánh Sáng",
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>105<> + <#a974ffff>45%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
+        },
+        "imperial_mandate": {
+            "name": "Trát Lệnh Đế Vương",
+            "option": "\n<#ff7a3eff>Chỉ Huy<>: Kĩ năng trúng một tướng địch đang <#d94c49ff>bị bất động<> sẽ đánh dấu chúng <#92dc7bff>Suy Yếu<> trong <#e8a800ff>3 giây<>, <#d94c49ff>tăng sát thương chúng phải nhận<> thêm <#d94c49ff>7%<>. Các lần áp dụng tiếp theo sẽ làm mới hiệu ứng này."
+        },
+        "radiant_imperial_mandate": {
+            "name": "Trát Lệnh Đế Vương Ánh Sáng",
+            "option": "\n<#ff7a3eff>Chỉ Huy<>: Kĩ năng trúng một tướng địch đang <#d94c49ff>bị bất động<> sẽ đánh dấu chúng <#92dc7bff>Suy Yếu<> trong <#e8a800ff>3 giây<>, <#d94c49ff>tăng sát thương chúng phải nhận<> thêm <#d94c49ff>7%<>. Các lần áp dụng tiếp theo sẽ làm mới hiệu ứng này."
+        },
+        "zhonyas_hourglass": {
+            "name": "Đồng Hồ Cát Zhonya",
+            "option": "\n<#ff7a3eff>Ngưng Đọng Thời Gian<>: <#d94c49ff>Máu rơi xuống dưới 25%<> sẽ đưa bạn vào trạng thái <#92dc7bff>Ngưng Đọng<> trong 2.5 giây. Khi đang <#92dc7bff>Ngưng Đọng<>, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>120 giây<> hồi chiêu)."
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Đồng Hồ Cát Zhonya Ánh Sáng",
+            "option": "\n<#ff7a3eff>Ngưng Đọng Thời Gian<>: <#d94c49ff>Máu rơi xuống dưới 25%<> sẽ đưa bạn vào trạng thái <#92dc7bff>Ngưng Đọng<> trong 2.5 giây. Khi đang <#92dc7bff>Ngưng Đọng<>, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>120 giây<> hồi chiêu)."
+        },
+        "seekers_armguard": {
+            "name": "Giáp Tay Seeker",
+            "option": "\n<#ff7a3eff>Con Đường Phù Thủy<>: Tiêu diệt một đơn vị sẽ cho <#ffdd8eff>0.5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, tối đa <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>."
         }
     },
     "zh-hans": {
@@ -2679,6 +2767,50 @@
         "sorcerers_shoes": {
             "name": "法师之靴",
             "option": ""
+        },
+        "staff_of_flowing_water": {
+            "name": "流水法杖",
+            "option": "\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "光明版流水法杖",
+            "option": "\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
+        },
+        "immortal_shieldbow": {
+            "name": "不朽盾弓",
+            "option": "\n<#ff7a3eff>救主灵刃<>：<#d94c49ff>生命值降至30%以下<>时，获得一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>330<> - <#cab944ff>605<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>（冷却时间90秒）。"
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "光明版不朽盾弓",
+            "option": "\n<#ff7a3eff>救主灵刃<>：<#d94c49ff>生命值降至30%以下<>时，获得一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>330<> - <#cab944ff>605<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>（冷却时间90秒）。"
+        },
+        "lich_bane": {
+            "name": "巫妖之祸",
+            "option": "\n<#ff7a3eff>咒刃<>：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>30%<> 的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+        },
+        "radiant_lich_bane": {
+            "name": "光明版巫妖之祸",
+            "option": "\n<#ff7a3eff>咒刃<>：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>45%<> 的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+        },
+        "imperial_mandate": {
+            "name": "帝国指令",
+            "option": "\n<#ff7a3eff>命令<>：技能命中处于<#d94c49ff>定身<>状态的敌方英雄时，使其<#92dc7bff>易损<>，持续 <#e8a800ff>3秒<>，<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>。再次施加会刷新此效果。"
+        },
+        "radiant_imperial_mandate": {
+            "name": "光明版帝国指令",
+            "option": "\n<#ff7a3eff>命令<>：技能命中处于<#d94c49ff>定身<>状态的敌方英雄时，使其<#92dc7bff>易损<>，持续 <#e8a800ff>3秒<>，<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>。再次施加会刷新此效果。"
+        },
+        "zhonyas_hourglass": {
+            "name": "中娅沙漏",
+            "option": "\n<#ff7a3eff>时间停止<>：<#d94c49ff>生命值降至25%以下<>时，进入<#92dc7bff>凝滞<>状态2.5秒。<#92dc7bff>凝滞<>期间，你无法被选取、无敌且无法行动（冷却时间120秒）。"
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "光明版中娅沙漏",
+            "option": "\n<#ff7a3eff>时间停止<>：<#d94c49ff>生命值降至25%以下<>时，进入<#92dc7bff>凝滞<>状态2.5秒。<#92dc7bff>凝滞<>期间，你无法被选取、无敌且无法行动（冷却时间120秒）。"
+        },
+        "seekers_armguard": {
+            "name": "探索者的护臂",
+            "option": "\n<#ff7a3eff>女巫之路<>：击杀一个单位可获得 <#ffdd8eff>0.5 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>，最多 <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>。"
         }
     },
     "pt-BR": {
@@ -3573,6 +3705,50 @@
         "sorcerers_shoes": {
             "name": "Sapatos do Feiticeiro",
             "option": ""
+        },
+        "staff_of_flowing_water": {
+            "name": "Cajado Aquafluxo",
+            "option": "\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Cajado Aquafluxo Radiante",
+            "option": "\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
+        },
+        "immortal_shieldbow": {
+            "name": "Arco-escudo Imortal",
+            "option": "\n<#ff7a3eff>Salva-Vidas<>: Ao cair <#d94c49ff>abaixo de 30% de Vida<>, concede um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#cab944ff>330<> - <#cab944ff>605<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<> (recarga de <#e8a800ff>90 segundos<>)."
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Arco-escudo Imortal Radiante",
+            "option": "\n<#ff7a3eff>Salva-Vidas<>: Ao cair <#d94c49ff>abaixo de 30% de Vida<>, concede um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#cab944ff>330<> - <#cab944ff>605<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<> (recarga de <#e8a800ff>90 segundos<>)."
+        },
+        "lich_bane": {
+            "name": "Perdição de Lich",
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>105<> + <#a974ffff>30%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
+        },
+        "radiant_lich_bane": {
+            "name": "Perdição de Lich Radiante",
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>105<> + <#a974ffff>45%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
+        },
+        "imperial_mandate": {
+            "name": "Mandato Imperial",
+            "option": "\n<#ff7a3eff>Comando<>: Acertar uma Habilidade em um campeão inimigo <#d94c49ff>imobilizado<> o marca como <#92dc7bff>Vulnerável<> por <#e8a800ff>3 segundos<>, <#d94c49ff>aumentando o dano que ele recebe<> em <#d94c49ff>7%<>. Aplicações seguintes renovam este efeito."
+        },
+        "radiant_imperial_mandate": {
+            "name": "Mandato Imperial Radiante",
+            "option": "\n<#ff7a3eff>Comando<>: Acertar uma Habilidade em um campeão inimigo <#d94c49ff>imobilizado<> o marca como <#92dc7bff>Vulnerável<> por <#e8a800ff>3 segundos<>, <#d94c49ff>aumentando o dano que ele recebe<> em <#d94c49ff>7%<>. Aplicações seguintes renovam este efeito."
+        },
+        "zhonyas_hourglass": {
+            "name": "Ampulheta de Zhonya",
+            "option": "\n<#ff7a3eff>Tempo Paralisado<>: Ao cair <#d94c49ff>abaixo de 25% de Vida<>, você entra em <#92dc7bff>Estase<> por 2.5 segundos. Durante a <#92dc7bff>Estase<>, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>120 segundos<>)."
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Ampulheta de Zhonya Radiante",
+            "option": "\n<#ff7a3eff>Tempo Paralisado<>: Ao cair <#d94c49ff>abaixo de 25% de Vida<>, você entra em <#92dc7bff>Estase<> por 2.5 segundos. Durante a <#92dc7bff>Estase<>, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>120 segundos<>)."
+        },
+        "seekers_armguard": {
+            "name": "Armaguarda da Caçadora",
+            "option": "\n<#ff7a3eff>Caminho da Bruxa<>: Abater uma unidade concede <#ffdd8eff>0.5 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, até o máximo de <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>."
         }
     },
     "ru": {
@@ -4467,6 +4643,50 @@
         "sorcerers_shoes": {
             "name": "Сапоги чародея",
             "option": ""
+        },
+        "staff_of_flowing_water": {
+            "name": "Посох водного потока",
+            "option": "\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Лучезарный Посох водного потока",
+            "option": "\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
+        },
+        "immortal_shieldbow": {
+            "name": "Арбалет бессмертия",
+            "option": "\n<#ff7a3eff>Линия жизни<>: При <#d94c49ff>падении здоровья ниже 30%<> вы получаете <#cab944ff>щит<> на <#e8a800ff>3 секунды<>, поглощающий <#cab944ff>330<> - <#cab944ff>605<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<> (перезарядка 90 секунд)."
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Лучезарный Арбалет бессмертия",
+            "option": "\n<#ff7a3eff>Линия жизни<>: При <#d94c49ff>падении здоровья ниже 30%<> вы получаете <#cab944ff>щит<> на <#e8a800ff>3 секунды<>, поглощающий <#cab944ff>330<> - <#cab944ff>605<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<> (перезарядка 90 секунд)."
+        },
+        "lich_bane": {
+            "name": "Гроза Личей",
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>105<> + <#a974ffff>30%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
+        },
+        "radiant_lich_bane": {
+            "name": "Лучезарная Гроза Личей",
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>105<> + <#a974ffff>45%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
+        },
+        "imperial_mandate": {
+            "name": "Имперский мандат",
+            "option": "\n<#ff7a3eff>Команда<>: Попадание умением по <#d94c49ff>обездвиженному<> вражескому чемпиону накладывает на него <#92dc7bff>уязвимость<> на <#e8a800ff>3 секунды<>, <#d94c49ff>увеличивая получаемый им урон<> на <#d94c49ff>7%<>. Повторное наложение обновляет этот эффект."
+        },
+        "radiant_imperial_mandate": {
+            "name": "Лучезарный Имперский мандат",
+            "option": "\n<#ff7a3eff>Команда<>: Попадание умением по <#d94c49ff>обездвиженному<> вражескому чемпиону накладывает на него <#92dc7bff>уязвимость<> на <#e8a800ff>3 секунды<>, <#d94c49ff>увеличивая получаемый им урон<> на <#d94c49ff>7%<>. Повторное наложение обновляет этот эффект."
+        },
+        "zhonyas_hourglass": {
+            "name": "Песочные часы Жони",
+            "option": "\n<#ff7a3eff>Остановка времени<>: При <#d94c49ff>падении здоровья ниже 25%<> вы впадаете в <#92dc7bff>стазис<> на 2.5 секунды. В <#92dc7bff>стазисе<> вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 120 секунд)."
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Лучезарные Песочные часы Жони",
+            "option": "\n<#ff7a3eff>Остановка времени<>: При <#d94c49ff>падении здоровья ниже 25%<> вы впадаете в <#92dc7bff>стазис<> на 2.5 секунды. В <#92dc7bff>стазисе<> вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 120 секунд)."
+        },
+        "seekers_armguard": {
+            "name": "Наручи Искательницы",
+            "option": "\n<#ff7a3eff>Путь ведьмы<>: Убийство бойца даёт <#ffdd8eff>0.5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, но не более <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>."
         }
     },
     "ko": {
@@ -5361,6 +5581,50 @@
         "sorcerers_shoes": {
             "name": "마법사의 신발",
             "option": ""
+        },
+        "staff_of_flowing_water": {
+            "name": "흐르는 물의 지팡이",
+            "option": "\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>10<> 증가합니다."
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "찬란한 흐르는 물의 지팡이",
+            "option": "\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>10<> 증가합니다."
+        },
+        "immortal_shieldbow": {
+            "name": "불멸의 철갑궁",
+            "option": "\n<#ff7a3eff>생명선<>: <#d94c49ff>체력이 30% 아래로 내려가면<> <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>330<>~<#cab944ff>605<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다."
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "찬란한 불멸의 철갑궁",
+            "option": "\n<#ff7a3eff>생명선<>: <#d94c49ff>체력이 30% 아래로 내려가면<> <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>330<>~<#cab944ff>605<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>90초<>입니다."
+        },
+        "lich_bane": {
+            "name": "리치베인",
+            "option": "\n<#ff7a3eff>주문 검<>: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 30%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+        },
+        "radiant_lich_bane": {
+            "name": "찬란한 리치베인",
+            "option": "\n<#ff7a3eff>주문 검<>: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 45%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+        },
+        "imperial_mandate": {
+            "name": "제국의 명령",
+            "option": "\n<#ff7a3eff>명령<>: <#d94c49ff>이동 불가<> 상태인 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>3초<> 동안 <#92dc7bff>취약<> 표식을 남겨 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다. 다시 적용하면 효과가 갱신됩니다."
+        },
+        "radiant_imperial_mandate": {
+            "name": "찬란한 제국의 명령",
+            "option": "\n<#ff7a3eff>명령<>: <#d94c49ff>이동 불가<> 상태인 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>3초<> 동안 <#92dc7bff>취약<> 표식을 남겨 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다. 다시 적용하면 효과가 갱신됩니다."
+        },
+        "zhonyas_hourglass": {
+            "name": "존야의 모래시계",
+            "option": "\n<#ff7a3eff>시간 정지<>: <#d94c49ff>체력이 25% 아래로 내려가면<> 2.5초 동안 <#92dc7bff>경직<> 상태가 됩니다. <#92dc7bff>경직<> 상태에서는 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>120초<>입니다."
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "찬란한 존야의 모래시계",
+            "option": "\n<#ff7a3eff>시간 정지<>: <#d94c49ff>체력이 25% 아래로 내려가면<> 2.5초 동안 <#92dc7bff>경직<> 상태가 됩니다. <#92dc7bff>경직<> 상태에서는 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>120초<>입니다."
+        },
+        "seekers_armguard": {
+            "name": "추적자의 팔목 보호대",
+            "option": "\n<#ff7a3eff>마녀의 길<>: 유닛을 처치하면 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>이 <#ffdd8eff>0.5<> 증가하며, 최대 <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>까지 중첩됩니다."
         }
     }
 }

@@ -39,6 +39,14 @@
             "tag": "revive",
             "z": 1,
             "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_zhonyas_hourglass_stasis",
+            "anim": "asset/riot_items_tfm2/effects/zhonyas_hourglass_stasis",
+            "tag": "stasis",
+            "z": 1,
+            "is_follow": true
         }
     ],
     "view_projectiles": [],

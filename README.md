@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 179 new items (106 base + 73 Radiant) to the game.
+Reskins the 30 existing items and also adds 190 new items (112 base + 78 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -84,6 +84,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Phage** | 500G | +100 HP<br>+20 AD | Rage: Basic attacks against enemy champions grant 5% movement speed for 2 seconds. |
 | **Plated Steelcaps** | 650G | +15 Armor<br>+10% MS | Plating: Reduce damage taken from basic attacks by 5%. |
 | **Scout's Slingshot** | 400G | +30% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
+| **Seeker's Armguard** | 500G | +30 AP<br>+20 Armor | Witch's Path: Killing a unit grants 0.5 armor, up to a maximum of 15. |
 | **Serrated Dirk** | 400G | +25 AD | Gain 10 Lethality. |
 | **Sheen** | 650G | +20% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
 | **Sorcerer's Shoes** | 650G | +15% Magic Pen<br>+10% MS | — |
@@ -120,16 +121,19 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Frozen Heart** | 650G | +35 Armor<br>+10 Ability Haste<br>+10% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Frozen Mallet** | 700G | +200 HP<br>+20 AD | Icy: Basic attacks apply a 15% slow for 2 seconds. |
 | **Grez's Spectral Lantern** | 700G | +150 HP<br>+30 AP<br>+10 Ability Haste | Spirit Drain: Gain 2 Ability Power for each champion takedown and monster killed, up to 20.<br>Butcher: Against monsters, deal 20% bonus magic damage and restore health equal to 4% of your damage dealt. |
-| **Guardian Angel** | 750G | +35 AD<br>+30 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 40% of your maximum health. During the duration, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
+| **Guardian Angel** | 750G | +35 AD<br>+30 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 40% of your maximum health. While resurrecting, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
 | **Guinsoo's Rageblade** | 700G | +15 AD<br>+15 AP<br>+30% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Hamstringer** | 750G | +25 AD<br>+25% AS<br>+20% Crit Chance | Scour: Your critical strikes bleed the target, dealing 70 - 180 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
 | **Heartsteel** | 750G | +250 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 750G | +25 AD<br>+50 AP<br>+10% Omnivamp | — |
 | **Hubris** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
+| **Immortal Shieldbow** | 750G | +45 AD<br>+20% Crit Chance | Lifeline: Falling below 30% health grants a shield for 3 seconds that absorbs 330 - 605 (based on level) damage (90 second cooldown). |
+| **Imperial Mandate** | 550G | +100 HP<br>+1 HP Regen<br>+25 AP<br>+15 Ability Haste | Command: Landing an Ability on an immobilized enemy champion marks them as Vulnerable for 3 seconds, increasing their damage taken by 7%. Subsequent applications refresh this buff. |
 | **Infinity Edge** | 750G | +50 AD<br>+20% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Jak'Sho, The Protean** | 700G | +150 HP<br>+25 Armor<br>+40 MR | Resilience: Taking damage from an enemy champion grants 6% armor and 6% magic resistance for 4 seconds (max 4 stacks). |
 | **Kraken Slayer** | 700G | +30 AD<br>+30% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Liandry's Torment** | 700G | +200 HP<br>+40 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
+| **Lich Bane** | 750G | +50 AP<br>+20% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 105 + 30% of your Ability Power as bonus magic damage (1.5 second cooldown). |
 | **Locket of the Iron Solari** | 550G | +100 HP<br>+20 Armor<br>+30 MR<br>+10 Ability Haste | Devotion: Falling below 50% health grants you and all nearby allied champions a shield that absorbs damage equal to 170 - 225 (based on level) health over 2.5 seconds (90 second cooldown).<br>Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Lord Dominik's Regards** | 750G | +25 AD<br>+20% Crit Chance<br>+25% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Malignance** | 650G | +60 AP<br>+12 Ability Haste | Scorn: Gain 12 Ultimate Ability Haste. |
@@ -153,6 +157,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Shadowflame** | 700G | +60 AP<br>+15% Magic Pen | Cinderbloom: Your magic and true damage is 20% stronger against enemies below 40% maximum health. |
 | **Spear of Shojin** | 700G | +200 HP<br>+20 AD<br>+10 Ability Haste | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 700G | +200 HP<br>+50 MR | Vitality: Increase all healing received by 20%. |
+| **Staff of Flowing Water** | 550G | +100 HP<br>+1 HP Regen<br>+30 AP<br>+10 Ability Haste | Rapids: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target 25 Ability Power and 10 Ability Haste for 3 seconds. |
 | **Sterak's Gage** | 700G | +200 HP<br>+20 AD<br>+15% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Stormrazor** | 800G | +35 AD<br>+20% AS<br>+20% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Stormsurge** | 700G | +55 AP<br>+5% MS<br>+10% Magic Pen | Stormraider: Dealing damage to an enemy champion equal to 25% of their maximum health within 2.5 seconds inflicts them with Squall (30 second cooldown per target). Squall: After 2 seconds, strike the target, dealing 125 + 10% of your Ability Power as magic damage. |
@@ -167,6 +172,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Wit's End** | 700G | +40% AS<br>+40 MR<br>+20% Tenacity | Fray: Basic attacks deal 45 bonus magic damage. |
 | **Yun Tal Wildarrows** | 750G | +35 AD<br>+20% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
 | **Zeke's Herald** | 550G | +150 HP<br>+2 HP Regen<br>+20 AP<br>+10 Ability Haste | Aura: Grant 15 Adaptive Force and 6% Omnivamp to all allied champions within 100 range. |
+| **Zhonya's Hourglass** | 750G | +50 AP<br>+35 Armor | Time Stop: Falling below 25% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
 
 
 #### Tier 5  
@@ -198,16 +204,19 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Frozen Heart** | 950G | +55 Armor<br>+15 Ability Haste<br>+15% Skill DMG Reduction | Winter's Caress: Reduce the attack speed of enemy champions within 100 range by 30%. |
 | **Radiant Frozen Mallet** | 1000G | +300 HP<br>+30 AD | Icy: Basic attacks deal bonus physical damage equal to 20 + 3% of your maximum health and apply a 15% slow for 2 seconds. |
 | **Radiant Grez's Spectral Lantern** | 1000G | +200 HP<br>+60 AP<br>+10 Ability Haste | Spirit Drain: Gain 2 Ability Power for each champion takedown and monster killed, up to 40.<br>Butcher: Against monsters, deal 30% bonus magic damage and restore health equal to 6% of your damage dealt. |
-| **Radiant Guardian Angel** | 1100G | +50 AD<br>+45 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 60% of your maximum health. During the duration, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
+| **Radiant Guardian Angel** | 1100G | +50 AD<br>+45 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 60% of your maximum health. While resurrecting, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
 | **Radiant Guinsoo's Rageblade** | 950G | +25 AD<br>+25 AP<br>+50% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Hamstringer** | 1100G | +40 AD<br>+45% AS<br>+25% Crit Chance | Scour: Your critical strikes bleed the target, dealing 125 - 290 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
 | **Radiant Heartsteel** | 1050G | +400 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 1050G | +45 AD<br>+75 AP<br>+15% Omnivamp | — |
 | **Radiant Hubris** | 1000G | +60 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
+| **Radiant Immortal Shieldbow** | 1050G | +65 AD<br>+25% Crit Chance | Lifeline: Falling below 30% health grants a shield for 3 seconds that absorbs 330 - 605 (based on level) damage (90 second cooldown). |
+| **Radiant Imperial Mandate** | 750G | +150 HP<br>+2 HP Regen<br>+40 AP<br>+20 Ability Haste | Command: Landing an Ability on an immobilized enemy champion marks them as Vulnerable for 3 seconds, increasing their damage taken by 7%. Subsequent applications refresh this buff. |
 | **Radiant Infinity Edge** | 1150G | +75 AD<br>+25% Crit Chance | Excoriate: Gain 30% critical strike damage. |
 | **Radiant Jak'Sho, The Protean** | 1000G | +300 HP<br>+35 Armor<br>+60 MR | Resilience: Taking damage from an enemy champion grants 10% armor and 10% magic resistance for 4 seconds (max 4 stacks). |
 | **Radiant Kraken Slayer** | 1000G | +45 AD<br>+45% AS<br>+4% MS | Bring It Down: Every third basic attack deals 150 bonus physical damage, increased by up to 75% based on the target's missing health (maximum bonus at 25% target health). |
 | **Radiant Liandry's Torment** | 1000G | +300 HP<br>+75 AP | Suffering: Dealing Ability damage burns enemies, causing them to take 6% of their maximum health as magic damage over 3 seconds. Deals a maximum of 40 magic damage per tick against minions and monsters. |
+| **Radiant Lich Bane** | 1050G | +90 AP<br>+25% AS<br>+15 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 105 + 45% of your Ability Power as bonus magic damage (1.5 second cooldown). |
 | **Radiant Locket of the Iron Solari** | 850G | +150 HP<br>+40 Armor<br>+50 MR<br>+15 Ability Haste | Devotion: Falling below 50% health grants you and all nearby allied champions a shield that absorbs damage equal to 295 - 350 (based on level) health over 2.5 seconds (90 second cooldown).<br>Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Radiant Lord Dominik's Regards** | 1000G | +45 AD<br>+25% Crit Chance<br>+35% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Radiant Malignance** | 950G | +100 AP<br>+20 Ability Haste | Scorn: Gain 20 Ultimate Ability Haste. |
@@ -231,6 +240,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Shadowflame** | 900G | +105 AP<br>+15% Magic Pen | Cinderbloom: Your magic and true damage is 20% stronger against enemies below 40% maximum health. |
 | **Radiant Spear of Shojin** | 1100G | +300 HP<br>+30 AD<br>+20 Ability Haste | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Radiant Spirit Visage** | 950G | +300 HP<br>+75 MR | Vitality: Increase all healing received by 20%. |
+| **Radiant Staff of Flowing Water** | 750G | +150 HP<br>+2 HP Regen<br>+50 AP<br>+15 Ability Haste | Rapids: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target 25 Ability Power and 10 Ability Haste for 3 seconds. |
 | **Radiant Sterak's Gage** | 1000G | +350 HP<br>+25 AD<br>+20% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Radiant Stormrazor** | 1100G | +50 AD<br>+40% AS<br>+25% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Radiant Stormsurge** | 1000G | +100 AP<br>+5% MS<br>+15% Magic Pen | Stormraider: Dealing damage to an enemy champion equal to 25% of their maximum health within 2.5 seconds inflicts them with Squall (30 second cooldown per target). Squall: After 2 seconds, strike the target, dealing 125 + 15% of your Ability Power as magic damage. |
@@ -245,6 +255,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Wit's End** | 1000G | +65% AS<br>+65 MR<br>+30% Tenacity | Fray: Basic attacks deal 45 bonus magic damage. |
 | **Radiant Yun Tal Wildarrows** | 1100G | +40 AD<br>+50% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
 | **Radiant Zeke's Herald** | 750G | +250 HP<br>+3 HP Regen<br>+30 AP<br>+15 Ability Haste | Aura: Grant 25 Adaptive Force and 10% Omnivamp to all allied champions within 100 range. |
+| **Radiant Zhonya's Hourglass** | 1050G | +80 AP<br>+50 Armor | Time Stop: Falling below 25% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
 
 ### Base Item Reskins
 

@@ -1253,6 +1253,72 @@
             "y": 0.5,
             "w": 0.05,
             "h": 0.05
+        },
+        "staff_of_flowing_water": {
+            "x": 0.45,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_staff_of_flowing_water": {
+            "x": 0.50,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "immortal_shieldbow": {
+            "x": 0.55,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_immortal_shieldbow": {
+            "x": 0.60,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "lich_bane": {
+            "x": 0.65,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_lich_bane": {
+            "x": 0.70,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "imperial_mandate": {
+            "x": 0.75,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_imperial_mandate": {
+            "x": 0.80,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "zhonyas_hourglass": {
+            "x": 0.85,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "radiant_zhonyas_hourglass": {
+            "x": 0.90,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
+        },
+        "seekers_armguard": {
+            "x": 0.95,
+            "y": 0.5,
+            "w": 0.05,
+            "h": 0.05
         }
     }
 }
