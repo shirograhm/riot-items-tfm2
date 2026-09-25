@@ -2483,46 +2483,60 @@ static FIRE: [AtomicU64; 4] = [
     AtomicU64::new(0),
 ];
 static NN_ID_NAME: Mutex<Option<HashMap<u64, String>>> = Mutex::new(None);
-// Catalog index -> item name (evt[0x50] shadow-call). The inverse of scan_recipe_safe_in.
+/// Catalog index -> item name (evt[0x50] shadow-call). The inverse of scan_recipe_safe_in.
+///
+/// Every read is VEH-guarded (`safe_read_*`) rather than `readable` + a raw
+/// read: the buy detour names catalog entries dozens of times a decision, and
+/// `readable` is a `VirtualQuery` syscall per check (7 per name, ~5.9 us
+/// each, measured 2026-09-25). The one thing a guarded read cannot prove, that
+/// the name getter is code, is proven once per getter ([`name_getter_ok`]).
 unsafe fn catalog_name_at(ctx: usize, idx: u64) -> Option<String> {
-    if ctx < 0x10000 || !readable(ctx, 0x38) {
+    if ctx < 0x10000 {
         return None;
     }
-    let coll = rd_u64(ctx + 0x30) as usize;
-    if coll < 0x10000 || !readable(coll, 0x18) {
+    let coll = safe_read_u64(ctx + 0x30)? as usize;
+    if coll < 0x10000 {
         return None;
     }
-    catalog_name_in(rd_u64(coll + 8) as usize, rd_u64(coll + 0x10), idx)
+    catalog_name_in(
+        safe_read_u64(coll + 8)? as usize,
+        safe_read_u64(coll + 0x10)?,
+        idx,
+    )
 }
 
 /// [`catalog_name_at`] against a catalog array already read out of its
 /// collection (`data`/`len`), which is what the index cache needs to re-check a
 /// cached index without going back through a context.
 unsafe fn catalog_name_in(data: usize, len: u64, idx: u64) -> Option<String> {
-    if idx >= len || data < 0x10000 || !readable(data + (idx as usize) * 16, 16) {
+    if idx >= len || data < 0x10000 {
         return None;
     }
     let e = data + (idx as usize) * 16;
-    let edata = rd_u64(e) as usize;
-    let evt = rd_u64(e + 8) as usize;
-    if edata < 0x10000 || evt < 0x10000 || !readable(evt, 0x60) {
+    let edata = safe_read_u64(e)? as usize;
+    let evt = safe_read_u64(e + 8)? as usize;
+    if edata < 0x10000 || evt < 0x10000 {
         return None;
     }
-    let namefn = rd_u64(evt + 0x58) as usize;
-    if !code_ptr_ok(namefn) {
+    let namefn = safe_read_u64(evt + 0x58)? as usize;
+    if !name_getter_ok(namefn) {
         return None;
     }
     let f: unsafe extern "win64" fn(usize) -> usize = core::mem::transmute(namefn);
     let nobj = f(edata);
-    if nobj < 0x10000 || !readable(nobj, 0x18) {
+    if nobj < 0x10000 {
         return None;
     }
-    let chars = rd_u64(nobj + 8) as usize;
-    let nlen = rd_u64(nobj + 0x10) as usize;
-    if chars < 0x10000 || nlen == 0 || nlen > 64 || !readable(chars, nlen) {
+    let chars = safe_read_u64(nobj + 8)? as usize;
+    let nlen = safe_read_u64(nobj + 0x10)? as usize;
+    if chars < 0x10000 || nlen == 0 || nlen > 64 {
         return None;
     }
-    Some(String::from_utf8_lossy(std::slice::from_raw_parts(chars as *const u8, nlen)).into_owned())
+    let mut name = Vec::new();
+    if !safe_read_bytes(chars, nlen, &mut name) {
+        return None;
+    }
+    Some(String::from_utf8_lossy(&name).into_owned())
 }
 
 // === Match start launcher hook (0.5.1 RE) - deterministic capture of the rendered match seed ===
@@ -4460,18 +4474,18 @@ const AUTO4_MATCH_3RD_CATEGORY: bool = true;
 /// Resolved through the catalog rather than from the build slot directly,
 /// because a slot holds a catalog *index* and only vanilla items have
 /// index == id — reading it as an id would silently mis-categorise every mod
-/// item. The pointer guard matches the one the buy path already applies before
-/// touching `build[]`: `rd_u64` is a raw read, not a checked one.
+/// item. `build[2]` is read VEH-guarded, not behind a `readable` syscall.
 unsafe fn third_slot_category(athlete: usize, rsp_entry: usize) -> Option<u32> {
     if !AUTO4_MATCH_3RD_CATEGORY {
         return None;
     }
     let ptr = rd_u64(athlete + 0x558) as usize;
-    if ptr < 0x10000 || !readable(ptr, 24) {
+    if ptr < 0x10000 {
         return None;
     }
+    let third = safe_read_u64(ptr + 16)?;
     let ctx = rd_u64(rsp_entry + 0x30) as usize;
-    catalog_name_at(ctx, rd_u64(ptr + 16))
+    catalog_name_at(ctx, third)
         .as_deref()
         .and_then(engine_category)
 }
@@ -5136,15 +5150,8 @@ unsafe fn catalog_entry_named(data: usize, len: u64, idx: u64, want: &[u8]) -> b
     let Some(namefn) = safe_read_u64(evt + 0x58).map(|f| f as usize) else {
         return false;
     };
-    if !NAME_GETTERS
-        .iter()
-        .any(|g| g.load(Ordering::Relaxed) == namefn)
-    {
-        if !code_ptr_ok(namefn) {
-            return false;
-        }
-        let slot = NAME_GETTER_NEXT.fetch_add(1, Ordering::Relaxed) % NAME_GETTERS.len();
-        NAME_GETTERS[slot].store(namefn, Ordering::Relaxed);
+    if !name_getter_ok(namefn) {
+        return false;
     }
     let f: unsafe extern "win64" fn(usize) -> usize = core::mem::transmute(namefn);
     let nobj = f(edata);
@@ -5165,6 +5172,29 @@ unsafe fn catalog_entry_named(data: usize, len: u64, idx: u64, want: &[u8]) -> b
 static NAME_GETTERS: [AtomicUsize; 8] = [const { AtomicUsize::new(0) }; 8];
 static NAME_GETTER_NEXT: AtomicUsize = AtomicUsize::new(0);
 
+/// Whether `namefn` is a catalog name getter proven to be code, proving and
+/// remembering it on first sight: `code_ptr_ok` is a `VirtualQuery` syscall,
+/// and the catalog holds only a handful of item types. The low-address test
+/// comes first because an empty [`NAME_GETTERS`] slot is 0, and a null getter
+/// must not match one.
+unsafe fn name_getter_ok(namefn: usize) -> bool {
+    if namefn < 0x10000 {
+        return false;
+    }
+    if NAME_GETTERS
+        .iter()
+        .any(|g| g.load(Ordering::Relaxed) == namefn)
+    {
+        return true;
+    }
+    if !code_ptr_ok(namefn) {
+        return false;
+    }
+    let slot = NAME_GETTER_NEXT.fetch_add(1, Ordering::Relaxed) % NAME_GETTERS.len();
+    NAME_GETTERS[slot].store(namefn, Ordering::Relaxed);
+    true
+}
+
 fn forget_catalog(base: usize, len: u64) {
     if let Some(outer) = SCAN_CACHE
         .lock()
@@ -5175,15 +5205,22 @@ fn forget_catalog(base: usize, len: u64) {
     }
 }
 
+/// VEH-guarded reads, not `readable`: the candidate searches call this once
+/// per candidate, and two `VirtualQuery` syscalls each made a 5th/6th-slot
+/// growth pass cost milliseconds (see [`catalog_name_at`]).
 unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
-    if ctx < 0x10000 || !readable(ctx, 0x38) {
+    if ctx < 0x10000 {
         return None;
     }
-    let coll = rd_u64(ctx + 0x30) as usize; // * 0.5.0: the catalog collection offset moved ctx+0x20 -> +0x30 (RE confirmed, the only change)
-    if coll < 0x10000 || !readable(coll, 0x18) {
+    let coll = safe_read_u64(ctx + 0x30)? as usize; // * 0.5.0: the catalog collection offset moved ctx+0x20 -> +0x30 (RE confirmed, the only change)
+    if coll < 0x10000 {
         return None;
     }
-    scan_catalog_index(rd_u64(coll + 8) as usize, rd_u64(coll + 0x10), want)
+    scan_catalog_index(
+        safe_read_u64(coll + 8)? as usize,
+        safe_read_u64(coll + 0x10)?,
+        want,
+    )
 }
 // * buy_item replace-detour: when owned==3 and the champion designates a mod item as its 4th, scan the clone source collection (ctx+0x20)
 //   by name (vtable[0x50]) -> return that mod item's index i as rax=1/rdx=i -> run_tick_ext clones/pushes it
@@ -5391,7 +5428,13 @@ unsafe fn auto_extra_pick(
 /// Fixed in place: every slot up to the one being built now (`owned`, whose
 /// components may already be bought), the player's pins (`designate`), and
 /// the boots, which rule 7 placed.
-unsafe fn reorder_unbought(ctx: usize, champ: &str, slots: &mut [u64], owned: u64, designate: bool) {
+unsafe fn reorder_unbought(
+    ctx: usize,
+    champ: &str,
+    slots: &mut [u64],
+    owned: u64,
+    designate: bool,
+) {
     let movable: Vec<usize> = (owned as usize + 1..slots.len())
         .filter(|&j| !(designate && crate::build_config::pinned_key_raw(champ, j).is_some()))
         .filter(|&j| !buy_is_boots(ctx, slots[j]))
@@ -5483,6 +5526,126 @@ unsafe fn needs_build_extension(athlete: usize) -> bool {
     }
 }
 
+/// Fixed words at the front of [`BuyInputs`]; the build targets follow.
+const BUY_INPUT_FIXED: usize = 14;
+/// Longest build [`BuyInputs`] holds. The detour grows builds to
+/// `build_config::picker_slots()` (6); a longer one is never memoized.
+const BUY_MEMO_BUILD_MAX: usize = 8;
+
+/// Everything `buy_replace_ctx` decides an athlete's build from, read without
+/// a syscall. Two calls with equal inputs make the same decision.
+#[derive(Clone, Copy, PartialEq, Eq)]
+struct BuyInputs([u64; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX]);
+
+/// Reads [`BuyInputs`] for `athlete`, or `None` when any of it is unreadable
+/// or the build is too long to hold, and the call takes the full path.
+///
+/// It covers what the full path reads: the athlete's identity, champion,
+/// side, lane, owned count and build Vec (header and every target), the
+/// catalog context, the team-gate flags, both settings, the scene side, and
+/// which pin snapshot is live. Not gold: nothing below decides anything from
+/// it. The neural 4th pick is covered through its inputs (build[0..3], the
+/// champion and the match's lineup, which the seed stands for).
+unsafe fn buy_inputs(
+    athlete: usize,
+    rsp_entry: usize,
+    seed: u64,
+    is_live: bool,
+) -> Option<BuyInputs> {
+    let read = |offset: usize| safe_read_u64(athlete + offset);
+    let ptr = read(0x558)?;
+    let len = read(0x560)?;
+    if len as usize > BUY_MEMO_BUILD_MAX {
+        return None;
+    }
+    let mine = match is_my_athlete(athlete) {
+        None => 0,
+        Some(false) => 1,
+        Some(true) => 2,
+    };
+    let flags = is_live as u64
+        | (COMPTEST_MATCH.load(Ordering::Relaxed) as u64) << 1
+        | (crate::build_config::is_test_match(seed) as u64) << 2
+        | mine << 3
+        | (crate::build_config::own_team_only_enabled() as u64) << 5
+        | (crate::build_config::smart_builds_enabled() as u64) << 6;
+    let fixed: [u64; BUY_INPUT_FIXED] = [
+        seed,
+        read(O_ATHLETE_ID)?,
+        read(O_ATHLETE_CHAMP_PTR)?,
+        read(O_ATHLETE_CHAMP_LEN)?,
+        read(O_ATHLETE_TEAM)?,
+        read(O_ATHLETE_POS)? & 0xffff_ffff,
+        read(0x518)?, // owned
+        read(0x550)?, // build cap
+        ptr,
+        len,
+        safe_read_u64(rsp_entry + 0x30)?, // ctx: the catalog every pick resolves in
+        flags,
+        SCENE_SIDE.load(Ordering::Relaxed),
+        crate::build_config::pins_generation(),
+    ];
+    let mut words = [0u64; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX];
+    words[..BUY_INPUT_FIXED].copy_from_slice(&fixed);
+    for i in 0..len as usize {
+        words[BUY_INPUT_FIXED + i] = safe_read_u64(ptr as usize + i * 8)?;
+    }
+    Some(BuyInputs(words))
+}
+
+/// Athletes remembered per thread. A match has ten athletes, but a rayon
+/// worker can step several background fixtures in turn, so this holds a few
+/// matches' worth rather than letting them evict each other. A miss only costs
+/// the full path, so the table does not need to be exact.
+const BUY_MEMO_SLOTS: usize = 64;
+
+/// Per athlete, the inputs of its last buy decision that changed nothing.
+struct BuyMemo {
+    entries: [(usize, BuyInputs); BUY_MEMO_SLOTS],
+    next: usize,
+}
+
+thread_local! {
+    // `const` and no `Drop`: no lazy init or destructor registration on the
+    // detour's threads, as with `SEH_T`.
+    static BUY_MEMO: core::cell::RefCell<BuyMemo> = const {
+        core::cell::RefCell::new(BuyMemo {
+            entries: [(0, BuyInputs([0; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX])); BUY_MEMO_SLOTS],
+            next: 0,
+        })
+    };
+}
+
+/// Whether `athlete`'s last decision on this thread changed nothing and was
+/// made from exactly `inputs` -- so this one would change nothing either.
+fn buy_memo_hit(athlete: usize, inputs: &BuyInputs) -> bool {
+    BUY_MEMO
+        .try_with(|memo| {
+            memo.try_borrow().is_ok_and(|memo| {
+                memo.entries
+                    .iter()
+                    .any(|(key, known)| *key == athlete && known == inputs)
+            })
+        })
+        .unwrap_or(false)
+}
+
+/// Remembers that a decision from `inputs` changed nothing for `athlete`,
+/// replacing whatever this thread held for it.
+fn buy_memo_store(athlete: usize, inputs: BuyInputs) {
+    let _ = BUY_MEMO.try_with(|memo| {
+        let Ok(mut memo) = memo.try_borrow_mut() else {
+            return;
+        };
+        let known = memo.entries.iter().position(|(key, _)| *key == athlete);
+        let slot = known.unwrap_or(memo.next);
+        if known.is_none() {
+            memo.next = (slot + 1) % BUY_MEMO_SLOTS;
+        }
+        memo.entries[slot] = (athlete, inputs);
+    });
+}
+
 unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
     // * Hot path (parallel rayon workers) - global atomic counters would make the measurement itself expensive through cache-line contention,
     //   so thread_local accumulation (rec_tl) is used. T_BUY_ALL = the whole detour (including catch_unwind),
@@ -5563,21 +5726,48 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         {
             return 0;
         }
-        // -- From here on, only spectated-match buys (a small minority) and background buys by my 5 players get through --
-        // * The athlete validity check (VirtualQuery) happens once, here - see the reordering comment above.
-        if !readable(athlete, 0x538) {
-            return 0;
-        } // 0.5.0: covers build len@+0x4a0+8
-        let owned = rd_u64(athlete + 0x518); // 0.5.0 owned (was 0x3d0)
-                                             // * Only handle target (designated) champions - everything else passes through (build untouched).
-        let cptr = rd_u64(athlete + 0x4e0) as usize; // 0.5.0 champ name ptr (was 0x398, derived +0x88)
-        let clen = rd_u64(athlete + 0x4e8) as usize; // 0.5.0 champ name len (was 0x3a0)
-        if cptr < 0x10000 || clen == 0 || clen > 48 || !readable(cptr, clen) {
+        // ** Per-athlete memo (2026-09-25, the sim slowing down in teamfights).
+        //   `run_tick` calls buy_item every tick for every athlete who is dead
+        //   or standing in its fountain (the entity lookup at 0x1aff1b8 on
+        //   0.6.1), so after a fight everything below ran 60 times a second
+        //   per dead athlete: about 56 `readable`/`VirtualQuery` syscalls a
+        //   call, ~0.33 ms at the ~5.9 us one costs, to rewrite build targets
+        //   that had not changed. With the detour off (`DIAG_BUY_OFF`) the lag
+        //   went away.
+        //
+        //   Everything below is a function of `BuyInputs`. A call whose inputs
+        //   match the athlete's last call that changed nothing would change
+        //   nothing too, so it passes through after ~20 VEH reads. A purchase
+        //   (owned), an engine re-plan (the targets), a new pin snapshot or a
+        //   flipped gate each change the inputs and run the full path again.
+        let memo_inputs = buy_inputs(athlete, rsp_entry, seed_r9, is_live);
+        if memo_inputs.is_some_and(|inputs| buy_memo_hit(athlete, &inputs)) {
             return 0;
         }
-        // * Performance: borrow via Cow (no heap allocation for valid UTF-8).
-        let champ_cow =
-            String::from_utf8_lossy(std::slice::from_raw_parts(cptr as *const u8, clen));
+        // -- From here on, only spectated-match buys (a small minority) and background buys by my 5 players get through --
+        // * The athlete validity check, now VEH-guarded reads rather than a
+        //   `readable` (VirtualQuery) syscall (2026-09-25; see `catalog_name_at`).
+        //   The build len at +0x560 is read too, only as proof: it is the
+        //   furthest of the fields read raw below (+0x550/+0x558/+0x560), which
+        //   the old `readable(athlete, 0x538)` no longer reached.
+        let (Some(owned), Some(cptr), Some(clen), Some(_)) = (
+            safe_read_u64(athlete + 0x518), // 0.5.0 owned (was 0x3d0)
+            safe_read_u64(athlete + O_ATHLETE_CHAMP_PTR),
+            safe_read_u64(athlete + O_ATHLETE_CHAMP_LEN),
+            safe_read_u64(athlete + 0x560),
+        ) else {
+            return 0;
+        };
+        let (cptr, clen) = (cptr as usize, clen as usize);
+        let mut champ_bytes = Vec::new();
+        if cptr < 0x10000
+            || clen == 0
+            || clen > 48
+            || !safe_read_bytes(cptr, clen, &mut champ_bytes)
+        {
+            return 0;
+        }
+        let champ_cow = String::from_utf8_lossy(&champ_bytes);
         let champ: &str = champ_cow.as_ref();
         // Before any pin is looked up: the lane every lookup below resolves in.
         crate::build_config::set_athlete_lane(athlete_lane(athlete));
@@ -5587,11 +5777,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //  this far paid two global mutex acquisitions, and sometimes a rebuild of
         //  the designated-champion `HashSet`, to compute a value it dropped.
         //  `is_champ_designated` itself is still used by the spawn path.)
-        let side = if readable(athlete + 0xa00, 8) {
-            rd_u64(athlete + 0xa00)
-        } else {
-            u64::MAX
-        };
+        let side = safe_read_u64(athlete + O_ATHLETE_TEAM).unwrap_or(u64::MAX);
         // * Deciding the side: prefer the direct scene read (SCENE_SIDE, refreshed on the main thread) -> if undecided, decide on the spot from LIVE_DB (protects the owned=0 injection window).
         //   Undecided = no injection (prevents enemy/background contamination - the fallback vote is definitively abandoned).
         let scene_ps = scene_player_side().or_else(|| {
@@ -6153,6 +6339,16 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         }
                     }
                 }
+            }
+        }
+        // The memo's other half: inputs unchanged by the whole pass above mean
+        // it wrote nothing, and a call with the same inputs would write nothing
+        // too. A pass that did write is not remembered, so the next call runs in
+        // full on what it wrote, as it always has (growth takes a second pass to
+        // settle), and is remembered once it settles.
+        if let Some(inputs) = memo_inputs {
+            if buy_inputs(athlete, rsp_entry, seed_r9, is_live) == Some(inputs) {
+                buy_memo_store(athlete, inputs);
             }
         }
         // * AUTO4_NATURAL: plant only the build[3] target and force nothing -> the game builds up naturally from components (t1), paying full gold.
