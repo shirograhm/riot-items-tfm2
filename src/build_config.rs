@@ -553,6 +553,18 @@ fn publish_pins(config: &BuildConfig) {
     if let Ok(mut pins) = PINS.lock() {
         *pins = Some(Arc::new(PinSnapshot { by_key, sole_key }));
     }
+    PINS_GENERATION.fetch_add(1, Ordering::Relaxed);
+}
+
+/// Counts publications of [`PINS`]. The buy detour memoizes its per-athlete
+/// work against it (see `tactics::BuyMemo`), so a build the editor saves
+/// mid-match is picked up on the next buy decision instead of being hidden
+/// behind the memo.
+static PINS_GENERATION: AtomicU64 = AtomicU64::new(0);
+
+/// How many times the pins have been published. One atomic load.
+pub fn pins_generation() -> u64 {
+    PINS_GENERATION.load(Ordering::Relaxed)
 }
 
 fn pins() -> Option<Arc<PinSnapshot>> {
