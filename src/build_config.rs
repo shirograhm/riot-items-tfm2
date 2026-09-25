@@ -26,7 +26,7 @@ use serde::Deserialize;
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::path::PathBuf;
-use std::sync::atomic::{AtomicU8, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU8, Ordering};
 use std::sync::{Arc, Mutex, RwLock};
 
 /// Schema of `item-builds.json`: the whole file is a map of champion id -> build
@@ -575,14 +575,12 @@ pub fn has_pins(champion: &str) -> bool {
 /// The pin row the detours apply to `champion` played in `role`, picked the
 /// way they pick it ([`pin_entry`]); empty when there is none.
 ///
-/// For the stable hook under `own_team_only`. It does not apply the pins, but
-/// it must not put Smart Builds' boots where one will land: the detours paste
-/// the pins over those slots later, and boots are cheap enough to be finished
-/// before the buy path gets to write the pin, which then loses the slot for
-/// the match. Both sides know the real lane — the hook is told it, the
-/// detours read it off the athlete ([`set_athlete_lane`]) — so they pick the
-/// same row. `role` is [`Role::Any`] when the host did not say, and then the
-/// lane is not known.
+/// For the stable hook under `own_team_only`, which builds the pin-aware
+/// Smart Builds build for the spawn injector from it (see
+/// [`remember_pinned_build`]). Both sides know the real lane — the hook is
+/// told it, the detours read it off the athlete ([`set_athlete_lane`]) — so
+/// they pick the same row. `role` is [`Role::Any`] when the host did not say,
+/// and then the lane is not known.
 pub fn pin_row(champion: &str, role: Role) -> Vec<Option<String>> {
     pins()
         .and_then(|pins| pin_entry(&pins, champion, role, role != Role::Any).cloned())
@@ -667,6 +665,43 @@ fn pin_entry<'a>(
 
 static LINEUP_ROLES: Mutex<Option<Arc<HashMap<String, Role>>>> = Mutex::new(None);
 
+/// Whether the last item-build route call set up a lane or 5v5 test, and the
+/// champions of both its sides. The buy detour's team gate reads these: both
+/// sides of a test are the player's, whatever `own_team_only` says, but only
+/// the athletes of the player's starting roster pass the roster check.
+///
+/// The route call is the one reliable signal for a test (its `mode` argument,
+/// see `crate::hook::apply_training_builds`). Every league fixture makes a route
+/// call with `mode` false before it is simulated, which clears both.
+static TRAINING_MATCH: AtomicBool = AtomicBool::new(false);
+static TRAINING_CHAMPIONS: Mutex<Vec<String>> = Mutex::new(Vec::new());
+
+/// Records whether an item-build route call is for a lane or 5v5 test
+/// (`training`), with the champions of both sides.
+pub fn record_route_call<'a>(training: bool, champions: impl Iterator<Item = &'a str>) {
+    if let Ok(mut recorded) = TRAINING_CHAMPIONS.lock() {
+        recorded.clear();
+        if training {
+            recorded.extend(champions.map(str::to_string));
+        }
+    }
+    TRAINING_MATCH.store(training, Ordering::Relaxed);
+}
+
+/// Whether a lane or 5v5 test is the match being played. One atomic load, for
+/// the buy detour's hot-path exit.
+pub fn training_match() -> bool {
+    TRAINING_MATCH.load(Ordering::Relaxed)
+}
+
+/// Whether `champion` plays in the lane or 5v5 test being played.
+pub fn is_training_champion(champion: &str) -> bool {
+    training_match()
+        && TRAINING_CHAMPIONS
+            .lock()
+            .is_ok_and(|recorded| recorded.iter().any(|recorded| recorded == champion))
+}
+
 /// Records a lineup's champion -> role mapping from a position-ordered roster.
 ///
 /// Entries beyond the five lanes are ignored rather than wrapped: a longer
@@ -732,6 +767,67 @@ fn lane_for_champion(champion: &str) -> (Role, bool) {
 /// The role `champion` is played in, as [`lane_for_champion`] finds it.
 pub fn role_for_champion(champion: &str) -> Role {
     lane_for_champion(champion).0
+}
+
+/// The pin row the detours apply to `champion`, one entry per picker slot, in
+/// the lane [`pinned_key_raw`] resolves: the row [`pin_row`] gives the stable
+/// hook, padded the same way, when both find the same lane.
+pub fn athlete_pin_row(champion: &str) -> Vec<Option<String>> {
+    (0..picker_slots())
+        .map(|slot| pinned_key_raw(champion, slot))
+        .collect()
+}
+
+/// A pin-aware build waiting for the spawn injector: under `own_team_only`,
+/// the build the stable hook would have given `champion` had it known it was
+/// the player's (`to`), next to the one it gave instead (`from`).
+struct PinnedBuild {
+    champion: String,
+    row: Vec<Option<String>>,
+    from: Vec<String>,
+    to: Vec<String>,
+}
+
+/// Newest last. Every fixture's athletes land here, background ones included,
+/// so it is capped; a spawn follows its own match's decisions closely enough
+/// that the oldest entries are never the ones still wanted.
+static PINNED_BUILDS: Mutex<Vec<PinnedBuild>> = Mutex::new(Vec::new());
+const PINNED_BUILDS_CAP: usize = 64;
+
+/// Records the build `champion` with pins `row` gets on the player's team when
+/// the stable hook hands it `from`. Replaces an older entry for the same three,
+/// so a match whose pins change nothing clears a stale one.
+pub fn remember_pinned_build(
+    champion: &str,
+    row: Vec<Option<String>>,
+    from: Vec<String>,
+    to: Vec<String>,
+) {
+    let Ok(mut builds) = PINNED_BUILDS.lock() else {
+        return;
+    };
+    builds.retain(|build| !(build.champion == champion && build.row == row && build.from == from));
+    if builds.len() >= PINNED_BUILDS_CAP {
+        builds.remove(0);
+    }
+    builds.push(PinnedBuild {
+        champion: champion.to_string(),
+        row,
+        from,
+        to,
+    });
+}
+
+/// The pin-aware build for a player's athlete on `champion` with pins `row`
+/// holding `from`, when the stable hook recorded one that differs from it.
+pub fn pinned_build(champion: &str, row: &[Option<String>], from: &[String]) -> Option<Vec<String>> {
+    let builds = PINNED_BUILDS.lock().ok()?;
+    builds
+        .iter()
+        .rev()
+        .find(|build| build.champion == champion && build.row == row && build.from == from)
+        .filter(|build| build.to != build.from)
+        .map(|build| build.to.clone())
 }
 
 /// The pinned item for one slot, exactly as written in the file.

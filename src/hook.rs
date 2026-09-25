@@ -670,6 +670,12 @@ unsafe fn detour(
         mode,
     );
 
+    // The buy detour's team gate lets both sides of a test through (the 5th
+    // and 6th slots are only set there), so it has to know a test is on.
+    build_config::record_route_call(
+        mode,
+        team1.iter().chain(team2.iter()).map(|(_, champion)| champion.as_str()),
+    );
     if mode {
         apply_training_builds(&mut routes, items, team1, team2);
     }

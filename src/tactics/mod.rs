@@ -3046,6 +3046,12 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         }
         if cat_base < 0x10000 || cat_len == 0 || cat_len > 100000 {
             SP4_NOCAT.fetch_add(1, Ordering::Relaxed); // vanilla designations need no scan, so keep going
+        } else {
+            // The stable hook gave this athlete the build it gives both teams,
+            // which does not know the pins. The player's athlete gets the
+            // pin-aware one the hook recorded next to it, before the pins
+            // below are written into it.
+            spawn_paste_pinned_build(champ, bptr, blen, cat_base, cat_len);
         }
         for si in 0u8..3 {
             if (si as u64) >= blen {
@@ -3132,6 +3138,36 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
 /// holds the catalog base and length rather than a buy context.
 unsafe fn spawn_is_boots(cat_base: usize, cat_len: u64, index: u64) -> bool {
     catalog_name_in(cat_base, cat_len, index).is_some_and(|name| crate::smart_builds::is_boots(&name))
+}
+
+/// Swaps the pin-free build the stable hook handed this athlete for the
+/// pin-aware one it recorded under `own_team_only`
+/// (`crate::item_build_hook::remember_pinned_build`): the Smart Builds pass
+/// that counted the player's pins. Only `cap_spawn`'s player gate reaches
+/// this, so the enemy keeps the pin-free build. Nothing is written unless the
+/// athlete still holds exactly the build the hook recorded and every item of
+/// the pin-aware one resolves.
+unsafe fn spawn_paste_pinned_build(champ: &str, bptr: usize, blen: u64, cat_base: usize, cat_len: u64) {
+    let held: Option<Vec<String>> = (0..blen as usize)
+        .map(|j| catalog_name_in(cat_base, cat_len, rd_u64(bptr + j * 8)))
+        .collect();
+    let Some(held) = held else {
+        return;
+    };
+    let row = crate::build_config::athlete_pin_row(champ);
+    let Some(pinned) = crate::build_config::pinned_build(champ, &row, &held) else {
+        return;
+    };
+    let indices: Option<Vec<u64>> = pinned
+        .iter()
+        .map(|key| scan_catalog_index(cat_base, cat_len, key.as_bytes()))
+        .collect();
+    let Some(indices) = indices.filter(|indices| indices.len() == blen as usize) else {
+        return;
+    };
+    for (j, index) in indices.into_iter().enumerate() {
+        wr_u64(bptr + j * 8, index);
+    }
 }
 
 /// The player's pin for build slot `slot`, as a catalog index, for `cap_spawn`.
@@ -3641,7 +3677,11 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
             //   chance to correct it), and comp test is also InGame while that screen has no notion of team membership, so
             //   `player_team_id()` **returns 0**. Publishing that 0 makes team(0).last_starting=[0,1,2,3,4] my team.
             //   => ignore 0 reports during comp test and keep the value captured in a normal match.
-            let in_comptest = COMPTEST_MATCH.load(Ordering::Relaxed);
+            // (2026-09-24: or a lane/5v5 test by the route call's `mode` —
+            //  `COMPTEST_MATCH` hangs on 0.5.3 launcher retaddrs that were never
+            //  re-derived; see `build_config::training_match`.)
+            let in_comptest =
+                COMPTEST_MATCH.load(Ordering::Relaxed) || crate::build_config::training_match();
             let pu = pid as u64;
             // * Diagnostic: pid observation history. ** Confirmed by measurement (2026-07-30) - **from the user's point of view comp test is a
             //   background brief-sim, but under the SDK `Scene` enum it is `InGame`** (proved by LIVE_DB != 0, i.e. this block did run),
@@ -5344,8 +5384,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   Scope is unaffected: `is_player` is still what gates the designation, so a
         //   non-player athlete reaching the extension takes the network/vanilla fallback
         //   the code below already had for it.
+        //   A lane or 5v5 test gets through too: both of its sides are the
+        //   player's (see `is_training_champion` below), and the flag is off for
+        //   every league fixture, so the exit stays as cheap as it was.
         if FIXB
             && !is_live
+            && !crate::build_config::training_match()
             && !matches!(is_my_athlete(athlete), Some(true))
             && !needs_build_extension(athlete)
         {
@@ -5423,7 +5467,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   `is_live && (by_scene || COMPTEST_MATCH)` fell away with it**. Comp-test main matches and record replays are both
         //   on-screen matches (the launcher plants LIVE_SEED), so filtering by is_live keeps the feature intact.
         let is_comptest_live = COMPTEST_MATCH.load(Ordering::Relaxed) && is_live;
-        let is_player = if is_comptest_live {
+        // ** 2026-09-24: lane and 5v5 tests, from the route call's `mode` rather
+        //   than the launcher retaddrs above, which date from 0.5.3 and were
+        //   never re-derived (and never listed the lane test). Both sides of a
+        //   test are the player's, so `own_team_only` does not apply to them.
+        let is_training = crate::build_config::is_training_champion(champ);
+        let is_player = if is_comptest_live || is_training {
             true // comp test = both sides user-composed -> bypass the team gate
         } else if FIXB {
             matches!(is_my_athlete(athlete), Some(true))
