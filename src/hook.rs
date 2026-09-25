@@ -676,6 +676,14 @@ unsafe fn detour(
         mode,
         team1.iter().chain(team2.iter()).map(|(_, champion)| champion.as_str()),
     );
+    crate::own_team_log::line(|| {
+        format!(
+            "route call: training={} team1={:?} team2={:?}",
+            mode,
+            team1.iter().map(|(_, champion)| champion.as_str()).collect::<Vec<_>>(),
+            team2.iter().map(|(_, champion)| champion.as_str()).collect::<Vec<_>>()
+        )
+    });
     if mode {
         apply_training_builds(&mut routes, items, team1, team2);
     }
@@ -761,8 +769,11 @@ fn apply_training_builds(
         }
         if smart {
             let fit = crate::smart_builds::fit(champion, role);
-            let boots = index_of(crate::smart_builds::boots_for(champion, role, &enemies));
-            enforce_smart_build(items, route, &pinned, &reserved, fit, boots);
+            let boots_key = crate::smart_builds::boots_for(champion, role, &enemies);
+            build_config::remember_rule_boots(champion, boots_key);
+            let boots = index_of(boots_key);
+            let later_open = build_config::later_slot_open(&build_config::pin_row(champion, role));
+            enforce_smart_build(items, route, &pinned, &reserved, later_open, fit, boots);
         }
     }
 }
@@ -806,6 +817,7 @@ fn enforce_smart_build(
     build: &mut [usize],
     pinned: &[bool],
     reserved: &[usize],
+    later_open: bool,
     fit: crate::smart_builds::Fit,
     boots: Option<usize>,
 ) {
@@ -814,7 +826,7 @@ fn enforce_smart_build(
         build,
         pinned,
         reserved,
-        &[],
+        later_open,
         fit,
         boots,
         |index| items.get(index).map(|item| item.key().to_string()),

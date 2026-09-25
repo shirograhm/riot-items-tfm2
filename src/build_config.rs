@@ -26,8 +26,9 @@ use serde::Deserialize;
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::path::PathBuf;
-use std::sync::atomic::{AtomicBool, AtomicU8, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, AtomicU8, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex, RwLock};
+use std::time::Instant;
 
 /// Schema of `item-builds.json`: the whole file is a map of champion id -> build
 /// (there is no wrapper object).
@@ -665,41 +666,166 @@ fn pin_entry<'a>(
 
 static LINEUP_ROLES: Mutex<Option<Arc<HashMap<String, Role>>>> = Mutex::new(None);
 
-/// Whether the last item-build route call set up a lane or 5v5 test, and the
-/// champions of both its sides. The buy detour's team gate reads these: both
-/// sides of a test are the player's, whatever `own_team_only` says, but only
-/// the athletes of the player's starting roster pass the roster check.
+/// Whether the last item-build route call set up a lane or 5v5 test. Read by
+/// `tactics` for its team-id bookkeeping; the test's own athletes are found
+/// through [`TEST_WINDOW`] instead, which a league fixture does not close.
+static TRAINING_MATCH: AtomicBool = AtomicBool::new(false);
+
+/// The last test's route call: when it came, and the champions of both its
+/// sides.
 ///
 /// The route call is the one reliable signal for a test (its `mode` argument,
-/// see `crate::hook::apply_training_builds`). Every league fixture makes a route
-/// call with `mode` false before it is simulated, which clears both.
-static TRAINING_MATCH: AtomicBool = AtomicBool::new(false);
-static TRAINING_CHAMPIONS: Mutex<Vec<String>> = Mutex::new(Vec::new());
+/// see `crate::hook::apply_training_builds`), but it only says that a test
+/// *started*: the day's league fixtures keep simulating while it runs, their
+/// athletes on the same champions, and their route calls can come between the
+/// test's and its spawns (log of 2026-09-25: one 0.08 s after a lane test's,
+/// on the same thread, before its second athlete had spawned). So it opens a
+/// window, closed only by the next test or after [`TEST_WINDOW_SECS`], in
+/// which the spawn hook finds the test's own match ([`note_test_spawn`]); it
+/// is that match, not the champion, that makes an athlete the player's.
+/// Gating on the champion put the player's pins on four league athletes
+/// during a lane test.
+static TEST_WINDOW: Mutex<Option<(Instant, Vec<String>)>> = Mutex::new(None);
+
+/// How long after a test's route call its athletes can still spawn. They come
+/// within a fraction of a second; a league fixture spawning in the window is
+/// told apart by its champions anyway, so this only bounds how long a window
+/// stays open.
+const TEST_WINDOW_SECS: u64 = 10;
 
 /// Records whether an item-build route call is for a lane or 5v5 test
-/// (`training`), with the champions of both sides.
+/// (`training`), with the champions of both sides. A test opens a new window
+/// and drops the tallies of the last one; a league fixture changes neither.
 pub fn record_route_call<'a>(training: bool, champions: impl Iterator<Item = &'a str>) {
-    if let Ok(mut recorded) = TRAINING_CHAMPIONS.lock() {
-        recorded.clear();
-        if training {
-            recorded.extend(champions.map(str::to_string));
+    if training {
+        if let Ok(mut window) = TEST_WINDOW.lock() {
+            *window = Some((Instant::now(), champions.map(str::to_string).collect()));
+        }
+        if let Ok(mut spawns) = TEST_SPAWNS.lock() {
+            spawns.clear();
         }
     }
     TRAINING_MATCH.store(training, Ordering::Relaxed);
 }
 
-/// Whether a lane or 5v5 test is the match being played. One atomic load, for
-/// the buy detour's hot-path exit.
+/// Whether a lane or 5v5 test has been set up since the last league fixture.
+/// One atomic load.
 pub fn training_match() -> bool {
     TRAINING_MATCH.load(Ordering::Relaxed)
 }
 
-/// Whether `champion` plays in the lane or 5v5 test being played.
-pub fn is_training_champion(champion: &str) -> bool {
-    training_match()
-        && TRAINING_CHAMPIONS
-            .lock()
-            .is_ok_and(|recorded| recorded.iter().any(|recorded| recorded == champion))
+/// A match that spawned athletes while a test was on, by its seed
+/// (`provider + O_PROVIDER_SEED` in `tactics`). Not by the provider itself:
+/// the game spawns a match's athletes into one sim object and plays the match
+/// in copies of it, each a provider of its own that the buy detour sees, all
+/// with the same seed (log of 2026-09-25: one lane test, spawned in one
+/// provider, bought in another). Nor by athlete: the spawn hook sees a stack
+/// copy of each, at an address the buy detour never does.
+struct TestSpawns {
+    seed: u64,
+    /// How many of its athletes play a champion of the test. Counted per
+    /// spawn, so a match spawned twice counts each athlete twice.
+    matching: usize,
+    /// Whether one plays a champion the test does not have: a league fixture.
+    foreign: bool,
+}
+
+static TEST_SPAWNS: Mutex<Vec<TestSpawns>> = Mutex::new(Vec::new());
+
+/// The seeds of the matches [`TEST_SPAWNS`] showed to be a test's: every
+/// athlete on a test champion, and as many of them as the test has.
+///
+/// Several slots, though only one test runs at a time: a league fixture can
+/// look like the test for as long as only the test's champions have spawned
+/// in it (a lane test's two, as its first two athletes), and it must not take
+/// the real test's slot, or withdrawing it would take the real test with it.
+/// The oldest slot is overwritten first, so a test's seed outlives the test,
+/// which is harmless: seeds are not reused. Lock-free, because the buy
+/// detour's hot-path exit reads it; `0` is an empty slot, and never a test's
+/// seed.
+static TEST_SEEDS: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
+static NEXT_TEST_SEED: AtomicUsize = AtomicUsize::new(0);
+
+/// Records an athlete on `champion` spawning in the match seeded `seed` while
+/// a test is on, and publishes the match as the test's once its athletes add
+/// up to it.
+///
+/// A league fixture is told apart by its champions: it has ten athletes, and
+/// some always play champions the test does not have. It may start with test
+/// champions, so a match can be published and withdrawn again before any
+/// athlete in it has bought anything.
+pub fn note_test_spawn(seed: u64, champion: &str) {
+    if seed == 0 {
+        return;
+    }
+    let (on_test_champion, size, window_open) = {
+        let Ok(window) = TEST_WINDOW.lock() else {
+            return;
+        };
+        let Some((started, champions)) = window.as_ref() else {
+            return;
+        };
+        (
+            champions.iter().any(|known| known == champion),
+            champions.len(),
+            started.elapsed().as_secs() < TEST_WINDOW_SECS,
+        )
+    };
+    if size == 0 {
+        return;
+    }
+    let Ok(mut spawns) = TEST_SPAWNS.lock() else {
+        return;
+    };
+    let index = match spawns.iter().position(|spawned| spawned.seed == seed) {
+        Some(index) => index,
+        // Past the window no new match is tracked, but one already tracked
+        // keeps counting: a league fixture that began spawning in the window
+        // with the test's champions still has to be ruled out by the rest of
+        // its athletes, however late they come.
+        None if !window_open => return,
+        None => {
+            spawns.push(TestSpawns {
+                seed,
+                matching: 0,
+                foreign: false,
+            });
+            spawns.len() - 1
+        }
+    };
+    let spawned = &mut spawns[index];
+    if on_test_champion {
+        spawned.matching += 1;
+    } else {
+        spawned.foreign = true;
+    }
+    let is_test = !spawned.foreign && spawned.matching >= size;
+    let matching = spawned.matching;
+    let published = is_test_match(seed);
+    if is_test && !published {
+        let slot = NEXT_TEST_SEED.fetch_add(1, Ordering::Relaxed) % TEST_SEEDS.len();
+        TEST_SEEDS[slot].store(seed, Ordering::Relaxed);
+        crate::own_team_log::line(|| {
+            format!("test match: seed=0x{seed:x} found ({matching} athletes)")
+        });
+    } else if !is_test && published {
+        for slot in &TEST_SEEDS {
+            let _ = slot.compare_exchange(seed, 0, Ordering::Relaxed, Ordering::Relaxed);
+        }
+        crate::own_team_log::line(|| {
+            format!("test match: seed=0x{seed:x} withdrawn ({champion} is not in the test)")
+        });
+    }
+}
+
+/// Whether the match seeded `seed` is one [`note_test_spawn`] found to be a
+/// lane or 5v5 test: both of its sides are the player's. Lock-free: the buy
+/// detour's hot-path exit reads it.
+pub fn is_test_match(seed: u64) -> bool {
+    seed != 0
+        && TEST_SEEDS
+            .iter()
+            .any(|slot| slot.load(Ordering::Relaxed) == seed)
 }
 
 /// Records a lineup's champion -> role mapping from a position-ordered roster.
@@ -776,6 +902,40 @@ pub fn athlete_pin_row(champion: &str) -> Vec<Option<String>> {
     (0..picker_slots())
         .map(|slot| pinned_key_raw(champion, slot))
         .collect()
+}
+
+/// Whether a build slot past the game's four — the 5th or 6th — is open for
+/// Smart Builds' boots: one that no pin in `row` holds, in a build the buy
+/// detour will grow that far. `row` is a pin row as [`pin_row`] gives it.
+pub fn later_slot_open(row: &[Option<String>]) -> bool {
+    (game_slots()..picker_slots()).any(|slot| row.get(slot).map_or(true, Option::is_none))
+        && crate::tactics::builds_grow_past_four()
+}
+
+/// The pair of boots Smart Builds last picked for each champion, by key.
+/// Only the stable hook and the training-screen detour see the enemy lineup
+/// that picks them, so the buy detour, when it puts the boots in the 5th or
+/// 6th slot, takes them from here.
+static RULE_BOOTS: Mutex<Vec<(String, String)>> = Mutex::new(Vec::new());
+
+/// Records `boots` as the pair Smart Builds picked for `champion`.
+pub fn remember_rule_boots(champion: &str, boots: &str) {
+    let Ok(mut picked) = RULE_BOOTS.lock() else {
+        return;
+    };
+    match picked.iter_mut().find(|(known, _)| known == champion) {
+        Some((_, known)) => *known = boots.to_string(),
+        None => picked.push((champion.to_string(), boots.to_string())),
+    }
+}
+
+/// The pair of boots Smart Builds last picked for `champion`, when it has.
+pub fn rule_boots(champion: &str) -> Option<String> {
+    let picked = RULE_BOOTS.lock().ok()?;
+    picked
+        .iter()
+        .find(|(known, _)| known == champion)
+        .map(|(_, boots)| boots.clone())
 }
 
 /// A pin-aware build waiting for the spawn injector: under `own_team_only`,
@@ -1046,6 +1206,20 @@ pub fn build_for_champion(
     ai_build: &[usize],
 ) -> Option<MergedBuild> {
     let build = build_entry(config, champion, role)?;
+    Some(merge_pin_row(build, resolve, ai_build))
+}
+
+/// A pin row merged into the engine's build: each pin in its slot, the
+/// engine's picks sliding into the slots between them, and the pins past the
+/// game's slots as `reserved`. What [`build_for_champion`] does with the row
+/// it looks up, for a caller that already holds one — the stable hook under
+/// `own_team_only`, whose row ([`pin_row`]) is also what the spawn injector
+/// finds the result by.
+pub fn merge_pin_row(
+    row: &[Option<String>],
+    resolve: impl Fn(&str) -> Option<usize>,
+    ai_build: &[usize],
+) -> MergedBuild {
     // A build may be longer than the game has slots for — the file keeps a
     // fourth item while 3-slot mode is on, so that switching back restores the
     // build. Sending that item anyway would hand the game a slot it cannot put
@@ -1053,18 +1227,18 @@ pub fn build_for_champion(
     //
     // `game_slots`, not `picker_slots`: the 5th and 6th slots do not exist yet
     // when the engine asks, and the buy detour fills them from the same pins.
-    let usable = build.len().min(game_slots());
-    let (items, pinned) = merge_build(&build[..usable], ai_build, &resolve);
-    let reserved = build[usable..]
+    let usable = row.len().min(game_slots());
+    let (items, pinned) = merge_build(&row[..usable], ai_build, &resolve);
+    let reserved = row[usable..]
         .iter()
         .flatten()
         .filter_map(|key| resolve_key(key, &resolve))
         .collect();
-    Some(MergedBuild {
+    MergedBuild {
         items,
         pinned,
         reserved,
-    })
+    }
 }
 
 /// The build a champion uses in `role`: the role's own if one is written, and

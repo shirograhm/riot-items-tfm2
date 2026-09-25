@@ -27,7 +27,9 @@
 //!    Riftmaker's health-to-AP, Rabadon's multiplier) after them. This rule
 //!    only reorders; the other five decide what is in the build.
 //! 7. **One pair of boots** — a build with no boots gets the pair
-//!    [`boots_for`] picks for its champion, as its second AI pick. The engine
+//!    [`boots_for`] picks for its champion, in the second slot, or the first
+//!    open slot after it when a pin holds that one (the 5th and 6th included),
+//!    else the first slot (every slot pinned, no boots). The engine
 //!    never plans toward a tier-3 item, so without this no AI build holds any.
 //!    Boots the player pinned anywhere, the 5th and 6th slots included, count,
 //!    and no AI pick is ever swapped *for* boots by the other rules.
@@ -302,6 +304,13 @@ fn timing(key: &str) -> Timing {
     }
 }
 
+/// Rule 6 over AI picks chosen elsewhere: the buy detour's, for the 5th and
+/// 6th slots the build only grows to after [`enforce`] has run. Stable, like
+/// the sort in [`enforce`], so picks of the same timing keep their order.
+pub(crate) fn sort_by_timing<T>(picks: &mut [T], key: impl Fn(&T) -> Option<String>) {
+    picks.sort_by_key(|pick| key(pick).map_or(Timing::Any, |key| timing(&key)));
+}
+
 /// The tier-1 boots every upgraded pair builds from.
 const BASE_BOOTS: &str = "boots";
 const BERSERKERS_GREAVES: &str = "berserkers_greaves";
@@ -323,9 +332,10 @@ const UPGRADED_BOOTS: [&str; 7] = [
     SORCERERS_SHOES,
 ];
 
-/// The AI slot rule 7 puts boots in: the second, which is where League players
-/// finish theirs. Counted among the AI's slots, so a pin before it pushes the
-/// boots later rather than displacing the pin.
+/// The build slot rule 7 puts boots in: the second, which is where League
+/// players finish theirs. A pin always wins the slot: when one holds it, the
+/// boots take the first open slot after it (up to the 6th), then the first
+/// slot, and with every slot pinned there are no boots.
 const BOOTS_SLOT: usize = 1;
 
 /// Whether `key` is a pair of boots, tier 1 or upgraded.
@@ -493,19 +503,22 @@ impl Budget {
 ///
 /// Then rule 7: `boots` is the catalog index of the pair [`boots_for`] picked
 /// (`None` when the catalog has none). A build with no boots in any slot or in
-/// `reserved` gets them as its second AI pick (the only one, if it has one); the
-/// AI picks from there on move one AI slot later and the last one drops off. Boots are never a
-/// stand-in for the other rules, whatever `is_final` says about them.
+/// `reserved` gets them in the second slot, or the first open slot after it
+/// when a pin holds that one, else the first ([`BOOTS_SLOT`]); the AI picks from there on move
+/// one AI slot later and the last one drops off. Boots are never a stand-in for
+/// the other rules, whatever `is_final` says about them.
 ///
-/// `boots_avoid` marks AI slots the boots must not take, per slot like
-/// `pinned`: slots a pin will be pasted over later (`own_team_only`), which
-/// rule 7 counts past as if they were pinned. With no slot left, no boots.
+/// `later_open`: a slot past the end of `build` — the 5th or 6th, which exist
+/// only once the buy detour grows the build — that no pin holds
+/// ([`crate::build_config::later_slot_open`]). When every slot of `build` from
+/// the second on is taken, the boots are left to that slot
+/// (`tactics::extra_slot_pick`) rather than put in the first.
 pub(crate) fn enforce<C, K, G, F>(
     count: usize,
     build: &mut [usize],
     pinned: &[bool],
     reserved: &[usize],
-    boots_avoid: &[bool],
+    later_open: bool,
     fit: Fit,
     boots: Option<usize>,
     key: K,
@@ -626,12 +639,17 @@ pub(crate) fn enforce<C, K, G, F>(
         .iter()
         .chain(reserved)
         .any(|&index| key(index).is_some_and(|key| is_boots(&key)));
-    // The AI picks the boots may take, as positions in `picks`: the second, or
-    // the only one if there is one.
-    let free: Vec<usize> = (0..open.len())
-        .filter(|&pick| !boots_avoid.get(open[pick]).copied().unwrap_or(false))
-        .collect();
-    let at = free.get(BOOTS_SLOT).or(free.last()).copied();
+    // Where the boots go, as a position in `picks` (the AI's slots, in
+    // order): the second build slot, or the first open one after it when a pin
+    // holds it — the 5th and 6th included, which the buy detour fills when it
+    // grows the build, so an open one there leaves the boots to it — or the
+    // first slot when every one from the second on is pinned. No open slot at
+    // all, no boots.
+    let at = match (0..open.len()).find(|&pick| open[pick] >= BOOTS_SLOT) {
+        Some(at) => Some(at),
+        None if later_open => None,
+        None => (!open.is_empty()).then_some(0),
+    };
     if let (Some(boots), Some(at), false) = (boots, at, has_boots) {
         picks.insert(at, boots);
         picks.truncate(open.len());
