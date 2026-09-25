@@ -13,9 +13,9 @@ use crate::{apply_config, percent_of, ticks, ItemMeta};
 
 /// Invulnerability for the stasis and the tick after it. Shared by both tiers.
 const STASIS_BUFF: &str = "zhonyas_hourglass_stasis";
-/// A turning golden hourglass whose sand runs out over the stasis, on Guardian
-/// Angel's ring. Bound in `view/effects.view_effects`; the sheet is drawn 2.5
-/// seconds long, so it matches the default `effect_duration_seconds`.
+/// A small golden hourglass turning end over end, on Guardian Angel's ring.
+/// Bound in `view/effects.view_effects`; the sheet is drawn 2.5 seconds long
+/// (two full turns), so it matches the default `effect_duration_seconds`.
 const STASIS_EFFECT: &str = "riot_zhonyas_hourglass_stasis";
 
 #[derive(Clone, Debug)]

@@ -681,23 +681,27 @@
   },
   "zekes_herald": {
     "price": 550,
-    "hp": 150,
-    "hp_regen": 2,
-    "magic_power": 20,
+    "hp": 100,
+    "defence": 20,
+    "magic_resistance": 30,
     "skill_cooldown_mult": 10,
-    "effect_adaptive_force": 15,
-    "effect_vamp": 6,
-    "effect_max_distance": 100
+    "ult_cooldown_mult": 15,
+    "effect_duration_seconds": 4,
+    "effect_bonus_magic_damage": 30,
+    "effect_slow_amount": 20,
+    "effect_max_distance": 50
   },
   "radiant_zekes_herald": {
     "price": 750,
-    "hp": 250,
-    "hp_regen": 3,
-    "magic_power": 30,
+    "hp": 150,
+    "defence": 30,
+    "magic_resistance": 40,
     "skill_cooldown_mult": 15,
-    "effect_adaptive_force": 25,
-    "effect_vamp": 10,
-    "effect_max_distance": 100
+    "ult_cooldown_mult": 15,
+    "effect_duration_seconds": 4,
+    "effect_bonus_magic_damage": 30,
+    "effect_slow_amount": 20,
+    "effect_max_distance": 50
   },
   "scouts_slingshot": {
     "price": 400,

@@ -171,7 +171,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Warmog's Armor** | 750G | +300 HP<br>+3 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Wit's End** | 700G | +40% AS<br>+40 MR<br>+20% Tenacity | Fray: Basic attacks deal 45 bonus magic damage. |
 | **Yun Tal Wildarrows** | 750G | +35 AD<br>+20% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
-| **Zeke's Herald** | 550G | +150 HP<br>+2 HP Regen<br>+20 AP<br>+10 Ability Haste | Aura: Grant 15 Adaptive Force and 6% Omnivamp to all allied champions within 100 range. |
+| **Zeke's Convergence** | 550G | +100 HP<br>+20 Armor<br>+30 MR<br>+10 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 30 magic damage per second to nearby enemies and applies a 20% slow. |
 | **Zhonya's Hourglass** | 750G | +50 AP<br>+35 Armor | Time Stop: Falling below 25% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
 
 
@@ -254,7 +254,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Warmog's Armor** | 1050G | +500 HP<br>+5 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Wit's End** | 1000G | +65% AS<br>+65 MR<br>+30% Tenacity | Fray: Basic attacks deal 45 bonus magic damage. |
 | **Radiant Yun Tal Wildarrows** | 1100G | +40 AD<br>+50% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
-| **Radiant Zeke's Herald** | 750G | +250 HP<br>+3 HP Regen<br>+30 AP<br>+15 Ability Haste | Aura: Grant 25 Adaptive Force and 10% Omnivamp to all allied champions within 100 range. |
+| **Radiant Zeke's Convergence** | 750G | +150 HP<br>+30 Armor<br>+40 MR<br>+15 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 30 magic damage per second to nearby enemies and applies a 20% slow. |
 | **Radiant Zhonya's Hourglass** | 1050G | +80 AP<br>+50 Armor | Time Stop: Falling below 25% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
 
 ### Base Item Reskins

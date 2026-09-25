@@ -26,7 +26,9 @@ pub struct ImperialMandate {
     meta: ItemMeta,
     /// Shared by both variants: Vulnerable is a state on the target, and the
     /// two variants grant the same amount, so a second carrier refreshes it
-    /// rather than doubling it.
+    /// rather than doubling it. The name is also the `view_buffs` binding in
+    /// `view/effects.view_effects` that draws the mini flag over the target;
+    /// rename both together or the flag stops showing.
     vulnerable_buff: &'static str,
     price: usize,
     hp: i32,

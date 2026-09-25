@@ -50,5 +50,20 @@
         }
     ],
     "view_projectiles": [],
-    "view_buffs": []
+    "view_buffs": [
+        {
+            "type": "Animated",
+            "name": "imperial_mandate_vulnerable",
+            "anim": "asset/riot_items_tfm2/effects/imperial_mandate_flag",
+            "tag": "flag",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "zekes_convergence_storm",
+            "anim": "asset/riot_items_tfm2/effects/zekes_convergence_storm",
+            "tag": "storm",
+            "z": 1
+        }
+    ]
 }
