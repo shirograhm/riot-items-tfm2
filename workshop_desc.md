@@ -63,6 +63,7 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
 - support items (except Protoplasm Harness) outside the support role
+- Feral Flare and Grez's Spectral Lantern outside the jungle role
 - items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone). Champions from other mods are covered too.
 
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
