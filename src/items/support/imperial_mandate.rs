@@ -3,14 +3,18 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, ticks, ItemMeta};
 
-/// Crowd control that stops movement outright: stun, root, knock-up and
-/// knockback/pull. League's "immobilize" set; taunt, fear and charm move the
-/// target instead, and disarm, silence and ground leave it free to walk.
-const IMMOBILIZING: [CcKindV1; 4] = [
+/// Crowd control that takes movement out of the target's hands: stun, root,
+/// knock-up, knockback/pull and taunt. League's "immobilize" set, plus taunt;
+/// fear and charm still don't count, and disarm, silence and ground leave the
+/// target free to walk.
+const IMMOBILIZING: [CcKindV1; 7] = [
     CcKindV1::Airborne,
     CcKindV1::Stun,
     CcKindV1::Bind,
     CcKindV1::ForceMove,
+    CcKindV1::Taunt,
+    CcKindV1::Fear,
+    CcKindV1::Charm,
 ];
 
 /// How many immobilizing effects the entity is under right now.

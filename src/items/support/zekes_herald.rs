@@ -8,8 +8,8 @@ use crate::{apply_config, refresh_buff, ticks, ItemMeta, DISTANCE_UNITS_PER_RANG
 // Cryocombustion: Gain 15 Ultimate Ability Haste.
 //
 // Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame
-// and ice around you for 4 seconds. The storm deals 30 magic damage per second to
-// nearby enemies and applies a 20% slow.
+// and ice around you for 4 seconds. The storm deals 60 magic damage per second to
+// nearby enemies and applies a 40% slow.
 
 /// The storm hits four times a second.
 const TEMPEST_TICK_SECONDS: f64 = 0.25;
@@ -45,7 +45,8 @@ pub struct ZekesHerald {
     storm_ticks_left: usize,
     until_next_tick: usize,
     /// Storm ticks dealt so far, so per-tick damage can alternate to hit the
-    /// per-second total exactly (30 per second is 7.5 per tick: 7, 8, 7, 8).
+    /// per-second total exactly (a total that does not divide by four, such as
+    /// 30 a second, is 7.5 a tick: 7, 8, 7, 8).
     storm_ticks_dealt: usize,
 }
 
@@ -64,8 +65,8 @@ impl ZekesHerald {
             skill_cooldown_mult: 10,
             ult_cooldown_mult: 15,
             effect_duration_seconds: 4.0,
-            effect_bonus_magic_damage: 30,
-            effect_slow_amount: 30,
+            effect_bonus_magic_damage: 60,
+            effect_slow_amount: 40,
             effect_max_distance: 50,
             // Non-vital stats (internals)
             last_ult_cooldown: None,
@@ -85,8 +86,8 @@ impl ZekesHerald {
             skill_cooldown_mult: 15,
             ult_cooldown_mult: 15,
             effect_duration_seconds: 4.0,
-            effect_bonus_magic_damage: 30,
-            effect_slow_amount: 30,
+            effect_bonus_magic_damage: 60,
+            effect_slow_amount: 40,
             effect_max_distance: 50,
             ..Self::base()
         }

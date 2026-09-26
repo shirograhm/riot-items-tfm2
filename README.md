@@ -31,14 +31,17 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 - a duplicate item
 - a second Grievous Wounds item
 - a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked)
-- a support item (except Protoplasm Harness) on any champion not playing the support role
-- an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion (hybrid champions and hybrid items are left alone)
+- Feral Flare or Grez's Spectral Lantern on any champion not playing the jungle role
+- a support item (except Protoplasm Harness and Zeke's Convergence) on any champion not playing the support role
+- an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion (hybrid champions and hybrid items are left alone; Magic Knight counts as an AP champion, since only its basic attack is physical)
 
 For the last two, the replacement follows the rest of the build instead of the removed item: it comes from the same category as the build's other items, starting with the first slot.
 
-It also decides the order the AI buys its picks in. Items that get stronger the longer you own them are bought first: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern and Collector. Items that scale off stats from the rest of the build are bought last: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards. Everything else keeps the AI's order.
+Supports and junglers also get an item for their role: a support item for supports (one that suits the champion's damage type, so an AD support gets a tank one, not an AP one), and Feral Flare or Grez's Spectral Lantern (whichever suits the champion's damage type) for junglers. If the AI didn't pick one and you haven't pinned one, its last pick is swapped for one. Only one is guaranteed; the rest of the build is still the AI's own choice.
 
-It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, in the slot you put it in, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items are exempt from the damage-type check in the support role, since they're built for their effect on allies. Switch it to **Allow Any Builds** to leave every pick alone.
+It also decides the order the AI buys its picks in. A support's or jungler's role item comes first. After that, items that get stronger the longer you own them are bought first: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern and Collector. Items that scale off stats from the rest of the build are bought last: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards. Everything else keeps the AI's order.
+
+It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, in the slot you put it in, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items get no pass on the damage-type check: an AD support won't keep an AP support item like Staff of Flowing Water, though tank support items are fine. Bloodsong and Sword of Blossoming Dawn count as AP items here, despite their attack speed. Switch it to **Allow Any Builds** to leave every pick alone.
 
 It also gives every AI build a pair of boots, as its second pick, unless you pinned boots yourself: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (whichever answers the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity too, unless they're tanks, who get tank boots. Boots of Swiftness goes to champions none of that fits. Boots are also in the Build Editor under their own **Boots** group.
 
@@ -172,8 +175,8 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Warmog's Armor** | 750G | +300 HP<br>+3 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Wit's End** | 700G | +40% AS<br>+40 MR<br>+20% Tenacity | Fray: Basic attacks deal 45 bonus magic damage. |
 | **Yun Tal Wildarrows** | 750G | +35 AD<br>+20% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
-| **Zeke's Convergence** | 550G | +100 HP<br>+20 Armor<br>+30 MR<br>+10 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 30 magic damage per second to nearby enemies and applies a 30% slow. |
-| **Zhonya's Hourglass** | 750G | +50 AP<br>+35 Armor | Time Stop: Falling below 25% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
+| **Zeke's Convergence** | 550G | +100 HP<br>+20 Armor<br>+30 MR<br>+10 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 60 magic damage per second to nearby enemies and applies a 40% slow. |
+| **Zhonya's Hourglass** | 750G | +50 AP<br>+35 Armor | Time Stop: Falling below 20% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
 
 
 #### Tier 5  
@@ -256,8 +259,8 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Warmog's Armor** | 1050G | +500 HP<br>+5 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Wit's End** | 1000G | +65% AS<br>+65 MR<br>+30% Tenacity | Fray: Basic attacks deal 45 bonus magic damage. |
 | **Radiant Yun Tal Wildarrows** | 1100G | +40 AD<br>+50% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
-| **Radiant Zeke's Convergence** | 750G | +150 HP<br>+30 Armor<br>+40 MR<br>+15 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 30 magic damage per second to nearby enemies and applies a 30% slow. |
-| **Radiant Zhonya's Hourglass** | 1050G | +80 AP<br>+50 Armor | Time Stop: Falling below 25% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
+| **Radiant Zeke's Convergence** | 750G | +150 HP<br>+30 Armor<br>+40 MR<br>+15 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 60 magic damage per second to nearby enemies and applies a 40% slow. |
+| **Radiant Zhonya's Hourglass** | 1050G | +80 AP<br>+50 Armor | Time Stop: Falling below 20% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
 
 ### Base Item Reskins
 

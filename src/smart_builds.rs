@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Seven of them:
+//! Eight of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -13,13 +13,15 @@
 //!    at all, rather than one that merely fits: a stand-in worth having is one
 //!    whose stats the champion can use.
 //! 4. **Support items stay in the support role** — the Support class (bar
-//!    Protoplasm Harness) is only kept by whoever plays support, whatever the
-//!    champion.
+//!    Protoplasm Harness and Zeke's Convergence) is only kept by whoever plays
+//!    support, whatever the champion.
 //! 5. **Items the champion scales with** — an AP-only champion keeps no item
 //!    whose only offence is physical (attack, attack speed or crit), and an
 //!    AD-only champion no item whose only offence is magic power. Hybrid items,
-//!    hybrid champions and items with no offensive stat are never touched, and
-//!    neither are support items in the support role.
+//!    hybrid champions and items with no offensive stat are never touched.
+//!    Support items get no pass in the support role: an AD support keeps the
+//!    tank ones, not the AP ones ([`AP_ITEMS`] puts Bloodsong and Sword of
+//!    Blossoming Dawn with those despite their attack speed).
 //! 6. **Items bought when they pay off** — an item whose value accumulates
 //!    the longer it is owned ([`EARLY_ITEMS`]: Heartsteel's permanent health,
 //!    Hubris's takedown stacks) is bought before the AI's other picks, and one
@@ -33,13 +35,25 @@
 //!    never plans toward a tier-3 item, so without this no AI build holds any.
 //!    Boots the player pinned anywhere, the 5th and 6th slots included, count,
 //!    and no AI pick is ever swapped *for* boots by the other rules.
+//! 8. **Jungle items stay in the jungle** — Feral Flare and Grez's Spectral
+//!    Lantern ([`JUNGLE_ITEMS`]) grow on monster kills, which only the jungle
+//!    role gets, so only whoever plays jungle keeps them. Numbered after 7
+//!    only so the rules above keep the numbers the rest of the mod cites them by.
+//! 9. **Role items first** — a support's build holds a Support-class item
+//!    (the two exceptions to rule 4 included) and a jungler's a jungle item, bought
+//!    before the AI's other picks. Only one is guaranteed: the rest of the
+//!    build is still whatever the AI chose. When neither a pin nor an AI pick
+//!    is one, the AI's last pick makes way for the first role item every
+//!    other rule accepts. Rule 5 is what matches it to the champion: an AD
+//!    support gets a tank support item, never an AP one, and a jungler Feral
+//!    Flare or Grez's by damage type.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
 //! other item, so the AI's picks around it make way for it rather than the
 //! other way round.
 //!
-//! Rules 4 and 5 are about the champion, not the build, and come in as a
+//! Rules 4, 5, 8 and 9 are about the champion, not the build, and come in as a
 //! [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
@@ -148,7 +162,7 @@ fn table() -> Arc<Table> {
 /// `stat()` and `tags()` are safe to call there, unlike on a `dyn ItemInfo`.
 pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
     let stat = item.stat();
-    let traits = ItemTraits {
+    let mut traits = ItemTraits {
         cuts_healing: item.tags().contains(&ItemTagV1::HealReduce),
         ..ItemTraits::from_stats(
             stat.crit_chance,
@@ -157,10 +171,20 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
             stat.magic_power,
         )
     };
+    if AP_ITEMS.contains(&crate::build_config::base_slug(key)) {
+        traits.physical = false;
+    }
     edit_table(|table| {
         table.mod_items.insert(key.to_string(), traits);
     });
 }
+
+/// Rule 5: items counted as AP only, whatever physical stat they also carry.
+/// By base slug, so the radiant tier follows. Bloodsong and Sword of Blossoming
+/// Dawn give attack speed beside their ability power, which made them hybrid
+/// and let AD supports keep them; the user put them with the AP support items
+/// (2026-09-26).
+const AP_ITEMS: [&str; 2] = ["bloodsong", "sword_of_blossoming_dawn"];
 
 /// Adds the crit chance an item's passive grants at full stacks to what
 /// [`note_mod_item`] recorded from its flat stats. Called right after it, from
@@ -200,6 +224,7 @@ pub(crate) enum Reason {
     Crit,
     SupportOnly,
     Scaling,
+    JungleOnly,
 }
 
 impl Reason {
@@ -207,14 +232,17 @@ impl Reason {
     /// for its stand-in. A support item's category holds nothing but support
     /// items, and an item the champion does not scale with sits among others
     /// it does not scale with, so for these two the stand-in is taken from the
-    /// categories the rest of the build uses instead.
+    /// categories the rest of the build uses instead. A jungle item's category
+    /// is an ordinary one (Grez's is a Mage item), so its stand-in comes from
+    /// there, like a duplicate's.
     pub(crate) fn restyles(self) -> bool {
         matches!(self, Reason::SupportOnly | Reason::Scaling)
     }
 }
 
-/// The one Support-class item any champion may build.
-const SUPPORT_ITEM_EXCEPTION: &str = "protoplasm_harness";
+/// The Support-class items any champion may build, by base slug. Zeke's
+/// Convergence keeps its old key, `zekes_herald`.
+const SUPPORT_ITEM_EXCEPTIONS: [&str; 2] = ["protoplasm_harness", "zekes_herald"];
 
 /// What the champion a build is for may hold, whatever the build already has.
 #[derive(Clone, Copy, Debug)]
@@ -223,25 +251,37 @@ pub(crate) struct Fit {
     support_items: bool,
     /// Rule 5: what the champion scales with, `None` when unknown.
     scaling: Option<Scaling>,
+    /// Rule 8: whether jungle items are allowed.
+    jungle_items: bool,
 }
 
 /// The [`Fit`] for `champion` playing `role`.
 ///
 /// Support items are allowed in the support role and nowhere else — not even an
 /// unknown role ([`Role::Any`]), which the buy detour falls back to when no
-/// lineup has placed the champion yet. A champion nothing is known about gets
-/// no scaling restriction: a missing tag must never cost a build an item.
+/// lineup has placed the champion yet. Jungle items follow the same line, for
+/// the jungle role. A champion nothing is known about gets no scaling
+/// restriction: a missing tag must never cost a build an item.
 pub(crate) fn fit(champion: &str, role: Role) -> Fit {
     let traits = champion_traits::traits(champion);
     Fit {
         support_items: role == Role::Support,
         scaling: traits.and_then(|traits| traits.scaling),
+        jungle_items: role == Role::Jungle,
     }
 }
 
 impl Fit {
-    /// Whether an item with these traits gives only stats the champion cannot
-    /// use.
+    /// Rule 5 for one item: whether an item with these traits gives only stats
+    /// the champion cannot use.
+    ///
+    /// Support items in the support role used to be exempt, on the grounds that
+    /// their worth is what they do for allies. That let an AD support keep an
+    /// AP-only one (Dual Blader on Staff of Flowing Water, 2026-09-26), and the
+    /// user asked for it gone. The support items an AD champion can use pass
+    /// anyway: the tank ones carry no offensive stat. Bloodsong and Sword of
+    /// Blossoming Dawn would pass as hybrid too, but [`AP_ITEMS`] counts them
+    /// as AP.
     fn mismatches(&self, item: &ItemTraits) -> bool {
         match self.scaling {
             Some(Scaling::Ap) => item.physical && !item.magic,
@@ -250,12 +290,16 @@ impl Fit {
         }
     }
 
-    /// Rule 5 for one item. A support item in the support role is exempt: its
-    /// worth is what it does for allies — auras, heals, shields — not the
-    /// holder's own damage, so an AD support (Exorcist, Plague Doctor) still
-    /// takes Echoes of Helia or Zeke's Herald.
-    fn mismatches_item(&self, key: &str, item: &ItemTraits) -> bool {
-        !(self.support_items && is_support_item(key)) && self.mismatches(item)
+    /// Whether the champion plays a role with items of its own (rule 9).
+    fn has_role_items(&self) -> bool {
+        self.support_items || self.jungle_items
+    }
+
+    /// Rule 9: whether `key` is an item of the role this champion plays — a
+    /// Support-class item for a support, a jungle item for a jungler, nothing
+    /// in any other role.
+    fn is_role_item(&self, key: &str) -> bool {
+        (self.support_items && is_support_class(key)) || (self.jungle_items && is_jungle_item(key))
     }
 }
 
@@ -304,11 +348,20 @@ fn timing(key: &str) -> Timing {
     }
 }
 
-/// Rule 6 over AI picks chosen elsewhere: the buy detour's, for the 5th and
-/// 6th slots the build only grows to after [`enforce`] has run. Stable, like
-/// the sort in [`enforce`], so picks of the same timing keep their order.
-pub(crate) fn sort_by_timing<T>(picks: &mut [T], key: impl Fn(&T) -> Option<String>) {
-    picks.sort_by_key(|pick| key(pick).map_or(Timing::Any, |key| timing(&key)));
+/// The order rules 6 and 9 buy AI picks in: the role's own items (rule 9)
+/// first, then by [`timing`]. Sorted on, so smaller is sooner.
+fn buy_order(key: Option<&str>, fit: Fit) -> (bool, Timing) {
+    match key {
+        Some(key) => (!fit.is_role_item(key), timing(key)),
+        None => (true, Timing::Any),
+    }
+}
+
+/// Rules 6 and 9 over AI picks chosen elsewhere: the buy detour's, for the 5th
+/// and 6th slots the build only grows to after [`enforce`] has run. Stable,
+/// like the sort in [`enforce`], so picks of the same timing keep their order.
+pub(crate) fn sort_by_timing<T>(picks: &mut [T], fit: Fit, key: impl Fn(&T) -> Option<String>) {
+    picks.sort_by_key(|pick| buy_order(key(pick).as_deref(), fit));
 }
 
 /// The tier-1 boots every upgraded pair builds from.
@@ -385,11 +438,28 @@ pub(crate) fn boots_for(champion: &str, role: Role, enemies: &[&str]) -> &'stati
     }
 }
 
+/// Whether `key` is in the editor's Support class, base or radiant —
+/// [`SUPPORT_ITEM_EXCEPTIONS`] included, unlike [`is_support_item`].
+fn is_support_class(key: &str) -> bool {
+    crate::item_catalog::category_of(crate::build_config::base_slug(key)) == Some("Support")
+}
+
 /// Whether `key` is an item only the support role may build: the editor's Support
-/// class, base or radiant, less [`SUPPORT_ITEM_EXCEPTION`].
+/// class, base or radiant, less [`SUPPORT_ITEM_EXCEPTIONS`].
 fn is_support_item(key: &str) -> bool {
-    let slug = crate::build_config::base_slug(key);
-    slug != SUPPORT_ITEM_EXCEPTION && crate::item_catalog::category_of(slug) == Some("Support")
+    !SUPPORT_ITEM_EXCEPTIONS.contains(&crate::build_config::base_slug(key)) && is_support_class(key)
+}
+
+/// Rule 8: items only the jungle role may build. By base slug, so the radiant
+/// tier follows.
+const JUNGLE_ITEMS: [&str; 2] = [
+    "feral_flare",            // a stack per takedown and monster killed
+    "grezs_spectral_lantern", // ability power per takedown and monster killed
+];
+
+/// Whether `key` is one of [`JUNGLE_ITEMS`], base or radiant.
+fn is_jungle_item(key: &str) -> bool {
+    JUNGLE_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
 /// What the items a build already holds have spent of the two budgets the rules
@@ -431,7 +501,9 @@ impl Budget {
         let traits = self.table.traits(key);
         if !self.fit.support_items && is_support_item(key) {
             Some(Reason::SupportOnly)
-        } else if self.fit.mismatches_item(key, &traits) {
+        } else if !self.fit.jungle_items && is_jungle_item(key) {
+            Some(Reason::JungleOnly)
+        } else if self.fit.mismatches(&traits) {
             Some(Reason::Scaling)
         } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
@@ -442,12 +514,13 @@ impl Budget {
         }
     }
 
-    /// Whether `key` is an item this champion may hold at all — rules 4 and 5,
-    /// which do not depend on what else is in the build. An item that fails is
-    /// no guide to the build's style.
+    /// Whether `key` is an item this champion may hold at all — rules 4, 5 and
+    /// 8, which do not depend on what else is in the build. An item that fails
+    /// is no guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
         !(!self.fit.support_items && is_support_item(key))
-            && !self.fit.mismatches_item(key, &self.table.traits(key))
+            && !(!self.fit.jungle_items && is_jungle_item(key))
+            && !self.fit.mismatches(&self.table.traits(key))
     }
 
     /// Whether `key` brings any crit chance — what the stand-in for a crit
@@ -469,7 +542,7 @@ impl Budget {
     }
 }
 
-/// Rewrites `build` in place so that it breaks none of the seven rules, as far as
+/// Rewrites `build` in place so that it breaks none of the eight rules, as far as
 /// the catalog allows.
 ///
 /// A slot that breaks one is swapped for the next item that fixes it: unused, of
@@ -495,11 +568,18 @@ impl Budget {
 /// slot is looked at, so an AI pick that clashes with a pin is the one that
 /// goes, wherever the two sit in the build.
 ///
-/// Last, rule 6 reorders the AI's slots among themselves: early items first,
-/// late items last, and the engine's order within each group. A pinned slot
-/// keeps its position and its item, so the player's buy order is never moved.
-/// Every caller decides the build before the match, when nothing is bought
-/// yet, so no owned item can end up in a later slot.
+/// Then rule 9: a support or jungler whose build holds no item of its role,
+/// pinned or picked, has its last AI slot swapped for one. The walk is the one
+/// above, from the item being replaced, and the stand-in is held to every
+/// other rule against the rest of the build. Nothing that fits, nothing
+/// changes.
+///
+/// Last, rule 6 reorders the AI's slots among themselves: the role's own items
+/// first (rule 9), then early items, late items last, and the engine's order
+/// within each group. A pinned slot keeps its position and its item, so the
+/// player's buy order is never moved. Every caller decides the build before
+/// the match, when nothing is bought yet, so no owned item can end up in a
+/// later slot.
 ///
 /// Then rule 7: `boots` is the catalog index of the pair [`boots_for`] picked
 /// (`None` when the catalog has none). A build with no boots in any slot or in
@@ -597,10 +677,24 @@ pub(crate) fn enforce<C, K, G, F>(
                         })
                 };
                 if reason.restyles() {
-                    styles
-                        .iter()
-                        .find_map(|style| {
-                            search(&|candidate| category(candidate).as_ref() == Some(style))
+                    // An item of the champion's role that fails rule 5 (an
+                    // AP-only support item on an AD support) makes way for one
+                    // of the role it can use first: rule 9 wants the role to
+                    // keep one, and the build's style would not look there.
+                    let role_item = current
+                        .as_deref()
+                        .is_some_and(|key| fit.is_role_item(key))
+                        .then(|| {
+                            search(&|candidate| {
+                                key(candidate).is_some_and(|key| fit.is_role_item(&key))
+                            })
+                        })
+                        .flatten();
+                    role_item
+                        .or_else(|| {
+                            styles.iter().find_map(|style| {
+                                search(&|candidate| category(candidate).as_ref() == Some(style))
+                            })
                         })
                         // A build with no usable style at all — every other
                         // item broke these rules too — still loses the item.
@@ -628,11 +722,53 @@ pub(crate) fn enforce<C, K, G, F>(
         }
     }
 
-    // Rule 6. A stable sort, so items of the same timing keep the engine's
-    // order.
+    // Rule 9. The AI's last pick is the one the engine wanted least, so it is
+    // the one that makes way. The stand-in is judged against the rest of the
+    // build, which is why the budget is rebuilt without that slot.
+    let needs_role_item = fit.has_role_items()
+        && !build
+            .iter()
+            .chain(reserved)
+            .any(|&index| key(index).is_some_and(|key| fit.is_role_item(&key)));
+    if needs_role_item {
+        let last_pick = (0..build.len()).rev().find(|&slot| {
+            !is_pinned(slot) && !key(build[slot]).is_some_and(|key| is_boots(&key))
+        });
+        if let Some(slot) = last_pick {
+            let offender = build[slot];
+            let mut rest = Budget::empty(fit);
+            let others = build
+                .iter()
+                .enumerate()
+                .filter(|&(other, _)| other != slot)
+                .map(|(_, &index)| index);
+            for index in others.chain(reserved.iter().copied()) {
+                if let Some(key) = key(index) {
+                    rest.take(&key);
+                }
+            }
+            let role_item = (1..count)
+                .map(|step| (offender + step) % count)
+                .find(|&candidate| {
+                    !seen.contains(&candidate)
+                        && is_final(candidate)
+                        && key(candidate).is_some_and(|candidate| {
+                            fit.is_role_item(&candidate)
+                                && !is_boots(&candidate)
+                                && rest.rejects(&candidate).is_none()
+                        })
+                });
+            if let Some(role_item) = role_item {
+                build[slot] = role_item;
+            }
+        }
+    }
+
+    // Rule 6, with rule 9's role items ahead of it. A stable sort, so items
+    // of the same timing keep the engine's order.
     let open: Vec<usize> = (0..build.len()).filter(|&slot| !is_pinned(slot)).collect();
     let mut picks: Vec<usize> = open.iter().map(|&slot| build[slot]).collect();
-    picks.sort_by_key(|&index| key(index).map_or(Timing::Any, |key| timing(&key)));
+    picks.sort_by_key(|&index| buy_order(key(index).as_deref(), fit));
 
     // Rule 7.
     let has_boots = build
