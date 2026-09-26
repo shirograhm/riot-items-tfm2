@@ -24,7 +24,7 @@ mod tactics;
 
 use items::*;
 
-pub(crate) use buffs::{add_stack, refresh_buff};
+pub(crate) use buffs::{add_stack, mark_immolate, refresh_buff};
 pub(crate) use constants::*;
 pub(crate) use item_meta::ItemMeta;
 pub(crate) use proc_queue::ProcQueue;
@@ -328,6 +328,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("phage" => Phage));
     reg.add_item(configured!("plated_steelcaps" => PlatedSteelcaps, boots));
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
+    reg.add_item(configured!("seekers_armguard" => SeekersArmguard));
     reg.add_item(configured!("serrated_dirk" => SerratedDirk));
     reg.add_item(configured!("sorcerers_shoes" => SorcerersShoes, boots));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
@@ -366,11 +367,15 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("hamstringer" => Hamstringer));
     reg.add_item(configured!("heartsteel" => Heartsteel));
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
+    reg.add_item(configured!("hollow_radiance" => HollowRadiance));
     reg.add_item(configured!("hubris" => Hubris));
+    reg.add_item(configured!("immortal_shieldbow" => ImmortalShieldbow));
+    reg.add_item(configured!("imperial_mandate" => ImperialMandate));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
     reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured!("kraken_slayer" => KrakenSlayer));
     reg.add_item(configured!("liandrys_torment" => LiandrysTorment));
+    reg.add_item(configured!("lich_bane" => LichBane));
     reg.add_item(configured!("locket_of_the_iron_solari" => LocketOfTheIronSolari));
     reg.add_item(configured!("lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured!("malignance" => Malignance));
@@ -394,6 +399,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("shadowflame" => Shadowflame));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
+    reg.add_item(configured!("staff_of_flowing_water" => StaffOfFlowingWater));
     reg.add_item(configured!("steraks_gage" => SteraksGage));
     reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("stormsurge" => Stormsurge));
@@ -408,6 +414,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("wits_end" => WitsEnd));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
+    reg.add_item(configured!("zhonyas_hourglass" => ZhonyasHourglass));
 
     // Tier 5
     reg.add_item(configured_radiant!("radiant_ardent_censer" => ArdentCenser));
@@ -441,11 +448,15 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_hamstringer" => Hamstringer));
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
     reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
+    reg.add_item(configured_radiant!("radiant_hollow_radiance" => HollowRadiance));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
+    reg.add_item(configured_radiant!("radiant_immortal_shieldbow" => ImmortalShieldbow));
+    reg.add_item(configured_radiant!("radiant_imperial_mandate" => ImperialMandate));
     reg.add_item(configured_radiant!("radiant_infinity_edge" => InfinityEdge));
     reg.add_item(configured_radiant!("radiant_jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured_radiant!("radiant_kraken_slayer" => KrakenSlayer));
     reg.add_item(configured_radiant!("radiant_liandrys_torment" => LiandrysTorment));
+    reg.add_item(configured_radiant!("radiant_lich_bane" => LichBane));
     reg.add_item(configured_radiant!("radiant_locket_of_the_iron_solari" => LocketOfTheIronSolari));
     reg.add_item(configured_radiant!("radiant_lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured_radiant!("radiant_malignance" => Malignance));
@@ -469,6 +480,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
+    reg.add_item(configured_radiant!("radiant_staff_of_flowing_water" => StaffOfFlowingWater));
     reg.add_item(configured_radiant!("radiant_steraks_gage" => SteraksGage));
     reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
     reg.add_item(configured_radiant!("radiant_stormsurge" => Stormsurge));
@@ -483,6 +495,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
+    reg.add_item(configured_radiant!("radiant_zhonyas_hourglass" => ZhonyasHourglass));
 
     // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);

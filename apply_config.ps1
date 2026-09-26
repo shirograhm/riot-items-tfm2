@@ -214,12 +214,14 @@ $dtsPct = [int]$config.diamond_tipped_spear.effect_max_percent_bonus
 $rdtsPct = [int]$config.radiant_diamond_tipped_spear.effect_max_percent_bonus
 $dtsDist = [int]$config.diamond_tipped_spear.effect_max_distance
 $rdtsDist = [int]$config.radiant_diamond_tipped_spear.effect_max_distance
-$zekForce = [int]$config.zekes_herald.effect_adaptive_force
-$rzekForce = [int]$config.radiant_zekes_herald.effect_adaptive_force
-$zekDist = [int]$config.zekes_herald.effect_max_distance
-$rzekDist = [int]$config.radiant_zekes_herald.effect_max_distance
-$zekVamp = [int]$config.zekes_herald.effect_vamp
-$rzekVamp = [int]$config.radiant_zekes_herald.effect_vamp
+$zekUlt = [int]$config.zekes_herald.ult_cooldown_mult
+$zekDur = [double]$config.zekes_herald.effect_duration_seconds
+$zekDmg = [int]$config.zekes_herald.effect_bonus_magic_damage
+$zekSlow = [int]$config.zekes_herald.effect_slow_amount
+$rzekUlt = [int]$config.radiant_zekes_herald.ult_cooldown_mult
+$rzekDur = [double]$config.radiant_zekes_herald.effect_duration_seconds
+$rzekDmg = [int]$config.radiant_zekes_herald.effect_bonus_magic_damage
+$rzekSlow = [int]$config.radiant_zekes_herald.effect_slow_amount
 $fhAS = [int]$config.frozen_heart.effect_attack_speed_reduce
 $rfhAS = [int]$config.radiant_frozen_heart.effect_attack_speed_reduce
 $fhDist = [int]$config.frozen_heart.effect_max_distance
@@ -537,6 +539,54 @@ $gaCd = [int]$config.guardian_angel.effect_cooldown_seconds
 $rgaHeal = [double]$config.radiant_guardian_angel.effect_caster_hp_percent_heal
 $rgaDur = [int]$config.radiant_guardian_angel.effect_duration_seconds
 $rgaCd = [int]$config.radiant_guardian_angel.effect_cooldown_seconds
+$sofwAp = [int]$config.staff_of_flowing_water.effect_magic_power
+$sofwAh = [int]$config.staff_of_flowing_water.effect_skill_cooldown_mult
+$sofwDur = [double]$config.staff_of_flowing_water.effect_duration_seconds
+$rsofwAp = [int]$config.radiant_staff_of_flowing_water.effect_magic_power
+$rsofwAh = [int]$config.radiant_staff_of_flowing_water.effect_skill_cooldown_mult
+$rsofwDur = [double]$config.radiant_staff_of_flowing_water.effect_duration_seconds
+$isbThreshold = [double]$config.immortal_shieldbow.effect_hp_percent_threshold
+$isbMinShield = [int]$config.immortal_shieldbow.effect_min_shield
+$isbMaxShield = [int]$config.immortal_shieldbow.effect_max_shield
+$isbShieldDur = [double]$config.immortal_shieldbow.effect_shield_seconds
+$isbCd = [int]$config.immortal_shieldbow.effect_cooldown_seconds
+$risbThreshold = [double]$config.radiant_immortal_shieldbow.effect_hp_percent_threshold
+$risbMinShield = [int]$config.radiant_immortal_shieldbow.effect_min_shield
+$risbMaxShield = [int]$config.radiant_immortal_shieldbow.effect_max_shield
+$risbShieldDur = [double]$config.radiant_immortal_shieldbow.effect_shield_seconds
+$risbCd = [int]$config.radiant_immortal_shieldbow.effect_cooldown_seconds
+$lbFlat = [int]$config.lich_bane.effect_bonus_flat_damage
+$lbApPct = [double]$config.lich_bane.effect_ap_percent_damage
+$lbCd = [double]$config.lich_bane.effect_cooldown_seconds
+$rlbFlat = [int]$config.radiant_lich_bane.effect_bonus_flat_damage
+$rlbApPct = [double]$config.radiant_lich_bane.effect_ap_percent_damage
+$rlbCd = [double]$config.radiant_lich_bane.effect_cooldown_seconds
+$imAmp = [int]$config.imperial_mandate.effect_damaged_amplify
+$imDur = [double]$config.imperial_mandate.effect_duration_seconds
+$rimAmp = [int]$config.radiant_imperial_mandate.effect_damaged_amplify
+$rimDur = [double]$config.radiant_imperial_mandate.effect_duration_seconds
+$zhThreshold = [double]$config.zhonyas_hourglass.effect_hp_percent_threshold
+$zhDur = [double]$config.zhonyas_hourglass.effect_duration_seconds
+$zhCd = [int]$config.zhonyas_hourglass.effect_cooldown_seconds
+$rzhThreshold = [double]$config.radiant_zhonyas_hourglass.effect_hp_percent_threshold
+$rzhDur = [double]$config.radiant_zhonyas_hourglass.effect_duration_seconds
+$rzhCd = [int]$config.radiant_zhonyas_hourglass.effect_cooldown_seconds
+$saPer = [double]$config.seekers_armguard.effect_stack_defence
+$saStacks = [int]$config.seekers_armguard.effect_max_stacks
+$saMax = $saPer * $saStacks
+$hrFlat = [int]$config.hollow_radiance.effect_bonus_flat_damage
+$hrHpPct = [double]$config.hollow_radiance.effect_caster_hp_percent_damage
+$hrRange = [int]$config.hollow_radiance.effect_max_distance
+$hrExFlat = [int]$config.hollow_radiance.effect_explosion_flat_damage
+$hrExPct = [double]$config.hollow_radiance.effect_explosion_caster_hp_percent
+$hrMinion = [double]$config.hollow_radiance.effect_minion_percent
+$hrExDist = [int]$config.hollow_radiance.effect_explosion_distance
+$rhrFlat = [int]$config.radiant_hollow_radiance.effect_bonus_flat_damage
+$rhrHpPct = [double]$config.radiant_hollow_radiance.effect_caster_hp_percent_damage
+$rhrRange = [int]$config.radiant_hollow_radiance.effect_max_distance
+$rhrExFlat = [int]$config.radiant_hollow_radiance.effect_explosion_flat_damage
+$rhrExPct = [double]$config.radiant_hollow_radiance.effect_explosion_caster_hp_percent
+$rhrMinion = [double]$config.radiant_hollow_radiance.effect_minion_percent
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -675,9 +725,9 @@ $i18n.en.radiant_mirage_blade.option = $mbIllusion -f $rmbForce, $rmbMoveSpeed, 
 $dtsPierce = "<#ff7a3eff>Pierce<>: Gain <#d48294ff>{0}<> <$forceIcon> <#d48294ff>Adaptive Force<>. Each <$forceIcon> <#d48294ff>Adaptive Force<> grants <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>Attack Damage<> or <#a974ffff>1<> <$apIcon> <#a974ffff>Ability Power<>, depending on which is higher.`n`n<#ff7a3eff>Sweet Spot<>: Deal up to <#e8a800ff>{1}% bonus damage<> to enemy champions based on distance (maximum effect at <#ff86c2ff>{2} <$rangeIcon> range<>)."
 $i18n.en.diamond_tipped_spear.option = $dtsPierce -f $dtsForce, $dtsPct, $dtsDist
 $i18n.en.radiant_diamond_tipped_spear.option = $dtsPierce -f $rdtsForce, $rdtsPct, $rdtsDist
-$zekAura = "<#ff7a3eff>Aura<>: Grant <#d48294ff>{0}<> <$forceIcon> <#d48294ff>Adaptive Force<> and <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>Omnivamp<> to all allied champions within <#ff86c2ff>{1} <$rangeIcon> range<>."
-$i18n.en.zekes_herald.option = $zekAura -f $zekForce, $zekDist, $zekVamp
-$i18n.en.radiant_zekes_herald.option = $zekAura -f $rzekForce, $rzekDist, $rzekVamp
+$zekEn = "<#ff7a3eff>Cryocombustion<>: Gain <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>.`n`n<#ff7a3eff>Frostfire Tempest<>: Upon casting your ultimate ability, summon a storm of flame and ice around you for <#e8a800ff>{1} seconds<>. The storm deals <#a974ffff>{2} magic damage<> per second to nearby enemies and applies a <#d94c49ff>{3}% slow<>."
+$i18n.en.zekes_herald.option = $zekEn -f $zekUlt, $zekDur, $zekDmg, $zekSlow
+$i18n.en.radiant_zekes_herald.option = $zekEn -f $rzekUlt, $rzekDur, $rzekDmg, $rzekSlow
 $fhAura = "<#ff7a3eff>Winter's Caress<>: Reduce the <$asIcon> <#ceff99ff>attack speed<> of enemy champions within <#ff86c2ff>{1} <$rangeIcon> range<> by <#e8a800ff>{0}%.<>"
 $i18n.en.frozen_heart.option = $fhAura -f $fhAS, $fhDist
 $i18n.en.radiant_frozen_heart.option = $fhAura -f $rfhAS, $rfhDist
@@ -790,9 +840,28 @@ $i18n.en.chemtech_putrifier.option = "<#ff7a3eff>Grievous Wounds<>: Dealing dama
 $i18n.en.radiant_chemtech_putrifier.option = "<#ff7a3eff>Grievous Wounds<>: Dealing damage to an enemy champion <#d94c49ff>reduces their healing by ${rcptHeal}%<> for <#e8a800ff>${rcptDur} seconds<>."
 $i18n.en.chempunk_chainsword.option = "<#ff7a3eff>Grievous Wounds<>: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${ccsHeal}%<> for <#e8a800ff>${ccsDur} seconds<>."
 $i18n.en.radiant_chempunk_chainsword.option = "<#ff7a3eff>Grievous Wounds<>: Dealing <#ff9028ff>physical damage<> to an enemy champion <#d94c49ff>reduces their healing by ${rccsHeal}%<> for <#e8a800ff>${rccsDur} seconds<>."
-$gaTemplate = "<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>{1} seconds<>, <$hpRegenIcon> <#60e84dff>healing<> for <#60e84dff>{0}%<> of your <$hpIcon> <#60e84dff>maximum health<>. During the duration, you are untargetable, invulnerable, and unable to act (<#e8a800ff>{2} second<> cooldown)."
+$gaTemplate = "<#ff7a3eff>Rebirth<>: Upon taking lethal damage, instead <#92dc7bff>resurrect<> for <#e8a800ff>{1} seconds<>, <$hpRegenIcon> <#60e84dff>healing<> for <#60e84dff>{0}%<> of your <$hpIcon> <#60e84dff>maximum health<>. While <#92dc7bff>resurrecting<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>{2} second<> cooldown)."
 $i18n.en.guardian_angel.option = $gaTemplate -f $gaHeal, $gaDur, $gaCd
 $i18n.en.radiant_guardian_angel.option = $gaTemplate -f $rgaHeal, $rgaDur, $rgaCd
+$sofwEn = "<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>{0} <$apIcon> Ability Power<> and <#4b7cffff>{1} <$cdrIcon> Ability Haste<> for <#e8a800ff>{2} seconds<>."
+$i18n.en.staff_of_flowing_water.option = $sofwEn -f $sofwAp, $sofwAh, $sofwDur
+$i18n.en.radiant_staff_of_flowing_water.option = $sofwEn -f $rsofwAp, $rsofwAh, $rsofwDur
+$isbEn = "<#ff7a3eff>Lifeline<>: <#d94c49ff>Falling below {0}% health<> grants a <#cab944ff>shield<> for <#e8a800ff>{3} seconds<> that <#cab944ff>absorbs<> <#cab944ff>{1}<> - <#cab944ff>{2}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#cab944ff>damage<> (<#e8a800ff>{4} second<> cooldown)."
+$i18n.en.immortal_shieldbow.option = $isbEn -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
+$i18n.en.radiant_immortal_shieldbow.option = $isbEn -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
+$lbEn = "<#ff7a3eff>Spellblade<>: Landing an Ability on an enemy champion causes your next basic attack to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>{2} second<> cooldown)."
+$i18n.en.lich_bane.option = $lbEn -f $lbFlat, $lbApPct, $lbCd
+$i18n.en.radiant_lich_bane.option = $lbEn -f $rlbFlat, $rlbApPct, $rlbCd
+$imEn = "<#ff7a3eff>Command<>: <#d94c49ff>Immobilizing<> an enemy champion marks them as <#92dc7bff>Vulnerable<> for <#e8a800ff>{0} seconds<>, <#d94c49ff>increasing their damage taken<> by <#d94c49ff>{1}%<>. Subsequent applications refresh this buff."
+$i18n.en.imperial_mandate.option = $imEn -f $imDur, $imAmp
+$i18n.en.radiant_imperial_mandate.option = $imEn -f $rimDur, $rimAmp
+$zhEn = "<#ff7a3eff>Time Stop<>: <#d94c49ff>Falling below {0}% health<> puts you in <#92dc7bff>stasis<> for {1} seconds. While in <#92dc7bff>stasis<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>{2} second<> cooldown)."
+$i18n.en.zhonyas_hourglass.option = $zhEn -f $zhThreshold, $zhDur, $zhCd
+$i18n.en.radiant_zhonyas_hourglass.option = $zhEn -f $rzhThreshold, $rzhDur, $rzhCd
+$i18n.en.seekers_armguard.option = "<#ff7a3eff>Witch's Path<>: Killing a unit grants <#ffdd8eff>{0} <$armorIcon> armor<>, up to a maximum of <#ffdd8eff>{1}<> <$armorIcon>." -f $saPer, $saMax
+$hrEn = "$bamiTemplate`n`n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>{3}<> + <#60e84dff>{4}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>{5}% as effective<> against minions and monsters."
+$i18n.en.hollow_radiance.option = $hrEn -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.en.radiant_hollow_radiance.option = $hrEn -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -881,9 +950,9 @@ $i18n.vi.radiant_mirage_blade.option = $mbIllusionVi -f $rmbForce, $rmbMoveSpeed
 $dtsPierceVi = "<#ff7a3eff>Xuyên Thấu<>: Nhận <#d48294ff>{0}<> <$forceIcon> <#d48294ff>Lực Thích Ứng<>. Với mỗi <$forceIcon> <#d48294ff>Lực Thích Ứng<> tăng <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>SMCK<> hoặc <#a974ffff>1<> <$apIcon> <#a974ffff>SMPT<>, tùy vào bên nào cao hơn.`n`n<#ff7a3eff>Điểm Lý Tưởng<>: Gây tối đa <#e8a800ff>{1}% sát thương cộng thêm<> lên tướng địch dựa trên khoảng cách (hiệu quả tối đa ở <#ff86c2ff>{2}<> <$rangeIcon> )."
 $i18n.vi.diamond_tipped_spear.option = $dtsPierceVi -f $dtsForce, $dtsPct, $dtsDist
 $i18n.vi.radiant_diamond_tipped_spear.option = $dtsPierceVi -f $rdtsForce, $rdtsPct, $rdtsDist
-$zekAuraVi = "<#ff7a3eff>Hào Quang<>: Cấp <#d48294ff>{0}<> <$forceIcon> <#d48294ff>Lực Thích Ứng<> và <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>hút máu<> cho mọi tướng đồng minh trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon> ."
-$i18n.vi.zekes_herald.option = $zekAuraVi -f $zekForce, $zekDist, $zekVamp
-$i18n.vi.radiant_zekes_herald.option = $zekAuraVi -f $rzekForce, $rzekDist, $rzekVamp
+$zekVi = "<#ff7a3eff>Hàn Diễm<>: Nhận <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.`n`n<#ff7a3eff>Băng Hỏa Cuồng Nộ<>: Khi sử dụng chiêu cuối, triệu hồi một cơn bão băng và lửa quanh bạn trong <#e8a800ff>{1} giây<>. Cơn bão gây <#a974ffff>{2} sát thương phép<> mỗi giây lên kẻ địch lân cận và <#d94c49ff>làm chậm {3}%<>."
+$i18n.vi.zekes_herald.option = $zekVi -f $zekUlt, $zekDur, $zekDmg, $zekSlow
+$i18n.vi.radiant_zekes_herald.option = $zekVi -f $rzekUlt, $rzekDur, $rzekDmg, $rzekSlow
 $fhAuraVi = "<#ff7a3eff>Chiến Binh Mùa Đông<>: Giảm <$asIcon> <#ceff99ff>tốc độ đánh<> của các tướng địch trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon> đi <#e8a800ff>{0}%.<>"
 $i18n.vi.frozen_heart.option = $fhAuraVi -f $fhAS, $fhDist
 $i18n.vi.radiant_frozen_heart.option = $fhAuraVi -f $rfhAS, $rfhDist
@@ -999,6 +1068,25 @@ $i18n.vi.radiant_chempunk_chainsword.option = "<#ff7a3eff>Vết thương chí m�
 $gaTemplateVi = "<#ff7a3eff>Tái Sinh<>: Khi nhận sát thương kết liễu, bạn sẽ <#92dc7bff>hồi sinh<> trong <#e8a800ff>{1} giây<>, <$hpRegenIcon> <#60e84dff>hồi máu<> bằng <#60e84dff>{0}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bạn. Trong thời gian này, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>{2} giây<> hồi chiêu)."
 $i18n.vi.guardian_angel.option = $gaTemplateVi -f $gaHeal, $gaDur, $gaCd
 $i18n.vi.radiant_guardian_angel.option = $gaTemplateVi -f $rgaHeal, $rgaDur, $rgaCd
+$sofwVi = "<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>{0} <$apIcon> SMPT<> và <#4b7cffff>{1} <$cdrIcon> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>{2} giây<>."
+$i18n.vi.staff_of_flowing_water.option = $sofwVi -f $sofwAp, $sofwAh, $sofwDur
+$i18n.vi.radiant_staff_of_flowing_water.option = $sofwVi -f $rsofwAp, $rsofwAh, $rsofwDur
+$isbVi = "<#ff7a3eff>Bảo Hiểm Ma Pháp<>: <#d94c49ff>Máu rơi xuống dưới {0}%<> sẽ tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>{3} giây<> <#cab944ff>hấp thụ<> <#cab944ff>{1}<> - <#cab944ff>{2}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<> (<#e8a800ff>{4} giây<> hồi chiêu)."
+$i18n.vi.immortal_shieldbow.option = $isbVi -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
+$i18n.vi.radiant_immortal_shieldbow.option = $isbVi -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
+$lbVi = "<#ff7a3eff>Kiếm Phép<>: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>)."
+$i18n.vi.lich_bane.option = $lbVi -f $lbFlat, $lbApPct, $lbCd
+$i18n.vi.radiant_lich_bane.option = $lbVi -f $rlbFlat, $rlbApPct, $rlbCd
+$imVi = "<#ff7a3eff>Chỉ Huy<>: <#d94c49ff>Làm Bất Động<> một tướng địch sẽ đánh dấu chúng <#92dc7bff>Suy Yếu<> trong <#e8a800ff>{0} giây<>, <#d94c49ff>tăng sát thương chúng phải nhận<> thêm <#d94c49ff>{1}%<>. Các lần áp dụng tiếp theo sẽ làm mới hiệu ứng này."
+$i18n.vi.imperial_mandate.option = $imVi -f $imDur, $imAmp
+$i18n.vi.radiant_imperial_mandate.option = $imVi -f $rimDur, $rimAmp
+$zhVi = "<#ff7a3eff>Ngưng Đọng Thời Gian<>: <#d94c49ff>Máu rơi xuống dưới {0}%<> sẽ đưa bạn vào trạng thái <#92dc7bff>Ngưng Đọng<> trong {1} giây. Khi đang <#92dc7bff>Ngưng Đọng<>, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>{2} giây<> hồi chiêu)."
+$i18n.vi.zhonyas_hourglass.option = $zhVi -f $zhThreshold, $zhDur, $zhCd
+$i18n.vi.radiant_zhonyas_hourglass.option = $zhVi -f $rzhThreshold, $rzhDur, $rzhCd
+$i18n.vi.seekers_armguard.option = "<#ff7a3eff>Con Đường Phù Thủy<>: Tiêu diệt một đơn vị sẽ cho <#ffdd8eff>{0} <$armorIcon> giáp<>, tối đa <#ffdd8eff>{1}<> <$armorIcon>." -f $saPer, $saMax
+$hrVi = "$bamiTemplateVi`n`n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>{3}<> + <#60e84dff>{4}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>{5}% hiệu quả<> với lính và quái."
+$i18n.vi.hollow_radiance.option = $hrVi -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.vi.radiant_hollow_radiance.option = $hrVi -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1087,9 +1175,9 @@ $i18n.'zh-hans'.radiant_mirage_blade.option = $mbIllusionZh -f $rmbForce, $rmbMo
 $dtsPierceZh = "<#ff7a3eff>穿刺<>：获得 <#d48294ff>{0}<> <$forceIcon> <#d48294ff>自适应之力<>。每点 <$forceIcon> <#d48294ff>自适应之力<>会根据较高者提供 <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>攻击力<>或 <#a974ffff>1<> <$apIcon> <#a974ffff>法术强度<>。`n`n<#ff7a3eff>最佳距离<>：根据距离对敌方英雄造成最多 <#e8a800ff>{1}% 额外伤害<>（在 <#ff86c2ff>{2} <$rangeIcon> 射程<>时效果最大）。"
 $i18n.'zh-hans'.diamond_tipped_spear.option = $dtsPierceZh -f $dtsForce, $dtsPct, $dtsDist
 $i18n.'zh-hans'.radiant_diamond_tipped_spear.option = $dtsPierceZh -f $rdtsForce, $rdtsPct, $rdtsDist
-$zekAuraZh = "<#ff7a3eff>光环<>：为 <#ff86c2ff>{1} <$rangeIcon> 射程<>范围内的所有友方英雄提供 <#d48294ff>{0}<> <$forceIcon> <#d48294ff>自适应之力<> 和 <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>全能吸血<>。"
-$i18n.'zh-hans'.zekes_herald.option = $zekAuraZh -f $zekForce, $zekDist, $zekVamp
-$i18n.'zh-hans'.radiant_zekes_herald.option = $zekAuraZh -f $rzekForce, $rzekDist, $rzekVamp
+$zekZh = "<#ff7a3eff>冰焰燃烧<>：获得 <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。`n`n<#ff7a3eff>霜火风暴<>：施放终极技能时，召唤一个环绕你的冰火风暴，持续 <#e8a800ff>{1}秒<>。风暴每秒对附近的敌人造成 <#a974ffff>{2}点魔法伤害<>，并施加 <#d94c49ff>{3}%减速<>。"
+$i18n.'zh-hans'.zekes_herald.option = $zekZh -f $zekUlt, $zekDur, $zekDmg, $zekSlow
+$i18n.'zh-hans'.radiant_zekes_herald.option = $zekZh -f $rzekUlt, $rzekDur, $rzekDmg, $rzekSlow
 $fhAuraZh = "<#ff7a3eff>凛冬之抚<>：使 <#ff86c2ff>{1} <$rangeIcon> 射程<>范围内敌方英雄的 <$asIcon> <#ceff99ff>攻击速度<> 降低 <#e8a800ff>{0}%<>。"
 $i18n.'zh-hans'.frozen_heart.option = $fhAuraZh -f $fhAS, $fhDist
 $i18n.'zh-hans'.radiant_frozen_heart.option = $fhAuraZh -f $rfhAS, $rfhDist
@@ -1205,6 +1293,25 @@ $i18n.'zh-hans'.radiant_chempunk_chainsword.option = "<#ff7a3eff>重伤<>：对�
 $gaTemplateZh = "<#ff7a3eff>重生<>：受到致命伤害时，改为在 <#e8a800ff>{1}秒<> 内<#92dc7bff>复活<>，并<$hpRegenIcon> <#60e84dff>回复<>相当于你 <$hpIcon> <#60e84dff>最大生命值<> 的 <#60e84dff>{0}%<> 的生命值。在此期间，你无法被选取、无敌且无法行动（冷却时间{2}秒）。"
 $i18n.'zh-hans'.guardian_angel.option = $gaTemplateZh -f $gaHeal, $gaDur, $gaCd
 $i18n.'zh-hans'.radiant_guardian_angel.option = $gaTemplateZh -f $rgaHeal, $rgaDur, $rgaCd
+$sofwZh = "<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>{0} 点<$apIcon> 法术强度<>和 <#4b7cffff>{1} 点<$cdrIcon> 技能急速<>，持续 <#e8a800ff>{2}秒<>。"
+$i18n.'zh-hans'.staff_of_flowing_water.option = $sofwZh -f $sofwAp, $sofwAh, $sofwDur
+$i18n.'zh-hans'.radiant_staff_of_flowing_water.option = $sofwZh -f $rsofwAp, $rsofwAh, $rsofwDur
+$isbZh = "<#ff7a3eff>救主灵刃<>：<#d94c49ff>生命值降至{0}%以下<>时，获得一个持续 <#e8a800ff>{3}秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>{1}<> - <#cab944ff>{2}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>（冷却时间{4}秒）。"
+$i18n.'zh-hans'.immortal_shieldbow.option = $isbZh -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
+$i18n.'zh-hans'.radiant_immortal_shieldbow.option = $isbZh -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
+$lbZh = "<#ff7a3eff>咒刃<>：技能命中敌方英雄后，你的下一次普通攻击会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>{2}秒<>）。"
+$i18n.'zh-hans'.lich_bane.option = $lbZh -f $lbFlat, $lbApPct, $lbCd
+$i18n.'zh-hans'.radiant_lich_bane.option = $lbZh -f $rlbFlat, $rlbApPct, $rlbCd
+$imZh = "<#ff7a3eff>命令<>：<#d94c49ff>定身<>一个敌方英雄时，使其<#92dc7bff>易损<>，持续 <#e8a800ff>{0}秒<>，<#d94c49ff>受到的伤害<>提高 <#d94c49ff>{1}%<>。再次施加会刷新此效果。"
+$i18n.'zh-hans'.imperial_mandate.option = $imZh -f $imDur, $imAmp
+$i18n.'zh-hans'.radiant_imperial_mandate.option = $imZh -f $rimDur, $rimAmp
+$zhZh = "<#ff7a3eff>时间停止<>：<#d94c49ff>生命值降至{0}%以下<>时，进入<#92dc7bff>凝滞<>状态{1}秒。<#92dc7bff>凝滞<>期间，你无法被选取、无敌且无法行动（冷却时间{2}秒）。"
+$i18n.'zh-hans'.zhonyas_hourglass.option = $zhZh -f $zhThreshold, $zhDur, $zhCd
+$i18n.'zh-hans'.radiant_zhonyas_hourglass.option = $zhZh -f $rzhThreshold, $rzhDur, $rzhCd
+$i18n.'zh-hans'.seekers_armguard.option = "<#ff7a3eff>女巫之路<>：击杀一个单位可获得 <#ffdd8eff>{0} 点<$armorIcon> 护甲<>，最多 <#ffdd8eff>{1}<> <$armorIcon>。" -f $saPer, $saMax
+$hrZh = "$bamiTemplateZh`n`n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>{3}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{4}%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>{5}%<>。"
+$i18n.'zh-hans'.hollow_radiance.option = $hrZh -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.'zh-hans'.radiant_hollow_radiance.option = $hrZh -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1293,9 +1400,9 @@ $i18n.'pt-BR'.radiant_mirage_blade.option = $mbIllusionPt -f $rmbForce, $rmbMove
 $dtsPiercePt = "<#ff7a3eff>Perfuração<>: Ganha <#d48294ff>{0}<> <$forceIcon> de <#d48294ff>Força Adaptativa<>. Cada <$forceIcon> <#d48294ff>Força Adaptativa<> garante <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>Dano de Ataque<> ou <#a974ffff>1<> <$apIcon> <#a974ffff>Poder de Habilidade<>, dependendo de qual é maior.`n`n<#ff7a3eff>Ponto Ideal<>: Causa até <#e8a800ff>{1}% de dano bônus<> a campeões inimigos com base na distância (efeito máximo em <#ff86c2ff>{2} <$rangeIcon> alcance<>)."
 $i18n.'pt-BR'.diamond_tipped_spear.option = $dtsPiercePt -f $dtsForce, $dtsPct, $dtsDist
 $i18n.'pt-BR'.radiant_diamond_tipped_spear.option = $dtsPiercePt -f $rdtsForce, $rdtsPct, $rdtsDist
-$zekAuraPt = "<#ff7a3eff>Aura<>: Concede <#d48294ff>{0}<> <$forceIcon> de <#d48294ff>Força Adaptativa<> e <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>roubo de vida<> a todos os campeões aliados dentro de <#ff86c2ff>{1} <$rangeIcon> alcance<>."
-$i18n.'pt-BR'.zekes_herald.option = $zekAuraPt -f $zekForce, $zekDist, $zekVamp
-$i18n.'pt-BR'.radiant_zekes_herald.option = $zekAuraPt -f $rzekForce, $rzekDist, $rzekVamp
+$zekPt = "<#ff7a3eff>Criocombustão<>: Recebe <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.`n`n<#ff7a3eff>Tempestade do Raio de Gelo<>: Ao conjurar sua ultimate, invoca uma tempestade de fogo e gelo ao seu redor por <#e8a800ff>{1} segundos<>. A tempestade causa <#a974ffff>{2} de dano mágico<> por segundo a inimigos próximos e aplica <#d94c49ff>{3}% de Lentidão<>."
+$i18n.'pt-BR'.zekes_herald.option = $zekPt -f $zekUlt, $zekDur, $zekDmg, $zekSlow
+$i18n.'pt-BR'.radiant_zekes_herald.option = $zekPt -f $rzekUlt, $rzekDur, $rzekDmg, $rzekSlow
 $fhAuraPt = "<#ff7a3eff>Carícia do Inverno<>: Reduz a <$asIcon> <#ceff99ff>velocidade de ataque<> dos campeões inimigos dentro de <#ff86c2ff>{1} <$rangeIcon> alcance<> em <#e8a800ff>{0}%.<>"
 $i18n.'pt-BR'.frozen_heart.option = $fhAuraPt -f $fhAS, $fhDist
 $i18n.'pt-BR'.radiant_frozen_heart.option = $fhAuraPt -f $rfhAS, $rfhDist
@@ -1411,6 +1518,25 @@ $i18n.'pt-BR'.radiant_chempunk_chainsword.option = "<#ff7a3eff>Ferimentos Graves
 $gaTemplatePt = "<#ff7a3eff>Renascimento<>: Ao sofrer dano letal, em vez disso você <#92dc7bff>ressuscita<> ao longo de <#e8a800ff>{1} segundos<>, <$hpRegenIcon> <#60e84dff>curando<> <#60e84dff>{0}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<>. Durante esse tempo, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>{2} segundos<>)."
 $i18n.'pt-BR'.guardian_angel.option = $gaTemplatePt -f $gaHeal, $gaDur, $gaCd
 $i18n.'pt-BR'.radiant_guardian_angel.option = $gaTemplatePt -f $rgaHeal, $rgaDur, $rgaCd
+$sofwPt = "<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>{0} de <$apIcon> Poder de Habilidade<> e <#4b7cffff>{1} de <$cdrIcon> Aceleração de Habilidade<> por <#e8a800ff>{2} segundos<>."
+$i18n.'pt-BR'.staff_of_flowing_water.option = $sofwPt -f $sofwAp, $sofwAh, $sofwDur
+$i18n.'pt-BR'.radiant_staff_of_flowing_water.option = $sofwPt -f $rsofwAp, $rsofwAh, $rsofwDur
+$isbPt = "<#ff7a3eff>Salva-Vidas<>: Ao cair <#d94c49ff>abaixo de {0}% de Vida<>, concede um <#cab944ff>escudo<> por <#e8a800ff>{3} segundos<> que <#cab944ff>absorve<> <#cab944ff>{1}<> - <#cab944ff>{2}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <#cab944ff>dano<> (recarga de <#e8a800ff>{4} segundos<>)."
+$i18n.'pt-BR'.immortal_shieldbow.option = $isbPt -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
+$i18n.'pt-BR'.radiant_immortal_shieldbow.option = $isbPt -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
+$lbPt = "<#ff7a3eff>Lâmina Arcana<>: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>{2} segundos<>)."
+$i18n.'pt-BR'.lich_bane.option = $lbPt -f $lbFlat, $lbApPct, $lbCd
+$i18n.'pt-BR'.radiant_lich_bane.option = $lbPt -f $rlbFlat, $rlbApPct, $rlbCd
+$imPt = "<#ff7a3eff>Comando<>: <#d94c49ff>Imobilizar<> um campeão inimigo o marca como <#92dc7bff>Vulnerável<> por <#e8a800ff>{0} segundos<>, <#d94c49ff>aumentando o dano que ele recebe<> em <#d94c49ff>{1}%<>. Aplicações seguintes renovam este efeito."
+$i18n.'pt-BR'.imperial_mandate.option = $imPt -f $imDur, $imAmp
+$i18n.'pt-BR'.radiant_imperial_mandate.option = $imPt -f $rimDur, $rimAmp
+$zhPt = "<#ff7a3eff>Tempo Paralisado<>: Ao cair <#d94c49ff>abaixo de {0}% de Vida<>, você entra em <#92dc7bff>Estase<> por {1} segundos. Durante a <#92dc7bff>Estase<>, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>{2} segundos<>)."
+$i18n.'pt-BR'.zhonyas_hourglass.option = $zhPt -f $zhThreshold, $zhDur, $zhCd
+$i18n.'pt-BR'.radiant_zhonyas_hourglass.option = $zhPt -f $rzhThreshold, $rzhDur, $rzhCd
+$i18n.'pt-BR'.seekers_armguard.option = "<#ff7a3eff>Caminho da Bruxa<>: Abater uma unidade concede <#ffdd8eff>{0} de <$armorIcon> Armadura<>, até o máximo de <#ffdd8eff>{1}<> <$armorIcon>." -f $saPer, $saMax
+$hrPt = "$bamiTemplatePt`n`n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>{3}<> + <#60e84dff>{4}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>{5}% eficaz<> contra tropas e monstros."
+$i18n.'pt-BR'.hollow_radiance.option = $hrPt -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.'pt-BR'.radiant_hollow_radiance.option = $hrPt -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1499,9 +1625,9 @@ $i18n.ru.radiant_mirage_blade.option = $mbIllusionRu -f $rmbForce, $rmbMoveSpeed
 $dtsPierceRu = "<#ff7a3eff>Пронзание<>: Даёт <#d48294ff>{0}<> <$forceIcon> <#d48294ff>адаптивной силы<>. Каждая единица <$forceIcon> <#d48294ff>адаптивной силы<> даёт <#ff9028ff>0.6<> <$adIcon> <#ff9028ff>Силы атаки<> или <#a974ffff>1<> <$apIcon> <#a974ffff>Силы умений<>, в зависимости от того, что выше.`n`n<#ff7a3eff>Идеальная дистанция<>: Наносит до <#e8a800ff>{1}% дополнительного урона<> вражеским чемпионам в зависимости от расстояния (максимальный эффект на <#ff86c2ff>{2} <$rangeIcon> дальности<>)."
 $i18n.ru.diamond_tipped_spear.option = $dtsPierceRu -f $dtsForce, $dtsPct, $dtsDist
 $i18n.ru.radiant_diamond_tipped_spear.option = $dtsPierceRu -f $rdtsForce, $rdtsPct, $rdtsDist
-$zekAuraRu = "<#ff7a3eff>Аура<>: Даёт <#d48294ff>{0}<> <$forceIcon> <#d48294ff>адаптивной силы<> и <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>всестороннего вытягивания жизни<> всем союзным чемпионам в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<>."
-$i18n.ru.zekes_herald.option = $zekAuraRu -f $zekForce, $zekDist, $zekVamp
-$i18n.ru.radiant_zekes_herald.option = $zekAuraRu -f $rzekForce, $rzekDist, $rzekVamp
+$zekRu = "<#ff7a3eff>Криогорение<>: Даёт <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>.`n`n<#ff7a3eff>Буря ледяного пламени<>: При применении абсолютного умения вас на <#e8a800ff>{1} секунды<> окружает буря огня и льда. Буря наносит ближайшим врагам <#a974ffff>{2} магического урона<> в секунду и <#d94c49ff>замедляет их на {3}%<>."
+$i18n.ru.zekes_herald.option = $zekRu -f $zekUlt, $zekDur, $zekDmg, $zekSlow
+$i18n.ru.radiant_zekes_herald.option = $zekRu -f $rzekUlt, $rzekDur, $rzekDmg, $rzekSlow
 $fhAuraRu = "<#ff7a3eff>Объятия зимы<>: Уменьшает <$asIcon> <#ceff99ff>скорость атаки<> вражеских чемпионов в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<> на <#e8a800ff>{0}%.<>"
 $i18n.ru.frozen_heart.option = $fhAuraRu -f $fhAS, $fhDist
 $i18n.ru.radiant_frozen_heart.option = $fhAuraRu -f $rfhAS, $rfhDist
@@ -1617,6 +1743,25 @@ $i18n.ru.radiant_chempunk_chainsword.option = "<#ff7a3eff>Тяжёлые ран�
 $gaTemplateRu = "<#ff7a3eff>Перерождение<>: При получении смертельного урона вы вместо этого <#92dc7bff>воскрешаетесь<> в течение <#e8a800ff>{1} секунд<>, <$hpRegenIcon> <#60e84dff>восстанавливая<> <#60e84dff>{0}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<>. В течение этого времени вы не можете быть целью, неуязвимы и не можете действовать (перезарядка {2} секунд)."
 $i18n.ru.guardian_angel.option = $gaTemplateRu -f $gaHeal, $gaDur, $gaCd
 $i18n.ru.radiant_guardian_angel.option = $gaTemplateRu -f $rgaHeal, $rgaDur, $rgaCd
+$sofwRu = "<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>{0} <$apIcon> силы умений<> и <#4b7cffff>{1} <$cdrIcon> ускорения умений<> на <#e8a800ff>{2} секунды<>."
+$i18n.ru.staff_of_flowing_water.option = $sofwRu -f $sofwAp, $sofwAh, $sofwDur
+$i18n.ru.radiant_staff_of_flowing_water.option = $sofwRu -f $rsofwAp, $rsofwAh, $rsofwDur
+$isbRu = "<#ff7a3eff>Линия жизни<>: При <#d94c49ff>падении здоровья ниже {0}%<> вы получаете <#cab944ff>щит<> на <#e8a800ff>{3} секунды<>, поглощающий <#cab944ff>{1}<> - <#cab944ff>{2}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#cab944ff>урона<> (перезарядка {4} секунд)."
+$i18n.ru.immortal_shieldbow.option = $isbRu -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
+$i18n.ru.radiant_immortal_shieldbow.option = $isbRu -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
+$lbRu = "<#ff7a3eff>Чародейский клинок<>: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<>)."
+$i18n.ru.lich_bane.option = $lbRu -f $lbFlat, $lbApPct, $lbCd
+$i18n.ru.radiant_lich_bane.option = $lbRu -f $rlbFlat, $rlbApPct, $rlbCd
+$imRu = "<#ff7a3eff>Команда<>: <#d94c49ff>Обездвиживая<> вражеского чемпиона, вы накладываете на него <#92dc7bff>уязвимость<> на <#e8a800ff>{0} секунды<>, <#d94c49ff>увеличивая получаемый им урон<> на <#d94c49ff>{1}%<>. Повторное наложение обновляет этот эффект."
+$i18n.ru.imperial_mandate.option = $imRu -f $imDur, $imAmp
+$i18n.ru.radiant_imperial_mandate.option = $imRu -f $rimDur, $rimAmp
+$zhRu = "<#ff7a3eff>Остановка времени<>: При <#d94c49ff>падении здоровья ниже {0}%<> вы впадаете в <#92dc7bff>стазис<> на {1} секунды. В <#92dc7bff>стазисе<> вы не можете быть целью, неуязвимы и не можете действовать (перезарядка {2} секунд)."
+$i18n.ru.zhonyas_hourglass.option = $zhRu -f $zhThreshold, $zhDur, $zhCd
+$i18n.ru.radiant_zhonyas_hourglass.option = $zhRu -f $rzhThreshold, $rzhDur, $rzhCd
+$i18n.ru.seekers_armguard.option = "<#ff7a3eff>Путь ведьмы<>: Убийство бойца даёт <#ffdd8eff>{0} <$armorIcon> брони<>, но не более <#ffdd8eff>{1}<> <$armorIcon>." -f $saPer, $saMax
+$hrRu = "$bamiTemplateRu`n`n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>{3}<> + <#60e84dff>{4}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>{5}%<>."
+$i18n.ru.hollow_radiance.option = $hrRu -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.ru.radiant_hollow_radiance.option = $hrRu -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -1705,9 +1850,9 @@ $i18n.ko.radiant_mirage_blade.option = $mbIllusionKo -f $rmbForce, $rmbMoveSpeed
 $dtsPierceKo = "<#ff7a3eff>관통<>: <$forceIcon> <#d48294ff>적응형 능력치<>를 <#d48294ff>{0}<> 얻습니다. <$forceIcon> 적응형 능력치 1당 더 높은 능력치에 따라 <$adIcon> <#ff9028ff>공격력 0.6<> 또는 <$apIcon> <#a974ffff>주문력 1<>을 얻습니다.`n`n<#ff7a3eff>최적 거리<>: 적 챔피언과의 거리에 따라 최대 <#e8a800ff>{1}%의 추가 피해<>를 입힙니다. <$rangeIcon> <#ff86c2ff>사거리 {2}<>에서 효과가 최대가 됩니다."
 $i18n.ko.diamond_tipped_spear.option = $dtsPierceKo -f $dtsForce, $dtsPct, $dtsDist
 $i18n.ko.radiant_diamond_tipped_spear.option = $dtsPierceKo -f $rdtsForce, $rdtsPct, $rdtsDist
-$zekAuraKo = "<#ff7a3eff>오라<>: <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 모든 아군 챔피언에게 <$forceIcon> <#d48294ff>적응형 능력치 {0}<>과 <$vampIcon> <#b7462dff>모든 피해 흡혈 {2}%<>를 부여합니다."
-$i18n.ko.zekes_herald.option = $zekAuraKo -f $zekForce, $zekDist, $zekVamp
-$i18n.ko.radiant_zekes_herald.option = $zekAuraKo -f $rzekForce, $rzekDist, $rzekVamp
+$zekKo = "<#ff7a3eff>냉기 연소<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>{0}<> 증가합니다.`n`n<#ff7a3eff>서리불꽃 폭풍<>: 궁극기 사용 시 <#e8a800ff>{1}초<> 동안 주변에 불꽃과 얼음의 폭풍을 소환합니다. 폭풍은 주변 적에게 매초 <#a974ffff>{2}의 마법 피해<>를 입히고 <#d94c49ff>{3}% 둔화<>시킵니다."
+$i18n.ko.zekes_herald.option = $zekKo -f $zekUlt, $zekDur, $zekDmg, $zekSlow
+$i18n.ko.radiant_zekes_herald.option = $zekKo -f $rzekUlt, $rzekDur, $rzekDmg, $rzekSlow
 $fhAuraKo = "<#ff7a3eff>혹한의 포옹<>: <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 적 챔피언의 <$asIcon> <#ceff99ff>공격 속도<>를 <#e8a800ff>{0}%<> 감소시킵니다."
 $i18n.ko.frozen_heart.option = $fhAuraKo -f $fhAS, $fhDist
 $i18n.ko.radiant_frozen_heart.option = $fhAuraKo -f $rfhAS, $rfhDist
@@ -1822,6 +1967,25 @@ $i18n.ko.radiant_chempunk_chainsword.option = "<#ff7a3eff>고통스러운 상처
 $gaTemplateKo = "<#ff7a3eff>환생<>: 치명적인 피해를 입으면 대신 <#e8a800ff>{1}초<> 동안 <#92dc7bff>부활<>하며 <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>{0}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>합니다. 지속시간 동안 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>{2}초<>입니다."
 $i18n.ko.guardian_angel.option = $gaTemplateKo -f $gaHeal, $gaDur, $gaCd
 $i18n.ko.radiant_guardian_angel.option = $gaTemplateKo -f $rgaHeal, $rgaDur, $rgaCd
+$sofwKo = "<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>{2}초<> 동안 자신과 대상의 <$apIcon> <#a974ffff>주문력<>이 <#a974ffff>{0}<>, <$cdrIcon> <#4b7cffff>스킬 가속<>이 <#4b7cffff>{1}<> 증가합니다."
+$i18n.ko.staff_of_flowing_water.option = $sofwKo -f $sofwAp, $sofwAh, $sofwDur
+$i18n.ko.radiant_staff_of_flowing_water.option = $sofwKo -f $rsofwAp, $rsofwAh, $rsofwDur
+$isbKo = "<#ff7a3eff>생명선<>: <#d94c49ff>체력이 {0}% 아래로 내려가면<> <#e8a800ff>{3}초<> 동안 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>{1}<>~<#cab944ff>{2}<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>{4}초<>입니다."
+$i18n.ko.immortal_shieldbow.option = $isbKo -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
+$i18n.ko.radiant_immortal_shieldbow.option = $isbKo -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
+$lbKo = "<#ff7a3eff>주문 검<>: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>)"
+$i18n.ko.lich_bane.option = $lbKo -f $lbFlat, $lbApPct, $lbCd
+$i18n.ko.radiant_lich_bane.option = $lbKo -f $rlbFlat, $rlbApPct, $rlbCd
+$imKo = "<#ff7a3eff>명령<>: 적 챔피언에게 <#d94c49ff>이동 불가<> 효과를 적용하면 <#e8a800ff>{0}초<> 동안 <#92dc7bff>취약<> 표식을 남겨 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>{1}%<> 증가합니다. 다시 적용하면 효과가 갱신됩니다."
+$i18n.ko.imperial_mandate.option = $imKo -f $imDur, $imAmp
+$i18n.ko.radiant_imperial_mandate.option = $imKo -f $rimDur, $rimAmp
+$zhKo = "<#ff7a3eff>시간 정지<>: <#d94c49ff>체력이 {0}% 아래로 내려가면<> {1}초 동안 <#92dc7bff>경직<> 상태가 됩니다. <#92dc7bff>경직<> 상태에서는 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>{2}초<>입니다."
+$i18n.ko.zhonyas_hourglass.option = $zhKo -f $zhThreshold, $zhDur, $zhCd
+$i18n.ko.radiant_zhonyas_hourglass.option = $zhKo -f $rzhThreshold, $rzhDur, $rzhCd
+$i18n.ko.seekers_armguard.option = "<#ff7a3eff>마녀의 길<>: 유닛을 처치하면 <$armorIcon> <#ffdd8eff>방어력<>이 <#ffdd8eff>{0}<> 증가하며, 최대 <#ffdd8eff>{1}<> <$armorIcon>까지 중첩됩니다." -f $saPer, $saMax
+$hrKo = "$bamiTemplateKo`n`n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>{3}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>{4}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>{5}%<>의 효과만 적용됩니다."
+$i18n.ko.hollow_radiance.option = $hrKo -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.ko.radiant_hollow_radiance.option = $hrKo -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {
@@ -2032,3 +2196,16 @@ Write-Host "  Radiant Sunfire Cape:        $($config.radiant_sunfire_cape.effect
 Write-Host "  Bramble Vest / Thornmail / Radiant Thornmail: -${bvPlating}% / -${tmPlating}% / -${rtmPlating}% basic attack damage taken"
 Write-Host "  Locket of the Iron Solari:         ${lockDef} armor / ${lockMr} MR / ${lockRegen} regen within ${lockDist} range / Devotion ${lockMinShield} - ${lockMaxShield} shield ${lockShieldDur}s below ${lockThreshold}% HP (${lockCd}s CD)"
 Write-Host "  Radiant Locket of the Iron Solari: ${rlockDef} armor / ${rlockMr} MR / ${rlockRegen} regen within ${rlockDist} range / Devotion ${rlockMinShield} - ${rlockMaxShield} shield ${rlockShieldDur}s below ${rlockThreshold}% HP (${rlockCd}s CD)"
+Write-Host "  Staff of Flowing Water:         Rapids ${sofwAp} AP / ${sofwAh} AH for ${sofwDur}s"
+Write-Host "  Radiant Staff of Flowing Water: Rapids ${rsofwAp} AP / ${rsofwAh} AH for ${rsofwDur}s"
+Write-Host "  Immortal Shieldbow:         Lifeline ${isbMinShield} - ${isbMaxShield} shield ${isbShieldDur}s below ${isbThreshold}% HP (${isbCd}s CD)"
+Write-Host "  Radiant Immortal Shieldbow: Lifeline ${risbMinShield} - ${risbMaxShield} shield ${risbShieldDur}s below ${risbThreshold}% HP (${risbCd}s CD)"
+Write-Host "  Lich Bane:         Spellblade ${lbFlat} + ${lbApPct}% AP magic dmg (${lbCd}s CD)"
+Write-Host "  Radiant Lich Bane: Spellblade ${rlbFlat} + ${rlbApPct}% AP magic dmg (${rlbCd}s CD)"
+Write-Host "  Imperial Mandate:         Command +${imAmp}% damage taken ${imDur}s on immobilized champions"
+Write-Host "  Radiant Imperial Mandate: Command +${rimAmp}% damage taken ${rimDur}s on immobilized champions"
+Write-Host "  Seeker's Armguard:          Witch's Path ${saPer} armor per kill (max ${saMax})"
+Write-Host "  Zhonya's Hourglass:         Time Stop ${zhDur}s stasis below ${zhThreshold}% HP (${zhCd}s CD)"
+Write-Host "  Radiant Zhonya's Hourglass: Time Stop ${rzhDur}s stasis below ${rzhThreshold}% HP (${rzhCd}s CD)"
+Write-Host "  Hollow Radiance:         Immolate ${hrFlat} + ${hrHpPct}% max HP/s within ${hrRange} / Desolate ${hrExFlat} + ${hrExPct}% max HP within ${hrExDist} (${hrMinion}% vs minions)"
+Write-Host "  Radiant Hollow Radiance: Immolate ${rhrFlat} + ${rhrHpPct}% max HP/s within ${rhrRange} / Desolate ${rhrExFlat} + ${rhrExPct}% max HP (${rhrMinion}% vs minions)"

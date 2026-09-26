@@ -41,12 +41,16 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("hamstringer", "Marksman"),
     ("heartsteel", "Tank"),
     ("hextech_gunblade", "Mage"),
+    ("hollow_radiance", "Tank"),
     ("hubris", "Assassin"),
+    ("immortal_shieldbow", "Marksman"),
+    ("imperial_mandate", "Support"),
     ("infinity_edge", "Marksman"),
     ("ionian_boots_of_lucidity", "Boots"),
     ("jaksho_the_protean", "Tank"),
     ("kraken_slayer", "Marksman"),
     ("liandrys_torment", "Mage"),
+    ("lich_bane", "Mage"),
     ("locket_of_the_iron_solari", "Support"),
     ("lord_dominiks_regards", "Marksman"),
     ("ludens_tempest", "Mage"),
@@ -75,6 +79,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("sorcerers_shoes", "Boots"),
     ("spear_of_shojin", "Fighter"),
     ("spirit_visage", "Tank"),
+    ("staff_of_flowing_water", "Support"),
     ("steraks_gage", "Fighter"),
     ("stormrazor", "Marksman"),
     ("stormsurge", "Mage"),
@@ -91,6 +96,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("wits_end", "Marksman"),
     ("yun_tal_wildarrows", "Marksman"),
     ("zekes_herald", "Support"),
+    ("zhonyas_hourglass", "Mage"),
 ];
 
 const RESKIN_ICON: &[(&str, &str)] = &[

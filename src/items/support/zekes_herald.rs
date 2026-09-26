@@ -1,24 +1,52 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, ItemMeta, ADAPTIVE_FORCE_AD_RATIO, AURA_DURATION_TICKS, AURA_REFRESH_TICKS,
-    DISTANCE_UNITS_PER_RANGE,
-};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, DISTANCE_UNITS_PER_RANGE};
+
+// Zeke's Convergence (registered under its old key, `zekes_herald`).
+//
+// Cryocombustion: Gain 15 Ultimate Ability Haste.
+//
+// Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame
+// and ice around you for 4 seconds. The storm deals 30 magic damage per second to
+// nearby enemies and applies a 20% slow.
+
+/// The storm hits four times a second.
+const TEMPEST_TICK_SECONDS: f64 = 0.25;
+/// Shared by both variants: the slow is a state on the target, and two carriers'
+/// storms refresh one slow rather than stacking two.
+const SLOW_BUFF: &str = "zekes_convergence_slow";
+/// A little longer than one storm tick, so a target inside the storm is never
+/// between slows; it wears off shortly after leaving the storm or the storm
+/// ending.
+const SLOW_GRACE_TICKS: usize = 10;
+/// Statless marker on the carrier for as long as the storm lasts. It is the
+/// `view_buffs` binding in `view/effects.view_effects` that draws the storm, so
+/// the art follows her and goes when she dies (buffs do not survive death).
+const STORM_BUFF: &str = "zekes_convergence_storm";
 
 #[derive(Clone, Debug)]
 pub struct ZekesHerald {
     meta: ItemMeta,
-    aura_buff: &'static str,
     price: usize,
     hp: i32,
-    hp_regen: i32,
-    magic_power: i32,
+    defence: i32,
+    magic_resistance: i32,
     skill_cooldown_mult: i32,
-    effect_adaptive_force: i32,
-    effect_vamp: i32,
+    ult_cooldown_mult: i32,
+    effect_duration_seconds: f64,
+    effect_bonus_magic_damage: usize,
+    effect_slow_amount: i32,
     effect_max_distance: usize,
-    refresh_cooldown: usize,
+    // Non-vital stats (internals)
+    /// Ult cooldown seen on the previous tick. There is no "cast ultimate" hook,
+    /// so a cast is read off the cooldown jumping up.
+    last_ult_cooldown: Option<usize>,
+    storm_ticks_left: usize,
+    until_next_tick: usize,
+    /// Storm ticks dealt so far, so per-tick damage can alternate to hit the
+    /// per-second total exactly (30 per second is 7.5 per tick: 7, 8, 7, 8).
+    storm_ticks_dealt: usize,
 }
 
 impl ZekesHerald {
@@ -26,35 +54,40 @@ impl ZekesHerald {
         Self {
             meta: ItemMeta::base(
                 "zekes_herald",
-                &["bandleglass_mirror"],
+                &["aegis_of_the_legion"],
                 &["radiant_zekes_herald"],
             ),
-            aura_buff: "zekes_herald_aura",
             price: 550,
-            hp: 150,
-            hp_regen: 2,
-            magic_power: 20,
+            hp: 100,
+            defence: 20,
+            magic_resistance: 30,
             skill_cooldown_mult: 10,
-            effect_adaptive_force: 15,
-            effect_vamp: 6,
-            effect_max_distance: 100,
+            ult_cooldown_mult: 15,
+            effect_duration_seconds: 4.0,
+            effect_bonus_magic_damage: 30,
+            effect_slow_amount: 30,
+            effect_max_distance: 50,
             // Non-vital stats (internals)
-            refresh_cooldown: 0,
+            last_ult_cooldown: None,
+            storm_ticks_left: 0,
+            until_next_tick: 0,
+            storm_ticks_dealt: 0,
         }
     }
 
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_zekes_herald", &["zekes_herald"]),
-            aura_buff: "zekes_herald_aura",
             price: 750,
-            hp: 250,
-            hp_regen: 3,
-            magic_power: 30,
+            hp: 150,
+            defence: 30,
+            magic_resistance: 40,
             skill_cooldown_mult: 15,
-            effect_adaptive_force: 25,
-            effect_vamp: 10,
-            effect_max_distance: 100,
+            ult_cooldown_mult: 15,
+            effect_duration_seconds: 4.0,
+            effect_bonus_magic_damage: 30,
+            effect_slow_amount: 30,
+            effect_max_distance: 50,
             ..Self::base()
         }
     }
@@ -74,71 +107,62 @@ impl ZekesHerald {
             [
                 price,
                 hp,
-                hp_regen,
-                magic_power,
+                defence,
+                magic_resistance,
                 skill_cooldown_mult,
-                effect_adaptive_force,
-                effect_vamp,
+                ult_cooldown_mult,
+                effect_duration_seconds,
+                effect_bonus_magic_damage,
+                effect_slow_amount,
                 effect_max_distance
             ]
         );
         self
     }
 
-    fn apply_aura(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        if self.refresh_cooldown > 0 {
-            self.refresh_cooldown -= 1;
-            return;
-        }
+    /// Damage for the next storm tick: the running total rounded down, minus
+    /// what has already been dealt.
+    fn next_tick_damage(&mut self) -> usize {
+        let per_tick = self.effect_bonus_magic_damage as f64 * TEMPEST_TICK_SECONDS;
+        let dealt = (per_tick * self.storm_ticks_dealt as f64).floor() as usize;
+        self.storm_ticks_dealt += 1;
+        let total = (per_tick * self.storm_ticks_dealt as f64).floor() as usize;
+        total - dealt
+    }
 
-        let Some(player_ref) = ctx.get_player(player) else {
+    fn storm_tick(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        let Some((caster, caster_team)) = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .filter(|c| c.is_alive())
+            .map(|c| (c.id(), c.team()))
+        else {
+            // The storm is around the carrier; it ends with her.
+            self.storm_ticks_left = 0;
             return;
         };
-        let Some(caster) = player_ref.champion() else {
-            return;
-        };
-        let caster_id = caster.id();
-        let caster_team = caster.team();
 
         let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
         let range_sq = range * range;
+        // Any enemy unit but a turret, the way Bami's Cinder picks its targets.
+        let targets: Vec<usize> = (0..ctx.entity_count())
+            .filter_map(|index| ctx.entity_at(index))
+            .filter(|e| e.is_alive() && !e.is_tower() && e.team() != caster_team)
+            .map(|e| e.id())
+            .filter(|&id| ctx.distance_sq(caster, id) <= range_sq)
+            .collect();
 
-        let mut targets: Vec<(usize, bool)> = Vec::new();
-        for index in 0..ctx.champion_count() {
-            let id = ctx.champion_id_at(index);
-            let Some(entity_ref) = ctx.get_entity(id) else {
-                continue;
-            };
-            if !entity_ref.is_alive() || entity_ref.team() != caster_team || id == caster_id {
-                continue;
+        let damage = self.next_tick_damage();
+        let slow = BuffV1 {
+            move_speed_mult: -self.effect_slow_amount,
+            ..BuffV1::timed(SLOW_BUFF, ticks(TEMPEST_TICK_SECONDS) + SLOW_GRACE_TICKS)
+        };
+        for target in targets {
+            if damage > 0 {
+                ctx.deal_damage(caster, target, 0, damage, AttackTypeV1::Item);
             }
-            if ctx.distance_sq(caster_id, id) > range_sq {
-                continue;
-            }
-            let prefers_ap = entity_ref.stat().magic_power > entity_ref.stat().attack;
-            targets.push((id, prefers_ap));
+            refresh_buff(ctx, target, SLOW_BUFF, &slow);
         }
-
-        for (id, prefers_ap) in targets {
-            let mut buff = BuffV1 {
-                vamp: self.effect_vamp,
-                ..BuffV1::timed(self.aura_buff, AURA_DURATION_TICKS)
-            };
-            if prefers_ap {
-                buff.magic_power = self.effect_adaptive_force;
-            } else {
-                buff.attack =
-                    (self.effect_adaptive_force as f64 * ADAPTIVE_FORCE_AD_RATIO).round() as i32;
-            }
-            // Replace rather than skip-if-present: both calls land in the same
-            // tick, so the ally never drops the bonus, and re-reading
-            // `prefers_ap` each cycle lets the adaptive half follow a champion
-            // whose AD/AP balance changed since the last refresh.
-            ctx.entity_remove_buff(id, self.aura_buff);
-            ctx.add_buff(id, &buff);
-        }
-
-        self.refresh_cooldown = AURA_REFRESH_TICKS;
     }
 }
 
@@ -180,29 +204,67 @@ impl StableItem for ZekesHerald {
     fn stat(&self) -> BuffV1 {
         BuffV1 {
             hp: self.hp,
-            hp_regen: self.hp_regen,
-            magic_power: self.magic_power,
+            defence: self.defence,
+            magic_resistance: self.magic_resistance,
             skill_cooldown_mult: self.skill_cooldown_mult,
+            ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
         }
     }
 
-    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        self.refresh_cooldown = 0;
-        self.apply_aura(ctx, player);
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.last_ult_cooldown = None;
+        self.storm_ticks_left = 0;
+        self.until_next_tick = 0;
     }
 
+    // Frostfire Tempest. A cast shows up as the ult cooldown going *up* between
+    // two ticks: it only ever counts down otherwise. The first reading after a
+    // spawn is just a baseline.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        self.apply_aura(ctx, player);
+        let ult_cooldown = ctx
+            .get_player(player)
+            .and_then(|p| p.cooldowns())
+            .map(|(_, _, _, ult)| ult);
+        if let (Some(now), Some(before)) = (ult_cooldown, self.last_ult_cooldown) {
+            if now > before {
+                self.storm_ticks_left = ticks(self.effect_duration_seconds);
+                self.until_next_tick = 0;
+                self.storm_ticks_dealt = 0;
+                let carrier = ctx
+                    .get_player(player)
+                    .and_then(|p| p.champion())
+                    .map(|c| c.id());
+                if let Some(carrier) = carrier {
+                    refresh_buff(
+                        ctx,
+                        carrier,
+                        STORM_BUFF,
+                        &BuffV1::timed(STORM_BUFF, self.storm_ticks_left),
+                    );
+                }
+            }
+        }
+        self.last_ult_cooldown = ult_cooldown;
+
+        if self.storm_ticks_left == 0 {
+            return;
+        }
+        if self.until_next_tick == 0 {
+            self.storm_tick(ctx, player);
+            self.until_next_tick = ticks(TEMPEST_TICK_SECONDS).max(1);
+        }
+        self.until_next_tick -= 1;
+        self.storm_ticks_left = self.storm_ticks_left.saturating_sub(1);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![
             ItemTagV1::Hp,
-            ItemTagV1::Ad,
-            ItemTagV1::Ap,
-            ItemTagV1::HpRegen,
+            ItemTagV1::Defense,
+            ItemTagV1::MagicResistance,
             ItemTagV1::CooltimeReduce,
+            ItemTagV1::DotDamage,
         ]
     }
 

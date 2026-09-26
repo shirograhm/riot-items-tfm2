@@ -143,7 +143,7 @@ impl StableItem for SwordOfBlossomingDawn {
     // lowest fraction of maximum health rather than the lowest number, so a
     // chipped tank does not outrank a nearly dead carry; distance only breaks
     // ties. The carrier is not a candidate, matching the other ally-facing
-    // items here (`zekes_herald`, `locket_of_the_iron_solari`).
+    // items here (`locket_of_the_iron_solari`).
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

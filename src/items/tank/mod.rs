@@ -6,6 +6,7 @@ items! {
     dead_mans_plate,
     frozen_heart,
     heartsteel,
+    hollow_radiance,
     jaksho_the_protean,
     protectors_vow,
     randuins_omen,
