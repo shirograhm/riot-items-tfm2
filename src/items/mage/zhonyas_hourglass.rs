@@ -17,6 +17,12 @@ const STASIS_BUFF: &str = "zhonyas_hourglass_stasis";
 /// Angel's ring. Bound in `view/effects.view_effects`; the sheet is drawn 2.5
 /// seconds long, so it matches the default `effect_duration_seconds`.
 const STASIS_EFFECT: &str = "riot_zhonyas_hourglass_stasis";
+/// The activation sound: `sound/sfx/riot_zhonyas_stasis.sound_info`, mapped
+/// into `asset/base/sound/sfx` by `mod.override_info`, which is where sound
+/// names are looked up. The clip is trimmed so its first hit lands on the
+/// activation and its closing chime on the default 2.5 second stasis ending;
+/// the untrimmed source is `sfx/zhonyas.wav`.
+const STASIS_SFX: &str = "riot_zhonyas_stasis";
 
 #[derive(Clone, Debug)]
 pub struct ZhonyasHourglass {
@@ -181,6 +187,7 @@ impl StableItem for ZhonyasHourglass {
         );
         ctx.entity_clear_cc(entity);
         ctx.entity_banish(entity, entity, stasis, STASIS_EFFECT, "");
+        ctx.play_sfx(STASIS_SFX, entity, &InputTargetV1::target(entity));
         self.time_stop_cooldown = ticks(self.effect_cooldown_seconds);
     }
 

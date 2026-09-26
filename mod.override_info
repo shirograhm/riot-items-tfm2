@@ -62,5 +62,13 @@
   "asset/base/ui/layout/match_result": {
     "remapping": "asset/riot_items_tfm2/ui/layout/match_result",
     "type": "override"
+  },
+  "asset/base/sound/sfx/riot_zhonyas_stasis": {
+    "remapping": "asset/riot_items_tfm2/sound/sfx/riot_zhonyas_stasis",
+    "type": "override"
+  },
+  "asset/base/sound/sfx/riot_zhonyas_stasis_clip": {
+    "remapping": "asset/riot_items_tfm2/sound/sfx/riot_zhonyas_stasis_clip",
+    "type": "override"
   }
 }
