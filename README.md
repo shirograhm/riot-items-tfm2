@@ -31,6 +31,7 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 - a duplicate item
 - a second Grievous Wounds item
 - a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked)
+- Feral Flare or Grez's Spectral Lantern on any champion not playing the jungle role
 - a support item (except Protoplasm Harness) on any champion not playing the support role
 - an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion (hybrid champions and hybrid items are left alone)
 

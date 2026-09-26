@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Seven of them:
+//! Eight of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -33,13 +33,17 @@
 //!    never plans toward a tier-3 item, so without this no AI build holds any.
 //!    Boots the player pinned anywhere, the 5th and 6th slots included, count,
 //!    and no AI pick is ever swapped *for* boots by the other rules.
+//! 8. **Jungle items stay in the jungle** — Feral Flare and Grez's Spectral
+//!    Lantern ([`JUNGLE_ITEMS`]) grow on monster kills, which only the jungle
+//!    role gets, so only whoever plays jungle keeps them. Numbered last only
+//!    so the rules above keep the numbers the rest of the mod cites them by.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
 //! other item, so the AI's picks around it make way for it rather than the
 //! other way round.
 //!
-//! Rules 4 and 5 are about the champion, not the build, and come in as a
+//! Rules 4, 5 and 8 are about the champion, not the build, and come in as a
 //! [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
@@ -200,6 +204,7 @@ pub(crate) enum Reason {
     Crit,
     SupportOnly,
     Scaling,
+    JungleOnly,
 }
 
 impl Reason {
@@ -207,7 +212,9 @@ impl Reason {
     /// for its stand-in. A support item's category holds nothing but support
     /// items, and an item the champion does not scale with sits among others
     /// it does not scale with, so for these two the stand-in is taken from the
-    /// categories the rest of the build uses instead.
+    /// categories the rest of the build uses instead. A jungle item's category
+    /// is an ordinary one (Grez's is a Mage item), so its stand-in comes from
+    /// there, like a duplicate's.
     pub(crate) fn restyles(self) -> bool {
         matches!(self, Reason::SupportOnly | Reason::Scaling)
     }
@@ -223,19 +230,23 @@ pub(crate) struct Fit {
     support_items: bool,
     /// Rule 5: what the champion scales with, `None` when unknown.
     scaling: Option<Scaling>,
+    /// Rule 8: whether jungle items are allowed.
+    jungle_items: bool,
 }
 
 /// The [`Fit`] for `champion` playing `role`.
 ///
 /// Support items are allowed in the support role and nowhere else — not even an
 /// unknown role ([`Role::Any`]), which the buy detour falls back to when no
-/// lineup has placed the champion yet. A champion nothing is known about gets
-/// no scaling restriction: a missing tag must never cost a build an item.
+/// lineup has placed the champion yet. Jungle items follow the same line, for
+/// the jungle role. A champion nothing is known about gets no scaling
+/// restriction: a missing tag must never cost a build an item.
 pub(crate) fn fit(champion: &str, role: Role) -> Fit {
     let traits = champion_traits::traits(champion);
     Fit {
         support_items: role == Role::Support,
         scaling: traits.and_then(|traits| traits.scaling),
+        jungle_items: role == Role::Jungle,
     }
 }
 
@@ -392,6 +403,18 @@ fn is_support_item(key: &str) -> bool {
     slug != SUPPORT_ITEM_EXCEPTION && crate::item_catalog::category_of(slug) == Some("Support")
 }
 
+/// Rule 8: items only the jungle role may build. By base slug, so the radiant
+/// tier follows.
+const JUNGLE_ITEMS: [&str; 2] = [
+    "feral_flare",            // a stack per takedown and monster killed
+    "grezs_spectral_lantern", // ability power per takedown and monster killed
+];
+
+/// Whether `key` is one of [`JUNGLE_ITEMS`], base or radiant.
+fn is_jungle_item(key: &str) -> bool {
+    JUNGLE_ITEMS.contains(&crate::build_config::base_slug(key))
+}
+
 /// What the items a build already holds have spent of the two budgets the rules
 /// police, and the [`Fit`] of the champion it is for. Carries the trait table
 /// with it, so a scan across the catalog is a run of hash lookups rather than a
@@ -431,6 +454,8 @@ impl Budget {
         let traits = self.table.traits(key);
         if !self.fit.support_items && is_support_item(key) {
             Some(Reason::SupportOnly)
+        } else if !self.fit.jungle_items && is_jungle_item(key) {
+            Some(Reason::JungleOnly)
         } else if self.fit.mismatches_item(key, &traits) {
             Some(Reason::Scaling)
         } else if self.cuts_healing && traits.cuts_healing {
@@ -442,11 +467,12 @@ impl Budget {
         }
     }
 
-    /// Whether `key` is an item this champion may hold at all — rules 4 and 5,
-    /// which do not depend on what else is in the build. An item that fails is
-    /// no guide to the build's style.
+    /// Whether `key` is an item this champion may hold at all — rules 4, 5 and
+    /// 8, which do not depend on what else is in the build. An item that fails
+    /// is no guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
         !(!self.fit.support_items && is_support_item(key))
+            && !(!self.fit.jungle_items && is_jungle_item(key))
             && !self.fit.mismatches_item(key, &self.table.traits(key))
     }
 
@@ -469,7 +495,7 @@ impl Budget {
     }
 }
 
-/// Rewrites `build` in place so that it breaks none of the seven rules, as far as
+/// Rewrites `build` in place so that it breaks none of the eight rules, as far as
 /// the catalog allows.
 ///
 /// A slot that breaks one is swapped for the next item that fixes it: unused, of
