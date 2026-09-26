@@ -5392,9 +5392,10 @@ unsafe fn auto_extra_pick(
         .or_else(|| pick_candidate(ctx, u64::MAX, taken, champ, |_| true))
 }
 
-/// Smart Builds' rule 6 over a build just grown to its 5th and 6th slots,
-/// which the stable hook's pass never saw: the automatic picks not bought yet,
-/// early items first and late items last (`smart_builds::sort_by_timing`).
+/// Smart Builds' rules 6 and 9 over a build just grown to its 5th and 6th
+/// slots, which the stable hook's pass never saw: the automatic picks not
+/// bought yet, role items first, then early items, late items last
+/// (`smart_builds::sort_by_timing`).
 /// Fixed in place: every slot up to the one being built now (`owned`, whose
 /// components may already be bought), the player's pins (`designate`), and
 /// the boots, which rule 7 placed.
@@ -5410,7 +5411,10 @@ unsafe fn reorder_unbought(
         .filter(|&j| !buy_is_boots(ctx, slots[j]))
         .collect();
     let mut picks: Vec<u64> = movable.iter().map(|&j| slots[j]).collect();
-    crate::smart_builds::sort_by_timing(&mut picks, |&index| catalog_name_at(ctx, index));
+    // The fit too, so a support's or jungler's role item (rule 9) stays ahead
+    // of the early items this sort pulls forward.
+    let fit = crate::smart_builds::fit(champ, crate::build_config::role_for_champion(champ));
+    crate::smart_builds::sort_by_timing(&mut picks, fit, |&index| catalog_name_at(ctx, index));
     for (&j, index) in movable.iter().zip(picks) {
         slots[j] = index;
     }

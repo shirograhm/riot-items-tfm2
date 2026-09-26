@@ -127,7 +127,8 @@ fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
 
 /// The base game's champions, from `setting/champion_info` (`category` and `tags`),
 /// including the eight it ships under `mod_champions`. Only a
-/// fallback: an answer from the host always wins.
+/// fallback: an answer from the host always wins. Kept true to the game's
+/// tags; corrections go in [`SCALING_OVERRIDES`], which beat both.
 const VANILLA: &[(&str, u8, Class)] = &[
     ("alchemist", AP, Class::Magician),
     ("android", AD | TANK, Class::Melee),
@@ -302,9 +303,31 @@ static ASKED: Mutex<Option<HashSet<String>>> = Mutex::new(None);
 /// paths are not on the client, so they leave the question here for [`learn`].
 static PENDING: Mutex<Option<HashSet<String>>> = Mutex::new(None);
 
+/// Champions whose `AD`/`AP` tags misstate what their kit scales with, and
+/// what Smart Builds treats them as instead. These win over every source,
+/// the host included, which is why they are not simply edits to [`VANILLA`].
+///
+/// Magic Knight is tagged both, but only its basic attack is physical: both
+/// abilities deal magic damage off Ability Power, and its ultimate's attack
+/// speed scales with Ability Power too. Left hybrid, rule 5 never touched it
+/// and the engine had it building full AD (2026-09-26, in a match where it
+/// dealt ~20k damage, nearly all of it magic).
+const SCALING_OVERRIDES: &[(&str, Scaling)] = &[("magic_knight", Scaling::Ap)];
+
 /// What is known about `champion`, or `None` when nothing is — which the rules
 /// read as "no restriction". A miss is queued for the next [`learn`].
+/// [`SCALING_OVERRIDES`] apply on top of whatever answered.
 pub(crate) fn traits(champion: &str) -> Option<ChampionTraits> {
+    let mut traits = looked_up(champion);
+    if let Some(&(_, scaling)) = SCALING_OVERRIDES.iter().find(|(key, _)| *key == champion) {
+        traits.get_or_insert_with(ChampionTraits::default).scaling = Some(scaling);
+    }
+    traits
+}
+
+/// [`traits`] as the sources give it: the host's settled answer, else the
+/// [`fallback`].
+fn looked_up(champion: &str) -> Option<ChampionTraits> {
     if let Some(settled) = LEARNED
         .read()
         .ok()

@@ -687,8 +687,8 @@
     "skill_cooldown_mult": 10,
     "ult_cooldown_mult": 15,
     "effect_duration_seconds": 4,
-    "effect_bonus_magic_damage": 30,
-    "effect_slow_amount": 30,
+    "effect_bonus_magic_damage": 60,
+    "effect_slow_amount": 40,
     "effect_max_distance": 50
   },
   "radiant_zekes_herald": {
@@ -699,8 +699,8 @@
     "skill_cooldown_mult": 15,
     "ult_cooldown_mult": 15,
     "effect_duration_seconds": 4,
-    "effect_bonus_magic_damage": 30,
-    "effect_slow_amount": 30,
+    "effect_bonus_magic_damage": 60,
+    "effect_slow_amount": 40,
     "effect_max_distance": 50
   },
   "scouts_slingshot": {
