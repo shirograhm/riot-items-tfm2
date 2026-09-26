@@ -1736,7 +1736,7 @@
     "price": 750,
     "magic_power": 50,
     "defence": 35,
-    "effect_hp_percent_threshold": 25.0,
+    "effect_hp_percent_threshold": 30.0,
     "effect_duration_seconds": 2.5,
     "effect_cooldown_seconds": 120
   },
@@ -1744,7 +1744,7 @@
     "price": 1050,
     "magic_power": 80,
     "defence": 50,
-    "effect_hp_percent_threshold": 25.0,
+    "effect_hp_percent_threshold": 30.0,
     "effect_duration_seconds": 2.5,
     "effect_cooldown_seconds": 120
   },
