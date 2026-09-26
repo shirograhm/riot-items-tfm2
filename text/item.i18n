@@ -926,11 +926,11 @@
         },
         "zhonyas_hourglass": {
             "name": "Zhonya's Hourglass",
-            "option": "\n<#ff7a3eff>Time Stop<>: <#d94c49ff>Falling below 30% health<> puts you in <#92dc7bff>stasis<> for 2.5 seconds. While in <#92dc7bff>stasis<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>120 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Time Stop<>: <#d94c49ff>Falling below 20% health<> puts you in <#92dc7bff>stasis<> for 2.5 seconds. While in <#92dc7bff>stasis<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>120 second<> cooldown)."
         },
         "radiant_zhonyas_hourglass": {
             "name": "Radiant Zhonya's Hourglass",
-            "option": "\n<#ff7a3eff>Time Stop<>: <#d94c49ff>Falling below 30% health<> puts you in <#92dc7bff>stasis<> for 2.5 seconds. While in <#92dc7bff>stasis<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>120 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Time Stop<>: <#d94c49ff>Falling below 20% health<> puts you in <#92dc7bff>stasis<> for 2.5 seconds. While in <#92dc7bff>stasis<>, you are untargetable, invulnerable, and unable to act (<#e8a800ff>120 second<> cooldown)."
         },
         "seekers_armguard": {
             "name": "Seeker's Armguard",
@@ -1872,11 +1872,11 @@
         },
         "zhonyas_hourglass": {
             "name": "Đồng Hồ Cát Zhonya",
-            "option": "\n<#ff7a3eff>Ngưng Đọng Thời Gian<>: <#d94c49ff>Máu rơi xuống dưới 30%<> sẽ đưa bạn vào trạng thái <#92dc7bff>Ngưng Đọng<> trong 2.5 giây. Khi đang <#92dc7bff>Ngưng Đọng<>, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>120 giây<> hồi chiêu)."
+            "option": "\n<#ff7a3eff>Ngưng Đọng Thời Gian<>: <#d94c49ff>Máu rơi xuống dưới 20%<> sẽ đưa bạn vào trạng thái <#92dc7bff>Ngưng Đọng<> trong 2.5 giây. Khi đang <#92dc7bff>Ngưng Đọng<>, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>120 giây<> hồi chiêu)."
         },
         "radiant_zhonyas_hourglass": {
             "name": "Đồng Hồ Cát Zhonya Ánh Sáng",
-            "option": "\n<#ff7a3eff>Ngưng Đọng Thời Gian<>: <#d94c49ff>Máu rơi xuống dưới 30%<> sẽ đưa bạn vào trạng thái <#92dc7bff>Ngưng Đọng<> trong 2.5 giây. Khi đang <#92dc7bff>Ngưng Đọng<>, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>120 giây<> hồi chiêu)."
+            "option": "\n<#ff7a3eff>Ngưng Đọng Thời Gian<>: <#d94c49ff>Máu rơi xuống dưới 20%<> sẽ đưa bạn vào trạng thái <#92dc7bff>Ngưng Đọng<> trong 2.5 giây. Khi đang <#92dc7bff>Ngưng Đọng<>, bạn không thể bị chọn làm mục tiêu, bất khả xâm phạm và không thể hành động (<#e8a800ff>120 giây<> hồi chiêu)."
         },
         "seekers_armguard": {
             "name": "Giáp Tay Seeker",
@@ -2818,11 +2818,11 @@
         },
         "zhonyas_hourglass": {
             "name": "中娅沙漏",
-            "option": "\n<#ff7a3eff>时间停止<>：<#d94c49ff>生命值降至30%以下<>时，进入<#92dc7bff>凝滞<>状态2.5秒。<#92dc7bff>凝滞<>期间，你无法被选取、无敌且无法行动（冷却时间120秒）。"
+            "option": "\n<#ff7a3eff>时间停止<>：<#d94c49ff>生命值降至20%以下<>时，进入<#92dc7bff>凝滞<>状态2.5秒。<#92dc7bff>凝滞<>期间，你无法被选取、无敌且无法行动（冷却时间120秒）。"
         },
         "radiant_zhonyas_hourglass": {
             "name": "光明版中娅沙漏",
-            "option": "\n<#ff7a3eff>时间停止<>：<#d94c49ff>生命值降至30%以下<>时，进入<#92dc7bff>凝滞<>状态2.5秒。<#92dc7bff>凝滞<>期间，你无法被选取、无敌且无法行动（冷却时间120秒）。"
+            "option": "\n<#ff7a3eff>时间停止<>：<#d94c49ff>生命值降至20%以下<>时，进入<#92dc7bff>凝滞<>状态2.5秒。<#92dc7bff>凝滞<>期间，你无法被选取、无敌且无法行动（冷却时间120秒）。"
         },
         "seekers_armguard": {
             "name": "探索者的护臂",
@@ -3764,11 +3764,11 @@
         },
         "zhonyas_hourglass": {
             "name": "Ampulheta de Zhonya",
-            "option": "\n<#ff7a3eff>Tempo Paralisado<>: Ao cair <#d94c49ff>abaixo de 30% de Vida<>, você entra em <#92dc7bff>Estase<> por 2.5 segundos. Durante a <#92dc7bff>Estase<>, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>120 segundos<>)."
+            "option": "\n<#ff7a3eff>Tempo Paralisado<>: Ao cair <#d94c49ff>abaixo de 20% de Vida<>, você entra em <#92dc7bff>Estase<> por 2.5 segundos. Durante a <#92dc7bff>Estase<>, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>120 segundos<>)."
         },
         "radiant_zhonyas_hourglass": {
             "name": "Ampulheta de Zhonya Radiante",
-            "option": "\n<#ff7a3eff>Tempo Paralisado<>: Ao cair <#d94c49ff>abaixo de 30% de Vida<>, você entra em <#92dc7bff>Estase<> por 2.5 segundos. Durante a <#92dc7bff>Estase<>, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>120 segundos<>)."
+            "option": "\n<#ff7a3eff>Tempo Paralisado<>: Ao cair <#d94c49ff>abaixo de 20% de Vida<>, você entra em <#92dc7bff>Estase<> por 2.5 segundos. Durante a <#92dc7bff>Estase<>, você não pode ser alvejado, fica invulnerável e não pode agir (recarga de <#e8a800ff>120 segundos<>)."
         },
         "seekers_armguard": {
             "name": "Armaguarda da Caçadora",
@@ -4710,11 +4710,11 @@
         },
         "zhonyas_hourglass": {
             "name": "Песочные часы Жони",
-            "option": "\n<#ff7a3eff>Остановка времени<>: При <#d94c49ff>падении здоровья ниже 30%<> вы впадаете в <#92dc7bff>стазис<> на 2.5 секунды. В <#92dc7bff>стазисе<> вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 120 секунд)."
+            "option": "\n<#ff7a3eff>Остановка времени<>: При <#d94c49ff>падении здоровья ниже 20%<> вы впадаете в <#92dc7bff>стазис<> на 2.5 секунды. В <#92dc7bff>стазисе<> вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 120 секунд)."
         },
         "radiant_zhonyas_hourglass": {
             "name": "Лучезарные Песочные часы Жони",
-            "option": "\n<#ff7a3eff>Остановка времени<>: При <#d94c49ff>падении здоровья ниже 30%<> вы впадаете в <#92dc7bff>стазис<> на 2.5 секунды. В <#92dc7bff>стазисе<> вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 120 секунд)."
+            "option": "\n<#ff7a3eff>Остановка времени<>: При <#d94c49ff>падении здоровья ниже 20%<> вы впадаете в <#92dc7bff>стазис<> на 2.5 секунды. В <#92dc7bff>стазисе<> вы не можете быть целью, неуязвимы и не можете действовать (перезарядка 120 секунд)."
         },
         "seekers_armguard": {
             "name": "Наручи Искательницы",
@@ -5656,11 +5656,11 @@
         },
         "zhonyas_hourglass": {
             "name": "존야의 모래시계",
-            "option": "\n<#ff7a3eff>시간 정지<>: <#d94c49ff>체력이 30% 아래로 내려가면<> 2.5초 동안 <#92dc7bff>경직<> 상태가 됩니다. <#92dc7bff>경직<> 상태에서는 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>120초<>입니다."
+            "option": "\n<#ff7a3eff>시간 정지<>: <#d94c49ff>체력이 20% 아래로 내려가면<> 2.5초 동안 <#92dc7bff>경직<> 상태가 됩니다. <#92dc7bff>경직<> 상태에서는 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>120초<>입니다."
         },
         "radiant_zhonyas_hourglass": {
             "name": "찬란한 존야의 모래시계",
-            "option": "\n<#ff7a3eff>시간 정지<>: <#d94c49ff>체력이 30% 아래로 내려가면<> 2.5초 동안 <#92dc7bff>경직<> 상태가 됩니다. <#92dc7bff>경직<> 상태에서는 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>120초<>입니다."
+            "option": "\n<#ff7a3eff>시간 정지<>: <#d94c49ff>체력이 20% 아래로 내려가면<> 2.5초 동안 <#92dc7bff>경직<> 상태가 됩니다. <#92dc7bff>경직<> 상태에서는 대상으로 지정할 수 없고 무적 상태가 되며 행동할 수 없습니다. 재사용 대기시간은 <#e8a800ff>120초<>입니다."
         },
         "seekers_armguard": {
             "name": "추적자의 팔목 보호대",

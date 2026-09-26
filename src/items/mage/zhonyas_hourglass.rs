@@ -3,7 +3,7 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ticks, ItemMeta};
 
-// Time Stop: Falling below 30% health puts you in stasis for 2.5 seconds. While in
+// Time Stop: Falling below 20% health puts you in stasis for 2.5 seconds. While in
 // stasis, you are untargetable, invulnerable, and unable to act (120 second
 // cooldown).
 //
@@ -51,7 +51,7 @@ impl ZhonyasHourglass {
             price: 750,
             magic_power: 50,
             defence: 35,
-            effect_hp_percent_threshold: 30.0,
+            effect_hp_percent_threshold: 20.0,
             effect_duration_seconds: 2.5,
             effect_cooldown_seconds: 120.0,
             // Non-vital stats (internals)
@@ -66,7 +66,7 @@ impl ZhonyasHourglass {
             price: 1050,
             magic_power: 80,
             defence: 50,
-            effect_hp_percent_threshold: 30.0,
+            effect_hp_percent_threshold: 20.0,
             effect_duration_seconds: 2.5,
             effect_cooldown_seconds: 120.0,
             ..Self::base()
