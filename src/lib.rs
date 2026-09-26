@@ -24,7 +24,7 @@ mod tactics;
 
 use items::*;
 
-pub(crate) use buffs::{add_stack, refresh_buff};
+pub(crate) use buffs::{add_stack, mark_immolate, refresh_buff};
 pub(crate) use constants::*;
 pub(crate) use item_meta::ItemMeta;
 pub(crate) use proc_queue::ProcQueue;
@@ -367,6 +367,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("hamstringer" => Hamstringer));
     reg.add_item(configured!("heartsteel" => Heartsteel));
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
+    reg.add_item(configured!("hollow_radiance" => HollowRadiance));
     reg.add_item(configured!("hubris" => Hubris));
     reg.add_item(configured!("immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured!("imperial_mandate" => ImperialMandate));
@@ -447,6 +448,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_hamstringer" => Hamstringer));
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
     reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
+    reg.add_item(configured_radiant!("radiant_hollow_radiance" => HollowRadiance));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
     reg.add_item(configured_radiant!("radiant_immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured_radiant!("radiant_imperial_mandate" => ImperialMandate));

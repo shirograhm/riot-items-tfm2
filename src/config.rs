@@ -122,6 +122,9 @@ pub struct ItemConfig {
     pub effect_magic_power: Option<i32>,
     pub effect_skill_cooldown_mult: Option<i32>,
     pub effect_stack_defence: Option<f64>,
+    pub effect_explosion_flat_damage: Option<usize>,
+    pub effect_explosion_caster_hp_percent: Option<f64>,
+    pub effect_explosion_distance: Option<usize>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,

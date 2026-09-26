@@ -8,18 +8,20 @@
 //! surroundings once a second, which leaves the vanilla item itself untouched.
 //!
 //! Radiant Sunfire Cape (`giants_horn_shard`) already has this aura built into
-//! the engine (`flat_aoe_damage` / `max_hp_aoe_ratio` / `aoe_range`), so it is
-//! deliberately not handled here. Its numbers, like the rest of the HP line's
-//! stats, are written into `setting/item_setting.item_setting` by
-//! `apply_config.ps1`; only this scripted aura is read from config here, under
-//! the `sunfire_cape` entry.
+//! the engine (`flat_aoe_damage` / `max_hp_aoe_ratio` / `aoe_range`), so its
+//! burn is deliberately not handled here; the hook only gives its holders the
+//! same Immolate flames. Its numbers, like the rest of the HP line's stats, are
+//! written into `setting/item_setting.item_setting` by `apply_config.ps1`; only
+//! this scripted aura is read from config here, under the `sunfire_cape` entry.
 
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND};
+use crate::{apply_config, mark_immolate, percent_of, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND};
 
 const SUNFIRE_KEY: &str = "hourglass_of_eternity";
+/// Radiant Sunfire Cape. The engine burns for it; the hook only adds the flames.
+const RADIANT_SUNFIRE_KEY: &str = "giants_horn_shard";
 
 /// Sunfire Cape's Immolate numbers. Defaults mirror Radiant Sunfire Cape's
 /// vanilla aura, matching the tooltip.
@@ -56,18 +58,22 @@ impl Immolate {
     }
 }
 
-/// Deals one second of Immolate for every living Sunfire Cape holder.
+/// Deals one second of Immolate for every living Sunfire Cape holder, and keeps
+/// the Immolate flames up on them and on Radiant Sunfire Cape holders.
 fn immolate(sim: &mut StableSim<'_>, numbers: &Immolate) {
     if sim.tick() % TICKS_PER_SECOND as usize != 0 {
         return;
     }
 
+    let mut flames = Vec::new();
     let mut burns = Vec::new();
     for index in 0..sim.player_count() {
         let Some(player) = sim.player_at(index) else {
             continue;
         };
-        if !player.item_keys().iter().any(|key| key == SUNFIRE_KEY) {
+        let keys = player.item_keys();
+        let burns_here = keys.iter().any(|key| key == SUNFIRE_KEY);
+        if !burns_here && !keys.iter().any(|key| key == RADIANT_SUNFIRE_KEY) {
             continue;
         }
         let Some(champion) = player.champion() else {
@@ -76,9 +82,17 @@ fn immolate(sim: &mut StableSim<'_>, numbers: &Immolate) {
         if !champion.is_alive() {
             continue;
         }
+        flames.push(champion.id());
+        if !burns_here {
+            continue;
+        }
         let damage = numbers.effect_bonus_flat_damage
             + percent_of(champion.hp().1, numbers.effect_caster_hp_percent_damage);
         burns.push((champion.id(), champion.team(), damage));
+    }
+
+    for champion in flames {
+        mark_immolate(sim, champion);
     }
 
     let range = (numbers.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;

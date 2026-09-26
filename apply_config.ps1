@@ -574,6 +574,19 @@ $rzhCd = [int]$config.radiant_zhonyas_hourglass.effect_cooldown_seconds
 $saPer = [double]$config.seekers_armguard.effect_stack_defence
 $saStacks = [int]$config.seekers_armguard.effect_max_stacks
 $saMax = $saPer * $saStacks
+$hrFlat = [int]$config.hollow_radiance.effect_bonus_flat_damage
+$hrHpPct = [double]$config.hollow_radiance.effect_caster_hp_percent_damage
+$hrRange = [int]$config.hollow_radiance.effect_max_distance
+$hrExFlat = [int]$config.hollow_radiance.effect_explosion_flat_damage
+$hrExPct = [double]$config.hollow_radiance.effect_explosion_caster_hp_percent
+$hrMinion = [double]$config.hollow_radiance.effect_minion_percent
+$hrExDist = [int]$config.hollow_radiance.effect_explosion_distance
+$rhrFlat = [int]$config.radiant_hollow_radiance.effect_bonus_flat_damage
+$rhrHpPct = [double]$config.radiant_hollow_radiance.effect_caster_hp_percent_damage
+$rhrRange = [int]$config.radiant_hollow_radiance.effect_max_distance
+$rhrExFlat = [int]$config.radiant_hollow_radiance.effect_explosion_flat_damage
+$rhrExPct = [double]$config.radiant_hollow_radiance.effect_explosion_caster_hp_percent
+$rhrMinion = [double]$config.radiant_hollow_radiance.effect_minion_percent
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -846,6 +859,9 @@ $zhEn = "<#ff7a3eff>Time Stop<>: <#d94c49ff>Falling below {0}% health<> puts you
 $i18n.en.zhonyas_hourglass.option = $zhEn -f $zhThreshold, $zhDur, $zhCd
 $i18n.en.radiant_zhonyas_hourglass.option = $zhEn -f $rzhThreshold, $rzhDur, $rzhCd
 $i18n.en.seekers_armguard.option = "<#ff7a3eff>Witch's Path<>: Killing a unit grants <#ffdd8eff>{0} <$armorIcon> armor<>, up to a maximum of <#ffdd8eff>{1}<> <$armorIcon>." -f $saPer, $saMax
+$hrEn = "$bamiTemplate`n`n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>{3}<> + <#60e84dff>{4}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>{5}% as effective<> against minions and monsters."
+$i18n.en.hollow_radiance.option = $hrEn -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.en.radiant_hollow_radiance.option = $hrEn -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -1068,6 +1084,9 @@ $zhVi = "<#ff7a3eff>Ngưng Đọng Thời Gian<>: <#d94c49ff>Máu rơi xuống d
 $i18n.vi.zhonyas_hourglass.option = $zhVi -f $zhThreshold, $zhDur, $zhCd
 $i18n.vi.radiant_zhonyas_hourglass.option = $zhVi -f $rzhThreshold, $rzhDur, $rzhCd
 $i18n.vi.seekers_armguard.option = "<#ff7a3eff>Con Đường Phù Thủy<>: Tiêu diệt một đơn vị sẽ cho <#ffdd8eff>{0} <$armorIcon> giáp<>, tối đa <#ffdd8eff>{1}<> <$armorIcon>." -f $saPer, $saMax
+$hrVi = "$bamiTemplateVi`n`n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>{3}<> + <#60e84dff>{4}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>{5}% hiệu quả<> với lính và quái."
+$i18n.vi.hollow_radiance.option = $hrVi -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.vi.radiant_hollow_radiance.option = $hrVi -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1290,6 +1309,9 @@ $zhZh = "<#ff7a3eff>时间停止<>：<#d94c49ff>生命值降至{0}%以下<>时�
 $i18n.'zh-hans'.zhonyas_hourglass.option = $zhZh -f $zhThreshold, $zhDur, $zhCd
 $i18n.'zh-hans'.radiant_zhonyas_hourglass.option = $zhZh -f $rzhThreshold, $rzhDur, $rzhCd
 $i18n.'zh-hans'.seekers_armguard.option = "<#ff7a3eff>女巫之路<>：击杀一个单位可获得 <#ffdd8eff>{0} 点<$armorIcon> 护甲<>，最多 <#ffdd8eff>{1}<> <$armorIcon>。" -f $saPer, $saMax
+$hrZh = "$bamiTemplateZh`n`n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>{3}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{4}%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>{5}%<>。"
+$i18n.'zh-hans'.hollow_radiance.option = $hrZh -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.'zh-hans'.radiant_hollow_radiance.option = $hrZh -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1512,6 +1534,9 @@ $zhPt = "<#ff7a3eff>Tempo Paralisado<>: Ao cair <#d94c49ff>abaixo de {0}% de Vid
 $i18n.'pt-BR'.zhonyas_hourglass.option = $zhPt -f $zhThreshold, $zhDur, $zhCd
 $i18n.'pt-BR'.radiant_zhonyas_hourglass.option = $zhPt -f $rzhThreshold, $rzhDur, $rzhCd
 $i18n.'pt-BR'.seekers_armguard.option = "<#ff7a3eff>Caminho da Bruxa<>: Abater uma unidade concede <#ffdd8eff>{0} de <$armorIcon> Armadura<>, até o máximo de <#ffdd8eff>{1}<> <$armorIcon>." -f $saPer, $saMax
+$hrPt = "$bamiTemplatePt`n`n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>{3}<> + <#60e84dff>{4}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>{5}% eficaz<> contra tropas e monstros."
+$i18n.'pt-BR'.hollow_radiance.option = $hrPt -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.'pt-BR'.radiant_hollow_radiance.option = $hrPt -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1734,6 +1759,9 @@ $zhRu = "<#ff7a3eff>Остановка времени<>: При <#d94c49ff>па�
 $i18n.ru.zhonyas_hourglass.option = $zhRu -f $zhThreshold, $zhDur, $zhCd
 $i18n.ru.radiant_zhonyas_hourglass.option = $zhRu -f $rzhThreshold, $rzhDur, $rzhCd
 $i18n.ru.seekers_armguard.option = "<#ff7a3eff>Путь ведьмы<>: Убийство бойца даёт <#ffdd8eff>{0} <$armorIcon> брони<>, но не более <#ffdd8eff>{1}<> <$armorIcon>." -f $saPer, $saMax
+$hrRu = "$bamiTemplateRu`n`n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>{3}<> + <#60e84dff>{4}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>{5}%<>."
+$i18n.ru.hollow_radiance.option = $hrRu -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.ru.radiant_hollow_radiance.option = $hrRu -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -1955,6 +1983,9 @@ $zhKo = "<#ff7a3eff>시간 정지<>: <#d94c49ff>체력이 {0}% 아래로 내려�
 $i18n.ko.zhonyas_hourglass.option = $zhKo -f $zhThreshold, $zhDur, $zhCd
 $i18n.ko.radiant_zhonyas_hourglass.option = $zhKo -f $rzhThreshold, $rzhDur, $rzhCd
 $i18n.ko.seekers_armguard.option = "<#ff7a3eff>마녀의 길<>: 유닛을 처치하면 <$armorIcon> <#ffdd8eff>방어력<>이 <#ffdd8eff>{0}<> 증가하며, 최대 <#ffdd8eff>{1}<> <$armorIcon>까지 중첩됩니다." -f $saPer, $saMax
+$hrKo = "$bamiTemplateKo`n`n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>{3}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>{4}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>{5}%<>의 효과만 적용됩니다."
+$i18n.ko.hollow_radiance.option = $hrKo -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
+$i18n.ko.radiant_hollow_radiance.option = $hrKo -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {
@@ -2176,3 +2207,5 @@ Write-Host "  Radiant Imperial Mandate: Command +${rimAmp}% damage taken ${rimDu
 Write-Host "  Seeker's Armguard:          Witch's Path ${saPer} armor per kill (max ${saMax})"
 Write-Host "  Zhonya's Hourglass:         Time Stop ${zhDur}s stasis below ${zhThreshold}% HP (${zhCd}s CD)"
 Write-Host "  Radiant Zhonya's Hourglass: Time Stop ${rzhDur}s stasis below ${rzhThreshold}% HP (${rzhCd}s CD)"
+Write-Host "  Hollow Radiance:         Immolate ${hrFlat} + ${hrHpPct}% max HP/s within ${hrRange} / Desolate ${hrExFlat} + ${hrExPct}% max HP within ${hrExDist} (${hrMinion}% vs minions)"
+Write-Host "  Radiant Hollow Radiance: Immolate ${rhrFlat} + ${rhrHpPct}% max HP/s within ${rhrRange} / Desolate ${rhrExFlat} + ${rhrExPct}% max HP (${rhrMinion}% vs minions)"

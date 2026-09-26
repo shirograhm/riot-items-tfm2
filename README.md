@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 190 new items (112 base + 78 Radiant) to the game.
+Reskins the 30 existing items and also adds 192 new items (113 base + 79 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -126,6 +126,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Hamstringer** | 750G | +25 AD<br>+25% AS<br>+20% Crit Chance | Scour: Your critical strikes bleed the target, dealing 70 - 180 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
 | **Heartsteel** | 750G | +250 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 750G | +25 AD<br>+50 AP<br>+10% Omnivamp | — |
+| **Hollow Radiance** | 750G | +200 HP<br>+50 MR<br>+4% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 30 + 2% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
 | **Hubris** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Immortal Shieldbow** | 750G | +45 AD<br>+20% Crit Chance | Lifeline: Falling below 30% health grants a shield for 3 seconds that absorbs 330 - 605 (based on level) damage (90 second cooldown). |
 | **Imperial Mandate** | 550G | +100 HP<br>+1 HP Regen<br>+25 AP<br>+15 Ability Haste | Command: Immobilizing an enemy champion marks them as Vulnerable for 3 seconds, increasing their damage taken by 9%. Subsequent applications refresh this buff. |
@@ -209,6 +210,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Hamstringer** | 1100G | +40 AD<br>+45% AS<br>+25% Crit Chance | Scour: Your critical strikes bleed the target, dealing 125 - 290 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
 | **Radiant Heartsteel** | 1050G | +400 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 1050G | +45 AD<br>+75 AP<br>+15% Omnivamp | — |
+| **Radiant Hollow Radiance** | 1050G | +350 HP<br>+70 MR<br>+6% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 60 + 4% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
 | **Radiant Hubris** | 1000G | +60 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Radiant Immortal Shieldbow** | 1050G | +65 AD<br>+25% Crit Chance | Lifeline: Falling below 30% health grants a shield for 3 seconds that absorbs 330 - 605 (based on level) damage (90 second cooldown). |
 | **Radiant Imperial Mandate** | 750G | +150 HP<br>+2 HP Regen<br>+40 AP<br>+20 Ability Haste | Command: Immobilizing an enemy champion marks them as Vulnerable for 3 seconds, increasing their damage taken by 9%. Subsequent applications refresh this buff. |

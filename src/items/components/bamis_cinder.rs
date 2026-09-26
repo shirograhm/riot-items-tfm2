@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND};
+use crate::{apply_config, mark_immolate, percent_of, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND};
 
 #[derive(Clone, Debug)]
 pub struct BamisCinder {
@@ -87,7 +87,10 @@ impl StableItem for BamisCinder {
 
     fn next_tier(&self) -> Vec<String> {
         // Sunfire Cape, under the key the game keeps it by.
-        vec!["hourglass_of_eternity".to_string()]
+        vec![
+            "hourglass_of_eternity".to_string(),
+            "hollow_radiance".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffV1 {
@@ -97,8 +100,16 @@ impl StableItem for BamisCinder {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.until_next_burn = TICKS_PER_SECOND as usize;
+        // Flames up from the first frame rather than the first burn.
+        if let Some(champion) = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .map(|c| c.id())
+        {
+            mark_immolate(ctx, champion);
+        }
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
@@ -117,6 +128,7 @@ impl StableItem for BamisCinder {
             return;
         };
 
+        mark_immolate(ctx, caster);
         let damage =
             self.effect_bonus_flat_damage + percent_of(max_hp, self.effect_caster_hp_percent_damage);
         for target in self.nearby_enemies(ctx, caster, caster_team) {

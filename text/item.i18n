@@ -935,6 +935,14 @@
         "seekers_armguard": {
             "name": "Seeker's Armguard",
             "option": "\n<#ff7a3eff>Witch's Path<>: Killing a unit grants <#ffdd8eff>0.5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<>, up to a maximum of <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>."
+        },
+        "hollow_radiance": {
+            "name": "Hollow Radiance",
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>30<> + <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
+        },
+        "radiant_hollow_radiance": {
+            "name": "Radiant Hollow Radiance",
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>60<> + <#60e84dff>4%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
         }
     },
     "vi": {
@@ -1873,6 +1881,14 @@
         "seekers_armguard": {
             "name": "Giáp Tay Seeker",
             "option": "\n<#ff7a3eff>Con Đường Phù Thủy<>: Tiêu diệt một đơn vị sẽ cho <#ffdd8eff>0.5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<>, tối đa <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>."
+        },
+        "hollow_radiance": {
+            "name": "Áo Choàng Hắc Quang",
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> .\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>30<> + <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
+        },
+        "radiant_hollow_radiance": {
+            "name": "Áo Choàng Hắc Quang Ánh Sáng",
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> .\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>60<> + <#60e84dff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
         }
     },
     "zh-hans": {
@@ -2811,6 +2827,14 @@
         "seekers_armguard": {
             "name": "探索者的护臂",
             "option": "\n<#ff7a3eff>女巫之路<>：击杀一个单位可获得 <#ffdd8eff>0.5 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>，最多 <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>。"
+        },
+        "hollow_radiance": {
+            "name": "璀璨回响",
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>30<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
+        },
+        "radiant_hollow_radiance": {
+            "name": "光明版璀璨回响",
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>60<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>4%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
         }
     },
     "pt-BR": {
@@ -3749,6 +3773,14 @@
         "seekers_armguard": {
             "name": "Armaguarda da Caçadora",
             "option": "\n<#ff7a3eff>Caminho da Bruxa<>: Abater uma unidade concede <#ffdd8eff>0.5 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<>, até o máximo de <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>."
+        },
+        "hollow_radiance": {
+            "name": "Resplendor Vazio",
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>30<> + <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
+        },
+        "radiant_hollow_radiance": {
+            "name": "Resplendor Vazio Radiante",
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>60<> + <#60e84dff>4%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
         }
     },
     "ru": {
@@ -4687,6 +4719,14 @@
         "seekers_armguard": {
             "name": "Наручи Искательницы",
             "option": "\n<#ff7a3eff>Путь ведьмы<>: Убийство бойца даёт <#ffdd8eff>0.5 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<>, но не более <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>."
+        },
+        "hollow_radiance": {
+            "name": "Сияние пустоты",
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>30<> + <#60e84dff>2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
+        },
+        "radiant_hollow_radiance": {
+            "name": "Лучезарное Сияние пустоты",
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>60<> + <#60e84dff>4%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
         }
     },
     "ko": {
@@ -5625,6 +5665,14 @@
         "seekers_armguard": {
             "name": "추적자의 팔목 보호대",
             "option": "\n<#ff7a3eff>마녀의 길<>: 유닛을 처치하면 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>이 <#ffdd8eff>0.5<> 증가하며, 최대 <#ffdd8eff>15<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0>까지 중첩됩니다."
+        },
+        "hollow_radiance": {
+            "name": "공허한 광휘",
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>30<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
+        },
+        "radiant_hollow_radiance": {
+            "name": "찬란한 공허한 광휘",
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>60<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>4%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
         }
     }
 }

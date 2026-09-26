@@ -1747,5 +1747,31 @@
     "effect_hp_percent_threshold": 25.0,
     "effect_duration_seconds": 2.5,
     "effect_cooldown_seconds": 120
+  },
+  "hollow_radiance": {
+    "price": 750,
+    "hp": 200,
+    "magic_resistance": 50,
+    "skill_damaged_reduce": 4,
+    "effect_bonus_flat_damage": 10,
+    "effect_caster_hp_percent_damage": 1.0,
+    "effect_max_distance": 30,
+    "effect_explosion_flat_damage": 30,
+    "effect_explosion_caster_hp_percent": 2.0,
+    "effect_explosion_distance": 35,
+    "effect_minion_percent": 50.0
+  },
+  "radiant_hollow_radiance": {
+    "price": 1050,
+    "hp": 350,
+    "magic_resistance": 70,
+    "skill_damaged_reduce": 6,
+    "effect_bonus_flat_damage": 10,
+    "effect_caster_hp_percent_damage": 1.0,
+    "effect_max_distance": 30,
+    "effect_explosion_flat_damage": 60,
+    "effect_explosion_caster_hp_percent": 4.0,
+    "effect_explosion_distance": 35,
+    "effect_minion_percent": 50.0
   }
 }

@@ -47,6 +47,14 @@
             "tag": "stasis",
             "z": 1,
             "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_hollow_radiance_desolate",
+            "anim": "asset/riot_items_tfm2/effects/hollow_radiance_desolate",
+            "tag": "erupt",
+            "z": 1,
+            "is_follow": false
         }
     ],
     "view_projectiles": [],
@@ -63,6 +71,13 @@
             "name": "zekes_convergence_storm",
             "anim": "asset/riot_items_tfm2/effects/zekes_convergence_storm",
             "tag": "storm",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_immolate",
+            "anim": "asset/riot_items_tfm2/effects/immolate_flames",
+            "tag": "flames",
             "z": 1
         }
     ]

@@ -41,6 +41,7 @@ const CATEGORY_OF: &[(&str, &str)] = &[
     ("hamstringer", "Marksman"),
     ("heartsteel", "Tank"),
     ("hextech_gunblade", "Mage"),
+    ("hollow_radiance", "Tank"),
     ("hubris", "Assassin"),
     ("immortal_shieldbow", "Marksman"),
     ("imperial_mandate", "Support"),
