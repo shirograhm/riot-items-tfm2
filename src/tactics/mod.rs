@@ -4976,7 +4976,7 @@ const AUTO4_NATURAL: bool = true; // * natural build-up (user decision): plant o
 //   catalog = the same array the resolver indexes (RE confirmed). element{elem_ptr@0, vtable@8}, name = vtable[0x50],
 //   has_recipe = calling vtable[0x68] (!=0 = has a recipe). Without a recipe the game panics in FUN_141d5ab40 -> always validate before use.
 //   Returns = the catalog index of a valid final item that has a recipe (usable directly in build[3]). None otherwise (vanilla fallback).
-// * For the spawn hook (v14): a scan that takes the catalog base/len directly (Game+0x1fd0/+0x1fd8). Cache key = base.
+// * For the spawn hook (v14): a scan that takes the catalog base/len directly (Game+0x1fd0/+0x1fd8). Cache key = len (see `SCAN_CACHE`).
 //   Same index space as the buy path (the ctx+0x30 collection) - a build[] value *is* this index, so the resolver consumes it as-is.
 unsafe fn scan_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<u64> {
     if want.is_empty() || base < 0x10000 || len == 0 || len > 100000 {
@@ -4990,10 +4990,10 @@ unsafe fn scan_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<u64> 
     let last = catalog_name_in(base, len, len - 1);
     let mut g = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner());
     let outer = g.get_or_insert_with(HashMap::new);
-    if !outer.contains_key(&(base, len)) && outer.len() >= 16 {
+    if !outer.contains_key(&len) && outer.len() >= 16 {
         outer.clear(); // reset when too many catalogs (memory cap)
     }
-    let cache = outer.entry((base, len)).or_insert_with(|| CatalogCache {
+    let cache = outer.entry(len).or_insert_with(|| CatalogCache {
         last,
         found: HashMap::new(),
     });
@@ -5005,78 +5005,33 @@ unsafe fn scan_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<u64> 
     res
 }
 // Shared scan core: find the index in the catalog array (element{elem_ptr@0, vtable@8}, stride 0x10) whose name matches and which has a recipe.
+//
+// ** Every read is VEH-guarded, through `catalog_entry_named` (2026-09-26, the
+//   teamfight lag the buy memo only partly fixed). This loop used to prove each
+//   entry with `readable`/`code_ptr_ok` first: up to four `VirtualQuery` syscalls
+//   an entry at ~5.9 us each, so ~6 ms to walk a catalog of ~250, on every lookup
+//   that missed `SCAN_CACHE`. A full buy pass makes dozens of lookups (every
+//   `pick_candidate` step is one), and every sim copy of a match used to start
+//   with a cold cache — see `SCAN_CACHE`.
 unsafe fn scan_recipe_safe_in(data: usize, len: u64, want: &[u8]) -> Option<u64> {
-    if data < 0x10000 || len == 0 || len > 100000 || !readable(data, (len as usize) * 16) {
+    if want.is_empty() || data < 0x10000 || len == 0 || len > 100000 {
         return None;
     }
-    let do_diag = false;
-    let mut dbg = if do_diag {
-        format!(
-            "[{}ms] scan want='{}' data={:#x} len={}\n",
-            now_ms(),
-            String::from_utf8_lossy(want),
-            data,
-            len
-        )
-    } else {
-        String::new()
-    };
-    let mut names_ok = 0u64;
-    let mut i = 0u64;
-    while i < len {
-        let e = data + (i as usize) * 16;
-        let edata = rd_u64(e) as usize;
-        let evt = rd_u64(e + 8) as usize;
-        if edata >= 0x10000 && evt >= 0x10000 && readable(evt, 0x78) {
-            let namefn = rd_u64(evt + 0x58) as usize;
-            if code_ptr_ok(namefn) {
-                let f: unsafe extern "win64" fn(usize) -> usize = core::mem::transmute(namefn);
-                let nobj = f(edata);
-                if nobj >= 0x10000 && readable(nobj, 0x18) {
-                    let chars = rd_u64(nobj + 8) as usize;
-                    let nlen = rd_u64(nobj + 0x10) as usize;
-                    if chars >= 0x10000 && nlen > 0 && nlen <= 64 && readable(chars, nlen) {
-                        let nm = std::slice::from_raw_parts(chars as *const u8, nlen);
-                        if do_diag {
-                            names_ok += 1;
-                            if names_ok <= 12 || nm.starts_with(b"radiant") {
-                                dbg.push_str(&format!(
-                                    "  [{}] '{}'\n",
-                                    i,
-                                    String::from_utf8_lossy(nm)
-                                ));
-                            }
-                        }
-                        if nm == want {
-                            // * Recipe validation: calling vtable[0x68] must return !=0 for natural build-up to be safe (0 = a base item -> panic).
-                            let recfn = rd_u64(evt + 0x70) as usize; // 0.5.1: the next_tier/recipe getter slot moved +0x68 -> +0x70 (ghidra-re)
-                            if code_ptr_ok(recfn) {
-                                let rf: unsafe extern "win64" fn(usize) -> usize =
-                                    core::mem::transmute(recfn);
-                                if rf(edata) != 0 {
-                                    return Some(i);
-                                }
-                            }
-                            return None; // the name matches but there is no recipe -> fall back
-                        }
-                    }
-                }
-            }
-        }
-        i += 1;
+    let i = (0..len).find(|&i| catalog_entry_named(data, len, i, want))?;
+    // * Recipe validation: calling vtable[0x68] must return !=0 for natural build-up to be safe (0 = a base item -> panic).
+    //   Only the first entry with the name counts: a name match without a recipe falls back rather than looking further.
+    let e = data + (i as usize) * 16;
+    let edata = safe_read_u64(e)? as usize;
+    let evt = safe_read_u64(e + 8)? as usize;
+    let recfn = safe_read_u64(evt + 0x70)? as usize; // 0.5.1: the next_tier/recipe getter slot moved +0x68 -> +0x70 (ghidra-re)
+    if !name_getter_ok(recfn) {
+        return None;
     }
-    if do_diag {
-        dbg.push_str(&format!(
-            "  name extraction succeeded {}/{} - want not found
-",
-            names_ok, len
-        ));
-    }
-    None
+    let rf: unsafe extern "win64" fn(usize) -> usize = core::mem::transmute(recfn);
+    (rf(edata) != 0).then_some(i)
 }
 
 // * Performance: scan cache (name -> index). Reduces the 96-element shadow-call scan to once per name. Value -1 = not found / no recipe.
-//   * Multi-catalog (keyed by the catalog array's base + len): parallel background sims do not thrash. Catalog cap 16.
 //
 // A catalog index is only meaningful against the catalog it was read from. The
 // list grows and reorders with the enabled mods, and a save load or a new match
@@ -5086,9 +5041,20 @@ unsafe fn scan_recipe_safe_in(data: usize, len: u64, want: &[u8]) -> Option<u64>
 // which the game then never built. Every positive hit is re-read by name before
 // it is returned, the way `StableItemBuildContext::item_index` looks items up by
 // key on every call; a mismatch falls through to a fresh scan.
-static SCAN_CACHE: Mutex<Option<HashMap<(usize, u64), CatalogCache>>> = Mutex::new(None);
+//
+// ** Keyed by the catalog's length, not its address (2026-09-26). Every `Game`
+//   builds its own catalog array, and a match plays in several sim copies (the
+//   player's league match was seen buying in 4 providers), so the old
+//   (base, len) key gave each copy a cold cache, and more than 16 live catalogs
+//   (league fixtures x copies) cleared it outright. The copies of one session
+//   are built from one item list, so their answers are the same; the checks
+//   above are what make that safe to rely on. A hit is re-read by name in the
+//   catalog asking, and a miss is trusted only while that catalog's last entry
+//   has the name the cache started with. Two catalogs of the same length but a
+//   different item set would only cost rescans: a failed check forgets the lot.
+static SCAN_CACHE: Mutex<Option<HashMap<u64, CatalogCache>>> = Mutex::new(None);
 
-/// Cached lookups against one catalog array.
+/// Cached lookups against every catalog of one length.
 struct CatalogCache {
     /// Name of the catalog's last entry when this cache was started — what a
     /// cached miss is checked against.
@@ -5111,7 +5077,7 @@ struct CatalogCache {
 unsafe fn cached_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<Option<u64>> {
     let (cached, last) = {
         let g = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner());
-        let cache = g.as_ref()?.get(&(base, len))?;
+        let cache = g.as_ref()?.get(&len)?;
         (*cache.found.get(want)?, cache.last.clone())
     };
     let verified = if cached >= 0 {
@@ -5121,7 +5087,7 @@ unsafe fn cached_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<Opt
             .then_some(None)
     };
     if verified.is_none() {
-        forget_catalog(base, len);
+        forget_catalog(len);
     }
     verified
 }
@@ -5168,15 +5134,19 @@ unsafe fn catalog_entry_named(data: usize, len: u64, idx: u64, want: &[u8]) -> b
     safe_read_bytes(chars as usize, want.len(), &mut name) && name == want
 }
 
-/// Name-getter addresses [`catalog_entry_named`] has already proven are code.
-static NAME_GETTERS: [AtomicUsize; 8] = [const { AtomicUsize::new(0) }; 8];
+/// Getter addresses [`catalog_entry_named`] and [`scan_recipe_safe_in`] have
+/// already proven are code. Sixteen, not eight, since the recipe getters share
+/// it: a name getter pushed out of the ring costs a syscall on every entry of
+/// the next scan.
+static NAME_GETTERS: [AtomicUsize; 16] = [const { AtomicUsize::new(0) }; 16];
 static NAME_GETTER_NEXT: AtomicUsize = AtomicUsize::new(0);
 
-/// Whether `namefn` is a catalog name getter proven to be code, proving and
-/// remembering it on first sight: `code_ptr_ok` is a `VirtualQuery` syscall,
-/// and the catalog holds only a handful of item types. The low-address test
-/// comes first because an empty [`NAME_GETTERS`] slot is 0, and a null getter
-/// must not match one.
+/// Whether `namefn` is a catalog getter (the name getter, or the recipe getter
+/// `scan_recipe_safe_in` calls) proven to be code, proving and remembering it
+/// on first sight: `code_ptr_ok` is a `VirtualQuery` syscall, and the catalog
+/// holds only a handful of item types. The low-address test comes first
+/// because an empty [`NAME_GETTERS`] slot is 0, and a null getter must not
+/// match one.
 unsafe fn name_getter_ok(namefn: usize) -> bool {
     if namefn < 0x10000 {
         return false;
@@ -5195,13 +5165,13 @@ unsafe fn name_getter_ok(namefn: usize) -> bool {
     true
 }
 
-fn forget_catalog(base: usize, len: u64) {
+fn forget_catalog(len: u64) {
     if let Some(outer) = SCAN_CACHE
         .lock()
         .unwrap_or_else(|e| e.into_inner())
         .as_mut()
     {
-        outer.remove(&(base, len));
+        outer.remove(&len);
     }
 }
 
