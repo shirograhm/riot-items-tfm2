@@ -943,6 +943,38 @@
         "radiant_hollow_radiance": {
             "name": "Radiant Hollow Radiance",
             "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>60<> + <#60e84dff>4%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
+        },
+        "cosmic_drive": {
+            "name": "Cosmic Drive",
+            "option": "\n<#ff7a3eff>Spelldance<>: Dealing <#a974ffff>magic damage<> or <#e3ab9dff>true damage<> to an enemy champion grants you <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> movement speed<> for <#e8a800ff>4 seconds<>."
+        },
+        "radiant_cosmic_drive": {
+            "name": "Radiant Cosmic Drive",
+            "option": "\n<#ff7a3eff>Spelldance<>: Dealing <#a974ffff>magic damage<> or <#e3ab9dff>true damage<> to an enemy champion grants you <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> movement speed<> for <#e8a800ff>4 seconds<>."
+        },
+        "fiendhunter_bolts": {
+            "name": "Fiendhunter Bolts",
+            "option": "\n<#ff7a3eff>Night Vigil<>: Gain <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Opening Barrage<>: Upon casting your ultimate ability, gain 50% attack speed for <#e8a800ff>8 seconds<>. Your next 3 basic attacks within this window <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strike<> for <#e8a800ff>60% bonus damage<>. If the attack would have already critically struck, it instead deals <#e3ab9dff>bonus true damage<> equal to <#e3ab9dff>15%<> of the attack's damage dealt (<#e8a800ff>45 second<> cooldown)."
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Radiant Fiendhunter Bolts",
+            "option": "\n<#ff7a3eff>Night Vigil<>: Gain <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Opening Barrage<>: Upon casting your ultimate ability, gain 50% attack speed for <#e8a800ff>8 seconds<>. Your next 3 basic attacks within this window <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strike<> for <#e8a800ff>60% bonus damage<>. If the attack would have already critically struck, it instead deals <#e3ab9dff>bonus true damage<> equal to <#e3ab9dff>15%<> of the attack's damage dealt (<#e8a800ff>45 second<> cooldown)."
+        },
+        "essence_reaver": {
+            "name": "Essence Reaver",
+            "option": "\n<#ff7a3eff>Spellblade<>: Landing an Ability on an enemy champion causes your next basic attack to deal <#ff9028ff>125%<> of your <#ff9028ff>Attack Damage<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> as <#ff9028ff>bonus physical damage<> on-hit (<#e8a800ff>1.5 second<> cooldown)."
+        },
+        "radiant_essence_reaver": {
+            "name": "Radiant Essence Reaver",
+            "option": "\n<#ff7a3eff>Spellblade<>: Landing an Ability on an enemy champion causes your next basic attack to deal <#ff9028ff>125%<> of your <#ff9028ff>Attack Damage<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> as <#ff9028ff>bonus physical damage<> on-hit (<#e8a800ff>1.5 second<> cooldown)."
+        },
+        "endless_hunger": {
+            "name": "Endless Hunger",
+            "option": "\n<#ff7a3eff>Famine<>: Gain <#4b7cffff>5<> (<#ff9028ff>+5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ability Haste<>.\n\n<#ff7a3eff>Feast<>: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> for <#e8a800ff>8 seconds<>."
+        },
+        "radiant_endless_hunger": {
+            "name": "Radiant Endless Hunger",
+            "option": "\n<#ff7a3eff>Famine<>: Gain <#4b7cffff>5<> (<#ff9028ff>+5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ability Haste<>.\n\n<#ff7a3eff>Feast<>: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> for <#e8a800ff>8 seconds<>."
         }
     },
     "vi": {
@@ -1889,6 +1921,38 @@
         "radiant_hollow_radiance": {
             "name": "Áo Choàng Hắc Quang Ánh Sáng",
             "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> .\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>60<> + <#60e84dff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
+        },
+        "cosmic_drive": {
+            "name": "Động Cơ Vũ Trụ",
+            "option": "\n<#ff7a3eff>Vũ Điệu Ma Pháp<>: Gây <#a974ffff>sát thương phép<> hoặc <#e3ab9dff>sát thương chuẩn<> lên tướng địch cho bạn <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> tốc độ di chuyển<> trong <#e8a800ff>4 giây<>."
+        },
+        "radiant_cosmic_drive": {
+            "name": "Động Cơ Vũ Trụ Ánh Sáng",
+            "option": "\n<#ff7a3eff>Vũ Điệu Ma Pháp<>: Gây <#a974ffff>sát thương phép<> hoặc <#e3ab9dff>sát thương chuẩn<> lên tướng địch cho bạn <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> tốc độ di chuyển<> trong <#e8a800ff>4 giây<>."
+        },
+        "fiendhunter_bolts": {
+            "name": "Cung Tiễn Diệt Quỷ",
+            "option": "\n<#ff7a3eff>Gác Đêm<>: Nhận <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Mưa Đạn Mở Màn<>: Khi sử dụng chiêu cuối, nhận 50% tốc độ đánh trong <#e8a800ff>8 giây<>. 3 đòn đánh thường tiếp theo trong khoảng thời gian này sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<>. Nếu đòn đánh vốn đã chí mạng, thay vào đó nó gây <#e3ab9dff>sát thương chuẩn cộng thêm<> bằng <#e3ab9dff>15%<> sát thương của đòn đánh đó (hồi chiêu <#e8a800ff>45 giây<>)."
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Cung Tiễn Diệt Quỷ Ánh Sáng",
+            "option": "\n<#ff7a3eff>Gác Đêm<>: Nhận <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Mưa Đạn Mở Màn<>: Khi sử dụng chiêu cuối, nhận 50% tốc độ đánh trong <#e8a800ff>8 giây<>. 3 đòn đánh thường tiếp theo trong khoảng thời gian này sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<>. Nếu đòn đánh vốn đã chí mạng, thay vào đó nó gây <#e3ab9dff>sát thương chuẩn cộng thêm<> bằng <#e3ab9dff>15%<> sát thương của đòn đánh đó (hồi chiêu <#e8a800ff>45 giây<>)."
+        },
+        "essence_reaver": {
+            "name": "Lưỡi Hái Linh Hồn",
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>125%<> <#ff9028ff>SMCK<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>1.5 giây<>)."
+        },
+        "radiant_essence_reaver": {
+            "name": "Lưỡi Hái Linh Hồn Ánh Sáng",
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>125%<> <#ff9028ff>SMCK<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>1.5 giây<>)."
+        },
+        "endless_hunger": {
+            "name": "Liềm Xích Huyết Thực",
+            "option": "\n<#ff7a3eff>Nạn Đói<>: Nhận <#4b7cffff>5<> (<#ff9028ff>+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Kỹ Năng<>.\n\n<#ff7a3eff>Xơi Tái<>: Khi tham gia hạ gục một tướng địch, nhận <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>8 giây<>."
+        },
+        "radiant_endless_hunger": {
+            "name": "Liềm Xích Huyết Thực Ánh Sáng",
+            "option": "\n<#ff7a3eff>Nạn Đói<>: Nhận <#4b7cffff>5<> (<#ff9028ff>+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> của bạn) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Kỹ Năng<>.\n\n<#ff7a3eff>Xơi Tái<>: Khi tham gia hạ gục một tướng địch, nhận <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>8 giây<>."
         }
     },
     "zh-hans": {
@@ -2835,6 +2899,38 @@
         "radiant_hollow_radiance": {
             "name": "光明版璀璨回响",
             "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>60<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>4%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
+        },
+        "cosmic_drive": {
+            "name": "星界驱驰",
+            "option": "\n<#ff7a3eff>咒舞<>：对敌方英雄造成<#a974ffff>魔法伤害<>或<#e3ab9dff>真实伤害<>时，获得 <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> 移动速度<>，持续 <#e8a800ff>4秒<>。"
+        },
+        "radiant_cosmic_drive": {
+            "name": "光明版星界驱驰",
+            "option": "\n<#ff7a3eff>咒舞<>：对敌方英雄造成<#a974ffff>魔法伤害<>或<#e3ab9dff>真实伤害<>时，获得 <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> 移动速度<>，持续 <#e8a800ff>4秒<>。"
+        },
+        "fiendhunter_bolts": {
+            "name": "猎魔人弩箭",
+            "option": "\n<#ff7a3eff>守夜<>：获得 <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。\n\n<#ff7a3eff>开战弹幕<>：施放终极技能时，获得 50% 攻击速度，持续 <#e8a800ff>8秒<>。在此期间，你的下 3 次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>。如果该次攻击本就会暴击，则改为造成相当于该次攻击伤害 <#e3ab9dff>15%<> 的<#e3ab9dff>额外真实伤害<>（冷却 <#e8a800ff>45秒<>）。"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "光明版猎魔人弩箭",
+            "option": "\n<#ff7a3eff>守夜<>：获得 <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。\n\n<#ff7a3eff>开战弹幕<>：施放终极技能时，获得 50% 攻击速度，持续 <#e8a800ff>8秒<>。在此期间，你的下 3 次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>。如果该次攻击本就会暴击，则改为造成相当于该次攻击伤害 <#e3ab9dff>15%<> 的<#e3ab9dff>额外真实伤害<>（冷却 <#e8a800ff>45秒<>）。"
+        },
+        "essence_reaver": {
+            "name": "夺萃之镰",
+            "option": "\n<#ff7a3eff>咒刃<>：技能命中敌方英雄后，你的下一次普通攻击命中时会造成相当于 <#ff9028ff>攻击力<>的 <#ff9028ff>125%<> <#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+        },
+        "radiant_essence_reaver": {
+            "name": "光明版夺萃之镰",
+            "option": "\n<#ff7a3eff>咒刃<>：技能命中敌方英雄后，你的下一次普通攻击命中时会造成相当于 <#ff9028ff>攻击力<>的 <#ff9028ff>125%<> <#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+        },
+        "endless_hunger": {
+            "name": "无穷饥渴",
+            "option": "\n<#ff7a3eff>饥馑<>：获得 <#4b7cffff>5<>（<#ff9028ff>+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>）<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>技能急速<>。\n\n<#ff7a3eff>盛宴<>：参与击杀敌方英雄时，获得 <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，持续 <#e8a800ff>8秒<>。"
+        },
+        "radiant_endless_hunger": {
+            "name": "光明版无穷饥渴",
+            "option": "\n<#ff7a3eff>饥馑<>：获得 <#4b7cffff>5<>（<#ff9028ff>+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>）<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>技能急速<>。\n\n<#ff7a3eff>盛宴<>：参与击杀敌方英雄时，获得 <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，持续 <#e8a800ff>8秒<>。"
         }
     },
     "pt-BR": {
@@ -3781,6 +3877,38 @@
         "radiant_hollow_radiance": {
             "name": "Resplendor Vazio Radiante",
             "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>60<> + <#60e84dff>4%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
+        },
+        "cosmic_drive": {
+            "name": "Ímpeto Cósmico",
+            "option": "\n<#ff7a3eff>Dança Enfeitiçada<>: Causar <#a974ffff>dano mágico<> ou <#e3ab9dff>dano verdadeiro<> a um campeão inimigo concede <#ffffffff>8% de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> Velocidade de Movimento<> por <#e8a800ff>4 segundos<>."
+        },
+        "radiant_cosmic_drive": {
+            "name": "Ímpeto Cósmico Radiante",
+            "option": "\n<#ff7a3eff>Dança Enfeitiçada<>: Causar <#a974ffff>dano mágico<> ou <#e3ab9dff>dano verdadeiro<> a um campeão inimigo concede <#ffffffff>8% de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> Velocidade de Movimento<> por <#e8a800ff>4 segundos<>."
+        },
+        "fiendhunter_bolts": {
+            "name": "Dardos de Caça-Demônios",
+            "option": "\n<#ff7a3eff>Vigília Noturna<>: Recebe <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Barragem de Abertura<>: Ao conjurar sua ultimate, recebe 50% de Velocidade de Ataque por <#e8a800ff>8 segundos<>. Seus próximos 3 ataques básicos dentro desse período <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causam acerto crítico<>, causando <#e8a800ff>60% de dano bônus<>. Se o ataque já fosse causar acerto crítico, em vez disso ele causa <#e3ab9dff>dano verdadeiro bônus<> igual a <#e3ab9dff>15%<> do dano causado pelo ataque (recarga de <#e8a800ff>45 segundos<>)."
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Dardos de Caça-Demônios Radiantes",
+            "option": "\n<#ff7a3eff>Vigília Noturna<>: Recebe <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Barragem de Abertura<>: Ao conjurar sua ultimate, recebe 50% de Velocidade de Ataque por <#e8a800ff>8 segundos<>. Seus próximos 3 ataques básicos dentro desse período <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causam acerto crítico<>, causando <#e8a800ff>60% de dano bônus<>. Se o ataque já fosse causar acerto crítico, em vez disso ele causa <#e3ab9dff>dano verdadeiro bônus<> igual a <#e3ab9dff>15%<> do dano causado pelo ataque (recarga de <#e8a800ff>45 segundos<>)."
+        },
+        "essence_reaver": {
+            "name": "Colhedor de Essência",
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#ff9028ff>125%<> do seu <#ff9028ff>Dano de Ataque<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> como <#ff9028ff>dano físico bônus<> ao contato (recarga de <#e8a800ff>1.5 segundos<>)."
+        },
+        "radiant_essence_reaver": {
+            "name": "Colhedor de Essência Radiante",
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#ff9028ff>125%<> do seu <#ff9028ff>Dano de Ataque<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> como <#ff9028ff>dano físico bônus<> ao contato (recarga de <#e8a800ff>1.5 segundos<>)."
+        },
+        "endless_hunger": {
+            "name": "Fome Eterna",
+            "option": "\n<#ff7a3eff>Fome<>: Recebe <#4b7cffff>5<> (<#ff9028ff>+5%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade<>.\n\n<#ff7a3eff>Banquete<>: Ao participar do abate de um campeão inimigo, concede <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> por <#e8a800ff>8 segundos<>."
+        },
+        "radiant_endless_hunger": {
+            "name": "Fome Eterna Radiante",
+            "option": "\n<#ff7a3eff>Fome<>: Recebe <#4b7cffff>5<> (<#ff9028ff>+5%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade<>.\n\n<#ff7a3eff>Banquete<>: Ao participar do abate de um campeão inimigo, concede <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> por <#e8a800ff>8 segundos<>."
         }
     },
     "ru": {
@@ -4727,6 +4855,38 @@
         "radiant_hollow_radiance": {
             "name": "Лучезарное Сияние пустоты",
             "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>60<> + <#60e84dff>4%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
+        },
+        "cosmic_drive": {
+            "name": "Космический ускоритель",
+            "option": "\n<#ff7a3eff>Магический танец<>: Нанесение <#a974ffff>магического урона<> или <#e3ab9dff>чистого урона<> вражескому чемпиону даёт вам <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> скорости передвижения<> на <#e8a800ff>4 секунды<>."
+        },
+        "radiant_cosmic_drive": {
+            "name": "Лучезарный Космический ускоритель",
+            "option": "\n<#ff7a3eff>Магический танец<>: Нанесение <#a974ffff>магического урона<> или <#e3ab9dff>чистого урона<> вражескому чемпиону даёт вам <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> скорости передвижения<> на <#e8a800ff>4 секунды<>."
+        },
+        "fiendhunter_bolts": {
+            "name": "Стрелы борца с демонами",
+            "option": "\n<#ff7a3eff>Ночное бдение<>: Даёт <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Первый залп<>: При применении абсолютного умения вы получаете 50% скорости атаки на <#e8a800ff>8 секунд<>. Ваши следующие 3 базовые атаки в течение этого времени <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносят критический удар<> с <#e8a800ff>60% дополнительного урона<>. Если атака и так была бы критической, вместо этого она наносит <#e3ab9dff>дополнительный чистый урон<> в размере <#e3ab9dff>15%<> от урона этой атаки (перезарядка <#e8a800ff>45 секунд<>)."
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Лучезарные Стрелы борца с демонами",
+            "option": "\n<#ff7a3eff>Ночное бдение<>: Даёт <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Первый залп<>: При применении абсолютного умения вы получаете 50% скорости атаки на <#e8a800ff>8 секунд<>. Ваши следующие 3 базовые атаки в течение этого времени <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносят критический удар<> с <#e8a800ff>60% дополнительного урона<>. Если атака и так была бы критической, вместо этого она наносит <#e3ab9dff>дополнительный чистый урон<> в размере <#e3ab9dff>15%<> от урона этой атаки (перезарядка <#e8a800ff>45 секунд<>)."
+        },
+        "essence_reaver": {
+            "name": "Похититель сущности",
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести при попадании <#ff9028ff>125%<> вашей <#ff9028ff>силы атаки<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунды<>)."
+        },
+        "radiant_essence_reaver": {
+            "name": "Лучезарный Похититель сущности",
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести при попадании <#ff9028ff>125%<> вашей <#ff9028ff>силы атаки<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунды<>)."
+        },
+        "endless_hunger": {
+            "name": "Вечный голод",
+            "option": "\n<#ff7a3eff>Голод<>: Даёт <#4b7cffff>5<> (<#ff9028ff>+5%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения умений<>.\n\n<#ff7a3eff>Пиршество<>: При участии в убийстве вражеского чемпиона даёт <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>8 секунд<>."
+        },
+        "radiant_endless_hunger": {
+            "name": "Лучезарный Вечный голод",
+            "option": "\n<#ff7a3eff>Голод<>: Даёт <#4b7cffff>5<> (<#ff9028ff>+5%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения умений<>.\n\n<#ff7a3eff>Пиршество<>: При участии в убийстве вражеского чемпиона даёт <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>8 секунд<>."
         }
     },
     "ko": {
@@ -5673,6 +5833,38 @@
         "radiant_hollow_radiance": {
             "name": "찬란한 공허한 광휘",
             "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>60<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>4%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
+        },
+        "cosmic_drive": {
+            "name": "우주의 추진력",
+            "option": "\n<#ff7a3eff>마법의 춤<>: 적 챔피언에게 <#a974ffff>마법 피해<> 또는 <#e3ab9dff>고정 피해<>를 입히면 <#e8a800ff>4초<> 동안 <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> 이동 속도<>를 얻습니다."
+        },
+        "radiant_cosmic_drive": {
+            "name": "찬란한 우주의 추진력",
+            "option": "\n<#ff7a3eff>마법의 춤<>: 적 챔피언에게 <#a974ffff>마법 피해<> 또는 <#e3ab9dff>고정 피해<>를 입히면 <#e8a800ff>4초<> 동안 <#ffffffff>8% <i#asset/base/ui/banpick/champion_stat_icon:speed_0> 이동 속도<>를 얻습니다."
+        },
+        "fiendhunter_bolts": {
+            "name": "악마사냥꾼의 화살",
+            "option": "\n<#ff7a3eff>한밤 경계<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>15<> 증가합니다.\n\n<#ff7a3eff>폭격 개시<>: 궁극기 사용 시 <#e8a800ff>8초<> 동안 공격 속도가 50% 증가합니다. 이 시간 동안 다음 3회의 기본 공격은 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>60%의 추가 피해<>를 입힙니다. 이미 치명타가 적용될 공격이었다면 대신 해당 공격 피해량의 <#e3ab9dff>15%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>45초<>)"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "찬란한 악마사냥꾼의 화살",
+            "option": "\n<#ff7a3eff>한밤 경계<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>25<> 증가합니다.\n\n<#ff7a3eff>폭격 개시<>: 궁극기 사용 시 <#e8a800ff>8초<> 동안 공격 속도가 50% 증가합니다. 이 시간 동안 다음 3회의 기본 공격은 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>60%의 추가 피해<>를 입힙니다. 이미 치명타가 적용될 공격이었다면 대신 해당 공격 피해량의 <#e3ab9dff>15%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>45초<>)"
+        },
+        "essence_reaver": {
+            "name": "정수 약탈자",
+            "option": "\n<#ff7a3eff>주문 검<>: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 적중 시 <#ff9028ff>공격력<>의 <#ff9028ff>125%<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+        },
+        "radiant_essence_reaver": {
+            "name": "찬란한 정수 약탈자",
+            "option": "\n<#ff7a3eff>주문 검<>: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 적중 시 <#ff9028ff>공격력<>의 <#ff9028ff>125%<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+        },
+        "endless_hunger": {
+            "name": "끝없는 갈망",
+            "option": "\n<#ff7a3eff>기근<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>5<> (<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>의 <#ff9028ff>+5%<>) 증가합니다.\n\n<#ff7a3eff>만찬<>: 적 챔피언 처치에 관여하면 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 15%<>를 얻습니다."
+        },
+        "radiant_endless_hunger": {
+            "name": "찬란한 끝없는 갈망",
+            "option": "\n<#ff7a3eff>기근<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>5<> (<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>의 <#ff9028ff>+5%<>) 증가합니다.\n\n<#ff7a3eff>만찬<>: 적 챔피언 처치에 관여하면 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 15%<>를 얻습니다."
         }
     }
 }

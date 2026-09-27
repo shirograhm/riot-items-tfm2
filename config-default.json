@@ -1773,5 +1773,89 @@
     "effect_explosion_caster_hp_percent": 4.0,
     "effect_explosion_distance": 35,
     "effect_minion_percent": 50.0
+  },
+  "cosmic_drive": {
+    "price": 850,
+    "hp": 150,
+    "magic_power": 50,
+    "skill_cooldown_mult": 10,
+    "move_speed_mult": 4,
+    "effect_move_speed_mult": 8,
+    "effect_duration_seconds": 4
+  },
+  "radiant_cosmic_drive": {
+    "price": 1000,
+    "hp": 250,
+    "magic_power": 75,
+    "skill_cooldown_mult": 15,
+    "move_speed_mult": 4,
+    "effect_move_speed_mult": 8,
+    "effect_duration_seconds": 4
+  },
+  "fiendhunter_bolts": {
+    "price": 700,
+    "attack_speed_mult": 35,
+    "crit_chance": 20,
+    "move_speed_mult": 4,
+    "ult_cooldown_mult": 15,
+    "effect_attack_speed_mult": 50,
+    "effect_duration_seconds": 8,
+    "effect_max_stacks": 3,
+    "effect_percent_bonus_damage": 60.0,
+    "effect_damage_conversion": 15.0,
+    "effect_cooldown_seconds": 45
+  },
+  "radiant_fiendhunter_bolts": {
+    "price": 1000,
+    "attack_speed_mult": 55,
+    "crit_chance": 25,
+    "move_speed_mult": 4,
+    "ult_cooldown_mult": 25,
+    "effect_attack_speed_mult": 50,
+    "effect_duration_seconds": 8,
+    "effect_max_stacks": 3,
+    "effect_percent_bonus_damage": 60.0,
+    "effect_damage_conversion": 15.0,
+    "effect_cooldown_seconds": 45
+  },
+  "essence_reaver": {
+    "price": 800,
+    "attack": 30,
+    "attack_speed_mult": 20,
+    "skill_cooldown_mult": 10,
+    "crit_chance": 20,
+    "effect_ad_percent_damage": 125.0,
+    "effect_crit_percent_damage": 100.0,
+    "effect_cooldown_seconds": 1.5
+  },
+  "radiant_essence_reaver": {
+    "price": 1000,
+    "attack": 50,
+    "attack_speed_mult": 30,
+    "skill_cooldown_mult": 15,
+    "crit_chance": 25,
+    "effect_ad_percent_damage": 125.0,
+    "effect_crit_percent_damage": 100.0,
+    "effect_cooldown_seconds": 1.5
+  },
+  "endless_hunger": {
+    "price": 700,
+    "attack": 40,
+    "vamp": 5,
+    "toughness": 20,
+    "effect_skill_cooldown_mult": 5,
+    "effect_ad_percent_haste": 5.0,
+    "effect_vamp": 15,
+    "effect_duration_seconds": 8
+  },
+  "radiant_endless_hunger": {
+    "price": 1000,
+    "attack": 60,
+    "vamp": 10,
+    "toughness": 25,
+    "effect_skill_cooldown_mult": 5,
+    "effect_ad_percent_haste": 5.0,
+    "effect_vamp": 15,
+    "effect_duration_seconds": 8
   }
 }

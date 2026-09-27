@@ -55,6 +55,7 @@ impl StableItem for BFSword {
             "infinity_edge".to_string(),
             "deathblade".to_string(),
             "guardian_angel".to_string(),
+            "endless_hunger".to_string(),
         ]
     }
 

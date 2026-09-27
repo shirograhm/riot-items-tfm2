@@ -125,6 +125,7 @@ pub struct ItemConfig {
     pub effect_explosion_flat_damage: Option<usize>,
     pub effect_explosion_caster_hp_percent: Option<f64>,
     pub effect_explosion_distance: Option<usize>,
+    pub effect_ad_percent_haste: Option<f64>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,

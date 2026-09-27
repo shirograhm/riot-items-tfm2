@@ -587,6 +587,38 @@ $rhrRange = [int]$config.radiant_hollow_radiance.effect_max_distance
 $rhrExFlat = [int]$config.radiant_hollow_radiance.effect_explosion_flat_damage
 $rhrExPct = [double]$config.radiant_hollow_radiance.effect_explosion_caster_hp_percent
 $rhrMinion = [double]$config.radiant_hollow_radiance.effect_minion_percent
+$cdrvMs = [int]$config.cosmic_drive.effect_move_speed_mult
+$cdrvDur = [double]$config.cosmic_drive.effect_duration_seconds
+$rcdrvMs = [int]$config.radiant_cosmic_drive.effect_move_speed_mult
+$rcdrvDur = [double]$config.radiant_cosmic_drive.effect_duration_seconds
+$fhbUlt = [int]$config.fiendhunter_bolts.ult_cooldown_mult
+$fhbAs = [int]$config.fiendhunter_bolts.effect_attack_speed_mult
+$fhbDur = [double]$config.fiendhunter_bolts.effect_duration_seconds
+$fhbHits = [int]$config.fiendhunter_bolts.effect_max_stacks
+$fhbCrit = [double]$config.fiendhunter_bolts.effect_percent_bonus_damage
+$fhbTrue = [double]$config.fiendhunter_bolts.effect_damage_conversion
+$fhbCd = [double]$config.fiendhunter_bolts.effect_cooldown_seconds
+$rfhbUlt = [int]$config.radiant_fiendhunter_bolts.ult_cooldown_mult
+$rfhbAs = [int]$config.radiant_fiendhunter_bolts.effect_attack_speed_mult
+$rfhbDur = [double]$config.radiant_fiendhunter_bolts.effect_duration_seconds
+$rfhbHits = [int]$config.radiant_fiendhunter_bolts.effect_max_stacks
+$rfhbCrit = [double]$config.radiant_fiendhunter_bolts.effect_percent_bonus_damage
+$rfhbTrue = [double]$config.radiant_fiendhunter_bolts.effect_damage_conversion
+$rfhbCd = [double]$config.radiant_fiendhunter_bolts.effect_cooldown_seconds
+$reapAd = [double]$config.essence_reaver.effect_ad_percent_damage
+$reapCrit = [double]$config.essence_reaver.effect_crit_percent_damage
+$reapCd = [double]$config.essence_reaver.effect_cooldown_seconds
+$rreapAd = [double]$config.radiant_essence_reaver.effect_ad_percent_damage
+$rreapCrit = [double]$config.radiant_essence_reaver.effect_crit_percent_damage
+$rreapCd = [double]$config.radiant_essence_reaver.effect_cooldown_seconds
+$hungFlat = [int]$config.endless_hunger.effect_skill_cooldown_mult
+$hungAdPct = [double]$config.endless_hunger.effect_ad_percent_haste
+$hungVamp = [int]$config.endless_hunger.effect_vamp
+$hungDur = [double]$config.endless_hunger.effect_duration_seconds
+$rhungFlat = [int]$config.radiant_endless_hunger.effect_skill_cooldown_mult
+$rhungAdPct = [double]$config.radiant_endless_hunger.effect_ad_percent_haste
+$rhungVamp = [int]$config.radiant_endless_hunger.effect_vamp
+$rhungDur = [double]$config.radiant_endless_hunger.effect_duration_seconds
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -862,6 +894,18 @@ $i18n.en.seekers_armguard.option = "<#ff7a3eff>Witch's Path<>: Killing a unit gr
 $hrEn = "$bamiTemplate`n`n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>{3}<> + <#60e84dff>{4}%<> of your <$hpIcon> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>{5}% as effective<> against minions and monsters."
 $i18n.en.hollow_radiance.option = $hrEn -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
 $i18n.en.radiant_hollow_radiance.option = $hrEn -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
+$cdrvEn = "<#ff7a3eff>Spelldance<>: Dealing <#a974ffff>magic damage<> or <#e3ab9dff>true damage<> to an enemy champion grants you <#ffffffff>{0}% <$speedIcon> movement speed<> for <#e8a800ff>{1} seconds<>."
+$i18n.en.cosmic_drive.option = $cdrvEn -f $cdrvMs, $cdrvDur
+$i18n.en.radiant_cosmic_drive.option = $cdrvEn -f $rcdrvMs, $rcdrvDur
+$fhbEn = "<#ff7a3eff>Night Vigil<>: Gain <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>.`n`n<#ff7a3eff>Opening Barrage<>: Upon casting your ultimate ability, gain {1}% attack speed for <#e8a800ff>{2} seconds<>. Your next {3} basic attacks within this window <$critIcon> <#d45656ff>critically strike<> for <#e8a800ff>{4}% bonus damage<>. If the attack would have already critically struck, it instead deals <#e3ab9dff>bonus true damage<> equal to <#e3ab9dff>{5}%<> of the attack's damage dealt (<#e8a800ff>{6} second<> cooldown)."
+$i18n.en.fiendhunter_bolts.option = $fhbEn -f $fhbUlt, $fhbAs, $fhbDur, $fhbHits, $fhbCrit, $fhbTrue, $fhbCd
+$i18n.en.radiant_fiendhunter_bolts.option = $fhbEn -f $rfhbUlt, $rfhbAs, $rfhbDur, $rfhbHits, $rfhbCrit, $rfhbTrue, $rfhbCd
+$reapEn = "<#ff7a3eff>Spellblade<>: Landing an Ability on an enemy champion causes your next basic attack to deal <#ff9028ff>{0}%<> of your <#ff9028ff>Attack Damage<> <#d45656ff>(+{1}% <$critIcon>)<> as <#ff9028ff>bonus physical damage<> on-hit (<#e8a800ff>{2} second<> cooldown)."
+$i18n.en.essence_reaver.option = $reapEn -f $reapAd, $reapCrit, $reapCd
+$i18n.en.radiant_essence_reaver.option = $reapEn -f $rreapAd, $rreapCrit, $rreapCd
+$hungEn = "<#ff7a3eff>Famine<>: Gain <#4b7cffff>{0}<> (<#ff9028ff>+{1}%<> of your <$adIcon> <#ff9028ff>Attack Damage<>) <$cdrIcon> <#4b7cffff>Ability Haste<>.`n`n<#ff7a3eff>Feast<>: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>Omnivamp<> for <#e8a800ff>{3} seconds<>."
+$i18n.en.endless_hunger.option = $hungEn -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
+$i18n.en.radiant_endless_hunger.option = $hungEn -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -1087,6 +1131,18 @@ $i18n.vi.seekers_armguard.option = "<#ff7a3eff>Con Đường Phù Thủy<>: Tiê
 $hrVi = "$bamiTemplateVi`n`n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>{3}<> + <#60e84dff>{4}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>{5}% hiệu quả<> với lính và quái."
 $i18n.vi.hollow_radiance.option = $hrVi -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
 $i18n.vi.radiant_hollow_radiance.option = $hrVi -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
+$cdrvVi = "<#ff7a3eff>Vũ Điệu Ma Pháp<>: Gây <#a974ffff>sát thương phép<> hoặc <#e3ab9dff>sát thương chuẩn<> lên tướng địch cho bạn <#ffffffff>{0}% <$speedIcon> tốc độ di chuyển<> trong <#e8a800ff>{1} giây<>."
+$i18n.vi.cosmic_drive.option = $cdrvVi -f $cdrvMs, $cdrvDur
+$i18n.vi.radiant_cosmic_drive.option = $cdrvVi -f $rcdrvMs, $rcdrvDur
+$fhbVi = "<#ff7a3eff>Gác Đêm<>: Nhận <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.`n`n<#ff7a3eff>Mưa Đạn Mở Màn<>: Khi sử dụng chiêu cuối, nhận {1}% tốc độ đánh trong <#e8a800ff>{2} giây<>. {3} đòn đánh thường tiếp theo trong khoảng thời gian này sẽ <$critIcon> <#d45656ff>chí mạng<>, gây <#e8a800ff>{4}% sát thương cộng thêm<>. Nếu đòn đánh vốn đã chí mạng, thay vào đó nó gây <#e3ab9dff>sát thương chuẩn cộng thêm<> bằng <#e3ab9dff>{5}%<> sát thương của đòn đánh đó (hồi chiêu <#e8a800ff>{6} giây<>)."
+$i18n.vi.fiendhunter_bolts.option = $fhbVi -f $fhbUlt, $fhbAs, $fhbDur, $fhbHits, $fhbCrit, $fhbTrue, $fhbCd
+$i18n.vi.radiant_fiendhunter_bolts.option = $fhbVi -f $rfhbUlt, $rfhbAs, $rfhbDur, $rfhbHits, $rfhbCrit, $rfhbTrue, $rfhbCd
+$reapVi = "<#ff7a3eff>Kiếm Phép<>: Kĩ năng trúng tướng địch khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>{0}%<> <#ff9028ff>SMCK<> <#d45656ff>(+{1}% <$critIcon>)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>{2} giây<>)."
+$i18n.vi.essence_reaver.option = $reapVi -f $reapAd, $reapCrit, $reapCd
+$i18n.vi.radiant_essence_reaver.option = $reapVi -f $rreapAd, $rreapCrit, $rreapCd
+$hungVi = "<#ff7a3eff>Nạn Đói<>: Nhận <#4b7cffff>{0}<> (<#ff9028ff>+{1}%<> <$adIcon> <#ff9028ff>SMCK<> của bạn) <$cdrIcon> <#4b7cffff>Điểm Hồi Kỹ Năng<>.`n`n<#ff7a3eff>Xơi Tái<>: Khi tham gia hạ gục một tướng địch, nhận <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>{3} giây<>."
+$i18n.vi.endless_hunger.option = $hungVi -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
+$i18n.vi.radiant_endless_hunger.option = $hungVi -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1312,6 +1368,18 @@ $i18n.'zh-hans'.seekers_armguard.option = "<#ff7a3eff>女巫之路<>：击杀一
 $hrZh = "$bamiTemplateZh`n`n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>{3}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{4}%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>{5}%<>。"
 $i18n.'zh-hans'.hollow_radiance.option = $hrZh -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
 $i18n.'zh-hans'.radiant_hollow_radiance.option = $hrZh -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
+$cdrvZh = "<#ff7a3eff>咒舞<>：对敌方英雄造成<#a974ffff>魔法伤害<>或<#e3ab9dff>真实伤害<>时，获得 <#ffffffff>{0}% <$speedIcon> 移动速度<>，持续 <#e8a800ff>{1}秒<>。"
+$i18n.'zh-hans'.cosmic_drive.option = $cdrvZh -f $cdrvMs, $cdrvDur
+$i18n.'zh-hans'.radiant_cosmic_drive.option = $cdrvZh -f $rcdrvMs, $rcdrvDur
+$fhbZh = "<#ff7a3eff>守夜<>：获得 <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。`n`n<#ff7a3eff>开战弹幕<>：施放终极技能时，获得 {1}% 攻击速度，持续 <#e8a800ff>{2}秒<>。在此期间，你的下 {3} 次普通攻击会 <$critIcon> <#d45656ff>暴击<>，造成 <#e8a800ff>{4}% 额外伤害<>。如果该次攻击本就会暴击，则改为造成相当于该次攻击伤害 <#e3ab9dff>{5}%<> 的<#e3ab9dff>额外真实伤害<>（冷却 <#e8a800ff>{6}秒<>）。"
+$i18n.'zh-hans'.fiendhunter_bolts.option = $fhbZh -f $fhbUlt, $fhbAs, $fhbDur, $fhbHits, $fhbCrit, $fhbTrue, $fhbCd
+$i18n.'zh-hans'.radiant_fiendhunter_bolts.option = $fhbZh -f $rfhbUlt, $rfhbAs, $rfhbDur, $rfhbHits, $rfhbCrit, $rfhbTrue, $rfhbCd
+$reapZh = "<#ff7a3eff>咒刃<>：技能命中敌方英雄后，你的下一次普通攻击命中时会造成相当于 <#ff9028ff>攻击力<>的 <#ff9028ff>{0}%<> <#d45656ff>（+{1}% <$critIcon>）<>的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>{2}秒<>）。"
+$i18n.'zh-hans'.essence_reaver.option = $reapZh -f $reapAd, $reapCrit, $reapCd
+$i18n.'zh-hans'.radiant_essence_reaver.option = $reapZh -f $rreapAd, $rreapCrit, $rreapCd
+$hungZh = "<#ff7a3eff>饥馑<>：获得 <#4b7cffff>{0}<>（<#ff9028ff>+{1}%<> <$adIcon> <#ff9028ff>攻击力<>）<$cdrIcon> <#4b7cffff>技能急速<>。`n`n<#ff7a3eff>盛宴<>：参与击杀敌方英雄时，获得 <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>全能吸血<>，持续 <#e8a800ff>{3}秒<>。"
+$i18n.'zh-hans'.endless_hunger.option = $hungZh -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
+$i18n.'zh-hans'.radiant_endless_hunger.option = $hungZh -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1537,6 +1605,18 @@ $i18n.'pt-BR'.seekers_armguard.option = "<#ff7a3eff>Caminho da Bruxa<>: Abater u
 $hrPt = "$bamiTemplatePt`n`n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>{3}<> + <#60e84dff>{4}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>{5}% eficaz<> contra tropas e monstros."
 $i18n.'pt-BR'.hollow_radiance.option = $hrPt -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
 $i18n.'pt-BR'.radiant_hollow_radiance.option = $hrPt -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
+$cdrvPt = "<#ff7a3eff>Dança Enfeitiçada<>: Causar <#a974ffff>dano mágico<> ou <#e3ab9dff>dano verdadeiro<> a um campeão inimigo concede <#ffffffff>{0}% de <$speedIcon> Velocidade de Movimento<> por <#e8a800ff>{1} segundos<>."
+$i18n.'pt-BR'.cosmic_drive.option = $cdrvPt -f $cdrvMs, $cdrvDur
+$i18n.'pt-BR'.radiant_cosmic_drive.option = $cdrvPt -f $rcdrvMs, $rcdrvDur
+$fhbPt = "<#ff7a3eff>Vigília Noturna<>: Recebe <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.`n`n<#ff7a3eff>Barragem de Abertura<>: Ao conjurar sua ultimate, recebe {1}% de Velocidade de Ataque por <#e8a800ff>{2} segundos<>. Seus próximos {3} ataques básicos dentro desse período <$critIcon> <#d45656ff>causam acerto crítico<>, causando <#e8a800ff>{4}% de dano bônus<>. Se o ataque já fosse causar acerto crítico, em vez disso ele causa <#e3ab9dff>dano verdadeiro bônus<> igual a <#e3ab9dff>{5}%<> do dano causado pelo ataque (recarga de <#e8a800ff>{6} segundos<>)."
+$i18n.'pt-BR'.fiendhunter_bolts.option = $fhbPt -f $fhbUlt, $fhbAs, $fhbDur, $fhbHits, $fhbCrit, $fhbTrue, $fhbCd
+$i18n.'pt-BR'.radiant_fiendhunter_bolts.option = $fhbPt -f $rfhbUlt, $rfhbAs, $rfhbDur, $rfhbHits, $rfhbCrit, $rfhbTrue, $rfhbCd
+$reapPt = "<#ff7a3eff>Lâmina Arcana<>: Acertar uma Habilidade em um campeão inimigo faz seu próximo ataque básico causar <#ff9028ff>{0}%<> do seu <#ff9028ff>Dano de Ataque<> <#d45656ff>(+{1}% <$critIcon>)<> como <#ff9028ff>dano físico bônus<> ao contato (recarga de <#e8a800ff>{2} segundos<>)."
+$i18n.'pt-BR'.essence_reaver.option = $reapPt -f $reapAd, $reapCrit, $reapCd
+$i18n.'pt-BR'.radiant_essence_reaver.option = $reapPt -f $rreapAd, $rreapCrit, $rreapCd
+$hungPt = "<#ff7a3eff>Fome<>: Recebe <#4b7cffff>{0}<> (<#ff9028ff>+{1}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<>) <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade<>.`n`n<#ff7a3eff>Banquete<>: Ao participar do abate de um campeão inimigo, concede <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>roubo de vida<> por <#e8a800ff>{3} segundos<>."
+$i18n.'pt-BR'.endless_hunger.option = $hungPt -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
+$i18n.'pt-BR'.radiant_endless_hunger.option = $hungPt -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1762,6 +1842,18 @@ $i18n.ru.seekers_armguard.option = "<#ff7a3eff>Путь ведьмы<>: Убий
 $hrRu = "$bamiTemplateRu`n`n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>{3}<> + <#60e84dff>{4}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>{5}%<>."
 $i18n.ru.hollow_radiance.option = $hrRu -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
 $i18n.ru.radiant_hollow_radiance.option = $hrRu -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
+$cdrvRu = "<#ff7a3eff>Магический танец<>: Нанесение <#a974ffff>магического урона<> или <#e3ab9dff>чистого урона<> вражескому чемпиону даёт вам <#ffffffff>{0}% <$speedIcon> скорости передвижения<> на <#e8a800ff>{1} секунды<>."
+$i18n.ru.cosmic_drive.option = $cdrvRu -f $cdrvMs, $cdrvDur
+$i18n.ru.radiant_cosmic_drive.option = $cdrvRu -f $rcdrvMs, $rcdrvDur
+$fhbRu = "<#ff7a3eff>Ночное бдение<>: Даёт <#4b7cffff>{0}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>.`n`n<#ff7a3eff>Первый залп<>: При применении абсолютного умения вы получаете {1}% скорости атаки на <#e8a800ff>{2} секунд<>. Ваши следующие {3} базовые атаки в течение этого времени <$critIcon> <#d45656ff>наносят критический удар<> с <#e8a800ff>{4}% дополнительного урона<>. Если атака и так была бы критической, вместо этого она наносит <#e3ab9dff>дополнительный чистый урон<> в размере <#e3ab9dff>{5}%<> от урона этой атаки (перезарядка <#e8a800ff>{6} секунд<>)."
+$i18n.ru.fiendhunter_bolts.option = $fhbRu -f $fhbUlt, $fhbAs, $fhbDur, $fhbHits, $fhbCrit, $fhbTrue, $fhbCd
+$i18n.ru.radiant_fiendhunter_bolts.option = $fhbRu -f $rfhbUlt, $rfhbAs, $rfhbDur, $rfhbHits, $rfhbCrit, $rfhbTrue, $rfhbCd
+$reapRu = "<#ff7a3eff>Чародейский клинок<>: Попадание умением по вражескому чемпиону заставляет вашу следующую базовую атаку нанести при попадании <#ff9028ff>{0}%<> вашей <#ff9028ff>силы атаки<> <#d45656ff>(+{1}% <$critIcon>)<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>{2} секунды<>)."
+$i18n.ru.essence_reaver.option = $reapRu -f $reapAd, $reapCrit, $reapCd
+$i18n.ru.radiant_essence_reaver.option = $reapRu -f $rreapAd, $rreapCrit, $rreapCd
+$hungRu = "<#ff7a3eff>Голод<>: Даёт <#4b7cffff>{0}<> (<#ff9028ff>+{1}%<> вашей <$adIcon> <#ff9028ff>силы атаки<>) <$cdrIcon> <#4b7cffff>ускорения умений<>.`n`n<#ff7a3eff>Пиршество<>: При участии в убийстве вражеского чемпиона даёт <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>{3} секунд<>."
+$i18n.ru.endless_hunger.option = $hungRu -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
+$i18n.ru.radiant_endless_hunger.option = $hungRu -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -1986,6 +2078,18 @@ $i18n.ko.seekers_armguard.option = "<#ff7a3eff>마녀의 길<>: 유닛을 처치
 $hrKo = "$bamiTemplateKo`n`n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>{3}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>{4}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>{5}%<>의 효과만 적용됩니다."
 $i18n.ko.hollow_radiance.option = $hrKo -f $hrFlat, $hrHpPct, $hrRange, $hrExFlat, $hrExPct, $hrMinion
 $i18n.ko.radiant_hollow_radiance.option = $hrKo -f $rhrFlat, $rhrHpPct, $rhrRange, $rhrExFlat, $rhrExPct, $rhrMinion
+$cdrvKo = "<#ff7a3eff>마법의 춤<>: 적 챔피언에게 <#a974ffff>마법 피해<> 또는 <#e3ab9dff>고정 피해<>를 입히면 <#e8a800ff>{1}초<> 동안 <#ffffffff>{0}% <$speedIcon> 이동 속도<>를 얻습니다."
+$i18n.ko.cosmic_drive.option = $cdrvKo -f $cdrvMs, $cdrvDur
+$i18n.ko.radiant_cosmic_drive.option = $cdrvKo -f $rcdrvMs, $rcdrvDur
+$fhbKo = "<#ff7a3eff>한밤 경계<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>{0}<> 증가합니다.`n`n<#ff7a3eff>폭격 개시<>: 궁극기 사용 시 <#e8a800ff>{2}초<> 동안 공격 속도가 {1}% 증가합니다. 이 시간 동안 다음 {3}회의 기본 공격은 <$critIcon> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>{4}%의 추가 피해<>를 입힙니다. 이미 치명타가 적용될 공격이었다면 대신 해당 공격 피해량의 <#e3ab9dff>{5}%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{6}초<>)"
+$i18n.ko.fiendhunter_bolts.option = $fhbKo -f $fhbUlt, $fhbAs, $fhbDur, $fhbHits, $fhbCrit, $fhbTrue, $fhbCd
+$i18n.ko.radiant_fiendhunter_bolts.option = $fhbKo -f $rfhbUlt, $rfhbAs, $rfhbDur, $rfhbHits, $rfhbCrit, $rfhbTrue, $rfhbCd
+$reapKo = "<#ff7a3eff>주문 검<>: 적 챔피언에게 스킬을 적중시키면 다음 기본 공격이 적중 시 <#ff9028ff>공격력<>의 <#ff9028ff>{0}%<> <#d45656ff>(+{1}% <$critIcon>)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>)"
+$i18n.ko.essence_reaver.option = $reapKo -f $reapAd, $reapCrit, $reapCd
+$i18n.ko.radiant_essence_reaver.option = $reapKo -f $rreapAd, $rreapCrit, $rreapCd
+$hungKo = "<#ff7a3eff>기근<>: <$cdrIcon> <#4b7cffff>스킬 가속<>이 <#4b7cffff>{0}<> (<$adIcon> <#ff9028ff>공격력<>의 <#ff9028ff>+{1}%<>) 증가합니다.`n`n<#ff7a3eff>만찬<>: 적 챔피언 처치에 관여하면 <#e8a800ff>{3}초<> 동안 <$vampIcon> <#b7462dff>모든 피해 흡혈 {2}%<>를 얻습니다."
+$i18n.ko.endless_hunger.option = $hungKo -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
+$i18n.ko.radiant_endless_hunger.option = $hungKo -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {
@@ -2209,3 +2313,11 @@ Write-Host "  Zhonya's Hourglass:         Time Stop ${zhDur}s stasis below ${zhT
 Write-Host "  Radiant Zhonya's Hourglass: Time Stop ${rzhDur}s stasis below ${rzhThreshold}% HP (${rzhCd}s CD)"
 Write-Host "  Hollow Radiance:         Immolate ${hrFlat} + ${hrHpPct}% max HP/s within ${hrRange} / Desolate ${hrExFlat} + ${hrExPct}% max HP within ${hrExDist} (${hrMinion}% vs minions)"
 Write-Host "  Radiant Hollow Radiance: Immolate ${rhrFlat} + ${rhrHpPct}% max HP/s within ${rhrRange} / Desolate ${rhrExFlat} + ${rhrExPct}% max HP (${rhrMinion}% vs minions)"
+Write-Host "  Cosmic Drive:              Spelldance ${cdrvMs}% MS ${cdrvDur}s"
+Write-Host "  Radiant Cosmic Drive:      Spelldance ${rcdrvMs}% MS ${rcdrvDur}s"
+Write-Host "  Fiendhunter Bolts:         ${fhbUlt} ult haste / Opening Barrage ${fhbAs}% AS ${fhbDur}s, ${fhbHits} attacks crit +${fhbCrit}% (${fhbTrue}% true instead if crit) / ${fhbCd}s CD"
+Write-Host "  Radiant Fiendhunter Bolts: ${rfhbUlt} ult haste / Opening Barrage ${rfhbAs}% AS ${rfhbDur}s, ${rfhbHits} attacks crit +${rfhbCrit}% (${rfhbTrue}% true instead if crit) / ${rfhbCd}s CD"
+Write-Host "  Essence Reaver:            Spellblade ${reapAd}% AD (+${reapCrit}% crit chance) / ${reapCd}s CD"
+Write-Host "  Radiant Essence Reaver:    Spellblade ${rreapAd}% AD (+${rreapCrit}% crit chance) / ${rreapCd}s CD"
+Write-Host "  Endless Hunger:            ${hungFlat} + ${hungAdPct}% AD haste / Feast ${hungVamp}% omnivamp ${hungDur}s"
+Write-Host "  Radiant Endless Hunger:    ${rhungFlat} + ${rhungAdPct}% AD haste / Feast ${rhungVamp}% omnivamp ${rhungDur}s"
