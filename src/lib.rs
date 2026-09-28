@@ -15,6 +15,7 @@ mod item_stats_sim;
 mod item_stats_ui;
 mod items;
 mod own_team_log;
+mod perf;
 mod proc_queue;
 mod smart_builds;
 mod solo_rank_ui;
@@ -274,7 +275,7 @@ fn init(host: &StableHost) -> StableMod {
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
-            item
+            perf::timed($key, item)
         }};
     }
     macro_rules! configured_radiant {
@@ -291,7 +292,7 @@ fn init(host: &StableHost) -> StableMod {
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key, StableItem::category(&item));
-            item
+            perf::timed($key, item)
         }};
     }
 

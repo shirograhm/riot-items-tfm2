@@ -2907,6 +2907,7 @@ static SPAWN_WROTE: AtomicU64 = AtomicU64::new(0); // actual build[] writes
 static SPAWN_NOSIDE: AtomicU64 = AtomicU64::new(0); // skipped because the side was undecided (= covered by the buy path)
 unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+        let _probe = crate::perf::Probe::start(crate::perf::Section::SpawnDetour);
         // Only under `own_team_only`: otherwise `item_build_hook::decide_build`
         // has already set these slots on the stable API, and two writers would
         // fight over them.
@@ -5573,9 +5574,24 @@ unsafe fn buy_inputs(
 /// the full path, so the table does not need to be exact.
 const BUY_MEMO_SLOTS: usize = 64;
 
+/// Which athlete a [`BuyInputs`] belongs to: the match seed, the athlete id and
+/// the address of its build `Vec`.
+///
+/// Not the `athlete` pointer the detour is handed, which was the key until
+/// 2026-09-27. A logged session showed the game passing every athlete of a team
+/// through the same buffer: five athletes (ids 0xbd..0xc1) took turns at one
+/// address, each overwrote the last one's entry, and the memo missed on ~520k
+/// calls in four minutes, every one a full pass that changed nothing. The seed
+/// tells sim copies of different fixtures apart, the id tells athletes apart,
+/// and the build `Vec` is the athlete's own heap buffer, which tells two copies
+/// of one match on the same seed apart.
+fn buy_memo_key(inputs: &BuyInputs) -> [u64; 3] {
+    [inputs.0[0], inputs.0[1], inputs.0[8]]
+}
+
 /// Per athlete, the inputs of its last buy decision that changed nothing.
 struct BuyMemo {
-    entries: [(usize, BuyInputs); BUY_MEMO_SLOTS],
+    entries: [([u64; 3], BuyInputs); BUY_MEMO_SLOTS],
     next: usize,
 }
 
@@ -5584,21 +5600,50 @@ thread_local! {
     // detour's threads, as with `SEH_T`.
     static BUY_MEMO: core::cell::RefCell<BuyMemo> = const {
         core::cell::RefCell::new(BuyMemo {
-            entries: [(0, BuyInputs([0; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX])); BUY_MEMO_SLOTS],
+            entries: [([0; 3], BuyInputs([0; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX])); BUY_MEMO_SLOTS],
             next: 0,
         })
     };
 }
 
-/// Whether `athlete`'s last decision on this thread changed nothing and was
+/// Whether this athlete's last decision on this thread changed nothing and was
 /// made from exactly `inputs` -- so this one would change nothing either.
-fn buy_memo_hit(athlete: usize, inputs: &BuyInputs) -> bool {
+fn buy_memo_hit(inputs: &BuyInputs) -> bool {
+    let key = buy_memo_key(inputs);
     BUY_MEMO
         .try_with(|memo| {
             memo.try_borrow().is_ok_and(|memo| {
-                memo.entries
-                    .iter()
-                    .any(|(key, known)| *key == athlete && known == inputs)
+                // One entry per athlete: `buy_memo_store` replaces in place.
+                match memo.entries.iter().find(|(known_key, _)| *known_key == key) {
+                    Some((_, known)) if known == inputs => true,
+                    // Diagnostic (2026-09-27): what defeats the memo. Either the
+                    // sim moved to another rayon worker (none on this thread) or
+                    // an input word changed since this athlete's last call
+                    // (which one, below).
+                    Some((_, known)) => {
+                        crate::perf::count(crate::perf::Section::BuyMissChanged);
+                        crate::perf::note("buy memo miss", || {
+                            // 0 seed, 1 athlete id, 2/3 champion ptr/len,
+                            // 4 team, 5 lane, 6 owned, 7 build cap, 8/9 build
+                            // ptr/len, 10 ctx, 11 flags, 12 scene side, 13 pins
+                            // generation, 14.. build targets.
+                            known
+                                .0
+                                .iter()
+                                .zip(inputs.0.iter())
+                                .enumerate()
+                                .filter(|(_, (was, now))| was != now)
+                                .map(|(word, (was, now))| format!("[{word}] {was:#x} -> {now:#x}"))
+                                .collect::<Vec<_>>()
+                                .join("  ")
+                        });
+                        false
+                    }
+                    None => {
+                        crate::perf::count(crate::perf::Section::BuyMissNoEntry);
+                        false
+                    }
+                }
             })
         })
         .unwrap_or(false)
@@ -5606,17 +5651,19 @@ fn buy_memo_hit(athlete: usize, inputs: &BuyInputs) -> bool {
 
 /// Remembers that a decision from `inputs` changed nothing for `athlete`,
 /// replacing whatever this thread held for it.
-fn buy_memo_store(athlete: usize, inputs: BuyInputs) {
+fn buy_memo_store(inputs: BuyInputs) {
+    crate::perf::count(crate::perf::Section::BuyMemoStored);
+    let key = buy_memo_key(&inputs);
     let _ = BUY_MEMO.try_with(|memo| {
         let Ok(mut memo) = memo.try_borrow_mut() else {
             return;
         };
-        let known = memo.entries.iter().position(|(key, _)| *key == athlete);
+        let known = memo.entries.iter().position(|(known_key, _)| *known_key == key);
         let slot = known.unwrap_or(memo.next);
         if known.is_none() {
             memo.next = (slot + 1) % BUY_MEMO_SLOTS;
         }
-        memo.entries[slot] = (athlete, inputs);
+        memo.entries[slot] = (key, inputs);
     });
 }
 
@@ -5625,6 +5672,9 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
     //   so thread_local accumulation (rec_tl) is used. T_BUY_ALL = the whole detour (including catch_unwind),
     //   T_BUY_EARLY = the background-sim early exit portion (contained in ALL, so it is double counted - subtract when interpreting).
     let r = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| -> u64 {
+        // Relabelled as the call gets further, so each exit is timed as the
+        // kind of call it was: an early exit, a memo hit, or a full pass.
+        let mut probe = crate::perf::Probe::start(crate::perf::Section::BuyEarlyExit);
         if saved.is_null() {
             return 0;
         } // * mode=3 passes through here too (slot 0/1/2 designation injection). Only the 4th-item logic is gated on mode=4 below.
@@ -5714,10 +5764,15 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   nothing too, so it passes through after ~20 VEH reads. A purchase
         //   (owned), an engine re-plan (the targets), a new pin snapshot or a
         //   flipped gate each change the inputs and run the full path again.
+        probe.set(crate::perf::Section::BuyMemoHit);
         let memo_inputs = buy_inputs(athlete, rsp_entry, seed_r9, is_live);
-        if memo_inputs.is_some_and(|inputs| buy_memo_hit(athlete, &inputs)) {
+        if memo_inputs.is_none() {
+            crate::perf::count(crate::perf::Section::BuyUnmemoizable);
+        }
+        if memo_inputs.is_some_and(|inputs| buy_memo_hit(&inputs)) {
             return 0;
         }
+        probe.set(crate::perf::Section::BuyFullPass);
         // -- From here on, only spectated-match buys (a small minority) and background buys by my 5 players get through --
         // * The athlete validity check, now VEH-guarded reads rather than a
         //   `readable` (VirtualQuery) syscall (2026-09-25; see `catalog_name_at`).
@@ -6322,7 +6377,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // settle), and is remembered once it settles.
         if let Some(inputs) = memo_inputs {
             if buy_inputs(athlete, rsp_entry, seed_r9, is_live) == Some(inputs) {
-                buy_memo_store(athlete, inputs);
+                buy_memo_store(inputs);
             }
         }
         // * AUTO4_NATURAL: plant only the build[3] target and force nothing -> the game builds up naturally from components (t1), paying full gold.

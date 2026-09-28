@@ -47,6 +47,7 @@
 //! statistic only fills in from matches simmed after it is added.
 
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Mutex;
 
 use mod_api_stable::*;
@@ -104,6 +105,12 @@ struct Queue {
     by_seed: BTreeMap<u64, Vec<CapturedPlayer>>,
     /// Insertion order, so the oldest can be evicted. A `BTreeMap` is ordered by
     /// seed, which says nothing about when a match was played.
+    ///
+    /// Only [`MAX_QUEUED`] evicts. A capture's record is written when the
+    /// game day it was played on is committed, all of that day's matches at
+    /// once, which can be many minutes after the match was simulated; an age
+    /// limit (tried 2026-09-27, 120 s) threw away the captures of every match
+    /// that day but the last few.
     order: VecDeque<u64>,
     /// Seeds already folded into the totals, oldest first, for eviction order.
     counted: VecDeque<u64>,
@@ -260,6 +267,16 @@ pub(crate) fn pending() -> usize {
     with_queue(|queue| queue.by_seed.len()).unwrap_or(0)
 }
 
+/// Bumped on every capture. `item_stats::sync` compares it with the value at
+/// its last sweep: a capture that arrived since is a reason to read the records
+/// again, where a capture still waiting from before is not.
+static CAPTURES: AtomicU64 = AtomicU64::new(0);
+
+/// How many captures have been queued since the game started.
+pub(crate) fn captures() -> u64 {
+    CAPTURES.load(Ordering::Relaxed)
+}
+
 /// Hands over a captured match to be counted, and remembers that it was.
 ///
 /// The entry is removed as it is returned: once the caller has folded it into the
@@ -367,6 +384,17 @@ impl StableMatchHook for EndOfMatchItems {
                     queue.by_seed.remove(&oldest);
                 }
             }
+        });
+        CAPTURES.fetch_add(1, Ordering::Relaxed);
+        crate::perf::count(crate::perf::Section::CaptureQueued);
+        // Diagnostic (2026-09-27): which kind of sim the captures come from, and
+        // their seeds, to hold against the `record` notes' seeds.
+        crate::perf::note("capture", || match sim.sim_origin() {
+            Some(origin) => format!(
+                "seed={seed} origin kind={} match_id={} replay_id={} set={}",
+                origin.kind, origin.match_id, origin.replay_id, origin.set_index
+            ),
+            None => format!("seed={seed} origin=<host too old>"),
         });
     }
 }
