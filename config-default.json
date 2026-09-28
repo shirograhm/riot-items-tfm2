@@ -1846,7 +1846,7 @@
     "effect_skill_cooldown_mult": 5,
     "effect_ad_percent_haste": 5.0,
     "effect_vamp": 15,
-    "effect_duration_seconds": 8
+    "effect_duration_seconds": 5
   },
   "radiant_endless_hunger": {
     "price": 1000,
@@ -1856,6 +1856,6 @@
     "effect_skill_cooldown_mult": 5,
     "effect_ad_percent_haste": 5.0,
     "effect_vamp": 15,
-    "effect_duration_seconds": 8
+    "effect_duration_seconds": 5
   }
 }

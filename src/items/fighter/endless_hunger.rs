@@ -2,7 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of_i32, refresh_buff, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    add_stack, apply_config, percent_of_i32, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS,
 };
 
@@ -40,7 +40,7 @@ impl EndlessHunger {
             effect_skill_cooldown_mult: 5,
             effect_ad_percent_haste: 5.0,
             effect_vamp: 15,
-            effect_duration_seconds: 8.0,
+            effect_duration_seconds: 5.0,
             // Non-vital stats (internals)
             refresh_cooldown: 0,
         }
@@ -56,7 +56,7 @@ impl EndlessHunger {
             effect_skill_cooldown_mult: 5,
             effect_ad_percent_haste: 5.0,
             effect_vamp: 15,
-            effect_duration_seconds: 8.0,
+            effect_duration_seconds: 5.0,
             ..Self::base()
         }
     }
@@ -120,15 +120,17 @@ impl EndlessHunger {
         self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
 
+    // One stack at most, refreshed: a double takedown in one tick still
+    // grants the Omnivamp once.
     fn feast(&self, ctx: &mut StableSim<'_>, entity: usize) {
-        refresh_buff(
+        add_stack(
             ctx,
             entity,
-            FEAST_BUFF,
             &BuffV1 {
                 vamp: self.effect_vamp,
                 ..BuffV1::timed(FEAST_BUFF, ticks(self.effect_duration_seconds))
             },
+            1,
         );
     }
 }

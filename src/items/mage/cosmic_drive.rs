@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_enemy_champion, refresh_buff, ticks, ItemMeta};
+use crate::{add_stack, apply_config, is_enemy_champion, ticks, ItemMeta};
 
 /// Spelldance's movement speed. The base item and its Radiant share the name,
 /// so an upgrade mid-buff replaces it rather than stacking a second one.
@@ -123,6 +123,8 @@ impl StableItem for CosmicDrive {
 
     // Spelldance. Any hit counts - abilities, basic attacks and item procs
     // alike - as long as it lands as magic or true damage on an enemy champion.
+    // One stack at most: the engine caps it and restarts its duration, which
+    // also holds when an ability hits several champions in the same tick.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -140,14 +142,14 @@ impl StableItem for CosmicDrive {
             return;
         }
 
-        refresh_buff(
+        add_stack(
             ctx,
             caster,
-            SPELLDANCE_BUFF,
             &BuffV1 {
                 move_speed_mult: self.effect_move_speed_mult,
                 ..BuffV1::timed(SPELLDANCE_BUFF, ticks(self.effect_duration_seconds))
             },
+            1,
         );
     }
 
