@@ -15,6 +15,7 @@ items! {
     mirage_blade,
     mortal_reminder,
     runaans_hurricane,
+    statikk_shiv,
     stormrazor,
     terminus,
     wits_end,

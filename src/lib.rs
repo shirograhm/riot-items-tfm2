@@ -407,6 +407,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("staff_of_flowing_water" => StaffOfFlowingWater));
+    reg.add_item(configured!("statikk_shiv" => StatikkShiv));
     reg.add_item(configured!("steraks_gage" => SteraksGage));
     reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("stormsurge" => Stormsurge));
@@ -495,6 +496,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
     reg.add_item(configured_radiant!("radiant_staff_of_flowing_water" => StaffOfFlowingWater));
+    reg.add_item(configured_radiant!("radiant_statikk_shiv" => StatikkShiv));
     reg.add_item(configured_radiant!("radiant_steraks_gage" => SteraksGage));
     reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
     reg.add_item(configured_radiant!("radiant_stormsurge" => Stormsurge));
@@ -511,8 +513,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
     reg.add_item(configured_radiant!("radiant_zhonyas_hourglass" => ZhonyasHourglass));
 
-    // What item projectiles run when they land. Runaan's Hurricane registers
-    // one per tier, so each tier's bolts carry that tier's configured damage.
+    // What item projectiles run when they land. Runaan's Hurricane and Statikk
+    // Shiv register one per tier, so each tier's projectiles carry that tier's
+    // configured damage.
     for runaans in [
         configs
             .get("runaans_hurricane")
@@ -524,6 +527,18 @@ fn init(host: &StableHost) -> StableMod {
             .unwrap_or_else(RunaansHurricane::radiant),
     ] {
         reg.add_native_effect(runaans.bolt_hit_name(), runaans.bolt_hit());
+    }
+    for shiv in [
+        configs
+            .get("statikk_shiv")
+            .map(StatikkShiv::with_config)
+            .unwrap_or_default(),
+        configs
+            .get("radiant_statikk_shiv")
+            .map(StatikkShiv::radiant_with_config)
+            .unwrap_or_else(StatikkShiv::radiant),
+    ] {
+        reg.add_native_effect(shiv.spark_hit_name(), shiv.spark_hit());
     }
 
     // `item-builds.json` hook

@@ -55,6 +55,14 @@
             "tag": "erupt",
             "z": 1,
             "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_statikk_shock",
+            "anim": "asset/riot_items_tfm2/effects/statikk_shock",
+            "tag": "shock",
+            "z": 1,
+            "is_follow": true
         }
     ],
     "view_projectiles": [
@@ -63,6 +71,13 @@
             "name": "riot_runaans_bolt",
             "anim": "asset/riot_items_tfm2/effects/runaans_bolt",
             "tag": "bolt",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_statikk_spark",
+            "anim": "asset/riot_items_tfm2/effects/statikk_spark",
+            "tag": "spark",
             "z": 1
         }
     ],

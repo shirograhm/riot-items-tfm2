@@ -628,6 +628,16 @@ $runaanAd = [double]$config.runaans_hurricane.effect_ad_percent_damage
 $rrunaanTargets = [int]$config.radiant_runaans_hurricane.effect_max_targets
 $rrunaanRange = [int]$config.radiant_runaans_hurricane.effect_max_distance
 $rrunaanAd = [double]$config.radiant_runaans_hurricane.effect_ad_percent_damage
+$shivStacks = [int]$config.statikk_shiv.effect_max_stacks
+$shivDmg = [int]$config.statikk_shiv.effect_bonus_magic_damage
+$shivTargets = [int]$config.statikk_shiv.effect_max_targets
+$shivRange = [int]$config.statikk_shiv.effect_max_distance
+$shivMinion = [int]$config.statikk_shiv.effect_minion_percent
+$rshivStacks = [int]$config.radiant_statikk_shiv.effect_max_stacks
+$rshivDmg = [int]$config.radiant_statikk_shiv.effect_bonus_magic_damage
+$rshivTargets = [int]$config.radiant_statikk_shiv.effect_max_targets
+$rshivRange = [int]$config.radiant_statikk_shiv.effect_max_distance
+$rshivMinion = [int]$config.radiant_statikk_shiv.effect_minion_percent
 $eonLeth = [int]$config.edge_of_night.effect_lethality
 $eonCd = [double]$config.edge_of_night.effect_cooldown_seconds
 $reonLeth = [int]$config.radiant_edge_of_night.effect_lethality
@@ -928,6 +938,9 @@ $i18n.en.radiant_edge_of_night.option = ($lethEn -f $reonLeth) + "`n`n" + ($annu
 $runaanEn = "<#ff7a3eff>Wind's Fury<>: Basic attacks fire bolts at up to {0} additional enemies within <#ff86c2ff>{1} <$rangeIcon> range<>, prioritizing champions, each dealing <#ff9028ff>{2}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>. Bolts can <$critIcon> <#d45656ff>critically strike<>."
 $i18n.en.runaans_hurricane.option = $runaanEn -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.en.radiant_runaans_hurricane.option = $runaanEn -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
+$shivEn = "<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>{1} magic damage<> to the target and up to {2} more enemies, each within <#ff86c2ff>{3} <$rangeIcon> range<> of the last, prioritizing champions. This effect is <#e8a800ff>{4}% as effective<> against minions and monsters."
+$i18n.en.statikk_shiv.option = $shivEn -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
+$i18n.en.radiant_statikk_shiv.option = $shivEn -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -1174,6 +1187,9 @@ $i18n.vi.radiant_edge_of_night.option = ($lethVi -f $reonLeth) + "`n`n" + ($annu
 $runaanVi = "<#ff7a3eff>Gió Cuồng Nộ<>: Đòn đánh thường bắn ra các tia đạn vào tối đa {0} kẻ địch khác trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon>, ưu tiên tướng địch, mỗi tia gây <#ff9028ff>{2}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>. Tia đạn có thể <$critIcon> <#d45656ff>chí mạng<>."
 $i18n.vi.runaans_hurricane.option = $runaanVi -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.vi.radiant_runaans_hurricane.option = $runaanVi -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
+$shivVi = "<#ff7a3eff>Tích Điện<>: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Phóng Điện<>: Khi <#92dc7bff>Tích Điện<> đầy, đòn đánh thường tiếp theo phóng ra sét nảy, gây <#a974ffff>{1} sát thương phép<> lên mục tiêu và tối đa {2} kẻ địch khác, mỗi lần nảy trong phạm vi <#ff86c2ff>{3}<> <$rangeIcon> từ mục tiêu trước, ưu tiên tướng địch. Hiệu ứng này <#e8a800ff>hiệu quả {4}%<> lên lính và quái."
+$i18n.vi.statikk_shiv.option = $shivVi -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
+$i18n.vi.radiant_statikk_shiv.option = $shivVi -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1420,6 +1436,9 @@ $i18n.'zh-hans'.radiant_edge_of_night.option = ($lethZh -f $reonLeth) + "`n`n" +
 $runaanZh = "<#ff7a3eff>风怒<>：普通攻击会对 <#ff86c2ff>{1} <$rangeIcon> 射程<>内最多 {0} 个额外敌人（优先英雄）发射弩箭，每根弩箭造成相当于你 <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{2}%<> 的<#ff9028ff>额外物理伤害<>。弩箭可以<$critIcon> <#d45656ff>暴击<>。"
 $i18n.'zh-hans'.runaans_hurricane.option = $runaanZh -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.'zh-hans'.radiant_runaans_hurricane.option = $runaanZh -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
+$shivZh = "<#ff7a3eff>蓄能<>：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>{0}<> 层。`n`n<#ff7a3eff>电火花<>：<#92dc7bff>蓄能<>充满时，你的下一次普通攻击会发射连锁闪电，对目标及最多 {2} 个其他敌人造成 <#a974ffff>{1} 点魔法伤害<>，每次弹射距离上一个目标不超过 <#ff86c2ff>{3} <$rangeIcon> 射程<>（优先英雄）。该效果对小兵和野怪的<#e8a800ff>效果为 {4}%<>。"
+$i18n.'zh-hans'.statikk_shiv.option = $shivZh -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
+$i18n.'zh-hans'.radiant_statikk_shiv.option = $shivZh -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1666,6 +1685,9 @@ $i18n.'pt-BR'.radiant_edge_of_night.option = ($lethPt -f $reonLeth) + "`n`n" + (
 $runaanPt = "<#ff7a3eff>Fúria do Vento<>: Ataques básicos disparam projéteis em até {0} inimigos adicionais a até <#ff86c2ff>{1} <$rangeIcon> de alcance<>, priorizando campeões, cada um causando <#ff9028ff>{2}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>. Os projéteis podem <$critIcon> <#d45656ff>causar acerto crítico<>."
 $i18n.'pt-BR'.runaans_hurricane.option = $runaanPt -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.'pt-BR'.radiant_runaans_hurricane.option = $runaanPt -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
+$shivPt = "<#ff7a3eff>Energizado<>: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Eletrocentelha<>: Quando totalmente <#92dc7bff>Energizado<>, seu próximo ataque básico dispara uma cadeia de relâmpagos que causa <#a974ffff>{1} de dano mágico<> ao alvo e a até {2} inimigos adicionais, cada um a até <#ff86c2ff>{3} <$rangeIcon> de alcance<> do anterior, priorizando campeões. Este efeito é <#e8a800ff>{4}% efetivo<> contra lacaios e monstros."
+$i18n.'pt-BR'.statikk_shiv.option = $shivPt -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
+$i18n.'pt-BR'.radiant_statikk_shiv.option = $shivPt -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1912,6 +1934,9 @@ $i18n.ru.radiant_edge_of_night.option = ($lethRu -f $reonLeth) + "`n`n" + ($annu
 $runaanRu = "<#ff7a3eff>Ярость ветра<>: Базовые атаки выпускают заряды не более чем в {0} дополнительных врагов в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<>, в первую очередь в чемпионов. Каждый заряд наносит <#ff9028ff>{2}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<>. Заряды могут <$critIcon> <#d45656ff>наносить критический удар<>."
 $i18n.ru.runaans_hurricane.option = $runaanRu -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.ru.radiant_runaans_hurricane.option = $runaanRu -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
+$shivRu = "<#ff7a3eff>Заряд<>: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Электрическая искра<>: При полном <#92dc7bff>Заряде<>, ваша следующая базовая атака выпускает цепную молнию, которая наносит <#a974ffff>{1} магического урона<> цели и не более чем {2} другим врагам, каждый в пределах <#ff86c2ff>{3} <$rangeIcon> дальности<> от предыдущего, в первую очередь чемпионам. Против миньонов и монстров <#e8a800ff>эффект составляет {4}%<>."
+$i18n.ru.statikk_shiv.option = $shivRu -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
+$i18n.ru.radiant_statikk_shiv.option = $shivRu -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -2157,6 +2182,9 @@ $i18n.ko.radiant_edge_of_night.option = ($lethKo -f $reonLeth) + "`n`n" + ($annu
 $runaanKo = "<#ff7a3eff>바람의 분노<>: 기본 공격 시 <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 적 최대 {0}명에게 챔피언을 우선으로 추가 탄환을 발사해 각각 <$adIcon> <#ff9028ff>공격력의 {2}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 탄환에는 <$critIcon> <#d45656ff>치명타<>가 적용될 수 있습니다."
 $i18n.ko.runaans_hurricane.option = $runaanKo -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.ko.radiant_runaans_hurricane.option = $runaanKo -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
+$shivKo = "<#ff7a3eff>충전<>: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>{0}<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.`n`n<#ff7a3eff>전기불꽃<>: 완전히 <#92dc7bff>충전<>되면 다음 기본 공격이 연쇄 번개를 발사해 대상과 다른 적 최대 {2}명에게 <#a974ffff>{1}의 마법 피해<>를 입힙니다. 번개는 챔피언을 우선으로, 직전 대상으로부터 <$rangeIcon> <#ff86c2ff>사거리 {3}<> 안의 적에게 튕깁니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>{4}%로 적용됩니다<>."
+$i18n.ko.statikk_shiv.option = $shivKo -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
+$i18n.ko.radiant_statikk_shiv.option = $shivKo -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {

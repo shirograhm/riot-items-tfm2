@@ -1003,6 +1003,14 @@
         "radiant_runaans_hurricane": {
             "name": "Radiant Runaan's Hurricane",
             "option": "\n<#ff7a3eff>Wind's Fury<>: Basic attacks fire bolts at up to 2 additional enemies within <#ff86c2ff>70 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>, prioritizing champions, each dealing <#ff9028ff>50%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>. Bolts can <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strike<>."
+        },
+        "statikk_shiv": {
+            "name": "Statikk Shiv",
+            "option": "\n<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>60 magic damage<> to the target and up to 4 more enemies, each within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the last, prioritizing champions. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
+        },
+        "radiant_statikk_shiv": {
+            "name": "Radiant Statikk Shiv",
+            "option": "\n<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>80 magic damage<> to the target and up to 5 more enemies, each within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the last, prioritizing champions. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
         }
     },
     "vi": {
@@ -2009,6 +2017,14 @@
         "radiant_runaans_hurricane": {
             "name": "Cuồng Cung Runaan Ánh Sáng",
             "option": "\n<#ff7a3eff>Gió Cuồng Nộ<>: Đòn đánh thường bắn ra các tia đạn vào tối đa 2 kẻ địch khác trong phạm vi <#ff86c2ff>70<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>, ưu tiên tướng địch, mỗi tia gây <#ff9028ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>. Tia đạn có thể <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>."
+        },
+        "statikk_shiv": {
+            "name": "Dao Điện Statikk",
+            "option": "\n<#ff7a3eff>Tích Điện<>: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\n<#ff7a3eff>Phóng Điện<>: Khi <#92dc7bff>Tích Điện<> đầy, đòn đánh thường tiếp theo phóng ra sét nảy, gây <#a974ffff>60 sát thương phép<> lên mục tiêu và tối đa 4 kẻ địch khác, mỗi lần nảy trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> từ mục tiêu trước, ưu tiên tướng địch. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+        },
+        "radiant_statikk_shiv": {
+            "name": "Dao Điện Statikk Ánh Sáng",
+            "option": "\n<#ff7a3eff>Tích Điện<>: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\n<#ff7a3eff>Phóng Điện<>: Khi <#92dc7bff>Tích Điện<> đầy, đòn đánh thường tiếp theo phóng ra sét nảy, gây <#a974ffff>80 sát thương phép<> lên mục tiêu và tối đa 5 kẻ địch khác, mỗi lần nảy trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> từ mục tiêu trước, ưu tiên tướng địch. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
         }
     },
     "zh-hans": {
@@ -3015,6 +3031,14 @@
         "radiant_runaans_hurricane": {
             "name": "光明版卢安娜的飓风",
             "option": "\n<#ff7a3eff>风怒<>：普通攻击会对 <#ff86c2ff>70 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内最多 2 个额外敌人（优先英雄）发射弩箭，每根弩箭造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>50%<> 的<#ff9028ff>额外物理伤害<>。弩箭可以<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>。"
+        },
+        "statikk_shiv": {
+            "name": "斯塔缇克电刃",
+            "option": "\n<#ff7a3eff>蓄能<>：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n<#ff7a3eff>电火花<>：<#92dc7bff>蓄能<>充满时，你的下一次普通攻击会发射连锁闪电，对目标及最多 4 个其他敌人造成 <#a974ffff>60 点魔法伤害<>，每次弹射距离上一个目标不超过 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>（优先英雄）。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+        },
+        "radiant_statikk_shiv": {
+            "name": "光明版斯塔缇克电刃",
+            "option": "\n<#ff7a3eff>蓄能<>：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n<#ff7a3eff>电火花<>：<#92dc7bff>蓄能<>充满时，你的下一次普通攻击会发射连锁闪电，对目标及最多 5 个其他敌人造成 <#a974ffff>80 点魔法伤害<>，每次弹射距离上一个目标不超过 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>（优先英雄）。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
         }
     },
     "pt-BR": {
@@ -4021,6 +4045,14 @@
         "radiant_runaans_hurricane": {
             "name": "Furacão de Runaan Radiante",
             "option": "\n<#ff7a3eff>Fúria do Vento<>: Ataques básicos disparam projéteis em até 2 inimigos adicionais a até <#ff86c2ff>70 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<>, priorizando campeões, cada um causando <#ff9028ff>50%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>. Os projéteis podem <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causar acerto crítico<>."
+        },
+        "statikk_shiv": {
+            "name": "Faca de Statikk",
+            "option": "\n<#ff7a3eff>Energizado<>: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\n<#ff7a3eff>Eletrocentelha<>: Quando totalmente <#92dc7bff>Energizado<>, seu próximo ataque básico dispara uma cadeia de relâmpagos que causa <#a974ffff>60 de dano mágico<> ao alvo e a até 4 inimigos adicionais, cada um a até <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> do anterior, priorizando campeões. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+        },
+        "radiant_statikk_shiv": {
+            "name": "Faca de Statikk Radiante",
+            "option": "\n<#ff7a3eff>Energizado<>: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\n<#ff7a3eff>Eletrocentelha<>: Quando totalmente <#92dc7bff>Energizado<>, seu próximo ataque básico dispara uma cadeia de relâmpagos que causa <#a974ffff>80 de dano mágico<> ao alvo e a até 5 inimigos adicionais, cada um a até <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> do anterior, priorizando campeões. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
         }
     },
     "ru": {
@@ -5027,6 +5059,14 @@
         "radiant_runaans_hurricane": {
             "name": "Лучезарный Ураган Рунаан",
             "option": "\n<#ff7a3eff>Ярость ветра<>: Базовые атаки выпускают заряды не более чем в 2 дополнительных врагов в пределах <#ff86c2ff>70 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>, в первую очередь в чемпионов. Каждый заряд наносит <#ff9028ff>50%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<>. Заряды могут <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносить критический удар<>."
+        },
+        "statikk_shiv": {
+            "name": "Заточка Статикка",
+            "option": "\n<#ff7a3eff>Заряд<>: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\n<#ff7a3eff>Электрическая искра<>: При полном <#92dc7bff>Заряде<>, ваша следующая базовая атака выпускает цепную молнию, которая наносит <#a974ffff>60 магического урона<> цели и не более чем 4 другим врагам, каждый в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от предыдущего, в первую очередь чемпионам. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+        },
+        "radiant_statikk_shiv": {
+            "name": "Лучезарная Заточка Статикка",
+            "option": "\n<#ff7a3eff>Заряд<>: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\n<#ff7a3eff>Электрическая искра<>: При полном <#92dc7bff>Заряде<>, ваша следующая базовая атака выпускает цепную молнию, которая наносит <#a974ffff>80 магического урона<> цели и не более чем 5 другим врагам, каждый в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от предыдущего, в первую очередь чемпионам. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
         }
     },
     "ko": {
@@ -6033,6 +6073,14 @@
         "radiant_runaans_hurricane": {
             "name": "찬란한 루난의 허리케인",
             "option": "\n<#ff7a3eff>바람의 분노<>: 기본 공격 시 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 70<> 안의 적 최대 2명에게 챔피언을 우선으로 추가 탄환을 발사해 각각 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 50%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 탄환에는 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 적용될 수 있습니다."
+        },
+        "statikk_shiv": {
+            "name": "스태틱의 단검",
+            "option": "\n<#ff7a3eff>충전<>: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n<#ff7a3eff>전기불꽃<>: 완전히 <#92dc7bff>충전<>되면 다음 기본 공격이 연쇄 번개를 발사해 대상과 다른 적 최대 4명에게 <#a974ffff>60의 마법 피해<>를 입힙니다. 번개는 챔피언을 우선으로, 직전 대상으로부터 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적에게 튕깁니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+        },
+        "radiant_statikk_shiv": {
+            "name": "찬란한 스태틱의 단검",
+            "option": "\n<#ff7a3eff>충전<>: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n<#ff7a3eff>전기불꽃<>: 완전히 <#92dc7bff>충전<>되면 다음 기본 공격이 연쇄 번개를 발사해 대상과 다른 적 최대 5명에게 <#a974ffff>80의 마법 피해<>를 입힙니다. 번개는 챔피언을 우선으로, 직전 대상으로부터 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적에게 튕깁니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
         }
     }
 }

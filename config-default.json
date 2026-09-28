@@ -1907,5 +1907,29 @@
     "effect_ad_percent_damage": 50.0,
     "effect_max_targets": 2,
     "effect_max_distance": 70
+  },
+  "statikk_shiv": {
+    "price": 700,
+    "attack": 15,
+    "magic_power": 15,
+    "attack_speed_mult": 30,
+    "move_speed_mult": 4,
+    "effect_max_stacks": 100,
+    "effect_bonus_magic_damage": 60,
+    "effect_minion_percent": 150.0,
+    "effect_max_targets": 4,
+    "effect_max_distance": 50
+  },
+  "radiant_statikk_shiv": {
+    "price": 1000,
+    "attack": 25,
+    "magic_power": 25,
+    "attack_speed_mult": 50,
+    "move_speed_mult": 4,
+    "effect_max_stacks": 100,
+    "effect_bonus_magic_damage": 80,
+    "effect_minion_percent": 150.0,
+    "effect_max_targets": 5,
+    "effect_max_distance": 50
   }
 }

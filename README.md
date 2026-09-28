@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 207 new items (121 base + 86 Radiant) to the game.
+Reskins the 30 existing items and also adds 209 new items (122 base + 87 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -170,6 +170,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Spear of Shojin** | 700G | +200 HP<br>+20 AD<br>+10 Ability Haste | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 700G | +200 HP<br>+50 MR | Vitality: Increase all healing received by 20%. |
 | **Staff of Flowing Water** | 550G | +100 HP<br>+1 HP Regen<br>+30 AP<br>+10 Ability Haste | Rapids: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target 25 Ability Power and 10 Ability Haste for 3 seconds. |
+| **Statikk Shiv** | 700G | +15 AD<br>+15 AP<br>+30% AS<br>+4% MS | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Electrospark: When fully Energized, your next basic attack fires chain lightning that deals 60 magic damage to the target and up to 4 more enemies, each within 50 range of the last, prioritizing champions. This effect is 150% as effective against minions and monsters. |
 | **Sterak's Gage** | 700G | +200 HP<br>+20 AD<br>+15% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Stormrazor** | 800G | +35 AD<br>+20% AS<br>+20% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Stormsurge** | 700G | +55 AP<br>+5% MS<br>+10% Magic Pen | Stormraider: Dealing damage to an enemy champion equal to 25% of their maximum health within 2.5 seconds inflicts them with Squall (30 second cooldown per target). Squall: After 2 seconds, strike the target, dealing 125 + 10% of your Ability Power as magic damage. |
@@ -261,6 +262,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Spear of Shojin** | 1100G | +300 HP<br>+30 AD<br>+20 Ability Haste | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Radiant Spirit Visage** | 950G | +300 HP<br>+75 MR | Vitality: Increase all healing received by 20%. |
 | **Radiant Staff of Flowing Water** | 750G | +150 HP<br>+2 HP Regen<br>+50 AP<br>+15 Ability Haste | Rapids: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target 25 Ability Power and 10 Ability Haste for 3 seconds. |
+| **Radiant Statikk Shiv** | 1000G | +25 AD<br>+25 AP<br>+50% AS<br>+4% MS | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Electrospark: When fully Energized, your next basic attack fires chain lightning that deals 80 magic damage to the target and up to 5 more enemies, each within 50 range of the last, prioritizing champions. This effect is 150% as effective against minions and monsters. |
 | **Radiant Sterak's Gage** | 1000G | +350 HP<br>+25 AD<br>+20% Tenacity | Lifeline: Taking damage that would reduce you below 30% health grants a shield that absorbs damage equal to 60% of your maximum health for 4 seconds (90 second cooldown). |
 | **Radiant Stormrazor** | 1100G | +50 AD<br>+40% AS<br>+25% Crit Chance | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Bolt: When fully Energized, your next basic attack deals 100 bonus magic damage and grants you 35% movement speed for 1.5 seconds. |
 | **Radiant Stormsurge** | 1000G | +100 AP<br>+5% MS<br>+15% Magic Pen | Stormraider: Dealing damage to an enemy champion equal to 25% of their maximum health within 2.5 seconds inflicts them with Squall (30 second cooldown per target). Squall: After 2 seconds, strike the target, dealing 125 + 15% of your Ability Power as magic damage. |
