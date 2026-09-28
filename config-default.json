@@ -1897,7 +1897,7 @@
     "move_speed_mult": 5,
     "effect_ad_percent_damage": 50.0,
     "effect_max_targets": 2,
-    "effect_max_distance": 50
+    "effect_max_distance": 70
   },
   "radiant_runaans_hurricane": {
     "price": 950,
@@ -1906,6 +1906,6 @@
     "move_speed_mult": 5,
     "effect_ad_percent_damage": 50.0,
     "effect_max_targets": 2,
-    "effect_max_distance": 50
+    "effect_max_distance": 70
   }
 }

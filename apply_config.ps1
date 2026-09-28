@@ -925,7 +925,7 @@ $i18n.en.banshees_veil.option = $annulEn -f $veilCd
 $i18n.en.radiant_banshees_veil.option = $annulEn -f $rveilCd
 $i18n.en.edge_of_night.option = ($lethEn -f $eonLeth) + "`n`n" + ($annulEn -f $eonCd)
 $i18n.en.radiant_edge_of_night.option = ($lethEn -f $reonLeth) + "`n`n" + ($annulEn -f $reonCd)
-$runaanEn = "<#ff7a3eff>Wind's Fury<>: Basic attacks fire bolts at up to {0} additional enemies within <#ff86c2ff>{1} <$rangeIcon> range<> of your target, each dealing <#ff9028ff>{2}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>. Bolts can <$critIcon> <#d45656ff>critically strike<>."
+$runaanEn = "<#ff7a3eff>Wind's Fury<>: Basic attacks fire bolts at up to {0} additional enemies within <#ff86c2ff>{1} <$rangeIcon> range<>, prioritizing champions, each dealing <#ff9028ff>{2}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>. Bolts can <$critIcon> <#d45656ff>critically strike<>."
 $i18n.en.runaans_hurricane.option = $runaanEn -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.en.radiant_runaans_hurricane.option = $runaanEn -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
 
@@ -1171,7 +1171,7 @@ $i18n.vi.banshees_veil.option = $annulVi -f $veilCd
 $i18n.vi.radiant_banshees_veil.option = $annulVi -f $rveilCd
 $i18n.vi.edge_of_night.option = ($lethVi -f $eonLeth) + "`n`n" + ($annulVi -f $eonCd)
 $i18n.vi.radiant_edge_of_night.option = ($lethVi -f $reonLeth) + "`n`n" + ($annulVi -f $reonCd)
-$runaanVi = "<#ff7a3eff>Gió Cuồng Nộ<>: Đòn đánh thường bắn ra các tia đạn vào tối đa {0} kẻ địch khác trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon> quanh mục tiêu, mỗi tia gây <#ff9028ff>{2}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>. Tia đạn có thể <$critIcon> <#d45656ff>chí mạng<>."
+$runaanVi = "<#ff7a3eff>Gió Cuồng Nộ<>: Đòn đánh thường bắn ra các tia đạn vào tối đa {0} kẻ địch khác trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon>, ưu tiên tướng địch, mỗi tia gây <#ff9028ff>{2}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>. Tia đạn có thể <$critIcon> <#d45656ff>chí mạng<>."
 $i18n.vi.runaans_hurricane.option = $runaanVi -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.vi.radiant_runaans_hurricane.option = $runaanVi -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
 
@@ -1417,7 +1417,7 @@ $i18n.'zh-hans'.banshees_veil.option = $annulZh -f $veilCd
 $i18n.'zh-hans'.radiant_banshees_veil.option = $annulZh -f $rveilCd
 $i18n.'zh-hans'.edge_of_night.option = ($lethZh -f $eonLeth) + "`n`n" + ($annulZh -f $eonCd)
 $i18n.'zh-hans'.radiant_edge_of_night.option = ($lethZh -f $reonLeth) + "`n`n" + ($annulZh -f $reonCd)
-$runaanZh = "<#ff7a3eff>风怒<>：普通攻击会对目标周围 <#ff86c2ff>{1} <$rangeIcon> 射程<>内最多 {0} 个额外敌人发射弩箭，每根弩箭造成相当于你 <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{2}%<> 的<#ff9028ff>额外物理伤害<>。弩箭可以<$critIcon> <#d45656ff>暴击<>。"
+$runaanZh = "<#ff7a3eff>风怒<>：普通攻击会对 <#ff86c2ff>{1} <$rangeIcon> 射程<>内最多 {0} 个额外敌人（优先英雄）发射弩箭，每根弩箭造成相当于你 <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{2}%<> 的<#ff9028ff>额外物理伤害<>。弩箭可以<$critIcon> <#d45656ff>暴击<>。"
 $i18n.'zh-hans'.runaans_hurricane.option = $runaanZh -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.'zh-hans'.radiant_runaans_hurricane.option = $runaanZh -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
 
@@ -1663,7 +1663,7 @@ $i18n.'pt-BR'.banshees_veil.option = $annulPt -f $veilCd
 $i18n.'pt-BR'.radiant_banshees_veil.option = $annulPt -f $rveilCd
 $i18n.'pt-BR'.edge_of_night.option = ($lethPt -f $eonLeth) + "`n`n" + ($annulPt -f $eonCd)
 $i18n.'pt-BR'.radiant_edge_of_night.option = ($lethPt -f $reonLeth) + "`n`n" + ($annulPt -f $reonCd)
-$runaanPt = "<#ff7a3eff>Fúria do Vento<>: Ataques básicos disparam projéteis em até {0} inimigos adicionais a até <#ff86c2ff>{1} <$rangeIcon> de alcance<> do alvo, cada um causando <#ff9028ff>{2}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>. Os projéteis podem <$critIcon> <#d45656ff>causar acerto crítico<>."
+$runaanPt = "<#ff7a3eff>Fúria do Vento<>: Ataques básicos disparam projéteis em até {0} inimigos adicionais a até <#ff86c2ff>{1} <$rangeIcon> de alcance<>, priorizando campeões, cada um causando <#ff9028ff>{2}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>. Os projéteis podem <$critIcon> <#d45656ff>causar acerto crítico<>."
 $i18n.'pt-BR'.runaans_hurricane.option = $runaanPt -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.'pt-BR'.radiant_runaans_hurricane.option = $runaanPt -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
 
@@ -1909,7 +1909,7 @@ $i18n.ru.banshees_veil.option = $annulRu -f $veilCd
 $i18n.ru.radiant_banshees_veil.option = $annulRu -f $rveilCd
 $i18n.ru.edge_of_night.option = ($lethRu -f $eonLeth) + "`n`n" + ($annulRu -f $eonCd)
 $i18n.ru.radiant_edge_of_night.option = ($lethRu -f $reonLeth) + "`n`n" + ($annulRu -f $reonCd)
-$runaanRu = "<#ff7a3eff>Ярость ветра<>: Базовые атаки выпускают заряды не более чем в {0} дополнительных врагов в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<> от цели, каждый из которых наносит <#ff9028ff>{2}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<>. Заряды могут <$critIcon> <#d45656ff>наносить критический удар<>."
+$runaanRu = "<#ff7a3eff>Ярость ветра<>: Базовые атаки выпускают заряды не более чем в {0} дополнительных врагов в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<>, в первую очередь в чемпионов. Каждый заряд наносит <#ff9028ff>{2}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<>. Заряды могут <$critIcon> <#d45656ff>наносить критический удар<>."
 $i18n.ru.runaans_hurricane.option = $runaanRu -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.ru.radiant_runaans_hurricane.option = $runaanRu -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
 
@@ -2154,7 +2154,7 @@ $i18n.ko.banshees_veil.option = $annulKo -f $veilCd
 $i18n.ko.radiant_banshees_veil.option = $annulKo -f $rveilCd
 $i18n.ko.edge_of_night.option = ($lethKo -f $eonLeth) + "`n`n" + ($annulKo -f $eonCd)
 $i18n.ko.radiant_edge_of_night.option = ($lethKo -f $reonLeth) + "`n`n" + ($annulKo -f $reonCd)
-$runaanKo = "<#ff7a3eff>바람의 분노<>: 기본 공격 시 대상 주변 <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 적 최대 {0}명에게 추가로 탄환을 발사해 각각 <$adIcon> <#ff9028ff>공격력의 {2}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 탄환에는 <$critIcon> <#d45656ff>치명타<>가 적용될 수 있습니다."
+$runaanKo = "<#ff7a3eff>바람의 분노<>: 기본 공격 시 <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 적 최대 {0}명에게 챔피언을 우선으로 추가 탄환을 발사해 각각 <$adIcon> <#ff9028ff>공격력의 {2}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 탄환에는 <$critIcon> <#d45656ff>치명타<>가 적용될 수 있습니다."
 $i18n.ko.runaans_hurricane.option = $runaanKo -f $runaanTargets, $runaanRange, $runaanAd
 $i18n.ko.radiant_runaans_hurricane.option = $runaanKo -f $rrunaanTargets, $rrunaanRange, $rrunaanAd
 

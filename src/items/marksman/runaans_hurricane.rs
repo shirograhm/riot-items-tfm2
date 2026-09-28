@@ -5,8 +5,9 @@ use rand::{RngExt, SeedableRng};
 use crate::config::ItemConfig;
 use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE};
 
-// Wind's Fury: Basic attacks fire bolts at up to 2 additional enemies near the
-// target, each dealing bonus physical damage that can critically strike.
+// Wind's Fury: Basic attacks fire bolts at up to 2 additional enemies within
+// range of the carrier, champions first, each dealing bonus physical damage
+// that can critically strike.
 //
 // The bolts are real projectiles: `spawn_projectile` flies each one from the
 // carrier to its target, and the damage lands when it arrives, through the
@@ -54,7 +55,7 @@ impl RunaansHurricane {
             move_speed_mult: 5,
             effect_ad_percent_damage: 50.0,
             effect_max_targets: 2,
-            effect_max_distance: 50,
+            effect_max_distance: 70,
             // Non-vital stats (internals)
             procs: ProcQueue::new(),
         }
@@ -109,9 +110,17 @@ impl RunaansHurricane {
         self.bolt_hit
     }
 
-    /// Up to `effect_max_targets` enemies within range of `target`, champions
-    /// first, nearest first. Turrets are never picked.
-    fn bolt_targets(&self, ctx: &StableSim<'_>, team: usize, target: usize) -> Vec<usize> {
+    /// Up to `effect_max_targets` enemies other than `target` within range of
+    /// the carrier, as LoL measures it: every champion in range before any
+    /// other unit, nearest first within each. Turrets are never picked. The
+    /// default range sits just past a ranged champion's attack range (60).
+    fn bolt_targets(
+        &self,
+        ctx: &StableSim<'_>,
+        caster: usize,
+        team: usize,
+        target: usize,
+    ) -> Vec<usize> {
         let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
         let range_sq = range * range;
         let mut candidates: Vec<(bool, u64, usize)> = (0..ctx.entity_count())
@@ -125,7 +134,7 @@ impl RunaansHurricane {
             })
             .map(|e| (e.is_champion(), e.id()))
             .filter_map(|(champion, id)| {
-                let dist = ctx.distance_sq(target, id);
+                let dist = ctx.distance_sq(caster, id);
                 (dist <= range_sq).then_some((!champion, dist, id))
             })
             .collect();
@@ -209,7 +218,7 @@ impl StableItem for RunaansHurricane {
             return;
         };
 
-        for id in self.bolt_targets(ctx, team, target) {
+        for id in self.bolt_targets(ctx, caster, team, target) {
             let spec = ProjectileSpawnV1 {
                 caster_id: caster,
                 team,
