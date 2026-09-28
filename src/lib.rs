@@ -1,6 +1,7 @@
 use mod_api_stable::*;
 use std::cell::Cell;
 
+mod annul;
 mod buffs;
 mod build_config;
 mod champion_traits;
@@ -24,6 +25,7 @@ mod tactics;
 
 use items::*;
 
+pub(crate) use annul::Annul;
 pub(crate) use buffs::{add_stack, mark_immolate, refresh_buff};
 pub(crate) use constants::*;
 pub(crate) use item_meta::ItemMeta;
@@ -49,11 +51,13 @@ const LETHALITY_BY_KEY: &[(&str, usize)] = &[
     ("axiom_arc", 18),
     ("bastionbreaker", 22),
     ("collector", 10),
+    ("edge_of_night", 15),
     ("hubris", 18),
     ("opportunity", 18),
     ("radiant_axiom_arc", 18),
     ("radiant_bastionbreaker", 22),
     ("radiant_collector", 10),
+    ("radiant_edge_of_night", 15),
     ("radiant_hubris", 18),
     ("radiant_opportunity", 18),
     ("radiant_serpents_fang", 15),
@@ -359,6 +363,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("eclipse" => Eclipse));
+    reg.add_item(configured!("edge_of_night" => EdgeOfNight));
     reg.add_item(configured!("endless_hunger" => EndlessHunger));
     reg.add_item(configured!("essence_reaver" => EssenceReaver));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
@@ -445,6 +450,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured_radiant!("radiant_eclipse" => Eclipse));
+    reg.add_item(configured_radiant!("radiant_edge_of_night" => EdgeOfNight));
     reg.add_item(configured_radiant!("radiant_endless_hunger" => EndlessHunger));
     reg.add_item(configured_radiant!("radiant_essence_reaver" => EssenceReaver));
     reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));

@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 202 new items (118 base + 84 Radiant) to the game.
+Reskins the 30 existing items and also adds 204 new items (119 base + 85 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -102,7 +102,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Atma's Reckoning** | 750G | +250 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Axiom Arc** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
 | **Bandlepipes** | 500G | +100 HP<br>+20 Armor<br>+30 MR<br>+15 Ability Haste | Fanfare: Landing an Ability on an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% bonus attack speed. |
-| **Banshee's Veil** | 700G | +60 AP<br>+40 MR | Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second cooldown). |
+| **Banshee's Veil** | 700G | +60 AP<br>+40 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Bastionbreaker** | 650G | +35 AD<br>+15 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus true damage. |
 | **Black Cleaver** | 750G | +25 AD<br>+150 HP<br>+5 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
 | **Blackfire Torch** | 650G | +65 AP<br>+15 Ability Haste | Maleficent: Landing an Ability on an enemy champion grants 5 Ability Power for 4 seconds (max 4 stacks). |
@@ -121,6 +121,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Dusk and Dawn** | 700G | +100 HP<br>+30 AP<br>+15% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Echoes of Helia** | 550G | +150 HP<br>+2 HP Regen<br>+25 AP<br>+15 Ability Haste | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion (excluding yourself) consumes all Soul Charges and heals them equal to the consumed amount. |
 | **Eclipse** | 650G | +40 AD<br>+15 Ability Haste | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast instance. Hitting a marked champion consumes the mark to deal bonus physical damage equal to 5% of their maximum health and grant you a shield that absorbs 100 + 15% of your Attack Damage for 2 seconds (6 second cooldown per target). |
+| **Edge of Night** | 750G | +35 AD<br>+100 HP | Gain 15 Lethality.<br>Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Endless Hunger** | 700G | +40 AD<br>+5% Omnivamp<br>+20% Tenacity | Famine: Gain 5 (+5% AD) Ability Haste.<br>Feast: Scoring a takedown on an enemy champion grants 15% Omnivamp for 5 seconds. |
 | **Essence Reaver** | 800G | +30 AD<br>+20% AS<br>+10 Ability Haste<br>+20% Crit Chance | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 125% of your Attack Damage (+100% Crit Chance) as bonus physical damage on-hit (1.5 second cooldown). |
 | **Experimental Hexplate** | 600G | +150 HP<br>+30% AS | Overdrive: Gain 15 Ultimate Ability Haste. |
@@ -191,7 +192,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Atma's Reckoning** | 1050G | +450 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Radiant Axiom Arc** | 950G | +55 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
 | **Radiant Bandlepipes** | 750G | +200 HP<br>+30 Armor<br>+50 MR<br>+20 Ability Haste | Fanfare: Landing an Ability on an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% bonus attack speed. |
-| **Radiant Banshee's Veil** | 950G | +100 AP<br>+60 MR | Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second cooldown). |
+| **Radiant Banshee's Veil** | 950G | +100 AP<br>+60 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Radiant Bastionbreaker** | 1000G | +55 AD<br>+20 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus true damage. |
 | **Radiant Black Cleaver** | 1100G | +35 AD<br>+250 HP<br>+10 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Blackfire Torch** | 950G | +90 AP<br>+25 Ability Haste | Maleficent: Landing an Ability on an enemy champion grants 10 Ability Power for 4 seconds (max 4 stacks). |
@@ -210,6 +211,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Dusk and Dawn** | 1000G | +150 HP<br>+75 AP<br>+25% AS<br>+20 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Radiant Echoes of Helia** | 750G | +250 HP<br>+3 HP Regen<br>+35 AP<br>+20 Ability Haste | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion (excluding yourself) consumes all Soul Charges and heals them equal to the consumed amount. |
 | **Radiant Eclipse** | 1000G | +65 AD<br>+15 Ability Haste | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast instance. Hitting a marked champion consumes the mark to deal bonus physical damage equal to 8% of their maximum health and grant you a shield that absorbs 120 + 20% of your Attack Damage for 2 seconds (6 second cooldown per target). |
+| **Radiant Edge of Night** | 1000G | +60 AD<br>+150 HP | Gain 15 Lethality.<br>Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Radiant Endless Hunger** | 1000G | +60 AD<br>+10% Omnivamp<br>+25% Tenacity | Famine: Gain 5 (+5% AD) Ability Haste.<br>Feast: Scoring a takedown on an enemy champion grants 15% Omnivamp for 5 seconds. |
 | **Radiant Essence Reaver** | 1000G | +50 AD<br>+30% AS<br>+15 Ability Haste<br>+25% Crit Chance | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 125% of your Attack Damage (+100% Crit Chance) as bonus physical damage on-hit (1.5 second cooldown). |
 | **Radiant Experimental Hexplate** | 950G | +200 HP<br>+50% AS<br>+5% MS | Overdrive: Gain 25 Ultimate Ability Haste. |

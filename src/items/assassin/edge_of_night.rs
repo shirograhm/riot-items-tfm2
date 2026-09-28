@@ -1,33 +1,36 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, Annul, ItemMeta};
+use crate::{apply_config, apply_lethality, Annul, ItemMeta};
 
 // Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second
-// cooldown). The shield itself lives in `crate::annul`.
+// cooldown). The shield itself lives in `crate::annul`, shared with Banshee's
+// Veil.
 
 #[derive(Clone, Debug)]
-pub struct BansheesVeil {
+pub struct EdgeOfNight {
     meta: ItemMeta,
     price: usize,
-    magic_power: i32,
-    magic_resistance: i32,
+    attack: i32,
+    hp: i32,
+    effect_lethality: usize,
     effect_cooldown_seconds: f64,
     // Non-vital stats (internals)
     annul: Annul,
 }
 
-impl BansheesVeil {
+impl EdgeOfNight {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base(
-                "banshees_veil",
-                &["hextech_alternator"],
-                &["radiant_banshees_veil"],
+                "edge_of_night",
+                &["serrated_dirk"],
+                &["radiant_edge_of_night"],
             ),
-            price: 700,
-            magic_power: 60,
-            magic_resistance: 40,
+            price: 750,
+            attack: 35,
+            hp: 100,
+            effect_lethality: 15,
             effect_cooldown_seconds: 40.0,
             // Non-vital stats (internals)
             annul: Annul::default(),
@@ -36,10 +39,11 @@ impl BansheesVeil {
 
     pub fn radiant() -> Self {
         Self {
-            meta: ItemMeta::radiant("radiant_banshees_veil", &["banshees_veil"]),
-            price: 950,
-            magic_power: 100,
-            magic_resistance: 60,
+            meta: ItemMeta::radiant("radiant_edge_of_night", &["edge_of_night"]),
+            price: 1000,
+            attack: 60,
+            hp: 150,
+            effect_lethality: 15,
             effect_cooldown_seconds: 40.0,
             ..Self::base()
         }
@@ -57,19 +61,19 @@ impl BansheesVeil {
         apply_config!(
             self,
             cfg,
-            [price, magic_power, magic_resistance, effect_cooldown_seconds]
+            [price, attack, hp, effect_lethality, effect_cooldown_seconds]
         );
         self
     }
 }
 
-impl Default for BansheesVeil {
+impl Default for EdgeOfNight {
     fn default() -> Self {
         Self::base()
     }
 }
 
-impl StableItem for BansheesVeil {
+impl StableItem for EdgeOfNight {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
@@ -100,9 +104,24 @@ impl StableItem for BansheesVeil {
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
-            magic_power: self.magic_power,
-            magic_resistance: self.magic_resistance,
+            attack: self.attack,
+            hp: self.hp,
             ..Default::default()
+        }
+    }
+
+    fn on_attack(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        caster: usize,
+        target: usize,
+        damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
+    ) {
+        if ctx.get_entity(target).is_some_and(|t| !t.is_tower()) {
+            apply_lethality(ctx, caster, target, self.effect_lethality, damage);
         }
     }
 
@@ -140,10 +159,10 @@ impl StableItem for BansheesVeil {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Ap, ItemTagV1::MagicResistance]
+        vec![ItemTagV1::Ad, ItemTagV1::Hp, ItemTagV1::DefensePenetration]
     }
 
     fn category(&self) -> ItemCategoryV1 {
-        ItemCategoryV1::Magic
+        ItemCategoryV1::Ad
     }
 }

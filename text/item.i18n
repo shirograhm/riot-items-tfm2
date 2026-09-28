@@ -983,6 +983,14 @@
         "radiant_banshees_veil": {
             "name": "Radiant Banshee's Veil",
             "option": "\n<#ff7a3eff>Annul<>: Grants a <#92dc7bff>spell shield<> that blocks the next enemy Ability (<#e8a800ff>40 second<> cooldown)."
+        },
+        "edge_of_night": {
+            "name": "Edge of Night",
+            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Annul<>: Grants a <#92dc7bff>spell shield<> that blocks the next enemy Ability (<#e8a800ff>40 second<> cooldown)."
+        },
+        "radiant_edge_of_night": {
+            "name": "Radiant Edge of Night",
+            "option": "\nGain <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Annul<>: Grants a <#92dc7bff>spell shield<> that blocks the next enemy Ability (<#e8a800ff>40 second<> cooldown)."
         }
     },
     "vi": {
@@ -1969,6 +1977,14 @@
         "radiant_banshees_veil": {
             "name": "Dây Chuyền Chữ Thập Ánh Sáng",
             "option": "\n<#ff7a3eff>Hóa Giải<>: Tạo 1 <#92dc7bff>Khiên Phép<> chặn kỹ năng tiếp theo của kẻ địch (hồi chiêu <#e8a800ff>40 giây<>)."
+        },
+        "edge_of_night": {
+            "name": "Áo Choàng Bóng Tối",
+            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Hóa Giải<>: Tạo 1 <#92dc7bff>Khiên Phép<> chặn kỹ năng tiếp theo của kẻ địch (hồi chiêu <#e8a800ff>40 giây<>)."
+        },
+        "radiant_edge_of_night": {
+            "name": "Áo Choàng Bóng Tối Ánh Sáng",
+            "option": "\nNhận <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Hóa Giải<>: Tạo 1 <#92dc7bff>Khiên Phép<> chặn kỹ năng tiếp theo của kẻ địch (hồi chiêu <#e8a800ff>40 giây<>)."
         }
     },
     "zh-hans": {
@@ -2955,6 +2971,14 @@
         "radiant_banshees_veil": {
             "name": "光明版女妖面纱",
             "option": "\n<#ff7a3eff>废除<>：提供一层<#92dc7bff>法术护盾<>来格挡下一个敌方技能（冷却 <#e8a800ff>40秒<>）。"
+        },
+        "edge_of_night": {
+            "name": "夜之锋刃",
+            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>废除<>：提供一层<#92dc7bff>法术护盾<>来格挡下一个敌方技能（冷却 <#e8a800ff>40秒<>）。"
+        },
+        "radiant_edge_of_night": {
+            "name": "光明版夜之锋刃",
+            "option": "\n获得 <#ffdd8eff>15 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>废除<>：提供一层<#92dc7bff>法术护盾<>来格挡下一个敌方技能（冷却 <#e8a800ff>40秒<>）。"
         }
     },
     "pt-BR": {
@@ -3941,6 +3965,14 @@
         "radiant_banshees_veil": {
             "name": "Véu da Banshee Radiante",
             "option": "\n<#ff7a3eff>Anular<>: Concede um <#92dc7bff>Escudo de Feitiço<> que bloqueia a próxima Habilidade inimiga (recarga de <#e8a800ff>40 segundos<>)."
+        },
+        "edge_of_night": {
+            "name": "Limiar da Noite",
+            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Anular<>: Concede um <#92dc7bff>Escudo de Feitiço<> que bloqueia a próxima Habilidade inimiga (recarga de <#e8a800ff>40 segundos<>)."
+        },
+        "radiant_edge_of_night": {
+            "name": "Limiar da Noite Radiante",
+            "option": "\nGanha <#ffdd8eff>15 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Anular<>: Concede um <#92dc7bff>Escudo de Feitiço<> que bloqueia a próxima Habilidade inimiga (recarga de <#e8a800ff>40 segundos<>)."
         }
     },
     "ru": {
@@ -4927,6 +4959,14 @@
         "radiant_banshees_veil": {
             "name": "Лучезарная Завеса банши",
             "option": "\n<#ff7a3eff>Отвод<>: Накладывает <#92dc7bff>щит от заклинаний<>, который блокирует следующее вражеское умение (перезарядка <#e8a800ff>40 секунд<>)."
+        },
+        "edge_of_night": {
+            "name": "Грань ночи",
+            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Отвод<>: Накладывает <#92dc7bff>щит от заклинаний<>, который блокирует следующее вражеское умение (перезарядка <#e8a800ff>40 секунд<>)."
+        },
+        "radiant_edge_of_night": {
+            "name": "Лучезарная Грань ночи",
+            "option": "\nДаёт <#ffdd8eff>15 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Отвод<>: Накладывает <#92dc7bff>щит от заклинаний<>, который блокирует следующее вражеское умение (перезарядка <#e8a800ff>40 секунд<>)."
         }
     },
     "ko": {
@@ -5913,6 +5953,14 @@
         "radiant_banshees_veil": {
             "name": "찬란한 밴시의 장막",
             "option": "\n<#ff7a3eff>무효화<>: 적의 다음 스킬을 막아 주는 <#92dc7bff>주문 방어막<>을 생성합니다. 재사용 대기시간은 <#e8a800ff>40초<>입니다."
+        },
+        "edge_of_night": {
+            "name": "밤의 끝자락",
+            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>무효화<>: 적의 다음 스킬을 막아 주는 <#92dc7bff>주문 방어막<>을 생성합니다. 재사용 대기시간은 <#e8a800ff>40초<>입니다."
+        },
+        "radiant_edge_of_night": {
+            "name": "찬란한 밤의 끝자락",
+            "option": "\n<#ffdd8eff>15의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>무효화<>: 적의 다음 스킬을 막아 주는 <#92dc7bff>주문 방어막<>을 생성합니다. 재사용 대기시간은 <#e8a800ff>40초<>입니다."
         }
     }
 }

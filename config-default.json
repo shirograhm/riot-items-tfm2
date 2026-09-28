@@ -1869,5 +1869,19 @@
     "magic_power": 100,
     "magic_resistance": 60,
     "effect_cooldown_seconds": 40
+  },
+  "edge_of_night": {
+    "price": 750,
+    "attack": 35,
+    "hp": 100,
+    "effect_lethality": 15,
+    "effect_cooldown_seconds": 40
+  },
+  "radiant_edge_of_night": {
+    "price": 1000,
+    "attack": 60,
+    "hp": 150,
+    "effect_lethality": 15,
+    "effect_cooldown_seconds": 40
   }
 }

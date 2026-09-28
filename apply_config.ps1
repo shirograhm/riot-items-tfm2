@@ -621,6 +621,10 @@ $rhungVamp = [int]$config.radiant_endless_hunger.effect_vamp
 $rhungDur = [double]$config.radiant_endless_hunger.effect_duration_seconds
 $veilCd = [double]$config.banshees_veil.effect_cooldown_seconds
 $rveilCd = [double]$config.radiant_banshees_veil.effect_cooldown_seconds
+$eonLeth = [int]$config.edge_of_night.effect_lethality
+$eonCd = [double]$config.edge_of_night.effect_cooldown_seconds
+$reonLeth = [int]$config.radiant_edge_of_night.effect_lethality
+$reonCd = [double]$config.radiant_edge_of_night.effect_cooldown_seconds
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -908,9 +912,11 @@ $i18n.en.radiant_essence_reaver.option = $reapEn -f $rreapAd, $rreapCrit, $rreap
 $hungEn = "<#ff7a3eff>Famine<>: Gain <#4b7cffff>{0}<> <#ff9028ff>(+{1}%<> <$adIcon> <#ff9028ff>AD)<> <$cdrIcon> <#4b7cffff>Ability Haste<>.`n`n<#ff7a3eff>Feast<>: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>Omnivamp<> for <#e8a800ff>{3} seconds<>."
 $i18n.en.endless_hunger.option = $hungEn -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
 $i18n.en.radiant_endless_hunger.option = $hungEn -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
-$veilEn = "<#ff7a3eff>Annul<>: Grants a <#92dc7bff>Spell Shield<> that blocks the next enemy Ability (<#e8a800ff>{0} second<> cooldown)."
-$i18n.en.banshees_veil.option = $veilEn -f $veilCd
-$i18n.en.radiant_banshees_veil.option = $veilEn -f $rveilCd
+$annulEn = "<#ff7a3eff>Annul<>: Grants a <#92dc7bff>spell shield<> that blocks the next enemy Ability (<#e8a800ff>{0} second<> cooldown)."
+$i18n.en.banshees_veil.option = $annulEn -f $veilCd
+$i18n.en.radiant_banshees_veil.option = $annulEn -f $rveilCd
+$i18n.en.edge_of_night.option = ($lethEn -f $eonLeth) + "`n`n" + ($annulEn -f $eonCd)
+$i18n.en.radiant_edge_of_night.option = ($lethEn -f $reonLeth) + "`n`n" + ($annulEn -f $reonCd)
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -1148,9 +1154,11 @@ $i18n.vi.radiant_essence_reaver.option = $reapVi -f $rreapAd, $rreapCrit, $rreap
 $hungVi = "<#ff7a3eff>Nạn Đói<>: Nhận <#4b7cffff>{0}<> <#ff9028ff>(+{1}%<> <$adIcon> <#ff9028ff>SMCK)<> <$cdrIcon> <#4b7cffff>Điểm Hồi Kỹ Năng<>.`n`n<#ff7a3eff>Xơi Tái<>: Khi tham gia hạ gục một tướng địch, nhận <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>{3} giây<>."
 $i18n.vi.endless_hunger.option = $hungVi -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
 $i18n.vi.radiant_endless_hunger.option = $hungVi -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
-$veilVi = "<#ff7a3eff>Hóa Giải<>: Tạo 1 <#92dc7bff>Khiên Phép<> chặn kỹ năng tiếp theo của kẻ địch (hồi chiêu <#e8a800ff>{0} giây<>)."
-$i18n.vi.banshees_veil.option = $veilVi -f $veilCd
-$i18n.vi.radiant_banshees_veil.option = $veilVi -f $rveilCd
+$annulVi = "<#ff7a3eff>Hóa Giải<>: Tạo 1 <#92dc7bff>Khiên Phép<> chặn kỹ năng tiếp theo của kẻ địch (hồi chiêu <#e8a800ff>{0} giây<>)."
+$i18n.vi.banshees_veil.option = $annulVi -f $veilCd
+$i18n.vi.radiant_banshees_veil.option = $annulVi -f $rveilCd
+$i18n.vi.edge_of_night.option = ($lethVi -f $eonLeth) + "`n`n" + ($annulVi -f $eonCd)
+$i18n.vi.radiant_edge_of_night.option = ($lethVi -f $reonLeth) + "`n`n" + ($annulVi -f $reonCd)
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1388,9 +1396,11 @@ $i18n.'zh-hans'.radiant_essence_reaver.option = $reapZh -f $rreapAd, $rreapCrit,
 $hungZh = "<#ff7a3eff>饥馑<>：获得 <#4b7cffff>{0}<><#ff9028ff>（+{1}%<> <$adIcon> <#ff9028ff>攻击力）<><$cdrIcon> <#4b7cffff>技能急速<>。`n`n<#ff7a3eff>盛宴<>：参与击杀敌方英雄时，获得 <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>全能吸血<>，持续 <#e8a800ff>{3}秒<>。"
 $i18n.'zh-hans'.endless_hunger.option = $hungZh -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
 $i18n.'zh-hans'.radiant_endless_hunger.option = $hungZh -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
-$veilZh = "<#ff7a3eff>废除<>：提供一层<#92dc7bff>法术护盾<>来格挡下一个敌方技能（冷却 <#e8a800ff>{0}秒<>）。"
-$i18n.'zh-hans'.banshees_veil.option = $veilZh -f $veilCd
-$i18n.'zh-hans'.radiant_banshees_veil.option = $veilZh -f $rveilCd
+$annulZh = "<#ff7a3eff>废除<>：提供一层<#92dc7bff>法术护盾<>来格挡下一个敌方技能（冷却 <#e8a800ff>{0}秒<>）。"
+$i18n.'zh-hans'.banshees_veil.option = $annulZh -f $veilCd
+$i18n.'zh-hans'.radiant_banshees_veil.option = $annulZh -f $rveilCd
+$i18n.'zh-hans'.edge_of_night.option = ($lethZh -f $eonLeth) + "`n`n" + ($annulZh -f $eonCd)
+$i18n.'zh-hans'.radiant_edge_of_night.option = ($lethZh -f $reonLeth) + "`n`n" + ($annulZh -f $reonCd)
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1628,9 +1638,11 @@ $i18n.'pt-BR'.radiant_essence_reaver.option = $reapPt -f $rreapAd, $rreapCrit, $
 $hungPt = "<#ff7a3eff>Fome<>: Recebe <#4b7cffff>{0}<> <#ff9028ff>(+{1}%<> <$adIcon> <#ff9028ff>Dano de Ataque)<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade<>.`n`n<#ff7a3eff>Banquete<>: Ao participar do abate de um campeão inimigo, concede <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>roubo de vida<> por <#e8a800ff>{3} segundos<>."
 $i18n.'pt-BR'.endless_hunger.option = $hungPt -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
 $i18n.'pt-BR'.radiant_endless_hunger.option = $hungPt -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
-$veilPt = "<#ff7a3eff>Anular<>: Concede um <#92dc7bff>Escudo de Feitiço<> que bloqueia a próxima Habilidade inimiga (recarga de <#e8a800ff>{0} segundos<>)."
-$i18n.'pt-BR'.banshees_veil.option = $veilPt -f $veilCd
-$i18n.'pt-BR'.radiant_banshees_veil.option = $veilPt -f $rveilCd
+$annulPt = "<#ff7a3eff>Anular<>: Concede um <#92dc7bff>Escudo de Feitiço<> que bloqueia a próxima Habilidade inimiga (recarga de <#e8a800ff>{0} segundos<>)."
+$i18n.'pt-BR'.banshees_veil.option = $annulPt -f $veilCd
+$i18n.'pt-BR'.radiant_banshees_veil.option = $annulPt -f $rveilCd
+$i18n.'pt-BR'.edge_of_night.option = ($lethPt -f $eonLeth) + "`n`n" + ($annulPt -f $eonCd)
+$i18n.'pt-BR'.radiant_edge_of_night.option = ($lethPt -f $reonLeth) + "`n`n" + ($annulPt -f $reonCd)
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -1868,9 +1880,11 @@ $i18n.ru.radiant_essence_reaver.option = $reapRu -f $rreapAd, $rreapCrit, $rreap
 $hungRu = "<#ff7a3eff>Голод<>: Даёт <#4b7cffff>{0}<> <#ff9028ff>(+{1}%<> <$adIcon> <#ff9028ff>силы атаки)<> <$cdrIcon> <#4b7cffff>ускорения умений<>.`n`n<#ff7a3eff>Пиршество<>: При участии в убийстве вражеского чемпиона даёт <#b7462dff>{2}%<> <$vampIcon> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>{3} секунд<>."
 $i18n.ru.endless_hunger.option = $hungRu -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
 $i18n.ru.radiant_endless_hunger.option = $hungRu -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
-$veilRu = "<#ff7a3eff>Отвод<>: Накладывает <#92dc7bff>щит от заклинаний<>, который блокирует следующее вражеское умение (перезарядка <#e8a800ff>{0} секунд<>)."
-$i18n.ru.banshees_veil.option = $veilRu -f $veilCd
-$i18n.ru.radiant_banshees_veil.option = $veilRu -f $rveilCd
+$annulRu = "<#ff7a3eff>Отвод<>: Накладывает <#92dc7bff>щит от заклинаний<>, который блокирует следующее вражеское умение (перезарядка <#e8a800ff>{0} секунд<>)."
+$i18n.ru.banshees_veil.option = $annulRu -f $veilCd
+$i18n.ru.radiant_banshees_veil.option = $annulRu -f $rveilCd
+$i18n.ru.edge_of_night.option = ($lethRu -f $eonLeth) + "`n`n" + ($annulRu -f $eonCd)
+$i18n.ru.radiant_edge_of_night.option = ($lethRu -f $reonLeth) + "`n`n" + ($annulRu -f $reonCd)
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -2107,9 +2121,11 @@ $i18n.ko.radiant_essence_reaver.option = $reapKo -f $rreapAd, $rreapCrit, $rreap
 $hungKo = "<#ff7a3eff>기근<>: <$cdrIcon> <#4b7cffff>스킬 가속<>이 <#4b7cffff>{0}<> <#ff9028ff>(<$adIcon> 공격력의 +{1}%)<> 증가합니다.`n`n<#ff7a3eff>만찬<>: 적 챔피언 처치에 관여하면 <#e8a800ff>{3}초<> 동안 <$vampIcon> <#b7462dff>모든 피해 흡혈 {2}%<>를 얻습니다."
 $i18n.ko.endless_hunger.option = $hungKo -f $hungFlat, $hungAdPct, $hungVamp, $hungDur
 $i18n.ko.radiant_endless_hunger.option = $hungKo -f $rhungFlat, $rhungAdPct, $rhungVamp, $rhungDur
-$veilKo = "<#ff7a3eff>무효화<>: 적의 다음 스킬을 막아 주는 <#92dc7bff>주문 방어막<>을 생성합니다. 재사용 대기시간은 <#e8a800ff>{0}초<>입니다."
-$i18n.ko.banshees_veil.option = $veilKo -f $veilCd
-$i18n.ko.radiant_banshees_veil.option = $veilKo -f $rveilCd
+$annulKo = "<#ff7a3eff>무효화<>: 적의 다음 스킬을 막아 주는 <#92dc7bff>주문 방어막<>을 생성합니다. 재사용 대기시간은 <#e8a800ff>{0}초<>입니다."
+$i18n.ko.banshees_veil.option = $annulKo -f $veilCd
+$i18n.ko.radiant_banshees_veil.option = $annulKo -f $rveilCd
+$i18n.ko.edge_of_night.option = ($lethKo -f $eonLeth) + "`n`n" + ($annulKo -f $eonCd)
+$i18n.ko.radiant_edge_of_night.option = ($lethKo -f $reonLeth) + "`n`n" + ($annulKo -f $reonCd)
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {
@@ -2343,3 +2359,5 @@ Write-Host "  Endless Hunger:            ${hungFlat} + ${hungAdPct}% AD haste / 
 Write-Host "  Radiant Endless Hunger:    ${rhungFlat} + ${rhungAdPct}% AD haste / Feast ${rhungVamp}% omnivamp ${rhungDur}s"
 Write-Host "  Banshee's Veil:            Annul spell shield / ${veilCd}s CD"
 Write-Host "  Radiant Banshee's Veil:    Annul spell shield / ${rveilCd}s CD"
+Write-Host "  Edge of Night:             ${eonLeth} lethality / Annul spell shield / ${eonCd}s CD"
+Write-Host "  Radiant Edge of Night:     ${reonLeth} lethality / Annul spell shield / ${reonCd}s CD"
