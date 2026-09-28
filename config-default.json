@@ -1857,5 +1857,17 @@
     "effect_ad_percent_haste": 5.0,
     "effect_vamp": 15,
     "effect_duration_seconds": 5
+  },
+  "banshees_veil": {
+    "price": 700,
+    "magic_power": 60,
+    "magic_resistance": 40,
+    "effect_cooldown_seconds": 40
+  },
+  "radiant_banshees_veil": {
+    "price": 950,
+    "magic_power": 100,
+    "magic_resistance": 60,
+    "effect_cooldown_seconds": 40
   }
 }

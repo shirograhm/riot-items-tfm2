@@ -1,6 +1,7 @@
 //! Completed items in the Mage category.
 
 items! {
+    banshees_veil,
     blackfire_torch,
     bloodletters_curse,
     cosmic_drive,

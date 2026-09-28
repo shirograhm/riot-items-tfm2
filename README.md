@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 200 new items (117 base + 83 Radiant) to the game.
+Reskins the 30 existing items and also adds 202 new items (118 base + 84 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -102,6 +102,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Atma's Reckoning** | 750G | +250 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Axiom Arc** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
 | **Bandlepipes** | 500G | +100 HP<br>+20 Armor<br>+30 MR<br>+15 Ability Haste | Fanfare: Landing an Ability on an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% bonus attack speed. |
+| **Banshee's Veil** | 700G | +60 AP<br>+40 MR | Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second cooldown). |
 | **Bastionbreaker** | 650G | +35 AD<br>+15 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus true damage. |
 | **Black Cleaver** | 750G | +25 AD<br>+150 HP<br>+5 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
 | **Blackfire Torch** | 650G | +65 AP<br>+15 Ability Haste | Maleficent: Landing an Ability on an enemy champion grants 5 Ability Power for 4 seconds (max 4 stacks). |
@@ -190,6 +191,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Atma's Reckoning** | 1050G | +450 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Radiant Axiom Arc** | 950G | +55 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
 | **Radiant Bandlepipes** | 750G | +200 HP<br>+30 Armor<br>+50 MR<br>+20 Ability Haste | Fanfare: Landing an Ability on an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% bonus attack speed. |
+| **Radiant Banshee's Veil** | 950G | +100 AP<br>+60 MR | Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second cooldown). |
 | **Radiant Bastionbreaker** | 1000G | +55 AD<br>+20 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus true damage. |
 | **Radiant Black Cleaver** | 1100G | +35 AD<br>+250 HP<br>+10 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Blackfire Torch** | 950G | +90 AP<br>+25 Ability Haste | Maleficent: Landing an Ability on an enemy champion grants 10 Ability Power for 4 seconds (max 4 stacks). |

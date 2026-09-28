@@ -79,6 +79,13 @@
             "anim": "asset/riot_items_tfm2/effects/immolate_flames",
             "tag": "flames",
             "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "banshees_veil_annul",
+            "anim": "asset/riot_items_tfm2/effects/banshees_veil_shield",
+            "tag": "shield",
+            "z": 1
         }
     ]
 }

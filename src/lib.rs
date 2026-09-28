@@ -340,6 +340,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("atmas_reckoning" => AtmasReckoning, passive_crit));
     reg.add_item(configured!("axiom_arc" => AxiomArc));
     reg.add_item(configured!("bandlepipes" => Bandlepipes));
+    reg.add_item(configured!("banshees_veil" => BansheesVeil));
     reg.add_item(configured!("bastionbreaker" => Bastionbreaker));
     reg.add_item(configured!("black_cleaver" => BlackCleaver));
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
@@ -425,6 +426,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning, passive_crit));
     reg.add_item(configured_radiant!("radiant_axiom_arc" => AxiomArc));
     reg.add_item(configured_radiant!("radiant_bandlepipes" => Bandlepipes));
+    reg.add_item(configured_radiant!("radiant_banshees_veil" => BansheesVeil));
     reg.add_item(configured_radiant!("radiant_bastionbreaker" => Bastionbreaker));
     reg.add_item(configured_radiant!("radiant_black_cleaver" => BlackCleaver));
     reg.add_item(configured_radiant!("radiant_blackfire_torch" => BlackfireTorch));

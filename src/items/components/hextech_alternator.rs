@@ -76,6 +76,7 @@ impl StableItem for HextechAlternator {
             "stormsurge".to_string(),
             "lich_bane".to_string(),
             "cosmic_drive".to_string(),
+            "banshees_veil".to_string(),
         ]
     }
 
