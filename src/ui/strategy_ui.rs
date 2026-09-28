@@ -422,7 +422,7 @@ const COMP_ROOT: &str = "training";
 /// right screen?" test to gate it with.
 const COMP_PROBE_EVERY: u32 = 30;
 
-/// Depth and node budget for that sweep, mirroring `item_stats_ui::find_screen`.
+/// Depth and node budget for that sweep, mirroring `item_stats::ui::find_screen`.
 /// A depth limit alone does not bound the walk — one wide level can be hundreds
 /// of nodes, and this runs on the UI thread.
 const COMP_PROBE_DEPTH: u32 = 4;
@@ -472,7 +472,7 @@ const TAB_HOVER_TEXT: &str = "#e0e2e7ff";
 /// they live in different scenes. `#contents` is authored inside `strategy.ui`,
 /// so `main.contents` does not exist at all while the composition test is up —
 /// see [`EditorPaths`].
-const EDITOR_SOURCE: &str = include_str!("../ui/layout/build_editor.ui");
+const EDITOR_SOURCE: &str = include_str!("../../ui/layout/build_editor.ui");
 const EDITOR_NODE: &str = "build_editor";
 
 /// Sheet the item icons come from. The mod overrides this asset with its own
@@ -2291,7 +2291,7 @@ fn sync_filter(ctx: &mut StableClient<'_>) {
 /// `main`; and `contents` is a node authored *inside* `strategy.ui`, so it does
 /// not exist on any screen but that one. `ui_visible` returned `None` for the
 /// whole path, the vanilla rows were never hidden and the editor never opened —
-/// the same silent failure `item_stats_ui::resolve_screen` documents for the
+/// the same silent failure `item_stats::ui::resolve_screen` documents for the
 /// statistics tab, which cost a build there.
 ///
 /// So the documented path is a *candidate*, not an answer: [`COMP_ROOT`] is
@@ -2339,7 +2339,7 @@ fn resolve_comp_tactics(ctx: &StableClient<'_>) -> Option<String> {
 
 /// Whether the client says the Training tab is the one up.
 ///
-/// Gates the sweep in [`resolve_comp_tactics`] the way `item_stats_ui`'s
+/// Gates the sweep in [`resolve_comp_tactics`] the way `item_stats::ui`'s
 /// `on_statistics_tab` gates its own. `None` means the client could not answer,
 /// and the sweep is allowed rather than blocked: the throttle still bounds it,
 /// and refusing on a missing answer would make the fallback dead code on any
@@ -2827,7 +2827,7 @@ fn list_entry_style(lit: bool, idle_text: &str) -> String {
 /// considers selected, and `selected_image`/`selected_label` for a vanilla one
 /// it does.
 ///
-/// Shared with [`crate::item_stats_ui`], whose fourth tab on the statistics
+/// Shared with [`crate::item_stats::ui`], whose fourth tab on the statistics
 /// screen is the same trick against a different runner: same `strategy_option`
 /// style underneath, so the same pair of property sets lights and dims it.
 pub(crate) fn tab_style(image_key: &str, label_key: &str, lit: bool) -> String {
@@ -3444,7 +3444,7 @@ impl StableExtension for StrategyPicker {
 
         // Same again, for the statistics screen and its Item Stats tab. Inert
         // anywhere else: it returns on its first line unless that screen is up.
-        crate::item_stats_ui::sync(ctx);
+        crate::item_stats::ui::sync(ctx);
 
         // The composition test hosts the editor too. It has to be handled
         // before the gate below, which returns — and tears the editor down —

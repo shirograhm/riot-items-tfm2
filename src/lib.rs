@@ -1,35 +1,30 @@
 use mod_api_stable::*;
 use std::cell::Cell;
 
-mod annul;
-mod buffs;
 mod build_config;
 mod champion_traits;
-mod config;
-mod constants;
-mod hook;
-mod item_build_hook;
+mod hooks;
 mod item_catalog;
-mod item_meta;
 mod item_stats;
-mod item_stats_sim;
-mod item_stats_ui;
 mod items;
-mod own_team_log;
-mod proc_queue;
 mod smart_builds;
-mod solo_rank_ui;
-mod strategy_ui;
-mod sunfire;
 mod tactics;
+mod ui;
+mod utils;
+mod vfx;
 
 use items::*;
 
-pub(crate) use annul::Annul;
-pub(crate) use buffs::{add_stack, mark_immolate, refresh_buff};
-pub(crate) use constants::*;
-pub(crate) use item_meta::ItemMeta;
-pub(crate) use proc_queue::ProcQueue;
+pub(crate) use utils::constants::*;
+pub(crate) use utils::item_meta::ItemMeta;
+pub(crate) use utils::proc_queue::ProcQueue;
+// Re-exported under their old names, so paths like `crate::config::ItemConfig`
+// and `crate::strategy_ui::ICON_SHEET` keep working from every module.
+pub(crate) use hooks::{hook, item_build_hook};
+pub(crate) use ui::{solo_rank_ui, strategy_ui};
+pub(crate) use utils::{config, own_team_log};
+pub(crate) use vfx::sunfire;
+pub(crate) use vfx::{add_stack, mark_immolate, refresh_buff, Annul};
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -404,6 +399,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("ravenous_hydra" => RavenousHydra));
     reg.add_item(configured!("riftmaker" => Riftmaker));
     reg.add_item(configured!("rite_of_ruin" => RiteOfRuin, passive_crit));
+    reg.add_item(configured!("runaans_hurricane" => RunaansHurricane));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
     reg.add_item(configured!("seryldas_grudge" => SeryldasGrudge));
@@ -491,6 +487,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_ravenous_hydra" => RavenousHydra));
     reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
     reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin, passive_crit));
+    reg.add_item(configured_radiant!("radiant_runaans_hurricane" => RunaansHurricane));
     reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
     reg.add_item(configured_radiant!("radiant_seryldas_grudge" => SeryldasGrudge));
@@ -513,6 +510,21 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
     reg.add_item(configured_radiant!("radiant_zhonyas_hourglass" => ZhonyasHourglass));
+
+    // What item projectiles run when they land. Runaan's Hurricane registers
+    // one per tier, so each tier's bolts carry that tier's configured damage.
+    for runaans in [
+        configs
+            .get("runaans_hurricane")
+            .map(RunaansHurricane::with_config)
+            .unwrap_or_default(),
+        configs
+            .get("radiant_runaans_hurricane")
+            .map(RunaansHurricane::radiant_with_config)
+            .unwrap_or_else(RunaansHurricane::radiant),
+    ] {
+        reg.add_native_effect(runaans.bolt_hit_name(), runaans.bolt_hit());
+    }
 
     // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);

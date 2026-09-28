@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 205 new items (120 base + 85 Radiant) to the game.
+Reskins the 30 existing items and also adds 207 new items (121 base + 86 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -162,6 +162,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Ravenous Hydra** | 700G | +30 AD<br>+10% Omnivamp<br>+10 Ability Haste | Cleave: Basic attacks deal 30% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Riftmaker** | 650G | +200 HP<br>+30 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Rite of Ruin** | 700G | +55 AP<br>+10 Ability Haste<br>+20% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
+| **Runaan's Hurricane** | 700G | +40% AS<br>+20% Crit Chance<br>+5% MS | Wind's Fury: Basic attacks fire bolts at up to 2 additional enemies within 50 range of your target, each dealing 50% of your Attack Damage as bonus physical damage. Bolts can critically strike. |
 | **Rylai's Crystal Scepter** | 700G | +150 HP<br>+65 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |
 | **Serpent's Fang** | 600G | +45 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 50 + 10% of your Attack Damage as bonus physical damage. |
 | **Serylda's Grudge** | 700G | +25 AD<br>+10 Ability Haste<br>+25% Armor Pen | Bitter Cold: Dealing Ability damage to an enemy at or below 50% maximum health applies a 30% slow for 1.5 seconds. |
@@ -252,6 +253,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Ravenous Hydra** | 950G | +45 AD<br>+15% Omnivamp<br>+15 Ability Haste | Cleave: Basic attacks deal 40% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Radiant Riftmaker** | 950G | +300 HP<br>+60 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Radiant Rite of Ruin** | 1000G | +95 AP<br>+15 Ability Haste<br>+25% Crit Chance | Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Landing an Ability on an enemy champion has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage. |
+| **Radiant Runaan's Hurricane** | 950G | +70% AS<br>+25% Crit Chance<br>+5% MS | Wind's Fury: Basic attacks fire bolts at up to 2 additional enemies within 50 range of your target, each dealing 50% of your Attack Damage as bonus physical damage. Bolts can critically strike. |
 | **Radiant Rylai's Crystal Scepter** | 950G | +200 HP<br>+100 AP | Rimefrost: Landing an Ability on an enemy applies a 15% slow for 2 seconds. |
 | **Radiant Serpent's Fang** | 900G | +70 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 85 + 15% of your Attack Damage as bonus physical damage. |
 | **Radiant Serylda's Grudge** | 1050G | +45 AD<br>+15 Ability Haste<br>+35% Armor Pen | Bitter Cold: Dealing Ability damage to an enemy at or below 50% maximum health applies a 30% slow for 1.5 seconds. |

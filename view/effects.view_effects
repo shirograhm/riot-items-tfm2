@@ -57,7 +57,15 @@
             "is_follow": false
         }
     ],
-    "view_projectiles": [],
+    "view_projectiles": [
+        {
+            "type": "Animated",
+            "name": "riot_runaans_bolt",
+            "anim": "asset/riot_items_tfm2/effects/runaans_bolt",
+            "tag": "bolt",
+            "z": 1
+        }
+    ],
     "view_buffs": [
         {
             "type": "Animated",

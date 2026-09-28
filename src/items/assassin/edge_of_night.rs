@@ -4,7 +4,7 @@ use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, Annul, ItemMeta};
 
 // Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second
-// cooldown). The shield itself lives in `crate::annul`, shared with Banshee's
+// cooldown). The shield itself lives in `crate::vfx::annul`, shared with Banshee's
 // Veil.
 
 #[derive(Clone, Debug)]

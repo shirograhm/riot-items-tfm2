@@ -14,6 +14,7 @@ items! {
     lord_dominiks_regards,
     mirage_blade,
     mortal_reminder,
+    runaans_hurricane,
     stormrazor,
     terminus,
     wits_end,

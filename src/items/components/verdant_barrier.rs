@@ -3,7 +3,7 @@ use crate::{apply_config, Annul};
 use mod_api_stable::*;
 
 // Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second
-// cooldown). The shield itself lives in `crate::annul`; its cooldown carries
+// cooldown). The shield itself lives in `crate::vfx::annul`; its cooldown carries
 // into Banshee's Veil.
 
 const NEXT: &str = "banshees_veil";

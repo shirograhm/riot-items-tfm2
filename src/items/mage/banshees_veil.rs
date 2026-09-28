@@ -4,7 +4,7 @@ use crate::config::ItemConfig;
 use crate::{apply_config, Annul, ItemMeta};
 
 // Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second
-// cooldown). The shield itself lives in `crate::annul`; Verdant Barrier's
+// cooldown). The shield itself lives in `crate::vfx::annul`; Verdant Barrier's
 // cooldown carries into it, and it carries into the Radiant.
 
 #[derive(Clone, Debug)]

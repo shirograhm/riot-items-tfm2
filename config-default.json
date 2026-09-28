@@ -1889,5 +1889,23 @@
     "magic_power": 35,
     "magic_resistance": 25,
     "effect_cooldown_seconds": 40
+  },
+  "runaans_hurricane": {
+    "price": 700,
+    "attack_speed_mult": 40,
+    "crit_chance": 20,
+    "move_speed_mult": 5,
+    "effect_ad_percent_damage": 50.0,
+    "effect_max_targets": 2,
+    "effect_max_distance": 50
+  },
+  "radiant_runaans_hurricane": {
+    "price": 950,
+    "attack_speed_mult": 70,
+    "crit_chance": 25,
+    "move_speed_mult": 5,
+    "effect_ad_percent_damage": 50.0,
+    "effect_max_targets": 2,
+    "effect_max_distance": 50
   }
 }

@@ -995,6 +995,14 @@
         "verdant_barrier": {
             "name": "Verdant Barrier",
             "option": "\n<#ff7a3eff>Annul<>: Grants a <#92dc7bff>spell shield<> that blocks the next enemy Ability (<#e8a800ff>40 second<> cooldown)."
+        },
+        "runaans_hurricane": {
+            "name": "Runaan's Hurricane",
+            "option": "\n<#ff7a3eff>Wind's Fury<>: Basic attacks fire bolts at up to 2 additional enemies within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target, each dealing <#ff9028ff>50%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>. These bolts can <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strike<>."
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Radiant Runaan's Hurricane",
+            "option": "\n<#ff7a3eff>Wind's Fury<>: Basic attacks fire bolts at up to 2 additional enemies within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of your target, each dealing <#ff9028ff>50%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<>. These bolts can <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strike<>."
         }
     },
     "vi": {
@@ -1993,6 +2001,14 @@
         "verdant_barrier": {
             "name": "Dây Chuyền Sự Sống",
             "option": "\n<#ff7a3eff>Hóa Giải<>: Tạo 1 <#92dc7bff>Khiên Phép<> chặn kỹ năng tiếp theo của kẻ địch (hồi chiêu <#e8a800ff>40 giây<>)."
+        },
+        "runaans_hurricane": {
+            "name": "Cuồng Cung Runaan",
+            "option": "\n<#ff7a3eff>Gió Cuồng Nộ<>: Đòn đánh thường bắn ra các tia đạn vào tối đa 2 kẻ địch khác trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu, mỗi tia gây <#ff9028ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>. Tia đạn có thể <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>."
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Cuồng Cung Runaan Ánh Sáng",
+            "option": "\n<#ff7a3eff>Gió Cuồng Nộ<>: Đòn đánh thường bắn ra các tia đạn vào tối đa 2 kẻ địch khác trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh mục tiêu, mỗi tia gây <#ff9028ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>. Tia đạn có thể <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>."
         }
     },
     "zh-hans": {
@@ -2991,6 +3007,14 @@
         "verdant_barrier": {
             "name": "翠绿屏障",
             "option": "\n<#ff7a3eff>废除<>：提供一层<#92dc7bff>法术护盾<>来格挡下一个敌方技能（冷却 <#e8a800ff>40秒<>）。"
+        },
+        "runaans_hurricane": {
+            "name": "卢安娜的飓风",
+            "option": "\n<#ff7a3eff>风怒<>：普通攻击会对目标周围 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内最多 2 个额外敌人发射弩箭，每根弩箭造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>50%<> 的<#ff9028ff>额外物理伤害<>。弩箭可以<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>。"
+        },
+        "radiant_runaans_hurricane": {
+            "name": "光明版卢安娜的飓风",
+            "option": "\n<#ff7a3eff>风怒<>：普通攻击会对目标周围 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内最多 2 个额外敌人发射弩箭，每根弩箭造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>50%<> 的<#ff9028ff>额外物理伤害<>。弩箭可以<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>。"
         }
     },
     "pt-BR": {
@@ -3989,6 +4013,14 @@
         "verdant_barrier": {
             "name": "Barreira Verdejante",
             "option": "\n<#ff7a3eff>Anular<>: Concede um <#92dc7bff>Escudo de Feitiço<> que bloqueia a próxima Habilidade inimiga (recarga de <#e8a800ff>40 segundos<>)."
+        },
+        "runaans_hurricane": {
+            "name": "Furacão de Runaan",
+            "option": "\n<#ff7a3eff>Fúria do Vento<>: Ataques básicos disparam projéteis em até 2 inimigos adicionais a até <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> do alvo, cada um causando <#ff9028ff>50%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>. Os projéteis podem <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causar acerto crítico<>."
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Furacão de Runaan Radiante",
+            "option": "\n<#ff7a3eff>Fúria do Vento<>: Ataques básicos disparam projéteis em até 2 inimigos adicionais a até <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> do alvo, cada um causando <#ff9028ff>50%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<>. Os projéteis podem <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causar acerto crítico<>."
         }
     },
     "ru": {
@@ -4987,6 +5019,14 @@
         "verdant_barrier": {
             "name": "Изумрудный оберег",
             "option": "\n<#ff7a3eff>Отвод<>: Накладывает <#92dc7bff>щит от заклинаний<>, который блокирует следующее вражеское умение (перезарядка <#e8a800ff>40 секунд<>)."
+        },
+        "runaans_hurricane": {
+            "name": "Ураган Рунаан",
+            "option": "\n<#ff7a3eff>Ярость ветра<>: Базовые атаки выпускают заряды не более чем в 2 дополнительных врагов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели, каждый из которых наносит <#ff9028ff>50%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<>. Заряды могут <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносить критический удар<>."
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Лучезарный Ураган Рунаан",
+            "option": "\n<#ff7a3eff>Ярость ветра<>: Базовые атаки выпускают заряды не более чем в 2 дополнительных врагов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от цели, каждый из которых наносит <#ff9028ff>50%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<>. Заряды могут <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносить критический удар<>."
         }
     },
     "ko": {
@@ -5985,6 +6025,14 @@
         "verdant_barrier": {
             "name": "신록의 장벽",
             "option": "\n<#ff7a3eff>무효화<>: 적의 다음 스킬을 막아 주는 <#92dc7bff>주문 방어막<>을 생성합니다. 재사용 대기시간은 <#e8a800ff>40초<>입니다."
+        },
+        "runaans_hurricane": {
+            "name": "루난의 허리케인",
+            "option": "\n<#ff7a3eff>바람의 분노<>: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적 최대 2명에게 추가로 탄환을 발사해 각각 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 50%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 탄환에는 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 적용될 수 있습니다."
+        },
+        "radiant_runaans_hurricane": {
+            "name": "찬란한 루난의 허리케인",
+            "option": "\n<#ff7a3eff>바람의 분노<>: 기본 공격 시 대상 주변 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적 최대 2명에게 추가로 탄환을 발사해 각각 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 50%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 탄환에는 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>가 적용될 수 있습니다."
         }
     }
 }
