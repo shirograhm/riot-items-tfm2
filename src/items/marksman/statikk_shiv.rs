@@ -21,7 +21,7 @@ use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue, DISTANCE_
 /// hop of the chain (`effects/statikk_spark`).
 const SPARK_PROJECTILE: &str = "riot_statikk_spark";
 /// The `view_effects` name that crackles on each enemy the chain hits
-/// (`effects/statikk_shock`, 0.3 s, following the unit).
+/// (`effects/statikk_shock`, 0.4 s, following the unit).
 const SHOCK_EFFECT: &str = "riot_statikk_shock";
 /// A hop's hit circle. The default is one champion wide (10000), and enemies
 /// in a fight stand close enough that a hop that size touched its target
@@ -359,11 +359,18 @@ fn spark_damage(damage: usize, minion_percent: f64, champion: bool) -> usize {
 }
 
 /// The speed that keeps a hop from `from` to `to` in the air for `HOP_TICKS`:
-/// the distance left once the hit circles touch, spread over the flight.
+/// the distance left once the hit circles touch, spread over the flight, plus
+/// the target's own move speed. Without that, a short hop could fly slower
+/// than its target runs and trail behind an enemy moving away. Move speed is
+/// in the same units per tick as projectile speed (vanilla champions move at
+/// 900; their basic attacks fly at 4200-4300).
 fn hop_speed(ctx: &StableSim<'_>, from: usize, to: usize) -> u64 {
     let distance = (ctx.distance_sq(from, to) as f64).sqrt() as u64;
-    let contact = SPARK_RADIUS + ctx.get_entity(to).map_or(0, |t| t.radius() as u64);
-    (distance.saturating_sub(contact) / HOP_TICKS).max(MIN_SPARK_SPEED)
+    let (radius, move_speed) = ctx
+        .get_entity(to)
+        .map_or((0, 0), |t| (t.radius() as u64, t.stat().move_speed as u64));
+    let travel = distance.saturating_sub(SPARK_RADIUS + radius);
+    (travel / HOP_TICKS).max(MIN_SPARK_SPEED) + move_speed
 }
 
 /// Leaves `target` crackling after a hit. Anchored on the unit, so like every
