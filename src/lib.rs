@@ -337,6 +337,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("sorcerers_shoes" => SorcerersShoes, boots));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
     reg.add_item(configured!("tiamat" => Tiamat));
+    reg.add_item(configured!("verdant_barrier" => VerdantBarrier));
     reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4

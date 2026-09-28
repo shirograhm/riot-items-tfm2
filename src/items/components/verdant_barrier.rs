@@ -1,15 +1,15 @@
+use crate::config::ItemConfig;
+use crate::{apply_config, Annul};
 use mod_api_stable::*;
 
-use crate::config::ItemConfig;
-use crate::{apply_config, Annul, ItemMeta};
-
 // Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second
-// cooldown). The shield itself lives in `crate::annul`; Verdant Barrier's
-// cooldown carries into it, and it carries into the Radiant.
+// cooldown). The shield itself lives in `crate::annul`; its cooldown carries
+// into Banshee's Veil.
+
+const NEXT: &str = "banshees_veil";
 
 #[derive(Clone, Debug)]
-pub struct BansheesVeil {
-    meta: ItemMeta,
+pub struct VerdantBarrier {
     price: usize,
     magic_power: i32,
     magic_resistance: i32,
@@ -18,69 +18,42 @@ pub struct BansheesVeil {
     annul: Annul,
 }
 
-impl BansheesVeil {
-    pub fn base() -> Self {
+impl Default for VerdantBarrier {
+    fn default() -> Self {
         Self {
-            meta: ItemMeta::base(
-                "banshees_veil",
-                &["verdant_barrier"],
-                &["radiant_banshees_veil"],
-            ),
-            price: 700,
-            magic_power: 60,
-            magic_resistance: 40,
+            price: 400,
+            magic_power: 35,
+            magic_resistance: 25,
             effect_cooldown_seconds: 40.0,
             // Non-vital stats (internals)
             annul: Annul::default(),
         }
     }
+}
 
-    pub fn radiant() -> Self {
-        Self {
-            meta: ItemMeta::radiant("radiant_banshees_veil", &["banshees_veil"]),
-            price: 950,
-            magic_power: 100,
-            magic_resistance: 60,
-            effect_cooldown_seconds: 40.0,
-            ..Self::base()
-        }
-    }
-
+impl VerdantBarrier {
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        Self::base().configured(cfg)
-    }
-
-    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
-        Self::radiant().configured(cfg)
-    }
-
-    fn configured(mut self, cfg: &ItemConfig) -> Self {
+        let mut item = Self::default();
         apply_config!(
-            self,
+            item,
             cfg,
             [price, magic_power, magic_resistance, effect_cooldown_seconds]
         );
-        self
+        item
     }
 }
 
-impl Default for BansheesVeil {
-    fn default() -> Self {
-        Self::base()
-    }
-}
-
-impl StableItem for BansheesVeil {
+impl StableItem for VerdantBarrier {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> String {
-        self.meta.key.to_string()
+        "verdant_barrier".to_string()
     }
 
     fn icon(&self) -> String {
-        self.meta.key.to_string()
+        "verdant_barrier".to_string()
     }
 
     fn price(&self) -> usize {
@@ -88,15 +61,15 @@ impl StableItem for BansheesVeil {
     }
 
     fn tier(&self) -> usize {
-        self.meta.tier
+        2
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        self.meta.previous_tier()
+        vec!["spirit_crystal".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
-        self.meta.next_tier()
+        vec![NEXT.to_string()]
     }
 
     fn stat(&self) -> BuffV1 {
@@ -141,16 +114,10 @@ impl StableItem for BansheesVeil {
     }
 
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
-        if self.meta.upgrades_to(next_key) {
+        if next_key == NEXT {
             self.annul.carry()
         } else {
             0
-        }
-    }
-
-    fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
-        if self.meta.upgrades_from(prev_key) {
-            self.annul.resume(carry);
         }
     }
 

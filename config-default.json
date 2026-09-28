@@ -1883,5 +1883,11 @@
     "hp": 150,
     "effect_lethality": 15,
     "effect_cooldown_seconds": 40
+  },
+  "verdant_barrier": {
+    "price": 400,
+    "magic_power": 35,
+    "magic_resistance": 25,
+    "effect_cooldown_seconds": 40
   }
 }

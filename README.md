@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 204 new items (119 base + 85 Radiant) to the game.
+Reskins the 30 existing items and also adds 205 new items (120 base + 85 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -93,6 +93,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Sorcerer's Shoes** | 650G | +15% Magic Pen<br>+10% MS | — |
 | **Steel Sigil** | 500G | +20 AD<br>+20 Armor | — |
 | **Tiamat** | 400G | +25 AD | Cleave: Basic attacks deal 20% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
+| **Verdant Barrier** | 400G | +35 AP<br>+25 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Winged Moonplate** | 400G | +150 HP<br>+4% MS | — |
 
 #### Tier 4

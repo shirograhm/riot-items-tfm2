@@ -1,5 +1,6 @@
 //! Annul: Grants a Spell Shield that blocks the next enemy Ability. Shared by
-//! Banshee's Veil and Edge of Night; each item owns its cooldown.
+//! Verdant Barrier, Banshee's Veil and Edge of Night; each item owns its
+//! cooldown and hands it to the item it upgrades into.
 //!
 //! Item hooks run after a hit has resolved, so the block has to be in place
 //! before the ability lands. While Annul is up the carrier holds `ANNUL_BUFF`:
@@ -27,9 +28,13 @@ pub(crate) struct Annul {
     cooldown: usize,
     /// The Spell Shield is on the carrier and has not been spent.
     up: bool,
-    /// Popped this tick; `update` takes the buff off this entity.
-    popped: Option<usize>,
+    /// Popped this tick; `update` takes the buff off the carrier.
+    popped: bool,
 }
+
+/// Flags packed above the cooldown in [`Annul::carry`].
+const CARRY_UP: u64 = 1 << 62;
+const CARRY_POPPED: u64 = 1 << 63;
 
 /// The carrier's ability damage reduction from every other buff, and the
 /// shield's own if it is on, so the shield only fills the room left under 100%.
@@ -51,28 +56,51 @@ impl Annul {
         *self = Self::default();
     }
 
+    /// What an upgrade hands its successor, so building the next tier neither
+    /// resets the cooldown nor strands a popped shield on the carrier: the old
+    /// item is gone before its `update` could take the buff off.
+    pub(crate) fn carry(&self) -> u64 {
+        let mut carry = self.cooldown as u64;
+        if self.up {
+            carry |= CARRY_UP;
+        }
+        if self.popped {
+            carry |= CARRY_POPPED;
+        }
+        carry
+    }
+
+    /// Picks up where the item this one was built from left off.
+    pub(crate) fn resume(&mut self, carry: u64) {
+        self.cooldown = (carry & !(CARRY_UP | CARRY_POPPED)) as usize;
+        self.up = carry & CARRY_UP != 0;
+        self.popped = carry & CARRY_POPPED != 0;
+    }
+
     /// Takes a popped shield off, then keeps a ready one on the carrier. The
     /// buff is re-checked every tick rather than added once: death can strip
     /// it, and its size follows the carrier's other ability damage reduction
     /// (Cloak of Starry Night's grows with magic resistance).
     pub(crate) fn update(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        if let Some(entity) = self.popped.take() {
-            ctx.entity_remove_buff(entity, ANNUL_BUFF);
+        let champion = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .map(|c| (c.id(), c.is_alive()));
+        if self.popped {
+            if let Some((entity, _)) = champion {
+                ctx.entity_remove_buff(entity, ANNUL_BUFF);
+                self.popped = false;
+            }
             return;
         }
         self.cooldown = self.cooldown.saturating_sub(1);
         if self.cooldown > 0 {
             return;
         }
-        let Some((entity, others, own)) = ctx
-            .get_player(player)
-            .and_then(|p| p.champion())
-            .filter(|c| c.is_alive())
-            .map(|c| {
-                let (others, own) = skill_damaged_reduce(&c);
-                (c.id(), others, own)
-            })
-        else {
+        let Some((entity, true)) = champion else {
+            return;
+        };
+        let Some((others, own)) = ctx.get_entity(entity).map(|c| skill_damaged_reduce(&c)) else {
             return;
         };
 
@@ -156,7 +184,7 @@ impl Annul {
             return;
         }
         self.up = false;
-        self.popped = Some(entity);
+        self.popped = true;
         self.cooldown = ticks(cooldown_seconds);
     }
 }

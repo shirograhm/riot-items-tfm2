@@ -26,5 +26,6 @@ items! {
     sheen,
     steel_sigil,
     tiamat,
+    verdant_barrier,
     winged_moonplate,
 }
