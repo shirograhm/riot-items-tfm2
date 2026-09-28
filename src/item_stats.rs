@@ -145,9 +145,6 @@ struct Aggregate {
     read: HashMap<usize, Option<(String, u64)>>,
     /// The queued pass has not yet matched captures against [`Self::read`].
     rematch: bool,
-    /// The queued pass reads only records added since an earlier pass, rather
-    /// than the whole list on a first or verify pass. Diagnostic only.
-    incremental: bool,
     /// Whether the save's counters have been read into this table yet.
     ///
     /// Nothing may be written back before this is true. A read can come back
@@ -213,10 +210,7 @@ pub(crate) const TOP_CHAMPIONS: usize = 3;
 /// deduplicated by match seed and cannot be double counted however often a
 /// record is re-read.
 pub(crate) fn sweep(ctx: &StableClient<'_>) {
-    let ids = crate::perf::time(crate::perf::Section::RecordIds, || {
-        ctx.record_ids(RecordKindV1::MatchReplay)
-    });
-    queue_pass(&ids, false);
+    queue_pass(&ctx.record_ids(RecordKindV1::MatchReplay), false);
 }
 
 /// [`sweep`] over ids already in hand. `verify` re-reads the records already
@@ -227,7 +221,6 @@ fn queue_pass(ids: &[usize], verify: bool) {
     }
     let live: HashSet<usize> = ids.iter().copied().collect();
     let _ = with_agg(|agg| {
-        agg.incremental = !verify && !agg.read.is_empty();
         if verify {
             agg.read.clear();
         } else {
@@ -275,13 +268,13 @@ static SWEEP_MARK: Mutex<Option<SweepMark>> = Mutex::new(None);
 ///
 /// # Why passes are not queued every frame
 ///
-/// They were, whenever any capture was waiting (2026-09-27, measured with
-/// `perf`). Some captures never get a record — whatever the game simulates
-/// without keeping a replay of it — so after the first of those, every frame of
-/// the session queued a fresh pass and read the newest [`CHUNK`] records in
-/// full: ~10 ms a frame on the main thread, which halved the frame rate for the
-/// rest of the session, and took it to ~24 fps with the statistics screen open,
-/// whose own pump read the same pass.
+/// They were, whenever any capture was waiting (measured 2026-09-27). A capture
+/// waits until its record is written, which happens when its game day is
+/// committed and can be many minutes later, and some never get one at all — so
+/// from the first capture on, every frame queued a fresh pass and read the
+/// newest [`CHUNK`] records in full: ~10 ms a frame on the main thread, which
+/// halved the frame rate for the rest of the session, and took it to ~24 fps
+/// with the statistics screen open, whose own pump read the same pass.
 ///
 /// A pass can only find something new if a capture has arrived since the last
 /// one, or the record list has changed. The first is an atomic read; the second
@@ -300,9 +293,7 @@ fn due_pass(ctx: &StableClient<'_>) -> Option<(Vec<usize>, bool)> {
         return None;
     }
     mark.since_check = 0;
-    let ids = crate::perf::time(crate::perf::Section::RecordIds, || {
-        ctx.record_ids(RecordKindV1::MatchReplay)
-    });
+    let ids = ctx.record_ids(RecordKindV1::MatchReplay);
     if !new_capture && !verify && ids == mark.ids {
         return None;
     }
@@ -352,7 +343,6 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
     let mut folded = false;
     for (patch, seed) in &known {
         if let Some(players) = crate::item_stats_sim::take(*seed) {
-            crate::perf::count(crate::perf::Section::CaptureMatched);
             fold(patch, &players);
             folded = true;
         }
@@ -364,16 +354,9 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
     })
     .unwrap_or_default();
 
-    let incremental = with_agg(|agg| agg.incremental).unwrap_or(false);
     for id in &batch {
         let entry = read_record(ctx, *id);
         let _ = with_agg(|agg| agg.read.insert(*id, entry.clone()));
-        // Diagnostic (2026-09-27): a record written this session, to hold
-        // against the `capture` notes' seeds. The `record` notes are spent on
-        // the first pass, which reads the save's existing records.
-        if incremental {
-            crate::perf::note("new record", || format!("id={id} (patch, seed)={entry:?}"));
-        }
         let Some((patch, seed)) = entry else {
             continue;
         };
@@ -384,7 +367,6 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
         let Some(players) = crate::item_stats_sim::take(seed) else {
             continue;
         };
-        crate::perf::count(crate::perf::Section::CaptureMatched);
         fold(&patch, &players);
         folded = true;
     }
@@ -563,11 +545,10 @@ fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
     // Measured 2026-09-27: a named read ("seed") costs about half a full read,
     // so the two named reads this needs would cost what one full read does.
     // The full read stays first.
-    let full = crate::perf::time(crate::perf::Section::RecordRead, || {
-        ctx.record_get_json(RecordKindV1::MatchReplay, id, "")
-            .and_then(|json| serde_json::from_str::<Value>(&json).ok())
-    });
-    let record = match full {
+    let record = match ctx
+        .record_get_json(RecordKindV1::MatchReplay, id, "")
+        .and_then(|json| serde_json::from_str::<Value>(&json).ok())
+    {
         Some(record) => record,
         // Older hosts, or a path grammar that does not accept the empty path for
         // this record kind. Named reads say the same thing, and are reassembled
@@ -584,24 +565,6 @@ fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
             })
         }
     };
-    // Diagnostic (2026-09-27): 110 captures and 0 matches in a logged session.
-    // Newest records come first in a pass, so these are the ones a capture from
-    // this session should match.
-    crate::perf::note("record", || {
-        let show = |value: Option<&Value>| {
-            value.map_or_else(
-                || "<absent>".to_string(),
-                |value| value.to_string().chars().take(48).collect(),
-            )
-        };
-        format!(
-            "id={id} version={} seed={} is_brief={}",
-            show(record.get("version")),
-            show(record.get("seed")),
-            show(record.get("is_brief")),
-        )
-    });
-
     // A league match always names its version, so one that does not is not a
     // record this table can place — skipped rather than filed under a catch-all
     // bucket that would only ever collect things that should not be there.
@@ -897,14 +860,6 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     let in_flight = with_agg(|agg| !agg.pending.is_empty()).unwrap_or(false);
     if !in_flight && crate::item_stats_sim::pending() > 0 {
         if let Some((ids, verify)) = due_pass(ctx) {
-            crate::perf::note("pass", || {
-                format!(
-                    "records={} newest ids={:?} verify={verify} captures waiting={}",
-                    ids.len(),
-                    ids.iter().rev().take(5).collect::<Vec<_>>(),
-                    crate::item_stats_sim::pending(),
-                )
-            });
             queue_pass(&ids, verify);
         }
     }

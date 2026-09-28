@@ -3417,45 +3417,34 @@ impl StableExtension for StrategyPicker {
     }
 
     fn post_update(&self, ctx: &mut StableClient<'_>, _dt_micros: u64) {
-        use crate::perf::{self, Section};
-        // This is the one per-frame hook, so it is also where timing reports
-        // are written from. Both no-ops unless `perf::ENABLED`.
-        perf::report_if_due();
-        let _frame = perf::Probe::start(Section::Frame);
-
         // The merged `tfm2_item_tactics` half, which was its own
         // `ModExtension::post_update` before it moved in here. It has to run
         // first and unconditionally: this is the only per-frame client hook the
         // mod owns, and everything below returns early off the strategy screen,
         // while the tactics half installs and self-heals its hooks (including
         // the one that captures the UI root) on every frame, everywhere.
-        perf::time(Section::FrameTactics, || tactics::driver::post_update(ctx));
+        tactics::driver::post_update(ctx);
 
         // Also unconditional, and for the same reason: the screen it acts on is
         // not this one, so it cannot live behind the early return below. It is
         // inert unless `4items.cfg` says three slots.
-        perf::time(Section::FrameSoloRank, || crate::solo_rank_ui::sync(ctx));
+        crate::solo_rank_ui::sync(ctx);
 
         // Which save's item totals are loaded. Unconditional because it has to
         // be settled before anything reads or writes them, and the two places
         // that do — the statistics screen and the management tick — are both
         // somewhere this early return would have skipped.
-        perf::time(Section::FrameItemStats, || crate::item_stats::sync(ctx));
+        crate::item_stats::sync(ctx);
 
         // Champion facts for the Smart Builds rules, which only the client can
         // ask the host for. Unconditional: the build paths need them in every
         // match, and it returns at once when there is no champion it has not
         // asked about.
-        perf::time(Section::FrameChampionTraits, || {
-            crate::champion_traits::learn(ctx)
-        });
+        crate::champion_traits::learn(ctx);
 
         // Same again, for the statistics screen and its Item Stats tab. Inert
         // anywhere else: it returns on its first line unless that screen is up.
-        perf::time(Section::FrameItemStatsUi, || crate::item_stats_ui::sync(ctx));
-
-        // Everything from here to whichever return this frame takes.
-        let _editor = perf::Probe::start(Section::FrameEditor);
+        crate::item_stats_ui::sync(ctx);
 
         // The composition test hosts the editor too. It has to be handled
         // before the gate below, which returns — and tears the editor down —

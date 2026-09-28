@@ -125,7 +125,6 @@ impl StableMatchHook for MatchHooks {
     }
 
     fn on_match_tick(&self, sim: &mut StableSim<'_>, rng_seed: u64) {
-        let _probe = crate::perf::Probe::start(crate::perf::Section::MatchTick);
         if !sim.is_end() {
             immolate(sim, &self.immolate);
         }

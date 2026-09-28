@@ -386,16 +386,6 @@ impl StableMatchHook for EndOfMatchItems {
             }
         });
         CAPTURES.fetch_add(1, Ordering::Relaxed);
-        crate::perf::count(crate::perf::Section::CaptureQueued);
-        // Diagnostic (2026-09-27): which kind of sim the captures come from, and
-        // their seeds, to hold against the `record` notes' seeds.
-        crate::perf::note("capture", || match sim.sim_origin() {
-            Some(origin) => format!(
-                "seed={seed} origin kind={} match_id={} replay_id={} set={}",
-                origin.kind, origin.match_id, origin.replay_id, origin.set_index
-            ),
-            None => format!("seed={seed} origin=<host too old>"),
-        });
     }
 }
 

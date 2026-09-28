@@ -601,7 +601,6 @@ unsafe fn detour(
     team2: &Vec<(Position, String)>,
     mode: bool,
 ) -> Vec<Vec<usize>> {
-    let _probe = crate::perf::Probe::start(crate::perf::Section::NativeBuildHook);
     // The merged `tfm2_item_tactics` half needs the game's `Database`, which a
     // stable-ABI mod is never handed. `agent` is the item recommendation network
     // that lives at a fixed offset inside it, so this argument is the one route
@@ -658,23 +657,18 @@ unsafe fn detour(
     // are decided in `crate::item_build_hook`, on the stable API, where the
     // champion a build belongs to is stated rather than inferred from route
     // order. The `mode` routes are the exception - see below.
-    // Timed apart from the detour around it: the game's own build decision,
-    // which includes this mod's `score_item`/`decide_build` hooks called from
-    // inside it.
-    let mut routes = crate::perf::time(crate::perf::Section::NativeBuildGame, || {
-        ORIGINAL
-            .get()
-            .copied()
-            .expect("item build hook original function missing")(
-            agent,
-            items,
-            champions,
-            champion_ids,
-            team1,
-            team2,
-            mode,
-        )
-    });
+    let mut routes = ORIGINAL
+        .get()
+        .copied()
+        .expect("item build hook original function missing")(
+        agent,
+        items,
+        champions,
+        champion_ids,
+        team1,
+        team2,
+        mode,
+    );
 
     // The buy detour's team gate lets both sides of a test through (the 5th
     // and 6th slots are only set there), so it has to know a test is on.
