@@ -121,13 +121,13 @@ pub(crate) struct MatchHooks {
 
 impl StableMatchHook for MatchHooks {
     fn on_match_start(&self, sim: &mut StableSim<'_>) {
-        crate::item_stats_sim::EndOfMatchItems.on_match_start(sim);
+        crate::item_stats::sim::EndOfMatchItems.on_match_start(sim);
     }
 
     fn on_match_tick(&self, sim: &mut StableSim<'_>, rng_seed: u64) {
         if !sim.is_end() {
             immolate(sim, &self.immolate);
         }
-        crate::item_stats_sim::EndOfMatchItems.on_match_tick(sim, rng_seed);
+        crate::item_stats::sim::EndOfMatchItems.on_match_tick(sim, rng_seed);
     }
 }

@@ -1,4 +1,4 @@
-//! Per-item win/loss totals over the matches [`crate::item_stats_sim`] captured.
+//! Per-item win/loss totals over the matches [`crate::item_stats::sim`] captured.
 //!
 //! # Where the numbers come from
 //!
@@ -17,7 +17,7 @@
 //!
 //! Only two fields: `version`, which is the patch the match was played on and
 //! what the patch filter groups by, and `seed`, which joins it to the loadout
-//! [`crate::item_stats_sim`] captured from the simulation.
+//! [`crate::item_stats::sim`] captured from the simulation.
 //!
 //! Its per-player `items` is deliberately **not** read. That field holds the
 //! build the game *assigned*, not what was finished with, and it is stored as
@@ -61,8 +61,11 @@
 //! seen going 126 -> 28 -> 77 inside one session, so the game prunes and recycles
 //! them freely. Re-reading every record on every pass stays safe because a record
 //! contributes no numbers, only a patch, and a match can be counted only once —
-//! [`crate::item_stats_sim::take`] hands each one over exactly once and remembers
+//! [`crate::item_stats::sim::take`] hands each one over exactly once and remembers
 //! that it did.
+
+pub(crate) mod sim;
+pub(crate) mod ui;
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -251,7 +254,7 @@ const SWEEP_VERIFY_FRAMES: u32 = 18_000;
 /// What the records looked like when the last pass was queued.
 #[derive(Default)]
 struct SweepMark {
-    /// [`crate::item_stats_sim::captures`] at the time.
+    /// [`crate::item_stats::sim::captures`] at the time.
     captures: u64,
     /// The record ids at the time.
     ids: Vec<usize>,
@@ -282,7 +285,7 @@ static SWEEP_MARK: Mutex<Option<SweepMark>> = Mutex::new(None);
 ///
 /// Returns the ids and whether the pass is a verify pass.
 fn due_pass(ctx: &StableClient<'_>) -> Option<(Vec<usize>, bool)> {
-    let captures = crate::item_stats_sim::captures();
+    let captures = crate::item_stats::sim::captures();
     let mut guard = SWEEP_MARK.lock().ok()?;
     let mark = guard.get_or_insert_with(SweepMark::default);
     mark.since_check = mark.since_check.saturating_add(1);
@@ -322,7 +325,7 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
     }
     // Every capture has been matched: the rest of the pass would read records
     // for nothing.
-    if crate::item_stats_sim::pending() == 0 {
+    if crate::item_stats::sim::pending() == 0 {
         let _ = with_agg(|agg| {
             agg.pending.clear();
             agg.rematch = false;
@@ -342,7 +345,7 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
     .unwrap_or_default();
     let mut folded = false;
     for (patch, seed) in &known {
-        if let Some(players) = crate::item_stats_sim::take(*seed) {
+        if let Some(players) = crate::item_stats::sim::take(*seed) {
             fold(patch, &players);
             folded = true;
         }
@@ -364,7 +367,7 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
         // capturing began — the loadout it would need does not exist, and the
         // record carries no usable substitute — or one already counted, which
         // `take` declines a second time. Both are nothing to do.
-        let Some(players) = crate::item_stats_sim::take(seed) else {
+        let Some(players) = crate::item_stats::sim::take(seed) else {
             continue;
         };
         fold(&patch, &players);
@@ -386,7 +389,7 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
 /// Called once per match, ever. The counters it adds to are the stored history,
 /// so nothing is recomputed and nothing is walked twice — which is the whole
 /// point of keeping numbers rather than matches.
-fn fold(patch: &str, players: &[crate::item_stats_sim::CapturedPlayer]) {
+fn fold(patch: &str, players: &[crate::item_stats::sim::CapturedPlayer]) {
     let _ = with_agg(|agg| {
         *agg.matches.entry(patch.to_string()).or_default() += 1;
 
@@ -840,7 +843,7 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         // loads its own table rather than inheriting this one's.
         if with_agg(|agg| agg.loaded).unwrap_or(false) {
             let _ = with_agg(|agg| *agg = Aggregate::default());
-            crate::item_stats_sim::forget();
+            crate::item_stats::sim::forget();
         }
         if let Ok(mut waited) = WAITED.lock() {
             *waited = 0;
@@ -858,7 +861,7 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     // the same batch. What arrives meanwhile is still new to `due_pass` once the
     // pass ends, and gets a pass of its own then.
     let in_flight = with_agg(|agg| !agg.pending.is_empty()).unwrap_or(false);
-    if !in_flight && crate::item_stats_sim::pending() > 0 {
+    if !in_flight && crate::item_stats::sim::pending() > 0 {
         if let Some((ids, verify)) = due_pass(ctx) {
             queue_pass(&ids, verify);
         }

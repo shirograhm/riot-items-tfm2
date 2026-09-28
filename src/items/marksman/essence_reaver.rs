@@ -23,7 +23,7 @@ impl EssenceReaver {
         Self {
             meta: ItemMeta::base(
                 "essence_reaver",
-                &["sheen", "caulfields_warhammer", "noonquiver"],
+                &["sheen", "noonquiver"],
                 &["radiant_essence_reaver"],
             ),
             price: 800,

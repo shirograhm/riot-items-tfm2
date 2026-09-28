@@ -24,7 +24,7 @@
 // `mod_api` is still LINKED, but only for its *types* (`Node`, `Database`,
 // `GameUI`, `find_node`, …). Their `repr(Rust)` layout is fixed by the compiler,
 // not by the SDK version, and `rust-toolchain.toml` pins the compiler the game
-// is built with — the same reasoning that already lets `src/hook.rs` link
+// is built with — the same reasoning that already lets `src/hooks/hook.rs` link
 // `game_core`. What the classic API used to *hand* us (`ctx.database`,
 // `&mut GameUI`, `Scene`) is now sourced from raw addresses the mod captures
 // itself; see `driver::db()` and `driver::ui_root()`.
@@ -126,7 +126,7 @@ const TRACE_FILES: bool = false;
 /// **Bisect switch.** `false` makes `tactics_init` install nothing at all — no
 /// detours, no byte patches, no per-frame UI work — exactly as a closed version
 /// gate does, while leaving the rest of the mod (the stable-API item builds via
-/// `crate::item_build_hook`, and `src/hook.rs`'s data tap) untouched.
+/// `crate::item_build_hook`, and `src/hooks/hook.rs`'s data tap) untouched.
 ///
 /// Added 2026-08-19 to bisect a performance regression on game 0.5.6: days
 /// advance, but very slowly. This half is the only part the 0.5.6 migration

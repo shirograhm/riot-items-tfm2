@@ -1,4 +1,13 @@
+//! Buffs and the effects drawn from them: the buff helpers every item uses,
+//! the Immolate flames marker, the shared Annul spell shield (whose buff draws
+//! the shield bubble) and Sunfire Cape's Immolate, which runs as the match hook.
+
+mod annul;
+pub(crate) mod sunfire;
+
 use mod_api_stable::*;
+
+pub(crate) use annul::Annul;
 
 pub(crate) fn refresh_buff(ctx: &mut StableSim<'_>, entity: usize, name: &str, buff: &BuffV1) {
     ctx.entity_remove_buff(entity, name);

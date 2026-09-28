@@ -4,6 +4,7 @@ items! {
     axiom_arc,
     bastionbreaker,
     collector,
+    edge_of_night,
     hubris,
     opportunity,
     serpents_fang,

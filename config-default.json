@@ -1857,5 +1857,55 @@
     "effect_ad_percent_haste": 5.0,
     "effect_vamp": 15,
     "effect_duration_seconds": 5
+  },
+  "banshees_veil": {
+    "price": 700,
+    "magic_power": 60,
+    "magic_resistance": 40,
+    "effect_cooldown_seconds": 40
+  },
+  "radiant_banshees_veil": {
+    "price": 950,
+    "magic_power": 100,
+    "magic_resistance": 60,
+    "effect_cooldown_seconds": 40
+  },
+  "edge_of_night": {
+    "price": 750,
+    "attack": 35,
+    "hp": 100,
+    "effect_lethality": 15,
+    "effect_cooldown_seconds": 40
+  },
+  "radiant_edge_of_night": {
+    "price": 1000,
+    "attack": 60,
+    "hp": 150,
+    "effect_lethality": 15,
+    "effect_cooldown_seconds": 40
+  },
+  "verdant_barrier": {
+    "price": 400,
+    "magic_power": 35,
+    "magic_resistance": 25,
+    "effect_cooldown_seconds": 40
+  },
+  "runaans_hurricane": {
+    "price": 700,
+    "attack_speed_mult": 40,
+    "crit_chance": 20,
+    "move_speed_mult": 5,
+    "effect_ad_percent_damage": 50.0,
+    "effect_max_targets": 2,
+    "effect_max_distance": 50
+  },
+  "radiant_runaans_hurricane": {
+    "price": 950,
+    "attack_speed_mult": 70,
+    "crit_chance": 25,
+    "move_speed_mult": 5,
+    "effect_ad_percent_damage": 50.0,
+    "effect_max_targets": 2,
+    "effect_max_distance": 50
   }
 }
