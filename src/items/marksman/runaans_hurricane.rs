@@ -20,8 +20,8 @@ use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue, DISTANCE_
 /// bolt in flight (`effects/runaans_bolt`).
 const BOLT_PROJECTILE: &str = "riot_runaans_bolt";
 /// World units per tick. The base game's own ranged attacks fly at 4200-4300;
-/// the bolts go about half again as fast, which read as too slow at 4300.
-const BOLT_SPEED: u64 = 6500;
+/// the bolts go a little faster, which read as too slow at 4300.
+const BOLT_SPEED: u64 = 5000;
 
 #[derive(Clone, Debug)]
 pub struct RunaansHurricane {
