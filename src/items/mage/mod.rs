@@ -3,6 +3,7 @@
 items! {
     blackfire_torch,
     bloodletters_curse,
+    cosmic_drive,
     dusk_and_dawn,
     grezs_spectral_lantern,
     hextech_gunblade,

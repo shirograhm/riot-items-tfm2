@@ -4,6 +4,8 @@ items! {
     blade_of_the_ruined_king,
     deathblade,
     diamond_tipped_spear,
+    essence_reaver,
+    fiendhunter_bolts,
     guinsoos_rageblade,
     hamstringer,
     immortal_shieldbow,

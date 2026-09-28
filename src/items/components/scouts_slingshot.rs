@@ -77,6 +77,7 @@ impl StableItem for ScoutsSlingshot {
             "wits_end".to_string(),
             "experimental_hexplate".to_string(),
             "terminus".to_string(),
+            "fiendhunter_bolts".to_string(),
         ]
     }
 

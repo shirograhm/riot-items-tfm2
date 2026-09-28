@@ -5,6 +5,7 @@ items! {
     chempunk_chainsword,
     deaths_dance,
     eclipse,
+    endless_hunger,
     experimental_hexplate,
     feral_flare,
     frozen_mallet,

@@ -64,7 +64,7 @@
 //! [`crate::item_stats_sim::take`] hands each one over exactly once and remembers
 //! that it did.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap, HashSet};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
 
@@ -75,9 +75,11 @@ use serde_json::Value;
 ///
 /// Two fields are wanted from each, but the whole record still crosses the ABI
 /// and is parsed — ten players' match statistics included — and this runs on the
-/// UI thread. A season is hundreds of matches, so reading the set in one frame
-/// is a visible hitch; at 24 a frame a full pass costs a handful of frames.
-const CHUNK: usize = 24;
+/// UI thread. Measured at roughly half a millisecond a record (2026-09-27), so a
+/// batch of 24 was a 12-14 ms frame. Most passes now read only the records that
+/// are new since the last one (see [`Aggregate::read`]); this bounds the ones
+/// that re-read everything.
+const CHUNK: usize = 8;
 
 #[derive(Clone, Copy, Default)]
 pub(crate) struct Totals {
@@ -129,6 +131,20 @@ impl Totals {
 struct Aggregate {
     /// Record ids still to read for their patch, newest first.
     pending: Vec<usize>,
+    /// What each record read so far said: its patch and seed, or `None` for one
+    /// that cannot be placed.
+    ///
+    /// A pass reads only the ids missing from here and matches the rest from
+    /// memory. Re-reading every record on every pass was the cost that remained
+    /// once passes stopped running every frame: most captures never get a
+    /// record, so while any waits, each finished match set off a pass through
+    /// the whole list. An id that leaves the list is forgotten, since it may
+    /// come back holding a different match. One that is pruned and re-used
+    /// between two looks at the list would read stale, which is what the
+    /// periodic verify pass is for (see [`due_pass`]).
+    read: HashMap<usize, Option<(String, u64)>>,
+    /// The queued pass has not yet matched captures against [`Self::read`].
+    rematch: bool,
     /// Whether the save's counters have been read into this table yet.
     ///
     /// Nothing may be written back before this is true. A read can come back
@@ -181,24 +197,112 @@ pub(crate) struct Snapshot {
 /// 4px gaps, with nothing left over.
 pub(crate) const TOP_CHAMPIONS: usize = 3;
 
-/// Queues every match record for a patch-backfill pass.
+/// Queues a patch-backfill pass over the match records.
 ///
-/// Every record, not just unseen ones. Record ids are **reused**: the count was
-/// observed going 126 -> 28 -> 77 inside one session, so the game prunes and
-/// recycles them, and "id 12 is already scanned" is not a fact that stays true.
-/// Re-reading them all is what makes that harmless.
+/// Record ids are **reused**: the count was observed going 126 -> 28 -> 77
+/// inside one session, so the game prunes and recycles them, and "id 12 is
+/// already scanned" is not a fact that stays true. That is why an id that
+/// leaves the list is forgotten here, and why [`due_pass`] still re-reads
+/// everything now and then.
 ///
-/// It is affordable because a record is now read for two fields and nothing is
-/// folded from it — the totals come from the captures, which are deduplicated by
-/// match seed and cannot be double counted however often a record is re-read.
+/// Re-reading is harmless because a record is read for two fields and nothing
+/// is folded from it — the totals come from the captures, which are
+/// deduplicated by match seed and cannot be double counted however often a
+/// record is re-read.
 pub(crate) fn sweep(ctx: &StableClient<'_>) {
-    let ids = ctx.record_ids(RecordKindV1::MatchReplay);
+    queue_pass(&ctx.record_ids(RecordKindV1::MatchReplay), false);
+}
+
+/// [`sweep`] over ids already in hand. `verify` re-reads the records already
+/// in [`Aggregate::read`] instead of trusting them.
+fn queue_pass(ids: &[usize], verify: bool) {
     if ids.is_empty() {
         return;
     }
+    let live: HashSet<usize> = ids.iter().copied().collect();
     let _ = with_agg(|agg| {
-        agg.pending = ids.iter().rev().copied().collect();
+        if verify {
+            agg.read.clear();
+        } else {
+            agg.read.retain(|id, _| live.contains(id));
+        }
+        agg.pending = ids
+            .iter()
+            .rev()
+            .copied()
+            .filter(|id| !agg.read.contains_key(id))
+            .collect();
+        agg.rematch = true;
     });
+}
+
+/// Frames between looks at the record list while captures are waiting.
+const SWEEP_CHECK_FRAMES: u32 = 30;
+
+/// Frames between passes that re-read every record. A new record can take an id
+/// a pruned one left behind between two looks at the list, and then the one
+/// [`Aggregate::read`] remembers for it is stale. This catches that, rarely
+/// enough that the reads it costs do not matter.
+///
+/// A verify pass reads every record, and a long save holds thousands (~2000
+/// measured, ~0.3 ms each), so it runs every five minutes or so of frames.
+const SWEEP_VERIFY_FRAMES: u32 = 18_000;
+
+/// What the records looked like when the last pass was queued.
+#[derive(Default)]
+struct SweepMark {
+    /// [`crate::item_stats_sim::captures`] at the time.
+    captures: u64,
+    /// The record ids at the time.
+    ids: Vec<usize>,
+    /// Frames since the id list was last looked at.
+    since_check: u32,
+    /// Frames since the last verify pass was queued.
+    since_verify: u32,
+}
+
+static SWEEP_MARK: Mutex<Option<SweepMark>> = Mutex::new(None);
+
+/// The record ids to pass over when a pass could find something the last one
+/// did not, or `None` when it could not.
+///
+/// # Why passes are not queued every frame
+///
+/// They were, whenever any capture was waiting (measured 2026-09-27). A capture
+/// waits until its record is written, which happens when its game day is
+/// committed and can be many minutes later, and some never get one at all — so
+/// from the first capture on, every frame queued a fresh pass and read the
+/// newest [`CHUNK`] records in full: ~10 ms a frame on the main thread, which
+/// halved the frame rate for the rest of the session, and took it to ~24 fps
+/// with the statistics screen open, whose own pump read the same pass.
+///
+/// A pass can only find something new if a capture has arrived since the last
+/// one, or the record list has changed. The first is an atomic read; the second
+/// is one `record_ids` call every [`SWEEP_CHECK_FRAMES`].
+///
+/// Returns the ids and whether the pass is a verify pass.
+fn due_pass(ctx: &StableClient<'_>) -> Option<(Vec<usize>, bool)> {
+    let captures = crate::item_stats_sim::captures();
+    let mut guard = SWEEP_MARK.lock().ok()?;
+    let mark = guard.get_or_insert_with(SweepMark::default);
+    mark.since_check = mark.since_check.saturating_add(1);
+    mark.since_verify = mark.since_verify.saturating_add(1);
+    let new_capture = captures != mark.captures;
+    let verify = mark.since_verify >= SWEEP_VERIFY_FRAMES;
+    if !new_capture && !verify && mark.since_check < SWEEP_CHECK_FRAMES {
+        return None;
+    }
+    mark.since_check = 0;
+    let ids = ctx.record_ids(RecordKindV1::MatchReplay);
+    if !new_capture && !verify && ids == mark.ids {
+        return None;
+    }
+    mark.captures = captures;
+    mark.ids.clone_from(&ids);
+    if verify {
+        mark.since_verify = 0;
+    }
+    Some((ids, verify))
 }
 
 /// Reads a bounded batch of records to backfill patches, then re-folds the
@@ -216,15 +320,44 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
     if !with_agg(|agg| agg.loaded).unwrap_or(false) {
         return false;
     }
+    // Every capture has been matched: the rest of the pass would read records
+    // for nothing.
+    if crate::item_stats_sim::pending() == 0 {
+        let _ = with_agg(|agg| {
+            agg.pending.clear();
+            agg.rematch = false;
+        });
+        return false;
+    }
+
+    // First the records already read, which need no reading to be matched: a
+    // capture often arrives after its record was read for an earlier pass.
+    let known: Vec<(String, u64)> = with_agg(|agg| {
+        if std::mem::take(&mut agg.rematch) {
+            agg.read.values().flatten().cloned().collect()
+        } else {
+            Vec::new()
+        }
+    })
+    .unwrap_or_default();
+    let mut folded = false;
+    for (patch, seed) in &known {
+        if let Some(players) = crate::item_stats_sim::take(*seed) {
+            fold(patch, &players);
+            folded = true;
+        }
+    }
+
     let batch = with_agg(|agg| {
         let take = CHUNK.min(agg.pending.len());
         agg.pending.drain(..take).collect::<Vec<_>>()
     })
     .unwrap_or_default();
 
-    let mut folded = false;
     for id in &batch {
-        let Some((patch, seed)) = read_record(ctx, *id) else {
+        let entry = read_record(ctx, *id);
+        let _ = with_agg(|agg| agg.read.insert(*id, entry.clone()));
+        let Some((patch, seed)) = entry else {
             continue;
         };
         // A seed with no capture waiting is either a match simmed before
@@ -238,12 +371,13 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
         folded = true;
     }
 
+    let finished = with_agg(|agg| agg.pending.is_empty()).unwrap_or(false);
+
     if folded {
         DIRTY.store(true, Ordering::Relaxed);
         return true;
     }
 
-    let finished = with_agg(|agg| agg.pending.is_empty()).unwrap_or(false);
     !batch.is_empty() && finished
 }
 
@@ -408,6 +542,9 @@ fn rows(counts: &BTreeMap<String, Totals>) -> Vec<(String, Totals)> {
 /// fetched in one call where the host allows it, because one round trip beats
 /// two and the parse is the same either way.
 fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
+    // Measured 2026-09-27: a named read ("seed") costs about half a full read,
+    // so the two named reads this needs would cost what one full read does.
+    // The full read stays first.
     let record = match ctx
         .record_get_json(RecordKindV1::MatchReplay, id, "")
         .and_then(|json| serde_json::from_str::<Value>(&json).ok())
@@ -428,7 +565,6 @@ fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
             })
         }
     };
-
     // A league match always names its version, so one that does not is not a
     // record this table can place — skipped rather than filed under a catch-all
     // bucket that would only ever collect things that should not be there.
@@ -687,8 +823,9 @@ static WAITED: Mutex<u32> = Mutex::new(0);
 /// queue a 2MB file. Driven from the management tick instead, the queue drains
 /// within a tick or two of a match ending and never needs to persist at all.
 ///
-/// The sweep is gated on there being something to fold, so a quiet tick costs one
-/// atomic read.
+/// A pass is only queued when it could find something new (see [`due_pass`]),
+/// so a frame with captures waiting on records that never come costs an atomic
+/// read, and a `record_ids` call every [`SWEEP_CHECK_FRAMES`].
 ///
 /// # What "saved" means now
 ///
@@ -716,10 +853,19 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    if crate::item_stats_sim::pending() > 0 {
-        sweep(ctx);
-        while pump(ctx) {}
+    // Not while a pass is in flight: queuing one resets it to the newest record,
+    // so captures arriving faster than a pass finishes would keep it re-reading
+    // the same batch. What arrives meanwhile is still new to `due_pass` once the
+    // pass ends, and gets a pass of its own then.
+    let in_flight = with_agg(|agg| !agg.pending.is_empty()).unwrap_or(false);
+    if !in_flight && crate::item_stats_sim::pending() > 0 {
+        if let Some((ids, verify)) = due_pass(ctx) {
+            queue_pass(&ids, verify);
+        }
     }
+    // A pass in flight goes on from where the last frame left it, rather than
+    // being queued afresh. With none in flight this reads nothing.
+    while pump(ctx) {}
 
     flush(ctx);
 }

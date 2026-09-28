@@ -5573,9 +5573,24 @@ unsafe fn buy_inputs(
 /// the full path, so the table does not need to be exact.
 const BUY_MEMO_SLOTS: usize = 64;
 
+/// Which athlete a [`BuyInputs`] belongs to: the match seed, the athlete id and
+/// the address of its build `Vec`.
+///
+/// Not the `athlete` pointer the detour is handed, which was the key until
+/// 2026-09-27. A logged session showed the game passing every athlete of a team
+/// through the same buffer: five athletes (ids 0xbd..0xc1) took turns at one
+/// address, each overwrote the last one's entry, and the memo missed on ~520k
+/// calls in four minutes, every one a full pass that changed nothing. The seed
+/// tells sim copies of different fixtures apart, the id tells athletes apart,
+/// and the build `Vec` is the athlete's own heap buffer, which tells two copies
+/// of one match on the same seed apart.
+fn buy_memo_key(inputs: &BuyInputs) -> [u64; 3] {
+    [inputs.0[0], inputs.0[1], inputs.0[8]]
+}
+
 /// Per athlete, the inputs of its last buy decision that changed nothing.
 struct BuyMemo {
-    entries: [(usize, BuyInputs); BUY_MEMO_SLOTS],
+    entries: [([u64; 3], BuyInputs); BUY_MEMO_SLOTS],
     next: usize,
 }
 
@@ -5584,21 +5599,22 @@ thread_local! {
     // detour's threads, as with `SEH_T`.
     static BUY_MEMO: core::cell::RefCell<BuyMemo> = const {
         core::cell::RefCell::new(BuyMemo {
-            entries: [(0, BuyInputs([0; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX])); BUY_MEMO_SLOTS],
+            entries: [([0; 3], BuyInputs([0; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX])); BUY_MEMO_SLOTS],
             next: 0,
         })
     };
 }
 
-/// Whether `athlete`'s last decision on this thread changed nothing and was
+/// Whether this athlete's last decision on this thread changed nothing and was
 /// made from exactly `inputs` -- so this one would change nothing either.
-fn buy_memo_hit(athlete: usize, inputs: &BuyInputs) -> bool {
+fn buy_memo_hit(inputs: &BuyInputs) -> bool {
+    let key = buy_memo_key(inputs);
     BUY_MEMO
         .try_with(|memo| {
             memo.try_borrow().is_ok_and(|memo| {
                 memo.entries
                     .iter()
-                    .any(|(key, known)| *key == athlete && known == inputs)
+                    .any(|(known_key, known)| *known_key == key && known == inputs)
             })
         })
         .unwrap_or(false)
@@ -5606,17 +5622,18 @@ fn buy_memo_hit(athlete: usize, inputs: &BuyInputs) -> bool {
 
 /// Remembers that a decision from `inputs` changed nothing for `athlete`,
 /// replacing whatever this thread held for it.
-fn buy_memo_store(athlete: usize, inputs: BuyInputs) {
+fn buy_memo_store(inputs: BuyInputs) {
+    let key = buy_memo_key(&inputs);
     let _ = BUY_MEMO.try_with(|memo| {
         let Ok(mut memo) = memo.try_borrow_mut() else {
             return;
         };
-        let known = memo.entries.iter().position(|(key, _)| *key == athlete);
+        let known = memo.entries.iter().position(|(known_key, _)| *known_key == key);
         let slot = known.unwrap_or(memo.next);
         if known.is_none() {
             memo.next = (slot + 1) % BUY_MEMO_SLOTS;
         }
-        memo.entries[slot] = (athlete, inputs);
+        memo.entries[slot] = (key, inputs);
     });
 }
 
@@ -5715,7 +5732,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   (owned), an engine re-plan (the targets), a new pin snapshot or a
         //   flipped gate each change the inputs and run the full path again.
         let memo_inputs = buy_inputs(athlete, rsp_entry, seed_r9, is_live);
-        if memo_inputs.is_some_and(|inputs| buy_memo_hit(athlete, &inputs)) {
+        if memo_inputs.is_some_and(|inputs| buy_memo_hit(&inputs)) {
             return 0;
         }
         // -- From here on, only spectated-match buys (a small minority) and background buys by my 5 players get through --
@@ -6322,7 +6339,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // settle), and is remembered once it settles.
         if let Some(inputs) = memo_inputs {
             if buy_inputs(athlete, rsp_entry, seed_r9, is_live) == Some(inputs) {
-                buy_memo_store(athlete, inputs);
+                buy_memo_store(inputs);
             }
         }
         // * AUTO4_NATURAL: plant only the build[3] target and force nothing -> the game builds up naturally from components (t1), paying full gold.

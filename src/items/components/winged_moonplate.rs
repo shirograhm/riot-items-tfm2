@@ -56,6 +56,7 @@ impl StableItem for WingedMoonplate {
         vec![
             "dead_mans_plate".to_string(),
             "protoplasm_harness".to_string(),
+            "cosmic_drive".to_string(),
         ]
     }
 

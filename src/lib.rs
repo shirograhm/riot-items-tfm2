@@ -350,6 +350,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("chemtech_putrifier" => ChemtechPutrifier));
     reg.add_item(configured!("cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured!("collector" => Collector));
+    reg.add_item(configured!("cosmic_drive" => CosmicDrive));
     reg.add_item(configured!("dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
@@ -357,8 +358,11 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("eclipse" => Eclipse));
+    reg.add_item(configured!("endless_hunger" => EndlessHunger));
+    reg.add_item(configured!("essence_reaver" => EssenceReaver));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured!("feral_flare" => FeralFlare));
+    reg.add_item(configured!("fiendhunter_bolts" => FiendhunterBolts));
     reg.add_item(configured!("frozen_heart" => FrozenHeart));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
     reg.add_item(configured!("grezs_spectral_lantern" => GrezsSpectralLantern));
@@ -431,6 +435,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_chemtech_putrifier" => ChemtechPutrifier));
     reg.add_item(configured_radiant!("radiant_cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured_radiant!("radiant_collector" => Collector));
+    reg.add_item(configured_radiant!("radiant_cosmic_drive" => CosmicDrive));
     reg.add_item(configured_radiant!("radiant_dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
     reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));
@@ -438,8 +443,11 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured_radiant!("radiant_eclipse" => Eclipse));
+    reg.add_item(configured_radiant!("radiant_endless_hunger" => EndlessHunger));
+    reg.add_item(configured_radiant!("radiant_essence_reaver" => EssenceReaver));
     reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
+    reg.add_item(configured_radiant!("radiant_fiendhunter_bolts" => FiendhunterBolts));
     reg.add_item(configured_radiant!("radiant_frozen_heart" => FrozenHeart));
     reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
     reg.add_item(configured_radiant!("radiant_grezs_spectral_lantern" => GrezsSpectralLantern));
