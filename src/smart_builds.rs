@@ -307,7 +307,7 @@ impl Fit {
 /// builds permanent stacks over the match. By base slug, so the radiant tier
 /// follows.
 const EARLY_ITEMS: [&str; 6] = [
-    "heartsteel",             // permanent bonus health every 20 seconds
+    "heartsteel",             // permanent bonus health per charged hit on a champion
     "yun_tal_wildarrows",     // permanent crit chance per basic attack
     "hubris",                 // permanent stack per takedown
     "feral_flare",            // a stack per takedown and monster killed

@@ -79,6 +79,14 @@
             "tag": "heal",
             "z": 1,
             "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_heartsteel_trigger",
+            "anim": "asset/riot_items_tfm2/effects/heartsteel_trigger",
+            "tag": "trigger",
+            "z": 1,
+            "is_follow": true
         }
     ],
     "view_projectiles": [
@@ -138,6 +146,20 @@
             "name": "riot_spellblade",
             "anim": "asset/riot_items_tfm2/effects/spellblade_sparks",
             "tag": "sparks",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_heartsteel_charge",
+            "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
+            "tag": "charge",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_heartsteel_mark",
+            "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
+            "tag": "ready",
             "z": 1
         }
     ]
