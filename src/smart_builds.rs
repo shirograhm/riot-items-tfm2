@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Eight of them:
+//! Ten of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -47,13 +47,23 @@
 //!    other rule accepts. Rule 5 is what matches it to the champion: an AD
 //!    support gets a tank support item, never an AP one, and a jungler Feral
 //!    Flare or Grez's by damage type.
+//! 10. **Imperial Mandate for supports with crowd control** — a support whose
+//!    champion is tagged `CC` makes Mandate its support item, since its passive
+//!    pays off on the slows and stuns that champion lands: the AI's first
+//!    support item gives way to it. A support item the player pinned is their
+//!    choice and stays, a build that already holds Mandate is left alone, and
+//!    the other rules still judge it (Mandate is an AP item, so rule 5 keeps it
+//!    off an AD support). The other way round, a support known to have no
+//!    crowd control never keeps an AI's Mandate: it makes way for another
+//!    support item, and rule 9 never hands one out. A champion nothing is known
+//!    about is left alone either way.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
 //! other item, so the AI's picks around it make way for it rather than the
 //! other way round.
 //!
-//! Rules 4, 5, 8 and 9 are about the champion, not the build, and come in as a
+//! Rules 4, 5, 8, 9 and 10 are about the champion, not the build, and come in as a
 //! [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
@@ -225,6 +235,7 @@ pub(crate) enum Reason {
     SupportOnly,
     Scaling,
     JungleOnly,
+    MandateWithoutCc,
 }
 
 impl Reason {
@@ -232,11 +243,16 @@ impl Reason {
     /// for its stand-in. A support item's category holds nothing but support
     /// items, and an item the champion does not scale with sits among others
     /// it does not scale with, so for these two the stand-in is taken from the
-    /// categories the rest of the build uses instead. A jungle item's category
-    /// is an ordinary one (Grez's is a Mage item), so its stand-in comes from
-    /// there, like a duplicate's.
+    /// categories the rest of the build uses instead. Imperial Mandate on a
+    /// support without crowd control goes the same way: it is a support item,
+    /// so another support item stands in first. A jungle item's category is an
+    /// ordinary one (Grez's is a Mage item), so its stand-in comes from there,
+    /// like a duplicate's.
     pub(crate) fn restyles(self) -> bool {
-        matches!(self, Reason::SupportOnly | Reason::Scaling)
+        matches!(
+            self,
+            Reason::SupportOnly | Reason::Scaling | Reason::MandateWithoutCc
+        )
     }
 }
 
@@ -253,6 +269,12 @@ pub(crate) struct Fit {
     scaling: Option<Scaling>,
     /// Rule 8: whether jungle items are allowed.
     jungle_items: bool,
+    /// Rule 10: whether this is a support with crowd control, whose support
+    /// item is Imperial Mandate.
+    mandate: bool,
+    /// Rule 10's other half: whether this is a support known to have no crowd
+    /// control, who never keeps Mandate. `false` when the champion is unknown.
+    no_mandate: bool,
 }
 
 /// The [`Fit`] for `champion` playing `role`.
@@ -268,6 +290,8 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
         support_items: role == Role::Support,
         scaling: traits.and_then(|traits| traits.scaling),
         jungle_items: role == Role::Jungle,
+        mandate: role == Role::Support && traits.is_some_and(|traits| traits.cc),
+        no_mandate: role == Role::Support && traits.is_some_and(|traits| !traits.cc),
     }
 }
 
@@ -450,6 +474,11 @@ fn is_support_item(key: &str) -> bool {
     !SUPPORT_ITEM_EXCEPTIONS.contains(&crate::build_config::base_slug(key)) && is_support_class(key)
 }
 
+/// Rule 10: whether `key` is Imperial Mandate, base or radiant.
+fn is_mandate(key: &str) -> bool {
+    crate::build_config::base_slug(key) == "imperial_mandate"
+}
+
 /// Rule 8: items only the jungle role may build. By base slug, so the radiant
 /// tier follows.
 const JUNGLE_ITEMS: [&str; 2] = [
@@ -503,6 +532,8 @@ impl Budget {
             Some(Reason::SupportOnly)
         } else if !self.fit.jungle_items && is_jungle_item(key) {
             Some(Reason::JungleOnly)
+        } else if self.fit.no_mandate && is_mandate(key) {
+            Some(Reason::MandateWithoutCc)
         } else if self.fit.mismatches(&traits) {
             Some(Reason::Scaling)
         } else if self.cuts_healing && traits.cuts_healing {
@@ -514,12 +545,13 @@ impl Budget {
         }
     }
 
-    /// Whether `key` is an item this champion may hold at all — rules 4, 5 and
-    /// 8, which do not depend on what else is in the build. An item that fails
-    /// is no guide to the build's style.
+    /// Whether `key` is an item this champion may hold at all — rules 4, 5, 8
+    /// and 10, which do not depend on what else is in the build. An item that
+    /// fails is no guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
         !(!self.fit.support_items && is_support_item(key))
             && !(!self.fit.jungle_items && is_jungle_item(key))
+            && !(self.fit.no_mandate && is_mandate(key))
             && !self.fit.mismatches(&self.table.traits(key))
     }
 
@@ -573,6 +605,11 @@ impl Budget {
 /// above, from the item being replaced, and the stand-in is held to every
 /// other rule against the rest of the build. Nothing that fits, nothing
 /// changes.
+///
+/// Then rule 10: a support with crowd control whose build has no Imperial
+/// Mandate, and no support item the player pinned, has the AI's first support
+/// item (preferring one only supports may build) swapped for Mandate, held to
+/// the other rules the same way.
 ///
 /// Last, rule 6 reorders the AI's slots among themselves: the role's own items
 /// first (rule 9), then early items, late items last, and the engine's order
@@ -722,6 +759,23 @@ pub(crate) fn enforce<C, K, G, F>(
         }
     }
 
+    // What the rest of the build spends with `slot` left out: the budget a
+    // stand-in for that slot is judged against (rules 9 and 10).
+    let budget_without = |build: &[usize], slot: usize| {
+        let mut rest = Budget::empty(fit);
+        let others = build
+            .iter()
+            .enumerate()
+            .filter(|&(other, _)| other != slot)
+            .map(|(_, &index)| index);
+        for index in others.chain(reserved.iter().copied()) {
+            if let Some(key) = key(index) {
+                rest.take(&key);
+            }
+        }
+        rest
+    };
+
     // Rule 9. The AI's last pick is the one the engine wanted least, so it is
     // the one that makes way. The stand-in is judged against the rest of the
     // build, which is why the budget is rebuilt without that slot.
@@ -736,17 +790,7 @@ pub(crate) fn enforce<C, K, G, F>(
         });
         if let Some(slot) = last_pick {
             let offender = build[slot];
-            let mut rest = Budget::empty(fit);
-            let others = build
-                .iter()
-                .enumerate()
-                .filter(|&(other, _)| other != slot)
-                .map(|(_, &index)| index);
-            for index in others.chain(reserved.iter().copied()) {
-                if let Some(key) = key(index) {
-                    rest.take(&key);
-                }
-            }
+            let rest = budget_without(build, slot);
             let role_item = (1..count)
                 .map(|step| (offender + step) % count)
                 .find(|&candidate| {
@@ -760,6 +804,40 @@ pub(crate) fn enforce<C, K, G, F>(
                 });
             if let Some(role_item) = role_item {
                 build[slot] = role_item;
+            }
+        }
+    }
+
+    // Rule 10. After rule 9, so a support always holds a support item here
+    // unless nothing fit; this only decides which one. The player's pinned
+    // support item is their choice, so a pin rules Mandate out.
+    let holds = |index: usize, want: fn(&str) -> bool| key(index).is_some_and(|key| want(&key));
+    let pinned_support = (0..build.len())
+        .filter(|&slot| is_pinned(slot))
+        .map(|slot| build[slot])
+        .chain(reserved.iter().copied())
+        .any(|index| holds(index, is_support_class));
+    let has_mandate = build
+        .iter()
+        .chain(reserved)
+        .any(|&index| holds(index, is_mandate));
+    if fit.mandate && !has_mandate && !pinned_support {
+        let ai_slot_holding = |want: fn(&str) -> bool| {
+            (0..build.len()).find(|&slot| !is_pinned(slot) && holds(build[slot], want))
+        };
+        if let Some(slot) =
+            ai_slot_holding(is_support_item).or_else(|| ai_slot_holding(is_support_class))
+        {
+            let rest = budget_without(build, slot);
+            let mandate = (0..count).find(|&candidate| {
+                is_final(candidate)
+                    && !build.contains(&candidate)
+                    && key(candidate).is_some_and(|candidate| {
+                        is_mandate(&candidate) && rest.rejects(&candidate).is_none()
+                    })
+            });
+            if let Some(mandate) = mandate {
+                build[slot] = mandate;
             }
         }
     }
