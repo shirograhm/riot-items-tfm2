@@ -1,10 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, has_buff, keep_spellblade, mark_spellblade, percent_of, spend_spellblade, ticks,
-    ItemMeta, ProcQueue,
-};
+use crate::{apply_config, percent_of, ItemMeta, ProcQueue, Spellblade};
 
 #[derive(Clone, Debug)]
 pub struct LichBane {
@@ -16,7 +13,7 @@ pub struct LichBane {
     effect_bonus_flat_damage: usize,
     effect_ap_percent_damage: f64,
     effect_cooldown_seconds: f64,
-    spellblade_ready: bool,
+    spellblade: Spellblade,
     procs: ProcQueue,
 }
 
@@ -36,7 +33,7 @@ impl LichBane {
             effect_ap_percent_damage: 30.0,
             effect_cooldown_seconds: 1.5,
             // Non-vital stats (internals)
-            spellblade_ready: false,
+            spellblade: Spellblade::default(),
             procs: ProcQueue::new(),
         }
     }
@@ -126,32 +123,8 @@ impl StableItem for LichBane {
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.spellblade_ready = false;
+        self.spellblade.reset();
         self.procs.clear();
-    }
-
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        caster: usize,
-        target: usize,
-        is_ally: bool,
-    ) {
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if !target_ref.is_champion() || is_ally {
-            return;
-        }
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
-        if !on_cooldown {
-            self.spellblade_ready = true;
-            mark_spellblade(ctx, caster);
-        }
     }
 
     fn on_attack(
@@ -164,7 +137,7 @@ impl StableItem for LichBane {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if !self.spellblade_ready || attack_type != AttackTypeV1::BaseAttack {
+        if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
@@ -174,19 +147,15 @@ impl StableItem for LichBane {
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
 
         self.procs.push_magic(ctx, target, bonus_damage);
-        self.spellblade_ready = false;
-        spend_spellblade(ctx, caster, target);
-        ctx.add_buff(
-            caster,
-            &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
-        );
+        self.spellblade
+            .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and keeps the
-    /// Spellblade sparks up while it is ready.
+    /// Lands the Spellblade damage whose delay has run out, and watches for
+    /// the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
-        keep_spellblade(ctx, player, self.spellblade_ready);
+        self.spellblade.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

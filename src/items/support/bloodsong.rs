@@ -1,10 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, has_buff, keep_spellblade, mark_spellblade, refresh_buff, spend_spellblade,
-    ticks, ItemMeta, ProcQueue,
-};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade};
 
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
@@ -20,7 +17,7 @@ pub struct Bloodsong {
     effect_cooldown_seconds: f64,
     effect_damaged_amplify: usize,
     effect_duration_seconds: f64,
-    spellblade_ready: bool,
+    spellblade: Spellblade,
     procs: ProcQueue,
 }
 
@@ -44,7 +41,7 @@ impl Bloodsong {
             effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
             // Non-vital stats (internals)
-            spellblade_ready: false,
+            spellblade: Spellblade::default(),
             procs: ProcQueue::new(),
         }
     }
@@ -149,32 +146,8 @@ impl StableItem for Bloodsong {
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.spellblade_ready = false;
+        self.spellblade.reset();
         self.procs.clear();
-    }
-
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        caster: usize,
-        target: usize,
-        is_ally: bool,
-    ) {
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if !target_ref.is_champion() || is_ally {
-            return;
-        }
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
-        if !on_cooldown {
-            self.spellblade_ready = true;
-            mark_spellblade(ctx, caster);
-        }
     }
 
     fn on_attack(
@@ -187,24 +160,20 @@ impl StableItem for Bloodsong {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if !self.spellblade_ready || attack_type != AttackTypeV1::BaseAttack {
+        if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
         let bonus_damage = self.spellblade_damage(caster_ref.level());
-        self.spellblade_ready = false;
-        spend_spellblade(ctx, caster, target);
+        self.spellblade
+            .spend(ctx, caster, target, self.effect_cooldown_seconds);
 
         // Vulnerable goes on below and is up by the time this lands, so the
         // proc is amplified by its own debuff — it was not when the damage
         // resolved inline, ahead of the buff.
         self.procs.push_magic(ctx, target, bonus_damage);
-        ctx.add_buff(
-            caster,
-            &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
-        );
 
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -223,11 +192,11 @@ impl StableItem for Bloodsong {
         );
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and keeps the
-    /// Spellblade sparks up while it is ready.
+    /// Lands the Spellblade damage whose delay has run out, and watches for
+    /// the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
-        keep_spellblade(ctx, player, self.spellblade_ready);
+        self.spellblade.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

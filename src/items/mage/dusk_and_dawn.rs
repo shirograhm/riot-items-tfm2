@@ -1,10 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, has_buff, keep_spellblade, mark_spellblade, percent_of, spend_spellblade, ticks,
-    ItemMeta, ProcQueue,
-};
+use crate::{apply_config, percent_of, ItemMeta, ProcQueue, Spellblade};
 
 #[derive(Clone, Debug)]
 pub struct DuskAndDawn {
@@ -19,7 +16,7 @@ pub struct DuskAndDawn {
     effect_caster_ap_percent_heal: f64,
     effect_caster_hp_percent_heal: f64,
     effect_cooldown_seconds: f64,
-    spellblade_ready: bool,
+    spellblade: Spellblade,
     procs: ProcQueue,
 }
 
@@ -42,7 +39,7 @@ impl DuskAndDawn {
             effect_caster_hp_percent_heal: 2.5,
             effect_cooldown_seconds: 3.5,
             // Non-vital stats (internals)
-            spellblade_ready: false,
+            spellblade: Spellblade::default(),
             procs: ProcQueue::new(),
         }
     }
@@ -139,32 +136,8 @@ impl StableItem for DuskAndDawn {
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.spellblade_ready = false;
+        self.spellblade.reset();
         self.procs.clear();
-    }
-
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        caster: usize,
-        target: usize,
-        is_ally: bool,
-    ) {
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if !target_ref.is_champion() || is_ally {
-            return;
-        }
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
-        if !on_cooldown {
-            self.spellblade_ready = true;
-            mark_spellblade(ctx, caster);
-        }
     }
 
     fn on_attack(
@@ -177,7 +150,7 @@ impl StableItem for DuskAndDawn {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if !self.spellblade_ready || attack_type != AttackTypeV1::BaseAttack {
+        if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
@@ -196,19 +169,15 @@ impl StableItem for DuskAndDawn {
         self.procs.push_magic(ctx, target, bonus_damage);
         ctx.heal(caster, caster, heal_amount);
 
-        self.spellblade_ready = false;
-        spend_spellblade(ctx, caster, target);
-        ctx.add_buff(
-            caster,
-            &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
-        );
+        self.spellblade
+            .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and keeps the
-    /// Spellblade sparks up while it is ready.
+    /// Lands the Spellblade damage whose delay has run out, and watches for
+    /// the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
-        keep_spellblade(ctx, player, self.spellblade_ready);
+        self.spellblade.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
