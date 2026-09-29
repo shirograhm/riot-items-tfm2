@@ -1,7 +1,7 @@
-//! Spellblade: using an Ability empowers the next basic attack. Shared by Sheen
-//! and everything built from it (Trinity Force, Dusk and Dawn, Lich Bane,
-//! Essence Reaver, Bloodsong); each item owns its numbers and deals its own
-//! bonus damage.
+//! Spellblade: using an Ability empowers the next basic attack within
+//! `WINDOW_SECONDS`. Shared by Sheen and everything built from it (Trinity
+//! Force, Dusk and Dawn, Lich Bane, Essence Reaver, Bloodsong); each item owns
+//! its numbers and deals its own bonus damage.
 //!
 //! No hook reports a cast, so one is read the way Zeke's Convergence reads its
 //! ult: an ability's remaining cooldown going *up* between two ticks, since it
@@ -17,6 +17,10 @@ use crate::{has_buff, refresh_buff, ticks, TICKS_PER_SECOND};
 /// next one until it runs out. One name for every Spellblade item, so they
 /// share it.
 const COOLDOWN_BUFF: &str = "spellblade_cooldown";
+/// How long a cast keeps the next basic attack empowered; an unused one is
+/// lost. Another cast while it is up restarts it. The tooltips state it as a
+/// fixed 10 seconds, so it is not read from config.
+const WINDOW_SECONDS: f64 = 10.0;
 /// Statless marker on a champion whose next basic attack is empowered. It is
 /// the `view_buffs` binding in `view/effects.view_effects` that draws sparks
 /// circling the champion's hands (`effects/spellblade_sparks`).
@@ -33,6 +37,8 @@ const PROC_EFFECT: &str = "riot_spellblade_proc";
 pub(crate) struct Spellblade {
     /// The next basic attack is empowered.
     ready: bool,
+    /// Ticks left before an unused empowered attack is lost.
+    window: usize,
     /// The carrier's remaining ability cooldowns (skill, skill2, ult) last
     /// tick. `None` until the first reading after a spawn, which is only a
     /// baseline.
@@ -49,8 +55,9 @@ impl Spellblade {
     }
 
     /// Readies Spellblade when the carrier casts, unless the last empowered
-    /// attack's cooldown is still running, and keeps the sparks up while it is
-    /// ready. Call once per `update`.
+    /// attack's cooldown is still running; a cast while it is ready restarts
+    /// the window instead. Keeps the sparks up while it is ready and takes
+    /// them down when the window runs out. Call once per `update`.
     pub(crate) fn update(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         let cooldowns = ctx
             .get_player(player)
@@ -63,6 +70,12 @@ impl Spellblade {
         );
         self.last_cooldowns = cooldowns;
 
+        self.window = self.window.saturating_sub(1);
+        let expired = self.ready && self.window == 0;
+        if expired {
+            self.ready = false;
+        }
+
         let Some((champion, cooling_down)) = ctx
             .get_player(player)
             .and_then(|p| p.champion())
@@ -71,9 +84,14 @@ impl Spellblade {
         else {
             return;
         };
-        if cast && !self.ready && !cooling_down {
+        if cast && !cooling_down {
+            if !self.ready {
+                mark(ctx, champion);
+            }
             self.ready = true;
-            mark(ctx, champion);
+            self.window = ticks(WINDOW_SECONDS);
+        } else if expired {
+            ctx.entity_remove_buff(champion, SPARKS_BUFF);
         } else if self.ready && ctx.tick() % TICKS_PER_SECOND as usize == 0 {
             mark(ctx, champion);
         }

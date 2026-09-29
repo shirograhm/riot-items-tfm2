@@ -602,15 +602,15 @@
         },
         "sheen": {
             "name": "Sheen",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#ff9028ff>30<> - <#ff9028ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>30<> - <#ff9028ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "trinity_force": {
             "name": "Trinity Force",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "radiant_trinity_force": {
             "name": "Radiant Trinity Force",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>33<> + <#ff9028ff>33%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "frozen_heart": {
             "name": "Frozen Heart",
@@ -626,19 +626,19 @@
         },
         "dusk_and_dawn": {
             "name": "Dusk and Dawn",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Radiant Dusk and Dawn",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>85<> + <#a974ffff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal you<> for <#a974ffff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> and <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> (<#e8a800ff>3.5 second<> cooldown)."
         },
         "bloodsong": {
             "name": "Bloodsong",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "radiant_bloodsong": {
             "name": "Radiant Bloodsong",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "serrated_dirk": {
             "name": "Serrated Dirk",
@@ -910,11 +910,11 @@
         },
         "lich_bane": {
             "name": "Lich Bane",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#a974ffff>105<> + <#a974ffff>30%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>1.5 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>105<> + <#a974ffff>30%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "radiant_lich_bane": {
             "name": "Radiant Lich Bane",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#a974ffff>105<> + <#a974ffff>45%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>1.5 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>105<> + <#a974ffff>45%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>1.5 second<> cooldown)."
         },
         "imperial_mandate": {
             "name": "Imperial Mandate",
@@ -962,11 +962,11 @@
         },
         "essence_reaver": {
             "name": "Essence Reaver",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#ff9028ff>125%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> as <#ff9028ff>bonus physical damage<> on-hit (<#e8a800ff>1.5 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>125%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> as <#ff9028ff>bonus physical damage<> on-hit (<#e8a800ff>1.5 second<> cooldown)."
         },
         "radiant_essence_reaver": {
             "name": "Radiant Essence Reaver",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack to deal <#ff9028ff>125%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> as <#ff9028ff>bonus physical damage<> on-hit (<#e8a800ff>1.5 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>125%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> as <#ff9028ff>bonus physical damage<> on-hit (<#e8a800ff>1.5 second<> cooldown)."
         },
         "endless_hunger": {
             "name": "Endless Hunger",
@@ -1624,15 +1624,15 @@
         },
         "sheen": {
             "name": "Thủy Kiếm",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>30<> - <#ff9028ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>30<> - <#ff9028ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
         },
         "trinity_force": {
             "name": "Tam Hợp Kiếm",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
         },
         "radiant_trinity_force": {
             "name": "Tam Hợp Kiếm Ánh Sáng",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>33<> + <#ff9028ff>33%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
         },
         "frozen_heart": {
             "name": "Tim Băng",
@@ -1648,19 +1648,19 @@
         },
         "dusk_and_dawn": {
             "name": "Hoàng Hôn và Bình Minh",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> và <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> và <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Hoàng Hôn và Bình Minh Ánh Sáng",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> và <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>85<> + <#a974ffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu cho bạn<> <#a974ffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> và <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>3.5 giây<>)."
         },
         "bloodsong": {
             "name": "Khúc Ca Máu",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "radiant_bloodsong": {
             "name": "Khúc Ca Máu Ánh Sáng",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "serrated_dirk": {
             "name": "Dao Găm Răng Cưa",
@@ -1932,11 +1932,11 @@
         },
         "lich_bane": {
             "name": "Kiếm Tai Ương",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>105<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>105<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
         },
         "radiant_lich_bane": {
             "name": "Kiếm Tai Ương Ánh Sáng",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#a974ffff>105<> + <#a974ffff>45%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>105<> + <#a974ffff>45%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>1.5 giây<>)."
         },
         "imperial_mandate": {
             "name": "Trát Lệnh Đế Vương",
@@ -1984,11 +1984,11 @@
         },
         "essence_reaver": {
             "name": "Lưỡi Hái Linh Hồn",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>125%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>1.5 giây<>)."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>125%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>1.5 giây<>)."
         },
         "radiant_essence_reaver": {
             "name": "Lưỡi Hái Linh Hồn Ánh Sáng",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn gây <#ff9028ff>125%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>1.5 giây<>)."
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>125%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>1.5 giây<>)."
         },
         "endless_hunger": {
             "name": "Liềm Xích Huyết Thực",
@@ -2646,15 +2646,15 @@
         },
         "sheen": {
             "name": "耀光",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击会造成 <#ff9028ff>30<> - <#ff9028ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#ff9028ff>30<> - <#ff9028ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
         },
         "trinity_force": {
             "name": "三相之力",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击会造成相当于 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>33%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>3.5秒<>）。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成相当于 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>33%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>3.5秒<>）。"
         },
         "radiant_trinity_force": {
             "name": "光明版三相之力",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击会造成相当于 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>33%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>3.5秒<>）。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成相当于 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>33%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>3.5秒<>）。"
         },
         "frozen_heart": {
             "name": "冰霜之心",
@@ -2670,19 +2670,19 @@
         },
         "dusk_and_dawn": {
             "name": "黄昏与黎明",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击会造成相当于 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>15%<> 的<#a974ffff>额外魔法伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为你回复<>相当于<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>10%<> 与<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值（冷却 <#e8a800ff>3.5秒<>）。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成相当于 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>15%<> 的<#a974ffff>额外魔法伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为你回复<>相当于<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>10%<> 与<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值（冷却 <#e8a800ff>3.5秒<>）。"
         },
         "radiant_dusk_and_dawn": {
             "name": "光明版黄昏与黎明",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击会造成相当于 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>15%<> 的<#a974ffff>额外魔法伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为你回复<>相当于<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>10%<> 与<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值（冷却 <#e8a800ff>3.5秒<>）。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成相当于 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>15%<> 的<#a974ffff>额外魔法伤害<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为你回复<>相当于<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>10%<> 与<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值（冷却 <#e8a800ff>3.5秒<>）。"
         },
         "bloodsong": {
             "name": "血歌",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "radiant_bloodsong": {
             "name": "光明版血歌",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "serrated_dirk": {
             "name": "锯齿短匕",
@@ -2954,11 +2954,11 @@
         },
         "lich_bane": {
             "name": "巫妖之祸",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击会造成相当于 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>30%<> 的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成相当于 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>30%<> 的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
         },
         "radiant_lich_bane": {
             "name": "光明版巫妖之祸",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击会造成相当于 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>45%<> 的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成相当于 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>的 <#a974ffff>45%<> 的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
         },
         "imperial_mandate": {
             "name": "帝国指令",
@@ -3006,11 +3006,11 @@
         },
         "essence_reaver": {
             "name": "夺萃之镰",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击命中时会造成相当于 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>125%<> <#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击命中时会造成相当于 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>125%<> <#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
         },
         "radiant_essence_reaver": {
             "name": "光明版夺萃之镰",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你的下一次普通攻击命中时会造成相当于 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>125%<> <#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击命中时会造成相当于 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>125%<> <#d45656ff>（+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>1.5秒<>）。"
         },
         "endless_hunger": {
             "name": "无穷饥渴",
@@ -3668,15 +3668,15 @@
         },
         "sheen": {
             "name": "Fulgor",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#ff9028ff>30<> - <#ff9028ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>30<> - <#ff9028ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
         },
         "trinity_force": {
             "name": "Força da Trindade",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
         },
         "radiant_trinity_force": {
             "name": "Força da Trindade Radiante",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>33<> + <#ff9028ff>33%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>3.5 segundos<>)."
         },
         "frozen_heart": {
             "name": "Coração Congelado",
@@ -3692,19 +3692,19 @@
         },
         "dusk_and_dawn": {
             "name": "Crepúsculo e Alvorada",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curar você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> e <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curar você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> e <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>3.5 segundos<>)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Crepúsculo e Alvorada Radiante",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curar você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> e <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>3.5 segundos<>)."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>85<> + <#a974ffff>15%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curar você<> em <#a974ffff>10%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> e <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>3.5 segundos<>)."
         },
         "bloodsong": {
             "name": "Canção de Sangue",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "radiant_bloodsong": {
             "name": "Canção de Sangue Radiante",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "serrated_dirk": {
             "name": "Adaga Serrilhada",
@@ -3976,11 +3976,11 @@
         },
         "lich_bane": {
             "name": "Perdição de Lich",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#a974ffff>105<> + <#a974ffff>30%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>105<> + <#a974ffff>30%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
         },
         "radiant_lich_bane": {
             "name": "Perdição de Lich Radiante",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#a974ffff>105<> + <#a974ffff>45%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>105<> + <#a974ffff>45%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>1.5 segundos<>)."
         },
         "imperial_mandate": {
             "name": "Mandato Imperial",
@@ -4028,11 +4028,11 @@
         },
         "essence_reaver": {
             "name": "Colhedor de Essência",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#ff9028ff>125%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> como <#ff9028ff>dano físico bônus<> ao contato (recarga de <#e8a800ff>1.5 segundos<>)."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>125%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> como <#ff9028ff>dano físico bônus<> ao contato (recarga de <#e8a800ff>1.5 segundos<>)."
         },
         "radiant_essence_reaver": {
             "name": "Colhedor de Essência Radiante",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico causar <#ff9028ff>125%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> como <#ff9028ff>dano físico bônus<> ao contato (recarga de <#e8a800ff>1.5 segundos<>)."
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>125%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> como <#ff9028ff>dano físico bônus<> ao contato (recarga de <#e8a800ff>1.5 segundos<>)."
         },
         "endless_hunger": {
             "name": "Fome Eterna",
@@ -4690,15 +4690,15 @@
         },
         "sheen": {
             "name": "Сияние",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести <#ff9028ff>30<> - <#ff9028ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>30<> - <#ff9028ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
         },
         "trinity_force": {
             "name": "Тройственный Союз",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести <#ff9028ff>33<> + <#ff9028ff>33%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>33<> + <#ff9028ff>33%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
         },
         "radiant_trinity_force": {
             "name": "Лучезарный Тройственный Союз",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести <#ff9028ff>33<> + <#ff9028ff>33%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>33<> + <#ff9028ff>33%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>3.5 секунд<>)."
         },
         "frozen_heart": {
             "name": "Ледяное сердце",
@@ -4714,19 +4714,19 @@
         },
         "dusk_and_dawn": {
             "name": "Закат и Рассвет",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести <#a974ffff>85<> + <#a974ffff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстановить вам<> <#a974ffff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> и <#60e84dff>2.5%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>85<> + <#a974ffff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстановить вам<> <#a974ffff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> и <#60e84dff>2.5%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>3.5 секунд<>)."
         },
         "radiant_dusk_and_dawn": {
             "name": "Лучезарный Закат и Рассвет",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести <#a974ffff>85<> + <#a974ffff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстановить вам<> <#a974ffff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> и <#60e84dff>2.5%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>3.5 секунд<>)."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>85<> + <#a974ffff>15%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстановить вам<> <#a974ffff>10%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> и <#60e84dff>2.5%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>3.5 секунд<>)."
         },
         "bloodsong": {
             "name": "Песнь Крови",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "radiant_bloodsong": {
             "name": "Лучезарная Песнь Крови",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "serrated_dirk": {
             "name": "Зубчатый кинжал",
@@ -4998,11 +4998,11 @@
         },
         "lich_bane": {
             "name": "Гроза Личей",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести <#a974ffff>105<> + <#a974ffff>30%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>105<> + <#a974ffff>30%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
         },
         "radiant_lich_bane": {
             "name": "Лучезарная Гроза Личей",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести <#a974ffff>105<> + <#a974ffff>45%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>105<> + <#a974ffff>45%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>1.5 секунд<>)."
         },
         "imperial_mandate": {
             "name": "Имперский мандат",
@@ -5050,11 +5050,11 @@
         },
         "essence_reaver": {
             "name": "Похититель сущности",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести при попадании <#ff9028ff>125%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунды<>)."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести при попадании <#ff9028ff>125%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунды<>)."
         },
         "radiant_essence_reaver": {
             "name": "Лучезарный Похититель сущности",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку нанести при попадании <#ff9028ff>125%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунды<>)."
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести при попадании <#ff9028ff>125%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>1.5 секунды<>)."
         },
         "endless_hunger": {
             "name": "Вечный голод",
@@ -5712,15 +5712,15 @@
         },
         "sheen": {
             "name": "광휘의 검",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>30<>~<#ff9028ff>85<>의 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>30<>~<#ff9028ff>85<>의 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
         },
         "trinity_force": {
             "name": "삼위일체",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 33%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 33%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
         },
         "radiant_trinity_force": {
             "name": "찬란한 삼위일체",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 33%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <#ff9028ff>33<> + <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 33%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
         },
         "frozen_heart": {
             "name": "얼어붙은 심장",
@@ -5736,19 +5736,19 @@
         },
         "dusk_and_dawn": {
             "name": "황혼과 새벽",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 15%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#60e84dff>주문력의 10%<>와 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 15%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#60e84dff>주문력의 10%<>와 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
         },
         "radiant_dusk_and_dawn": {
             "name": "찬란한 황혼과 새벽",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 15%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#60e84dff>주문력의 10%<>와 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <#a974ffff>85<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 15%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#60e84dff>주문력의 10%<>와 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력의 2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>3.5초<>)"
         },
         "bloodsong": {
             "name": "피의 노래",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "radiant_bloodsong": {
             "name": "찬란한 피의 노래",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "serrated_dirk": {
             "name": "톱날 단검",
@@ -6020,11 +6020,11 @@
         },
         "lich_bane": {
             "name": "리치베인",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 30%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 30%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
         },
         "radiant_lich_bane": {
             "name": "찬란한 리치베인",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 45%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <#a974ffff>105<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력의 45%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
         },
         "imperial_mandate": {
             "name": "제국의 명령",
@@ -6072,11 +6072,11 @@
         },
         "essence_reaver": {
             "name": "정수 약탈자",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 적중 시 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>의 <#ff9028ff>125%<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 적중 시 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>의 <#ff9028ff>125%<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
         },
         "radiant_essence_reaver": {
             "name": "찬란한 정수 약탈자",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 다음 기본 공격이 적중 시 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>의 <#ff9028ff>125%<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 적중 시 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>의 <#ff9028ff>125%<> <#d45656ff>(+100% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>1.5초<>)"
         },
         "endless_hunger": {
             "name": "끝없는 갈망",
