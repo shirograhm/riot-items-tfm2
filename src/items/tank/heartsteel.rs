@@ -8,24 +8,23 @@ use crate::{
     TICKS_PER_SECOND,
 };
 
-// Ironheart, League's Colossal Consumption: an enemy champion who stays within
-// `effect_max_distance` of the carrier for `effect_charge_seconds` is marked,
-// and the carrier's next basic attack against them deals bonus damage and banks
-// part of it as permanent health. Each enemy champion has their own charge,
-// mark and `effect_cooldown_seconds` cooldown, so one fight can pay out on
-// several of them. Leaving range before the charge completes starts it over.
-// A mark lasts until it is spent, until either side dies, or until the enemy
-// has spent `effect_duration_seconds` out of range in one go; one that falls
-// off that way costs no cooldown.
+// Ironheart, League's Colossal Consumption: an enemy champion within
+// `effect_max_distance` of the carrier builds up stages, one for every third of
+// `effect_charge_seconds` in range (0.5 s each at the default 1.5), up to three.
+// At three the carrier's next basic attack against them deals bonus damage and
+// banks part of it as permanent health, and they go on `effect_cooldown_seconds`
+// cooldown. Each enemy champion has their own stages and cooldown, so one fight
+// can pay out on several of them. Out of range, each stage lingers
+// `effect_duration_seconds` and then drops, one at a time; death on either side
+// clears them all.
 //
-// The pictures are League's stack and trigger VFX. The charge and the mark are
-// drawn by two statless buffs on the enemy, bound in the `view_buffs` table of
-// `view/effects.view_effects` and both from `effects/heartsteel_mark`: an orb
-// up and to the right of them, a dark swirling ring for the first half of the
-// charge, then the same ring with a yellow-green core lit, then a bright pink
-// orb pulsing inside it until the attack lands. The attack bursts the orb: a
-// pink flash where it was, with sharp light-blue and pink spikes shooting out of
-// it (`effects/heartsteel_trigger`).
+// The pictures are League's stack and trigger VFX, drawn up and to the right of
+// the enemy by one statless buff per stage, bound in the `view_buffs` table of
+// `view/effects.view_effects` and all from `effects/heartsteel_mark`: a dark
+// swirling ring, then the same ring with a yellow-green core lit, then a bright
+// pink orb pulsing inside it. The attack bursts the orb: a pink flash where it
+// was, with sharp light-blue and pink spikes shooting out of it
+// (`effects/heartsteel_trigger`).
 
 /// The Ironheart proc sound: `sound/sfx/riot_heartsteel_ironheart.sound_info`,
 /// mapped into `asset/base/sound/sfx` by `mod.override_info`, which is where
@@ -33,19 +32,20 @@ use crate::{
 /// 2 dB with its peaks limited to -1 dBFS, its tail trimmed, and faded in and
 /// out; the first cut, 3 dB down, was too quiet in game.
 const IRONHEART_SFX: &str = "riot_heartsteel_ironheart";
-/// Over an enemy champion while Ironheart charges on them (tag `charge`, drawn
-/// for the default 1.5 second charge).
-const CHARGE_BUFF: &str = "riot_heartsteel_charge";
-/// Over an enemy champion Ironheart has charged on (tag `ready`).
-const MARK_BUFF: &str = "riot_heartsteel_mark";
-/// The burst on the enemy when a mark is spent (a `view_effects` animation).
+/// The picture for each stage, tags `stage1` to `stage3`. The last is the
+/// charged one: the next basic attack against them procs.
+const STAGE_BUFFS: [&str; 3] = [
+    "riot_heartsteel_stage1",
+    "riot_heartsteel_stage2",
+    "riot_heartsteel_stage3",
+];
+const MAX_STAGES: u8 = 3;
+/// The stage picture is refreshed once a second, so it never lapses while the
+/// stage is up, and is gone half a second after a missed refresh: the item left.
+const STAGE_BUFF_TICKS: usize = 90;
+/// The burst where the orb was when the charged attack lands (a `view_effects`
+/// animation).
 const TRIGGER_EFFECT: &str = "riot_heartsteel_trigger";
-/// The charge buff outlasts the charge by this much, so it always comes off on
-/// purpose rather than running out a tick early.
-const CHARGE_BUFF_GRACE_TICKS: usize = 30;
-/// The mark is refreshed once a second, so it never lapses while it is up, and
-/// is gone half a second after a missed refresh: the item left.
-const MARK_BUFF_TICKS: usize = 90;
 
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
@@ -83,7 +83,7 @@ impl Heartsteel {
             effect_bonus_hp_percent_of_damage: 10.0,
             effect_max_distance: 70,
             effect_charge_seconds: 1.5,
-            effect_duration_seconds: 8.0,
+            effect_duration_seconds: 3.0,
             effect_cooldown_seconds: 30.0,
             // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
@@ -103,7 +103,7 @@ impl Heartsteel {
             effect_bonus_hp_percent_of_damage: 10.0,
             effect_max_distance: 70,
             effect_charge_seconds: 1.5,
-            effect_duration_seconds: 8.0,
+            effect_duration_seconds: 3.0,
             effect_cooldown_seconds: 30.0,
             ..Self::base()
         }
@@ -136,19 +136,13 @@ impl Heartsteel {
         self
     }
 
-    /// Ends every charge and mark: the carrier died or respawned. The
-    /// cooldowns keep running.
-    fn drop_charges(&mut self, ctx: &mut StableSim<'_>) {
+    /// Clears every enemy's stages: the carrier respawned. The cooldowns keep
+    /// running.
+    fn clear_stages(&mut self, ctx: &mut StableSim<'_>) {
         for target in self.targets.values_mut() {
-            if target.charge > 0 {
-                ctx.entity_remove_buff(target.entity, CHARGE_BUFF);
-            }
-            if target.marked {
-                ctx.entity_remove_buff(target.entity, MARK_BUFF);
-            }
-            target.charge = 0;
-            target.marked = false;
-            target.away = 0;
+            set_stage(ctx, target, 0);
+            target.progress = 0;
+            target.idle = 0;
         }
     }
 }
@@ -197,7 +191,7 @@ impl StableItem for Heartsteel {
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.procs.clear();
-        self.drop_charges(ctx);
+        self.clear_stages(ctx);
 
         let Some(player_ref) = ctx.get_player(player) else {
             return;
@@ -220,7 +214,8 @@ impl StableItem for Heartsteel {
         );
     }
 
-    /// Spends a mark: a basic attack against a marked enemy champion.
+    /// Spends the charge: a basic attack against an enemy champion at the last
+    /// stage.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -238,17 +233,17 @@ impl StableItem for Heartsteel {
             return;
         };
         let cooldown = ticks(self.effect_cooldown_seconds);
-        let Some(marked) = self
+        let Some(charged) = self
             .targets
             .values_mut()
-            .find(|t| t.marked && t.entity == target)
+            .find(|t| t.stages == MAX_STAGES && t.entity == target)
         else {
             return;
         };
-        marked.marked = false;
-        marked.away = 0;
-        marked.cooldown = cooldown;
-        ctx.entity_remove_buff(target, MARK_BUFF);
+        set_stage(ctx, charged, 0);
+        charged.progress = 0;
+        charged.idle = 0;
+        charged.cooldown = cooldown;
 
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(max_hp, self.effect_caster_hp_percent_damage);
@@ -275,8 +270,8 @@ impl StableItem for Heartsteel {
         self.accumulated_bonus_hp += bonus_hp;
     }
 
-    /// Lands the Ironheart damage whose delay has run out, then charges, marks
-    /// and cools down every enemy champion.
+    /// Lands the Ironheart damage whose delay has run out, then builds, drops
+    /// and cools down every enemy champion's stages.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
 
@@ -303,80 +298,48 @@ impl StableItem for Heartsteel {
         }
 
         let reach = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
-        let charge_ticks = ticks(self.effect_charge_seconds).max(1);
-        let away_ticks = ticks(self.effect_duration_seconds).max(1);
+        let stage_ticks = (ticks(self.effect_charge_seconds) / MAX_STAGES as usize).max(1);
+        let linger_ticks = ticks(self.effect_duration_seconds).max(1);
         let refresh = ctx.tick() % TICKS_PER_SECOND as usize == 0;
         for (id, entity, alive) in enemies {
             let target = self.targets.entry(id).or_default();
             target.entity = entity;
             target.cooldown = target.cooldown.saturating_sub(1);
-            // Death on either side ends a charge and a mark.
+            // Death on either side clears every stage.
             let Some(carrier_id) = carrier.filter(|_| alive) else {
-                if target.charge > 0 {
-                    ctx.entity_remove_buff(entity, CHARGE_BUFF);
-                }
-                if target.marked {
-                    ctx.entity_remove_buff(entity, MARK_BUFF);
-                }
-                target.charge = 0;
-                target.marked = false;
-                target.away = 0;
+                set_stage(ctx, target, 0);
+                target.progress = 0;
+                target.idle = 0;
                 continue;
             };
-            if target.marked {
-                // Too long out of range and the mark falls off, with no
-                // cooldown: the next time they come close it charges again.
-                if ctx.distance_sq(carrier_id, entity) > reach * reach {
-                    target.away += 1;
-                    if target.away >= away_ticks {
-                        target.marked = false;
-                        target.away = 0;
-                        ctx.entity_remove_buff(entity, MARK_BUFF);
-                        continue;
+            let in_range = ctx.distance_sq(carrier_id, entity) <= reach * reach;
+            if in_range && target.cooldown == 0 {
+                // Building: a stage for every `stage_ticks` in range.
+                target.idle = 0;
+                if target.stages < MAX_STAGES {
+                    target.progress += 1;
+                    if target.progress >= stage_ticks {
+                        target.progress = 0;
+                        let next = target.stages + 1;
+                        set_stage(ctx, target, next);
                     }
-                } else {
-                    target.away = 0;
                 }
-                if refresh {
-                    refresh_buff(
-                        ctx,
-                        entity,
-                        MARK_BUFF,
-                        &BuffV1::timed(MARK_BUFF, MARK_BUFF_TICKS),
-                    );
+            } else {
+                // Out of range: part of a stage is lost at once, a whole one
+                // lingers `linger_ticks` and then drops, one at a time.
+                target.progress = 0;
+                if target.stages > 0 {
+                    target.idle += 1;
+                    if target.idle >= linger_ticks {
+                        target.idle = 0;
+                        let next = target.stages - 1;
+                        set_stage(ctx, target, next);
+                    }
                 }
-                continue;
             }
-            if target.cooldown > 0 {
-                continue;
-            }
-            if ctx.distance_sq(carrier_id, entity) > reach * reach {
-                if target.charge > 0 {
-                    target.charge = 0;
-                    ctx.entity_remove_buff(entity, CHARGE_BUFF);
-                }
-                continue;
-            }
-            if target.charge == 0 {
-                refresh_buff(
-                    ctx,
-                    entity,
-                    CHARGE_BUFF,
-                    &BuffV1::timed(CHARGE_BUFF, charge_ticks + CHARGE_BUFF_GRACE_TICKS),
-                );
-            }
-            target.charge += 1;
-            if target.charge >= charge_ticks {
-                target.charge = 0;
-                target.marked = true;
-                target.away = 0;
-                ctx.entity_remove_buff(entity, CHARGE_BUFF);
-                refresh_buff(
-                    ctx,
-                    entity,
-                    MARK_BUFF,
-                    &BuffV1::timed(MARK_BUFF, MARK_BUFF_TICKS),
-                );
+            if refresh && target.stages > 0 {
+                let name = STAGE_BUFFS[target.stages as usize - 1];
+                refresh_buff(ctx, entity, name, &BuffV1::timed(name, STAGE_BUFF_TICKS));
             }
         }
     }
@@ -414,13 +377,35 @@ impl StableItem for Heartsteel {
 struct Target {
     /// Their champion entity, as of the last update.
     entity: usize,
-    /// Ticks spent in range so far; they are marked at `effect_charge_seconds`.
-    charge: usize,
-    /// Charged: the carrier's next basic attack against them procs.
-    marked: bool,
-    /// Ticks in a row they have been out of range while marked; the mark falls
-    /// off at `effect_duration_seconds`.
-    away: usize,
-    /// Ticks left before Ironheart can charge on them again.
+    /// 0 to `MAX_STAGES`; at the last one the carrier's next basic attack
+    /// against them procs.
+    stages: u8,
+    /// Ticks in range toward the next stage.
+    progress: usize,
+    /// Ticks out of range since a stage was last gained or dropped; the top
+    /// one drops at `effect_duration_seconds`.
+    idle: usize,
+    /// Ticks left before Ironheart can build stages on them again.
     cooldown: usize,
+}
+
+/// Moves `target` to `stage`, swapping the picture over them: the old stage's
+/// comes off and the new one's goes on. Stage 0 has none.
+fn set_stage(ctx: &mut StableSim<'_>, target: &mut Target, stage: u8) {
+    if target.stages == stage {
+        return;
+    }
+    if target.stages > 0 {
+        ctx.entity_remove_buff(target.entity, STAGE_BUFFS[target.stages as usize - 1]);
+    }
+    target.stages = stage;
+    if stage > 0 {
+        let name = STAGE_BUFFS[stage as usize - 1];
+        refresh_buff(
+            ctx,
+            target.entity,
+            name,
+            &BuffV1::timed(name, STAGE_BUFF_TICKS),
+        );
+    }
 }

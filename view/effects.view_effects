@@ -150,16 +150,23 @@
         },
         {
             "type": "Animated",
-            "name": "riot_heartsteel_charge",
+            "name": "riot_heartsteel_stage1",
             "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
-            "tag": "charge",
+            "tag": "stage1",
             "z": 1
         },
         {
             "type": "Animated",
-            "name": "riot_heartsteel_mark",
+            "name": "riot_heartsteel_stage2",
             "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
-            "tag": "ready",
+            "tag": "stage2",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_heartsteel_stage3",
+            "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
+            "tag": "stage3",
             "z": 1
         }
     ]

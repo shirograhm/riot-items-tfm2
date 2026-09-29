@@ -130,7 +130,7 @@
     "effect_bonus_hp_percent_of_damage": 10.0,
     "effect_max_distance": 70,
     "effect_charge_seconds": 1.5,
-    "effect_duration_seconds": 8,
+    "effect_duration_seconds": 3,
     "effect_cooldown_seconds": 30
   },
   "hextech_gunblade": {
@@ -376,7 +376,7 @@
     "effect_bonus_hp_percent_of_damage": 10.0,
     "effect_max_distance": 70,
     "effect_charge_seconds": 1.5,
-    "effect_duration_seconds": 8,
+    "effect_duration_seconds": 3,
     "effect_cooldown_seconds": 30
   },
   "radiant_hextech_gunblade": {
