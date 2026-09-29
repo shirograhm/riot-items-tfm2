@@ -545,6 +545,20 @@ fn init(host: &StableHost) -> StableMod {
     // Titanic Hydra's Cleave wedge is only a picture, so both tiers share
     // one effect that does nothing.
     reg.add_native_effect(TitanicHydra::WAVE_HIT, TitanicWave);
+    // Sword of Blossoming Dawn's wisp carries Peppermint's heal to the ally,
+    // each tier with its own numbers.
+    for sword in [
+        configs
+            .get("sword_of_blossoming_dawn")
+            .map(SwordOfBlossomingDawn::with_config)
+            .unwrap_or_default(),
+        configs
+            .get("radiant_sword_of_blossoming_dawn")
+            .map(SwordOfBlossomingDawn::radiant_with_config)
+            .unwrap_or_else(SwordOfBlossomingDawn::radiant),
+    ] {
+        reg.add_native_effect(sword.wisp_hit_name(), sword.wisp_hit());
+    }
 
     // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);

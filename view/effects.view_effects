@@ -110,6 +110,13 @@
             "anim": "asset/riot_items_tfm2/effects/titanic_hydra_wave",
             "tag": "wave",
             "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_blossoming_dawn_wisp",
+            "anim": "asset/riot_items_tfm2/effects/blossoming_dawn_wisp",
+            "tag": "wisp",
+            "z": 1
         }
     ],
     "view_buffs": [
