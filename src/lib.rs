@@ -542,6 +542,9 @@ fn init(host: &StableHost) -> StableMod {
     ] {
         reg.add_native_effect(shiv.spark_hit_name(), shiv.spark_hit());
     }
+    // Titanic Hydra's Cleave wedge is only a picture, so both tiers share
+    // one effect that does nothing.
+    reg.add_native_effect(TitanicHydra::WAVE_HIT, TitanicWave);
 
     // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);

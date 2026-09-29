@@ -6,8 +6,28 @@ use crate::{apply_config, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RA
 // Cleave, scaled on the carrier's maximum health instead of Tiamat's Attack
 // Damage: basic attacks hit their target for a share of it and every other
 // enemy near the target for a larger share. The splash radius, the tower
-// exclusion, the ranged falloff and the swing effect are Tiamat's and Ravenous
-// Hydra's, so the three read as one Cleave.
+// exclusion and the ranged falloff are Tiamat's and Ravenous Hydra's, so the
+// three read as one Cleave.
+//
+// The picture is League's: a wedge of streaks bursting out of the target, its
+// point on the target and its flat end away from the carrier, drawn to the
+// 35-range splash radius. View effects cannot be turned to face a direction,
+// but projectiles are (their art faces +x), so the wedge is a `Linear`
+// projectile that passes through everything and does nothing. The wedge's
+// point is the centre of its frame, so the projectile sits on the target and
+// only creeps forward: it moves just so the engine knows which way to face it
+// and when to remove it, and the burst itself is the animation. The damage
+// still lands with the swing, on every enemy in the radius. A host without
+// projectiles gets Tiamat's swing effect instead.
+
+/// The `view_projectiles` name in `view/effects.view_effects` that draws the
+/// wedge (`effects/titanic_hydra_wave`).
+const WAVE_PROJECTILE: &str = "riot_titanic_hydra_wave";
+/// How long the wedge stays up (0.3 s): the first five frames of its
+/// animation. The sixth holds longer, so a late removal never loops it.
+const WAVE_TICKS: u64 = 18;
+/// How far the wedge creeps each tick, in world units (1.8 px in all).
+const WAVE_DRIFT: u64 = 100;
 
 #[derive(Clone, Debug)]
 pub struct TitanicHydra {
@@ -26,6 +46,9 @@ pub struct TitanicHydra {
 }
 
 impl TitanicHydra {
+    /// The native effect the wedge carries, for `lib.rs` to register.
+    pub const WAVE_HIT: &'static str = "riot_titanic_hydra_wave_hit";
+
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base("titanic_hydra", &["tiamat"], &["radiant_titanic_hydra"]),
@@ -107,6 +130,45 @@ impl TitanicHydra {
             splashed.push(id);
         }
         splashed
+    }
+
+    /// Bursts the wedge out of `target`, pointing directly away from the
+    /// carrier. False when there is no direction to point it in (the two
+    /// stand on the same spot) or no projectile to draw it with.
+    fn throw_wedge(
+        &self,
+        ctx: &mut StableSim<'_>,
+        caster: usize,
+        team: usize,
+        target: usize,
+    ) -> bool {
+        let Some((cx, cy)) = ctx.get_entity(caster).map(|c| c.pos()) else {
+            return false;
+        };
+        let Some((tx, ty)) = ctx.get_entity(target).map(|t| t.pos()) else {
+            return false;
+        };
+        let (dx, dy) = (tx as f64 - cx as f64, ty as f64 - cy as f64);
+        let length = (dx * dx + dy * dy).sqrt();
+        if length < 1.0 {
+            return false;
+        }
+        let reach = (WAVE_DRIFT * WAVE_TICKS) as f64;
+        let spec = ProjectileSpawnV1 {
+            caster_id: caster,
+            team,
+            x: tx,
+            y: ty,
+            radius: 1_000,
+            speed: WAVE_DRIFT,
+            move_kind: ProjectileMoveKindV1::Linear.code(),
+            target_x: (tx as f64 + dx / length * reach).max(0.0) as u64,
+            target_y: (ty as f64 + dy / length * reach).max(0.0) as u64,
+            penetrate: true,
+            attack_type: AttackTypeV1::Item.code(),
+            ..ProjectileSpawnV1::default()
+        };
+        ctx.spawn_projectile(WAVE_PROJECTILE, Self::WAVE_HIT, &spec)
     }
 }
 
@@ -195,14 +257,16 @@ impl StableItem for TitanicHydra {
         }
 
         let splashed = self.splash_targets(ctx, caster_team, target);
-        ctx.play_view_effect(
-            self.cleave_effect,
-            caster,
-            &InputTargetV1::target(target),
-            0,
-            0,
-            0,
-        );
+        if !self.throw_wedge(ctx, caster, caster_team, target) {
+            ctx.play_view_effect(
+                self.cleave_effect,
+                caster,
+                &InputTargetV1::target(target),
+                0,
+                0,
+                0,
+            );
+        }
 
         for id in splashed {
             ctx.deal_damage(caster, id, splash, 0, AttackTypeV1::Item);
@@ -220,5 +284,22 @@ impl StableItem for TitanicHydra {
 
     fn category(&self) -> ItemCategoryV1 {
         ItemCategoryV1::Ad
+    }
+}
+
+/// What the Cleave wedge does to whatever it passes through: nothing. The
+/// wedge is only the picture; `spawn_projectile` still needs an effect for
+/// it to carry.
+#[derive(Clone, Debug)]
+pub struct TitanicWave;
+
+impl StableEffectType for TitanicWave {
+    fn apply(
+        &self,
+        _sim: &mut StableSim<'_>,
+        _rng_seed: u64,
+        _caster_id: usize,
+        _input: InputTargetV1,
+    ) {
     }
 }

@@ -79,6 +79,13 @@
             "anim": "asset/riot_items_tfm2/effects/statikk_spark",
             "tag": "spark",
             "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_titanic_hydra_wave",
+            "anim": "asset/riot_items_tfm2/effects/titanic_hydra_wave",
+            "tag": "wave",
+            "z": 1
         }
     ],
     "view_buffs": [
