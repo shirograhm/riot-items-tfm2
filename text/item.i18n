@@ -1011,6 +1011,14 @@
         "radiant_statikk_shiv": {
             "name": "Radiant Statikk Shiv",
             "option": "\n<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>80 magic damage<> to the target and up to 5 more enemies, each within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the last, prioritizing champions. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
+        },
+        "titanic_hydra": {
+            "name": "Titanic Hydra",
+            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#ff9028ff>bonus physical damage<> to the target and <#60e84dff>3%<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "radiant_titanic_hydra": {
+            "name": "Radiant Titanic Hydra",
+            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#ff9028ff>bonus physical damage<> to the target and <#60e84dff>4%<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
         }
     },
     "vi": {
@@ -2025,6 +2033,14 @@
         "radiant_statikk_shiv": {
             "name": "Dao Điện Statikk Ánh Sáng",
             "option": "\n<#ff7a3eff>Tích Điện<>: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>100<>.\n\n<#ff7a3eff>Phóng Điện<>: Khi <#92dc7bff>Tích Điện<> đầy, đòn đánh thường tiếp theo phóng ra sét nảy, gây <#a974ffff>80 sát thương phép<> lên mục tiêu và tối đa 5 kẻ địch khác, mỗi lần nảy trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> từ mục tiêu trước, ưu tiên tướng địch. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+        },
+        "titanic_hydra": {
+            "name": "Rìu Đại Mãng Xà",
+            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> lên mục tiêu và <#60e84dff>3%<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "radiant_titanic_hydra": {
+            "name": "Rìu Đại Mãng Xà Ánh Sáng",
+            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> lên mục tiêu và <#60e84dff>4%<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
         }
     },
     "zh-hans": {
@@ -3039,6 +3055,14 @@
         "radiant_statikk_shiv": {
             "name": "光明版斯塔缇克电刃",
             "option": "\n<#ff7a3eff>蓄能<>：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>100<> 层。\n\n<#ff7a3eff>电火花<>：<#92dc7bff>蓄能<>充满时，你的下一次普通攻击会发射连锁闪电，对目标及最多 5 个其他敌人造成 <#a974ffff>80 点魔法伤害<>，每次弹射距离上一个目标不超过 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>（优先英雄）。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+        },
+        "titanic_hydra": {
+            "name": "巨型九头蛇",
+            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对目标造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#ff9028ff>额外物理伤害<>，并对附近的敌人造成相当于 <#60e84dff>3%<> 最大生命值的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "radiant_titanic_hydra": {
+            "name": "光明版巨型九头蛇",
+            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对目标造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的<#ff9028ff>额外物理伤害<>，并对附近的敌人造成相当于 <#60e84dff>4%<> 最大生命值的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
         }
     },
     "pt-BR": {
@@ -4053,6 +4077,14 @@
         "radiant_statikk_shiv": {
             "name": "Faca de Statikk Radiante",
             "option": "\n<#ff7a3eff>Energizado<>: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>100<>.\n\n<#ff7a3eff>Eletrocentelha<>: Quando totalmente <#92dc7bff>Energizado<>, seu próximo ataque básico dispara uma cadeia de relâmpagos que causa <#a974ffff>80 de dano mágico<> ao alvo e a até 5 inimigos adicionais, cada um a até <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> do anterior, priorizando campeões. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+        },
+        "titanic_hydra": {
+            "name": "Hidra Titânica",
+            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#ff9028ff>dano físico adicional<> ao alvo e <#60e84dff>3%<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "radiant_titanic_hydra": {
+            "name": "Hidra Titânica Radiante",
+            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#ff9028ff>dano físico adicional<> ao alvo e <#60e84dff>4%<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
         }
     },
     "ru": {
@@ -5067,6 +5099,14 @@
         "radiant_statikk_shiv": {
             "name": "Лучезарная Заточка Статикка",
             "option": "\n<#ff7a3eff>Заряд<>: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>100<>.\n\n<#ff7a3eff>Электрическая искра<>: При полном <#92dc7bff>Заряде<>, ваша следующая базовая атака выпускает цепную молнию, которая наносит <#a974ffff>80 магического урона<> цели и не более чем 5 другим врагам, каждый в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от предыдущего, в первую очередь чемпионам. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+        },
+        "titanic_hydra": {
+            "name": "Титаническая гидра",
+            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят цели <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в виде <#ff9028ff>дополнительного физического урона<>, а ближайшим врагам — <#60e84dff>3%<> в виде <#ff9028ff>физического урона<>. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "radiant_titanic_hydra": {
+            "name": "Лучезарная Титаническая гидра",
+            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят цели <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в виде <#ff9028ff>дополнительного физического урона<>, а ближайшим врагам — <#60e84dff>4%<> в виде <#ff9028ff>физического урона<>. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
         }
     },
     "ko": {
@@ -6081,6 +6121,14 @@
         "radiant_statikk_shiv": {
             "name": "찬란한 스태틱의 단검",
             "option": "\n<#ff7a3eff>충전<>: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>100<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.\n\n<#ff7a3eff>전기불꽃<>: 완전히 <#92dc7bff>충전<>되면 다음 기본 공격이 연쇄 번개를 발사해 대상과 다른 적 최대 5명에게 <#a974ffff>80의 마법 피해<>를 입힙니다. 번개는 챔피언을 우선으로, 직전 대상으로부터 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적에게 튕깁니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+        },
+        "titanic_hydra": {
+            "name": "거대한 히드라",
+            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 대상에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#ff9028ff>추가 물리 피해<>를, 주변 적들에게 <#60e84dff>3%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "radiant_titanic_hydra": {
+            "name": "찬란한 거대한 히드라",
+            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 대상에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1.5%<>만큼 <#ff9028ff>추가 물리 피해<>를, 주변 적들에게 <#60e84dff>4%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
         }
     }
 }

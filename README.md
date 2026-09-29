@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 209 new items (122 base + 87 Radiant) to the game.
+Reskins the 30 existing items and also adds 211 new items (123 base + 88 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -177,6 +177,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Sundered Sky** | 700G | +200 HP<br>+20 AD<br>+10 Ability Haste | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
 | **Sword of Blossoming Dawn** | 500G | +100 HP<br>+20 AP<br>+20% AS<br>+10 Ability Haste | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Terminus** | 700G | +15 AD<br>+35% AS<br>+20% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
+| **Titanic Hydra** | 750G | +200 HP<br>+25 AD | Cleave: Basic attacks deal 1% of your maximum health as bonus physical damage to the target and 3% as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Trinity Force** | 750G | +100 HP<br>+20 AD<br>+20% AS<br>+10 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
 | **Unending Despair** | 750G | +250 HP<br>+15 Armor | Anguish: Landing an Ability on an enemy champion heals you for 35 + 1% of your maximum health. |
 | **Void Staff** | 750G | +50 AP<br>+25% Magic Pen | — |
@@ -269,6 +270,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Sundered Sky** | 1000G | +300 HP<br>+35 AD<br>+20 Ability Haste | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 10% of your missing health (20 second cooldown per target). |
 | **Radiant Sword of Blossoming Dawn** | 850G | +150 HP<br>+35 AP<br>+35% AS<br>+15 Ability Haste | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Radiant Terminus** | 1000G | +25 AD<br>+60% AS<br>+25% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
+| **Radiant Titanic Hydra** | 1000G | +300 HP<br>+40 AD | Cleave: Basic attacks deal 1.5% of your maximum health as bonus physical damage to the target and 4% as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Radiant Trinity Force** | 1333G | +333 HP<br>+33 AD<br>+25% AS<br>+15 Ability Haste | Spellblade: Landing an Ability on an enemy champion causes your next basic attack to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
 | **Radiant Unending Despair** | 1050G | +350 HP<br>+25 Armor | Anguish: Landing an Ability on an enemy champion heals you for 50 + 2.5% of your maximum health. |
 | **Radiant Void Staff** | 1100G | +80 AP<br>+40% Magic Pen | — |

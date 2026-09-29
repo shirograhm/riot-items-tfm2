@@ -1931,5 +1931,25 @@
     "effect_minion_percent": 150.0,
     "effect_max_targets": 5,
     "effect_max_distance": 50
+  },
+  "titanic_hydra": {
+    "price": 750,
+    "attack": 25,
+    "hp": 200,
+    "effect_caster_hp_percent_damage": 1.0,
+    "effect_splash_caster_hp_percent": 3.0,
+    "effect_max_distance": 35,
+    "effect_melee_distance": 35,
+    "effect_ranged_percent": 50.0
+  },
+  "radiant_titanic_hydra": {
+    "price": 1000,
+    "attack": 40,
+    "hp": 300,
+    "effect_caster_hp_percent_damage": 1.5,
+    "effect_splash_caster_hp_percent": 4.0,
+    "effect_max_distance": 35,
+    "effect_melee_distance": 35,
+    "effect_ranged_percent": 50.0
   }
 }
