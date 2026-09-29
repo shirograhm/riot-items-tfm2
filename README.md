@@ -134,7 +134,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Guardian Angel** | 750G | +35 AD<br>+30 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 40% of your maximum health. While resurrecting, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
 | **Guinsoo's Rageblade** | 700G | +15 AD<br>+15 AP<br>+30% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Hamstringer** | 750G | +25 AD<br>+25% AS<br>+20% Crit Chance | Scour: Your critical strikes bleed the target, dealing 70 - 180 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
-| **Heartsteel** | 750G | +250 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
+| **Heartsteel** | 750G | +250 HP | Ironheart: Every 30 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Hextech Gunblade** | 750G | +25 AD<br>+50 AP<br>+10% Omnivamp | — |
 | **Hollow Radiance** | 750G | +200 HP<br>+50 MR<br>+4% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 30 + 2% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
 | **Hubris** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
@@ -156,7 +156,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Opportunity** | 650G | +45 AD | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Overlord's Bloodmail** | 700G | +15 AD<br>+200 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Protector's Vow** | 650G | +200 HP<br>+25 Armor | Awe: Gain maximum health equal to 50 + 80% of your armor. |
-| **Protoplasm Harness** | 600G | +200 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
+| **Protoplasm Harness** | 600G | +200 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount over 1.5 seconds (30 second cooldown). |
 | **Rabadon's Deathcap** | 750G | +80 AP | Opus: Increase your total Ability Power by 20%. |
 | **Randuin's Omen** | 750G | +150 HP<br>+35 Armor | Resilience: Heal for 30% of the damage taken from critical strikes. |
 | **Ravenous Hydra** | 700G | +30 AD<br>+10% Omnivamp<br>+10 Ability Haste | Cleave: Basic attacks deal 30% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
@@ -177,7 +177,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Sundered Sky** | 700G | +200 HP<br>+20 AD<br>+10 Ability Haste | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
 | **Sword of Blossoming Dawn** | 500G | +100 HP<br>+20 AP<br>+20% AS<br>+10 Ability Haste | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Terminus** | 700G | +15 AD<br>+35% AS<br>+20% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
-| **Titanic Hydra** | 750G | +200 HP<br>+25 AD | Cleave: Basic attacks deal 1% of your maximum health as bonus physical damage to the target and 3% as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
+| **Titanic Hydra** | 750G | +200 HP<br>+25 AD | Cleave: Basic attacks deal 1% of your maximum health as bonus physical damage to the target and 3% as physical damage to enemies behind the target. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Trinity Force** | 750G | +100 HP<br>+20 AD<br>+20% AS<br>+10 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
 | **Unending Despair** | 750G | +250 HP<br>+15 Armor | Anguish: Landing an Ability on an enemy champion heals you for 35 + 1% of your maximum health. |
 | **Void Staff** | 750G | +50 AP<br>+25% Magic Pen | — |
@@ -227,7 +227,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Guardian Angel** | 1100G | +50 AD<br>+45 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 60% of your maximum health. While resurrecting, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
 | **Radiant Guinsoo's Rageblade** | 950G | +25 AD<br>+25 AP<br>+50% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Hamstringer** | 1100G | +40 AD<br>+45% AS<br>+25% Crit Chance | Scour: Your critical strikes bleed the target, dealing 125 - 290 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
-| **Radiant Heartsteel** | 1050G | +400 HP | Ironheart: Every 20 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
+| **Radiant Heartsteel** | 1050G | +400 HP | Ironheart: Every 30 seconds, your next basic attack deals bonus physical damage equal to 15 + 6% of your maximum health, granting 12% of that damage as permanent bonus health. |
 | **Radiant Hextech Gunblade** | 1050G | +45 AD<br>+75 AP<br>+15% Omnivamp | — |
 | **Radiant Hollow Radiance** | 1050G | +350 HP<br>+70 MR<br>+6% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 60 + 4% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
 | **Radiant Hubris** | 1000G | +60 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
@@ -249,7 +249,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Opportunity** | 1000G | +65 AD<br>+5% MS | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Radiant Overlord's Bloodmail** | 1000G | +20 AD<br>+350 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
 | **Radiant Protector's Vow** | 900G | +300 HP<br>+40 Armor<br>+15 Ability Haste | Awe: Gain maximum health equal to 50 + 80% of your armor. |
-| **Radiant Protoplasm Harness** | 850G | +350 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount (30 second cooldown). |
+| **Radiant Protoplasm Harness** | 850G | +350 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount over 1.5 seconds (30 second cooldown). |
 | **Radiant Rabadon's Deathcap** | 1150G | +130 AP | Opus: Increase your total Ability Power by 35%. |
 | **Radiant Randuin's Omen** | 1000G | +300 HP<br>+45 Armor | Resilience: Heal for 30% of the damage taken from critical strikes. |
 | **Radiant Ravenous Hydra** | 950G | +45 AD<br>+15% Omnivamp<br>+15 Ability Haste | Cleave: Basic attacks deal 40% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
@@ -270,7 +270,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Sundered Sky** | 1000G | +300 HP<br>+35 AD<br>+20 Ability Haste | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 10% of your missing health (20 second cooldown per target). |
 | **Radiant Sword of Blossoming Dawn** | 850G | +150 HP<br>+35 AP<br>+35% AS<br>+15 Ability Haste | Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Radiant Terminus** | 1000G | +25 AD<br>+60% AS<br>+25% Crit Chance | Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
-| **Radiant Titanic Hydra** | 1000G | +300 HP<br>+40 AD | Cleave: Basic attacks deal 1.5% of your maximum health as bonus physical damage to the target and 4% as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
+| **Radiant Titanic Hydra** | 1000G | +300 HP<br>+40 AD | Cleave: Basic attacks deal 1.5% of your maximum health as bonus physical damage to the target and 4% as physical damage to enemies behind the target. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Radiant Trinity Force** | 1333G | +333 HP<br>+33 AD<br>+25% AS<br>+15 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 33 + 33% of your Attack Damage as bonus physical damage (3.5 second cooldown). |
 | **Radiant Unending Despair** | 1050G | +350 HP<br>+25 Armor | Anguish: Landing an Ability on an enemy champion heals you for 50 + 2.5% of your maximum health. |
 | **Radiant Void Staff** | 1100G | +80 AP<br>+40% Magic Pen | — |

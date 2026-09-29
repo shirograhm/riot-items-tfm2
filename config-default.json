@@ -128,7 +128,7 @@
     "effect_bonus_flat_damage": 15,
     "effect_caster_hp_percent_damage": 6.0,
     "effect_bonus_hp_percent_of_damage": 12.0,
-    "effect_cooldown_seconds": 20
+    "effect_cooldown_seconds": 30
   },
   "hextech_gunblade": {
     "price": 750,
@@ -268,6 +268,8 @@
     "effect_hp_percent_boost": 25.0,
     "effect_hp_percent_threshold": 40.0,
     "effect_duration_seconds": 6,
+    "effect_heal_duration_seconds": 1.5,
+    "effect_heal_interval_seconds": 0.25,
     "effect_cooldown_seconds": 30
   },
   "rabadons_deathcap": {
@@ -369,7 +371,7 @@
     "effect_bonus_flat_damage": 15,
     "effect_caster_hp_percent_damage": 6.0,
     "effect_bonus_hp_percent_of_damage": 12.0,
-    "effect_cooldown_seconds": 20
+    "effect_cooldown_seconds": 30
   },
   "radiant_hextech_gunblade": {
     "price": 1050,
@@ -483,6 +485,8 @@
     "effect_hp_percent_boost": 25.0,
     "effect_hp_percent_threshold": 40.0,
     "effect_duration_seconds": 6,
+    "effect_heal_duration_seconds": 1.5,
+    "effect_heal_interval_seconds": 0.25,
     "effect_cooldown_seconds": 30
   },
   "radiant_riftmaker": {

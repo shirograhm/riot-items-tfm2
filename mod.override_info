@@ -70,5 +70,13 @@
   "asset/base/sound/sfx/riot_zhonyas_stasis_clip": {
     "remapping": "asset/riot_items_tfm2/sound/sfx/riot_zhonyas_stasis_clip",
     "type": "override"
+  },
+  "asset/base/sound/sfx/riot_heartsteel_ironheart": {
+    "remapping": "asset/riot_items_tfm2/sound/sfx/riot_heartsteel_ironheart",
+    "type": "override"
+  },
+  "asset/base/sound/sfx/riot_heartsteel_ironheart_clip": {
+    "remapping": "asset/riot_items_tfm2/sound/sfx/riot_heartsteel_ironheart_clip",
+    "type": "override"
   }
 }

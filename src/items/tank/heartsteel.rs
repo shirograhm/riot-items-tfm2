@@ -3,6 +3,12 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, ProcQueue};
 
+/// The Ironheart proc sound: `sound/sfx/riot_heartsteel_ironheart.sound_info`,
+/// mapped into `asset/base/sound/sfx` by `mod.override_info`, which is where
+/// sound names are looked up. The clip is `sfx/lol-heartsteel.mp3` with its
+/// tail trimmed, faded in and out, and turned down 3 dB.
+const IRONHEART_SFX: &str = "riot_heartsteel_ironheart";
+
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
     meta: ItemMeta,
@@ -33,7 +39,7 @@ impl Heartsteel {
             effect_bonus_flat_damage: 15,
             effect_caster_hp_percent_damage: 6.0,
             effect_bonus_hp_percent_of_damage: 12.0,
-            effect_cooldown_seconds: 20.0,
+            effect_cooldown_seconds: 30.0,
             // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
             procs: ProcQueue::new(),
@@ -50,7 +56,7 @@ impl Heartsteel {
             effect_bonus_flat_damage: 15,
             effect_caster_hp_percent_damage: 6.0,
             effect_bonus_hp_percent_of_damage: 12.0,
-            effect_cooldown_seconds: 20.0,
+            effect_cooldown_seconds: 30.0,
             ..Self::base()
         }
     }
@@ -182,6 +188,7 @@ impl StableItem for Heartsteel {
         // The banked health is priced off the damage this swing earned and is
         // granted with the swing; only the damage number waits.
         self.procs.push_physical(ctx, target, bonus_damage);
+        ctx.play_sfx(IRONHEART_SFX, caster, &InputTargetV1::target(target));
         ctx.add_buff(
             caster,
             &BuffV1 {

@@ -22,7 +22,7 @@ pub(crate) fn refresh_buff(ctx: &mut StableSim<'_>, entity: usize, name: &str, b
 /// the `view_buffs` binding in `view/effects.view_effects` that draws flames at
 /// the champion's feet.
 const IMMOLATE_BUFF: &str = "riot_immolate";
-/// Refreshed once a second as the burn ticks, so it never lapses between burns,
+/// Refreshed once a second as the burn ticks, so it never lapses between burns,s
 /// and goes half a second after the last one: death, or the item leaving.
 const IMMOLATE_MARKER_TICKS: usize = 90;
 

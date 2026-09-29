@@ -258,11 +258,11 @@
         },
         "protoplasm_harness": {
             "name": "Protoplasm Harness",
-            "option": "\n<#ff7a3eff>Fortification<>: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>300<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for half that amount (<#e8a800ff>30 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Fortification<>: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>300<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for half that amount over <#e8a800ff>1.5 seconds<> (<#e8a800ff>30 second<> cooldown)."
         },
         "radiant_protoplasm_harness": {
             "name": "Radiant Protoplasm Harness",
-            "option": "\n<#ff7a3eff>Fortification<>: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>600<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for half that amount (<#e8a800ff>30 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Fortification<>: <#d94c49ff>Falling below 40% health<> grants <#60e84dff>600<> + <#60e84dff>25%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#60e84dff>bonus health<> for <#e8a800ff>6 seconds<> and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for half that amount over <#e8a800ff>1.5 seconds<> (<#e8a800ff>30 second<> cooldown)."
         },
         "frozen_mallet": {
             "name": "Frozen Mallet",
@@ -434,11 +434,11 @@
         },
         "heartsteel": {
             "name": "Heartsteel",
-            "option": "\n<#ff7a3eff>Ironheart<>: Every <#e8a800ff>20 seconds<>, your next basic attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
+            "option": "\n<#ff7a3eff>Ironheart<>: Every <#e8a800ff>30 seconds<>, your next basic attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
         },
         "radiant_heartsteel": {
             "name": "Radiant Heartsteel",
-            "option": "\n<#ff7a3eff>Ironheart<>: Every <#e8a800ff>20 seconds<>, your next basic attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
+            "option": "\n<#ff7a3eff>Ironheart<>: Every <#e8a800ff>30 seconds<>, your next basic attack deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>15<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>12%<> of that damage as permanent <#60e84dff>bonus health<>."
         },
         "spear_of_shojin": {
             "name": "Spear of Shojin",
@@ -1014,11 +1014,11 @@
         },
         "titanic_hydra": {
             "name": "Titanic Hydra",
-            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#ff9028ff>bonus physical damage<> to the target and <#60e84dff>3%<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#ff9028ff>bonus physical damage<> to the target and <#60e84dff>3%<> as <#ff9028ff>physical damage<> to enemies behind the target. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
         },
         "radiant_titanic_hydra": {
             "name": "Radiant Titanic Hydra",
-            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#ff9028ff>bonus physical damage<> to the target and <#60e84dff>4%<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#ff9028ff>bonus physical damage<> to the target and <#60e84dff>4%<> as <#ff9028ff>physical damage<> to enemies behind the target. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
         }
     },
     "vi": {
@@ -1280,11 +1280,11 @@
         },
         "protoplasm_harness": {
             "name": "Đai Nguyên Sinh",
-            "option": "\n<#ff7a3eff>Vững chãi<>: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>300<> + <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>6 giây<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong 30 giây.)."
+            "option": "\n<#ff7a3eff>Vững chãi<>: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>300<> + <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>6 giây<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng phân nửa lượng đó trong vòng <#e8a800ff>1.5 giây<> (hồi chiêu <#e8a800ff>30 giây<>)."
         },
         "radiant_protoplasm_harness": {
             "name": "Đai Nguyên Sinh Ánh Sáng",
-            "option": "\n<#ff7a3eff>Vững chãi<>: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>600<> + <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>6 giây<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng phân nữa lượng đó (trong 30 giây.)."
+            "option": "\n<#ff7a3eff>Vững chãi<>: Máu rơi xuống dưới <#d94c49ff>40%<> sẽ nhận <#60e84dff>600<> + <#60e84dff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, được xem là <#60e84dff>máu cộng thêm<> trong <#e8a800ff>6 giây<> và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> bằng phân nửa lượng đó trong vòng <#e8a800ff>1.5 giây<> (hồi chiêu <#e8a800ff>30 giây<>)."
         },
         "frozen_mallet": {
             "name": "Búa Băng",
@@ -1456,11 +1456,11 @@
         },
         "heartsteel": {
             "name": "Tâm Thép",
-            "option": "\n<#ff7a3eff>Trái Tim Sắt Đá<>: Mỗi <#e8a800ff>20 giây<>, đòn đánh thường tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>12%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
+            "option": "\n<#ff7a3eff>Trái Tim Sắt Đá<>: Mỗi <#e8a800ff>30 giây<>, đòn đánh thường tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>12%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
         },
         "radiant_heartsteel": {
             "name": "Tâm Thép Ánh Sáng",
-            "option": "\n<#ff7a3eff>Trái Tim Sắt Đá<>: Mỗi <#e8a800ff>20 giây<>, đòn đánh thường tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>12%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
+            "option": "\n<#ff7a3eff>Trái Tim Sắt Đá<>: Mỗi <#e8a800ff>30 giây<>, đòn đánh thường tiếp theo của bạn gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>15<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>12%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<>."
         },
         "spear_of_shojin": {
             "name": "Ngọn Giáo Shojin",
@@ -2036,11 +2036,11 @@
         },
         "titanic_hydra": {
             "name": "Rìu Đại Mãng Xà",
-            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> lên mục tiêu và <#60e84dff>3%<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> lên mục tiêu và <#60e84dff>3%<> dưới dạng <#ff9028ff>sát thương vật lí<> lên những kẻ địch phía sau mục tiêu. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
         },
         "radiant_titanic_hydra": {
             "name": "Rìu Đại Mãng Xà Ánh Sáng",
-            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> lên mục tiêu và <#60e84dff>4%<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> lên mục tiêu và <#60e84dff>4%<> dưới dạng <#ff9028ff>sát thương vật lí<> lên những kẻ địch phía sau mục tiêu. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
         }
     },
     "zh-hans": {
@@ -2302,11 +2302,11 @@
         },
         "protoplasm_harness": {
             "name": "原生质护带",
-            "option": "\n<#ff7a3eff>筑防<>：<#d94c49ff>生命值降至40%以下<>时，获得 <#60e84dff>300<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>25%<> 作为<#60e84dff>额外生命值<>，持续 <#e8a800ff>6秒<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>该数值一半的生命值（冷却时间30秒）。"
+            "option": "\n<#ff7a3eff>筑防<>：<#d94c49ff>生命值降至40%以下<>时，获得 <#60e84dff>300<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>25%<> 作为<#60e84dff>额外生命值<>，持续 <#e8a800ff>6秒<>，并在 <#e8a800ff>1.5秒<> 内<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>该数值一半的生命值（冷却时间30秒）。"
         },
         "radiant_protoplasm_harness": {
             "name": "光明版原生质护带",
-            "option": "\n<#ff7a3eff>筑防<>：<#d94c49ff>生命值降至40%以下<>时，获得 <#60e84dff>600<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>25%<> 作为<#60e84dff>额外生命值<>，持续 <#e8a800ff>6秒<>，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>该数值一半的生命值（冷却时间30秒）。"
+            "option": "\n<#ff7a3eff>筑防<>：<#d94c49ff>生命值降至40%以下<>时，获得 <#60e84dff>600<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>25%<> 作为<#60e84dff>额外生命值<>，持续 <#e8a800ff>6秒<>，并在 <#e8a800ff>1.5秒<> 内<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<>该数值一半的生命值（冷却时间30秒）。"
         },
         "frozen_mallet": {
             "name": "冰霜之锤",
@@ -2478,11 +2478,11 @@
         },
         "heartsteel": {
             "name": "心之钢",
-            "option": "\n<#ff7a3eff>铁石心肠<>：每隔 <#e8a800ff>20秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>12%<> 作为 <#60e84dff>额外生命值<>。"
+            "option": "\n<#ff7a3eff>铁石心肠<>：每隔 <#e8a800ff>30秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>12%<> 作为 <#60e84dff>额外生命值<>。"
         },
         "radiant_heartsteel": {
             "name": "光明版心之钢",
-            "option": "\n<#ff7a3eff>铁石心肠<>：每隔 <#e8a800ff>20秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>12%<> 作为 <#60e84dff>额外生命值<>。"
+            "option": "\n<#ff7a3eff>铁石心肠<>：每隔 <#e8a800ff>30秒<>，你的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>12%<> 作为 <#60e84dff>额外生命值<>。"
         },
         "spear_of_shojin": {
             "name": "朔极之矛",
@@ -3058,11 +3058,11 @@
         },
         "titanic_hydra": {
             "name": "巨型九头蛇",
-            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对目标造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#ff9028ff>额外物理伤害<>，并对附近的敌人造成相当于 <#60e84dff>3%<> 最大生命值的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对目标造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#ff9028ff>额外物理伤害<>，并对目标身后的敌人们造成相当于 <#60e84dff>3%<> 最大生命值的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
         },
         "radiant_titanic_hydra": {
             "name": "光明版巨型九头蛇",
-            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对目标造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的<#ff9028ff>额外物理伤害<>，并对附近的敌人造成相当于 <#60e84dff>4%<> 最大生命值的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对目标造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的<#ff9028ff>额外物理伤害<>，并对目标身后的敌人们造成相当于 <#60e84dff>4%<> 最大生命值的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
         }
     },
     "pt-BR": {
@@ -3324,11 +3324,11 @@
         },
         "protoplasm_harness": {
             "name": "Couraça Protoplásmatica",
-            "option": "\n<#ff7a3eff>Fortificação<>: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de 40%<> você, recebe <#60e84dff>300<> + <#60e84dff>25%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>6 segundos<>, depois <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> por metade desse valor (30s)."
+            "option": "\n<#ff7a3eff>Fortificação<>: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de 40%<> você, recebe <#60e84dff>300<> + <#60e84dff>25%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>6 segundos<>, depois <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> por metade desse valor ao longo de <#e8a800ff>1.5 segundos<> (30s)."
         },
         "radiant_protoplasm_harness": {
             "name": "Couraça Protoplásmatica Radiante",
-            "option": "\n<#ff7a3eff>Fortificação<>: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de 40%<> você, recebe <#60e84dff>600<> + <#60e84dff>25%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>6 segundos<>, depois <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> por metade desse valor (30s)."
+            "option": "\n<#ff7a3eff>Fortificação<>: Ao receber dano suficiente para reduzir sua <#d94c49ff>Vida a menos de 40%<> você, recebe <#60e84dff>600<> + <#60e84dff>25%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> por <#e8a800ff>6 segundos<>, depois <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> por metade desse valor ao longo de <#e8a800ff>1.5 segundos<> (30s)."
         },
         "frozen_mallet": {
             "name": "Malho Congelado",
@@ -3500,11 +3500,11 @@
         },
         "heartsteel": {
             "name": "Coração de Aço",
-            "option": "\n<#ff7a3eff>Coração Forjado<>: A cada <#e8a800ff>20 segundos<>, seu próximo ataque básico causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>12%<> desse dano como <#60e84dff>vida bônus<>."
+            "option": "\n<#ff7a3eff>Coração Forjado<>: A cada <#e8a800ff>30 segundos<>, seu próximo ataque básico causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>12%<> desse dano como <#60e84dff>vida bônus<>."
         },
         "radiant_heartsteel": {
             "name": "Coração de Aço Radiante",
-            "option": "\n<#ff7a3eff>Coração Forjado<>: A cada <#e8a800ff>20 segundos<>, seu próximo ataque básico causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>12%<> desse dano como <#60e84dff>vida bônus<>."
+            "option": "\n<#ff7a3eff>Coração Forjado<>: A cada <#e8a800ff>30 segundos<>, seu próximo ataque básico causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>15<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>12%<> desse dano como <#60e84dff>vida bônus<>."
         },
         "spear_of_shojin": {
             "name": "Lança de Shojin",
@@ -4080,11 +4080,11 @@
         },
         "titanic_hydra": {
             "name": "Hidra Titânica",
-            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#ff9028ff>dano físico adicional<> ao alvo e <#60e84dff>3%<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#ff9028ff>dano físico adicional<> ao alvo e <#60e84dff>3%<> como <#ff9028ff>dano físico<> aos inimigos atrás do alvo. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
         },
         "radiant_titanic_hydra": {
             "name": "Hidra Titânica Radiante",
-            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#ff9028ff>dano físico adicional<> ao alvo e <#60e84dff>4%<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#ff9028ff>dano físico adicional<> ao alvo e <#60e84dff>4%<> como <#ff9028ff>dano físico<> aos inimigos atrás do alvo. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
         }
     },
     "ru": {
@@ -4346,11 +4346,11 @@
         },
         "protoplasm_harness": {
             "name": "Протоплазменная Упряжь",
-            "option": "\n<#ff7a3eff>Укрепление<>: При <#d94c49ff>падении здоровья ниже 40%<> даёт <#60e84dff>300<> + <#60e84dff>25%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#60e84dff>дополнительное здоровье<> на <#e8a800ff>6 секунд<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> половину этого количества (перезарядка 30 секунд)."
+            "option": "\n<#ff7a3eff>Укрепление<>: При <#d94c49ff>падении здоровья ниже 40%<> даёт <#60e84dff>300<> + <#60e84dff>25%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#60e84dff>дополнительное здоровье<> на <#e8a800ff>6 секунд<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> половину этого количества в течение <#e8a800ff>1.5 сек.<> (перезарядка 30 секунд)."
         },
         "radiant_protoplasm_harness": {
             "name": "Лучезарная Протоплазменная Упряжь",
-            "option": "\n<#ff7a3eff>Укрепление<>: При <#d94c49ff>падении здоровья ниже 40%<> даёт <#60e84dff>600<> + <#60e84dff>25%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#60e84dff>дополнительное здоровье<> на <#e8a800ff>6 секунд<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> половину этого количества (перезарядка 30 секунд)."
+            "option": "\n<#ff7a3eff>Укрепление<>: При <#d94c49ff>падении здоровья ниже 40%<> даёт <#60e84dff>600<> + <#60e84dff>25%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#60e84dff>дополнительное здоровье<> на <#e8a800ff>6 секунд<> и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> половину этого количества в течение <#e8a800ff>1.5 сек.<> (перезарядка 30 секунд)."
         },
         "frozen_mallet": {
             "name": "Замёрзший Молот",
@@ -4522,11 +4522,11 @@
         },
         "heartsteel": {
             "name": "Сердце Стали",
-            "option": "\n<#ff7a3eff>Железное сердце<>: Каждые <#e8a800ff>20 секунд<>, ваша следующая базовая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>12%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
+            "option": "\n<#ff7a3eff>Железное сердце<>: Каждые <#e8a800ff>30 секунд<>, ваша следующая базовая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>12%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
         },
         "radiant_heartsteel": {
             "name": "Лучезарное Сердце Стали",
-            "option": "\n<#ff7a3eff>Железное сердце<>: Каждые <#e8a800ff>20 секунд<>, ваша следующая базовая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>12%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
+            "option": "\n<#ff7a3eff>Железное сердце<>: Каждые <#e8a800ff>30 секунд<>, ваша следующая базовая атака наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>15<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>12%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<>."
         },
         "spear_of_shojin": {
             "name": "Копье Седзина",
@@ -5102,11 +5102,11 @@
         },
         "titanic_hydra": {
             "name": "Титаническая гидра",
-            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят цели <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в виде <#ff9028ff>дополнительного физического урона<>, а ближайшим врагам — <#60e84dff>3%<> в виде <#ff9028ff>физического урона<>. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят цели <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в виде <#ff9028ff>дополнительного физического урона<>, а врагам позади цели — <#60e84dff>3%<> в виде <#ff9028ff>физического урона<>. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
         },
         "radiant_titanic_hydra": {
             "name": "Лучезарная Титаническая гидра",
-            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят цели <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в виде <#ff9028ff>дополнительного физического урона<>, а ближайшим врагам — <#60e84dff>4%<> в виде <#ff9028ff>физического урона<>. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят цели <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в виде <#ff9028ff>дополнительного физического урона<>, а врагам позади цели — <#60e84dff>4%<> в виде <#ff9028ff>физического урона<>. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
         }
     },
     "ko": {
@@ -5368,11 +5368,11 @@
         },
         "protoplasm_harness": {
             "name": "원형질 안전벨트",
-            "option": "\n<#ff7a3eff>요새화<>: <#d94c49ff>체력이 40% 아래로 내려가면<> <#e8a800ff>6초<> 동안 <#60e84dff>300<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>25%<>만큼 <#60e84dff>추가 체력<>을 얻고, 그 절반만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. 재사용 대기시간은 <#e8a800ff>30초<>입니다."
+            "option": "\n<#ff7a3eff>요새화<>: <#d94c49ff>체력이 40% 아래로 내려가면<> <#e8a800ff>6초<> 동안 <#60e84dff>300<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>25%<>만큼 <#60e84dff>추가 체력<>을 얻고, 그 절반만큼 <#e8a800ff>1.5초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. 재사용 대기시간은 <#e8a800ff>30초<>입니다."
         },
         "radiant_protoplasm_harness": {
             "name": "찬란한 원형질 안전벨트",
-            "option": "\n<#ff7a3eff>요새화<>: <#d94c49ff>체력이 40% 아래로 내려가면<> <#e8a800ff>6초<> 동안 <#60e84dff>600<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>25%<>만큼 <#60e84dff>추가 체력<>을 얻고, 그 절반만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. 재사용 대기시간은 <#e8a800ff>30초<>입니다."
+            "option": "\n<#ff7a3eff>요새화<>: <#d94c49ff>체력이 40% 아래로 내려가면<> <#e8a800ff>6초<> 동안 <#60e84dff>600<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>25%<>만큼 <#60e84dff>추가 체력<>을 얻고, 그 절반만큼 <#e8a800ff>1.5초<>에 걸쳐 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다. 재사용 대기시간은 <#e8a800ff>30초<>입니다."
         },
         "frozen_mallet": {
             "name": "얼어붙은 망치",
@@ -5544,11 +5544,11 @@
         },
         "heartsteel": {
             "name": "강철심장",
-            "option": "\n<#ff7a3eff>강철의 심장<>: <#e8a800ff>20초<>마다 다음 기본 공격이 <#ff9028ff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>12%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다."
+            "option": "\n<#ff7a3eff>강철의 심장<>: <#e8a800ff>30초<>마다 다음 기본 공격이 <#ff9028ff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>12%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다."
         },
         "radiant_heartsteel": {
             "name": "찬란한 강철심장",
-            "option": "\n<#ff7a3eff>강철의 심장<>: <#e8a800ff>20초<>마다 다음 기본 공격이 <#ff9028ff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>12%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다."
+            "option": "\n<#ff7a3eff>강철의 심장<>: <#e8a800ff>30초<>마다 다음 기본 공격이 <#ff9028ff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>12%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다."
         },
         "spear_of_shojin": {
             "name": "쇼진의 창",
@@ -6124,11 +6124,11 @@
         },
         "titanic_hydra": {
             "name": "거대한 히드라",
-            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 대상에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#ff9028ff>추가 물리 피해<>를, 주변 적들에게 <#60e84dff>3%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 대상에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#ff9028ff>추가 물리 피해<>를, 대상 뒤의 적들에게 <#60e84dff>3%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
         },
         "radiant_titanic_hydra": {
             "name": "찬란한 거대한 히드라",
-            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 대상에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1.5%<>만큼 <#ff9028ff>추가 물리 피해<>를, 주변 적들에게 <#60e84dff>4%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 대상에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1.5%<>만큼 <#ff9028ff>추가 물리 피해<>를, 대상 뒤의 적들에게 <#60e84dff>4%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
         }
     }
 }
