@@ -1006,11 +1006,11 @@
         },
         "statikk_shiv": {
             "name": "Statikk Shiv",
-            "option": "\n<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>60 magic damage<> to the target and up to 4 more enemies, each within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the last, prioritizing champions. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
+            "option": "\n<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>60 magic damage<> to the target and up to <#e8a800ff>4<> more enemies, each within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the last, prioritizing champions. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
         },
         "radiant_statikk_shiv": {
             "name": "Radiant Statikk Shiv",
-            "option": "\n<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>80 magic damage<> to the target and up to 5 more enemies, each within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the last, prioritizing champions. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
+            "option": "\n<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>100<>.\n\n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>80 magic damage<> to the target and up to <#e8a800ff>5<> more enemies, each within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of the last, prioritizing champions. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
         },
         "titanic_hydra": {
             "name": "Titanic Hydra",
