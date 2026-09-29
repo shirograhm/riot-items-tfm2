@@ -81,9 +81,9 @@ impl Heartsteel {
             effect_bonus_flat_damage: 70,
             effect_caster_hp_percent_damage: 6.0,
             effect_bonus_hp_percent_of_damage: 10.0,
-            effect_max_distance: 70,
+            effect_max_distance: 50,
             effect_charge_seconds: 1.5,
-            effect_duration_seconds: 3.0,
+            effect_duration_seconds: 1.5,
             effect_cooldown_seconds: 30.0,
             // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
@@ -101,9 +101,9 @@ impl Heartsteel {
             effect_bonus_flat_damage: 70,
             effect_caster_hp_percent_damage: 6.0,
             effect_bonus_hp_percent_of_damage: 10.0,
-            effect_max_distance: 70,
+            effect_max_distance: 50,
             effect_charge_seconds: 1.5,
-            effect_duration_seconds: 3.0,
+            effect_duration_seconds: 1.5,
             effect_cooldown_seconds: 30.0,
             ..Self::base()
         }
