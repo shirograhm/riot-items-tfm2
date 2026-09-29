@@ -63,6 +63,14 @@
             "tag": "shock",
             "z": 1,
             "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_spellblade_proc",
+            "anim": "asset/riot_items_tfm2/effects/spellblade_proc",
+            "tag": "proc",
+            "z": 1,
+            "is_follow": true
         }
     ],
     "view_projectiles": [
@@ -115,6 +123,13 @@
             "name": "riot_annul",
             "anim": "asset/riot_items_tfm2/effects/annul_spell_shield",
             "tag": "shield",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_spellblade",
+            "anim": "asset/riot_items_tfm2/effects/spellblade_sparks",
+            "tag": "sparks",
             "z": 1
         }
     ]

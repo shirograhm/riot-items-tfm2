@@ -1,7 +1,10 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, refresh_buff, ticks, ItemMeta, ProcQueue};
+use crate::{
+    apply_config, has_buff, keep_spellblade, mark_spellblade, refresh_buff, spend_spellblade,
+    ticks, ItemMeta, ProcQueue,
+};
 
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
@@ -170,6 +173,7 @@ impl StableItem for Bloodsong {
         let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
+            mark_spellblade(ctx, caster);
         }
     }
 
@@ -191,6 +195,7 @@ impl StableItem for Bloodsong {
         };
         let bonus_damage = self.spellblade_damage(caster_ref.level());
         self.spellblade_ready = false;
+        spend_spellblade(ctx, caster, target);
 
         // Vulnerable goes on below and is up by the time this lands, so the
         // proc is amplified by its own debuff — it was not when the damage
@@ -218,9 +223,11 @@ impl StableItem for Bloodsong {
         );
     }
 
-    /// Lands the Spellblade damage whose delay has run out.
+    /// Lands the Spellblade damage whose delay has run out, and keeps the
+    /// Spellblade sparks up while it is ready.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
+        keep_spellblade(ctx, player, self.spellblade_ready);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

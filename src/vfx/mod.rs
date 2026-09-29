@@ -1,11 +1,14 @@
 //! Buffs and the effects drawn from them: the buff helpers every item uses,
-//! the Immolate flames marker, the shared Annul spell shield (whose buff draws
-//! the shield bubble) and Sunfire Cape's Immolate, which runs as the match hook.
+//! the Immolate flames and Spellblade sparks markers, the shared Annul spell
+//! shield (whose buff draws the shield bubble) and Sunfire Cape's Immolate,
+//! which runs as the match hook.
 
 mod annul;
 pub(crate) mod sunfire;
 
 use mod_api_stable::*;
+
+use crate::TICKS_PER_SECOND;
 
 pub(crate) use annul::Annul;
 
@@ -32,6 +35,60 @@ pub(crate) fn mark_immolate(ctx: &mut StableSim<'_>, entity: usize) {
         entity,
         IMMOLATE_BUFF,
         &BuffV1::timed(IMMOLATE_BUFF, IMMOLATE_MARKER_TICKS),
+    );
+}
+
+/// Statless marker on a champion whose next basic attack Spellblade will
+/// empower, shared by every Spellblade item (Sheen and everything built from
+/// it). It is the `view_buffs` binding in `view/effects.view_effects` that
+/// draws sparks circling the champion's hands.
+const SPELLBLADE_BUFF: &str = "riot_spellblade";
+/// Refreshed once a second while Spellblade is up, so it never lapses between
+/// refreshes, and gone half a second after a missed one: the champion died,
+/// or the item left.
+const SPELLBLADE_MARKER_TICKS: usize = 90;
+/// The `view_effects` burst that plays on the target of the empowered attack
+/// (`effects/spellblade_proc`), in the sparks' colours.
+const SPELLBLADE_PROC_EFFECT: &str = "riot_spellblade_proc";
+
+/// Puts up (or keeps up) the Spellblade sparks on `entity`. Replacing rather
+/// than adding keeps one instance however many Spellblade items it holds.
+pub(crate) fn mark_spellblade(ctx: &mut StableSim<'_>, entity: usize) {
+    refresh_buff(
+        ctx,
+        entity,
+        SPELLBLADE_BUFF,
+        &BuffV1::timed(SPELLBLADE_BUFF, SPELLBLADE_MARKER_TICKS),
+    );
+}
+
+/// Keeps the Spellblade sparks up on `player`'s living champion while `ready`,
+/// refreshing them once a second. For a Spellblade item's `update`.
+pub(crate) fn keep_spellblade(ctx: &mut StableSim<'_>, player: usize, ready: bool) {
+    if !ready || ctx.tick() % TICKS_PER_SECOND as usize != 0 {
+        return;
+    }
+    if let Some(champion) = ctx
+        .get_player(player)
+        .and_then(|p| p.champion())
+        .filter(|c| c.is_alive())
+        .map(|c| c.id())
+    {
+        mark_spellblade(ctx, champion);
+    }
+}
+
+/// The empowered attack went off: takes the sparks off `caster` and bursts on
+/// `target`. For a Spellblade item's `on_attack`, where it spends the charge.
+pub(crate) fn spend_spellblade(ctx: &mut StableSim<'_>, caster: usize, target: usize) {
+    ctx.entity_remove_buff(caster, SPELLBLADE_BUFF);
+    ctx.play_view_effect(
+        SPELLBLADE_PROC_EFFECT,
+        caster,
+        &InputTargetV1::target(target),
+        0,
+        0,
+        0,
     );
 }
 

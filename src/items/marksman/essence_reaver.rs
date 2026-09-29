@@ -1,7 +1,10 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, ProcQueue};
+use crate::{
+    apply_config, has_buff, keep_spellblade, mark_spellblade, percent_of, spend_spellblade, ticks,
+    ItemMeta, ProcQueue,
+};
 
 #[derive(Clone, Debug)]
 pub struct EssenceReaver {
@@ -152,6 +155,7 @@ impl StableItem for EssenceReaver {
         let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
         if !on_cooldown {
             self.spellblade_ready = true;
+            mark_spellblade(ctx, caster);
         }
     }
 
@@ -183,11 +187,14 @@ impl StableItem for EssenceReaver {
             &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
         );
         self.spellblade_ready = false;
+        spend_spellblade(ctx, caster, target);
     }
 
-    /// Lands the Spellblade damage whose delay has run out.
+    /// Lands the Spellblade damage whose delay has run out, and keeps the
+    /// Spellblade sparks up while it is ready.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
+        keep_spellblade(ctx, player, self.spellblade_ready);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
