@@ -91,6 +91,8 @@ pub struct ItemConfig {
     pub effect_delay_seconds: Option<f64>,
     pub effect_shield_seconds: Option<f64>,
     pub effect_heal_interval_seconds: Option<f64>,
+    pub effect_heal_duration_seconds: Option<f64>,
+    pub effect_charge_seconds: Option<f64>,
     pub effect_bonus_flat_shield: Option<usize>,
     pub effect_ad_percent_shield: Option<f64>,
     pub effect_caster_hp_percent_shield: Option<f64>,
@@ -127,6 +129,7 @@ pub struct ItemConfig {
     pub effect_explosion_distance: Option<usize>,
     pub effect_ad_percent_haste: Option<f64>,
     pub effect_max_targets: Option<usize>,
+    pub effect_splash_caster_hp_percent: Option<f64>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,

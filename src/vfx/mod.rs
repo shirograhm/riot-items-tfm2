@@ -1,13 +1,16 @@
 //! Buffs and the effects drawn from them: the buff helpers every item uses,
 //! the Immolate flames marker, the shared Annul spell shield (whose buff draws
-//! the shield bubble) and Sunfire Cape's Immolate, which runs as the match hook.
+//! the shield bubble), the shared Spellblade (whose buff draws the sparks) and
+//! Sunfire Cape's Immolate, which runs as the match hook.
 
 mod annul;
+mod spellblade;
 pub(crate) mod sunfire;
 
 use mod_api_stable::*;
 
 pub(crate) use annul::Annul;
+pub(crate) use spellblade::Spellblade;
 
 pub(crate) fn refresh_buff(ctx: &mut StableSim<'_>, entity: usize, name: &str, buff: &BuffV1) {
     ctx.entity_remove_buff(entity, name);
@@ -19,7 +22,7 @@ pub(crate) fn refresh_buff(ctx: &mut StableSim<'_>, entity: usize, name: &str, b
 /// the `view_buffs` binding in `view/effects.view_effects` that draws flames at
 /// the champion's feet.
 const IMMOLATE_BUFF: &str = "riot_immolate";
-/// Refreshed once a second as the burn ticks, so it never lapses between burns,
+/// Refreshed once a second as the burn ticks, so it never lapses between burns,s
 /// and goes half a second after the last one: death, or the item leaving.
 const IMMOLATE_MARKER_TICKS: usize = 90;
 

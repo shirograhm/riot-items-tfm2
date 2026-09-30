@@ -1,20 +1,69 @@
+use std::collections::HashMap;
+
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, ProcQueue};
+use crate::{
+    apply_config, percent_of, refresh_buff, ticks, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE,
+    TICKS_PER_SECOND,
+};
+
+// Ironheart, League's Colossal Consumption: an enemy champion within
+// `effect_max_distance` of the carrier builds up stages, one for every third of
+// `effect_charge_seconds` in range (0.5 s each at the default 1.5), up to three.
+// At three the carrier's next basic attack against them deals bonus damage and
+// banks part of it as permanent health, and they go on `effect_cooldown_seconds`
+// cooldown. Each enemy champion has their own stages and cooldown, so one fight
+// can pay out on several of them. Out of range, each stage lingers
+// `effect_duration_seconds` and then drops, one at a time; death on either side
+// clears them all.
+//
+// The pictures are League's stack and trigger VFX, drawn up and to the right of
+// the enemy by one statless buff per stage, bound in the `view_buffs` table of
+// `view/effects.view_effects` and all from `effects/heartsteel_mark`: a dark
+// swirling ring, then the same ring with a yellow-green core lit, then a bright
+// pink orb pulsing inside it. The attack bursts the orb: a pink flash where it
+// was, with sharp light-blue and pink spikes shooting out of it
+// (`effects/heartsteel_trigger`).
+
+/// The Ironheart proc sound: `sound/sfx/riot_heartsteel_ironheart.sound_info`,
+/// mapped into `asset/base/sound/sfx` by `mod.override_info`, which is where
+/// sound names are looked up. The clip is `sfx/lol-heartsteel.mp3` turned up
+/// 2 dB with its peaks limited to -1 dBFS, its tail trimmed, and faded in and
+/// out; the first cut, 3 dB down, was too quiet in game.
+const IRONHEART_SFX: &str = "riot_heartsteel_ironheart";
+/// The picture for each stage, tags `stage1` to `stage3`. The last is the
+/// charged one: the next basic attack against them procs.
+const STAGE_BUFFS: [&str; 3] = [
+    "riot_heartsteel_stage1",
+    "riot_heartsteel_stage2",
+    "riot_heartsteel_stage3",
+];
+const MAX_STAGES: u8 = 3;
+/// The stage picture is refreshed once a second, so it never lapses while the
+/// stage is up, and is gone half a second after a missed refresh: the item left.
+const STAGE_BUFF_TICKS: usize = 90;
+/// The burst where the orb was when the charged attack lands (a `view_effects`
+/// animation).
+const TRIGGER_EFFECT: &str = "riot_heartsteel_trigger";
 
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
     meta: ItemMeta,
     stack_buff: &'static str,
-    cooldown_buff: &'static str,
     price: usize,
     hp: i32,
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
     effect_bonus_hp_percent_of_damage: f64,
+    effect_max_distance: usize,
+    effect_charge_seconds: f64,
+    effect_duration_seconds: f64,
     effect_cooldown_seconds: f64,
     accumulated_bonus_hp: i32,
+    /// Ironheart on each enemy champion, by their player id: the player keeps
+    /// it across a respawn, their champion entity may not.
+    targets: HashMap<usize, Target>,
     procs: ProcQueue,
 }
 
@@ -27,15 +76,18 @@ impl Heartsteel {
                 &["radiant_heartsteel"],
             ),
             stack_buff: "heartsteel_stack",
-            cooldown_buff: "heartsteel_cooldown",
             price: 750,
             hp: 250,
-            effect_bonus_flat_damage: 15,
+            effect_bonus_flat_damage: 70,
             effect_caster_hp_percent_damage: 6.0,
-            effect_bonus_hp_percent_of_damage: 12.0,
-            effect_cooldown_seconds: 20.0,
+            effect_bonus_hp_percent_of_damage: 10.0,
+            effect_max_distance: 50,
+            effect_charge_seconds: 1.5,
+            effect_duration_seconds: 1.5,
+            effect_cooldown_seconds: 30.0,
             // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
+            targets: HashMap::new(),
             procs: ProcQueue::new(),
         }
     }
@@ -44,13 +96,15 @@ impl Heartsteel {
         Self {
             meta: ItemMeta::radiant("radiant_heartsteel", &["heartsteel"]),
             stack_buff: "heartsteel_stack",
-            cooldown_buff: "heartsteel_cooldown",
             price: 1050,
             hp: 400,
-            effect_bonus_flat_damage: 15,
+            effect_bonus_flat_damage: 70,
             effect_caster_hp_percent_damage: 6.0,
-            effect_bonus_hp_percent_of_damage: 12.0,
-            effect_cooldown_seconds: 20.0,
+            effect_bonus_hp_percent_of_damage: 10.0,
+            effect_max_distance: 50,
+            effect_charge_seconds: 1.5,
+            effect_duration_seconds: 1.5,
+            effect_cooldown_seconds: 30.0,
             ..Self::base()
         }
     }
@@ -73,10 +127,23 @@ impl Heartsteel {
                 effect_bonus_flat_damage,
                 effect_caster_hp_percent_damage,
                 effect_bonus_hp_percent_of_damage,
+                effect_max_distance,
+                effect_charge_seconds,
+                effect_duration_seconds,
                 effect_cooldown_seconds
             ]
         );
         self
+    }
+
+    /// Clears every enemy's stages: the carrier respawned. The cooldowns keep
+    /// running.
+    fn clear_stages(&mut self, ctx: &mut StableSim<'_>) {
+        for target in self.targets.values_mut() {
+            set_stage(ctx, target, 0);
+            target.progress = 0;
+            target.idle = 0;
+        }
     }
 }
 
@@ -124,6 +191,7 @@ impl StableItem for Heartsteel {
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.procs.clear();
+        self.clear_stages(ctx);
 
         let Some(player_ref) = ctx.get_player(player) else {
             return;
@@ -146,6 +214,8 @@ impl StableItem for Heartsteel {
         );
     }
 
+    /// Spends the charge: a basic attack against an enemy champion at the last
+    /// stage.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -156,32 +226,40 @@ impl StableItem for Heartsteel {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
+        if attack_type != AttackTypeV1::BaseAttack {
             return;
         }
-
-        let is_cooldown_ticking = has_buff(&caster_ref, self.cooldown_buff);
-        if is_cooldown_ticking {
+        let Some(max_hp) = ctx.get_entity(caster).map(|c| c.hp().1) else {
             return;
-        }
+        };
+        let cooldown = ticks(self.effect_cooldown_seconds);
+        let Some(charged) = self
+            .targets
+            .values_mut()
+            .find(|t| t.stages == MAX_STAGES && t.entity == target)
+        else {
+            return;
+        };
+        set_stage(ctx, charged, 0);
+        charged.progress = 0;
+        charged.idle = 0;
+        charged.cooldown = cooldown;
 
         let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_ref.hp().1, self.effect_caster_hp_percent_damage);
+            + percent_of(max_hp, self.effect_caster_hp_percent_damage);
         let bonus_hp = percent_of(bonus_damage, self.effect_bonus_hp_percent_of_damage) as i32;
-
-        ctx.add_buff(
-            caster,
-            &BuffV1::timed(self.cooldown_buff, ticks(self.effect_cooldown_seconds)),
-        );
         // The banked health is priced off the damage this swing earned and is
         // granted with the swing; only the damage number waits.
         self.procs.push_physical(ctx, target, bonus_damage);
+        ctx.play_sfx(IRONHEART_SFX, caster, &InputTargetV1::target(target));
+        ctx.play_view_effect(
+            TRIGGER_EFFECT,
+            caster,
+            &InputTargetV1::target(target),
+            0,
+            0,
+            0,
+        );
         ctx.add_buff(
             caster,
             &BuffV1 {
@@ -192,9 +270,78 @@ impl StableItem for Heartsteel {
         self.accumulated_bonus_hp += bonus_hp;
     }
 
-    /// Lands the Colossal Consumption damage whose delay has run out.
+    /// Lands the Ironheart damage whose delay has run out, then builds, drops
+    /// and cools down every enemy champion's stages.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
+
+        let Some(team) = ctx.get_player(player).map(|p| p.team()) else {
+            return;
+        };
+        let carrier = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .filter(|c| c.is_alive())
+            .map(|c| c.id());
+        // (player id, champion entity, alive) for every enemy champion.
+        let mut enemies = Vec::new();
+        for index in 0..ctx.player_count() {
+            let Some(enemy) = ctx.player_at(index) else {
+                continue;
+            };
+            if enemy.team() == team {
+                continue;
+            }
+            if let Some(champion) = enemy.champion() {
+                enemies.push((enemy.id(), champion.id(), champion.is_alive()));
+            }
+        }
+
+        let reach = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let stage_ticks = (ticks(self.effect_charge_seconds) / MAX_STAGES as usize).max(1);
+        let linger_ticks = ticks(self.effect_duration_seconds).max(1);
+        let refresh = ctx.tick() % TICKS_PER_SECOND as usize == 0;
+        for (id, entity, alive) in enemies {
+            let target = self.targets.entry(id).or_default();
+            target.entity = entity;
+            target.cooldown = target.cooldown.saturating_sub(1);
+            // Death on either side clears every stage.
+            let Some(carrier_id) = carrier.filter(|_| alive) else {
+                set_stage(ctx, target, 0);
+                target.progress = 0;
+                target.idle = 0;
+                continue;
+            };
+            let in_range = ctx.distance_sq(carrier_id, entity) <= reach * reach;
+            if in_range && target.cooldown == 0 {
+                // Building: a stage for every `stage_ticks` in range.
+                target.idle = 0;
+                if target.stages < MAX_STAGES {
+                    target.progress += 1;
+                    if target.progress >= stage_ticks {
+                        target.progress = 0;
+                        let next = target.stages + 1;
+                        set_stage(ctx, target, next);
+                    }
+                }
+            } else {
+                // Out of range: part of a stage is lost at once, a whole one
+                // lingers `linger_ticks` and then drops, one at a time.
+                target.progress = 0;
+                if target.stages > 0 {
+                    target.idle += 1;
+                    if target.idle >= linger_ticks {
+                        target.idle = 0;
+                        let next = target.stages - 1;
+                        set_stage(ctx, target, next);
+                    }
+                }
+            }
+            if refresh && target.stages > 0 {
+                let name = STAGE_BUFFS[target.stages as usize - 1];
+                refresh_buff(ctx, entity, name, &BuffV1::timed(name, STAGE_BUFF_TICKS));
+            }
+        }
     }
 
     /// Colossal Consumption's banked HP is permanent, so it crosses the Radiant
@@ -222,5 +369,43 @@ impl StableItem for Heartsteel {
 
     fn category(&self) -> ItemCategoryV1 {
         ItemCategoryV1::Hp
+    }
+}
+
+/// Ironheart's hold on one enemy champion.
+#[derive(Clone, Copy, Debug, Default)]
+struct Target {
+    /// Their champion entity, as of the last update.
+    entity: usize,
+    /// 0 to `MAX_STAGES`; at the last one the carrier's next basic attack
+    /// against them procs.
+    stages: u8,
+    /// Ticks in range toward the next stage.
+    progress: usize,
+    /// Ticks out of range since a stage was last gained or dropped; the top
+    /// one drops at `effect_duration_seconds`.
+    idle: usize,
+    /// Ticks left before Ironheart can build stages on them again.
+    cooldown: usize,
+}
+
+/// Moves `target` to `stage`, swapping the picture over them: the old stage's
+/// comes off and the new one's goes on. Stage 0 has none.
+fn set_stage(ctx: &mut StableSim<'_>, target: &mut Target, stage: u8) {
+    if target.stages == stage {
+        return;
+    }
+    if target.stages > 0 {
+        ctx.entity_remove_buff(target.entity, STAGE_BUFFS[target.stages as usize - 1]);
+    }
+    target.stages = stage;
+    if stage > 0 {
+        let name = STAGE_BUFFS[stage as usize - 1];
+        refresh_buff(
+            ctx,
+            target.entity,
+            name,
+            &BuffV1::timed(name, STAGE_BUFF_TICKS),
+        );
     }
 }

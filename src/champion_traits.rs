@@ -1,6 +1,7 @@
 //! What Smart Builds needs to know about a champion: what its damage scales
-//! with, and, to pick its boots, its class and whether it tanks or keeps allies
-//! alive.
+//! with, to pick its boots, its class and whether it tanks or keeps allies
+//! alive, and whether its kit has crowd control (a support that does builds
+//! Imperial Mandate).
 //!
 //! # Where the answer comes from
 //!
@@ -82,6 +83,8 @@ pub(crate) struct ChampionTraits {
     pub tank: bool,
     /// Tagged `Heal` or `Shield`: it keeps allies alive.
     pub sustains: bool,
+    /// Tagged `CC`: its kit slows, stuns or otherwise holds enemies.
+    pub cc: bool,
 }
 
 impl ChampionTraits {
@@ -91,6 +94,7 @@ impl ChampionTraits {
             class,
             tank: flags & TANK != 0,
             sustains: flags & (HEAL | SHIELD) != 0,
+            cc: flags & CC != 0,
         }
     }
 }
@@ -109,6 +113,7 @@ const AP: u8 = 2;
 const TANK: u8 = 4;
 const HEAL: u8 = 8;
 const SHIELD: u8 = 16;
+const CC: u8 = 32;
 
 /// The flag bits for a champion's `tags`, by tag name.
 fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
@@ -120,6 +125,7 @@ fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
                 "tank" => TANK,
                 "heal" => HEAL,
                 "shield" => SHIELD,
+                "cc" => CC,
                 _ => 0,
             }
     })
@@ -130,74 +136,74 @@ fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
 /// fallback: an answer from the host always wins. Kept true to the game's
 /// tags; corrections go in [`SCALING_OVERRIDES`], which beat both.
 const VANILLA: &[(&str, u8, Class)] = &[
-    ("alchemist", AP, Class::Magician),
-    ("android", AD | TANK, Class::Melee),
+    ("alchemist", AP | CC, Class::Magician),
+    ("android", AD | TANK | CC, Class::Melee),
     ("archer", AD, Class::Range),
-    ("astrologer", AP, Class::Magician),
+    ("astrologer", AP | CC, Class::Magician),
     ("bard", AP, Class::Util),
     ("barrier_magician", AP | SHIELD, Class::Util),
     ("berserker", AD, Class::Melee),
     ("bomber", AD, Class::Range),
     ("boomerang_hunter", AD, Class::Range),
-    ("cavalry_knight", AD, Class::Melee),
+    ("cavalry_knight", AD | CC, Class::Melee),
     ("chef", AP | TANK | HEAL, Class::Util),
     ("circus_blade", AD, Class::Assassin),
     ("clown", AD, Class::Assassin),
     ("crossbowman", AD, Class::Range),
     ("dancer", AD, Class::Range),
-    ("dark_mage", AP, Class::Magician),
-    ("demon", AD, Class::Assassin),
+    ("dark_mage", AP | CC, Class::Magician),
+    ("demon", AD | CC, Class::Assassin),
     ("dokkaebi", AD | TANK | SHIELD, Class::Melee),
     ("druid", AP, Class::Magician),
-    ("dual_blader", AD, Class::Melee),
+    ("dual_blader", AD | CC, Class::Melee),
     ("enchanter", AP, Class::Util),
-    ("executioner", AD, Class::Melee),
+    ("executioner", AD | CC, Class::Melee),
     ("exorcist", AD | TANK, Class::Util),
-    ("fighter", AD | TANK, Class::Melee),
+    ("fighter", AD | TANK | CC, Class::Melee),
     ("gambler", AD, Class::Range),
     ("ghost", AD, Class::Assassin),
     ("guardian_spirit", AP | HEAL | SHIELD, Class::Util),
     ("gunner", AD, Class::Range),
-    ("hammerer", AD | TANK, Class::Melee),
-    ("harpooner", AD, Class::Range),
-    ("hitman", AD, Class::Assassin),
+    ("hammerer", AD | TANK | CC, Class::Melee),
+    ("harpooner", AD | CC, Class::Range),
+    ("hitman", AD | CC, Class::Assassin),
     ("hunter", AD, Class::Assassin),
-    ("ice_mage", AP, Class::Magician),
-    ("illusionist", AP, Class::Magician),
+    ("ice_mage", AP | CC, Class::Magician),
+    ("illusionist", AP | CC, Class::Magician),
     ("inquisitor", AD, Class::Assassin),
-    ("jiangshi", AD | TANK, Class::Melee),
-    ("knight", AD | TANK | SHIELD, Class::Melee),
+    ("jiangshi", AD | TANK | CC, Class::Melee),
+    ("knight", AD | TANK | SHIELD | CC, Class::Melee),
     ("lancer", AD, Class::Melee),
-    ("lightning_mage", AP, Class::Magician),
-    ("magic_knight", AD | AP, Class::Melee),
-    ("monk", AP | TANK | HEAL | SHIELD, Class::Util),
+    ("lightning_mage", AP | CC, Class::Magician),
+    ("magic_knight", AD | AP | CC, Class::Melee),
+    ("monk", AP | TANK | HEAL | SHIELD | CC, Class::Util),
     ("necromancer", AP, Class::Magician),
     ("nightmare", AD, Class::Assassin),
     ("ninja", AD, Class::Assassin),
-    ("ogre", AD | TANK, Class::Melee),
+    ("ogre", AD | TANK | CC, Class::Melee),
     ("plague_doctor", AD | TANK, Class::Util),
     ("poison_dart_hunter", AD, Class::Range),
-    ("pole_warrior", AD, Class::Melee),
+    ("pole_warrior", AD | CC, Class::Melee),
     ("priest", AP | HEAL | SHIELD, Class::Util),
-    ("prisoner", AD | TANK, Class::Melee),
+    ("prisoner", AD | TANK | CC, Class::Melee),
     ("pyromancer", AP, Class::Magician),
     ("pythoness", AP | HEAL, Class::Util),
-    ("sand_mage", AP, Class::Magician),
-    ("shadowmancer", AP, Class::Magician),
-    ("shield_bearer", AD | TANK | SHIELD, Class::Melee),
+    ("sand_mage", AP | CC, Class::Magician),
+    ("shadowmancer", AP | CC, Class::Magician),
+    ("shield_bearer", AD | TANK | SHIELD | CC, Class::Melee),
     ("siege_breaker", AD | TANK, Class::Melee),
     ("soldier", AD, Class::Range),
-    ("spellbreaker", AD | AP, Class::Melee),
+    ("spellbreaker", AD | AP | CC, Class::Melee),
     ("spirit_caller", AP | HEAL, Class::Util),
-    ("strongman", AD | TANK | SHIELD, Class::Melee),
+    ("strongman", AD | TANK | SHIELD | CC, Class::Melee),
     ("swordman", AD, Class::Melee),
-    ("taoist", AP, Class::Util),
+    ("taoist", AP | CC, Class::Util),
     ("vampire", AP | HEAL, Class::Magician),
-    ("voodoo_shaman", AP, Class::Magician),
-    ("werewolf", AD | HEAL, Class::Assassin),
+    ("voodoo_shaman", AP | CC, Class::Magician),
+    ("werewolf", AD | HEAL | CC, Class::Assassin),
     ("whip_master", AD, Class::Range),
     ("white_mage", AP, Class::Magician),
-    ("wind_mage", AP, Class::Magician),
+    ("wind_mage", AP | CC, Class::Magician),
 ];
 
 /// Champions other mods add, by id, from the `tags` and `category` in their
@@ -396,6 +402,7 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
                     class: brief.category.map(Class::from_category),
                     tank: has(ChampionTagV1::Tank),
                     sustains: has(ChampionTagV1::Heal) || has(ChampionTagV1::Shield),
+                    cc: has(ChampionTagV1::Cc),
                 };
                 answered.push((key, traits));
             }

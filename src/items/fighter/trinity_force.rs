@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, percent_of, ItemMeta, Spellblade};
 
 #[derive(Clone, Debug)]
 pub struct TrinityForce {
@@ -14,7 +14,7 @@ pub struct TrinityForce {
     effect_bonus_flat_damage: usize,
     effect_ad_percent_damage: f64,
     effect_cooldown_seconds: f64,
-    spellblade_ready: bool,
+    spellblade: Spellblade,
 }
 
 impl TrinityForce {
@@ -34,7 +34,7 @@ impl TrinityForce {
             effect_ad_percent_damage: 33.0,
             effect_cooldown_seconds: 3.5,
             // Non-vital stats (internals)
-            spellblade_ready: false,
+            spellblade: Spellblade::default(),
         }
     }
 
@@ -126,30 +126,7 @@ impl StableItem for TrinityForce {
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.spellblade_ready = false;
-    }
-
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        caster: usize,
-        target: usize,
-        is_ally: bool,
-    ) {
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if !target_ref.is_champion() || is_ally {
-            return;
-        }
-        let Some(caster_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let on_cooldown = has_buff(&caster_ref, "spellblade_cooldown");
-        if !on_cooldown {
-            self.spellblade_ready = true;
-        }
+        self.spellblade.reset();
     }
 
     fn on_attack(
@@ -162,7 +139,7 @@ impl StableItem for TrinityForce {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if !self.spellblade_ready || attack_type != AttackTypeV1::BaseAttack {
+        if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
@@ -172,11 +149,13 @@ impl StableItem for TrinityForce {
             + percent_of(caster_ref.stat().attack, self.effect_ad_percent_damage);
 
         ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
-        ctx.add_buff(
-            caster,
-            &BuffV1::timed("spellblade_cooldown", ticks(self.effect_cooldown_seconds)),
-        );
-        self.spellblade_ready = false;
+        self.spellblade
+            .spend(ctx, caster, target, self.effect_cooldown_seconds);
+    }
+
+    /// Watches for the cast that readies Spellblade.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.spellblade.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

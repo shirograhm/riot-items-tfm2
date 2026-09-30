@@ -55,6 +55,38 @@
             "tag": "erupt",
             "z": 1,
             "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_statikk_shock",
+            "anim": "asset/riot_items_tfm2/effects/statikk_shock",
+            "tag": "shock",
+            "z": 1,
+            "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_spellblade_proc",
+            "anim": "asset/riot_items_tfm2/effects/spellblade_proc",
+            "tag": "proc",
+            "z": 1,
+            "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_protoplasm_heal",
+            "anim": "asset/riot_items_tfm2/effects/protoplasm_heal",
+            "tag": "heal",
+            "z": 1,
+            "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_heartsteel_trigger",
+            "anim": "asset/riot_items_tfm2/effects/heartsteel_trigger",
+            "tag": "trigger",
+            "z": 1,
+            "is_follow": true
         }
     ],
     "view_projectiles": [
@@ -63,6 +95,27 @@
             "name": "riot_runaans_bolt",
             "anim": "asset/riot_items_tfm2/effects/runaans_bolt",
             "tag": "bolt",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_statikk_spark",
+            "anim": "asset/riot_items_tfm2/effects/statikk_spark",
+            "tag": "spark",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_titanic_hydra_wave",
+            "anim": "asset/riot_items_tfm2/effects/titanic_hydra_wave",
+            "tag": "wave",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_blossoming_dawn_wisp",
+            "anim": "asset/riot_items_tfm2/effects/blossoming_dawn_wisp",
+            "tag": "wisp",
             "z": 1
         }
     ],
@@ -93,6 +146,34 @@
             "name": "riot_annul",
             "anim": "asset/riot_items_tfm2/effects/annul_spell_shield",
             "tag": "shield",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_spellblade",
+            "anim": "asset/riot_items_tfm2/effects/spellblade_sparks",
+            "tag": "sparks",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_heartsteel_stage1",
+            "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
+            "tag": "stage1",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_heartsteel_stage2",
+            "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
+            "tag": "stage2",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_heartsteel_stage3",
+            "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
+            "tag": "stage3",
             "z": 1
         }
     ]

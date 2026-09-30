@@ -15,5 +15,6 @@ items! {
     spear_of_shojin,
     steraks_gage,
     sundered_sky,
+    titanic_hydra,
     trinity_force,
 }

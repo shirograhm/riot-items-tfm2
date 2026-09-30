@@ -3,10 +3,12 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{
     apply_config, has_buff, percent_of, refresh_buff, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
-    BUFF_REFRESH_PERIOD_TICKS,
+    BUFF_REFRESH_PERIOD_TICKS, TICKS_PER_SECOND,
 };
 
-const REGEN_PERIOD_TICKS: usize = 60;
+/// Warmog's Heart heals in a pulse every half second, each one half of the
+/// per-second share, so the rate the tooltip states is unchanged.
+const REGEN_PERIOD_TICKS: usize = 30;
 
 #[derive(Clone, Debug)]
 pub struct WarmogsArmor {
@@ -101,19 +103,18 @@ impl WarmogsArmor {
             return;
         }
 
-        // Regenerate a share of maximum health every second.
+        // Heal a share of maximum health every `REGEN_PERIOD_TICKS`. A direct
+        // heal rather than an `hp_regen` buff: the engine applies regen on its
+        // own schedule, and a heal is counted like every other item's.
         if self.regen_cooldown == 0 {
-            let heal = percent_of(max_hp, self.effect_caster_hp_percent_heal) as i32;
+            let share =
+                self.effect_caster_hp_percent_heal * REGEN_PERIOD_TICKS as f64 / TICKS_PER_SECOND;
+            let heal = percent_of(max_hp, share);
             if heal > 0 {
-                ctx.add_buff(
-                    entity,
-                    &BuffV1 {
-                        hp_regen: heal,
-                        ..BuffV1::timed("", 60)
-                    },
-                );
+                ctx.heal(entity, entity, heal);
             }
-            self.regen_cooldown = REGEN_PERIOD_TICKS;
+            // The pulse lands on the tick the countdown reaches 0.
+            self.regen_cooldown = REGEN_PERIOD_TICKS - 1;
         } else {
             self.regen_cooldown -= 1;
         }

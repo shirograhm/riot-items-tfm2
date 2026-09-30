@@ -125,10 +125,13 @@
   "heartsteel": {
     "price": 750,
     "hp": 250,
-    "effect_bonus_flat_damage": 15,
+    "effect_bonus_flat_damage": 70,
     "effect_caster_hp_percent_damage": 6.0,
-    "effect_bonus_hp_percent_of_damage": 12.0,
-    "effect_cooldown_seconds": 20
+    "effect_bonus_hp_percent_of_damage": 10.0,
+    "effect_max_distance": 50,
+    "effect_charge_seconds": 1.5,
+    "effect_duration_seconds": 1.5,
+    "effect_cooldown_seconds": 30
   },
   "hextech_gunblade": {
     "price": 750,
@@ -268,6 +271,8 @@
     "effect_hp_percent_boost": 25.0,
     "effect_hp_percent_threshold": 40.0,
     "effect_duration_seconds": 6,
+    "effect_heal_duration_seconds": 1.5,
+    "effect_heal_interval_seconds": 0.25,
     "effect_cooldown_seconds": 30
   },
   "rabadons_deathcap": {
@@ -366,10 +371,13 @@
   "radiant_heartsteel": {
     "price": 1050,
     "hp": 400,
-    "effect_bonus_flat_damage": 15,
+    "effect_bonus_flat_damage": 70,
     "effect_caster_hp_percent_damage": 6.0,
-    "effect_bonus_hp_percent_of_damage": 12.0,
-    "effect_cooldown_seconds": 20
+    "effect_bonus_hp_percent_of_damage": 10.0,
+    "effect_max_distance": 50,
+    "effect_charge_seconds": 1.5,
+    "effect_duration_seconds": 1.5,
+    "effect_cooldown_seconds": 30
   },
   "radiant_hextech_gunblade": {
     "price": 1050,
@@ -483,6 +491,8 @@
     "effect_hp_percent_boost": 25.0,
     "effect_hp_percent_threshold": 40.0,
     "effect_duration_seconds": 6,
+    "effect_heal_duration_seconds": 1.5,
+    "effect_heal_interval_seconds": 0.25,
     "effect_cooldown_seconds": 30
   },
   "radiant_riftmaker": {
@@ -1907,5 +1917,49 @@
     "effect_ad_percent_damage": 50.0,
     "effect_max_targets": 2,
     "effect_max_distance": 70
+  },
+  "statikk_shiv": {
+    "price": 700,
+    "attack": 15,
+    "magic_power": 15,
+    "attack_speed_mult": 30,
+    "move_speed_mult": 4,
+    "effect_max_stacks": 100,
+    "effect_bonus_magic_damage": 60,
+    "effect_minion_percent": 150.0,
+    "effect_max_targets": 4,
+    "effect_max_distance": 50
+  },
+  "radiant_statikk_shiv": {
+    "price": 1000,
+    "attack": 25,
+    "magic_power": 25,
+    "attack_speed_mult": 50,
+    "move_speed_mult": 4,
+    "effect_max_stacks": 100,
+    "effect_bonus_magic_damage": 80,
+    "effect_minion_percent": 150.0,
+    "effect_max_targets": 5,
+    "effect_max_distance": 50
+  },
+  "titanic_hydra": {
+    "price": 750,
+    "attack": 25,
+    "hp": 200,
+    "effect_caster_hp_percent_damage": 1.0,
+    "effect_splash_caster_hp_percent": 3.0,
+    "effect_max_distance": 35,
+    "effect_melee_distance": 35,
+    "effect_ranged_percent": 50.0
+  },
+  "radiant_titanic_hydra": {
+    "price": 1000,
+    "attack": 40,
+    "hp": 300,
+    "effect_caster_hp_percent_damage": 1.5,
+    "effect_splash_caster_hp_percent": 4.0,
+    "effect_max_distance": 35,
+    "effect_melee_distance": 35,
+    "effect_ranged_percent": 50.0
   }
 }

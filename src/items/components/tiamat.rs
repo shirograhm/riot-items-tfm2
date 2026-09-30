@@ -110,7 +110,7 @@ impl StableItem for Tiamat {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["ravenous_hydra".to_string()]
+        vec!["ravenous_hydra".to_string(), "titanic_hydra".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {

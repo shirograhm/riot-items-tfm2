@@ -3,6 +3,11 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, has_buff, percent_of, percent_of_i32, ticks, ItemMeta};
 
+/// Green pluses rising off the carrier while Fortification heals:
+/// the `view_effects` binding `effects/protoplasm_heal`, drawn 1.5 seconds long
+/// to match the default heal.
+const HEAL_EFFECT: &str = "riot_protoplasm_heal";
+
 #[derive(Clone, Debug)]
 pub struct ProtoplasmHarness {
     meta: ItemMeta,
@@ -16,7 +21,11 @@ pub struct ProtoplasmHarness {
     effect_hp_percent_boost: f64,
     effect_hp_percent_threshold: f64,
     effect_duration_seconds: f64,
+    effect_heal_duration_seconds: f64,
+    effect_heal_interval_seconds: f64,
     effect_cooldown_seconds: f64,
+    // Non-vital stats (internals)
+    healing: Option<PendingHeal>,
 }
 
 impl ProtoplasmHarness {
@@ -37,7 +46,11 @@ impl ProtoplasmHarness {
             effect_hp_percent_boost: 25.0,
             effect_hp_percent_threshold: 40.0,
             effect_duration_seconds: 6.0,
+            effect_heal_duration_seconds: 1.5,
+            effect_heal_interval_seconds: 0.25,
             effect_cooldown_seconds: 30.0,
+            // Non-vital stats (internals)
+            healing: None,
         }
     }
 
@@ -54,6 +67,8 @@ impl ProtoplasmHarness {
             effect_hp_percent_boost: 25.0,
             effect_hp_percent_threshold: 40.0,
             effect_duration_seconds: 6.0,
+            effect_heal_duration_seconds: 1.5,
+            effect_heal_interval_seconds: 0.25,
             effect_cooldown_seconds: 30.0,
             ..Self::base()
         }
@@ -80,10 +95,16 @@ impl ProtoplasmHarness {
                 effect_hp_percent_boost,
                 effect_hp_percent_threshold,
                 effect_duration_seconds,
+                effect_heal_duration_seconds,
+                effect_heal_interval_seconds,
                 effect_cooldown_seconds
             ]
         );
         self
+    }
+
+    fn interval_ticks(&self) -> usize {
+        ticks(self.effect_heal_interval_seconds).max(1)
     }
 }
 
@@ -160,12 +181,52 @@ impl StableItem for ProtoplasmHarness {
                 },
             );
 
-            ctx.heal(entity, entity, percent_of_i32(bonus_max_hp, 50.0) as usize);
+            // Half the bonus health, paid out in equal pulses every
+            // `effect_heal_interval_seconds` across `effect_heal_duration_seconds`.
+            let interval = self.interval_ticks();
+            self.healing = Some(PendingHeal {
+                owed: percent_of_i32(bonus_max_hp, 50.0) as usize,
+                pulses_left: (ticks(self.effect_heal_duration_seconds) / interval).max(1),
+                until_next: interval,
+            });
+            ctx.play_view_effect(HEAL_EFFECT, entity, &InputTargetV1::target(entity), 0, 0, 0);
             ctx.add_buff(
                 entity,
                 &BuffV1::timed(self.cooldown_buff_buff, ticks(self.effect_cooldown_seconds)),
             );
         }
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.healing = None;
+    }
+
+    /// Pays the Fortification heal out one pulse at a time. Death stops it.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        let Some(mut heal) = self.healing else {
+            return;
+        };
+        heal.until_next = heal.until_next.saturating_sub(1);
+        if heal.until_next > 0 {
+            self.healing = Some(heal);
+            return;
+        }
+        let Some(entity) = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .filter(|c| c.is_alive())
+            .map(|c| c.id())
+        else {
+            self.healing = None;
+            return;
+        };
+        // An even share of what is left, so the pulses add up to the whole heal.
+        let amount = heal.owed / heal.pulses_left;
+        ctx.heal(entity, entity, amount);
+        heal.owed -= amount;
+        heal.pulses_left -= 1;
+        heal.until_next = self.interval_ticks();
+        self.healing = (heal.pulses_left > 0).then_some(heal);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
@@ -179,4 +240,13 @@ impl StableItem for ProtoplasmHarness {
     fn category(&self) -> ItemCategoryV1 {
         ItemCategoryV1::Hp
     }
+}
+
+/// Fortification's heal while it is being paid out: what is still owed, the
+/// pulses left to pay it in, and the ticks until the next one.
+#[derive(Clone, Copy, Debug)]
+struct PendingHeal {
+    owed: usize,
+    pulses_left: usize,
+    until_next: usize,
 }

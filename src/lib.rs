@@ -24,7 +24,7 @@ pub(crate) use hooks::{hook, item_build_hook};
 pub(crate) use ui::{solo_rank_ui, strategy_ui};
 pub(crate) use utils::{config, own_team_log};
 pub(crate) use vfx::sunfire;
-pub(crate) use vfx::{add_stack, mark_immolate, refresh_buff, Annul};
+pub(crate) use vfx::{add_stack, mark_immolate, refresh_buff, Annul, Spellblade};
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -407,12 +407,14 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("staff_of_flowing_water" => StaffOfFlowingWater));
+    reg.add_item(configured!("statikk_shiv" => StatikkShiv));
     reg.add_item(configured!("steraks_gage" => SteraksGage));
     reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("stormsurge" => Stormsurge));
     reg.add_item(configured!("sundered_sky" => SunderedSky));
     reg.add_item(configured!("sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured!("terminus" => Terminus));
+    reg.add_item(configured!("titanic_hydra" => TitanicHydra));
     reg.add_item(configured!("trinity_force" => TrinityForce));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("void_staff" => VoidStaff));
@@ -495,12 +497,14 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
     reg.add_item(configured_radiant!("radiant_staff_of_flowing_water" => StaffOfFlowingWater));
+    reg.add_item(configured_radiant!("radiant_statikk_shiv" => StatikkShiv));
     reg.add_item(configured_radiant!("radiant_steraks_gage" => SteraksGage));
     reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
     reg.add_item(configured_radiant!("radiant_stormsurge" => Stormsurge));
     reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
     reg.add_item(configured_radiant!("radiant_sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
+    reg.add_item(configured_radiant!("radiant_titanic_hydra" => TitanicHydra));
     reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce));
     reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
     reg.add_item(configured_radiant!("radiant_void_staff" => VoidStaff));
@@ -511,8 +515,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
     reg.add_item(configured_radiant!("radiant_zhonyas_hourglass" => ZhonyasHourglass));
 
-    // What item projectiles run when they land. Runaan's Hurricane registers
-    // one per tier, so each tier's bolts carry that tier's configured damage.
+    // What item projectiles run when they land. Runaan's Hurricane and Statikk
+    // Shiv register one per tier, so each tier's projectiles carry that tier's
+    // configured damage.
     for runaans in [
         configs
             .get("runaans_hurricane")
@@ -524,6 +529,35 @@ fn init(host: &StableHost) -> StableMod {
             .unwrap_or_else(RunaansHurricane::radiant),
     ] {
         reg.add_native_effect(runaans.bolt_hit_name(), runaans.bolt_hit());
+    }
+    for shiv in [
+        configs
+            .get("statikk_shiv")
+            .map(StatikkShiv::with_config)
+            .unwrap_or_default(),
+        configs
+            .get("radiant_statikk_shiv")
+            .map(StatikkShiv::radiant_with_config)
+            .unwrap_or_else(StatikkShiv::radiant),
+    ] {
+        reg.add_native_effect(shiv.spark_hit_name(), shiv.spark_hit());
+    }
+    // Titanic Hydra's Cleave wedge is only a picture, so both tiers share
+    // one effect that does nothing.
+    reg.add_native_effect(TitanicHydra::WAVE_HIT, TitanicWave);
+    // Sword of Blossoming Dawn's wisp carries Peppermint's heal to the ally,
+    // each tier with its own numbers.
+    for sword in [
+        configs
+            .get("sword_of_blossoming_dawn")
+            .map(SwordOfBlossomingDawn::with_config)
+            .unwrap_or_default(),
+        configs
+            .get("radiant_sword_of_blossoming_dawn")
+            .map(SwordOfBlossomingDawn::radiant_with_config)
+            .unwrap_or_else(SwordOfBlossomingDawn::radiant),
+    ] {
+        reg.add_native_effect(sword.wisp_hit_name(), sword.wisp_hit());
     }
 
     // `item-builds.json` hook
