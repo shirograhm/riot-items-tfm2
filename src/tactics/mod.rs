@@ -2384,7 +2384,7 @@ unsafe fn athlete_lane(athlete: usize) -> Option<crate::build_config::Role> {
     let pos = (safe_read_u64(athlete + O_ATHLETE_POS)? & 0xffff_ffff) as usize;
     (pos < 5).then(|| crate::build_config::Role::from_lane_code(pos))
 }
-// Is this athlete_id one of my starters? If the roster is not obtained yet (before visiting the management screen), None = undecided (the caller decides).
+// Is this athlete_id on my team (under contract, or in the last starting five)? If the roster is not obtained yet (before visiting the management screen), None = undecided (the caller decides).
 #[inline]
 unsafe fn is_my_athlete(athlete: usize) -> Option<bool> {
     let p = MY_ATHLETES.load(Ordering::Acquire);
@@ -3049,6 +3049,13 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                 // the save loaded and 25 s before the first spawn, and every
                 // spawn of the player's athletes that session read `Some(true)`.
                 // The miss above was not reproduced, so the poll is unchanged.)
+                //
+                // (2026-09-29, reproduced on a new save: `last_starting` stayed
+                // empty until the first match began, so the starters were
+                // published two seconds after they spawned. The fix was at the
+                // publish end, as predicted, but in *what* is published rather
+                // than how often: the roster now comes from every athlete's
+                // contract, which exists from load. See `roster_scan_step`.)
                 if !rendered {
                     return;
                 }
@@ -3296,6 +3303,7 @@ fn install_spawn_hook() {
         )
     };
     SPAWN_INSTALLED.store(if r.is_ok() { 1 } else { 2 }, Ordering::Relaxed);
+    crate::own_team_log::line(|| format!("spawn hook install @ {SPAWN_RVA:#x}: {r:?}"));
 }
 
 static VIEW_OK: AtomicU64 = AtomicU64::new(0); // successful view captures
@@ -3815,15 +3823,25 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                 }
                 PID_EVER_VALID.store(1, Ordering::Relaxed);
             }
-            // ** v15: publish my team's starting roster (5 athlete_ids) - the material for the spawn hook's scene-free team decision.
-            //   Refreshed on the ROSTER_POLL period (transfers and lineup changes are picked up automatically). Once obtained, a low rate is plenty.
+            // ** v15: publish my team's athlete_ids - the material for the spawn hook's scene-free team decision.
+            //   Everyone under contract (`roster_scan_step`, published the frame a pass finishes) plus the last starting five,
+            //   refreshed on the ROSTER_POLL period (transfers and lineup changes are picked up automatically).
             {
                 const ROSTER_POLL: u64 = 120; // frames
                 let n = ROSTER_TICK.fetch_add(1, Ordering::Relaxed);
                 let known = PLAYER_TEAM_ID.load(Ordering::Relaxed);
-                if n % ROSTER_POLL == 0 && known != u64::MAX && known < 10000 {
+                let valid = known != u64::MAX && known < 10000;
+                // Every frame: the contract scan reads a few records at a time.
+                let scanned = valid && roster_scan_step(client, known as usize);
+                if valid && (n % ROSTER_POLL == 0 || scanned) {
                     // (was `db.team(known).last_starting` / `.champion_personal_tactics`)
-                    let my = stable_last_starting(client, known as usize);
+                    // The whole contracted roster, plus the last starting five
+                    // as a floor: see `roster_scan_step` for why the starters
+                    // alone missed the first match of a new save.
+                    let starting = stable_last_starting(client, known as usize);
+                    let roster = contracted_roster(known as usize);
+                    let mut my = starting.clone();
+                    my.extend(roster.iter().copied());
                     let pt_n = stable_personal_tactics(client, known as usize).len();
                     MY_PT_N.store(pt_n as u64, Ordering::Relaxed);
                     // NO **PT-count cross-check abandoned (refuted by measurement 2026-07-30)**: based on an old note that "my team has dozens of PT entries
@@ -3836,14 +3854,15 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                     //   => it is never published in a comp-test-only session, and playing a normal match captures the real pid.
                     let trust = known != 0 || PID_ZERO_CLEAN.load(Ordering::Relaxed) >= 600;
                     crate::own_team_log::on_change("roster", {
-                        let mut ids: Vec<u64> = my.iter().copied().collect();
+                        let mut ids: Vec<u64> = starting.iter().copied().collect();
                         ids.sort_unstable();
                         format!(
-                            "pid_raw={} team_id={} trust={} last_starting={:?} published_n={} comptest={}",
+                            "pid_raw={} team_id={} trust={} last_starting={:?} contracted_n={} published_n={} comptest={}",
                             pid,
                             known,
                             trust,
                             ids,
+                            roster.len(),
                             MY_ATH_N.load(Ordering::Relaxed),
                             in_comptest
                         )
@@ -4011,6 +4030,161 @@ fn stable_last_starting(
         }
     }
     out
+}
+
+// ── The contracted roster ─────────────────────────────────────────────────
+//
+// Athlete ids of everyone under contract with the player's team — starters,
+// subs and academy alike — read off each athlete record's `contract`.
+//
+// `last_starting` alone is empty until the team has played a match, so on a
+// new save the first match spawned before anything was published: the log of
+// 2026-09-29 read `last_starting=[]` from load until the match began, and
+// published the starters two seconds after the spawn, by which time every
+// athlete had bought its first item from the engine's build. A contract is
+// there from the moment the save loads, and it also covers a newly signed
+// starter, who is not in `last_starting` until he has played.
+//
+// `contract` is an enum, `FreeAgent { requests }` or `InContract { team_id,
+// start_date, end_date, weekly_salary, transfer_fee, incentives,
+// transfer_requests, recruit_requests }` (the serde tables in the 0.6.2 exe),
+// so the plain path `contract.team_id` matches nothing — the first build of
+// this read 0 of 1,065. The fragment is read whole instead and its first
+// `team_id` taken ([`contract_team_id`]), which holds however serde tags the
+// enum: fields serialize in declaration order, so the contract's own team
+// comes before any `team_id` inside its transfer requests.
+//
+// A read costs 0.1-0.2 ms (that same one-shot build: 1,065 in 114 ms, a
+// visible hitch), so a pass is spread over frames, [`ROSTER_SCAN_BATCH`] at a
+// time, and repeated only when the in-game day changes (signings land on day
+// ticks) and at most every [`ROSTER_RESCAN_FRAMES`], so a fast-forward that
+// ticks the date every second does not keep one running.
+
+/// Athlete records [`roster_scan_step`] reads per frame. Measured on 0.6.2 at
+/// 32 a frame: 1,065 contracts in 191 ms over 34 frames, ~5.6 ms a frame. At
+/// 16 that is under 3 ms a frame and about a second for a whole pass.
+const ROSTER_SCAN_BATCH: usize = 16;
+/// Frames (~10 s) a finished pass waits before a day change starts another.
+const ROSTER_RESCAN_FRAMES: u64 = 600;
+
+type GameDay = Option<(i32, u32, u32)>;
+
+#[derive(Default)]
+struct RosterScan {
+    team: usize,
+    /// The athlete records this pass walks, and how far it has got.
+    ids: Vec<usize>,
+    next: usize,
+    found: std::collections::HashSet<u64>,
+    /// Time spent reading, summed over the frames of this pass.
+    work: std::time::Duration,
+    frames: u64,
+    /// One contract fragment, logged once so the shape can be checked.
+    sample: Option<String>,
+    /// The last finished pass, and what has happened since.
+    done: Option<std::collections::HashSet<u64>>,
+    day: GameDay,
+    idle_frames: u64,
+}
+
+static ROSTER_SCAN: Mutex<Option<RosterScan>> = Mutex::new(None);
+
+/// Advances the contracted-roster scan for `team_id` by one frame. True on
+/// the frame a pass finishes, so the caller can publish at once rather than
+/// on its next poll.
+fn roster_scan_step(client: &StableClient<'_>, team_id: usize) -> bool {
+    let mut guard = ROSTER_SCAN.lock().unwrap_or_else(|e| e.into_inner());
+    if guard.as_ref().map_or(true, |scan| scan.team != team_id) {
+        *guard = Some(RosterScan {
+            team: team_id,
+            ..RosterScan::default()
+        });
+    }
+    let Some(scan) = guard.as_mut() else {
+        return false;
+    };
+    if scan.next >= scan.ids.len() {
+        scan.idle_frames += 1;
+        let day: GameDay = client.game_time().map(|(y, m, d, _, _)| (y, m, d));
+        let due = scan.done.is_none()
+            || (scan.day != day && scan.idle_frames >= ROSTER_RESCAN_FRAMES);
+        if !due {
+            return false;
+        }
+        let ids = client.record_ids(RecordKindV1::Athlete);
+        if ids.is_empty() {
+            return false; // the save is still loading
+        }
+        scan.ids = ids;
+        scan.next = 0;
+        scan.found.clear();
+        scan.work = std::time::Duration::ZERO;
+        scan.frames = 0;
+        scan.day = day;
+    }
+    let started = std::time::Instant::now();
+    let end = (scan.next + ROSTER_SCAN_BATCH).min(scan.ids.len());
+    for &id in &scan.ids[scan.next..end] {
+        let Some(json) = client.record_get_json(RecordKindV1::Athlete, id, "contract") else {
+            continue;
+        };
+        let team = contract_team_id(&json);
+        if scan.sample.is_none() && team.is_some() {
+            scan.sample = Some(json.chars().take(200).collect());
+        }
+        if team == Some(team_id) {
+            scan.found.insert(id as u64);
+        }
+    }
+    scan.next = end;
+    scan.work += started.elapsed();
+    scan.frames += 1;
+    if scan.next < scan.ids.len() {
+        return false;
+    }
+    crate::own_team_log::line(|| {
+        format!(
+            "roster scan: team {team_id} day {:?}: {} of {} athletes under contract \
+             ({:.1} ms over {} frames); sample contract: {}",
+            scan.day,
+            scan.found.len(),
+            scan.ids.len(),
+            scan.work.as_secs_f64() * 1000.0,
+            scan.frames,
+            scan.sample.as_deref().unwrap_or("(none)")
+        )
+    });
+    scan.done = Some(std::mem::take(&mut scan.found));
+    scan.idle_frames = 0;
+    true
+}
+
+/// The last finished pass of [`roster_scan_step`] for `team_id`; empty until
+/// one has finished.
+fn contracted_roster(team_id: usize) -> std::collections::HashSet<u64> {
+    let guard = ROSTER_SCAN.lock().unwrap_or_else(|e| e.into_inner());
+    guard
+        .as_ref()
+        .filter(|scan| scan.team == team_id)
+        .and_then(|scan| scan.done.clone())
+        .unwrap_or_default()
+}
+
+/// The team a serialized `contract` is with: its first `team_id`, or `None`
+/// for a free agent (whose `requests` can hold other teams' ids).
+fn contract_team_id(json: &str) -> Option<usize> {
+    if json.contains("FreeAgent") {
+        return None;
+    }
+    let key = "\"team_id\"";
+    let rest = json[json.find(key)? + key.len()..]
+        .trim_start()
+        .strip_prefix(':')?
+        .trim_start();
+    let end = rest
+        .find(|c: char| !c.is_ascii_digit())
+        .unwrap_or(rest.len());
+    rest[..end].parse().ok()
 }
 
 /// Per-champion vanilla item categories — was `team.champion_personal_tactics`,
@@ -7652,7 +7826,14 @@ fn tactics_init() -> bool {
 
     // ** Version gate: if this is not 0.5.3, install **no hooks or patches at all** and return an empty registration.
     //   (It depends on hardcoded RVAs, byte patches and struct offsets, so other versions risk misbehaviour.)
-    if !check_game_version() {
+    let version_ok = check_game_version();
+    crate::own_team_log::line(|| {
+        format!(
+            "version gate: {}",
+            VERSION_MSG.lock().unwrap_or_else(|e| e.into_inner())
+        )
+    });
+    if !version_ok {
         let msg = VERSION_MSG
             .lock()
             .unwrap_or_else(|e| e.into_inner())
