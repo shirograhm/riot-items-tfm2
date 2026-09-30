@@ -10,6 +10,7 @@ items! {
     feral_flare,
     frozen_mallet,
     guardian_angel,
+    hullbreaker,
     overlords_bloodmail,
     ravenous_hydra,
     spear_of_shojin,

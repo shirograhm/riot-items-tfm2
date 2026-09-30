@@ -2,11 +2,12 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, mark_immolate, percent_of, ItemMeta, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
+    apply_config, immolate_burn, mark_immolate, percent_of, ItemMeta, DISTANCE_UNITS_PER_RANGE,
+    TICKS_PER_SECOND,
 };
 
 // Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies
-// within 30 range.
+// within 30 range. This effect deals 50% more damage to minions and monsters.
 //
 // Desolate: Killing a unit causes an eruption around their death location,
 // dealing 30 + 2% of your maximum health as magic damage to all enemies nearby.
@@ -26,6 +27,7 @@ pub struct HollowRadiance {
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
     effect_max_distance: usize,
+    effect_minion_bonus_percent: f64,
     effect_explosion_flat_damage: usize,
     effect_explosion_caster_hp_percent: f64,
     effect_explosion_distance: usize,
@@ -54,6 +56,7 @@ impl HollowRadiance {
             effect_bonus_flat_damage: 10,
             effect_caster_hp_percent_damage: 1.0,
             effect_max_distance: 30,
+            effect_minion_bonus_percent: 50.0,
             effect_explosion_flat_damage: 30,
             effect_explosion_caster_hp_percent: 2.0,
             effect_explosion_distance: 35,
@@ -74,6 +77,7 @@ impl HollowRadiance {
             effect_bonus_flat_damage: 10,
             effect_caster_hp_percent_damage: 1.0,
             effect_max_distance: 30,
+            effect_minion_bonus_percent: 50.0,
             effect_explosion_flat_damage: 60,
             effect_explosion_caster_hp_percent: 4.0,
             effect_explosion_distance: 35,
@@ -102,6 +106,7 @@ impl HollowRadiance {
                 effect_bonus_flat_damage,
                 effect_caster_hp_percent_damage,
                 effect_max_distance,
+                effect_minion_bonus_percent,
                 effect_explosion_flat_damage,
                 effect_explosion_caster_hp_percent,
                 effect_explosion_distance,
@@ -238,17 +243,15 @@ impl StableItem for HollowRadiance {
         mark_immolate(ctx, caster);
         let damage = self.effect_bonus_flat_damage
             + percent_of(max_hp, self.effect_caster_hp_percent_damage);
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
-        let range_sq = range * range;
-        let targets: Vec<usize> = (0..ctx.entity_count())
-            .filter_map(|index| ctx.entity_at(index))
-            .filter(|e| e.is_alive() && !e.is_tower() && e.team() != team)
-            .map(|e| e.id())
-            .filter(|&id| ctx.distance_sq(caster, id) <= range_sq)
-            .collect();
-        for target in targets {
-            ctx.deal_damage(caster, target, 0, damage, AttackTypeV1::Item);
-        }
+        let minion_damage = damage + percent_of(damage, self.effect_minion_bonus_percent);
+        immolate_burn(
+            ctx,
+            caster,
+            team,
+            self.effect_max_distance,
+            damage,
+            minion_damage,
+        );
     }
 
     // Desolate: any unit but a turret. The victim is already dead here, so its

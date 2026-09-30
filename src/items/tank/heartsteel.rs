@@ -25,6 +25,11 @@ use crate::{
 // pink orb pulsing inside it. The attack bursts the orb: a pink flash where it
 // was, with sharp light-blue and pink spikes shooting out of it
 // (`effects/heartsteel_trigger`).
+//
+// Goliath: the carrier grows `effect_size_per_thousand_hp` percent for every
+// 1000 maximum health, up to `effect_max_size_percent`. Size is the buff field
+// `radius_mult`, a whole percent (another mod's Cho'Gath grows with it the
+// same way), so it steps up one percent at a time as the health comes in.
 
 /// The Ironheart proc sound: `sound/sfx/riot_heartsteel_ironheart.sound_info`,
 /// mapped into `asset/base/sound/sfx` by `mod.override_info`, which is where
@@ -46,6 +51,9 @@ const STAGE_BUFF_TICKS: usize = 90;
 /// The burst where the orb was when the charged attack lands (a `view_effects`
 /// animation).
 const TRIGGER_EFFECT: &str = "riot_heartsteel_trigger";
+/// Goliath's size on the carrier. One name for both tiers, so the Radiant
+/// upgrade replaces the base item's instead of adding a second.
+const GOLIATH_BUFF: &str = "riot_heartsteel_goliath";
 
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
@@ -60,7 +68,12 @@ pub struct Heartsteel {
     effect_charge_seconds: f64,
     effect_duration_seconds: f64,
     effect_cooldown_seconds: f64,
+    effect_size_per_thousand_hp: f64,
+    effect_max_size_percent: i32,
     accumulated_bonus_hp: i32,
+    /// The size Goliath has on the carrier now, in percent; 0 before the
+    /// first update of each life.
+    goliath_percent: i32,
     /// Ironheart on each enemy champion, by their player id: the player keeps
     /// it across a respawn, their champion entity may not.
     targets: HashMap<usize, Target>,
@@ -85,8 +98,11 @@ impl Heartsteel {
             effect_charge_seconds: 1.5,
             effect_duration_seconds: 1.5,
             effect_cooldown_seconds: 30.0,
+            effect_size_per_thousand_hp: 3.0,
+            effect_max_size_percent: 30,
             // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
+            goliath_percent: 0,
             targets: HashMap::new(),
             procs: ProcQueue::new(),
         }
@@ -105,6 +121,8 @@ impl Heartsteel {
             effect_charge_seconds: 1.5,
             effect_duration_seconds: 1.5,
             effect_cooldown_seconds: 30.0,
+            effect_size_per_thousand_hp: 3.0,
+            effect_max_size_percent: 30,
             ..Self::base()
         }
     }
@@ -130,10 +148,37 @@ impl Heartsteel {
                 effect_max_distance,
                 effect_charge_seconds,
                 effect_duration_seconds,
-                effect_cooldown_seconds
+                effect_cooldown_seconds,
+                effect_size_per_thousand_hp,
+                effect_max_size_percent
             ]
         );
         self
+    }
+
+    /// Goliath: sizes the carrier to their maximum health. The buff is only
+    /// replaced when the whole percent changes, not every tick.
+    fn goliath(&mut self, ctx: &mut StableSim<'_>, carrier: usize) {
+        let Some(max_hp) = ctx.get_entity(carrier).map(|c| c.hp().1) else {
+            return;
+        };
+        let percent = ((max_hp as f64 * self.effect_size_per_thousand_hp / 1000.0) as i32)
+            .min(self.effect_max_size_percent)
+            .max(0);
+        if percent == self.goliath_percent {
+            return;
+        }
+        self.goliath_percent = percent;
+        ctx.entity_remove_buff(carrier, GOLIATH_BUFF);
+        if percent > 0 {
+            ctx.add_buff(
+                carrier,
+                &BuffV1 {
+                    radius_mult: percent,
+                    ..BuffV1::named(GOLIATH_BUFF)
+                },
+            );
+        }
     }
 
     /// Clears every enemy's stages: the carrier respawned. The cooldowns keep
@@ -212,6 +257,9 @@ impl StableItem for Heartsteel {
                 ..BuffV1::named(self.stack_buff)
             },
         );
+        // Goliath is sized afresh each life, on the next update.
+        ctx.entity_remove_buff(champion_id, GOLIATH_BUFF);
+        self.goliath_percent = 0;
     }
 
     /// Spends the charge: a basic attack against an enemy champion at the last
@@ -270,8 +318,9 @@ impl StableItem for Heartsteel {
         self.accumulated_bonus_hp += bonus_hp;
     }
 
-    /// Lands the Ironheart damage whose delay has run out, then builds, drops
-    /// and cools down every enemy champion's stages.
+    /// Lands the Ironheart damage whose delay has run out, keeps Goliath's
+    /// size in step with the carrier's health, then builds, drops and cools
+    /// down every enemy champion's stages.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
 
@@ -283,6 +332,9 @@ impl StableItem for Heartsteel {
             .and_then(|p| p.champion())
             .filter(|c| c.is_alive())
             .map(|c| c.id());
+        if let Some(carrier_id) = carrier {
+            self.goliath(ctx, carrier_id);
+        }
         // (player id, champion entity, alive) for every enemy champion.
         let mut enemies = Vec::new();
         for index in 0..ctx.player_count() {

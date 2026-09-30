@@ -57,6 +57,7 @@ impl StableItem for WingedMoonplate {
             "dead_mans_plate".to_string(),
             "protoplasm_harness".to_string(),
             "cosmic_drive".to_string(),
+            "hullbreaker".to_string(),
         ]
     }
 

@@ -24,7 +24,7 @@ pub(crate) use hooks::{hook, item_build_hook};
 pub(crate) use ui::{solo_rank_ui, strategy_ui};
 pub(crate) use utils::{config, own_team_log};
 pub(crate) use vfx::sunfire;
-pub(crate) use vfx::{add_stack, mark_immolate, refresh_buff, Annul, Spellblade};
+pub(crate) use vfx::{add_stack, immolate_burn, mark_immolate, refresh_buff, Annul, Spellblade};
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize
@@ -375,6 +375,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
     reg.add_item(configured!("hollow_radiance" => HollowRadiance));
     reg.add_item(configured!("hubris" => Hubris));
+    reg.add_item(configured!("hullbreaker" => Hullbreaker));
     reg.add_item(configured!("immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured!("imperial_mandate" => ImperialMandate));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
@@ -465,6 +466,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
     reg.add_item(configured_radiant!("radiant_hollow_radiance" => HollowRadiance));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
+    reg.add_item(configured_radiant!("radiant_hullbreaker" => Hullbreaker));
     reg.add_item(configured_radiant!("radiant_immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured_radiant!("radiant_imperial_mandate" => ImperialMandate));
     reg.add_item(configured_radiant!("radiant_infinity_edge" => InfinityEdge));
@@ -565,10 +567,15 @@ fn init(host: &StableHost) -> StableMod {
 
     // Records only keep the build a match was *assigned*; this reads what each
     // champion actually finished holding, off the simulation's last tick. The
-    // same hook runs Immolate for the vanilla Sunfire Cape.
+    // same hook runs Immolate for the vanilla Sunfire Cape, and the minion and
+    // monster bonus the engine's Radiant Sunfire Cape burn does not have.
     reg.set_match_hook(sunfire::MatchHooks {
         immolate: configs
             .get("sunfire_cape")
+            .map(sunfire::Immolate::with_config)
+            .unwrap_or_default(),
+        radiant_immolate: configs
+            .get("radiant_sunfire_cape")
             .map(sunfire::Immolate::with_config)
             .unwrap_or_default(),
     });
