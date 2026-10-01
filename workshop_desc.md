@@ -70,14 +70,14 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 
 Supports always get a support item that suits their damage type, and junglers Feral Flare or Grez's Spectral Lantern, bought first. The rest of their build is still the AI's choice.  
 
-Champions try to build items tagged for their role (Fighter for Melee, Marksman for Ranged, Mage, Assassin, Support, plus Tank for tanks), whenever one fits the rules above.  
-
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
 [h1] Item Stats [/h1]
 The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, pick rate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  
+
+Works alongside [b]Bows' Drafter's Toolbox[/b]: with both enabled, its Advanced Stats page becomes a fifth tab in the same bar.  
 
 [h1] Planned Features [/h1]
 - More support items.

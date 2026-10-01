@@ -5517,9 +5517,7 @@ unsafe fn rejection(
 ///
 /// A free final in the category of build[si - 4]: the 5th follows the 1st
 /// item and the 6th the 2nd, the way the 4th follows the 3rd
-/// (`third_slot_category`), so an attack-damage build stays one. With Smart
-/// Builds on, an item tagged for the champion's role is looked for first (rule
-/// 12), in that category and then in any. Then a
+/// (`third_slot_category`), so an attack-damage build stays one. Then a
 /// vanilla final the build does not hold, then any final at all. Never a
 /// duplicate: `taken` is every slot before this one, and `reserved` the
 /// player's pins for the slots after it, which count exactly as if placed.
@@ -5552,28 +5550,12 @@ unsafe fn auto_extra_pick(
             .as_ref()
             .is_none_or(|budget| budget.rejects(candidate).is_none())
     };
-    // Smart Builds rule 12: an item tagged for the champion's role comes first,
-    // in the anchor's category where there is one. Never true with the toggle
-    // off or the role unknown, which leaves the picks below as they were.
-    let on_role = |candidate: &str| {
-        budget
-            .as_ref()
-            .is_some_and(|budget| budget.tagged_for_role(candidate))
-            && allowed(candidate)
-    };
-    let category = anchor.as_deref().and_then(engine_category);
-    category
+    anchor
+        .as_deref()
+        .and_then(engine_category)
         .and_then(|category| {
             pick_candidate(ctx, u64::MAX, taken, champ, |candidate| {
-                engine_category(candidate) == Some(category) && on_role(candidate)
-            })
-        })
-        .or_else(|| pick_candidate(ctx, u64::MAX, taken, champ, |candidate| on_role(candidate)))
-        .or_else(|| {
-            category.and_then(|category| {
-                pick_candidate(ctx, u64::MAX, taken, champ, |candidate| {
-                    engine_category(candidate) == Some(category) && allowed(candidate)
-                })
+                engine_category(candidate) == Some(category) && allowed(candidate)
             })
         })
         .or_else(|| {

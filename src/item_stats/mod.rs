@@ -65,6 +65,7 @@
 //! that it did.
 
 pub(crate) mod sim;
+pub(crate) mod toolbox_tab;
 pub(crate) mod ui;
 
 use std::collections::{BTreeMap, HashMap, HashSet};

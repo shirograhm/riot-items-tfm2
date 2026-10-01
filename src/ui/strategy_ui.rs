@@ -3446,6 +3446,11 @@ impl StableExtension for StrategyPicker {
         // anywhere else: it returns on its first line unless that screen is up.
         crate::item_stats::ui::sync(ctx);
 
+        // Drafter's Toolbox's Advanced Stats tab, when that mod is enabled too.
+        // After the line above, not merely near it: it hides the Item Stats
+        // dropdowns that line has just shown while Advanced is open over them.
+        crate::item_stats::toolbox_tab::sync(ctx);
+
         // The composition test hosts the editor too. It has to be handled
         // before the gate below, which returns — and tears the editor down —
         // for any screen without the strategy tabs, this one included.
