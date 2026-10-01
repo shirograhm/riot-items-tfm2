@@ -100,6 +100,15 @@ const ITEM_FILTERS: [&str; 9] = [
     "main.top.right.statistics.item_category_catch",
 ];
 
+/// The game's own filters, which drive its three tables and not the Toolbox's.
+/// The same four `super::ui` hides for the Item Stats tab.
+const GAME_FILTERS: [&str; 4] = [
+    "main.top.right.statistics.position",
+    "main.top.right.statistics.patch",
+    "main.top.right.statistics.year_filter",
+    "main.top.right.statistics.league_filter",
+];
+
 // -- geometry -----------------------------------------------------------------
 
 /// Champ, Player, Team, Item, Advanced.
@@ -252,6 +261,9 @@ struct State {
     covered: bool,
     /// Whether the Advanced tab is currently painted as the open one.
     lit: bool,
+    /// Which of [`GAME_FILTERS`] were showing the last frame the Advanced panel
+    /// was closed: what to put back when it closes again.
+    filters: [bool; 4],
 }
 
 impl State {
@@ -611,11 +623,26 @@ fn shield_source() -> String {
 ///
 /// All three of the game's tabs are dimmed without asking which one that is:
 /// the other two are drawing `image` / `label` and ignore it.
+///
+/// # The game's filters
+///
+/// The Toolbox hides the four of them when it opens, once. Game code drives
+/// them from its own tab state and puts them back, so they sat over a table
+/// they do not filter - exactly what `super::ui` found over the Item Stats tab,
+/// and the fix is the same: hide them every frame the panel is open.
+///
+/// Putting them back is the half `super::ui` gets for free, because leaving its
+/// tab is always a click that names the panel to show. Here the panel can close
+/// with nothing rebuilt - a click on the game tab it was opened from - so which
+/// filters were up is remembered from the last frame before it opened.
 fn keep_lit(state: &mut State, ctx: &mut StableClient<'_>, rebuilt: bool) {
     let open = ctx.ui_exists(ADV_PANEL);
     let shielded = ctx.ui_exists(SHIELD);
 
     if open {
+        for path in GAME_FILTERS {
+            ctx.ui_set_visible(path, false);
+        }
         if !shielded {
             ctx.ui_spawn_source(SCREEN, &shield_source());
         }
@@ -637,15 +664,32 @@ fn keep_lit(state: &mut State, ctx: &mut StableClient<'_>, rebuilt: bool) {
     }
     if state.lit {
         ctx.ui_set_properties(ADV_BUTTON, &tab_style("image", "label", false));
-        // With Item Stats up, the game's tabs stay dim: `super::ui` dimmed them
-        // for its own tab, and [`keep_clear`] has just lit that one again.
+        // With Item Stats up, the game's tabs stay dim and its filters stay
+        // hidden: `super::ui` did both for its own tab, and [`keep_clear`] has
+        // just lit that one again.
         if ctx.ui_visible(ITEM_PANEL) != Some(true) {
             let lit = tab_style("selected_image", "selected_label", true);
             for path in VANILLA_TABS {
                 ctx.ui_set_properties(path, &lit);
             }
+            // Not after a rebuild. That was a switch to another game tab, whose
+            // filters are a different pair, and game code has just set them.
+            if !rebuilt {
+                for (path, shown) in GAME_FILTERS.iter().zip(state.filters) {
+                    if shown {
+                        ctx.ui_set_visible(path, true);
+                    }
+                }
+            }
         }
         state.lit = false;
+        return;
+    }
+
+    // Closed, and was last frame too: what is showing now is what game code
+    // and `super::ui` want showing.
+    for (shown, path) in state.filters.iter_mut().zip(GAME_FILTERS) {
+        *shown = ctx.ui_visible(path) == Some(true);
     }
 }
 
@@ -664,8 +708,8 @@ fn keep_lit(state: &mut State, ctx: &mut StableClient<'_>, rebuilt: bool) {
 ///
 /// Removing the panel is a close the Toolbox already handles: its own check
 /// finds the panel gone and clears its open flag, the same path it takes when
-/// the game rebuilds the screen. The filters it hid are the game's and
-/// `super::ui`'s to show again, and both re-assert theirs.
+/// the game rebuilds the screen. That path does not put back the filters the
+/// Toolbox hid; [`keep_lit`] does.
 ///
 /// Registered beside `super::ui`'s own handler on the same four paths rather
 /// than called from it: that one drops a click it has already seen this frame,
@@ -727,8 +771,9 @@ pub fn sync(ctx: &mut StableClient<'_>) {
         rebuilt
     } else {
         // Between a rebuild and the Toolbox's next check, or before its first.
+        // Either way these are fresh nodes, which is what `rebuilt` means.
         hold_place(state, ctx, resized);
-        false
+        true
     };
 
     // Both run with or without the Toolbox's tab. Its panel is what they
