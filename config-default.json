@@ -1983,7 +1983,7 @@
     "effect_tower_caster_hp_percent_damage": 10.0,
     "effect_melee_distance": 35,
     "effect_ranged_percent": 70.0,
-    "effect_bonus_defence": 20,
+    "effect_bonus_defence": 10,
     "effect_bonus_magic_resistance": 20,
     "effect_max_distance": 100
   },
@@ -1999,7 +1999,7 @@
     "effect_tower_caster_hp_percent_damage": 10.0,
     "effect_melee_distance": 35,
     "effect_ranged_percent": 70.0,
-    "effect_bonus_defence": 20,
+    "effect_bonus_defence": 10,
     "effect_bonus_magic_resistance": 20,
     "effect_max_distance": 100
   }
