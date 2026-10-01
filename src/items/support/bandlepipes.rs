@@ -1,10 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, ticks, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS,
-    DISTANCE_UNITS_PER_RANGE,
-};
+use crate::{apply_config, sized_range, ticks, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS};
 
 /// Bandlepipes — Fanfare, a self-empower that turns into a short team aura.
 ///
@@ -132,7 +129,7 @@ impl Bandlepipes {
         caster_id: usize,
         caster_team: usize,
     ) -> Vec<usize> {
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let range = sized_range(ctx, caster_id, self.effect_max_distance);
         let range_sq = range * range;
 
         let mut targets = vec![caster_id];

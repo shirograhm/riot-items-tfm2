@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, mark_immolate, percent_of, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND};
+use crate::{apply_config, immolate_burn, mark_immolate, percent_of, TICKS_PER_SECOND};
 
 #[derive(Clone, Debug)]
 pub struct BamisCinder {
@@ -10,6 +10,7 @@ pub struct BamisCinder {
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
     effect_max_distance: usize,
+    effect_minion_bonus_percent: f64,
     // Non-vital stats (internals)
     /// Ticks until the next second of Immolate lands on everyone in range.
     until_next_burn: usize,
@@ -23,6 +24,7 @@ impl Default for BamisCinder {
             effect_bonus_flat_damage: 5,
             effect_caster_hp_percent_damage: 0.5,
             effect_max_distance: 30,
+            effect_minion_bonus_percent: 50.0,
             // Non-vital stats (internals)
             until_next_burn: TICKS_PER_SECOND as usize,
         }
@@ -40,23 +42,11 @@ impl BamisCinder {
                 hp,
                 effect_bonus_flat_damage,
                 effect_caster_hp_percent_damage,
-                effect_max_distance
+                effect_max_distance,
+                effect_minion_bonus_percent
             ]
         );
         item
-    }
-
-    fn nearby_enemies(&self, ctx: &StableSim<'_>, caster: usize, caster_team: usize) -> Vec<usize> {
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
-        let range_sq = range * range;
-
-        (0..ctx.entity_count())
-            .filter_map(|index| ctx.entity_at(index))
-            // Towers are enemy entities too, and Immolate is not meant for them.
-            .filter(|entity| entity.is_alive() && !entity.is_tower() && entity.team() != caster_team)
-            .map(|entity| entity.id())
-            .filter(|&id| ctx.distance_sq(caster, id) <= range_sq)
-            .collect()
     }
 }
 
@@ -131,9 +121,15 @@ impl StableItem for BamisCinder {
         mark_immolate(ctx, caster);
         let damage =
             self.effect_bonus_flat_damage + percent_of(max_hp, self.effect_caster_hp_percent_damage);
-        for target in self.nearby_enemies(ctx, caster, caster_team) {
-            ctx.deal_damage(caster, target, 0, damage, AttackTypeV1::Item);
-        }
+        let minion_damage = damage + percent_of(damage, self.effect_minion_bonus_percent);
+        immolate_burn(
+            ctx,
+            caster,
+            caster_team,
+            self.effect_max_distance,
+            damage,
+            minion_damage,
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

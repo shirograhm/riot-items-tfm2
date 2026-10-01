@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Ten of them:
+//! Twelve of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -57,14 +57,35 @@
 //!    crowd control never keeps an AI's Mandate: it makes way for another
 //!    support item, and rule 9 never hands one out. A champion nothing is known
 //!    about is left alone either way.
+//! 11. **Items for the champion's reach** — a ranged champion keeps no item
+//!    whose passive wants its carrier in melee ([`MELEE_ITEMS`]: the Hydras'
+//!    Cleave and Hullbreaker's Skipper weaken from past 35 range, and
+//!    Heartsteel and the Immolate auras need the enemy closer than a ranged
+//!    champion stands), and a melee champion none that wants its carrier at
+//!    range ([`RANGED_ITEMS`]: Runaan's Hurricane, Diamond Tipped Spear).
+//!    Melee is a basic attack that reaches 35 or less, the same line those
+//!    items draw. The stand-in comes from the item's own category, like a
+//!    duplicate's. A champion whose reach nothing states is left alone.
+//! 12. **Items tagged for the champion's role** — an AI pick of another class
+//!    makes way for one of the class tagged for the champion's role, the
+//!    game's `category` ([`role_class`]): Fighter for Melee, Marksman for
+//!    Ranged, Mage for Mage, Assassin for Assassin, Support for Support. A
+//!    champion tagged `Tank` counts Tank items as its own too, and the items
+//!    of its lane (rule 9) always count. This one only tries: the stand-in has
+//!    to pass every other rule against the rest of the build, and a pick with
+//!    no such stand-in stays. So an AP champion in the Melee role, whose
+//!    Fighter items all fail rule 5, keeps what the AI picked, and so does a
+//!    Support-role champion outside the support lane (rule 4). An item with no
+//!    class and a champion with no known role are left alone.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
 //! other item, so the AI's picks around it make way for it rather than the
 //! other way round.
 //!
-//! Rules 4, 5, 8, 9 and 10 are about the champion, not the build, and come in as a
-//! [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
+//! Rules 4, 5, 8, 9, 10, 11 and 12 are about the champion, not the build, and
+//! come in as a [`Fit`]; see [`crate::champion_traits`] for where its facts come
+//! from.
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
 //! crit the build can still afford, and replaces what comes after. That matches
@@ -236,6 +257,7 @@ pub(crate) enum Reason {
     Scaling,
     JungleOnly,
     MandateWithoutCc,
+    Reach,
 }
 
 impl Reason {
@@ -247,7 +269,8 @@ impl Reason {
     /// support without crowd control goes the same way: it is a support item,
     /// so another support item stands in first. A jungle item's category is an
     /// ordinary one (Grez's is a Mage item), so its stand-in comes from there,
-    /// like a duplicate's.
+    /// like a duplicate's. So is a melee or ranged item's: a ranged champion
+    /// that loses Titanic Hydra still wanted an item of that kind.
     pub(crate) fn restyles(self) -> bool {
         matches!(
             self,
@@ -275,6 +298,34 @@ pub(crate) struct Fit {
     /// Rule 10's other half: whether this is a support known to have no crowd
     /// control, who never keeps Mandate. `false` when the champion is unknown.
     no_mandate: bool,
+    /// Rule 11: whether the champion attacks from range, `None` when unknown.
+    ranged: Option<bool>,
+    /// Rule 12: the item class tagged for the champion's role, `None` when
+    /// its role is unknown.
+    role_class: Option<&'static str>,
+    /// Rule 12: whether Tank items are the champion's too.
+    tank_items: bool,
+}
+
+/// Rule 12: the item class (`text/item_classes.json`) tagged for each champion
+/// role. The roles are the game's `category`, which the draft shows as Melee,
+/// Ranged, Mage, Support and Assassin. There is no Tank role: tanks are
+/// champions of these roles tagged `Tank`, which [`Fit`] carries separately.
+fn role_class(class: champion_traits::Class) -> &'static str {
+    use champion_traits::Class;
+    match class {
+        Class::Melee => "Fighter",
+        Class::Range => "Marksman",
+        Class::Magician => "Mage",
+        Class::Util => "Support",
+        Class::Assassin => "Assassin",
+    }
+}
+
+/// The editor class of `key`, base or radiant. `None` for an item with none:
+/// components, and the game's own finals below the radiant tier.
+fn item_class(key: &str) -> Option<&'static str> {
+    crate::item_catalog::category_of(crate::build_config::base_slug(key))
 }
 
 /// The [`Fit`] for `champion` playing `role`.
@@ -283,7 +334,8 @@ pub(crate) struct Fit {
 /// unknown role ([`Role::Any`]), which the buy detour falls back to when no
 /// lineup has placed the champion yet. Jungle items follow the same line, for
 /// the jungle role. A champion nothing is known about gets no scaling
-/// restriction: a missing tag must never cost a build an item.
+/// restriction and none on its reach: a missing tag must never cost a build an
+/// item.
 pub(crate) fn fit(champion: &str, role: Role) -> Fit {
     let traits = champion_traits::traits(champion);
     Fit {
@@ -292,6 +344,9 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
         jungle_items: role == Role::Jungle,
         mandate: role == Role::Support && traits.is_some_and(|traits| traits.cc),
         no_mandate: role == Role::Support && traits.is_some_and(|traits| !traits.cc),
+        ranged: traits.and_then(|traits| traits.ranged),
+        role_class: traits.and_then(|traits| traits.class).map(role_class),
+        tank_items: traits.is_some_and(|traits| traits.tank),
     }
 }
 
@@ -312,6 +367,36 @@ impl Fit {
             Some(Scaling::Ad) => item.magic && !item.physical,
             Some(Scaling::Hybrid) | None => false,
         }
+    }
+
+    /// Rule 11: whether `key` is an item for the other reach — a melee item on
+    /// a ranged champion, or a ranged item on a melee one.
+    fn out_of_reach(&self, key: &str) -> bool {
+        match self.ranged {
+            Some(true) => is_melee_item(key),
+            Some(false) => is_ranged_item(key),
+            None => false,
+        }
+    }
+
+    /// Rule 12: whether `key` is tagged for the champion's role — an item of
+    /// its role's class, a Tank item on a tank, or an item of its lane (rule
+    /// 9), which a jungler's Feral Flare is whatever its class. Never true
+    /// when the role is unknown.
+    fn tagged_for_role(&self, key: &str) -> bool {
+        let Some(wanted) = self.role_class else {
+            return false;
+        };
+        self.is_role_item(key)
+            || item_class(key)
+                .is_some_and(|class| class == wanted || (self.tank_items && class == "Tank"))
+    }
+
+    /// Rule 12: whether `key` is tagged for some other role, which is what
+    /// makes an AI pick give way. An item with no class is not: there is
+    /// nothing to hold against it.
+    fn tagged_for_another_role(&self, key: &str) -> bool {
+        self.role_class.is_some() && item_class(key).is_some() && !self.tagged_for_role(key)
     }
 
     /// Whether the champion plays a role with items of its own (rule 9).
@@ -491,6 +576,38 @@ fn is_jungle_item(key: &str) -> bool {
     JUNGLE_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
+/// Rule 11: items whose passive wants the carrier in melee, which a ranged
+/// champion does not keep. By base slug, so the radiant tier follows. The
+/// distances are the defaults; all of them are config-editable.
+const MELEE_ITEMS: [&str; 7] = [
+    "ravenous_hydra",  // Cleave at half strength from past 35 range
+    "titanic_hydra",   // Cleave at half strength from past 35 range
+    "hullbreaker",     // Skipper at 70% strength from past 35 range
+    "heartsteel",      // Ironheart charges on enemies that stay within 50 range
+    "hollow_radiance", // Immolate burns enemies within 30 range
+    "sunfire_cape",    // Immolate again; this slug is the radiant cape's
+    // Sunfire Cape itself, whose key the base game never lost: only the
+    // radiant reskins have an alias for `base_slug` to undo.
+    "hourglass_of_eternity",
+];
+
+/// Rule 11: items whose passive wants the carrier at range, which a melee
+/// champion does not keep. By base slug, so the radiant tier follows.
+const RANGED_ITEMS: [&str; 2] = [
+    "runaans_hurricane",    // bolts at the enemies around the carrier; ranged only in League
+    "diamond_tipped_spear", // Sweet Spot grows with the distance to the target, up to 100 range
+];
+
+/// Whether `key` is one of [`MELEE_ITEMS`], base or radiant.
+fn is_melee_item(key: &str) -> bool {
+    MELEE_ITEMS.contains(&crate::build_config::base_slug(key))
+}
+
+/// Whether `key` is one of [`RANGED_ITEMS`], base or radiant.
+fn is_ranged_item(key: &str) -> bool {
+    RANGED_ITEMS.contains(&crate::build_config::base_slug(key))
+}
+
 /// What the items a build already holds have spent of the two budgets the rules
 /// police, and the [`Fit`] of the champion it is for. Carries the trait table
 /// with it, so a scan across the catalog is a run of hash lookups rather than a
@@ -536,6 +653,11 @@ impl Budget {
             Some(Reason::MandateWithoutCc)
         } else if self.fit.mismatches(&traits) {
             Some(Reason::Scaling)
+        } else if self.fit.out_of_reach(key) {
+            // After rule 5: an item that fails both (Runaan's on a melee mage)
+            // is replaced the way rule 5 does it, in the build's style, not by
+            // another item of a kind the champion cannot use.
+            Some(Reason::Reach)
         } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
         } else if self.crit_chance + traits.crit_chance > CRIT_CAP {
@@ -545,14 +667,21 @@ impl Budget {
         }
     }
 
-    /// Whether `key` is an item this champion may hold at all — rules 4, 5, 8
-    /// and 10, which do not depend on what else is in the build. An item that
-    /// fails is no guide to the build's style.
+    /// Whether `key` is an item this champion may hold at all — rules 4, 5, 8,
+    /// 10 and 11, which do not depend on what else is in the build. An item
+    /// that fails is no guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
         !(!self.fit.support_items && is_support_item(key))
             && !(!self.fit.jungle_items && is_jungle_item(key))
             && !(self.fit.no_mandate && is_mandate(key))
             && !self.fit.mismatches(&self.table.traits(key))
+            && !self.fit.out_of_reach(key)
+    }
+
+    /// Rule 12, for the buy detour's own picks: whether `key` is tagged for
+    /// the champion's role ([`Fit::tagged_for_role`]).
+    pub(crate) fn tagged_for_role(&self, key: &str) -> bool {
+        self.fit.tagged_for_role(key)
     }
 
     /// Whether `key` brings any crit chance — what the stand-in for a crit
@@ -610,6 +739,10 @@ impl Budget {
 /// Mandate, and no support item the player pinned, has the AI's first support
 /// item (preferring one only supports may build) swapped for Mandate, held to
 /// the other rules the same way.
+///
+/// Then rule 12: an AI slot holding an item tagged for another role makes way
+/// for one tagged for the champion's, of the same category where there is one,
+/// held to the other rules the same way. No such stand-in, no change.
 ///
 /// Last, rule 6 reorders the AI's slots among themselves: the role's own items
 /// first (rule 9), then early items, late items last, and the engine's order
@@ -839,6 +972,46 @@ pub(crate) fn enforce<C, K, G, F>(
             if let Some(mandate) = mandate {
                 build[slot] = mandate;
             }
+        }
+    }
+
+    // Rule 12. Last of the rules that change what is in the build, so every
+    // stand-in is judged against a build the others have already settled.
+    // Slot by slot, earliest first, each against the build as it then stands.
+    for slot in 0..build.len() {
+        if is_pinned(slot) {
+            continue;
+        }
+        let offender = build[slot];
+        let gives_way = key(offender)
+            .is_some_and(|key| !is_boots(&key) && fit.tagged_for_another_role(&key));
+        if !gives_way {
+            continue;
+        }
+        let rest = budget_without(build, slot);
+        let search = |matches: &dyn Fn(usize) -> bool| {
+            (1..count)
+                .map(|step| (offender + step) % count)
+                .find(|&candidate| {
+                    !build.contains(&candidate)
+                        && !reserved.contains(&candidate)
+                        && matches(candidate)
+                        && is_final(candidate)
+                        && key(candidate).is_some_and(|candidate| {
+                            !is_boots(&candidate)
+                                && fit.tagged_for_role(&candidate)
+                                && rest.rejects(&candidate).is_none()
+                        })
+                })
+        };
+        // The same kind of item where the caller's grouping has one tagged for
+        // the role (the stable hook's does: an attack-speed item makes way
+        // for an attack-speed item), else any that is.
+        let stand_in = category(offender)
+            .and_then(|wanted| search(&|candidate| category(candidate).as_ref() == Some(&wanted)))
+            .or_else(|| search(&|_| true));
+        if let Some(stand_in) = stand_in {
+            build[slot] = stand_in;
         }
     }
 

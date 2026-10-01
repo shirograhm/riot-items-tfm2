@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 211 new items (123 base + 88 Radiant) to the game.
+Reskins the 30 existing items and also adds 213 new items (124 base + 89 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -32,12 +32,15 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 - a second Grievous Wounds item
 - a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked)
 - Feral Flare or Grez's Spectral Lantern on any champion not playing the jungle role
+- a melee item on a ranged champion (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Sunfire Cape, Hollow Radiance), or a ranged item on a melee champion (Runaan's Hurricane, Diamond Tipped Spear). A champion is melee when its basic attack range is 35 or less; champions from other mods are covered too
 - a support item (except Protoplasm Harness and Zeke's Convergence) on any champion not playing the support role
 - an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion (hybrid champions and hybrid items are left alone; Magic Knight counts as an AP champion, since only its basic attack is physical)
 
 For the last two, the replacement follows the rest of the build instead of the removed item: it comes from the same category as the build's other items, starting with the first slot.
 
 Supports and junglers also get an item for their role: a support item for supports (one that suits the champion's damage type, so an AD support gets a tank one, not an AP one), and Feral Flare or Grez's Spectral Lantern (whichever suits the champion's damage type) for junglers. If the AI didn't pick one and you haven't pinned one, its last pick is swapped for one. Only one is guaranteed; the rest of the build is still the AI's own choice. A support whose champion has crowd control (the game's CC tag) makes Imperial Mandate that item, unless you pinned a support item yourself; Mandate is an AP item, so an AD support keeps its own. A support without crowd control never keeps a Mandate the AI picked: it's swapped for another support item (a Mandate you pin is always kept).
+
+Champions also try to build items tagged for their role: Fighter items for Melee champions, Marksman items for Ranged, Mage items for Mages, Assassin items for Assassins and Support items for Supports. Champions tagged Tank count Tank items as their own too, and a support's or jungler's role item always counts. An AI pick from another class is swapped for one of the champion's own, as long as that item passes every rule above; if none does, the pick stays. So an AP champion in the Melee role keeps its AP items, and a Support-role champion outside the support lane keeps what the AI chose.
 
 It also decides the order the AI buys its picks in. A support's or jungler's role item comes first. After that, items that get stronger the longer you own them are bought first: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern and Collector. Items that scale off stats from the rest of the build are bought last: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards. Everything else keeps the AI's order.
 
@@ -64,7 +67,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Aegis of the Legion** | 700G | +100 HP<br>+20 Armor<br>+30 MR | — |
-| **Bami's Cinder** | 400G | +150 HP | Immolate: Deal 5 + 0.5% of your maximum health as magic damage to all enemies within 30 range. |
+| **Bami's Cinder** | 400G | +150 HP | Immolate: Deal 5 + 0.5% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters. |
 | **Bandleglass Mirror** | 350G | +100 HP<br>+1 HP Regen<br>+10 AP<br>+5 Ability Haste | — |
 | **Berserker's Greaves** | 650G | +15% AS<br>+10% MS | — |
 | **B.F. Sword** | 450G | +35 Attack Damage | — |
@@ -134,10 +137,11 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Guardian Angel** | 750G | +35 AD<br>+30 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 40% of your maximum health. While resurrecting, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
 | **Guinsoo's Rageblade** | 700G | +15 AD<br>+15 AP<br>+30% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Hamstringer** | 750G | +25 AD<br>+25% AS<br>+20% Crit Chance | Scour: Your critical strikes bleed the target, dealing 70 - 180 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
-| **Heartsteel** | 750G | +250 HP | Ironheart: If an enemy champion stays within 50 range of you for 1.5 seconds, your next basic attack against them deals bonus physical damage equal to 70 + 6% of your maximum health, granting 10% of that damage as permanent bonus health (30 second cooldown per target). |
+| **Heartsteel** | 750G | +250 HP | Ironheart: If an enemy champion stays within 50 range of you for 1.5 seconds, your next basic attack against them deals bonus physical damage equal to 70 + 6% of your maximum health, granting 10% of that damage as permanent bonus health (30 second cooldown per target).<br>Goliath: Gain 3% increased size for every 1000 maximum health, up to 30%. |
 | **Hextech Gunblade** | 750G | +25 AD<br>+50 AP<br>+10% Omnivamp | — |
-| **Hollow Radiance** | 750G | +200 HP<br>+50 MR<br>+4% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 30 + 2% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
+| **Hollow Radiance** | 750G | +200 HP<br>+50 MR<br>+4% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 30 + 2% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
 | **Hubris** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
+| **Hullbreaker** | 800G | +20 AD<br>+200 HP<br>+4% MS | Skipper: Every fifth basic attack against champions and monsters deals 80% AD (+5% max HP) as bonus physical damage, increased to 200% AD (+10% max HP) against turrets. Attacks from further than 35 range apply this effect at 70% strength.<br>Boarding Party: Allied minions within 100 range gain 10 armor and 20 magic resistance. |
 | **Immortal Shieldbow** | 750G | +45 AD<br>+20% Crit Chance | Lifeline: Falling below 30% health grants a shield for 3 seconds that absorbs 330 - 605 (based on level) damage (90 second cooldown). |
 | **Imperial Mandate** | 550G | +100 HP<br>+1 HP Regen<br>+25 AP<br>+15 Ability Haste | Command: Immobilizing an enemy champion marks them as Vulnerable for 3 seconds, increasing their damage taken by 9%. Subsequent applications refresh this buff. |
 | **Infinity Edge** | 750G | +50 AD<br>+20% Crit Chance | Excoriate: Gain 30% critical strike damage. |
@@ -227,10 +231,11 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Guardian Angel** | 1100G | +50 AD<br>+45 Armor | Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for 60% of your maximum health. While resurrecting, you are untargetable, invulnerable, and unable to act (300 second cooldown). |
 | **Radiant Guinsoo's Rageblade** | 950G | +25 AD<br>+25 AP<br>+50% AS | Wrath: Basic attacks deal 30 bonus magic damage.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Hamstringer** | 1100G | +40 AD<br>+45% AS<br>+25% Crit Chance | Scour: Your critical strikes bleed the target, dealing 125 - 290 (based on level) (+100% Crit Chance) physical damage over 3 seconds and applying a 7% slow. |
-| **Radiant Heartsteel** | 1050G | +400 HP | Ironheart: If an enemy champion stays within 50 range of you for 1.5 seconds, your next basic attack against them deals bonus physical damage equal to 70 + 6% of your maximum health, granting 10% of that damage as permanent bonus health (30 second cooldown per target). |
+| **Radiant Heartsteel** | 1050G | +400 HP | Ironheart: If an enemy champion stays within 50 range of you for 1.5 seconds, your next basic attack against them deals bonus physical damage equal to 70 + 6% of your maximum health, granting 10% of that damage as permanent bonus health (30 second cooldown per target).<br>Goliath: Gain 3% increased size for every 1000 maximum health, up to 30%. |
 | **Radiant Hextech Gunblade** | 1050G | +45 AD<br>+75 AP<br>+15% Omnivamp | — |
-| **Radiant Hollow Radiance** | 1050G | +350 HP<br>+70 MR<br>+6% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 60 + 4% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
+| **Radiant Hollow Radiance** | 1050G | +350 HP<br>+70 MR<br>+6% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 60 + 4% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
 | **Radiant Hubris** | 1000G | +60 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
+| **Radiant Hullbreaker** | 1000G | +35 AD<br>+300 HP<br>+4% MS | Skipper: Every fifth basic attack against champions and monsters deals 80% AD (+5% max HP) as bonus physical damage, increased to 200% AD (+10% max HP) against turrets. Attacks from further than 35 range apply this effect at 70% strength.<br>Boarding Party: Allied minions within 100 range gain 10 armor and 20 magic resistance. |
 | **Radiant Immortal Shieldbow** | 1050G | +65 AD<br>+25% Crit Chance | Lifeline: Falling below 30% health grants a shield for 3 seconds that absorbs 330 - 605 (based on level) damage (90 second cooldown). |
 | **Radiant Imperial Mandate** | 750G | +150 HP<br>+2 HP Regen<br>+40 AP<br>+20 Ability Haste | Command: Immobilizing an enemy champion marks them as Vulnerable for 3 seconds, increasing their damage taken by 9%. Subsequent applications refresh this buff. |
 | **Radiant Infinity Edge** | 1150G | +75 AD<br>+25% Crit Chance | Excoriate: Gain 30% critical strike damage. |

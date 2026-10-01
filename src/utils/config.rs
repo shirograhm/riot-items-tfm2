@@ -130,6 +130,11 @@ pub struct ItemConfig {
     pub effect_ad_percent_haste: Option<f64>,
     pub effect_max_targets: Option<usize>,
     pub effect_splash_caster_hp_percent: Option<f64>,
+    pub effect_tower_ad_percent_damage: Option<f64>,
+    pub effect_tower_caster_hp_percent_damage: Option<f64>,
+    pub effect_minion_bonus_percent: Option<f64>,
+    pub effect_size_per_thousand_hp: Option<f64>,
+    pub effect_max_size_percent: Option<i32>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,

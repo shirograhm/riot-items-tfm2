@@ -178,11 +178,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Sunfire Cape",
-            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters."
         },
         "giants_horn_shard": {
             "name": "Radiant Sunfire Cape",
-            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters."
         },
         "bf_sword": {
             "name": "B.F. Sword",
@@ -434,11 +434,11 @@
         },
         "heartsteel": {
             "name": "Heartsteel",
-            "option": "\n<#ff7a3eff>Ironheart<>: If an enemy champion stays within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of you for <#e8a800ff>1.5 seconds<>, your next basic attack against them deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>70<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>10%<> of that damage as permanent <#60e84dff>bonus health<> (<#e8a800ff>30 second<> cooldown per target)."
+            "option": "\n<#ff7a3eff>Ironheart<>: If an enemy champion stays within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of you for <#e8a800ff>1.5 seconds<>, your next basic attack against them deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>70<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>10%<> of that damage as permanent <#60e84dff>bonus health<> (<#e8a800ff>30 second<> cooldown per target).\n\n<#ff7a3eff>Goliath<>: Gain <#e8a800ff>3% increased size<> for every <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, up to <#e8a800ff>30%<>."
         },
         "radiant_heartsteel": {
             "name": "Radiant Heartsteel",
-            "option": "\n<#ff7a3eff>Ironheart<>: If an enemy champion stays within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of you for <#e8a800ff>1.5 seconds<>, your next basic attack against them deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>70<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>10%<> of that damage as permanent <#60e84dff>bonus health<> (<#e8a800ff>30 second<> cooldown per target)."
+            "option": "\n<#ff7a3eff>Ironheart<>: If an enemy champion stays within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of you for <#e8a800ff>1.5 seconds<>, your next basic attack against them deals <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>70<> + <#60e84dff>6%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, granting <#60e84dff>10%<> of that damage as permanent <#60e84dff>bonus health<> (<#e8a800ff>30 second<> cooldown per target).\n\n<#ff7a3eff>Goliath<>: Gain <#e8a800ff>3% increased size<> for every <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, up to <#e8a800ff>30%<>."
         },
         "spear_of_shojin": {
             "name": "Spear of Shojin",
@@ -814,7 +814,7 @@
         },
         "bamis_cinder": {
             "name": "Bami's Cinder",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>5<> + <#60e84dff>0.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>5<> + <#60e84dff>0.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters."
         },
         "bandlepipes": {
             "name": "Bandlepipes",
@@ -938,11 +938,11 @@
         },
         "hollow_radiance": {
             "name": "Hollow Radiance",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>30<> + <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>30<> + <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
         },
         "radiant_hollow_radiance": {
             "name": "Radiant Hollow Radiance",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>60<> + <#60e84dff>4%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>60<> + <#60e84dff>4%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
         },
         "cosmic_drive": {
             "name": "Cosmic Drive",
@@ -1019,6 +1019,14 @@
         "radiant_titanic_hydra": {
             "name": "Radiant Titanic Hydra",
             "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#ff9028ff>bonus physical damage<> to the target and <#60e84dff>4%<> as <#ff9028ff>physical damage<> to enemies behind the target. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "hullbreaker": {
+            "name": "Hullbreaker",
+            "option": "\n<#ff7a3eff>Skipper<>: Every fifth basic attack against champions and monsters deals <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>max HP)<> as <#ff9028ff>bonus physical damage<>, increased to <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>max HP)<> against turrets. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>70% strength<>.\n\n<#ff7a3eff>Boarding Party<>: Allied minions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> gain <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>."
+        },
+        "radiant_hullbreaker": {
+            "name": "Radiant Hullbreaker",
+            "option": "\n<#ff7a3eff>Skipper<>: Every fifth basic attack against champions and monsters deals <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>max HP)<> as <#ff9028ff>bonus physical damage<>, increased to <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>max HP)<> against turrets. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>70% strength<>.\n\n<#ff7a3eff>Boarding Party<>: Allied minions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> gain <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>."
         }
     },
     "vi": {
@@ -1200,11 +1208,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Áo Choàng Lửa Mặt Trời",
-            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái."
         },
         "giants_horn_shard": {
             "name": "Áo Choàng Lửa Mặt Trời Ánh Sáng",
-            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{Range}<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{Range}<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái."
         },
         "bf_sword": {
             "name": "Kiếm B.F.",
@@ -1456,11 +1464,11 @@
         },
         "heartsteel": {
             "name": "Tâm Thép",
-            "option": "\n<#ff7a3eff>Trái Tim Sắt Đá<>: Nếu một tướng địch ở trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> của bạn trong <#e8a800ff>1.5 giây<>, đòn đánh thường tiếp theo của bạn lên tướng đó gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>70<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>10%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<> (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu)."
+            "option": "\n<#ff7a3eff>Trái Tim Sắt Đá<>: Nếu một tướng địch ở trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> của bạn trong <#e8a800ff>1.5 giây<>, đòn đánh thường tiếp theo của bạn lên tướng đó gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>70<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>10%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<> (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\n<#ff7a3eff>Khổng Lồ Hóa<>: Với mỗi <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<>, tăng <#e8a800ff>3% kích cỡ<>, tối đa <#e8a800ff>30%<>."
         },
         "radiant_heartsteel": {
             "name": "Tâm Thép Ánh Sáng",
-            "option": "\n<#ff7a3eff>Trái Tim Sắt Đá<>: Nếu một tướng địch ở trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> của bạn trong <#e8a800ff>1.5 giây<>, đòn đánh thường tiếp theo của bạn lên tướng đó gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>70<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>10%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<> (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu)."
+            "option": "\n<#ff7a3eff>Trái Tim Sắt Đá<>: Nếu một tướng địch ở trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> của bạn trong <#e8a800ff>1.5 giây<>, đòn đánh thường tiếp theo của bạn lên tướng đó gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>70<> + <#60e84dff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân, đồng thời nhận vĩnh viễn <#60e84dff>10%<> sát thương đó dưới dạng <#60e84dff>máu cộng thêm<> (hồi chiêu <#e8a800ff>30 giây<> mỗi mục tiêu).\n\n<#ff7a3eff>Khổng Lồ Hóa<>: Với mỗi <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<>, tăng <#e8a800ff>3% kích cỡ<>, tối đa <#e8a800ff>30%<>."
         },
         "spear_of_shojin": {
             "name": "Ngọn Giáo Shojin",
@@ -1836,7 +1844,7 @@
         },
         "bamis_cinder": {
             "name": "Tàn Tích Bami",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>5<> + <#60e84dff>0.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>5<> + <#60e84dff>0.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái."
         },
         "tiamat": {
             "name": "Rìu Tiamat",
@@ -1960,11 +1968,11 @@
         },
         "hollow_radiance": {
             "name": "Áo Choàng Hắc Quang",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> .\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>30<> + <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>30<> + <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
         },
         "radiant_hollow_radiance": {
             "name": "Áo Choàng Hắc Quang Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> .\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>60<> + <#60e84dff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>60<> + <#60e84dff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
         },
         "cosmic_drive": {
             "name": "Động Cơ Vũ Trụ",
@@ -2041,6 +2049,14 @@
         "radiant_titanic_hydra": {
             "name": "Rìu Đại Mãng Xà Ánh Sáng",
             "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bản thân dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> lên mục tiêu và <#60e84dff>4%<> dưới dạng <#ff9028ff>sát thương vật lí<> lên những kẻ địch phía sau mục tiêu. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "hullbreaker": {
+            "name": "Búa Tiến Công",
+            "option": "\n<#ff7a3eff>Thuyền Trưởng<>: Mỗi đòn đánh thường thứ năm lên tướng và quái vật gây <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>, tăng lên <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa)<> khi đánh trụ. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>70% sức mạnh<>.\n\n<#ff7a3eff>Thuyền Viên<>: Lính đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> nhận <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> và <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<>."
+        },
+        "radiant_hullbreaker": {
+            "name": "Búa Tiến Công Ánh Sáng",
+            "option": "\n<#ff7a3eff>Thuyền Trưởng<>: Mỗi đòn đánh thường thứ năm lên tướng và quái vật gây <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>, tăng lên <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa)<> khi đánh trụ. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>70% sức mạnh<>.\n\n<#ff7a3eff>Thuyền Viên<>: Lính đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> nhận <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> và <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<>."
         }
     },
     "zh-hans": {
@@ -2222,11 +2238,11 @@
         },
         "hourglass_of_eternity": {
             "name": "日炎斗篷",
-            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{Flat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。"
+            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{Flat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。"
         },
         "giants_horn_shard": {
             "name": "光明版日炎斗篷",
-            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{RegenFlat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>{DmgFlat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>{DmgRatio}%<> 的<#a974ffff>魔法伤害<>。"
+            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{RegenFlat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>{DmgFlat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>{DmgRatio}%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。"
         },
         "bf_sword": {
             "name": "暴风之剑",
@@ -2478,11 +2494,11 @@
         },
         "heartsteel": {
             "name": "心之钢",
-            "option": "\n<#ff7a3eff>铁石心肠<>：如果一名敌方英雄在你的 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内停留 <#e8a800ff>1.5秒<>，你对其的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>70<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>10%<> 作为 <#60e84dff>额外生命值<>（每个目标冷却 <#e8a800ff>30秒<>）。"
+            "option": "\n<#ff7a3eff>铁石心肠<>：如果一名敌方英雄在你的 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内停留 <#e8a800ff>1.5秒<>，你对其的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>70<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>10%<> 作为 <#60e84dff>额外生命值<>（每个目标冷却 <#e8a800ff>30秒<>）。\n\n<#ff7a3eff>歌利亚巨人<>：每有 <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，获得 <#e8a800ff>3% 体型提升<>，至多 <#e8a800ff>30%<>。"
         },
         "radiant_heartsteel": {
             "name": "光明版心之钢",
-            "option": "\n<#ff7a3eff>铁石心肠<>：如果一名敌方英雄在你的 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内停留 <#e8a800ff>1.5秒<>，你对其的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>70<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>10%<> 作为 <#60e84dff>额外生命值<>（每个目标冷却 <#e8a800ff>30秒<>）。"
+            "option": "\n<#ff7a3eff>铁石心肠<>：如果一名敌方英雄在你的 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内停留 <#e8a800ff>1.5秒<>，你对其的下一次普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>70<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>6%<>，并永久获得该伤害 <#60e84dff>10%<> 作为 <#60e84dff>额外生命值<>（每个目标冷却 <#e8a800ff>30秒<>）。\n\n<#ff7a3eff>歌利亚巨人<>：每有 <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，获得 <#e8a800ff>3% 体型提升<>，至多 <#e8a800ff>30%<>。"
         },
         "spear_of_shojin": {
             "name": "朔极之矛",
@@ -2858,7 +2874,7 @@
         },
         "bamis_cinder": {
             "name": "斑比的熔渣",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>5<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>0.5%<> 的<#a974ffff>魔法伤害<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>5<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>0.5%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。"
         },
         "tiamat": {
             "name": "提亚马特",
@@ -2982,11 +2998,11 @@
         },
         "hollow_radiance": {
             "name": "璀璨回响",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>30<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>30<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
         },
         "radiant_hollow_radiance": {
             "name": "光明版璀璨回响",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>60<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>4%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>60<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>4%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
         },
         "cosmic_drive": {
             "name": "星界驱驰",
@@ -3063,6 +3079,14 @@
         "radiant_titanic_hydra": {
             "name": "光明版巨型九头蛇",
             "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对目标造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的<#ff9028ff>额外物理伤害<>，并对目标身后的敌人们造成相当于 <#60e84dff>4%<> 最大生命值的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "hullbreaker": {
+            "name": "破舰者",
+            "option": "\n<#ff7a3eff>船长<>：对英雄和野怪的每第五次普通攻击造成 <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<> <#60e84dff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值）<> 的<#ff9028ff>额外物理伤害<>，对防御塔提高至 <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<> <#60e84dff>（+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值）<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>70% 强度<>触发。\n\n<#ff7a3eff>登舰小组<>：<#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方小兵获得 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>和 <#88ccffff>20 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>。"
+        },
+        "radiant_hullbreaker": {
+            "name": "光明版破舰者",
+            "option": "\n<#ff7a3eff>船长<>：对英雄和野怪的每第五次普通攻击造成 <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<> <#60e84dff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值）<> 的<#ff9028ff>额外物理伤害<>，对防御塔提高至 <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<> <#60e84dff>（+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值）<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>70% 强度<>触发。\n\n<#ff7a3eff>登舰小组<>：<#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方小兵获得 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>和 <#88ccffff>20 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>。"
         }
     },
     "pt-BR": {
@@ -3244,11 +3268,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Capa do Sol Nascente",
-            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{Flat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{Flat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros."
         },
         "giants_horn_shard": {
             "name": "Capa do Sol Nascente Radiante",
-            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{RegenFlat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{RegenFlat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros."
         },
         "bf_sword": {
             "name": "Espada G. p. C.",
@@ -3500,11 +3524,11 @@
         },
         "heartsteel": {
             "name": "Coração de Aço",
-            "option": "\n<#ff7a3eff>Coração Forjado<>: Se um campeão inimigo permanecer a até <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> de você por <#e8a800ff>1.5 segundos<>, seu próximo ataque básico contra ele causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>70<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>10%<> desse dano como <#60e84dff>vida bônus<> (recarga de <#e8a800ff>30 segundos<> por alvo)."
+            "option": "\n<#ff7a3eff>Coração Forjado<>: Se um campeão inimigo permanecer a até <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> de você por <#e8a800ff>1.5 segundos<>, seu próximo ataque básico contra ele causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>70<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>10%<> desse dano como <#60e84dff>vida bônus<> (recarga de <#e8a800ff>30 segundos<> por alvo).\n\n<#ff7a3eff>Golias<>: Para cada <#60e84dff>1000<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, recebe <#e8a800ff>3% de aumento de tamanho<>, até <#e8a800ff>30%<>."
         },
         "radiant_heartsteel": {
             "name": "Coração de Aço Radiante",
-            "option": "\n<#ff7a3eff>Coração Forjado<>: Se um campeão inimigo permanecer a até <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> de você por <#e8a800ff>1.5 segundos<>, seu próximo ataque básico contra ele causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>70<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>10%<> desse dano como <#60e84dff>vida bônus<> (recarga de <#e8a800ff>30 segundos<> por alvo)."
+            "option": "\n<#ff7a3eff>Coração Forjado<>: Se um campeão inimigo permanecer a até <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> de você por <#e8a800ff>1.5 segundos<>, seu próximo ataque básico contra ele causa <#ff9028ff>dano físico<> adicional igual a <#ff9028ff>70<> + <#60e84dff>6%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, concedendo permanentemente <#60e84dff>10%<> desse dano como <#60e84dff>vida bônus<> (recarga de <#e8a800ff>30 segundos<> por alvo).\n\n<#ff7a3eff>Golias<>: Para cada <#60e84dff>1000<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, recebe <#e8a800ff>3% de aumento de tamanho<>, até <#e8a800ff>30%<>."
         },
         "spear_of_shojin": {
             "name": "Lança de Shojin",
@@ -3880,7 +3904,7 @@
         },
         "bamis_cinder": {
             "name": "Brasa de Bami",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>5<> + <#60e84dff>0.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>5<> + <#60e84dff>0.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros."
         },
         "tiamat": {
             "name": "Tiamat",
@@ -4004,11 +4028,11 @@
         },
         "hollow_radiance": {
             "name": "Resplendor Vazio",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>30<> + <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>30<> + <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
         },
         "radiant_hollow_radiance": {
             "name": "Resplendor Vazio Radiante",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>60<> + <#60e84dff>4%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>60<> + <#60e84dff>4%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
         },
         "cosmic_drive": {
             "name": "Ímpeto Cósmico",
@@ -4085,6 +4109,14 @@
         "radiant_titanic_hydra": {
             "name": "Hidra Titânica Radiante",
             "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#ff9028ff>dano físico adicional<> ao alvo e <#60e84dff>4%<> como <#ff9028ff>dano físico<> aos inimigos atrás do alvo. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "hullbreaker": {
+            "name": "Quebracascos",
+            "option": "\n<#ff7a3eff>Marujo<>: A cada quinto ataque básico contra campeões e monstros, causa <#ff9028ff>80%<> do <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#60e84dff>(+5% da<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima)<> como <#ff9028ff>dano físico bônus<>, aumentado para <#ff9028ff>200%<> do <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#60e84dff>(+10% da<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima)<> contra torres. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>70% de intensidade<>.\n\n<#ff7a3eff>Invasão Pirata<>: Tropas aliadas a até <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> recebem <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> e <#88ccffff>20 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<>."
+        },
+        "radiant_hullbreaker": {
+            "name": "Quebracascos Radiante",
+            "option": "\n<#ff7a3eff>Marujo<>: A cada quinto ataque básico contra campeões e monstros, causa <#ff9028ff>80%<> do <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#60e84dff>(+5% da<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima)<> como <#ff9028ff>dano físico bônus<>, aumentado para <#ff9028ff>200%<> do <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#60e84dff>(+10% da<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima)<> contra torres. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>70% de intensidade<>.\n\n<#ff7a3eff>Invasão Pirata<>: Tropas aliadas a até <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> recebem <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> e <#88ccffff>20 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<>."
         }
     },
     "ru": {
@@ -4266,11 +4298,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Плащ солнечного пламени",
-            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>."
         },
         "giants_horn_shard": {
             "name": "Светоносный плащ солнечного пламени",
-            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>."
         },
         "bf_sword": {
             "name": "Самый Лучший Меч",
@@ -4522,11 +4554,11 @@
         },
         "heartsteel": {
             "name": "Сердце Стали",
-            "option": "\n<#ff7a3eff>Железное сердце<>: Если вражеский чемпион находится в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от вас в течение <#e8a800ff>1.5 сек.<>, ваша следующая базовая атака против него наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>70<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>10%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<> (перезарядка <#e8a800ff>30 секунд<> для каждой цели)."
+            "option": "\n<#ff7a3eff>Железное сердце<>: Если вражеский чемпион находится в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от вас в течение <#e8a800ff>1.5 сек.<>, ваша следующая базовая атака против него наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>70<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>10%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<> (перезарядка <#e8a800ff>30 секунд<> для каждой цели).\n\n<#ff7a3eff>Голиаф<>: За каждые <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> вы увеличиваетесь в размерах на <#e8a800ff>3%<> (максимум <#e8a800ff>30%<>)."
         },
         "radiant_heartsteel": {
             "name": "Лучезарное Сердце Стали",
-            "option": "\n<#ff7a3eff>Железное сердце<>: Если вражеский чемпион находится в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от вас в течение <#e8a800ff>1.5 сек.<>, ваша следующая базовая атака против него наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>70<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>10%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<> (перезарядка <#e8a800ff>30 секунд<> для каждой цели)."
+            "option": "\n<#ff7a3eff>Железное сердце<>: Если вражеский чемпион находится в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от вас в течение <#e8a800ff>1.5 сек.<>, ваша следующая базовая атака против него наносит <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>70<> + <#60e84dff>6%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, и даёт <#60e84dff>10%<> от этого урона как постоянное <#60e84dff>дополнительное здоровье<> (перезарядка <#e8a800ff>30 секунд<> для каждой цели).\n\n<#ff7a3eff>Голиаф<>: За каждые <#60e84dff>1000<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> вы увеличиваетесь в размерах на <#e8a800ff>3%<> (максимум <#e8a800ff>30%<>)."
         },
         "spear_of_shojin": {
             "name": "Копье Седзина",
@@ -4902,7 +4934,7 @@
         },
         "bamis_cinder": {
             "name": "Пепел Бами",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>5<> + <#60e84dff>0.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>5<> + <#60e84dff>0.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>."
         },
         "tiamat": {
             "name": "Тиамат",
@@ -5026,11 +5058,11 @@
         },
         "hollow_radiance": {
             "name": "Сияние пустоты",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>30<> + <#60e84dff>2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>30<> + <#60e84dff>2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
         },
         "radiant_hollow_radiance": {
             "name": "Лучезарное Сияние пустоты",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>60<> + <#60e84dff>4%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>60<> + <#60e84dff>4%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
         },
         "cosmic_drive": {
             "name": "Космический ускоритель",
@@ -5107,6 +5139,14 @@
         "radiant_titanic_hydra": {
             "name": "Лучезарная Титаническая гидра",
             "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят цели <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> в виде <#ff9028ff>дополнительного физического урона<>, а врагам позади цели — <#60e84dff>4%<> в виде <#ff9028ff>физического урона<>. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "hullbreaker": {
+            "name": "Бортолом",
+            "option": "\n<#ff7a3eff>Шкипер<>: Каждая пятая базовая атака по чемпионам и монстрам наносит <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>макс. здоровья)<> в виде <#ff9028ff>дополнительного физического урона<>, увеличиваясь до <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>макс. здоровья)<> по башням. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>70% силы<>.\n\n<#ff7a3eff>Абордажная команда<>: Союзные миньоны в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> получают <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> и <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<>."
+        },
+        "radiant_hullbreaker": {
+            "name": "Лучезарный Бортолом",
+            "option": "\n<#ff7a3eff>Шкипер<>: Каждая пятая базовая атака по чемпионам и монстрам наносит <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>макс. здоровья)<> в виде <#ff9028ff>дополнительного физического урона<>, увеличиваясь до <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>макс. здоровья)<> по башням. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>70% силы<>.\n\n<#ff7a3eff>Абордажная команда<>: Союзные миньоны в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> получают <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> и <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<>."
         }
     },
     "ko": {
@@ -5288,11 +5328,11 @@
         },
         "hourglass_of_eternity": {
             "name": "태양불꽃 망토",
-            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{Flat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{Flat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다."
         },
         "giants_horn_shard": {
             "name": "찬란한 태양불꽃 망토",
-            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{RegenFlat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>{DmgFlat}<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>{DmgRatio}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{RegenFlat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>{DmgFlat}<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>{DmgRatio}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다."
         },
         "bf_sword": {
             "name": "B.F. 대검",
@@ -5544,11 +5584,11 @@
         },
         "heartsteel": {
             "name": "강철심장",
-            "option": "\n<#ff7a3eff>강철의 심장<>: 적 챔피언이 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안에 <#e8a800ff>1.5초<> 동안 머무르면 해당 대상에게 가하는 다음 기본 공격이 <#ff9028ff>70<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>10%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>30초<>)"
+            "option": "\n<#ff7a3eff>강철의 심장<>: 적 챔피언이 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안에 <#e8a800ff>1.5초<> 동안 머무르면 해당 대상에게 가하는 다음 기본 공격이 <#ff9028ff>70<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>10%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>30초<>)\n\n<#ff7a3eff>거인<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<> <#60e84dff>1000<>당 크기가 <#e8a800ff>3%<> 증가합니다. (최대 <#e8a800ff>30%<>)"
         },
         "radiant_heartsteel": {
             "name": "찬란한 강철심장",
-            "option": "\n<#ff7a3eff>강철의 심장<>: 적 챔피언이 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안에 <#e8a800ff>1.5초<> 동안 머무르면 해당 대상에게 가하는 다음 기본 공격이 <#ff9028ff>70<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>10%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>30초<>)"
+            "option": "\n<#ff7a3eff>강철의 심장<>: 적 챔피언이 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안에 <#e8a800ff>1.5초<> 동안 머무르면 해당 대상에게 가하는 다음 기본 공격이 <#ff9028ff>70<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>6%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, 해당 피해량의 <#60e84dff>10%<>만큼 <#60e84dff>추가 체력<>을 영구적으로 얻습니다. (대상별 재사용 대기시간 <#e8a800ff>30초<>)\n\n<#ff7a3eff>거인<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<> <#60e84dff>1000<>당 크기가 <#e8a800ff>3%<> 증가합니다. (최대 <#e8a800ff>30%<>)"
         },
         "spear_of_shojin": {
             "name": "쇼진의 창",
@@ -5924,7 +5964,7 @@
         },
         "bamis_cinder": {
             "name": "바미의 불씨",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>5<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>0.5%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>5<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>0.5%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다."
         },
         "tiamat": {
             "name": "티아맷",
@@ -6048,11 +6088,11 @@
         },
         "hollow_radiance": {
             "name": "공허한 광휘",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>30<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>30<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
         },
         "radiant_hollow_radiance": {
             "name": "찬란한 공허한 광휘",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>60<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>4%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>60<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>4%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
         },
         "cosmic_drive": {
             "name": "우주의 추진력",
@@ -6129,6 +6169,14 @@
         "radiant_titanic_hydra": {
             "name": "찬란한 거대한 히드라",
             "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 대상에게 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1.5%<>만큼 <#ff9028ff>추가 물리 피해<>를, 대상 뒤의 적들에게 <#60e84dff>4%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "hullbreaker": {
+            "name": "선체파괴자",
+            "option": "\n<#ff7a3eff>선장<>: 챔피언과 몬스터에게 다섯 번째 기본 공격을 가할 때마다 <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 포탑에게는 <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력)<>로 증가합니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>70% 위력<>으로 적용됩니다.\n\n<#ff7a3eff>승선 부대<>: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 미니언이 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 10<> 및 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 20<>을 얻습니다."
+        },
+        "radiant_hullbreaker": {
+            "name": "찬란한 선체파괴자",
+            "option": "\n<#ff7a3eff>선장<>: 챔피언과 몬스터에게 다섯 번째 기본 공격을 가할 때마다 <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 포탑에게는 <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력)<>로 증가합니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>70% 위력<>으로 적용됩니다.\n\n<#ff7a3eff>승선 부대<>: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 미니언이 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 10<> 및 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 20<>을 얻습니다."
         }
     }
 }

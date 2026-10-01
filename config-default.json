@@ -131,7 +131,9 @@
     "effect_max_distance": 50,
     "effect_charge_seconds": 1.5,
     "effect_duration_seconds": 1.5,
-    "effect_cooldown_seconds": 30
+    "effect_cooldown_seconds": 30,
+    "effect_size_per_thousand_hp": 3.0,
+    "effect_max_size_percent": 30
   },
   "hextech_gunblade": {
     "price": 750,
@@ -377,7 +379,9 @@
     "effect_max_distance": 50,
     "effect_charge_seconds": 1.5,
     "effect_duration_seconds": 1.5,
-    "effect_cooldown_seconds": 30
+    "effect_cooldown_seconds": 30,
+    "effect_size_per_thousand_hp": 3.0,
+    "effect_max_size_percent": 30
   },
   "radiant_hextech_gunblade": {
     "price": 1050,
@@ -1359,7 +1363,8 @@
     "hp": 150,
     "effect_bonus_flat_damage": 5,
     "effect_caster_hp_percent_damage": 0.5,
-    "effect_max_distance": 30
+    "effect_max_distance": 30,
+    "effect_minion_bonus_percent": 50.0
   },
   "long_sword": {
     "price": 250,
@@ -1508,7 +1513,8 @@
     "effect_bonus_hp_regen": 20,
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1.0,
-    "effect_max_distance": 30
+    "effect_max_distance": 30,
+    "effect_minion_bonus_percent": 50.0
   },
   "radiant_sunfire_cape": {
     "price": 1000,
@@ -1516,7 +1522,8 @@
     "effect_bonus_hp_regen": 40,
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1,
-    "effect_max_distance": 30
+    "effect_max_distance": 30,
+    "effect_minion_bonus_percent": 50.0
   },
   "tiamat": {
     "price": 400,
@@ -1766,6 +1773,7 @@
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1.0,
     "effect_max_distance": 30,
+    "effect_minion_bonus_percent": 50.0,
     "effect_explosion_flat_damage": 30,
     "effect_explosion_caster_hp_percent": 2.0,
     "effect_explosion_distance": 35,
@@ -1779,6 +1787,7 @@
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1.0,
     "effect_max_distance": 30,
+    "effect_minion_bonus_percent": 50.0,
     "effect_explosion_flat_damage": 60,
     "effect_explosion_caster_hp_percent": 4.0,
     "effect_explosion_distance": 35,
@@ -1961,5 +1970,37 @@
     "effect_max_distance": 35,
     "effect_melee_distance": 35,
     "effect_ranged_percent": 50.0
+  },
+  "hullbreaker": {
+    "price": 800,
+    "attack": 20,
+    "hp": 200,
+    "move_speed_mult": 4,
+    "effect_attack_interval": 5,
+    "effect_ad_percent_damage": 80.0,
+    "effect_caster_hp_percent_damage": 5.0,
+    "effect_tower_ad_percent_damage": 200.0,
+    "effect_tower_caster_hp_percent_damage": 10.0,
+    "effect_melee_distance": 35,
+    "effect_ranged_percent": 70.0,
+    "effect_bonus_defence": 10,
+    "effect_bonus_magic_resistance": 20,
+    "effect_max_distance": 100
+  },
+  "radiant_hullbreaker": {
+    "price": 1000,
+    "attack": 35,
+    "hp": 300,
+    "move_speed_mult": 4,
+    "effect_attack_interval": 5,
+    "effect_ad_percent_damage": 80.0,
+    "effect_caster_hp_percent_damage": 5.0,
+    "effect_tower_ad_percent_damage": 200.0,
+    "effect_tower_caster_hp_percent_damage": 10.0,
+    "effect_melee_distance": 35,
+    "effect_ranged_percent": 70.0,
+    "effect_bonus_defence": 10,
+    "effect_bonus_magic_resistance": 20,
+    "effect_max_distance": 100
   }
 }

@@ -1,7 +1,8 @@
 //! What Smart Builds needs to know about a champion: what its damage scales
 //! with, to pick its boots, its class and whether it tanks or keeps allies
-//! alive, and whether its kit has crowd control (a support that does builds
-//! Imperial Mandate).
+//! alive, whether its kit has crowd control (a support that does builds
+//! Imperial Mandate), and whether it attacks from range (ranged and melee
+//! champions keep different items).
 //!
 //! # Where the answer comes from
 //!
@@ -24,6 +25,10 @@
 //! is only asked on the client frame after a build path wants the answer, so
 //! with the host alone the first build decided for a modded champion (a
 //! Twitch from another mod, 2026-09-21, building pure AP) went unchecked.
+//!
+//! The host's answer has no attack range in it, so whether a champion is
+//! ranged always comes from the fallbacks where they know it: both carry the
+//! reach of the basic attack itself. See [`ranged_of`].
 
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
@@ -85,17 +90,53 @@ pub(crate) struct ChampionTraits {
     pub sustains: bool,
     /// Tagged `CC`: its kit slows, stuns or otherwise holds enemies.
     pub cc: bool,
+    /// Whether its basic attack reaches past [`MELEE_ATTACK_RANGE`]. `None`
+    /// when nothing says, which the rules leave alone.
+    pub ranged: Option<bool>,
 }
 
 impl ChampionTraits {
-    fn from_flags(flags: u8, class: Option<Class>) -> Self {
+    /// `attack_range` is the reach of the basic attack in world units, where
+    /// the source states one.
+    fn from_flags(flags: u8, class: Option<Class>, attack_range: Option<usize>) -> Self {
         Self {
             scaling: scaling_of(flags & AD != 0, flags & AP != 0),
             class,
             tank: flags & TANK != 0,
             sustains: flags & (HEAL | SHIELD) != 0,
             cc: flags & CC != 0,
+            ranged: ranged_of(attack_range, flags & RANGE != 0, flags & MELEE != 0, class),
         }
+    }
+}
+
+/// The longest basic attack that still counts as melee, in the range units
+/// tooltips use: a champion reaching further is ranged. The same 35 the melee
+/// items measure their falloff from (`effect_melee_distance`), so a champion
+/// is ranged exactly when its own attacks land at reduced strength. Vanilla
+/// melee champions reach 23-30 and the ranged ones 40-80.
+const MELEE_ATTACK_RANGE: usize = 35;
+
+/// Whether a champion attacks from range, `None` when nothing says: the reach
+/// of its basic attack (world units) where the source states one, else its
+/// `Range` or `Melee` tag, else its class where that settles it. The tags and
+/// classes are a last resort: only six vanilla champions carry either tag,
+/// Vampire is a Magician that attacks at 25, and Clown an Assassin at 40.
+fn ranged_of(
+    attack_range: Option<usize>,
+    range_tag: bool,
+    melee_tag: bool,
+    class: Option<Class>,
+) -> Option<bool> {
+    if let Some(range) = attack_range {
+        return Some(range > MELEE_ATTACK_RANGE * crate::DISTANCE_UNITS_PER_RANGE);
+    }
+    match (range_tag, melee_tag, class) {
+        (true, false, _) => Some(true),
+        (false, true, _) => Some(false),
+        (false, false, Some(Class::Range)) => Some(true),
+        (false, false, Some(Class::Melee)) => Some(false),
+        _ => None,
     }
 }
 
@@ -114,6 +155,8 @@ const TANK: u8 = 4;
 const HEAL: u8 = 8;
 const SHIELD: u8 = 16;
 const CC: u8 = 32;
+const RANGE: u8 = 64;
+const MELEE: u8 = 128;
 
 /// The flag bits for a champion's `tags`, by tag name.
 fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
@@ -126,88 +169,94 @@ fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
                 "heal" => HEAL,
                 "shield" => SHIELD,
                 "cc" => CC,
+                "range" => RANGE,
+                "melee" => MELEE,
                 _ => 0,
             }
     })
 }
 
-/// The base game's champions, from `setting/champion_info` (`category` and `tags`),
-/// including the eight it ships under `mod_champions`. Only a
-/// fallback: an answer from the host always wins. Kept true to the game's
-/// tags; corrections go in [`SCALING_OVERRIDES`], which beat both.
-const VANILLA: &[(&str, u8, Class)] = &[
-    ("alchemist", AP | CC, Class::Magician),
-    ("android", AD | TANK | CC, Class::Melee),
-    ("archer", AD, Class::Range),
-    ("astrologer", AP | CC, Class::Magician),
-    ("bard", AP, Class::Util),
-    ("barrier_magician", AP | SHIELD, Class::Util),
-    ("berserker", AD, Class::Melee),
-    ("bomber", AD, Class::Range),
-    ("boomerang_hunter", AD, Class::Range),
-    ("cavalry_knight", AD | CC, Class::Melee),
-    ("chef", AP | TANK | HEAL, Class::Util),
-    ("circus_blade", AD, Class::Assassin),
-    ("clown", AD, Class::Assassin),
-    ("crossbowman", AD, Class::Range),
-    ("dancer", AD, Class::Range),
-    ("dark_mage", AP | CC, Class::Magician),
-    ("demon", AD | CC, Class::Assassin),
-    ("dokkaebi", AD | TANK | SHIELD, Class::Melee),
-    ("druid", AP, Class::Magician),
-    ("dual_blader", AD | CC, Class::Melee),
-    ("enchanter", AP, Class::Util),
-    ("executioner", AD | CC, Class::Melee),
-    ("exorcist", AD | TANK, Class::Util),
-    ("fighter", AD | TANK | CC, Class::Melee),
-    ("gambler", AD, Class::Range),
-    ("ghost", AD, Class::Assassin),
-    ("guardian_spirit", AP | HEAL | SHIELD, Class::Util),
-    ("gunner", AD, Class::Range),
-    ("hammerer", AD | TANK | CC, Class::Melee),
-    ("harpooner", AD | CC, Class::Range),
-    ("hitman", AD | CC, Class::Assassin),
-    ("hunter", AD, Class::Assassin),
-    ("ice_mage", AP | CC, Class::Magician),
-    ("illusionist", AP | CC, Class::Magician),
-    ("inquisitor", AD, Class::Assassin),
-    ("jiangshi", AD | TANK | CC, Class::Melee),
-    ("knight", AD | TANK | SHIELD | CC, Class::Melee),
-    ("lancer", AD, Class::Melee),
-    ("lightning_mage", AP | CC, Class::Magician),
-    ("magic_knight", AD | AP | CC, Class::Melee),
-    ("monk", AP | TANK | HEAL | SHIELD | CC, Class::Util),
-    ("necromancer", AP, Class::Magician),
-    ("nightmare", AD, Class::Assassin),
-    ("ninja", AD, Class::Assassin),
-    ("ogre", AD | TANK | CC, Class::Melee),
-    ("plague_doctor", AD | TANK, Class::Util),
-    ("poison_dart_hunter", AD, Class::Range),
-    ("pole_warrior", AD | CC, Class::Melee),
-    ("priest", AP | HEAL | SHIELD, Class::Util),
-    ("prisoner", AD | TANK | CC, Class::Melee),
-    ("pyromancer", AP, Class::Magician),
-    ("pythoness", AP | HEAL, Class::Util),
-    ("sand_mage", AP | CC, Class::Magician),
-    ("shadowmancer", AP | CC, Class::Magician),
-    ("shield_bearer", AD | TANK | SHIELD | CC, Class::Melee),
-    ("siege_breaker", AD | TANK, Class::Melee),
-    ("soldier", AD, Class::Range),
-    ("spellbreaker", AD | AP | CC, Class::Melee),
-    ("spirit_caller", AP | HEAL, Class::Util),
-    ("strongman", AD | TANK | SHIELD | CC, Class::Melee),
-    ("swordman", AD, Class::Melee),
-    ("taoist", AP | CC, Class::Util),
-    ("vampire", AP | HEAL, Class::Magician),
-    ("voodoo_shaman", AP | CC, Class::Magician),
-    ("werewolf", AD | HEAL | CC, Class::Assassin),
-    ("whip_master", AD, Class::Range),
-    ("white_mage", AP, Class::Magician),
-    ("wind_mage", AP | CC, Class::Magician),
+/// The base game's champions, from `setting/champion_info` (`category`, `tags`
+/// and `attack.range`), including the eight it ships under `mod_champions`.
+/// Only a fallback: an answer from the host always wins. Kept true to the
+/// game's tags; corrections go in [`SCALING_OVERRIDES`], which beat both.
+///
+/// The last column is the reach of the basic attack in range units (the
+/// game's value over 1000), which the host does not report. The `Range` and
+/// `Melee` tags are left out of the flags: the reach says the same and more.
+const VANILLA: &[(&str, u8, Class, usize)] = &[
+    ("alchemist", AP | CC, Class::Magician, 60),
+    ("android", AD | TANK | CC, Class::Melee, 25),
+    ("archer", AD, Class::Range, 70),
+    ("astrologer", AP | CC, Class::Magician, 60),
+    ("bard", AP, Class::Util, 80),
+    ("barrier_magician", AP | SHIELD, Class::Util, 60),
+    ("berserker", AD, Class::Melee, 25),
+    ("bomber", AD, Class::Range, 60),
+    ("boomerang_hunter", AD, Class::Range, 60),
+    ("cavalry_knight", AD | CC, Class::Melee, 27),
+    ("chef", AP | TANK | HEAL, Class::Util, 25),
+    ("circus_blade", AD, Class::Assassin, 23),
+    ("clown", AD, Class::Assassin, 40),
+    ("crossbowman", AD, Class::Range, 60),
+    ("dancer", AD, Class::Range, 60),
+    ("dark_mage", AP | CC, Class::Magician, 60),
+    ("demon", AD | CC, Class::Assassin, 23),
+    ("dokkaebi", AD | TANK | SHIELD, Class::Melee, 25),
+    ("druid", AP, Class::Magician, 60),
+    ("dual_blader", AD | CC, Class::Melee, 25),
+    ("enchanter", AP, Class::Util, 60),
+    ("executioner", AD | CC, Class::Melee, 25),
+    ("exorcist", AD | TANK, Class::Util, 25),
+    ("fighter", AD | TANK | CC, Class::Melee, 23),
+    ("gambler", AD, Class::Range, 70),
+    ("ghost", AD, Class::Assassin, 23),
+    ("guardian_spirit", AP | HEAL | SHIELD, Class::Util, 60),
+    ("gunner", AD, Class::Range, 50),
+    ("hammerer", AD | TANK | CC, Class::Melee, 25),
+    ("harpooner", AD | CC, Class::Range, 60),
+    ("hitman", AD | CC, Class::Assassin, 40),
+    ("hunter", AD, Class::Assassin, 23),
+    ("ice_mage", AP | CC, Class::Magician, 60),
+    ("illusionist", AP | CC, Class::Magician, 60),
+    ("inquisitor", AD, Class::Assassin, 25),
+    ("jiangshi", AD | TANK | CC, Class::Melee, 25),
+    ("knight", AD | TANK | SHIELD | CC, Class::Melee, 25),
+    ("lancer", AD, Class::Melee, 30),
+    ("lightning_mage", AP | CC, Class::Magician, 60),
+    ("magic_knight", AD | AP | CC, Class::Melee, 26),
+    ("monk", AP | TANK | HEAL | SHIELD | CC, Class::Util, 23),
+    ("necromancer", AP, Class::Magician, 60),
+    ("nightmare", AD, Class::Assassin, 23),
+    ("ninja", AD, Class::Assassin, 23),
+    ("ogre", AD | TANK | CC, Class::Melee, 28),
+    ("plague_doctor", AD | TANK, Class::Util, 25),
+    ("poison_dart_hunter", AD, Class::Range, 50),
+    ("pole_warrior", AD | CC, Class::Melee, 30),
+    ("priest", AP | HEAL | SHIELD, Class::Util, 60),
+    ("prisoner", AD | TANK | CC, Class::Melee, 28),
+    ("pyromancer", AP, Class::Magician, 60),
+    ("pythoness", AP | HEAL, Class::Util, 60),
+    ("sand_mage", AP | CC, Class::Magician, 60),
+    ("shadowmancer", AP | CC, Class::Magician, 60),
+    ("shield_bearer", AD | TANK | SHIELD | CC, Class::Melee, 25),
+    ("siege_breaker", AD | TANK, Class::Melee, 25),
+    ("soldier", AD, Class::Range, 60),
+    ("spellbreaker", AD | AP | CC, Class::Melee, 28),
+    ("spirit_caller", AP | HEAL, Class::Util, 60),
+    ("strongman", AD | TANK | SHIELD | CC, Class::Melee, 28),
+    ("swordman", AD, Class::Melee, 25),
+    ("taoist", AP | CC, Class::Util, 60),
+    ("vampire", AP | HEAL, Class::Magician, 25),
+    ("voodoo_shaman", AP | CC, Class::Magician, 60),
+    ("werewolf", AD | HEAL | CC, Class::Assassin, 25),
+    ("whip_master", AD, Class::Range, 40),
+    ("white_mage", AP, Class::Magician, 60),
+    ("wind_mage", AP | CC, Class::Magician, 60),
 ];
 
-/// Champions other mods add, by id, from the `tags` and `category` in their
-/// `.data_champion` files. Filled once by [`load_mod_champions`].
+/// Champions other mods add, by id, from the `tags`, `category` and
+/// `attack.range` in their `.data_champion` files. Filled once by [`load_mod_champions`].
 static MOD_CHAMPIONS: OnceLock<HashMap<String, ChampionTraits>> = OnceLock::new();
 
 /// Steam app id, which names the game's Workshop content folder.
@@ -275,13 +324,24 @@ struct ChampionFile {
     category: String,
     #[serde(default)]
     tags: Vec<String>,
+    /// The basic attack, of which only `range` is read. Left untyped so that an
+    /// attack written some other way costs the champion its reach, not the
+    /// rest of what the file says.
+    #[serde(default)]
+    attack: serde_json::Value,
 }
 
 fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
     let text = std::fs::read_to_string(path).ok()?;
     let file: ChampionFile = serde_json::from_str(text.trim_start_matches('\u{feff}')).ok()?;
     let flags = flags_of(file.tags.iter().map(String::as_str));
-    Some((file.id, ChampionTraits::from_flags(flags, Class::from_name(&file.category))))
+    let attack_range = file
+        .attack
+        .get("range")
+        .and_then(|range| range.as_u64().or_else(|| range.as_f64().map(|range| range as u64)))
+        .map(|range| range as usize);
+    let traits = ChampionTraits::from_flags(flags, Class::from_name(&file.category), attack_range);
+    Some((file.id, traits))
 }
 
 /// What is known about `champion` without the host: [`VANILLA`] for the base
@@ -351,11 +411,12 @@ fn looked_up(champion: &str) -> Option<ChampionTraits> {
 
 fn vanilla(champion: &str) -> Option<ChampionTraits> {
     VANILLA
-        .binary_search_by_key(&champion, |(key, _, _)| key)
+        .binary_search_by_key(&champion, |(key, _, _, _)| key)
         .ok()
         .map(|index| {
-            let (_, flags, class) = VANILLA[index];
-            ChampionTraits::from_flags(flags, Some(class))
+            let (_, flags, class, attack_range) = VANILLA[index];
+            let attack_range = attack_range * crate::DISTANCE_UNITS_PER_RANGE;
+            ChampionTraits::from_flags(flags, Some(class), Some(attack_range))
         })
 }
 
@@ -397,12 +458,19 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
         match ctx.champion_brief(&key) {
             Some(brief) => {
                 let has = |tag: ChampionTagV1| brief.tags.contains(&tag);
+                let class = brief.category.map(Class::from_category);
                 let traits = ChampionTraits {
                     scaling: scaling_of(has(ChampionTagV1::Ad), has(ChampionTagV1::Ap)),
-                    class: brief.category.map(Class::from_category),
+                    class,
                     tank: has(ChampionTagV1::Tank),
                     sustains: has(ChampionTagV1::Heal) || has(ChampionTagV1::Shield),
                     cc: has(ChampionTagV1::Cc),
+                    // The brief has no attack range, so the fallbacks' answer
+                    // stands where they have one.
+                    ranged: fallback(&key).and_then(|known| known.ranged).or_else(|| {
+                        let (range, melee) = (ChampionTagV1::Range, ChampionTagV1::Melee);
+                        ranged_of(None, has(range), has(melee), class)
+                    }),
                 };
                 answered.push((key, traits));
             }

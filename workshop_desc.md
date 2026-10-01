@@ -1,4 +1,4 @@
-Adds 6 item slots & 211 new items (123 base + 88 Radiant) to Teamfight Manager 2.  
+Adds 6 item slots & 213 new items (124 base + 89 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
@@ -65,9 +65,12 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
 - support items (except Protoplasm Harness and Zeke's Convergence) outside the support role
 - Feral Flare and Grez's Spectral Lantern outside the jungle role
+- melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Sunfire Cape, Hollow Radiance) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
 - items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone). Champions from other mods are covered too.
 
 Supports always get a support item that suits their damage type, and junglers Feral Flare or Grez's Spectral Lantern, bought first. The rest of their build is still the AI's choice.  
+
+Champions try to build items tagged for their role (Fighter for Melee, Marksman for Ranged, Mage, Assassin, Support, plus Tank for tanks), whenever one fits the rules above.  
 
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
 

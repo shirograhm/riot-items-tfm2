@@ -97,6 +97,7 @@ impl StableItem for Phage {
             "spear_of_shojin".to_string(),
             "sundered_sky".to_string(),
             "chempunk_chainsword".to_string(),
+            "hullbreaker".to_string(),
         ]
     }
 
