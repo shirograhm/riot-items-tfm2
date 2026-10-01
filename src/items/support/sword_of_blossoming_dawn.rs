@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, percent_of, sized_range, ItemMeta};
 
 /// The `view_projectiles` name in `view/effects.view_effects` that draws the
 /// wisp flying from the carrier to the ally Peppermint heals
@@ -222,7 +222,7 @@ impl StableItem for SwordOfBlossomingDawn {
             return;
         };
 
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let range = sized_range(ctx, caster, self.effect_max_distance);
         let range_sq = range * range;
 
         let mut best: Option<(usize, f64, u64)> = None;

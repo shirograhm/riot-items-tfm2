@@ -4,8 +4,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, refresh_buff, ticks, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE,
-    TICKS_PER_SECOND,
+    apply_config, percent_of, refresh_buff, size_percent, ticks, ItemMeta, ProcQueue,
+    DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
 };
 
 // Ironheart, League's Colossal Consumption: an enemy champion within
@@ -18,9 +18,10 @@ use crate::{
 // `effect_duration_seconds` and then drops, one at a time; death on either side
 // clears them all.
 //
-// That distance grows with the carrier: a carrier 30% bigger reaches 30%
-// further, whatever made them bigger (`size_percent`). Goliath is the usual
-// source, so the item extends its own reach as the health comes in.
+// That distance grows with the carrier, like every range in the mod measured
+// from its carrier (`crate::sized_range`): a carrier 30% bigger reaches 30%
+// further, whatever made them bigger. Goliath is the usual source, so the item
+// extends its own reach as the health comes in.
 //
 // The pictures are League's stack and trigger VFX, drawn up and to the right of
 // the enemy by one statless buff per stage, bound in the `view_buffs` table of
@@ -79,8 +80,9 @@ pub struct Heartsteel {
     /// first update of each life.
     goliath_percent: i32,
     /// How much bigger than usual the carrier is, in percent, from every
-    /// source ([`size_percent`]). Read back once a second and whenever Goliath
-    /// changes, rather than every tick.
+    /// source ([`crate::size_percent`]). Ironheart measures its range every
+    /// tick, so this is read back once a second and whenever Goliath changes
+    /// rather than each time.
     size_percent: u64,
     /// Ironheart on each enemy champion, by their player id: the player keeps
     /// it across a respawn, their champion entity may not.
@@ -439,21 +441,6 @@ impl StableItem for Heartsteel {
     fn category(&self) -> ItemCategoryV1 {
         ItemCategoryV1::Hp
     }
-}
-
-/// How much bigger than usual `carrier` is, in percent: the `radius_mult` of
-/// every buff on them, which is how anything in this game changes a champion's
-/// size (Goliath above, another mod's Cho'Gath). Never below zero, so a
-/// shrunken carrier keeps Ironheart's written range.
-fn size_percent(ctx: &StableSim<'_>, carrier: usize) -> u64 {
-    let Some(entity) = ctx.get_entity(carrier) else {
-        return 0;
-    };
-    let total: i32 = (0..entity.buff_count())
-        .filter_map(|index| entity.buff_at(index))
-        .map(|buff| buff.radius_mult)
-        .sum();
-    total.max(0) as u64
 }
 
 /// Ironheart's hold on one enemy champion.

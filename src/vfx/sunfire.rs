@@ -12,7 +12,10 @@
 //! burn is deliberately not handled here. The hook gives its holders the same
 //! Immolate flames, and adds the part the engine lacks: the bonus against
 //! minions and monsters, as a second hit on them alone. That assumes the
-//! engine burns once a second like every other Immolate. Its numbers, like the
+//! engine burns once a second like every other Immolate. The other part it
+//! lacks is the reach a bigger holder gets: the engine's range is fixed, so the
+//! hook burns the band past it itself, which assumes the engine measures
+//! centre to centre the way the mod does. Its numbers, like the
 //! rest of the HP line's stats, are written into
 //! `setting/item_setting.item_setting` by `apply_config.ps1`. The hook reads
 //! the same config entries, `sunfire_cape` and `radiant_sunfire_cape`.
@@ -20,7 +23,12 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, immolate_burn, mark_immolate, percent_of, TICKS_PER_SECOND};
+use crate::{
+    apply_config, immolate_burn, mark_immolate, percent_of, sized_range, DISTANCE_UNITS_PER_RANGE,
+    TICKS_PER_SECOND,
+};
+
+use super::immolate_burn_between;
 
 const SUNFIRE_KEY: &str = "hourglass_of_eternity";
 /// Radiant Sunfire Cape. The engine burns for it; the hook only adds the flames.
@@ -83,8 +91,10 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
     }
 
     let mut flames = Vec::new();
-    // (caster, team, range, champion damage, minion and monster damage)
+    // (caster, team, champion damage, minion and monster damage)
     let mut burns = Vec::new();
+    // (caster, team, champion damage, minion and monster bonus)
+    let mut radiant_burns = Vec::new();
     for index in 0..sim.player_count() {
         let Some(player) = sim.player_at(index) else {
             continue;
@@ -106,12 +116,11 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
         if sunfire_here {
             let damage = sunfire.damage(max_hp);
             let minion_damage = damage + sunfire.minion_bonus(damage);
-            burns.push((id, team, sunfire.effect_max_distance, damage, minion_damage));
+            burns.push((id, team, damage, minion_damage));
         }
         if radiant_here {
-            // The engine burns everyone for the base damage itself.
-            let minion_bonus = radiant.minion_bonus(radiant.damage(max_hp));
-            burns.push((id, team, radiant.effect_max_distance, 0, minion_bonus));
+            let damage = radiant.damage(max_hp);
+            radiant_burns.push((id, team, damage, radiant.minion_bonus(damage)));
         }
     }
 
@@ -119,8 +128,31 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
         mark_immolate(sim, champion);
     }
 
-    for (caster, caster_team, range, damage, minion_damage) in burns {
+    for (caster, caster_team, damage, minion_damage) in burns {
+        let range = sunfire.effect_max_distance;
         immolate_burn(sim, caster, caster_team, range, damage, minion_damage);
+    }
+
+    for (caster, caster_team, damage, minion_bonus) in radiant_burns {
+        // The engine burns everyone within its own range for the base damage
+        // itself, so there the hook only adds the bonus.
+        let engine_reach = (radiant.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        immolate_burn_between(sim, caster, caster_team, 0, engine_reach, 0, minion_bonus);
+        // The engine's range does not grow with the holder, so the band a
+        // bigger holder adds past it ([`sized_range`]) is burnt here in full.
+        let reach = sized_range(sim, caster, radiant.effect_max_distance);
+        if reach > engine_reach {
+            let minion_damage = damage + minion_bonus;
+            immolate_burn_between(
+                sim,
+                caster,
+                caster_team,
+                engine_reach,
+                reach,
+                damage,
+                minion_damage,
+            );
+        }
     }
 }
 

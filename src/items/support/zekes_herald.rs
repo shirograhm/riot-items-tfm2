@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, refresh_buff, sized_range, ticks, ItemMeta};
 
 // Zeke's Convergence (registered under its old key, `zekes_herald`).
 //
@@ -143,7 +143,7 @@ impl ZekesHerald {
             return;
         };
 
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let range = sized_range(ctx, caster, self.effect_max_distance);
         let range_sq = range * range;
         // Any enemy unit but a turret, the way Bami's Cinder picks its targets.
         let targets: Vec<usize> = (0..ctx.entity_count())

@@ -24,7 +24,10 @@ pub(crate) use hooks::{hook, item_build_hook};
 pub(crate) use ui::{solo_rank_ui, strategy_ui};
 pub(crate) use utils::{config, own_team_log};
 pub(crate) use vfx::sunfire;
-pub(crate) use vfx::{add_stack, immolate_burn, mark_immolate, refresh_buff, Annul, Spellblade};
+pub(crate) use vfx::{
+    add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
+    Spellblade,
+};
 
 fn percent_of(value: usize, percent: f64) -> usize {
     (value as f64 * percent / 100.0).round() as usize

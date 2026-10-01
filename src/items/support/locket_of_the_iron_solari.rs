@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, percent_of_i32, ticks, ItemMeta, AURA_DURATION_TICKS,
-    AURA_REFRESH_TICKS, DISTANCE_UNITS_PER_RANGE,
+    apply_config, percent_of, percent_of_i32, sized_range, ticks, ItemMeta, AURA_DURATION_TICKS,
+    AURA_REFRESH_TICKS,
 };
 
 #[derive(Clone, Debug)]
@@ -148,7 +148,7 @@ impl LocketOfTheIronSolari {
             return;
         }
 
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let range = sized_range(ctx, caster, self.effect_max_distance);
         let range_sq = range * range;
 
         // Champions only — Legion is the half of the item that looks after
@@ -193,7 +193,7 @@ impl LocketOfTheIronSolari {
         let caster_id = caster.id();
         let caster_team = caster.team();
 
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let range = sized_range(ctx, caster_id, self.effect_max_distance);
         let range_sq = range * range;
 
         let mut targets: Vec<(usize, bool)> = Vec::new();

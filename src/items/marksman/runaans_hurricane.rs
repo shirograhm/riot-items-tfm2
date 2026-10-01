@@ -3,7 +3,7 @@ use rand::rngs::StdRng;
 use rand::{RngExt, SeedableRng};
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, is_monster, percent_of, sized_range, ItemMeta, ProcQueue};
 
 // Wind's Fury: Basic attacks fire bolts at up to 2 additional enemies within
 // range of the carrier, champions first, each dealing bonus physical damage
@@ -121,7 +121,7 @@ impl RunaansHurricane {
         team: usize,
         target: usize,
     ) -> Vec<usize> {
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let range = sized_range(ctx, caster, self.effect_max_distance);
         let range_sq = range * range;
         let mut candidates: Vec<(bool, u64, usize)> = (0..ctx.entity_count())
             .filter_map(|index| ctx.entity_at(index))

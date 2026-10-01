@@ -2,7 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, is_monster, percent_of, ItemMeta, ProcQueue, AURA_DURATION_TICKS,
+    apply_config, is_monster, percent_of, sized_range, ItemMeta, ProcQueue, AURA_DURATION_TICKS,
     AURA_REFRESH_TICKS, DISTANCE_UNITS_PER_RANGE,
 };
 
@@ -128,7 +128,7 @@ impl Hullbreaker {
         else {
             return;
         };
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        let range = sized_range(ctx, carrier, self.effect_max_distance);
         let range_sq = range * range;
 
         let minions: Vec<usize> = (0..ctx.entity_count())
