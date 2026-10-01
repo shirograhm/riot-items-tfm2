@@ -18,6 +18,10 @@ use crate::{
 // `effect_duration_seconds` and then drops, one at a time; death on either side
 // clears them all.
 //
+// That distance grows with the carrier: a carrier 30% bigger reaches 30%
+// further, whatever made them bigger (`size_percent`). Goliath is the usual
+// source, so the item extends its own reach as the health comes in.
+//
 // The pictures are League's stack and trigger VFX, drawn up and to the right of
 // the enemy by one statless buff per stage, bound in the `view_buffs` table of
 // `view/effects.view_effects` and all from `effects/heartsteel_mark`: a dark
@@ -74,6 +78,10 @@ pub struct Heartsteel {
     /// The size Goliath has on the carrier now, in percent; 0 before the
     /// first update of each life.
     goliath_percent: i32,
+    /// How much bigger than usual the carrier is, in percent, from every
+    /// source ([`size_percent`]). Read back once a second and whenever Goliath
+    /// changes, rather than every tick.
+    size_percent: u64,
     /// Ironheart on each enemy champion, by their player id: the player keeps
     /// it across a respawn, their champion entity may not.
     targets: HashMap<usize, Target>,
@@ -103,6 +111,7 @@ impl Heartsteel {
             // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
             goliath_percent: 0,
+            size_percent: 0,
             targets: HashMap::new(),
             procs: ProcQueue::new(),
         }
@@ -157,16 +166,17 @@ impl Heartsteel {
     }
 
     /// Goliath: sizes the carrier to their maximum health. The buff is only
-    /// replaced when the whole percent changes, not every tick.
-    fn goliath(&mut self, ctx: &mut StableSim<'_>, carrier: usize) {
+    /// replaced when the whole percent changes, not every tick; returns
+    /// whether it was.
+    fn goliath(&mut self, ctx: &mut StableSim<'_>, carrier: usize) -> bool {
         let Some(max_hp) = ctx.get_entity(carrier).map(|c| c.hp().1) else {
-            return;
+            return false;
         };
         let percent = ((max_hp as f64 * self.effect_size_per_thousand_hp / 1000.0) as i32)
             .min(self.effect_max_size_percent)
             .max(0);
         if percent == self.goliath_percent {
-            return;
+            return false;
         }
         self.goliath_percent = percent;
         ctx.entity_remove_buff(carrier, GOLIATH_BUFF);
@@ -179,6 +189,7 @@ impl Heartsteel {
                 },
             );
         }
+        true
     }
 
     /// Clears every enemy's stages: the carrier respawned. The cooldowns keep
@@ -332,8 +343,12 @@ impl StableItem for Heartsteel {
             .and_then(|p| p.champion())
             .filter(|c| c.is_alive())
             .map(|c| c.id());
+        let refresh = ctx.tick() % TICKS_PER_SECOND as usize == 0;
         if let Some(carrier_id) = carrier {
-            self.goliath(ctx, carrier_id);
+            let resized = self.goliath(ctx, carrier_id);
+            if resized || refresh {
+                self.size_percent = size_percent(ctx, carrier_id);
+            }
         }
         // (player id, champion entity, alive) for every enemy champion.
         let mut enemies = Vec::new();
@@ -349,10 +364,12 @@ impl StableItem for Heartsteel {
             }
         }
 
-        let reach = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
+        // Ironheart reaches as much further as the carrier is bigger.
+        let reach = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64
+            * (100 + self.size_percent)
+            / 100;
         let stage_ticks = (ticks(self.effect_charge_seconds) / MAX_STAGES as usize).max(1);
         let linger_ticks = ticks(self.effect_duration_seconds).max(1);
-        let refresh = ctx.tick() % TICKS_PER_SECOND as usize == 0;
         for (id, entity, alive) in enemies {
             let target = self.targets.entry(id).or_default();
             target.entity = entity;
@@ -422,6 +439,21 @@ impl StableItem for Heartsteel {
     fn category(&self) -> ItemCategoryV1 {
         ItemCategoryV1::Hp
     }
+}
+
+/// How much bigger than usual `carrier` is, in percent: the `radius_mult` of
+/// every buff on them, which is how anything in this game changes a champion's
+/// size (Goliath above, another mod's Cho'Gath). Never below zero, so a
+/// shrunken carrier keeps Ironheart's written range.
+fn size_percent(ctx: &StableSim<'_>, carrier: usize) -> u64 {
+    let Some(entity) = ctx.get_entity(carrier) else {
+        return 0;
+    };
+    let total: i32 = (0..entity.buff_count())
+        .filter_map(|index| entity.buff_at(index))
+        .map(|buff| buff.radius_mult)
+        .sum();
+    total.max(0) as u64
 }
 
 /// Ironheart's hold on one enemy champion.
