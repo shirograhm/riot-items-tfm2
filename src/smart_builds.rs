@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Ten of them:
+//! Eleven of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -57,14 +57,23 @@
 //!    crowd control never keeps an AI's Mandate: it makes way for another
 //!    support item, and rule 9 never hands one out. A champion nothing is known
 //!    about is left alone either way.
+//! 11. **Items for the champion's reach** — a ranged champion keeps no item
+//!    whose passive wants its carrier in melee ([`MELEE_ITEMS`]: the Hydras'
+//!    Cleave and Hullbreaker's Skipper weaken from past 35 range, and
+//!    Heartsteel and the Immolate auras need the enemy closer than a ranged
+//!    champion stands), and a melee champion none that wants its carrier at
+//!    range ([`RANGED_ITEMS`]: Runaan's Hurricane, Diamond Tipped Spear).
+//!    Melee is a basic attack that reaches 35 or less, the same line those
+//!    items draw. The stand-in comes from the item's own category, like a
+//!    duplicate's. A champion whose reach nothing states is left alone.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
 //! other item, so the AI's picks around it make way for it rather than the
 //! other way round.
 //!
-//! Rules 4, 5, 8, 9 and 10 are about the champion, not the build, and come in as a
-//! [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
+//! Rules 4, 5, 8, 9, 10 and 11 are about the champion, not the build, and come in
+//! as a [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
 //! crit the build can still afford, and replaces what comes after. That matches
@@ -236,6 +245,7 @@ pub(crate) enum Reason {
     Scaling,
     JungleOnly,
     MandateWithoutCc,
+    Reach,
 }
 
 impl Reason {
@@ -247,7 +257,8 @@ impl Reason {
     /// support without crowd control goes the same way: it is a support item,
     /// so another support item stands in first. A jungle item's category is an
     /// ordinary one (Grez's is a Mage item), so its stand-in comes from there,
-    /// like a duplicate's.
+    /// like a duplicate's. So is a melee or ranged item's: a ranged champion
+    /// that loses Titanic Hydra still wanted an item of that kind.
     pub(crate) fn restyles(self) -> bool {
         matches!(
             self,
@@ -275,6 +286,8 @@ pub(crate) struct Fit {
     /// Rule 10's other half: whether this is a support known to have no crowd
     /// control, who never keeps Mandate. `false` when the champion is unknown.
     no_mandate: bool,
+    /// Rule 11: whether the champion attacks from range, `None` when unknown.
+    ranged: Option<bool>,
 }
 
 /// The [`Fit`] for `champion` playing `role`.
@@ -283,7 +296,8 @@ pub(crate) struct Fit {
 /// unknown role ([`Role::Any`]), which the buy detour falls back to when no
 /// lineup has placed the champion yet. Jungle items follow the same line, for
 /// the jungle role. A champion nothing is known about gets no scaling
-/// restriction: a missing tag must never cost a build an item.
+/// restriction and none on its reach: a missing tag must never cost a build an
+/// item.
 pub(crate) fn fit(champion: &str, role: Role) -> Fit {
     let traits = champion_traits::traits(champion);
     Fit {
@@ -292,6 +306,7 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
         jungle_items: role == Role::Jungle,
         mandate: role == Role::Support && traits.is_some_and(|traits| traits.cc),
         no_mandate: role == Role::Support && traits.is_some_and(|traits| !traits.cc),
+        ranged: traits.and_then(|traits| traits.ranged),
     }
 }
 
@@ -311,6 +326,16 @@ impl Fit {
             Some(Scaling::Ap) => item.physical && !item.magic,
             Some(Scaling::Ad) => item.magic && !item.physical,
             Some(Scaling::Hybrid) | None => false,
+        }
+    }
+
+    /// Rule 11: whether `key` is an item for the other reach — a melee item on
+    /// a ranged champion, or a ranged item on a melee one.
+    fn out_of_reach(&self, key: &str) -> bool {
+        match self.ranged {
+            Some(true) => is_melee_item(key),
+            Some(false) => is_ranged_item(key),
+            None => false,
         }
     }
 
@@ -491,6 +516,38 @@ fn is_jungle_item(key: &str) -> bool {
     JUNGLE_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
+/// Rule 11: items whose passive wants the carrier in melee, which a ranged
+/// champion does not keep. By base slug, so the radiant tier follows. The
+/// distances are the defaults; all of them are config-editable.
+const MELEE_ITEMS: [&str; 7] = [
+    "ravenous_hydra",  // Cleave at half strength from past 35 range
+    "titanic_hydra",   // Cleave at half strength from past 35 range
+    "hullbreaker",     // Skipper at 70% strength from past 35 range
+    "heartsteel",      // Ironheart charges on enemies that stay within 50 range
+    "hollow_radiance", // Immolate burns enemies within 30 range
+    "sunfire_cape",    // Immolate again; this slug is the radiant cape's
+    // Sunfire Cape itself, whose key the base game never lost: only the
+    // radiant reskins have an alias for `base_slug` to undo.
+    "hourglass_of_eternity",
+];
+
+/// Rule 11: items whose passive wants the carrier at range, which a melee
+/// champion does not keep. By base slug, so the radiant tier follows.
+const RANGED_ITEMS: [&str; 2] = [
+    "runaans_hurricane",    // bolts at the enemies around the carrier; ranged only in League
+    "diamond_tipped_spear", // Sweet Spot grows with the distance to the target, up to 100 range
+];
+
+/// Whether `key` is one of [`MELEE_ITEMS`], base or radiant.
+fn is_melee_item(key: &str) -> bool {
+    MELEE_ITEMS.contains(&crate::build_config::base_slug(key))
+}
+
+/// Whether `key` is one of [`RANGED_ITEMS`], base or radiant.
+fn is_ranged_item(key: &str) -> bool {
+    RANGED_ITEMS.contains(&crate::build_config::base_slug(key))
+}
+
 /// What the items a build already holds have spent of the two budgets the rules
 /// police, and the [`Fit`] of the champion it is for. Carries the trait table
 /// with it, so a scan across the catalog is a run of hash lookups rather than a
@@ -536,6 +593,11 @@ impl Budget {
             Some(Reason::MandateWithoutCc)
         } else if self.fit.mismatches(&traits) {
             Some(Reason::Scaling)
+        } else if self.fit.out_of_reach(key) {
+            // After rule 5: an item that fails both (Runaan's on a melee mage)
+            // is replaced the way rule 5 does it, in the build's style, not by
+            // another item of a kind the champion cannot use.
+            Some(Reason::Reach)
         } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
         } else if self.crit_chance + traits.crit_chance > CRIT_CAP {
@@ -545,14 +607,15 @@ impl Budget {
         }
     }
 
-    /// Whether `key` is an item this champion may hold at all — rules 4, 5, 8
-    /// and 10, which do not depend on what else is in the build. An item that
-    /// fails is no guide to the build's style.
+    /// Whether `key` is an item this champion may hold at all — rules 4, 5, 8,
+    /// 10 and 11, which do not depend on what else is in the build. An item
+    /// that fails is no guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
         !(!self.fit.support_items && is_support_item(key))
             && !(!self.fit.jungle_items && is_jungle_item(key))
             && !(self.fit.no_mandate && is_mandate(key))
             && !self.fit.mismatches(&self.table.traits(key))
+            && !self.fit.out_of_reach(key)
     }
 
     /// Whether `key` brings any crit chance — what the stand-in for a crit

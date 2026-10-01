@@ -32,6 +32,7 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 - a second Grievous Wounds item
 - a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked)
 - Feral Flare or Grez's Spectral Lantern on any champion not playing the jungle role
+- a melee item on a ranged champion (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Sunfire Cape, Hollow Radiance), or a ranged item on a melee champion (Runaan's Hurricane, Diamond Tipped Spear). A champion is melee when its basic attack range is 35 or less; champions from other mods are covered too
 - a support item (except Protoplasm Harness and Zeke's Convergence) on any champion not playing the support role
 - an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion (hybrid champions and hybrid items are left alone; Magic Knight counts as an AP champion, since only its basic attack is physical)
 
