@@ -70,6 +70,8 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 
 Supports always get a support item that suits their damage type, and junglers Feral Flare or Grez's Spectral Lantern, bought first. The rest of their build is still the AI's choice.  
 
+Champions try to build items tagged for their role (Fighter for Melee, Marksman for Ranged, Mage, Assassin, Support, plus Tank for tanks), whenever one fits the rules above.  
+
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
