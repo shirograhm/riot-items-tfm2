@@ -12,10 +12,15 @@
 //! comes off on the next `update` rather than in the hook: an ability that
 //! deals its damage before its stun would otherwise lose the immunity between
 //! the two. Everything else landing in that same tick is blocked with it.
+//!
+//! The host of game 0.6.2 never calls the upgrade hooks, so the hand-over runs
+//! through `crate::upgrade_carry`: every pop notes the tick the shield is ready
+//! again under the item's upgrade line, and an item built from another on that
+//! line starts from the latest one.
 
 use mod_api_stable::*;
 
-use crate::{refresh_buff, ticks};
+use crate::{refresh_buff, ticks, upgrade_carry};
 
 /// One name for every Annul item, so a champion holding two has one shield:
 /// the hit that pops it reaches both items and starts both cooldowns. Also the
@@ -30,6 +35,14 @@ pub(crate) struct Annul {
     up: bool,
     /// Popped this tick; `update` takes the buff off the carrier.
     popped: bool,
+    /// The upgrade line the cooldown is noted under: the key of the first item
+    /// of those that hand it on to one another.
+    line: &'static str,
+    /// Whether this item is built from another on its line, and so takes over
+    /// that one's cooldown.
+    built_up: bool,
+    /// Whether this instance has taken over the cooldown of the item it replaced.
+    inherited: bool,
 }
 
 /// Flags packed above the cooldown in [`Annul::carry`].
@@ -52,8 +65,24 @@ fn skill_damaged_reduce(entity: &StableEntity<'_, '_>) -> (usize, Option<usize>)
 }
 
 impl Annul {
-    pub(crate) fn reset(&mut self) {
-        *self = Self::default();
+    /// The Annul of an item on `line`; `built_up` is whether the item is built
+    /// from another on it.
+    pub(crate) fn on_line(line: &'static str, built_up: bool) -> Self {
+        Self {
+            line,
+            built_up,
+            ..Self::default()
+        }
+    }
+
+    /// The carrier respawned: the shield starts over, ready.
+    pub(crate) fn reset(&mut self, ctx: &StableSim<'_>, player: usize) {
+        self.cooldown = 0;
+        self.up = false;
+        self.popped = false;
+        // Nothing left to take over, and nothing for a later upgrade to either.
+        self.inherited = true;
+        upgrade_carry::note(self.line, ctx, player, 0);
     }
 
     /// What an upgrade hands its successor, so building the next tier neither
@@ -82,6 +111,14 @@ impl Annul {
     /// it, and its size follows the carrier's other ability damage reduction
     /// (Cloak of Starry Night's grows with magic resistance).
     pub(crate) fn update(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        // An item built from another arrives as a fresh instance: it takes over
+        // what is left of that one's cooldown, once.
+        if !std::mem::replace(&mut self.inherited, true) && self.built_up {
+            if let Some((_, ready_at)) = upgrade_carry::latest(self.line, ctx, player) {
+                let left = (ready_at as usize).saturating_sub(ctx.tick());
+                self.cooldown = self.cooldown.max(left);
+            }
+        }
         let champion = ctx
             .get_player(player)
             .and_then(|p| p.champion())
@@ -125,9 +162,11 @@ impl Annul {
     /// reaches the carrier as 0 damage: that is the shield having eaten it, and
     /// it must not go on eating them for free. Anything that still hurts went
     /// past the shield and leaves it up.
+    #[allow(clippy::too_many_arguments)]
     pub(crate) fn on_damaged(
         &mut self,
         ctx: &mut StableSim<'_>,
+        player: usize,
         entity: usize,
         attacker: usize,
         damage: usize,
@@ -140,7 +179,7 @@ impl Annul {
             _ => false,
         };
         if blocked {
-            self.pop(ctx, entity, attacker, cooldown_seconds);
+            self.pop(ctx, player, entity, attacker, cooldown_seconds);
         }
     }
 
@@ -161,7 +200,7 @@ impl Annul {
         else {
             return;
         };
-        self.pop(ctx, entity, caster, cooldown_seconds);
+        self.pop(ctx, player, entity, caster, cooldown_seconds);
     }
 
     /// Spends the shield on a hit from `source`, if it is up and `source` is
@@ -170,6 +209,7 @@ impl Annul {
     fn pop(
         &mut self,
         ctx: &mut StableSim<'_>,
+        player: usize,
         entity: usize,
         source: usize,
         cooldown_seconds: f64,
@@ -186,5 +226,7 @@ impl Annul {
         self.up = false;
         self.popped = true;
         self.cooldown = ticks(cooldown_seconds);
+        let ready_at = ctx.tick() + self.cooldown;
+        upgrade_carry::note(self.line, ctx, player, ready_at as u64);
     }
 }

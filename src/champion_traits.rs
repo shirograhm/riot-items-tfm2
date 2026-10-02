@@ -1,6 +1,6 @@
 //! What Smart Builds needs to know about a champion: what its damage scales
 //! with, to pick its boots, its class and whether it tanks or keeps allies
-//! alive, whether its kit has crowd control (a support that does builds
+//! alive, whether its kit can immobilize an enemy (a support that can builds
 //! Imperial Mandate), and whether it attacks from range (ranged and melee
 //! champions keep different items).
 //!
@@ -28,7 +28,9 @@
 //!
 //! The host's answer has no attack range in it, so whether a champion is
 //! ranged always comes from the fallbacks where they know it: both carry the
-//! reach of the basic attack itself. See [`ranged_of`].
+//! reach of the basic attack itself. See [`ranged_of`]. Whether a kit
+//! immobilizes is not in the host's answer either, only the broader `CC` tag,
+//! so that comes from the fallbacks the same way.
 
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
@@ -78,6 +80,18 @@ impl Class {
     }
 }
 
+/// What a kit immobilizes with: the crowd control that takes movement out of
+/// an enemy's hands, the set Imperial Mandate's Command answers to. A slow, a
+/// silence or a disarm is none of it.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub(crate) struct Immobilize {
+    /// A taunt. Kept apart because a taunt names its taunter, so Command
+    /// credits it without guessing.
+    pub taunt: bool,
+    /// Anything else: a stun, root, knock-up, knockback, pull, fear or charm.
+    pub other: bool,
+}
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub(crate) struct ChampionTraits {
     /// `None` for a champion tagged neither way, which the rules leave alone.
@@ -90,6 +104,9 @@ pub(crate) struct ChampionTraits {
     pub sustains: bool,
     /// Tagged `CC`: its kit slows, stuns or otherwise holds enemies.
     pub cc: bool,
+    /// What its abilities immobilize with, which is narrower than `cc`. `None`
+    /// when only the tag is known.
+    pub immobilize: Option<Immobilize>,
     /// Whether its basic attack reaches past [`MELEE_ATTACK_RANGE`]. `None`
     /// when nothing says, which the rules leave alone.
     pub ranged: Option<bool>,
@@ -97,16 +114,29 @@ pub(crate) struct ChampionTraits {
 
 impl ChampionTraits {
     /// `attack_range` is the reach of the basic attack in world units, where
-    /// the source states one.
-    fn from_flags(flags: u8, class: Option<Class>, attack_range: Option<usize>) -> Self {
+    /// the source states one, and `immobilize` what its kit says about that.
+    fn from_flags(
+        flags: u8,
+        class: Option<Class>,
+        attack_range: Option<usize>,
+        immobilize: Option<Immobilize>,
+    ) -> Self {
         Self {
             scaling: scaling_of(flags & AD != 0, flags & AP != 0),
             class,
             tank: flags & TANK != 0,
             sustains: flags & (HEAL | SHIELD) != 0,
             cc: flags & CC != 0,
+            immobilize,
             ranged: ranged_of(attack_range, flags & RANGE != 0, flags & MELEE != 0, class),
         }
+    }
+
+    /// Whether the kit can set off Imperial Mandate: what the kit itself says
+    /// where it is known, else the `CC` tag, which also counts slows.
+    pub(crate) fn can_immobilize(&self) -> bool {
+        self.immobilize
+            .map_or(self.cc, |immobilize| immobilize.taunt || immobilize.other)
     }
 }
 
@@ -255,8 +285,140 @@ const VANILLA: &[(&str, u8, Class, usize)] = &[
     ("wind_mage", AP | CC, Class::Magician, 60),
 ];
 
-/// Champions other mods add, by id, from the `tags`, `category` and
-/// `attack.range` in their `.data_champion` files. Filled once by [`load_mod_champions`].
+/// The base game's champions with an ability that taunts ([`Immobilize::taunt`]).
+/// Knight and Shield Bearer immobilize with nothing else. Sorted, for the
+/// binary search.
+const VANILLA_TAUNTERS: &[&str] = &["illusionist", "knight", "prisoner", "shield_bearer"];
+
+/// The base game's champions with an ability that immobilizes some other way
+/// ([`Immobilize::other`]). Both lists are read off each kit's parameters in
+/// `setting/champion_info` and its skill text (0.6.2). Not the `CC` tag: four
+/// tagged champions only slow, silence or disarm (Alchemist, Astrologer,
+/// Taoist, Voodoo Shaman), and thirteen with a stun, root, knockback, fear or
+/// charm carry no tag at all. Werewolf is here for the pull among its charge's
+/// parameters, though its text speaks only of the slow. Sorted, for the binary
+/// search.
+const VANILLA_IMMOBILIZERS: &[&str] = &[
+    "android",
+    "archer",
+    "barrier_magician",
+    "berserker",
+    "bomber",
+    "cavalry_knight",
+    "circus_blade",
+    "dark_mage",
+    "demon",
+    "dokkaebi",
+    "druid",
+    "dual_blader",
+    "executioner",
+    "fighter",
+    "gambler",
+    "hammerer",
+    "harpooner",
+    "hitman",
+    "ice_mage",
+    "illusionist",
+    "inquisitor",
+    "jiangshi",
+    "lancer",
+    "lightning_mage",
+    "magic_knight",
+    "monk",
+    "ogre",
+    "pole_warrior",
+    "prisoner",
+    "sand_mage",
+    "shadowmancer",
+    "spellbreaker",
+    "spirit_caller",
+    "strongman",
+    "werewolf",
+    "whip_master",
+    "white_mage",
+    "wind_mage",
+];
+
+/// How a `.data_champion` kit spells one kind of crowd control: the effect
+/// types that apply it, and the parameters a `Native` effect borrowed from the
+/// base game names it by.
+struct KitSign {
+    effects: &'static [&'static str],
+    params: &'static [&'static str],
+}
+
+const TAUNT_SIGN: KitSign = KitSign {
+    effects: &["Taunt"],
+    params: &["taunt_duration"],
+};
+
+/// Every immobilize but the taunt.
+const IMMOBILIZE_SIGN: KitSign = KitSign {
+    effects: &[
+        "Airborne",
+        "Bind",
+        "Charm",
+        "Fear",
+        "Grab",
+        "Knockback",
+        "Pull",
+        "Stun",
+    ],
+    params: &[
+        "airborne",
+        "airborne_tick",
+        "airborne_time",
+        "bind",
+        "bind_duration",
+        "bind_tick",
+        "charm_duration",
+        "fear_duration",
+        "fear_tick",
+        "grab",
+        "pull_speed",
+        "stun",
+        "stun_duration",
+    ],
+};
+
+/// Whether anything in this part of a `.data_champion` kit does what `sign`
+/// spells to an enemy. What a kit does to its own caster (`WithSelf`) holds no
+/// one.
+fn kit_shows(kit: &serde_json::Value, sign: &KitSign) -> bool {
+    match kit {
+        serde_json::Value::Object(fields) => {
+            let effect = fields.get("type").and_then(serde_json::Value::as_str);
+            if effect == Some("WithSelf") {
+                return false;
+            }
+            effect.is_some_and(|effect| sign.effects.contains(&effect))
+                || fields.iter().any(|(name, value)| {
+                    let set = value.as_u64().is_some_and(|amount| amount > 0)
+                        || value.as_bool() == Some(true);
+                    (set && sign.params.contains(&name.as_str())) || kit_shows(value, sign)
+                })
+        }
+        serde_json::Value::Array(items) => items.iter().any(|item| kit_shows(item, sign)),
+        _ => false,
+    }
+}
+
+/// Whether this part of a kit runs a `Native` effect: code in the mod's own
+/// DLL, which may stun or root with nothing in the file to show for it (another
+/// mod's Brand, tagged `CC`, does exactly that).
+fn runs_native_code(kit: &serde_json::Value) -> bool {
+    match kit {
+        serde_json::Value::Object(fields) => {
+            fields.get("type").and_then(serde_json::Value::as_str) == Some("Native")
+                || fields.values().any(runs_native_code)
+        }
+        serde_json::Value::Array(items) => items.iter().any(runs_native_code),
+        _ => false,
+    }
+}
+
+/// Champions other mods add, by id, from the `tags`, `category`, `attack.range`
+/// and abilities in their `.data_champion` files. Filled once by [`load_mod_champions`].
 static MOD_CHAMPIONS: OnceLock<HashMap<String, ChampionTraits>> = OnceLock::new();
 
 /// Steam app id, which names the game's Workshop content folder.
@@ -329,6 +491,11 @@ struct ChampionFile {
     /// rest of what the file says.
     #[serde(default)]
     attack: serde_json::Value,
+    /// Everything else, the abilities among it: read for what they immobilize
+    /// with. The basic attack is left out, since Imperial Mandate only answers
+    /// to abilities.
+    #[serde(flatten)]
+    rest: HashMap<String, serde_json::Value>,
 }
 
 fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
@@ -340,7 +507,22 @@ fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
         .get("range")
         .and_then(|range| range.as_u64().or_else(|| range.as_f64().map(|range| range as u64)))
         .map(|range| range as usize);
-    let traits = ChampionTraits::from_flags(flags, Class::from_name(&file.category), attack_range);
+    let shows = |sign: &KitSign| file.rest.values().any(|part| kit_shows(part, sign));
+    let (taunt, other) = (shows(&TAUNT_SIGN), shows(&IMMOBILIZE_SIGN));
+    // Native code may immobilize with nothing in the file to show for it. A kit
+    // that shows nothing at all is then not known to have none, so its `CC` tag
+    // decides; one that shows only a taunt is taken to have more.
+    let native = file.rest.values().any(runs_native_code);
+    let immobilize = (taunt || other || !native).then_some(Immobilize {
+        taunt,
+        other: other || native,
+    });
+    let traits = ChampionTraits::from_flags(
+        flags,
+        Class::from_name(&file.category),
+        attack_range,
+        immobilize,
+    );
     Some((file.id, traits))
 }
 
@@ -416,7 +598,11 @@ fn vanilla(champion: &str) -> Option<ChampionTraits> {
         .map(|index| {
             let (_, flags, class, attack_range) = VANILLA[index];
             let attack_range = attack_range * crate::DISTANCE_UNITS_PER_RANGE;
-            ChampionTraits::from_flags(flags, Some(class), Some(attack_range))
+            let immobilize = Immobilize {
+                taunt: VANILLA_TAUNTERS.binary_search(&champion).is_ok(),
+                other: VANILLA_IMMOBILIZERS.binary_search(&champion).is_ok(),
+            };
+            ChampionTraits::from_flags(flags, Some(class), Some(attack_range), Some(immobilize))
         })
 }
 
@@ -465,8 +651,10 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
                     tank: has(ChampionTagV1::Tank),
                     sustains: has(ChampionTagV1::Heal) || has(ChampionTagV1::Shield),
                     cc: has(ChampionTagV1::Cc),
-                    // The brief has no attack range, so the fallbacks' answer
-                    // stands where they have one.
+                    // The brief says neither what the kit immobilizes with nor
+                    // how far the attack reaches, so the fallbacks' answers
+                    // stand where they have one.
+                    immobilize: fallback(&key).and_then(|known| known.immobilize),
                     ranged: fallback(&key).and_then(|known| known.ranged).or_else(|| {
                         let (range, melee) = (ChampionTagV1::Range, ChampionTagV1::Melee);
                         ranged_of(None, has(range), has(melee), class)

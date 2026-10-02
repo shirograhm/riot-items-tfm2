@@ -1,7 +1,11 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue};
+use crate::{apply_config, is_monster, percent_of, upgrade_carry, ItemMeta, ProcQueue};
+
+/// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
+/// they follow the carrier into the Radiant item.
+const BASE_KEY: &str = "feral_flare";
 
 #[derive(Clone, Debug)]
 pub struct FeralFlare {
@@ -17,6 +21,10 @@ pub struct FeralFlare {
     effect_minion_percent: f64,
     // Non-vital stats (internals)
     feral_stacks: usize,
+    /// The stack count last noted for an upgrade to take over.
+    noted_stacks: usize,
+    /// Whether this instance has taken over the stacks of the item it replaced.
+    inherited: bool,
     procs: ProcQueue,
 }
 
@@ -24,7 +32,7 @@ impl FeralFlare {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base(
-                "feral_flare",
+                BASE_KEY,
                 &["hearthbound_axe"],
                 &["radiant_feral_flare"],
             ),
@@ -38,13 +46,15 @@ impl FeralFlare {
             effect_max_stacks: 50,
             effect_minion_percent: 150.0,
             feral_stacks: 0,
+            noted_stacks: 0,
+            inherited: false,
             procs: ProcQueue::new(),
         }
     }
 
     pub fn radiant() -> Self {
         Self {
-            meta: ItemMeta::radiant("radiant_feral_flare", &["feral_flare"]),
+            meta: ItemMeta::radiant("radiant_feral_flare", &[BASE_KEY]),
             price: 1000,
             attack: 30,
             attack_speed_mult: 40,
@@ -88,6 +98,24 @@ impl FeralFlare {
     fn add_stack(&mut self) {
         if self.feral_stacks < self.effect_max_stacks {
             self.feral_stacks += 1;
+        }
+    }
+
+    /// Keeps the stacks where an upgrade can find them. The Radiant item
+    /// arrives as a fresh instance: it takes over the base item's stacks once,
+    /// clamped to its own ceiling, and every instance notes its count when it
+    /// changes.
+    fn carry_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
+        if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
+            if let Some((_, stacks)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
+                let stacks = (stacks as usize).min(self.effect_max_stacks);
+                self.feral_stacks = self.feral_stacks.max(stacks);
+                self.noted_stacks = self.feral_stacks;
+            }
+        }
+        if self.feral_stacks != self.noted_stacks {
+            self.noted_stacks = self.feral_stacks;
+            upgrade_carry::note(BASE_KEY, ctx, player, self.feral_stacks as u64);
         }
     }
 }
@@ -138,6 +166,8 @@ impl StableItem for FeralFlare {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.feral_stacks = 0;
+        // The stacks start over each life, so there is nothing left to take over.
+        self.inherited = true;
         self.procs.clear();
     }
 
@@ -184,6 +214,7 @@ impl StableItem for FeralFlare {
 
     /// Lands the on-hit damage whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.carry_stacks(ctx, player);
         self.procs.update(ctx, player);
     }
 
@@ -211,6 +242,9 @@ impl StableItem for FeralFlare {
 
     /// Feral stacks survive the Radiant upgrade, clamped to the successor's own
     /// ceiling in case the config gives the two variants different caps.
+    ///
+    /// The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
+    /// `carry_stacks` does the carrying, and they stay for a host that does.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.feral_stacks as u64

@@ -4,8 +4,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, refresh_buff, size_percent, ticks, ItemMeta, ProcQueue,
-    DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
+    apply_config, percent_of, refresh_buff, size_percent, ticks, upgrade_carry, ItemMeta,
+    ProcQueue, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
 };
 
 // Ironheart, League's Colossal Consumption: an enemy champion within
@@ -59,6 +59,9 @@ const TRIGGER_EFFECT: &str = "riot_heartsteel_trigger";
 /// Goliath's size on the carrier. One name for both tiers, so the Radiant
 /// upgrade replaces the base item's instead of adding a second.
 const GOLIATH_BUFF: &str = "riot_heartsteel_goliath";
+/// The upgrade line the banked health is noted under (`crate::upgrade_carry`),
+/// so it follows the carrier into the Radiant item.
+const BASE_KEY: &str = "heartsteel";
 
 #[derive(Clone, Debug)]
 pub struct Heartsteel {
@@ -76,6 +79,10 @@ pub struct Heartsteel {
     effect_size_per_thousand_hp: f64,
     effect_max_size_percent: i32,
     accumulated_bonus_hp: i32,
+    /// The banked total last noted for an upgrade to take over.
+    noted_bonus_hp: i32,
+    /// Whether this instance has taken over the total of the item it replaced.
+    inherited: bool,
     /// The size Goliath has on the carrier now, in percent; 0 before the
     /// first update of each life.
     goliath_percent: i32,
@@ -94,7 +101,7 @@ impl Heartsteel {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base(
-                "heartsteel",
+                BASE_KEY,
                 &["ring_of_reincarnation"],
                 &["radiant_heartsteel"],
             ),
@@ -112,6 +119,8 @@ impl Heartsteel {
             effect_max_size_percent: 30,
             // Non-vital stats (internals)
             accumulated_bonus_hp: 0,
+            noted_bonus_hp: 0,
+            inherited: false,
             goliath_percent: 0,
             size_percent: 0,
             targets: HashMap::new(),
@@ -121,7 +130,7 @@ impl Heartsteel {
 
     pub fn radiant() -> Self {
         Self {
-            meta: ItemMeta::radiant("radiant_heartsteel", &["heartsteel"]),
+            meta: ItemMeta::radiant("radiant_heartsteel", &[BASE_KEY]),
             stack_buff: "heartsteel_stack",
             price: 1050,
             hp: 400,
@@ -194,6 +203,25 @@ impl Heartsteel {
         true
     }
 
+    /// Keeps the banked total where an upgrade can find it. The Radiant item
+    /// arrives as a fresh instance: it takes over the base item's total once,
+    /// before it first uses its own, and every instance notes the total when it
+    /// grows. Only the counter moves. The health banked this life is already on
+    /// the champion as `heartsteel_stack` buffs, and `on_spawn` re-applies it
+    /// from the total on the next respawn.
+    fn carry_bonus_hp(&mut self, ctx: &StableSim<'_>, player: usize) {
+        if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
+            if let Some((_, total)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
+                self.accumulated_bonus_hp = self.accumulated_bonus_hp.max(total as i32);
+                self.noted_bonus_hp = self.accumulated_bonus_hp;
+            }
+        }
+        if self.accumulated_bonus_hp != self.noted_bonus_hp {
+            self.noted_bonus_hp = self.accumulated_bonus_hp;
+            upgrade_carry::note(BASE_KEY, ctx, player, self.accumulated_bonus_hp.max(0) as u64);
+        }
+    }
+
     /// Clears every enemy's stages: the carrier respawned. The cooldowns keep
     /// running.
     fn clear_stages(&mut self, ctx: &mut StableSim<'_>) {
@@ -248,6 +276,7 @@ impl StableItem for Heartsteel {
     }
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        self.carry_bonus_hp(ctx, player);
         self.procs.clear();
         self.clear_stages(ctx);
 
@@ -335,6 +364,7 @@ impl StableItem for Heartsteel {
     /// size in step with the carrier's health, then builds, drops and cools
     /// down every enemy champion's stages.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.carry_bonus_hp(ctx, player);
         self.procs.update(ctx, player);
 
         let Some(team) = ctx.get_player(player).map(|p| p.team()) else {
@@ -420,6 +450,9 @@ impl StableItem for Heartsteel {
     /// sitting on the champion as `heartsteel_stack` buffs, and `on_spawn`
     /// re-applies it from the carried total on the next respawn. The cast round
     /// trips exactly for every `i32`, so the total needs no clamping.
+    ///
+    /// The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
+    /// `carry_bonus_hp` does the carrying, and they stay for a host that does.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.accumulated_bonus_hp as u64

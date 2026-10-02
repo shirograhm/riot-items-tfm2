@@ -1,7 +1,11 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue};
+use crate::{apply_config, is_monster, percent_of, upgrade_carry, ItemMeta, ProcQueue};
+
+/// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
+/// they follow the carrier into the Radiant item.
+const BASE_KEY: &str = "grezs_spectral_lantern";
 
 #[derive(Clone, Debug)]
 pub struct GrezsSpectralLantern {
@@ -17,6 +21,10 @@ pub struct GrezsSpectralLantern {
     effect_bonus_hp_percent_of_damage: f64,
     // Non-vital stats (internals)
     accumulated_stacks: usize,
+    /// The stack count last noted for an upgrade to take over.
+    noted_stacks: usize,
+    /// Whether this instance has taken over the stacks of the item it replaced.
+    inherited: bool,
     procs: ProcQueue,
 }
 
@@ -24,7 +32,7 @@ impl GrezsSpectralLantern {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base(
-                "grezs_spectral_lantern",
+                BASE_KEY,
                 &["haunting_guise"],
                 &["radiant_grezs_spectral_lantern"],
             ),
@@ -39,16 +47,15 @@ impl GrezsSpectralLantern {
             effect_bonus_hp_percent_of_damage: 4.0,
             // Non-vital stats (internals)
             accumulated_stacks: 0,
+            noted_stacks: 0,
+            inherited: false,
             procs: ProcQueue::new(),
         }
     }
 
     pub fn radiant() -> Self {
         Self {
-            meta: ItemMeta::radiant(
-                "radiant_grezs_spectral_lantern",
-                &["grezs_spectral_lantern"],
-            ),
+            meta: ItemMeta::radiant("radiant_grezs_spectral_lantern", &[BASE_KEY]),
             price: 1000,
             hp: 200,
             magic_power: 60,
@@ -103,6 +110,26 @@ impl GrezsSpectralLantern {
             },
         );
     }
+
+    /// Keeps the stacks where an upgrade can find them. The Radiant item
+    /// arrives as a fresh instance: it takes over the base item's stacks once,
+    /// clamped to its own ceiling, and every instance notes its count when it
+    /// grows. Only the counter moves. The power drained this life is already on
+    /// the champion as `spirit_drain` buffs, and `on_spawn` re-applies it from
+    /// the count on the next respawn.
+    fn carry_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
+        if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
+            if let Some((_, stacks)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
+                let stacks = (stacks as usize).min(self.effect_max_stacks);
+                self.accumulated_stacks = self.accumulated_stacks.max(stacks);
+                self.noted_stacks = self.accumulated_stacks;
+            }
+        }
+        if self.accumulated_stacks != self.noted_stacks {
+            self.noted_stacks = self.accumulated_stacks;
+            upgrade_carry::note(BASE_KEY, ctx, player, self.accumulated_stacks as u64);
+        }
+    }
 }
 
 impl Default for GrezsSpectralLantern {
@@ -155,6 +182,7 @@ impl StableItem for GrezsSpectralLantern {
         // Ahead of the early return below: a proc left over from the last
         // fight has to go whether or not any power has been drained yet.
         self.procs.clear();
+        self.carry_stacks(ctx, player);
 
         if self.accumulated_stacks == 0 {
             return;
@@ -216,6 +244,7 @@ impl StableItem for GrezsSpectralLantern {
 
     /// Lands the Butcher bonus whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.carry_stacks(ctx, player);
         self.procs.update(ctx, player);
     }
 
@@ -244,6 +273,9 @@ impl StableItem for GrezsSpectralLantern {
     /// Drained power is bought, not earned twice: the stacks banked on the base
     /// item survive the Radiant upgrade, clamped to the successor's own ceiling
     /// in case the config gives the two variants different caps.
+    ///
+    /// The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
+    /// `carry_stacks` does the carrying, and they stay for a host that does.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.accumulated_stacks as u64

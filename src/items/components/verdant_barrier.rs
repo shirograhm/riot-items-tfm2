@@ -7,6 +7,9 @@ use mod_api_stable::*;
 // into Banshee's Veil.
 
 const NEXT: &str = "banshees_veil";
+/// The upgrade line the Annul cooldown is noted under (`crate::upgrade_carry`):
+/// this item's key, which Banshee's Veil and its Radiant note theirs under too.
+const ANNUL_LINE: &str = "verdant_barrier";
 
 #[derive(Clone, Debug)]
 pub struct VerdantBarrier {
@@ -26,7 +29,7 @@ impl Default for VerdantBarrier {
             magic_resistance: 25,
             effect_cooldown_seconds: 40.0,
             // Non-vital stats (internals)
-            annul: Annul::default(),
+            annul: Annul::on_line(ANNUL_LINE, false),
         }
     }
 }
@@ -80,8 +83,8 @@ impl StableItem for VerdantBarrier {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.annul.reset();
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        self.annul.reset(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
@@ -91,7 +94,7 @@ impl StableItem for VerdantBarrier {
     fn on_damaged(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _player: usize,
+        player: usize,
         entity: usize,
         attacker: usize,
         damage: usize,
@@ -101,6 +104,7 @@ impl StableItem for VerdantBarrier {
     ) {
         self.annul.on_damaged(
             ctx,
+            player,
             entity,
             attacker,
             damage,
