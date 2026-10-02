@@ -3,6 +3,10 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, Annul, ItemMeta};
 
+/// The upgrade line the Annul cooldown is noted under (`crate::upgrade_carry`),
+/// so it follows the carrier into the Radiant item.
+const BASE_KEY: &str = "edge_of_night";
+
 // Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second
 // cooldown). The shield itself lives in `crate::vfx::annul`, shared with Banshee's
 // Veil.
@@ -23,7 +27,7 @@ impl EdgeOfNight {
     pub fn base() -> Self {
         Self {
             meta: ItemMeta::base(
-                "edge_of_night",
+                BASE_KEY,
                 &["serrated_dirk"],
                 &["radiant_edge_of_night"],
             ),
@@ -33,18 +37,19 @@ impl EdgeOfNight {
             effect_lethality: 15,
             effect_cooldown_seconds: 40.0,
             // Non-vital stats (internals)
-            annul: Annul::default(),
+            annul: Annul::on_line(BASE_KEY, false),
         }
     }
 
     pub fn radiant() -> Self {
         Self {
-            meta: ItemMeta::radiant("radiant_edge_of_night", &["edge_of_night"]),
+            meta: ItemMeta::radiant("radiant_edge_of_night", &[BASE_KEY]),
             price: 1000,
             attack: 60,
             hp: 150,
             effect_lethality: 15,
             effect_cooldown_seconds: 40.0,
+            annul: Annul::on_line(BASE_KEY, true),
             ..Self::base()
         }
     }
@@ -125,8 +130,8 @@ impl StableItem for EdgeOfNight {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.annul.reset();
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        self.annul.reset(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
@@ -136,7 +141,7 @@ impl StableItem for EdgeOfNight {
     fn on_damaged(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _player: usize,
+        player: usize,
         entity: usize,
         attacker: usize,
         damage: usize,
@@ -146,6 +151,7 @@ impl StableItem for EdgeOfNight {
     ) {
         self.annul.on_damaged(
             ctx,
+            player,
             entity,
             attacker,
             damage,

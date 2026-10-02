@@ -3,6 +3,11 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, Annul, ItemMeta};
 
+/// What this is built from, which is also the upgrade line the Annul cooldown
+/// is noted under (`crate::upgrade_carry`). Both tiers take over the cooldown of
+/// the item they replace.
+const ANNUL_LINE: &str = "verdant_barrier";
+
 // Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second
 // cooldown). The shield itself lives in `crate::vfx::annul`; Verdant Barrier's
 // cooldown carries into it, and it carries into the Radiant.
@@ -23,7 +28,7 @@ impl BansheesVeil {
         Self {
             meta: ItemMeta::base(
                 "banshees_veil",
-                &["verdant_barrier"],
+                &[ANNUL_LINE],
                 &["radiant_banshees_veil"],
             ),
             price: 700,
@@ -31,7 +36,7 @@ impl BansheesVeil {
             magic_resistance: 40,
             effect_cooldown_seconds: 40.0,
             // Non-vital stats (internals)
-            annul: Annul::default(),
+            annul: Annul::on_line(ANNUL_LINE, true),
         }
     }
 
@@ -107,8 +112,8 @@ impl StableItem for BansheesVeil {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.annul.reset();
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        self.annul.reset(ctx, player);
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
@@ -118,7 +123,7 @@ impl StableItem for BansheesVeil {
     fn on_damaged(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _player: usize,
+        player: usize,
         entity: usize,
         attacker: usize,
         damage: usize,
@@ -128,6 +133,7 @@ impl StableItem for BansheesVeil {
     ) {
         self.annul.on_damaged(
             ctx,
+            player,
             entity,
             attacker,
             damage,

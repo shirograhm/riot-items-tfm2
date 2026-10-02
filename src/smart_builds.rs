@@ -47,16 +47,18 @@
 //!    other rule accepts. Rule 5 is what matches it to the champion: an AD
 //!    support gets a tank support item, never an AP one, and a jungler Feral
 //!    Flare or Grez's by damage type.
-//! 10. **Imperial Mandate for supports with crowd control** — a support whose
-//!    champion is tagged `CC` makes Mandate its support item, since its passive
-//!    pays off on the slows and stuns that champion lands: the AI's first
-//!    support item gives way to it. A support item the player pinned is their
-//!    choice and stays, a build that already holds Mandate is left alone, and
-//!    the other rules still judge it (Mandate is an AP item, so rule 5 keeps it
-//!    off an AD support). The other way round, a support known to have no
-//!    crowd control never keeps an AI's Mandate: it makes way for another
-//!    support item, and rule 9 never hands one out. A champion nothing is known
-//!    about is left alone either way.
+//! 10. **Imperial Mandate for supports that immobilize** — a support whose
+//!    kit has a stun, root, knock-up, knockback, pull, taunt, fear or charm
+//!    makes Mandate its support item, since its passive pays off on exactly
+//!    those: the AI's first support item gives way to it. A slow does not
+//!    count, nor a silence or a disarm, so the game's `CC` tag only decides for
+//!    a champion whose kit is not known (`ChampionTraits::can_immobilize`). A
+//!    support item the player pinned is their choice and stays, a build that
+//!    already holds Mandate is left alone, and the other rules still judge it
+//!    (Mandate is an AP item, so rule 5 keeps it off an AD support). The other
+//!    way round, a support known not to immobilize never keeps an AI's
+//!    Mandate: it makes way for another support item, and rule 9 never hands
+//!    one out. A champion nothing is known about is left alone either way.
 //! 11. **Items for the champion's reach** — a ranged champion keeps no item
 //!    whose passive wants its carrier in melee ([`MELEE_ITEMS`]: the Hydras'
 //!    Cleave and Hullbreaker's Skipper weaken from past 35 range, and
@@ -254,7 +256,7 @@ impl Reason {
     /// items, and an item the champion does not scale with sits among others
     /// it does not scale with, so for these two the stand-in is taken from the
     /// categories the rest of the build uses instead. Imperial Mandate on a
-    /// support without crowd control goes the same way: it is a support item,
+    /// support that cannot immobilize goes the same way: it is a support item,
     /// so another support item stands in first. A jungle item's category is an
     /// ordinary one (Grez's is a Mage item), so its stand-in comes from there,
     /// like a duplicate's. So is a melee or ranged item's: a ranged champion
@@ -280,11 +282,12 @@ pub(crate) struct Fit {
     scaling: Option<Scaling>,
     /// Rule 8: whether jungle items are allowed.
     jungle_items: bool,
-    /// Rule 10: whether this is a support with crowd control, whose support
+    /// Rule 10: whether this is a support whose kit immobilizes, whose support
     /// item is Imperial Mandate.
     mandate: bool,
-    /// Rule 10's other half: whether this is a support known to have no crowd
-    /// control, who never keeps Mandate. `false` when the champion is unknown.
+    /// Rule 10's other half: whether this is a support known not to
+    /// immobilize, who never keeps Mandate. `false` when the champion is
+    /// unknown.
     no_mandate: bool,
     /// Rule 11: whether the champion attacks from range, `None` when unknown.
     ranged: Option<bool>,
@@ -304,8 +307,8 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
         support_items: role == Role::Support,
         scaling: traits.and_then(|traits| traits.scaling),
         jungle_items: role == Role::Jungle,
-        mandate: role == Role::Support && traits.is_some_and(|traits| traits.cc),
-        no_mandate: role == Role::Support && traits.is_some_and(|traits| !traits.cc),
+        mandate: role == Role::Support && traits.is_some_and(|traits| traits.can_immobilize()),
+        no_mandate: role == Role::Support && traits.is_some_and(|traits| !traits.can_immobilize()),
         ranged: traits.and_then(|traits| traits.ranged),
     }
 }
@@ -669,7 +672,7 @@ impl Budget {
 /// other rule against the rest of the build. Nothing that fits, nothing
 /// changes.
 ///
-/// Then rule 10: a support with crowd control whose build has no Imperial
+/// Then rule 10: a support whose kit immobilizes and whose build has no Imperial
 /// Mandate, and no support item the player pinned, has the AI's first support
 /// item (preferring one only supports may build) swapped for Mandate, held to
 /// the other rules the same way.

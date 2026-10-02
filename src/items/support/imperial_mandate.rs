@@ -4,20 +4,37 @@ use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, ticks, ItemMeta};
 
 /// Crowd control that takes movement out of the target's hands: stun, root,
-/// knock-up, knockback/pull and taunt. League's "immobilize" set, plus taunt;
-/// fear and charm still don't count, and disarm, silence and ground leave the
-/// target free to walk.
-const IMMOBILIZING: [CcKindV1; 7] = [
+/// knock-up, knockback/pull, fear and charm, and taunt, which is counted on its
+/// own below. League's "immobilize" set, plus the three that walk the target
+/// somewhere; disarm, silence and ground leave them free to walk, and a slow
+/// is not crowd control here at all. `champion_traits::Immobilize` is the same
+/// set read off a champion's kit: keep the two in step.
+const IMMOBILIZING: [CcKindV1; 6] = [
     CcKindV1::Airborne,
     CcKindV1::Stun,
     CcKindV1::Bind,
     CcKindV1::ForceMove,
-    CcKindV1::Taunt,
     CcKindV1::Fear,
     CcKindV1::Charm,
 ];
 
-/// How many immobilizing effects the entity is under right now.
+/// What the entity is under right now, read in one pass: (immobilizing effects,
+/// taunts aside; taunts onto `taunter`). A taunt names who it forces its target
+/// to attack, which is who applied it: the one immobilize whose source the host
+/// does give.
+fn held(entity: &StableEntity<'_, '_>, taunter: usize) -> (usize, usize) {
+    let (mut immobilized, mut taunted) = (0, 0);
+    for cc in (0..entity.cc_count()).filter_map(|i| entity.cc_at(i)) {
+        if cc.kind == CcKindV1::Taunt.code() {
+            taunted += usize::from(cc.target == taunter);
+        } else if IMMOBILIZING.iter().any(|kind| kind.code() == cc.kind) {
+            immobilized += 1;
+        }
+    }
+    (immobilized, taunted)
+}
+
+/// How many immobilizing effects the entity is under right now, taunts aside.
 fn immobilize_count(entity: &StableEntity<'_, '_>) -> usize {
     (0..entity.cc_count())
         .filter(|&i| {
@@ -58,10 +75,18 @@ pub struct ImperialMandate {
     effect_damaged_amplify: usize,
     effect_duration_seconds: f64,
     // Non-vital stats (internals)
-    /// Each enemy champion's immobilize count as of the last tick: the "before"
-    /// a skill hit is compared against.
-    baseline: Vec<(usize, usize)>,
+    /// Each enemy champion as of the last tick: (entity, immobilize count,
+    /// taunts onto the carrier). The first count is the "before" a skill hit is
+    /// compared against, the second the one a new taunt is.
+    baseline: Vec<(usize, usize, usize)>,
+    /// The tick before's `baseline`, kept to swap with rather than reallocate.
+    previous: Vec<(usize, usize, usize)>,
     pending: Vec<PendingHit>,
+    /// Whether a skill hit may claim an immobilize that lands with it: not for
+    /// a carrier whose kit is known to immobilize with nothing but a taunt, or
+    /// nothing at all, or every stun an ally lands on a target of its slows
+    /// would be credited to it. `None` until the carrier's champion is read.
+    claims_hits: Option<bool>,
 }
 
 impl ImperialMandate {
@@ -82,7 +107,9 @@ impl ImperialMandate {
             effect_duration_seconds: 3.0,
             // Non-vital stats (internals)
             baseline: Vec::new(),
+            previous: Vec::new(),
             pending: Vec::new(),
+            claims_hits: None,
         }
     }
 
@@ -140,9 +167,19 @@ impl ImperialMandate {
     fn baseline_of(&self, target: usize) -> usize {
         self.baseline
             .iter()
-            .find(|&&(id, _)| id == target)
-            .map_or(0, |&(_, count)| count)
+            .find(|&&(id, _, _)| id == target)
+            .map_or(0, |&(_, count, _)| count)
     }
+}
+
+/// Whether a skill hit by `champion` may claim an immobilize (`claims_hits`):
+/// yes unless its kit is known to have none but a taunt.
+fn claims_hits(champion: &StableEntity<'_, '_>) -> bool {
+    champion
+        .name()
+        .and_then(|key| crate::champion_traits::traits(&key))
+        .and_then(|traits| traits.immobilize)
+        .map_or(true, |immobilize| immobilize.other)
 }
 
 impl Default for ImperialMandate {
@@ -192,17 +229,25 @@ impl StableItem for ImperialMandate {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.baseline.clear();
+        self.previous.clear();
         self.pending.clear();
     }
 
-    // Command: immobilizing an enemy champion. The host does not say who
-    // applied a crowd control, so "you immobilized them" is read as one of your
-    // skills hitting a champion who becomes newly immobilized at that hit or
-    // within `IMMOBILIZE_WINDOW_TICKS` after it (a skill's stun may land either
-    // side of its hit report). "Newly" means more immobilizing effects than the
-    // last tick's baseline, so chaining a second stun onto a stunned target
-    // refreshes the mark too. An ally's stun landing in that same window reads
-    // the same and will be credited to you.
+    // Command: immobilizing an enemy champion. A taunt is the easy one: it
+    // names its taunter, so `update` marks every new taunt onto the carrier,
+    // with no skill hit needed (Knight's taunt deals no damage, and it never
+    // set Command off while it waited on one).
+    //
+    // For the rest the host does not say who applied a crowd control, so "you
+    // immobilized them" is read as one of your skills hitting a champion who
+    // becomes newly immobilized at that hit or within `IMMOBILIZE_WINDOW_TICKS`
+    // after it (a skill's stun may land either side of its hit report).
+    // "Newly" means more immobilizing effects than the last tick's baseline,
+    // so chaining a second stun onto a stunned target refreshes the mark too.
+    // An ally's stun landing in that same window reads the same and will be
+    // credited to you, which is why a carrier with no such skill of its own
+    // claims nothing here (`claims_hits`): its slows would otherwise collect
+    // every stun its allies land.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -211,7 +256,7 @@ impl StableItem for ImperialMandate {
         target: usize,
         is_ally: bool,
     ) {
-        if is_ally {
+        if is_ally || self.claims_hits == Some(false) {
             return;
         }
         let Some(now) = ctx
@@ -260,25 +305,41 @@ impl StableItem for ImperialMandate {
             }
         }
 
-        // This tick's counts become the next hit's "before".
-        let Some(team) = ctx
-            .get_player(player)
-            .and_then(|p| p.champion())
-            .map(|c| c.team())
-        else {
+        let Some(carrier) = ctx.get_player(player).and_then(|p| p.champion()) else {
             return;
         };
+        let (carrier_id, team) = (carrier.id(), carrier.team());
+        if self.claims_hits.is_none() {
+            self.claims_hits = Some(claims_hits(&carrier));
+        }
+
+        // This tick's counts become the next hit's "before", and a champion
+        // under more of the carrier's taunts than a tick ago has just been
+        // taunted by them.
+        std::mem::swap(&mut self.baseline, &mut self.previous);
         self.baseline.clear();
+        let mut taunted = Vec::new();
         for index in 0..ctx.champion_count() {
             let id = ctx.champion_id_at(index);
-            let Some(count) = ctx
+            let Some((count, taunts)) = ctx
                 .get_entity(id)
                 .filter(|e| e.team() != team && e.is_alive())
-                .map(|e| immobilize_count(&e))
+                .map(|e| held(&e, carrier_id))
             else {
                 continue;
             };
-            self.baseline.push((id, count));
+            let before = self
+                .previous
+                .iter()
+                .find(|&&(known, _, _)| known == id)
+                .map_or(0, |&(_, _, taunts)| taunts);
+            if taunts > before {
+                taunted.push(id);
+            }
+            self.baseline.push((id, count, taunts));
+        }
+        for target in taunted {
+            self.mark(ctx, target);
         }
     }
 

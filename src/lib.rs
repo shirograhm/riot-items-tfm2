@@ -22,7 +22,7 @@ pub(crate) use utils::proc_queue::ProcQueue;
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
 pub(crate) use ui::{solo_rank_ui, strategy_ui};
-pub(crate) use utils::{config, own_team_log};
+pub(crate) use utils::{config, own_team_log, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
