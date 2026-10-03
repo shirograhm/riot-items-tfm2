@@ -626,22 +626,18 @@ unsafe fn detour(
     // by the *caller*, so without it every call after the first still allocated
     // two `String`s per item — for the whole catalog, this mod's additions
     // included — only for the callee to drop them.
-    //
-    // The build editor takes the same list for the items other mods add, which
-    // it has no other way to learn of (`build_config::record_other_mod_items`).
-    if !crate::tactics::driver::item_catalog_recorded() || !build_config::other_mod_items_recorded()
-    {
-        let catalog: Vec<(String, Vec<String>)> = items
-            .iter()
-            .map(|item| {
-                (
-                    item.key().to_string(),
-                    item.next_tier().iter().map(ToString::to_string).collect(),
-                )
-            })
-            .collect();
-        build_config::record_other_mod_items(&catalog);
-        crate::tactics::driver::record_item_catalog(catalog);
+    if !crate::tactics::driver::item_catalog_recorded() {
+        crate::tactics::driver::record_item_catalog(
+            items
+                .iter()
+                .map(|item| {
+                    (
+                        item.key().to_string(),
+                        item.next_tier().iter().map(ToString::to_string).collect(),
+                    )
+                })
+                .collect(),
+        );
     }
 
     // Hand the champion roster to the client-side editor, which cannot

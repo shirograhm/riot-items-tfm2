@@ -740,10 +740,6 @@ struct EditorState {
     /// The item list, headers included. Cached for the process lifetime — the
     /// item pool cannot change without a restart.
     entries: Vec<ListEntry>,
-    /// How many items of other mods were known when `entries` was built. They
-    /// arrive with the first match's catalog, which can be after the list is
-    /// first wanted; a different count now means it has to be built again.
-    entries_other: usize,
     /// The champion list. Cached for the same reason.
     champions: Vec<ChampionChoice>,
     /// Where the vanilla Item Info popup was found on this screen, and how many
@@ -1261,15 +1257,11 @@ fn load_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
         }
     }
     merge_mod_finals(ctx, &mut choices);
-    merge_other_mod_items(ctx, &mut choices);
 
-    // Category first, then name, so the headers come out in CATEGORY_ORDER. The
-    // two groups past it, Boots and the other mods' items, rank the same there,
-    // so the category's own name keeps each one together.
+    // Category first, then name, so the headers come out in CATEGORY_ORDER.
     choices.sort_by(|a, b| {
         item_catalog::category_rank(a.category)
             .cmp(&item_catalog::category_rank(b.category))
-            .then_with(|| a.category.cmp(b.category))
             .then_with(|| a.name.cmp(&b.name))
     });
 
@@ -1349,50 +1341,6 @@ fn merge_mod_finals(ctx: &StableClient<'_>, choices: &mut Vec<ItemChoice>) {
     }
 }
 
-/// The group other mods' items are listed under, after this mod's own classes
-/// and Boots: nothing says which of those classes they belong to.
-const OTHER_MODS_CATEGORY: &str = "Other Mods";
-
-/// Adds the final items other mods register (`build_config::other_mod_items`),
-/// skipping any already listed. They have no art in this mod's icon sheet, so
-/// they are listed by name alone.
-fn merge_other_mod_items(ctx: &StableClient<'_>, choices: &mut Vec<ItemChoice>) {
-    for key in build_config::other_mod_items() {
-        // A key is written to `item-builds.json` and looked up exactly as it
-        // is, so one `sanitize` would alter cannot be offered.
-        if sanitize(&key) != key || choices.iter().any(|choice| choice.key == key) {
-            continue;
-        }
-        let name = other_mod_item_name(ctx, &key);
-        choices.push(ItemChoice {
-            name: sanitize(&name),
-            frame: None,
-            category: OTHER_MODS_CATEGORY,
-            key,
-        });
-    }
-}
-
-/// Display name for another mod's item: its own text where it ships any under
-/// the game's item names, else its key spelled out (`"void_staff"` as "Void
-/// Staff").
-fn other_mod_item_name(ctx: &StableClient<'_>, key: &str) -> String {
-    ctx.i18n(&format!("#asset/base/text/item?{key}.name"))
-        .filter(|text| !text.is_empty() && !text.starts_with('#'))
-        .unwrap_or_else(|| {
-            key.split('_')
-                .filter(|word| !word.is_empty())
-                .map(|word| {
-                    let mut letters = word.chars();
-                    letters.next().map_or_else(String::new, |first| {
-                        first.to_uppercase().chain(letters).collect()
-                    })
-                })
-                .collect::<Vec<_>>()
-                .join(" ")
-        })
-}
-
 /// An object is an item when it carries any of the fields every item has.
 /// Checked structurally because the settings document mixes items with
 /// container objects — mod-added items sit under a `mod_items` group rather
@@ -1440,19 +1388,9 @@ fn collect_items(
 /// The item list, loading it on first use. Empty is a valid (if useless)
 /// answer — it means the client cannot read the item settings document — and is
 /// not cached, so a later frame can retry.
-///
-/// The one thing that outdates a cached list is the other mods' items arriving
-/// after it was built (see `EditorState::entries_other`). The list is then
-/// built again, and the editor with it: its list nodes were spawned from the
-/// old one and a click resolves by index, so `modal_ready` is dropped to make
-/// [`ensure_editor`] respawn the window rather than keep nodes that no longer
-/// line up.
 fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
-    let other = build_config::other_mod_items_len();
-    let (cached, stale) =
-        with_state(|state| (state.entries.clone(), state.entries_other != other))
-            .unwrap_or_default();
-    if !cached.is_empty() && !stale {
+    let cached = with_state(|state| state.entries.clone()).unwrap_or_default();
+    if !cached.is_empty() {
         return cached;
     }
 
@@ -1465,13 +1403,7 @@ fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
         // Not `loaded.is_empty()`: the Clear row is always there, so the list
         // being non-empty says nothing about whether any item was found.
     } else {
-        let _ = with_state(|state| {
-            if !state.entries.is_empty() {
-                state.modal_ready = false;
-            }
-            state.entries = loaded.clone();
-            state.entries_other = other;
-        });
+        let _ = with_state(|state| state.entries = loaded.clone());
     }
     loaded
 }
@@ -1686,26 +1618,6 @@ fn edit_row(row: usize, edit: impl FnOnce(&mut ChampionRow)) -> bool {
 const ICON_PAD: &str = "          ";
 const PLAIN_PAD: &str = "  ";
 
-/// What a pinned slot shows for an item with no icon: the initials of its
-/// name's words, or the start of a one-word name. Three letters at most, two
-/// where they are wide, because that is the room left of the clear button and
-/// button text is not clipped.
-fn short_label(name: &str) -> String {
-    let words: Vec<&str> = name.split(|c: char| c.is_whitespace() || c == '_').collect();
-    let words: Vec<&str> = words.into_iter().filter(|word| !word.is_empty()).collect();
-    let letters: Vec<char> = match words.as_slice() {
-        [word] => word.chars().collect(),
-        words => words.iter().filter_map(|word| word.chars().next()).collect(),
-    };
-    let room = if letters.first().is_some_and(char::is_ascii) {
-        3
-    } else {
-        2
-    };
-    let label: String = letters.into_iter().take(room).collect();
-    format!(" {}", label.to_uppercase())
-}
-
 /// The pinned key for one slot, or `None` when the AI owns it.
 fn pinned_key(rows: &[ChampionRow], row: usize, slot: usize) -> Option<String> {
     rows.get(row)
@@ -1725,20 +1637,13 @@ fn refresh_combo(
     slot: usize,
 ) {
     let pinned = pinned_key(rows, row, slot);
-    let choice = pinned.as_deref().and_then(|key| choice_of(entries, key));
-    let frame = choice.and_then(|item| item.frame.as_deref());
     // A pinned slot is its icon alone; the name is on the list it was picked
     // from. Button text is not clipped to the button,
     // so anything longer than a few characters spills over the swap button on
     // a narrow host -- which is why the empty slot is a dash, not a sentence.
-    // An item with no icon to be (another mod's) is a few letters of its name.
-    let (label, color) = match (&pinned, frame) {
-        (Some(_), Some(_)) => (String::new(), "#e8e8e8ff"),
-        (Some(key), None) => {
-            let name = choice.map_or(key.as_str(), |item| item.name.as_str());
-            (short_label(name), "#e8e8e8ff")
-        }
-        (None, _) => (EMPTY_SLOT_LABEL.to_string(), "#a5a5abff"),
+    let (label, color) = match &pinned {
+        Some(_) => (String::new(), "#e8e8e8ff"),
+        None => (EMPTY_SLOT_LABEL.to_string(), "#a5a5abff"),
     };
     ctx.ui_set_properties(
         &combo_path(row, slot),
@@ -1748,6 +1653,10 @@ fn refresh_combo(
         ),
     );
 
+    let frame = pinned
+        .as_deref()
+        .and_then(|key| choice_of(entries, key))
+        .and_then(|item| item.frame.as_deref());
     let icon = match frame {
         Some(frame) => format!("visible: true; rect_tag: \"{frame}\";"),
         None => "visible: false;".to_string(),
