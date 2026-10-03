@@ -24,6 +24,7 @@ items! {
     seekers_armguard,
     serrated_dirk,
     sheen,
+    spirit_stone,
     steel_sigil,
     tiamat,
     verdant_barrier,

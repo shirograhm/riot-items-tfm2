@@ -1,66 +1,106 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, immolate_burn, mark_immolate, percent_of, TICKS_PER_SECOND};
+use crate::{apply_config, immolate_burn, mark_immolate, percent_of, ItemMeta, TICKS_PER_SECOND};
+
+// Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies
+// within 30 range. This effect deals 50% more damage to minions and monsters.
 
 #[derive(Clone, Debug)]
-pub struct BamisCinder {
+pub struct PhilosophersStone {
+    meta: ItemMeta,
     price: usize,
     hp: i32,
+    defence: i32,
+    magic_resistance: i32,
     effect_bonus_flat_damage: usize,
     effect_caster_hp_percent_damage: f64,
     effect_max_distance: usize,
     effect_minion_bonus_percent: f64,
     // Non-vital stats (internals)
-    /// Ticks until the next second of Immolate lands on everyone in range.
     until_next_burn: usize,
 }
 
-impl Default for BamisCinder {
-    fn default() -> Self {
+impl PhilosophersStone {
+    pub fn base() -> Self {
         Self {
-            price: 700,
+            meta: ItemMeta::base(
+                "philosophers_stone",
+                &["aegis_of_the_legion", "bamis_cinder"],
+                &["radiant_philosophers_stone"],
+            ),
+            price: 750,
             hp: 200,
-            effect_bonus_flat_damage: 5,
-            effect_caster_hp_percent_damage: 0.5,
+            defence: 20,
+            magic_resistance: 30,
+            effect_bonus_flat_damage: 10,
+            effect_caster_hp_percent_damage: 1.0,
             effect_max_distance: 30,
             effect_minion_bonus_percent: 50.0,
             // Non-vital stats (internals)
             until_next_burn: TICKS_PER_SECOND as usize,
         }
     }
-}
 
-impl BamisCinder {
+    pub fn radiant() -> Self {
+        Self {
+            meta: ItemMeta::radiant("radiant_philosophers_stone", &["philosophers_stone"]),
+            price: 1050,
+            hp: 350,
+            defence: 30,
+            magic_resistance: 50,
+            effect_bonus_flat_damage: 10,
+            effect_caster_hp_percent_damage: 1.0,
+            effect_max_distance: 30,
+            effect_minion_bonus_percent: 50.0,
+            ..Self::base()
+        }
+    }
+
     pub fn with_config(cfg: &ItemConfig) -> Self {
-        let mut item = Self::default();
+        Self::base().configured(cfg)
+    }
+
+    pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
+        Self::radiant().configured(cfg)
+    }
+
+    fn configured(mut self, cfg: &ItemConfig) -> Self {
         apply_config!(
-            item,
+            self,
             cfg,
             [
                 price,
                 hp,
+                defence,
+                magic_resistance,
                 effect_bonus_flat_damage,
                 effect_caster_hp_percent_damage,
                 effect_max_distance,
                 effect_minion_bonus_percent
             ]
         );
-        item
+        self
     }
 }
 
-impl StableItem for BamisCinder {
+impl Default for PhilosophersStone {
+    fn default() -> Self {
+        Self::base()
+    }
+}
+
+impl StableItem for PhilosophersStone {
     fn clone_box(&self) -> Box<dyn StableItem> {
         Box::new(self.clone())
     }
 
     fn key(&self) -> String {
-        "bamis_cinder".to_string()
+        self.meta.key.to_string()
     }
 
     fn icon(&self) -> String {
-        "bamis_cinder".to_string()
+        self.meta.key.to_string()
     }
 
     fn price(&self) -> usize {
@@ -68,25 +108,22 @@ impl StableItem for BamisCinder {
     }
 
     fn tier(&self) -> usize {
-        2
+        self.meta.tier
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hardened_heart".to_string()]
+        self.meta.previous_tier()
     }
 
     fn next_tier(&self) -> Vec<String> {
-        // Sunfire Cape, under the key the game keeps it by.
-        vec![
-            "hourglass_of_eternity".to_string(),
-            "hollow_radiance".to_string(),
-            "philosophers_stone".to_string(),
-        ]
+        self.meta.next_tier()
     }
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
             hp: self.hp,
+            defence: self.defence,
+            magic_resistance: self.magic_resistance,
             ..Default::default()
         }
     }
@@ -104,29 +141,30 @@ impl StableItem for BamisCinder {
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        // Immolate, once a second while alive, the same burn as Bami's Cinder.
         self.until_next_burn = self.until_next_burn.saturating_sub(1);
         if self.until_next_burn > 0 {
             return;
         }
         self.until_next_burn = TICKS_PER_SECOND as usize;
 
-        let Some((caster, caster_team, max_hp)) = ctx
+        let Some((caster, team, max_hp)) = ctx
             .get_player(player)
-            .and_then(|player_ref| player_ref.champion())
-            .filter(|champion| champion.is_alive())
-            .map(|champion| (champion.id(), champion.team(), champion.hp().1))
+            .and_then(|p| p.champion())
+            .filter(|c| c.is_alive())
+            .map(|c| (c.id(), c.team(), c.hp().1))
         else {
             return;
         };
 
         mark_immolate(ctx, caster);
-        let damage =
-            self.effect_bonus_flat_damage + percent_of(max_hp, self.effect_caster_hp_percent_damage);
+        let damage = self.effect_bonus_flat_damage
+            + percent_of(max_hp, self.effect_caster_hp_percent_damage);
         let minion_damage = damage + percent_of(damage, self.effect_minion_bonus_percent);
         immolate_burn(
             ctx,
             caster,
-            caster_team,
+            team,
             self.effect_max_distance,
             damage,
             minion_damage,
@@ -134,7 +172,12 @@ impl StableItem for BamisCinder {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Hp, ItemTagV1::DotDamage]
+        vec![
+            ItemTagV1::Hp,
+            ItemTagV1::Defense,
+            ItemTagV1::MagicResistance,
+            ItemTagV1::DotDamage,
+        ]
     }
 
     fn category(&self) -> ItemCategoryV1 {

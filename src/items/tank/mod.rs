@@ -8,6 +8,7 @@ items! {
     heartsteel,
     hollow_radiance,
     jaksho_the_protean,
+    philosophers_stone,
     protectors_vow,
     randuins_omen,
     spirit_visage,

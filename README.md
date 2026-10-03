@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 213 new items (124 base + 89 Radiant) to the game.
+Reskins the 30 existing items and also adds 216 new items (126 base + 90 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -32,7 +32,7 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 - a second Grievous Wounds item
 - a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked)
 - Feral Flare or Grez's Spectral Lantern on any champion not playing the jungle role
-- a melee item on a ranged champion (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Sunfire Cape, Hollow Radiance), or a ranged item on a melee champion (Runaan's Hurricane, Diamond Tipped Spear). A champion is melee when its basic attack range is 35 or less; champions from other mods are covered too
+- a melee item on a ranged champion (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Sunfire Cape, Hollow Radiance, Philosopher's Stone), or a ranged item on a melee champion (Runaan's Hurricane, Diamond Tipped Spear). A champion is melee when its basic attack range is 35 or less; champions from other mods are covered too
 - a support item (except Protoplasm Harness and Zeke's Convergence) on any champion not playing the support role
 - an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion (hybrid champions and hybrid items are left alone; Magic Knight counts as an AP champion, since only its basic attack is physical)
 
@@ -45,6 +45,9 @@ It also decides the order the AI buys its picks in. A support's or jungler's rol
 It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, in the slot you put it in, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items get no pass on the damage-type check: an AD support won't keep an AP support item like Staff of Flowing Water, though tank support items are fine. Bloodsong and Sword of Blossoming Dawn count as AP items here, despite their attack speed. Switch it to **Allow Any Builds** to leave every pick alone.
 
 It also gives every AI build a pair of boots, as its second pick, unless you pinned boots yourself: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (whichever answers the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity too, unless they're tanks, who get tank boots. Boots of Swiftness goes to champions none of that fits. Boots are also in the Build Editor under their own **Boots** group.
+
+##### In-Game Chat Fix
+The champion info tooltip draws on top of the in-match chat instead of underneath it. This is the [Ingame Chat Foreground Fix](https://steamcommunity.com/sharedfiles/filedetails/?id=3743712915) mod, built in. If you have the standalone mod, disable it: both replace the same in-match layout, so only one can apply, and if the standalone one wins, the wide scoreboard goes back to the base game's width, which six item slots don't fit.
 
 ### Added Items
 
@@ -65,7 +68,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Aegis of the Legion** | 700G | +100 HP<br>+20 Armor<br>+30 MR | — |
-| **Bami's Cinder** | 400G | +150 HP | Immolate: Deal 5 + 0.5% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters. |
+| **Bami's Cinder** | 700G | +200 HP | Immolate: Deal 5 + 0.5% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters. |
 | **Bandleglass Mirror** | 350G | +100 HP<br>+1 HP Regen<br>+10 AP<br>+5 Ability Haste | — |
 | **Berserker's Greaves** | 650G | +15% AS<br>+10% MS | — |
 | **B.F. Sword** | 450G | +35 Attack Damage | — |
@@ -92,6 +95,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Serrated Dirk** | 400G | +25 AD | Gain 10 Lethality. |
 | **Sheen** | 650G | +20% AS<br>+10 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 30 - 85 (based on level) as bonus physical damage (1.5 second cooldown). |
 | **Sorcerer's Shoes** | 650G | +15% Magic Pen<br>+10% MS | — |
+| **Spirit Stone** | 400G | +100 HP<br>+20 AP | Butcher: Against monsters, deal 10% bonus magic damage and restore health equal to 2% of your damage dealt. |
 | **Steel Sigil** | 500G | +20 AD<br>+20 Armor | — |
 | **Tiamat** | 400G | +25 AD | Cleave: Basic attacks deal 20% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Verdant Barrier** | 400G | +35 AP<br>+25 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
@@ -157,6 +161,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Night Harvester** | 700G | +150 HP<br>+50 AP<br>+10 Ability Haste | Soulrend: Landing an Ability on an enemy champion deals bonus magic damage equal to 100 + 20% Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Opportunity** | 650G | +45 AD | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Overlord's Bloodmail** | 700G | +15 AD<br>+200 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
+| **Philosopher's Stone** | 750G | +200 HP<br>+20 Armor<br>+30 MR | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters. |
 | **Protector's Vow** | 650G | +200 HP<br>+25 Armor | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Protoplasm Harness** | 600G | +200 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount over 1.5 seconds (30 second cooldown). |
 | **Rabadon's Deathcap** | 750G | +80 AP | Opus: Increase your total Ability Power by 20%. |
@@ -251,6 +256,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Night Harvester** | 1000G | +250 HP<br>+80 AP<br>+10 Ability Haste | Soulrend: Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Radiant Opportunity** | 1000G | +65 AD<br>+5% MS | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Radiant Overlord's Bloodmail** | 1000G | +20 AD<br>+350 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
+| **Radiant Philosopher's Stone** | 1050G | +350 HP<br>+30 Armor<br>+50 MR | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters. |
 | **Radiant Protector's Vow** | 900G | +300 HP<br>+40 Armor<br>+15 Ability Haste | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Radiant Protoplasm Harness** | 850G | +350 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount over 1.5 seconds (30 second cooldown). |
 | **Radiant Rabadon's Deathcap** | 1150G | +130 AP | Opus: Increase your total Ability Power by 35%. |

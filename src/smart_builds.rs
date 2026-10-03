@@ -522,13 +522,14 @@ fn is_jungle_item(key: &str) -> bool {
 /// Rule 11: items whose passive wants the carrier in melee, which a ranged
 /// champion does not keep. By base slug, so the radiant tier follows. The
 /// distances are the defaults; all of them are config-editable.
-const MELEE_ITEMS: [&str; 7] = [
-    "ravenous_hydra",  // Cleave at half strength from past 35 range
-    "titanic_hydra",   // Cleave at half strength from past 35 range
-    "hullbreaker",     // Skipper at 70% strength from past 35 range
-    "heartsteel",      // Ironheart charges on enemies that stay within 50 range
-    "hollow_radiance", // Immolate burns enemies within 30 range
-    "sunfire_cape",    // Immolate again; this slug is the radiant cape's
+const MELEE_ITEMS: [&str; 8] = [
+    "ravenous_hydra",     // Cleave at half strength from past 35 range
+    "titanic_hydra",      // Cleave at half strength from past 35 range
+    "hullbreaker",        // Skipper at 70% strength from past 35 range
+    "heartsteel",         // Ironheart charges on enemies that stay within 50 range
+    "hollow_radiance",    // Immolate burns enemies within 30 range
+    "philosophers_stone", // Immolate again
+    "sunfire_cape",       // Immolate again; this slug is the radiant cape's
     // Sunfire Cape itself, whose key the base game never lost: only the
     // radiant reskins have an alias for `base_slug` to undo.
     "hourglass_of_eternity",

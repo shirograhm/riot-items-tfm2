@@ -33,7 +33,7 @@ impl GrezsSpectralLantern {
         Self {
             meta: ItemMeta::base(
                 BASE_KEY,
-                &["haunting_guise"],
+                &["haunting_guise", "spirit_stone"],
                 &["radiant_grezs_spectral_lantern"],
             ),
             spirit_drain_buff: "grezs_spectral_lantern_spirit_drain",
