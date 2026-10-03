@@ -10,7 +10,7 @@ use crate::{
 // within 30 range. This effect deals 50% more damage to minions and monsters.
 //
 // Cinderhulk: Gain 1% maximum health for each champion takedown and monster
-// killed, up to 20%.
+// killed, up to 15%.
 
 /// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
 /// they follow the carrier into the Radiant item.
@@ -54,7 +54,7 @@ impl PhilosophersStone {
             effect_max_distance: 30,
             effect_minion_bonus_percent: 50.0,
             effect_stack_hp_mult: 1,
-            effect_max_stacks: 20,
+            effect_max_stacks: 15,
             // Non-vital stats (internals)
             until_next_burn: TICKS_PER_SECOND as usize,
             cinderhulk_stacks: 0,
@@ -75,7 +75,7 @@ impl PhilosophersStone {
             effect_max_distance: 30,
             effect_minion_bonus_percent: 50.0,
             effect_stack_hp_mult: 1,
-            effect_max_stacks: 20,
+            effect_max_stacks: 15,
             ..Self::base()
         }
     }

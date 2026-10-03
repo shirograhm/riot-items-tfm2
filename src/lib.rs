@@ -42,12 +42,7 @@ fn ticks(seconds: f64) -> usize {
 }
 
 fn is_monster(entity: &StableEntity<'_, '_>) -> bool {
-    !entity.is_champion()
-        && !entity.is_tower()
-        && !entity.is_minion()
-        // A Voidspawn is none of those three either, and killing one must not
-        // count as a monster kill. Asked last: the name is the costly check.
-        && entity.name().as_deref() != Some(VOIDSPAWN_UNIT)
+    !entity.is_champion() && !entity.is_tower() && !entity.is_minion()
 }
 
 const LETHALITY_BY_KEY: &[(&str, usize)] = &[
@@ -435,7 +430,6 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
     reg.add_item(configured!("zhonyas_hourglass" => ZhonyasHourglass));
-    reg.add_item(configured!("zzrot_portal" => ZzRotPortal));
 
     // Tier 5
     reg.add_item(configured_radiant!("radiant_ardent_censer" => ArdentCenser));
@@ -528,7 +522,6 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
     reg.add_item(configured_radiant!("radiant_zhonyas_hourglass" => ZhonyasHourglass));
-    reg.add_item(configured_radiant!("radiant_zzrot_portal" => ZzRotPortal));
 
     // What item projectiles run when they land. Runaan's Hurricane and Statikk
     // Shiv register one per tier, so each tier's projectiles carry that tier's

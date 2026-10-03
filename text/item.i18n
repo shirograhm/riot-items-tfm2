@@ -1034,19 +1034,11 @@
         },
         "philosophers_stone": {
             "name": "Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>20%<>."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Radiant Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>20%<>."
-        },
-        "zzrot_portal": {
-            "name": "Zz'Rot Portal",
-            "option": "\n<#ff7a3eff>Void Gate<>: Damaging an enemy champion summons a <#92dc7bff>Voidspawn<> for <#e8a800ff>6 seconds<> (<#e8a800ff>20 second<> cooldown). The <#92dc7bff>Voidspawn<> has <#60e84dff>30%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> and <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<>, and its attacks deal <#60e84dff>15<> + <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#ff9028ff>physical damage<>."
-        },
-        "radiant_zzrot_portal": {
-            "name": "Radiant Zz'Rot Portal",
-            "option": "\n<#ff7a3eff>Void Gate<>: Damaging an enemy champion summons a <#92dc7bff>Voidspawn<> for <#e8a800ff>6 seconds<> (<#e8a800ff>20 second<> cooldown). The <#92dc7bff>Voidspawn<> has <#60e84dff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> and <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<>, and its attacks deal <#60e84dff>25<> + <#60e84dff>3%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#ff9028ff>physical damage<>."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
         }
     },
     "vi": {
@@ -2084,19 +2076,11 @@
         },
         "philosophers_stone": {
             "name": "Đá Hiền Triết",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>20%<>."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Đá Hiền Triết Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>20%<>."
-        },
-        "zzrot_portal": {
-            "name": "Thông Đạo Zz'rot",
-            "option": "\n<#ff7a3eff>Cổng Hư Không<>: Khi gây sát thương cho tướng địch, triệu hồi một <#92dc7bff>Bọ Hư Không<> trong <#e8a800ff>6 giây<> (hồi chiêu <#e8a800ff>20 giây<>). <#92dc7bff>Bọ Hư Không<> có <#60e84dff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>giáp<> và <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của bạn, và đòn đánh của nó gây <#60e84dff>15<> + <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#ff9028ff>sát thương vật lí<>."
-        },
-        "radiant_zzrot_portal": {
-            "name": "Thông Đạo Zz'rot Ánh Sáng",
-            "option": "\n<#ff7a3eff>Cổng Hư Không<>: Khi gây sát thương cho tướng địch, triệu hồi một <#92dc7bff>Bọ Hư Không<> trong <#e8a800ff>6 giây<> (hồi chiêu <#e8a800ff>20 giây<>). <#92dc7bff>Bọ Hư Không<> có <#60e84dff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>giáp<> và <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của bạn, và đòn đánh của nó gây <#60e84dff>25<> + <#60e84dff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#ff9028ff>sát thương vật lí<>."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
         }
     },
     "zh-hans": {
@@ -3134,19 +3118,11 @@
         },
         "philosophers_stone": {
             "name": "贤者之石",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>20%<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
         },
         "radiant_philosophers_stone": {
             "name": "光明版贤者之石",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>20%<>。"
-        },
-        "zzrot_portal": {
-            "name": "兹若特传送门",
-            "option": "\n<#ff7a3eff>虚空之门<>：对敌方英雄造成伤害时，召唤一只<#92dc7bff>虚空兽<>，持续 <#e8a800ff>6秒<>（冷却 <#e8a800ff>20秒<>）。<#92dc7bff>虚空兽<>拥有你 <#60e84dff>30%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>、<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>和<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<>，其攻击造成 <#60e84dff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2%<> 的<#ff9028ff>物理伤害<>。"
-        },
-        "radiant_zzrot_portal": {
-            "name": "光明版兹若特传送门",
-            "option": "\n<#ff7a3eff>虚空之门<>：对敌方英雄造成伤害时，召唤一只<#92dc7bff>虚空兽<>，持续 <#e8a800ff>6秒<>（冷却 <#e8a800ff>20秒<>）。<#92dc7bff>虚空兽<>拥有你 <#60e84dff>40%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>、<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>和<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<>，其攻击造成 <#60e84dff>25<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>3%<> 的<#ff9028ff>物理伤害<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
         }
     },
     "pt-BR": {
@@ -4184,19 +4160,11 @@
         },
         "philosophers_stone": {
             "name": "Pedra Filosofal",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>20%<>."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Pedra Filosofal Radiante",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>20%<>."
-        },
-        "zzrot_portal": {
-            "name": "Portal de Zz'rot",
-            "option": "\n<#ff7a3eff>Portal do Vazio<>: Causar dano a um campeão inimigo invoca uma <#92dc7bff>Criatura do Vazio<> por <#e8a800ff>6 segundos<> (recarga de <#e8a800ff>20 segundos<>). A <#92dc7bff>Criatura do Vazio<> tem <#60e84dff>30%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<> e <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<>, e seus ataques causam <#60e84dff>15<> + <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#ff9028ff>dano físico<>."
-        },
-        "radiant_zzrot_portal": {
-            "name": "Portal de Zz'rot Radiante",
-            "option": "\n<#ff7a3eff>Portal do Vazio<>: Causar dano a um campeão inimigo invoca uma <#92dc7bff>Criatura do Vazio<> por <#e8a800ff>6 segundos<> (recarga de <#e8a800ff>20 segundos<>). A <#92dc7bff>Criatura do Vazio<> tem <#60e84dff>40%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Armadura<> e <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<>, e seus ataques causam <#60e84dff>25<> + <#60e84dff>3%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#ff9028ff>dano físico<>."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
         }
     },
     "ru": {
@@ -5234,19 +5202,11 @@
         },
         "philosophers_stone": {
             "name": "Философский камень",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>20%<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Лучезарный Философский камень",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>20%<>."
-        },
-        "zzrot_portal": {
-            "name": "Портал Зз'Рота",
-            "option": "\n<#ff7a3eff>Врата Бездны<>: Нанесение урона вражескому чемпиону призывает <#92dc7bff>порождение Бездны<> на <#e8a800ff>6 секунд<> (перезарядка <#e8a800ff>20 секунд<>). <#92dc7bff>Порождение Бездны<> имеет <#60e84dff>30%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> и <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивления магии<>, а его атаки наносят <#60e84dff>15<> + <#60e84dff>2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#ff9028ff>физический урон<>."
-        },
-        "radiant_zzrot_portal": {
-            "name": "Лучезарный Портал Зз'Рота",
-            "option": "\n<#ff7a3eff>Врата Бездны<>: Нанесение урона вражескому чемпиону призывает <#92dc7bff>порождение Бездны<> на <#e8a800ff>6 секунд<> (перезарядка <#e8a800ff>20 секунд<>). <#92dc7bff>Порождение Бездны<> имеет <#60e84dff>40%<> вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> и <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивления магии<>, а его атаки наносят <#60e84dff>25<> + <#60e84dff>3%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#ff9028ff>физический урон<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
         }
     },
     "ko": {
@@ -6284,19 +6244,11 @@
         },
         "philosophers_stone": {
             "name": "현자의 돌",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>20%<>까지 쌓입니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
         },
         "radiant_philosophers_stone": {
             "name": "찬란한 현자의 돌",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>20%<>까지 쌓입니다."
-        },
-        "zzrot_portal": {
-            "name": "즈롯 차원문",
-            "option": "\n<#ff7a3eff>공허의 문<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>6초<> 동안 <#92dc7bff>공허 생물<>을 소환합니다. 재사용 대기시간은 <#e8a800ff>20초<>입니다. <#92dc7bff>공허 생물<>은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>의 <#60e84dff>30%<>를 가지며, 공격 시 <#60e84dff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다."
-        },
-        "radiant_zzrot_portal": {
-            "name": "찬란한 즈롯 차원문",
-            "option": "\n<#ff7a3eff>공허의 문<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>6초<> 동안 <#92dc7bff>공허 생물<>을 소환합니다. 재사용 대기시간은 <#e8a800ff>20초<>입니다. <#92dc7bff>공허 생물<>은 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>, <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>, <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>의 <#60e84dff>40%<>를 가지며, 공격 시 <#60e84dff>25<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>3%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
         }
     }
 }

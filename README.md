@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 218 new items (127 base + 91 Radiant) to the game.
+Reskins the 30 existing items and also adds 216 new items (126 base + 90 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -161,7 +161,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Night Harvester** | 700G | +150 HP<br>+50 AP<br>+10 Ability Haste | Soulrend: Landing an Ability on an enemy champion deals bonus magic damage equal to 100 + 20% Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Opportunity** | 650G | +45 AD | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Overlord's Bloodmail** | 700G | +15 AD<br>+200 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
-| **Philosopher's Stone** | 750G | +200 HP<br>+20 Armor<br>+30 MR | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters.<br>Cinderhulk: Gain 1% maximum health for each champion takedown and monster killed, up to 20%. |
+| **Philosopher's Stone** | 750G | +200 HP<br>+20 Armor<br>+30 MR | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters.<br>Cinderhulk: Gain 1% maximum health for each champion takedown and monster killed, up to 15%. |
 | **Protector's Vow** | 650G | +200 HP<br>+25 Armor | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Protoplasm Harness** | 600G | +200 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount over 1.5 seconds (30 second cooldown). |
 | **Rabadon's Deathcap** | 750G | +80 AP | Opus: Increase your total Ability Power by 20%. |
@@ -194,7 +194,6 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Yun Tal Wildarrows** | 750G | +35 AD<br>+20% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
 | **Zeke's Convergence** | 550G | +100 HP<br>+20 Armor<br>+30 MR<br>+10 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 60 magic damage per second to nearby enemies and applies a 40% slow. |
 | **Zhonya's Hourglass** | 750G | +50 AP<br>+35 Armor | Time Stop: Falling below 20% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
-| **Zz'Rot Portal** | 700G | +100 HP<br>+2 HP Regen<br>+30 Armor<br>+40 MR | Void Gate: Damaging an enemy champion summons a Voidspawn for 6 seconds (20 second cooldown). The Voidspawn has 30% of your maximum health, armor and magic resistance, and its attacks deal 15 + 2% of your maximum health as physical damage. |
 
 
 #### Tier 5  
@@ -257,7 +256,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Night Harvester** | 1000G | +250 HP<br>+80 AP<br>+10 Ability Haste | Soulrend: Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Radiant Opportunity** | 1000G | +65 AD<br>+5% MS | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Radiant Overlord's Bloodmail** | 1000G | +20 AD<br>+350 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
-| **Radiant Philosopher's Stone** | 1050G | +350 HP<br>+30 Armor<br>+50 MR | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters.<br>Cinderhulk: Gain 1% maximum health for each champion takedown and monster killed, up to 20%. |
+| **Radiant Philosopher's Stone** | 1050G | +350 HP<br>+30 Armor<br>+50 MR | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 50% more damage to minions and monsters.<br>Cinderhulk: Gain 1% maximum health for each champion takedown and monster killed, up to 15%. |
 | **Radiant Protector's Vow** | 900G | +300 HP<br>+40 Armor<br>+15 Ability Haste | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Radiant Protoplasm Harness** | 850G | +350 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount over 1.5 seconds (30 second cooldown). |
 | **Radiant Rabadon's Deathcap** | 1150G | +130 AP | Opus: Increase your total Ability Power by 35%. |
@@ -290,7 +289,6 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Yun Tal Wildarrows** | 1100G | +40 AD<br>+50% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
 | **Radiant Zeke's Convergence** | 750G | +150 HP<br>+30 Armor<br>+40 MR<br>+15 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 60 magic damage per second to nearby enemies and applies a 40% slow. |
 | **Radiant Zhonya's Hourglass** | 1050G | +80 AP<br>+50 Armor | Time Stop: Falling below 20% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
-| **Radiant Zz'Rot Portal** | 1000G | +200 HP<br>+3 HP Regen<br>+45 Armor<br>+60 MR | Void Gate: Damaging an enemy champion summons a Voidspawn for 6 seconds (20 second cooldown). The Voidspawn has 40% of your maximum health, armor and magic resistance, and its attacks deal 25 + 3% of your maximum health as physical damage. |
 
 ### Base Item Reskins
 

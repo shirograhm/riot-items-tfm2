@@ -3,7 +3,7 @@ use rand::rngs::StdRng;
 use rand::{RngExt, SeedableRng};
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, sized_range, ItemMeta, ProcQueue};
+use crate::{apply_config, is_monster, percent_of, sized_range, ItemMeta, ProcQueue};
 
 // Wind's Fury: Basic attacks fire bolts at up to 2 additional enemies within
 // range of the carrier, champions first, each dealing bonus physical damage
@@ -130,8 +130,7 @@ impl RunaansHurricane {
                     && e.team() != team
                     && e.is_alive()
                     && e.is_targetable()
-                    // Any unit but a turret: champions, minions, monsters, summons.
-                    && !e.is_tower()
+                    && (e.is_champion() || e.is_minion() || is_monster(e))
             })
             .map(|e| (e.is_champion(), e.id()))
             .filter_map(|(champion, id)| {
