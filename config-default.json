@@ -2033,5 +2033,29 @@
     "effect_minion_bonus_percent": 50.0,
     "effect_stack_hp_mult": 1,
     "effect_max_stacks": 20
+  },
+  "zzrot_portal": {
+    "price": 700,
+    "hp": 100,
+    "hp_regen": 2,
+    "defence": 30,
+    "magic_resistance": 40,
+    "effect_cooldown_seconds": 20,
+    "effect_duration_seconds": 6,
+    "effect_summon_stat_percent": 30.0,
+    "effect_bonus_flat_damage": 15,
+    "effect_caster_hp_percent_damage": 2.0
+  },
+  "radiant_zzrot_portal": {
+    "price": 1000,
+    "hp": 200,
+    "hp_regen": 3,
+    "defence": 45,
+    "magic_resistance": 60,
+    "effect_cooldown_seconds": 20,
+    "effect_duration_seconds": 6,
+    "effect_summon_stat_percent": 40.0,
+    "effect_bonus_flat_damage": 25,
+    "effect_caster_hp_percent_damage": 3.0
   }
 }

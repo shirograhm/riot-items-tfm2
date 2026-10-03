@@ -16,3 +16,8 @@ pub(crate) const DOT_TICK_RATE: usize = 12;
 
 pub(crate) const AURA_DURATION_TICKS: usize = 60;
 pub(crate) const AURA_REFRESH_TICKS: usize = 20;
+
+// The unit Zz'Rot Portal summons. The name is what binds its art: the view
+// draws an entity from `aseprite_resources/champions/<name>`, which
+// `mod.override_info` maps to this mod's Voidspawn sheet and animations.
+pub(crate) const VOIDSPAWN_UNIT: &str = "riot_voidspawn";

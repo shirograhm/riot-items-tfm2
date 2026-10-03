@@ -1,4 +1,4 @@
-Adds 6 item slots & 216 new items (126 base + 90 Radiant) to Teamfight Manager 2.  
+Adds 6 item slots & 218 new items (127 base + 91 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
@@ -64,11 +64,11 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
 - support items (except Protoplasm Harness and Zeke's Convergence) outside the support role
-- Feral Flare and Grez's Spectral Lantern outside the jungle role
+- jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role, and any jungle item other than a jungler's one
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
 - items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone). Champions from other mods are covered too.
 
-Supports always get a support item that suits their damage type, and junglers Feral Flare or Grez's Spectral Lantern, bought first. The rest of their build is still the AI's choice.  
+Supports always get a support item that suits their damage type, and junglers one jungle item, bought first: Philosopher's Stone for tanks, otherwise Feral Flare or Grez's Spectral Lantern by damage type. Pin more yourself if you want more than one. The rest of their build is still the AI's choice.  
 
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
 

@@ -14,4 +14,5 @@ items! {
     spirit_visage,
     unending_despair,
     warmogs_armor,
+    zzrot_portal,
 }

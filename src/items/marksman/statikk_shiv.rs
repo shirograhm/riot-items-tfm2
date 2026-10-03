@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE};
 
 // Electrospark: when fully Energized, the next basic attack deals bonus magic
 // damage to its target and releases chain lightning that jumps on to up to
@@ -162,7 +162,8 @@ impl StatikkShiv {
                     && e.team() != team
                     && e.is_alive()
                     && e.is_targetable()
-                    && (e.is_champion() || e.is_minion() || is_monster(e))
+                    // Any unit but a turret: champions, minions, monsters, summons.
+                    && !e.is_tower()
             })
             .map(|e| (e.is_champion(), e.id()))
             .collect();

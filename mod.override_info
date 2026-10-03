@@ -78,5 +78,13 @@
   "asset/base/sound/sfx/riot_heartsteel_ironheart_clip": {
     "remapping": "asset/riot_items_tfm2/sound/sfx/riot_heartsteel_ironheart_clip",
     "type": "override"
+  },
+  "asset/base/aseprite_resources/champions/riot_voidspawn#sheet": {
+    "remapping": "asset/riot_items_tfm2/aseprite_resources/champions/riot_voidspawn#sheet",
+    "type": "override"
+  },
+  "asset/base/aseprite_resources/champions/riot_voidspawn#anim": {
+    "remapping": "asset/riot_items_tfm2/aseprite_resources/champions/riot_voidspawn#anim",
+    "type": "override"
   }
 }
