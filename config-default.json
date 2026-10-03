@@ -1510,6 +1510,7 @@
   "sunfire_cape": {
     "price": 700,
     "hp": 250,
+    "defence": 15,
     "effect_bonus_hp_regen": 20,
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1.0,
@@ -1519,6 +1520,7 @@
   "radiant_sunfire_cape": {
     "price": 1000,
     "hp": 400,
+    "defence": 25,
     "effect_bonus_hp_regen": 40,
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1,
@@ -2018,7 +2020,7 @@
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1.0,
     "effect_max_distance": 30,
-    "effect_minion_bonus_percent": 50.0,
+    "effect_minion_bonus_percent": 150.0,
     "effect_stack_hp_mult": 1,
     "effect_max_stacks": 15
   },
@@ -2030,7 +2032,7 @@
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1.0,
     "effect_max_distance": 30,
-    "effect_minion_bonus_percent": 50.0,
+    "effect_minion_bonus_percent": 150.0,
     "effect_stack_hp_mult": 1,
     "effect_max_stacks": 15
   },
