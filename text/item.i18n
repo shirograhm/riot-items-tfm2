@@ -1027,6 +1027,18 @@
         "radiant_hullbreaker": {
             "name": "Radiant Hullbreaker",
             "option": "\n<#ff7a3eff>Skipper<>: Every fifth basic attack against champions and monsters deals <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>max HP)<> as <#ff9028ff>bonus physical damage<>, increased to <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>max HP)<> against turrets. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>70% strength<>.\n\n<#ff7a3eff>Boarding Party<>: Allied minions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> gain <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> armor<> and <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> magic resistance<>."
+        },
+        "spirit_stone": {
+            "name": "Spirit Stone",
+            "option": "\n<#ff7a3eff>Butcher<>: Against monsters, deal <#a974ffff>10% bonus magic damage<> and restore <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>health<> equal to <#d94c49ff>2% of your damage dealt<>."
+        },
+        "philosophers_stone": {
+            "name": "Philosopher's Stone",
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
+        },
+        "radiant_philosophers_stone": {
+            "name": "Radiant Philosopher's Stone",
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
         }
     },
     "vi": {
@@ -2057,6 +2069,18 @@
         "radiant_hullbreaker": {
             "name": "Búa Tiến Công Ánh Sáng",
             "option": "\n<#ff7a3eff>Thuyền Trưởng<>: Mỗi đòn đánh thường thứ năm lên tướng và quái vật gây <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa)<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<>, tăng lên <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa)<> khi đánh trụ. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>70% sức mạnh<>.\n\n<#ff7a3eff>Thuyền Viên<>: Lính đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> nhận <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> giáp<> và <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> kháng phép<>."
+        },
+        "spirit_stone": {
+            "name": "Đá Tâm Linh",
+            "option": "\n<#ff7a3eff>Đồ Tể<>: Với quái, gây thêm <#a974ffff>10% sát thương phép<> và hồi <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>máu<> bằng <#d94c49ff>2% sát thương bạn gây ra<>."
+        },
+        "philosophers_stone": {
+            "name": "Đá Hiền Triết",
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
+        },
+        "radiant_philosophers_stone": {
+            "name": "Đá Hiền Triết Ánh Sáng",
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
         }
     },
     "zh-hans": {
@@ -3087,6 +3111,18 @@
         "radiant_hullbreaker": {
             "name": "光明版破舰者",
             "option": "\n<#ff7a3eff>船长<>：对英雄和野怪的每第五次普通攻击造成 <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<> <#60e84dff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值）<> 的<#ff9028ff>额外物理伤害<>，对防御塔提高至 <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<> <#60e84dff>（+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值）<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>70% 强度<>触发。\n\n<#ff7a3eff>登舰小组<>：<#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方小兵获得 <#ffdd8eff>10 点<i#asset/base/ui/banpick/champion_stat_icon:armor_0> 护甲<>和 <#88ccffff>20 点<i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> 魔法抗性<>。"
+        },
+        "spirit_stone": {
+            "name": "精魄之石",
+            "option": "\n<#ff7a3eff>屠夫<>：对野怪额外造成 <#a974ffff>10% 的魔法伤害<>，并回复相当于<#d94c49ff>已造成伤害 2%<>的 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>生命值<>。"
+        },
+        "philosophers_stone": {
+            "name": "贤者之石",
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
+        },
+        "radiant_philosophers_stone": {
+            "name": "光明版贤者之石",
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
         }
     },
     "pt-BR": {
@@ -4117,6 +4153,18 @@
         "radiant_hullbreaker": {
             "name": "Quebracascos Radiante",
             "option": "\n<#ff7a3eff>Marujo<>: A cada quinto ataque básico contra campeões e monstros, causa <#ff9028ff>80%<> do <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#60e84dff>(+5% da<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima)<> como <#ff9028ff>dano físico bônus<>, aumentado para <#ff9028ff>200%<> do <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> <#60e84dff>(+10% da<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima)<> contra torres. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>70% de intensidade<>.\n\n<#ff7a3eff>Invasão Pirata<>: Tropas aliadas a até <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de alcance<> recebem <#ffdd8eff>10 de <i#asset/base/ui/banpick/champion_stat_icon:armor_0> Armadura<> e <#88ccffff>20 de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> Resistência Mágica<>."
+        },
+        "spirit_stone": {
+            "name": "Pedra Espiritual",
+            "option": "\n<#ff7a3eff>Açougueiro<>: Contra monstros, causa <#a974ffff>10% de dano mágico bônus<> e restaura <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>vida<> equivalente a <#d94c49ff>2% do dano causado<>."
+        },
+        "philosophers_stone": {
+            "name": "Pedra Filosofal",
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
+        },
+        "radiant_philosophers_stone": {
+            "name": "Pedra Filosofal Radiante",
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
         }
     },
     "ru": {
@@ -5147,6 +5195,18 @@
         "radiant_hullbreaker": {
             "name": "Лучезарный Бортолом",
             "option": "\n<#ff7a3eff>Шкипер<>: Каждая пятая базовая атака по чемпионам и монстрам наносит <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>макс. здоровья)<> в виде <#ff9028ff>дополнительного физического урона<>, увеличиваясь до <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>макс. здоровья)<> по башням. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>70% силы<>.\n\n<#ff7a3eff>Абордажная команда<>: Союзные миньоны в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> получают <#ffdd8eff>10 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> брони<> и <#88ccffff>20 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> сопротивления магии<>."
+        },
+        "spirit_stone": {
+            "name": "Духовный камень",
+            "option": "\n<#ff7a3eff>Мясник<>: Против монстров наносит <#a974ffff>10% дополнительного магического урона<> и восстанавливает <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>здоровье<> в размере <#d94c49ff>2% нанесённого урона<>."
+        },
+        "philosophers_stone": {
+            "name": "Философский камень",
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
+        },
+        "radiant_philosophers_stone": {
+            "name": "Лучезарный Философский камень",
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
         }
     },
     "ko": {
@@ -6177,6 +6237,18 @@
         "radiant_hullbreaker": {
             "name": "찬란한 선체파괴자",
             "option": "\n<#ff7a3eff>선장<>: 챔피언과 몬스터에게 다섯 번째 기본 공격을 가할 때마다 <#ff9028ff>80%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<> <#60e84dff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력)<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. 포탑에게는 <#ff9028ff>200%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<> <#60e84dff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력)<>로 증가합니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>70% 위력<>으로 적용됩니다.\n\n<#ff7a3eff>승선 부대<>: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 미니언이 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력 10<> 및 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력 20<>을 얻습니다."
+        },
+        "spirit_stone": {
+            "name": "정령석",
+            "option": "\n<#ff7a3eff>도살자<>: 몬스터에게 <#a974ffff>10%의 추가 마법 피해<>를 입히고 <#d94c49ff>입힌 피해량의 2%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+        },
+        "philosophers_stone": {
+            "name": "현자의 돌",
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
+        },
+        "radiant_philosophers_stone": {
+            "name": "찬란한 현자의 돌",
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
         }
     }
 }

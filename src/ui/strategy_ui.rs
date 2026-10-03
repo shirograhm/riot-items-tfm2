@@ -141,6 +141,7 @@ use std::sync::{Arc, Mutex, OnceLock};
 
 use mod_api_stable::*;
 
+use super::draft_watch;
 use crate::build_config::{self, picker_slots, ChampionRow, Role};
 use crate::item_catalog;
 use crate::tactics;
@@ -186,6 +187,10 @@ struct Strings {
     unique_off: String,
     scope_all: String,
     scope_own: String,
+    /// The two cells under the Matchup card. Each names the side whose drafted
+    /// champions it puts in the filter box.
+    side_blue: String,
+    side_red: String,
     save: String,
     ai_slot: String,
     no_champion: String,
@@ -212,6 +217,8 @@ impl Default for Strings {
             unique_off: "Allow Any Builds".into(),
             scope_all: "Apply To All Players".into(),
             scope_own: "Apply To Your Players Only".into(),
+            side_blue: "Blue Team".into(),
+            side_red: "Red Team".into(),
             save: "Save Item Builds".into(),
             ai_slot: AI_SLOT_LABEL_FALLBACK.into(),
             no_champion: NO_CHAMPION_LABEL_FALLBACK.into(),
@@ -269,6 +276,8 @@ fn load_strings(ctx: &StableClient<'_>) {
         unique_off: reference("unique_off", &fallback.unique_off),
         scope_all: reference("scope_all", &fallback.scope_all),
         scope_own: reference("scope_own", &fallback.scope_own),
+        side_blue: reference("side_blue", &fallback.side_blue),
+        side_red: reference("side_red", &fallback.side_red),
         save: reference("save", &fallback.save),
         // A placeholder is a whole label, so it takes a reference like the rest.
         // Confirmed against the bundle: all 21 `placeholder:` values the game
@@ -305,8 +314,8 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
         &strings.col_champion,
     );
     ctx.ui_set_text(&format!("{}.c_role", colheader_path()), &strings.col_role);
-    // The tab and the footer toggle cells carry `text` as a direct property, not
-    // a nested block — see `#builds` in `strategy.ui` — so they take the plain
+    // The tab and the toggle cells carry `text` as a direct property, not a
+    // nested block — see `#builds` in `strategy.ui` — so they take the plain
     // form. The cells are labelled once here rather than on every repaint: in a
     // segmented control the label of a cell is what it *is*, and only which one
     // is lit changes with the setting.
@@ -316,6 +325,8 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
         (unique_off_path(), &strings.unique_off),
         (scope_all_path(), &strings.scope_all),
         (scope_own_path(), &strings.scope_own),
+        (side_blue_path(), &strings.side_blue),
+        (side_red_path(), &strings.side_red),
     ] {
         ctx.ui_set_properties(path, &format!("text: \"{}\";", escape(text)));
     }
@@ -709,6 +720,23 @@ struct EditorState {
     /// The filter box's text, as of the last frame that read it. Rows whose
     /// champion does not match are left unspawned.
     filter: String,
+    /// Which of the Blue Team / Red Team cells are lit. While either is, the
+    /// filter box holds the names those cells wrote, and [`visible_rows`]
+    /// matches them whole.
+    side_blue: bool,
+    side_red: bool,
+    /// Each side's drafted champions as the editor names them, blue then red,
+    /// and the [`draft_watch::revision`] they were worked out from. See
+    /// [`sync_sides`].
+    side_names: [Vec<String>; 2],
+    sides_revision: u64,
+    /// Frames for which the filter box may still read back its old text after
+    /// a side cell wrote to it. See [`sync_filter`].
+    side_settle: u8,
+    /// The filter box's width as last written, and whether that was for text
+    /// too long for one line. `None` for a subtree fresh from source. See
+    /// [`fit_search`].
+    search_fit: Option<(u32, bool)>,
     /// The item list, headers included. Cached for the process lifetime — the
     /// item pool cannot change without a restart.
     entries: Vec<ListEntry>,
@@ -890,7 +918,7 @@ pub(crate) fn is_mod_final_item(key: &str) -> bool {
 ///
 /// The strings are leaked, which is sound because the set is bounded by the
 /// number of distinct hosts — two — and each is built at most once. That is a
-/// fixed ~46 small strings for the life of the process; it does not grow with
+/// fixed ~52 small strings for the life of the process; it does not grow with
 /// time, with screen changes, or with use.
 struct EditorPaths {
     /// The node the window is spawned under. Never addressed except to spawn.
@@ -925,6 +953,23 @@ struct EditorPaths {
     /// exactly the event a button reports.
     search: &'static str,
     search_clear: &'static str,
+    /// The Blue Team / Red Team cells and the box that holds them. Outside the
+    /// panel, under the Matchup card whose two columns they stand for, but
+    /// still the editor's own nodes so that they come and go with the tab.
+    /// Built like the footer's segmented controls, but each cell is its own
+    /// switch: both can be lit, or neither.
+    ///
+    /// `build_editor.ui` authors their place from `strategy.ui`'s numbers
+    /// rather than measuring the card. With "Closing Out" hidden the card is
+    /// the first child of `#sub4` (see [`MATCHUP_PATH`]), so it spans
+    /// 1446..1852 across and ends at y 505, and the cells sit `#sub4`'s own
+    /// 15px spacing below that. The card's rect is not trusted for this: game
+    /// code re-shows "Closing Out" and [`keep_matchup`] hides it again every
+    /// frame, and which of the two states a measurement would see is unknown.
+    /// A change to `#sub4` or `#matchup` in `strategy.ui` moves these too.
+    sides: &'static str,
+    side_blue: &'static str,
+    side_red: &'static str,
     /// In the footer rather than the toolbar: it is the panel's "done" button,
     /// and bottom-right is where one is looked for.
     save: &'static str,
@@ -989,6 +1034,9 @@ impl EditorPaths {
             add: leak(format!("{toolbar}.add")),
             search: leak(format!("{toolbar}.search")),
             search_clear: leak(format!("{toolbar}.searchclear")),
+            sides: leak(format!("{editor}.sides")),
+            side_blue: leak(format!("{editor}.sides.blue")),
+            side_red: leak(format!("{editor}.sides.red")),
             save: leak(format!("{footer}.save")),
             saved: leak(format!("{footer}.saved")),
             unique_on: leak(format!("{footer}.unique.on")),
@@ -1079,6 +1127,15 @@ fn search_path() -> &'static str {
 }
 fn search_clear_path() -> &'static str {
     paths().search_clear
+}
+fn sides_path() -> &'static str {
+    paths().sides
+}
+fn side_blue_path() -> &'static str {
+    paths().side_blue
+}
+fn side_red_path() -> &'static str {
+    paths().side_red
 }
 fn save_path() -> &'static str {
     paths().save
@@ -1748,6 +1805,233 @@ fn refresh_scope(ctx: &mut StableClient<'_>) {
     }
 }
 
+// -- side cells -----------------------------------------------------------
+
+/// How long the filter box is given to read back what a side cell wrote into
+/// it, in frames. See [`sync_filter`].
+const SIDE_SETTLE_FRAMES: u8 = 3;
+
+/// The filter box's left edge and the width it has for a line that fits, as
+/// `build_editor.ui` authors them.
+const SEARCH_X: u32 = 205;
+const SEARCH_LINE_W: u32 = 450;
+
+/// The gap between the filter box and its X button, and what that gap, the
+/// button and the toolbar's right margin take off the room the box may grow
+/// into.
+const SEARCH_CLEAR_GAP: u32 = 10;
+const SEARCH_RIGHT_INSET: u32 = SEARCH_CLEAR_GAP + 22 + 15;
+
+/// The filter box's left and right padding, which its text cannot use.
+const SEARCH_PADDING: u32 = 44 + 15;
+
+/// Whether the Blue Team / Red Team cells are up.
+///
+/// Only on the strategy screen and only after a draft that [`draft_watch`]
+/// saw. The composition test has no draft before it and no Matchup card to put
+/// them under, and a cell that fills the box with nothing reads as a broken
+/// one.
+fn sides_shown() -> bool {
+    with_state(|state| state.side_names.iter().any(|side| !side.is_empty())).unwrap_or(false)
+        && paths().parent == UI_ROOT
+}
+
+/// Shows the side cells when there is a lineup for them to write, and paints
+/// them.
+fn refresh_sides(ctx: &mut StableClient<'_>) {
+    ctx.ui_set_visible(sides_path(), sides_shown());
+    paint_sides(ctx);
+}
+
+/// Sizes the filter box for the text in it.
+///
+/// # Why the box grows
+///
+/// A `text_edit` wraps what does not fit its width and draws every line of it,
+/// inside its own rect or not: ten champion names off the side cells came out
+/// as four lines over a one-line box. Nothing turns that off. The runner's
+/// whole property set is `color`, `rounding`, `stroke`, `back_color`, `font`,
+/// `size`, `text_color`, `selection_color`, `placeholder`, `placeholder_color`,
+/// `numeric_only` and `max_length`, and the label's `fit_width` is the label's
+/// alone. So text that would wrap is given the rest of the toolbar instead,
+/// and the hint, which lives there, steps aside until the text is short again.
+///
+/// Typing gets the same treatment as a side cell's text, since it wraps the
+/// same way.
+///
+/// # Why it writes only a change
+///
+/// This is asked on every change to the text, which while the player types is
+/// every keystroke, and a property write to the box they are typing in is not
+/// something to repeat for nothing. The geometry last written is kept, and a
+/// keystroke that leaves it standing writes nothing.
+fn fit_search(ctx: &mut StableClient<'_>) {
+    // A host too narrow to give more than the line keeps the line, and wraps.
+    let room = panel_size()
+        .0
+        .saturating_sub(SEARCH_X + SEARCH_RIGHT_INSET)
+        .max(SEARCH_LINE_W);
+    let Some((width, long)) = with_state(|state| {
+        let long = filter_text_width(&state.filter) + SEARCH_PADDING > SEARCH_LINE_W;
+        let fit = (if long { room } else { SEARCH_LINE_W }, long);
+        (state.search_fit != Some(fit)).then(|| {
+            state.search_fit = Some(fit);
+            fit
+        })
+    })
+    .flatten() else {
+        return;
+    };
+    ctx.ui_set_properties(search_path(), &format!("width: {width}px;"));
+    ctx.ui_set_properties(
+        search_clear_path(),
+        &format!("x: {}px;", SEARCH_X + width + SEARCH_CLEAR_GAP),
+    );
+    ctx.ui_set_visible(hint_path(), !long);
+}
+
+/// A guess at how wide `text` draws in the filter box, in px.
+///
+/// Nothing reports the real width. Latin text measured 6.0 to 6.3px a
+/// character at the box's size 14, so 7 errs towards calling a line long, and
+/// the cost of that is a box that widens a few characters early. Anything
+/// outside ASCII is counted as a full-width glyph for the same reason.
+fn filter_text_width(text: &str) -> u32 {
+    text.chars()
+        .map(|c| if c.is_ascii() { 7 } else { 14 })
+        .sum()
+}
+
+/// Paints which side cells are lit.
+///
+/// One at a time, where [`paint_toggle`] paints a pair: each cell here is its
+/// own switch, so both can be lit or neither. Both property pairs are written
+/// for the reason given there.
+fn paint_sides(ctx: &mut StableClient<'_>) {
+    let (blue, red) =
+        with_state(|state| (state.side_blue, state.side_red)).unwrap_or((false, false));
+    ctx.ui_set_properties(side_blue_path(), &toggle_style(blue));
+    ctx.ui_set_properties(side_red_path(), &toggle_style(red));
+}
+
+/// What the lit side cells put in the filter box: their champions, blue's
+/// first, separated the way [`filter_terms`] splits them.
+fn sides_text(state: &EditorState) -> String {
+    state
+        .side_names
+        .iter()
+        .zip([state.side_blue, state.side_red])
+        .filter(|(_, lit)| *lit)
+        .flat_map(|(names, _)| names.iter().map(String::as_str))
+        .collect::<Vec<_>>()
+        .join(", ")
+}
+
+/// Works out which of the editor's champions each side drafted, whenever the
+/// picks [`draft_watch`] holds have changed.
+///
+/// Here, from `post_update`, rather than in the click that wants the answer:
+/// matching a name takes the game's own name for every champion, and a click
+/// handler is where host calls have come back empty before (see the note on
+/// `cached_entries` in `post_update`).
+fn sync_sides(ctx: &mut StableClient<'_>) {
+    let revision = draft_watch::revision();
+    if with_state(|state| state.sides_revision == revision).unwrap_or(true) {
+        return;
+    }
+    let champions = cached_champions(ctx);
+    let game_names: Vec<String> = champions
+        .iter()
+        .map(|choice| game_champion_name(ctx, &choice.id))
+        .collect();
+    let names = [false, true].map(|red| {
+        draft_watch::picks(red)
+            .iter()
+            .filter_map(|pick| drafted_label(&champions, &game_names, pick))
+            .collect::<Vec<_>>()
+    });
+    let _ = with_state(|state| {
+        state.side_names = names;
+        state.sides_revision = revision;
+    });
+    refresh_sides(ctx);
+}
+
+/// The game's own name for a champion id, or nothing where it has none.
+///
+/// `champion.i18n` keeps it under `description.<id>.name`, and `ctx.i18n`
+/// answers in `en` whatever the locale (see [`load_strings`]). It is not always
+/// the id prettified, which is what the editor shows: `priest` is "Priestess",
+/// `cavalry_knight` is "Cavalry".
+fn game_champion_name(ctx: &StableClient<'_>, id: &str) -> String {
+    ctx.i18n(&format!("#asset/base/text/champion?description.{id}.name"))
+        .filter(|name| !name.starts_with('#'))
+        .unwrap_or_default()
+}
+
+/// What the filter box should say for one drafted champion: the editor's own
+/// label for it when the pick can be tied to a champion the editor lists, what
+/// the draft grid showed when it cannot, and nothing when that is unreadable.
+///
+/// Tied by id where one can be read, because an id is the same in every
+/// language: out of the label's text if that is a reference
+/// (`#asset/…?description.<id>.name`) rather than a name, and failing
+/// everything else out of the slot's node name, if the game names slots for
+/// their champion. By name in between, against the game's name for each
+/// champion (`game_names`, in step with `champions`) and then the editor's
+/// label and the id itself, all compared through [`fold`]. That route only
+/// works with the game in English, the one language both sides of the
+/// comparison are certain to be in.
+fn drafted_label(
+    champions: &[ChampionChoice],
+    game_names: &[String],
+    pick: &draft_watch::Pick,
+) -> Option<String> {
+    let by_id = |id: &str| champions.iter().find(|choice| choice.id == id);
+    let reference = pick
+        .name
+        .strip_prefix('#')
+        .and_then(|rest| rest.split_once('?'))
+        .map(|(_, key)| key);
+    let shown = fold(&pick.name);
+    let by_name = || {
+        if reference.is_some() || shown.is_empty() {
+            return None;
+        }
+        champions
+            .iter()
+            .zip(game_names)
+            .find(|(_, name)| shown == fold(name))
+            .map(|(choice, _)| choice)
+            .or_else(|| {
+                champions
+                    .iter()
+                    .find(|choice| shown == fold(&choice.name) || shown == fold(&choice.id))
+            })
+    };
+    if let Some(choice) = reference
+        .and_then(|key| key.split('.').find_map(by_id))
+        .or_else(by_name)
+        .or_else(|| by_id(&pick.node))
+    {
+        return Some(choice.name.clone());
+    }
+    // Not a champion the editor lists. What the grid showed is still the best
+    // term there is, unless it is a reference: nothing in the list could match
+    // one and nobody could read it. A comma would split the term in two.
+    let raw = sanitize(&pick.name).replace(',', " ");
+    (reference.is_none() && !raw.trim().is_empty()).then_some(raw)
+}
+
+/// A name with everything but its letters and digits dropped, lowercased, so
+/// that `Poison Dart Hunter` and `poison_dart_hunter` compare equal.
+fn fold(text: &str) -> String {
+    text.chars()
+        .filter(|c| c.is_alphanumeric())
+        .flat_map(char::to_lowercase)
+        .collect()
+}
+
 // -- spawning -----------------------------------------------------------
 
 /// `.ui` source for one champion row.
@@ -2202,6 +2486,10 @@ fn visible_rows() -> Vec<usize> {
         // Owned, so the borrow of `state.filter` ends before `state.rows` is
         // iterated below.
         let terms = filter_terms(&state.filter);
+        // Terms a side cell wrote are whole names, and are matched whole:
+        // "Knight" off the draft must not bring up Magic Knight's row as well.
+        // What the player types still matches anywhere in a name.
+        let whole = state.side_blue || state.side_red;
         state
             .rows
             .iter()
@@ -2213,11 +2501,16 @@ fn visible_rows() -> Vec<usize> {
                 // to the raw id — is still reachable by typing it.
                 Some(id) => {
                     terms.is_empty() || {
-                        let haystack = format!("{} {id}", champion_label(&champions, Some(id)))
-                            .to_lowercase();
+                        let label = champion_label(&champions, Some(id)).to_lowercase();
+                        let id = id.to_lowercase();
                         // Any term, not all: commas read as "or", so a row needs
                         // to answer only one of the names typed.
-                        terms.iter().any(|term| haystack.contains(term))
+                        if whole {
+                            terms.iter().any(|term| *term == label || *term == id)
+                        } else {
+                            let haystack = format!("{label} {id}");
+                            terms.iter().any(|term| haystack.contains(term))
+                        }
                     }
                 }
             })
@@ -2259,19 +2552,43 @@ fn filter_active() -> bool {
 /// handler would leave the list stale until the box lost focus. Reading a string
 /// once a frame is cheap, and the rebuild is gated on the text actually
 /// differing.
+///
+/// # The side cells
+///
+/// A lit side cell means "the box holds this side's champions", which stops
+/// being true the moment the player types in it, so a change found here puts
+/// both cells out. What a cell writes itself is recorded as already read, and
+/// must not count as typing — but whether the box reads back a programmatic
+/// write on the very next frame is not known, so for [`SIDE_SETTLE_FRAMES`]
+/// after one a mismatch is waited out rather than believed. A write that never
+/// takes is believed once they have passed, which leaves the cells out and the
+/// list filtered by what the box really says.
 fn sync_filter(ctx: &mut StableClient<'_>) {
     let Some(text) = ctx.ui_text_edit_text(search_path()) else {
         return;
     };
-    let changed = with_state(|state| {
-        let changed = state.filter != text;
+    let Some(unlit) = with_state(|state| {
+        if state.filter == text {
+            state.side_settle = 0;
+            return None;
+        }
+        if state.side_settle > 0 {
+            state.side_settle -= 1;
+            return None;
+        }
         state.filter = text.clone();
-        changed
+        let unlit = state.side_blue || state.side_red;
+        state.side_blue = false;
+        state.side_red = false;
+        Some(unlit)
     })
-    .unwrap_or(false);
-    if !changed {
+    .flatten() else {
         return;
+    };
+    if unlit {
+        paint_sides(ctx);
     }
+    fit_search(ctx);
 
     ctx.ui_set_visible(search_clear_path(), !text.trim().is_empty());
     // A floating list is positioned against the row that opened it, and that row
@@ -2664,8 +2981,12 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         canonicalize_rows(&entries, &mut state.rows);
         state.spawned_rows.clear();
         // The subtree was just spawned, so its filter box is empty whatever the
-        // last screen was left filtered by.
+        // last screen was left filtered by, and no side cell is lit.
         state.filter.clear();
+        state.side_blue = false;
+        state.side_red = false;
+        state.side_settle = 0;
+        state.search_fit = None;
     });
     rebuild_rows(ctx, &entries);
 
@@ -2678,9 +2999,14 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         scope_own_path(),
         listcatch_path(),
         search_clear_path(),
+        side_blue_path(),
+        side_red_path(),
     ] {
         register_once(ctx, path);
     }
+    // Authored hidden, so this is what puts them up: the lineup was worked out
+    // before the subtree it is shown in existed.
+    refresh_sides(ctx);
 
     // Both lists start hidden but nothing in the source stops them taking the
     // wheel, so without this a scroll of the rows also scrolls two panels that
@@ -3220,7 +3546,49 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     if path == search_clear_path() {
         ctx.ui_set_text_edit_text(search_path(), "");
         ctx.ui_set_visible(search_clear_path(), false);
-        let _ = with_state(|state| state.filter.clear());
+        let _ = with_state(|state| {
+            state.filter.clear();
+            // The names a side cell wrote go with the rest of the box.
+            state.side_blue = false;
+            state.side_red = false;
+        });
+        paint_sides(ctx);
+        fit_search(ctx);
+        close_list(ctx);
+        rebuild_rows(ctx, &entries);
+        return;
+    }
+
+    // Each side cell is a switch of its own, so unlike the footer's cells a
+    // click on a lit one has to do something: put it out. That makes the kind
+    // of event matter here as it does not there, because acting on anything
+    // else would undo the click. Only a click gets through, with an unreported
+    // kind counted as one — the gate `item_stats::ui` uses, for its reason.
+    if path == side_blue_path() || path == side_red_path() {
+        if !matches!(event.kind, Some(UiEventKindV1::Click) | None) {
+            return;
+        }
+        let red = path == side_red_path();
+        let text = with_state(|state| {
+            if red {
+                state.side_red = !state.side_red;
+            } else {
+                state.side_blue = !state.side_blue;
+            }
+            // Whatever was in the box is replaced, not added to: the cells say
+            // what it holds. Recorded as read here, so `sync_filter` does not
+            // find the box changed and take that for typing.
+            state.filter = sides_text(state);
+            state.side_settle = SIDE_SETTLE_FRAMES;
+            state.filter.clone()
+        })
+        .unwrap_or_default();
+        paint_sides(ctx);
+        // Sized before it is filled, so the names arrive in a box that holds
+        // them on one line.
+        fit_search(ctx);
+        ctx.ui_set_text_edit_text(search_path(), &text);
+        ctx.ui_set_visible(search_clear_path(), !text.is_empty());
         close_list(ctx);
         rebuild_rows(ctx, &entries);
         return;
@@ -3451,6 +3819,12 @@ impl StableExtension for StrategyPicker {
         // dropdowns that line has just shown while Advanced is open over them.
         crate::item_stats::toolbox_tab::sync(ctx);
 
+        // The draft screen's picks, for the editor's Blue Team / Red Team
+        // cells. Unconditional because the draft is over by the time the
+        // strategy screen is up: it has to be read on its own screen, and off
+        // that screen this is one failed lookup.
+        draft_watch::sync(ctx);
+
         // The composition test hosts the editor too. It has to be handled
         // before the gate below, which returns — and tears the editor down —
         // for any screen without the strategy tabs, this one included.
@@ -3482,6 +3856,10 @@ impl StableExtension for StrategyPicker {
                 state.modal_ready = false;
                 state.spawned_rows.clear();
                 state.filter.clear();
+                state.side_blue = false;
+                state.side_red = false;
+                state.side_settle = 0;
+                state.search_fit = None;
                 state.open_list = None;
                 // The popup found on this screen dies with it, so the next one
                 // searches again rather than writing to a stale path.
@@ -3496,6 +3874,9 @@ impl StableExtension for StrategyPicker {
                 // The screen and everything registered on it is gone, so the
                 // next one has to wire itself from scratch.
                 forget_registrations();
+                // The lineup that screen was for has gone into its match. The
+                // next strategy screen gets the draft before it, or no cells.
+                draft_watch::forget();
             }
 
             return;
@@ -3522,6 +3903,11 @@ impl StableExtension for StrategyPicker {
             }
             let _ = with_state(|state| state.wired = true);
         }
+
+        // Before the `showing` gate below: the lineup has to be worked out by
+        // the time the tab is first opened, and once it is this is a single
+        // comparison a frame.
+        sync_sides(ctx);
 
         // Re-asserted every frame rather than once on entry. Game code drives
         // these from its own idea of the current tab, which never becomes

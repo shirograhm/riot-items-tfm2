@@ -333,6 +333,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("seekers_armguard" => SeekersArmguard));
     reg.add_item(configured!("serrated_dirk" => SerratedDirk));
     reg.add_item(configured!("sorcerers_shoes" => SorcerersShoes, boots));
+    reg.add_item(configured!("spirit_stone" => SpiritStone));
     reg.add_item(configured!("steel_sigil" => SteelSigil));
     reg.add_item(configured!("tiamat" => Tiamat));
     reg.add_item(configured!("verdant_barrier" => VerdantBarrier));
@@ -396,6 +397,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("night_harvester" => NightHarvester));
     reg.add_item(configured!("opportunity" => Opportunity));
     reg.add_item(configured!("overlords_bloodmail" => OverlordsBloodmail));
+    reg.add_item(configured!("philosophers_stone" => PhilosophersStone));
     reg.add_item(configured!("protectors_vow" => ProtectorsVow));
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
@@ -487,6 +489,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_night_harvester" => NightHarvester));
     reg.add_item(configured_radiant!("radiant_opportunity" => Opportunity));
     reg.add_item(configured_radiant!("radiant_overlords_bloodmail" => OverlordsBloodmail));
+    reg.add_item(configured_radiant!("radiant_philosophers_stone" => PhilosophersStone));
     reg.add_item(configured_radiant!("radiant_protectors_vow" => ProtectorsVow));
     reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured_radiant!("radiant_rabadons_deathcap" => RabadonsDeathcap));

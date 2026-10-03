@@ -120,7 +120,6 @@ impl StableItem for HauntingGuise {
             "liandrys_torment".to_string(),
             "bloodletters_curse".to_string(),
             "dusk_and_dawn".to_string(),
-            "grezs_spectral_lantern".to_string(),
             "rylais_crystal_scepter".to_string(),
         ]
     }

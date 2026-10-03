@@ -19,8 +19,8 @@ pub struct BamisCinder {
 impl Default for BamisCinder {
     fn default() -> Self {
         Self {
-            price: 400,
-            hp: 150,
+            price: 700,
+            hp: 200,
             effect_bonus_flat_damage: 5,
             effect_caster_hp_percent_damage: 0.5,
             effect_max_distance: 30,
@@ -80,6 +80,7 @@ impl StableItem for BamisCinder {
         vec![
             "hourglass_of_eternity".to_string(),
             "hollow_radiance".to_string(),
+            "philosophers_stone".to_string(),
         ]
     }
 

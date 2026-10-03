@@ -58,7 +58,7 @@ build_editor:empty {
           bottom: 5px;
         }
         placeholder: "filter by champion...";
-        max_length: 60;
+        max_length: 240;
 
         #icon:image {
           ignore_event: true;
@@ -382,6 +382,70 @@ build_editor:empty {
           size: 15;
         }
       }
+    }
+  }
+
+  #sides:color {
+    visible: false;
+
+    x: 1446px;
+    y: 520px;
+    width: 406px;
+    height: 40px;
+
+    padding: {
+      left: 4px;
+      right: 4px;
+      top: 4px;
+      bottom: 4px;
+    }
+
+    color: #4a4c56ff;
+    stroke: 1;
+    back_color: #00000000;
+
+    child_type: LeftToRight {
+      spacing: 0px;
+    }
+
+    rounding: Uniform {
+      rounding: 8;
+    }
+
+    #blue:color_selectable {
+      @"asset/base/style/main#strategy_option";
+      width: 199px;
+      height: 32px;
+
+      label: {
+        size: 13;
+        align_x: Center;
+      }
+
+      selected_label: {
+        size: 13;
+        align_x: Center;
+      }
+
+      text: "Blue Team";
+    }
+
+    #red:color_selectable {
+      @"asset/base/style/main#strategy_option";
+      width: 199px;
+      height: 32px;
+
+      label: {
+        size: 13;
+        align_x: Center;
+      }
+
+      selected_label: {
+        size: 13;
+        align_x: Center;
+      }
+
+      text: "Red Team";
     }
   }
 

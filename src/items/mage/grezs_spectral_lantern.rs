@@ -31,11 +31,7 @@ pub struct GrezsSpectralLantern {
 impl GrezsSpectralLantern {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base(
-                BASE_KEY,
-                &["haunting_guise"],
-                &["radiant_grezs_spectral_lantern"],
-            ),
+            meta: ItemMeta::base(BASE_KEY, &["spirit_stone"], &["radiant_grezs_spectral_lantern"]),
             spirit_drain_buff: "grezs_spectral_lantern_spirit_drain",
             price: 700,
             hp: 150,

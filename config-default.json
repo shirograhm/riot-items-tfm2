@@ -1359,8 +1359,8 @@
     "effect_ranged_percent": 50.0
   },
   "bamis_cinder": {
-    "price": 400,
-    "hp": 150,
+    "price": 700,
+    "hp": 200,
     "effect_bonus_flat_damage": 5,
     "effect_caster_hp_percent_damage": 0.5,
     "effect_max_distance": 30,
@@ -2002,5 +2002,36 @@
     "effect_bonus_defence": 10,
     "effect_bonus_magic_resistance": 20,
     "effect_max_distance": 100
+  },
+  "spirit_stone": {
+    "price": 400,
+    "hp": 100,
+    "magic_power": 20,
+    "effect_percent_bonus_damage": 10.0,
+    "effect_bonus_hp_percent_of_damage": 2.0
+  },
+  "philosophers_stone": {
+    "price": 750,
+    "hp": 250,
+    "defence": 15,
+    "magic_resistance": 25,
+    "effect_bonus_flat_damage": 10,
+    "effect_caster_hp_percent_damage": 1.0,
+    "effect_max_distance": 30,
+    "effect_minion_bonus_percent": 50.0,
+    "effect_stack_hp_mult": 1,
+    "effect_max_stacks": 15
+  },
+  "radiant_philosophers_stone": {
+    "price": 1050,
+    "hp": 350,
+    "defence": 30,
+    "magic_resistance": 45,
+    "effect_bonus_flat_damage": 10,
+    "effect_caster_hp_percent_damage": 1.0,
+    "effect_max_distance": 30,
+    "effect_minion_bonus_percent": 50.0,
+    "effect_stack_hp_mult": 1,
+    "effect_max_stacks": 15
   }
 }

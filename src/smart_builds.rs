@@ -35,18 +35,24 @@
 //!    never plans toward a tier-3 item, so without this no AI build holds any.
 //!    Boots the player pinned anywhere, the 5th and 6th slots included, count,
 //!    and no AI pick is ever swapped *for* boots by the other rules.
-//! 8. **Jungle items stay in the jungle** — Feral Flare and Grez's Spectral
-//!    Lantern ([`JUNGLE_ITEMS`]) grow on monster kills, which only the jungle
-//!    role gets, so only whoever plays jungle keeps them. Numbered after 7
-//!    only so the rules above keep the numbers the rest of the mod cites them by.
+//! 8. **Jungle items stay in the jungle, one to a build** — Feral Flare,
+//!    Grez's Spectral Lantern and Philosopher's Stone ([`JUNGLE_ITEMS`]) grow
+//!    on monster kills, which only the jungle role gets, so only whoever plays
+//!    jungle keeps them. And a jungler is suggested one, the one for its
+//!    champion: Philosopher's Stone on a champion tagged `Tank`, else Feral
+//!    Flare or Grez's by damage type (rule 5). The AI's other jungle items
+//!    make way, all of them when the player pinned one: a pin is that build's
+//!    jungle item, and pins may hold as many as the player likes. Numbered
+//!    after 7 only so the rules above keep the numbers the rest of the mod
+//!    cites them by.
 //! 9. **Role items first** — a support's build holds a Support-class item
 //!    (the two exceptions to rule 4 included) and a jungler's a jungle item, bought
 //!    before the AI's other picks. Only one is guaranteed: the rest of the
 //!    build is still whatever the AI chose. When neither a pin nor an AI pick
 //!    is one, the AI's last pick makes way for the first role item every
 //!    other rule accepts. Rule 5 is what matches it to the champion: an AD
-//!    support gets a tank support item, never an AP one, and a jungler Feral
-//!    Flare or Grez's by damage type.
+//!    support gets a tank support item, never an AP one. A jungler's is the
+//!    one rule 8 names.
 //! 10. **Imperial Mandate for supports that immobilize** — a support whose
 //!    kit has a stun, root, knock-up, knockback, pull, taunt, fear or charm
 //!    makes Mandate its support item, since its passive pays off on exactly
@@ -246,6 +252,10 @@ pub(crate) enum Reason {
     SupportOnly,
     Scaling,
     JungleOnly,
+    /// A jungler holding a jungle item that is not its champion's.
+    JungleMismatch,
+    /// A jungle item in a build that already holds one.
+    SecondJungle,
     MandateWithoutCc,
     Reach,
 }
@@ -257,14 +267,19 @@ impl Reason {
     /// it does not scale with, so for these two the stand-in is taken from the
     /// categories the rest of the build uses instead. Imperial Mandate on a
     /// support that cannot immobilize goes the same way: it is a support item,
-    /// so another support item stands in first. A jungle item's category is an
-    /// ordinary one (Grez's is a Mage item), so its stand-in comes from there,
-    /// like a duplicate's. So is a melee or ranged item's: a ranged champion
-    /// that loses Titanic Hydra still wanted an item of that kind.
+    /// so another support item stands in first. So does a jungler's wrong
+    /// jungle item, for the same reason: its champion's own stands in first.
+    /// A jungle item's category is otherwise an ordinary one (Grez's is a Mage
+    /// item), so off the jungle, or as a build's second, its stand-in comes
+    /// from there, like a duplicate's. So is a melee or ranged item's: a ranged
+    /// champion that loses Titanic Hydra still wanted an item of that kind.
     pub(crate) fn restyles(self) -> bool {
         matches!(
             self,
-            Reason::SupportOnly | Reason::Scaling | Reason::MandateWithoutCc
+            Reason::SupportOnly
+                | Reason::Scaling
+                | Reason::JungleMismatch
+                | Reason::MandateWithoutCc
         )
     }
 }
@@ -282,6 +297,11 @@ pub(crate) struct Fit {
     scaling: Option<Scaling>,
     /// Rule 8: whether jungle items are allowed.
     jungle_items: bool,
+    /// Rule 8: whether this jungler's one jungle item is Philosopher's Stone
+    /// rather than a damage one: a champion tagged `Tank`. Not a ranged one,
+    /// which rule 11 would take the Stone back off; it builds its damage item
+    /// like any other jungler.
+    stone_jungler: bool,
     /// Rule 10: whether this is a support whose kit immobilizes, whose support
     /// item is Imperial Mandate.
     mandate: bool,
@@ -300,13 +320,15 @@ pub(crate) struct Fit {
 /// lineup has placed the champion yet. Jungle items follow the same line, for
 /// the jungle role. A champion nothing is known about gets no scaling
 /// restriction and none on its reach: a missing tag must never cost a build an
-/// item.
+/// item. In the jungle it is no tank either, so it builds a damage item.
 pub(crate) fn fit(champion: &str, role: Role) -> Fit {
     let traits = champion_traits::traits(champion);
     Fit {
         support_items: role == Role::Support,
         scaling: traits.and_then(|traits| traits.scaling),
         jungle_items: role == Role::Jungle,
+        stone_jungler: role == Role::Jungle
+            && traits.is_some_and(|traits| traits.tank && traits.ranged != Some(true)),
         mandate: role == Role::Support && traits.is_some_and(|traits| traits.can_immobilize()),
         no_mandate: role == Role::Support && traits.is_some_and(|traits| !traits.can_immobilize()),
         ranged: traits.and_then(|traits| traits.ranged),
@@ -340,6 +362,13 @@ impl Fit {
             Some(false) => is_ranged_item(key),
             None => false,
         }
+    }
+
+    /// Rule 8, for a jungler: whether `key` is a jungle item other than the
+    /// one its champion builds — a damage item on a tank, Philosopher's Stone
+    /// on anyone else. Which of the two damage items is rule 5's to say.
+    fn other_jungle_item(&self, key: &str) -> bool {
+        self.jungle_items && is_jungle_item(key) && is_philosophers_stone(key) != self.stone_jungler
     }
 
     /// Whether the champion plays a role with items of its own (rule 9).
@@ -509,26 +538,37 @@ fn is_mandate(key: &str) -> bool {
 
 /// Rule 8: items only the jungle role may build. By base slug, so the radiant
 /// tier follows.
-const JUNGLE_ITEMS: [&str; 2] = [
+const JUNGLE_ITEMS: [&str; 3] = [
     "feral_flare",            // a stack per takedown and monster killed
     "grezs_spectral_lantern", // ability power per takedown and monster killed
+    PHILOSOPHERS_STONE,       // maximum health per takedown and monster killed
 ];
+
+/// Rule 8: the jungle item of a champion tagged `Tank`. The other two are for
+/// champions that are not, by damage type.
+const PHILOSOPHERS_STONE: &str = "philosophers_stone";
 
 /// Whether `key` is one of [`JUNGLE_ITEMS`], base or radiant.
 fn is_jungle_item(key: &str) -> bool {
     JUNGLE_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
+/// Whether `key` is Philosopher's Stone, base or radiant.
+fn is_philosophers_stone(key: &str) -> bool {
+    crate::build_config::base_slug(key) == PHILOSOPHERS_STONE
+}
+
 /// Rule 11: items whose passive wants the carrier in melee, which a ranged
 /// champion does not keep. By base slug, so the radiant tier follows. The
 /// distances are the defaults; all of them are config-editable.
-const MELEE_ITEMS: [&str; 7] = [
-    "ravenous_hydra",  // Cleave at half strength from past 35 range
-    "titanic_hydra",   // Cleave at half strength from past 35 range
-    "hullbreaker",     // Skipper at 70% strength from past 35 range
-    "heartsteel",      // Ironheart charges on enemies that stay within 50 range
-    "hollow_radiance", // Immolate burns enemies within 30 range
-    "sunfire_cape",    // Immolate again; this slug is the radiant cape's
+const MELEE_ITEMS: [&str; 8] = [
+    "ravenous_hydra",     // Cleave at half strength from past 35 range
+    "titanic_hydra",      // Cleave at half strength from past 35 range
+    "hullbreaker",        // Skipper at 70% strength from past 35 range
+    "heartsteel",         // Ironheart charges on enemies that stay within 50 range
+    "hollow_radiance",    // Immolate burns enemies within 30 range
+    "philosophers_stone", // Immolate again
+    "sunfire_cape",       // Immolate again; this slug is the radiant cape's
     // Sunfire Cape itself, whose key the base game never lost: only the
     // radiant reskins have an alias for `base_slug` to undo.
     "hourglass_of_eternity",
@@ -551,7 +591,7 @@ fn is_ranged_item(key: &str) -> bool {
     RANGED_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
-/// What the items a build already holds have spent of the two budgets the rules
+/// What the items a build already holds have spent of the budgets the rules
 /// police, and the [`Fit`] of the champion it is for. Carries the trait table
 /// with it, so a scan across the catalog is a run of hash lookups rather than a
 /// run of lock acquisitions.
@@ -559,6 +599,8 @@ pub(crate) struct Budget {
     table: Arc<Table>,
     cuts_healing: bool,
     crit_chance: i32,
+    /// Rule 8: whether the build already holds a jungle item.
+    jungle_item: bool,
     fit: Fit,
 }
 
@@ -569,6 +611,7 @@ impl Budget {
             table: table(),
             cuts_healing: false,
             crit_chance: 0,
+            jungle_item: false,
             fit,
         }
     }
@@ -592,6 +635,8 @@ impl Budget {
             Some(Reason::SupportOnly)
         } else if !self.fit.jungle_items && is_jungle_item(key) {
             Some(Reason::JungleOnly)
+        } else if self.fit.other_jungle_item(key) {
+            Some(Reason::JungleMismatch)
         } else if self.fit.no_mandate && is_mandate(key) {
             Some(Reason::MandateWithoutCc)
         } else if self.fit.mismatches(&traits) {
@@ -601,6 +646,10 @@ impl Budget {
             // is replaced the way rule 5 does it, in the build's style, not by
             // another item of a kind the champion cannot use.
             Some(Reason::Reach)
+        } else if self.jungle_item && is_jungle_item(key) {
+            // After the rules about the champion: what is left here is a
+            // jungle item this jungler could hold, were it the build's first.
+            Some(Reason::SecondJungle)
         } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
         } else if self.crit_chance + traits.crit_chance > CRIT_CAP {
@@ -611,11 +660,13 @@ impl Budget {
     }
 
     /// Whether `key` is an item this champion may hold at all — rules 4, 5, 8,
-    /// 10 and 11, which do not depend on what else is in the build. An item
-    /// that fails is no guide to the build's style.
+    /// 10 and 11, which do not depend on what else is in the build (rule 8's
+    /// one-to-a-build half does, and is left out). An item that fails is no
+    /// guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
         !(!self.fit.support_items && is_support_item(key))
             && !(!self.fit.jungle_items && is_jungle_item(key))
+            && !self.fit.other_jungle_item(key)
             && !(self.fit.no_mandate && is_mandate(key))
             && !self.fit.mismatches(&self.table.traits(key))
             && !self.fit.out_of_reach(key)
@@ -637,6 +688,7 @@ impl Budget {
         let traits = self.table.traits(key);
         self.cuts_healing |= traits.cuts_healing;
         self.crit_chance += traits.crit_chance;
+        self.jungle_item |= is_jungle_item(key);
     }
 }
 
@@ -781,9 +833,10 @@ pub(crate) fn enforce<C, K, G, F>(
                 };
                 if reason.restyles() {
                     // An item of the champion's role that fails rule 5 (an
-                    // AP-only support item on an AD support) makes way for one
-                    // of the role it can use first: rule 9 wants the role to
-                    // keep one, and the build's style would not look there.
+                    // AP-only support item on an AD support) or rule 8 (Feral
+                    // Flare on a tank jungler) makes way for one of the role
+                    // it can use first: rule 9 wants the role to keep one, and
+                    // the build's style would not look there.
                     let role_item = current
                         .as_deref()
                         .is_some_and(|key| fit.is_role_item(key))
