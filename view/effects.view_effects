@@ -87,6 +87,30 @@
             "tag": "trigger",
             "z": 1,
             "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_frost_zone_form",
+            "anim": "asset/riot_items_tfm2/effects/frost_zone",
+            "tag": "form",
+            "z": 1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_frost_zone_hold",
+            "anim": "asset/riot_items_tfm2/effects/frost_zone",
+            "tag": "hold",
+            "z": 1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_frost_zone_melt",
+            "anim": "asset/riot_items_tfm2/effects/frost_zone",
+            "tag": "melt",
+            "z": 1,
+            "is_follow": false
         }
     ],
     "view_projectiles": [

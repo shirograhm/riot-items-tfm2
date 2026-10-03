@@ -380,6 +380,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("hollow_radiance" => HollowRadiance));
     reg.add_item(configured!("hubris" => Hubris));
     reg.add_item(configured!("hullbreaker" => Hullbreaker));
+    reg.add_item(configured!("iceborn_gauntlet" => IcebornGauntlet));
     reg.add_item(configured!("immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured!("imperial_mandate" => ImperialMandate));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
@@ -472,6 +473,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_hollow_radiance" => HollowRadiance));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
     reg.add_item(configured_radiant!("radiant_hullbreaker" => Hullbreaker));
+    reg.add_item(configured_radiant!("radiant_iceborn_gauntlet" => IcebornGauntlet));
     reg.add_item(configured_radiant!("radiant_immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured_radiant!("radiant_imperial_mandate" => ImperialMandate));
     reg.add_item(configured_radiant!("radiant_infinity_edge" => InfinityEdge));

@@ -7,6 +7,7 @@ items! {
     frozen_heart,
     heartsteel,
     hollow_radiance,
+    iceborn_gauntlet,
     jaksho_the_protean,
     philosophers_stone,
     protectors_vow,

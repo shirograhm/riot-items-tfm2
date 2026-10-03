@@ -90,6 +90,7 @@ impl StableItem for Sheen {
             "bloodsong".to_string(),
             "lich_bane".to_string(),
             "essence_reaver".to_string(),
+            "iceborn_gauntlet".to_string(),
         ]
     }
 

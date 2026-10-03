@@ -1039,6 +1039,14 @@
         "radiant_philosophers_stone": {
             "name": "Radiant Philosopher's Stone",
             "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
+        },
+        "iceborn_gauntlet": {
+            "name": "Iceborn Gauntlet",
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>30<> - <#ff9028ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> and creates a frost zone under the target for <#e8a800ff>2 seconds<> (<#e8a800ff>1.5 second<> cooldown). Enemies within the zone are <#d94c49ff>slowed<> by <#d94c49ff>20%<>."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Radiant Iceborn Gauntlet",
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>30<> - <#ff9028ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> and creates a frost zone under the target for <#e8a800ff>2 seconds<> (<#e8a800ff>1.5 second<> cooldown). Enemies within the zone are <#d94c49ff>slowed<> by <#d94c49ff>20%<>."
         }
     },
     "vi": {
@@ -2081,6 +2089,14 @@
         "radiant_philosophers_stone": {
             "name": "Đá Hiền Triết Ánh Sáng",
             "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
+        },
+        "iceborn_gauntlet": {
+            "name": "Găng Tay Băng Giá",
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>30<> - <#ff9028ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> và tạo ra một vùng đóng băng dưới chân mục tiêu trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>1.5 giây<>). Kẻ địch trong vùng này bị <#d94c49ff>làm chậm<> <#d94c49ff>20%<>."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Găng Tay Băng Giá Ánh Sáng",
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>30<> - <#ff9028ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> và tạo ra một vùng đóng băng dưới chân mục tiêu trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>1.5 giây<>). Kẻ địch trong vùng này bị <#d94c49ff>làm chậm<> <#d94c49ff>20%<>."
         }
     },
     "zh-hans": {
@@ -3123,6 +3139,14 @@
         "radiant_philosophers_stone": {
             "name": "光明版贤者之石",
             "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
+        },
+        "iceborn_gauntlet": {
+            "name": "冰脉护手",
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#ff9028ff>30<> - <#ff9028ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>，并在目标脚下生成一个持续 <#e8a800ff>2秒<> 的冰冷地带（冷却 <#e8a800ff>1.5秒<>）。地带内的敌人会被<#d94c49ff>减速<> <#d94c49ff>20%<>。"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "光明版冰脉护手",
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#ff9028ff>30<> - <#ff9028ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>，并在目标脚下生成一个持续 <#e8a800ff>2秒<> 的冰冷地带（冷却 <#e8a800ff>1.5秒<>）。地带内的敌人会被<#d94c49ff>减速<> <#d94c49ff>20%<>。"
         }
     },
     "pt-BR": {
@@ -4165,6 +4189,14 @@
         "radiant_philosophers_stone": {
             "name": "Pedra Filosofal Radiante",
             "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
+        },
+        "iceborn_gauntlet": {
+            "name": "Manopla dos Glacinatas",
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>30<> - <#ff9028ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> e criar um campo congelado sob o alvo por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>1.5 segundos<>). Inimigos dentro do campo sofrem <#d94c49ff>lentidão<> de <#d94c49ff>20%<>."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Manopla dos Glacinatas Radiante",
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>30<> - <#ff9028ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> e criar um campo congelado sob o alvo por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>1.5 segundos<>). Inimigos dentro do campo sofrem <#d94c49ff>lentidão<> de <#d94c49ff>20%<>."
         }
     },
     "ru": {
@@ -5207,6 +5239,14 @@
         "radiant_philosophers_stone": {
             "name": "Лучезарный Философский камень",
             "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
+        },
+        "iceborn_gauntlet": {
+            "name": "Хладорожденная рукавица",
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>30<> - <#ff9028ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> и создать под целью ледяное поле на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>1.5 секунд<>). Враги в поле <#d94c49ff>замедляются<> на <#d94c49ff>20%<>."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Лучезарная Хладорожденная рукавица",
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>30<> - <#ff9028ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> и создать под целью ледяное поле на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>1.5 секунд<>). Враги в поле <#d94c49ff>замедляются<> на <#d94c49ff>20%<>."
         }
     },
     "ko": {
@@ -6249,6 +6289,14 @@
         "radiant_philosophers_stone": {
             "name": "찬란한 현자의 돌",
             "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
+        },
+        "iceborn_gauntlet": {
+            "name": "얼어붙은 건틀릿",
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>30<>~<#ff9028ff>85<>의 <#ff9028ff>추가 물리 피해<>를 입히고 대상의 발밑에 <#e8a800ff>2초<> 동안 서리 영역을 생성합니다. (재사용 대기시간 <#e8a800ff>1.5초<>) 영역 안의 적은 <#d94c49ff>20%<> <#d94c49ff>둔화<>됩니다."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "찬란한 얼어붙은 건틀릿",
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>30<>~<#ff9028ff>85<>의 <#ff9028ff>추가 물리 피해<>를 입히고 대상의 발밑에 <#e8a800ff>2초<> 동안 서리 영역을 생성합니다. (재사용 대기시간 <#e8a800ff>1.5초<>) 영역 안의 적은 <#d94c49ff>20%<> <#d94c49ff>둔화<>됩니다."
         }
     }
 }
