@@ -60,7 +60,6 @@ impl StableItem for AegisOfTheLegion {
             "locket_of_the_iron_solari".to_string(),
             "bandlepipes".to_string(),
             "zekes_herald".to_string(),
-            "philosophers_stone".to_string(),
         ]
     }
 

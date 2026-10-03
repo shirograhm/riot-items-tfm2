@@ -44,11 +44,7 @@ pub struct PhilosophersStone {
 impl PhilosophersStone {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base(
-                BASE_KEY,
-                &["aegis_of_the_legion", "bamis_cinder"],
-                &["radiant_philosophers_stone"],
-            ),
+            meta: ItemMeta::base(BASE_KEY, &["bamis_cinder"], &["radiant_philosophers_stone"]),
             price: 750,
             hp: 200,
             defence: 20,
