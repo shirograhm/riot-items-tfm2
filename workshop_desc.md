@@ -64,11 +64,9 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
 - support items (except Protoplasm Harness and Zeke's Convergence) outside the support role
-- jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role, and any jungle item other than a jungler's one
+- jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
 - items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone). Champions from other mods are covered too.
-
-Supports always get a support item that suits their damage type, and junglers one jungle item, bought first: Philosopher's Stone for tanks, otherwise Feral Flare or Grez's Spectral Lantern by damage type. Pin more yourself if you want more than one. The rest of their build is still the AI's choice.  
 
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
 
@@ -78,9 +76,6 @@ Items you pin are never overridden, and the AI works around them. Switch to [b]A
 The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, pick rate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  
 
 Works alongside [b]Bows' Drafter's Toolbox[/b]: with both enabled, its Advanced Stats page becomes a fifth tab in the same bar.  
-
-[h1] In-Game Chat Fix [/h1]
-The champion info tooltip draws on top of the in-match chat instead of underneath it. This is my [b]Ingame Chat Foreground Fix[/b] mod, built in. If you have the standalone mod, disable it: both replace the same in-match layout, so only one can apply.  
 
 [h1] Planned Features [/h1]
 - More support items.
