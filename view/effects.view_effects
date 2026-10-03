@@ -199,6 +199,13 @@
             "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
             "tag": "stage3",
             "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "sabotage_charge",
+            "anim": "asset/riot_items_tfm2/effects/sabotage_charge",
+            "tag": "charge",
+            "z": 1
         }
     ]
 }
