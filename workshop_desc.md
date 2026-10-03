@@ -57,7 +57,7 @@ Pick any item for any champion, in-game:
 2. Press [b]+ Add Champion[/b], pick a champion (modded champions included), and set its item slots. Any slot left on [b]Let Player Decide (-)[/b] is filled by the AI.  
 3. Start the match!  
 
-Use the [b]filter by champion[/b] box to find champions in a long list (separate several with commas). Builds save automatically to [b]item-builds.json[/b] and carry across sessions. [b]Save Item Builds[/b] saves manually.  
+Use the [b]filter by champion[/b] box to find champions in a long list (separate several with commas). After a draft, [b]Blue Team[/b] and [b]Red Team[/b] under the Matchup card fill the box with that side's champions. Builds save automatically to [b]item-builds.json[/b] and carry across sessions. [b]Save Item Builds[/b] saves manually.  
 
 [h1] Smart Builds [/h1]
 [b]Enforce Smart Builds[/b] (Build Editor footer, on by default) cleans up the AI's picks. These get swapped for another item of the same category:
