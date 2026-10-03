@@ -2018,7 +2018,9 @@
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1.0,
     "effect_max_distance": 30,
-    "effect_minion_bonus_percent": 50.0
+    "effect_minion_bonus_percent": 50.0,
+    "effect_stack_hp_mult": 1,
+    "effect_max_stacks": 20
   },
   "radiant_philosophers_stone": {
     "price": 1050,
@@ -2028,6 +2030,8 @@
     "effect_bonus_flat_damage": 10,
     "effect_caster_hp_percent_damage": 1.0,
     "effect_max_distance": 30,
-    "effect_minion_bonus_percent": 50.0
+    "effect_minion_bonus_percent": 50.0,
+    "effect_stack_hp_mult": 1,
+    "effect_max_stacks": 20
   }
 }
