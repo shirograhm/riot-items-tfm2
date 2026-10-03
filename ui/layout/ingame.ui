@@ -2148,6 +2148,16 @@ ingame:ingame_ui {
     }
   }
 
+  #chat_list:empty {
+    x: 19px;
+    y: 780px;
+    height: 300px;
+
+    child_type: TopToBottom {
+      spacing: 4px;
+    }
+  }
+
   #champion_tooltip:color {
     width: 335px;
     height: 106px;
@@ -2601,16 +2611,6 @@ ingame:ingame_ui {
           text: "999";
         }
       }
-    }
-  }
-
-  #chat_list:empty {
-    x: 19px;
-    y: 780px;
-    height: 300px;
-
-    child_type: TopToBottom {
-      spacing: 4px;
     }
   }
 
