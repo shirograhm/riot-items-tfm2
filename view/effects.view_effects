@@ -281,6 +281,13 @@
             "anim": "asset/riot_items_tfm2/effects/dream_bubble",
             "tag": "bubble",
             "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "guardian_angel_undying",
+            "anim": "asset/riot_items_tfm2/effects/guardian_angel_ready",
+            "tag": "ready",
+            "z": 1
         }
     ]
 }

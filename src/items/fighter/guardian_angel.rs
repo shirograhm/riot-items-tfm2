@@ -17,6 +17,9 @@ use crate::{apply_config, has_buff, percent_of, ticks, upgrade_carry, ItemMeta};
 // at the HP floor is the "lethal" one.
 
 /// Held while Rebirth is ready. Shared by both tiers, so an upgrade keeps it.
+/// It is also the name the `view_buffs` binding in `view/effects.view_effects`
+/// draws the "Rebirth is ready" swirl under (`effects/guardian_angel_ready`),
+/// so the swirl is up exactly when the buff is and goes as Rebirth is spent.
 const UNDYING_BUFF: &str = "guardian_angel_undying";
 /// Invulnerability for the stasis (and the tick after it, for the last heal
 /// pulse): the banish stops targeting, this stops damage-over-time.
