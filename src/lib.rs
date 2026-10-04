@@ -341,6 +341,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4
+    reg.add_item(configured!("abyssal_mask" => AbyssalMask));
     reg.add_item(configured!("ardent_censer" => ArdentCenser));
     reg.add_item(configured!("atmas_reckoning" => AtmasReckoning, passive_crit));
     reg.add_item(configured!("axiom_arc" => AxiomArc));
@@ -435,6 +436,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("zhonyas_hourglass" => ZhonyasHourglass));
 
     // Tier 5
+    reg.add_item(configured_radiant!("radiant_abyssal_mask" => AbyssalMask));
     reg.add_item(configured_radiant!("radiant_ardent_censer" => ArdentCenser));
     reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning, passive_crit));
     reg.add_item(configured_radiant!("radiant_axiom_arc" => AxiomArc));

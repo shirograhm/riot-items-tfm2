@@ -658,6 +658,10 @@ $moonRange = [int]$config.moonstone_renewer.effect_max_distance
 $moonHeal = [double]$config.moonstone_renewer.effect_heal_chain_percent
 $rmoonRange = [int]$config.radiant_moonstone_renewer.effect_max_distance
 $rmoonHeal = [double]$config.radiant_moonstone_renewer.effect_heal_chain_percent
+$abyShred = [int]$config.abyssal_mask.effect_percent_mr_shred
+$abyDist = [int]$config.abyssal_mask.effect_max_distance
+$rabyShred = [int]$config.radiant_abyssal_mask.effect_percent_mr_shred
+$rabyDist = [int]$config.radiant_abyssal_mask.effect_max_distance
 $cdrvMs = [int]$config.cosmic_drive.effect_move_speed_mult
 $cdrvDur = [double]$config.cosmic_drive.effect_duration_seconds
 $rcdrvMs = [int]$config.radiant_cosmic_drive.effect_move_speed_mult
@@ -1006,6 +1010,9 @@ $i18n.en.radiant_iceborn_gauntlet.option = $igTemplate -f $rigMin, $rigMax, $rig
 $moonTemplate = "<#ff7a3eff>Starlit Grace<>: Healing an allied champion (excluding yourself) chains the effect to another allied champion within <#ff86c2ff>{0} <$rangeIcon> range<> of them, <$hpRegenIcon> <#60e84dff>healing {1}%<> of the original amount."
 $i18n.en.moonstone_renewer.option = $moonTemplate -f $moonRange, $moonHeal
 $i18n.en.radiant_moonstone_renewer.option = $moonTemplate -f $rmoonRange, $rmoonHeal
+$abyAura = "<#ff7a3eff>Unmake<>: Reduce the <$mrIcon> <#88ccffff>magic resistance<> of enemy champions within <#ff86c2ff>{1} <$rangeIcon> range<> by <#d94c49ff>{0}%<>."
+$i18n.en.abyssal_mask.option = $abyAura -f $abyShred, $abyDist
+$i18n.en.radiant_abyssal_mask.option = $abyAura -f $rabyShred, $rabyDist
 $cdrvEn = "<#ff7a3eff>Spelldance<>: Dealing <#a974ffff>magic damage<> or <#e3ab9dff>true damage<> to an enemy champion grants you <#ffffffff>{0}% <$speedIcon> movement speed<> for <#e8a800ff>{1} seconds<>."
 $i18n.en.cosmic_drive.option = $cdrvEn -f $cdrvMs, $cdrvDur
 $i18n.en.radiant_cosmic_drive.option = $cdrvEn -f $rcdrvMs, $rcdrvDur
@@ -1273,6 +1280,9 @@ $i18n.vi.radiant_iceborn_gauntlet.option = $igTemplateVi -f $rigMin, $rigMax, $r
 $moonTemplateVi = "<#ff7a3eff>Ánh Sao Yêu Kiều<>: Hồi máu cho một tướng đồng minh (không tính bản thân) sẽ truyền hiệu ứng sang một tướng đồng minh khác trong phạm vi <#ff86c2ff>{0}<> <$rangeIcon> quanh họ, <$hpRegenIcon> <#60e84dff>hồi máu bằng {1}%<> lượng ban đầu."
 $i18n.vi.moonstone_renewer.option = $moonTemplateVi -f $moonRange, $moonHeal
 $i18n.vi.radiant_moonstone_renewer.option = $moonTemplateVi -f $rmoonRange, $rmoonHeal
+$abyAuraVi = "<#ff7a3eff>Hủy Hoại<>: Giảm <$mrIcon> <#88ccffff>kháng phép<> của các tướng địch trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon> đi <#d94c49ff>{0}%<>."
+$i18n.vi.abyssal_mask.option = $abyAuraVi -f $abyShred, $abyDist
+$i18n.vi.radiant_abyssal_mask.option = $abyAuraVi -f $rabyShred, $rabyDist
 $cdrvVi = "<#ff7a3eff>Vũ Điệu Ma Pháp<>: Gây <#a974ffff>sát thương phép<> hoặc <#e3ab9dff>sát thương chuẩn<> lên tướng địch cho bạn <#ffffffff>{0}% <$speedIcon> tốc độ di chuyển<> trong <#e8a800ff>{1} giây<>."
 $i18n.vi.cosmic_drive.option = $cdrvVi -f $cdrvMs, $cdrvDur
 $i18n.vi.radiant_cosmic_drive.option = $cdrvVi -f $rcdrvMs, $rcdrvDur
@@ -1540,6 +1550,9 @@ $i18n.'zh-hans'.radiant_iceborn_gauntlet.option = $igTemplateZh -f $rigMin, $rig
 $moonTemplateZh = "<#ff7a3eff>星光恩典<>：为友方英雄（自己除外）治疗时，效果会连锁至其 <#ff86c2ff>{0} <$rangeIcon> 射程<>范围内的另一名友方英雄，<$hpRegenIcon> <#60e84dff>治疗<>原治疗值的 <#60e84dff>{1}%<>。"
 $i18n.'zh-hans'.moonstone_renewer.option = $moonTemplateZh -f $moonRange, $moonHeal
 $i18n.'zh-hans'.radiant_moonstone_renewer.option = $moonTemplateZh -f $rmoonRange, $rmoonHeal
+$abyAuraZh = "<#ff7a3eff>损毁<>：使 <#ff86c2ff>{1} <$rangeIcon> 射程<>范围内敌方英雄的 <$mrIcon> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>{0}%<>。"
+$i18n.'zh-hans'.abyssal_mask.option = $abyAuraZh -f $abyShred, $abyDist
+$i18n.'zh-hans'.radiant_abyssal_mask.option = $abyAuraZh -f $rabyShred, $rabyDist
 $cdrvZh = "<#ff7a3eff>咒舞<>：对敌方英雄造成<#a974ffff>魔法伤害<>或<#e3ab9dff>真实伤害<>时，获得 <#ffffffff>{0}% <$speedIcon> 移动速度<>，持续 <#e8a800ff>{1}秒<>。"
 $i18n.'zh-hans'.cosmic_drive.option = $cdrvZh -f $cdrvMs, $cdrvDur
 $i18n.'zh-hans'.radiant_cosmic_drive.option = $cdrvZh -f $rcdrvMs, $rcdrvDur
@@ -1807,6 +1820,9 @@ $i18n.'pt-BR'.radiant_iceborn_gauntlet.option = $igTemplatePt -f $rigMin, $rigMa
 $moonTemplatePt = "<#ff7a3eff>Graça Estrelada<>: Curar um campeão aliado (exceto você) propaga o efeito em cadeia para outro campeão aliado dentro de <#ff86c2ff>{0} <$rangeIcon> alcance<> dele, <$hpRegenIcon> <#60e84dff>curando-o em {1}%<> do valor original."
 $i18n.'pt-BR'.moonstone_renewer.option = $moonTemplatePt -f $moonRange, $moonHeal
 $i18n.'pt-BR'.radiant_moonstone_renewer.option = $moonTemplatePt -f $rmoonRange, $rmoonHeal
+$abyAuraPt = "<#ff7a3eff>Destroçar<>: Reduz a <$mrIcon> <#88ccffff>Resistência Mágica<> dos campeões inimigos dentro de <#ff86c2ff>{1} <$rangeIcon> alcance<> em <#d94c49ff>{0}%<>."
+$i18n.'pt-BR'.abyssal_mask.option = $abyAuraPt -f $abyShred, $abyDist
+$i18n.'pt-BR'.radiant_abyssal_mask.option = $abyAuraPt -f $rabyShred, $rabyDist
 $cdrvPt = "<#ff7a3eff>Dança Enfeitiçada<>: Causar <#a974ffff>dano mágico<> ou <#e3ab9dff>dano verdadeiro<> a um campeão inimigo concede <#ffffffff>{0}% de <$speedIcon> Velocidade de Movimento<> por <#e8a800ff>{1} segundos<>."
 $i18n.'pt-BR'.cosmic_drive.option = $cdrvPt -f $cdrvMs, $cdrvDur
 $i18n.'pt-BR'.radiant_cosmic_drive.option = $cdrvPt -f $rcdrvMs, $rcdrvDur
@@ -2074,6 +2090,9 @@ $i18n.ru.radiant_iceborn_gauntlet.option = $igTemplateRu -f $rigMin, $rigMax, $r
 $moonTemplateRu = "<#ff7a3eff>Подарок звезд<>: При лечении союзного чемпиона (кроме вас) эффект распространяется на другого союзного чемпиона в пределах <#ff86c2ff>{0} <$rangeIcon> дальности<> от него, <$hpRegenIcon> <#60e84dff>исцеляя его на {1}%<> от изначального значения."
 $i18n.ru.moonstone_renewer.option = $moonTemplateRu -f $moonRange, $moonHeal
 $i18n.ru.radiant_moonstone_renewer.option = $moonTemplateRu -f $rmoonRange, $rmoonHeal
+$abyAuraRu = "<#ff7a3eff>Уничтожение<>: Уменьшает <$mrIcon> <#88ccffff>сопротивление магии<> вражеских чемпионов в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<> на <#d94c49ff>{0}%<>."
+$i18n.ru.abyssal_mask.option = $abyAuraRu -f $abyShred, $abyDist
+$i18n.ru.radiant_abyssal_mask.option = $abyAuraRu -f $rabyShred, $rabyDist
 $cdrvRu = "<#ff7a3eff>Магический танец<>: Нанесение <#a974ffff>магического урона<> или <#e3ab9dff>чистого урона<> вражескому чемпиону даёт вам <#ffffffff>{0}% <$speedIcon> скорости передвижения<> на <#e8a800ff>{1} секунды<>."
 $i18n.ru.cosmic_drive.option = $cdrvRu -f $cdrvMs, $cdrvDur
 $i18n.ru.radiant_cosmic_drive.option = $cdrvRu -f $rcdrvMs, $rcdrvDur
@@ -2340,6 +2359,9 @@ $i18n.ko.radiant_iceborn_gauntlet.option = $igTemplateKo -f $rigMin, $rigMax, $r
 $moonTemplateKo = "<#ff7a3eff>별빛 은총<>: 아군 챔피언(자신 제외)의 체력을 회복시키면 대상으로부터 <$rangeIcon> <#ff86c2ff>사거리 {0}<> 안의 다른 아군 챔피언에게 연쇄 효과가 적용되어, 기존 수치의 <#60e84dff>{1}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>시킵니다."
 $i18n.ko.moonstone_renewer.option = $moonTemplateKo -f $moonRange, $moonHeal
 $i18n.ko.radiant_moonstone_renewer.option = $moonTemplateKo -f $rmoonRange, $rmoonHeal
+$abyAuraKo = "<#ff7a3eff>파괴<>: <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 적 챔피언의 <$mrIcon> <#88ccffff>마법 저항력<>을 <#d94c49ff>{0}%<> 감소시킵니다."
+$i18n.ko.abyssal_mask.option = $abyAuraKo -f $abyShred, $abyDist
+$i18n.ko.radiant_abyssal_mask.option = $abyAuraKo -f $rabyShred, $rabyDist
 $cdrvKo = "<#ff7a3eff>마법의 춤<>: 적 챔피언에게 <#a974ffff>마법 피해<> 또는 <#e3ab9dff>고정 피해<>를 입히면 <#e8a800ff>{1}초<> 동안 <#ffffffff>{0}% <$speedIcon> 이동 속도<>를 얻습니다."
 $i18n.ko.cosmic_drive.option = $cdrvKo -f $cdrvMs, $cdrvDur
 $i18n.ko.radiant_cosmic_drive.option = $cdrvKo -f $rcdrvMs, $rcdrvDur
@@ -2570,6 +2592,8 @@ Write-Host "  Bandlepipes:                 ${bpMoveSpeed}% MS ${bpDuration}s / $
 Write-Host "  Radiant Bandlepipes:         ${rbpMoveSpeed}% MS ${rbpDuration}s / ${rbpAttackSpeed}% AS to allies within ${rbpRange} range"
 Write-Host "  Moonstone Renewer:           chains ${moonHeal}% of a heal within ${moonRange} range"
 Write-Host "  Radiant Moonstone Renewer:   chains ${rmoonHeal}% of a heal within ${rmoonRange} range"
+Write-Host "  Abyssal Mask:                -${abyShred}% MR to enemy champions within ${abyDist} range"
+Write-Host "  Radiant Abyssal Mask:        -${rabyShred}% MR to enemy champions within ${rabyDist} range"
 Write-Host "  Serylda's Grudge:            ${serySlow}% slow ${seryDur}s on ability damage at or below ${seryThreshold}% health"
 Write-Host "  Radiant Serylda's Grudge:    ${rserySlow}% slow ${rseryDur}s on ability damage at or below ${rseryThreshold}% health"
 Write-Host "  Bami's Cinder:               ${bamiFlat} + ${bamiHpPct}% max HP magic dmg/s within ${bamiRange} range"

@@ -1,6 +1,7 @@
 //! Completed items in the Tank category.
 
 items! {
+    abyssal_mask,
     atmas_reckoning,
     cloak_of_starry_night,
     dead_mans_plate,

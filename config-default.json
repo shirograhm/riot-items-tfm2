@@ -2079,5 +2079,21 @@
     "skill_cooldown_mult": 20,
     "effect_heal_chain_percent": 35.0,
     "effect_max_distance": 100
+  },
+  "abyssal_mask": {
+    "price": 700,
+    "hp": 150,
+    "magic_resistance": 50,
+    "skill_cooldown_mult": 10,
+    "effect_percent_mr_shred": 20,
+    "effect_max_distance": 100
+  },
+  "radiant_abyssal_mask": {
+    "price": 950,
+    "hp": 250,
+    "magic_resistance": 75,
+    "skill_cooldown_mult": 15,
+    "effect_percent_mr_shred": 20,
+    "effect_max_distance": 100
   }
 }
