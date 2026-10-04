@@ -140,6 +140,8 @@ pub struct ItemConfig {
     pub effect_gold_interval_seconds: Option<f64>,
     pub effect_min_bonus_hp: Option<usize>,
     pub effect_max_bonus_hp: Option<usize>,
+    pub effect_damaged_reduce: Option<usize>,
+    pub effect_slow_seconds: Option<f64>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,

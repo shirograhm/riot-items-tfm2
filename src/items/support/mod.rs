@@ -4,6 +4,7 @@ items! {
     ardent_censer,
     bandlepipes,
     bloodsong,
+    celestial_opposition,
     chemtech_putrifier,
     echoes_of_helia,
     imperial_mandate,

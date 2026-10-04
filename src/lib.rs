@@ -358,6 +358,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured!("bloodsong" => Bloodsong));
+    reg.add_item(configured!("celestial_opposition" => CelestialOpposition));
     reg.add_item(configured!("chempunk_chainsword" => ChempunkChainsword));
     reg.add_item(configured!("chemtech_putrifier" => ChemtechPutrifier));
     reg.add_item(configured!("cloak_of_starry_night" => CloakOfStarryNight));
@@ -455,6 +456,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured_radiant!("radiant_bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong));
+    reg.add_item(configured_radiant!("radiant_celestial_opposition" => CelestialOpposition));
     reg.add_item(configured_radiant!("radiant_chempunk_chainsword" => ChempunkChainsword));
     reg.add_item(configured_radiant!("radiant_chemtech_putrifier" => ChemtechPutrifier));
     reg.add_item(configured_radiant!("radiant_cloak_of_starry_night" => CloakOfStarryNight));

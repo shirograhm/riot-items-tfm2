@@ -80,7 +80,9 @@
 //!    role's starting item, and what it grows into ([`ATLAS_ITEMS`]) is to a
 //!    support what a jungle item is to a jungler: its build holds one, the one
 //!    for its champion, bought before everything else, so the match starts on
-//!    World Atlas and its gold. Solstice Sleigh on a support whose kit
+//!    World Atlas and its gold. Celestial Opposition on a champion tagged
+//!    `Tank`, the one the enemy hits, which is what Blessing of the Mountain
+//!    answers to; else Solstice Sleigh on a support whose kit
 //!    immobilizes, which is what Going Sledding pays off on (rule 10's test);
 //!    else Zaz'Zak's Realmspike on an AP champion that neither heals nor
 //!    shields, whose abilities are there to hurt, which is what Void Explosion
@@ -347,6 +349,10 @@ pub(crate) struct Fit {
     /// Realmspike: an AP champion that neither immobilizes (the Sleigh's) nor
     /// heals or shields, so its abilities are there to deal damage.
     realmspike: bool,
+    /// Rule 12: whether this is a support whose World Atlas item is Celestial
+    /// Opposition: a champion tagged `Tank`, the one the enemy hits. It comes
+    /// before the other two tests.
+    celestial: bool,
     /// Rule 11: whether the champion attacks from range, `None` when unknown.
     ranged: Option<bool>,
 }
@@ -373,6 +379,7 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
             && traits.is_some_and(|traits| {
                 traits.scaling == Some(Scaling::Ap) && !traits.sustains && !traits.can_immobilize()
             }),
+        celestial: role == Role::Support && traits.is_some_and(|traits| traits.tank),
         ranged: traits.and_then(|traits| traits.ranged),
     }
 }
@@ -434,11 +441,14 @@ impl Fit {
     }
 
     /// Rule 12, for a support: the World Atlas item its champion builds —
-    /// Solstice Sleigh when its kit immobilizes, Zaz'Zak's Realmspike when it
-    /// is an AP champion that only deals damage, Bloodsong for the rest and
-    /// for a champion nothing is known about.
+    /// Celestial Opposition for a tank, else Solstice Sleigh when its kit
+    /// immobilizes, else Zaz'Zak's Realmspike when it is an AP champion that
+    /// only deals damage, Bloodsong for the rest and for a champion nothing
+    /// is known about.
     fn atlas_item(&self) -> &'static str {
-        if self.mandate {
+        if self.celestial {
+            CELESTIAL_OPPOSITION
+        } else if self.mandate {
             SOLSTICE_SLEIGH
         } else if self.realmspike {
             ZAZZAKS_REALMSPIKE
@@ -610,14 +620,18 @@ fn is_mandate(key: &str) -> bool {
 /// Rule 12: what World Atlas grows into, the support role's own item line. By
 /// base slug, so the radiant tier follows. Which of them a support builds is
 /// [`Fit::atlas_item`]'s to say: a new one needs a place there.
-const ATLAS_ITEMS: [&str; 3] = [
-    BLOODSONG,          // Spellblade, for a support neither of the others is for
-    SOLSTICE_SLEIGH,    // Going Sledding, on immobilizing an enemy champion
-    ZAZZAKS_REALMSPIKE, // Void Explosion, on ability damage to an enemy champion
+const ATLAS_ITEMS: [&str; 4] = [
+    BLOODSONG,            // Spellblade, for a support none of the others is for
+    CELESTIAL_OPPOSITION, // Blessing of the Mountain, on being hit by an enemy champion
+    SOLSTICE_SLEIGH,      // Going Sledding, on immobilizing an enemy champion
+    ZAZZAKS_REALMSPIKE,   // Void Explosion, on ability damage to an enemy champion
 ];
 
-/// Rule 12: the World Atlas item of a support neither of the others is for.
+/// Rule 12: the World Atlas item of a support none of the others is for.
 const BLOODSONG: &str = "bloodsong";
+
+/// Rule 12: the World Atlas item of a tank.
+const CELESTIAL_OPPOSITION: &str = "celestial_opposition";
 
 /// Rule 12: the World Atlas item of a support whose kit immobilizes.
 const SOLSTICE_SLEIGH: &str = "solstice_sleigh";

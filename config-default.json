@@ -2167,5 +2167,31 @@
     "effect_max_distance": 40,
     "effect_bonus_gold": 4,
     "effect_gold_interval_seconds": 5
+  },
+  "celestial_opposition": {
+    "price": 550,
+    "hp": 200,
+    "hp_regen": 4,
+    "effect_damaged_reduce": 15,
+    "effect_duration_seconds": 2,
+    "effect_max_distance": 50,
+    "effect_slow_amount": 50,
+    "effect_slow_seconds": 1.5,
+    "effect_cooldown_seconds": 18,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
+  },
+  "radiant_celestial_opposition": {
+    "price": 750,
+    "hp": 300,
+    "hp_regen": 5,
+    "effect_damaged_reduce": 15,
+    "effect_duration_seconds": 2,
+    "effect_max_distance": 50,
+    "effect_slow_amount": 50,
+    "effect_slow_seconds": 1.5,
+    "effect_cooldown_seconds": 18,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
   }
 }

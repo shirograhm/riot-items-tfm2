@@ -5,8 +5,8 @@ use mod_api_stable::*;
 
 /// Bounty of Worlds — the last step of the World Atlas line before a finished
 /// support item: more health and regen, and more gold again
-/// ([`SharedRiches`]). It grows into Bloodsong, Solstice Sleigh or Zaz'Zak's
-/// Realmspike.
+/// ([`SharedRiches`]). It grows into Bloodsong, Celestial Opposition, Solstice
+/// Sleigh or Zaz'Zak's Realmspike.
 #[derive(Clone, Debug)]
 pub struct BountyOfWorlds {
     price: usize,
@@ -78,6 +78,7 @@ impl StableItem for BountyOfWorlds {
     fn next_tier(&self) -> Vec<String> {
         vec![
             "bloodsong".to_string(),
+            "celestial_opposition".to_string(),
             "solstice_sleigh".to_string(),
             "zazzaks_realmspike".to_string(),
         ]

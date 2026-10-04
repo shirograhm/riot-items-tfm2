@@ -700,6 +700,22 @@ $rzazHp = [int]$config.radiant_zazzaks_realmspike.effect_enemy_max_hp_damage
 $rzazCd = [double]$config.radiant_zazzaks_realmspike.effect_cooldown_seconds
 $rzazGold = [int]$config.radiant_zazzaks_realmspike.effect_bonus_gold
 $rzazGoldEvery = [double]$config.radiant_zazzaks_realmspike.effect_gold_interval_seconds
+$celopReduce = [int]$config.celestial_opposition.effect_damaged_reduce
+$celopDur = [double]$config.celestial_opposition.effect_duration_seconds
+$celopRange = [int]$config.celestial_opposition.effect_max_distance
+$celopSlow = [int]$config.celestial_opposition.effect_slow_amount
+$celopSlowDur = [double]$config.celestial_opposition.effect_slow_seconds
+$celopCd = [double]$config.celestial_opposition.effect_cooldown_seconds
+$celopGold = [int]$config.celestial_opposition.effect_bonus_gold
+$celopGoldEvery = [double]$config.celestial_opposition.effect_gold_interval_seconds
+$rcelopReduce = [int]$config.radiant_celestial_opposition.effect_damaged_reduce
+$rcelopDur = [double]$config.radiant_celestial_opposition.effect_duration_seconds
+$rcelopRange = [int]$config.radiant_celestial_opposition.effect_max_distance
+$rcelopSlow = [int]$config.radiant_celestial_opposition.effect_slow_amount
+$rcelopSlowDur = [double]$config.radiant_celestial_opposition.effect_slow_seconds
+$rcelopCd = [double]$config.radiant_celestial_opposition.effect_cooldown_seconds
+$rcelopGold = [int]$config.radiant_celestial_opposition.effect_bonus_gold
+$rcelopGoldEvery = [double]$config.radiant_celestial_opposition.effect_gold_interval_seconds
 $cdrvMs = [int]$config.cosmic_drive.effect_move_speed_mult
 $cdrvDur = [double]$config.cosmic_drive.effect_duration_seconds
 $rcdrvMs = [int]$config.radiant_cosmic_drive.effect_move_speed_mult
@@ -983,6 +999,9 @@ $i18n.en.radiant_solstice_sleigh.option = ($sleighTemplate -f $rsleighRange, $rs
 $zazTemplate = "<#ff7a3eff>Void Explosion<>: Dealing ability damage to an enemy champion creates an explosion at their location after a <#e8a800ff>{0} second<> delay, dealing <#a974ffff>{1}<> <#a974ffff>(+{2}%<> <$apIcon> <#a974ffff>AP)<> <#d94c49ff>(+{3}% of the target's max HP)<> <#a974ffff>magic damage<> to enemies hit (<#e8a800ff>{4} second<> cooldown)."
 $i18n.en.zazzaks_realmspike.option = ($zazTemplate -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplate -f $zazGold, $zazGoldEvery)
 $i18n.en.radiant_zazzaks_realmspike.option = ($zazTemplate -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplate -f $rzazGold, $rzazGoldEvery)
+$celopTemplate = "<#ff7a3eff>Blessing of the Mountain<>: Become <#92dc7bff>Blessed<> upon taking damage from an enemy champion, reducing your damage taken by <#e8a800ff>{0}%<> for <#e8a800ff>{1} seconds<>. After <#92dc7bff>Blessed<> ends, unleash a shockwave around you that <#d94c49ff>slows<> enemies within <#ff86c2ff>{2} <$rangeIcon> units<> by <#d94c49ff>{3}%<> for <#e8a800ff>{4} seconds<> (<#e8a800ff>{5} second<> cooldown, beginning after the explosion)."
+$i18n.en.celestial_opposition.option = ($celopTemplate -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd) + "`n`n" + ($richesTemplate -f $celopGold, $celopGoldEvery)
+$i18n.en.radiant_celestial_opposition.option = ($celopTemplate -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd) + "`n`n" + ($richesTemplate -f $rcelopGold, $rcelopGoldEvery)
 
 $lethEn = "Gain <#ffdd8eff>{0} <$armorPenIcon> Lethality<>."
 $i18n.en.serrated_dirk.option = $lethEn -f $sdLeth
@@ -1263,6 +1282,9 @@ $i18n.vi.radiant_solstice_sleigh.option = ($sleighTemplateVi -f $rsleighRange, $
 $zazTemplateVi = "<#ff7a3eff>Vụ Nổ Hư Không<>: Gây sát thương kĩ năng lên tướng địch sẽ tạo ra một vụ nổ tại vị trí của chúng sau <#e8a800ff>{0} giây<>, gây <#a974ffff>{1}<> <#a974ffff>(+{2}%<> <$apIcon> <#a974ffff>SMPT)<> <#d94c49ff>(+{3}% máu tối đa của mục tiêu)<> <#a974ffff>sát thương phép<> lên các kẻ địch bị trúng (hồi chiêu <#e8a800ff>{4} giây<>)."
 $i18n.vi.zazzaks_realmspike.option = ($zazTemplateVi -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplateVi -f $zazGold, $zazGoldEvery)
 $i18n.vi.radiant_zazzaks_realmspike.option = ($zazTemplateVi -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplateVi -f $rzazGold, $rzazGoldEvery)
+$celopTemplateVi = "<#ff7a3eff>Phước Lành Sơn Thạch<>: Khi nhận sát thương từ tướng địch, bạn được <#92dc7bff>Ban Phước<>, giảm sát thương phải nhận <#e8a800ff>{0}%<> trong <#e8a800ff>{1} giây<>. Khi <#92dc7bff>Ban Phước<> kết thúc, phóng ra một sóng xung kích quanh bạn, <#d94c49ff>làm chậm<> kẻ địch trong phạm vi <#ff86c2ff>{2}<> <$rangeIcon> đi <#d94c49ff>{3}%<> trong <#e8a800ff>{4} giây<> (hồi chiêu <#e8a800ff>{5} giây<>, bắt đầu sau vụ nổ)."
+$i18n.vi.celestial_opposition.option = ($celopTemplateVi -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd) + "`n`n" + ($richesTemplateVi -f $celopGold, $celopGoldEvery)
+$i18n.vi.radiant_celestial_opposition.option = ($celopTemplateVi -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd) + "`n`n" + ($richesTemplateVi -f $rcelopGold, $rcelopGoldEvery)
 
 $lethVi = "Nhận <#ffdd8eff>{0} <$armorPenIcon> Xuyên Giáp Trắng<>."
 $i18n.vi.serrated_dirk.option = $lethVi -f $sdLeth
@@ -1543,6 +1565,9 @@ $i18n.'zh-hans'.radiant_solstice_sleigh.option = ($sleighTemplateZh -f $rsleighR
 $zazTemplateZh = "<#ff7a3eff>虚空扩爆<>：对敌方英雄造成技能伤害时，会在 <#e8a800ff>{0}秒<> 后于其所在位置引发一次爆炸，对命中的敌人造成 <#a974ffff>{1}<> <#a974ffff>（+{2}%<> <$apIcon> <#a974ffff>法术强度）<> <#d94c49ff>（+目标{3}%最大生命值）<> 的<#a974ffff>魔法伤害<>（冷却 <#e8a800ff>{4}秒<>）。"
 $i18n.'zh-hans'.zazzaks_realmspike.option = ($zazTemplateZh -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplateZh -f $zazGold, $zazGoldEvery)
 $i18n.'zh-hans'.radiant_zazzaks_realmspike.option = ($zazTemplateZh -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplateZh -f $rzazGold, $rzazGoldEvery)
+$celopTemplateZh = "<#ff7a3eff>神峰庇佑<>：受到敌方英雄的伤害时获得<#92dc7bff>庇佑<>，使你受到的伤害降低 <#e8a800ff>{0}%<>，持续 <#e8a800ff>{1}秒<>。<#92dc7bff>庇佑<>结束后，向四周释放一道冲击波，使 <#ff86c2ff>{2} <$rangeIcon> 射程<>范围内的敌人<#d94c49ff>减速<> <#d94c49ff>{3}%<>，持续 <#e8a800ff>{4}秒<>（冷却 <#e8a800ff>{5}秒<>，在爆炸后开始计算）。"
+$i18n.'zh-hans'.celestial_opposition.option = ($celopTemplateZh -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd) + "`n`n" + ($richesTemplateZh -f $celopGold, $celopGoldEvery)
+$i18n.'zh-hans'.radiant_celestial_opposition.option = ($celopTemplateZh -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd) + "`n`n" + ($richesTemplateZh -f $rcelopGold, $rcelopGoldEvery)
 
 $lethZh = "获得 <#ffdd8eff>{0} 点<$armorPenIcon> 穿甲<>。"
 $i18n.'zh-hans'.serrated_dirk.option = $lethZh -f $sdLeth
@@ -1823,6 +1848,9 @@ $i18n.'pt-BR'.radiant_solstice_sleigh.option = ($sleighTemplatePt -f $rsleighRan
 $zazTemplatePt = "<#ff7a3eff>Explosão do Vazio<>: Causar dano de habilidade a um campeão inimigo cria uma explosão no local dele após um atraso de <#e8a800ff>{0} segundos<>, causando <#a974ffff>{1}<> <#a974ffff>(+{2}% do<> <$apIcon> <#a974ffff>Poder de Habilidade)<> <#d94c49ff>(+{3}% da Vida Máxima do alvo)<> de <#a974ffff>dano mágico<> aos inimigos atingidos (recarga de <#e8a800ff>{4} segundos<>)."
 $i18n.'pt-BR'.zazzaks_realmspike.option = ($zazTemplatePt -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplatePt -f $zazGold, $zazGoldEvery)
 $i18n.'pt-BR'.radiant_zazzaks_realmspike.option = ($zazTemplatePt -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplatePt -f $rzazGold, $rzazGoldEvery)
+$celopTemplatePt = "<#ff7a3eff>Bênção da Montanha<>: Ao sofrer dano de um campeão inimigo, você fica <#92dc7bff>Abençoado<>, reduzindo o dano que sofre em <#e8a800ff>{0}%<> por <#e8a800ff>{1} segundos<>. Quando <#92dc7bff>Abençoado<> termina, libera uma onda de choque ao seu redor que aplica <#d94c49ff>lentidão<> de <#d94c49ff>{3}%<> a inimigos dentro de <#ff86c2ff>{2} <$rangeIcon> alcance<> por <#e8a800ff>{4} segundos<> (recarga de <#e8a800ff>{5} segundos<>, começando após a explosão)."
+$i18n.'pt-BR'.celestial_opposition.option = ($celopTemplatePt -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd) + "`n`n" + ($richesTemplatePt -f $celopGold, $celopGoldEvery)
+$i18n.'pt-BR'.radiant_celestial_opposition.option = ($celopTemplatePt -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd) + "`n`n" + ($richesTemplatePt -f $rcelopGold, $rcelopGoldEvery)
 
 $lethPt = "Ganha <#ffdd8eff>{0} de <$armorPenIcon> Letalidade<>."
 $i18n.'pt-BR'.serrated_dirk.option = $lethPt -f $sdLeth
@@ -2103,6 +2131,9 @@ $i18n.ru.radiant_solstice_sleigh.option = ($sleighTemplateRu -f $rsleighRange, $
 $zazTemplateRu = "<#ff7a3eff>Взрыв Бездны<>: Нанесение урона умением вражескому чемпиону вызывает взрыв на его месте с задержкой <#e8a800ff>{0} секунды<>, нанося задетым врагам <#a974ffff>{1}<> <#a974ffff>(+{2}%<> <$apIcon> <#a974ffff>Силы Умений)<> <#d94c49ff>(+{3}% макс. здоровья цели)<> <#a974ffff>магического урона<> (перезарядка <#e8a800ff>{4} секунд<>)."
 $i18n.ru.zazzaks_realmspike.option = ($zazTemplateRu -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplateRu -f $zazGold, $zazGoldEvery)
 $i18n.ru.radiant_zazzaks_realmspike.option = ($zazTemplateRu -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplateRu -f $rzazGold, $rzazGoldEvery)
+$celopTemplateRu = "<#ff7a3eff>Благословение горы<>: Получив урон от вражеского чемпиона, вы получаете <#92dc7bff>Благословение<>, уменьшающее получаемый вами урон на <#e8a800ff>{0}%<> на <#e8a800ff>{1} секунды<>. Когда <#92dc7bff>Благословение<> заканчивается, вы выпускаете вокруг себя ударную волну, которая <#d94c49ff>замедляет<> врагов в пределах <#ff86c2ff>{2} <$rangeIcon> дальности<> на <#d94c49ff>{3}%<> на <#e8a800ff>{4} секунды<> (перезарядка <#e8a800ff>{5} секунд<>, начинается после взрыва)."
+$i18n.ru.celestial_opposition.option = ($celopTemplateRu -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd) + "`n`n" + ($richesTemplateRu -f $celopGold, $celopGoldEvery)
+$i18n.ru.radiant_celestial_opposition.option = ($celopTemplateRu -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd) + "`n`n" + ($richesTemplateRu -f $rcelopGold, $rcelopGoldEvery)
 
 $lethRu = "Даёт <#ffdd8eff>{0} <$armorPenIcon> летальности<>."
 $i18n.ru.serrated_dirk.option = $lethRu -f $sdLeth
@@ -2382,6 +2413,9 @@ $i18n.ko.radiant_solstice_sleigh.option = ($sleighTemplateKo -f $rsleighRange, $
 $zazTemplateKo = "<#ff7a3eff>공허 폭발<>: 적 챔피언에게 스킬 피해를 입히면 <#e8a800ff>{0}초<> 후 대상의 위치에서 폭발이 일어나 적중한 적에게 <#a974ffff>{1}<> <#a974ffff>(+{2}%<> <$apIcon> <#a974ffff>주문력)<> <#d94c49ff>(+대상 최대 체력의 {3}%)<>만큼 <#a974ffff>마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{4}초<>)"
 $i18n.ko.zazzaks_realmspike.option = ($zazTemplateKo -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplateKo -f $zazGold, $zazGoldEvery)
 $i18n.ko.radiant_zazzaks_realmspike.option = ($zazTemplateKo -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplateKo -f $rzazGold, $rzazGoldEvery)
+$celopTemplateKo = "<#ff7a3eff>산의 축복<>: 적 챔피언에게 피해를 받으면 <#92dc7bff>축복<> 상태가 되어 <#e8a800ff>{1}초<> 동안 받는 피해가 <#e8a800ff>{0}%<> 감소합니다. <#92dc7bff>축복<>이 끝나면 주변에 충격파를 일으켜 <$rangeIcon> <#ff86c2ff>사거리 {2}<> 안의 적을 <#e8a800ff>{4}초<> 동안 <#d94c49ff>{3}% 둔화<>시킵니다. (재사용 대기시간 <#e8a800ff>{5}초<>, 폭발 후 시작)"
+$i18n.ko.celestial_opposition.option = ($celopTemplateKo -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd) + "`n`n" + ($richesTemplateKo -f $celopGold, $celopGoldEvery)
+$i18n.ko.radiant_celestial_opposition.option = ($celopTemplateKo -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd) + "`n`n" + ($richesTemplateKo -f $rcelopGold, $rcelopGoldEvery)
 
 $lethKo = "<#ffdd8eff>{0}의 <$armorPenIcon> 물리 관통력<>을 획득합니다."
 $i18n.ko.serrated_dirk.option = $lethKo -f $sdLeth
@@ -2699,6 +2733,8 @@ Write-Host "  Solstice Sleigh:             ${sleighSpeed}% MS + ${sleighMinHp} -
 Write-Host "  Radiant Solstice Sleigh:     ${rsleighSpeed}% MS + ${rsleighMinHp} - ${rsleighMaxHp} HP for ${rsleighDur}s within ${rsleighRange} range / ${rsleighGold} gold every ${rsleighGoldEvery}s"
 Write-Host "  Zaz'Zak's Realmspike:        ${zazFlat} + ${zazAp}% AP + ${zazHp}% target max HP after ${zazDelay}s, ${zazCd}s cooldown / ${zazGold} gold every ${zazGoldEvery}s"
 Write-Host "  Radiant Zaz'Zak's Realmspike: ${rzazFlat} + ${rzazAp}% AP + ${rzazHp}% target max HP after ${rzazDelay}s, ${rzazCd}s cooldown / ${rzazGold} gold every ${rzazGoldEvery}s"
+Write-Host "  Celestial Opposition:        ${celopReduce}% less damage for ${celopDur}s, then ${celopSlow}% slow for ${celopSlowDur}s within ${celopRange} range, ${celopCd}s cooldown / ${celopGold} gold every ${celopGoldEvery}s"
+Write-Host "  Radiant Celestial Opposition: ${rcelopReduce}% less damage for ${rcelopDur}s, then ${rcelopSlow}% slow for ${rcelopSlowDur}s within ${rcelopRange} range, ${rcelopCd}s cooldown / ${rcelopGold} gold every ${rcelopGoldEvery}s"
 Write-Host "  Serylda's Grudge:            ${serySlow}% slow ${seryDur}s on ability damage at or below ${seryThreshold}% health"
 Write-Host "  Radiant Serylda's Grudge:    ${rserySlow}% slow ${rseryDur}s on ability damage at or below ${rseryThreshold}% health"
 Write-Host "  Bami's Cinder:               ${bamiFlat} + ${bamiHpPct}% max HP magic dmg/s within ${bamiRange} range"
