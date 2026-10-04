@@ -715,14 +715,14 @@ $rcelopCd = [double]$config.radiant_celestial_opposition.effect_cooldown_seconds
 $rcelopGold = [int]$config.radiant_celestial_opposition.effect_bonus_gold
 $rcelopGoldEvery = [double]$config.radiant_celestial_opposition.effect_gold_interval_seconds
 $dreamDur = [double]$config.dream_maker.effect_duration_seconds
-$dreamMin = [int]$config.dream_maker.effect_min_bonus_damage
-$dreamMax = [int]$config.dream_maker.effect_max_bonus_damage
+$dreamSdr = [int]$config.dream_maker.effect_skill_damaged_reduce
+$dreamForce = [int]$config.dream_maker.effect_adaptive_force
 $dreamCd = [double]$config.dream_maker.effect_cooldown_seconds
 $dreamGold = [int]$config.dream_maker.effect_bonus_gold
 $dreamGoldEvery = [double]$config.dream_maker.effect_gold_interval_seconds
 $rdreamDur = [double]$config.radiant_dream_maker.effect_duration_seconds
-$rdreamMin = [int]$config.radiant_dream_maker.effect_min_bonus_damage
-$rdreamMax = [int]$config.radiant_dream_maker.effect_max_bonus_damage
+$rdreamSdr = [int]$config.radiant_dream_maker.effect_skill_damaged_reduce
+$rdreamForce = [int]$config.radiant_dream_maker.effect_adaptive_force
 $rdreamCd = [double]$config.radiant_dream_maker.effect_cooldown_seconds
 $rdreamGold = [int]$config.radiant_dream_maker.effect_bonus_gold
 $rdreamGoldEvery = [double]$config.radiant_dream_maker.effect_gold_interval_seconds
@@ -1011,9 +1011,9 @@ $i18n.en.radiant_zazzaks_realmspike.option = ($richesTemplate -f $rzazGold, $rza
 $celopTemplate = "<#ff7a3eff>Blessing of the Mountain<>: Become <#92dc7bff>Blessed<> upon taking damage from an enemy champion, reducing your damage taken by <#e8a800ff>{0}%<> for <#e8a800ff>{1} seconds<>. After <#92dc7bff>Blessed<> ends, unleash a shockwave around you that <#d94c49ff>slows<> enemies within <#ff86c2ff>{2} <$rangeIcon> units<> by <#d94c49ff>{3}%<> for <#e8a800ff>{4} seconds<> (<#e8a800ff>{5} second<> cooldown, beginning after the explosion)."
 $i18n.en.celestial_opposition.option = ($richesTemplate -f $celopGold, $celopGoldEvery) + "`n`n" + ($celopTemplate -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd)
 $i18n.en.radiant_celestial_opposition.option = ($richesTemplate -f $rcelopGold, $rcelopGoldEvery) + "`n`n" + ($celopTemplate -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd)
-$dreamTemplate = "<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#92dc7bff>Dream Bubble<> for <#e8a800ff>{0} seconds<>. Their next basic attack or Ability against an enemy champion consumes the <#92dc7bff>Dream Bubble<> to deal <#a974ffff>{1}<> - <#a974ffff>{2}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>{3} second<> cooldown, starting after the <#92dc7bff>Dream Bubble<> is consumed)."
-$i18n.en.dream_maker.option = ($richesTemplate -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplate -f $dreamDur, $dreamMin, $dreamMax, $dreamCd)
-$i18n.en.radiant_dream_maker.option = ($richesTemplate -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplate -f $rdreamDur, $rdreamMin, $rdreamMax, $rdreamCd)
+$dreamTemplate = "<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#92dc7bff>Dream Bubble<> for <#e8a800ff>{0} seconds<>. While the <#92dc7bff>Dream Bubble<> is active, it grants <#92dc7bff>{1}%<> <$sdrIcon> <#92dc7bff>skill damage reduction<> and <#d48294ff>{2}<> <$forceIcon> <#d48294ff>Adaptive Force<> (<#e8a800ff>{3} second<> cooldown, starting after the <#92dc7bff>Dream Bubble<> ends)."
+$i18n.en.dream_maker.option = ($richesTemplate -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplate -f $dreamDur, $dreamSdr, $dreamForce, $dreamCd)
+$i18n.en.radiant_dream_maker.option = ($richesTemplate -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplate -f $rdreamDur, $rdreamSdr, $rdreamForce, $rdreamCd)
 
 $lethEn = "Gain <#ffdd8eff>{0} <$armorPenIcon> Lethality<>."
 $i18n.en.serrated_dirk.option = $lethEn -f $sdLeth
@@ -1296,9 +1296,9 @@ $i18n.vi.radiant_zazzaks_realmspike.option = ($richesTemplateVi -f $rzazGold, $r
 $celopTemplateVi = "<#ff7a3eff>Phước Lành Sơn Thạch<>: Khi nhận sát thương từ tướng địch, bạn được <#92dc7bff>Ban Phước<>, giảm sát thương phải nhận <#e8a800ff>{0}%<> trong <#e8a800ff>{1} giây<>. Khi <#92dc7bff>Ban Phước<> kết thúc, phóng ra một sóng xung kích quanh bạn, <#d94c49ff>làm chậm<> kẻ địch trong phạm vi <#ff86c2ff>{2}<> <$rangeIcon> đi <#d94c49ff>{3}%<> trong <#e8a800ff>{4} giây<> (hồi chiêu <#e8a800ff>{5} giây<>, bắt đầu sau vụ nổ)."
 $i18n.vi.celestial_opposition.option = ($richesTemplateVi -f $celopGold, $celopGoldEvery) + "`n`n" + ($celopTemplateVi -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd)
 $i18n.vi.radiant_celestial_opposition.option = ($richesTemplateVi -f $rcelopGold, $rcelopGoldEvery) + "`n`n" + ($celopTemplateVi -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd)
-$dreamTemplateVi = "<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#92dc7bff>Bong Bóng Mơ<> trong <#e8a800ff>{0} giây<>. Đòn đánh thường hoặc kĩ năng tiếp theo của họ lên tướng địch sẽ tiêu thụ <#92dc7bff>Bong Bóng Mơ<> để gây <#a974ffff>{1}<> - <#a974ffff>{2}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{3} giây<>, bắt đầu sau khi <#92dc7bff>Bong Bóng Mơ<> bị tiêu thụ)."
-$i18n.vi.dream_maker.option = ($richesTemplateVi -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplateVi -f $dreamDur, $dreamMin, $dreamMax, $dreamCd)
-$i18n.vi.radiant_dream_maker.option = ($richesTemplateVi -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplateVi -f $rdreamDur, $rdreamMin, $rdreamMax, $rdreamCd)
+$dreamTemplateVi = "<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#92dc7bff>Bong Bóng Mơ<> trong <#e8a800ff>{0} giây<>. Khi <#92dc7bff>Bong Bóng Mơ<> còn hiệu lực, nó cho <#92dc7bff>{1}%<> <$sdrIcon> <#92dc7bff>Giảm Sát thương Kỹ năng<> và <#d48294ff>{2}<> <$forceIcon> <#d48294ff>Lực Thích Ứng<> (hồi chiêu <#e8a800ff>{3} giây<>, bắt đầu sau khi <#92dc7bff>Bong Bóng Mơ<> kết thúc)."
+$i18n.vi.dream_maker.option = ($richesTemplateVi -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplateVi -f $dreamDur, $dreamSdr, $dreamForce, $dreamCd)
+$i18n.vi.radiant_dream_maker.option = ($richesTemplateVi -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplateVi -f $rdreamDur, $rdreamSdr, $rdreamForce, $rdreamCd)
 
 $lethVi = "Nhận <#ffdd8eff>{0} <$armorPenIcon> Xuyên Giáp Trắng<>."
 $i18n.vi.serrated_dirk.option = $lethVi -f $sdLeth
@@ -1581,9 +1581,9 @@ $i18n.'zh-hans'.radiant_zazzaks_realmspike.option = ($richesTemplateZh -f $rzazG
 $celopTemplateZh = "<#ff7a3eff>神峰庇佑<>：受到敌方英雄的伤害时获得<#92dc7bff>庇佑<>，使你受到的伤害降低 <#e8a800ff>{0}%<>，持续 <#e8a800ff>{1}秒<>。<#92dc7bff>庇佑<>结束后，向四周释放一道冲击波，使 <#ff86c2ff>{2} <$rangeIcon> 射程<>范围内的敌人<#d94c49ff>减速<> <#d94c49ff>{3}%<>，持续 <#e8a800ff>{4}秒<>（冷却 <#e8a800ff>{5}秒<>，在爆炸后开始计算）。"
 $i18n.'zh-hans'.celestial_opposition.option = ($richesTemplateZh -f $celopGold, $celopGoldEvery) + "`n`n" + ($celopTemplateZh -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd)
 $i18n.'zh-hans'.radiant_celestial_opposition.option = ($richesTemplateZh -f $rcelopGold, $rcelopGoldEvery) + "`n`n" + ($celopTemplateZh -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd)
-$dreamTemplateZh = "<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#92dc7bff>美梦泡泡<>，持续 <#e8a800ff>{0}秒<>。其下一次对敌方英雄的普通攻击或技能会消耗<#92dc7bff>美梦泡泡<>，造成 <#a974ffff>{1}<> - <#a974ffff>{2}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>{3}秒<>，在<#92dc7bff>美梦泡泡<>被消耗后开始计算）。"
-$i18n.'zh-hans'.dream_maker.option = ($richesTemplateZh -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplateZh -f $dreamDur, $dreamMin, $dreamMax, $dreamCd)
-$i18n.'zh-hans'.radiant_dream_maker.option = ($richesTemplateZh -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplateZh -f $rdreamDur, $rdreamMin, $rdreamMax, $rdreamCd)
+$dreamTemplateZh = "<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#92dc7bff>美梦泡泡<>，持续 <#e8a800ff>{0}秒<>。<#92dc7bff>美梦泡泡<>存在期间，提供 <#92dc7bff>{1}%<> <$sdrIcon> <#92dc7bff>技能伤害减免<>和 <#d48294ff>{2}<> <$forceIcon> <#d48294ff>自适应之力<>（冷却 <#e8a800ff>{3}秒<>，在<#92dc7bff>美梦泡泡<>结束后开始计算）。"
+$i18n.'zh-hans'.dream_maker.option = ($richesTemplateZh -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplateZh -f $dreamDur, $dreamSdr, $dreamForce, $dreamCd)
+$i18n.'zh-hans'.radiant_dream_maker.option = ($richesTemplateZh -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplateZh -f $rdreamDur, $rdreamSdr, $rdreamForce, $rdreamCd)
 
 $lethZh = "获得 <#ffdd8eff>{0} 点<$armorPenIcon> 穿甲<>。"
 $i18n.'zh-hans'.serrated_dirk.option = $lethZh -f $sdLeth
@@ -1866,9 +1866,9 @@ $i18n.'pt-BR'.radiant_zazzaks_realmspike.option = ($richesTemplatePt -f $rzazGol
 $celopTemplatePt = "<#ff7a3eff>Bênção da Montanha<>: Ao sofrer dano de um campeão inimigo, você fica <#92dc7bff>Abençoado<>, reduzindo o dano que sofre em <#e8a800ff>{0}%<> por <#e8a800ff>{1} segundos<>. Quando <#92dc7bff>Abençoado<> termina, libera uma onda de choque ao seu redor que aplica <#d94c49ff>lentidão<> de <#d94c49ff>{3}%<> a inimigos dentro de <#ff86c2ff>{2} <$rangeIcon> alcance<> por <#e8a800ff>{4} segundos<> (recarga de <#e8a800ff>{5} segundos<>, começando após a explosão)."
 $i18n.'pt-BR'.celestial_opposition.option = ($richesTemplatePt -f $celopGold, $celopGoldEvery) + "`n`n" + ($celopTemplatePt -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd)
 $i18n.'pt-BR'.radiant_celestial_opposition.option = ($richesTemplatePt -f $rcelopGold, $rcelopGoldEvery) + "`n`n" + ($celopTemplatePt -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd)
-$dreamTemplatePt = "<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#92dc7bff>Bolha do Sonho<> por <#e8a800ff>{0} segundos<>. O próximo ataque básico ou Habilidade dele contra um campeão inimigo consome a <#92dc7bff>Bolha do Sonho<> para causar <#a974ffff>{1}<> - <#a974ffff>{2}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>{3} segundos<>, começando após a <#92dc7bff>Bolha do Sonho<> ser consumida)."
-$i18n.'pt-BR'.dream_maker.option = ($richesTemplatePt -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplatePt -f $dreamDur, $dreamMin, $dreamMax, $dreamCd)
-$i18n.'pt-BR'.radiant_dream_maker.option = ($richesTemplatePt -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplatePt -f $rdreamDur, $rdreamMin, $rdreamMax, $rdreamCd)
+$dreamTemplatePt = "<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#92dc7bff>Bolha do Sonho<> por <#e8a800ff>{0} segundos<>. Enquanto a <#92dc7bff>Bolha do Sonho<> estiver ativa, ela concede <#92dc7bff>{1}%<> de <$sdrIcon> <#92dc7bff>Redução de Dano de Habilidades<> e <#d48294ff>{2}<> <$forceIcon> de <#d48294ff>Força Adaptativa<> (recarga de <#e8a800ff>{3} segundos<>, começando após a <#92dc7bff>Bolha do Sonho<> terminar)."
+$i18n.'pt-BR'.dream_maker.option = ($richesTemplatePt -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplatePt -f $dreamDur, $dreamSdr, $dreamForce, $dreamCd)
+$i18n.'pt-BR'.radiant_dream_maker.option = ($richesTemplatePt -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplatePt -f $rdreamDur, $rdreamSdr, $rdreamForce, $rdreamCd)
 
 $lethPt = "Ganha <#ffdd8eff>{0} de <$armorPenIcon> Letalidade<>."
 $i18n.'pt-BR'.serrated_dirk.option = $lethPt -f $sdLeth
@@ -2151,9 +2151,9 @@ $i18n.ru.radiant_zazzaks_realmspike.option = ($richesTemplateRu -f $rzazGold, $r
 $celopTemplateRu = "<#ff7a3eff>Благословение горы<>: Получив урон от вражеского чемпиона, вы получаете <#92dc7bff>Благословение<>, уменьшающее получаемый вами урон на <#e8a800ff>{0}%<> на <#e8a800ff>{1} секунды<>. Когда <#92dc7bff>Благословение<> заканчивается, вы выпускаете вокруг себя ударную волну, которая <#d94c49ff>замедляет<> врагов в пределах <#ff86c2ff>{2} <$rangeIcon> дальности<> на <#d94c49ff>{3}%<> на <#e8a800ff>{4} секунды<> (перезарядка <#e8a800ff>{5} секунд<>, начинается после взрыва)."
 $i18n.ru.celestial_opposition.option = ($richesTemplateRu -f $celopGold, $celopGoldEvery) + "`n`n" + ($celopTemplateRu -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd)
 $i18n.ru.radiant_celestial_opposition.option = ($richesTemplateRu -f $rcelopGold, $rcelopGoldEvery) + "`n`n" + ($celopTemplateRu -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd)
-$dreamTemplateRu = "<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#92dc7bff>Пузырь сна<> на <#e8a800ff>{0} секунды<>. Его следующая базовая атака или умение по вражескому чемпиону расходует <#92dc7bff>Пузырь сна<> и наносит <#a974ffff>{1}<> - <#a974ffff>{2}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{3} секунд<>, начинается после того, как <#92dc7bff>Пузырь сна<> израсходован)."
-$i18n.ru.dream_maker.option = ($richesTemplateRu -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplateRu -f $dreamDur, $dreamMin, $dreamMax, $dreamCd)
-$i18n.ru.radiant_dream_maker.option = ($richesTemplateRu -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplateRu -f $rdreamDur, $rdreamMin, $rdreamMax, $rdreamCd)
+$dreamTemplateRu = "<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#92dc7bff>Пузырь сна<> на <#e8a800ff>{0} секунды<>. Пока <#92dc7bff>Пузырь сна<> активен, он даёт <#92dc7bff>{1}%<> <$sdrIcon> <#92dc7bff>снижения урона от умений<> и <#d48294ff>{2}<> <$forceIcon> <#d48294ff>адаптивной силы<> (перезарядка <#e8a800ff>{3} секунд<>, начинается после того, как <#92dc7bff>Пузырь сна<> заканчивается)."
+$i18n.ru.dream_maker.option = ($richesTemplateRu -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplateRu -f $dreamDur, $dreamSdr, $dreamForce, $dreamCd)
+$i18n.ru.radiant_dream_maker.option = ($richesTemplateRu -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplateRu -f $rdreamDur, $rdreamSdr, $rdreamForce, $rdreamCd)
 
 $lethRu = "Даёт <#ffdd8eff>{0} <$armorPenIcon> летальности<>."
 $i18n.ru.serrated_dirk.option = $lethRu -f $sdLeth
@@ -2435,9 +2435,9 @@ $i18n.ko.radiant_zazzaks_realmspike.option = ($richesTemplateKo -f $rzazGold, $r
 $celopTemplateKo = "<#ff7a3eff>산의 축복<>: 적 챔피언에게 피해를 받으면 <#92dc7bff>축복<> 상태가 되어 <#e8a800ff>{1}초<> 동안 받는 피해가 <#e8a800ff>{0}%<> 감소합니다. <#92dc7bff>축복<>이 끝나면 주변에 충격파를 일으켜 <$rangeIcon> <#ff86c2ff>사거리 {2}<> 안의 적을 <#e8a800ff>{4}초<> 동안 <#d94c49ff>{3}% 둔화<>시킵니다. (재사용 대기시간 <#e8a800ff>{5}초<>, 폭발 후 시작)"
 $i18n.ko.celestial_opposition.option = ($richesTemplateKo -f $celopGold, $celopGoldEvery) + "`n`n" + ($celopTemplateKo -f $celopReduce, $celopDur, $celopRange, $celopSlow, $celopSlowDur, $celopCd)
 $i18n.ko.radiant_celestial_opposition.option = ($richesTemplateKo -f $rcelopGold, $rcelopGoldEvery) + "`n`n" + ($celopTemplateKo -f $rcelopReduce, $rcelopDur, $rcelopRange, $rcelopSlow, $rcelopSlowDur, $rcelopCd)
-$dreamTemplateKo = "<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>{0}초<> 동안 <#92dc7bff>꿈방울<>을 부여합니다. 대상이 적 챔피언에게 가하는 다음 기본 공격 또는 스킬이 <#92dc7bff>꿈방울<>을 소모하여 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>{1}<>~<#a974ffff>{2}<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{3}초<>, <#92dc7bff>꿈방울<>이 소모된 후 시작)"
-$i18n.ko.dream_maker.option = ($richesTemplateKo -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplateKo -f $dreamDur, $dreamMin, $dreamMax, $dreamCd)
-$i18n.ko.radiant_dream_maker.option = ($richesTemplateKo -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplateKo -f $rdreamDur, $rdreamMin, $rdreamMax, $rdreamCd)
+$dreamTemplateKo = "<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>{0}초<> 동안 <#92dc7bff>꿈방울<>을 부여합니다. <#92dc7bff>꿈방울<>이 유지되는 동안 대상은 <$sdrIcon> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>{1}%<>, <$forceIcon> <#d48294ff>적응형 능력치<>를 <#d48294ff>{2}<> 얻습니다. (재사용 대기시간 <#e8a800ff>{3}초<>, <#92dc7bff>꿈방울<>이 끝난 후 시작)"
+$i18n.ko.dream_maker.option = ($richesTemplateKo -f $dreamGold, $dreamGoldEvery) + "`n`n" + ($dreamTemplateKo -f $dreamDur, $dreamSdr, $dreamForce, $dreamCd)
+$i18n.ko.radiant_dream_maker.option = ($richesTemplateKo -f $rdreamGold, $rdreamGoldEvery) + "`n`n" + ($dreamTemplateKo -f $rdreamDur, $rdreamSdr, $rdreamForce, $rdreamCd)
 
 $lethKo = "<#ffdd8eff>{0}의 <$armorPenIcon> 물리 관통력<>을 획득합니다."
 $i18n.ko.serrated_dirk.option = $lethKo -f $sdLeth
@@ -2756,8 +2756,8 @@ Write-Host "  Zaz'Zak's Realmspike:        ${zazFlat} + ${zazAp}% AP + ${zazHp}%
 Write-Host "  Radiant Zaz'Zak's Realmspike: ${rzazFlat} + ${rzazAp}% AP + ${rzazHp}% target max HP after ${rzazDelay}s, ${rzazCd}s cooldown / ${rzazGold} gold every ${rzazGoldEvery}s"
 Write-Host "  Celestial Opposition:        ${celopReduce}% less damage for ${celopDur}s, then ${celopSlow}% slow for ${celopSlowDur}s within ${celopRange} range, ${celopCd}s cooldown / ${celopGold} gold every ${celopGoldEvery}s"
 Write-Host "  Radiant Celestial Opposition: ${rcelopReduce}% less damage for ${rcelopDur}s, then ${rcelopSlow}% slow for ${rcelopSlowDur}s within ${rcelopRange} range, ${rcelopCd}s cooldown / ${rcelopGold} gold every ${rcelopGoldEvery}s"
-Write-Host "  Dream Maker:                 ${dreamMin} - ${dreamMax} damage, bubble ${dreamDur}s, ${dreamCd}s cooldown / ${dreamGold} gold every ${dreamGoldEvery}s"
-Write-Host "  Radiant Dream Maker:         ${rdreamMin} - ${rdreamMax} damage, bubble ${rdreamDur}s, ${rdreamCd}s cooldown / ${rdreamGold} gold every ${rdreamGoldEvery}s"
+Write-Host "  Dream Maker:                 bubble ${dreamDur}s: ${dreamSdr}% skill damage reduction, ${dreamForce} Adaptive Force, ${dreamCd}s cooldown / ${dreamGold} gold every ${dreamGoldEvery}s"
+Write-Host "  Radiant Dream Maker:         bubble ${rdreamDur}s: ${rdreamSdr}% skill damage reduction, ${rdreamForce} Adaptive Force, ${rdreamCd}s cooldown / ${rdreamGold} gold every ${rdreamGoldEvery}s"
 Write-Host "  Serylda's Grudge:            ${serySlow}% slow ${seryDur}s on ability damage at or below ${seryThreshold}% health"
 Write-Host "  Radiant Serylda's Grudge:    ${rserySlow}% slow ${rseryDur}s on ability damage at or below ${rseryThreshold}% health"
 Write-Host "  Bami's Cinder:               ${bamiFlat} + ${bamiHpPct}% max HP magic dmg/s within ${bamiRange} range"

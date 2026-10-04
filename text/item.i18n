@@ -1098,11 +1098,11 @@
         },
         "dream_maker": {
             "name": "Dream Maker",
-            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#92dc7bff>Dream Bubble<> for <#e8a800ff>3 seconds<>. Their next basic attack or Ability against an enemy champion consumes the <#92dc7bff>Dream Bubble<> to deal <#a974ffff>40<> - <#a974ffff>150<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>8 second<> cooldown, starting after the <#92dc7bff>Dream Bubble<> is consumed)."
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#92dc7bff>Dream Bubble<> for <#e8a800ff>3 seconds<>. While the <#92dc7bff>Dream Bubble<> is active, it grants <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>skill damage reduction<> and <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> (<#e8a800ff>8 second<> cooldown, starting after the <#92dc7bff>Dream Bubble<> ends)."
         },
         "radiant_dream_maker": {
             "name": "Radiant Dream Maker",
-            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#92dc7bff>Dream Bubble<> for <#e8a800ff>3 seconds<>. Their next basic attack or Ability against an enemy champion consumes the <#92dc7bff>Dream Bubble<> to deal <#a974ffff>40<> - <#a974ffff>150<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>8 second<> cooldown, starting after the <#92dc7bff>Dream Bubble<> is consumed)."
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#92dc7bff>Dream Bubble<> for <#e8a800ff>3 seconds<>. While the <#92dc7bff>Dream Bubble<> is active, it grants <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>skill damage reduction<> and <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> (<#e8a800ff>8 second<> cooldown, starting after the <#92dc7bff>Dream Bubble<> ends)."
         }
     },
     "vi": {
@@ -2204,11 +2204,11 @@
         },
         "dream_maker": {
             "name": "Thú Bông Bảo Mộng",
-            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#92dc7bff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Đòn đánh thường hoặc kĩ năng tiếp theo của họ lên tướng địch sẽ tiêu thụ <#92dc7bff>Bong Bóng Mơ<> để gây <#a974ffff>40<> - <#a974ffff>150<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#92dc7bff>Bong Bóng Mơ<> bị tiêu thụ)."
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#92dc7bff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Khi <#92dc7bff>Bong Bóng Mơ<> còn hiệu lực, nó cho <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Giảm Sát thương Kỹ năng<> và <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#92dc7bff>Bong Bóng Mơ<> kết thúc)."
         },
         "radiant_dream_maker": {
             "name": "Thú Bông Bảo Mộng Ánh Sáng",
-            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#92dc7bff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Đòn đánh thường hoặc kĩ năng tiếp theo của họ lên tướng địch sẽ tiêu thụ <#92dc7bff>Bong Bóng Mơ<> để gây <#a974ffff>40<> - <#a974ffff>150<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#92dc7bff>Bong Bóng Mơ<> bị tiêu thụ)."
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#92dc7bff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Khi <#92dc7bff>Bong Bóng Mơ<> còn hiệu lực, nó cho <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Giảm Sát thương Kỹ năng<> và <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#92dc7bff>Bong Bóng Mơ<> kết thúc)."
         }
     },
     "zh-hans": {
@@ -3310,11 +3310,11 @@
         },
         "dream_maker": {
             "name": "圆梦使者",
-            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#92dc7bff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。其下一次对敌方英雄的普通攻击或技能会消耗<#92dc7bff>美梦泡泡<>，造成 <#a974ffff>40<> - <#a974ffff>150<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>8秒<>，在<#92dc7bff>美梦泡泡<>被消耗后开始计算）。"
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#92dc7bff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。<#92dc7bff>美梦泡泡<>存在期间，提供 <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>技能伤害减免<>和 <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>（冷却 <#e8a800ff>8秒<>，在<#92dc7bff>美梦泡泡<>结束后开始计算）。"
         },
         "radiant_dream_maker": {
             "name": "光明版圆梦使者",
-            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#92dc7bff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。其下一次对敌方英雄的普通攻击或技能会消耗<#92dc7bff>美梦泡泡<>，造成 <#a974ffff>40<> - <#a974ffff>150<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>8秒<>，在<#92dc7bff>美梦泡泡<>被消耗后开始计算）。"
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#92dc7bff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。<#92dc7bff>美梦泡泡<>存在期间，提供 <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>技能伤害减免<>和 <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>（冷却 <#e8a800ff>8秒<>，在<#92dc7bff>美梦泡泡<>结束后开始计算）。"
         }
     },
     "pt-BR": {
@@ -4416,11 +4416,11 @@
         },
         "dream_maker": {
             "name": "Criassonhos",
-            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#92dc7bff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. O próximo ataque básico ou Habilidade dele contra um campeão inimigo consome a <#92dc7bff>Bolha do Sonho<> para causar <#a974ffff>40<> - <#a974ffff>150<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#92dc7bff>Bolha do Sonho<> ser consumida)."
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#92dc7bff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. Enquanto a <#92dc7bff>Bolha do Sonho<> estiver ativa, ela concede <#92dc7bff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Redução de Dano de Habilidades<> e <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#92dc7bff>Bolha do Sonho<> terminar)."
         },
         "radiant_dream_maker": {
             "name": "Criassonhos Radiante",
-            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#92dc7bff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. O próximo ataque básico ou Habilidade dele contra um campeão inimigo consome a <#92dc7bff>Bolha do Sonho<> para causar <#a974ffff>40<> - <#a974ffff>150<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#92dc7bff>Bolha do Sonho<> ser consumida)."
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#92dc7bff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. Enquanto a <#92dc7bff>Bolha do Sonho<> estiver ativa, ela concede <#92dc7bff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Redução de Dano de Habilidades<> e <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#92dc7bff>Bolha do Sonho<> terminar)."
         }
     },
     "ru": {
@@ -5522,11 +5522,11 @@
         },
         "dream_maker": {
             "name": "Сновичок",
-            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#92dc7bff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Его следующая базовая атака или умение по вражескому чемпиону расходует <#92dc7bff>Пузырь сна<> и наносит <#a974ffff>40<> - <#a974ffff>150<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#92dc7bff>Пузырь сна<> израсходован)."
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#92dc7bff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Пока <#92dc7bff>Пузырь сна<> активен, он даёт <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>снижения урона от умений<> и <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#92dc7bff>Пузырь сна<> заканчивается)."
         },
         "radiant_dream_maker": {
             "name": "Лучезарный Сновичок",
-            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#92dc7bff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Его следующая базовая атака или умение по вражескому чемпиону расходует <#92dc7bff>Пузырь сна<> и наносит <#a974ffff>40<> - <#a974ffff>150<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#92dc7bff>Пузырь сна<> израсходован)."
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#92dc7bff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Пока <#92dc7bff>Пузырь сна<> активен, он даёт <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>снижения урона от умений<> и <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#92dc7bff>Пузырь сна<> заканчивается)."
         }
     },
     "ko": {
@@ -6628,11 +6628,11 @@
         },
         "dream_maker": {
             "name": "꿈 생성기",
-            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#92dc7bff>꿈방울<>을 부여합니다. 대상이 적 챔피언에게 가하는 다음 기본 공격 또는 스킬이 <#92dc7bff>꿈방울<>을 소모하여 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>40<>~<#a974ffff>150<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>8초<>, <#92dc7bff>꿈방울<>이 소모된 후 시작)"
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#92dc7bff>꿈방울<>을 부여합니다. <#92dc7bff>꿈방울<>이 유지되는 동안 대상은 <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>8%<>, <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>20<> 얻습니다. (재사용 대기시간 <#e8a800ff>8초<>, <#92dc7bff>꿈방울<>이 끝난 후 시작)"
         },
         "radiant_dream_maker": {
             "name": "찬란한 꿈 생성기",
-            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#92dc7bff>꿈방울<>을 부여합니다. 대상이 적 챔피언에게 가하는 다음 기본 공격 또는 스킬이 <#92dc7bff>꿈방울<>을 소모하여 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>40<>~<#a974ffff>150<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>8초<>, <#92dc7bff>꿈방울<>이 소모된 후 시작)"
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#92dc7bff>꿈방울<>을 부여합니다. <#92dc7bff>꿈방울<>이 유지되는 동안 대상은 <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>8%<>, <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>20<> 얻습니다. (재사용 대기시간 <#e8a800ff>8초<>, <#92dc7bff>꿈방울<>이 끝난 후 시작)"
         }
     }
 }
