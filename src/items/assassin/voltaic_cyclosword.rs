@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, percent_of, ticks, ItemMeta, ProcQueue};
+use crate::{apply_config, apply_lethality, percent_of, ticks, Energized, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct VoltaicCyclosword {
@@ -15,8 +15,7 @@ pub struct VoltaicCyclosword {
     effect_minion_damage_cap: usize,
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
-    energized_stacks: usize,
-    energized_update_tick: usize,
+    energized: Energized,
     /// Ticks left on Firmament's bonus lethality
     firmament_ticks: usize,
     procs: ProcQueue,
@@ -40,8 +39,7 @@ impl VoltaicCyclosword {
             effect_max_stacks: 100,
             effect_duration_seconds: 4.0,
             // Non-vital stats (internals)
-            energized_stacks: 0,
-            energized_update_tick: 0,
+            energized: Energized::default(),
             firmament_ticks: 0,
             procs: ProcQueue::new(),
         }
@@ -143,8 +141,7 @@ impl StableItem for VoltaicCyclosword {
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.energized_stacks = 0;
-        self.energized_update_tick = 0;
+        self.energized.reset();
         self.firmament_ticks = 0;
         self.procs.clear();
     }
@@ -166,7 +163,10 @@ impl StableItem for VoltaicCyclosword {
             return;
         }
 
-        if self.energized_stacks >= self.effect_max_stacks {
+        if self
+            .energized
+            .is_charged(ctx, caster, self.effect_max_stacks)
+        {
             let mut bonus_damage = percent_of(target_ref.hp().0, self.effect_hp_percent_damage);
             if !target_ref.is_champion() {
                 bonus_damage = bonus_damage.min(self.effect_minion_damage_cap);
@@ -177,14 +177,13 @@ impl StableItem for VoltaicCyclosword {
             // arrives, so the number matches the hit that earned it.
             self.procs.push_physical(ctx, target, bonus_damage);
             self.firmament_ticks = ticks(self.effect_duration_seconds);
-            self.energized_stacks = 0;
+            self.energized.spend(ctx);
         }
 
         apply_lethality(ctx, caster, target, self.active_lethality(), damage);
 
-        // Gain 5 energized stacks on base attacks, up to the max stacks
         if attack_type == AttackTypeV1::BaseAttack {
-            self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
+            self.energized.basic_attack(self.effect_max_stacks);
         }
     }
 
@@ -192,21 +191,14 @@ impl StableItem for VoltaicCyclosword {
         self.procs.update(ctx, player);
 
         self.firmament_ticks = self.firmament_ticks.saturating_sub(1);
-
-        // Add 1 energized stack per 0.2 seconds
-        if self.energized_update_tick >= 12 {
-            self.energized_stacks = (self.energized_stacks + 1).min(self.effect_max_stacks);
-            self.energized_update_tick = 0;
-        } else {
-            self.energized_update_tick += 1;
-        }
+        self.energized.update(ctx, player, self.effect_max_stacks);
     }
 
     /// The Energized meter carries across the Radiant upgrade, so buying it
     /// mid-fight does not throw away a nearly full bar.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
-            self.energized_stacks as u64
+            self.energized.stacks() as u64
         } else {
             0
         }
@@ -214,7 +206,8 @@ impl StableItem for VoltaicCyclosword {
 
     fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
         if self.meta.upgrades_from(prev_key) {
-            self.energized_stacks = (carry as usize).min(self.effect_max_stacks);
+            self.energized
+                .set_stacks((carry as usize).min(self.effect_max_stacks));
         }
     }
 

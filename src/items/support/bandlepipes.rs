@@ -19,6 +19,14 @@ use crate::{apply_config, sized_range, ticks, ItemMeta, AURA_DURATION_TICKS, AUR
 /// `fanfare_remaining` is non-zero, exactly as `LocketOfTheIronSolari` does for
 /// Legion.
 ///
+/// # The ring on the ground
+///
+/// `fanfare_buff` is on the carrier for exactly as long as the aura runs, so
+/// the `view_buffs` binding of the same name in `view/effects.view_effects`
+/// (`effects/bandlepipes_aura`) draws the aura's edge under them for that
+/// long. The picture is a 100-range circle, the default `effect_max_distance`:
+/// a configured range or a bigger carrier reaches further than it shows.
+///
 /// # The residue when Fanfare ends
 ///
 /// `anthem_buff` outlives its last refresh by up to

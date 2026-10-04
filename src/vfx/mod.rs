@@ -1,15 +1,18 @@
 //! Buffs and the effects drawn from them: the buff helpers every item uses,
 //! the Immolate flames marker and burn, the shared Annul spell shield (whose
 //! buff draws the shield bubble), the shared Spellblade (whose buff draws the
-//! sparks) and Sunfire Cape's Immolate, which runs as the match hook.
+//! sparks), the shared Energized (whose buff draws the crackle) and Sunfire
+//! Cape's Immolate, which runs as the match hook.
 
 mod annul;
+mod energized;
 mod spellblade;
 pub(crate) mod sunfire;
 
 use mod_api_stable::*;
 
 pub(crate) use annul::Annul;
+pub(crate) use energized::Energized;
 pub(crate) use spellblade::Spellblade;
 
 pub(crate) fn refresh_buff(ctx: &mut StableSim<'_>, entity: usize, name: &str, buff: &BuffV1) {

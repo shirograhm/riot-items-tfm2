@@ -119,6 +119,14 @@
             "tag": "blast",
             "z": 1,
             "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_collector_execute",
+            "anim": "asset/riot_items_tfm2/effects/collector_execute",
+            "tag": "execute",
+            "z": 1,
+            "is_follow": false
         }
     ],
     "view_projectiles": [
@@ -147,6 +155,13 @@
             "type": "Animated",
             "name": "riot_blossoming_dawn_wisp",
             "anim": "asset/riot_items_tfm2/effects/blossoming_dawn_wisp",
+            "tag": "wisp",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_moonstone_wisp",
+            "anim": "asset/riot_items_tfm2/effects/moonstone_wisp",
             "tag": "wisp",
             "z": 1
         }
@@ -212,6 +227,20 @@
             "type": "Animated",
             "name": "sabotage_charge",
             "anim": "asset/riot_items_tfm2/effects/sabotage_charge",
+            "tag": "charge",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "bandlepipes_fanfare",
+            "anim": "asset/riot_items_tfm2/effects/bandlepipes_aura",
+            "tag": "aura",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_energized",
+            "anim": "asset/riot_items_tfm2/effects/energized_charge",
             "tag": "charge",
             "z": 1
         }

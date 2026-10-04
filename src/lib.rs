@@ -27,7 +27,7 @@ pub(crate) use utils::{config, own_team_log, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
-    Spellblade,
+    Energized, Spellblade,
 };
 
 fn percent_of(value: usize, percent: f64) -> usize {
@@ -560,6 +560,9 @@ fn init(host: &StableHost) -> StableMod {
     // Titanic Hydra's Cleave wedge is only a picture, so both tiers share
     // one effect that does nothing.
     reg.add_native_effect(TitanicHydra::WAVE_HIT, TitanicWave);
+    // Moonstone Renewer's wisp is only a picture too: the chained heal has
+    // landed by the time it flies.
+    reg.add_native_effect(MoonstoneRenewer::WISP_HIT, MoonstoneWisp);
     // Sword of Blossoming Dawn's wisp carries Peppermint's heal to the ally,
     // each tier with its own numbers.
     for sword in [
