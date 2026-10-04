@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue};
+use crate::{apply_config, refresh_buff, ticks, Energized, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct Stormrazor {
@@ -14,8 +14,7 @@ pub struct Stormrazor {
     effect_move_speed_mult: i32,
     effect_bonus_flat_damage: usize,
     effect_duration_seconds: f64,
-    energized_stacks: usize,
-    energized_update_tick: usize,
+    energized: Energized,
     procs: ProcQueue,
 }
 
@@ -32,8 +31,7 @@ impl Stormrazor {
             effect_bonus_flat_damage: 100,
             effect_duration_seconds: 1.5,
             // Non-vital stats (internals)
-            energized_stacks: 0,
-            energized_update_tick: 0,
+            energized: Energized::default(),
             procs: ProcQueue::new(),
         }
     }
@@ -125,7 +123,7 @@ impl StableItem for Stormrazor {
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.energized_stacks = 0;
+        self.energized.reset();
         self.procs.clear();
     }
 
@@ -146,7 +144,11 @@ impl StableItem for Stormrazor {
             return;
         }
 
-        if self.energized_stacks >= self.effect_max_stacks {
+        if self
+            .energized
+            .is_charged(ctx, caster, self.effect_max_stacks)
+        {
+            self.energized.spend(ctx);
             self.procs
                 .push_magic(ctx, target, self.effect_bonus_flat_damage);
             refresh_buff(
@@ -158,31 +160,21 @@ impl StableItem for Stormrazor {
                     ..BuffV1::timed("stormrazor_move_speed", ticks(self.effect_duration_seconds))
                 },
             );
-
-            self.energized_stacks = 0;
         }
 
-        // Gain 5 energized stacks on base attacks
-        self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
+        self.energized.basic_attack(self.effect_max_stacks);
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
-
-        // Add 1 energized stack per 0.2 seconds
-        if self.energized_update_tick >= 12 {
-            self.energized_stacks = (self.energized_stacks + 1).min(self.effect_max_stacks);
-            self.energized_update_tick = 0;
-        } else {
-            self.energized_update_tick += 1;
-        }
+        self.energized.update(ctx, player, self.effect_max_stacks);
     }
 
     /// The Energized meter carries across the Radiant upgrade, so buying it
     /// mid-fight does not throw away a nearly full bar.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
-            self.energized_stacks as u64
+            self.energized.stacks() as u64
         } else {
             0
         }
@@ -190,7 +182,8 @@ impl StableItem for Stormrazor {
 
     fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
         if self.meta.upgrades_from(prev_key) {
-            self.energized_stacks = (carry as usize).min(self.effect_max_stacks);
+            self.energized
+                .set_stacks((carry as usize).min(self.effect_max_stacks));
         }
     }
 

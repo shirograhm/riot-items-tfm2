@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ticks, ItemMeta};
+use crate::{apply_config, ticks, ItemMeta, SelfCastWatch};
 
 #[derive(Clone, Debug)]
 pub struct ArdentCenser {
@@ -18,6 +18,8 @@ pub struct ArdentCenser {
     effect_attack_speed_mult: i32,
     effect_enemy_max_hp_damage: usize,
     effect_duration_seconds: f64,
+    // Non-vital stats (internals)
+    self_cast: SelfCastWatch,
 }
 
 impl ArdentCenser {
@@ -38,6 +40,8 @@ impl ArdentCenser {
             effect_attack_speed_mult: 20,
             effect_enemy_max_hp_damage: 2,
             effect_duration_seconds: 6.0,
+            // Non-vital stats (internals)
+            self_cast: SelfCastWatch::default(),
         }
     }
 
@@ -79,6 +83,22 @@ impl ArdentCenser {
             ]
         );
         self
+    }
+
+    /// Puts Sanctify on `target`. Re-applying is a remove followed by an add
+    /// rather than a `has_buff` gate: refreshing means replacing the instance,
+    /// and one `entity_remove_buff` clears every copy, so a multi-hit cast
+    /// cannot leave two on the same ally.
+    fn sanctify(&self, ctx: &mut StableSim<'_>, target: usize) {
+        ctx.entity_remove_buff(target, self.sanctify_buff);
+        ctx.add_buff(
+            target,
+            &BuffV1 {
+                attack_speed_mult: self.effect_attack_speed_mult,
+                base_attack_enemy_max_hp_damage: self.effect_enemy_max_hp_damage,
+                ..BuffV1::timed(self.sanctify_buff, ticks(self.effect_duration_seconds))
+            },
+        );
     }
 }
 
@@ -130,10 +150,7 @@ impl StableItem for ArdentCenser {
 
     // Sanctify. `is_ally` is the SDK's flag for an ally-targeted skill — a
     // heal, shield or buff — which is exactly the trigger, and `on_skill_hit`
-    // only ever fires for this carrier's own casts. Re-applying is a remove
-    // followed by an add rather than a `has_buff` gate: refreshing means
-    // replacing the instance, and one `entity_remove_buff` clears every copy,
-    // so a multi-hit cast cannot leave two on the same ally.
+    // only ever fires for this carrier's own casts.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -142,9 +159,14 @@ impl StableItem for ArdentCenser {
         target: usize,
         is_ally: bool,
     ) {
-        // Self-casts count as ally-targeted, so the carrier has to be ruled
-        // out explicitly: Sanctify only ever lands on someone else.
-        if !is_ally || target == caster {
+        if !is_ally {
+            return;
+        }
+        // Self-casts count as ally-targeted, and Sanctify only ever lands on
+        // someone else. A self-cast may still have healed an ally, as the
+        // Monk's heal does around them: that is watched for in `update`.
+        if target == caster {
+            self.self_cast.open(ctx, caster);
             return;
         }
         let Some(is_champion) = ctx.get_entity(target).map(|t| t.is_champion()) else {
@@ -154,15 +176,17 @@ impl StableItem for ArdentCenser {
             return;
         }
 
-        ctx.entity_remove_buff(target, self.sanctify_buff);
-        ctx.add_buff(
-            target,
-            &BuffV1 {
-                attack_speed_mult: self.effect_attack_speed_mult,
-                base_attack_enemy_max_hp_damage: self.effect_enemy_max_hp_damage,
-                ..BuffV1::timed(self.sanctify_buff, ticks(self.effect_duration_seconds))
-            },
-        );
+        self.sanctify(ctx, target);
+    }
+
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
+        for target in self.self_cast.poll(ctx) {
+            self.sanctify(ctx, target);
+        }
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.self_cast.close();
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

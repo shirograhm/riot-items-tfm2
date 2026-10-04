@@ -87,6 +87,70 @@
             "tag": "trigger",
             "z": 1,
             "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_frost_zone_form",
+            "anim": "asset/riot_items_tfm2/effects/frost_zone",
+            "tag": "form",
+            "z": -1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_frost_zone_hold",
+            "anim": "asset/riot_items_tfm2/effects/frost_zone",
+            "tag": "hold",
+            "z": -1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_frost_zone_melt",
+            "anim": "asset/riot_items_tfm2/effects/frost_zone",
+            "tag": "melt",
+            "z": -1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_sabotage_blast",
+            "anim": "asset/riot_items_tfm2/effects/sabotage_blast",
+            "tag": "blast",
+            "z": 1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_collector_execute",
+            "anim": "asset/riot_items_tfm2/effects/collector_execute",
+            "tag": "execute",
+            "z": 1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_void_explosion_gather",
+            "anim": "asset/riot_items_tfm2/effects/void_explosion",
+            "tag": "gather",
+            "z": -1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_void_explosion_blast",
+            "anim": "asset/riot_items_tfm2/effects/void_explosion",
+            "tag": "blast",
+            "z": 1,
+            "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_celestial_shatter",
+            "anim": "asset/riot_items_tfm2/effects/celestial_shatter",
+            "tag": "shatter",
+            "z": 1,
+            "is_follow": true
         }
     ],
     "view_projectiles": [
@@ -115,6 +179,13 @@
             "type": "Animated",
             "name": "riot_blossoming_dawn_wisp",
             "anim": "asset/riot_items_tfm2/effects/blossoming_dawn_wisp",
+            "tag": "wisp",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_moonstone_wisp",
+            "anim": "asset/riot_items_tfm2/effects/moonstone_wisp",
             "tag": "wisp",
             "z": 1
         }
@@ -174,6 +245,48 @@
             "name": "riot_heartsteel_stage3",
             "anim": "asset/riot_items_tfm2/effects/heartsteel_mark",
             "tag": "stage3",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "sabotage_charge",
+            "anim": "asset/riot_items_tfm2/effects/sabotage_charge",
+            "tag": "charge",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "bandlepipes_fanfare",
+            "anim": "asset/riot_items_tfm2/effects/bandlepipes_aura",
+            "tag": "aura",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_energized",
+            "anim": "asset/riot_items_tfm2/effects/energized_charge",
+            "tag": "charge",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "celestial_opposition_blessed",
+            "anim": "asset/riot_items_tfm2/effects/celestial_shield",
+            "tag": "shield",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "dream_maker_bubble",
+            "anim": "asset/riot_items_tfm2/effects/dream_bubble",
+            "tag": "bubble",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "guardian_angel_undying",
+            "anim": "asset/riot_items_tfm2/effects/guardian_angel_ready",
+            "tag": "ready",
             "z": 1
         }
     ]

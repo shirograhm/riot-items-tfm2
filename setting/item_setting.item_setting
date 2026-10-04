@@ -1473,7 +1473,7 @@
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
-      "defence": 0,
+      "defence": 15,
       "defence_mult": 0,
       "hp": 250,
       "hp_regen": 0,
@@ -1512,6 +1512,7 @@
     "max_hp_regen_ratio": 0,
     "tags": [
       "HP",
+      "Defense",
       "HPRegen"
     ],
     "category": "Hp"
@@ -1528,7 +1529,7 @@
       "attack_mult": 0,
       "magic_power": 0,
       "magic_power_mult": 0,
-      "defence": 0,
+      "defence": 25,
       "defence_mult": 0,
       "hp": 400,
       "hp_regen": 0,
@@ -1568,6 +1569,7 @@
     "aoe_range": 30000,
     "tags": [
       "HP",
+      "Defense",
       "HPRegen",
       "DotDamage"
     ],

@@ -3,6 +3,10 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, percent_of, ticks, ItemMeta, PROC_DELAY_SECONDS};
 
+/// The gold X that marks an execute: the `view_effects` binding of this name
+/// in `view/effects.view_effects` (`effects/collector_execute`).
+const EXECUTE_EFFECT: &str = "riot_collector_execute";
+
 #[derive(Clone, Debug)]
 pub struct Collector {
     meta: ItemMeta,
@@ -142,6 +146,16 @@ impl StableItem for Collector {
             let hp_threshold = percent_of(target_max_hp, self.effect_hp_percent_threshold);
             let remaining = target_curr_hp - *damage;
             if remaining <= hp_threshold {
+                // Before the damage, and left where the champion stood: the
+                // target is gone once it lands.
+                ctx.play_view_effect(
+                    EXECUTE_EFFECT,
+                    caster,
+                    &InputTargetV1::target(target),
+                    0,
+                    0,
+                    0,
+                );
                 ctx.deal_damage_typed(
                     caster,
                     target,

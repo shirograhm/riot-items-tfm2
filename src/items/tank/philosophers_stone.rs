@@ -7,7 +7,7 @@ use crate::{
 };
 
 // Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies
-// within 30 range. This effect deals 50% more damage to minions and monsters.
+// within 30 range. This effect deals 150% more damage to minions and monsters.
 //
 // Cinderhulk: Gain 1% maximum health for each champion takedown and monster
 // killed, up to 15%.
@@ -52,7 +52,7 @@ impl PhilosophersStone {
             effect_bonus_flat_damage: 10,
             effect_caster_hp_percent_damage: 1.0,
             effect_max_distance: 30,
-            effect_minion_bonus_percent: 50.0,
+            effect_minion_bonus_percent: 150.0,
             effect_stack_hp_mult: 1,
             effect_max_stacks: 15,
             // Non-vital stats (internals)
@@ -73,7 +73,7 @@ impl PhilosophersStone {
             effect_bonus_flat_damage: 10,
             effect_caster_hp_percent_damage: 1.0,
             effect_max_distance: 30,
-            effect_minion_bonus_percent: 50.0,
+            effect_minion_bonus_percent: 150.0,
             effect_stack_hp_mult: 1,
             effect_max_stacks: 15,
             ..Self::base()

@@ -1,7 +1,11 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, apply_lethality, has_buff, percent_of, refresh_buff, ticks, ItemMeta};
+
+/// The burst on the turret as Sabotage goes off: the `view_effects` binding of
+/// this name in `view/effects.view_effects` (`effects/sabotage_blast`).
+const BLAST_EFFECT: &str = "riot_sabotage_blast";
 
 fn sabotage_bonus(ctx: &mut StableSim<'_>, caster: usize, flat: usize, ad_percent: f64) -> usize {
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
@@ -10,7 +14,11 @@ fn sabotage_bonus(ctx: &mut StableSim<'_>, caster: usize, flat: usize, ad_percen
 
 // Gain 22 Lethality.
 // Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack
-// against a turret to deal 150 + 15% AD as bonus physical damage.
+// against a turret to deal 150 + 15% AD as bonus true damage.
+//
+// While Sabotage is held, a molten shard glows by the carrier: the `view_buffs`
+// binding of the same name in `view/effects.view_effects` (`effects/sabotage_charge`).
+// The attack that spends it bursts on the turret ([`BLAST_EFFECT`]).
 #[derive(Clone, Debug)]
 pub struct Bastionbreaker {
     meta: ItemMeta,
@@ -63,6 +71,18 @@ impl Bastionbreaker {
 
     pub fn radiant_with_config(cfg: &ItemConfig) -> Self {
         Self::radiant().configured(cfg)
+    }
+
+    /// Grants Sabotage, or starts its time over on a carrier that already has
+    /// it. Replaced rather than added: Sabotage is one empowered attack however
+    /// many takedowns came before it, and one buff is one picture.
+    fn grant_sabotage(&self, sim: &mut StableSim<'_>, entity: usize) {
+        refresh_buff(
+            sim,
+            entity,
+            self.sabotage_buff,
+            &BuffV1::timed(self.sabotage_buff, ticks(self.effect_duration_seconds)),
+        );
     }
 
     fn configured(mut self, cfg: &ItemConfig) -> Self {
@@ -170,6 +190,16 @@ impl StableItem for Bastionbreaker {
                 self.effect_bonus_flat_damage,
                 self.effect_ad_percent_damage,
             );
+            // Before the damage: this hit may be the one that brings the turret
+            // down, and the burst is played where the turret stands.
+            ctx.play_view_effect(
+                BLAST_EFFECT,
+                caster,
+                &InputTargetV1::target(target),
+                0,
+                0,
+                0,
+            );
             ctx.deal_damage_typed(
                 caster,
                 target,
@@ -187,19 +217,16 @@ impl StableItem for Bastionbreaker {
         _rng_seed: u64,
         _player: usize,
         entity: usize,
-        _victim: usize,
+        victim: usize,
     ) {
-        sim.add_buff(
-            entity,
-            &BuffV1::timed(self.sabotage_buff, ticks(self.effect_duration_seconds)),
-        );
+        // A takedown on a champion. Minions, monsters and turrets grant nothing.
+        if sim.get_entity(victim).is_some_and(|victim| victim.is_champion()) {
+            self.grant_sabotage(sim, entity);
+        }
     }
 
     fn on_assist(&mut self, sim: &mut StableSim<'_>, _player: usize, entity: usize) {
-        sim.add_buff(
-            entity,
-            &BuffV1::timed(self.sabotage_buff, ticks(self.effect_duration_seconds)),
-        );
+        self.grant_sabotage(sim, entity);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

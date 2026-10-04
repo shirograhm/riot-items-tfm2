@@ -1,7 +1,9 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE};
+use crate::{
+    apply_config, is_monster, percent_of, Energized, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE,
+};
 
 // Electrospark: when fully Energized, the next basic attack deals bonus magic
 // damage to its target and releases chain lightning that jumps on to up to
@@ -49,8 +51,7 @@ pub struct StatikkShiv {
     effect_max_targets: usize,
     effect_max_distance: usize,
     // Non-vital stats (internals)
-    energized_stacks: usize,
-    energized_update_tick: usize,
+    energized: Energized,
     procs: ProcQueue,
 }
 
@@ -74,8 +75,7 @@ impl StatikkShiv {
             effect_max_targets: 4,
             effect_max_distance: 50,
             // Non-vital stats (internals)
-            energized_stacks: 0,
-            energized_update_tick: 0,
+            energized: Energized::default(),
             procs: ProcQueue::new(),
         }
     }
@@ -273,8 +273,7 @@ impl StableItem for StatikkShiv {
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.energized_stacks = 0;
-        self.energized_update_tick = 0;
+        self.energized.reset();
         self.procs.clear();
     }
 
@@ -297,32 +296,27 @@ impl StableItem for StatikkShiv {
             return;
         }
 
-        if self.energized_stacks >= self.effect_max_stacks {
+        if self
+            .energized
+            .is_charged(ctx, caster, self.effect_max_stacks)
+        {
+            self.energized.spend(ctx);
             self.electrospark(ctx, caster, target);
-            self.energized_stacks = 0;
         }
 
-        // Gain 5 energized stacks on base attacks
-        self.energized_stacks = (self.energized_stacks + 5).min(self.effect_max_stacks);
+        self.energized.basic_attack(self.effect_max_stacks);
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
-
-        // Add 1 energized stack per 0.2 seconds
-        if self.energized_update_tick >= 12 {
-            self.energized_stacks = (self.energized_stacks + 1).min(self.effect_max_stacks);
-            self.energized_update_tick = 0;
-        } else {
-            self.energized_update_tick += 1;
-        }
+        self.energized.update(ctx, player, self.effect_max_stacks);
     }
 
     /// The Energized meter carries across the Radiant upgrade, so buying it
     /// mid-fight does not throw away a nearly full bar.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
-            self.energized_stacks as u64
+            self.energized.stacks() as u64
         } else {
             0
         }
@@ -330,7 +324,8 @@ impl StableItem for StatikkShiv {
 
     fn on_upgraded_from(&mut self, prev_key: &str, carry: u64) {
         if self.meta.upgrades_from(prev_key) {
-            self.energized_stacks = (carry as usize).min(self.effect_max_stacks);
+            self.energized
+                .set_stacks((carry as usize).min(self.effect_max_stacks));
         }
     }
 

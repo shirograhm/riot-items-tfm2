@@ -16,8 +16,11 @@ mod vfx;
 use items::*;
 
 pub(crate) use utils::constants::*;
+pub(crate) use utils::heal_watch::{HealWatch, SelfCastWatch};
+pub(crate) use utils::immobilize_watch::ImmobilizeWatch;
 pub(crate) use utils::item_meta::ItemMeta;
 pub(crate) use utils::proc_queue::ProcQueue;
+pub(crate) use utils::shared_riches::SharedRiches;
 // Re-exported under their old names, so paths like `crate::config::ItemConfig`
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
@@ -26,7 +29,7 @@ pub(crate) use utils::{config, own_team_log, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
-    Spellblade,
+    Energized, Spellblade,
 };
 
 fn percent_of(value: usize, percent: f64) -> usize {
@@ -300,11 +303,13 @@ fn init(host: &StableHost) -> StableMod {
     // Tier 1
     reg.add_item(configured!("boots" => Boots));
     reg.add_item(configured!("glowing_mote" => GlowingMote));
+    reg.add_item(configured!("world_atlas" => WorldAtlas));
 
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
     reg.add_item(configured!("fated_ashes" => FatedAshes));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
+    reg.add_item(configured!("runic_compass" => RunicCompass));
     reg.add_item(configured!("sheen" => Sheen));
 
     // Tier 3
@@ -340,6 +345,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("winged_moonplate" => WingedMoonplate));
 
     // Tier 4
+    reg.add_item(configured!("abyssal_mask" => AbyssalMask));
     reg.add_item(configured!("ardent_censer" => ArdentCenser));
     reg.add_item(configured!("atmas_reckoning" => AtmasReckoning, passive_crit));
     reg.add_item(configured!("axiom_arc" => AxiomArc));
@@ -351,6 +357,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured!("bloodsong" => Bloodsong));
+    reg.add_item(configured!("celestial_opposition" => CelestialOpposition));
     reg.add_item(configured!("chempunk_chainsword" => ChempunkChainsword));
     reg.add_item(configured!("chemtech_putrifier" => ChemtechPutrifier));
     reg.add_item(configured!("cloak_of_starry_night" => CloakOfStarryNight));
@@ -360,6 +367,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
     reg.add_item(configured!("diamond_tipped_spear" => DiamondTippedSpear));
+    reg.add_item(configured!("dream_maker" => DreamMaker));
     reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("eclipse" => Eclipse));
@@ -380,6 +388,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("hollow_radiance" => HollowRadiance));
     reg.add_item(configured!("hubris" => Hubris));
     reg.add_item(configured!("hullbreaker" => Hullbreaker));
+    reg.add_item(configured!("iceborn_gauntlet" => IcebornGauntlet));
     reg.add_item(configured!("immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured!("imperial_mandate" => ImperialMandate));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
@@ -391,6 +400,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured!("malignance" => Malignance));
     reg.add_item(configured!("mirage_blade" => MirageBlade));
+    reg.add_item(configured!("moonstone_renewer" => MoonstoneRenewer));
     reg.add_item(configured!("morellonomicon" => Morellonomicon));
     reg.add_item(configured!("mortal_reminder" => MortalReminder));
     reg.add_item(configured!("nashors_tooth" => NashorsTooth));
@@ -410,6 +420,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
     reg.add_item(configured!("seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured!("shadowflame" => Shadowflame));
+    reg.add_item(configured!("solstice_sleigh" => SolsticeSleigh));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("staff_of_flowing_water" => StaffOfFlowingWater));
@@ -428,10 +439,12 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("wits_end" => WitsEnd));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
+    reg.add_item(configured!("zazzaks_realmspike" => ZazzaksRealmspike));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
     reg.add_item(configured!("zhonyas_hourglass" => ZhonyasHourglass));
 
     // Tier 5
+    reg.add_item(configured_radiant!("radiant_abyssal_mask" => AbyssalMask));
     reg.add_item(configured_radiant!("radiant_ardent_censer" => ArdentCenser));
     reg.add_item(configured_radiant!("radiant_atmas_reckoning" => AtmasReckoning, passive_crit));
     reg.add_item(configured_radiant!("radiant_axiom_arc" => AxiomArc));
@@ -443,6 +456,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured_radiant!("radiant_bloodletters_curse" => BloodlettersCurse));
     reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong));
+    reg.add_item(configured_radiant!("radiant_celestial_opposition" => CelestialOpposition));
     reg.add_item(configured_radiant!("radiant_chempunk_chainsword" => ChempunkChainsword));
     reg.add_item(configured_radiant!("radiant_chemtech_putrifier" => ChemtechPutrifier));
     reg.add_item(configured_radiant!("radiant_cloak_of_starry_night" => CloakOfStarryNight));
@@ -452,6 +466,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
     reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));
     reg.add_item(configured_radiant!("radiant_diamond_tipped_spear" => DiamondTippedSpear));
+    reg.add_item(configured_radiant!("radiant_dream_maker" => DreamMaker));
     reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured_radiant!("radiant_eclipse" => Eclipse));
@@ -472,6 +487,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_hollow_radiance" => HollowRadiance));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
     reg.add_item(configured_radiant!("radiant_hullbreaker" => Hullbreaker));
+    reg.add_item(configured_radiant!("radiant_iceborn_gauntlet" => IcebornGauntlet));
     reg.add_item(configured_radiant!("radiant_immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured_radiant!("radiant_imperial_mandate" => ImperialMandate));
     reg.add_item(configured_radiant!("radiant_infinity_edge" => InfinityEdge));
@@ -483,6 +499,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured_radiant!("radiant_malignance" => Malignance));
     reg.add_item(configured_radiant!("radiant_mirage_blade" => MirageBlade));
+    reg.add_item(configured_radiant!("radiant_moonstone_renewer" => MoonstoneRenewer));
     reg.add_item(configured_radiant!("radiant_morellonomicon" => Morellonomicon));
     reg.add_item(configured_radiant!("radiant_mortal_reminder" => MortalReminder));
     reg.add_item(configured_radiant!("radiant_nashors_tooth" => NashorsTooth));
@@ -502,6 +519,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
     reg.add_item(configured_radiant!("radiant_seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
+    reg.add_item(configured_radiant!("radiant_solstice_sleigh" => SolsticeSleigh));
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
     reg.add_item(configured_radiant!("radiant_staff_of_flowing_water" => StaffOfFlowingWater));
@@ -519,7 +537,10 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
     reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
-    reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
+    reg.add_item(
+        configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit),
+    );
+    reg.add_item(configured_radiant!("radiant_zazzaks_realmspike" => ZazzaksRealmspike));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
     reg.add_item(configured_radiant!("radiant_zhonyas_hourglass" => ZhonyasHourglass));
 
@@ -553,6 +574,9 @@ fn init(host: &StableHost) -> StableMod {
     // Titanic Hydra's Cleave wedge is only a picture, so both tiers share
     // one effect that does nothing.
     reg.add_native_effect(TitanicHydra::WAVE_HIT, TitanicWave);
+    // Moonstone Renewer's wisp is only a picture too: the chained heal has
+    // landed by the time it flies.
+    reg.add_native_effect(MoonstoneRenewer::WISP_HIT, MoonstoneWisp);
     // Sword of Blossoming Dawn's wisp carries Peppermint's heal to the ally,
     // each tier with its own numbers.
     for sword in [

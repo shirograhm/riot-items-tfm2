@@ -634,11 +634,11 @@
         },
         "bloodsong": {
             "name": "Bloodsong",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "radiant_bloodsong": {
             "name": "Radiant Bloodsong",
-            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>70<> - <#a974ffff>125<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>3.5 second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>7%<> for <#e8a800ff>4 seconds<>."
         },
         "serrated_dirk": {
             "name": "Serrated Dirk",
@@ -818,11 +818,11 @@
         },
         "bandlepipes": {
             "name": "Bandlepipes",
-            "option": "\n<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
         },
         "radiant_bandlepipes": {
             "name": "Radiant Bandlepipes",
-            "option": "\n<#ff7a3eff>Fanfare<>: Landing an Ability on an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
         },
         "tiamat": {
             "name": "Tiamat",
@@ -1034,11 +1034,75 @@
         },
         "philosophers_stone": {
             "name": "Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Radiant Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
+        },
+        "iceborn_gauntlet": {
+            "name": "Iceborn Gauntlet",
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>30<> - <#ff9028ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> and creates a frost zone under the target for <#e8a800ff>2 seconds<> (<#e8a800ff>1.5 second<> cooldown). Enemies within the zone are <#d94c49ff>slowed<> by <#d94c49ff>20%<>."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Radiant Iceborn Gauntlet",
+            "option": "\n<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>30<> - <#ff9028ff>85<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> and creates a frost zone under the target for <#e8a800ff>2 seconds<> (<#e8a800ff>1.5 second<> cooldown). Enemies within the zone are <#d94c49ff>slowed<> by <#d94c49ff>20%<>."
+        },
+        "moonstone_renewer": {
+            "name": "Moonstone Renewer",
+            "option": "\n<#ff7a3eff>Starlit Grace<>: Healing an allied champion (excluding yourself) chains the effect to another allied champion within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of them, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing 35%<> of the original amount."
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Radiant Moonstone Renewer",
+            "option": "\n<#ff7a3eff>Starlit Grace<>: Healing an allied champion (excluding yourself) chains the effect to another allied champion within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> of them, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>healing 35%<> of the original amount."
+        },
+        "abyssal_mask": {
+            "name": "Abyssal Mask",
+            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of enemy champions within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> by <#d94c49ff>20%<>."
+        },
+        "radiant_abyssal_mask": {
+            "name": "Radiant Abyssal Mask",
+            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of enemy champions within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> by <#d94c49ff>20%<>."
+        },
+        "world_atlas": {
+            "name": "World Atlas",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>2 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>."
+        },
+        "runic_compass": {
+            "name": "Runic Compass",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>."
+        },
+        "solstice_sleigh": {
+            "name": "Solstice Sleigh",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Going Sledding<>: <#d94c49ff>Immobilizing<> an enemy champion grants you and the most wounded allied champion within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> <#ffffffff>20%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#60e84dff>50<> - <#60e84dff>215<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>bonus health<> for <#e8a800ff>2 seconds<>."
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Radiant Solstice Sleigh",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Going Sledding<>: <#d94c49ff>Immobilizing<> an enemy champion grants you and the most wounded allied champion within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> <#ffffffff>20%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#60e84dff>50<> - <#60e84dff>215<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>bonus health<> for <#e8a800ff>2 seconds<>."
+        },
+        "zazzaks_realmspike": {
+            "name": "Zaz'Zak's Realmspike",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Void Explosion<>: Dealing ability damage to an enemy champion creates an explosion at their location after a <#e8a800ff>0.5 second<> delay, dealing <#a974ffff>10<> <#a974ffff>(+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>AP)<> <#d94c49ff>(+3% of the target's max HP)<> <#a974ffff>magic damage<> to enemies hit (<#e8a800ff>10 second<> cooldown)."
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Radiant Zaz'Zak's Realmspike",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Void Explosion<>: Dealing ability damage to an enemy champion creates an explosion at their location after a <#e8a800ff>0.5 second<> delay, dealing <#a974ffff>10<> <#a974ffff>(+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>AP)<> <#d94c49ff>(+3% of the target's max HP)<> <#a974ffff>magic damage<> to enemies hit (<#e8a800ff>10 second<> cooldown)."
+        },
+        "celestial_opposition": {
+            "name": "Celestial Opposition",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Blessing of the Mountain<>: Become <#92dc7bff>Blessed<> upon taking damage from an enemy champion, reducing your damage taken by <#e8a800ff>15%<> for <#e8a800ff>2 seconds<>. After <#92dc7bff>Blessed<> ends, unleash a shockwave around you that <#d94c49ff>slows<> enemies within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> units<> by <#d94c49ff>50%<> for <#e8a800ff>1.5 seconds<> (<#e8a800ff>18 second<> cooldown, beginning after the explosion)."
+        },
+        "radiant_celestial_opposition": {
+            "name": "Radiant Celestial Opposition",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Blessing of the Mountain<>: Become <#92dc7bff>Blessed<> upon taking damage from an enemy champion, reducing your damage taken by <#e8a800ff>15%<> for <#e8a800ff>2 seconds<>. After <#92dc7bff>Blessed<> ends, unleash a shockwave around you that <#d94c49ff>slows<> enemies within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> units<> by <#d94c49ff>50%<> for <#e8a800ff>1.5 seconds<> (<#e8a800ff>18 second<> cooldown, beginning after the explosion)."
+        },
+        "dream_maker": {
+            "name": "Dream Maker",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#64b6f6ff>Dream Bubble<> for <#e8a800ff>3 seconds<>. While the <#64b6f6ff>Dream Bubble<> is active, it grants <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>skill damage reduction<> and <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> (<#e8a800ff>8 second<> cooldown, starting after the <#64b6f6ff>Dream Bubble<> ends)."
+        },
+        "radiant_dream_maker": {
+            "name": "Radiant Dream Maker",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#64b6f6ff>Dream Bubble<> for <#e8a800ff>3 seconds<>. While the <#64b6f6ff>Dream Bubble<> is active, it grants <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>skill damage reduction<> and <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> (<#e8a800ff>8 second<> cooldown, starting after the <#64b6f6ff>Dream Bubble<> ends)."
         }
     },
     "vi": {
@@ -1676,11 +1740,11 @@
         },
         "bloodsong": {
             "name": "Khúc Ca Máu",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "radiant_bloodsong": {
             "name": "Khúc Ca Máu Ánh Sáng",
-            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>70<> - <#a974ffff>125<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>3.5 giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>7%<> trong <#e8a800ff>4 giây<>."
         },
         "serrated_dirk": {
             "name": "Dao Găm Răng Cưa",
@@ -1792,11 +1856,11 @@
         },
         "sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ",
-            "option": "\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bị thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ Ánh Sáng",
-            "option": "\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+            "option": "\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bị thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
         },
         "ardent_censer": {
             "name": "Lư Hương Sôi Sục",
@@ -1864,11 +1928,11 @@
         },
         "bandlepipes": {
             "name": "Kèn Túi Bandle",
-            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Đánh trúng một kỹ năng lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
+            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
         },
         "radiant_bandlepipes": {
             "name": "Kèn Túi Bandle Ánh Sáng",
-            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Đánh trúng một kỹ năng lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
+            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
         },
         "seryldas_grudge": {
             "name": "Thương Phục Hận Serylda",
@@ -2076,11 +2140,75 @@
         },
         "philosophers_stone": {
             "name": "Đá Hiền Triết",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Đá Hiền Triết Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
+        },
+        "iceborn_gauntlet": {
+            "name": "Găng Tay Băng Giá",
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>30<> - <#ff9028ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> và tạo ra một vùng đóng băng dưới chân mục tiêu trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>1.5 giây<>). Kẻ địch trong vùng này bị <#d94c49ff>làm chậm<> <#d94c49ff>20%<>."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Găng Tay Băng Giá Ánh Sáng",
+            "option": "\n<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>30<> - <#ff9028ff>85<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> và tạo ra một vùng đóng băng dưới chân mục tiêu trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>1.5 giây<>). Kẻ địch trong vùng này bị <#d94c49ff>làm chậm<> <#d94c49ff>20%<>."
+        },
+        "moonstone_renewer": {
+            "name": "Bùa Nguyệt Thạch",
+            "option": "\n<#ff7a3eff>Ánh Sao Yêu Kiều<>: Hồi máu cho một tướng đồng minh (không tính bản thân) sẽ truyền hiệu ứng sang một tướng đồng minh khác trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh họ, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu bằng 35%<> lượng ban đầu."
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Bùa Nguyệt Thạch Ánh Sáng",
+            "option": "\n<#ff7a3eff>Ánh Sao Yêu Kiều<>: Hồi máu cho một tướng đồng minh (không tính bản thân) sẽ truyền hiệu ứng sang một tướng đồng minh khác trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> quanh họ, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu bằng 35%<> lượng ban đầu."
+        },
+        "abyssal_mask": {
+            "name": "Mặt Nạ Vực Thẳm",
+            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#d94c49ff>20%<>."
+        },
+        "radiant_abyssal_mask": {
+            "name": "Mặt Nạ Vực Thẳm Ánh Sáng",
+            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#d94c49ff>20%<>."
+        },
+        "world_atlas": {
+            "name": "Bản Đồ Thế Giới",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>2 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>."
+        },
+        "runic_compass": {
+            "name": "La Bàn Cổ Ngữ",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>."
+        },
+        "solstice_sleigh": {
+            "name": "Cỗ Xe Mùa Đông",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Trượt Tuyết<>: <#d94c49ff>Làm Bất Động<> một tướng địch sẽ giúp bạn và tướng đồng minh bị thương nặng nhất trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> và <#60e84dff>50<> - <#60e84dff>215<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu cộng thêm<> trong <#e8a800ff>2 giây<>."
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Cỗ Xe Mùa Đông Ánh Sáng",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Trượt Tuyết<>: <#d94c49ff>Làm Bất Động<> một tướng địch sẽ giúp bạn và tướng đồng minh bị thương nặng nhất trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> và <#60e84dff>50<> - <#60e84dff>215<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu cộng thêm<> trong <#e8a800ff>2 giây<>."
+        },
+        "zazzaks_realmspike": {
+            "name": "Ngòi Nổ Hư Không Zaz'Zak",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Vụ Nổ Hư Không<>: Gây sát thương kĩ năng lên tướng địch sẽ tạo ra một vụ nổ tại vị trí của chúng sau <#e8a800ff>0.5 giây<>, gây <#a974ffff>10<> <#a974ffff>(+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT)<> <#d94c49ff>(+3% máu tối đa của mục tiêu)<> <#a974ffff>sát thương phép<> lên các kẻ địch bị trúng (hồi chiêu <#e8a800ff>10 giây<>)."
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Ngòi Nổ Hư Không Zaz'Zak Ánh Sáng",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Vụ Nổ Hư Không<>: Gây sát thương kĩ năng lên tướng địch sẽ tạo ra một vụ nổ tại vị trí của chúng sau <#e8a800ff>0.5 giây<>, gây <#a974ffff>10<> <#a974ffff>(+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT)<> <#d94c49ff>(+3% máu tối đa của mục tiêu)<> <#a974ffff>sát thương phép<> lên các kẻ địch bị trúng (hồi chiêu <#e8a800ff>10 giây<>)."
+        },
+        "celestial_opposition": {
+            "name": "Khiên Vàng Thượng Giới",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Phước Lành Sơn Thạch<>: Khi nhận sát thương từ tướng địch, bạn được <#92dc7bff>Ban Phước<>, giảm sát thương phải nhận <#e8a800ff>15%<> trong <#e8a800ff>2 giây<>. Khi <#92dc7bff>Ban Phước<> kết thúc, phóng ra một sóng xung kích quanh bạn, <#d94c49ff>làm chậm<> kẻ địch trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#d94c49ff>50%<> trong <#e8a800ff>1.5 giây<> (hồi chiêu <#e8a800ff>18 giây<>, bắt đầu sau vụ nổ)."
+        },
+        "radiant_celestial_opposition": {
+            "name": "Khiên Vàng Thượng Giới Ánh Sáng",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Phước Lành Sơn Thạch<>: Khi nhận sát thương từ tướng địch, bạn được <#92dc7bff>Ban Phước<>, giảm sát thương phải nhận <#e8a800ff>15%<> trong <#e8a800ff>2 giây<>. Khi <#92dc7bff>Ban Phước<> kết thúc, phóng ra một sóng xung kích quanh bạn, <#d94c49ff>làm chậm<> kẻ địch trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#d94c49ff>50%<> trong <#e8a800ff>1.5 giây<> (hồi chiêu <#e8a800ff>18 giây<>, bắt đầu sau vụ nổ)."
+        },
+        "dream_maker": {
+            "name": "Thú Bông Bảo Mộng",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#64b6f6ff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Khi <#64b6f6ff>Bong Bóng Mơ<> còn hiệu lực, nó cho <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Giảm Sát thương Kỹ năng<> và <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#64b6f6ff>Bong Bóng Mơ<> kết thúc)."
+        },
+        "radiant_dream_maker": {
+            "name": "Thú Bông Bảo Mộng Ánh Sáng",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#64b6f6ff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Khi <#64b6f6ff>Bong Bóng Mơ<> còn hiệu lực, nó cho <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Giảm Sát thương Kỹ năng<> và <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#64b6f6ff>Bong Bóng Mơ<> kết thúc)."
         }
     },
     "zh-hans": {
@@ -2718,11 +2846,11 @@
         },
         "bloodsong": {
             "name": "血歌",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "radiant_bloodsong": {
             "name": "光明版血歌",
-            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#a974ffff>70<> - <#a974ffff>125<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>3.5秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>7%<>，持续 <#e8a800ff>4秒<>。"
         },
         "serrated_dirk": {
             "name": "锯齿短匕",
@@ -2906,11 +3034,11 @@
         },
         "bandlepipes": {
             "name": "班德尔音管",
-            "option": "\n<#ff7a3eff>嘹亮旋律<>：技能命中敌方英雄时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
+            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
         },
         "radiant_bandlepipes": {
             "name": "光明版班德尔音管",
-            "option": "\n<#ff7a3eff>嘹亮旋律<>：技能命中敌方英雄时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
+            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
         },
         "seryldas_grudge": {
             "name": "赛瑞尔达的怨恨",
@@ -3118,11 +3246,75 @@
         },
         "philosophers_stone": {
             "name": "贤者之石",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
         },
         "radiant_philosophers_stone": {
             "name": "光明版贤者之石",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
+        },
+        "iceborn_gauntlet": {
+            "name": "冰脉护手",
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#ff9028ff>30<> - <#ff9028ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>，并在目标脚下生成一个持续 <#e8a800ff>2秒<> 的冰冷地带（冷却 <#e8a800ff>1.5秒<>）。地带内的敌人会被<#d94c49ff>减速<> <#d94c49ff>20%<>。"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "光明版冰脉护手",
+            "option": "\n<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#ff9028ff>30<> - <#ff9028ff>85<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>，并在目标脚下生成一个持续 <#e8a800ff>2秒<> 的冰冷地带（冷却 <#e8a800ff>1.5秒<>）。地带内的敌人会被<#d94c49ff>减速<> <#d94c49ff>20%<>。"
+        },
+        "moonstone_renewer": {
+            "name": "月石再生器",
+            "option": "\n<#ff7a3eff>星光恩典<>：为友方英雄（自己除外）治疗时，效果会连锁至其 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的另一名友方英雄，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>原治疗值的 <#60e84dff>35%<>。"
+        },
+        "radiant_moonstone_renewer": {
+            "name": "光明版月石再生器",
+            "option": "\n<#ff7a3eff>星光恩典<>：为友方英雄（自己除外）治疗时，效果会连锁至其 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的另一名友方英雄，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>原治疗值的 <#60e84dff>35%<>。"
+        },
+        "abyssal_mask": {
+            "name": "深渊面具",
+            "option": "\n<#ff7a3eff>损毁<>：使 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
+        },
+        "radiant_abyssal_mask": {
+            "name": "光明版深渊面具",
+            "option": "\n<#ff7a3eff>损毁<>：使 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
+        },
+        "world_atlas": {
+            "name": "云游图鉴",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>2 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。"
+        },
+        "runic_compass": {
+            "name": "符文罗盘",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。"
+        },
+        "solstice_sleigh": {
+            "name": "摩天雪橇",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>雪橇出击<>：<#d94c49ff>定身<>一个敌方英雄时，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内伤势最重的友方英雄获得 <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>和 <#60e84dff>50<> - <#60e84dff>215<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>额外生命值<>，持续 <#e8a800ff>2秒<>。"
+        },
+        "radiant_solstice_sleigh": {
+            "name": "光明版摩天雪橇",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>雪橇出击<>：<#d94c49ff>定身<>一个敌方英雄时，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内伤势最重的友方英雄获得 <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>和 <#60e84dff>50<> - <#60e84dff>215<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>额外生命值<>，持续 <#e8a800ff>2秒<>。"
+        },
+        "zazzaks_realmspike": {
+            "name": "扎兹沙克的溃口",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>虚空扩爆<>：对敌方英雄造成技能伤害时，会在 <#e8a800ff>0.5秒<> 后于其所在位置引发一次爆炸，对命中的敌人造成 <#a974ffff>10<> <#a974ffff>（+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度）<> <#d94c49ff>（+目标3%最大生命值）<> 的<#a974ffff>魔法伤害<>（冷却 <#e8a800ff>10秒<>）。"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "光明版扎兹沙克的溃口",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>虚空扩爆<>：对敌方英雄造成技能伤害时，会在 <#e8a800ff>0.5秒<> 后于其所在位置引发一次爆炸，对命中的敌人造成 <#a974ffff>10<> <#a974ffff>（+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度）<> <#d94c49ff>（+目标3%最大生命值）<> 的<#a974ffff>魔法伤害<>（冷却 <#e8a800ff>10秒<>）。"
+        },
+        "celestial_opposition": {
+            "name": "星界据守",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>神峰庇佑<>：受到敌方英雄的伤害时获得<#92dc7bff>庇佑<>，使你受到的伤害降低 <#e8a800ff>15%<>，持续 <#e8a800ff>2秒<>。<#92dc7bff>庇佑<>结束后，向四周释放一道冲击波，使 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的敌人<#d94c49ff>减速<> <#d94c49ff>50%<>，持续 <#e8a800ff>1.5秒<>（冷却 <#e8a800ff>18秒<>，在爆炸后开始计算）。"
+        },
+        "radiant_celestial_opposition": {
+            "name": "光明版星界据守",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>神峰庇佑<>：受到敌方英雄的伤害时获得<#92dc7bff>庇佑<>，使你受到的伤害降低 <#e8a800ff>15%<>，持续 <#e8a800ff>2秒<>。<#92dc7bff>庇佑<>结束后，向四周释放一道冲击波，使 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的敌人<#d94c49ff>减速<> <#d94c49ff>50%<>，持续 <#e8a800ff>1.5秒<>（冷却 <#e8a800ff>18秒<>，在爆炸后开始计算）。"
+        },
+        "dream_maker": {
+            "name": "圆梦使者",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#64b6f6ff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。<#64b6f6ff>美梦泡泡<>存在期间，提供 <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>技能伤害减免<>和 <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>（冷却 <#e8a800ff>8秒<>，在<#64b6f6ff>美梦泡泡<>结束后开始计算）。"
+        },
+        "radiant_dream_maker": {
+            "name": "光明版圆梦使者",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#64b6f6ff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。<#64b6f6ff>美梦泡泡<>存在期间，提供 <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>技能伤害减免<>和 <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>（冷却 <#e8a800ff>8秒<>，在<#64b6f6ff>美梦泡泡<>结束后开始计算）。"
         }
     },
     "pt-BR": {
@@ -3760,11 +3952,11 @@
         },
         "bloodsong": {
             "name": "Canção de Sangue",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "radiant_bloodsong": {
             "name": "Canção de Sangue Radiante",
-            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>70<> - <#a974ffff>125<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>3.5 segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>7%<> por <#e8a800ff>4 segundos<>."
         },
         "serrated_dirk": {
             "name": "Adaga Serrilhada",
@@ -3948,11 +4140,11 @@
         },
         "bandlepipes": {
             "name": "Bandocanos",
-            "option": "\n<#ff7a3eff>Fanfarra<>: Acertar uma Habilidade em um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
+            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
         },
         "radiant_bandlepipes": {
             "name": "Bandocanos Radiante",
-            "option": "\n<#ff7a3eff>Fanfarra<>: Acertar uma Habilidade em um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
+            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
         },
         "seryldas_grudge": {
             "name": "Rancor de Serylda",
@@ -4160,11 +4352,75 @@
         },
         "philosophers_stone": {
             "name": "Pedra Filosofal",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Pedra Filosofal Radiante",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
+        },
+        "iceborn_gauntlet": {
+            "name": "Manopla dos Glacinatas",
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>30<> - <#ff9028ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> e criar um campo congelado sob o alvo por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>1.5 segundos<>). Inimigos dentro do campo sofrem <#d94c49ff>lentidão<> de <#d94c49ff>20%<>."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Manopla dos Glacinatas Radiante",
+            "option": "\n<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>30<> - <#ff9028ff>85<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> e criar um campo congelado sob o alvo por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>1.5 segundos<>). Inimigos dentro do campo sofrem <#d94c49ff>lentidão<> de <#d94c49ff>20%<>."
+        },
+        "moonstone_renewer": {
+            "name": "Regenerador de Pedra Lunar",
+            "option": "\n<#ff7a3eff>Graça Estrelada<>: Curar um campeão aliado (exceto você) propaga o efeito em cadeia para outro campeão aliado dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> dele, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando-o em 35%<> do valor original."
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Regenerador de Pedra Lunar Radiante",
+            "option": "\n<#ff7a3eff>Graça Estrelada<>: Curar um campeão aliado (exceto você) propaga o efeito em cadeia para outro campeão aliado dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> dele, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curando-o em 35%<> do valor original."
+        },
+        "abyssal_mask": {
+            "name": "Máscara Abissal",
+            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos dentro de <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> em <#d94c49ff>20%<>."
+        },
+        "radiant_abyssal_mask": {
+            "name": "Máscara Abissal Radiante",
+            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos dentro de <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> em <#d94c49ff>20%<>."
+        },
+        "world_atlas": {
+            "name": "Atlas Mundial",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>2 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>."
+        },
+        "runic_compass": {
+            "name": "Bússola Rúnica",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>."
+        },
+        "solstice_sleigh": {
+            "name": "Trenó do Solstício",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Passeio de Trenó<>: <#d94c49ff>Imobilizar<> um campeão inimigo concede a você e ao campeão aliado mais ferido dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> e <#60e84dff>50<> - <#60e84dff>215<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida adicional<> por <#e8a800ff>2 segundos<>."
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Trenó do Solstício Radiante",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Passeio de Trenó<>: <#d94c49ff>Imobilizar<> um campeão inimigo concede a você e ao campeão aliado mais ferido dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> e <#60e84dff>50<> - <#60e84dff>215<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida adicional<> por <#e8a800ff>2 segundos<>."
+        },
+        "zazzaks_realmspike": {
+            "name": "Invadomínio de Zaz'Zak",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Explosão do Vazio<>: Causar dano de habilidade a um campeão inimigo cria uma explosão no local dele após um atraso de <#e8a800ff>0.5 segundos<>, causando <#a974ffff>10<> <#a974ffff>(+15% do<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade)<> <#d94c49ff>(+3% da Vida Máxima do alvo)<> de <#a974ffff>dano mágico<> aos inimigos atingidos (recarga de <#e8a800ff>10 segundos<>)."
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Invadomínio de Zaz'Zak Radiante",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Explosão do Vazio<>: Causar dano de habilidade a um campeão inimigo cria uma explosão no local dele após um atraso de <#e8a800ff>0.5 segundos<>, causando <#a974ffff>10<> <#a974ffff>(+15% do<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade)<> <#d94c49ff>(+3% da Vida Máxima do alvo)<> de <#a974ffff>dano mágico<> aos inimigos atingidos (recarga de <#e8a800ff>10 segundos<>)."
+        },
+        "celestial_opposition": {
+            "name": "Oposição Celestial",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Bênção da Montanha<>: Ao sofrer dano de um campeão inimigo, você fica <#92dc7bff>Abençoado<>, reduzindo o dano que sofre em <#e8a800ff>15%<> por <#e8a800ff>2 segundos<>. Quando <#92dc7bff>Abençoado<> termina, libera uma onda de choque ao seu redor que aplica <#d94c49ff>lentidão<> de <#d94c49ff>50%<> a inimigos dentro de <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> por <#e8a800ff>1.5 segundos<> (recarga de <#e8a800ff>18 segundos<>, começando após a explosão)."
+        },
+        "radiant_celestial_opposition": {
+            "name": "Oposição Celestial Radiante",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Bênção da Montanha<>: Ao sofrer dano de um campeão inimigo, você fica <#92dc7bff>Abençoado<>, reduzindo o dano que sofre em <#e8a800ff>15%<> por <#e8a800ff>2 segundos<>. Quando <#92dc7bff>Abençoado<> termina, libera uma onda de choque ao seu redor que aplica <#d94c49ff>lentidão<> de <#d94c49ff>50%<> a inimigos dentro de <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> por <#e8a800ff>1.5 segundos<> (recarga de <#e8a800ff>18 segundos<>, começando após a explosão)."
+        },
+        "dream_maker": {
+            "name": "Criassonhos",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#64b6f6ff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. Enquanto a <#64b6f6ff>Bolha do Sonho<> estiver ativa, ela concede <#92dc7bff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Redução de Dano de Habilidades<> e <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#64b6f6ff>Bolha do Sonho<> terminar)."
+        },
+        "radiant_dream_maker": {
+            "name": "Criassonhos Radiante",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#64b6f6ff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. Enquanto a <#64b6f6ff>Bolha do Sonho<> estiver ativa, ela concede <#92dc7bff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Redução de Dano de Habilidades<> e <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#64b6f6ff>Bolha do Sonho<> terminar)."
         }
     },
     "ru": {
@@ -4802,11 +5058,11 @@
         },
         "bloodsong": {
             "name": "Песнь Крови",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "radiant_bloodsong": {
             "name": "Лучезарная Песнь Крови",
-            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>70<> - <#a974ffff>125<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>3.5 секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>7%<> на <#e8a800ff>4 секунды<>."
         },
         "serrated_dirk": {
             "name": "Зубчатый кинжал",
@@ -4990,11 +5246,11 @@
         },
         "bandlepipes": {
             "name": "Бандл-трубы",
-            "option": "\n<#ff7a3eff>Фанфары<>: Попадание умением по вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
+            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
         },
         "radiant_bandlepipes": {
             "name": "Лучезарные Бандл-трубы",
-            "option": "\n<#ff7a3eff>Фанфары<>: Попадание умением по вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
+            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
         },
         "seryldas_grudge": {
             "name": "Злоба Серильды",
@@ -5202,11 +5458,75 @@
         },
         "philosophers_stone": {
             "name": "Философский камень",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Лучезарный Философский камень",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
+        },
+        "iceborn_gauntlet": {
+            "name": "Хладорожденная рукавица",
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>30<> - <#ff9028ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> и создать под целью ледяное поле на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>1.5 секунд<>). Враги в поле <#d94c49ff>замедляются<> на <#d94c49ff>20%<>."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Лучезарная Хладорожденная рукавица",
+            "option": "\n<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>30<> - <#ff9028ff>85<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> и создать под целью ледяное поле на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>1.5 секунд<>). Враги в поле <#d94c49ff>замедляются<> на <#d94c49ff>20%<>."
+        },
+        "moonstone_renewer": {
+            "name": "Исцеляющий лунный камень",
+            "option": "\n<#ff7a3eff>Подарок звезд<>: При лечении союзного чемпиона (кроме вас) эффект распространяется на другого союзного чемпиона в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от него, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>исцеляя его на 35%<> от изначального значения."
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Лучезарный Исцеляющий лунный камень",
+            "option": "\n<#ff7a3eff>Подарок звезд<>: При лечении союзного чемпиона (кроме вас) эффект распространяется на другого союзного чемпиона в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> от него, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>исцеляя его на 35%<> от изначального значения."
+        },
+        "abyssal_mask": {
+            "name": "Маска пустоты",
+            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#d94c49ff>20%<>."
+        },
+        "radiant_abyssal_mask": {
+            "name": "Лучезарная Маска пустоты",
+            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#d94c49ff>20%<>."
+        },
+        "world_atlas": {
+            "name": "Атлас мира",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>2 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>."
+        },
+        "runic_compass": {
+            "name": "Рунный компас",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>."
+        },
+        "solstice_sleigh": {
+            "name": "Сани солнцестояния",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Катание на санях<>: <#d94c49ff>Обездвиживая<> вражеского чемпиона, вы и наиболее раненый союзный чемпион в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> получаете <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> и <#60e84dff>50<> - <#60e84dff>215<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>дополнительного здоровья<> на <#e8a800ff>2 секунды<>."
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Лучезарные Сани солнцестояния",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Катание на санях<>: <#d94c49ff>Обездвиживая<> вражеского чемпиона, вы и наиболее раненый союзный чемпион в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> получаете <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> и <#60e84dff>50<> - <#60e84dff>215<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>дополнительного здоровья<> на <#e8a800ff>2 секунды<>."
+        },
+        "zazzaks_realmspike": {
+            "name": "Нарыв Зак'Зака",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Взрыв Бездны<>: Нанесение урона умением вражескому чемпиону вызывает взрыв на его месте с задержкой <#e8a800ff>0.5 секунды<>, нанося задетым врагам <#a974ffff>10<> <#a974ffff>(+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений)<> <#d94c49ff>(+3% макс. здоровья цели)<> <#a974ffff>магического урона<> (перезарядка <#e8a800ff>10 секунд<>)."
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Лучезарный Нарыв Зак'Зака",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Взрыв Бездны<>: Нанесение урона умением вражескому чемпиону вызывает взрыв на его месте с задержкой <#e8a800ff>0.5 секунды<>, нанося задетым врагам <#a974ffff>10<> <#a974ffff>(+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений)<> <#d94c49ff>(+3% макс. здоровья цели)<> <#a974ffff>магического урона<> (перезарядка <#e8a800ff>10 секунд<>)."
+        },
+        "celestial_opposition": {
+            "name": "Небесное противостояние",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Благословение горы<>: Получив урон от вражеского чемпиона, вы получаете <#92dc7bff>Благословение<>, уменьшающее получаемый вами урон на <#e8a800ff>15%<> на <#e8a800ff>2 секунды<>. Когда <#92dc7bff>Благословение<> заканчивается, вы выпускаете вокруг себя ударную волну, которая <#d94c49ff>замедляет<> врагов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#d94c49ff>50%<> на <#e8a800ff>1.5 секунды<> (перезарядка <#e8a800ff>18 секунд<>, начинается после взрыва)."
+        },
+        "radiant_celestial_opposition": {
+            "name": "Лучезарное Небесное противостояние",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Благословение горы<>: Получив урон от вражеского чемпиона, вы получаете <#92dc7bff>Благословение<>, уменьшающее получаемый вами урон на <#e8a800ff>15%<> на <#e8a800ff>2 секунды<>. Когда <#92dc7bff>Благословение<> заканчивается, вы выпускаете вокруг себя ударную волну, которая <#d94c49ff>замедляет<> врагов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#d94c49ff>50%<> на <#e8a800ff>1.5 секунды<> (перезарядка <#e8a800ff>18 секунд<>, начинается после взрыва)."
+        },
+        "dream_maker": {
+            "name": "Сновичок",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#64b6f6ff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Пока <#64b6f6ff>Пузырь сна<> активен, он даёт <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>снижения урона от умений<> и <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#64b6f6ff>Пузырь сна<> заканчивается)."
+        },
+        "radiant_dream_maker": {
+            "name": "Лучезарный Сновичок",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#64b6f6ff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Пока <#64b6f6ff>Пузырь сна<> активен, он даёт <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>снижения урона от умений<> и <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#64b6f6ff>Пузырь сна<> заканчивается)."
         }
     },
     "ko": {
@@ -5844,11 +6164,11 @@
         },
         "bloodsong": {
             "name": "피의 노래",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "radiant_bloodsong": {
             "name": "찬란한 피의 노래",
-            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>70<>~<#a974ffff>125<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>3.5초<>) 대상이 챔피언이면 <#e8a800ff>4초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>7%<> 증가합니다."
         },
         "serrated_dirk": {
             "name": "톱날 단검",
@@ -6032,11 +6352,11 @@
         },
         "bandlepipes": {
             "name": "밴들파이프",
-            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
+            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
         },
         "radiant_bandlepipes": {
             "name": "찬란한 밴들파이프",
-            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
+            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
         },
         "seryldas_grudge": {
             "name": "세릴다의 원한",
@@ -6244,11 +6564,75 @@
         },
         "philosophers_stone": {
             "name": "현자의 돌",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
         },
         "radiant_philosophers_stone": {
             "name": "찬란한 현자의 돌",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
+        },
+        "iceborn_gauntlet": {
+            "name": "얼어붙은 건틀릿",
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>30<>~<#ff9028ff>85<>의 <#ff9028ff>추가 물리 피해<>를 입히고 대상의 발밑에 <#e8a800ff>2초<> 동안 서리 영역을 생성합니다. (재사용 대기시간 <#e8a800ff>1.5초<>) 영역 안의 적은 <#d94c49ff>20%<> <#d94c49ff>둔화<>됩니다."
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "찬란한 얼어붙은 건틀릿",
+            "option": "\n<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>30<>~<#ff9028ff>85<>의 <#ff9028ff>추가 물리 피해<>를 입히고 대상의 발밑에 <#e8a800ff>2초<> 동안 서리 영역을 생성합니다. (재사용 대기시간 <#e8a800ff>1.5초<>) 영역 안의 적은 <#d94c49ff>20%<> <#d94c49ff>둔화<>됩니다."
+        },
+        "moonstone_renewer": {
+            "name": "월석 재생기",
+            "option": "\n<#ff7a3eff>별빛 은총<>: 아군 챔피언(자신 제외)의 체력을 회복시키면 대상으로부터 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 다른 아군 챔피언에게 연쇄 효과가 적용되어, 기존 수치의 <#60e84dff>35%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>시킵니다."
+        },
+        "radiant_moonstone_renewer": {
+            "name": "찬란한 월석 재생기",
+            "option": "\n<#ff7a3eff>별빛 은총<>: 아군 챔피언(자신 제외)의 체력을 회복시키면 대상으로부터 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 다른 아군 챔피언에게 연쇄 효과가 적용되어, 기존 수치의 <#60e84dff>35%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>시킵니다."
+        },
+        "abyssal_mask": {
+            "name": "심연의 가면",
+            "option": "\n<#ff7a3eff>파괴<>: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
+        },
+        "radiant_abyssal_mask": {
+            "name": "찬란한 심연의 가면",
+            "option": "\n<#ff7a3eff>파괴<>: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
+        },
+        "world_atlas": {
+            "name": "세계 지도집",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>2 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다."
+        },
+        "runic_compass": {
+            "name": "룬 나침반",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다."
+        },
+        "solstice_sleigh": {
+            "name": "태양의 썰매",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>썰매 질주<>: 적 챔피언에게 <#d94c49ff>이동 불가<> 효과를 적용하면 <#e8a800ff>2초<> 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안에서 부상이 가장 심한 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>20%<> 증가하고 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>50<>~<#60e84dff>215<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>추가 체력<>을 얻습니다."
+        },
+        "radiant_solstice_sleigh": {
+            "name": "찬란한 태양의 썰매",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>썰매 질주<>: 적 챔피언에게 <#d94c49ff>이동 불가<> 효과를 적용하면 <#e8a800ff>2초<> 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안에서 부상이 가장 심한 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>20%<> 증가하고 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>50<>~<#60e84dff>215<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>추가 체력<>을 얻습니다."
+        },
+        "zazzaks_realmspike": {
+            "name": "자자크의 세계가시",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>공허 폭발<>: 적 챔피언에게 스킬 피해를 입히면 <#e8a800ff>0.5초<> 후 대상의 위치에서 폭발이 일어나 적중한 적에게 <#a974ffff>10<> <#a974ffff>(+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력)<> <#d94c49ff>(+대상 최대 체력의 3%)<>만큼 <#a974ffff>마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>10초<>)"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "찬란한 자자크의 세계가시",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>공허 폭발<>: 적 챔피언에게 스킬 피해를 입히면 <#e8a800ff>0.5초<> 후 대상의 위치에서 폭발이 일어나 적중한 적에게 <#a974ffff>10<> <#a974ffff>(+15%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력)<> <#d94c49ff>(+대상 최대 체력의 3%)<>만큼 <#a974ffff>마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>10초<>)"
+        },
+        "celestial_opposition": {
+            "name": "천상의 이의",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>산의 축복<>: 적 챔피언에게 피해를 받으면 <#92dc7bff>축복<> 상태가 되어 <#e8a800ff>2초<> 동안 받는 피해가 <#e8a800ff>15%<> 감소합니다. <#92dc7bff>축복<>이 끝나면 주변에 충격파를 일으켜 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적을 <#e8a800ff>1.5초<> 동안 <#d94c49ff>50% 둔화<>시킵니다. (재사용 대기시간 <#e8a800ff>18초<>, 폭발 후 시작)"
+        },
+        "radiant_celestial_opposition": {
+            "name": "찬란한 천상의 이의",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>산의 축복<>: 적 챔피언에게 피해를 받으면 <#92dc7bff>축복<> 상태가 되어 <#e8a800ff>2초<> 동안 받는 피해가 <#e8a800ff>15%<> 감소합니다. <#92dc7bff>축복<>이 끝나면 주변에 충격파를 일으켜 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적을 <#e8a800ff>1.5초<> 동안 <#d94c49ff>50% 둔화<>시킵니다. (재사용 대기시간 <#e8a800ff>18초<>, 폭발 후 시작)"
+        },
+        "dream_maker": {
+            "name": "꿈 생성기",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#64b6f6ff>꿈방울<>을 부여합니다. <#64b6f6ff>꿈방울<>이 유지되는 동안 대상은 <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>8%<>, <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>20<> 얻습니다. (재사용 대기시간 <#e8a800ff>8초<>, <#64b6f6ff>꿈방울<>이 끝난 후 시작)"
+        },
+        "radiant_dream_maker": {
+            "name": "찬란한 꿈 생성기",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#64b6f6ff>꿈방울<>을 부여합니다. <#64b6f6ff>꿈방울<>이 유지되는 동안 대상은 <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>8%<>, <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>20<> 얻습니다. (재사용 대기시간 <#e8a800ff>8초<>, <#64b6f6ff>꿈방울<>이 끝난 후 시작)"
         }
     }
 }

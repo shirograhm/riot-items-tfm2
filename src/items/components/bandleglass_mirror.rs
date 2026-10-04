@@ -67,6 +67,7 @@ impl StableItem for BandleglassMirror {
             "chemtech_putrifier".to_string(),
             "staff_of_flowing_water".to_string(),
             "imperial_mandate".to_string(),
+            "moonstone_renewer".to_string(),
         ]
     }
 

@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ItemMeta};
+use crate::{apply_config, ItemMeta, SelfCastWatch};
 
 #[derive(Clone, Debug)]
 pub struct EchoesOfHelia {
@@ -15,6 +15,7 @@ pub struct EchoesOfHelia {
     effect_min_stacks: usize,
     effect_max_stacks: usize,
     charge_stored: usize,
+    self_cast: SelfCastWatch,
 }
 
 impl EchoesOfHelia {
@@ -35,6 +36,7 @@ impl EchoesOfHelia {
             effect_max_stacks: 350,
             // Non-vital stats (internals)
             charge_stored: 0,
+            self_cast: SelfCastWatch::default(),
         }
     }
 
@@ -89,6 +91,12 @@ impl EchoesOfHelia {
         } else {
             self.charge_stored += stack_gain;
         }
+    }
+
+    /// Spends every stored charge on `target`, a living allied champion.
+    fn spend_charges(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
+        ctx.heal(caster, target, self.charge_stored);
+        self.charge_stored = 0;
     }
 }
 
@@ -172,9 +180,10 @@ impl StableItem for EchoesOfHelia {
 
     /// Spends the stored charges on an ally.
     ///
-    /// Self-casts count as ally-targeted, so the carrier is ruled out
-    /// explicitly, the way `ardent_censer` does: Soul Charges only ever spend on
-    /// someone else.
+    /// Self-casts count as ally-targeted, and Soul Charges only ever spend on
+    /// someone else, so a self-cast spends nothing here. It may still have
+    /// healed an ally, as the Monk's heal does around them: that is watched for
+    /// and spent in `update`.
     ///
     /// Every one of these checks now returns *before* the reset rather than
     /// skipping only the heal. Clearing the charges unconditionally spent them
@@ -189,7 +198,11 @@ impl StableItem for EchoesOfHelia {
         target: usize,
         is_ally: bool,
     ) {
-        if !is_ally || target == caster {
+        if !is_ally {
+            return;
+        }
+        if target == caster {
+            self.self_cast.open(ctx, caster);
             return;
         }
         let Some(target_ref) = ctx.get_entity(target) else {
@@ -199,8 +212,36 @@ impl StableItem for EchoesOfHelia {
             return;
         }
 
-        ctx.heal(caster, target, self.charge_stored);
-        self.charge_stored = 0;
+        self.spend_charges(ctx, caster, target);
+    }
+
+    /// A self-cast that healed allies as well spends the charges on the most
+    /// wounded of them: the charges are spent whole, on one ally.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        let healed = self.self_cast.poll(ctx);
+        let most_wounded = healed
+            .into_iter()
+            .filter_map(|id| {
+                let (current, max) = ctx.get_entity(id)?.hp();
+                (max > 0).then(|| (id, current as f64 / max as f64))
+            })
+            .min_by(|a, b| a.1.total_cmp(&b.1));
+        let Some((target, _)) = most_wounded else {
+            return;
+        };
+        let Some(caster) = ctx
+            .get_player(player)
+            .and_then(|player_ref| player_ref.champion())
+            .map(|champion_ref| champion_ref.id())
+        else {
+            return;
+        };
+
+        self.spend_charges(ctx, caster, target);
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.self_cast.close();
     }
 
     /// Stored charges follow the item through the Radiant upgrade; the next
