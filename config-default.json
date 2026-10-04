@@ -2061,5 +2061,23 @@
     "effect_duration_seconds": 2,
     "effect_slow_amount": 20,
     "effect_max_distance": 30
+  },
+  "moonstone_renewer": {
+    "price": 550,
+    "hp": 150,
+    "hp_regen": 2,
+    "magic_power": 20,
+    "skill_cooldown_mult": 15,
+    "effect_heal_chain_percent": 35.0,
+    "effect_max_distance": 100
+  },
+  "radiant_moonstone_renewer": {
+    "price": 750,
+    "hp": 250,
+    "hp_regen": 3,
+    "magic_power": 30,
+    "skill_cooldown_mult": 20,
+    "effect_heal_chain_percent": 35.0,
+    "effect_max_distance": 100
   }
 }

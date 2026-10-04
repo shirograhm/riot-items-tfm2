@@ -16,6 +16,7 @@ mod vfx;
 use items::*;
 
 pub(crate) use utils::constants::*;
+pub(crate) use utils::heal_watch::{HealWatch, SelfCastWatch};
 pub(crate) use utils::item_meta::ItemMeta;
 pub(crate) use utils::proc_queue::ProcQueue;
 // Re-exported under their old names, so paths like `crate::config::ItemConfig`
@@ -392,6 +393,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured!("malignance" => Malignance));
     reg.add_item(configured!("mirage_blade" => MirageBlade));
+    reg.add_item(configured!("moonstone_renewer" => MoonstoneRenewer));
     reg.add_item(configured!("morellonomicon" => Morellonomicon));
     reg.add_item(configured!("mortal_reminder" => MortalReminder));
     reg.add_item(configured!("nashors_tooth" => NashorsTooth));
@@ -485,6 +487,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured_radiant!("radiant_malignance" => Malignance));
     reg.add_item(configured_radiant!("radiant_mirage_blade" => MirageBlade));
+    reg.add_item(configured_radiant!("radiant_moonstone_renewer" => MoonstoneRenewer));
     reg.add_item(configured_radiant!("radiant_morellonomicon" => Morellonomicon));
     reg.add_item(configured_radiant!("radiant_mortal_reminder" => MortalReminder));
     reg.add_item(configured_radiant!("radiant_nashors_tooth" => NashorsTooth));

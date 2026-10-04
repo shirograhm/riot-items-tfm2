@@ -111,6 +111,14 @@
             "tag": "melt",
             "z": -1,
             "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_sabotage_blast",
+            "anim": "asset/riot_items_tfm2/effects/sabotage_blast",
+            "tag": "blast",
+            "z": 1,
+            "is_follow": false
         }
     ],
     "view_projectiles": [

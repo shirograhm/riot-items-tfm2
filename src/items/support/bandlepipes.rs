@@ -8,7 +8,7 @@ use crate::{apply_config, sized_range, ticks, ItemMeta, AURA_DURATION_TICKS, AUR
 /// # Why this is two buffs and not one
 ///
 /// Fanfare is two different shapes of effect wearing one name. The movement
-/// speed is a plain timed self-buff, set once when the trigger lands. The
+/// speed is a plain timed self-buff, set whenever the trigger lands. The
 /// attack speed is an *aura*: the tooltip says "while empowered, you and nearby
 /// allied champions", so an ally who walks into range during the window has to
 /// pick it up, and one who walks out has to lose it. A single buff applied at
@@ -246,20 +246,20 @@ impl StableItem for Bandlepipes {
         self.refresh_cooldown = 0;
     }
 
-    // Fanfare. `is_ally` false is the SDK's flag for an enemy-targeted skill,
-    // and `on_skill_hit` only ever fires for this carrier's own casts, so the
-    // trigger needs no team gate of its own.
-    fn on_skill_hit(
+    // Fanfare. Any damage the carrier deals to an enemy champion sets it off:
+    // a basic attack, an Ability or an item's own damage, the trigger
+    // `chemtech_putrifier` uses. `on_attack` only ever fires for this carrier's
+    // own damage, so the trigger needs no team gate of its own.
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
         caster: usize,
         target: usize,
-        is_ally: bool,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        if is_ally {
-            return;
-        }
         let Some(is_champion) = ctx.get_entity(target).map(|t| t.is_champion()) else {
             return;
         };
@@ -267,10 +267,17 @@ impl StableItem for Bandlepipes {
             return;
         }
 
+        // A window that is opening starts the aura on this tick instead of
+        // waiting out the cycle the previous one left behind. One that is only
+        // being kept open leaves the cycle alone: damage comes far more often
+        // than the aura needs re-applying.
+        if self.fanfare_remaining == 0 {
+            self.refresh_cooldown = 0;
+        }
         let duration = ticks(self.effect_duration_seconds);
         self.fanfare_remaining = duration;
-        // A second cast inside the window refreshes rather than stacks: one
-        // `entity_remove_buff` clears every copy, so a multi-hit cast cannot
+        // More damage inside the window refreshes rather than stacks: one
+        // `entity_remove_buff` clears every copy, so a multi-hit attack cannot
         // leave two on the carrier.
         ctx.entity_remove_buff(caster, self.fanfare_buff);
         ctx.add_buff(
@@ -280,9 +287,6 @@ impl StableItem for Bandlepipes {
                 ..BuffV1::timed(self.fanfare_buff, duration)
             },
         );
-        // Start the aura on this tick instead of waiting out the cycle the
-        // previous window left behind.
-        self.refresh_cooldown = 0;
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {

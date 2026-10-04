@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, SelfCastWatch};
 
 #[derive(Clone, Debug)]
 pub struct StaffOfFlowingWater {
@@ -19,6 +19,7 @@ pub struct StaffOfFlowingWater {
     effect_duration_seconds: f64,
     // Non-vital stats (internals)
     carrier_refreshed_tick: Option<usize>,
+    self_cast: SelfCastWatch,
 }
 
 impl StaffOfFlowingWater {
@@ -40,6 +41,7 @@ impl StaffOfFlowingWater {
             effect_duration_seconds: 3.0,
             // Non-vital stats (internals)
             carrier_refreshed_tick: None,
+            self_cast: SelfCastWatch::default(),
         }
     }
 
@@ -94,6 +96,21 @@ impl StaffOfFlowingWater {
             ..BuffV1::timed(self.rapids_buff, ticks(self.effect_duration_seconds))
         }
     }
+
+    /// Rapids on `target` and on the carrier, refreshed rather than stacked.
+    /// A cast that reaches several allies comes through here once per ally in
+    /// the same tick, so the carrier's copy is refreshed only on the first of
+    /// them: one application per cast, however many allies it reached.
+    fn grant_rapids(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
+        let buff = self.rapids();
+        refresh_buff(ctx, target, self.rapids_buff, &buff);
+
+        let tick = ctx.tick();
+        if self.carrier_refreshed_tick != Some(tick) {
+            refresh_buff(ctx, caster, self.rapids_buff, &buff);
+            self.carrier_refreshed_tick = Some(tick);
+        }
+    }
 }
 
 impl Default for StaffOfFlowingWater {
@@ -143,16 +160,14 @@ impl StableItem for StaffOfFlowingWater {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.carrier_refreshed_tick = None;
+        self.self_cast.close();
     }
 
     // Rapids. Same trigger as `ardent_censer`'s Sanctify: `is_ally` marks an
     // ally-targeted skill — a heal, shield or buff — and self-casts count as
-    // one, so the carrier is ruled out as a target explicitly.
-    //
-    // The target and the carrier both get the buff, refreshed rather than
-    // stacked. A cast that lands on several allies arrives here once per ally
-    // in the same tick, so the carrier's copy is refreshed only on the first of
-    // them: one application per cast, however many allies it reached.
+    // one, so the carrier is ruled out as a target. A self-cast may still have
+    // healed an ally, as the Monk's heal does around them: that is watched for
+    // in `update`.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -161,7 +176,11 @@ impl StableItem for StaffOfFlowingWater {
         target: usize,
         is_ally: bool,
     ) {
-        if !is_ally || target == caster {
+        if !is_ally {
+            return;
+        }
+        if target == caster {
+            self.self_cast.open(ctx, caster);
             return;
         }
         let Some(target_ref) = ctx.get_entity(target) else {
@@ -171,13 +190,24 @@ impl StableItem for StaffOfFlowingWater {
             return;
         }
 
-        let buff = self.rapids();
-        refresh_buff(ctx, target, self.rapids_buff, &buff);
+        self.grant_rapids(ctx, caster, target);
+    }
 
-        let tick = ctx.tick();
-        if self.carrier_refreshed_tick != Some(tick) {
-            refresh_buff(ctx, caster, self.rapids_buff, &buff);
-            self.carrier_refreshed_tick = Some(tick);
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        let healed = self.self_cast.poll(ctx);
+        if healed.is_empty() {
+            return;
+        }
+        let Some(caster) = ctx
+            .get_player(player)
+            .and_then(|player_ref| player_ref.champion())
+            .map(|champion_ref| champion_ref.id())
+        else {
+            return;
+        };
+
+        for target in healed {
+            self.grant_rapids(ctx, caster, target);
         }
     }
 

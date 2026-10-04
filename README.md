@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 218 new items (127 base + 91 Radiant) to the game.
+Reskins the 30 existing items and also adds 220 new items (128 base + 92 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -107,7 +107,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Ardent Censer** | 500G | +100 HP<br>+1 HP Regen<br>+25 AP<br>+5 Ability Haste<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Atma's Reckoning** | 750G | +250 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Axiom Arc** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
-| **Bandlepipes** | 500G | +100 HP<br>+20 Armor<br>+30 MR<br>+15 Ability Haste | Fanfare: Landing an Ability on an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% bonus attack speed. |
+| **Bandlepipes** | 500G | +100 HP<br>+20 Armor<br>+30 MR<br>+15 Ability Haste | Fanfare: Dealing damage to an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% bonus attack speed. |
 | **Banshee's Veil** | 700G | +60 AP<br>+40 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Bastionbreaker** | 650G | +35 AD<br>+15 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus true damage. |
 | **Black Cleaver** | 750G | +25 AD<br>+150 HP<br>+5 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
@@ -156,6 +156,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Lord Dominik's Regards** | 750G | +25 AD<br>+20% Crit Chance<br>+25% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Malignance** | 650G | +60 AP<br>+12 Ability Haste | Scorn: Gain 12 Ultimate Ability Haste. |
 | **Mirage Blade** | 750G | +40% AS<br>+10% MS | Illusion: Gain 30 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Blur: On kill, gain 20% movement speed for 2 seconds. |
+| **Moonstone Renewer** | 550G | +150 HP<br>+2 HP Regen<br>+20 AP<br>+15 Ability Haste | Starlit Grace: Healing an allied champion (excluding yourself) chains the effect to another allied champion within 100 range of them, healing 35% of the original amount. |
 | **Morellonomicon** | 650G | +100 HP<br>+60 AP<br>+10 Ability Haste | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Mortal Reminder** | 700G | +25 AD<br>+20% Crit Chance<br>+20% Armor Pen | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Nashor's Tooth** | 750G | +60 AP<br>+25% AS | Icathian Bite: Basic attacks deal bonus magic damage equal to 35 + 3% Ability Power. |
@@ -203,7 +204,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Ardent Censer** | 850G | +200 HP<br>+2 HP Regen<br>+45 AP<br>+5 Ability Haste<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Radiant Atma's Reckoning** | 1050G | +450 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Radiant Axiom Arc** | 950G | +55 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
-| **Radiant Bandlepipes** | 750G | +200 HP<br>+30 Armor<br>+50 MR<br>+20 Ability Haste | Fanfare: Landing an Ability on an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% bonus attack speed. |
+| **Radiant Bandlepipes** | 750G | +200 HP<br>+30 Armor<br>+50 MR<br>+20 Ability Haste | Fanfare: Dealing damage to an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% bonus attack speed. |
 | **Radiant Banshee's Veil** | 950G | +100 AP<br>+60 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Radiant Bastionbreaker** | 1000G | +55 AD<br>+20 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus true damage. |
 | **Radiant Black Cleaver** | 1100G | +35 AD<br>+250 HP<br>+10 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
@@ -252,6 +253,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Lord Dominik's Regards** | 1000G | +45 AD<br>+25% Crit Chance<br>+35% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Radiant Malignance** | 950G | +100 AP<br>+20 Ability Haste | Scorn: Gain 20 Ultimate Ability Haste. |
 | **Radiant Mirage Blade** | 1050G | +65% AS<br>+15% MS | Illusion: Gain 50 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Blur: On kill, gain 20% movement speed for 2 seconds. |
+| **Radiant Moonstone Renewer** | 750G | +250 HP<br>+3 HP Regen<br>+30 AP<br>+20 Ability Haste | Starlit Grace: Healing an allied champion (excluding yourself) chains the effect to another allied champion within 100 range of them, healing 35% of the original amount. |
 | **Radiant Morellonomicon** | 950G | +200 HP<br>+95 AP<br>+10 Ability Haste | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Radiant Mortal Reminder** | 1000G | +45 AD<br>+25% Crit Chance<br>+30% Armor Pen | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Radiant Nashor's Tooth** | 1050G | +90 AP<br>+40% AS | Icathian Bite: Basic attacks deal bonus magic damage equal to 50 + 5% Ability Power. |

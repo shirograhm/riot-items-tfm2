@@ -136,6 +136,7 @@ pub struct ItemConfig {
     pub effect_minion_bonus_percent: Option<f64>,
     pub effect_size_per_thousand_hp: Option<f64>,
     pub effect_max_size_percent: Option<i32>,
+    pub effect_heal_chain_percent: Option<f64>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,

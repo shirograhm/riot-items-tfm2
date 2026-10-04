@@ -3,6 +3,10 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, has_buff, percent_of, refresh_buff, ticks, ItemMeta};
 
+/// The burst on the turret as Sabotage goes off: the `view_effects` binding of
+/// this name in `view/effects.view_effects` (`effects/sabotage_blast`).
+const BLAST_EFFECT: &str = "riot_sabotage_blast";
+
 fn sabotage_bonus(ctx: &mut StableSim<'_>, caster: usize, flat: usize, ad_percent: f64) -> usize {
     let caster_ad = ctx.get_entity(caster).map(|c| c.stat().attack).unwrap_or(0);
     flat + percent_of(caster_ad, ad_percent)
@@ -14,6 +18,7 @@ fn sabotage_bonus(ctx: &mut StableSim<'_>, caster: usize, flat: usize, ad_percen
 //
 // While Sabotage is held, a molten shard glows by the carrier: the `view_buffs`
 // binding of the same name in `view/effects.view_effects` (`effects/sabotage_charge`).
+// The attack that spends it bursts on the turret ([`BLAST_EFFECT`]).
 #[derive(Clone, Debug)]
 pub struct Bastionbreaker {
     meta: ItemMeta,
@@ -184,6 +189,16 @@ impl StableItem for Bastionbreaker {
                 caster,
                 self.effect_bonus_flat_damage,
                 self.effect_ad_percent_damage,
+            );
+            // Before the damage: this hit may be the one that brings the turret
+            // down, and the burst is played where the turret stands.
+            ctx.play_view_effect(
+                BLAST_EFFECT,
+                caster,
+                &InputTargetV1::target(target),
+                0,
+                0,
+                0,
             );
             ctx.deal_damage_typed(
                 caster,
