@@ -32,7 +32,6 @@ pub struct SolsticeSleigh {
     price: usize,
     hp: i32,
     hp_regen: i32,
-    skill_cooldown_mult: i32,
     effect_move_speed_mult: i32,
     effect_min_bonus_hp: usize,
     effect_max_bonus_hp: usize,
@@ -57,7 +56,6 @@ impl SolsticeSleigh {
             price: 550,
             hp: 200,
             hp_regen: 4,
-            skill_cooldown_mult: 10,
             effect_move_speed_mult: 20,
             effect_min_bonus_hp: 50,
             effect_max_bonus_hp: 215,
@@ -77,7 +75,6 @@ impl SolsticeSleigh {
             price: 750,
             hp: 300,
             hp_regen: 5,
-            skill_cooldown_mult: 15,
             // Going Sledding itself is unchanged — Radiant buys the stat line only.
             ..Self::base()
         }
@@ -99,7 +96,6 @@ impl SolsticeSleigh {
                 price,
                 hp,
                 hp_regen,
-                skill_cooldown_mult,
                 effect_move_speed_mult,
                 effect_min_bonus_hp,
                 effect_max_bonus_hp,
@@ -227,7 +223,6 @@ impl StableItem for SolsticeSleigh {
         BuffV1 {
             hp: self.hp,
             hp_regen: self.hp_regen,
-            skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -270,12 +265,7 @@ impl StableItem for SolsticeSleigh {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![
-            ItemTagV1::Hp,
-            ItemTagV1::HpRegen,
-            ItemTagV1::CooltimeReduce,
-            ItemTagV1::MoveSpeed,
-        ]
+        vec![ItemTagV1::Hp, ItemTagV1::HpRegen, ItemTagV1::MoveSpeed]
     }
 
     fn category(&self) -> ItemCategoryV1 {
