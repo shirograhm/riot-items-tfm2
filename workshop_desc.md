@@ -1,4 +1,4 @@
-Adds 6 item slots & 222 new items (129 base + 93 Radiant) to Teamfight Manager 2.  
+Adds 6 item slots & 229 new items (134 base + 95 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
@@ -67,6 +67,8 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
 - items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone). Champions from other mods are covered too.
+
+Every support starts on World Atlas: its build gets a World Atlas item as its first pick: Solstice Sleigh for supports that immobilize, Zaz'Zak's Realmspike for AP supports that only deal damage, and Bloodsong for the rest.
 
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
 

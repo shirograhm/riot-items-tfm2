@@ -87,7 +87,6 @@ impl StableItem for Sheen {
         vec![
             "trinity_force".to_string(),
             "dusk_and_dawn".to_string(),
-            "bloodsong".to_string(),
             "lich_bane".to_string(),
             "essence_reaver".to_string(),
             "iceborn_gauntlet".to_string(),

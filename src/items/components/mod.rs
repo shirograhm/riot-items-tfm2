@@ -6,6 +6,7 @@ items! {
     bandleglass_mirror,
     bf_sword,
     blighting_jewel,
+    bounty_of_worlds,
     caulfields_warhammer,
     executioners_calling,
     fated_ashes,
@@ -20,6 +21,7 @@ items! {
     noonquiver,
     oblivion_orb,
     phage,
+    runic_compass,
     scouts_slingshot,
     seekers_armguard,
     serrated_dirk,
@@ -29,4 +31,5 @@ items! {
     tiamat,
     verdant_barrier,
     winged_moonplate,
+    world_atlas,
 }

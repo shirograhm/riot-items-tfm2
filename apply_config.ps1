@@ -662,6 +662,44 @@ $abyShred = [int]$config.abyssal_mask.effect_percent_mr_shred
 $abyDist = [int]$config.abyssal_mask.effect_max_distance
 $rabyShred = [int]$config.radiant_abyssal_mask.effect_percent_mr_shred
 $rabyDist = [int]$config.radiant_abyssal_mask.effect_max_distance
+$atlasGold = [int]$config.world_atlas.effect_bonus_gold
+$atlasEvery = [double]$config.world_atlas.effect_gold_interval_seconds
+$compassGold = [int]$config.runic_compass.effect_bonus_gold
+$compassEvery = [double]$config.runic_compass.effect_gold_interval_seconds
+$bountyGold = [int]$config.bounty_of_worlds.effect_bonus_gold
+$bountyEvery = [double]$config.bounty_of_worlds.effect_gold_interval_seconds
+$bsGold = [int]$config.bloodsong.effect_bonus_gold
+$bsGoldEvery = [double]$config.bloodsong.effect_gold_interval_seconds
+$rbsGold = [int]$config.radiant_bloodsong.effect_bonus_gold
+$rbsGoldEvery = [double]$config.radiant_bloodsong.effect_gold_interval_seconds
+$sleighRange = [int]$config.solstice_sleigh.effect_max_distance
+$sleighSpeed = [int]$config.solstice_sleigh.effect_move_speed_mult
+$sleighMinHp = [int]$config.solstice_sleigh.effect_min_bonus_hp
+$sleighMaxHp = [int]$config.solstice_sleigh.effect_max_bonus_hp
+$sleighDur = [double]$config.solstice_sleigh.effect_duration_seconds
+$sleighGold = [int]$config.solstice_sleigh.effect_bonus_gold
+$sleighGoldEvery = [double]$config.solstice_sleigh.effect_gold_interval_seconds
+$rsleighRange = [int]$config.radiant_solstice_sleigh.effect_max_distance
+$rsleighSpeed = [int]$config.radiant_solstice_sleigh.effect_move_speed_mult
+$rsleighMinHp = [int]$config.radiant_solstice_sleigh.effect_min_bonus_hp
+$rsleighMaxHp = [int]$config.radiant_solstice_sleigh.effect_max_bonus_hp
+$rsleighDur = [double]$config.radiant_solstice_sleigh.effect_duration_seconds
+$rsleighGold = [int]$config.radiant_solstice_sleigh.effect_bonus_gold
+$rsleighGoldEvery = [double]$config.radiant_solstice_sleigh.effect_gold_interval_seconds
+$zazDelay = [double]$config.zazzaks_realmspike.effect_delay_seconds
+$zazFlat = [int]$config.zazzaks_realmspike.effect_bonus_flat_damage
+$zazAp = [double]$config.zazzaks_realmspike.effect_ap_percent_damage
+$zazHp = [int]$config.zazzaks_realmspike.effect_enemy_max_hp_damage
+$zazCd = [double]$config.zazzaks_realmspike.effect_cooldown_seconds
+$zazGold = [int]$config.zazzaks_realmspike.effect_bonus_gold
+$zazGoldEvery = [double]$config.zazzaks_realmspike.effect_gold_interval_seconds
+$rzazDelay = [double]$config.radiant_zazzaks_realmspike.effect_delay_seconds
+$rzazFlat = [int]$config.radiant_zazzaks_realmspike.effect_bonus_flat_damage
+$rzazAp = [double]$config.radiant_zazzaks_realmspike.effect_ap_percent_damage
+$rzazHp = [int]$config.radiant_zazzaks_realmspike.effect_enemy_max_hp_damage
+$rzazCd = [double]$config.radiant_zazzaks_realmspike.effect_cooldown_seconds
+$rzazGold = [int]$config.radiant_zazzaks_realmspike.effect_bonus_gold
+$rzazGoldEvery = [double]$config.radiant_zazzaks_realmspike.effect_gold_interval_seconds
 $cdrvMs = [int]$config.cosmic_drive.effect_move_speed_mult
 $cdrvDur = [double]$config.cosmic_drive.effect_duration_seconds
 $rcdrvMs = [int]$config.radiant_cosmic_drive.effect_move_speed_mult
@@ -932,9 +970,19 @@ $dndTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic
 $i18n.en.dusk_and_dawn.option = $dndTemplate -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.en.radiant_dusk_and_dawn.option = $dndTemplate -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
+$richesTemplate = "<#ff7a3eff>Shared Riches<>: Gain <$goldColor>{0} <$goldIcon> gold<> every <#e8a800ff>{1} seconds<>."
 $bsTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>{0}<> - <#a974ffff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>{2} second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>{3}%<> for <#e8a800ff>{4} seconds<>."
-$i18n.en.bloodsong.option = $bsTemplate -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.en.radiant_bloodsong.option = $bsTemplate -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$i18n.en.bloodsong.option = ($bsTemplate -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur) + "`n`n" + ($richesTemplate -f $bsGold, $bsGoldEvery)
+$i18n.en.radiant_bloodsong.option = ($bsTemplate -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur) + "`n`n" + ($richesTemplate -f $rbsGold, $rbsGoldEvery)
+$i18n.en.world_atlas.option = $richesTemplate -f $atlasGold, $atlasEvery
+$i18n.en.runic_compass.option = $richesTemplate -f $compassGold, $compassEvery
+$i18n.en.bounty_of_worlds.option = $richesTemplate -f $bountyGold, $bountyEvery
+$sleighTemplate = "<#ff7a3eff>Going Sledding<>: <#d94c49ff>Immobilizing<> an enemy champion grants you and the most wounded allied champion within <#ff86c2ff>{0} <$rangeIcon> range<> <#ffffffff>{1}%<> bonus <$speedIcon> <#ffffffff>movement speed<> and <#60e84dff>{2}<> - <#60e84dff>{3}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <$hpIcon> <#60e84dff>bonus health<> for <#e8a800ff>{4} seconds<>."
+$i18n.en.solstice_sleigh.option = ($sleighTemplate -f $sleighRange, $sleighSpeed, $sleighMinHp, $sleighMaxHp, $sleighDur) + "`n`n" + ($richesTemplate -f $sleighGold, $sleighGoldEvery)
+$i18n.en.radiant_solstice_sleigh.option = ($sleighTemplate -f $rsleighRange, $rsleighSpeed, $rsleighMinHp, $rsleighMaxHp, $rsleighDur) + "`n`n" + ($richesTemplate -f $rsleighGold, $rsleighGoldEvery)
+$zazTemplate = "<#ff7a3eff>Void Explosion<>: Dealing ability damage to an enemy champion creates an explosion at their location after a <#e8a800ff>{0} second<> delay, dealing <#a974ffff>{1}<> <#a974ffff>(+{2}%<> <$apIcon> <#a974ffff>AP)<> <#d94c49ff>(+{3}% of the target's max HP)<> <#a974ffff>magic damage<> to enemies hit (<#e8a800ff>{4} second<> cooldown)."
+$i18n.en.zazzaks_realmspike.option = ($zazTemplate -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplate -f $zazGold, $zazGoldEvery)
+$i18n.en.radiant_zazzaks_realmspike.option = ($zazTemplate -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplate -f $rzazGold, $rzazGoldEvery)
 
 $lethEn = "Gain <#ffdd8eff>{0} <$armorPenIcon> Lethality<>."
 $i18n.en.serrated_dirk.option = $lethEn -f $sdLeth
@@ -1113,7 +1161,7 @@ $i18n.vi.radiant_rabadons_deathcap.option = "<#ff7a3eff>Hạt nhân<>: Tăng <$a
 $feralVi = "<#ff7a3eff>Tàn Phế<>: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>{3}<>. Đòn đánh thường gây <#a974ffff>{0}<> (<#a974ffff>+{1}<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> và hồi <#60e84dff>{2} <$hpRegenIcon> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả {4}%<> lên lính và quái."
 $i18n.vi.feral_flare.option = $feralVi -f $ffDmg, $ffStack, $ffHeal, $ffStacks, $ffMinion
 $i18n.vi.radiant_feral_flare.option = $feralVi -f $rffDmg, $rffStack, $rffHeal, $rffStacks, $rffMinion
-$sbdVi = "<#ff7a3eff>Peppermint<>: Đòn đánh thường <$hpRegenIcon> <#60e84dff>hồi<> cho tướng đồng minh bi thương nặng nhất và gần nhất <#60e84dff>{0}<> - <#60e84dff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+{2}% <$adIcon> SMCK)<> <#a974ffff>(+{3}% <$apIcon> SMPT)<>."
+$sbdVi = "<#ff7a3eff>Peppermint<>: Đòn đánh thường <$hpRegenIcon> <#60e84dff>hồi<> cho tướng đồng minh bị thương nặng nhất và gần nhất <#60e84dff>{0}<> - <#60e84dff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+{2}% <$adIcon> SMCK)<> <#a974ffff>(+{3}% <$apIcon> SMPT)<>."
 $i18n.vi.sword_of_blossoming_dawn.option = $sbdVi -f $sbdMin, $sbdMax, $sbdAd, $sbdAp
 $i18n.vi.radiant_sword_of_blossoming_dawn.option = $sbdVi -f $rsbdMin, $rsbdMax, $rsbdAd, $rsbdAp
 $acVi = "<#ff7a3eff>Cầu Nguyện<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>{0}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> và gây thêm <#ff9028ff>sát thương vật lí<> khi đánh trúng bằng <#d94c49ff>{1}% máu tối đa của mục tiêu<> trong <#e8a800ff>{2} giây<>."
@@ -1202,9 +1250,19 @@ $dndTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn
 $i18n.vi.dusk_and_dawn.option = $dndTemplateVi -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.vi.radiant_dusk_and_dawn.option = $dndTemplateVi -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
+$richesTemplateVi = "<#ff7a3eff>Chia Tiền<>: Nhận <$goldColor>{0} <$goldIcon> vàng<> mỗi <#e8a800ff>{1} giây<>."
 $bsTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>{0}<> - <#a974ffff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>{3}%<> trong <#e8a800ff>{4} giây<>."
-$i18n.vi.bloodsong.option = $bsTemplateVi -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.vi.radiant_bloodsong.option = $bsTemplateVi -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$i18n.vi.bloodsong.option = ($bsTemplateVi -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur) + "`n`n" + ($richesTemplateVi -f $bsGold, $bsGoldEvery)
+$i18n.vi.radiant_bloodsong.option = ($bsTemplateVi -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur) + "`n`n" + ($richesTemplateVi -f $rbsGold, $rbsGoldEvery)
+$i18n.vi.world_atlas.option = $richesTemplateVi -f $atlasGold, $atlasEvery
+$i18n.vi.runic_compass.option = $richesTemplateVi -f $compassGold, $compassEvery
+$i18n.vi.bounty_of_worlds.option = $richesTemplateVi -f $bountyGold, $bountyEvery
+$sleighTemplateVi = "<#ff7a3eff>Trượt Tuyết<>: <#d94c49ff>Làm Bất Động<> một tướng địch sẽ giúp bạn và tướng đồng minh bị thương nặng nhất trong phạm vi <#ff86c2ff>{0}<> <$rangeIcon> nhận <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<> và <#60e84dff>{2}<> - <#60e84dff>{3}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <$hpIcon> <#60e84dff>máu cộng thêm<> trong <#e8a800ff>{4} giây<>."
+$i18n.vi.solstice_sleigh.option = ($sleighTemplateVi -f $sleighRange, $sleighSpeed, $sleighMinHp, $sleighMaxHp, $sleighDur) + "`n`n" + ($richesTemplateVi -f $sleighGold, $sleighGoldEvery)
+$i18n.vi.radiant_solstice_sleigh.option = ($sleighTemplateVi -f $rsleighRange, $rsleighSpeed, $rsleighMinHp, $rsleighMaxHp, $rsleighDur) + "`n`n" + ($richesTemplateVi -f $rsleighGold, $rsleighGoldEvery)
+$zazTemplateVi = "<#ff7a3eff>Vụ Nổ Hư Không<>: Gây sát thương kĩ năng lên tướng địch sẽ tạo ra một vụ nổ tại vị trí của chúng sau <#e8a800ff>{0} giây<>, gây <#a974ffff>{1}<> <#a974ffff>(+{2}%<> <$apIcon> <#a974ffff>SMPT)<> <#d94c49ff>(+{3}% máu tối đa của mục tiêu)<> <#a974ffff>sát thương phép<> lên các kẻ địch bị trúng (hồi chiêu <#e8a800ff>{4} giây<>)."
+$i18n.vi.zazzaks_realmspike.option = ($zazTemplateVi -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplateVi -f $zazGold, $zazGoldEvery)
+$i18n.vi.radiant_zazzaks_realmspike.option = ($zazTemplateVi -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplateVi -f $rzazGold, $rzazGoldEvery)
 
 $lethVi = "Nhận <#ffdd8eff>{0} <$armorPenIcon> Xuyên Giáp Trắng<>."
 $i18n.vi.serrated_dirk.option = $lethVi -f $sdLeth
@@ -1472,9 +1530,19 @@ $dndTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10�
 $i18n.'zh-hans'.dusk_and_dawn.option = $dndTemplateZh -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.'zh-hans'.radiant_dusk_and_dawn.option = $dndTemplateZh -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
+$richesTemplateZh = "<#ff7a3eff>分享财富<>：每 <#e8a800ff>{1}秒<> 获得 <$goldColor>{0} <$goldIcon> 金币<>。"
 $bsTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#a974ffff>{0}<> - <#a974ffff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>{2}秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>{3}%<>，持续 <#e8a800ff>{4}秒<>。"
-$i18n.'zh-hans'.bloodsong.option = $bsTemplateZh -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.'zh-hans'.radiant_bloodsong.option = $bsTemplateZh -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$i18n.'zh-hans'.bloodsong.option = ($bsTemplateZh -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur) + "`n`n" + ($richesTemplateZh -f $bsGold, $bsGoldEvery)
+$i18n.'zh-hans'.radiant_bloodsong.option = ($bsTemplateZh -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur) + "`n`n" + ($richesTemplateZh -f $rbsGold, $rbsGoldEvery)
+$i18n.'zh-hans'.world_atlas.option = $richesTemplateZh -f $atlasGold, $atlasEvery
+$i18n.'zh-hans'.runic_compass.option = $richesTemplateZh -f $compassGold, $compassEvery
+$i18n.'zh-hans'.bounty_of_worlds.option = $richesTemplateZh -f $bountyGold, $bountyEvery
+$sleighTemplateZh = "<#ff7a3eff>雪橇出击<>：<#d94c49ff>定身<>一个敌方英雄时，你和 <#ff86c2ff>{0} <$rangeIcon> 射程<>范围内伤势最重的友方英雄获得 <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>移动速度<>和 <#60e84dff>{2}<> - <#60e84dff>{3}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<$hpIcon> <#60e84dff>额外生命值<>，持续 <#e8a800ff>{4}秒<>。"
+$i18n.'zh-hans'.solstice_sleigh.option = ($sleighTemplateZh -f $sleighRange, $sleighSpeed, $sleighMinHp, $sleighMaxHp, $sleighDur) + "`n`n" + ($richesTemplateZh -f $sleighGold, $sleighGoldEvery)
+$i18n.'zh-hans'.radiant_solstice_sleigh.option = ($sleighTemplateZh -f $rsleighRange, $rsleighSpeed, $rsleighMinHp, $rsleighMaxHp, $rsleighDur) + "`n`n" + ($richesTemplateZh -f $rsleighGold, $rsleighGoldEvery)
+$zazTemplateZh = "<#ff7a3eff>虚空扩爆<>：对敌方英雄造成技能伤害时，会在 <#e8a800ff>{0}秒<> 后于其所在位置引发一次爆炸，对命中的敌人造成 <#a974ffff>{1}<> <#a974ffff>（+{2}%<> <$apIcon> <#a974ffff>法术强度）<> <#d94c49ff>（+目标{3}%最大生命值）<> 的<#a974ffff>魔法伤害<>（冷却 <#e8a800ff>{4}秒<>）。"
+$i18n.'zh-hans'.zazzaks_realmspike.option = ($zazTemplateZh -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplateZh -f $zazGold, $zazGoldEvery)
+$i18n.'zh-hans'.radiant_zazzaks_realmspike.option = ($zazTemplateZh -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplateZh -f $rzazGold, $rzazGoldEvery)
 
 $lethZh = "获得 <#ffdd8eff>{0} 点<$armorPenIcon> 穿甲<>。"
 $i18n.'zh-hans'.serrated_dirk.option = $lethZh -f $sdLeth
@@ -1742,9 +1810,19 @@ $dndTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próx
 $i18n.'pt-BR'.dusk_and_dawn.option = $dndTemplatePt -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.'pt-BR'.radiant_dusk_and_dawn.option = $dndTemplatePt -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
+$richesTemplatePt = "<#ff7a3eff>Riquezas Compartilhadas<>: Receba <$goldColor>{0} <$goldIcon> de ouro<> a cada <#e8a800ff>{1} segundos<>."
 $bsTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>{0}<> - <#a974ffff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>{2} segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>{3}%<> por <#e8a800ff>{4} segundos<>."
-$i18n.'pt-BR'.bloodsong.option = $bsTemplatePt -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.'pt-BR'.radiant_bloodsong.option = $bsTemplatePt -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$i18n.'pt-BR'.bloodsong.option = ($bsTemplatePt -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur) + "`n`n" + ($richesTemplatePt -f $bsGold, $bsGoldEvery)
+$i18n.'pt-BR'.radiant_bloodsong.option = ($bsTemplatePt -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur) + "`n`n" + ($richesTemplatePt -f $rbsGold, $rbsGoldEvery)
+$i18n.'pt-BR'.world_atlas.option = $richesTemplatePt -f $atlasGold, $atlasEvery
+$i18n.'pt-BR'.runic_compass.option = $richesTemplatePt -f $compassGold, $compassEvery
+$i18n.'pt-BR'.bounty_of_worlds.option = $richesTemplatePt -f $bountyGold, $bountyEvery
+$sleighTemplatePt = "<#ff7a3eff>Passeio de Trenó<>: <#d94c49ff>Imobilizar<> um campeão inimigo concede a você e ao campeão aliado mais ferido dentro de <#ff86c2ff>{0} <$rangeIcon> alcance<> <#ffffffff>{1}%<> de <$speedIcon> <#ffffffff>Velocidade de Movimento<> e <#60e84dff>{2}<> - <#60e84dff>{3}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <$hpIcon> <#60e84dff>Vida adicional<> por <#e8a800ff>{4} segundos<>."
+$i18n.'pt-BR'.solstice_sleigh.option = ($sleighTemplatePt -f $sleighRange, $sleighSpeed, $sleighMinHp, $sleighMaxHp, $sleighDur) + "`n`n" + ($richesTemplatePt -f $sleighGold, $sleighGoldEvery)
+$i18n.'pt-BR'.radiant_solstice_sleigh.option = ($sleighTemplatePt -f $rsleighRange, $rsleighSpeed, $rsleighMinHp, $rsleighMaxHp, $rsleighDur) + "`n`n" + ($richesTemplatePt -f $rsleighGold, $rsleighGoldEvery)
+$zazTemplatePt = "<#ff7a3eff>Explosão do Vazio<>: Causar dano de habilidade a um campeão inimigo cria uma explosão no local dele após um atraso de <#e8a800ff>{0} segundos<>, causando <#a974ffff>{1}<> <#a974ffff>(+{2}% do<> <$apIcon> <#a974ffff>Poder de Habilidade)<> <#d94c49ff>(+{3}% da Vida Máxima do alvo)<> de <#a974ffff>dano mágico<> aos inimigos atingidos (recarga de <#e8a800ff>{4} segundos<>)."
+$i18n.'pt-BR'.zazzaks_realmspike.option = ($zazTemplatePt -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplatePt -f $zazGold, $zazGoldEvery)
+$i18n.'pt-BR'.radiant_zazzaks_realmspike.option = ($zazTemplatePt -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplatePt -f $rzazGold, $rzazGoldEvery)
 
 $lethPt = "Ganha <#ffdd8eff>{0} de <$armorPenIcon> Letalidade<>."
 $i18n.'pt-BR'.serrated_dirk.option = $lethPt -f $sdLeth
@@ -2012,9 +2090,19 @@ $dndTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Примен
 $i18n.ru.dusk_and_dawn.option = $dndTemplateRu -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ru.radiant_dusk_and_dawn.option = $dndTemplateRu -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
+$richesTemplateRu = "<#ff7a3eff>Общие богатства<>: Вы получаете <$goldColor>{0} <$goldIcon> золота<> каждые <#e8a800ff>{1} секунд<>."
 $bsTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>{0}<> - <#a974ffff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>{3}%<> на <#e8a800ff>{4} секунды<>."
-$i18n.ru.bloodsong.option = $bsTemplateRu -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.ru.radiant_bloodsong.option = $bsTemplateRu -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$i18n.ru.bloodsong.option = ($bsTemplateRu -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur) + "`n`n" + ($richesTemplateRu -f $bsGold, $bsGoldEvery)
+$i18n.ru.radiant_bloodsong.option = ($bsTemplateRu -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur) + "`n`n" + ($richesTemplateRu -f $rbsGold, $rbsGoldEvery)
+$i18n.ru.world_atlas.option = $richesTemplateRu -f $atlasGold, $atlasEvery
+$i18n.ru.runic_compass.option = $richesTemplateRu -f $compassGold, $compassEvery
+$i18n.ru.bounty_of_worlds.option = $richesTemplateRu -f $bountyGold, $bountyEvery
+$sleighTemplateRu = "<#ff7a3eff>Катание на санях<>: <#d94c49ff>Обездвиживая<> вражеского чемпиона, вы и наиболее раненый союзный чемпион в пределах <#ff86c2ff>{0} <$rangeIcon> дальности<> получаете <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>скорости передвижения<> и <#60e84dff>{2}<> - <#60e84dff>{3}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <$hpIcon> <#60e84dff>дополнительного здоровья<> на <#e8a800ff>{4} секунды<>."
+$i18n.ru.solstice_sleigh.option = ($sleighTemplateRu -f $sleighRange, $sleighSpeed, $sleighMinHp, $sleighMaxHp, $sleighDur) + "`n`n" + ($richesTemplateRu -f $sleighGold, $sleighGoldEvery)
+$i18n.ru.radiant_solstice_sleigh.option = ($sleighTemplateRu -f $rsleighRange, $rsleighSpeed, $rsleighMinHp, $rsleighMaxHp, $rsleighDur) + "`n`n" + ($richesTemplateRu -f $rsleighGold, $rsleighGoldEvery)
+$zazTemplateRu = "<#ff7a3eff>Взрыв Бездны<>: Нанесение урона умением вражескому чемпиону вызывает взрыв на его месте с задержкой <#e8a800ff>{0} секунды<>, нанося задетым врагам <#a974ffff>{1}<> <#a974ffff>(+{2}%<> <$apIcon> <#a974ffff>Силы Умений)<> <#d94c49ff>(+{3}% макс. здоровья цели)<> <#a974ffff>магического урона<> (перезарядка <#e8a800ff>{4} секунд<>)."
+$i18n.ru.zazzaks_realmspike.option = ($zazTemplateRu -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplateRu -f $zazGold, $zazGoldEvery)
+$i18n.ru.radiant_zazzaks_realmspike.option = ($zazTemplateRu -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplateRu -f $rzazGold, $rzazGoldEvery)
 
 $lethRu = "Даёт <#ffdd8eff>{0} <$armorPenIcon> летальности<>."
 $i18n.ru.serrated_dirk.option = $lethRu -f $sdLeth
@@ -2281,9 +2369,19 @@ $dndTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10�
 $i18n.ko.dusk_and_dawn.option = $dndTemplateKo -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ko.radiant_dusk_and_dawn.option = $dndTemplateKo -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
+$richesTemplateKo = "<#ff7a3eff>재물 공유<>: <#e8a800ff>{1}초<>마다 <$goldColor>{0} <$goldIcon> 골드<>를 획득합니다."
 $bsTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>{0}<>~<#a974ffff>{1}<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>) 대상이 챔피언이면 <#e8a800ff>{4}초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>{3}%<> 증가합니다."
-$i18n.ko.bloodsong.option = $bsTemplateKo -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur
-$i18n.ko.radiant_bloodsong.option = $bsTemplateKo -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur
+$i18n.ko.bloodsong.option = ($bsTemplateKo -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur) + "`n`n" + ($richesTemplateKo -f $bsGold, $bsGoldEvery)
+$i18n.ko.radiant_bloodsong.option = ($bsTemplateKo -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur) + "`n`n" + ($richesTemplateKo -f $rbsGold, $rbsGoldEvery)
+$i18n.ko.world_atlas.option = $richesTemplateKo -f $atlasGold, $atlasEvery
+$i18n.ko.runic_compass.option = $richesTemplateKo -f $compassGold, $compassEvery
+$i18n.ko.bounty_of_worlds.option = $richesTemplateKo -f $bountyGold, $bountyEvery
+$sleighTemplateKo = "<#ff7a3eff>썰매 질주<>: 적 챔피언에게 <#d94c49ff>이동 불가<> 효과를 적용하면 <#e8a800ff>{4}초<> 동안 자신과 <$rangeIcon> <#ff86c2ff>사거리 {0}<> 안에서 부상이 가장 심한 아군 챔피언의 <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>{1}%<> 증가하고 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>{2}<>~<#60e84dff>{3}<>의 <$hpIcon> <#60e84dff>추가 체력<>을 얻습니다."
+$i18n.ko.solstice_sleigh.option = ($sleighTemplateKo -f $sleighRange, $sleighSpeed, $sleighMinHp, $sleighMaxHp, $sleighDur) + "`n`n" + ($richesTemplateKo -f $sleighGold, $sleighGoldEvery)
+$i18n.ko.radiant_solstice_sleigh.option = ($sleighTemplateKo -f $rsleighRange, $rsleighSpeed, $rsleighMinHp, $rsleighMaxHp, $rsleighDur) + "`n`n" + ($richesTemplateKo -f $rsleighGold, $rsleighGoldEvery)
+$zazTemplateKo = "<#ff7a3eff>공허 폭발<>: 적 챔피언에게 스킬 피해를 입히면 <#e8a800ff>{0}초<> 후 대상의 위치에서 폭발이 일어나 적중한 적에게 <#a974ffff>{1}<> <#a974ffff>(+{2}%<> <$apIcon> <#a974ffff>주문력)<> <#d94c49ff>(+대상 최대 체력의 {3}%)<>만큼 <#a974ffff>마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{4}초<>)"
+$i18n.ko.zazzaks_realmspike.option = ($zazTemplateKo -f $zazDelay, $zazFlat, $zazAp, $zazHp, $zazCd) + "`n`n" + ($richesTemplateKo -f $zazGold, $zazGoldEvery)
+$i18n.ko.radiant_zazzaks_realmspike.option = ($zazTemplateKo -f $rzazDelay, $rzazFlat, $rzazAp, $rzazHp, $rzazCd) + "`n`n" + ($richesTemplateKo -f $rzazGold, $rzazGoldEvery)
 
 $lethKo = "<#ffdd8eff>{0}의 <$armorPenIcon> 물리 관통력<>을 획득합니다."
 $i18n.ko.serrated_dirk.option = $lethKo -f $sdLeth
@@ -2577,8 +2675,8 @@ Write-Host "  Sundered Sky:                ${ssDamage}% first hit damage bonus /
 Write-Host "  Sundered Sky:                ${rssDamage}% first hit damage bonus / ${rssFlatHeal} + ${rssPercentHeal}% missing HP heal / (${rssOnHitCD} CD per target)"
 Write-Host "  Eclipse:                     ${eclHpPct}% max HP dmg / ${eclShield} + ${eclAdPct}% AD shield ${eclShDur}s / ${eclDur}s mark / ${eclCd}s CD"
 Write-Host "  Radiant Eclipse:             ${reclHpPct}% max HP dmg / ${reclShield} + ${reclAdPct}% AD shield ${reclShDur}s / ${reclDur}s mark / ${reclCd}s CD"
-Write-Host "  Bloodsong:                   ${bsMin} - ${bsMax} magic (by level) / ${bsCd}s CD / +${bsAmp}% damage taken ${bsDur}s"
-Write-Host "  Radiant Bloodsong:           ${rbsMin} - ${rbsMax} magic (by level) / ${rbsCd}s CD / +${rbsAmp}% damage taken ${rbsDur}s"
+Write-Host "  Bloodsong:                   ${bsMin} - ${bsMax} magic (by level) / ${bsCd}s CD / +${bsAmp}% damage taken ${bsDur}s / ${bsGold} gold every ${bsGoldEvery}s"
+Write-Host "  Radiant Bloodsong:           ${rbsMin} - ${rbsMax} magic (by level) / ${rbsCd}s CD / +${rbsAmp}% damage taken ${rbsDur}s / ${rbsGold} gold every ${rbsGoldEvery}s"
 Write-Host "  Rite of Ruin:                +${rorCrit}% crit/stack (max ${rorStacks}) / ${rorDur}s / ${rorMin} - ${rorMax} shield ${rorShDur}s"
 Write-Host "  Radiant Rite of Ruin:        +${rrorCrit}% crit/stack (max ${rrorStacks}) / ${rrorDur}s / ${rrorMin} - ${rrorMax} shield ${rrorShDur}s"
 Write-Host "  Sterak's Gage:               ${sgShieldPct}% max HP shield ${sgShDur}s below ${sgThreshold}% HP / ${sgCd}s CD"
@@ -2594,6 +2692,13 @@ Write-Host "  Moonstone Renewer:           chains ${moonHeal}% of a heal within 
 Write-Host "  Radiant Moonstone Renewer:   chains ${rmoonHeal}% of a heal within ${rmoonRange} range"
 Write-Host "  Abyssal Mask:                -${abyShred}% MR to enemy champions within ${abyDist} range"
 Write-Host "  Radiant Abyssal Mask:        -${rabyShred}% MR to enemy champions within ${rabyDist} range"
+Write-Host "  World Atlas:                 ${atlasGold} gold every ${atlasEvery}s"
+Write-Host "  Runic Compass:               ${compassGold} gold every ${compassEvery}s"
+Write-Host "  Bounty of Worlds:            ${bountyGold} gold every ${bountyEvery}s"
+Write-Host "  Solstice Sleigh:             ${sleighSpeed}% MS + ${sleighMinHp} - ${sleighMaxHp} HP for ${sleighDur}s within ${sleighRange} range / ${sleighGold} gold every ${sleighGoldEvery}s"
+Write-Host "  Radiant Solstice Sleigh:     ${rsleighSpeed}% MS + ${rsleighMinHp} - ${rsleighMaxHp} HP for ${rsleighDur}s within ${rsleighRange} range / ${rsleighGold} gold every ${rsleighGoldEvery}s"
+Write-Host "  Zaz'Zak's Realmspike:        ${zazFlat} + ${zazAp}% AP + ${zazHp}% target max HP after ${zazDelay}s, ${zazCd}s cooldown / ${zazGold} gold every ${zazGoldEvery}s"
+Write-Host "  Radiant Zaz'Zak's Realmspike: ${rzazFlat} + ${rzazAp}% AP + ${rzazHp}% target max HP after ${rzazDelay}s, ${rzazCd}s cooldown / ${rzazGold} gold every ${rzazGoldEvery}s"
 Write-Host "  Serylda's Grudge:            ${serySlow}% slow ${seryDur}s on ability damage at or below ${seryThreshold}% health"
 Write-Host "  Radiant Serylda's Grudge:    ${rserySlow}% slow ${rseryDur}s on ability damage at or below ${rseryThreshold}% health"
 Write-Host "  Bami's Cinder:               ${bamiFlat} + ${bamiHpPct}% max HP magic dmg/s within ${bamiRange} range"

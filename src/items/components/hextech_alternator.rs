@@ -70,7 +70,6 @@ impl StableItem for HextechAlternator {
     fn next_tier(&self) -> Vec<String> {
         vec![
             "hextech_gunblade".to_string(),
-            "ludens_tempest".to_string(),
             "night_harvester".to_string(),
             "shadowflame".to_string(),
             "stormsurge".to_string(),

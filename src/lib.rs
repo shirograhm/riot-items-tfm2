@@ -17,8 +17,10 @@ use items::*;
 
 pub(crate) use utils::constants::*;
 pub(crate) use utils::heal_watch::{HealWatch, SelfCastWatch};
+pub(crate) use utils::immobilize_watch::ImmobilizeWatch;
 pub(crate) use utils::item_meta::ItemMeta;
 pub(crate) use utils::proc_queue::ProcQueue;
+pub(crate) use utils::shared_riches::SharedRiches;
 // Re-exported under their old names, so paths like `crate::config::ItemConfig`
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
@@ -301,11 +303,13 @@ fn init(host: &StableHost) -> StableMod {
     // Tier 1
     reg.add_item(configured!("boots" => Boots));
     reg.add_item(configured!("glowing_mote" => GlowingMote));
+    reg.add_item(configured!("world_atlas" => WorldAtlas));
 
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
     reg.add_item(configured!("fated_ashes" => FatedAshes));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
+    reg.add_item(configured!("runic_compass" => RunicCompass));
     reg.add_item(configured!("sheen" => Sheen));
 
     // Tier 3
@@ -316,6 +320,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
     reg.add_item(configured!("boots_of_swiftness" => BootsOfSwiftness, boots));
+    reg.add_item(configured!("bounty_of_worlds" => BountyOfWorlds));
     reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
     reg.add_item(configured!("forbidden_idol" => ForbiddenIdol));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
@@ -414,6 +419,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
     reg.add_item(configured!("seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured!("shadowflame" => Shadowflame));
+    reg.add_item(configured!("solstice_sleigh" => SolsticeSleigh));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("staff_of_flowing_water" => StaffOfFlowingWater));
@@ -432,6 +438,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("wits_end" => WitsEnd));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
+    reg.add_item(configured!("zazzaks_realmspike" => ZazzaksRealmspike));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
     reg.add_item(configured!("zhonyas_hourglass" => ZhonyasHourglass));
 
@@ -509,6 +516,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
     reg.add_item(configured_radiant!("radiant_seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
+    reg.add_item(configured_radiant!("radiant_solstice_sleigh" => SolsticeSleigh));
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
     reg.add_item(configured_radiant!("radiant_staff_of_flowing_water" => StaffOfFlowingWater));
@@ -527,6 +535,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
     reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
     reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
+    reg.add_item(configured_radiant!("radiant_zazzaks_realmspike" => ZazzaksRealmspike));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
     reg.add_item(configured_radiant!("radiant_zhonyas_hourglass" => ZhonyasHourglass));
 

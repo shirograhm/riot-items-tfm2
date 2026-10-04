@@ -1,48 +1,49 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, SharedRiches, Spellblade};
 
+/// Bloodsong — what World Atlas grows into, by way of Bounty of Worlds:
+/// Spellblade, a mark that makes its target take more damage, and the gold
+/// the Atlas line pays ([`SharedRiches`]).
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
     meta: ItemMeta,
     vulnerable_buff: &'static str,
     price: usize,
-    attack_speed_mult: i32,
     hp: i32,
-    magic_power: i32,
-    skill_cooldown_mult: i32,
+    hp_regen: i32,
     effect_min_bonus_damage: usize,
     effect_max_bonus_damage: usize,
     effect_cooldown_seconds: f64,
     effect_damaged_amplify: usize,
     effect_duration_seconds: f64,
+    effect_bonus_gold: usize,
+    effect_gold_interval_seconds: f64,
     spellblade: Spellblade,
     procs: ProcQueue,
+    riches: SharedRiches,
 }
 
 impl Bloodsong {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base(
-                "bloodsong",
-                &["forbidden_idol", "sheen"],
-                &["radiant_bloodsong"],
-            ),
+            meta: ItemMeta::base("bloodsong", &["bounty_of_worlds"], &["radiant_bloodsong"]),
             vulnerable_buff: "bloodsong_vulnerable",
             price: 550,
-            attack_speed_mult: 25,
-            hp: 100,
-            magic_power: 10,
-            skill_cooldown_mult: 10,
+            hp: 200,
+            hp_regen: 4,
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
             effect_cooldown_seconds: 3.5,
             effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
+            effect_bonus_gold: 4,
+            effect_gold_interval_seconds: 5.0,
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
             procs: ProcQueue::new(),
+            riches: SharedRiches::default(),
         }
     }
 
@@ -51,10 +52,8 @@ impl Bloodsong {
             meta: ItemMeta::radiant("radiant_bloodsong", &["bloodsong"]),
             vulnerable_buff: "bloodsong_vulnerable",
             price: 750,
-            attack_speed_mult: 35,
-            hp: 200,
-            magic_power: 20,
-            skill_cooldown_mult: 10,
+            hp: 300,
+            hp_regen: 5,
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
             effect_cooldown_seconds: 3.5,
@@ -78,15 +77,15 @@ impl Bloodsong {
             cfg,
             [
                 price,
-                attack_speed_mult,
                 hp,
-                magic_power,
-                skill_cooldown_mult,
+                hp_regen,
                 effect_min_bonus_damage,
                 effect_max_bonus_damage,
                 effect_cooldown_seconds,
                 effect_damaged_amplify,
-                effect_duration_seconds
+                effect_duration_seconds,
+                effect_bonus_gold,
+                effect_gold_interval_seconds
             ]
         );
         self
@@ -137,10 +136,8 @@ impl StableItem for Bloodsong {
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
-            attack_speed_mult: self.attack_speed_mult,
             hp: self.hp,
-            magic_power: self.magic_power,
-            skill_cooldown_mult: self.skill_cooldown_mult,
+            hp_regen: self.hp_regen,
             ..Default::default()
         }
     }
@@ -192,20 +189,21 @@ impl StableItem for Bloodsong {
         );
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and watches for
-    /// the cast that readies the next one.
+    /// Lands the Spellblade damage whose delay has run out, watches for the
+    /// cast that readies the next one, and pays Shared Riches.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);
+        self.riches.update(
+            ctx,
+            player,
+            self.effect_bonus_gold,
+            self.effect_gold_interval_seconds,
+        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![
-            ItemTagV1::Hp,
-            ItemTagV1::Ap,
-            ItemTagV1::AttackSpeed,
-            ItemTagV1::CooltimeReduce,
-        ]
+        vec![ItemTagV1::Hp, ItemTagV1::HpRegen]
     }
 
     fn category(&self) -> ItemCategoryV1 {

@@ -871,27 +871,27 @@
   },
   "bloodsong": {
     "price": 550,
-    "attack_speed_mult": 25,
-    "hp": 100,
-    "magic_power": 10,
-    "skill_cooldown_mult": 10,
+    "hp": 200,
+    "hp_regen": 4,
     "effect_min_bonus_damage": 70,
     "effect_max_bonus_damage": 125,
     "effect_cooldown_seconds": 3.5,
     "effect_damaged_amplify": 7,
-    "effect_duration_seconds": 4
+    "effect_duration_seconds": 4,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
   },
   "radiant_bloodsong": {
     "price": 750,
-    "attack_speed_mult": 35,
-    "hp": 200,
-    "magic_power": 20,
-    "skill_cooldown_mult": 10,
+    "hp": 300,
+    "hp_regen": 5,
     "effect_min_bonus_damage": 70,
     "effect_max_bonus_damage": 125,
     "effect_cooldown_seconds": 3.5,
     "effect_damaged_amplify": 7,
-    "effect_duration_seconds": 4
+    "effect_duration_seconds": 4,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
   },
   "serrated_dirk": {
     "price": 400,
@@ -2095,5 +2095,77 @@
     "skill_cooldown_mult": 15,
     "effect_percent_mr_shred": 20,
     "effect_max_distance": 50
+  },
+  "world_atlas": {
+    "price": 250,
+    "hp_regen": 3,
+    "effect_bonus_gold": 2,
+    "effect_gold_interval_seconds": 5
+  },
+  "runic_compass": {
+    "price": 250,
+    "hp": 50,
+    "hp_regen": 3,
+    "effect_bonus_gold": 3,
+    "effect_gold_interval_seconds": 5
+  },
+  "bounty_of_worlds": {
+    "price": 400,
+    "hp": 100,
+    "hp_regen": 4,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
+  },
+  "solstice_sleigh": {
+    "price": 550,
+    "hp": 200,
+    "hp_regen": 4,
+    "skill_cooldown_mult": 10,
+    "effect_move_speed_mult": 20,
+    "effect_min_bonus_hp": 50,
+    "effect_max_bonus_hp": 215,
+    "effect_duration_seconds": 2,
+    "effect_max_distance": 100,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
+  },
+  "radiant_solstice_sleigh": {
+    "price": 750,
+    "hp": 300,
+    "hp_regen": 5,
+    "skill_cooldown_mult": 15,
+    "effect_move_speed_mult": 20,
+    "effect_min_bonus_hp": 50,
+    "effect_max_bonus_hp": 215,
+    "effect_duration_seconds": 2,
+    "effect_max_distance": 100,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
+  },
+  "zazzaks_realmspike": {
+    "price": 550,
+    "hp": 200,
+    "hp_regen": 4,
+    "effect_delay_seconds": 0.5,
+    "effect_bonus_flat_damage": 10,
+    "effect_ap_percent_damage": 15,
+    "effect_enemy_max_hp_damage": 3,
+    "effect_cooldown_seconds": 10,
+    "effect_max_distance": 40,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
+  },
+  "radiant_zazzaks_realmspike": {
+    "price": 750,
+    "hp": 300,
+    "hp_regen": 5,
+    "effect_delay_seconds": 0.5,
+    "effect_bonus_flat_damage": 10,
+    "effect_ap_percent_damage": 15,
+    "effect_enemy_max_hp_damage": 3,
+    "effect_cooldown_seconds": 10,
+    "effect_max_distance": 40,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
   }
 }

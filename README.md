@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 222 new items (129 base + 93 Radiant) to the game.
+Reskins the 30 existing items and also adds 229 new items (134 base + 95 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -38,11 +38,13 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 
 For the last two, the replacement follows the rest of the build instead of the removed item: it comes from the same category as the build's other items, starting with the first slot.
 
+Every support also gets a World Atlas item as its first pick, so it starts the match on World Atlas and its gold: World Atlas grows into Runic Compass, Bounty of Worlds and then one of three finished items. A support whose kit immobilizes (the same champions that take Imperial Mandate) gets Solstice Sleigh. An AP support that neither immobilizes nor heals or shields gets Zaz'Zak's Realmspike, since its abilities are there to deal damage. Every other support gets Bloodsong, whatever its damage type. It replaces the AI's last pick, unless you pinned one yourself. The AI only ever gets that one: any other it picked is swapped out (your own pins can hold more than one).
+
 Supports and junglers also get an item for their role: a support item for supports (one that suits the champion's damage type, so an AD support gets a tank one, not an AP one), and one jungle item for junglers: Philosopher's Stone for a champion with the game's Tank tag, otherwise Feral Flare or Grez's Spectral Lantern (whichever suits the champion's damage type). A ranged tank takes its damage item too, since Philosopher's Stone is a melee item. The AI only ever gets that one jungle item: any other it picked is swapped out, and if you pinned a jungle item yourself it adds none (your own pins can hold as many as you like). If the AI didn't pick one and you haven't pinned one, its last pick is swapped for one. Only one is guaranteed; the rest of the build is still the AI's own choice. A support whose champion has crowd control (the game's CC tag) makes Imperial Mandate that item, unless you pinned a support item yourself; Mandate is an AP item, so an AD support keeps its own. A support without crowd control never keeps a Mandate the AI picked: it's swapped for another support item (a Mandate you pin is always kept).
 
-It also decides the order the AI buys its picks in. A support's or jungler's role item comes first. After that, items that get stronger the longer you own them are bought first: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern and Collector. Items that scale off stats from the rest of the build are bought last: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards. Everything else keeps the AI's order.
+It also decides the order the AI buys its picks in. A support's World Atlas item comes first of all, then a support's or jungler's role item. After that, items that get stronger the longer you own them are bought first: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern and Collector. Items that scale off stats from the rest of the build are bought last: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards. Everything else keeps the AI's order.
 
-It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, in the slot you put it in, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items get no pass on the damage-type check: an AD support won't keep an AP support item like Staff of Flowing Water, though tank support items are fine. Bloodsong and Sword of Blossoming Dawn count as AP items here, despite their attack speed. Switch it to **Allow Any Builds** to leave every pick alone.
+It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, in the slot you put it in, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items get no pass on the damage-type check: an AD support won't keep an AP support item like Staff of Flowing Water, though tank support items are fine. Sword of Blossoming Dawn counts as an AP item here, despite its attack speed. Switch it to **Allow Any Builds** to leave every pick alone.
 
 It also gives every AI build a pair of boots, as its second pick, unless you pinned boots yourself: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (whichever answers the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity too, unless they're tanks, who get tank boots. Boots of Swiftness goes to champions none of that fits. Boots are also in the Build Editor under their own **Boots** group.
 
@@ -58,11 +60,13 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | --- | --- | --- | --- |
 | **Boots** | 250G | +7% MS | — |
 | **Glowing Mote** | 250G | +10 Ability Haste | — |
+| **World Atlas** | 250G | +3 HP Regen | Shared Riches: Gain 2 gold every 5 seconds. |
 
 #### Tier 2
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Fated Ashes** | 250G | +30 AP | Inflame: Landing an Ability on an enemy burns them for 15 magic damage over 3 seconds. This effect is 400% effective against minions and monsters. |
+| **Runic Compass** | 250G | +50 HP<br>+3 HP Regen | Shared Riches: Gain 3 gold every 5 seconds. |
 
 #### Tier 3
 | Item | Cost | Stats | Passive |
@@ -74,6 +78,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **B.F. Sword** | 450G | +35 Attack Damage | — |
 | **Blighting Jewel** | 400G | +40 AP<br>+10% Magic Pen | — |
 | **Boots of Swiftness** | 650G | +25% Tenacity<br>+12% MS | — |
+| **Bounty of Worlds** | 400G | +100 HP<br>+4 HP Regen | Shared Riches: Gain 4 gold every 5 seconds. |
 | **Caulfield's Warhammer** | 500G | +25 AD<br>+10 Ability Haste | — |
 | **Executioner's Calling** | 650G | +25 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Forbidden Idol** | 350G | +100 HP<br>+10 AP<br>+10 Ability Haste | — |
@@ -115,7 +120,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Blackfire Torch** | 650G | +65 AP<br>+15 Ability Haste | Maleficent: Landing an Ability on an enemy champion grants 5 Ability Power for 4 seconds (max 4 stacks). |
 | **Blade of the Ruined King** | 750G | +25 AD<br>+25% AS<br>+5% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Bloodletter's Curse** | 750G | +150 HP<br>+55 AP<br>+5 Ability Haste | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
-| **Bloodsong** | 550G | +100 HP<br>+10 AP<br>+25% AS<br>+10 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
+| **Bloodsong** | 550G | +200 HP<br>+4 HP Regen | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds.<br>Shared Riches: Gain 4 gold every 5 seconds. |
 | **Chempunk Chainsword** | 650G | +20 AD<br>+200 HP<br>+10 Ability Haste | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Chemtech Putrifier** | 500G | +150 HP<br>+2 HP Regen<br>+15 AP<br>+15 Ability Haste | Grievous Wounds: Dealing damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Cloak of Starry Night** | 750G | +200 HP<br>+50 MR<br>+25% Total MR | Limitless as the Stars: Increase your total magic resistance by 20%. Additionally, gain 5% (+1% per 25 magic resistance) skill damage reduction, up to a maximum of 25%. |
@@ -177,6 +182,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Serpent's Fang** | 600G | +45 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 50 + 10% of your Attack Damage as bonus physical damage. |
 | **Serylda's Grudge** | 700G | +25 AD<br>+10 Ability Haste<br>+25% Armor Pen | Bitter Cold: Dealing Ability damage to an enemy at or below 50% maximum health applies a 30% slow for 1.5 seconds. |
 | **Shadowflame** | 700G | +60 AP<br>+15% Magic Pen | Cinderbloom: Your magic and true damage is 20% stronger against enemies below 40% maximum health. |
+| **Solstice Sleigh** | 550G | +200 HP<br>+4 HP Regen<br>+10 Ability Haste | Going Sledding: Immobilizing an enemy champion grants you and the most wounded allied champion within 100 range 20% bonus movement speed and 50 - 215 (based on level) bonus health for 2 seconds.<br>Shared Riches: Gain 4 gold every 5 seconds. |
 | **Spear of Shojin** | 700G | +200 HP<br>+20 AD<br>+10 Ability Haste | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Spirit Visage** | 700G | +200 HP<br>+50 MR | Vitality: Increase all healing received by 20%. |
 | **Staff of Flowing Water** | 550G | +100 HP<br>+1 HP Regen<br>+30 AP<br>+10 Ability Haste | Rapids: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target 25 Ability Power and 10 Ability Haste for 3 seconds. |
@@ -195,6 +201,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Warmog's Armor** | 750G | +300 HP<br>+3 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Wit's End** | 700G | +40% AS<br>+40 MR<br>+20% Tenacity | Fray: Basic attacks deal 45 bonus magic damage. |
 | **Yun Tal Wildarrows** | 750G | +35 AD<br>+20% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
+| **Zaz'Zak's Realmspike** | 550G | +200 HP<br>+4 HP Regen | Void Explosion: Dealing ability damage to an enemy champion creates an explosion at their location after a 0.5 second delay, dealing 10 (+15% AP) (+3% of the target's max HP) magic damage to enemies hit (10 second cooldown).<br>Shared Riches: Gain 4 gold every 5 seconds. |
 | **Zeke's Convergence** | 550G | +100 HP<br>+20 Armor<br>+30 MR<br>+10 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 60 magic damage per second to nearby enemies and applies a 40% slow. |
 | **Zhonya's Hourglass** | 750G | +50 AP<br>+35 Armor | Time Stop: Falling below 20% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
 
@@ -213,7 +220,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Blackfire Torch** | 950G | +90 AP<br>+25 Ability Haste | Maleficent: Landing an Ability on an enemy champion grants 10 Ability Power for 4 seconds (max 4 stacks). |
 | **Radiant Blade of the Ruined King** | 1050G | +30 AD<br>+50% AS<br>+10% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage equal to 8% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Bloodletter's Curse** | 1100G | +250 HP<br>+90 AP<br>+10 Ability Haste | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
-| **Radiant Bloodsong** | 750G | +200 HP<br>+20 AP<br>+35% AS<br>+10 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
+| **Radiant Bloodsong** | 750G | +300 HP<br>+5 HP Regen | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 70 - 125 (based on level) as bonus magic damage (3.5 second cooldown). If the target is a champion, increase their damage taken by 7% for 4 seconds.<br>Shared Riches: Gain 4 gold every 5 seconds. |
 | **Radiant Chempunk Chainsword** | 950G | +30 AD<br>+300 HP<br>+15 Ability Haste | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Radiant Chemtech Putrifier** | 750G | +250 HP<br>+3 HP Regen<br>+25 AP<br>+15 Ability Haste | Grievous Wounds: Dealing damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Radiant Cloak of Starry Night** | 1050G | +250 HP<br>+100 MR<br>+25% Total MR | Limitless as the Stars: Increase your total magic resistance by 20%. Additionally, gain 5% (+1% per 25 magic resistance) skill damage reduction, up to a maximum of 25%. |
@@ -275,6 +282,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Serpent's Fang** | 900G | +70 AD | Gain 15 Lethality.<br>Shield Reaver: Dealing damage to an enemy champion with a shield deals 85 + 15% of your Attack Damage as bonus physical damage. |
 | **Radiant Serylda's Grudge** | 1050G | +45 AD<br>+15 Ability Haste<br>+35% Armor Pen | Bitter Cold: Dealing Ability damage to an enemy at or below 50% maximum health applies a 30% slow for 1.5 seconds. |
 | **Radiant Shadowflame** | 900G | +105 AP<br>+15% Magic Pen | Cinderbloom: Your magic and true damage is 20% stronger against enemies below 40% maximum health. |
+| **Radiant Solstice Sleigh** | 750G | +300 HP<br>+5 HP Regen<br>+15 Ability Haste | Going Sledding: Immobilizing an enemy champion grants you and the most wounded allied champion within 100 range 20% bonus movement speed and 50 - 215 (based on level) bonus health for 2 seconds.<br>Shared Riches: Gain 4 gold every 5 seconds. |
 | **Radiant Spear of Shojin** | 1100G | +300 HP<br>+30 AD<br>+20 Ability Haste | Focused Will: Landing an Ability on an enemy champion grants 3% Attack Damage for 5 seconds (max 4 stacks). |
 | **Radiant Spirit Visage** | 950G | +300 HP<br>+75 MR | Vitality: Increase all healing received by 20%. |
 | **Radiant Staff of Flowing Water** | 750G | +150 HP<br>+2 HP Regen<br>+50 AP<br>+15 Ability Haste | Rapids: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target 25 Ability Power and 10 Ability Haste for 3 seconds. |
@@ -293,6 +301,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Warmog's Armor** | 1050G | +500 HP<br>+5 HP Regen | Warmog's Heart: Regenerate 3% of your maximum health every second and gain 4% movement speed if you have not taken damage in the last 6 seconds. |
 | **Radiant Wit's End** | 1000G | +65% AS<br>+65 MR<br>+30% Tenacity | Fray: Basic attacks deal 45 bonus magic damage. |
 | **Radiant Yun Tal Wildarrows** | 1100G | +40 AD<br>+50% AS | Practice Makes Lethal: Basic attacks grant 1% critical strike chance permanently, up to 25%.<br>Flurry: Every 15 seconds, your next basic attack grants 30% attack speed for 6 seconds. |
+| **Radiant Zaz'Zak's Realmspike** | 750G | +300 HP<br>+5 HP Regen | Void Explosion: Dealing ability damage to an enemy champion creates an explosion at their location after a 0.5 second delay, dealing 10 (+15% AP) (+3% of the target's max HP) magic damage to enemies hit (10 second cooldown).<br>Shared Riches: Gain 4 gold every 5 seconds. |
 | **Radiant Zeke's Convergence** | 750G | +150 HP<br>+30 Armor<br>+40 MR<br>+15 Ability Haste | Cryocombustion: Gain 15 Ultimate Ability Haste.<br>Frostfire Tempest: Upon casting your ultimate ability, summon a storm of flame and ice around you for 4 seconds. The storm deals 60 magic damage per second to nearby enemies and applies a 40% slow. |
 | **Radiant Zhonya's Hourglass** | 1050G | +80 AP<br>+50 Armor | Time Stop: Falling below 20% health puts you in stasis for 2.5 seconds. While in stasis, you are untargetable, invulnerable, and unable to act (120 second cooldown). |
 
