@@ -473,6 +473,28 @@ fn aims_at_allies(kit: &serde_json::Value) -> bool {
     }
 }
 
+/// The `.data_champion` effects that heal, shield or buff whoever the ability
+/// is applied to. `AddCasterBuff` is not one: it is the caster's own.
+const AID_EFFECTS: [&str; 4] = ["Heal", "Shield", "AddBuff", "AddStatScaledBuff"];
+
+/// Whether anything in this part of a `.data_champion` kit heals, shields or
+/// buffs someone other than its caster: one of [`AID_EFFECTS`] not marked for
+/// the caster (`heal_type` or `target` of `Caster`).
+fn shows_aid(kit: &serde_json::Value) -> bool {
+    match kit {
+        serde_json::Value::Object(fields) => {
+            let effect = fields.get("type").and_then(serde_json::Value::as_str);
+            let own = ["heal_type", "target"].iter().any(|name| {
+                fields.get(*name).and_then(serde_json::Value::as_str) == Some("Caster")
+            });
+            (effect.is_some_and(|effect| AID_EFFECTS.contains(&effect)) && !own)
+                || fields.values().any(shows_aid)
+        }
+        serde_json::Value::Array(items) => items.iter().any(shows_aid),
+        _ => false,
+    }
+}
+
 /// Champions other mods add, by id, from the `tags`, `category`, `attack.range`
 /// and abilities in their `.data_champion` files. Filled once by [`load_mod_champions`].
 static MOD_CHAMPIONS: OnceLock<HashMap<String, ChampionTraits>> = OnceLock::new();
@@ -573,12 +595,16 @@ fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
         taunt,
         other: other || native,
     });
-    // The same doubt over aiding allies: a basic ability aimed at one shows it,
-    // and native code may do it with nothing in the file to show.
+    // Aiding allies takes both: a basic ability aimed at one, and a heal, shield
+    // or buff in it. Aimed at an ally alone is not enough (another mod's Dummy
+    // sets a decoy down beside one, and was handed Dream Maker for it). The
+    // same doubt as above over native code, which may aid with nothing in the
+    // file to show: a kit that runs some and shows no aid is not known either
+    // way, so its `Heal` and `Shield` tags decide.
     let aids = ["skill", "skill2"]
         .iter()
         .filter_map(|part| file.rest.get(*part))
-        .any(aims_at_allies);
+        .any(|part| aims_at_allies(part) && shows_aid(part));
     let aids = (aids || !native).then_some(aids);
     let traits = ChampionTraits::from_flags(
         flags,
