@@ -64,11 +64,12 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
 - support items (except Protoplasm Harness and Zeke's Convergence) outside the support role
+- heal, shield and buff items (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on supports that don't heal, shield or buff allies
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
 - items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone). Champions from other mods are covered too.
 
-Every support starts on World Atlas: its build gets a World Atlas item as its first pick: Celestial Opposition for tanks, Dream Maker for supports that heal or shield, Solstice Sleigh for others that immobilize, Zaz'Zak's Realmspike for AP supports that only deal damage, and Bloodsong for the rest.
+Every support starts on World Atlas: its build gets a World Atlas item as its first pick: Dream Maker for supports that heal, shield or buff allies, Celestial Opposition for tanks, Solstice Sleigh for others that immobilize, Zaz'Zak's Realmspike for other AP supports, and Bloodsong for the rest. Supports that heal, shield or buff allies also get one of the heal, shield and buff items.
 
 It also sets the buy order: items that get stronger the longer you own them come first, and items that scale off the rest of the build come last.  
 

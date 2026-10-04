@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Twelve of them:
+//! Thirteen of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -80,15 +80,15 @@
 //!    role's starting item, and what it grows into ([`ATLAS_ITEMS`]) is to a
 //!    support what a jungle item is to a jungler: its build holds one, the one
 //!    for its champion, bought before everything else, so the match starts on
-//!    World Atlas and its gold. Celestial Opposition on a champion tagged
-//!    `Tank`, the one the enemy hits, which is what Blessing of the Mountain
-//!    answers to; else Dream Maker on one tagged `Heal` or `Shield`, whose
-//!    casts on allies are what blow its bubbles; else Solstice Sleigh on a
-//!    support whose kit
-//!    immobilizes, which is what Going Sledding pays off on (rule 10's test);
-//!    else Zaz'Zak's Realmspike on an AP champion that neither heals nor
-//!    shields, whose abilities are there to hurt, which is what Void Explosion
-//!    asks for; else Bloodsong, whose Spellblade any cast readies. The AI's
+//!    World Atlas and its gold. Dream Maker on a champion whose kit heals,
+//!    shields or buffs allies, whose casts on them are what blow its bubbles
+//!    (rule 13's test); else Celestial Opposition on a champion tagged `Tank`,
+//!    the one the enemy hits, which is what Blessing of the Mountain answers
+//!    to; else Solstice Sleigh on a support whose kit immobilizes, which is
+//!    what Going Sledding pays off on (rule 10's test); else Zaz'Zak's
+//!    Realmspike on an AP champion, whose abilities are there to hurt, which
+//!    is what Void Explosion asks for; else Bloodsong, whose Spellblade any
+//!    cast readies. The AI's
 //!    other Atlas items make way, all of them when the player pinned one. A
 //!    build with none, pinned or picked, has the AI's
 //!    last pick swapped for it, one that is not the role item rule 9 keeps
@@ -96,6 +96,19 @@
 //!    does not judge it, and rules 9 and 10 look past it, so the support item
 //!    they guarantee and Mandate's swap are what they were. Off the support
 //!    role it is a support item like any other (rule 4).
+//! 13. **Heal, shield and buff items for the champions that do that** — four
+//!    support items only answer to their carrier healing, shielding or
+//!    buffing an ally ([`ALLY_AID_ITEMS`]: Ardent Censer, Echoes of Helia,
+//!    Moonstone Renewer, Staff of Flowing Water). A support whose kit does
+//!    that with a basic ability holds one: with none in the build, and no
+//!    support item the player pinned, the AI's first support item that is
+//!    neither Mandate nor the Atlas one makes way for it, or its last pick
+//!    where there is none to spare. A support known not to never keeps one
+//!    the AI picked. What a kit does is read off the kit where it is known
+//!    (`ChampionTraits::aids_allies`), not off the `Heal` and `Shield` tags,
+//!    which a Vampire that heals only itself carries and a Bard that only
+//!    buffs does not. These items are for what the champion casts, not what
+//!    it scales with, so rule 5 does not judge them.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
@@ -225,7 +238,10 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
     }
     // Rule 12's item is every support's, whatever the champion scales with:
     // its stats are not what it is bought for, so rule 5 has no say over it.
-    if is_atlas_item(key) {
+    // Rule 13's items neither: they are for what the champion casts, and an
+    // AD support that shields an ally wants Ardent Censer whatever its ability
+    // power is worth to it.
+    if is_atlas_item(key) || is_ally_aid_item(key) {
         traits.physical = false;
         traits.magic = false;
     }
@@ -290,6 +306,9 @@ pub(crate) enum Reason {
     /// A World Atlas item in a build that already holds one.
     SecondAtlas,
     MandateWithoutCc,
+    /// An item that answers to healing, shielding or buffing an ally, on a
+    /// support whose kit does none of that.
+    AllyAidWithoutAid,
     Reach,
 }
 
@@ -300,7 +319,9 @@ impl Reason {
     /// it does not scale with, so for these two the stand-in is taken from the
     /// categories the rest of the build uses instead. Imperial Mandate on a
     /// support that cannot immobilize goes the same way: it is a support item,
-    /// so another support item stands in first. So does a jungler's wrong
+    /// so another support item stands in first, and an item that answers to
+    /// aiding allies on a support that aids none goes with it. So does a
+    /// jungler's wrong
     /// jungle item, for the same reason: its champion's own stands in first.
     /// A jungle item's category is otherwise an ordinary one (Grez's is a Mage
     /// item), so off the jungle, or as a build's second, its stand-in comes
@@ -318,6 +339,7 @@ impl Reason {
                 | Reason::AtlasMismatch
                 | Reason::SecondAtlas
                 | Reason::MandateWithoutCc
+                | Reason::AllyAidWithoutAid
         )
     }
 }
@@ -347,19 +369,22 @@ pub(crate) struct Fit {
     /// immobilize, who never keeps Mandate. `false` when the champion is
     /// unknown.
     no_mandate: bool,
-    /// Rule 12: whether this is a support whose World Atlas item is Zaz'Zak's
-    /// Realmspike: an AP champion that neither immobilizes (the Sleigh's) nor
-    /// heals or shields, so its abilities are there to deal damage.
-    realmspike: bool,
+    /// Rule 13: whether this is a support whose kit heals, shields or buffs
+    /// allies, who holds an item that answers to it. Rule 12 too: its World
+    /// Atlas item is Dream Maker, ahead of every other test.
+    ally_aid: bool,
+    /// Rule 13's other half: whether this is a support known not to aid
+    /// allies, who never keeps such an item. `false` when the champion is
+    /// unknown.
+    no_ally_aid: bool,
     /// Rule 12: whether this is a support whose World Atlas item is Celestial
     /// Opposition: a champion tagged `Tank`, the one the enemy hits. It comes
-    /// before the other tests.
+    /// after Dream Maker's test and before the other two.
     celestial: bool,
-    /// Rule 12: whether this is a support whose World Atlas item is Dream
-    /// Maker: a champion tagged `Heal` or `Shield`, whose casts on allies are
-    /// what blow its bubbles. It comes after the tank's test and before the
-    /// rest.
-    dream: bool,
+    /// Rule 12: whether this is a support whose World Atlas item is Zaz'Zak's
+    /// Realmspike: an AP champion none of the tests before it took, so its
+    /// abilities are there to deal damage.
+    realmspike: bool,
     /// Rule 11: whether the champion attacks from range, `None` when unknown.
     ranged: Option<bool>,
 }
@@ -382,12 +407,11 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
             && traits.is_some_and(|traits| traits.tank && traits.ranged != Some(true)),
         mandate: role == Role::Support && traits.is_some_and(|traits| traits.can_immobilize()),
         no_mandate: role == Role::Support && traits.is_some_and(|traits| !traits.can_immobilize()),
-        realmspike: role == Role::Support
-            && traits.is_some_and(|traits| {
-                traits.scaling == Some(Scaling::Ap) && !traits.sustains && !traits.can_immobilize()
-            }),
+        ally_aid: role == Role::Support && traits.is_some_and(|traits| traits.aids_allies()),
+        no_ally_aid: role == Role::Support && traits.is_some_and(|traits| !traits.aids_allies()),
         celestial: role == Role::Support && traits.is_some_and(|traits| traits.tank),
-        dream: role == Role::Support && traits.is_some_and(|traits| traits.sustains),
+        realmspike: role == Role::Support
+            && traits.is_some_and(|traits| traits.scaling == Some(Scaling::Ap)),
         ranged: traits.and_then(|traits| traits.ranged),
     }
 }
@@ -449,15 +473,15 @@ impl Fit {
     }
 
     /// Rule 12, for a support: the World Atlas item its champion builds —
-    /// Celestial Opposition for a tank, else Dream Maker when it heals or
-    /// shields, else Solstice Sleigh when its kit immobilizes, else Zaz'Zak's
-    /// Realmspike when it is an AP champion that only deals damage, Bloodsong
-    /// for the rest and for a champion nothing is known about.
+    /// Dream Maker when its kit aids allies, else Celestial Opposition for a
+    /// tank, else Solstice Sleigh when its kit immobilizes, else Zaz'Zak's
+    /// Realmspike for an AP champion, Bloodsong for the rest and for a
+    /// champion nothing is known about.
     fn atlas_item(&self) -> &'static str {
-        if self.celestial {
-            CELESTIAL_OPPOSITION
-        } else if self.dream {
+        if self.ally_aid {
             DREAM_MAKER
+        } else if self.celestial {
+            CELESTIAL_OPPOSITION
         } else if self.mandate {
             SOLSTICE_SLEIGH
         } else if self.realmspike {
@@ -627,6 +651,21 @@ fn is_mandate(key: &str) -> bool {
     crate::build_config::base_slug(key) == "imperial_mandate"
 }
 
+/// Rule 13: the items whose passive only answers to the carrier healing,
+/// shielding or buffing an ally. By base slug, so the radiant tier follows.
+/// Dream Maker is one too, and rule 12 hands that out.
+const ALLY_AID_ITEMS: [&str; 4] = [
+    "ardent_censer",          // Sanctify, on healing, shielding or buffing an ally
+    "echoes_of_helia",        // Soul Siphon spends its charges on the same
+    "moonstone_renewer",      // Starlit Grace chains a heal given to an ally
+    "staff_of_flowing_water", // Rapids, on healing, shielding or buffing an ally
+];
+
+/// Whether `key` is one of [`ALLY_AID_ITEMS`], base or radiant.
+fn is_ally_aid_item(key: &str) -> bool {
+    ALLY_AID_ITEMS.contains(&crate::build_config::base_slug(key))
+}
+
 /// Rule 12: what World Atlas grows into, the support role's own item line. By
 /// base slug, so the radiant tier follows. Which of them a support builds is
 /// [`Fit::atlas_item`]'s to say: a new one needs a place there.
@@ -778,6 +817,8 @@ impl Budget {
             Some(Reason::AtlasMismatch)
         } else if self.fit.no_mandate && is_mandate(key) {
             Some(Reason::MandateWithoutCc)
+        } else if self.fit.no_ally_aid && is_ally_aid_item(key) {
+            Some(Reason::AllyAidWithoutAid)
         } else if self.fit.mismatches(&traits) {
             Some(Reason::Scaling)
         } else if self.fit.out_of_reach(key) {
@@ -802,7 +843,7 @@ impl Budget {
     }
 
     /// Whether `key` is an item this champion may hold at all — rules 4, 5, 8,
-    /// 10 and 11, which do not depend on what else is in the build (rule 8's
+    /// 10, 11 and 13, which do not depend on what else is in the build (rule 8's
     /// one-to-a-build half does, and is left out). An item that fails is no
     /// guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
@@ -811,6 +852,7 @@ impl Budget {
             && !self.fit.other_jungle_item(key)
             && !self.fit.other_atlas_item(key)
             && !(self.fit.no_mandate && is_mandate(key))
+            && !(self.fit.no_ally_aid && is_ally_aid_item(key))
             && !self.fit.mismatches(&self.table.traits(key))
             && !self.fit.out_of_reach(key)
     }
@@ -872,6 +914,11 @@ impl Budget {
 /// Mandate, and no support item the player pinned, has the AI's first support
 /// item (preferring one only supports may build) swapped for Mandate, held to
 /// the other rules the same way.
+///
+/// Then rule 13: a support whose kit aids allies and whose build has no item
+/// that answers to it, and no support item the player pinned, has one swapped
+/// in the same way: over the AI's first support item that is neither Mandate
+/// nor the Atlas one, or over its last pick where there is none to spare.
 ///
 /// Last, rule 6 reorders the AI's slots among themselves: the role's own items
 /// first (rule 9), then early items, late items last, and the engine's order
@@ -1148,6 +1195,48 @@ pub(crate) fn enforce<C, K, G, F>(
             });
             if let Some(mandate) = mandate {
                 build[slot] = mandate;
+            }
+        }
+    }
+
+    // Rule 13. After rules 9 and 10, so it only decides which support item:
+    // the AI's first that is neither Mandate nor the Atlas one makes way, and
+    // where the build has none to spare (rule 10 took the only one for
+    // Mandate) its last pick does. A pinned support item rules it out, as it
+    // does Mandate.
+    let has_ally_aid = build
+        .iter()
+        .chain(reserved)
+        .any(|&index| holds(index, is_ally_aid_item));
+    if fit.ally_aid && !has_ally_aid && !pinned_support {
+        let spare = (0..build.len()).find(|&slot| {
+            !is_pinned(slot)
+                && key(build[slot])
+                    .is_some_and(|key| is_other_support_class(&key) && !is_mandate(&key))
+        });
+        let last_pick = || {
+            (0..build.len()).rev().find(|&slot| {
+                !is_pinned(slot)
+                    && !key(build[slot]).is_some_and(|key| {
+                        is_boots(&key) || fit.is_atlas_pick(&key) || is_mandate(&key)
+                    })
+            })
+        };
+        if let Some(slot) = spare.or_else(last_pick) {
+            let offender = build[slot];
+            let rest = budget_without(build, slot);
+            let aid_item = (1..count)
+                .map(|step| (offender + step) % count)
+                .find(|&candidate| {
+                    is_final(candidate)
+                        && !build.contains(&candidate)
+                        && !reserved.contains(&candidate)
+                        && key(candidate).is_some_and(|candidate| {
+                            is_ally_aid_item(&candidate) && rest.rejects(&candidate).is_none()
+                        })
+                });
+            if let Some(aid_item) = aid_item {
+                build[slot] = aid_item;
             }
         }
     }

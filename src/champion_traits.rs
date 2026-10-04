@@ -100,8 +100,14 @@ pub(crate) struct ChampionTraits {
     pub class: Option<Class>,
     /// Tagged `Tank`.
     pub tank: bool,
-    /// Tagged `Heal` or `Shield`: it keeps allies alive.
+    /// Tagged `Heal` or `Shield`. The tags do not say whom: a Vampire's healing
+    /// is all its own.
     pub sustains: bool,
+    /// Whether a basic ability of its kit heals, shields or buffs an ally,
+    /// which is what the items that answer to that need. Narrower than
+    /// `sustains` (the Vampire) and wider (a Bard only buffs). `None` when
+    /// only the tags are known.
+    pub aids: Option<bool>,
     /// Tagged `CC`: its kit slows, stuns or otherwise holds enemies.
     pub cc: bool,
     /// What its abilities immobilize with, which is narrower than `cc`. `None`
@@ -114,18 +120,21 @@ pub(crate) struct ChampionTraits {
 
 impl ChampionTraits {
     /// `attack_range` is the reach of the basic attack in world units, where
-    /// the source states one, and `immobilize` what its kit says about that.
+    /// the source states one, `immobilize` what its kit says about that, and
+    /// `aids` whether it says the kit aids allies.
     fn from_flags(
         flags: u8,
         class: Option<Class>,
         attack_range: Option<usize>,
         immobilize: Option<Immobilize>,
+        aids: Option<bool>,
     ) -> Self {
         Self {
             scaling: scaling_of(flags & AD != 0, flags & AP != 0),
             class,
             tank: flags & TANK != 0,
             sustains: flags & (HEAL | SHIELD) != 0,
+            aids,
             cc: flags & CC != 0,
             immobilize,
             ranged: ranged_of(attack_range, flags & RANGE != 0, flags & MELEE != 0, class),
@@ -137,6 +146,13 @@ impl ChampionTraits {
     pub(crate) fn can_immobilize(&self) -> bool {
         self.immobilize
             .map_or(self.cc, |immobilize| immobilize.taunt || immobilize.other)
+    }
+
+    /// Whether the kit can set off the items that answer to healing, shielding
+    /// or buffing an ally: what the kit itself says where it is known, else
+    /// the `Heal` and `Shield` tags.
+    pub(crate) fn aids_allies(&self) -> bool {
+        self.aids.unwrap_or(self.sustains)
     }
 }
 
@@ -339,6 +355,29 @@ const VANILLA_IMMOBILIZERS: &[&str] = &[
     "wind_mage",
 ];
 
+/// The base game's champions with a basic ability that heals, shields or
+/// buffs an ally ([`ChampionTraits::aids`]), read off each kit's skill text
+/// (0.6.2). Not the `Heal` and `Shield` tags: Vampire, Werewolf and Dokkaebi
+/// carry one for what they do to themselves, and Bard, Enchanter, Exorcist
+/// and Plague Doctor aid allies all day with neither. An ultimate alone does
+/// not count (Android's shield, Strongman's throw, Knight's ward): the items
+/// this is for want it done every few seconds. Sorted, for the binary
+/// search.
+const VANILLA_ALLY_AIDS: &[&str] = &[
+    "bard",
+    "barrier_magician",
+    "chef",
+    "enchanter",
+    "exorcist",
+    "guardian_spirit",
+    "monk",
+    "plague_doctor",
+    "priest",
+    "pythoness",
+    "shield_bearer",
+    "spirit_caller",
+];
+
 /// How a `.data_champion` kit spells one kind of crowd control: the effect
 /// types that apply it, and the parameters a `Native` effect borrowed from the
 /// base game names it by.
@@ -413,6 +452,23 @@ fn runs_native_code(kit: &serde_json::Value) -> bool {
                 || fields.values().any(runs_native_code)
         }
         serde_json::Value::Array(items) => items.iter().any(runs_native_code),
+        _ => false,
+    }
+}
+
+/// Whether this part of a `.data_champion` kit is aimed at, or applied to, an
+/// ally other than its caster: a `casting_target`, `applied_target` or
+/// `target` that names allies. `AllyOnlySelf` is the caster alone.
+fn aims_at_allies(kit: &serde_json::Value) -> bool {
+    const TARGETS: [&str; 3] = ["casting_target", "applied_target", "target"];
+    match kit {
+        serde_json::Value::Object(fields) => fields.iter().any(|(name, value)| {
+            let allies = value
+                .as_str()
+                .is_some_and(|target| target.starts_with("Ally") && target != "AllyOnlySelf");
+            (allies && TARGETS.contains(&name.as_str())) || aims_at_allies(value)
+        }),
+        serde_json::Value::Array(items) => items.iter().any(aims_at_allies),
         _ => false,
     }
 }
@@ -517,11 +573,19 @@ fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
         taunt,
         other: other || native,
     });
+    // The same doubt over aiding allies: a basic ability aimed at one shows it,
+    // and native code may do it with nothing in the file to show.
+    let aids = ["skill", "skill2"]
+        .iter()
+        .filter_map(|part| file.rest.get(*part))
+        .any(aims_at_allies);
+    let aids = (aids || !native).then_some(aids);
     let traits = ChampionTraits::from_flags(
         flags,
         Class::from_name(&file.category),
         attack_range,
         immobilize,
+        aids,
     );
     Some((file.id, traits))
 }
@@ -602,7 +666,14 @@ fn vanilla(champion: &str) -> Option<ChampionTraits> {
                 taunt: VANILLA_TAUNTERS.binary_search(&champion).is_ok(),
                 other: VANILLA_IMMOBILIZERS.binary_search(&champion).is_ok(),
             };
-            ChampionTraits::from_flags(flags, Some(class), Some(attack_range), Some(immobilize))
+            let aids = VANILLA_ALLY_AIDS.binary_search(&champion).is_ok();
+            ChampionTraits::from_flags(
+                flags,
+                Some(class),
+                Some(attack_range),
+                Some(immobilize),
+                Some(aids),
+            )
         })
 }
 
@@ -651,9 +722,10 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
                     tank: has(ChampionTagV1::Tank),
                     sustains: has(ChampionTagV1::Heal) || has(ChampionTagV1::Shield),
                     cc: has(ChampionTagV1::Cc),
-                    // The brief says neither what the kit immobilizes with nor
-                    // how far the attack reaches, so the fallbacks' answers
-                    // stand where they have one.
+                    // The brief says neither what the kit immobilizes with, nor
+                    // whether it aids allies, nor how far the attack reaches, so
+                    // the fallbacks' answers stand where they have one.
+                    aids: fallback(&key).and_then(|known| known.aids),
                     immobilize: fallback(&key).and_then(|known| known.immobilize),
                     ranged: fallback(&key).and_then(|known| known.ranged).or_else(|| {
                         let (range, melee) = (ChampionTagV1::Range, ChampionTagV1::Melee);
