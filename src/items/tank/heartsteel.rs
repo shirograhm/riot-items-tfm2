@@ -4,7 +4,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, refresh_buff, size_percent, ticks, upgrade_carry, ItemMeta,
+    apply_config, percent_of, refresh_buff, size_percent, ticks, upgrade_carry, Elapsed, ItemMeta,
     ProcQueue, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
 };
 
@@ -95,6 +95,9 @@ pub struct Heartsteel {
     /// it across a respawn, their champion entity may not.
     targets: HashMap<usize, Target>,
     procs: ProcQueue,
+    /// Steps every enemy's cooldown by the time gone by, so they run through
+    /// the carrier's death.
+    clock: Elapsed,
 }
 
 impl Heartsteel {
@@ -125,6 +128,7 @@ impl Heartsteel {
             size_percent: 0,
             targets: HashMap::new(),
             procs: ProcQueue::new(),
+            clock: Elapsed::default(),
         }
     }
 
@@ -364,6 +368,9 @@ impl StableItem for Heartsteel {
     /// size in step with the carrier's health, then builds, drops and cools
     /// down every enemy champion's stages.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        // One tick, or the whole of a death on the first update after it: no
+        // `update` runs for a dead carrier, and the cooldowns are to keep running.
+        let gone = self.clock.since_last(ctx);
         self.carry_bonus_hp(ctx, player);
         self.procs.update(ctx, player);
 
@@ -405,7 +412,7 @@ impl StableItem for Heartsteel {
         for (id, entity, alive) in enemies {
             let target = self.targets.entry(id).or_default();
             target.entity = entity;
-            target.cooldown = target.cooldown.saturating_sub(1);
+            target.cooldown = target.cooldown.saturating_sub(gone);
             // Death on either side clears every stage.
             let Some(carrier_id) = carrier.filter(|_| alive) else {
                 set_stage(ctx, target, 0);

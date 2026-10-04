@@ -208,6 +208,10 @@ impl StableItem for DreamMaker {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.self_cast.close();
+        // A bubble still out when the carrier died ended long ago. Left
+        // standing it would run out its time after the respawn (no `update`
+        // runs for a dead carrier) and only then start the cooldown.
+        self.bubble = 0;
         self.cooldown = 0;
     }
 

@@ -162,8 +162,8 @@ impl ZazzaksRealmspike {
             return;
         }
 
-        // A marked spot outlives its carrier: it goes off all the same, with
-        // the ability power the carrier has by then.
+        // With the ability power the carrier has as the spot goes off, not as
+        // it was marked.
         let Some((carrier, team, ability_power)) = ctx
             .get_player(player)
             .and_then(|p| p.champion())
@@ -244,6 +244,9 @@ impl StableItem for ZazzaksRealmspike {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.cooldown = 0;
+        // A spot still waiting when the carrier died: no `update` ran to set
+        // it off, and it is not left to go off after the respawn.
+        self.blasts.clear();
     }
 
     /// Void Explosion's trigger: ability damage to an enemy champion, off

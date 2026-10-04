@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta};
+use crate::{apply_config, percent_of, refresh_buff, ticks, Elapsed, ItemMeta};
 
 /// Opening Barrage's attack speed. The base item and its Radiant share the
 /// name, so an upgrade mid-window replaces it rather than stacking a second one.
@@ -25,6 +25,8 @@ pub struct FiendhunterBolts {
     window_ticks: usize,
     empowered_attacks: usize,
     cooldown_ticks: usize,
+    /// Steps the cooldown by the time gone by, so it runs through a death.
+    clock: Elapsed,
 }
 
 impl FiendhunterBolts {
@@ -51,6 +53,7 @@ impl FiendhunterBolts {
             window_ticks: 0,
             empowered_attacks: 0,
             cooldown_ticks: 0,
+            clock: Elapsed::default(),
         }
     }
 
@@ -159,7 +162,10 @@ impl StableItem for FiendhunterBolts {
     // two ticks, the same reading Zeke's Convergence uses; the first reading
     // after a spawn is only a baseline.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        self.cooldown_ticks = self.cooldown_ticks.saturating_sub(1);
+        // By the time gone by, not by one: no `update` runs for a dead carrier,
+        // and the cooldown is to keep running through the death.
+        let gone = self.clock.since_last(ctx);
+        self.cooldown_ticks = self.cooldown_ticks.saturating_sub(gone);
         self.window_ticks = self.window_ticks.saturating_sub(1);
         if self.window_ticks == 0 {
             self.empowered_attacks = 0;

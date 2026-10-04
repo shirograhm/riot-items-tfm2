@@ -16,6 +16,7 @@ mod vfx;
 use items::*;
 
 pub(crate) use utils::constants::*;
+pub(crate) use utils::elapsed::Elapsed;
 pub(crate) use utils::heal_watch::{HealWatch, SelfCastWatch};
 pub(crate) use utils::immobilize_watch::ImmobilizeWatch;
 pub(crate) use utils::item_meta::ItemMeta;
