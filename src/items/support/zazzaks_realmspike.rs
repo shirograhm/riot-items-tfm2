@@ -1,11 +1,11 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ticks, ItemMeta, SharedRiches, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, percent_of, ticks, ItemMeta, DISTANCE_UNITS_PER_RANGE};
 
 /// Zaz'Zak's Realmspike — what World Atlas grows into for a support that
 /// fights with its abilities: Void Explosion, and the gold the Atlas line pays
-/// ([`SharedRiches`]).
+/// ([`crate::SharedRiches`]).
 ///
 /// # Void Explosion
 ///
@@ -37,7 +37,6 @@ pub struct ZazzaksRealmspike {
     cooldown: usize,
     /// Every spot this carrier has marked that has yet to go off.
     blasts: Vec<Blast>,
-    riches: SharedRiches,
 }
 
 /// The spot gathering, played once as it is marked, and the blast, played as
@@ -78,7 +77,6 @@ impl ZazzaksRealmspike {
             // Non-vital stats (internals)
             cooldown: 0,
             blasts: Vec::new(),
-            riches: SharedRiches::default(),
         }
     }
 
@@ -193,6 +191,12 @@ impl ZazzaksRealmspike {
             }
         }
     }
+
+    /// What Shared Riches pays a holder: this much gold, this often.
+    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    pub(crate) fn shared_riches(&self) -> (usize, f64) {
+        (self.effect_bonus_gold, self.effect_gold_interval_seconds)
+    }
 }
 
 impl Default for ZazzaksRealmspike {
@@ -277,16 +281,10 @@ impl StableItem for ZazzaksRealmspike {
         ctx.play_view_effect(GATHER_EFFECT, caster, &InputTargetV1::pos(x, y), 0, 0, 0);
     }
 
-    /// Runs the cooldown and the marked spots, and pays Shared Riches.
+    /// Runs the cooldown and the marked spots.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.cooldown = self.cooldown.saturating_sub(1);
         self.run_blasts(ctx, player);
-        self.riches.update(
-            ctx,
-            player,
-            self.effect_bonus_gold,
-            self.effect_gold_interval_seconds,
-        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

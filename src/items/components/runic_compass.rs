@@ -1,11 +1,10 @@
 use crate::apply_config;
 use crate::config::ItemConfig;
-use crate::SharedRiches;
 use mod_api_stable::*;
 
 /// Runic Compass — World Atlas's upgrade, and the last step before a finished
 /// support item: health on top of the regen, and the gold comes in faster
-/// ([`SharedRiches`]). It grows into every finished item of the World Atlas
+/// ([`crate::SharedRiches`]). It grows into every finished item of the World Atlas
 /// line.
 #[derive(Clone, Debug)]
 pub struct RunicCompass {
@@ -14,8 +13,6 @@ pub struct RunicCompass {
     hp_regen: i32,
     effect_bonus_gold: usize,
     effect_gold_interval_seconds: f64,
-    // Non-vital stats (internals)
-    riches: SharedRiches,
 }
 
 impl Default for RunicCompass {
@@ -26,8 +23,6 @@ impl Default for RunicCompass {
             hp_regen: 3,
             effect_bonus_gold: 3,
             effect_gold_interval_seconds: 5.0,
-            // Non-vital stats (internals)
-            riches: SharedRiches::default(),
         }
     }
 }
@@ -47,6 +42,12 @@ impl RunicCompass {
             ]
         );
         item
+    }
+
+    /// What Shared Riches pays a holder: this much gold, this often.
+    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    pub(crate) fn shared_riches(&self) -> (usize, f64) {
+        (self.effect_bonus_gold, self.effect_gold_interval_seconds)
     }
 }
 
@@ -91,15 +92,6 @@ impl StableItem for RunicCompass {
             hp_regen: self.hp_regen,
             ..Default::default()
         }
-    }
-
-    fn update(&mut self, sim: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        self.riches.update(
-            sim,
-            player,
-            self.effect_bonus_gold,
-            self.effect_gold_interval_seconds,
-        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

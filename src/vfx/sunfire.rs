@@ -156,11 +156,13 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
     }
 }
 
-/// The mod's one match hook: Immolate while the match runs, then the
-/// end-of-match item capture.
+/// The mod's one match hook: Immolate and Shared Riches while the match runs,
+/// then the end-of-match item capture.
 pub(crate) struct MatchHooks {
     pub(crate) immolate: Immolate,
     pub(crate) radiant_immolate: Immolate,
+    /// The World Atlas line's gold, which keeps coming while its carrier is dead.
+    pub(crate) riches: crate::SharedRiches,
 }
 
 impl StableMatchHook for MatchHooks {
@@ -171,6 +173,7 @@ impl StableMatchHook for MatchHooks {
     fn on_match_tick(&self, sim: &mut StableSim<'_>, rng_seed: u64) {
         if !sim.is_end() {
             immolate(sim, &self.immolate, &self.radiant_immolate);
+            self.riches.pay(sim);
         }
         crate::item_stats::sim::EndOfMatchItems.on_match_tick(sim, rng_seed);
     }

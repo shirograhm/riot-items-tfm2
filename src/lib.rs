@@ -255,6 +255,10 @@ fn init(host: &StableHost) -> StableMod {
 
     tactics::driver::on_mod_init();
 
+    // What each World Atlas item pays its holder (Shared Riches), noted as the
+    // items register below and handed to the match hook, which does the paying.
+    let mut riches = SharedRiches::default();
+
     // Both macros note the key as they go, for the item catalog to name and draw.
     // Registration order used to matter: the numeric `items` on a match record were
     // decoded by it. Nothing reads them that way now — loadouts come from the
@@ -264,7 +268,14 @@ fn init(host: &StableHost) -> StableMod {
     // Smart Builds counts it at full stacks on top of the flat stat.
     // The `, boots` arm is for upgraded boots: tier-3 items that are build goals
     // of their own, so the editor's picker lists them beside the radiants.
+    // The `, shared_riches` arm is for the World Atlas line: its gold is paid
+    // from the match hook, at the rate the item was configured with.
     macro_rules! configured {
+        ($key:literal => $T:ty, shared_riches) => {{
+            let item = configured!($key => $T);
+            riches.add($key, item.shared_riches());
+            item
+        }};
         ($key:literal => $T:ty, boots) => {{
             let item = configured!($key => $T);
             strategy_ui::note_final_item($key, StableItem::category(&item));
@@ -283,6 +294,11 @@ fn init(host: &StableHost) -> StableMod {
         }};
     }
     macro_rules! configured_radiant {
+        ($key:literal => $T:ty, shared_riches) => {{
+            let item = configured_radiant!($key => $T);
+            riches.add($key, item.shared_riches());
+            item
+        }};
         ($key:literal => $T:ty, passive_crit) => {{
             let item = configured_radiant!($key => $T);
             smart_builds::note_passive_crit($key, item.max_passive_crit());
@@ -303,13 +319,13 @@ fn init(host: &StableHost) -> StableMod {
     // Tier 1
     reg.add_item(configured!("boots" => Boots));
     reg.add_item(configured!("glowing_mote" => GlowingMote));
-    reg.add_item(configured!("world_atlas" => WorldAtlas));
+    reg.add_item(configured!("world_atlas" => WorldAtlas, shared_riches));
 
     // Tier 2
     reg.add_item(configured!("executioners_calling" => ExecutionersCalling));
     reg.add_item(configured!("fated_ashes" => FatedAshes));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
-    reg.add_item(configured!("runic_compass" => RunicCompass));
+    reg.add_item(configured!("runic_compass" => RunicCompass, shared_riches));
     reg.add_item(configured!("sheen" => Sheen));
 
     // Tier 3
@@ -356,8 +372,8 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
-    reg.add_item(configured!("bloodsong" => Bloodsong));
-    reg.add_item(configured!("celestial_opposition" => CelestialOpposition));
+    reg.add_item(configured!("bloodsong" => Bloodsong, shared_riches));
+    reg.add_item(configured!("celestial_opposition" => CelestialOpposition, shared_riches));
     reg.add_item(configured!("chempunk_chainsword" => ChempunkChainsword));
     reg.add_item(configured!("chemtech_putrifier" => ChemtechPutrifier));
     reg.add_item(configured!("cloak_of_starry_night" => CloakOfStarryNight));
@@ -367,7 +383,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
     reg.add_item(configured!("diamond_tipped_spear" => DiamondTippedSpear));
-    reg.add_item(configured!("dream_maker" => DreamMaker));
+    reg.add_item(configured!("dream_maker" => DreamMaker, shared_riches));
     reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("eclipse" => Eclipse));
@@ -420,7 +436,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
     reg.add_item(configured!("seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured!("shadowflame" => Shadowflame));
-    reg.add_item(configured!("solstice_sleigh" => SolsticeSleigh));
+    reg.add_item(configured!("solstice_sleigh" => SolsticeSleigh, shared_riches));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
     reg.add_item(configured!("staff_of_flowing_water" => StaffOfFlowingWater));
@@ -439,7 +455,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("wits_end" => WitsEnd));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
-    reg.add_item(configured!("zazzaks_realmspike" => ZazzaksRealmspike));
+    reg.add_item(configured!("zazzaks_realmspike" => ZazzaksRealmspike, shared_riches));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
     reg.add_item(configured!("zhonyas_hourglass" => ZhonyasHourglass));
 
@@ -455,8 +471,10 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_blackfire_torch" => BlackfireTorch));
     reg.add_item(configured_radiant!("radiant_blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured_radiant!("radiant_bloodletters_curse" => BloodlettersCurse));
-    reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong));
-    reg.add_item(configured_radiant!("radiant_celestial_opposition" => CelestialOpposition));
+    reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong, shared_riches));
+    reg.add_item(
+        configured_radiant!("radiant_celestial_opposition" => CelestialOpposition, shared_riches),
+    );
     reg.add_item(configured_radiant!("radiant_chempunk_chainsword" => ChempunkChainsword));
     reg.add_item(configured_radiant!("radiant_chemtech_putrifier" => ChemtechPutrifier));
     reg.add_item(configured_radiant!("radiant_cloak_of_starry_night" => CloakOfStarryNight));
@@ -466,7 +484,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
     reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));
     reg.add_item(configured_radiant!("radiant_diamond_tipped_spear" => DiamondTippedSpear));
-    reg.add_item(configured_radiant!("radiant_dream_maker" => DreamMaker));
+    reg.add_item(configured_radiant!("radiant_dream_maker" => DreamMaker, shared_riches));
     reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured_radiant!("radiant_eclipse" => Eclipse));
@@ -519,7 +537,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
     reg.add_item(configured_radiant!("radiant_seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
-    reg.add_item(configured_radiant!("radiant_solstice_sleigh" => SolsticeSleigh));
+    reg.add_item(configured_radiant!("radiant_solstice_sleigh" => SolsticeSleigh, shared_riches));
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
     reg.add_item(configured_radiant!("radiant_staff_of_flowing_water" => StaffOfFlowingWater));
@@ -540,7 +558,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(
         configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit),
     );
-    reg.add_item(configured_radiant!("radiant_zazzaks_realmspike" => ZazzaksRealmspike));
+    reg.add_item(
+        configured_radiant!("radiant_zazzaks_realmspike" => ZazzaksRealmspike, shared_riches),
+    );
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
     reg.add_item(configured_radiant!("radiant_zhonyas_hourglass" => ZhonyasHourglass));
 
@@ -598,7 +618,9 @@ fn init(host: &StableHost) -> StableMod {
     // Records only keep the build a match was *assigned*; this reads what each
     // champion actually finished holding, off the simulation's last tick. The
     // same hook runs Immolate for the vanilla Sunfire Cape, and the minion and
-    // monster bonus the engine's Radiant Sunfire Cape burn does not have.
+    // monster bonus the engine's Radiant Sunfire Cape burn does not have. It
+    // also pays Shared Riches, which an item's own `update` cannot do for a
+    // dead carrier.
     reg.set_match_hook(sunfire::MatchHooks {
         immolate: configs
             .get("sunfire_cape")
@@ -608,6 +630,7 @@ fn init(host: &StableHost) -> StableMod {
             .get("radiant_sunfire_cape")
             .map(sunfire::Immolate::with_config)
             .unwrap_or_default(),
+        riches,
     });
     reg.set_server_extension(NativeTapExtension);
 

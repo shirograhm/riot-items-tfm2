@@ -1,11 +1,11 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, SharedRiches, Spellblade};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade};
 
 /// Bloodsong — what World Atlas grows into, by way of Runic Compass:
 /// Spellblade, a mark that makes its target take more damage, and the gold
-/// the Atlas line pays ([`SharedRiches`]).
+/// the Atlas line pays ([`crate::SharedRiches`]).
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
     meta: ItemMeta,
@@ -22,7 +22,6 @@ pub struct Bloodsong {
     effect_gold_interval_seconds: f64,
     spellblade: Spellblade,
     procs: ProcQueue,
-    riches: SharedRiches,
 }
 
 impl Bloodsong {
@@ -43,7 +42,6 @@ impl Bloodsong {
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
             procs: ProcQueue::new(),
-            riches: SharedRiches::default(),
         }
     }
 
@@ -96,6 +94,12 @@ impl Bloodsong {
             / 11.0)
             .round() as usize;
         self.effect_min_bonus_damage + level.saturating_sub(1) * per_level
+    }
+
+    /// What Shared Riches pays a holder: this much gold, this often.
+    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    pub(crate) fn shared_riches(&self) -> (usize, f64) {
+        (self.effect_bonus_gold, self.effect_gold_interval_seconds)
     }
 }
 
@@ -189,17 +193,11 @@ impl StableItem for Bloodsong {
         );
     }
 
-    /// Lands the Spellblade damage whose delay has run out, watches for the
-    /// cast that readies the next one, and pays Shared Riches.
+    /// Lands the Spellblade damage whose delay has run out, and watches for the
+    /// cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);
-        self.riches.update(
-            ctx,
-            player,
-            self.effect_bonus_gold,
-            self.effect_gold_interval_seconds,
-        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

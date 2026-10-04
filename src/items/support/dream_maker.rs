@@ -1,14 +1,11 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, refresh_buff, ticks, ItemMeta, SelfCastWatch, SharedRiches,
-    ADAPTIVE_FORCE_AD_RATIO,
-};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, SelfCastWatch, ADAPTIVE_FORCE_AD_RATIO};
 
 /// Dream Maker — what World Atlas grows into for a support that keeps its
 /// allies up: the passive it is named for, and the gold the Atlas line pays
-/// ([`SharedRiches`]).
+/// ([`crate::SharedRiches`]).
 ///
 /// # Dream Maker
 ///
@@ -48,7 +45,6 @@ pub struct DreamMaker {
     /// Ticks until another can be blown, counted from when the last one ended.
     cooldown: usize,
     self_cast: SelfCastWatch,
-    riches: SharedRiches,
 }
 
 /// The Dream Bubble: the buff that carries what it grants. It is also the name
@@ -73,7 +69,6 @@ impl DreamMaker {
             bubble: 0,
             cooldown: 0,
             self_cast: SelfCastWatch::default(),
-            riches: SharedRiches::default(),
         }
     }
 
@@ -160,6 +155,12 @@ impl DreamMaker {
         );
         true
     }
+
+    /// What Shared Riches pays a holder: this much gold, this often.
+    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    pub(crate) fn shared_riches(&self) -> (usize, f64) {
+        (self.effect_bonus_gold, self.effect_gold_interval_seconds)
+    }
 }
 
 impl Default for DreamMaker {
@@ -235,7 +236,7 @@ impl StableItem for DreamMaker {
     }
 
     /// Runs the bubble's time and the cooldown that starts as it ends, and the
-    /// watch on a self-cast, and pays Shared Riches.
+    /// watch on a self-cast.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         if self.bubble > 0 {
             self.bubble -= 1;
@@ -261,12 +262,6 @@ impl StableItem for DreamMaker {
                 self.blow_to(ctx, ally);
             }
         }
-        self.riches.update(
-            ctx,
-            player,
-            self.effect_bonus_gold,
-            self.effect_gold_interval_seconds,
-        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

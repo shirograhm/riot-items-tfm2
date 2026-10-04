@@ -1,11 +1,11 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, sized_range, ticks, ItemMeta, SharedRiches};
+use crate::{apply_config, refresh_buff, sized_range, ticks, ItemMeta};
 
 /// Celestial Opposition — what World Atlas grows into for a support that
 /// stands in front and is hit: Blessing of the Mountain, and the gold the
-/// Atlas line pays ([`SharedRiches`]).
+/// Atlas line pays ([`crate::SharedRiches`]).
 ///
 /// # Blessing of the Mountain
 ///
@@ -36,7 +36,6 @@ pub struct CelestialOpposition {
     blessed: usize,
     /// Ticks until Blessing of the Mountain can come on again.
     cooldown: usize,
-    riches: SharedRiches,
 }
 
 /// Blessed: the cut in damage taken, and the name the `view_buffs` binding in
@@ -74,7 +73,6 @@ impl CelestialOpposition {
             // Non-vital stats (internals)
             blessed: 0,
             cooldown: 0,
-            riches: SharedRiches::default(),
         }
     }
 
@@ -176,6 +174,12 @@ impl CelestialOpposition {
             0,
         );
     }
+
+    /// What Shared Riches pays a holder: this much gold, this often.
+    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    pub(crate) fn shared_riches(&self) -> (usize, f64) {
+        (self.effect_bonus_gold, self.effect_gold_interval_seconds)
+    }
 }
 
 impl Default for CelestialOpposition {
@@ -269,18 +273,12 @@ impl StableItem for CelestialOpposition {
         );
     }
 
-    /// Runs the cooldown and Blessed, and pays Shared Riches.
+    /// Runs the cooldown and Blessed.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.cooldown = self.cooldown.saturating_sub(1);
         if self.blessed > 0 {
             self.run_blessed(ctx, player);
         }
-        self.riches.update(
-            ctx,
-            player,
-            self.effect_bonus_gold,
-            self.effect_gold_interval_seconds,
-        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

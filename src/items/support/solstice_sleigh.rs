@@ -1,13 +1,11 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, refresh_buff, sized_range, ticks, ImmobilizeWatch, ItemMeta, SharedRiches,
-};
+use crate::{apply_config, refresh_buff, sized_range, ticks, ImmobilizeWatch, ItemMeta};
 
 /// Solstice Sleigh — what World Atlas grows into for a support that locks
 /// enemies down: Going Sledding, and the gold the Atlas line pays
-/// ([`SharedRiches`]).
+/// ([`crate::SharedRiches`]).
 ///
 /// # Going Sledding
 ///
@@ -41,7 +39,6 @@ pub struct SolsticeSleigh {
     effect_gold_interval_seconds: f64,
     // Non-vital stats (internals)
     watch: ImmobilizeWatch,
-    riches: SharedRiches,
 }
 
 impl SolsticeSleigh {
@@ -65,7 +62,6 @@ impl SolsticeSleigh {
             effect_gold_interval_seconds: 5.0,
             // Non-vital stats (internals)
             watch: ImmobilizeWatch::default(),
-            riches: SharedRiches::default(),
         }
     }
 
@@ -182,6 +178,12 @@ impl SolsticeSleigh {
             ctx.heal(caster, rider, bonus_hp);
         }
     }
+
+    /// What Shared Riches pays a holder: this much gold, this often.
+    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    pub(crate) fn shared_riches(&self) -> (usize, f64) {
+        (self.effect_bonus_gold, self.effect_gold_interval_seconds)
+    }
 }
 
 impl Default for SolsticeSleigh {
@@ -244,8 +246,7 @@ impl StableItem for SolsticeSleigh {
         }
     }
 
-    /// Sleds once however many enemies were immobilized this tick, and pays
-    /// Shared Riches.
+    /// Sleds once however many enemies were immobilized this tick.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         if !self.watch.update(ctx, player).is_empty() {
             let carrier = ctx
@@ -256,12 +257,6 @@ impl StableItem for SolsticeSleigh {
                 self.sled(ctx, carrier);
             }
         }
-        self.riches.update(
-            ctx,
-            player,
-            self.effect_bonus_gold,
-            self.effect_gold_interval_seconds,
-        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
