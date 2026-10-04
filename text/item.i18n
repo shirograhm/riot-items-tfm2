@@ -1072,10 +1072,6 @@
             "name": "Runic Compass",
             "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>."
         },
-        "bounty_of_worlds": {
-            "name": "Bounty of Worlds",
-            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>."
-        },
         "solstice_sleigh": {
             "name": "Solstice Sleigh",
             "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Going Sledding<>: <#d94c49ff>Immobilizing<> an enemy champion grants you and the most wounded allied champion within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> <#ffffffff>20%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> and <#60e84dff>50<> - <#60e84dff>215<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>bonus health<> for <#e8a800ff>2 seconds<>."
@@ -1099,6 +1095,14 @@
         "radiant_celestial_opposition": {
             "name": "Radiant Celestial Opposition",
             "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Blessing of the Mountain<>: Become <#92dc7bff>Blessed<> upon taking damage from an enemy champion, reducing your damage taken by <#e8a800ff>15%<> for <#e8a800ff>2 seconds<>. After <#92dc7bff>Blessed<> ends, unleash a shockwave around you that <#d94c49ff>slows<> enemies within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> units<> by <#d94c49ff>50%<> for <#e8a800ff>1.5 seconds<> (<#e8a800ff>18 second<> cooldown, beginning after the explosion)."
+        },
+        "dream_maker": {
+            "name": "Dream Maker",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#92dc7bff>Dream Bubble<> for <#e8a800ff>3 seconds<>. Their next basic attack or Ability against an enemy champion consumes the <#92dc7bff>Dream Bubble<> to deal <#a974ffff>40<> - <#a974ffff>150<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>8 second<> cooldown, starting after the <#92dc7bff>Dream Bubble<> is consumed)."
+        },
+        "radiant_dream_maker": {
+            "name": "Radiant Dream Maker",
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#92dc7bff>Dream Bubble<> for <#e8a800ff>3 seconds<>. Their next basic attack or Ability against an enemy champion consumes the <#92dc7bff>Dream Bubble<> to deal <#a974ffff>40<> - <#a974ffff>150<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>8 second<> cooldown, starting after the <#92dc7bff>Dream Bubble<> is consumed)."
         }
     },
     "vi": {
@@ -2174,10 +2178,6 @@
             "name": "La Bàn Cổ Ngữ",
             "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>."
         },
-        "bounty_of_worlds": {
-            "name": "Kho Báu Cửu Giới",
-            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>."
-        },
         "solstice_sleigh": {
             "name": "Cỗ Xe Mùa Đông",
             "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Trượt Tuyết<>: <#d94c49ff>Làm Bất Động<> một tướng địch sẽ giúp bạn và tướng đồng minh bị thương nặng nhất trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> và <#60e84dff>50<> - <#60e84dff>215<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu cộng thêm<> trong <#e8a800ff>2 giây<>."
@@ -2201,6 +2201,14 @@
         "radiant_celestial_opposition": {
             "name": "Khiên Vàng Thượng Giới Ánh Sáng",
             "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Phước Lành Sơn Thạch<>: Khi nhận sát thương từ tướng địch, bạn được <#92dc7bff>Ban Phước<>, giảm sát thương phải nhận <#e8a800ff>15%<> trong <#e8a800ff>2 giây<>. Khi <#92dc7bff>Ban Phước<> kết thúc, phóng ra một sóng xung kích quanh bạn, <#d94c49ff>làm chậm<> kẻ địch trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#d94c49ff>50%<> trong <#e8a800ff>1.5 giây<> (hồi chiêu <#e8a800ff>18 giây<>, bắt đầu sau vụ nổ)."
+        },
+        "dream_maker": {
+            "name": "Thú Bông Bảo Mộng",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#92dc7bff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Đòn đánh thường hoặc kĩ năng tiếp theo của họ lên tướng địch sẽ tiêu thụ <#92dc7bff>Bong Bóng Mơ<> để gây <#a974ffff>40<> - <#a974ffff>150<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#92dc7bff>Bong Bóng Mơ<> bị tiêu thụ)."
+        },
+        "radiant_dream_maker": {
+            "name": "Thú Bông Bảo Mộng Ánh Sáng",
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#92dc7bff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Đòn đánh thường hoặc kĩ năng tiếp theo của họ lên tướng địch sẽ tiêu thụ <#92dc7bff>Bong Bóng Mơ<> để gây <#a974ffff>40<> - <#a974ffff>150<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#92dc7bff>Bong Bóng Mơ<> bị tiêu thụ)."
         }
     },
     "zh-hans": {
@@ -3276,10 +3284,6 @@
             "name": "符文罗盘",
             "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。"
         },
-        "bounty_of_worlds": {
-            "name": "异世珍藏",
-            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。"
-        },
         "solstice_sleigh": {
             "name": "摩天雪橇",
             "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>雪橇出击<>：<#d94c49ff>定身<>一个敌方英雄时，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内伤势最重的友方英雄获得 <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>和 <#60e84dff>50<> - <#60e84dff>215<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>额外生命值<>，持续 <#e8a800ff>2秒<>。"
@@ -3303,6 +3307,14 @@
         "radiant_celestial_opposition": {
             "name": "光明版星界据守",
             "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>神峰庇佑<>：受到敌方英雄的伤害时获得<#92dc7bff>庇佑<>，使你受到的伤害降低 <#e8a800ff>15%<>，持续 <#e8a800ff>2秒<>。<#92dc7bff>庇佑<>结束后，向四周释放一道冲击波，使 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的敌人<#d94c49ff>减速<> <#d94c49ff>50%<>，持续 <#e8a800ff>1.5秒<>（冷却 <#e8a800ff>18秒<>，在爆炸后开始计算）。"
+        },
+        "dream_maker": {
+            "name": "圆梦使者",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#92dc7bff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。其下一次对敌方英雄的普通攻击或技能会消耗<#92dc7bff>美梦泡泡<>，造成 <#a974ffff>40<> - <#a974ffff>150<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>8秒<>，在<#92dc7bff>美梦泡泡<>被消耗后开始计算）。"
+        },
+        "radiant_dream_maker": {
+            "name": "光明版圆梦使者",
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#92dc7bff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。其下一次对敌方英雄的普通攻击或技能会消耗<#92dc7bff>美梦泡泡<>，造成 <#a974ffff>40<> - <#a974ffff>150<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>8秒<>，在<#92dc7bff>美梦泡泡<>被消耗后开始计算）。"
         }
     },
     "pt-BR": {
@@ -4378,10 +4390,6 @@
             "name": "Bússola Rúnica",
             "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>."
         },
-        "bounty_of_worlds": {
-            "name": "Dádiva dos Mundos",
-            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>."
-        },
         "solstice_sleigh": {
             "name": "Trenó do Solstício",
             "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Passeio de Trenó<>: <#d94c49ff>Imobilizar<> um campeão inimigo concede a você e ao campeão aliado mais ferido dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> e <#60e84dff>50<> - <#60e84dff>215<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida adicional<> por <#e8a800ff>2 segundos<>."
@@ -4405,6 +4413,14 @@
         "radiant_celestial_opposition": {
             "name": "Oposição Celestial Radiante",
             "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Bênção da Montanha<>: Ao sofrer dano de um campeão inimigo, você fica <#92dc7bff>Abençoado<>, reduzindo o dano que sofre em <#e8a800ff>15%<> por <#e8a800ff>2 segundos<>. Quando <#92dc7bff>Abençoado<> termina, libera uma onda de choque ao seu redor que aplica <#d94c49ff>lentidão<> de <#d94c49ff>50%<> a inimigos dentro de <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> por <#e8a800ff>1.5 segundos<> (recarga de <#e8a800ff>18 segundos<>, começando após a explosão)."
+        },
+        "dream_maker": {
+            "name": "Criassonhos",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#92dc7bff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. O próximo ataque básico ou Habilidade dele contra um campeão inimigo consome a <#92dc7bff>Bolha do Sonho<> para causar <#a974ffff>40<> - <#a974ffff>150<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#92dc7bff>Bolha do Sonho<> ser consumida)."
+        },
+        "radiant_dream_maker": {
+            "name": "Criassonhos Radiante",
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#92dc7bff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. O próximo ataque básico ou Habilidade dele contra um campeão inimigo consome a <#92dc7bff>Bolha do Sonho<> para causar <#a974ffff>40<> - <#a974ffff>150<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#92dc7bff>Bolha do Sonho<> ser consumida)."
         }
     },
     "ru": {
@@ -5480,10 +5496,6 @@
             "name": "Рунный компас",
             "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>."
         },
-        "bounty_of_worlds": {
-            "name": "Сокровище миров",
-            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>."
-        },
         "solstice_sleigh": {
             "name": "Сани солнцестояния",
             "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Катание на санях<>: <#d94c49ff>Обездвиживая<> вражеского чемпиона, вы и наиболее раненый союзный чемпион в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> получаете <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> и <#60e84dff>50<> - <#60e84dff>215<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>дополнительного здоровья<> на <#e8a800ff>2 секунды<>."
@@ -5507,6 +5519,14 @@
         "radiant_celestial_opposition": {
             "name": "Лучезарное Небесное противостояние",
             "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Благословение горы<>: Получив урон от вражеского чемпиона, вы получаете <#92dc7bff>Благословение<>, уменьшающее получаемый вами урон на <#e8a800ff>15%<> на <#e8a800ff>2 секунды<>. Когда <#92dc7bff>Благословение<> заканчивается, вы выпускаете вокруг себя ударную волну, которая <#d94c49ff>замедляет<> врагов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#d94c49ff>50%<> на <#e8a800ff>1.5 секунды<> (перезарядка <#e8a800ff>18 секунд<>, начинается после взрыва)."
+        },
+        "dream_maker": {
+            "name": "Сновичок",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#92dc7bff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Его следующая базовая атака или умение по вражескому чемпиону расходует <#92dc7bff>Пузырь сна<> и наносит <#a974ffff>40<> - <#a974ffff>150<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#92dc7bff>Пузырь сна<> израсходован)."
+        },
+        "radiant_dream_maker": {
+            "name": "Лучезарный Сновичок",
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#92dc7bff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Его следующая базовая атака или умение по вражескому чемпиону расходует <#92dc7bff>Пузырь сна<> и наносит <#a974ffff>40<> - <#a974ffff>150<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#92dc7bff>Пузырь сна<> израсходован)."
         }
     },
     "ko": {
@@ -6582,10 +6602,6 @@
             "name": "룬 나침반",
             "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>3 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다."
         },
-        "bounty_of_worlds": {
-            "name": "세계의 결실",
-            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다."
-        },
         "solstice_sleigh": {
             "name": "태양의 썰매",
             "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>썰매 질주<>: 적 챔피언에게 <#d94c49ff>이동 불가<> 효과를 적용하면 <#e8a800ff>2초<> 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안에서 부상이 가장 심한 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>20%<> 증가하고 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>50<>~<#60e84dff>215<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>추가 체력<>을 얻습니다."
@@ -6609,6 +6625,14 @@
         "radiant_celestial_opposition": {
             "name": "찬란한 천상의 이의",
             "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>산의 축복<>: 적 챔피언에게 피해를 받으면 <#92dc7bff>축복<> 상태가 되어 <#e8a800ff>2초<> 동안 받는 피해가 <#e8a800ff>15%<> 감소합니다. <#92dc7bff>축복<>이 끝나면 주변에 충격파를 일으켜 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적을 <#e8a800ff>1.5초<> 동안 <#d94c49ff>50% 둔화<>시킵니다. (재사용 대기시간 <#e8a800ff>18초<>, 폭발 후 시작)"
+        },
+        "dream_maker": {
+            "name": "꿈 생성기",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#92dc7bff>꿈방울<>을 부여합니다. 대상이 적 챔피언에게 가하는 다음 기본 공격 또는 스킬이 <#92dc7bff>꿈방울<>을 소모하여 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>40<>~<#a974ffff>150<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>8초<>, <#92dc7bff>꿈방울<>이 소모된 후 시작)"
+        },
+        "radiant_dream_maker": {
+            "name": "찬란한 꿈 생성기",
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#92dc7bff>꿈방울<>을 부여합니다. 대상이 적 챔피언에게 가하는 다음 기본 공격 또는 스킬이 <#92dc7bff>꿈방울<>을 소모하여 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>40<>~<#a974ffff>150<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>8초<>, <#92dc7bff>꿈방울<>이 소모된 후 시작)"
         }
     }
 }

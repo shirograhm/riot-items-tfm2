@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 231 new items (135 base + 96 Radiant) to the game.
+Reskins the 30 existing items and also adds 232 new items (135 base + 97 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -38,7 +38,7 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 
 For the last two, the replacement follows the rest of the build instead of the removed item: it comes from the same category as the build's other items, starting with the first slot.
 
-Every support also gets a World Atlas item as its first pick, so it starts the match on World Atlas and its gold: World Atlas grows into Runic Compass, Bounty of Worlds and then one of four finished items. A support with the game's Tank tag gets Celestial Opposition, since it is the one being hit. Otherwise, a support whose kit immobilizes (the same champions that take Imperial Mandate) gets Solstice Sleigh, and an AP support that neither immobilizes nor heals or shields gets Zaz'Zak's Realmspike, since its abilities are there to deal damage. Every other support gets Bloodsong, whatever its damage type. It replaces the AI's last pick, unless you pinned one yourself. The AI only ever gets that one: any other it picked is swapped out (your own pins can hold more than one).
+Every support also gets a World Atlas item as its first pick, so it starts the match on World Atlas and its gold: World Atlas grows into Runic Compass and then one of five finished items. A support with the game's Tank tag gets Celestial Opposition, since it is the one being hit. Otherwise, a support with the Heal or Shield tag gets Dream Maker, since its casts on allies are what set it off. Otherwise, a support whose kit immobilizes (the same champions that take Imperial Mandate) gets Solstice Sleigh, and an AP support that does none of that gets Zaz'Zak's Realmspike, since its abilities are there to deal damage. Every other support gets Bloodsong, whatever its damage type. It replaces the AI's last pick, unless you pinned one yourself. The AI only ever gets that one: any other it picked is swapped out (your own pins can hold more than one).
 
 Supports and junglers also get an item for their role: a support item for supports (one that suits the champion's damage type, so an AD support gets a tank one, not an AP one), and one jungle item for junglers: Philosopher's Stone for a champion with the game's Tank tag, otherwise Feral Flare or Grez's Spectral Lantern (whichever suits the champion's damage type). A ranged tank takes its damage item too, since Philosopher's Stone is a melee item. The AI only ever gets that one jungle item: any other it picked is swapped out, and if you pinned a jungle item yourself it adds none (your own pins can hold as many as you like). If the AI didn't pick one and you haven't pinned one, its last pick is swapped for one. Only one is guaranteed; the rest of the build is still the AI's own choice. A support whose champion has crowd control (the game's CC tag) makes Imperial Mandate that item, unless you pinned a support item yourself; Mandate is an AP item, so an AD support keeps its own. A support without crowd control never keeps a Mandate the AI picked: it's swapped for another support item (a Mandate you pin is always kept).
 
@@ -66,7 +66,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Fated Ashes** | 250G | +30 AP | Inflame: Landing an Ability on an enemy burns them for 15 magic damage over 3 seconds. This effect is 400% effective against minions and monsters. |
-| **Runic Compass** | 250G | +50 HP<br>+3 HP Regen | Shared Riches: Gain 3 gold every 5 seconds. |
+| **Runic Compass** | 450G | +150 HP<br>+3 HP Regen | Shared Riches: Gain 3 gold every 5 seconds. |
 
 #### Tier 3
 | Item | Cost | Stats | Passive |
@@ -78,7 +78,6 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **B.F. Sword** | 450G | +35 Attack Damage | — |
 | **Blighting Jewel** | 400G | +40 AP<br>+10% Magic Pen | — |
 | **Boots of Swiftness** | 650G | +25% Tenacity<br>+12% MS | — |
-| **Bounty of Worlds** | 400G | +100 HP<br>+4 HP Regen | Shared Riches: Gain 4 gold every 5 seconds. |
 | **Caulfield's Warhammer** | 500G | +25 AD<br>+10 Ability Haste | — |
 | **Executioner's Calling** | 650G | +25 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Forbidden Idol** | 350G | +100 HP<br>+10 AP<br>+10 Ability Haste | — |
@@ -131,6 +130,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Deathblade** | 700G | +50 AD | Apex: Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 750G | +30 AD<br>+30 Armor<br>+10 Ability Haste | Ignore Pain: 25% of the damage you take is dealt over time as true damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 45 + 15% of your missing health. |
 | **Diamond Tipped Spear** | 750G | +35% AS<br>+10 Ability Haste | Pierce: Gain 30 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
+| **Dream Maker** | 550G | +200 HP<br>+4 HP Regen | Shared Riches: Gain 4 gold every 5 seconds.<br>Dream Maker: Healing, shielding, or buffing an allied champion grants them a Dream Bubble for 3 seconds. Their next basic attack or Ability against an enemy champion consumes the Dream Bubble to deal 40 - 150 (based on level) bonus magic damage (8 second cooldown, starting after the Dream Bubble is consumed). |
 | **Dusk and Dawn** | 700G | +100 HP<br>+30 AP<br>+15% AS<br>+10 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Echoes of Helia** | 550G | +150 HP<br>+2 HP Regen<br>+25 AP<br>+15 Ability Haste | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion (excluding yourself) consumes all Soul Charges and heals them equal to the consumed amount. |
 | **Eclipse** | 650G | +40 AD<br>+15 Ability Haste | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast instance. Hitting a marked champion consumes the mark to deal bonus physical damage equal to 5% of their maximum health and grant you a shield that absorbs 100 + 15% of your Attack Damage for 2 seconds (6 second cooldown per target). |
@@ -232,6 +232,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Deathblade** | 1000G | +80 AD | Apex: Increase your total Attack Damage by 25%. |
 | **Radiant Death's Dance** | 1050G | +45 AD<br>+45 Armor<br>+15 Ability Haste | Ignore Pain: 25% of the damage you take is dealt over time as true damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 75 + 25% of your missing health. |
 | **Radiant Diamond Tipped Spear** | 1150G | +60% AS<br>+10 Ability Haste | Pierce: Gain 50 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Sweet Spot: Deal up to 25% bonus damage to enemy champions based on distance (maximum effect at 100 range). |
+| **Radiant Dream Maker** | 750G | +300 HP<br>+5 HP Regen | Shared Riches: Gain 4 gold every 5 seconds.<br>Dream Maker: Healing, shielding, or buffing an allied champion grants them a Dream Bubble for 3 seconds. Their next basic attack or Ability against an enemy champion consumes the Dream Bubble to deal 40 - 150 (based on level) bonus magic damage (8 second cooldown, starting after the Dream Bubble is consumed). |
 | **Radiant Dusk and Dawn** | 1000G | +150 HP<br>+75 AP<br>+25% AS<br>+20 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 85 + 15% of your Ability Power as bonus magic damage and heal you for 10% of your Ability Power and 2.5% of your maximum health (3.5 second cooldown). |
 | **Radiant Echoes of Helia** | 750G | +250 HP<br>+3 HP Regen<br>+35 AP<br>+20 Ability Haste | Soul Siphon: Store 30% of the damage you deal or take as Soul Charges, up to 130 - 350 (based on level). Healing, shielding or buffing an allied champion (excluding yourself) consumes all Soul Charges and heals them equal to the consumed amount. |
 | **Radiant Eclipse** | 1000G | +65 AD<br>+15 Ability Haste | Ever Rising Moon: Landing a basic attack or an Ability on an enemy champion marks them for 2 seconds, up to once per cast instance. Hitting a marked champion consumes the mark to deal bonus physical damage equal to 8% of their maximum health and grant you a shield that absorbs 120 + 20% of your Attack Damage for 2 seconds (6 second cooldown per target). |

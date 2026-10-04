@@ -3,7 +3,7 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, SharedRiches, Spellblade};
 
-/// Bloodsong — what World Atlas grows into, by way of Bounty of Worlds:
+/// Bloodsong — what World Atlas grows into, by way of Runic Compass:
 /// Spellblade, a mark that makes its target take more damage, and the gold
 /// the Atlas line pays ([`SharedRiches`]).
 #[derive(Clone, Debug)]
@@ -28,7 +28,7 @@ pub struct Bloodsong {
 impl Bloodsong {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("bloodsong", &["bounty_of_worlds"], &["radiant_bloodsong"]),
+            meta: ItemMeta::base("bloodsong", &["runic_compass"], &["radiant_bloodsong"]),
             vulnerable_buff: "bloodsong_vulnerable",
             price: 550,
             hp: 200,

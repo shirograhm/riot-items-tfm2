@@ -3,9 +3,10 @@ use crate::config::ItemConfig;
 use crate::SharedRiches;
 use mod_api_stable::*;
 
-/// Runic Compass — World Atlas's first upgrade: some health on top of the
-/// regen, and the gold comes in faster ([`SharedRiches`]). It grows into
-/// Bounty of Worlds.
+/// Runic Compass — World Atlas's upgrade, and the last step before a finished
+/// support item: health on top of the regen, and the gold comes in faster
+/// ([`SharedRiches`]). It grows into every finished item of the World Atlas
+/// line.
 #[derive(Clone, Debug)]
 pub struct RunicCompass {
     price: usize,
@@ -20,8 +21,8 @@ pub struct RunicCompass {
 impl Default for RunicCompass {
     fn default() -> Self {
         Self {
-            price: 250,
-            hp: 50,
+            price: 450,
+            hp: 150,
             hp_regen: 3,
             effect_bonus_gold: 3,
             effect_gold_interval_seconds: 5.0,
@@ -75,7 +76,13 @@ impl StableItem for RunicCompass {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["bounty_of_worlds".to_string()]
+        vec![
+            "bloodsong".to_string(),
+            "celestial_opposition".to_string(),
+            "dream_maker".to_string(),
+            "solstice_sleigh".to_string(),
+            "zazzaks_realmspike".to_string(),
+        ]
     }
 
     fn stat(&self) -> BuffV1 {

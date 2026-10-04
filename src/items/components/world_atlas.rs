@@ -5,7 +5,7 @@ use mod_api_stable::*;
 
 /// World Atlas — the support's starting item: a little health regen and gold
 /// that comes in by itself ([`SharedRiches`]). It grows into Runic Compass,
-/// then Bounty of Worlds, then one of the finished support items.
+/// then one of the finished support items.
 #[derive(Clone, Debug)]
 pub struct WorldAtlas {
     price: usize,

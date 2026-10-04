@@ -1,6 +1,6 @@
 //! Shared Riches: a little gold at a steady rate for whoever holds the item.
-//! World Atlas pays it, and so does everything it grows into (Runic Compass,
-//! Bounty of Worlds, Bloodsong); each item owns its amount and its interval.
+//! World Atlas pays it, and so does everything it grows into (Runic Compass
+//! and the finished support items); each item owns its amount and its interval.
 //!
 //! The clock runs whether the carrier is alive or not, and it is not reset by
 //! a respawn: the tooltip promises gold every so many seconds, not every so

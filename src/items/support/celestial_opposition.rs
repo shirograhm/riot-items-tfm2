@@ -57,7 +57,7 @@ impl CelestialOpposition {
         Self {
             meta: ItemMeta::base(
                 "celestial_opposition",
-                &["bounty_of_worlds"],
+                &["runic_compass"],
                 &["radiant_celestial_opposition"],
             ),
             price: 550,

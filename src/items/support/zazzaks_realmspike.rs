@@ -61,7 +61,7 @@ impl ZazzaksRealmspike {
         Self {
             meta: ItemMeta::base(
                 "zazzaks_realmspike",
-                &["bounty_of_worlds"],
+                &["runic_compass"],
                 &["radiant_zazzaks_realmspike"],
             ),
             price: 550,

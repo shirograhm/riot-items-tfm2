@@ -2103,17 +2103,10 @@
     "effect_gold_interval_seconds": 5
   },
   "runic_compass": {
-    "price": 250,
-    "hp": 50,
+    "price": 450,
+    "hp": 150,
     "hp_regen": 3,
     "effect_bonus_gold": 3,
-    "effect_gold_interval_seconds": 5
-  },
-  "bounty_of_worlds": {
-    "price": 400,
-    "hp": 100,
-    "hp_regen": 4,
-    "effect_bonus_gold": 4,
     "effect_gold_interval_seconds": 5
   },
   "solstice_sleigh": {
@@ -2189,6 +2182,28 @@
     "effect_slow_amount": 50,
     "effect_slow_seconds": 1.5,
     "effect_cooldown_seconds": 18,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
+  },
+  "dream_maker": {
+    "price": 550,
+    "hp": 200,
+    "hp_regen": 4,
+    "effect_duration_seconds": 3,
+    "effect_min_bonus_damage": 40,
+    "effect_max_bonus_damage": 150,
+    "effect_cooldown_seconds": 8,
+    "effect_bonus_gold": 4,
+    "effect_gold_interval_seconds": 5
+  },
+  "radiant_dream_maker": {
+    "price": 750,
+    "hp": 300,
+    "hp_regen": 5,
+    "effect_duration_seconds": 3,
+    "effect_min_bonus_damage": 40,
+    "effect_max_bonus_damage": 150,
+    "effect_cooldown_seconds": 8,
     "effect_bonus_gold": 4,
     "effect_gold_interval_seconds": 5
   }

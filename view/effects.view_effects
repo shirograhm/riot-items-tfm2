@@ -274,6 +274,13 @@
             "anim": "asset/riot_items_tfm2/effects/celestial_shield",
             "tag": "shield",
             "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "dream_maker_bubble",
+            "anim": "asset/riot_items_tfm2/effects/dream_bubble",
+            "tag": "bubble",
+            "z": 1
         }
     ]
 }

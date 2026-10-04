@@ -320,7 +320,6 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
     reg.add_item(configured!("boots_of_swiftness" => BootsOfSwiftness, boots));
-    reg.add_item(configured!("bounty_of_worlds" => BountyOfWorlds));
     reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
     reg.add_item(configured!("forbidden_idol" => ForbiddenIdol));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
@@ -368,6 +367,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
     reg.add_item(configured!("diamond_tipped_spear" => DiamondTippedSpear));
+    reg.add_item(configured!("dream_maker" => DreamMaker));
     reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("eclipse" => Eclipse));
@@ -466,6 +466,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
     reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));
     reg.add_item(configured_radiant!("radiant_diamond_tipped_spear" => DiamondTippedSpear));
+    reg.add_item(configured_radiant!("radiant_dream_maker" => DreamMaker));
     reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured_radiant!("radiant_eclipse" => Eclipse));
@@ -536,7 +537,9 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
     reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
-    reg.add_item(configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
+    reg.add_item(
+        configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit),
+    );
     reg.add_item(configured_radiant!("radiant_zazzaks_realmspike" => ZazzaksRealmspike));
     reg.add_item(configured_radiant!("radiant_zekes_herald" => ZekesHerald));
     reg.add_item(configured_radiant!("radiant_zhonyas_hourglass" => ZhonyasHourglass));

@@ -49,7 +49,7 @@ impl SolsticeSleigh {
         Self {
             meta: ItemMeta::base(
                 "solstice_sleigh",
-                &["bounty_of_worlds"],
+                &["runic_compass"],
                 &["radiant_solstice_sleigh"],
             ),
             sledding_buff: "solstice_sleigh_sledding",
