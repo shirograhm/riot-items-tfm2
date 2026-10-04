@@ -32,7 +32,7 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 - a second Grievous Wounds item
 - a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked)
 - a jungle item (Feral Flare, Grez's Spectral Lantern or Philosopher's Stone) on any champion not playing the jungle role, and on a jungler any jungle item other than its one (see below)
-- a melee item on a ranged champion (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Sunfire Cape, Hollow Radiance, Philosopher's Stone), or a ranged item on a melee champion (Runaan's Hurricane, Diamond Tipped Spear). A champion is melee when its basic attack range is 35 or less; champions from other mods are covered too
+- a melee item on a ranged champion (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone), or a ranged item on a melee champion (Runaan's Hurricane, Diamond Tipped Spear). A champion is melee when its basic attack range is 35 or less; champions from other mods are covered too
 - a support item (except Protoplasm Harness and Zeke's Convergence) on any champion not playing the support role
 - an item the champion doesn't scale with: attack, attack speed or crit with no ability power on an AP champion, or ability power alone on an AD champion (hybrid champions and hybrid items are left alone; Magic Knight counts as an AP champion, since only its basic attack is physical)
 
@@ -104,7 +104,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 #### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Abyssal Mask** | 700G | +150 HP<br>+50 MR<br>+10 Ability Haste | Unmake: Reduce the magic resistance of enemy champions within 100 range by 20%. |
+| **Abyssal Mask** | 700G | +150 HP<br>+50 MR<br>+10 Ability Haste | Unmake: Reduce the magic resistance of enemy champions within 50 range by 20%. |
 | **Ardent Censer** | 500G | +100 HP<br>+1 HP Regen<br>+25 AP<br>+5 Ability Haste<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Atma's Reckoning** | 750G | +250 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Axiom Arc** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
@@ -202,7 +202,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 #### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Radiant Abyssal Mask** | 950G | +250 HP<br>+75 MR<br>+15 Ability Haste | Unmake: Reduce the magic resistance of enemy champions within 100 range by 20%. |
+| **Radiant Abyssal Mask** | 950G | +250 HP<br>+75 MR<br>+15 Ability Haste | Unmake: Reduce the magic resistance of enemy champions within 50 range by 20%. |
 | **Radiant Ardent Censer** | 850G | +200 HP<br>+2 HP Regen<br>+45 AP<br>+5 Ability Haste<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Radiant Atma's Reckoning** | 1050G | +450 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Radiant Axiom Arc** | 950G | +55 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |

@@ -44,7 +44,7 @@ impl AbyssalMask {
             magic_resistance: 50,
             skill_cooldown_mult: 10,
             effect_percent_mr_shred: 20,
-            effect_max_distance: 100,
+            effect_max_distance: 50,
             // Non-vital stats (internals)
             refresh_cooldown: 0,
         }

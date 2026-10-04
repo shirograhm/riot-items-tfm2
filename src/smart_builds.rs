@@ -68,9 +68,10 @@
 //! 11. **Items for the champion's reach** — a ranged champion keeps no item
 //!    whose passive wants its carrier in melee ([`MELEE_ITEMS`]: the Hydras'
 //!    Cleave and Hullbreaker's Skipper weaken from past 35 range, and
-//!    Heartsteel and the Immolate auras need the enemy closer than a ranged
-//!    champion stands), and a melee champion none that wants its carrier at
-//!    range ([`RANGED_ITEMS`]: Runaan's Hurricane, Diamond Tipped Spear).
+//!    Heartsteel, Abyssal Mask and the Immolate auras need the enemy closer
+//!    than a ranged champion stands), and a melee champion none that wants
+//!    its carrier at range ([`RANGED_ITEMS`]: Runaan's Hurricane, Diamond
+//!    Tipped Spear).
 //!    Melee is a basic attack that reaches 35 or less, the same line those
 //!    items draw. The stand-in comes from the item's own category, like a
 //!    duplicate's. A champion whose reach nothing states is left alone.
@@ -561,11 +562,12 @@ fn is_philosophers_stone(key: &str) -> bool {
 /// Rule 11: items whose passive wants the carrier in melee, which a ranged
 /// champion does not keep. By base slug, so the radiant tier follows. The
 /// distances are the defaults; all of them are config-editable.
-const MELEE_ITEMS: [&str; 8] = [
+const MELEE_ITEMS: [&str; 9] = [
     "ravenous_hydra",     // Cleave at half strength from past 35 range
     "titanic_hydra",      // Cleave at half strength from past 35 range
     "hullbreaker",        // Skipper at 70% strength from past 35 range
     "heartsteel",         // Ironheart charges on enemies that stay within 50 range
+    "abyssal_mask",       // Unmake curses enemy champions within 50 range
     "hollow_radiance",    // Immolate burns enemies within 30 range
     "philosophers_stone", // Immolate again
     "sunfire_cape",       // Immolate again; this slug is the radiant cape's
