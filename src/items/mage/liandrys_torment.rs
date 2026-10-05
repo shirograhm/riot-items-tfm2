@@ -1,7 +1,13 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ticks, ItemMeta, DOT_TICK_RATE};
+use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta, DOT_TICK_RATE};
+
+/// Statless marker on a champion Torment is burning: the `view_buffs` binding
+/// of the same name in `view/effects.view_effects` draws flames at its feet
+/// for as long as the marker is up. One name for both tiers and every
+/// carrier, so a champion two of them burn shows one fire.
+const BURN_BUFF: &str = "riot_liandrys_burn";
 
 #[derive(Clone, Debug)]
 pub struct LiandrysTorment {
@@ -91,11 +97,23 @@ impl LiandrysTorment {
         Some(per_instance.round() as usize)
     }
 
-    fn apply_burn(&mut self, target: usize) {
+    /// Starts the burn on `target`, or starts its time over. `show` puts the
+    /// flames up with it: for champions only, since the art is their size and
+    /// a burning minion wave would be a wall of it.
+    fn apply_burn(&mut self, ctx: &mut StableSim<'_>, target: usize, show: bool) {
         let duration = self.duration_ticks();
         match self.burns.iter_mut().find(|(id, _, _)| *id == target) {
             Some(burn) => burn.1 = duration,
             None => self.burns.push((target, duration, DOT_TICK_RATE)),
+        }
+        // Up for the whole burn from one call, not kept alive instance by
+        // instance: an instance comes every fifth of a second, and a marker
+        // replaced that often would restart its animation that often if the
+        // view ever took a replaced buff for a new one. The price is that the
+        // flames outlast a burn cut short by its carrier's death, by up to
+        // the burn's own length.
+        if show {
+            refresh_buff(ctx, target, BURN_BUFF, &BuffV1::timed(BURN_BUFF, duration));
         }
     }
 
@@ -198,8 +216,9 @@ impl StableItem for LiandrysTorment {
         if target_ref.is_tower() || attack_type != AttackTypeV1::Skill {
             return;
         }
+        let is_champion = target_ref.is_champion();
 
-        self.apply_burn(target);
+        self.apply_burn(ctx, target, is_champion);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
