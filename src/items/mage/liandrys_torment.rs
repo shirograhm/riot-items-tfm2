@@ -4,9 +4,10 @@ use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta, DOT_TICK_RATE};
 
 /// Statless marker on a champion Torment is burning: the `view_buffs` binding
-/// of the same name in `view/effects.view_effects` draws flames at its feet
-/// for as long as the marker is up. One name for both tiers and every
-/// carrier, so a champion two of them burn shows one fire.
+/// of the same name in `view/effects.view_effects` draws fire streaming out
+/// from its middle, behind it, for as long as the marker is up. One name for
+/// both tiers and every carrier, so a champion two of them burn shows one
+/// fire.
 const BURN_BUFF: &str = "riot_liandrys_burn";
 
 #[derive(Clone, Debug)]
