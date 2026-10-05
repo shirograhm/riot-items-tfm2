@@ -4,6 +4,13 @@ use crate::{build_config, smart_builds};
 
 const MOD_ITEM_SCORE_BONUS: f32 = 0.5;
 
+/// What a support item gets in place of [`MOD_ITEM_SCORE_BONUS`] from a
+/// support that prefers them (Smart Builds rule 9): enough to rank it over the
+/// mod's other items, not over what the engine itself wants for the
+/// champion's class. Double the plain bonus, a guess (2026-10-04) on a score
+/// scale nothing documents.
+const SUPPORT_ITEM_SCORE_BONUS: f32 = 1.0;
+
 pub struct ConfiguredBuilds;
 
 impl StableItemBuildHook for ConfiguredBuilds {
@@ -39,8 +46,14 @@ impl StableItemBuildHook for ConfiguredBuilds {
         // ended up building it. An item the champion could not keep under the
         // Smart Builds rules gets no push, toggle or not — declining to promote
         // an item is not overriding a pick.
-        if smart_builds::Budget::empty(champion_fit(ctx)).rejects(key).is_some() {
+        let fit = champion_fit(ctx);
+        if smart_builds::Budget::empty(fit).rejects(key).is_some() {
             return StableDraftDecision::Pass;
+        }
+        // A support's World Atlas item is its one dedicated support item, and
+        // past that it prefers support items without being held to one.
+        if fit.is_preferred_support_item(key) {
+            return StableDraftDecision::Add(SUPPORT_ITEM_SCORE_BONUS);
         }
         StableDraftDecision::Add(MOD_ITEM_SCORE_BONUS)
     }
