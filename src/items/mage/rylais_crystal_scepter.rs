@@ -66,6 +66,30 @@ impl RylaisCrystalScepter {
         );
         self
     }
+
+    /// Rimefrost: slows `target`, or starts the slow's time over. Never a
+    /// turret.
+    fn slow(&self, ctx: &mut StableSim<'_>, target: usize) {
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if target_ref.is_tower() {
+            return;
+        }
+
+        refresh_buff(
+            ctx,
+            target,
+            "rylais_crystal_scepter_slow",
+            &BuffV1 {
+                move_speed_mult: -self.effect_slow_amount,
+                ..BuffV1::timed(
+                    "rylais_crystal_scepter_slow",
+                    ticks(self.effect_duration_seconds),
+                )
+            },
+        );
+    }
 }
 
 impl Default for RylaisCrystalScepter {
@@ -119,25 +143,30 @@ impl StableItem for RylaisCrystalScepter {
         target: usize,
         is_ally: bool,
     ) {
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if target_ref.is_tower() || is_ally {
+        if is_ally {
             return;
         }
+        self.slow(ctx, target);
+    }
 
-        refresh_buff(
-            ctx,
-            target,
-            "rylais_crystal_scepter_slow",
-            &BuffV1 {
-                move_speed_mult: -self.effect_slow_amount,
-                ..BuffV1::timed(
-                    "rylais_crystal_scepter_slow",
-                    ticks(self.effect_duration_seconds),
-                )
-            },
-        );
+    /// Rimefrost again, for what `on_skill_hit` leaves out: the ticks of a
+    /// skill's damage over time, each of which starts the slow's time over as
+    /// another hit would. Without this a burning or poisoning skill slowed its
+    /// target once and let it go two seconds later.
+    fn on_attack(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
+    ) {
+        if !matches!(attack_type, AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield) {
+            return;
+        }
+        self.slow(ctx, target);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

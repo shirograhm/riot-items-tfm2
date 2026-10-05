@@ -59,7 +59,7 @@ impl DreamMaker {
             price: 550,
             hp: 200,
             hp_regen: 4,
-            effect_duration_seconds: 3.0,
+            effect_duration_seconds: 5.0,
             effect_skill_damaged_reduce: 8,
             effect_adaptive_force: 20,
             effect_cooldown_seconds: 8.0,

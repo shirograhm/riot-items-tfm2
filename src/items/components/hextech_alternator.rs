@@ -91,6 +91,10 @@ impl StableItem for HextechAlternator {
 
     /// Revved.
     ///
+    /// Any damage the carrier's champion deals itself sets it off: a basic
+    /// attack, a skill's hit, or a tick of a skill's damage over time (those
+    /// ticks were left out at first, though the tooltip says "damaging").
+    ///
     /// `Item` hits are turned away so the bolt cannot pay for itself: it is dealt
     /// through the engine and comes back around through this hook. The cooldown
     /// would bound that anyway, but the gate is what makes it impossible rather
@@ -105,7 +109,14 @@ impl StableItem for HextechAlternator {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if !matches!(attack_type, AttackTypeV1::BaseAttack | AttackTypeV1::Skill) {
+        let own_damage = matches!(
+            attack_type,
+            AttackTypeV1::BaseAttack
+                | AttackTypeV1::Skill
+                | AttackTypeV1::Dot
+                | AttackTypeV1::DotIgnoreShield
+        );
+        if !own_damage {
             return;
         }
         if self.cooldown > 0 {
