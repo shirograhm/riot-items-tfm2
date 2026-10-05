@@ -1,7 +1,40 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ticks, ItemMeta, DOT_TICK_RATE};
+use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta, DOT_TICK_RATE};
+
+/// Statless marker on a unit Torment is burning, monster as much as
+/// champion: the `view_buffs` binding of the same name in
+/// `view/effects.view_effects` draws a fire at its feet for as long as the
+/// marker is up. One name for both tiers and every carrier, so a unit two of
+/// them burn shows one fire. The art is drawn to a champion's size.
+const BURN_BUFF: &str = "riot_liandrys_burn";
+/// The same marker for a minion, bound to a fire its size: a minion stands
+/// about 13 px wide and tall against a champion's 21 to 36, its feet 7 px
+/// under it against 12, and the champion's fire swallowed it.
+const SMALL_BURN_BUFF: &str = "riot_liandrys_burn_small";
+/// How much longer than the burn the marker is put up for, which is also how
+/// long it is left alone before it is put up again. A damage-over-time skill
+/// starts the burn over on every one of its ticks, and replacing a buff that
+/// often is work for nothing: the marker would restart its animation as often
+/// if the view ever took a replaced buff for a new one. So the flames may
+/// outlast the burn by this much, a fifth of a second.
+const MARKER_SLACK_TICKS: usize = DOT_TICK_RATE;
+
+/// One unit this carrier's Torment is burning.
+#[derive(Clone, Copy, Debug)]
+struct Burn {
+    target: usize,
+    /// Ticks the burn has left.
+    remaining: usize,
+    /// Ticks until its next damage instance.
+    until_next: usize,
+    /// Ticks the flames' marker has left. Never less than `remaining`.
+    marker: usize,
+    /// Which marker the flames are: the small one on a minion. Kept here
+    /// because the unit may be gone by the time its flames are to come down.
+    flames: &'static str,
+}
 
 #[derive(Clone, Debug)]
 pub struct LiandrysTorment {
@@ -12,7 +45,7 @@ pub struct LiandrysTorment {
     effect_hp_percent_damage: f64,
     effect_minion_damage_cap: usize,
     effect_duration_seconds: f64,
-    burns: Vec<(usize, usize, usize)>,
+    burns: Vec<Burn>,
 }
 
 impl LiandrysTorment {
@@ -91,28 +124,55 @@ impl LiandrysTorment {
         Some(per_instance.round() as usize)
     }
 
-    fn apply_burn(&mut self, target: usize) {
+    /// Starts the burn on `target`, or starts its time over, and puts the
+    /// `flames` up with it.
+    fn apply_burn(&mut self, ctx: &mut StableSim<'_>, target: usize, flames: &'static str) {
         let duration = self.duration_ticks();
-        match self.burns.iter_mut().find(|(id, _, _)| *id == target) {
-            Some(burn) => burn.1 = duration,
-            None => self.burns.push((target, duration, DOT_TICK_RATE)),
+        let index = match self.burns.iter().position(|burn| burn.target == target) {
+            Some(index) => index,
+            None => {
+                self.burns.push(Burn {
+                    target,
+                    remaining: 0,
+                    until_next: DOT_TICK_RATE,
+                    marker: 0,
+                    flames,
+                });
+                self.burns.len() - 1
+            }
+        };
+        let burn = &mut self.burns[index];
+        burn.remaining = duration;
+        // Up for the whole burn from one call, not kept alive instance by
+        // instance, and only put up again once the burn would outlast it. The
+        // price is that the flames outlast a burn cut short by its carrier's
+        // death, by up to the burn's own length.
+        if burn.marker < duration {
+            burn.marker = duration + MARKER_SLACK_TICKS;
+            let marker = burn.marker;
+            refresh_buff(ctx, target, flames, &BuffV1::timed(flames, marker));
         }
     }
 
     fn tick_burns(&mut self, ctx: &mut StableSim<'_>, caster: usize) {
         let mut kept = Vec::with_capacity(self.burns.len());
-        for (id, remaining, until_next) in std::mem::take(&mut self.burns) {
-            let remaining = remaining.saturating_sub(1);
-            let mut until_next = until_next.saturating_sub(1);
-            if until_next == 0 {
-                let Some(damage) = self.instance_damage(ctx, id) else {
+        for mut burn in std::mem::take(&mut self.burns) {
+            burn.remaining = burn.remaining.saturating_sub(1);
+            burn.until_next = burn.until_next.saturating_sub(1);
+            burn.marker = burn.marker.saturating_sub(1);
+            if burn.until_next == 0 {
+                let Some(damage) = self.instance_damage(ctx, burn.target) else {
+                    // Dead or gone, and its flames go with the burn: minions
+                    // die burning all the time, and a marker left to run out
+                    // would sit on the body, or on whatever takes its slot.
+                    ctx.entity_remove_buff(burn.target, burn.flames);
                     continue;
                 };
-                ctx.deal_damage(caster, id, 0, damage, AttackTypeV1::Item);
-                until_next = DOT_TICK_RATE;
+                ctx.deal_damage(caster, burn.target, 0, damage, AttackTypeV1::Item);
+                burn.until_next = DOT_TICK_RATE;
             }
-            if remaining > 0 {
-                kept.push((id, remaining, until_next));
+            if burn.remaining > 0 {
+                kept.push(burn);
             }
         }
         self.burns = kept;
@@ -195,11 +255,25 @@ impl StableItem for LiandrysTorment {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if target_ref.is_tower() || attack_type != AttackTypeV1::Skill {
+        // Ability damage is a skill's hit and every tick of a skill's damage
+        // over time, which the engine reports as a kind of its own. Only the
+        // hit used to count, so a burning or poisoning skill started Torment
+        // once and never kept it going, the way an ability that hits again
+        // does.
+        let ability = matches!(
+            attack_type,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield
+        );
+        if target_ref.is_tower() || !ability {
             return;
         }
+        let flames = if target_ref.is_minion() {
+            SMALL_BURN_BUFF
+        } else {
+            BURN_BUFF
+        };
 
-        self.apply_burn(target);
+        self.apply_burn(ctx, target, flames);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

@@ -123,9 +123,9 @@ impl StableItem for MortalReminder {
         _attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        let Some(entity_ref) = ctx.get_entity(target) else {
+        if ctx.get_entity(target).is_none() {
             return;
-        };
+        }
 
         if damage_type != DamageTypeV1::Ad {
             return;

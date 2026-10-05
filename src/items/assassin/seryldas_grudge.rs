@@ -132,7 +132,15 @@ impl StableItem for SeryldasGrudge {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if attack_type != AttackTypeV1::Skill {
+        // Ability damage is a skill's hit and every tick of a skill's damage
+        // over time, which the engine reports as a kind of its own. Only the
+        // hit used to count, so a burn that wore a target down to the
+        // threshold never slowed it.
+        let ability = matches!(
+            attack_type,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield
+        );
+        if !ability {
             return;
         }
         let Some(target_ref) = ctx.get_entity(target) else {

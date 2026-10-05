@@ -208,6 +208,9 @@ fn logln(s: &str) {
 }
 
 type BOOL = i32;
+// Declared with pointers in hooks/hook.rs and with integers here: the same
+// calls on 64-bit Windows, where the two are passed alike.
+#[allow(clashing_extern_declarations)]
 #[link(name = "kernel32")]
 extern "system" {
     fn VirtualAlloc(addr: usize, size: usize, typ: u32, protect: u32) -> usize;
@@ -333,7 +336,7 @@ pub unsafe fn install() -> bool {
     // 0xeb17d0). It has been the same function as `LOADER` since 0.5.2, so the
     // second install was already being skipped — and the only path that needed
     // it, the strategy template, is no longer injected at all.
-    let a = install_one(base, LOADER_RVA, &LOADER_PROLOGUE, &TRAMP, detour as usize);
+    let a = install_one(base, LOADER_RVA, &LOADER_PROLOGUE, &TRAMP, detour as *const () as usize);
     if !a { INSTALLED.store(false, Ordering::Relaxed); return false; }
     true
 }

@@ -486,11 +486,11 @@
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
-            "option": "\n<#ff7a3eff>Rimefrost<>: Landing an Ability on an enemy applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\n<#ff7a3eff>Rimefrost<>: Dealing Ability damage to enemies applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Radiant Rylai's Crystal Scepter",
-            "option": "\n<#ff7a3eff>Rimefrost<>: Landing an Ability on an enemy applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
+            "option": "\n<#ff7a3eff>Rimefrost<>: Dealing Ability damage to enemies applies a <#d94c49ff>15% slow<> for <#e8a800ff>2 seconds<>."
         },
         "stormrazor": {
             "name": "Stormrazor",
@@ -766,11 +766,11 @@
         },
         "grezs_spectral_lantern": {
             "name": "Grez's Spectral Lantern",
-            "option": "\n<#ff7a3eff>Spirit Drain<>: Gain <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for each champion takedown and monster killed, up to <#a974ffff>20<>.\n\n<#ff7a3eff>Butcher<>: Against monsters, deal <#a974ffff>20% bonus magic damage<> and restore <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>health<> equal to <#d94c49ff>4% of your damage dealt<>."
+            "option": "\n<#ff7a3eff>Spirit Drain<>: Gain <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for each champion takedown and monster killed, up to <#a974ffff>20<>.\n\n<#ff7a3eff>Butcher<>: Against monsters, deal <#a974ffff>20% bonus magic damage<> and restore <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>health<> equal to <#d94c49ff>4% of your damage dealt<>."
         },
         "radiant_grezs_spectral_lantern": {
             "name": "Radiant Grez's Spectral Lantern",
-            "option": "\n<#ff7a3eff>Spirit Drain<>: Gain <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for each champion takedown and monster killed, up to <#a974ffff>40<>.\n\n<#ff7a3eff>Butcher<>: Against monsters, deal <#a974ffff>30% bonus magic damage<> and restore <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>health<> equal to <#d94c49ff>6% of your damage dealt<>."
+            "option": "\n<#ff7a3eff>Spirit Drain<>: Gain <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for each champion takedown and monster killed, up to <#a974ffff>40<>.\n\n<#ff7a3eff>Butcher<>: Against monsters, deal <#a974ffff>30% bonus magic damage<> and restore <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>health<> equal to <#d94c49ff>6% of your damage dealt<>."
         },
         "cloak_of_starry_night": {
             "name": "Cloak of Starry Night",
@@ -794,7 +794,7 @@
         },
         "fated_ashes": {
             "name": "Fated Ashes",
-            "option": "\n<#ff7a3eff>Inflame<>: Landing an Ability on an enemy burns them for <#a974ffff>15 magic damage<> over <#e8a800ff>3 seconds<>. This effect is <#e8a800ff>400% as effective<> against minions and monsters."
+            "option": "\n<#ff7a3eff>Inflame<>: Dealing Ability damage burns enemies for <#a974ffff>15 magic damage<> over <#e8a800ff>3 seconds<>. This effect is <#e8a800ff>400% as effective<> against minions and monsters."
         },
         "stormsurge": {
             "name": "Stormsurge",
@@ -1038,7 +1038,7 @@
         },
         "radiant_philosophers_stone": {
             "name": "Radiant Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Iceborn Gauntlet",
@@ -1098,11 +1098,11 @@
         },
         "dream_maker": {
             "name": "Dream Maker",
-            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#64b6f6ff>Dream Bubble<> for <#e8a800ff>3 seconds<>. While the <#64b6f6ff>Dream Bubble<> is active, it grants <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>skill damage reduction<> and <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> (<#e8a800ff>8 second<> cooldown, starting after the <#64b6f6ff>Dream Bubble<> ends)."
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#64b6f6ff>Dream Bubble<> for <#e8a800ff>5 seconds<>. While the <#64b6f6ff>Dream Bubble<> is active, it grants <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>skill damage reduction<> and <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> (<#e8a800ff>8 second<> cooldown, starting after the <#64b6f6ff>Dream Bubble<> ends)."
         },
         "radiant_dream_maker": {
             "name": "Radiant Dream Maker",
-            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#64b6f6ff>Dream Bubble<> for <#e8a800ff>3 seconds<>. While the <#64b6f6ff>Dream Bubble<> is active, it grants <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>skill damage reduction<> and <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> (<#e8a800ff>8 second<> cooldown, starting after the <#64b6f6ff>Dream Bubble<> ends)."
+            "option": "\n<#ff7a3eff>Shared Riches<>: Gain <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> gold<> every <#e8a800ff>5 seconds<>.\n\n<#ff7a3eff>Dream Maker<>: Healing, shielding, or buffing an allied champion grants them a <#64b6f6ff>Dream Bubble<> for <#e8a800ff>5 seconds<>. While the <#64b6f6ff>Dream Bubble<> is active, it grants <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>skill damage reduction<> and <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Adaptive Force<> (<#e8a800ff>8 second<> cooldown, starting after the <#64b6f6ff>Dream Bubble<> ends)."
         }
     },
     "vi": {
@@ -1592,11 +1592,11 @@
         },
         "rylais_crystal_scepter": {
             "name": "Quyền Trượng Pha Lê Rylai",
-            "option": "\n<#ff7a3eff>Sương Giá<>: Kĩ năng trúng kẻ địch sẽ gây <#d94c49ff>15% kiệt sức<> trong <#e8a800ff>2 giây<>."
+            "option": "\n<#ff7a3eff>Sương Giá<>: Gây sát thương kĩ năng lên kẻ địch sẽ gây <#d94c49ff>15% kiệt sức<> trong <#e8a800ff>2 giây<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Quyền Trượng Pha Lê Rylai Ánh Sáng",
-            "option": "\n<#ff7a3eff>Sương Giá<>: Kĩ năng trúng kẻ địch sẽ gây <#d94c49ff>15% kiệt sức<> trong <#e8a800ff>2 giây<>."
+            "option": "\n<#ff7a3eff>Sương Giá<>: Gây sát thương kĩ năng lên kẻ địch sẽ gây <#d94c49ff>15% kiệt sức<> trong <#e8a800ff>2 giây<>."
         },
         "stormrazor": {
             "name": "Kiếm Bão Tố",
@@ -1872,11 +1872,11 @@
         },
         "grezs_spectral_lantern": {
             "name": "Lồng Đèn Ma Grez",
-            "option": "\n<#ff7a3eff>Hút Linh Hồn<>: Nhận <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Sức Mạnh Phép Thuật<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#a974ffff>20<>.\n\n<#ff7a3eff>Đồ Tể<>: Với quái, gây thêm <#a974ffff>20% sát thương phép<> và hồi <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>máu<> bằng <#d94c49ff>4% sát thương bạn gây ra<>."
+            "option": "\n<#ff7a3eff>Hút Linh Hồn<>: Nhận <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Sức Mạnh Phép Thuật<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#a974ffff>20<>.\n\n<#ff7a3eff>Đồ Tể<>: Với quái, gây thêm <#a974ffff>20% sát thương phép<> và hồi <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>máu<> bằng <#d94c49ff>4% sát thương bạn gây ra<>."
         },
         "radiant_grezs_spectral_lantern": {
             "name": "Lồng Đèn Ma Grez Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hút Linh Hồn<>: Nhận <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Sức Mạnh Phép Thuật<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#a974ffff>40<>.\n\n<#ff7a3eff>Đồ Tể<>: Với quái, gây thêm <#a974ffff>30% sát thương phép<> và hồi <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>máu<> bằng <#d94c49ff>6% sát thương bạn gây ra<>."
+            "option": "\n<#ff7a3eff>Hút Linh Hồn<>: Nhận <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Sức Mạnh Phép Thuật<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#a974ffff>40<>.\n\n<#ff7a3eff>Đồ Tể<>: Với quái, gây thêm <#a974ffff>30% sát thương phép<> và hồi <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>máu<> bằng <#d94c49ff>6% sát thương bạn gây ra<>."
         },
         "cloak_of_starry_night": {
             "name": "Áo Choàng Sao Đêm",
@@ -1900,7 +1900,7 @@
         },
         "fated_ashes": {
             "name": "Tro Tàn Định Mệnh",
-            "option": "\n<#ff7a3eff>Tàn Lửa<>: Kĩ năng trúng kẻ địch sẽ thiêu đốt chúng, gây <#a974ffff>15 sát thương phép<> trong <#e8a800ff>3 giây<>. Hiệu ứng này <#e8a800ff>hiệu quả 400%<> lên lính và quái."
+            "option": "\n<#ff7a3eff>Tàn Lửa<>: Gây sát thương kĩ năng sẽ thiêu đốt kẻ địch, gây <#a974ffff>15 sát thương phép<> trong <#e8a800ff>3 giây<>. Hiệu ứng này <#e8a800ff>hiệu quả 400%<> lên lính và quái."
         },
         "stormsurge": {
             "name": "Quyền Trượng Bão Tố",
@@ -2144,7 +2144,7 @@
         },
         "radiant_philosophers_stone": {
             "name": "Đá Hiền Triết Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Găng Tay Băng Giá",
@@ -2204,11 +2204,11 @@
         },
         "dream_maker": {
             "name": "Thú Bông Bảo Mộng",
-            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#64b6f6ff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Khi <#64b6f6ff>Bong Bóng Mơ<> còn hiệu lực, nó cho <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Giảm Sát thương Kỹ năng<> và <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#64b6f6ff>Bong Bóng Mơ<> kết thúc)."
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#64b6f6ff>Bong Bóng Mơ<> trong <#e8a800ff>5 giây<>. Khi <#64b6f6ff>Bong Bóng Mơ<> còn hiệu lực, nó cho <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Giảm Sát thương Kỹ năng<> và <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#64b6f6ff>Bong Bóng Mơ<> kết thúc)."
         },
         "radiant_dream_maker": {
             "name": "Thú Bông Bảo Mộng Ánh Sáng",
-            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#64b6f6ff>Bong Bóng Mơ<> trong <#e8a800ff>3 giây<>. Khi <#64b6f6ff>Bong Bóng Mơ<> còn hiệu lực, nó cho <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Giảm Sát thương Kỹ năng<> và <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#64b6f6ff>Bong Bóng Mơ<> kết thúc)."
+            "option": "\n<#ff7a3eff>Chia Tiền<>: Nhận <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> vàng<> mỗi <#e8a800ff>5 giây<>.\n\n<#ff7a3eff>Thú Bông Bảo Mộng<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh sẽ trao cho họ một <#64b6f6ff>Bong Bóng Mơ<> trong <#e8a800ff>5 giây<>. Khi <#64b6f6ff>Bong Bóng Mơ<> còn hiệu lực, nó cho <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Giảm Sát thương Kỹ năng<> và <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>Lực Thích Ứng<> (hồi chiêu <#e8a800ff>8 giây<>, bắt đầu sau khi <#64b6f6ff>Bong Bóng Mơ<> kết thúc)."
         }
     },
     "zh-hans": {
@@ -2698,11 +2698,11 @@
         },
         "rylais_crystal_scepter": {
             "name": "兰蒂尔的冰晶节杖",
-            "option": "\n<#ff7a3eff>凛霜<>：技能命中敌人时，对其施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
+            "option": "\n<#ff7a3eff>凛霜<>：对敌人造成技能伤害时，对其施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
         },
         "radiant_rylais_crystal_scepter": {
             "name": "光明版兰蒂尔的冰晶节杖",
-            "option": "\n<#ff7a3eff>凛霜<>：技能命中敌人时，对其施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
+            "option": "\n<#ff7a3eff>凛霜<>：对敌人造成技能伤害时，对其施加 <#d94c49ff>15%减速<>，持续 <#e8a800ff>2秒<>。"
         },
         "stormrazor": {
             "name": "风暴利刃",
@@ -2978,11 +2978,11 @@
         },
         "grezs_spectral_lantern": {
             "name": "格雷兹之幽魂灯",
-            "option": "\n<#ff7a3eff>汲魂<>：每次参与击杀敌方英雄或击杀野怪获得 <#a974ffff>2<> 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，最多 <#a974ffff>20<> 点。\n\n<#ff7a3eff>屠夫<>：对野怪额外造成 <#a974ffff>20% 的魔法伤害<>，并回复相当于<#d94c49ff>已造成伤害 4%<>的 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>生命值<>。"
+            "option": "\n<#ff7a3eff>汲魂<>：每次参与击杀敌方英雄或击杀野怪获得 <#a974ffff>1<> 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，最多 <#a974ffff>20<> 点。\n\n<#ff7a3eff>屠夫<>：对野怪额外造成 <#a974ffff>20% 的魔法伤害<>，并回复相当于<#d94c49ff>已造成伤害 4%<>的 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>生命值<>。"
         },
         "radiant_grezs_spectral_lantern": {
             "name": "光明版格雷兹之幽魂灯",
-            "option": "\n<#ff7a3eff>汲魂<>：每次参与击杀敌方英雄或击杀野怪获得 <#a974ffff>2<> 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，最多 <#a974ffff>40<> 点。\n\n<#ff7a3eff>屠夫<>：对野怪额外造成 <#a974ffff>30% 的魔法伤害<>，并回复相当于<#d94c49ff>已造成伤害 6%<>的 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>生命值<>。"
+            "option": "\n<#ff7a3eff>汲魂<>：每次参与击杀敌方英雄或击杀野怪获得 <#a974ffff>1<> 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，最多 <#a974ffff>40<> 点。\n\n<#ff7a3eff>屠夫<>：对野怪额外造成 <#a974ffff>30% 的魔法伤害<>，并回复相当于<#d94c49ff>已造成伤害 6%<>的 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>生命值<>。"
         },
         "cloak_of_starry_night": {
             "name": "星夜斗篷",
@@ -3006,7 +3006,7 @@
         },
         "fated_ashes": {
             "name": "命定灰烬",
-            "option": "\n<#ff7a3eff>激燃<>：技能命中敌人时点燃目标，在 <#e8a800ff>3 秒<>内造成 <#a974ffff>15 点魔法伤害<>。该效果对小兵和野怪的<#e8a800ff>效果为 400%<>。"
+            "option": "\n<#ff7a3eff>激燃<>：造成技能伤害时点燃敌人，在 <#e8a800ff>3 秒<>内造成 <#a974ffff>15 点魔法伤害<>。该效果对小兵和野怪的<#e8a800ff>效果为 400%<>。"
         },
         "stormsurge": {
             "name": "风暴狂涌",
@@ -3250,7 +3250,7 @@
         },
         "radiant_philosophers_stone": {
             "name": "光明版贤者之石",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>25%<>。"
         },
         "iceborn_gauntlet": {
             "name": "冰脉护手",
@@ -3310,11 +3310,11 @@
         },
         "dream_maker": {
             "name": "圆梦使者",
-            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#64b6f6ff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。<#64b6f6ff>美梦泡泡<>存在期间，提供 <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>技能伤害减免<>和 <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>（冷却 <#e8a800ff>8秒<>，在<#64b6f6ff>美梦泡泡<>结束后开始计算）。"
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#64b6f6ff>美梦泡泡<>，持续 <#e8a800ff>5秒<>。<#64b6f6ff>美梦泡泡<>存在期间，提供 <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>技能伤害减免<>和 <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>（冷却 <#e8a800ff>8秒<>，在<#64b6f6ff>美梦泡泡<>结束后开始计算）。"
         },
         "radiant_dream_maker": {
             "name": "光明版圆梦使者",
-            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#64b6f6ff>美梦泡泡<>，持续 <#e8a800ff>3秒<>。<#64b6f6ff>美梦泡泡<>存在期间，提供 <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>技能伤害减免<>和 <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>（冷却 <#e8a800ff>8秒<>，在<#64b6f6ff>美梦泡泡<>结束后开始计算）。"
+            "option": "\n<#ff7a3eff>分享财富<>：每 <#e8a800ff>5秒<> 获得 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 金币<>。\n\n<#ff7a3eff>圆梦使者<>：为友方英雄治疗、护盾或增益时，使其获得一个<#64b6f6ff>美梦泡泡<>，持续 <#e8a800ff>5秒<>。<#64b6f6ff>美梦泡泡<>存在期间，提供 <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>技能伤害减免<>和 <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>自适应之力<>（冷却 <#e8a800ff>8秒<>，在<#64b6f6ff>美梦泡泡<>结束后开始计算）。"
         }
     },
     "pt-BR": {
@@ -3804,11 +3804,11 @@
         },
         "rylais_crystal_scepter": {
             "name": "Cetro de Cristal de Rylai",
-            "option": "\n<#ff7a3eff>Gélido<>: Acertar uma Habilidade em um inimigo aplica <#d94c49ff>15% de lentidão<> por <#e8a800ff>2 segundos<>."
+            "option": "\n<#ff7a3eff>Gélido<>: Causar dano de Habilidade a inimigos aplica <#d94c49ff>15% de lentidão<> por <#e8a800ff>2 segundos<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Cetro de Cristal de Rylai Radiante",
-            "option": "\n<#ff7a3eff>Gélido<>: Acertar uma Habilidade em um inimigo aplica <#d94c49ff>15% de lentidão<> por <#e8a800ff>2 segundos<>."
+            "option": "\n<#ff7a3eff>Gélido<>: Causar dano de Habilidade a inimigos aplica <#d94c49ff>15% de lentidão<> por <#e8a800ff>2 segundos<>."
         },
         "stormrazor": {
             "name": "Navalha da Tempestade",
@@ -4084,11 +4084,11 @@
         },
         "grezs_spectral_lantern": {
             "name": "Lanterna Espectral de Grez",
-            "option": "\n<#ff7a3eff>Dreno Espiritual<>: Ganha <#a974ffff>2<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#a974ffff>20<>.\n\n<#ff7a3eff>Açougueiro<>: Contra monstros, causa <#a974ffff>20% de dano mágico bônus<> e restaura <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>vida<> equivalente a <#d94c49ff>4% do dano causado<>."
+            "option": "\n<#ff7a3eff>Dreno Espiritual<>: Ganha <#a974ffff>1<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#a974ffff>20<>.\n\n<#ff7a3eff>Açougueiro<>: Contra monstros, causa <#a974ffff>20% de dano mágico bônus<> e restaura <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>vida<> equivalente a <#d94c49ff>4% do dano causado<>."
         },
         "radiant_grezs_spectral_lantern": {
             "name": "Lanterna Espectral de Grez Radiante",
-            "option": "\n<#ff7a3eff>Dreno Espiritual<>: Ganha <#a974ffff>2<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#a974ffff>40<>.\n\n<#ff7a3eff>Açougueiro<>: Contra monstros, causa <#a974ffff>30% de dano mágico bônus<> e restaura <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>vida<> equivalente a <#d94c49ff>6% do dano causado<>."
+            "option": "\n<#ff7a3eff>Dreno Espiritual<>: Ganha <#a974ffff>1<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#a974ffff>40<>.\n\n<#ff7a3eff>Açougueiro<>: Contra monstros, causa <#a974ffff>30% de dano mágico bônus<> e restaura <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>vida<> equivalente a <#d94c49ff>6% do dano causado<>."
         },
         "cloak_of_starry_night": {
             "name": "Manto da Noite Estrelada",
@@ -4112,7 +4112,7 @@
         },
         "fated_ashes": {
             "name": "Cinzas do Destino",
-            "option": "\n<#ff7a3eff>Inflamar<>: Acertar uma Habilidade em um inimigo o queima, causando <#a974ffff>15 de dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Este efeito é <#e8a800ff>400% efetivo<> contra lacaios e monstros."
+            "option": "\n<#ff7a3eff>Inflamar<>: Causar dano de Habilidade queima os inimigos, causando <#a974ffff>15 de dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Este efeito é <#e8a800ff>400% efetivo<> contra lacaios e monstros."
         },
         "stormsurge": {
             "name": "Ápice da Tempestade",
@@ -4356,7 +4356,7 @@
         },
         "radiant_philosophers_stone": {
             "name": "Pedra Filosofal Radiante",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Manopla dos Glacinatas",
@@ -4416,11 +4416,11 @@
         },
         "dream_maker": {
             "name": "Criassonhos",
-            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#64b6f6ff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. Enquanto a <#64b6f6ff>Bolha do Sonho<> estiver ativa, ela concede <#92dc7bff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Redução de Dano de Habilidades<> e <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#64b6f6ff>Bolha do Sonho<> terminar)."
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#64b6f6ff>Bolha do Sonho<> por <#e8a800ff>5 segundos<>. Enquanto a <#64b6f6ff>Bolha do Sonho<> estiver ativa, ela concede <#92dc7bff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Redução de Dano de Habilidades<> e <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#64b6f6ff>Bolha do Sonho<> terminar)."
         },
         "radiant_dream_maker": {
             "name": "Criassonhos Radiante",
-            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#64b6f6ff>Bolha do Sonho<> por <#e8a800ff>3 segundos<>. Enquanto a <#64b6f6ff>Bolha do Sonho<> estiver ativa, ela concede <#92dc7bff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Redução de Dano de Habilidades<> e <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#64b6f6ff>Bolha do Sonho<> terminar)."
+            "option": "\n<#ff7a3eff>Riquezas Compartilhadas<>: Receba <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> de ouro<> a cada <#e8a800ff>5 segundos<>.\n\n<#ff7a3eff>Criassonhos<>: Curar, conceder escudo ou fortalecer um campeão aliado concede a ele uma <#64b6f6ff>Bolha do Sonho<> por <#e8a800ff>5 segundos<>. Enquanto a <#64b6f6ff>Bolha do Sonho<> estiver ativa, ela concede <#92dc7bff>8%<> de <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>Redução de Dano de Habilidades<> e <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> de <#d48294ff>Força Adaptativa<> (recarga de <#e8a800ff>8 segundos<>, começando após a <#64b6f6ff>Bolha do Sonho<> terminar)."
         }
     },
     "ru": {
@@ -4910,11 +4910,11 @@
         },
         "rylais_crystal_scepter": {
             "name": "Кристальный Скипетр Райлая",
-            "option": "\n<#ff7a3eff>Иней<>: Попадание умением по противнику замедляет его на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
+            "option": "\n<#ff7a3eff>Иней<>: Нанесение урона умением противникам замедляет их на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "Лучезарный Кристальный Скипетр Райлая",
-            "option": "\n<#ff7a3eff>Иней<>: Попадание умением по противнику замедляет его на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
+            "option": "\n<#ff7a3eff>Иней<>: Нанесение урона умением противникам замедляет их на <#d94c49ff>15%<> на <#e8a800ff>2 секунды<>."
         },
         "stormrazor": {
             "name": "Грозовая бритва",
@@ -5190,11 +5190,11 @@
         },
         "grezs_spectral_lantern": {
             "name": "Призрачный фонарь Греза",
-            "option": "\n<#ff7a3eff>Похищение душ<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<>, до <#a974ffff>20<>.\n\n<#ff7a3eff>Мясник<>: Против монстров наносит <#a974ffff>20% дополнительного магического урона<> и восстанавливает <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>здоровье<> в размере <#d94c49ff>4% нанесённого урона<>."
+            "option": "\n<#ff7a3eff>Похищение душ<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<>, до <#a974ffff>20<>.\n\n<#ff7a3eff>Мясник<>: Против монстров наносит <#a974ffff>20% дополнительного магического урона<> и восстанавливает <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>здоровье<> в размере <#d94c49ff>4% нанесённого урона<>."
         },
         "radiant_grezs_spectral_lantern": {
             "name": "Лучезарный Призрачный фонарь Греза",
-            "option": "\n<#ff7a3eff>Похищение душ<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#a974ffff>2<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<>, до <#a974ffff>40<>.\n\n<#ff7a3eff>Мясник<>: Против монстров наносит <#a974ffff>30% дополнительного магического урона<> и восстанавливает <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>здоровье<> в размере <#d94c49ff>6% нанесённого урона<>."
+            "option": "\n<#ff7a3eff>Похищение душ<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#a974ffff>1<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений<>, до <#a974ffff>40<>.\n\n<#ff7a3eff>Мясник<>: Против монстров наносит <#a974ffff>30% дополнительного магического урона<> и восстанавливает <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>здоровье<> в размере <#d94c49ff>6% нанесённого урона<>."
         },
         "cloak_of_starry_night": {
             "name": "Мантия звездной ночи",
@@ -5218,7 +5218,7 @@
         },
         "fated_ashes": {
             "name": "Роковой пепел",
-            "option": "\n<#ff7a3eff>Разгорание<>: Попадание умением по противнику поджигает его, нанося <#a974ffff>15 магического урона<> в течение <#e8a800ff>3 сек.<> Против миньонов и монстров эффект <#e8a800ff>400%<>."
+            "option": "\n<#ff7a3eff>Разгорание<>: Нанесение урона умением поджигает противников, нанося <#a974ffff>15 магического урона<> в течение <#e8a800ff>3 сек.<> Против миньонов и монстров эффект <#e8a800ff>400%<>."
         },
         "stormsurge": {
             "name": "Штормовой прилив",
@@ -5462,7 +5462,7 @@
         },
         "radiant_philosophers_stone": {
             "name": "Лучезарный Философский камень",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Хладорожденная рукавица",
@@ -5522,11 +5522,11 @@
         },
         "dream_maker": {
             "name": "Сновичок",
-            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#64b6f6ff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Пока <#64b6f6ff>Пузырь сна<> активен, он даёт <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>снижения урона от умений<> и <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#64b6f6ff>Пузырь сна<> заканчивается)."
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#64b6f6ff>Пузырь сна<> на <#e8a800ff>5 секунд<>. Пока <#64b6f6ff>Пузырь сна<> активен, он даёт <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>снижения урона от умений<> и <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#64b6f6ff>Пузырь сна<> заканчивается)."
         },
         "radiant_dream_maker": {
             "name": "Лучезарный Сновичок",
-            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#64b6f6ff>Пузырь сна<> на <#e8a800ff>3 секунды<>. Пока <#64b6f6ff>Пузырь сна<> активен, он даёт <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>снижения урона от умений<> и <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#64b6f6ff>Пузырь сна<> заканчивается)."
+            "option": "\n<#ff7a3eff>Общие богатства<>: Вы получаете <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> золота<> каждые <#e8a800ff>5 секунд<>.\n\n<#ff7a3eff>Сновичок<>: Лечение, щит или усиление союзного чемпиона даёт ему <#64b6f6ff>Пузырь сна<> на <#e8a800ff>5 секунд<>. Пока <#64b6f6ff>Пузырь сна<> активен, он даёт <#92dc7bff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>снижения урона от умений<> и <#d48294ff>20<> <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>адаптивной силы<> (перезарядка <#e8a800ff>8 секунд<>, начинается после того, как <#64b6f6ff>Пузырь сна<> заканчивается)."
         }
     },
     "ko": {
@@ -6016,11 +6016,11 @@
         },
         "rylais_crystal_scepter": {
             "name": "라일라이의 수정홀",
-            "option": "\n<#ff7a3eff>서리<>: 적에게 스킬을 적중시키면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
+            "option": "\n<#ff7a3eff>서리<>: 적에게 스킬 피해를 입히면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
         },
         "radiant_rylais_crystal_scepter": {
             "name": "찬란한 라일라이의 수정홀",
-            "option": "\n<#ff7a3eff>서리<>: 적에게 스킬을 적중시키면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
+            "option": "\n<#ff7a3eff>서리<>: 적에게 스킬 피해를 입히면 <#e8a800ff>2초<> 동안 <#d94c49ff>15% 둔화<>시킵니다."
         },
         "stormrazor": {
             "name": "폭풍갈퀴",
@@ -6296,11 +6296,11 @@
         },
         "grezs_spectral_lantern": {
             "name": "그레즈의 유령 랜턴",
-            "option": "\n<#ff7a3eff>영혼 흡수<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>2<> 얻으며, 최대 <#a974ffff>20<>까지 쌓입니다.\n\n<#ff7a3eff>도살자<>: 몬스터에게 <#a974ffff>20%의 추가 마법 피해<>를 입히고 <#d94c49ff>입힌 피해량의 4%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>영혼 흡수<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>1<> 얻으며, 최대 <#a974ffff>20<>까지 쌓입니다.\n\n<#ff7a3eff>도살자<>: 몬스터에게 <#a974ffff>20%의 추가 마법 피해<>를 입히고 <#d94c49ff>입힌 피해량의 4%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
         },
         "radiant_grezs_spectral_lantern": {
             "name": "찬란한 그레즈의 유령 랜턴",
-            "option": "\n<#ff7a3eff>영혼 흡수<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>2<> 얻으며, 최대 <#a974ffff>40<>까지 쌓입니다.\n\n<#ff7a3eff>도살자<>: 몬스터에게 <#a974ffff>30%의 추가 마법 피해<>를 입히고 <#d94c49ff>입힌 피해량의 6%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>영혼 흡수<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>1<> 얻으며, 최대 <#a974ffff>40<>까지 쌓입니다.\n\n<#ff7a3eff>도살자<>: 몬스터에게 <#a974ffff>30%의 추가 마법 피해<>를 입히고 <#d94c49ff>입힌 피해량의 6%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
         },
         "cloak_of_starry_night": {
             "name": "별빛밤 망토",
@@ -6324,7 +6324,7 @@
         },
         "fated_ashes": {
             "name": "운명의 재",
-            "option": "\n<#ff7a3eff>발화<>: 스킬이 적에게 적중하면 대상을 불태워 <#e8a800ff>3초<> 동안 <#a974ffff>15의 마법 피해<>를 입힙니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>400%<>로 적용됩니다."
+            "option": "\n<#ff7a3eff>발화<>: 스킬 피해를 입히면 적을 불태워 <#e8a800ff>3초<> 동안 <#a974ffff>15의 마법 피해<>를 입힙니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>400%<>로 적용됩니다."
         },
         "stormsurge": {
             "name": "폭풍 쇄도",
@@ -6568,7 +6568,7 @@
         },
         "radiant_philosophers_stone": {
             "name": "찬란한 현자의 돌",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>25%<>까지 쌓입니다."
         },
         "iceborn_gauntlet": {
             "name": "얼어붙은 건틀릿",
@@ -6628,11 +6628,11 @@
         },
         "dream_maker": {
             "name": "꿈 생성기",
-            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#64b6f6ff>꿈방울<>을 부여합니다. <#64b6f6ff>꿈방울<>이 유지되는 동안 대상은 <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>8%<>, <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>20<> 얻습니다. (재사용 대기시간 <#e8a800ff>8초<>, <#64b6f6ff>꿈방울<>이 끝난 후 시작)"
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>5초<> 동안 <#64b6f6ff>꿈방울<>을 부여합니다. <#64b6f6ff>꿈방울<>이 유지되는 동안 대상은 <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>8%<>, <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>20<> 얻습니다. (재사용 대기시간 <#e8a800ff>8초<>, <#64b6f6ff>꿈방울<>이 끝난 후 시작)"
         },
         "radiant_dream_maker": {
             "name": "찬란한 꿈 생성기",
-            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>3초<> 동안 <#64b6f6ff>꿈방울<>을 부여합니다. <#64b6f6ff>꿈방울<>이 유지되는 동안 대상은 <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>8%<>, <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>20<> 얻습니다. (재사용 대기시간 <#e8a800ff>8초<>, <#64b6f6ff>꿈방울<>이 끝난 후 시작)"
+            "option": "\n<#ff7a3eff>재물 공유<>: <#e8a800ff>5초<>마다 <#e2ba3dff>4 <i#asset/base/ui/banpick/champion_stat_icon:gold_0> 골드<>를 획득합니다.\n\n<#ff7a3eff>꿈 생성기<>: 아군 챔피언을 치유하거나 보호막을 씌우거나 강화하면 대상에게 <#e8a800ff>5초<> 동안 <#64b6f6ff>꿈방울<>을 부여합니다. <#64b6f6ff>꿈방울<>이 유지되는 동안 대상은 <i#asset/base/ui/banpick/champion_stat_icon:skill_damage_reduction_0> <#92dc7bff>스킬 피해 감소<>를 <#92dc7bff>8%<>, <i#asset/base/ui/banpick/champion_stat_icon:force_0> <#d48294ff>적응형 능력치<>를 <#d48294ff>20<> 얻습니다. (재사용 대기시간 <#e8a800ff>8초<>, <#64b6f6ff>꿈방울<>이 끝난 후 시작)"
         }
     }
 }

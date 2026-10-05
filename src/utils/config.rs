@@ -190,6 +190,9 @@ pub(crate) fn dll_dir() -> Option<PathBuf> {
 }
 
 fn resolve_dll_dir() -> Option<PathBuf> {
+    // `GetModuleFileNameW` takes its module as an integer handle in
+    // tactics/mod.rs and as a pointer here: the same call on 64-bit Windows.
+    #[allow(clashing_extern_declarations)]
     extern "system" {
         fn GetModuleHandleExW(flags: u32, name: *const u16, module: *mut *mut c_void) -> i32;
         fn GetModuleFileNameW(module: *mut c_void, filename: *mut u16, size: u32) -> u32;
