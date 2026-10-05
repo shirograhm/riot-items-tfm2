@@ -295,6 +295,13 @@
             "anim": "asset/riot_items_tfm2/effects/liandrys_burn",
             "tag": "burn",
             "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_liandrys_burn_small",
+            "anim": "asset/riot_items_tfm2/effects/liandrys_burn_small",
+            "tag": "burn",
+            "z": 1
         }
     ]
 }

@@ -3,13 +3,16 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta, DOT_TICK_RATE};
 
-/// Statless marker on a unit Torment is burning, minion and monster as much
-/// as champion: the `view_buffs` binding of the same name in
+/// Statless marker on a unit Torment is burning, monster as much as
+/// champion: the `view_buffs` binding of the same name in
 /// `view/effects.view_effects` draws a fire at its feet for as long as the
 /// marker is up. One name for both tiers and every carrier, so a unit two of
-/// them burn shows one fire. The art is drawn to a champion's size, whatever
-/// it is on.
+/// them burn shows one fire. The art is drawn to a champion's size.
 const BURN_BUFF: &str = "riot_liandrys_burn";
+/// The same marker for a minion, bound to a fire its size: a minion stands
+/// about 13 px wide and tall against a champion's 21 to 36, its feet 7 px
+/// under it against 12, and the champion's fire swallowed it.
+const SMALL_BURN_BUFF: &str = "riot_liandrys_burn_small";
 /// How much longer than the burn the marker is put up for, which is also how
 /// long it is left alone before it is put up again. A damage-over-time skill
 /// starts the burn over on every one of its ticks, and replacing a buff that
@@ -28,6 +31,9 @@ struct Burn {
     until_next: usize,
     /// Ticks the flames' marker has left. Never less than `remaining`.
     marker: usize,
+    /// Which marker the flames are: the small one on a minion. Kept here
+    /// because the unit may be gone by the time its flames are to come down.
+    flames: &'static str,
 }
 
 #[derive(Clone, Debug)]
@@ -119,8 +125,8 @@ impl LiandrysTorment {
     }
 
     /// Starts the burn on `target`, or starts its time over, and puts the
-    /// flames up with it.
-    fn apply_burn(&mut self, ctx: &mut StableSim<'_>, target: usize) {
+    /// `flames` up with it.
+    fn apply_burn(&mut self, ctx: &mut StableSim<'_>, target: usize, flames: &'static str) {
         let duration = self.duration_ticks();
         let index = match self.burns.iter().position(|burn| burn.target == target) {
             Some(index) => index,
@@ -130,6 +136,7 @@ impl LiandrysTorment {
                     remaining: 0,
                     until_next: DOT_TICK_RATE,
                     marker: 0,
+                    flames,
                 });
                 self.burns.len() - 1
             }
@@ -143,7 +150,7 @@ impl LiandrysTorment {
         if burn.marker < duration {
             burn.marker = duration + MARKER_SLACK_TICKS;
             let marker = burn.marker;
-            refresh_buff(ctx, target, BURN_BUFF, &BuffV1::timed(BURN_BUFF, marker));
+            refresh_buff(ctx, target, flames, &BuffV1::timed(flames, marker));
         }
     }
 
@@ -158,7 +165,7 @@ impl LiandrysTorment {
                     // Dead or gone, and its flames go with the burn: minions
                     // die burning all the time, and a marker left to run out
                     // would sit on the body, or on whatever takes its slot.
-                    ctx.entity_remove_buff(burn.target, BURN_BUFF);
+                    ctx.entity_remove_buff(burn.target, burn.flames);
                     continue;
                 };
                 ctx.deal_damage(caster, burn.target, 0, damage, AttackTypeV1::Item);
@@ -260,8 +267,13 @@ impl StableItem for LiandrysTorment {
         if target_ref.is_tower() || !ability {
             return;
         }
+        let flames = if target_ref.is_minion() {
+            SMALL_BURN_BUFF
+        } else {
+            BURN_BUFF
+        };
 
-        self.apply_burn(ctx, target);
+        self.apply_burn(ctx, target, flames);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
