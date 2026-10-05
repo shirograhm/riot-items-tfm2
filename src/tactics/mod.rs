@@ -243,6 +243,11 @@ const VANILLA_OPTS: [&str; 7] = [
 type HMODULE = isize;
 type DWORD = u32;
 type BOOL = i32;
+// The same kernel32 calls are declared again elsewhere in the crate with
+// pointers where these take and return pointer-sized integers. On 64-bit
+// Windows the two are passed the same way, so the declarations differ in
+// spelling only and the lint that compares them has nothing to report.
+#[allow(clashing_extern_declarations)]
 #[link(name = "kernel32")]
 extern "system" {
     fn GetModuleHandleW(name: *const u16) -> HMODULE;
@@ -1594,7 +1599,7 @@ fn install_game_view_hook() {
         install_detour_generic(
             RVA_GV_UPDATE,
             12,
-            cap_game_view as usize,
+            cap_game_view as *const () as usize,
             &GV_UPDATE_PROLOGUE,
         )
     };
@@ -2710,7 +2715,7 @@ fn install_launcher_hook() {
         install_detour_generic(
             CL_LAUNCHER_RVA,
             12,
-            cap_launcher as usize,
+            cap_launcher as *const () as usize,
             &CL_LAUNCHER_PROLOGUE,
         )
     };
@@ -2812,7 +2817,7 @@ fn install_seed_ctor_hook() {
         install_detour_generic(
             SEEDCTOR_RVA,
             SEEDCTOR_ORIG_LEN,
-            cap_seed_ctor as usize,
+            cap_seed_ctor as *const () as usize,
             &SEEDCTOR_PROLOGUE,
         )
     };
@@ -3123,7 +3128,7 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             }
             // By key, vanilla included: name scan + recipe validation.
             let idx =
-                slotN_catalog_index(champ, si, |key| scan_catalog_index(cat_base, cat_len, key));
+                slot_n_catalog_index(champ, si, |key| scan_catalog_index(cat_base, cat_len, key));
             let Some(t) = idx else {
                 SP4_NOIDX.fetch_add(1, Ordering::Relaxed);
                 continue;
@@ -3275,7 +3280,7 @@ unsafe fn spawn_paste_pinned_build(
 
 /// The player's pin for build slot `slot`, as a catalog index, for `cap_spawn`.
 unsafe fn spawn_pin_at(champ: &str, cat_base: usize, cat_len: u64, slot: usize) -> Option<u64> {
-    slotN_catalog_index(champ, slot as u8, |key| {
+    slot_n_catalog_index(champ, slot as u8, |key| {
         scan_catalog_index(cat_base, cat_len, key)
     })
 }
@@ -3298,7 +3303,7 @@ fn install_spawn_hook() {
         install_detour_r11(
             SPAWN_RVA,
             SPAWN_ORIG_LEN,
-            cap_spawn as usize,
+            cap_spawn as *const () as usize,
             &SPAWN_PROLOGUE,
         )
     };
@@ -5121,11 +5126,11 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str, category: Option<u32>
 
 /// The pinned item key for one build slot, normalized (radiant + alias) the way
 /// the item catalog is keyed.
-fn slotN_item_key(champ: &str, si: u8) -> Option<String> {
+fn slot_n_item_key(champ: &str, si: u8) -> Option<String> {
     crate::build_config::pinned_key(champ, si as usize)
 }
 fn slot3_item_key(champ: &str) -> Option<String> {
-    slotN_item_key(champ, 3)
+    slot_n_item_key(champ, 3)
 }
 
 /// Catalog index of a slot's pinned item, looked up by key through `lookup`
@@ -5142,9 +5147,9 @@ fn slot3_item_key(champ: &str) -> Option<String> {
 /// (`radiant_` + alias, so `"bloodthirster"` finds `warlords_final_judgement`),
 /// then the key exactly as written, which is how a game-internal key like
 /// `"warlords_final_judgement"` resolves.
-fn slotN_catalog_index(champ: &str, si: u8, lookup: impl Fn(&[u8]) -> Option<u64>) -> Option<u64> {
+fn slot_n_catalog_index(champ: &str, si: u8, lookup: impl Fn(&[u8]) -> Option<u64>) -> Option<u64> {
     let raw = crate::build_config::pinned_key_raw(champ, si as usize)?;
-    slotN_item_key(champ, si)
+    slot_n_item_key(champ, si)
         .and_then(|key| lookup(key.as_bytes()))
         .or_else(|| lookup(raw.as_bytes()))
 }
@@ -5431,7 +5436,7 @@ unsafe fn extra_slot_boots(
     }
     if designate {
         let player_boots = (0..crate::build_config::picker_slots()).any(|j| {
-            slotN_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx, key))
+            slot_n_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx, key))
                 .is_some_and(|pin| buy_is_boots(ctx, pin))
         });
         if player_boots || crate::build_config::pinned_key_raw(champ, si).is_some() {
@@ -5448,7 +5453,7 @@ unsafe fn extra_slot_boots(
 /// The pinned item for build slot `si`, as a catalog index. Planted exactly as
 /// written: Smart Builds only ever rewrites the AI's picks, never the player's.
 unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize, taken: &[u64]) -> Option<u64> {
-    slotN_catalog_index(champ, si as u8, |key| scan_idx_cached(ctx, key))
+    slot_n_catalog_index(champ, si as u8, |key| scan_idx_cached(ctx, key))
         .filter(|&t| !pin_placed_by_engine(ctx, champ, t, taken))
 }
 
@@ -5466,7 +5471,7 @@ unsafe fn pin_placed_by_engine(ctx: usize, champ: &str, t: u64, taken: &[u64]) -
     let pin_boots = buy_is_boots(ctx, t);
     taken.iter().enumerate().any(|(j, &v)| {
         (v == t || (pin_boots && buy_is_boots(ctx, v)))
-            && slotN_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx, key)) != Some(v)
+            && slot_n_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx, key)) != Some(v)
     })
 }
 
@@ -5480,7 +5485,7 @@ unsafe fn buy_is_boots(ctx: usize, index: u64) -> bool {
 /// earlier slot must not duplicate or crowd out.
 unsafe fn later_pins(ctx: usize, champ: &str, from: usize) -> Vec<u64> {
     (from..crate::build_config::picker_slots())
-        .filter_map(|si| slotN_catalog_index(champ, si as u8, |key| scan_idx_cached(ctx, key)))
+        .filter_map(|si| slot_n_catalog_index(champ, si as u8, |key| scan_idx_cached(ctx, key)))
         .collect()
 }
 
@@ -6110,7 +6115,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         continue;
                     } // slot already purchased -> too late
                       // By key, vanilla included: name scan + recipe validation.
-                    let idx = slotN_catalog_index(champ, si, |key| scan_idx_cached(ctx012, key));
+                    let idx = slot_n_catalog_index(champ, si, |key| scan_idx_cached(ctx012, key));
                     if let Some(t) = idx {
                         // * Idempotence guard (07-19): skip the write if the target value is already there. Measured, the vast majority of 53,890 writes
                         //   were rewrites of the same value on the same athlete and slot -> a value comparison cut it to about 10 (removing the hot-path cost).
@@ -6134,7 +6139,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         // one. A slot the player pinned to what it holds is a
                         // deliberate duplicate, not a clash.
                         let pin_at = |j: usize| {
-                            slotN_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx012, key))
+                            slot_n_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx012, key))
                         };
                         let pin_boots = buy_is_boots(ctx012, t);
                         let elsewhere =
@@ -6322,7 +6327,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     // Dropped when the engine already put it in slots 0/1/2 (see
                     // `pin_placed_by_engine`); the fallbacks below then pick a
                     // 4th that duplicates nothing.
-                    slotN_catalog_index(champ, 3, |key| scan_idx_cached(ctx, key))
+                    slot_n_catalog_index(champ, 3, |key| scan_idx_cached(ctx, key))
                         .filter(|&t| !pin_placed_by_engine(ctx, champ, t, &[b0, b1, b2]))
                 } else if in_place && buy_is_boots(ctx, rd_u64(ptr + 24)) {
                     // Boots Smart Builds put in the 4th slot (rule 7, when pins
@@ -6786,7 +6791,7 @@ fn install_replace_4th() {
         return;
     }
     // orig_len=19: the new 0.5.1 prologue, 5 push (7) + sub rsp,0x50 (4) = 11B, cannot cover the 12B jmp patch -> relocate to the next clean boundary, 11 + mov rax,[rsp+0xa8] (8) = 19B.
-    match unsafe { install_replace_buy(RVA_BUY_ITEM, 19, buy_replace_ctx as usize) } {
+    match unsafe { install_replace_buy(RVA_BUY_ITEM, 19, buy_replace_ctx as *const () as usize) } {
         Ok(_) => BUY_PROBE_INSTALLED.store(1, Ordering::Relaxed),
         Err(e) => {
             BUY_PROBE_INSTALLED.store(3, Ordering::Relaxed);
