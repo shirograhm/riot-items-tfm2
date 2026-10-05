@@ -3,11 +3,12 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta, DOT_TICK_RATE};
 
-/// Statless marker on a champion Torment is burning: the `view_buffs` binding
-/// of the same name in `view/effects.view_effects` draws fire streaming out
-/// from its middle, behind it, for as long as the marker is up. One name for
-/// both tiers and every carrier, so a champion two of them burn shows one
-/// fire.
+/// Statless marker on a unit Torment is burning, minion and monster as much
+/// as champion: the `view_buffs` binding of the same name in
+/// `view/effects.view_effects` draws a fire at its feet for as long as the
+/// marker is up. One name for both tiers and every carrier, so a unit two of
+/// them burn shows one fire. The art is drawn to a champion's size, whatever
+/// it is on.
 const BURN_BUFF: &str = "riot_liandrys_burn";
 
 #[derive(Clone, Debug)]
@@ -98,10 +99,9 @@ impl LiandrysTorment {
         Some(per_instance.round() as usize)
     }
 
-    /// Starts the burn on `target`, or starts its time over. `show` puts the
-    /// flames up with it: for champions only, since the art is their size and
-    /// a burning minion wave would be a wall of it.
-    fn apply_burn(&mut self, ctx: &mut StableSim<'_>, target: usize, show: bool) {
+    /// Starts the burn on `target`, or starts its time over, and puts the
+    /// flames up with it.
+    fn apply_burn(&mut self, ctx: &mut StableSim<'_>, target: usize) {
         let duration = self.duration_ticks();
         match self.burns.iter_mut().find(|(id, _, _)| *id == target) {
             Some(burn) => burn.1 = duration,
@@ -113,9 +113,7 @@ impl LiandrysTorment {
         // view ever took a replaced buff for a new one. The price is that the
         // flames outlast a burn cut short by its carrier's death, by up to
         // the burn's own length.
-        if show {
-            refresh_buff(ctx, target, BURN_BUFF, &BuffV1::timed(BURN_BUFF, duration));
-        }
+        refresh_buff(ctx, target, BURN_BUFF, &BuffV1::timed(BURN_BUFF, duration));
     }
 
     fn tick_burns(&mut self, ctx: &mut StableSim<'_>, caster: usize) {
@@ -125,6 +123,10 @@ impl LiandrysTorment {
             let mut until_next = until_next.saturating_sub(1);
             if until_next == 0 {
                 let Some(damage) = self.instance_damage(ctx, id) else {
+                    // Dead or gone, and its flames go with the burn: minions
+                    // die burning all the time, and a marker left to run out
+                    // would sit on the body, or on whatever takes its slot.
+                    ctx.entity_remove_buff(id, BURN_BUFF);
                     continue;
                 };
                 ctx.deal_damage(caster, id, 0, damage, AttackTypeV1::Item);
@@ -217,9 +219,8 @@ impl StableItem for LiandrysTorment {
         if target_ref.is_tower() || attack_type != AttackTypeV1::Skill {
             return;
         }
-        let is_champion = target_ref.is_champion();
 
-        self.apply_burn(ctx, target, is_champion);
+        self.apply_burn(ctx, target);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

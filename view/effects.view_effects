@@ -294,7 +294,7 @@
             "name": "riot_liandrys_burn",
             "anim": "asset/riot_items_tfm2/effects/liandrys_burn",
             "tag": "burn",
-            "z": -1
+            "z": 1
         }
     ]
 }
