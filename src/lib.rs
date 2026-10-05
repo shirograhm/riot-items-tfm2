@@ -7,6 +7,7 @@ mod hooks;
 mod item_catalog;
 mod item_stats;
 mod items;
+mod multiplayer;
 mod smart_builds;
 mod tactics;
 mod ui;

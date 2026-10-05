@@ -3785,6 +3785,11 @@ impl StableExtension for StrategyPicker {
     }
 
     fn post_update(&self, ctx: &mut StableClient<'_>, _dt_micros: u64) {
+        // Whether this is a multiplayer session, settled before anything
+        // below reads a pin or a toggle this frame. Unconditional: the screens
+        // it watches for are the room and the title, neither of them this one.
+        crate::multiplayer::watch(ctx);
+
         // The merged `tfm2_item_tactics` half, which was its own
         // `ModExtension::post_update` before it moved in here. It has to run
         // first and unconditionally: this is the only per-frame client hook the
