@@ -80,14 +80,17 @@
 //!    role's starting item, and what it grows into ([`ATLAS_ITEMS`]) is to a
 //!    support what a jungle item is to a jungler: its build holds one, the one
 //!    for its champion, bought before everything else, so the match starts on
-//!    World Atlas and its gold. Dream Maker on a champion whose kit heals,
+//!    World Atlas and its gold. Zaz'Zak's Realmspike on a mage (the game's
+//!    `Magician` class), whose abilities are there to hurt whatever else its
+//!    kit does: a Brand stuns and a Lux shields, and both cast to deal damage;
+//!    else Dream Maker on a champion whose kit heals,
 //!    shields or buffs allies, whose casts on them are what blow its bubbles
 //!    (rule 13's test); else Celestial Opposition on a champion tagged `Tank`,
 //!    the one the enemy hits, which is what Blessing of the Mountain answers
 //!    to; else Solstice Sleigh on a support whose kit immobilizes, which is
 //!    what Going Sledding pays off on (rule 10's test); else Zaz'Zak's
-//!    Realmspike on an AP champion, whose abilities are there to hurt, which
-//!    is what Void Explosion asks for; else Bloodsong, whose Spellblade any
+//!    Realmspike on any other AP champion, for the same reason as a mage's;
+//!    else Bloodsong, whose Spellblade any
 //!    cast readies. The AI's
 //!    other Atlas items make way, all of them when the player pinned one. A
 //!    build with none, pinned or picked, has the AI's
@@ -144,7 +147,7 @@ use std::sync::{Arc, Mutex};
 use mod_api_stable::{ItemTagV1, StableItem};
 
 use crate::build_config::Role;
-use crate::champion_traits::{self, Scaling};
+use crate::champion_traits::{self, Class, Scaling};
 
 /// Flat crit chance a build may total before the rules start replacing crit
 /// items. The engine caps crit chance at 100%, so a build summing to exactly 100
@@ -369,9 +372,15 @@ pub(crate) struct Fit {
     /// immobilize, who never keeps Mandate. `false` when the champion is
     /// unknown.
     no_mandate: bool,
+    /// Rule 12: whether this is a support of the game's `Magician` class,
+    /// whose World Atlas item is Zaz'Zak's Realmspike ahead of every other
+    /// test. A mage that roots or shields still casts to deal damage: Brand
+    /// was handed Solstice Sleigh and Lux Dream Maker, and the user wanted
+    /// Zaz'Zak's on both (2026-10-04).
+    mage: bool,
     /// Rule 13: whether this is a support whose kit heals, shields or buffs
     /// allies, who holds an item that answers to it. Rule 12 too: its World
-    /// Atlas item is Dream Maker, ahead of every other test.
+    /// Atlas item is Dream Maker, unless it is a mage.
     ally_aid: bool,
     /// Rule 13's other half: whether this is a support known not to aid
     /// allies, who never keeps such an item. `false` when the champion is
@@ -379,11 +388,11 @@ pub(crate) struct Fit {
     no_ally_aid: bool,
     /// Rule 12: whether this is a support whose World Atlas item is Celestial
     /// Opposition: a champion tagged `Tank`, the one the enemy hits. It comes
-    /// after Dream Maker's test and before the other two.
+    /// after the mage and Dream Maker tests and before the other two.
     celestial: bool,
     /// Rule 12: whether this is a support whose World Atlas item is Zaz'Zak's
-    /// Realmspike: an AP champion none of the tests before it took, so its
-    /// abilities are there to deal damage.
+    /// Realmspike without being a mage: an AP champion none of the tests
+    /// before it took, so its abilities are there to deal damage.
     realmspike: bool,
     /// Rule 11: whether the champion attacks from range, `None` when unknown.
     ranged: Option<bool>,
@@ -407,6 +416,8 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
             && traits.is_some_and(|traits| traits.tank && traits.ranged != Some(true)),
         mandate: role == Role::Support && traits.is_some_and(|traits| traits.can_immobilize()),
         no_mandate: role == Role::Support && traits.is_some_and(|traits| !traits.can_immobilize()),
+        mage: role == Role::Support
+            && traits.is_some_and(|traits| traits.class == Some(Class::Magician)),
         ally_aid: role == Role::Support && traits.is_some_and(|traits| traits.aids_allies()),
         no_ally_aid: role == Role::Support && traits.is_some_and(|traits| !traits.aids_allies()),
         celestial: role == Role::Support && traits.is_some_and(|traits| traits.tank),
@@ -473,12 +484,14 @@ impl Fit {
     }
 
     /// Rule 12, for a support: the World Atlas item its champion builds —
-    /// Dream Maker when its kit aids allies, else Celestial Opposition for a
-    /// tank, else Solstice Sleigh when its kit immobilizes, else Zaz'Zak's
-    /// Realmspike for an AP champion, Bloodsong for the rest and for a
-    /// champion nothing is known about.
+    /// Zaz'Zak's Realmspike for a mage, else Dream Maker when its kit aids
+    /// allies, else Celestial Opposition for a tank, else Solstice Sleigh when
+    /// its kit immobilizes, else Zaz'Zak's Realmspike for an AP champion,
+    /// Bloodsong for the rest and for a champion nothing is known about.
     fn atlas_item(&self) -> &'static str {
-        if self.ally_aid {
+        if self.mage {
+            ZAZZAKS_REALMSPIKE
+        } else if self.ally_aid {
             DREAM_MAKER
         } else if self.celestial {
             CELESTIAL_OPPOSITION
@@ -605,7 +618,6 @@ pub(crate) fn is_boots(key: &str) -> bool {
 /// that heals or shields takes haste (Lucidity), and one that does neither, or
 /// one nothing is known about, the plain speed of Swiftness.
 pub(crate) fn boots_for(champion: &str, role: Role, enemies: &[&str]) -> &'static str {
-    use champion_traits::Class;
     let traits = champion_traits::traits(champion).unwrap_or_default();
     if traits.tank {
         let (physical, magic) = enemies.iter().fold((0, 0), |(physical, magic), enemy| {
@@ -689,7 +701,8 @@ const DREAM_MAKER: &str = "dream_maker";
 /// Rule 12: the World Atlas item of a support whose kit immobilizes.
 const SOLSTICE_SLEIGH: &str = "solstice_sleigh";
 
-/// Rule 12: the World Atlas item of an AP support that only deals damage.
+/// Rule 12: the World Atlas item of a mage, and of any other AP support that
+/// only deals damage.
 const ZAZZAKS_REALMSPIKE: &str = "zazzaks_realmspike";
 
 /// Whether `key` is one of [`ATLAS_ITEMS`], base or radiant.
