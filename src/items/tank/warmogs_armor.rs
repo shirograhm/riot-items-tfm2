@@ -2,7 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, has_buff, percent_of, refresh_buff, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS, TICKS_PER_SECOND,
 };
 
@@ -13,7 +13,6 @@ const REGEN_PERIOD_TICKS: usize = 30;
 #[derive(Clone, Debug)]
 pub struct WarmogsArmor {
     meta: ItemMeta,
-    recently_damaged_buff: &'static str,
     move_speed_buff: &'static str,
     price: usize,
     hp: i32,
@@ -23,6 +22,9 @@ pub struct WarmogsArmor {
     effect_duration_seconds: f64,
     regen_cooldown: usize,
     move_speed_cooldown: usize,
+    /// Ticks left before Warmog's Heart is live again; every hit taken
+    /// restarts it at `effect_duration_seconds`.
+    damaged_ticks: usize,
 }
 
 impl WarmogsArmor {
@@ -33,7 +35,6 @@ impl WarmogsArmor {
                 &["ring_of_reincarnation"],
                 &["radiant_warmogs_armor"],
             ),
-            recently_damaged_buff: "warmogs_armor_recently_damaged",
             move_speed_buff: "warmogs_armor_move_speed",
             price: 750,
             hp: 300,
@@ -44,13 +45,13 @@ impl WarmogsArmor {
             // Non-vital stats (internals)
             regen_cooldown: 0,
             move_speed_cooldown: 0,
+            damaged_ticks: 0,
         }
     }
 
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_warmogs_armor", &["warmogs_armor"]),
-            recently_damaged_buff: "warmogs_armor_recently_damaged",
             move_speed_buff: "warmogs_armor_move_speed",
             price: 1050,
             hp: 500,
@@ -87,21 +88,21 @@ impl WarmogsArmor {
     }
 
     fn apply_passive(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        let (entity, max_hp, recently_damaged) = {
+        // Warmog's Heart is suppressed while the holder has taken damage recently.
+        if self.damaged_ticks > 0 {
+            self.damaged_ticks -= 1;
+            return;
+        }
+
+        let (entity, max_hp) = {
             let Some(player_ref) = ctx.get_player(player) else {
                 return;
             };
             let Some(champion_ref) = player_ref.champion() else {
                 return;
             };
-            let recently_damaged = has_buff(&champion_ref, self.recently_damaged_buff);
-            (champion_ref.id(), champion_ref.hp().1, recently_damaged)
+            (champion_ref.id(), champion_ref.hp().1)
         };
-
-        // Warmog's Heart is suppressed while the holder has taken damage recently.
-        if recently_damaged {
-            return;
-        }
 
         // Heal a share of maximum health every `REGEN_PERIOD_TICKS`. A direct
         // heal rather than an `hp_regen` buff: the engine applies regen on its
@@ -181,6 +182,7 @@ impl StableItem for WarmogsArmor {
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         self.regen_cooldown = 0;
         self.move_speed_cooldown = 0;
+        self.damaged_ticks = 0;
         self.apply_passive(ctx, player);
     }
 
@@ -188,26 +190,21 @@ impl StableItem for WarmogsArmor {
         self.apply_passive(ctx, player);
     }
 
+    // Counted on the item rather than kept as a buff on the carrier: a buff
+    // replaced on every hit is not visible to `has_buff` for ~3 ticks, and
+    // `update` took each of those gaps for the timer having run out.
     fn on_damaged(
         &mut self,
-        ctx: &mut StableSim<'_>,
+        _ctx: &mut StableSim<'_>,
         _player: usize,
-        entity: usize,
+        _entity: usize,
         _attacker: usize,
         _damage: usize,
         _damage_type: DamageTypeV1,
         _attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        refresh_buff(
-            ctx,
-            entity,
-            self.recently_damaged_buff,
-            &BuffV1::timed(
-                self.recently_damaged_buff,
-                ticks(self.effect_duration_seconds),
-            ),
-        );
+        self.damaged_ticks = ticks(self.effect_duration_seconds);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
