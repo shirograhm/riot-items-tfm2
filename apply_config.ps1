@@ -108,6 +108,14 @@ $rrcsSlow = [int]$config.radiant_rylais_crystal_scepter.effect_slow_amount
 $rrcsDur = [int]$config.radiant_rylais_crystal_scepter.effect_duration_seconds
 $hexUltCdr = [int]$config.experimental_hexplate.ult_cooldown_mult
 $rhexUltCdr = [int]$config.radiant_experimental_hexplate.ult_cooldown_mult
+$hexAs = [int]$config.experimental_hexplate.effect_attack_speed_mult
+$hexMs = [int]$config.experimental_hexplate.effect_move_speed_mult
+$hexDur = [double]$config.experimental_hexplate.effect_duration_seconds
+$hexCd = [double]$config.experimental_hexplate.effect_cooldown_seconds
+$rhexAs = [int]$config.radiant_experimental_hexplate.effect_attack_speed_mult
+$rhexMs = [int]$config.radiant_experimental_hexplate.effect_move_speed_mult
+$rhexDur = [double]$config.radiant_experimental_hexplate.effect_duration_seconds
+$rhexCd = [double]$config.radiant_experimental_hexplate.effect_cooldown_seconds
 $malUltCdr = [int]$config.malignance.ult_cooldown_mult
 $rmalUltCdr = [int]$config.radiant_malignance.ult_cooldown_mult
 $rorCrit = [int]$config.rite_of_ruin.effect_stack_crit_chance
@@ -781,6 +789,31 @@ $eonLeth = [int]$config.edge_of_night.effect_lethality
 $eonCd = [double]$config.edge_of_night.effect_cooldown_seconds
 $reonLeth = [int]$config.radiant_edge_of_night.effect_lethality
 $reonCd = [double]$config.radiant_edge_of_night.effect_cooldown_seconds
+$coaAh = [int]$config.catalyst_of_aeons.effect_skill_cooldown_mult
+$coaDur = [double]$config.catalyst_of_aeons.effect_duration_seconds
+$coaStacks = [int]$config.catalyst_of_aeons.effect_max_stacks
+$coaMin = [int]$config.catalyst_of_aeons.effect_min_heal
+$coaMax = [int]$config.catalyst_of_aeons.effect_max_heal
+$roaHp = [int]$config.rod_of_ages.effect_growth_hp
+$roaAp = [int]$config.rod_of_ages.effect_growth_magic_power
+$roaGrowAh = [int]$config.rod_of_ages.effect_growth_skill_cooldown_mult
+$roaEvery = [double]$config.rod_of_ages.effect_growth_interval_seconds
+$roaTimes = [int]$config.rod_of_ages.effect_max_growth_stacks
+$roaAh = [int]$config.rod_of_ages.effect_skill_cooldown_mult
+$roaDur = [double]$config.rod_of_ages.effect_duration_seconds
+$roaStacks = [int]$config.rod_of_ages.effect_max_stacks
+$roaMin = [int]$config.rod_of_ages.effect_min_heal
+$roaMax = [int]$config.rod_of_ages.effect_max_heal
+$rroaHp = [int]$config.radiant_rod_of_ages.effect_growth_hp
+$rroaAp = [int]$config.radiant_rod_of_ages.effect_growth_magic_power
+$rroaGrowAh = [int]$config.radiant_rod_of_ages.effect_growth_skill_cooldown_mult
+$rroaEvery = [double]$config.radiant_rod_of_ages.effect_growth_interval_seconds
+$rroaTimes = [int]$config.radiant_rod_of_ages.effect_max_growth_stacks
+$rroaAh = [int]$config.radiant_rod_of_ages.effect_skill_cooldown_mult
+$rroaDur = [double]$config.radiant_rod_of_ages.effect_duration_seconds
+$rroaStacks = [int]$config.radiant_rod_of_ages.effect_max_stacks
+$rroaMin = [int]$config.radiant_rod_of_ages.effect_min_heal
+$rroaMax = [int]$config.radiant_rod_of_ages.effect_max_heal
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -870,8 +903,9 @@ $i18n.en.frozen_mallet.option = "<#ff7a3eff>Icy<>: Basic attacks apply a <#d94c4
 $i18n.en.radiant_frozen_mallet.option = "<#ff7a3eff>Icy<>: Basic attacks deal <#ff9028ff>bonus physical damage<> equal to <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> of your <$hpIcon> <#60e84dff>maximum health<> and apply a <#d94c49ff>${rfmSlow}% slow<> for <#e8a800ff>${rfmDur} seconds<>."
 $i18n.en.rylais_crystal_scepter.option = "<#ff7a3eff>Rimefrost<>: Dealing Ability damage to enemies applies a <#d94c49ff>${rcsSlow}% slow<> for <#e8a800ff>${rcsDur} seconds<>."
 $i18n.en.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>Rimefrost<>: Dealing Ability damage to enemies applies a <#d94c49ff>${rrcsSlow}% slow<> for <#e8a800ff>${rrcsDur} seconds<>."
-$i18n.en.experimental_hexplate.option = "<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>."
-$i18n.en.radiant_experimental_hexplate.option = "<#ff7a3eff>Overdrive<>: Gain <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>."
+$overdriveEn = "<#ff7a3eff>Overdrive<>: Upon casting your ultimate ability, enter <#92dc7bff>Overdrive<>, gaining <#ceff99ff>{0}%<> bonus <$asIcon> <#ceff99ff>attack speed<> and <#ffffffff>{1}%<> bonus <$speedIcon> <#ffffffff>movement speed<> for <#e8a800ff>{2} seconds<> (<#e8a800ff>{3} second<> cooldown, starting on cast)."
+$i18n.en.experimental_hexplate.option = "<#ff7a3eff>Hexcharged<>: Gain <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>.`n`n" + ($overdriveEn -f $hexAs, $hexMs, $hexDur, $hexCd)
+$i18n.en.radiant_experimental_hexplate.option = "<#ff7a3eff>Hexcharged<>: Gain <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>.`n`n" + ($overdriveEn -f $rhexAs, $rhexMs, $rhexDur, $rhexCd)
 $i18n.en.malignance.option = "<#ff7a3eff>Scorn<>: Gain <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>."
 $i18n.en.radiant_malignance.option = "<#ff7a3eff>Scorn<>: Gain <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>Ultimate Ability Haste<>."
 $rorTemplate = "<#ff7a3eff>Wrath and Ruin<>: Landing an Ability on an enemy champion grants <#d45656ff>{0}% <$critIcon> critical strike chance<> for <#e8a800ff>{1} seconds<> (max {2} stacks).`n`n<#ff7a3eff>Salvage the Wreckage<>: Landing an Ability on an enemy champion has a <#d45656ff>chance (<$critIcon>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>{3} seconds<> that <#cab944ff>absorbs<> <#cab944ff>{4}<> - <#cab944ff>{5}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
@@ -1116,6 +1150,11 @@ $i18n.en.radiant_runaans_hurricane.option = $runaanEn -f $rrunaanTargets, $rruna
 $shivEn = "<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>{1} magic damage<> to the target and up to <#e8a800ff>{2}<> more enemies, each within <#ff86c2ff>{3} <$rangeIcon> range<> of the last, prioritizing champions. This effect is <#e8a800ff>{4}% as effective<> against minions and monsters."
 $i18n.en.statikk_shiv.option = $shivEn -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.en.radiant_statikk_shiv.option = $shivEn -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessEn = "<#ff7a3eff>Timeless<>: This item gains <#60e84dff>{0} <$hpIcon> health<>, <#a974ffff>{1} <$apIcon> Ability Power<> and <#4b7cffff>{2} <$cdrIcon> Ability Haste<> every <#e8a800ff>{3} seconds<>, up to {4} times."
+$eternityEn = "<#ff7a3eff>Eternity<>: Gain <#4b7cffff>{0} <$cdrIcon> Ability Haste<> for <#e8a800ff>{1} seconds<> when taking damage from an enemy champion (max {2} stacks), and <$hpRegenIcon> <#60e84dff>heal<> for <#60e84dff>{3}<> - <#60e84dff>{4}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
+$i18n.en.catalyst_of_aeons.option = $eternityEn -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.en.rod_of_ages.option = ($timelessEn -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityEn -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.en.radiant_rod_of_ages.option = ($timelessEn -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityEn -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -1155,8 +1194,9 @@ $i18n.vi.frozen_mallet.option = "<#ff7a3eff>Băng kết<>: Đòn đánh thườn
 $i18n.vi.radiant_frozen_mallet.option = "<#ff7a3eff>Băng kết<>: Đòn đánh thường gây thêm <#ff9028ff>sát thương vật lí<> tương ứng <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> <$hpIcon> <#60e84dff>máu tối đa<> của bản thân và gây <#d94c49ff>${rfmSlow}% kiệt sức <> trong <#e8a800ff>${rfmDur} giây<>."
 $i18n.vi.rylais_crystal_scepter.option = "<#ff7a3eff>Sương Giá<>: Gây sát thương kĩ năng lên kẻ địch sẽ gây <#d94c49ff>${rcsSlow}% kiệt sức<> trong <#e8a800ff>${rcsDur} giây<>."
 $i18n.vi.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>Sương Giá<>: Gây sát thương kĩ năng lên kẻ địch sẽ gây <#d94c49ff>${rrcsSlow}% kiệt sức<> trong <#e8a800ff>${rrcsDur} giây<>."
-$i18n.vi.experimental_hexplate.option = "<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
-$i18n.vi.radiant_experimental_hexplate.option = "<#ff7a3eff>Tăng tốc<>: Nhận <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+$overdriveVi = "<#ff7a3eff>Quá Tải<>: Khi sử dụng chiêu cuối, bạn vào trạng thái <#92dc7bff>Quá Tải<>, nhận thêm <#ceff99ff>{0}%<> <$asIcon> <#ceff99ff>tốc độ đánh<> và <#ffffffff>{1}%<> <$speedIcon> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>{2} giây<> (hồi chiêu <#e8a800ff>{3} giây<>, bắt đầu khi sử dụng chiêu cuối)."
+$i18n.vi.experimental_hexplate.option = "<#ff7a3eff>Bùng Nổ Hextech<>: Nhận <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.`n`n" + ($overdriveVi -f $hexAs, $hexMs, $hexDur, $hexCd)
+$i18n.vi.radiant_experimental_hexplate.option = "<#ff7a3eff>Bùng Nổ Hextech<>: Nhận <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.`n`n" + ($overdriveVi -f $rhexAs, $rhexMs, $rhexDur, $rhexCd)
 $i18n.vi.malignance.option = "<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
 $i18n.vi.radiant_malignance.option = "<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
 $rorTemplateVi = "<#ff7a3eff>Thịnh Nộ Và Suy Vong<>: Kĩ năng trúng tướng địch cấp <#d45656ff>{0}% <$critIcon> tỉ lệ chí mạng<> trong <#e8a800ff>{1} giây<> (tối đa {2} cộng dồn).`n`n<#ff7a3eff>Cứu Rỗi Trò Tàn<>: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<$critIcon>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>{3} giây<>, <#cab944ff>hấp thụ<> <#cab944ff>{4}<> - <#cab944ff>{5}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
@@ -1401,6 +1441,11 @@ $i18n.vi.radiant_runaans_hurricane.option = $runaanVi -f $rrunaanTargets, $rruna
 $shivVi = "<#ff7a3eff>Tích Điện<>: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Phóng Điện<>: Khi <#92dc7bff>Tích Điện<> đầy, đòn đánh thường tiếp theo phóng ra sét nảy, gây <#a974ffff>{1} sát thương phép<> lên mục tiêu và tối đa <#e8a800ff>{2}<> kẻ địch khác, mỗi lần nảy trong phạm vi <#ff86c2ff>{3}<> <$rangeIcon> từ mục tiêu trước, ưu tiên tướng địch. Hiệu ứng này <#e8a800ff>hiệu quả {4}%<> lên lính và quái."
 $i18n.vi.statikk_shiv.option = $shivVi -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.vi.radiant_statikk_shiv.option = $shivVi -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessVi = "<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>{0} <$hpIcon> máu<>, <#a974ffff>{1} <$apIcon> SMPT<> và <#4b7cffff>{2} <$cdrIcon> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>{3} giây<>, tối đa {4} lần."
+$eternityVi = "<#ff7a3eff>Vĩnh Hằng<>: Nhận <#4b7cffff>{0} <$cdrIcon> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>{1} giây<> khi nhận sát thương từ tướng địch (tối đa {2} cộng dồn), và <$hpRegenIcon> <#60e84dff>hồi<> <#60e84dff>{3}<> - <#60e84dff>{4}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
+$i18n.vi.catalyst_of_aeons.option = $eternityVi -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.vi.rod_of_ages.option = ($timelessVi -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityVi -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.vi.radiant_rod_of_ages.option = ($timelessVi -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityVi -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1440,8 +1485,9 @@ $i18n.'zh-hans'.frozen_mallet.option = "<#ff7a3eff>冰寒<>：普通攻击会施
 $i18n.'zh-hans'.radiant_frozen_mallet.option = "<#ff7a3eff>冰寒<>：普通攻击造成 <#ff9028ff>额外物理伤害<>，数值为 <#ff9028ff>${rfmFlat}<> + 你的 <$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>${rfmHpPct}%<>，并施加 <#d94c49ff>${rfmSlow}%减速<>，持续 <#e8a800ff>${rfmDur}秒<>。"
 $i18n.'zh-hans'.rylais_crystal_scepter.option = "<#ff7a3eff>凛霜<>：对敌人造成技能伤害时，对其施加 <#d94c49ff>${rcsSlow}%减速<>，持续 <#e8a800ff>${rcsDur}秒<>。"
 $i18n.'zh-hans'.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>凛霜<>：对敌人造成技能伤害时，对其施加 <#d94c49ff>${rrcsSlow}%减速<>，持续 <#e8a800ff>${rrcsDur}秒<>。"
-$i18n.'zh-hans'.experimental_hexplate.option = "<#ff7a3eff>过载<>：获得 <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。"
-$i18n.'zh-hans'.radiant_experimental_hexplate.option = "<#ff7a3eff>过载<>：获得 <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。"
+$overdriveZh = "<#ff7a3eff>过载<>：施放终极技能时进入<#92dc7bff>过载<>状态，获得 <#ceff99ff>{0}%<> 额外<$asIcon> <#ceff99ff>攻击速度<>和 <#ffffffff>{1}%<> 额外<$speedIcon> <#ffffffff>移动速度<>，持续 <#e8a800ff>{2}秒<>（冷却 <#e8a800ff>{3}秒<>，从施放时开始计算）。"
+$i18n.'zh-hans'.experimental_hexplate.option = "<#ff7a3eff>海克斯充能<>：获得 <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。`n`n" + ($overdriveZh -f $hexAs, $hexMs, $hexDur, $hexCd)
+$i18n.'zh-hans'.radiant_experimental_hexplate.option = "<#ff7a3eff>海克斯充能<>：获得 <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。`n`n" + ($overdriveZh -f $rhexAs, $rhexMs, $rhexDur, $rhexCd)
 $i18n.'zh-hans'.malignance.option = "<#ff7a3eff>蔑视<>：获得 <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。"
 $i18n.'zh-hans'.radiant_malignance.option = "<#ff7a3eff>蔑视<>：获得 <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>终极技能急速<>。"
 $rorTemplateZh = "<#ff7a3eff>怒火与破坏<>：技能命中敌方英雄后获得 <#d45656ff>{0}% <$critIcon> 暴击几率<>，持续 <#e8a800ff>{1}秒<>（最多 {2} 层）。`n`n<#ff7a3eff>打捞残骸<>：技能命中敌方英雄后有<#d45656ff>几率（<$critIcon>）<>为你提供一个持续 <#e8a800ff>{3}秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>{4}<> - <#cab944ff>{5}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
@@ -1686,6 +1732,11 @@ $i18n.'zh-hans'.radiant_runaans_hurricane.option = $runaanZh -f $rrunaanTargets,
 $shivZh = "<#ff7a3eff>蓄能<>：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>{0}<> 层。`n`n<#ff7a3eff>电火花<>：<#92dc7bff>蓄能<>充满时，你的下一次普通攻击会发射连锁闪电，对目标及最多 <#e8a800ff>{2}<> 个其他敌人造成 <#a974ffff>{1} 点魔法伤害<>，每次弹射距离上一个目标不超过 <#ff86c2ff>{3} <$rangeIcon> 射程<>（优先英雄）。该效果对小兵和野怪的<#e8a800ff>效果为 {4}%<>。"
 $i18n.'zh-hans'.statikk_shiv.option = $shivZh -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.'zh-hans'.radiant_statikk_shiv.option = $shivZh -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessZh = "<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>{3}秒<> 获得 <#60e84dff>{0} 点<$hpIcon> 生命值<>、<#a974ffff>{1} 点<$apIcon> 法术强度<>和 <#4b7cffff>{2} 点<$cdrIcon> 技能急速<>，至多 {4} 次。"
+$eternityZh = "<#ff7a3eff>永恒<>：受到敌方英雄伤害时，获得 <#4b7cffff>{0} 点<$cdrIcon> 技能急速<>，持续 <#e8a800ff>{1}秒<>（最多叠加{2}层）；每次施放技能时<$hpRegenIcon> <#60e84dff>治疗<>自身 <#60e84dff>{3}<> - <#60e84dff>{4}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
+$i18n.'zh-hans'.catalyst_of_aeons.option = $eternityZh -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.'zh-hans'.rod_of_ages.option = ($timelessZh -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityZh -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.'zh-hans'.radiant_rod_of_ages.option = ($timelessZh -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityZh -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1725,8 +1776,9 @@ $i18n.'pt-BR'.frozen_mallet.option = "<#ff7a3eff>Congelante<>: Seus ataques apli
 $i18n.'pt-BR'.radiant_frozen_mallet.option = "<#ff7a3eff>Congelante<>: Seus ataques causam <#ff9028ff>dano físico<> igual a <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> e aplicam <#d94c49ff>${rfmSlow}% de lentidão<> por <#e8a800ff>${rfmDur} segundos<>."
 $i18n.'pt-BR'.rylais_crystal_scepter.option = "<#ff7a3eff>Gélido<>: Causar dano de Habilidade a inimigos aplica <#d94c49ff>${rcsSlow}% de lentidão<> por <#e8a800ff>${rcsDur} segundos<>."
 $i18n.'pt-BR'.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>Gélido<>: Causar dano de Habilidade a inimigos aplica <#d94c49ff>${rrcsSlow}% de lentidão<> por <#e8a800ff>${rrcsDur} segundos<>."
-$i18n.'pt-BR'.experimental_hexplate.option = "<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
-$i18n.'pt-BR'.radiant_experimental_hexplate.option = "<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+$overdrivePt = "<#ff7a3eff>Turbo<>: Ao conjurar sua ultimate, você entra em <#92dc7bff>Turbo<>, recebendo <#ceff99ff>{0}%<> de <$asIcon> <#ceff99ff>Velocidade de Ataque<> adicional e <#ffffffff>{1}%<> de <$speedIcon> <#ffffffff>Velocidade de Movimento<> adicional por <#e8a800ff>{2} segundos<> (recarga de <#e8a800ff>{3} segundos<>, começando na conjuração)."
+$i18n.'pt-BR'.experimental_hexplate.option = "<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.`n`n" + ($overdrivePt -f $hexAs, $hexMs, $hexDur, $hexCd)
+$i18n.'pt-BR'.radiant_experimental_hexplate.option = "<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.`n`n" + ($overdrivePt -f $rhexAs, $rhexMs, $rhexDur, $rhexCd)
 $i18n.'pt-BR'.malignance.option = "<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
 $i18n.'pt-BR'.radiant_malignance.option = "<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
 $rorTemplatePt = "<#ff7a3eff>Ira e Ruína<>: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>{0}% de <$critIcon> Chance de Acerto Crítico<> por <#e8a800ff>{1} segundos<> (máx. {2} acúmulos).`n`n<#ff7a3eff>Recuperando os Destroços<>: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<$critIcon>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>{3} segundos<> que <#cab944ff>absorve<> <#cab944ff>{4}<> - <#cab944ff>{5}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
@@ -1971,6 +2023,11 @@ $i18n.'pt-BR'.radiant_runaans_hurricane.option = $runaanPt -f $rrunaanTargets, $
 $shivPt = "<#ff7a3eff>Energizado<>: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Eletrocentelha<>: Quando totalmente <#92dc7bff>Energizado<>, seu próximo ataque básico dispara uma cadeia de relâmpagos que causa <#a974ffff>{1} de dano mágico<> ao alvo e a até <#e8a800ff>{2}<> inimigos adicionais, cada um a até <#ff86c2ff>{3} <$rangeIcon> de alcance<> do anterior, priorizando campeões. Este efeito é <#e8a800ff>{4}% efetivo<> contra lacaios e monstros."
 $i18n.'pt-BR'.statikk_shiv.option = $shivPt -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.'pt-BR'.radiant_statikk_shiv.option = $shivPt -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessPt = "<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>{0} de <$hpIcon> Vida<>, <#a974ffff>{1} de <$apIcon> Poder de Habilidade<> e <#4b7cffff>{2} de <$cdrIcon> Aceleração de Habilidade<> a cada <#e8a800ff>{3} segundos<>, até {4} vezes."
+$eternityPt = "<#ff7a3eff>Eternidade<>: Receba <#4b7cffff>{0} de <$cdrIcon> Aceleração de Habilidade<> por <#e8a800ff>{1} segundos<> ao receber dano de um campeão inimigo (acumula {2}x), e <$hpRegenIcon> <#60e84dff>cure-se<> em <#60e84dff>{3}<> - <#60e84dff>{4}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
+$i18n.'pt-BR'.catalyst_of_aeons.option = $eternityPt -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.'pt-BR'.rod_of_ages.option = ($timelessPt -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityPt -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.'pt-BR'.radiant_rod_of_ages.option = ($timelessPt -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityPt -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -2010,8 +2067,9 @@ $i18n.ru.frozen_mallet.option = "<#ff7a3eff>Обледенение<>: Базов
 $i18n.ru.radiant_frozen_mallet.option = "<#ff7a3eff>Обледенение<>: Базовые атаки наносят <#ff9028ff>дополнительный физический урон<> равный <#ff9028ff>${rfmFlat}<> + <#60e84dff>${rfmHpPct}%<> от вашего <$hpIcon> <#60e84dff>максимального здоровья<> и накладывают <#d94c49ff>замедление на ${rfmSlow}%<> на <#e8a800ff>${rfmDur} секунды<>."
 $i18n.ru.rylais_crystal_scepter.option = "<#ff7a3eff>Иней<>: Нанесение урона умением противникам замедляет их на <#d94c49ff>${rcsSlow}%<> на <#e8a800ff>${rcsDur} секунды<>."
 $i18n.ru.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>Иней<>: Нанесение урона умением противникам замедляет их на <#d94c49ff>${rrcsSlow}%<> на <#e8a800ff>${rrcsDur} секунды<>."
-$i18n.ru.experimental_hexplate.option = "<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>."
-$i18n.ru.radiant_experimental_hexplate.option = "<#ff7a3eff>Перегрузка<>: Даёт <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>."
+$overdriveRu = "<#ff7a3eff>Перегрузка<>: При применении абсолютного умения вы входите в режим <#92dc7bff>Перегрузки<> и получаете <#ceff99ff>{0}%<> дополнительной <$asIcon> <#ceff99ff>скорости атаки<> и <#ffffffff>{1}%<> дополнительной <$speedIcon> <#ffffffff>скорости передвижения<> на <#e8a800ff>{2} секунд<> (перезарядка <#e8a800ff>{3} секунды<>, начинается при применении)."
+$i18n.ru.experimental_hexplate.option = "<#ff7a3eff>Хекстековый заряд<>: Даёт <#4b7cffff>${hexUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>.`n`n" + ($overdriveRu -f $hexAs, $hexMs, $hexDur, $hexCd)
+$i18n.ru.radiant_experimental_hexplate.option = "<#ff7a3eff>Хекстековый заряд<>: Даёт <#4b7cffff>${rhexUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>.`n`n" + ($overdriveRu -f $rhexAs, $rhexMs, $rhexDur, $rhexCd)
 $i18n.ru.malignance.option = "<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>${malUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>."
 $i18n.ru.radiant_malignance.option = "<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>${rmalUltCdr}<> <$cdrIcon> <#4b7cffff>ускорения абсолютных умений<>."
 $rorTemplateRu = "<#ff7a3eff>Гнев и уничтожение<>: Попадание умением по вражескому чемпиону даёт <#d45656ff>{0}% <$critIcon> шанса критического удара<> на <#e8a800ff>{1} сек<> (максимум {2} зарядов).`n`n<#ff7a3eff>Спасение утопающих<>: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<$critIcon>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>{3} сек<>, поглощающий <#cab944ff>{4}<> - <#cab944ff>{5}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
@@ -2256,6 +2314,11 @@ $i18n.ru.radiant_runaans_hurricane.option = $runaanRu -f $rrunaanTargets, $rruna
 $shivRu = "<#ff7a3eff>Заряд<>: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Электрическая искра<>: При полном <#92dc7bff>Заряде<>, ваша следующая базовая атака выпускает цепную молнию, которая наносит <#a974ffff>{1} магического урона<> цели и не более чем <#e8a800ff>{2}<> другим врагам, каждый в пределах <#ff86c2ff>{3} <$rangeIcon> дальности<> от предыдущего, в первую очередь чемпионам. Против миньонов и монстров <#e8a800ff>эффект составляет {4}%<>."
 $i18n.ru.statikk_shiv.option = $shivRu -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.ru.radiant_statikk_shiv.option = $shivRu -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessRu = "<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>{0} <$hpIcon> здоровья<>, <#a974ffff>{1} <$apIcon> силы умений<> и <#4b7cffff>{2} <$cdrIcon> ускорения умений<> каждые <#e8a800ff>{3} секунд<>, до {4} раз."
+$eternityRu = "<#ff7a3eff>Вечность<>: Получение урона от вражеского чемпиона даёт <#4b7cffff>{0} <$cdrIcon> ускорения умений<> на <#e8a800ff>{1} секунд<> (макс. {2} стаков), а каждое применение умения <$hpRegenIcon> <#60e84dff>восстанавливает<> вам <#60e84dff>{3}<> - <#60e84dff>{4}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
+$i18n.ru.catalyst_of_aeons.option = $eternityRu -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.ru.rod_of_ages.option = ($timelessRu -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityRu -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.ru.radiant_rod_of_ages.option = ($timelessRu -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityRu -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -2295,8 +2358,9 @@ $i18n.ko.frozen_mallet.option = "<#ff7a3eff>빙결<>: 기본 공격 시 <#e8a800
 $i18n.ko.radiant_frozen_mallet.option = "<#ff7a3eff>빙결<>: 기본 공격 시 <#ff9028ff>${rfmFlat}<> + <$hpIcon> <#60e84dff>최대 체력<>의 <#60e84dff>${rfmHpPct}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입히고, <#e8a800ff>${rfmDur}초<> 동안 <#d94c49ff>${rfmSlow}% 둔화<>시킵니다."
 $i18n.ko.rylais_crystal_scepter.option = "<#ff7a3eff>서리<>: 적에게 스킬 피해를 입히면 <#e8a800ff>${rcsDur}초<> 동안 <#d94c49ff>${rcsSlow}% 둔화<>시킵니다."
 $i18n.ko.radiant_rylais_crystal_scepter.option = "<#ff7a3eff>서리<>: 적에게 스킬 피해를 입히면 <#e8a800ff>${rrcsDur}초<> 동안 <#d94c49ff>${rrcsSlow}% 둔화<>시킵니다."
-$i18n.ko.experimental_hexplate.option = "<#ff7a3eff>과충전<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${hexUltCdr}<> 증가합니다."
-$i18n.ko.radiant_experimental_hexplate.option = "<#ff7a3eff>과충전<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${rhexUltCdr}<> 증가합니다."
+$overdriveKo = "<#ff7a3eff>폭주<>: 궁극기 사용 시 <#92dc7bff>폭주<> 상태가 되어 <#e8a800ff>{2}초<> 동안 <$asIcon> <#ceff99ff>공격 속도<>가 <#ceff99ff>{0}%<>, <$speedIcon> <#ffffffff>이동 속도<>가 <#ffffffff>{1}%<> 증가합니다. (재사용 대기시간 <#e8a800ff>{3}초<>, 사용 시 시작)"
+$i18n.ko.experimental_hexplate.option = "<#ff7a3eff>마공학 충전<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${hexUltCdr}<> 증가합니다.`n`n" + ($overdriveKo -f $hexAs, $hexMs, $hexDur, $hexCd)
+$i18n.ko.radiant_experimental_hexplate.option = "<#ff7a3eff>마공학 충전<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${rhexUltCdr}<> 증가합니다.`n`n" + ($overdriveKo -f $rhexAs, $rhexMs, $rhexDur, $rhexCd)
 $i18n.ko.malignance.option = "<#ff7a3eff>경멸<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${malUltCdr}<> 증가합니다."
 $i18n.ko.radiant_malignance.option = "<#ff7a3eff>경멸<>: <$cdrIcon> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>${rmalUltCdr}<> 증가합니다."
 $rorTemplateKo = "<#ff7a3eff>분노와 파멸<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>{1}초<> 동안 <#d45656ff>{0}%의 <$critIcon> 치명타 확률<>을 얻습니다. (최대 {2}중첩)`n`n<#ff7a3eff>난파선 인양<>: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<$critIcon>)<>로 <#e8a800ff>{3}초<> 동안 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>{4}<>~<#cab944ff>{5}<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
@@ -2540,6 +2604,11 @@ $i18n.ko.radiant_runaans_hurricane.option = $runaanKo -f $rrunaanTargets, $rruna
 $shivKo = "<#ff7a3eff>충전<>: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>{0}<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.`n`n<#ff7a3eff>전기불꽃<>: 완전히 <#92dc7bff>충전<>되면 다음 기본 공격이 연쇄 번개를 발사해 대상과 다른 적 최대 <#e8a800ff>{2}<>명에게 <#a974ffff>{1}의 마법 피해<>를 입힙니다. 번개는 챔피언을 우선으로, 직전 대상으로부터 <$rangeIcon> <#ff86c2ff>사거리 {3}<> 안의 적에게 튕깁니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>{4}%로 적용됩니다<>."
 $i18n.ko.statikk_shiv.option = $shivKo -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.ko.radiant_statikk_shiv.option = $shivKo -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessKo = "<#ff7a3eff>불멸의 시간<>: <#e8a800ff>{3}초<>마다 <$hpIcon> <#60e84dff>체력<>이 <#60e84dff>{0}<>, <$apIcon> <#a974ffff>주문력<>이 <#a974ffff>{1}<>, <$cdrIcon> <#4b7cffff>스킬 가속<>이 <#4b7cffff>{2}<>씩 상승합니다. 최대 {4}회까지 중첩됩니다."
+$eternityKo = "<#ff7a3eff>영원<>: 적 챔피언에게 피해를 받으면 <#e8a800ff>{1}초<> 동안 <$cdrIcon> <#4b7cffff>스킬 가속<>이 <#4b7cffff>{0}<> 증가합니다. 최대 {2}회 중첩됩니다. 스킬을 사용할 때마다 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>{3}<>~<#60e84dff>{4}<>의 <$hpRegenIcon> <#60e84dff>체력<>을 회복합니다."
+$i18n.ko.catalyst_of_aeons.option = $eternityKo -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.ko.rod_of_ages.option = ($timelessKo -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityKo -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.ko.radiant_rod_of_ages.option = ($timelessKo -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityKo -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {

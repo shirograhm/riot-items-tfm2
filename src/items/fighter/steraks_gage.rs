@@ -4,7 +4,7 @@ use crate::config::ItemConfig;
 use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
 
 // Lifeline: If you would take damage below 30% of your maximum health, you first
-// gain a shield that absorbs damage equal to 60% of your maximum health for 4
+// gain a shield that absorbs damage equal to 45% of your maximum health for 4
 // seconds (90 second cooldown).
 #[derive(Clone, Debug)]
 pub struct SteraksGage {
@@ -30,7 +30,7 @@ impl SteraksGage {
             hp: 200,
             toughness: 15,
             effect_hp_percent_threshold: 30.0,
-            effect_caster_hp_percent_shield: 60.0,
+            effect_caster_hp_percent_shield: 45.0,
             effect_shield_seconds: 4.0,
             effect_cooldown_seconds: 90.0,
         }
@@ -45,7 +45,7 @@ impl SteraksGage {
             hp: 350,
             toughness: 20,
             effect_hp_percent_threshold: 30.0,
-            effect_caster_hp_percent_shield: 60.0,
+            effect_caster_hp_percent_shield: 45.0,
             effect_shield_seconds: 4.0,
             effect_cooldown_seconds: 90.0,
             ..Self::base()

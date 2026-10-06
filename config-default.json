@@ -81,7 +81,11 @@
     "price": 600,
     "hp": 150,
     "attack_speed_mult": 30,
-    "ult_cooldown_mult": 15
+    "ult_cooldown_mult": 15,
+    "effect_attack_speed_mult": 32,
+    "effect_move_speed_mult": 16,
+    "effect_duration_seconds": 8,
+    "effect_cooldown_seconds": 32
   },
   "deathblade": {
     "price": 700,
@@ -317,7 +321,11 @@
     "hp": 200,
     "attack_speed_mult": 50,
     "move_speed_mult": 5,
-    "ult_cooldown_mult": 25
+    "ult_cooldown_mult": 25,
+    "effect_attack_speed_mult": 32,
+    "effect_move_speed_mult": 16,
+    "effect_duration_seconds": 8,
+    "effect_cooldown_seconds": 32
   },
   "radiant_black_cleaver": {
     "price": 1100,
@@ -1098,7 +1106,7 @@
     "hp": 200,
     "toughness": 15,
     "effect_hp_percent_threshold": 30.0,
-    "effect_caster_hp_percent_shield": 60.0,
+    "effect_caster_hp_percent_shield": 45.0,
     "effect_shield_seconds": 4,
     "effect_cooldown_seconds": 90
   },
@@ -1108,7 +1116,7 @@
     "hp": 350,
     "toughness": 20,
     "effect_hp_percent_threshold": 30.0,
-    "effect_caster_hp_percent_shield": 60.0,
+    "effect_caster_hp_percent_shield": 45.0,
     "effect_shield_seconds": 4,
     "effect_cooldown_seconds": 90
   },
@@ -2206,5 +2214,48 @@
     "effect_cooldown_seconds": 8,
     "effect_bonus_gold": 4,
     "effect_gold_interval_seconds": 5
+  },
+  "catalyst_of_aeons": {
+    "price": 500,
+    "hp": 100,
+    "magic_power": 20,
+    "skill_cooldown_mult": 5,
+    "effect_skill_cooldown_mult": 2,
+    "effect_duration_seconds": 10,
+    "effect_max_stacks": 5,
+    "effect_min_heal": 15,
+    "effect_max_heal": 70
+  },
+  "rod_of_ages": {
+    "price": 700,
+    "hp": 150,
+    "magic_power": 40,
+    "skill_cooldown_mult": 5,
+    "effect_growth_hp": 10,
+    "effect_growth_magic_power": 2,
+    "effect_growth_skill_cooldown_mult": 1,
+    "effect_growth_interval_seconds": 30,
+    "effect_max_growth_stacks": 10,
+    "effect_skill_cooldown_mult": 2,
+    "effect_duration_seconds": 10,
+    "effect_max_stacks": 5,
+    "effect_min_heal": 15,
+    "effect_max_heal": 70
+  },
+  "radiant_rod_of_ages": {
+    "price": 1000,
+    "hp": 250,
+    "magic_power": 65,
+    "skill_cooldown_mult": 10,
+    "effect_growth_hp": 10,
+    "effect_growth_magic_power": 2,
+    "effect_growth_skill_cooldown_mult": 1,
+    "effect_growth_interval_seconds": 30,
+    "effect_max_growth_stacks": 10,
+    "effect_skill_cooldown_mult": 2,
+    "effect_duration_seconds": 10,
+    "effect_max_stacks": 5,
+    "effect_min_heal": 15,
+    "effect_max_heal": 70
   }
 }

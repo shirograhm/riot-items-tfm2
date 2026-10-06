@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Thirteen of them:
+//! Fourteen of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -16,12 +16,17 @@
 //!    Protoplasm Harness and Zeke's Convergence) is only kept by whoever plays
 //!    support, whatever the champion.
 //! 5. **Items the champion scales with** — an AP-only champion keeps no item
-//!    whose only offence is physical (attack, attack speed or crit), and an
-//!    AD-only champion no item whose only offence is magic power. Hybrid items,
-//!    hybrid champions and items with no offensive stat are never touched.
+//!    that gives a physical stat (attack, attack speed or crit), and an
+//!    AD-only champion none that gives magic power. That takes a hybrid item,
+//!    one that gives both, off either: it is for a hybrid champion (the user,
+//!    2026-10-05; until then hybrid items were never touched). Hextech
+//!    Gunblade is the only one: the AP items that give attack speed or crit
+//!    count as AP all the same ([`AP_ITEMS`]), and Guinsoo's Rageblade and
+//!    Statikk Shiv are rule 14's. Hybrid champions and items with no
+//!    offensive stat are never touched.
 //!    Support items get no pass in the support role: an AD support keeps the
-//!    tank ones, not the AP ones ([`AP_ITEMS`] puts Sword of Blossoming Dawn
-//!    with those despite its attack speed). Rule 12's item is the exception.
+//!    tank ones, not the AP ones. Rule 12's item is the exception, and Sword
+//!    of Blossoming Dawn is rule 14's.
 //! 6. **Items bought when they pay off** — an item whose value accumulates
 //!    the longer it is owned ([`EARLY_ITEMS`]: Heartsteel's permanent health,
 //!    Hubris's takedown stacks) is bought before the AI's other picks, and one
@@ -126,14 +131,27 @@
 //!    which a Vampire that heals only itself carries and a Bard that only
 //!    buffs does not. These items are for what the champion casts, not what
 //!    it scales with, so rule 5 does not judge them.
+//! 14. **Guinsoo's Rageblade and Statikk Shiv for marksmen** — both give
+//!    attack damage and ability power beside their attack speed, which made
+//!    them hybrid items. The user took them out of those and gave them to
+//!    marksmen alone (2026-10-05): only a champion of the game's `Range`
+//!    class keeps one ([`MARKSMAN_ONLY_ITEMS`]), whatever it scales with, so
+//!    rule 5 does not judge them. The stand-in follows the build's style,
+//!    like rule 5's. A champion whose class nothing states is left alone.
+//!    Sword of Blossoming Dawn joined them the next day: it heals an ally for
+//!    every basic attack, so the user gave it to the supports that attack,
+//!    "support marksmen/attackspeed champs". It is a support item, so rule 4
+//!    keeps it in the support role, and a marksman there keeps it whether it
+//!    is AD or AP. No tag or class says "attack speed champion", so the
+//!    `Range` class is all of that test for now.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
 //! other item, so the AI's picks around it make way for it rather than the
 //! other way round.
 //!
-//! Rules 4, 5, 8, 9, 10, 11 and 12 are about the champion, not the build, and
-//! come in as a [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
+//! Rules 4, 5 and 8 to 14 are about the champion, not the build, and come in
+//! as a [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
 //! crit the build can still afford, and replaces what comes after. That matches
@@ -250,15 +268,15 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
             stat.magic_power,
         )
     };
-    if AP_ITEMS.contains(&crate::build_config::base_slug(key)) {
+    if is_ap_item(key) {
         traits.physical = false;
     }
     // Rule 12's item is every support's, whatever the champion scales with:
     // its stats are not what it is bought for, so rule 5 has no say over it.
     // Rule 13's items neither: they are for what the champion casts, and an
     // AD support that shields an ally wants Ardent Censer whatever its ability
-    // power is worth to it.
-    if is_atlas_item(key) || is_ally_aid_item(key) {
+    // power is worth to it. Rule 14's are judged by the champion's class.
+    if is_atlas_item(key) || is_ally_aid_item(key) || is_marksman_only_item(key) {
         traits.physical = false;
         traits.magic = false;
     }
@@ -268,12 +286,28 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
 }
 
 /// Rule 5: items counted as AP only, whatever physical stat they also carry.
-/// By base slug, so the radiant tier follows. Sword of Blossoming Dawn gives
-/// attack speed beside its ability power, which made it hybrid and let AD
-/// supports keep it; the user put it with the AP support items (2026-09-26).
-/// Bloodsong was here with it until it lost its ability power and became the
-/// World Atlas item (rule 12).
-const AP_ITEMS: [&str; 1] = ["sword_of_blossoming_dawn"];
+/// By base slug, so the radiant tier follows. Sword of Blossoming Dawn was
+/// the first one here (2026-09-26) and is a marksman's item now (rule 14,
+/// [`MARKSMAN_ONLY_ITEMS`]); Bloodsong was here with it until it lost its
+/// ability power and became the World Atlas item (rule 12). Dusk and Dawn,
+/// Lich Bane and Nashor's Tooth give attack speed beside their ability power
+/// and are no hybrid items: the user said so the day hybrid items became
+/// hybrid champions' only (2026-10-05), and
+/// that of the Mage items only Hextech Gunblade is one, which gives attack
+/// damage. Rite of Ruin's crit is spent by its own passive, a shield rolled
+/// on landing an ability, so it is a mage's item as well (the same day; put
+/// here on my reading, the user did not name it).
+const AP_ITEMS: [&str; 4] = [
+    "dusk_and_dawn",
+    "lich_bane",
+    "nashors_tooth",
+    "rite_of_ruin",
+];
+
+/// Whether `key` is one of [`AP_ITEMS`], base or radiant.
+fn is_ap_item(key: &str) -> bool {
+    AP_ITEMS.contains(&crate::build_config::base_slug(key))
+}
 
 /// Adds the crit chance an item's passive grants at full stacks to what
 /// [`note_mod_item`] recorded from its flat stats. Called right after it, from
@@ -282,7 +316,7 @@ pub(crate) fn note_passive_crit(key: &str, crit_chance: i32) {
     edit_table(|table| {
         let traits = table.mod_items.entry(key.to_string()).or_default();
         traits.crit_chance += crit_chance;
-        traits.physical |= crit_chance > 0;
+        traits.physical |= crit_chance > 0 && !is_ap_item(key);
     });
 }
 
@@ -326,6 +360,8 @@ pub(crate) enum Reason {
     /// An item that answers to healing, shielding or buffing an ally, on a
     /// support whose kit does none of that.
     AllyAidWithoutAid,
+    /// An item only a marksman keeps (rule 14) on a champion that is none.
+    MarksmanOnly,
     Reach,
 }
 
@@ -346,7 +382,9 @@ impl Reason {
     /// champion that loses Titanic Hydra still wanted an item of that kind.
     /// A support's wrong World Atlas item is a jungler's wrong jungle item over
     /// again, and a second one is a support item, whose category holds only
-    /// more of those.
+    /// more of those. A marksman's item off a marksman goes with rule 5's:
+    /// its category holds little but attack items, none of which a mage
+    /// that loses Guinsoo's Rageblade could take.
     pub(crate) fn restyles(self) -> bool {
         matches!(
             self,
@@ -357,6 +395,7 @@ impl Reason {
                 | Reason::SecondAtlas
                 | Reason::MandateWithoutCc
                 | Reason::AllyAidWithoutAid
+                | Reason::MarksmanOnly
         )
     }
 }
@@ -372,6 +411,9 @@ pub(crate) struct Fit {
     support_items: bool,
     /// Rule 5: what the champion scales with, `None` when unknown.
     scaling: Option<Scaling>,
+    /// Rule 14: whether the champion is a marksman, the game's `Range` class,
+    /// `None` when its class is unknown.
+    marksman: Option<bool>,
     /// Rule 8: whether jungle items are allowed.
     jungle_items: bool,
     /// Rule 8: whether this jungler's one jungle item is Philosopher's Stone
@@ -426,11 +468,14 @@ pub(crate) struct Fit {
 /// item. In the jungle it is no tank either, so it builds a damage item.
 pub(crate) fn fit(champion: &str, role: Role) -> Fit {
     let traits = champion_traits::traits(champion);
-    let mage = role == Role::Support
-        && traits.is_some_and(|traits| traits.class == Some(Class::Magician));
+    let mage =
+        role == Role::Support && traits.is_some_and(|traits| traits.class == Some(Class::Magician));
     Fit {
         support_items: role == Role::Support,
         scaling: traits.and_then(|traits| traits.scaling),
+        marksman: traits
+            .and_then(|traits| traits.class)
+            .map(|class| class == Class::Range),
         jungle_items: role == Role::Jungle,
         stone_jungler: role == Role::Jungle
             && traits.is_some_and(|traits| traits.tank && traits.ranged != Some(true)),
@@ -450,22 +495,28 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
 }
 
 impl Fit {
-    /// Rule 5 for one item: whether an item with these traits gives only stats
-    /// the champion cannot use.
+    /// Rule 5 for one item: whether an item with these traits gives a stat the
+    /// champion cannot use. A hybrid item gives both kinds, so only a hybrid
+    /// champion keeps one.
     ///
     /// Support items in the support role used to be exempt, on the grounds that
     /// their worth is what they do for allies. That let an AD support keep an
     /// AP-only one (Dual Blader on Staff of Flowing Water, 2026-09-26), and the
     /// user asked for it gone. The support items an AD champion can use pass
-    /// anyway: the tank ones carry no offensive stat. Bloodsong and Sword of
-    /// Blossoming Dawn would pass as hybrid too, but [`AP_ITEMS`] counts them
-    /// as AP.
+    /// anyway: the tank ones carry no offensive stat. Sword of Blossoming Dawn
+    /// is not judged here at all: it is a marksman's item (rule 14).
     fn mismatches(&self, item: &ItemTraits) -> bool {
         match self.scaling {
-            Some(Scaling::Ap) => item.physical && !item.magic,
-            Some(Scaling::Ad) => item.magic && !item.physical,
+            Some(Scaling::Ap) => item.physical,
+            Some(Scaling::Ad) => item.magic,
             Some(Scaling::Hybrid) | None => false,
         }
+    }
+
+    /// Rule 14: whether `key` is an item only a marksman keeps, on a champion
+    /// known not to be one.
+    fn wants_marksman(&self, key: &str) -> bool {
+        self.marksman == Some(false) && is_marksman_only_item(key)
     }
 
     /// Rule 11: whether `key` is an item for the other reach — a melee item on
@@ -552,13 +603,14 @@ impl Fit {
 /// Rule 6: items worth more the longer they are owned, because their passive
 /// builds permanent stacks over the match. By base slug, so the radiant tier
 /// follows.
-const EARLY_ITEMS: [&str; 6] = [
+const EARLY_ITEMS: [&str; 7] = [
     "heartsteel",             // permanent bonus health per charged hit on a champion
     "yun_tal_wildarrows",     // permanent crit chance per basic attack
     "hubris",                 // permanent stack per takedown
     "feral_flare",            // a stack per takedown and monster killed
     "grezs_spectral_lantern", // ability power per takedown and monster killed
     "collector",              // bonus gold per kill, worth more the earlier it comes
+    "rod_of_ages",            // health, ability power and haste for every 30 seconds held
 ];
 
 /// Rule 6: items whose passive scales with a stat the rest of the build
@@ -658,15 +710,23 @@ pub(crate) fn is_boots(key: &str) -> bool {
 pub(crate) fn boots_for(champion: &str, role: Role, enemies: &[&str]) -> &'static str {
     let traits = champion_traits::traits(champion).unwrap_or_default();
     if traits.tank {
-        let (physical, magic) = enemies.iter().fold((0, 0), |(physical, magic), enemy| {
-            match champion_traits::traits(enemy).and_then(|traits| traits.scaling) {
-                Some(Scaling::Ad) => (physical + 1, magic),
-                Some(Scaling::Ap) => (physical, magic + 1),
-                Some(Scaling::Hybrid) => (physical + 1, magic + 1),
-                None => (physical, magic),
-            }
-        });
-        return if magic > physical { MERCURYS_TREADS } else { PLATED_STEELCAPS };
+        let (physical, magic) =
+            enemies.iter().fold(
+                (0, 0),
+                |(physical, magic), enemy| match champion_traits::traits(enemy)
+                    .and_then(|traits| traits.scaling)
+                {
+                    Some(Scaling::Ad) => (physical + 1, magic),
+                    Some(Scaling::Ap) => (physical, magic + 1),
+                    Some(Scaling::Hybrid) => (physical + 1, magic + 1),
+                    None => (physical, magic),
+                },
+            );
+        return if magic > physical {
+            MERCURYS_TREADS
+        } else {
+            PLATED_STEELCAPS
+        };
     }
     if role == Role::Support {
         return IONIAN_BOOTS;
@@ -694,6 +754,19 @@ fn is_support_class(key: &str) -> bool {
 /// class, base or radiant, less [`SUPPORT_ITEM_EXCEPTIONS`].
 fn is_support_item(key: &str) -> bool {
     !SUPPORT_ITEM_EXCEPTIONS.contains(&crate::build_config::base_slug(key)) && is_support_class(key)
+}
+
+/// Rule 14: the items only a marksman keeps. By base slug, so the radiant
+/// tier follows.
+const MARKSMAN_ONLY_ITEMS: [&str; 3] = [
+    "guinsoos_rageblade",
+    "statikk_shiv",
+    "sword_of_blossoming_dawn", // a support item, so a marksman playing support
+];
+
+/// Whether `key` is one of [`MARKSMAN_ONLY_ITEMS`], base or radiant.
+fn is_marksman_only_item(key: &str) -> bool {
+    MARKSMAN_ONLY_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
 /// Rule 10: whether `key` is Imperial Mandate, base or radiant.
@@ -801,7 +874,7 @@ const MELEE_ITEMS: [&str; 9] = [
 /// Rule 11: items whose passive wants the carrier at range, which a melee
 /// champion does not keep. By base slug, so the radiant tier follows.
 const RANGED_ITEMS: [&str; 2] = [
-    "runaans_hurricane",    // bolts at the enemies around the carrier; ranged only in League
+    "runaans_hurricane", // bolts at the enemies around the carrier; ranged only in League
     "diamond_tipped_spear", // Sweet Spot grows with the distance to the target, up to 100 range
 ];
 
@@ -870,6 +943,8 @@ impl Budget {
             Some(Reason::MandateWithoutCc)
         } else if self.fit.no_ally_aid && is_ally_aid_item(key) {
             Some(Reason::AllyAidWithoutAid)
+        } else if self.fit.wants_marksman(key) {
+            Some(Reason::MarksmanOnly)
         } else if self.fit.mismatches(&traits) {
             Some(Reason::Scaling)
         } else if self.fit.out_of_reach(key) {
@@ -894,7 +969,7 @@ impl Budget {
     }
 
     /// Whether `key` is an item this champion may hold at all — rules 4, 5, 8,
-    /// 10, 11 and 13, which do not depend on what else is in the build (rule 8's
+    /// 10, 11, 13 and 14, which do not depend on what else is in the build (rule 8's
     /// one-to-a-build half does, and is left out). An item that fails is no
     /// guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
@@ -904,6 +979,7 @@ impl Budget {
             && !self.fit.other_atlas_item(key)
             && !(self.fit.no_mandate && is_mandate(key))
             && !(self.fit.no_ally_aid && is_ally_aid_item(key))
+            && !self.fit.wants_marksman(key)
             && !self.fit.mismatches(&self.table.traits(key))
             && !self.fit.out_of_reach(key)
     }
@@ -1035,8 +1111,7 @@ pub(crate) fn enforce<C, K, G, F>(
     // whole build, so a support item in slot 0 still follows the IE in slot 1.
     // A mage support's support items are no style of its own (rule 9): what it
     // loses to rules 5 and 13 makes way for an item of its AP categories.
-    let sets_style =
-        |key: &str| budget.suits_champion(key) && !(fit.mage && is_support_class(key));
+    let sets_style = |key: &str| budget.suits_champion(key) && !(fit.mage && is_support_class(key));
     let mut styles: Vec<C> = Vec::new();
     for &index in build.iter() {
         if !key(index).is_some_and(|key| sets_style(&key)) {
@@ -1124,10 +1199,10 @@ pub(crate) fn enforce<C, K, G, F>(
                     // not classify.
                     match category(offender) {
                         None => offender,
-                        Some(wanted) => search(&|candidate| {
-                            category(candidate).as_ref() == Some(&wanted)
-                        })
-                        .unwrap_or(offender),
+                        Some(wanted) => {
+                            search(&|candidate| category(candidate).as_ref() == Some(&wanted))
+                                .unwrap_or(offender)
+                        }
                     }
                 }
             }

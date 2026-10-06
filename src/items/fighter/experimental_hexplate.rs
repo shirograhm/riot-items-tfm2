@@ -1,7 +1,8 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ItemMeta};
+use crate::{apply_config, refresh_buff, ticks, Elapsed, ItemMeta};
+const OVERDRIVE_BUFF: &str = "experimental_hexplate_overdrive";
 
 #[derive(Clone, Debug)]
 pub struct ExperimentalHexplate {
@@ -11,6 +12,15 @@ pub struct ExperimentalHexplate {
     attack_speed_mult: i32,
     move_speed_mult: i32,
     ult_cooldown_mult: i32,
+    effect_attack_speed_mult: i32,
+    effect_move_speed_mult: i32,
+    effect_duration_seconds: f64,
+    effect_cooldown_seconds: f64,
+    // Non-vital stats (internals)
+    last_ult_cooldown: Option<usize>,
+    cooldown_ticks: usize,
+    /// Steps the cooldown by the time gone by, so it runs through a death.
+    clock: Elapsed,
 }
 
 impl ExperimentalHexplate {
@@ -26,6 +36,14 @@ impl ExperimentalHexplate {
             attack_speed_mult: 30,
             move_speed_mult: 0,
             ult_cooldown_mult: 15,
+            effect_attack_speed_mult: 32,
+            effect_move_speed_mult: 16,
+            effect_duration_seconds: 8.0,
+            effect_cooldown_seconds: 32.0,
+            // Non-vital stats (internals)
+            last_ult_cooldown: None,
+            cooldown_ticks: 0,
+            clock: Elapsed::default(),
         }
     }
 
@@ -37,6 +55,10 @@ impl ExperimentalHexplate {
             attack_speed_mult: 50,
             move_speed_mult: 5,
             ult_cooldown_mult: 25,
+            effect_attack_speed_mult: 32,
+            effect_move_speed_mult: 16,
+            effect_duration_seconds: 8.0,
+            effect_cooldown_seconds: 32.0,
             ..Self::base()
         }
     }
@@ -58,7 +80,11 @@ impl ExperimentalHexplate {
                 hp,
                 attack_speed_mult,
                 move_speed_mult,
-                ult_cooldown_mult
+                ult_cooldown_mult,
+                effect_attack_speed_mult,
+                effect_move_speed_mult,
+                effect_duration_seconds,
+                effect_cooldown_seconds
             ]
         );
         self
@@ -108,6 +134,54 @@ impl StableItem for ExperimentalHexplate {
             ult_cooldown_mult: self.ult_cooldown_mult,
             ..Default::default()
         }
+    }
+
+    // The cooldown keeps running through a death, like an item cooldown in
+    // League; the first cooldown reading of the new life is only a baseline.
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.last_ult_cooldown = None;
+    }
+
+    // Overdrive. A cast shows up as the ult cooldown going *up* between two
+    // ticks, the same reading Zeke's Convergence uses.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        // By the time gone by, not by one: no `update` runs for a dead carrier,
+        // and the cooldown is to keep running through the death.
+        let gone = self.clock.since_last(ctx);
+        self.cooldown_ticks = self.cooldown_ticks.saturating_sub(gone);
+
+        let ult_cooldown = ctx
+            .get_player(player)
+            .and_then(|p| p.cooldowns())
+            .map(|(_, _, _, ult)| ult);
+        let cast = matches!(
+            (ult_cooldown, self.last_ult_cooldown),
+            (Some(now), Some(before)) if now > before
+        );
+        self.last_ult_cooldown = ult_cooldown;
+        if !cast || self.cooldown_ticks > 0 {
+            return;
+        }
+
+        let Some(carrier) = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .map(|c| c.id())
+        else {
+            return;
+        };
+        refresh_buff(
+            ctx,
+            carrier,
+            OVERDRIVE_BUFF,
+            &BuffV1 {
+                attack_speed_mult: self.effect_attack_speed_mult,
+                move_speed_mult: self.effect_move_speed_mult,
+                ..BuffV1::timed(OVERDRIVE_BUFF, ticks(self.effect_duration_seconds))
+            },
+        );
+        // From the cast, not from the end of Overdrive.
+        self.cooldown_ticks = ticks(self.effect_cooldown_seconds);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

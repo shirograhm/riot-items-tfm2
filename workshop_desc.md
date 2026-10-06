@@ -1,4 +1,4 @@
-Adds 6 item slots & 232 new items (135 base + 97 Radiant) to Teamfight Manager 2.  
+Adds 6 item slots & 235 new items (137 base + 98 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
@@ -67,9 +67,10 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - heal, shield and buff items (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on supports that don't heal, shield or buff allies, and on mages
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
-- items the champion doesn't scale with: attack-only items on an AP champion, or AP-only items on an AD champion (hybrids are left alone).
+- items the champion doesn't scale with: attack items on an AP champion, AP items on an AD champion, and Hextech Gunblade (the one hybrid item) on anyone but a hybrid champion.
+- Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn on anyone but a marksman.
 
-Support builds get a World Atlas item in the first slot: Zaz'Zak's Realmspike for mages, Dream Maker for supports that heal, shield or buff allies, Celestial Opposition for tanks, Solstice Sleigh for others that immobilize, Zaz'Zak's Realmspike for other AP supports, and Bloodsong for the rest. That's their one guaranteed support item: after it, supports lean toward support items but can build anything that suits their class, and mages build AP items like any other mage.
+Support builds get a World Atlas item in the first slot: Zaz'Zak's Realmspike for mages, Dream Maker for supports that heal, shield or buff allies, Celestial Opposition for tanks, Solstice Sleigh for others that immobilize, Zaz'Zak's Realmspike for other AP supports, and Bloodsong for the rest.  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
