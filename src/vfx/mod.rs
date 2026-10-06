@@ -2,12 +2,13 @@
 //! the Immolate flames marker and burn, the shared Annul spell shield (whose
 //! buff draws the shield bubble), the shared Spellblade (whose buff draws the
 //! sparks), the shared Energized (whose buff draws the crackle), the shared
-//! Eternity (a buff with nothing to draw) and Sunfire Cape's Immolate, which
-//! runs as the match hook.
+//! Eternity (a buff with nothing to draw), Lifeline's shield bubble and Sunfire
+//! Cape's Immolate, which runs as the match hook.
 
 mod annul;
 mod energized;
 mod eternity;
+mod lifeline;
 mod spellblade;
 pub(crate) mod sunfire;
 
@@ -16,6 +17,7 @@ use mod_api_stable::*;
 pub(crate) use annul::Annul;
 pub(crate) use energized::Energized;
 pub(crate) use eternity::Eternity;
+pub(crate) use lifeline::Lifeline;
 pub(crate) use spellblade::Spellblade;
 
 pub(crate) fn refresh_buff(ctx: &mut StableSim<'_>, entity: usize, name: &str, buff: &BuffV1) {

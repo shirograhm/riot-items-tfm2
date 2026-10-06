@@ -1,10 +1,13 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ticks, ItemMeta};
+use crate::{apply_config, percent_of, ticks, ItemMeta, Lifeline};
 
 // Lifeline: Falling below 30% health grants a shield for 3 seconds that absorbs
 // 330 - 605 (based on level) damage (90 second cooldown).
+//
+// While that shield is up the carrier shows Lifeline's bubble
+// ([`crate::Lifeline`]), the one Sterak's Gage's Lifeline shows too.
 #[derive(Clone, Debug)]
 pub struct ImmortalShieldbow {
     meta: ItemMeta,
@@ -18,6 +21,7 @@ pub struct ImmortalShieldbow {
     effect_cooldown_seconds: f64,
     // Non-vital stats (internals)
     lifeline_cooldown: usize,
+    lifeline: Lifeline,
 }
 
 impl ImmortalShieldbow {
@@ -38,6 +42,7 @@ impl ImmortalShieldbow {
             effect_cooldown_seconds: 90.0,
             // Non-vital stats (internals)
             lifeline_cooldown: 0,
+            lifeline: Lifeline::default(),
         }
     }
 
@@ -135,10 +140,13 @@ impl StableItem for ImmortalShieldbow {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.lifeline_cooldown = 0;
+        self.lifeline.reset();
     }
 
-    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.lifeline_cooldown = self.lifeline_cooldown.saturating_sub(1);
+        // Takes the bubble down when the shield is used up before its time.
+        self.lifeline.update(ctx, player);
     }
 
     // The host resolves the hit before this runs, so "falling below" is read
@@ -178,7 +186,9 @@ impl StableItem for ImmortalShieldbow {
             return;
         }
 
-        ctx.entity_add_shield(entity, shield, ticks(self.effect_shield_seconds));
+        let duration = ticks(self.effect_shield_seconds);
+        ctx.entity_add_shield(entity, shield, duration);
+        self.lifeline.raise(ctx, entity, duration);
         self.lifeline_cooldown = ticks(self.effect_cooldown_seconds);
     }
 

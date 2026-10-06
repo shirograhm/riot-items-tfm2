@@ -1,11 +1,14 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, Lifeline};
 
 // Lifeline: If you would take damage below 30% of your maximum health, you first
 // gain a shield that absorbs damage equal to 45% of your maximum health for 4
 // seconds (90 second cooldown).
+//
+// While that shield is up the carrier shows Lifeline's bubble
+// ([`crate::Lifeline`]), the one Immortal Shieldbow's Lifeline shows too.
 #[derive(Clone, Debug)]
 pub struct SteraksGage {
     meta: ItemMeta,
@@ -18,6 +21,8 @@ pub struct SteraksGage {
     effect_caster_hp_percent_shield: f64,
     effect_shield_seconds: f64,
     effect_cooldown_seconds: f64,
+    // Non-vital stats (internals)
+    lifeline: Lifeline,
 }
 
 impl SteraksGage {
@@ -33,6 +38,8 @@ impl SteraksGage {
             effect_caster_hp_percent_shield: 45.0,
             effect_shield_seconds: 4.0,
             effect_cooldown_seconds: 90.0,
+            // Non-vital stats (internals)
+            lifeline: Lifeline::default(),
         }
     }
 
@@ -123,6 +130,15 @@ impl StableItem for SteraksGage {
         }
     }
 
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.lifeline.reset();
+    }
+
+    /// Takes the bubble down when the shield is used up before its time.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.lifeline.update(ctx, player);
+    }
+
     // The host resolves the hit before this runs, so "damage that would take you
     // below the threshold" is read after the fact: the shield lands on the tick
     // the carrier crosses under it, and covers what comes next.
@@ -154,7 +170,9 @@ impl StableItem for SteraksGage {
             return;
         }
 
-        ctx.entity_add_shield(entity, shield, ticks(self.effect_shield_seconds));
+        let duration = ticks(self.effect_shield_seconds);
+        ctx.entity_add_shield(entity, shield, duration);
+        self.lifeline.raise(ctx, entity, duration);
         ctx.add_buff(
             entity,
             &BuffV1::timed(self.cooldown_buff, ticks(self.effect_cooldown_seconds)),
