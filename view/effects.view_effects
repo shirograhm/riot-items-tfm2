@@ -315,14 +315,14 @@
             "name": "rylais_crystal_scepter_slow",
             "anim": "asset/riot_items_tfm2/effects/rylais_frost",
             "tag": "frost",
-            "z": 1
+            "z": -1
         },
         {
             "type": "Animated",
             "name": "rylais_crystal_scepter_slow_small",
             "anim": "asset/riot_items_tfm2/effects/rylais_frost_small",
             "tag": "frost",
-            "z": 1
+            "z": -1
         }
     ]
 }
