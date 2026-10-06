@@ -568,21 +568,7 @@ pub fn pins_generation() -> u64 {
 }
 
 fn pins() -> Option<Arc<PinSnapshot>> {
-    // Nobody's pins apply in a multiplayer session: they are one player's
-    // file, and the other players' games would build something else
-    // (`crate::multiplayer`). Every pin the detours read comes through here.
-    if crate::multiplayer::active() {
-        return None;
-    }
     PINS.lock().ok()?.clone()
-}
-
-/// Tells whoever remembers what the pins said that it no longer holds, with
-/// no new file published: multiplayer mode going on or off, which takes every
-/// pin away or gives them back ([`pins`]). The buy detour's memo is keyed on
-/// this count.
-pub fn mode_changed() {
-    PINS_GENERATION.fetch_add(1, Ordering::Relaxed);
 }
 
 /// Whether this champion has any pinned item in the role it is being played,
@@ -1121,12 +1107,6 @@ fn setting(cache: &AtomicU8, read: impl Fn(&ModSettings) -> bool, default: bool)
 /// only rule: renaming it would silently reset the toggle for every player
 /// who has already set it. See [`crate::smart_builds`] for what it gates now.
 pub fn smart_builds_enabled() -> bool {
-    // On for everyone in a multiplayer session, whatever each player's toggle
-    // says: two games that disagree here build different items
-    // (`crate::multiplayer`).
-    if crate::multiplayer::active() {
-        return true;
-    }
     setting(&UNIQUE_ITEMS, |settings| settings.unique_items, true)
 }
 
@@ -1200,12 +1180,6 @@ pub fn smart_builds_enabled() -> bool {
 /// session, before the roster is published (see `cap_spawn`): slot 0 is then
 /// the engine's, and the buy path swaps rather than duplicates a pin.
 pub fn own_team_only_enabled() -> bool {
-    // Off in a multiplayer session: "my team" is a different team on every
-    // player's machine (`crate::multiplayer`). The pins it would have given
-    // them are gone there as well, see [`pins`].
-    if crate::multiplayer::active() {
-        return false;
-    }
     setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, true)
 }
 
@@ -1243,11 +1217,6 @@ pub fn build_for_champion(
     resolve: impl Fn(&str) -> Option<usize>,
     ai_build: &[usize],
 ) -> Option<MergedBuild> {
-    // No configured builds in a multiplayer session: the stable hook's half of
-    // what [`pins`] does for the detours (`crate::multiplayer`).
-    if crate::multiplayer::active() {
-        return None;
-    }
     let build = build_entry(config, champion, role)?;
     Some(merge_pin_row(build, resolve, ai_build))
 }

@@ -81,7 +81,11 @@
     "price": 600,
     "hp": 150,
     "attack_speed_mult": 30,
-    "ult_cooldown_mult": 15
+    "ult_cooldown_mult": 15,
+    "effect_attack_speed_mult": 32,
+    "effect_move_speed_mult": 16,
+    "effect_duration_seconds": 8,
+    "effect_cooldown_seconds": 32
   },
   "deathblade": {
     "price": 700,
@@ -317,7 +321,11 @@
     "hp": 200,
     "attack_speed_mult": 50,
     "move_speed_mult": 5,
-    "ult_cooldown_mult": 25
+    "ult_cooldown_mult": 25,
+    "effect_attack_speed_mult": 32,
+    "effect_move_speed_mult": 16,
+    "effect_duration_seconds": 8,
+    "effect_cooldown_seconds": 32
   },
   "radiant_black_cleaver": {
     "price": 1100,
@@ -1098,7 +1106,7 @@
     "hp": 200,
     "toughness": 15,
     "effect_hp_percent_threshold": 30.0,
-    "effect_caster_hp_percent_shield": 60.0,
+    "effect_caster_hp_percent_shield": 45.0,
     "effect_shield_seconds": 4,
     "effect_cooldown_seconds": 90
   },
@@ -1108,7 +1116,7 @@
     "hp": 350,
     "toughness": 20,
     "effect_hp_percent_threshold": 30.0,
-    "effect_caster_hp_percent_shield": 60.0,
+    "effect_caster_hp_percent_shield": 45.0,
     "effect_shield_seconds": 4,
     "effect_cooldown_seconds": 90
   },
