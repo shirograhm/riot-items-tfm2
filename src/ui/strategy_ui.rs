@@ -729,6 +729,10 @@ struct EditorState {
     /// and the [`draft_watch::revision`] they were worked out from. See
     /// [`sync_sides`].
     side_names: [Vec<String>; 2],
+    /// The ids of those champions, for the ones the editor lists: what a side
+    /// cell gives a row to when it is lit and the champion has none. A pick
+    /// the editor could only name, not tie to a champion, has no id here.
+    side_ids: [Vec<String>; 2],
     sides_revision: u64,
     /// Frames for which the filter box may still read back its old text after
     /// a side cell wrote to it. See [`sync_filter`].
@@ -1944,14 +1948,23 @@ fn sync_sides(ctx: &mut StableClient<'_>) {
         .iter()
         .map(|choice| game_champion_name(ctx, &choice.id))
         .collect();
-    let names = [false, true].map(|red| {
-        draft_watch::picks(red)
+    let picks = [false, true].map(draft_watch::picks);
+    let names = [0, 1].map(|side| {
+        picks[side]
             .iter()
             .filter_map(|pick| drafted_label(&champions, &game_names, pick))
             .collect::<Vec<_>>()
     });
+    let ids = [0, 1].map(|side| {
+        picks[side]
+            .iter()
+            .filter_map(|pick| drafted_champion(&champions, &game_names, pick))
+            .map(|choice| choice.id.clone())
+            .collect::<Vec<_>>()
+    });
     let _ = with_state(|state| {
         state.side_names = names;
+        state.side_ids = ids;
         state.sides_revision = revision;
     });
     refresh_sides(ctx);
@@ -1970,8 +1983,27 @@ fn game_champion_name(ctx: &StableClient<'_>, id: &str) -> String {
 }
 
 /// What the filter box should say for one drafted champion: the editor's own
-/// label for it when the pick can be tied to a champion the editor lists, what
-/// the draft grid showed when it cannot, and nothing when that is unreadable.
+/// label for it when the pick can be tied to a champion the editor lists
+/// ([`drafted_champion`]), what the draft grid showed when it cannot, and
+/// nothing when that is unreadable.
+fn drafted_label(
+    champions: &[ChampionChoice],
+    game_names: &[String],
+    pick: &draft_watch::Pick,
+) -> Option<String> {
+    if let Some(choice) = drafted_champion(champions, game_names, pick) {
+        return Some(choice.name.clone());
+    }
+    // Not a champion the editor lists. What the grid showed is still the best
+    // term there is, unless it is a reference: nothing in the list could match
+    // one and nobody could read it. A comma would split the term in two.
+    let reference = pick.name.starts_with('#') && pick.name.contains('?');
+    let raw = sanitize(&pick.name).replace(',', " ");
+    (!reference && !raw.trim().is_empty()).then_some(raw)
+}
+
+/// The champion the editor lists that one drafted pick is, if it can be tied
+/// to one.
 ///
 /// Tied by id where one can be read, because an id is the same in every
 /// language: out of the label's text if that is a reference
@@ -1982,11 +2014,11 @@ fn game_champion_name(ctx: &StableClient<'_>, id: &str) -> String {
 /// label and the id itself, all compared through [`fold`]. That route only
 /// works with the game in English, the one language both sides of the
 /// comparison are certain to be in.
-fn drafted_label(
-    champions: &[ChampionChoice],
+fn drafted_champion<'a>(
+    champions: &'a [ChampionChoice],
     game_names: &[String],
     pick: &draft_watch::Pick,
-) -> Option<String> {
+) -> Option<&'a ChampionChoice> {
     let by_id = |id: &str| champions.iter().find(|choice| choice.id == id);
     let reference = pick
         .name
@@ -2009,18 +2041,10 @@ fn drafted_label(
                     .find(|choice| shown == fold(&choice.name) || shown == fold(&choice.id))
             })
     };
-    if let Some(choice) = reference
+    reference
         .and_then(|key| key.split('.').find_map(by_id))
         .or_else(by_name)
         .or_else(|| by_id(&pick.node))
-    {
-        return Some(choice.name.clone());
-    }
-    // Not a champion the editor lists. What the grid showed is still the best
-    // term there is, unless it is a reference: nothing in the list could match
-    // one and nobody could read it. A comma would split the term in two.
-    let raw = sanitize(&pick.name).replace(',', " ");
-    (reference.is_none() && !raw.trim().is_empty()).then_some(raw)
 }
 
 /// A name with everything but its letters and digits dropped, lowercased, so
@@ -3569,20 +3593,46 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             return;
         }
         let red = path == side_red_path();
-        let text = with_state(|state| {
-            if red {
+        let (text, added) = with_state(|state| {
+            let lit = if red {
                 state.side_red = !state.side_red;
+                state.side_red
             } else {
                 state.side_blue = !state.side_blue;
+                state.side_blue
+            };
+            // Lighting a cell also gives every champion of its side a row, so
+            // the list it narrows to is the whole lineup and not just the
+            // champions that already had a build: one with no row under any
+            // role gets an empty one, at the end. Like a row off the Add
+            // button it is never written until an item is pinned in it.
+            let mut added = false;
+            if lit {
+                for id in state.side_ids[usize::from(red)].clone() {
+                    let listed = state
+                        .rows
+                        .iter()
+                        .any(|row| row.champion.as_deref() == Some(id.as_str()));
+                    if !listed {
+                        state.rows.push(ChampionRow {
+                            champion: Some(id),
+                            ..ChampionRow::default()
+                        });
+                        added = true;
+                    }
+                }
             }
             // Whatever was in the box is replaced, not added to: the cells say
             // what it holds. Recorded as read here, so `sync_filter` does not
             // find the box changed and take that for typing.
             state.filter = sides_text(state);
             state.side_settle = SIDE_SETTLE_FRAMES;
-            state.filter.clone()
+            (state.filter.clone(), added)
         })
         .unwrap_or_default();
+        if added {
+            clear_saved(ctx);
+        }
         paint_sides(ctx);
         // Sized before it is filled, so the names arrive in a box that holds
         // them on one line.
