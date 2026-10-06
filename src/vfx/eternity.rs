@@ -1,6 +1,5 @@
-//! Eternity: taking damage from an enemy champion grants a stack of Ability
-//! Haste for a while, and every Ability the carrier casts heals them. Shared
-//! by Catalyst of Aeons and Rod of Ages; each item owns its numbers.
+//! Eternity: every Ability the carrier casts heals them. Shared by Catalyst of
+//! Aeons and Rod of Ages; each item owns its numbers.
 //!
 //! No hook reports a cast, so one is read the way Spellblade reads it: an
 //! ability's remaining cooldown going *up* between two ticks, since it only
@@ -9,22 +8,17 @@
 //!
 //! # One Eternity for the champion
 //!
-//! The haste is `HASTE_BUFF` under one name for every Eternity item, so the
-//! stacks are one pool with one limit however many of them the champion holds,
-//! and they stay through an upgrade from one item to the next.
+//! Every Eternity item a champion holds sees the same cast in the same tick,
+//! so the first to heal for it leaves a note (`HEALED`) and the others find it
+//! and stand down.
 //!
-//! The heal has no buff to share. Every Eternity item sees the same cast in
-//! the same tick, so the first to heal for it leaves a note (`HEALED`) and the
-//! others find it and stand down.
+//! Until 2026-10-06 Eternity also granted stacking Ability Haste for damage
+//! taken from enemy champions; the user took that half out.
 
 use std::cell::Cell;
 
 use mod_api_stable::*;
 
-use crate::{add_stack, is_enemy_champion};
-
-/// The haste stacks on the carrier.
-const HASTE_BUFF: &str = "riot_eternity";
 /// Levels run from 1 to 12, so the heal grows over eleven steps.
 const LEVEL_STEPS: f64 = 11.0;
 
@@ -48,8 +42,8 @@ impl Eternity {
     }
 
     /// Heals the carrier when they cast an Ability: `min_heal` at level 1 and
-    /// `max_heal` at level 12, the same per-level step the other level-scaled
-    /// effects use. Call once per `update`.
+    /// `max_heal` at level 12, in a straight line between. Call once per
+    /// `update`.
     pub(crate) fn update(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -84,34 +78,12 @@ impl Eternity {
             return;
         }
 
-        let per_level = (max_heal.saturating_sub(min_heal) as f64 / LEVEL_STEPS).round() as usize;
-        let heal = min_heal + level.saturating_sub(1) * per_level;
+        // The whole span is shared out over the levels and then rounded, not
+        // rounded to a step per level first: 15 - 40 in whole steps of 2
+        // would stop at 37, short of what the tooltip states.
+        let steps = (level.saturating_sub(1) as f64).min(LEVEL_STEPS);
+        let span = max_heal.saturating_sub(min_heal) as f64;
+        let heal = min_heal + (span * steps / LEVEL_STEPS).round() as usize;
         ctx.heal(champion, champion, heal);
-    }
-
-    /// A hit on the carrier: one from an enemy champion adds a stack of
-    /// `haste` and restarts the duration of the stacks already there. For an
-    /// Eternity item's `on_damaged`.
-    pub(crate) fn damaged(
-        ctx: &mut StableSim<'_>,
-        entity: usize,
-        attacker: usize,
-        damage: usize,
-        haste: i32,
-        duration_ticks: usize,
-        max_stacks: usize,
-    ) {
-        if damage == 0 || !is_enemy_champion(ctx, entity, attacker) {
-            return;
-        }
-        add_stack(
-            ctx,
-            entity,
-            &BuffV1 {
-                skill_cooldown_mult: haste,
-                ..BuffV1::timed(HASTE_BUFF, duration_ticks)
-            },
-            max_stacks,
-        );
     }
 }

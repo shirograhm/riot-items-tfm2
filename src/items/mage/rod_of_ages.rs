@@ -9,7 +9,8 @@ use crate::{apply_config, ticks, upgrade_carry, Elapsed, Eternity, ItemMeta};
 // the carrier is alive or not, and the Radiant item carries on from where the
 // base item was.
 //
-// Eternity is Catalyst of Aeons' passive, kept ([`crate::Eternity`]).
+// Eternity is Catalyst of Aeons' passive, kept ([`crate::Eternity`]): a heal
+// for every Ability cast.
 
 /// Timeless's stats on the carrier. One name for both tiers, so what the base
 /// item granted stays on through the Radiant upgrade and is counted once.
@@ -30,9 +31,6 @@ pub struct RodOfAges {
     effect_growth_skill_cooldown_mult: i32,
     effect_growth_interval_seconds: f64,
     effect_max_growth_stacks: usize,
-    effect_skill_cooldown_mult: i32,
-    effect_duration_seconds: f64,
-    effect_max_stacks: usize,
     effect_min_heal: usize,
     effect_max_heal: usize,
     // Non-vital stats (internals)
@@ -59,11 +57,8 @@ impl RodOfAges {
             effect_growth_skill_cooldown_mult: 1,
             effect_growth_interval_seconds: 30.0,
             effect_max_growth_stacks: 10,
-            effect_skill_cooldown_mult: 2,
-            effect_duration_seconds: 10.0,
-            effect_max_stacks: 5,
             effect_min_heal: 15,
-            effect_max_heal: 70,
+            effect_max_heal: 40,
             // Non-vital stats (internals)
             held_ticks: 0,
             inherited: false,
@@ -84,11 +79,8 @@ impl RodOfAges {
             effect_growth_skill_cooldown_mult: 1,
             effect_growth_interval_seconds: 30.0,
             effect_max_growth_stacks: 10,
-            effect_skill_cooldown_mult: 2,
-            effect_duration_seconds: 10.0,
-            effect_max_stacks: 5,
             effect_min_heal: 15,
-            effect_max_heal: 70,
+            effect_max_heal: 40,
             ..Self::base()
         }
     }
@@ -115,9 +107,6 @@ impl RodOfAges {
                 effect_growth_skill_cooldown_mult,
                 effect_growth_interval_seconds,
                 effect_max_growth_stacks,
-                effect_skill_cooldown_mult,
-                effect_duration_seconds,
-                effect_max_stacks,
                 effect_min_heal,
                 effect_max_heal
             ]
@@ -262,29 +251,6 @@ impl StableItem for RodOfAges {
 
         self.eternity
             .update(ctx, player, self.effect_min_heal, self.effect_max_heal);
-    }
-
-    /// Eternity's Ability Haste, for a hit from an enemy champion.
-    fn on_damaged(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _player: usize,
-        entity: usize,
-        attacker: usize,
-        damage: usize,
-        _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
-        _is_crit: bool,
-    ) {
-        Eternity::damaged(
-            ctx,
-            entity,
-            attacker,
-            damage,
-            self.effect_skill_cooldown_mult,
-            ticks(self.effect_duration_seconds),
-            self.effect_max_stacks,
-        );
     }
 
     /// Timeless stacks survive the Radiant upgrade, clamped to the successor's

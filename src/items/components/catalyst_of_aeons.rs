@@ -1,20 +1,16 @@
 use crate::config::ItemConfig;
-use crate::{apply_config, ticks, Eternity};
+use crate::{apply_config, Eternity};
 use mod_api_stable::*;
 
 /// Catalyst of Aeons: health, a little Ability Power and Ability Haste, and
-/// Eternity ([`crate::Eternity`]): Ability Haste for being hit by enemy
-/// champions and a heal for every Ability cast. It grows into Rod of Ages,
-/// which keeps Eternity.
+/// Eternity ([`crate::Eternity`]): a heal for every Ability cast. It grows
+/// into Rod of Ages, which keeps Eternity.
 #[derive(Clone, Debug)]
 pub struct CatalystOfAeons {
     price: usize,
     hp: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
-    effect_skill_cooldown_mult: i32,
-    effect_duration_seconds: f64,
-    effect_max_stacks: usize,
     effect_min_heal: usize,
     effect_max_heal: usize,
     // Non-vital stats (internals)
@@ -28,11 +24,8 @@ impl Default for CatalystOfAeons {
             hp: 100,
             magic_power: 20,
             skill_cooldown_mult: 5,
-            effect_skill_cooldown_mult: 2,
-            effect_duration_seconds: 10.0,
-            effect_max_stacks: 5,
             effect_min_heal: 15,
-            effect_max_heal: 70,
+            effect_max_heal: 40,
             // Non-vital stats (internals)
             eternity: Eternity::default(),
         }
@@ -50,9 +43,6 @@ impl CatalystOfAeons {
                 hp,
                 magic_power,
                 skill_cooldown_mult,
-                effect_skill_cooldown_mult,
-                effect_duration_seconds,
-                effect_max_stacks,
                 effect_min_heal,
                 effect_max_heal
             ]
@@ -107,29 +97,6 @@ impl StableItem for CatalystOfAeons {
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.eternity
             .update(ctx, player, self.effect_min_heal, self.effect_max_heal);
-    }
-
-    /// Eternity's Ability Haste, for a hit from an enemy champion.
-    fn on_damaged(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _player: usize,
-        entity: usize,
-        attacker: usize,
-        damage: usize,
-        _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
-        _is_crit: bool,
-    ) {
-        Eternity::damaged(
-            ctx,
-            entity,
-            attacker,
-            damage,
-            self.effect_skill_cooldown_mult,
-            ticks(self.effect_duration_seconds),
-            self.effect_max_stacks,
-        );
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

@@ -1106,15 +1106,15 @@
         },
         "catalyst_of_aeons": {
             "name": "Catalyst of Aeons",
-            "option": "\n<#ff7a3eff>Eternity<>: Gain <#4b7cffff>2 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>10 seconds<> when taking damage from an enemy champion (max 5 stacks), and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> for <#60e84dff>15<> - <#60e84dff>70<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
+            "option": "\n<#ff7a3eff>Eternity<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Heal<> for <#60e84dff>15<> - <#60e84dff>40<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
         },
         "rod_of_ages": {
             "name": "Rod of Ages",
-            "option": "\n<#ff7a3eff>Timeless<>: This item gains <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> every <#e8a800ff>30 seconds<>, up to 10 times.\n\n<#ff7a3eff>Eternity<>: Gain <#4b7cffff>2 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>10 seconds<> when taking damage from an enemy champion (max 5 stacks), and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> for <#60e84dff>15<> - <#60e84dff>70<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
+            "option": "\n<#ff7a3eff>Timeless<>: This item gains <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> every <#e8a800ff>30 seconds<>, up to 10 times.\n\n<#ff7a3eff>Eternity<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Heal<> for <#60e84dff>15<> - <#60e84dff>40<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
         },
         "radiant_rod_of_ages": {
             "name": "Radiant Rod of Ages",
-            "option": "\n<#ff7a3eff>Timeless<>: This item gains <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> every <#e8a800ff>30 seconds<>, up to 10 times.\n\n<#ff7a3eff>Eternity<>: Gain <#4b7cffff>2 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>10 seconds<> when taking damage from an enemy champion (max 5 stacks), and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> for <#60e84dff>15<> - <#60e84dff>70<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
+            "option": "\n<#ff7a3eff>Timeless<>: This item gains <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> every <#e8a800ff>30 seconds<>, up to 10 times.\n\n<#ff7a3eff>Eternity<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Heal<> for <#60e84dff>15<> - <#60e84dff>40<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
         }
     },
     "vi": {
@@ -2224,15 +2224,15 @@
         },
         "catalyst_of_aeons": {
             "name": "Đá Vĩnh Hằng",
-            "option": "\n<#ff7a3eff>Vĩnh Hằng<>: Nhận <#4b7cffff>2 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>10 giây<> khi nhận sát thương từ tướng địch (tối đa 5 cộng dồn), và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> <#60e84dff>15<> - <#60e84dff>70<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
+            "option": "\n<#ff7a3eff>Vĩnh Hằng<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hồi<> <#60e84dff>15<> - <#60e84dff>40<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
         },
         "rod_of_ages": {
             "name": "Trượng Trường Sinh",
-            "option": "\n<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>30 giây<>, tối đa 10 lần.\n\n<#ff7a3eff>Vĩnh Hằng<>: Nhận <#4b7cffff>2 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>10 giây<> khi nhận sát thương từ tướng địch (tối đa 5 cộng dồn), và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> <#60e84dff>15<> - <#60e84dff>70<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
+            "option": "\n<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>30 giây<>, tối đa 10 lần.\n\n<#ff7a3eff>Vĩnh Hằng<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hồi<> <#60e84dff>15<> - <#60e84dff>40<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
         },
         "radiant_rod_of_ages": {
             "name": "Trượng Trường Sinh Ánh Sáng",
-            "option": "\n<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>30 giây<>, tối đa 10 lần.\n\n<#ff7a3eff>Vĩnh Hằng<>: Nhận <#4b7cffff>2 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>10 giây<> khi nhận sát thương từ tướng địch (tối đa 5 cộng dồn), và <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> <#60e84dff>15<> - <#60e84dff>70<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
+            "option": "\n<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>30 giây<>, tối đa 10 lần.\n\n<#ff7a3eff>Vĩnh Hằng<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hồi<> <#60e84dff>15<> - <#60e84dff>40<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
         }
     },
     "zh-hans": {
@@ -3342,15 +3342,15 @@
         },
         "catalyst_of_aeons": {
             "name": "万世催化石",
-            "option": "\n<#ff7a3eff>永恒<>：受到敌方英雄伤害时，获得 <#4b7cffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>10秒<>（最多叠加5层）；每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>70<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
+            "option": "\n<#ff7a3eff>永恒<>：每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>40<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
         },
         "rod_of_ages": {
             "name": "时光之杖",
-            "option": "\n<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>30秒<> 获得 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>、<#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>1 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，至多 10 次。\n\n<#ff7a3eff>永恒<>：受到敌方英雄伤害时，获得 <#4b7cffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>10秒<>（最多叠加5层）；每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>70<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
+            "option": "\n<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>30秒<> 获得 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>、<#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>1 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，至多 10 次。\n\n<#ff7a3eff>永恒<>：每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>40<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
         },
         "radiant_rod_of_ages": {
             "name": "光明版时光之杖",
-            "option": "\n<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>30秒<> 获得 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>、<#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>1 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，至多 10 次。\n\n<#ff7a3eff>永恒<>：受到敌方英雄伤害时，获得 <#4b7cffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>10秒<>（最多叠加5层）；每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>70<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
+            "option": "\n<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>30秒<> 获得 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>、<#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>1 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，至多 10 次。\n\n<#ff7a3eff>永恒<>：每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>40<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
         }
     },
     "pt-BR": {
@@ -4460,15 +4460,15 @@
         },
         "catalyst_of_aeons": {
             "name": "Catalisador das Eras",
-            "option": "\n<#ff7a3eff>Eternidade<>: Receba <#4b7cffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>10 segundos<> ao receber dano de um campeão inimigo (acumula 5x), e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cure-se<> em <#60e84dff>15<> - <#60e84dff>70<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
+            "option": "\n<#ff7a3eff>Eternidade<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Cure-se<> em <#60e84dff>15<> - <#60e84dff>40<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
         },
         "rod_of_ages": {
             "name": "Bastão das Eras",
-            "option": "\n<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> Vida<>, <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>1 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> a cada <#e8a800ff>30 segundos<>, até 10 vezes.\n\n<#ff7a3eff>Eternidade<>: Receba <#4b7cffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>10 segundos<> ao receber dano de um campeão inimigo (acumula 5x), e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cure-se<> em <#60e84dff>15<> - <#60e84dff>70<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
+            "option": "\n<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> Vida<>, <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>1 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> a cada <#e8a800ff>30 segundos<>, até 10 vezes.\n\n<#ff7a3eff>Eternidade<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Cure-se<> em <#60e84dff>15<> - <#60e84dff>40<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
         },
         "radiant_rod_of_ages": {
             "name": "Bastão das Eras Radiante",
-            "option": "\n<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> Vida<>, <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>1 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> a cada <#e8a800ff>30 segundos<>, até 10 vezes.\n\n<#ff7a3eff>Eternidade<>: Receba <#4b7cffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>10 segundos<> ao receber dano de um campeão inimigo (acumula 5x), e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cure-se<> em <#60e84dff>15<> - <#60e84dff>70<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
+            "option": "\n<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> Vida<>, <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>1 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> a cada <#e8a800ff>30 segundos<>, até 10 vezes.\n\n<#ff7a3eff>Eternidade<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Cure-se<> em <#60e84dff>15<> - <#60e84dff>40<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
         }
     },
     "ru": {
@@ -5578,15 +5578,15 @@
         },
         "catalyst_of_aeons": {
             "name": "Катализатор эонов",
-            "option": "\n<#ff7a3eff>Вечность<>: Получение урона от вражеского чемпиона даёт <#4b7cffff>2 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>10 секунд<> (макс. 5 стаков), а каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>70<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
+            "option": "\n<#ff7a3eff>Вечность<>: Каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>40<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
         },
         "rod_of_ages": {
             "name": "Жезл веков",
-            "option": "\n<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> каждые <#e8a800ff>30 секунд<>, до 10 раз.\n\n<#ff7a3eff>Вечность<>: Получение урона от вражеского чемпиона даёт <#4b7cffff>2 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>10 секунд<> (макс. 5 стаков), а каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>70<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
+            "option": "\n<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> каждые <#e8a800ff>30 секунд<>, до 10 раз.\n\n<#ff7a3eff>Вечность<>: Каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>40<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
         },
         "radiant_rod_of_ages": {
             "name": "Лучезарный Жезл веков",
-            "option": "\n<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> каждые <#e8a800ff>30 секунд<>, до 10 раз.\n\n<#ff7a3eff>Вечность<>: Получение урона от вражеского чемпиона даёт <#4b7cffff>2 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>10 секунд<> (макс. 5 стаков), а каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>70<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
+            "option": "\n<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> каждые <#e8a800ff>30 секунд<>, до 10 раз.\n\n<#ff7a3eff>Вечность<>: Каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>40<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
         }
     },
     "ko": {
@@ -6696,15 +6696,15 @@
         },
         "catalyst_of_aeons": {
             "name": "억겁의 카탈리스트",
-            "option": "\n<#ff7a3eff>영원<>: 적 챔피언에게 피해를 받으면 <#e8a800ff>10초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>2<> 증가합니다. 최대 5회 중첩됩니다. 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>70<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>영원<>: 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>40<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
         },
         "rod_of_ages": {
             "name": "영겁의 지팡이",
-            "option": "\n<#ff7a3eff>불멸의 시간<>: <#e8a800ff>30초<>마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>체력<>이 <#60e84dff>10<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>2<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>1<>씩 상승합니다. 최대 10회까지 중첩됩니다.\n\n<#ff7a3eff>영원<>: 적 챔피언에게 피해를 받으면 <#e8a800ff>10초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>2<> 증가합니다. 최대 5회 중첩됩니다. 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>70<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>불멸의 시간<>: <#e8a800ff>30초<>마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>체력<>이 <#60e84dff>10<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>2<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>1<>씩 상승합니다. 최대 10회까지 중첩됩니다.\n\n<#ff7a3eff>영원<>: 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>40<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
         },
         "radiant_rod_of_ages": {
             "name": "찬란한 영겁의 지팡이",
-            "option": "\n<#ff7a3eff>불멸의 시간<>: <#e8a800ff>30초<>마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>체력<>이 <#60e84dff>10<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>2<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>1<>씩 상승합니다. 최대 10회까지 중첩됩니다.\n\n<#ff7a3eff>영원<>: 적 챔피언에게 피해를 받으면 <#e8a800ff>10초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>2<> 증가합니다. 최대 5회 중첩됩니다. 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>70<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>불멸의 시간<>: <#e8a800ff>30초<>마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>체력<>이 <#60e84dff>10<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>2<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>1<>씩 상승합니다. 최대 10회까지 중첩됩니다.\n\n<#ff7a3eff>영원<>: 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>40<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
         }
     }
 }
