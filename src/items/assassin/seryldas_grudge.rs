@@ -3,7 +3,14 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta};
 
+/// Bitter Cold's slow. The name is also a `view_buffs` binding in
+/// `view/effects.view_effects` that draws Rylai's frost at the slowed unit's
+/// feet (`effects/rylais_frost`), so the picture is up exactly while the slow
+/// is. The base item and its Radiant share it.
 const SLOW_BUFF: &str = "seryldas_grudge_slow";
+/// The same slow on a minion, under a name of its own for frost drawn at a
+/// minion's size (`effects/rylais_frost_small`).
+const SMALL_SLOW_BUFF: &str = "seryldas_grudge_slow_small";
 
 #[derive(Clone, Debug)]
 pub struct SeryldasGrudge {
@@ -149,6 +156,11 @@ impl StableItem for SeryldasGrudge {
         if target_ref.is_tower() {
             return;
         }
+        let name = if target_ref.is_minion() {
+            SMALL_SLOW_BUFF
+        } else {
+            SLOW_BUFF
+        };
 
         let (target_curr_hp, target_max_hp) = target_ref.hp();
         let remaining = target_curr_hp.saturating_sub(*damage);
@@ -159,10 +171,10 @@ impl StableItem for SeryldasGrudge {
         refresh_buff(
             ctx,
             target,
-            SLOW_BUFF,
+            name,
             &BuffV1 {
                 move_speed_mult: -self.effect_slow_amount,
-                ..BuffV1::timed(SLOW_BUFF, ticks(self.effect_duration_seconds))
+                ..BuffV1::timed(name, ticks(self.effect_duration_seconds))
             },
         );
     }

@@ -323,6 +323,20 @@
             "anim": "asset/riot_items_tfm2/effects/rylais_frost_small",
             "tag": "frost",
             "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "seryldas_grudge_slow",
+            "anim": "asset/riot_items_tfm2/effects/rylais_frost",
+            "tag": "frost",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "seryldas_grudge_slow_small",
+            "anim": "asset/riot_items_tfm2/effects/rylais_frost_small",
+            "tag": "frost",
+            "z": -1
         }
     ]
 }
