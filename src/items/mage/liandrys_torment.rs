@@ -255,11 +255,6 @@ impl StableItem for LiandrysTorment {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        // Ability damage is a skill's hit and every tick of a skill's damage
-        // over time, which the engine reports as a kind of its own. Only the
-        // hit used to count, so a burning or poisoning skill started Torment
-        // once and never kept it going, the way an ability that hits again
-        // does.
         let ability = matches!(
             attack_type,
             AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield

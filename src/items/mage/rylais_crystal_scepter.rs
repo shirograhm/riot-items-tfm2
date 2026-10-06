@@ -146,24 +146,6 @@ impl StableItem for RylaisCrystalScepter {
         }
     }
 
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        _caster: usize,
-        target: usize,
-        is_ally: bool,
-    ) {
-        if is_ally {
-            return;
-        }
-        self.slow(ctx, target);
-    }
-
-    /// Rimefrost again, for what `on_skill_hit` leaves out: the ticks of a
-    /// skill's damage over time, each of which starts the slow's time over as
-    /// another hit would. Without this a burning or poisoning skill slowed its
-    /// target once and let it go two seconds later.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -174,7 +156,10 @@ impl StableItem for RylaisCrystalScepter {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if !matches!(attack_type, AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield) {
+        if !matches!(
+            attack_type,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield
+        ) {
             return;
         }
         self.slow(ctx, target);

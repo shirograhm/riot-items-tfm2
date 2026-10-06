@@ -158,10 +158,6 @@ impl Annul {
         );
     }
 
-    /// Abilities pop the shield. A burn or an item proc only does once it
-    /// reaches the carrier as 0 damage: that is the shield having eaten it, and
-    /// it must not go on eating them for free. Anything that still hurts went
-    /// past the shield and leaves it up.
     #[allow(clippy::too_many_arguments)]
     pub(crate) fn on_damaged(
         &mut self,

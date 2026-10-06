@@ -138,32 +138,6 @@ impl StableItem for FatedAshes {
         self.burns.clear();
     }
 
-    /// Inflame. Lights whatever the carrier's ability lands on.
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        _caster: usize,
-        target: usize,
-        is_ally: bool,
-    ) {
-        if is_ally {
-            return;
-        }
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if target_ref.is_tower() {
-            return;
-        }
-        self.apply_burn(target);
-    }
-
-    /// Inflame again, for what `on_skill_hit` leaves out: the ticks of a
-    /// skill's damage over time, each of which starts the burn's time over as
-    /// another hit would. Without this a burning or poisoning skill lit the
-    /// target once and let it go out. The burn itself goes out as `Item`
-    /// damage, so it never keeps itself alight.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -174,7 +148,10 @@ impl StableItem for FatedAshes {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if !matches!(attack_type, AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield) {
+        if !matches!(
+            attack_type,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield
+        ) {
             return;
         }
         let Some(target_ref) = ctx.get_entity(target) else {
