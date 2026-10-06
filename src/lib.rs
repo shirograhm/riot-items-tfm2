@@ -30,7 +30,7 @@ pub(crate) use utils::{config, own_team_log, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
-    Energized, Eternity, Spellblade,
+    Energized, Eternity, Lifeline, Spellblade,
 };
 
 fn percent_of(value: usize, percent: f64) -> usize {

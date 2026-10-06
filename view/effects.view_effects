@@ -302,6 +302,13 @@
             "anim": "asset/riot_items_tfm2/effects/liandrys_burn_small",
             "tag": "burn",
             "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_lifeline",
+            "anim": "asset/riot_items_tfm2/effects/lifeline_shield",
+            "tag": "shield",
+            "z": 1
         }
     ]
 }
