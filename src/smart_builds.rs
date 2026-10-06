@@ -597,13 +597,14 @@ impl Fit {
 /// Rule 6: items worth more the longer they are owned, because their passive
 /// builds permanent stacks over the match. By base slug, so the radiant tier
 /// follows.
-const EARLY_ITEMS: [&str; 6] = [
+const EARLY_ITEMS: [&str; 7] = [
     "heartsteel",             // permanent bonus health per charged hit on a champion
     "yun_tal_wildarrows",     // permanent crit chance per basic attack
     "hubris",                 // permanent stack per takedown
     "feral_flare",            // a stack per takedown and monster killed
     "grezs_spectral_lantern", // ability power per takedown and monster killed
     "collector",              // bonus gold per kill, worth more the earlier it comes
+    "rod_of_ages",            // health, ability power and haste for every 30 seconds held
 ];
 
 /// Rule 6: items whose passive scales with a stat the rest of the build

@@ -781,6 +781,31 @@ $eonLeth = [int]$config.edge_of_night.effect_lethality
 $eonCd = [double]$config.edge_of_night.effect_cooldown_seconds
 $reonLeth = [int]$config.radiant_edge_of_night.effect_lethality
 $reonCd = [double]$config.radiant_edge_of_night.effect_cooldown_seconds
+$coaAh = [int]$config.catalyst_of_aeons.effect_skill_cooldown_mult
+$coaDur = [double]$config.catalyst_of_aeons.effect_duration_seconds
+$coaStacks = [int]$config.catalyst_of_aeons.effect_max_stacks
+$coaMin = [int]$config.catalyst_of_aeons.effect_min_heal
+$coaMax = [int]$config.catalyst_of_aeons.effect_max_heal
+$roaHp = [int]$config.rod_of_ages.effect_growth_hp
+$roaAp = [int]$config.rod_of_ages.effect_growth_magic_power
+$roaGrowAh = [int]$config.rod_of_ages.effect_growth_skill_cooldown_mult
+$roaEvery = [double]$config.rod_of_ages.effect_growth_interval_seconds
+$roaTimes = [int]$config.rod_of_ages.effect_max_growth_stacks
+$roaAh = [int]$config.rod_of_ages.effect_skill_cooldown_mult
+$roaDur = [double]$config.rod_of_ages.effect_duration_seconds
+$roaStacks = [int]$config.rod_of_ages.effect_max_stacks
+$roaMin = [int]$config.rod_of_ages.effect_min_heal
+$roaMax = [int]$config.rod_of_ages.effect_max_heal
+$rroaHp = [int]$config.radiant_rod_of_ages.effect_growth_hp
+$rroaAp = [int]$config.radiant_rod_of_ages.effect_growth_magic_power
+$rroaGrowAh = [int]$config.radiant_rod_of_ages.effect_growth_skill_cooldown_mult
+$rroaEvery = [double]$config.radiant_rod_of_ages.effect_growth_interval_seconds
+$rroaTimes = [int]$config.radiant_rod_of_ages.effect_max_growth_stacks
+$rroaAh = [int]$config.radiant_rod_of_ages.effect_skill_cooldown_mult
+$rroaDur = [double]$config.radiant_rod_of_ages.effect_duration_seconds
+$rroaStacks = [int]$config.radiant_rod_of_ages.effect_max_stacks
+$rroaMin = [int]$config.radiant_rod_of_ages.effect_min_heal
+$rroaMax = [int]$config.radiant_rod_of_ages.effect_max_heal
 
 $i18n = Get-Content $i18nPath -Raw -Encoding UTF8 | ConvertFrom-Json
 
@@ -1116,6 +1141,11 @@ $i18n.en.radiant_runaans_hurricane.option = $runaanEn -f $rrunaanTargets, $rruna
 $shivEn = "<#ff7a3eff>Energized<>: Moving and basic attacking generates <#92dc7bff>Energize<> stacks, up to <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Electrospark<>: When fully <#92dc7bff>Energized<>, your next basic attack fires chain lightning that deals <#a974ffff>{1} magic damage<> to the target and up to <#e8a800ff>{2}<> more enemies, each within <#ff86c2ff>{3} <$rangeIcon> range<> of the last, prioritizing champions. This effect is <#e8a800ff>{4}% as effective<> against minions and monsters."
 $i18n.en.statikk_shiv.option = $shivEn -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.en.radiant_statikk_shiv.option = $shivEn -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessEn = "<#ff7a3eff>Timeless<>: This item gains <#60e84dff>{0} <$hpIcon> health<>, <#a974ffff>{1} <$apIcon> Ability Power<> and <#4b7cffff>{2} <$cdrIcon> Ability Haste<> every <#e8a800ff>{3} seconds<>, up to {4} times."
+$eternityEn = "<#ff7a3eff>Eternity<>: Gain <#4b7cffff>{0} <$cdrIcon> Ability Haste<> for <#e8a800ff>{1} seconds<> when taking damage from an enemy champion (max {2} stacks), and <$hpRegenIcon> <#60e84dff>heal<> for <#60e84dff>{3}<> - <#60e84dff>{4}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
+$i18n.en.catalyst_of_aeons.option = $eternityEn -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.en.rod_of_ages.option = ($timelessEn -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityEn -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.en.radiant_rod_of_ages.option = ($timelessEn -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityEn -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Vietnamese text."
@@ -1401,6 +1431,11 @@ $i18n.vi.radiant_runaans_hurricane.option = $runaanVi -f $rrunaanTargets, $rruna
 $shivVi = "<#ff7a3eff>Tích Điện<>: Di chuyển và đánh thường tạo ra điểm <#92dc7bff>Tích Điện<>, tối đa <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Phóng Điện<>: Khi <#92dc7bff>Tích Điện<> đầy, đòn đánh thường tiếp theo phóng ra sét nảy, gây <#a974ffff>{1} sát thương phép<> lên mục tiêu và tối đa <#e8a800ff>{2}<> kẻ địch khác, mỗi lần nảy trong phạm vi <#ff86c2ff>{3}<> <$rangeIcon> từ mục tiêu trước, ưu tiên tướng địch. Hiệu ứng này <#e8a800ff>hiệu quả {4}%<> lên lính và quái."
 $i18n.vi.statikk_shiv.option = $shivVi -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.vi.radiant_statikk_shiv.option = $shivVi -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessVi = "<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>{0} <$hpIcon> máu<>, <#a974ffff>{1} <$apIcon> SMPT<> và <#4b7cffff>{2} <$cdrIcon> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>{3} giây<>, tối đa {4} lần."
+$eternityVi = "<#ff7a3eff>Vĩnh Hằng<>: Nhận <#4b7cffff>{0} <$cdrIcon> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>{1} giây<> khi nhận sát thương từ tướng địch (tối đa {2} cộng dồn), và <$hpRegenIcon> <#60e84dff>hồi<> <#60e84dff>{3}<> - <#60e84dff>{4}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
+$i18n.vi.catalyst_of_aeons.option = $eternityVi -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.vi.rod_of_ages.option = ($timelessVi -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityVi -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.vi.radiant_rod_of_ages.option = ($timelessVi -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityVi -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Chinese (Simplified) text."
@@ -1686,6 +1721,11 @@ $i18n.'zh-hans'.radiant_runaans_hurricane.option = $runaanZh -f $rrunaanTargets,
 $shivZh = "<#ff7a3eff>蓄能<>：移动和普通攻击会产生<#92dc7bff>蓄能<>层数，最多 <#e8a800ff>{0}<> 层。`n`n<#ff7a3eff>电火花<>：<#92dc7bff>蓄能<>充满时，你的下一次普通攻击会发射连锁闪电，对目标及最多 <#e8a800ff>{2}<> 个其他敌人造成 <#a974ffff>{1} 点魔法伤害<>，每次弹射距离上一个目标不超过 <#ff86c2ff>{3} <$rangeIcon> 射程<>（优先英雄）。该效果对小兵和野怪的<#e8a800ff>效果为 {4}%<>。"
 $i18n.'zh-hans'.statikk_shiv.option = $shivZh -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.'zh-hans'.radiant_statikk_shiv.option = $shivZh -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessZh = "<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>{3}秒<> 获得 <#60e84dff>{0} 点<$hpIcon> 生命值<>、<#a974ffff>{1} 点<$apIcon> 法术强度<>和 <#4b7cffff>{2} 点<$cdrIcon> 技能急速<>，至多 {4} 次。"
+$eternityZh = "<#ff7a3eff>永恒<>：受到敌方英雄伤害时，获得 <#4b7cffff>{0} 点<$cdrIcon> 技能急速<>，持续 <#e8a800ff>{1}秒<>（最多叠加{2}层）；每次施放技能时<$hpRegenIcon> <#60e84dff>治疗<>自身 <#60e84dff>{3}<> - <#60e84dff>{4}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
+$i18n.'zh-hans'.catalyst_of_aeons.option = $eternityZh -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.'zh-hans'.rod_of_ages.option = ($timelessZh -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityZh -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.'zh-hans'.radiant_rod_of_ages.option = ($timelessZh -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityZh -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Portuguese (Brazil) text."
@@ -1971,6 +2011,11 @@ $i18n.'pt-BR'.radiant_runaans_hurricane.option = $runaanPt -f $rrunaanTargets, $
 $shivPt = "<#ff7a3eff>Energizado<>: Mover-se e atacar gera acúmulos de <#92dc7bff>Energia<>, até <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Eletrocentelha<>: Quando totalmente <#92dc7bff>Energizado<>, seu próximo ataque básico dispara uma cadeia de relâmpagos que causa <#a974ffff>{1} de dano mágico<> ao alvo e a até <#e8a800ff>{2}<> inimigos adicionais, cada um a até <#ff86c2ff>{3} <$rangeIcon> de alcance<> do anterior, priorizando campeões. Este efeito é <#e8a800ff>{4}% efetivo<> contra lacaios e monstros."
 $i18n.'pt-BR'.statikk_shiv.option = $shivPt -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.'pt-BR'.radiant_statikk_shiv.option = $shivPt -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessPt = "<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>{0} de <$hpIcon> Vida<>, <#a974ffff>{1} de <$apIcon> Poder de Habilidade<> e <#4b7cffff>{2} de <$cdrIcon> Aceleração de Habilidade<> a cada <#e8a800ff>{3} segundos<>, até {4} vezes."
+$eternityPt = "<#ff7a3eff>Eternidade<>: Receba <#4b7cffff>{0} de <$cdrIcon> Aceleração de Habilidade<> por <#e8a800ff>{1} segundos<> ao receber dano de um campeão inimigo (acumula {2}x), e <$hpRegenIcon> <#60e84dff>cure-se<> em <#60e84dff>{3}<> - <#60e84dff>{4}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
+$i18n.'pt-BR'.catalyst_of_aeons.option = $eternityPt -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.'pt-BR'.rod_of_ages.option = ($timelessPt -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityPt -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.'pt-BR'.radiant_rod_of_ages.option = ($timelessPt -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityPt -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Russian text."
@@ -2256,6 +2301,11 @@ $i18n.ru.radiant_runaans_hurricane.option = $runaanRu -f $rrunaanTargets, $rruna
 $shivRu = "<#ff7a3eff>Заряд<>: Движение и базовые атаки генерируют заряды <#92dc7bff>Энергии<>, до <#e8a800ff>{0}<>.`n`n<#ff7a3eff>Электрическая искра<>: При полном <#92dc7bff>Заряде<>, ваша следующая базовая атака выпускает цепную молнию, которая наносит <#a974ffff>{1} магического урона<> цели и не более чем <#e8a800ff>{2}<> другим врагам, каждый в пределах <#ff86c2ff>{3} <$rangeIcon> дальности<> от предыдущего, в первую очередь чемпионам. Против миньонов и монстров <#e8a800ff>эффект составляет {4}%<>."
 $i18n.ru.statikk_shiv.option = $shivRu -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.ru.radiant_statikk_shiv.option = $shivRu -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessRu = "<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>{0} <$hpIcon> здоровья<>, <#a974ffff>{1} <$apIcon> силы умений<> и <#4b7cffff>{2} <$cdrIcon> ускорения умений<> каждые <#e8a800ff>{3} секунд<>, до {4} раз."
+$eternityRu = "<#ff7a3eff>Вечность<>: Получение урона от вражеского чемпиона даёт <#4b7cffff>{0} <$cdrIcon> ускорения умений<> на <#e8a800ff>{1} секунд<> (макс. {2} стаков), а каждое применение умения <$hpRegenIcon> <#60e84dff>восстанавливает<> вам <#60e84dff>{3}<> - <#60e84dff>{4}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
+$i18n.ru.catalyst_of_aeons.option = $eternityRu -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.ru.rod_of_ages.option = ($timelessRu -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityRu -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.ru.radiant_rod_of_ages.option = ($timelessRu -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityRu -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 Write-Host "Done."
 Write-Host "Updating Korean text."
@@ -2540,6 +2590,11 @@ $i18n.ko.radiant_runaans_hurricane.option = $runaanKo -f $rrunaanTargets, $rruna
 $shivKo = "<#ff7a3eff>충전<>: 이동하거나 기본 공격을 하면 최대 <#e8a800ff>{0}<>까지 <#92dc7bff>충전<> 중첩을 얻습니다.`n`n<#ff7a3eff>전기불꽃<>: 완전히 <#92dc7bff>충전<>되면 다음 기본 공격이 연쇄 번개를 발사해 대상과 다른 적 최대 <#e8a800ff>{2}<>명에게 <#a974ffff>{1}의 마법 피해<>를 입힙니다. 번개는 챔피언을 우선으로, 직전 대상으로부터 <$rangeIcon> <#ff86c2ff>사거리 {3}<> 안의 적에게 튕깁니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>{4}%로 적용됩니다<>."
 $i18n.ko.statikk_shiv.option = $shivKo -f $shivStacks, $shivDmg, $shivTargets, $shivRange, $shivMinion
 $i18n.ko.radiant_statikk_shiv.option = $shivKo -f $rshivStacks, $rshivDmg, $rshivTargets, $rshivRange, $rshivMinion
+$timelessKo = "<#ff7a3eff>불멸의 시간<>: <#e8a800ff>{3}초<>마다 <$hpIcon> <#60e84dff>체력<>이 <#60e84dff>{0}<>, <$apIcon> <#a974ffff>주문력<>이 <#a974ffff>{1}<>, <$cdrIcon> <#4b7cffff>스킬 가속<>이 <#4b7cffff>{2}<>씩 상승합니다. 최대 {4}회까지 중첩됩니다."
+$eternityKo = "<#ff7a3eff>영원<>: 적 챔피언에게 피해를 받으면 <#e8a800ff>{1}초<> 동안 <$cdrIcon> <#4b7cffff>스킬 가속<>이 <#4b7cffff>{0}<> 증가합니다. 최대 {2}회 중첩됩니다. 스킬을 사용할 때마다 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>{3}<>~<#60e84dff>{4}<>의 <$hpRegenIcon> <#60e84dff>체력<>을 회복합니다."
+$i18n.ko.catalyst_of_aeons.option = $eternityKo -f $coaAh, $coaDur, $coaStacks, $coaMin, $coaMax
+$i18n.ko.rod_of_ages.option = ($timelessKo -f $roaHp, $roaAp, $roaGrowAh, $roaEvery, $roaTimes) + "`n`n" + ($eternityKo -f $roaAh, $roaDur, $roaStacks, $roaMin, $roaMax)
+$i18n.ko.radiant_rod_of_ages.option = ($timelessKo -f $rroaHp, $rroaAp, $rroaGrowAh, $rroaEvery, $rroaTimes) + "`n`n" + ($eternityKo -f $rroaAh, $rroaDur, $rroaStacks, $rroaMin, $rroaMax)
 
 foreach ($language in $i18n.PSObject.Properties) {
     foreach ($entry in $language.Value.PSObject.Properties) {

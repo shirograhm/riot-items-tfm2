@@ -142,6 +142,11 @@ pub struct ItemConfig {
     pub effect_max_bonus_hp: Option<usize>,
     pub effect_damaged_reduce: Option<usize>,
     pub effect_slow_seconds: Option<f64>,
+    pub effect_growth_hp: Option<i32>,
+    pub effect_growth_magic_power: Option<i32>,
+    pub effect_growth_skill_cooldown_mult: Option<i32>,
+    pub effect_growth_interval_seconds: Option<f64>,
+    pub effect_max_growth_stacks: Option<usize>,
 }
 
 /// Overwrites the listed fields of an item with whatever the config file set,

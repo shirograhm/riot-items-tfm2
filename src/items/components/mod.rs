@@ -6,6 +6,7 @@ items! {
     bandleglass_mirror,
     bf_sword,
     blighting_jewel,
+    catalyst_of_aeons,
     caulfields_warhammer,
     executioners_calling,
     fated_ashes,

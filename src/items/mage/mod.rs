@@ -17,6 +17,7 @@ items! {
     rabadons_deathcap,
     riftmaker,
     rite_of_ruin,
+    rod_of_ages,
     rylais_crystal_scepter,
     shadowflame,
     stormsurge,

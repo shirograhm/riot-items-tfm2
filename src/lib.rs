@@ -31,7 +31,7 @@ pub(crate) use utils::{config, own_team_log, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
-    Energized, Spellblade,
+    Energized, Eternity, Spellblade,
 };
 
 fn percent_of(value: usize, percent: f64) -> usize {
@@ -338,6 +338,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("bf_sword" => BFSword));
     reg.add_item(configured!("blighting_jewel" => BlightingJewel));
     reg.add_item(configured!("boots_of_swiftness" => BootsOfSwiftness, boots));
+    reg.add_item(configured!("catalyst_of_aeons" => CatalystOfAeons));
     reg.add_item(configured!("caulfields_warhammer" => CaulfieldsWarhammer));
     reg.add_item(configured!("forbidden_idol" => ForbiddenIdol));
     reg.add_item(configured!("glacial_buckler" => GlacialBuckler));
@@ -433,6 +434,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("ravenous_hydra" => RavenousHydra));
     reg.add_item(configured!("riftmaker" => Riftmaker));
     reg.add_item(configured!("rite_of_ruin" => RiteOfRuin, passive_crit));
+    reg.add_item(configured!("rod_of_ages" => RodOfAges));
     reg.add_item(configured!("runaans_hurricane" => RunaansHurricane));
     reg.add_item(configured!("rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
@@ -534,6 +536,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_ravenous_hydra" => RavenousHydra));
     reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
     reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin, passive_crit));
+    reg.add_item(configured_radiant!("radiant_rod_of_ages" => RodOfAges));
     reg.add_item(configured_radiant!("radiant_runaans_hurricane" => RunaansHurricane));
     reg.add_item(configured_radiant!("radiant_rylais_crystal_scepter" => RylaisCrystalScepter));
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
