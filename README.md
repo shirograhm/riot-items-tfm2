@@ -36,7 +36,7 @@ The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. I
 - a support item (except Protoplasm Harness and Zeke's Convergence) on any champion not playing the support role
 - an item that only works when its carrier heals, shields or buffs an ally (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on a support whose kit does none of that, or on a mage (see below). What counts is the champion's basic abilities, not the game's Heal and Shield tags: a Vampire only heals itself, and a Bard only buffs
 - an item the champion doesn't scale with: attack, attack speed or crit on an AP champion, or ability power on an AD champion. That includes Hextech Gunblade, the one hybrid item (attack damage together with ability power), which only hybrid champions keep. Hybrid champions are left alone, and so are the four heal, shield and buff items above, which are for what the champion casts. Magic Knight counts as an AP champion, since only its basic attack is physical. Dusk and Dawn, Lich Bane and Nashor's Tooth count as AP items despite their attack speed, and so does Rite of Ruin, whose crit only feeds its own shield
-- Guinsoo's Rageblade or Statikk Shiv on any champion that isn't a marksman (the game's Range class). Marksmen keep them whatever their damage type
+- Guinsoo's Rageblade, Statikk Shiv or Sword of Blossoming Dawn on any champion that isn't a marksman (the game's Range class). Marksmen keep them whatever their damage type. Sword of Blossoming Dawn is a support item, so it is for a marksman playing support
 
 For the last three, the replacement follows the rest of the build instead of the removed item: it comes from the same category as the build's other items, starting with the first slot.
 

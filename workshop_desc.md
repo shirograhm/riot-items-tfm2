@@ -68,7 +68,7 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
 - items the champion doesn't scale with: attack items on an AP champion, AP items on an AD champion, and Hextech Gunblade (the one hybrid item) on anyone but a hybrid champion.
-- Guinsoo's Rageblade and Statikk Shiv on anyone but a marksman.
+- Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn on anyone but a marksman.
 
 Support builds get a World Atlas item in the first slot: Zaz'Zak's Realmspike for mages, Dream Maker for supports that heal, shield or buff allies, Celestial Opposition for tanks, Solstice Sleigh for others that immobilize, Zaz'Zak's Realmspike for other AP supports, and Bloodsong for the rest.  
 

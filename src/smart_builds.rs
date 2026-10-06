@@ -25,8 +25,8 @@
 //!    Statikk Shiv are rule 14's. Hybrid champions and items with no
 //!    offensive stat are never touched.
 //!    Support items get no pass in the support role: an AD support keeps the
-//!    tank ones, not the AP ones ([`AP_ITEMS`] puts Sword of Blossoming Dawn
-//!    with those despite its attack speed). Rule 12's item is the exception.
+//!    tank ones, not the AP ones. Rule 12's item is the exception, and Sword
+//!    of Blossoming Dawn is rule 14's.
 //! 6. **Items bought when they pay off** — an item whose value accumulates
 //!    the longer it is owned ([`EARLY_ITEMS`]: Heartsteel's permanent health,
 //!    Hubris's takedown stacks) is bought before the AI's other picks, and one
@@ -138,6 +138,12 @@
 //!    class keeps one ([`MARKSMAN_ONLY_ITEMS`]), whatever it scales with, so
 //!    rule 5 does not judge them. The stand-in follows the build's style,
 //!    like rule 5's. A champion whose class nothing states is left alone.
+//!    Sword of Blossoming Dawn joined them the next day: it heals an ally for
+//!    every basic attack, so the user gave it to the supports that attack,
+//!    "support marksmen/attackspeed champs". It is a support item, so rule 4
+//!    keeps it in the support role, and a marksman there keeps it whether it
+//!    is AD or AP. No tag or class says "attack speed champion", so the
+//!    `Range` class is all of that test for now.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
@@ -280,13 +286,13 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
 }
 
 /// Rule 5: items counted as AP only, whatever physical stat they also carry.
-/// By base slug, so the radiant tier follows. Sword of Blossoming Dawn gives
-/// attack speed beside its ability power, which made it hybrid and let AD
-/// supports keep it; the user put it with the AP support items (2026-09-26).
-/// Bloodsong was here with it until it lost its ability power and became the
-/// World Atlas item (rule 12). Dusk and Dawn, Lich Bane and Nashor's Tooth
-/// give attack speed beside theirs too and are no hybrid items: the user said
-/// so the day hybrid items became hybrid champions' only (2026-10-05), and
+/// By base slug, so the radiant tier follows. Sword of Blossoming Dawn was
+/// the first one here (2026-09-26) and is a marksman's item now (rule 14,
+/// [`MARKSMAN_ONLY_ITEMS`]); Bloodsong was here with it until it lost its
+/// ability power and became the World Atlas item (rule 12). Dusk and Dawn,
+/// Lich Bane and Nashor's Tooth give attack speed beside their ability power
+/// and are no hybrid items: the user said so the day hybrid items became
+/// hybrid champions' only (2026-10-05), and
 /// that of the Mage items only Hextech Gunblade is one, which gives attack
 /// damage. Rite of Ruin's crit is spent by its own passive, a shield rolled
 /// on landing an ability, so it is a mage's item as well (the same day; put
@@ -354,7 +360,7 @@ pub(crate) enum Reason {
     /// An item that answers to healing, shielding or buffing an ally, on a
     /// support whose kit does none of that.
     AllyAidWithoutAid,
-    /// Guinsoo's Rageblade or Statikk Shiv on a champion that is no marksman.
+    /// An item only a marksman keeps (rule 14) on a champion that is none.
     MarksmanOnly,
     Reach,
 }
@@ -498,7 +504,7 @@ impl Fit {
     /// AP-only one (Dual Blader on Staff of Flowing Water, 2026-09-26), and the
     /// user asked for it gone. The support items an AD champion can use pass
     /// anyway: the tank ones carry no offensive stat. Sword of Blossoming Dawn
-    /// is no hybrid item here either: [`AP_ITEMS`] counts it as AP.
+    /// is not judged here at all: it is a marksman's item (rule 14).
     fn mismatches(&self, item: &ItemTraits) -> bool {
         match self.scaling {
             Some(Scaling::Ap) => item.physical,
@@ -752,7 +758,11 @@ fn is_support_item(key: &str) -> bool {
 
 /// Rule 14: the items only a marksman keeps. By base slug, so the radiant
 /// tier follows.
-const MARKSMAN_ONLY_ITEMS: [&str; 2] = ["guinsoos_rageblade", "statikk_shiv"];
+const MARKSMAN_ONLY_ITEMS: [&str; 3] = [
+    "guinsoos_rageblade",
+    "statikk_shiv",
+    "sword_of_blossoming_dawn", // a support item, so a marksman playing support
+];
 
 /// Whether `key` is one of [`MARKSMAN_ONLY_ITEMS`], base or radiant.
 fn is_marksman_only_item(key: &str) -> bool {
