@@ -1,7 +1,9 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade};
+use crate::{
+    apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus,
+};
 
 /// Bloodsong — what World Atlas grows into, by way of Runic Compass:
 /// Spellblade, a mark that makes its target take more damage, and the gold
@@ -89,11 +91,8 @@ impl Bloodsong {
         self
     }
 
-    fn spellblade_damage(&self, level: usize) -> usize {
-        let per_level = ((self.effect_max_bonus_damage - self.effect_min_bonus_damage) as f64
-            / 11.0)
-            .round() as usize;
-        self.effect_min_bonus_damage + level.saturating_sub(1) * per_level
+    pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
+        SpellbladeBonus::by_level(self.effect_min_bonus_damage, self.effect_max_bonus_damage)
     }
 
     /// What Shared Riches pays a holder: this much gold, this often.
@@ -164,10 +163,13 @@ impl StableItem for Bloodsong {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
+        if !self.spellblade.wins(ctx, caster, self.meta.key) {
+            return;
+        }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_damage = self.spellblade_damage(caster_ref.level());
+        let bonus_damage = self.spellblade_bonus().of(&caster_ref);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
 

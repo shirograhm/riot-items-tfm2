@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, ProcQueue, Spellblade};
+use crate::{apply_config, percent_of, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus};
 
 #[derive(Clone, Debug)]
 pub struct DuskAndDawn {
@@ -88,6 +88,15 @@ impl DuskAndDawn {
         );
         self
     }
+
+    /// What Spellblade adds to the empowered attack.
+    pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
+        SpellbladeBonus {
+            flat: self.effect_bonus_flat_damage,
+            ap_percent: self.effect_ap_percent_damage,
+            ..Default::default()
+        }
+    }
 }
 
 impl Default for DuskAndDawn {
@@ -153,12 +162,14 @@ impl StableItem for DuskAndDawn {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
+        if !self.spellblade.wins(ctx, caster, self.meta.key) {
+            return;
+        }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
 
-        let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
+        let bonus_damage = self.spellblade_bonus().of(&caster_ref);
         let heal_amount = percent_of(
             caster_ref.stat().magic_power,
             self.effect_caster_ap_percent_heal,

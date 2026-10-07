@@ -30,7 +30,7 @@ pub(crate) use utils::{config, own_team_log, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
-    Energized, Eternity, Lifeline, Spellblade,
+    Energized, Eternity, Lifeline, Spellblade, SpellbladeBonus,
 };
 
 fn percent_of(value: usize, percent: f64) -> usize {
@@ -287,6 +287,16 @@ fn init(host: &StableHost) -> StableMod {
             smart_builds::note_passive_crit($key, item.max_passive_crit());
             item
         }};
+        ($key:literal => $T:ty, spellblade) => {{
+            let item = configured!($key => $T);
+            Spellblade::note_bonus($key, item.spellblade_bonus());
+            item
+        }};
+        ($key:literal => $T:ty, $also:ident, spellblade) => {{
+            let item = configured!($key => $T, $also);
+            Spellblade::note_bonus($key, item.spellblade_bonus());
+            item
+        }};
         ($key:literal => $T:ty) => {{
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
             item_stats::note_registered($key, StableItem::tier(&item));
@@ -303,6 +313,16 @@ fn init(host: &StableHost) -> StableMod {
         ($key:literal => $T:ty, passive_crit) => {{
             let item = configured_radiant!($key => $T);
             smart_builds::note_passive_crit($key, item.max_passive_crit());
+            item
+        }};
+        ($key:literal => $T:ty, spellblade) => {{
+            let item = configured_radiant!($key => $T);
+            Spellblade::note_bonus($key, item.spellblade_bonus());
+            item
+        }};
+        ($key:literal => $T:ty, $also:ident, spellblade) => {{
+            let item = configured_radiant!($key => $T, $also);
+            Spellblade::note_bonus($key, item.spellblade_bonus());
             item
         }};
         ($key:literal => $T:ty) => {{
@@ -327,7 +347,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("fated_ashes" => FatedAshes));
     reg.add_item(configured!("oblivion_orb" => OblivionOrb));
     reg.add_item(configured!("runic_compass" => RunicCompass, shared_riches));
-    reg.add_item(configured!("sheen" => Sheen));
+    reg.add_item(configured!("sheen" => Sheen, spellblade));
 
     // Tier 3
     reg.add_item(configured!("aegis_of_the_legion" => AegisOfTheLegion));
@@ -374,7 +394,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("blackfire_torch" => BlackfireTorch));
     reg.add_item(configured!("blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured!("bloodletters_curse" => BloodlettersCurse));
-    reg.add_item(configured!("bloodsong" => Bloodsong, shared_riches));
+    reg.add_item(configured!("bloodsong" => Bloodsong, shared_riches, spellblade));
     reg.add_item(configured!("celestial_opposition" => CelestialOpposition, shared_riches));
     reg.add_item(configured!("chempunk_chainsword" => ChempunkChainsword));
     reg.add_item(configured!("chemtech_putrifier" => ChemtechPutrifier));
@@ -386,12 +406,12 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("deaths_dance" => DeathsDance));
     reg.add_item(configured!("diamond_tipped_spear" => DiamondTippedSpear));
     reg.add_item(configured!("dream_maker" => DreamMaker, shared_riches));
-    reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn));
+    reg.add_item(configured!("dusk_and_dawn" => DuskAndDawn, spellblade));
     reg.add_item(configured!("echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured!("eclipse" => Eclipse));
     reg.add_item(configured!("edge_of_night" => EdgeOfNight));
     reg.add_item(configured!("endless_hunger" => EndlessHunger));
-    reg.add_item(configured!("essence_reaver" => EssenceReaver));
+    reg.add_item(configured!("essence_reaver" => EssenceReaver, spellblade));
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured!("feral_flare" => FeralFlare));
     reg.add_item(configured!("fiendhunter_bolts" => FiendhunterBolts));
@@ -406,14 +426,14 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("hollow_radiance" => HollowRadiance));
     reg.add_item(configured!("hubris" => Hubris));
     reg.add_item(configured!("hullbreaker" => Hullbreaker));
-    reg.add_item(configured!("iceborn_gauntlet" => IcebornGauntlet));
+    reg.add_item(configured!("iceborn_gauntlet" => IcebornGauntlet, spellblade));
     reg.add_item(configured!("immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured!("imperial_mandate" => ImperialMandate));
     reg.add_item(configured!("infinity_edge" => InfinityEdge));
     reg.add_item(configured!("jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured!("kraken_slayer" => KrakenSlayer));
     reg.add_item(configured!("liandrys_torment" => LiandrysTorment));
-    reg.add_item(configured!("lich_bane" => LichBane));
+    reg.add_item(configured!("lich_bane" => LichBane, spellblade));
     reg.add_item(configured!("locket_of_the_iron_solari" => LocketOfTheIronSolari));
     reg.add_item(configured!("lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured!("malignance" => Malignance));
@@ -451,7 +471,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured!("terminus" => Terminus));
     reg.add_item(configured!("titanic_hydra" => TitanicHydra));
-    reg.add_item(configured!("trinity_force" => TrinityForce));
+    reg.add_item(configured!("trinity_force" => TrinityForce, spellblade));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
     reg.add_item(configured!("void_staff" => VoidStaff));
     reg.add_item(configured!("voltaic_cyclosword" => VoltaicCyclosword));
@@ -474,7 +494,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_blackfire_torch" => BlackfireTorch));
     reg.add_item(configured_radiant!("radiant_blade_of_the_ruined_king" => BladeOfTheRuinedKing));
     reg.add_item(configured_radiant!("radiant_bloodletters_curse" => BloodlettersCurse));
-    reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong, shared_riches));
+    reg.add_item(configured_radiant!("radiant_bloodsong" => Bloodsong, shared_riches, spellblade));
     reg.add_item(
         configured_radiant!("radiant_celestial_opposition" => CelestialOpposition, shared_riches),
     );
@@ -488,12 +508,12 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));
     reg.add_item(configured_radiant!("radiant_diamond_tipped_spear" => DiamondTippedSpear));
     reg.add_item(configured_radiant!("radiant_dream_maker" => DreamMaker, shared_riches));
-    reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn));
+    reg.add_item(configured_radiant!("radiant_dusk_and_dawn" => DuskAndDawn, spellblade));
     reg.add_item(configured_radiant!("radiant_echoes_of_helia" => EchoesOfHelia));
     reg.add_item(configured_radiant!("radiant_eclipse" => Eclipse));
     reg.add_item(configured_radiant!("radiant_edge_of_night" => EdgeOfNight));
     reg.add_item(configured_radiant!("radiant_endless_hunger" => EndlessHunger));
-    reg.add_item(configured_radiant!("radiant_essence_reaver" => EssenceReaver));
+    reg.add_item(configured_radiant!("radiant_essence_reaver" => EssenceReaver, spellblade));
     reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
     reg.add_item(configured_radiant!("radiant_fiendhunter_bolts" => FiendhunterBolts));
@@ -508,14 +528,14 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_hollow_radiance" => HollowRadiance));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
     reg.add_item(configured_radiant!("radiant_hullbreaker" => Hullbreaker));
-    reg.add_item(configured_radiant!("radiant_iceborn_gauntlet" => IcebornGauntlet));
+    reg.add_item(configured_radiant!("radiant_iceborn_gauntlet" => IcebornGauntlet, spellblade));
     reg.add_item(configured_radiant!("radiant_immortal_shieldbow" => ImmortalShieldbow));
     reg.add_item(configured_radiant!("radiant_imperial_mandate" => ImperialMandate));
     reg.add_item(configured_radiant!("radiant_infinity_edge" => InfinityEdge));
     reg.add_item(configured_radiant!("radiant_jaksho_the_protean" => JakshoTheProtean));
     reg.add_item(configured_radiant!("radiant_kraken_slayer" => KrakenSlayer));
     reg.add_item(configured_radiant!("radiant_liandrys_torment" => LiandrysTorment));
-    reg.add_item(configured_radiant!("radiant_lich_bane" => LichBane));
+    reg.add_item(configured_radiant!("radiant_lich_bane" => LichBane, spellblade));
     reg.add_item(configured_radiant!("radiant_locket_of_the_iron_solari" => LocketOfTheIronSolari));
     reg.add_item(configured_radiant!("radiant_lord_dominiks_regards" => LordDominiksRegards));
     reg.add_item(configured_radiant!("radiant_malignance" => Malignance));
@@ -553,7 +573,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
     reg.add_item(configured_radiant!("radiant_titanic_hydra" => TitanicHydra));
-    reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce));
+    reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce, spellblade));
     reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
     reg.add_item(configured_radiant!("radiant_void_staff" => VoidStaff));
     reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));

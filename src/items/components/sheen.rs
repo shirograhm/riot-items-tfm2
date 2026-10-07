@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ProcQueue, Spellblade};
+use crate::{apply_config, ProcQueue, Spellblade, SpellbladeBonus};
 
 #[derive(Clone, Debug)]
 pub struct Sheen {
@@ -50,11 +50,8 @@ impl Sheen {
     }
 
     // Bonus damage scales linearly from min (level 1) to max (level 12).
-    fn spellblade_damage(&self, level: usize) -> usize {
-        let per_level = ((self.effect_max_bonus_damage - self.effect_min_bonus_damage) as f64
-            / 11.0)
-            .round() as usize;
-        self.effect_min_bonus_damage + level.saturating_sub(1) * per_level
+    pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
+        SpellbladeBonus::by_level(self.effect_min_bonus_damage, self.effect_max_bonus_damage)
     }
 }
 
@@ -119,10 +116,13 @@ impl StableItem for Sheen {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
+        if !self.spellblade.wins(ctx, caster, "sheen") {
+            return;
+        }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_damage = self.spellblade_damage(caster_ref.level());
+        let bonus_damage = self.spellblade_bonus().of(&caster_ref);
 
         self.procs.on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
         self.spellblade

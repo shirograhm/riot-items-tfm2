@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, ProcQueue, Spellblade};
+use crate::{apply_config, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus};
 
 #[derive(Clone, Debug)]
 pub struct TrinityForce {
@@ -80,6 +80,15 @@ impl TrinityForce {
         );
         self
     }
+
+    /// What Spellblade adds to the empowered attack.
+    pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
+        SpellbladeBonus {
+            flat: self.effect_bonus_flat_damage,
+            ad_percent: self.effect_ad_percent_damage,
+            ..Default::default()
+        }
+    }
 }
 
 impl Default for TrinityForce {
@@ -145,11 +154,13 @@ impl StableItem for TrinityForce {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
+        if !self.spellblade.wins(ctx, caster, self.meta.key) {
+            return;
+        }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_ref.stat().attack, self.effect_ad_percent_damage);
+        let bonus_damage = self.spellblade_bonus().of(&caster_ref);
 
         self.procs.on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
         self.spellblade

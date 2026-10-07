@@ -2,7 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade, DISTANCE_UNITS_PER_RANGE,
+    apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus,
+    DISTANCE_UNITS_PER_RANGE,
 };
 
 // Spellblade: Using an Ability causes your next basic attack within 10 seconds
@@ -143,13 +144,8 @@ impl IcebornGauntlet {
 
     // Bonus damage scales linearly from min (level 1) to max (level 12), the
     // way Sheen's does.
-    fn spellblade_damage(&self, level: usize) -> usize {
-        let per_level = (self
-            .effect_max_bonus_damage
-            .saturating_sub(self.effect_min_bonus_damage) as f64
-            / 11.0)
-            .round() as usize;
-        self.effect_min_bonus_damage + level.saturating_sub(1) * per_level
+    pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
+        SpellbladeBonus::by_level(self.effect_min_bonus_damage, self.effect_max_bonus_damage)
     }
 
     /// Lays a frost zone where `target` stands. It stays on that spot for its
@@ -308,10 +304,13 @@ impl StableItem for IcebornGauntlet {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
+        if !self.spellblade.wins(ctx, caster, self.meta.key) {
+            return;
+        }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_damage = self.spellblade_damage(caster_ref.level());
+        let bonus_damage = self.spellblade_bonus().of(&caster_ref);
 
         self.procs.on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
         self.spellblade
