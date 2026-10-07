@@ -690,11 +690,11 @@
         },
         "dead_mans_plate": {
             "name": "Dead Man's Plate",
-            "option": "\n<#ff7a3eff>Shipwrecker<>: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Basic attacks consume all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<> <#ffff99ff>on-hit<>, scaling with stacks consumed."
+            "option": "\n<#ff7a3eff>Shipwrecker<>: Generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Basic attacks consume all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<> <#ffff99ff>on-hit<>, scaling with stacks consumed."
         },
         "radiant_dead_mans_plate": {
             "name": "Radiant Dead Man's Plate",
-            "option": "\n<#ff7a3eff>Shipwrecker<>: While moving, generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Basic attacks consume all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<> <#ffff99ff>on-hit<>, scaling with stacks consumed."
+            "option": "\n<#ff7a3eff>Shipwrecker<>: Generate <#e8a800ff>7 stacks<> of <#92dc7bff>Momentum<> every second, up to <#e8a800ff>100<>. Each stack grants <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<>. Basic attacks consume all remaining <#92dc7bff>Momentum<> to deal <#ff9028ff>0 - 200 bonus physical damage<> <#ffff99ff>on-hit<>, scaling with stacks consumed."
         },
         "winged_moonplate": {
             "name": "Winged Moonplate",
@@ -1808,11 +1808,11 @@
         },
         "dead_mans_plate": {
             "name": "Giáp Liệt Sĩ",
-            "option": "\n<#ff7a3eff>Kẻ Đắm Tàu<>: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Đòn đánh thường tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<> <#ffff99ff>khi đánh trúng<>, tăng theo số cộng dồn đã tiêu."
+            "option": "\n<#ff7a3eff>Kẻ Đắm Tàu<>: Tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Đòn đánh thường tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<> <#ffff99ff>khi đánh trúng<>, tăng theo số cộng dồn đã tiêu."
         },
         "radiant_dead_mans_plate": {
             "name": "Giáp Liệt Sĩ Ánh Sáng",
-            "option": "\n<#ff7a3eff>Kẻ Đắm Tàu<>: Khi di chuyển, tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Đòn đánh thường tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<> <#ffff99ff>khi đánh trúng<>, tăng theo số cộng dồn đã tiêu."
+            "option": "\n<#ff7a3eff>Kẻ Đắm Tàu<>: Tích <#e8a800ff>7 cộng dồn<> <#92dc7bff>Đà<> mỗi giây, tối đa <#e8a800ff>100<>. Mỗi cộng dồn tăng <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Đòn đánh thường tiêu hết <#92dc7bff>Đà<> còn lại để gây <#ff9028ff>0 - 200 sát thương vật lí cộng thêm<> <#ffff99ff>khi đánh trúng<>, tăng theo số cộng dồn đã tiêu."
         },
         "winged_moonplate": {
             "name": "Nguyệt Giáp Chắp Cánh",
@@ -2926,11 +2926,11 @@
         },
         "dead_mans_plate": {
             "name": "亡者板甲",
-            "option": "\n<#ff7a3eff>碎船者<>：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。普通攻击<#ffff99ff>命中时<>消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
+            "option": "\n<#ff7a3eff>碎船者<>：每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。普通攻击<#ffff99ff>命中时<>消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
         },
         "radiant_dead_mans_plate": {
             "name": "光明版亡者板甲",
-            "option": "\n<#ff7a3eff>碎船者<>：移动时每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。普通攻击<#ffff99ff>命中时<>消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
+            "option": "\n<#ff7a3eff>碎船者<>：每秒获得 <#e8a800ff>7 层<><#92dc7bff>动量<>，最多 <#e8a800ff>100<> 层。每层提供 <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。普通攻击<#ffff99ff>命中时<>消耗所有剩余<#92dc7bff>动量<>，造成 <#ff9028ff>0 - 200 点额外物理伤害<>，随消耗的层数提升。"
         },
         "winged_moonplate": {
             "name": "翼动月甲",
@@ -4044,11 +4044,11 @@
         },
         "dead_mans_plate": {
             "name": "Placa do Morto",
-            "option": "\n<#ff7a3eff>Naufragador<>: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Ataques básicos consomem todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<> <#ffff99ff>ao contato<>, conforme as cargas consumidas."
+            "option": "\n<#ff7a3eff>Naufragador<>: Gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Ataques básicos consomem todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<> <#ffff99ff>ao contato<>, conforme as cargas consumidas."
         },
         "radiant_dead_mans_plate": {
             "name": "Placa do Morto Radiante",
-            "option": "\n<#ff7a3eff>Naufragador<>: Ao se mover, gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Ataques básicos consomem todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<> <#ffff99ff>ao contato<>, conforme as cargas consumidas."
+            "option": "\n<#ff7a3eff>Naufragador<>: Gere <#e8a800ff>7 cargas<> de <#92dc7bff>Ímpeto<> por segundo, até <#e8a800ff>100<>. Cada carga concede <#ffffffff>0.25%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>. Ataques básicos consomem todo o <#92dc7bff>Ímpeto<> restante para causar <#ff9028ff>0 - 200 de dano físico bônus<> <#ffff99ff>ao contato<>, conforme as cargas consumidas."
         },
         "winged_moonplate": {
             "name": "Placa Lunar Alada",
@@ -5162,11 +5162,11 @@
         },
         "dead_mans_plate": {
             "name": "Доспехи Мертвеца",
-            "option": "\n<#ff7a3eff>Крушитель<>: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Автоатаки тратят всю накопленную <#92dc7bff>Инерцию<> и наносят <#ffff99ff>при попадании<> <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
+            "option": "\n<#ff7a3eff>Крушитель<>: Вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Автоатаки тратят всю накопленную <#92dc7bff>Инерцию<> и наносят <#ffff99ff>при попадании<> <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
         },
         "radiant_dead_mans_plate": {
             "name": "Лучезарные Доспехи Мертвеца",
-            "option": "\n<#ff7a3eff>Крушитель<>: При движении вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Автоатаки тратят всю накопленную <#92dc7bff>Инерцию<> и наносят <#ffff99ff>при попадании<> <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
+            "option": "\n<#ff7a3eff>Крушитель<>: Вы получаете <#e8a800ff>7 зарядов<> <#92dc7bff>Инерции<> в секунду, до <#e8a800ff>100<>. Каждый заряд дает <#ffffffff>0.25%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>. Автоатаки тратят всю накопленную <#92dc7bff>Инерцию<> и наносят <#ffff99ff>при попадании<> <#ff9028ff>0 - 200 дополнительного физического урона<> в зависимости от потраченных зарядов."
         },
         "winged_moonplate": {
             "name": "Крылатая Лунная Пластина",
@@ -6280,11 +6280,11 @@
         },
         "dead_mans_plate": {
             "name": "망자의 갑옷",
-            "option": "\n<#ff7a3eff>난파선<>: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 기본 공격 <#ffff99ff>적중 시<> 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>난파선<>: 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 기본 공격 <#ffff99ff>적중 시<> 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
         },
         "radiant_dead_mans_plate": {
             "name": "찬란한 망자의 갑옷",
-            "option": "\n<#ff7a3eff>난파선<>: 이동하는 동안 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 기본 공격 <#ffff99ff>적중 시<> 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>난파선<>: 매초 <#92dc7bff>여세<>를 <#e8a800ff>7중첩<> 얻으며, 최대 <#e8a800ff>100중첩<>까지 쌓입니다. 중첩당 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도 0.25%<>를 얻습니다. 기본 공격 <#ffff99ff>적중 시<> 남은 <#92dc7bff>여세<>를 모두 소모하여 소모한 중첩에 비례해 <#ff9028ff>0 - 200의 추가 물리 피해<>를 입힙니다."
         },
         "winged_moonplate": {
             "name": "날개 달린 월갑",
