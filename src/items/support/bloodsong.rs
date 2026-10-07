@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, Spellblade};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade};
 
 /// Bloodsong — what World Atlas grows into, by way of Runic Compass:
 /// Spellblade, a mark that makes its target take more damage, and the gold
@@ -21,6 +21,7 @@ pub struct Bloodsong {
     effect_bonus_gold: usize,
     effect_gold_interval_seconds: f64,
     spellblade: Spellblade,
+    procs: ProcQueue,
 }
 
 impl Bloodsong {
@@ -40,6 +41,7 @@ impl Bloodsong {
             effect_gold_interval_seconds: 5.0,
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
+            procs: ProcQueue::new(),
         }
     }
 
@@ -146,6 +148,7 @@ impl StableItem for Bloodsong {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade.reset();
+        self.procs.clear();
     }
 
     fn on_attack(
@@ -156,7 +159,7 @@ impl StableItem for Bloodsong {
         damage: &mut usize,
         damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
@@ -168,7 +171,6 @@ impl StableItem for Bloodsong {
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
 
-        // Vulnerable goes on ahead of the bonus, which can land as a hit of its own.
         if ctx.get_entity(target).is_some_and(|t| t.is_champion()) {
             refresh_buff(
                 ctx,
@@ -180,11 +182,13 @@ impl StableItem for Bloodsong {
                 },
             );
         }
-        Spellblade::on_hit_magic(ctx, caster, target, damage, damage_type, bonus_damage);
+        self.procs.on_hit_magic(ctx, target, damage, damage_type, is_crit, bonus_damage);
     }
 
-    /// Watches for the cast that readies Spellblade.
+    /// Lands the Spellblade damage whose delay has run out, and watches for
+    /// the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);
     }
 

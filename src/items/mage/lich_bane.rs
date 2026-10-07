@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, Spellblade};
+use crate::{apply_config, percent_of, ItemMeta, ProcQueue, Spellblade};
 
 #[derive(Clone, Debug)]
 pub struct LichBane {
@@ -14,6 +14,7 @@ pub struct LichBane {
     effect_ap_percent_damage: f64,
     effect_cooldown_seconds: f64,
     spellblade: Spellblade,
+    procs: ProcQueue,
 }
 
 impl LichBane {
@@ -33,6 +34,7 @@ impl LichBane {
             effect_cooldown_seconds: 1.5,
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
+            procs: ProcQueue::new(),
         }
     }
 
@@ -122,6 +124,7 @@ impl StableItem for LichBane {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade.reset();
+        self.procs.clear();
     }
 
     fn on_attack(
@@ -132,7 +135,7 @@ impl StableItem for LichBane {
         damage: &mut usize,
         damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
             return;
@@ -143,13 +146,15 @@ impl StableItem for LichBane {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
 
-        Spellblade::on_hit_magic(ctx, caster, target, damage, damage_type, bonus_damage);
+        self.procs.on_hit_magic(ctx, target, damage, damage_type, is_crit, bonus_damage);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }
 
-    /// Watches for the cast that readies Spellblade.
+    /// Lands the Spellblade damage whose delay has run out, and watches for
+    /// the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);
     }
 

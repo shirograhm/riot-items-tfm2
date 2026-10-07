@@ -1,8 +1,7 @@
 //! Spellblade: using an Ability empowers the next basic attack within
 //! `WINDOW_SECONDS`. Shared by Sheen and everything built from it (Trinity
 //! Force, Dusk and Dawn, Lich Bane, Essence Reaver, Bloodsong); each item owns
-//! its numbers, and deals its bonus damage on-hit through `on_hit_physical`
-//! or `on_hit_magic`.
+//! its numbers and deals its own bonus damage.
 //!
 //! No hook reports a cast, so one is read the way Zeke's Convergence reads its
 //! ult: an ability's remaining cooldown going *up* between two ticks, since it
@@ -115,49 +114,6 @@ impl Spellblade {
         );
         ctx.entity_remove_buff(caster, SPARKS_BUFF);
         ctx.play_view_effect(PROC_EFFECT, caster, &InputTargetV1::target(target), 0, 0, 0);
-    }
-
-    /// The item's bonus as physical damage on-hit; see `on_hit`.
-    pub(crate) fn on_hit_physical(
-        ctx: &mut StableSim<'_>,
-        caster: usize,
-        target: usize,
-        damage: &mut usize,
-        swing: DamageTypeV1,
-        bonus: usize,
-    ) {
-        on_hit(ctx, caster, target, damage, swing, bonus, DamageTypeV1::Ad);
-    }
-
-    /// The item's bonus as magic damage on-hit; see `on_hit`.
-    pub(crate) fn on_hit_magic(
-        ctx: &mut StableSim<'_>,
-        caster: usize,
-        target: usize,
-        damage: &mut usize,
-        swing: DamageTypeV1,
-        bonus: usize,
-    ) {
-        on_hit(ctx, caster, target, damage, swing, bonus, DamageTypeV1::Ap);
-    }
-}
-
-/// Deals `bonus` on-hit as `kind`. A swing carries one damage type, so a bonus
-/// of that type goes into the swing's own `damage`; one of another type would
-/// be dealt as the swing's type there, so it lands at once as a hit of its own.
-fn on_hit(
-    ctx: &mut StableSim<'_>,
-    caster: usize,
-    target: usize,
-    damage: &mut usize,
-    swing: DamageTypeV1,
-    bonus: usize,
-    kind: DamageTypeV1,
-) {
-    if kind == swing {
-        *damage += bonus;
-    } else if bonus > 0 {
-        ctx.deal_damage_typed(caster, target, bonus, kind, AttackTypeV1::Item);
     }
 }
 
