@@ -175,7 +175,8 @@ impl StableItem for DuskAndDawn {
             self.effect_caster_ap_percent_heal,
         ) + percent_of(caster_ref.hp().1, self.effect_caster_hp_percent_heal);
 
-        self.procs.on_hit_magic(ctx, target, damage, damage_type, is_crit, bonus_damage);
+        self.procs
+            .on_hit_magic(ctx, target, damage, damage_type, is_crit, bonus_damage);
         ctx.heal(caster, caster, heal_amount);
 
         self.spellblade

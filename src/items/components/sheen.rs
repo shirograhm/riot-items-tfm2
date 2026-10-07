@@ -124,7 +124,8 @@ impl StableItem for Sheen {
         };
         let bonus_damage = self.spellblade_bonus().of(&caster_ref);
 
-        self.procs.on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }

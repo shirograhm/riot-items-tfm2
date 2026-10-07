@@ -1,9 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus,
-};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus};
 
 /// Bloodsong — what World Atlas grows into, by way of Runic Compass:
 /// Spellblade, a mark that makes its target take more damage, and the gold
@@ -184,7 +182,8 @@ impl StableItem for Bloodsong {
                 },
             );
         }
-        self.procs.on_hit_magic(ctx, target, damage, damage_type, is_crit, bonus_damage);
+        self.procs
+            .on_hit_magic(ctx, target, damage, damage_type, is_crit, bonus_damage);
     }
 
     /// Lands the Spellblade damage whose delay has run out, and watches for

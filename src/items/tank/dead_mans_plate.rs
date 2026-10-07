@@ -194,7 +194,14 @@ impl DeadMansPlate {
             return;
         }
         self.trail_at = Some(at);
-        ctx.play_view_effect(TRAIL_EFFECT, carrier, &InputTargetV1::pos(at.0, at.1), 0, 0, 0);
+        ctx.play_view_effect(
+            TRAIL_EFFECT,
+            carrier,
+            &InputTargetV1::pos(at.0, at.1),
+            0,
+            0,
+            0,
+        );
     }
 }
 
@@ -270,10 +277,10 @@ impl StableItem for DeadMansPlate {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if self.momentum == 0 || attack_type != AttackTypeV1::BaseAttack {
             return;
@@ -286,13 +293,21 @@ impl StableItem for DeadMansPlate {
         self.refresh_cooldown = 0;
 
         if consumed >= self.effect_max_stacks {
-            ctx.play_view_effect(BURST_EFFECT, caster, &InputTargetV1::target(target), 0, 0, 0);
+            ctx.play_view_effect(
+                BURST_EFFECT,
+                caster,
+                &InputTargetV1::target(target),
+                0,
+                0,
+                0,
+            );
         }
 
         // Momentum is spent above, so the damage is priced off the stacks this
         // swing consumed rather than off whatever has rebuilt by landing time.
         let bonus_damage = self.proc_damage(consumed);
-        self.procs.push_physical(ctx, target, bonus_damage);
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
     }
 
     /// Momentum carries across the Radiant upgrade. Only whole stacks move —

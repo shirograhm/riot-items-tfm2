@@ -95,7 +95,12 @@ fn held(ctx: &StableSim<'_>, player: usize) -> Vec<(&'static str, SpellbladeBonu
         return Vec::new();
     };
     keys.iter()
-        .filter_map(|held| bonuses.iter().find(|(key, _)| *key == held.as_str()).copied())
+        .filter_map(|held| {
+            bonuses
+                .iter()
+                .find(|(key, _)| *key == held.as_str())
+                .copied()
+        })
         .collect()
 }
 
@@ -142,7 +147,9 @@ impl Spellblade {
     /// not the one.
     pub(crate) fn wins(&mut self, ctx: &StableSim<'_>, caster: usize, key: &str) -> bool {
         let swing = (ctx.tick(), caster);
-        let wins = self.strongest(ctx, caster).is_none_or(|strongest| strongest == key)
+        let wins = self
+            .strongest(ctx, caster)
+            .is_none_or(|strongest| strongest == key)
             && CLAIMED.with(|claimed| claimed.replace(Some(swing)) != Some(swing));
         if !wins {
             self.ready = false;

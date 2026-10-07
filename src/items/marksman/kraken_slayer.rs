@@ -165,10 +165,10 @@ impl StableItem for KrakenSlayer {
         ctx: &mut StableSim<'_>,
         _caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -188,7 +188,8 @@ impl StableItem for KrakenSlayer {
             // `bring_it_down_damage` already read the target's health, so the
             // execute bonus is the one the third swing earned, not the one the
             // target's health would earn once the proc lands.
-            self.procs.push_physical(ctx, target, final_damage);
+            self.procs
+                .on_hit_physical(ctx, target, damage, damage_type, is_crit, final_damage);
 
             self.attack_count = 0;
         } else {
