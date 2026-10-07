@@ -4,9 +4,9 @@ use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, ticks, ItemMeta, Spellblade, DISTANCE_UNITS_PER_RANGE};
 
 // Spellblade: Using an Ability causes your next basic attack within 10 seconds
-// to deal 30 - 85 (based on level) bonus physical damage and creates a frost
-// zone under the target for 2 seconds (1.5 second cooldown). Enemies within
-// the zone are slowed by 20%.
+// to deal 30 - 85 (based on level) bonus physical damage on-hit and creates a
+// frost zone under the target for 2 seconds (1.5 second cooldown, starting
+// after using the empowered attack). Enemies within the zone are slowed by 20%.
 //
 // The damage is Sheen's, so the upgrade keeps what the component did. The
 // zone is a spot and a timer, like Hollow Radiance's eruption: no unit stands

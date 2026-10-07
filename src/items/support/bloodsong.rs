@@ -33,7 +33,7 @@ impl Bloodsong {
             hp_regen: 4,
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
             effect_bonus_gold: 4,
@@ -52,7 +52,7 @@ impl Bloodsong {
             hp_regen: 5,
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
             ..Self::base()

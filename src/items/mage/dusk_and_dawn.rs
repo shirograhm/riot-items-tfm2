@@ -36,7 +36,7 @@ impl DuskAndDawn {
             effect_ap_percent_damage: 15.0,
             effect_caster_ap_percent_heal: 10.0,
             effect_caster_hp_percent_heal: 2.5,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
         }
@@ -54,7 +54,7 @@ impl DuskAndDawn {
             effect_ap_percent_damage: 15.0,
             effect_caster_ap_percent_heal: 10.0,
             effect_caster_hp_percent_heal: 2.5,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             ..Self::base()
         }
     }

@@ -32,7 +32,7 @@ impl TrinityForce {
             skill_cooldown_mult: 10,
             effect_bonus_flat_damage: 33,
             effect_ad_percent_damage: 33.0,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
         }
@@ -48,7 +48,7 @@ impl TrinityForce {
             skill_cooldown_mult: 15,
             effect_bonus_flat_damage: 33,
             effect_ad_percent_damage: 33.0,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             ..Self::base()
         }
     }
