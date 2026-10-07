@@ -214,7 +214,10 @@ pub(crate) const TOP_CHAMPIONS: usize = 3;
 /// deduplicated by match seed and cannot be double counted however often a
 /// record is re-read.
 pub(crate) fn sweep(ctx: &StableClient<'_>) {
-    queue_pass(&ctx.record_ids(RecordKindV1::MatchReplay), false);
+    let ids = crate::perf::time(crate::perf::Section::RecordIds, || {
+        ctx.record_ids(RecordKindV1::MatchReplay)
+    });
+    queue_pass(&ids, false);
 }
 
 /// [`sweep`] over ids already in hand. `verify` re-reads the records already
@@ -297,7 +300,9 @@ fn due_pass(ctx: &StableClient<'_>) -> Option<(Vec<usize>, bool)> {
         return None;
     }
     mark.since_check = 0;
-    let ids = ctx.record_ids(RecordKindV1::MatchReplay);
+    let ids = crate::perf::time(crate::perf::Section::RecordIds, || {
+        ctx.record_ids(RecordKindV1::MatchReplay)
+    });
     if !new_capture && !verify && ids == mark.ids {
         return None;
     }
@@ -549,10 +554,11 @@ fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
     // Measured 2026-09-27: a named read ("seed") costs about half a full read,
     // so the two named reads this needs would cost what one full read does.
     // The full read stays first.
-    let record = match ctx
-        .record_get_json(RecordKindV1::MatchReplay, id, "")
-        .and_then(|json| serde_json::from_str::<Value>(&json).ok())
-    {
+    let full = crate::perf::time(crate::perf::Section::RecordRead, || {
+        ctx.record_get_json(RecordKindV1::MatchReplay, id, "")
+            .and_then(|json| serde_json::from_str::<Value>(&json).ok())
+    });
+    let record = match full {
         Some(record) => record,
         // Older hosts, or a path grammar that does not accept the empty path for
         // this record kind. Named reads say the same thing, and are reassembled

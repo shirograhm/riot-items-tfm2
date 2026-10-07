@@ -26,7 +26,7 @@ pub(crate) use utils::shared_riches::SharedRiches;
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
 pub(crate) use ui::{solo_rank_ui, strategy_ui};
-pub(crate) use utils::{config, own_team_log, upgrade_carry};
+pub(crate) use utils::{config, own_team_log, perf, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
@@ -271,6 +271,8 @@ fn init(host: &StableHost) -> StableMod {
     // of their own, so the editor's picker lists them beside the radiants.
     // The `, shared_riches` arm is for the World Atlas line: its gold is paid
     // from the match hook, at the rate the item was configured with.
+    // Every item comes out wrapped in `perf::Timed`, which is the item itself
+    // unless `perf::ENABLED`.
     macro_rules! configured {
         ($key:literal => $T:ty, shared_riches) => {{
             let item = configured!($key => $T);
@@ -301,7 +303,7 @@ fn init(host: &StableHost) -> StableMod {
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
-            item
+            perf::timed($key, item)
         }};
     }
     macro_rules! configured_radiant {
@@ -333,7 +335,7 @@ fn init(host: &StableHost) -> StableMod {
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key, StableItem::category(&item));
-            item
+            perf::timed($key, item)
         }};
     }
 

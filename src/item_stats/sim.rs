@@ -386,6 +386,7 @@ impl StableMatchHook for EndOfMatchItems {
             }
         });
         CAPTURES.fetch_add(1, Ordering::Relaxed);
+        crate::perf::count(crate::perf::Section::CaptureQueued);
     }
 }
 
