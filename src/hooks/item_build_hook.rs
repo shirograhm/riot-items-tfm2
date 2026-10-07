@@ -28,6 +28,7 @@ impl StableItemBuildHook for ConfiguredBuilds {
         candidate: usize,
         base_score: f32,
     ) -> StableDraftDecision {
+        let _probe = crate::perf::Probe::start(crate::perf::Section::ScoreItem);
         // Already wanted, or not ours: leave the engine's ranking alone.
         if base_score > 0.0 {
             return StableDraftDecision::Pass;
@@ -59,6 +60,7 @@ impl StableItemBuildHook for ConfiguredBuilds {
     }
 
     fn decide_build(&self, ctx: &StableItemBuildContext<'_>) -> Vec<usize> {
+        let _probe = crate::perf::Probe::start(crate::perf::Section::StableBuildHook);
         let base = ctx.base_build();
         // `own_team_only` hands the configured builds to the native buy detour,
         // which is the only half of the mod that can tell the player's athletes

@@ -171,10 +171,19 @@ impl StableMatchHook for MatchHooks {
     }
 
     fn on_match_tick(&self, sim: &mut StableSim<'_>, rng_seed: u64) {
-        if !sim.is_end() {
-            immolate(sim, &self.immolate, &self.radiant_immolate);
-            self.riches.pay(sim);
+        use crate::perf::{self, Section};
+        if perf::ENABLED {
+            perf::sim_tick(sim.seed(), sim.tick(), sim.is_end());
         }
-        crate::item_stats::sim::EndOfMatchItems.on_match_tick(sim, rng_seed);
+        let _probe = perf::Probe::sim(Section::MatchTick);
+        if !sim.is_end() {
+            perf::time(Section::MatchImmolate, || {
+                immolate(sim, &self.immolate, &self.radiant_immolate)
+            });
+            perf::time(Section::MatchRiches, || self.riches.pay(sim));
+        }
+        perf::time(Section::MatchCapture, || {
+            crate::item_stats::sim::EndOfMatchItems.on_match_tick(sim, rng_seed)
+        });
     }
 }

@@ -315,10 +315,10 @@ impl StableItem for Heartsteel {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if attack_type != AttackTypeV1::BaseAttack {
             return;
@@ -343,8 +343,9 @@ impl StableItem for Heartsteel {
             + percent_of(max_hp, self.effect_caster_hp_percent_damage);
         let bonus_hp = percent_of(bonus_damage, self.effect_bonus_hp_percent_of_damage) as i32;
         // The banked health is priced off the damage this swing earned and is
-        // granted with the swing; only the damage number waits.
-        self.procs.push_physical(ctx, target, bonus_damage);
+        // granted with the swing.
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
         ctx.play_sfx(IRONHEART_SFX, caster, &InputTargetV1::target(target));
         ctx.play_view_effect(
             TRIGGER_EFFECT,

@@ -124,10 +124,10 @@ impl StableItem for BladeOfTheRuinedKing {
         ctx: &mut StableSim<'_>,
         _caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -143,7 +143,8 @@ impl StableItem for BladeOfTheRuinedKing {
 
         // Fixed here rather than re-read when it lands: the health the tooltip
         // promises a share of is the health the target had when it was hit.
-        self.procs.push_physical(ctx, target, bonus_damage);
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {

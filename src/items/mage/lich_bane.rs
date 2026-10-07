@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, ProcQueue, Spellblade};
+use crate::{apply_config, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus};
 
 #[derive(Clone, Debug)]
 pub struct LichBane {
@@ -76,6 +76,15 @@ impl LichBane {
         );
         self
     }
+
+    /// What Spellblade adds to the empowered attack.
+    pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
+        SpellbladeBonus {
+            flat: self.effect_bonus_flat_damage,
+            ap_percent: self.effect_ap_percent_damage,
+            ..Default::default()
+        }
+    }
 }
 
 impl Default for LichBane {
@@ -132,21 +141,24 @@ impl StableItem for LichBane {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
+            return;
+        }
+        if !self.spellblade.wins(ctx, caster, self.meta.key) {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_ref.stat().magic_power, self.effect_ap_percent_damage);
+        let bonus_damage = self.spellblade_bonus().of(&caster_ref);
 
-        self.procs.push_magic(ctx, target, bonus_damage);
+        self.procs
+            .on_hit_magic(ctx, target, damage, damage_type, is_crit, bonus_damage);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }

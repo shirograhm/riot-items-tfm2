@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, ProcQueue, Spellblade};
+use crate::{apply_config, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus};
 
 #[derive(Clone, Debug)]
 pub struct EssenceReaver {
@@ -80,6 +80,15 @@ impl EssenceReaver {
         );
         self
     }
+
+    /// What Spellblade adds to the empowered attack.
+    pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
+        SpellbladeBonus {
+            ad_percent: self.effect_ad_percent_damage,
+            crit_percent: self.effect_crit_percent_damage,
+            ..Default::default()
+        }
+    }
 }
 
 impl Default for EssenceReaver {
@@ -132,35 +141,33 @@ impl StableItem for EssenceReaver {
         self.procs.clear();
     }
 
-    // The crit term reads like Hamstringer's "(+100% crit)": each point of
-    // critical strike chance adds one point of bonus damage at 100%.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
+            return;
+        }
+        if !self.spellblade.wins(ctx, caster, self.meta.key) {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let stat = caster_ref.stat();
-        let bonus_damage = percent_of(stat.attack, self.effect_ad_percent_damage)
-            + percent_of(stat.crit_chance, self.effect_crit_percent_damage);
+        let bonus_damage = self.spellblade_bonus().of(&caster_ref);
 
-        self.procs.push_physical(ctx, target, bonus_damage);
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and watches for
-    /// the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);

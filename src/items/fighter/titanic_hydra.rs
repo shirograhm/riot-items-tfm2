@@ -262,10 +262,10 @@ impl StableItem for TitanicHydra {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if attack_type != AttackTypeV1::BaseAttack {
             return;
@@ -289,7 +289,8 @@ impl StableItem for TitanicHydra {
             splash = percent_of(splash, self.effect_ranged_percent);
         }
 
-        self.procs.push_physical(ctx, target, on_hit);
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, on_hit);
         if splash == 0 {
             return;
         }

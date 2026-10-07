@@ -29,8 +29,9 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 4. Play as you would normally!
 
 [h1] Versioning [/h1]
-Currently updated for game version 0.6.2. Older game versions need an older build of the mod:  
-Mod v0.11.3+ - 0.6.2  
+Currently updated for game version 0.6.3. Older game versions need an older build of the mod:  
+Mod v0.11.11+ - 0.6.3  
+Mod v0.11.3-0.11.10 - 0.6.2  
 Mod v0.10.1-0.11.2 - 0.6.1  
 Mod v0.9.11-0.10.0 - 0.6.0  
 Mod v0.9.6-9 - v0.5.8  
@@ -62,6 +63,7 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 [h1] Smart Builds [/h1]
 [b]Enforce Smart Builds[/b] (Build Editor footer, on by default) cleans up the AI's picks. These get swapped for another item of the same category:
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
+- a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count.
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
 - support items (except Protoplasm Harness and Zeke's Convergence) outside the support role
 - heal, shield and buff items (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on supports that don't heal, shield or buff allies, and on mages

@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus};
 
 /// Bloodsong — what World Atlas grows into, by way of Runic Compass:
 /// Spellblade, a mark that makes its target take more damage, and the gold
@@ -34,7 +34,7 @@ impl Bloodsong {
             hp_regen: 4,
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
             effect_bonus_gold: 4,
@@ -54,7 +54,7 @@ impl Bloodsong {
             hp_regen: 5,
             effect_min_bonus_damage: 70,
             effect_max_bonus_damage: 125,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             effect_damaged_amplify: 7,
             effect_duration_seconds: 4.0,
             ..Self::base()
@@ -89,11 +89,8 @@ impl Bloodsong {
         self
     }
 
-    fn spellblade_damage(&self, level: usize) -> usize {
-        let per_level = ((self.effect_max_bonus_damage - self.effect_min_bonus_damage) as f64
-            / 11.0)
-            .round() as usize;
-        self.effect_min_bonus_damage + level.saturating_sub(1) * per_level
+    pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
+        SpellbladeBonus::by_level(self.effect_min_bonus_damage, self.effect_max_bonus_damage)
     }
 
     /// What Shared Riches pays a holder: this much gold, this often.
@@ -156,45 +153,41 @@ impl StableItem for Bloodsong {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
+            return;
+        }
+        if !self.spellblade.wins(ctx, caster, self.meta.key) {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_damage = self.spellblade_damage(caster_ref.level());
+        let bonus_damage = self.spellblade_bonus().of(&caster_ref);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
 
-        // Vulnerable goes on below and is up by the time this lands, so the
-        // proc is amplified by its own debuff — it was not when the damage
-        // resolved inline, ahead of the buff.
-        self.procs.push_magic(ctx, target, bonus_damage);
-
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if !target_ref.is_champion() {
-            return;
+        if ctx.get_entity(target).is_some_and(|t| t.is_champion()) {
+            refresh_buff(
+                ctx,
+                target,
+                self.vulnerable_buff,
+                &BuffV1 {
+                    damaged_amplify: self.effect_damaged_amplify,
+                    ..BuffV1::timed(self.vulnerable_buff, ticks(self.effect_duration_seconds))
+                },
+            );
         }
-        refresh_buff(
-            ctx,
-            target,
-            self.vulnerable_buff,
-            &BuffV1 {
-                damaged_amplify: self.effect_damaged_amplify,
-                ..BuffV1::timed(self.vulnerable_buff, ticks(self.effect_duration_seconds))
-            },
-        );
+        self.procs
+            .on_hit_magic(ctx, target, damage, damage_type, is_crit, bonus_damage);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and watches for the
-    /// cast that readies the next one.
+    /// Lands the Spellblade damage whose delay has run out, and watches for
+    /// the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);

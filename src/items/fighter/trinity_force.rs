@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, Spellblade};
+use crate::{apply_config, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus};
 
 #[derive(Clone, Debug)]
 pub struct TrinityForce {
@@ -15,6 +15,7 @@ pub struct TrinityForce {
     effect_ad_percent_damage: f64,
     effect_cooldown_seconds: f64,
     spellblade: Spellblade,
+    procs: ProcQueue,
 }
 
 impl TrinityForce {
@@ -32,9 +33,10 @@ impl TrinityForce {
             skill_cooldown_mult: 10,
             effect_bonus_flat_damage: 33,
             effect_ad_percent_damage: 33.0,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
+            procs: ProcQueue::new(),
         }
     }
 
@@ -48,7 +50,7 @@ impl TrinityForce {
             skill_cooldown_mult: 15,
             effect_bonus_flat_damage: 33,
             effect_ad_percent_damage: 33.0,
-            effect_cooldown_seconds: 3.5,
+            effect_cooldown_seconds: 1.5,
             ..Self::base()
         }
     }
@@ -77,6 +79,15 @@ impl TrinityForce {
             ]
         );
         self
+    }
+
+    /// What Spellblade adds to the empowered attack.
+    pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
+        SpellbladeBonus {
+            flat: self.effect_bonus_flat_damage,
+            ad_percent: self.effect_ad_percent_damage,
+            ..Default::default()
+        }
     }
 }
 
@@ -127,6 +138,7 @@ impl StableItem for TrinityForce {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade.reset();
+        self.procs.clear();
     }
 
     fn on_attack(
@@ -134,27 +146,32 @@ impl StableItem for TrinityForce {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if !self.spellblade.is_ready() || attack_type != AttackTypeV1::BaseAttack {
+            return;
+        }
+        if !self.spellblade.wins(ctx, caster, self.meta.key) {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
-        let bonus_damage = self.effect_bonus_flat_damage
-            + percent_of(caster_ref.stat().attack, self.effect_ad_percent_damage);
+        let bonus_damage = self.spellblade_bonus().of(&caster_ref);
 
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }
 
-    /// Watches for the cast that readies Spellblade.
+    /// Lands the Spellblade damage whose delay has run out, and watches for
+    /// the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);
     }
 

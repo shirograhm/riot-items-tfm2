@@ -152,9 +152,9 @@ impl StableItem for VoltaicCyclosword {
         caster: usize,
         target: usize,
         damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
@@ -163,9 +163,10 @@ impl StableItem for VoltaicCyclosword {
             return;
         }
 
-        if self
-            .energized
-            .is_charged(ctx, caster, self.effect_max_stacks)
+        if attack_type == AttackTypeV1::BaseAttack
+            && self
+                .energized
+                .is_charged(ctx, caster, self.effect_max_stacks)
         {
             let mut bonus_damage = percent_of(target_ref.hp().0, self.effect_hp_percent_damage);
             if !target_ref.is_champion() {
@@ -175,7 +176,8 @@ impl StableItem for VoltaicCyclosword {
             // The percentage is taken off the health the target had when the
             // charged swing landed, not the health it has once the proc
             // arrives, so the number matches the hit that earned it.
-            self.procs.push_physical(ctx, target, bonus_damage);
+            self.procs
+                .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
             self.firmament_ticks = ticks(self.effect_duration_seconds);
             self.energized.spend(ctx);
         }

@@ -106,6 +106,43 @@ impl ProcQueue {
         self.push(ctx, target, 0, magic);
     }
 
+    /// Physical damage on-hit. It is part of the swing, so it goes into the
+    /// swing's own `damage`, with two exceptions that are queued as a proc
+    /// instead: a crit, which the bonus must not share in, and a swing of
+    /// another damage type, which would deal it as that type.
+    pub(crate) fn on_hit_physical(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        target: usize,
+        damage: &mut usize,
+        swing: DamageTypeV1,
+        is_crit: bool,
+        physical: usize,
+    ) {
+        if swing == DamageTypeV1::Ad && !is_crit {
+            *damage += physical;
+        } else {
+            self.push_physical(ctx, target, physical);
+        }
+    }
+
+    /// Magic damage on-hit; see [`ProcQueue::on_hit_physical`].
+    pub(crate) fn on_hit_magic(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        target: usize,
+        damage: &mut usize,
+        swing: DamageTypeV1,
+        is_crit: bool,
+        magic: usize,
+    ) {
+        if swing == DamageTypeV1::Ap && !is_crit {
+            *damage += magic;
+        } else {
+            self.push_magic(ctx, target, magic);
+        }
+    }
+
     pub(crate) fn clear(&mut self) {
         self.pending.clear();
     }

@@ -3,10 +3,25 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{
     apply_config, ItemMeta, ProcQueue, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
-    TICKS_PER_SECOND,
+    DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
 };
 
 const PROC_LOCKOUT_TICKS: usize = BUFF_REFRESH_DURATION_TICKS;
+/// One puff of the red trail a carrier at full momentum leaves behind it
+/// (`effects/dead_mans_trail`, bound in `view/effects.view_effects`). A view
+/// effect cannot face a direction, so the tail is not one picture: each puff
+/// stays where it was played and fades there, and the puffs dropped along the
+/// carrier's path line up behind it whichever way it runs.
+const TRAIL_EFFECT: &str = "riot_dead_mans_trail";
+/// Ground the carrier covers between two puffs. Spaced by distance rather than
+/// by time, so the tail is as dense at any speed and nothing piles up under a
+/// carrier that stands still.
+const TRAIL_SPACING: u64 = 6 * DISTANCE_UNITS_PER_RANGE as u64;
+/// The burst on the target of a basic attack that spends a full bar of
+/// momentum, which is where the trail ends (`effects/dead_mans_burst`, bound
+/// in `view/effects.view_effects`). Lesser hits spend their momentum quietly:
+/// a carrier that keeps attacking spends a few stacks on every swing.
+const BURST_EFFECT: &str = "riot_dead_mans_burst";
 
 #[derive(Clone, Debug)]
 pub struct DeadMansPlate {
@@ -26,6 +41,9 @@ pub struct DeadMansPlate {
     refresh_cooldown: usize,
     proc_cooldown: usize,
     procs: ProcQueue,
+    /// Where the last puff of the trail was dropped; `None` while momentum is
+    /// not full.
+    trail_at: Option<(u64, u64)>,
 }
 
 impl DeadMansPlate {
@@ -52,6 +70,7 @@ impl DeadMansPlate {
             refresh_cooldown: 0,
             proc_cooldown: 0,
             procs: ProcQueue::new(),
+            trail_at: None,
         }
     }
 
@@ -149,6 +168,41 @@ impl DeadMansPlate {
         );
         self.refresh_cooldown = BUFF_REFRESH_PERIOD_TICKS;
     }
+
+    /// At full momentum, drops a puff of the trail each time the carrier has
+    /// covered [`TRAIL_SPACING`] since the last one.
+    fn leave_trail(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        if self.effect_max_stacks == 0 || self.momentum < self.effect_max_stacks {
+            self.trail_at = None;
+            return;
+        }
+        let Some((carrier, at)) = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .map(|c| (c.id(), c.pos()))
+        else {
+            return;
+        };
+        // The first reading only marks where the trail starts: a carrier whose
+        // momentum fills while it stands still leaves nothing.
+        let Some(last) = self.trail_at else {
+            self.trail_at = Some(at);
+            return;
+        };
+        let (dx, dy) = (at.0.abs_diff(last.0), at.1.abs_diff(last.1));
+        if dx * dx + dy * dy < TRAIL_SPACING * TRAIL_SPACING {
+            return;
+        }
+        self.trail_at = Some(at);
+        ctx.play_view_effect(
+            TRAIL_EFFECT,
+            carrier,
+            &InputTargetV1::pos(at.0, at.1),
+            0,
+            0,
+            0,
+        );
+    }
 }
 
 impl Default for DeadMansPlate {
@@ -201,6 +255,7 @@ impl StableItem for DeadMansPlate {
         self.refresh_cooldown = 0;
         self.proc_cooldown = 0;
         self.procs.clear();
+        self.trail_at = None;
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
@@ -214,17 +269,18 @@ impl StableItem for DeadMansPlate {
         }
         self.build_momentum();
         self.apply_move_speed(ctx, player);
+        self.leave_trail(ctx, player);
     }
 
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _caster: usize,
+        caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if self.momentum == 0 || attack_type != AttackTypeV1::BaseAttack {
             return;
@@ -236,10 +292,22 @@ impl StableItem for DeadMansPlate {
         self.proc_cooldown = PROC_LOCKOUT_TICKS;
         self.refresh_cooldown = 0;
 
+        if consumed >= self.effect_max_stacks {
+            ctx.play_view_effect(
+                BURST_EFFECT,
+                caster,
+                &InputTargetV1::target(target),
+                0,
+                0,
+                0,
+            );
+        }
+
         // Momentum is spent above, so the damage is priced off the stacks this
         // swing consumed rather than off whatever has rebuilt by landing time.
         let bonus_damage = self.proc_damage(consumed);
-        self.procs.push_physical(ctx, target, bonus_damage);
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
     }
 
     /// Momentum carries across the Radiant upgrade. Only whole stacks move —

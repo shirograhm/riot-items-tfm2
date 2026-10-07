@@ -2279,7 +2279,7 @@ static PLAYER_TEAM_ID: AtomicU64 = AtomicU64::new(u64::MAX); // u64::MAX = not c
                                                              // 0.5.8 = 0x920, unchanged and **measured again, not carried forward**: the 286-byte roster walk pairs
                                                              // clean (0x18c84b0 -> 0x191e560, zero differing displacements) and in the new body still reads the id as
                                                              // `mov r14,[rdx+0x920]` at 0x191e58d, immediately before `add rbx,0x9e0` (= ATH_STRIDE) at 0x191e5aa.
-const O_ATHLETE_ID: usize = 0x9f0; // 0.6.0-beta2 (0.6.0-beta was 0x9b0, 0.5.5..0.5.8 0x920, 0.5.4 0x800, 0.5.3 0x810)
+const O_ATHLETE_ID: usize = 0x7f0; // 0.6.3 (0.6.0-beta2..0.6.2 0x9f0, 0.6.0-beta was 0x9b0, 0.5.5..0.5.8 0x920, 0.5.4 0x800, 0.5.3 0x810)
 
 /// The rest of the athlete fields this module reads, as constants rather than
 /// literals — which is the whole point of them existing.
@@ -2334,10 +2334,41 @@ const O_ATHLETE_ID: usize = 0x9f0; // 0.6.0-beta2 (0.6.0-beta was 0x9b0, 0.5.5..
 /// shifted by one delta. Independently corroborated while re-deriving
 /// `SPAWN_RVA`: that function writes the athlete's gold at `[rdx+0x998]` on
 /// 0.5.8 and `[rdx+0xa28]` on 0.6.0, exactly the move the layout note records.
-const O_ATHLETE_CHAMP_PTR: usize = 0x4e0; // 0.6.0-beta2 (0.6.0-beta was 0x4a0, 0.5.5..0.5.8 0x470, 0.5.4 0x410, 0.5.3 0x420)
-const O_ATHLETE_CHAMP_LEN: usize = 0x4e8; // 0.6.0-beta2 (0.6.0-beta was 0x4a8, 0.5.5..0.5.8 0x478, 0.5.4 0x418, 0.5.3 0x428)
-const O_ATHLETE_TEAM: usize = 0xa00; // 0.6.0-beta2 (0.6.0-beta was 0x9c0, 0.5.5..0.5.8 0x930, 0.5.4 0x810, 0.5.3 0x820)
-const O_ATHLETE_POS: usize = 0xa90; // dword. 0.6.0-beta2 (0.6.0-beta was 0xa50, 0.5.5..0.5.8 0x9c0, 0.5.4 0x8b0)
+///
+/// # 0.6.3 (2026-10-06)
+///
+/// The athlete shrank by **0x200 below the champion String**, so every field
+/// this module reads moved by exactly that much, and the roster stopped being
+/// an array of athletes: it is a `Vec` of pointers to them now (the 313-byte
+/// roster walk `0x1b72360` reads `mov rax,[rdx] / mov r14,[rax+0x7f0]` and
+/// steps 8), so there is no stride any more. See `ATH_STRIDE`.
+///
+/// Nothing pairs exe2exe this time, strict or loose, so each value is read off
+/// the 0.6.3 spawn function (`SPAWN_RVA`), which makes 0.6.2's reads in 0.6.2's
+/// order: gold `[rdx+0xa68]` -> `[rdx+0x868]`, then through one base register
+/// id `0x9f0` -> `0x7f0`, team `0xa00` -> `0x800`, position `0xa90` -> `0x890`,
+/// champion len/ptr `0x4e8/0x4e0` -> `0x2e8/0x2e0`. The resolver
+/// (`patch_final_gate`'s container, rdx = athlete) gives the build `Vec` at
+/// `[rdx+0x358]/[rdx+0x360]`, the items at `[rax+0x310]/[rax+0x318]` and the
+/// gold again at `[rsi+0x868]`; both spawn callers copy `0x898` bytes, where
+/// 0.6.2's copied `0xa98`.
+const O_ATHLETE_CHAMP_PTR: usize = 0x2e0; // 0.6.3 (0.6.0-beta2..0.6.2 0x4e0, 0.6.0-beta was 0x4a0, 0.5.5..0.5.8 0x470, 0.5.4 0x410, 0.5.3 0x420)
+const O_ATHLETE_CHAMP_LEN: usize = 0x2e8; // 0.6.3 (0.6.0-beta2..0.6.2 0x4e8, 0.6.0-beta was 0x4a8, 0.5.5..0.5.8 0x478, 0.5.4 0x418, 0.5.3 0x428)
+const O_ATHLETE_TEAM: usize = 0x800; // 0.6.3 (0.6.0-beta2..0.6.2 0xa00, 0.6.0-beta was 0x9c0, 0.5.5..0.5.8 0x930, 0.5.4 0x810, 0.5.3 0x820)
+const O_ATHLETE_POS: usize = 0x890; // dword. 0.6.3 (0.6.0-beta2..0.6.2 0xa90, 0.6.0-beta was 0xa50, 0.5.5..0.5.8 0x9c0, 0.5.4 0x8b0)
+/// The athlete's owned-item count and its build `Vec` (`{cap, ptr, len}`), the
+/// size of the athlete the spawn callers copy, and the `Game` fields the spawn
+/// detour reads. The detours spelled these out as literals through 0.6.2;
+/// 0.6.3 moved every one, so they are named like the fields above. How each
+/// was measured is in the 0.6.3 notes there and at `SPAWN_RVA`.
+const O_ATHLETE_ITEMS_LEN: usize = 0x318; // 0.6.3 (0.6.0-beta2..0.6.2 0x518)
+const O_ATHLETE_BUILD_CAP: usize = 0x350; // 0.6.3 (0.6.0-beta2..0.6.2 0x550)
+const O_ATHLETE_BUILD_PTR: usize = 0x358; // 0.6.3 (0.6.0-beta2..0.6.2 0x558)
+const O_ATHLETE_BUILD_LEN: usize = 0x360; // 0.6.3 (0.6.0-beta2..0.6.2 0x560)
+const ATHLETE_COPY_SIZE: usize = 0x898; // 0.6.3 (0.6.0-beta2..0.6.2 0xa98)
+const O_GAME_PROVIDER: usize = 0x1ba0; // 0.6.3 (0.5.3..0.6.2 0x1dc0)
+const O_GAME_CATALOG_PTR: usize = 0x1da0; // 0.6.3 (through 0.6.2 0x1fd0)
+const O_GAME_CATALOG_LEN: usize = 0x1da8; // 0.6.3 (through 0.6.2 0x1fd8)
 static MY_ATHLETES: AtomicPtr<std::collections::HashSet<u64>> =
     AtomicPtr::new(core::ptr::null_mut());
 static MY_ATH_PREV: AtomicPtr<std::collections::HashSet<u64>> =
@@ -2442,7 +2473,7 @@ static BUY_ORDER_BUF: Mutex<String> = Mutex::new(String::new());
 //   0x29a7640. The body is __rust_realloc outright: `cmp r8,0x11 / jae` splits the over-aligned path, the
 //   align<=16 path tail-jmps to HeapReAlloc(heap, 0, ptr, size), and the over-aligned path allocs (0x29bb920),
 //   memcpys, then frees. Argument contract (rcx=ptr, rdx=old, r8=align, r9=new) is unchanged.
-const RVA_REALLOC: usize = 0x2f9f0e0; // 0.6.2 (2026-09-29: exe2exe from 0.6.1 strict unique, FUNCTION START, size 174 both sides, pairdiff clean at --min-disp 0x4 --imm). 0.6.1 was 0x2f50ad0 (2026-09-21: exe2exe from 0.6.0 strict unique, FUNCTION START, size 174 both sides, pairdiff clean). 0.6.0 release was 0x2f23bf0 (2026-09-18: exe2exe from beta2 0x2f1b320 is unique, FUNCTION START, size 174 both sides; the 23-byte entry below is also unique in .text on its own). 0.6.0-beta2 was 0x2f1b320 (0.6.0-beta was 0x2dc0690, 0.5.7 0x2a9fb50, 0.5.6 0x2a9d1b0; exe2exe unique, size 174 both sides, pairdiff clean). History for 0.5.6 follows. (0.5.5 was 0x2a87a70; exe2exe unique, size 174 both sides, instruction-identical). History for 0.5.5 follows. (0.5.4 was 0x29a7640; exe2exe unique, size 174 both sides, body still the __rust_realloc shape). History for 0.5.4 follows. (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
+const RVA_REALLOC: usize = 0x2f855a0; // 0.6.3 (2026-10-06: exe2exe from 0.6.2 strict unique, FUNCTION START, size 174 both sides, the 12 prologue bytes unchanged). 0.6.2 was 0x2f9f0e0 (2026-09-29: exe2exe from 0.6.1 strict unique, FUNCTION START, size 174 both sides, pairdiff clean at --min-disp 0x4 --imm). 0.6.1 was 0x2f50ad0 (2026-09-21: exe2exe from 0.6.0 strict unique, FUNCTION START, size 174 both sides, pairdiff clean). 0.6.0 release was 0x2f23bf0 (2026-09-18: exe2exe from beta2 0x2f1b320 is unique, FUNCTION START, size 174 both sides; the 23-byte entry below is also unique in .text on its own). 0.6.0-beta2 was 0x2f1b320 (0.6.0-beta was 0x2dc0690, 0.5.7 0x2a9fb50, 0.5.6 0x2a9d1b0; exe2exe unique, size 174 both sides, pairdiff clean). History for 0.5.6 follows. (0.5.5 was 0x2a87a70; exe2exe unique, size 174 both sides, instruction-identical). History for 0.5.5 follows. (0.5.4 was 0x29a7640; exe2exe unique, size 174 both sides, body still the __rust_realloc shape). History for 0.5.4 follows. (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
 type ReallocFn = unsafe extern "win64" fn(usize, usize, usize, usize) -> usize;
 /// First 12 bytes of `RVA_REALLOC` (6 push + `sub rsp,0x28`), checked before
 /// every call. The call is a raw transmute, and on 2026-09-16 a stale beta2
@@ -2576,11 +2607,11 @@ unsafe fn catalog_name_in(data: usize, len: u64, idx: u64) -> Option<String> {
 //     (3) the entry idiom is byte-for-byte the same apart from the frame imm, `mov r12,r8` still saves the
 //         seed, and every rbp spill moved by exactly -0x20 = the frame delta. The r8=seed contract holds.
 //   CL_LAUNCHER_PROLOGUE therefore needs its last 4 bytes changed with the frame; that is the only edit.
-const CL_LAUNCHER_RVA: usize = 0x17277c0; // 0.6.2 (2026-09-29; 0.6.1 was 0x1a88440). exe2exe finds nothing (size 4454 -> 4490); from the seedctor callers again: 3 sites inside 0x17277c0 at the SAME +0x1c5/+0x298/+0x36f plus 1 in 0x1729490 (+0x113 both builds), 9 direct callers both sides (3078/4312/4445/5757 identical; the match-sim megafunction 79985 -> 79953 is also the hook.rs target's caller), frame 0x25458 -> 0x25478. 0.6.1 notes follow: (2026-09-21; 0.6.0 release was 0x16d9180). exe2exe finds nothing again (size 4486 -> 4454), so it came from the seedctor callers once more: 3 sites inside 0x1a88440 at +0x1c5/+0x298/+0x36f (0.6.0: +0x1c8/+0x29b/+0x372) plus 1 in 0x1a8a0f0, 9 direct callers both sides with the same caller sizes (only the match-sim megafunction grew, 79937 -> 79985, and it is also the hook.rs target's caller), frame 0x25478 -> 0x25458. 0.6.0 release notes follow: (0.6.0-beta2 was 0x16f7270). exe2exe finds NOTHING here - the body changed - so it came from the seedctor callers, the same way 0.5.3 did: beta2's seedctor had 3 call sites inside the launcher plus 1 elsewhere, and the release's seedctor (0x16e98c0) has exactly 3 inside 0x16d9180 plus 1 inside 0x16dae50. Cross-checked three more ways: 9 direct callers (the same count beta2 had), two of them in one function (the render scene builder calling it twice, 0x81ba60 here vs 0x814a20 there), and the same prologue idiom with only the chkstk frame moving. 0.6.0-beta2 (0.6.0-beta was 0x1183bb0, 0.5.7 0x106dd60, 0.5.6 0x14dda60, 0.5.5 0x14ac3e0, 0.5.4 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
+const CL_LAUNCHER_RVA: usize = 0x13f3950; // 0.6.3 (2026-10-06; 0.6.2 was 0x17277c0). From the seedctor callers once more: 3 sites inside 0x13f3950 at +0x1c8/+0x29b/+0x372 (0.6.2: +0x1c5/+0x298/+0x36f) plus 1 in 0x13f55c0 (+0x116), 60 direct calls and 9 caller sites in 8 functions on both sides (4445/5757 identical; the match-sim megafunction 79953 -> 80906 is again the hook.rs target's caller), size 4490 -> 4367, frame 0x25478 -> 0x25ef8. `mov r12,r8` still saves the seed at +0x41 and the seedctor call still gets it in rdx. 0.6.2 notes follow: (2026-09-29; 0.6.1 was 0x1a88440). exe2exe finds nothing (size 4454 -> 4490); from the seedctor callers again: 3 sites inside 0x17277c0 at the SAME +0x1c5/+0x298/+0x36f plus 1 in 0x1729490 (+0x113 both builds), 9 direct callers both sides (3078/4312/4445/5757 identical; the match-sim megafunction 79985 -> 79953 is also the hook.rs target's caller), frame 0x25458 -> 0x25478. 0.6.1 notes follow: (2026-09-21; 0.6.0 release was 0x16d9180). exe2exe finds nothing again (size 4486 -> 4454), so it came from the seedctor callers once more: 3 sites inside 0x1a88440 at +0x1c5/+0x298/+0x36f (0.6.0: +0x1c8/+0x29b/+0x372) plus 1 in 0x1a8a0f0, 9 direct callers both sides with the same caller sizes (only the match-sim megafunction grew, 79937 -> 79985, and it is also the hook.rs target's caller), frame 0x25478 -> 0x25458. 0.6.0 release notes follow: (0.6.0-beta2 was 0x16f7270). exe2exe finds NOTHING here - the body changed - so it came from the seedctor callers, the same way 0.5.3 did: beta2's seedctor had 3 call sites inside the launcher plus 1 elsewhere, and the release's seedctor (0x16e98c0) has exactly 3 inside 0x16d9180 plus 1 inside 0x16dae50. Cross-checked three more ways: 9 direct callers (the same count beta2 had), two of them in one function (the render scene builder calling it twice, 0x81ba60 here vs 0x814a20 there), and the same prologue idiom with only the chkstk frame moving. 0.6.0-beta2 (0.6.0-beta was 0x1183bb0, 0.5.7 0x106dd60, 0.5.6 0x14dda60, 0.5.5 0x14ac3e0, 0.5.4 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
 const CL_LAUNCHER_PROLOGUE: [u8; 17] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0x78, 0x54, 0x02,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0xf8, 0x5e, 0x02,
     0x00,
-]; // 0.6.2: 8 push + mov eax,0x25478 (0.6.1 was 0x25458, 0.6.0 release 0x25478, 0.6.0-beta2 0x25468) (0.6.0-beta was 0x25438, 0.5.7 0x25418, 0.5.6 0x25438, 0.5.5 0x25438, 0.5.4 0x25168, 0.5.3 0x25108, 0.5.2 0x165c8)
+]; // 0.6.3: 8 push + mov eax,0x25ef8 (0.6.2 was 0x25478, 0.6.1 0x25458, 0.6.0 release 0x25478, 0.6.0-beta2 0x25468) (0.6.0-beta was 0x25438, 0.5.7 0x25418, 0.5.6 0x25438, 0.5.5 0x25438, 0.5.4 0x25168, 0.5.3 0x25108, 0.5.2 0x165c8)
 static CLAUNCH_INSTALLED: AtomicU64 = AtomicU64::new(0);
 static LAUNCH_N: AtomicU64 = AtomicU64::new(0);
 static LAUNCH_RENDER_N: AtomicU64 = AtomicU64::new(0);
@@ -2757,7 +2788,7 @@ fn install_launcher_hook() {
 //   both sides). `pairdiff` reports only two differing displacements, both in the TLS block reached through
 //   `gs:[0x58]` (0x187e8 -> 0x18830), which is thread-local layout, not the provider struct. Entry shape
 //   unchanged (8 push + mov eax,frame + call chkstk), so SEEDCTOR_PROLOGUE needs no edit.
-const SEEDCTOR_RVA: usize = 0x1749a50; // 0.6.2 (2026-09-29: exe2exe finds nothing, size 4411 -> 4586, frame 0x11ba8 -> 0x11bc8; the `mov [rsi+0xec90],rax` O_PROVIDER_SEED store is unique in the image and sits in this function at +0xeed (0.6.1 +0xecd), and the launcher calls it at the same three offsets. 12B prologue byte-identical). 0.6.1 was 0x1a98e60 (2026-09-21: exe2exe strict unique, fn start, size 4411 both sides; the O_PROVIDER_SEED store is byte-identical at +0xecd). 0.6.0 release was 0x16e98c0 (0.6.0-beta2 was 0x1712c90; exe2exe unique at 154B, fn start, size 4407 -> 4411, 12B prologue byte-identical) (0.6.0-beta was 0x1697a30, 0.5.7 0x1635ae0, 0.5.6 0x10a3be0, 0.5.5 0x14c2380, 0.5.4 0x14e16d0, 0.5.3 0x12b9ab0). History for 0.5.3 follows. (0.5.2 was 0x22c1da0). The 12B prologue is completely identical (8 push); the chkstk frame went 0x11b58 -> 0x11b98; confirmed via the call inside launcher (0xeb8810) with rdx = the saved r8 (seed). WARNING: the seed store offset moved from provider+0xeab8 to **+0xeaf8** (measured at 0x12ba92d).
+const SEEDCTOR_RVA: usize = 0x13fddb0; // 0.6.3 (2026-10-06: exe2exe finds nothing, size 4586 -> 4468, frame 0x11bc8 -> 0x11f38. Found as the function holding the seed store, which moved: the masked `48 89 86 ?? ec 00 00` has 5 hits and one of them, `mov [rsi+0xec88],rax` at +0xf06, follows the same three `[rsi+0x70]/[rsi]/[rsi+0x10]` initialisers 0.6.2's store follows and stores the same value, the rdx seed spilled at +0x44. The launcher calls it three times and one other function once, as before. 12B prologue byte-identical). 0.6.2 was 0x1749a50 (2026-09-29: exe2exe finds nothing, size 4411 -> 4586, frame 0x11ba8 -> 0x11bc8; the `mov [rsi+0xec90],rax` O_PROVIDER_SEED store is unique in the image and sits in this function at +0xeed (0.6.1 +0xecd), and the launcher calls it at the same three offsets. 12B prologue byte-identical). 0.6.1 was 0x1a98e60 (2026-09-21: exe2exe strict unique, fn start, size 4411 both sides; the O_PROVIDER_SEED store is byte-identical at +0xecd). 0.6.0 release was 0x16e98c0 (0.6.0-beta2 was 0x1712c90; exe2exe unique at 154B, fn start, size 4407 -> 4411, 12B prologue byte-identical) (0.6.0-beta was 0x1697a30, 0.5.7 0x1635ae0, 0.5.6 0x10a3be0, 0.5.5 0x14c2380, 0.5.4 0x14e16d0, 0.5.3 0x12b9ab0). History for 0.5.3 follows. (0.5.2 was 0x22c1da0). The 12B prologue is completely identical (8 push); the chkstk frame went 0x11b58 -> 0x11b98; confirmed via the call inside launcher (0xeb8810) with rdx = the saved r8 (seed). WARNING: the seed store offset moved from provider+0xeab8 to **+0xeaf8** (measured at 0x12ba92d).
                                        // * 0.5.3: the seed store offset inside the provider struct moved (0.5.2 +0xeab8 -> 0.5.3 +0xeaf8).
                                        //   Measured = `mov [reg+0xeaf8], rdx` inside seedctor @0x12ba92d (the old exe has 0xeab8 in the same place).
                                        //   WARNING keep it in a single constant - updating only this on each patch carries the whole is_live gate along.
@@ -2774,7 +2805,7 @@ const SEEDCTOR_RVA: usize = 0x1749a50; // 0.6.2 (2026-09-29: exe2exe finds nothi
                                        // 0.5.6 and 0.5.7 = 0xec90, **unchanged and verified, not assumed**: the whole seven-store cluster inside
                                        // seedctor corresponds one for one, in the same order, at the same displacements — 0xecc2, **0xec90 (the
                                        // `mov [rsi+...],rax` seed store, at 0x1636a0d)**, 0xec98, 0xecc0, 0xecc1, 0xeca0, 0xecb0.
-const O_PROVIDER_SEED: usize = 0xec90;
+const O_PROVIDER_SEED: usize = 0xec88; // 0.6.3: `mov [rsi+0xec88],rax` at seedctor +0xf06 (0.6.2 0xec90 at +0xeed; the qword after it is still zeroed by the next instruction)
 const SEEDCTOR_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ]; // ghidra-re confirmed: 8 push (12B) + mov eax,0x11b58 + call chkstk (same pattern as launcher)
@@ -2896,7 +2927,22 @@ fn install_seed_ctor_hook() {
 //   exactly one function, the same one: **0x172ff50** (size 1914 -> 1924, frame still 0x108, the same
 //   2 direct callers at the same offsets). Contract re-read, not carried: `mov [rdx+0xa68],rax` (gold)
 //   at the same +0x41, and the caller's `mov r8d,0xa98` athlete copy at the same +0x21a.
-const SPAWN_RVA: usize = 0x172ff50; // 0.6.2 (0.6.1 0x1a8c100, 0.6.0 0x16dcdd0, beta2 0x16ff930, beta 0x118c260, 0.5.8 0x1819300, 0.5.3 0xebfe50, 0.5.2 0x1d9e0e0, 0.5.1 0x2060280).
+// * 0.6.3 re-derivation (2026-10-06). exe2exe finds neither the function nor its caller: the athlete
+//   moved (see `O_ATHLETE_CHAMP_PTR`), and so did the Game fields the structural filter above
+//   searches for. Found by the gold store with its new displacement, `mov [rdx+0x868],rax`, which
+//   has two hits in .text and one of them at a function's +0x41, where it has always been:
+//   **0x13f7550** (size 1924 -> 1818, frame still 0x108, the same 2 direct callers: 0x13f6be0 at
+//   +0x204 and 0x13f6f40 at +0x91). Contract re-read, not carried: rcx = Game, rdx = athlete, and
+//   both callers memcpy **0x898** bytes (was 0xa98) into the stack slot they pass as rdx.
+//   The Game fields moved by two different amounts, each read off this function:
+//     [rcx+0x2060]                -> [rcx+0x1e30]                 (-0x230)
+//     [rcx+0x1dc0..0x1dd8]        -> [rcx+0x1ba0..0x1bb8]         (-0x220; +0x1ba0 = the provider)
+//     [rsi+0x1fe8], [rsi+0x1ff0]  -> [rsi+0x1db8], [rsi+0x1dc0]   (-0x230; the empty Vec beside the catalog)
+//   which puts the catalog Vec at Game+0x1d98 {cap} / +0x1da0 {ptr} / +0x1da8 {len}. Confirmed
+//   apart from that neighbour: the 67-byte drop glue `lea rcx,[rsi+0x1fc8] / call` exists with
+//   `0x1d98` at the same +0x27 in 0.6.3, and so do the two large builders that take
+//   `lea rdx,[reg+0x1fc8]`. For the next build, the filter's disp32s are 0x1ba0/0x1ba8/0x1bb0/0x1bb8.
+const SPAWN_RVA: usize = 0x13f7550; // 0.6.3 (0.6.2 0x172ff50, 0.6.1 0x1a8c100, 0.6.0 0x16dcdd0, beta2 0x16ff930, beta 0x118c260, 0.5.8 0x1819300, 0.5.3 0xebfe50, 0.5.2 0x1d9e0e0, 0.5.1 0x2060280).
 const SPAWN_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ]; // 0.5.8: unchanged since 0.5.3 - 8 push (12B) + sub rsp,0xf8, byte-identical at the new address (0.5.2 was 7 push + mov eax,0x4d20)
@@ -2917,6 +2963,7 @@ static SPAWN_WROTE: AtomicU64 = AtomicU64::new(0); // actual build[] writes
 static SPAWN_NOSIDE: AtomicU64 = AtomicU64::new(0); // skipped because the side was undecided (= covered by the buy path)
 unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+        let _probe = crate::perf::Probe::sim(crate::perf::Section::SpawnDetour);
         // Only under `own_team_only`: otherwise `item_build_hook::decide_build`
         // has already set these slots on the stable API, and two writers would
         // fight over them.
@@ -2931,7 +2978,7 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             return;
         }
         // -- (1) Rendered (spectated) match gate: provider = *(Game+0x1dc0) - offset confirmed unchanged in 0.5.3 (07-29). WARNING the buy hook uses r9 (a separate path) --
-        let provider = match safe_read_u64(game + 0x1dc0) {
+        let provider = match safe_read_u64(game + O_GAME_PROVIDER) {
             Some(p) => p,
             None => return,
         };
@@ -2984,11 +3031,11 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             }
         }
         // -- (2) Is this a designated champion? --
-        if !readable(athlete, 0xa98) {
+        if !readable(athlete, ATHLETE_COPY_SIZE) {
             return;
         }
-        let cptr = rd_u64(athlete + 0x4e0) as usize;
-        let clen = rd_u64(athlete + 0x4e8) as usize;
+        let cptr = rd_u64(athlete + O_ATHLETE_CHAMP_PTR) as usize;
+        let clen = rd_u64(athlete + O_ATHLETE_CHAMP_LEN) as usize;
         if cptr < 0x10000 || clen == 0 || clen > 48 || !readable(cptr, clen) {
             return;
         }
@@ -3088,10 +3135,10 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         //   * Same index space: the ctx builder 0x1420571C8 puts ctx+0x30 = &(Game+0x1fc8) => it is the same heap buffer
         //    that buy indexes into = usable directly in build[] (no mapping table needed).
         //   * Ordering guaranteed: Game creation (catalog builder 0x21c0750) precedes spawn (in all 21 wrapper call sites).
-        let cat_base = rd_u64(game + 0x1fd0) as usize;
-        let cat_len = rd_u64(game + 0x1fd8);
-        let bptr = rd_u64(athlete + 0x558) as usize;
-        let blen = rd_u64(athlete + 0x560);
+        let cat_base = rd_u64(game + O_GAME_CATALOG_PTR) as usize;
+        let cat_len = rd_u64(game + O_GAME_CATALOG_LEN);
+        let bptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
+        let blen = rd_u64(athlete + O_ATHLETE_BUILD_LEN);
         SP4_BLEN.store(blen, Ordering::Relaxed);
         SP4_CATLEN.store(cat_len, Ordering::Relaxed);
         if bptr < 0x10000 || blen == 0 || blen > 8 || !writable(bptr, (blen as usize) * 8) {
@@ -4357,10 +4404,29 @@ fn probe_db() {
 //   moved struct defeats a strict match. `pairdiff --min-disp 0x4` then confirms it directly: zero differing
 //   displacements in buy_item and in all three of its callees (0xdf3a70, 0xdf5580, 0xde0120), so the build
 //   Vec, the items Vec and the id are all where they were. orig_len=19 unchanged.
-const RVA_BUY_ITEM: usize = 0xe82e40; // 0.6.2 (2026-09-29: exe2exe strict unique, fn start, size 230 both sides; buy_item and all three callees pairdiff clean at --min-disp 0x4 --imm, no struct offset moved). 0.6.1 was 0xeae130 (2026-09-21: exe2exe strict unique, fn start, size 230 both sides, pairdiff: no struct offset moved). 0.6.0 release was 0xf3d570 (0.6.0-beta2 was 0xfe23b0; exe2exe unique, fn start, size 230 both sides, prologue byte-identical) (0.6.0-beta was 0xf33680, 0.5.7 0xdf5490, 0.5.6 0xebca20, 0.5.5 0xeb2c40, 0.5.4 0xe767e0, 0.5.3 0xd0c680). History for 0.5.3 follows.(0.5.2 was 0x211e070). **The first 24B of the entry are byte-identical** (a single unique hit in the whole exe) + the body is instruction-for-instruction isomorphic + the argument contract is unchanged (r8=athlete, [rsp_entry+0x30]=Game, Game+0x30=catalog). orig_len=19 is unchanged too (11B < 12B -> the next clean boundary is the 8B mov rax,[rsp+0xa8]). WARNING 0.5.3 change: the call path became a vtable (+0x78) thunk 0xd22340 instead of a direct call, but **since we hook the function entry, every call is still caught**. History for 0.5.2 follows. (0.5.1 was 0x1f01090; exe2exe skeleton UNIQUE, the 24B prologue completely identical = body unchanged, delta +0x21cfe0.) History for 0.5.1 follows: the function was heavily reworked (8 push/sub 0x38 -> 5 push/sub 0x50, with build/name comparison split out into the subfunction 0x1f00920) so mask-sig was NONE, but it was confirmed by the unchanged argument contract (r8=athlete, p6=Game@rsp_entry+0x30, Game+0x30=catalog). Cross-checked against the buy driver FUN_142234430 (successor to the old FUN_1420e76e0) + the vtable slot.
+// ** 0.6.3 re-derivation (2026-10-06): the function was rebuilt, not moved. exe2exe finds nothing,
+//   strict or loose; the 25-byte thunk that forwarded to it is gone; the body is no longer 230 bytes.
+//   What did not change is who calls it. `run_tick` still does `call [vtable+0x80]` on the same trait
+//   object, and that vtable is found by its layout (drop, size, align 0x10, two methods, then the two
+//   supertrait pointers at vtable-0x40 and vtable-0x20): 0x3afa198 on 0.6.2, **0x3b08bd8** on 0.6.3.
+//   Slot +0x80 is now a bare `jmp` at 0xf61b80 to **0xf3f510** (317 bytes), and nothing else in the
+//   image refers to that function. Its body is the old one behind a longer prologue:
+//     mov r13,[rsp+0xc8]            8 pushes + sub rsp,0x58 -> entry+0x30 = Game (unchanged slot)
+//     cmp qword [rsi+0x360],0       rsi = r8 = athlete, its build len (was [r8+0x560])
+//     mov rax,[r13+0x30] / mov rbx,[rax+8] / mov r14,[rax+0x10]    the catalog
+//     three callees of 709/917/1069 bytes (were 691/1007/1069), then the same
+//     `call [rax+0x70]` / `sete al` tail with the index in rdx
+//   r9 is still the provider: it is the receiver of the two `call [arg5+0x20]`/`[arg5+0x28]` at the
+//   top, and `run_tick` loads it from the slot it loaded 0.6.2's from. So everything the detour
+//   reads holds (r8 = athlete, r9 = provider, [rsp_entry+0x30] = Game, Game+0x30 = catalog, rax/rdx
+//   out); only the prologue differs.
+//   NOT this function: 0xea1670 (189 bytes) has the same `cmp qword [r8+0x360],0` head, but takes
+//   the Game through r9 and returns a bare bool. It is the AI's "is there anything to buy" test,
+//   new in this build, called from three AI functions and never from `run_tick`.
+const RVA_BUY_ITEM: usize = 0xf3f510; // 0.6.3 (2026-10-06: see the note above; vtable 0x3b08bd8 +0x80 -> jmp 0xf61b80 -> here, size 317). 0.6.2 was 0xe82e40 (2026-09-29: exe2exe strict unique, fn start, size 230 both sides; buy_item and all three callees pairdiff clean at --min-disp 0x4 --imm, no struct offset moved). 0.6.1 was 0xeae130 (2026-09-21: exe2exe strict unique, fn start, size 230 both sides, pairdiff: no struct offset moved). 0.6.0 release was 0xf3d570 (0.6.0-beta2 was 0xfe23b0; exe2exe unique, fn start, size 230 both sides, prologue byte-identical) (0.6.0-beta was 0xf33680, 0.5.7 0xdf5490, 0.5.6 0xebca20, 0.5.5 0xeb2c40, 0.5.4 0xe767e0, 0.5.3 0xd0c680). History for 0.5.3 follows.(0.5.2 was 0x211e070). **The first 24B of the entry are byte-identical** (a single unique hit in the whole exe) + the body is instruction-for-instruction isomorphic + the argument contract is unchanged (r8=athlete, [rsp_entry+0x30]=Game, Game+0x30=catalog). orig_len=19 is unchanged too (11B < 12B -> the next clean boundary is the 8B mov rax,[rsp+0xa8]). WARNING 0.5.3 change: the call path became a vtable (+0x78) thunk 0xd22340 instead of a direct call, but **since we hook the function entry, every call is still caught**. History for 0.5.2 follows. (0.5.1 was 0x1f01090; exe2exe skeleton UNIQUE, the 24B prologue completely identical = body unchanged, delta +0x21cfe0.) History for 0.5.1 follows: the function was heavily reworked (8 push/sub 0x38 -> 5 push/sub 0x50, with build/name comparison split out into the subfunction 0x1f00920) so mask-sig was NONE, but it was confirmed by the unchanged argument contract (r8=athlete, p6=Game@rsp_entry+0x30, Game+0x30=catalog). Cross-checked against the buy driver FUN_142234430 (successor to the old FUN_1420e76e0) + the vtable slot.
 const BUY_PROLOGUE: [u8; 12] = [
-    0x41, 0x57, 0x41, 0x56, 0x56, 0x57, 0x53, 0x48, 0x83, 0xEC, 0x50, 0x48,
-]; // first 12B of the new 0.5.1 prologue: push r15/r14/rsi/rdi/rbx; sub rsp,0x50; (11B = a clean boundary) + the first byte of the following mov (0x48...). Trampoline relocation = 19B (next clean boundary = + mov rax,[rsp+0xa8])
+    0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x55, 0x53,
+]; // 0.6.3: push r15/r14/r13/r12/rsi/rdi/rbp/rbx = 12B, a clean boundary and all the trampoline relocates (`install_replace_4th`). Through 0.6.2 this was 41 57 41 56 56 57 53 48 83 EC 50 48, the first 12B of the 0.5.1 prologue: push r15/r14/rsi/rdi/rbx; sub rsp,0x50; (11B = a clean boundary) + the first byte of the following mov (0x48...). Trampoline relocation = 19B (next clean boundary = + mov rax,[rsp+0xa8])
 static BUY_PROBE_INSTALLED: AtomicU64 = AtomicU64::new(0);
 static CHAMP_SCAN: Mutex<Vec<u64>> = Mutex::new(Vec::new());
 static SCAN_DIAG_DONE: AtomicBool = AtomicBool::new(false); // * one-shot gate for the 0.5.1 scan diagnostic
@@ -4663,7 +4729,7 @@ unsafe fn third_slot_category(athlete: usize, rsp_entry: usize) -> Option<u32> {
     if !AUTO4_MATCH_3RD_CATEGORY {
         return None;
     }
-    let ptr = rd_u64(athlete + 0x558) as usize;
+    let ptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
     if ptr < 0x10000 {
         return None;
     }
@@ -4897,7 +4963,7 @@ fn auto_cands() -> std::sync::Arc<Vec<u64>> {
 // 0.5.4 = 0x8c0 (0.5.3 was 0x8d0). `imul r,r,stride`: 15 hits/0 on 0.5.3, 0/16 on 0.5.4.
 // 0.5.6 / 0.5.7 = still 0x9e0. Re-measured on 0.5.7 the same way the 0.5.4 entry was: `imul r,r,0x9e0` has
 // **121 hits in both builds and `imul r,r,0x8c0` has 0**, and the roster walk itself still steps `add rbx,0x9e0`.
-const ATH_STRIDE: usize = 0xab0; // 0.6.0-beta2 (0.6.0-beta was 0xa70, 0.5.5..0.5.7 0x9e0, 0.5.4 0x8c0, 0.5.3 0x8d0)
+const ATH_STRIDE: usize = 0xab0; // STALE on 0.6.3, and nothing replaces it: the roster is a Vec of athlete POINTERS there (the roster walk 0x1b72360 steps 8 and reads `[[rdx]+0x7f0]`; `imul r,r,0xab0` has 172 hits on 0.6.2 and no stride near it has any on 0.6.3), so `build_lineup_ctx` cannot reach the neighbouring athletes this way. It is unreachable while `itemnet_addr_valid()` is false (`ITEMNET_FORWARD_RVA` is not migrated); reviving the neural pick means finding the lineup another way first. 0.6.0-beta2..0.6.2 (0.6.0-beta was 0xa70, 0.5.5..0.5.7 0x9e0, 0.5.4 0x8c0, 0.5.3 0x8d0)
                                  // Validate an athlete + return (team, champ_id). Strong validation (team in {0,1} + a real champion name) determines the array bounds automatically.
 unsafe fn athlete_lineup_at(p: usize) -> Option<(u64, u64)> {
     if p < 0x10000 {
@@ -5017,7 +5083,7 @@ unsafe fn compute_auto_4th_id(athlete: usize, champ: &str, category: Option<u32>
     if net == 0 || !itemnet_addr_valid() {
         return None;
     }
-    let ptr = rd_u64(athlete + 0x558) as usize; // 0.5.0 build ptr (was 0x410)
+    let ptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize; // 0.5.0 build ptr (was 0x410)
     if ptr < 0x10000 || !readable(ptr, 24) {
         return None;
     }
@@ -5626,8 +5692,8 @@ unsafe fn grow_build(athlete: usize, ptr: usize, cap: u64, old_len: u64, slots: 
         if np < 0x10000 {
             return old_len;
         }
-        wr_u64(athlete + 0x558, np as u64);
-        wr_u64(athlete + 0x550, new_len as u64);
+        wr_u64(athlete + O_ATHLETE_BUILD_PTR, np as u64);
+        wr_u64(athlete + O_ATHLETE_BUILD_CAP, new_len as u64);
         np
     };
     if !writable(np + old * 8, (new_len - old) * 8) {
@@ -5636,7 +5702,7 @@ unsafe fn grow_build(athlete: usize, ptr: usize, cap: u64, old_len: u64, slots: 
     for (i, &value) in slots.iter().enumerate().skip(old) {
         wr_u64(np + i * 8, value);
     }
-    wr_u64(athlete + 0x560, new_len as u64);
+    wr_u64(athlete + O_ATHLETE_BUILD_LEN, new_len as u64);
     new_len as u64
 }
 
@@ -5676,8 +5742,8 @@ unsafe fn needs_build_extension(athlete: usize) -> bool {
     let target = crate::build_config::picker_slots() as u64;
     // 0.6.0 build Vec: cap@+0x550, ptr@+0x558, len@+0x560.
     match (
-        safe_read_u64(athlete + 0x550),
-        safe_read_u64(athlete + 0x560),
+        safe_read_u64(athlete + O_ATHLETE_BUILD_CAP),
+        safe_read_u64(athlete + O_ATHLETE_BUILD_LEN),
     ) {
         (Some(cap), Some(len)) => len >= 3 && len < target && cap >= len,
         _ => false,
@@ -5711,8 +5777,8 @@ unsafe fn buy_inputs(
     is_live: bool,
 ) -> Option<BuyInputs> {
     let read = |offset: usize| safe_read_u64(athlete + offset);
-    let ptr = read(0x558)?;
-    let len = read(0x560)?;
+    let ptr = read(O_ATHLETE_BUILD_PTR)?;
+    let len = read(O_ATHLETE_BUILD_LEN)?;
     if len as usize > BUY_MEMO_BUILD_MAX {
         return None;
     }
@@ -5734,8 +5800,8 @@ unsafe fn buy_inputs(
         read(O_ATHLETE_CHAMP_LEN)?,
         read(O_ATHLETE_TEAM)?,
         read(O_ATHLETE_POS)? & 0xffff_ffff,
-        read(0x518)?, // owned
-        read(0x550)?, // build cap
+        read(O_ATHLETE_ITEMS_LEN)?, // owned
+        read(O_ATHLETE_BUILD_CAP)?, // build cap
         ptr,
         len,
         safe_read_u64(rsp_entry + 0x30)?, // ctx: the catalog every pick resolves in
@@ -5807,6 +5873,7 @@ fn buy_memo_hit(inputs: &BuyInputs) -> bool {
 /// Remembers that a decision from `inputs` changed nothing for `athlete`,
 /// replacing whatever this thread held for it.
 fn buy_memo_store(inputs: BuyInputs) {
+    crate::perf::count(crate::perf::Section::BuyMemoStored);
     let key = buy_memo_key(&inputs);
     let _ = BUY_MEMO.try_with(|memo| {
         let Ok(mut memo) = memo.try_borrow_mut() else {
@@ -5826,6 +5893,9 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
     //   so thread_local accumulation (rec_tl) is used. T_BUY_ALL = the whole detour (including catch_unwind),
     //   T_BUY_EARLY = the background-sim early exit portion (contained in ALL, so it is double counted - subtract when interpreting).
     let r = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| -> u64 {
+        // Relabelled as the call gets further, so each exit is timed as the
+        // kind of call it was: an early exit, a memo hit, or a full pass.
+        let mut probe = crate::perf::Probe::sim(crate::perf::Section::BuyEarlyExit);
         if saved.is_null() {
             return 0;
         } // * mode=3 passes through here too (slot 0/1/2 designation injection). Only the 4th-item logic is gated on mode=4 below.
@@ -5915,10 +5985,15 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   nothing too, so it passes through after ~20 VEH reads. A purchase
         //   (owned), an engine re-plan (the targets), a new pin snapshot or a
         //   flipped gate each change the inputs and run the full path again.
+        probe.set(crate::perf::Section::BuyMemoHit);
         let memo_inputs = buy_inputs(athlete, rsp_entry, seed_r9, is_live);
+        if memo_inputs.is_none() {
+            crate::perf::count(crate::perf::Section::BuyUnmemoizable);
+        }
         if memo_inputs.is_some_and(|inputs| buy_memo_hit(&inputs)) {
             return 0;
         }
+        probe.set(crate::perf::Section::BuyFullPass);
         // -- From here on, only spectated-match buys (a small minority) and background buys by my 5 players get through --
         // * The athlete validity check, now VEH-guarded reads rather than a
         //   `readable` (VirtualQuery) syscall (2026-09-25; see `catalog_name_at`).
@@ -5926,10 +6001,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   furthest of the fields read raw below (+0x550/+0x558/+0x560), which
         //   the old `readable(athlete, 0x538)` no longer reached.
         let (Some(owned), Some(cptr), Some(clen), Some(_)) = (
-            safe_read_u64(athlete + 0x518), // 0.5.0 owned (was 0x3d0)
+            safe_read_u64(athlete + O_ATHLETE_ITEMS_LEN), // 0.5.0 owned (was 0x3d0)
             safe_read_u64(athlete + O_ATHLETE_CHAMP_PTR),
             safe_read_u64(athlete + O_ATHLETE_CHAMP_LEN),
-            safe_read_u64(athlete + 0x560),
+            safe_read_u64(athlete + O_ATHLETE_BUILD_LEN),
         ) else {
             return 0;
         };
@@ -6015,8 +6090,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         };
         if crate::own_team_log::ENABLED && crate::build_config::has_pins(champ) {
             let ctx = rd_u64(rsp_entry + 0x30) as usize;
-            let bptr = rd_u64(athlete + 0x558) as usize;
-            let blen = rd_u64(athlete + 0x560);
+            let bptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
+            let blen = rd_u64(athlete + O_ATHLETE_BUILD_LEN);
             let build: Vec<Option<String>> = if ctx >= 0x10000
                 && bptr >= 0x10000
                 && blen <= 8
@@ -6099,8 +6174,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // item is always injected here. Its own team gate is below.
         if own_team_only && is_player {
             let ctx012 = rd_u64(rsp_entry + 0x30) as usize;
-            let bptr = rd_u64(athlete + 0x558) as usize; // 0.5.0 build ptr
-            let blen = rd_u64(athlete + 0x560); // 0.5.0 build len
+            let bptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize; // 0.5.0 build ptr
+            let blen = rd_u64(athlete + O_ATHLETE_BUILD_LEN); // 0.5.0 build len
             if ctx012 >= 0x10000
                 && bptr >= 0x10000
                 && blen >= 1
@@ -6192,8 +6267,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         if BUY_ORDER_DIAG && is_player {
             let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 let ctx = rd_u64(rsp_entry + 0x30) as usize;
-                let bp = rd_u64(athlete + 0x558) as usize;
-                let bl = rd_u64(athlete + 0x560);
+                let bp = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
+                let bl = rd_u64(athlete + O_ATHLETE_BUILD_LEN);
                 if ctx < 0x10000
                     || bp < 0x10000
                     || bl == 0
@@ -6245,19 +6320,19 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // Realloc the build Vec 3->4 + build[3] = catalog index. At owned==3 the resolver targets build[3] and builds up from t1.
         //   * RE: a build Vec value is a "catalog index" (not an item id). build[0] = a valid index the game itself put there, with a recipe.
         //   Mechanism check: build[3] = a copy of build[0] (guaranteed valid). If that works, owned goes to 4. Then map the real 4th index.
-        let mut build_len = rd_u64(athlete + 0x560); // 0.5.0 build len (was 0x418)
-        let cap_now = rd_u64(athlete + 0x550); // 0.5.0 build cap (was 0x408)
-                                               // Two things can happen here, often both:
-                                               //   in_place -- the game's own fourth slot exists, so build[3] is
-                                               //               rewritten where it stands;
-                                               //   grow     -- the Vec is shorter than `target` (the game's 4 against
-                                               //               the mod's 6), so it is extended and every new slot is
-                                               //               filled before `len` moves. A 3-long build, which 0.6.0
-                                               //               still produces now and then, gets its 4th this way too.
-                                               // `grow` is the only path that reaches `RVA_REALLOC`. It is called
-                                               // through a raw transmute, so `realloc_ok` checks its entry bytes first:
-                                               // a stale address in that constant crashed matches on 2026-09-16.
-                                               // Keep this condition in step with `needs_build_extension`.
+        let mut build_len = rd_u64(athlete + O_ATHLETE_BUILD_LEN); // 0.5.0 build len (was 0x418)
+        let cap_now = rd_u64(athlete + O_ATHLETE_BUILD_CAP); // 0.5.0 build cap (was 0x408)
+                                                             // Two things can happen here, often both:
+                                                             //   in_place -- the game's own fourth slot exists, so build[3] is
+                                                             //               rewritten where it stands;
+                                                             //   grow     -- the Vec is shorter than `target` (the game's 4 against
+                                                             //               the mod's 6), so it is extended and every new slot is
+                                                             //               filled before `len` moves. A 3-long build, which 0.6.0
+                                                             //               still produces now and then, gets its 4th this way too.
+                                                             // `grow` is the only path that reaches `RVA_REALLOC`. It is called
+                                                             // through a raw transmute, so `realloc_ok` checks its entry bytes first:
+                                                             // a stale address in that constant crashed matches on 2026-09-16.
+                                                             // Keep this condition in step with `needs_build_extension`.
         let in_place = build_len >= 4 && cap_now >= 4;
         let grow = BUILD_EXTEND_ENABLED
             && build_len >= 3
@@ -6265,12 +6340,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
             && cap_now >= build_len
             && realloc_ok();
         if in_place || grow {
-            let ptr = rd_u64(athlete + 0x558) as usize; // 0.5.0 build ptr (was 0x410)
-                                                        // Every live slot is read below, and in place writes build[3..].
+            let ptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize; // 0.5.0 build ptr (was 0x410)
+                                                                      // Every live slot is read below, and in place writes build[3..].
             let live = build_len.min(16) as usize;
             let ok = ptr >= 0x10000
                 && readable(ptr, live * 8)
-                && writable(athlete + 0x550, 0x18)
+                && writable(athlete + O_ATHLETE_BUILD_CAP, 0x18)
                 && (!in_place || writable(ptr, live * 8));
             if ok {
                 let (b0, b1, b2) = (rd_u64(ptr), rd_u64(ptr + 8), rd_u64(ptr + 16));
@@ -6501,7 +6576,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         // have moved the old ones too. Only once the growth
                         // held, or an item moved into a slot that never came
                         // would be lost. The Vec may have moved.
-                        let new_ptr = rd_u64(athlete + 0x558) as usize;
+                        let new_ptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
                         if build_len as usize == slots.len()
                             && new_ptr >= 0x10000
                             && writable(new_ptr, old_len * 8)
@@ -6790,8 +6865,10 @@ fn install_replace_4th() {
         );
         return;
     }
-    // orig_len=19: the new 0.5.1 prologue, 5 push (7) + sub rsp,0x50 (4) = 11B, cannot cover the 12B jmp patch -> relocate to the next clean boundary, 11 + mov rax,[rsp+0xa8] (8) = 19B.
-    match unsafe { install_replace_buy(RVA_BUY_ITEM, 19, buy_replace_ctx as *const () as usize) } {
+    // orig_len=12 since 0.6.3: the prologue is 8 pushes, 12B, exactly the jmp patch. (Through 0.6.2 it was 19:
+    // 5 push (7) + sub rsp,0x50 (4) = 11B could not cover the 12B patch, so it ran to the next clean boundary,
+    // + mov rax,[rsp+0xa8] (8).)
+    match unsafe { install_replace_buy(RVA_BUY_ITEM, 12, buy_replace_ctx as *const () as usize) } {
         Ok(_) => BUY_PROBE_INSTALLED.store(1, Ordering::Relaxed),
         Err(e) => {
             BUY_PROBE_INSTALLED.store(3, Ordering::Relaxed);
@@ -7158,29 +7235,31 @@ unsafe fn patch_bytes(
 //   The beta2 site was a call's result spilled to the stack; the release
 //   inlines that call as the counting loop just above, which is why the form
 //   changed and exe2exe finds no match for the container (871 -> 1007 bytes).
-//   The 11-byte form below, through the `mov r13,[rsp+0x68]` after the jbe,
-//   is unique in .text.
+//   The 11-byte form below, through the spill reload after the jbe, is unique
+//   in .text. 0.6.3 recompiled the resolver (1007 -> 917 bytes): the count is in
+//   rbx and the reload is `mov r14,[rsp+0x48]`, where 0.6.2 had `cmp rax,3` and
+//   `mov r13,[rsp+0x68]`. Same gate, same `jbe`, different bytes.
 unsafe fn patch_final_gate() -> String {
-    let sig = exe_base_addr() + 0xe83251; // 0.6.2, container 0xe82f30 +0x321 (0.6.1 0xeae541; container a strict exe2exe match, bytes unchanged) (0.6.0 release 0xf3d981; container a strict exe2exe match, bytes unchanged)
+    let sig = exe_base_addr() + 0xea216a; // 0.6.3, container 0xea1ea0 +0x2ca (buy_item's second callee again; the form changed with the address, see above) (0.6.2 0xe83251, container 0xe82f30 +0x321) (0.6.1 0xeae541; container a strict exe2exe match, bytes unchanged) (0.6.0 release 0xf3d981; container a strict exe2exe match, bytes unchanged)
     const EXPECT: [(usize, u8); 11] = [
         (0, 0x48),
         (1, 0x83),
-        (2, 0xf8),
-        (3, 0x03), //  cmp rax, 3
+        (2, 0xfb),
+        (3, 0x03), //  cmp rbx, 3
         (4, 0x76),
-        (5, 0x65), //                       jbe +0x65   <- opcode at +4
+        (5, 0x37), //                       jbe +0x37   <- opcode at +4
         (6, 0x4c),
         (7, 0x8b),
-        (8, 0x6c),
+        (8, 0x74),
         (9, 0x24),
-        (10, 0x68), // mov r13, [rsp+0x68]
+        (10, 0x48), // mov r14, [rsp+0x48]
     ];
     patch_bytes("final_gate", sig, &EXPECT, &[(4, 0xEB)])
 }
 
 // * The tick's own finals cap, the one `patch_final_gate` could not reach.
 //
-//   `run_tick` (0x17a7b60 on 0.6.2, 0x1afad10 on 0.6.1, 0x174d640 on 0.6.0) calls buy_item through its vtable (+0x78), and on
+//   `run_tick` (0x1465e80 on 0.6.3, 0x17a7b60 on 0.6.2, 0x1afad10 on 0.6.1, 0x174d640 on 0.6.0) calls buy_item through its vtable (+0x80 on 0.6.2 and 0.6.3), and on
 //   an approved purchase counts the athlete's owned finals again -- the same
 //   inlined loop the resolver has -- then
 //
@@ -7189,11 +7268,11 @@ unsafe fn patch_final_gate() -> String {
 //   so a 5th item buy_item said yes to was dropped here, every time. Raising
 //   the imm to `slots - 1` keeps a hard cap, now at `slots` finals, instead of
 //   deleting the check. The 17-byte form below (through the
-//   `mov r9,[rbp+0x4cd0]` after the ja; 0x4e18 on 0.6.1, 0x4e20 on 0.6.0) is unique in .text; so is the
+//   `mov r9,[rbp+0x42f0]` after the ja; 0x4cd0 on 0.6.2, 0x4e18 on 0.6.1, 0x4e20 on 0.6.0) is unique in .text; so is the
 //   13-byte form with the rel32 masked, which is how to re-find it. That trailing frame slot has
 //   moved on every update, so re-read it from the disassembly rather than carrying it forward.
 unsafe fn patch_tick_finals_cap(slots: u8) -> String {
-    let sig = exe_base_addr() + 0x17ac532; // 0.6.2, run_tick 0x17a7b60 +0x49d2 (0.6.1 0x1aff8f2; run_tick 21164 -> 20694 bytes, the rel32-masked 13-byte form is unique, the ja rel32 and the [rax+0xa68] gold read after it are unchanged) (0.6.0 release 0x1752342; run_tick changed size, found by the rel32-masked 13-byte form, unique)
+    let sig = exe_base_addr() + 0x146baf3; // 0.6.3, run_tick 0x1465e80 +0x5c73 (run_tick 20694 -> 25507 bytes; the rel32-masked 13-byte form is still unique, the ja rel32 is 0x24a now and the gold read after it is [rax+0x868]) (0.6.2 0x17ac532, run_tick 0x17a7b60 +0x49d2) (0.6.1 0x1aff8f2; run_tick 21164 -> 20694 bytes, the rel32-masked 13-byte form is unique, the ja rel32 and the [rax+0xa68] gold read after it are unchanged) (0.6.0 release 0x1752342; run_tick changed size, found by the rel32-masked 13-byte form, unique)
     const EXPECT: [(usize, u8); 17] = [
         (0, 0x48),
         (1, 0x83),
@@ -7201,17 +7280,17 @@ unsafe fn patch_tick_finals_cap(slots: u8) -> String {
         (3, 0x03), //                cmp rax, 3   <- imm at +3
         (4, 0x0f),
         (5, 0x87),
-        (6, 0x44),
+        (6, 0x4a),
         (7, 0x02),
         (8, 0x00),
         (9, 0x00), // ja rel32
         (10, 0x4c),
         (11, 0x8b),
         (12, 0x8d),
-        (13, 0xd0),
-        (14, 0x4c),
+        (13, 0xf0),
+        (14, 0x42),
         (15, 0x00),
-        (16, 0x00), // mov r9, [rbp+0x4cd0] (0.6.1: 0x4e18, 0.6.0: 0x4e20)
+        (16, 0x00), // mov r9, [rbp+0x42f0] (0.6.2: 0x4cd0, 0.6.1: 0x4e18, 0.6.0: 0x4e20)
     ];
     patch_bytes("tick_finals_cap", sig, &EXPECT, &[(3, slots - 1)])
 }
@@ -7229,7 +7308,7 @@ unsafe fn patch_tick_finals_cap(slots: u8) -> String {
 //   Pinned by the same masked form `patch_slot_count` used, with the release
 //   immediates -- the bare cmp/mov/cmov is a stock idiom with dozens of hits.
 unsafe fn patch_row_floor(slots: u8) -> String {
-    let sig = exe_base_addr() + 0xb8b0f1; // 0.6.2, inside the ingame mega-function 0xb84660 (0.6.1 0xb34d91 in 0xb2e260; the masked form is still unique) (0.6.0 release 0xa6a501 in 0xa63a70; the masked form is unique)
+    let sig = exe_base_addr() + 0xba33f1; // 0.6.3, inside the ingame mega-function 0xb9c970 at +0x6a81 (135436 -> 135652 bytes; the masked form is still unique) (0.6.2 0xb8b0f1 in 0xb84660) (0.6.1 0xb34d91 in 0xb2e260; the masked form is still unique) (0.6.0 release 0xa6a501 in 0xa63a70; the masked form is unique)
     const EXPECT: [(usize, u8); 18] = [
         (0, 0x8a),
         (1, 0x9d), //                           mov bl, [rbp+disp32]
@@ -7260,7 +7339,7 @@ unsafe fn patch_row_floor(slots: u8) -> String {
 //   `patch_result_slot_count` explains the screen; the form is the same
 //   19 bytes with the release immediates, and still unique.
 unsafe fn patch_result_row_floor(slots: u8) -> String {
-    let sig = exe_base_addr() + 0xa6b9da; // 0.6.2, in the match-result screen builder 0xa69590 (0.6.1 0x8bf9de in 0x8bd560; the full 19-byte form is still unique, bytes unchanged) (0.6.0 release 0xc5264e in 0xc501d0; bytes unchanged)
+    let sig = exe_base_addr() + 0x910f8a; // 0.6.3, in the match-result screen builder 0x90eb40 at +0x244a (a strict exe2exe match at identical size 33673; the full 19-byte form is still unique, bytes unchanged) (0.6.2 0xa6b9da in 0xa69590) (0.6.1 0x8bf9de in 0x8bd560; the full 19-byte form is still unique, bytes unchanged) (0.6.0 release 0xc5264e in 0xc501d0; bytes unchanged)
     const EXPECT: [(usize, u8); 19] = [
         (0, 0x48),
         (1, 0x83),
@@ -7695,7 +7774,7 @@ unsafe fn patch_slot_ui_inner() -> String {
 //   (1) exe file size - 0.6.0_beta1 = 81,422,336B (0.5.7 was 77,111,808B, 0.5.6 77,101,056B, 0.5.5 76,957,696B, 0.5.4 75,936,256B, 0.5.3 74,970,624B). It reliably differs per version and costs nothing to read.
 //   (2) measured entry prologues of 3 key hooks - catches a repackage that happens to have the same size but different code.
 //  WARNING a loose check (size only) could misbehave on a hotfix, so we look at the prologues too.
-const GAME_EXE_SIZE_062: u64 = 86_674_944; // 0.6.2 (0.6.1 was 86_330_880, 0.6.0 release 86_082_048, 0.6.0_beta2 86_023_680) (0.6.0_beta1 was 81_422_336)
+const GAME_EXE_SIZE_063: u64 = 86_804_992; // 0.6.3 (0.6.2 was 86_674_944, 0.6.1 86_330_880, 0.6.0 release 86_082_048, 0.6.0_beta2 86_023_680) (0.6.0_beta1 was 81_422_336)
 static VERSION_OK: AtomicBool = AtomicBool::new(false);
 static VERSION_MSG: Mutex<String> = Mutex::new(String::new());
 /// Decide whether this is 0.6.0_beta1. Called once from init; the result is stored in VERSION_OK.
@@ -7705,12 +7784,12 @@ fn check_game_version() -> bool {
     let size_ok = match exe_path().and_then(|p| fs::metadata(p).ok()) {
         Some(m) => {
             let sz = m.len();
-            if sz == GAME_EXE_SIZE_062 {
+            if sz == GAME_EXE_SIZE_063 {
                 true
             } else {
                 why = format!(
-                    "exe size mismatch: {}B (0.6.2 = {}B)",
-                    sz, GAME_EXE_SIZE_062
+                    "exe size mismatch: {}B (0.6.3 = {}B)",
+                    sz, GAME_EXE_SIZE_063
                 );
                 false
             }
@@ -7772,7 +7851,7 @@ fn check_game_version() -> bool {
     };
     let ok = size_ok && proto_ok;
     *VERSION_MSG.lock().unwrap_or_else(|e| e.into_inner()) = if ok {
-        "0.6.2 confirmed - active".to_string()
+        "0.6.3 confirmed - active".to_string()
     } else {
         format!("version mismatch -> this half is fully disabled ({})", why)
     };

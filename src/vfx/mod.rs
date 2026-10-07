@@ -18,7 +18,7 @@ pub(crate) use annul::Annul;
 pub(crate) use energized::Energized;
 pub(crate) use eternity::Eternity;
 pub(crate) use lifeline::Lifeline;
-pub(crate) use spellblade::Spellblade;
+pub(crate) use spellblade::{Spellblade, SpellbladeBonus};
 
 pub(crate) fn refresh_buff(ctx: &mut StableSim<'_>, entity: usize, name: &str, buff: &BuffV1) {
     ctx.entity_remove_buff(entity, name);

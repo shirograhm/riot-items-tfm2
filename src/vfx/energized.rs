@@ -1,6 +1,7 @@
-//! Energized: moving and basic attacking fill a meter, and the hit that lands
-//! with it full spends it. Shared by Statikk Shiv, Stormrazor and Voltaic
-//! Cyclosword; each item owns its numbers and what its charged hit does.
+//! Energized: moving and basic attacking fill a meter, and the basic attack
+//! that lands with it full spends it. Shared by Statikk Shiv, Stormrazor and
+//! Voltaic Cyclosword; each item owns its numbers and what its charged hit
+//! does.
 //!
 //! There is no hook for moving, so the meter gains a stack as time passes and
 //! a few more on every basic attack. While the carrier is charged they hold
@@ -15,10 +16,8 @@
 //! charged attack sets off both, both meters start over together, and from
 //! then on they fill in step.
 //!
-//! A buff is read a few ticks late, both as it goes up and as it comes down,
-//! and Voltaic Cyclosword's charge can be spent by an Ability while another
-//! item's still waits for a basic attack and keeps the buff up. So an item
-//! that has just spent a charge goes by its own meter alone for
+//! A buff is read a few ticks late, both as it goes up and as it comes down.
+//! So an item that has just spent a charge goes by its own meter alone for
 //! `SHARE_LOCKOUT_TICKS`, which is shorter than the meter takes to fill.
 
 use mod_api_stable::*;

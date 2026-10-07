@@ -37,7 +37,7 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.6.2.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.6.3.
 //!
 //! The finder identifies the target by its **argument shape** rather than by
 //! anything in its body: the return type is 24 bytes so it comes back via `sret`
@@ -235,10 +235,21 @@ const ABSOLUTE_JUMP_LEN: usize = 12;
 /// caller sites in 4 functions (3037 identical, 30700 -> 30665, 1239 -> 1223, megafunction
 /// 79985 -> 79953, which is again one of `CL_LAUNCHER`'s callers). The margin is thin now:
 /// 47 bytes already hit 2 functions, so do not shorten.
+///
+/// 0.6.2 -> 0.6.3 (2026-10-06): the bytes changed again. The target moved `0x205ae40` ->
+/// **`0x2857400`** (2709 -> 2628 bytes): frame 0x238 -> 0x218, both displacements
+/// 0x1a0/0x198 -> 0x180/0x178 (the same 0x20 the frame lost), and r9 is kept in rbx now.
+/// exe2exe finds nothing, so it came from the locator: 5 candidates on both builds, two of
+/// 0.6.3's the recorded decoys at identical sizes (1533, 1489), and of the other three only
+/// this one has the target's callers, 8 sites in 4 functions with three of them at 0.6.2's
+/// exact sizes (30665, 3037, 1223) and the megafunction (79953 -> 80906) again one of
+/// `CL_LAUNCHER`'s callers. Its callees agree: the 567-byte pair at +0xa7/+0x164 and the
+/// 6354-byte one at +0x610, all 0.6.2's sizes. The stack arguments are still read at
+/// entry+0x28/+0x30. 48 bytes are unique; 47 hit 3 functions, so do not shorten.
 const FALLBACK_SIGNATURE: [u8; 48] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x38,
-    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0xA0, 0x01,
-    0x00, 0x00, 0x48, 0xC7, 0x85, 0x98, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4D, 0x89, 0xCE,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x18,
+    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x80, 0x01,
+    0x00, 0x00, 0x48, 0xC7, 0x85, 0x78, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0xCB,
 ];
 
 /// Plausible size range for the target in bytes (1869 in SDK 0.5.2). Narrows the
@@ -473,7 +484,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.6.2 and this build differs — \
+            "{error}; the built-in signature is for game 0.6.3 and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;
@@ -609,6 +620,7 @@ unsafe fn detour(
     team2: &Vec<(Position, String)>,
     mode: bool,
 ) -> Vec<Vec<usize>> {
+    let _probe = crate::perf::Probe::start(crate::perf::Section::NativeBuildHook);
     // The merged `tfm2_item_tactics` half needs the game's `Database`, which a
     // stable-ABI mod is never handed. `agent` is the item recommendation network
     // that lives at a fixed offset inside it, so this argument is the one route
@@ -665,18 +677,23 @@ unsafe fn detour(
     // are decided in `crate::item_build_hook`, on the stable API, where the
     // champion a build belongs to is stated rather than inferred from route
     // order. The `mode` routes are the exception - see below.
-    let mut routes = ORIGINAL
-        .get()
-        .copied()
-        .expect("item build hook original function missing")(
-        agent,
-        items,
-        champions,
-        champion_ids,
-        team1,
-        team2,
-        mode,
-    );
+    // Timed apart from the detour around it: the game's own build decision,
+    // which includes this mod's `score_item`/`decide_build` hooks called from
+    // inside it.
+    let mut routes = crate::perf::time(crate::perf::Section::NativeBuildGame, || {
+        ORIGINAL
+            .get()
+            .copied()
+            .expect("item build hook original function missing")(
+            agent,
+            items,
+            champions,
+            champion_ids,
+            team1,
+            team2,
+            mode,
+        )
+    });
 
     // The buy detour's team gate lets both sides of a test through (the 5th
     // and 6th slots are only set there), so it has to know a test is on.
