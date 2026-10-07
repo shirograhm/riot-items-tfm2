@@ -12,12 +12,14 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 [h3][i] THIS MOD WILL CHANGE THE BALANCE OF YOUR GAME. USE WITH CAUTION. [/i][/h3]
 
-[h1] Known Issues [/h1]
-- Some AI champions prefer the wrong stats when picking their own items. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
-- The SoloQ page may sometimes show incorrect item builds.  
-- The build editor only shows item and champion names in English.  
-- Saves from older versions of this mod may lag during the BP phase and in-game. For now, use a new save.  
-- Largely untested in multiplayer. It should work, but custom item builds only follow the host's choices.  
+[h1] Versioning [/h1]
+Currently updated for game version 0.6.3. Older game versions need an older build of the mod:  
+Mod v0.11.11+ - 0.6.3  
+Mod v0.11.3-0.11.10 - 0.6.2  
+Mod v0.10.1-0.11.2 - 0.6.1  
+Mod v0.9.11-0.10.0 - 0.6.0  
+
+Manual releases: https://github.com/shirograhm/riot-items-tfm2/releases
 
 [h1] Instructions [/h1]
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -28,20 +30,15 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
 4. Play as you would normally!
 
-[h1] Versioning [/h1]
-Currently updated for game version 0.6.3. Older game versions need an older build of the mod:  
-Mod v0.11.11+ - 0.6.3  
-Mod v0.11.3-0.11.10 - 0.6.2  
-Mod v0.10.1-0.11.2 - 0.6.1  
-Mod v0.9.11-0.10.0 - 0.6.0  
-Mod v0.9.6-9 - v0.5.8  
-
-Manual releases: https://github.com/shirograhm/riot-items-tfm2/releases
+[h1] Known Issues [/h1]
+- Some AI champions prefer the wrong stats when picking their own items. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
+- The SoloQ page may sometimes show incorrect item builds.  
+- The build editor only shows item and champion names in English.  
+- Saves from older versions of this mod may lag during the BP phase and in-game. For now, use a new save.  
+- Largely untested in multiplayer. It should work, but custom item builds only follow the host's choices.  
 
 [h1] Custom Item Values [/h1]
-This mod works directly out of the box!  
-
-However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:  
+This mod works directly out of the box! However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:  
 
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]  
 2. Edit the new [b]config.json[/b] with the custom values that you want.  
@@ -61,7 +58,7 @@ Pick any item for any champion, in-game:
 Use the [b]filter by champion[/b] box to find champions in a long list (separate several with commas). After a draft, [b]Blue Team[/b] and [b]Red Team[/b] under the Matchup card fill the box with that side's champions. Builds save automatically to [b]item-builds.json[/b] and carry across sessions. [b]Save Item Builds[/b] saves manually.  
 
 [h1] Smart Builds [/h1]
-[b]Enforce Smart Builds[/b] (Build Editor footer, on by default) cleans up the AI's picks. These get swapped for another item of the same category:
+[b]Enforce Smart Builds[/b] cleans up the AI's picks. The following items are swapped for another item of the same category:
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
 - a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count.
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
@@ -69,10 +66,8 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - heal, shield and buff items (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on supports that don't heal, shield or buff allies, and on mages
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
-- items the champion doesn't scale with: attack items on an AP champion, AP items on an AD champion, and Hextech Gunblade (the one hybrid item) on anyone but a hybrid champion.
-- Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn on anyone but a marksman.
-
-Support builds get a World Atlas item in the first slot: Zaz'Zak's Realmspike for mages, Dream Maker for supports that heal, shield or buff allies, Celestial Opposition for tanks, Solstice Sleigh for others that immobilize, Zaz'Zak's Realmspike for other AP supports, and Bloodsong for the rest.  
+- items the champion doesn't scale with: attack items on an AP champion, AP items on an AD champion, and Hextech Gunblade (the one hybrid item) on anyone but a hybrid champion (Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn only get built on marksmen).
+- additionally, supports get a World Atlas item in the first slot: Zaz'Zak's Realmspike for mages, Dream Maker for supports that heal, shield or buff allies, Celestial Opposition for tanks, Solstice Sleigh for others that immobilize, Zaz'Zak's Realmspike for other AP supports, and Bloodsong for the rest.  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
@@ -85,16 +80,10 @@ Works alongside [b]Bows' Drafter's Toolbox[/b]. With both enabled, its Advanced 
 Thank you to [b]@SUB[/b] from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
 
 Special thanks to all the playtesters that helped me out along the way by sending me crash dumps and testing beta builds:
-[b]@toxicsnek[/b] for helping with custom item creation & code!
-[b]@Monsoon[/b] for helping with the custom item builds functionality!  
-[b]@blasé[/b] for helping playtest the 4 Item Mode compatibility!  
-[b]@Guardsman C[/b] & [b]@kmrn[/b] for helping playtest the new item hooks on 0.6.0!
+[b]@toxicsnek[/b], [b]@Monsoon[/b], [b]@blasé[/b], [b]@Guardsman C[/b], [b]@kmrn[/b]
 
-Thank you to [b]@Formula Piggy[/b] & [b]@Yuuroo[/b] on discord for Vietnamese translations!
-Thank you to [b]@GeoStelar[/b] on discord for the Portuguese (BR) translations!
-Thank you to [b]@Monsoon[/b] on discord for the Chinese (Simplified) translations!
-Thank you to [b]@Dushnerd[/b] on discord for the Russian translations!
-Thank you to [b]@Flover[/b] on discord for the Korean translations!
+Thank you to all the translators:
+[b]@Formula Piggy[/b], [b]@Yuuroo[/b], [b]@GeoStelar[/b], [b]@Monsoon[/b], [b]@Dushnerd[/b], [b]@Flover[/b] 
 
 And finally, thank you to the people in the modding discord for their help with the mod-sdk setup, documentation, and general coolness.
 
