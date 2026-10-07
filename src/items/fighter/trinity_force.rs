@@ -134,8 +134,8 @@ impl StableItem for TrinityForce {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
@@ -148,7 +148,7 @@ impl StableItem for TrinityForce {
         let bonus_damage = self.effect_bonus_flat_damage
             + percent_of(caster_ref.stat().attack, self.effect_ad_percent_damage);
 
-        ctx.deal_damage(caster, target, bonus_damage, 0, AttackTypeV1::Item);
+        Spellblade::on_hit_physical(ctx, caster, target, damage, damage_type, bonus_damage);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }

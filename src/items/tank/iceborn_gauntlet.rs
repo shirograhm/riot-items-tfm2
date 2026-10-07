@@ -1,9 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{
-    apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade, DISTANCE_UNITS_PER_RANGE,
-};
+use crate::{apply_config, refresh_buff, ticks, ItemMeta, Spellblade, DISTANCE_UNITS_PER_RANGE};
 
 // Spellblade: Using an Ability causes your next basic attack within 10 seconds
 // to deal 30 - 85 (based on level) bonus physical damage and creates a frost
@@ -66,7 +64,6 @@ pub struct IcebornGauntlet {
     effect_max_distance: usize,
     // Non-vital stats (internals)
     spellblade: Spellblade,
-    procs: ProcQueue,
     /// Every zone this carrier has lying in the world. The empowered attack
     /// lays one; the rest happens in `update`.
     zones: Vec<FrostZone>,
@@ -89,7 +86,6 @@ impl IcebornGauntlet {
             effect_max_distance: 30,
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
-            procs: ProcQueue::new(),
             zones: Vec::new(),
         }
     }
@@ -292,7 +288,6 @@ impl StableItem for IcebornGauntlet {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade.reset();
-        self.procs.clear();
     }
 
     fn on_attack(
@@ -300,8 +295,8 @@ impl StableItem for IcebornGauntlet {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
@@ -313,16 +308,14 @@ impl StableItem for IcebornGauntlet {
         };
         let bonus_damage = self.spellblade_damage(caster_ref.level());
 
-        self.procs.push_physical(ctx, target, bonus_damage);
+        Spellblade::on_hit_physical(ctx, caster, target, damage, damage_type, bonus_damage);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
         self.lay_zone(ctx, target);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, watches for the
-    /// cast that readies the next one, and runs the zones.
+    /// Watches for the cast that readies Spellblade, and runs the zones.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);
         self.run_zones(ctx, player);
     }

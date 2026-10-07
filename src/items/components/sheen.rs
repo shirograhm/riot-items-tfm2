@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ProcQueue, Spellblade};
+use crate::{apply_config, Spellblade};
 
 #[derive(Clone, Debug)]
 pub struct Sheen {
@@ -12,7 +12,6 @@ pub struct Sheen {
     effect_max_bonus_damage: usize,
     effect_cooldown_seconds: f64,
     spellblade: Spellblade,
-    procs: ProcQueue,
 }
 
 impl Default for Sheen {
@@ -26,7 +25,6 @@ impl Default for Sheen {
             effect_cooldown_seconds: 1.5,
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
-            procs: ProcQueue::new(),
         }
     }
 }
@@ -103,7 +101,6 @@ impl StableItem for Sheen {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade.reset();
-        self.procs.clear();
     }
 
     fn on_attack(
@@ -111,8 +108,8 @@ impl StableItem for Sheen {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
@@ -124,15 +121,13 @@ impl StableItem for Sheen {
         };
         let bonus_damage = self.spellblade_damage(caster_ref.level());
 
-        self.procs.push_physical(ctx, target, bonus_damage);
+        Spellblade::on_hit_physical(ctx, caster, target, damage, damage_type, bonus_damage);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and watches for
-    /// the cast that readies the next one.
+    /// Watches for the cast that readies Spellblade.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);
     }
 

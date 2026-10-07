@@ -984,9 +984,9 @@ $i18n.en.radiant_eclipse.option = $eclEn -f $reclDur, $reclHpPct, $reclShield, $
 $i18n.en.echoes_of_helia.option = "<#ff7a3eff>Soul Siphon<>: Store <#e8a800ff>${eohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (based on <$levelIcon> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion (excluding yourself) consumes all <#92dc7bff>Soul Charges<> and <$hpRegenIcon> <#60e84dff>heals them<> equal to the consumed amount."
 $i18n.en.radiant_echoes_of_helia.option = "<#ff7a3eff>Soul Siphon<>: Store <#e8a800ff>${reohConversion}%<> of the damage you deal or take as <#92dc7bff>Soul Charges<>, up to <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (based on <$levelIcon> <#d8c9b3ff>level<>). Healing, shielding or buffing an allied champion (excluding yourself) consumes all <#92dc7bff>Soul Charges<> and <$hpRegenIcon> <#60e84dff>heals them<> equal to the consumed amount."
 
-$i18n.en.sheen.option = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> (<#e8a800ff>${sheenCd} second<> cooldown)."
+$i18n.en.sheen.option = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> on-hit (<#e8a800ff>${sheenCd} second<> cooldown)."
 
-$tfTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> (<#e8a800ff>{2} second<> cooldown)."
+$tfTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> of your <$adIcon> <#ff9028ff>Attack Damage<> as <#ff9028ff>bonus physical damage<> on-hit (<#e8a800ff>{2} second<> cooldown)."
 $i18n.en.trinity_force.option = $tfTemplate -f $tfFlat, $tfAdPct, $tfCd
 $i18n.en.radiant_trinity_force.option = $tfTemplate -f $rtfFlat, $rtfAdPct, $rtfCd
 
@@ -1017,12 +1017,12 @@ $i18n.en.eternal_iron_plate.option = $platingTemplate -f $tmPlating
 $i18n.en.impregnable_fortress.option = ($platingTemplate -f $rtmPlating) + "`n`n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <$armorIcon> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
 $i18n.en.plated_steelcaps.option = $platingTemplate -f $psPlating
 
-$dndTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> and <$hpRegenIcon> <#60e84dff>heal you<> for <#a974ffff>{2}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>{3}%<> of your <$hpIcon> <#60e84dff>maximum health<> (<#e8a800ff>{4} second<> cooldown)."
+$dndTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> on-hit and <$hpRegenIcon> <#60e84dff>heal you<> for <#a974ffff>{2}%<> of your <$apIcon> <#a974ffff>Ability Power<> and <#60e84dff>{3}%<> of your <$hpIcon> <#60e84dff>maximum health<> (<#e8a800ff>{4} second<> cooldown)."
 $i18n.en.dusk_and_dawn.option = $dndTemplate -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.en.radiant_dusk_and_dawn.option = $dndTemplate -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
 $richesTemplate = "<#ff7a3eff>Shared Riches<>: Gain <$goldColor>{0} <$goldIcon> gold<> every <#e8a800ff>{1} seconds<>."
-$bsTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>{0}<> - <#a974ffff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> (<#e8a800ff>{2} second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>{3}%<> for <#e8a800ff>{4} seconds<>."
+$bsTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>{0}<> - <#a974ffff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#a974ffff>bonus magic damage<> on-hit (<#e8a800ff>{2} second<> cooldown). If the target is a champion, increase their <#d94c49ff>damage taken<> by <#d94c49ff>{3}%<> for <#e8a800ff>{4} seconds<>."
 $i18n.en.bloodsong.option = ($richesTemplate -f $bsGold, $bsGoldEvery) + "`n`n" + ($bsTemplate -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur)
 $i18n.en.radiant_bloodsong.option = ($richesTemplate -f $rbsGold, $rbsGoldEvery) + "`n`n" + ($bsTemplate -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur)
 $i18n.en.world_atlas.option = $richesTemplate -f $atlasGold, $atlasEvery
@@ -1090,7 +1090,7 @@ $i18n.en.radiant_staff_of_flowing_water.option = $sofwEn -f $rsofwAp, $rsofwAh, 
 $isbEn = "<#ff7a3eff>Lifeline<>: <#d94c49ff>Falling below {0}% health<> grants a <#cab944ff>shield<> for <#e8a800ff>{3} seconds<> that <#cab944ff>absorbs<> <#cab944ff>{1}<> - <#cab944ff>{2}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#cab944ff>damage<> (<#e8a800ff>{4} second<> cooldown)."
 $i18n.en.immortal_shieldbow.option = $isbEn -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
 $i18n.en.radiant_immortal_shieldbow.option = $isbEn -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
-$lbEn = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> (<#e8a800ff>{2} second<> cooldown)."
+$lbEn = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#a974ffff>{0}<> + <#a974ffff>{1}%<> of your <$apIcon> <#a974ffff>Ability Power<> as <#a974ffff>bonus magic damage<> on-hit (<#e8a800ff>{2} second<> cooldown)."
 $i18n.en.lich_bane.option = $lbEn -f $lbFlat, $lbApPct, $lbCd
 $i18n.en.radiant_lich_bane.option = $lbEn -f $rlbFlat, $rlbApPct, $rlbCd
 $imEn = "<#ff7a3eff>Command<>: <#d94c49ff>Immobilizing<> an enemy champion marks them as <#92dc7bff>Vulnerable<> for <#e8a800ff>{0} seconds<>, <#d94c49ff>increasing their damage taken<> by <#d94c49ff>{1}%<>. Subsequent applications refresh this buff."
@@ -1108,7 +1108,7 @@ $i18n.en.spirit_stone.option = $butcherEn -f $ssBonus, $ssHeal
 $cinderEn = "<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>{0}%<> <$hpIcon> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>{1}%<>."
 $i18n.en.philosophers_stone.option = ($bamiTemplate -f $psFlat, $psHpPct, $psRange, $psMinion) + "`n`n" + ($cinderEn -f $psHpMult, $psMaxHp)
 $i18n.en.radiant_philosophers_stone.option = ($bamiTemplate -f $rpsFlat, $rpsHpPct, $rpsRange, $rpsMinion) + "`n`n" + ($cinderEn -f $rpsHpMult, $rpsMaxHp)
-$igTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> and creates a frost zone under the target for <#e8a800ff>{3} seconds<> (<#e8a800ff>{2} second<> cooldown). Enemies within the zone are <#d94c49ff>slowed<> by <#d94c49ff>{4}%<>."
+$igTemplate = "<#ff7a3eff>Spellblade<>: Using an Ability causes your next basic attack within <#e8a800ff>10 seconds<> to deal <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (based on <$levelIcon> <#d8c9b3ff>level<>) <#ff9028ff>bonus physical damage<> on-hit and creates a frost zone under the target for <#e8a800ff>{3} seconds<> (<#e8a800ff>{2} second<> cooldown). Enemies within the zone are <#d94c49ff>slowed<> by <#d94c49ff>{4}%<>."
 $i18n.en.iceborn_gauntlet.option = $igTemplate -f $igMin, $igMax, $igCd, $igDur, $igSlow
 $i18n.en.radiant_iceborn_gauntlet.option = $igTemplate -f $rigMin, $rigMax, $rigCd, $rigDur, $rigSlow
 $moonTemplate = "<#ff7a3eff>Starlit Grace<>: Healing an allied champion (excluding yourself) chains the effect to another allied champion within <#ff86c2ff>{0} <$rangeIcon> range<> of them, <$hpRegenIcon> <#60e84dff>healing {1}%<> of the original amount."
@@ -1275,9 +1275,9 @@ $i18n.vi.radiant_eclipse.option = $eclVi -f $reclDur, $reclHpPct, $reclShield, $
 $i18n.vi.echoes_of_helia.option = "<#ff7a3eff>Hút Hồn<>: Tích trữ <#e8a800ff>${eohConversion}%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh (không tính bản thân) sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <$hpRegenIcon> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
 $i18n.vi.radiant_echoes_of_helia.option = "<#ff7a3eff>Hút Hồn<>: Tích trữ <#e8a800ff>${reohConversion}%<> sát thương bạn gây ra và nhận vào dưới dạng <#92dc7bff>Hồn Lực<>, tối đa <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (tăng theo <#d8c9b3ff>cấp độ<>). Hồi máu, tạo khiên hoặc tăng sức mạnh cho đồng minh (không tính bản thân) sẽ tiêu hết <#92dc7bff>Hồn Lực<>, <$hpRegenIcon> <#60e84dff>hồi máu cho họ<> một lượng bằng số đã tiêu."
 
-$i18n.vi.sheen.option = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>${sheenCd} giây<>)."
+$i18n.vi.sheen.option = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>${sheenCd} giây<>)."
 
-$tfTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>)."
+$tfTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> <$adIcon> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>{2} giây<>)."
 $i18n.vi.trinity_force.option = $tfTemplateVi -f $tfFlat, $tfAdPct, $tfCd
 $i18n.vi.radiant_trinity_force.option = $tfTemplateVi -f $rtfFlat, $rtfAdPct, $rtfCd
 
@@ -1308,12 +1308,12 @@ $i18n.vi.eternal_iron_plate.option = $platingTemplateVi -f $tmPlating
 $i18n.vi.impregnable_fortress.option = ($platingTemplateVi -f $rtmPlating) + "`n`n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <$armorIcon> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
 $i18n.vi.plated_steelcaps.option = $platingTemplateVi -f $psPlating
 
-$dndTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> và <$hpRegenIcon> <#60e84dff>hồi máu cho bạn<> <#a974ffff>{2}%<> <$apIcon> <#a974ffff>SMPT<> và <#60e84dff>{3}%<> <$hpIcon> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>{4} giây<>)."
+$dndTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> khi đánh trúng và <$hpRegenIcon> <#60e84dff>hồi máu cho bạn<> <#a974ffff>{2}%<> <$apIcon> <#a974ffff>SMPT<> và <#60e84dff>{3}%<> <$hpIcon> <#60e84dff>máu tối đa<> (hồi chiêu <#e8a800ff>{4} giây<>)."
 $i18n.vi.dusk_and_dawn.option = $dndTemplateVi -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.vi.radiant_dusk_and_dawn.option = $dndTemplateVi -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
 $richesTemplateVi = "<#ff7a3eff>Chia Tiền<>: Nhận <$goldColor>{0} <$goldIcon> vàng<> mỗi <#e8a800ff>{1} giây<>."
-$bsTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>{0}<> - <#a974ffff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>{3}%<> trong <#e8a800ff>{4} giây<>."
+$bsTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>{0}<> - <#a974ffff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#a974ffff>sát thương phép cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>{2} giây<>). Nếu mục tiêu là tướng, tăng <#d94c49ff>sát thương chúng phải nhận<> thêm <#d94c49ff>{3}%<> trong <#e8a800ff>{4} giây<>."
 $i18n.vi.bloodsong.option = ($richesTemplateVi -f $bsGold, $bsGoldEvery) + "`n`n" + ($bsTemplateVi -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur)
 $i18n.vi.radiant_bloodsong.option = ($richesTemplateVi -f $rbsGold, $rbsGoldEvery) + "`n`n" + ($bsTemplateVi -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur)
 $i18n.vi.world_atlas.option = $richesTemplateVi -f $atlasGold, $atlasEvery
@@ -1381,7 +1381,7 @@ $i18n.vi.radiant_staff_of_flowing_water.option = $sofwVi -f $rsofwAp, $rsofwAh, 
 $isbVi = "<#ff7a3eff>Bảo Hiểm Ma Pháp<>: <#d94c49ff>Máu rơi xuống dưới {0}%<> sẽ tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>{3} giây<> <#cab944ff>hấp thụ<> <#cab944ff>{1}<> - <#cab944ff>{2}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<> (<#e8a800ff>{4} giây<> hồi chiêu)."
 $i18n.vi.immortal_shieldbow.option = $isbVi -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
 $i18n.vi.radiant_immortal_shieldbow.option = $isbVi -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
-$lbVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> (hồi chiêu <#e8a800ff>{2} giây<>)."
+$lbVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#a974ffff>{0}<> + <#a974ffff>{1}%<> <$apIcon> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép cộng thêm<> khi đánh trúng (hồi chiêu <#e8a800ff>{2} giây<>)."
 $i18n.vi.lich_bane.option = $lbVi -f $lbFlat, $lbApPct, $lbCd
 $i18n.vi.radiant_lich_bane.option = $lbVi -f $rlbFlat, $rlbApPct, $rlbCd
 $imVi = "<#ff7a3eff>Chỉ Huy<>: <#d94c49ff>Làm Bất Động<> một tướng địch sẽ đánh dấu chúng <#92dc7bff>Suy Yếu<> trong <#e8a800ff>{0} giây<>, <#d94c49ff>tăng sát thương chúng phải nhận<> thêm <#d94c49ff>{1}%<>. Các lần áp dụng tiếp theo sẽ làm mới hiệu ứng này."
@@ -1399,7 +1399,7 @@ $i18n.vi.spirit_stone.option = $butcherVi -f $ssBonus, $ssHeal
 $cinderVi = "<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>{0}%<> <$hpIcon> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>{1}%<>."
 $i18n.vi.philosophers_stone.option = ($bamiTemplateVi -f $psFlat, $psHpPct, $psRange, $psMinion) + "`n`n" + ($cinderVi -f $psHpMult, $psMaxHp)
 $i18n.vi.radiant_philosophers_stone.option = ($bamiTemplateVi -f $rpsFlat, $rpsHpPct, $rpsRange, $rpsMinion) + "`n`n" + ($cinderVi -f $rpsHpMult, $rpsMaxHp)
-$igTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> và tạo ra một vùng đóng băng dưới chân mục tiêu trong <#e8a800ff>{3} giây<> (hồi chiêu <#e8a800ff>{2} giây<>). Kẻ địch trong vùng này bị <#d94c49ff>làm chậm<> <#d94c49ff>{4}%<>."
+$igTemplateVi = "<#ff7a3eff>Kiếm Phép<>: Sử dụng kĩ năng khiến đòn đánh thường tiếp theo của bạn trong vòng <#e8a800ff>10 giây<> gây <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<>) dưới dạng <#ff9028ff>sát thương vật lí cộng thêm<> khi đánh trúng và tạo ra một vùng đóng băng dưới chân mục tiêu trong <#e8a800ff>{3} giây<> (hồi chiêu <#e8a800ff>{2} giây<>). Kẻ địch trong vùng này bị <#d94c49ff>làm chậm<> <#d94c49ff>{4}%<>."
 $i18n.vi.iceborn_gauntlet.option = $igTemplateVi -f $igMin, $igMax, $igCd, $igDur, $igSlow
 $i18n.vi.radiant_iceborn_gauntlet.option = $igTemplateVi -f $rigMin, $rigMax, $rigCd, $rigDur, $rigSlow
 $moonTemplateVi = "<#ff7a3eff>Ánh Sao Yêu Kiều<>: Hồi máu cho một tướng đồng minh (không tính bản thân) sẽ truyền hiệu ứng sang một tướng đồng minh khác trong phạm vi <#ff86c2ff>{0}<> <$rangeIcon> quanh họ, <$hpRegenIcon> <#60e84dff>hồi máu bằng {1}%<> lượng ban đầu."
@@ -1566,9 +1566,9 @@ $i18n.'zh-hans'.radiant_eclipse.option = $eclZh -f $reclDur, $reclHpPct, $reclSh
 $i18n.'zh-hans'.echoes_of_helia.option = "<#ff7a3eff>灵魂虹吸<>：将你造成和受到伤害的 <#e8a800ff>${eohConversion}%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<>（随<#d8c9b3ff>等级<>提升）。为友方英雄（自己除外）回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<$hpRegenIcon> <#60e84dff>回复<>等量的生命值。"
 $i18n.'zh-hans'.radiant_echoes_of_helia.option = "<#ff7a3eff>灵魂虹吸<>：将你造成和受到伤害的 <#e8a800ff>${reohConversion}%<> 储存为 <#92dc7bff>灵魂充能<>，最多 <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<>（随<#d8c9b3ff>等级<>提升）。为友方英雄（自己除外）回复生命、提供护盾或增益时，消耗全部 <#92dc7bff>灵魂充能<>，为其<$hpRegenIcon> <#60e84dff>回复<>等量的生命值。"
 
-$i18n.'zh-hans'.sheen.option = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>${sheenCd}秒<>）。"
+$i18n.'zh-hans'.sheen.option = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击命中时会造成 <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>${sheenCd}秒<>）。"
 
-$tfTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成相当于 <#ff9028ff>{0}<> + <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{1}%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>{2}秒<>）。"
+$tfTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击命中时会造成相当于 <#ff9028ff>{0}<> + <$adIcon> <#ff9028ff>攻击力<>的 <#ff9028ff>{1}%<> 的<#ff9028ff>额外物理伤害<>（冷却 <#e8a800ff>{2}秒<>）。"
 $i18n.'zh-hans'.trinity_force.option = $tfTemplateZh -f $tfFlat, $tfAdPct, $tfCd
 $i18n.'zh-hans'.radiant_trinity_force.option = $tfTemplateZh -f $rtfFlat, $rtfAdPct, $rtfCd
 
@@ -1599,12 +1599,12 @@ $i18n.'zh-hans'.eternal_iron_plate.option = $platingTemplateZh -f $tmPlating
 $i18n.'zh-hans'.impregnable_fortress.option = ($platingTemplateZh -f $rtmPlating) + "`n`n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <$armorIcon> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
 $i18n.'zh-hans'.plated_steelcaps.option = $platingTemplateZh -f $psPlating
 
-$dndTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>，并<$hpRegenIcon> <#60e84dff>为你回复<>相当于<$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{2}%<> 与<$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{3}%<> 的生命值（冷却 <#e8a800ff>{4}秒<>）。"
+$dndTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击命中时会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>，并<$hpRegenIcon> <#60e84dff>为你回复<>相当于<$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{2}%<> 与<$hpIcon> <#60e84dff>最大生命值<>的 <#60e84dff>{3}%<> 的生命值（冷却 <#e8a800ff>{4}秒<>）。"
 $i18n.'zh-hans'.dusk_and_dawn.option = $dndTemplateZh -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.'zh-hans'.radiant_dusk_and_dawn.option = $dndTemplateZh -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
 $richesTemplateZh = "<#ff7a3eff>分享财富<>：每 <#e8a800ff>{1}秒<> 获得 <$goldColor>{0} <$goldIcon> 金币<>。"
-$bsTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#a974ffff>{0}<> - <#a974ffff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>{2}秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>{3}%<>，持续 <#e8a800ff>{4}秒<>。"
+$bsTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击命中时会造成 <#a974ffff>{0}<> - <#a974ffff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>{2}秒<>）。如果目标是英雄，使其<#d94c49ff>受到的伤害<>提高 <#d94c49ff>{3}%<>，持续 <#e8a800ff>{4}秒<>。"
 $i18n.'zh-hans'.bloodsong.option = ($richesTemplateZh -f $bsGold, $bsGoldEvery) + "`n`n" + ($bsTemplateZh -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur)
 $i18n.'zh-hans'.radiant_bloodsong.option = ($richesTemplateZh -f $rbsGold, $rbsGoldEvery) + "`n`n" + ($bsTemplateZh -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur)
 $i18n.'zh-hans'.world_atlas.option = $richesTemplateZh -f $atlasGold, $atlasEvery
@@ -1672,7 +1672,7 @@ $i18n.'zh-hans'.radiant_staff_of_flowing_water.option = $sofwZh -f $rsofwAp, $rs
 $isbZh = "<#ff7a3eff>救主灵刃<>：<#d94c49ff>生命值降至{0}%以下<>时，获得一个持续 <#e8a800ff>{3}秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>{1}<> - <#cab944ff>{2}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>（冷却时间{4}秒）。"
 $i18n.'zh-hans'.immortal_shieldbow.option = $isbZh -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
 $i18n.'zh-hans'.radiant_immortal_shieldbow.option = $isbZh -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
-$lbZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>{2}秒<>）。"
+$lbZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击命中时会造成相当于 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>法术强度<>的 <#a974ffff>{1}%<> 的<#a974ffff>额外魔法伤害<>（冷却 <#e8a800ff>{2}秒<>）。"
 $i18n.'zh-hans'.lich_bane.option = $lbZh -f $lbFlat, $lbApPct, $lbCd
 $i18n.'zh-hans'.radiant_lich_bane.option = $lbZh -f $rlbFlat, $rlbApPct, $rlbCd
 $imZh = "<#ff7a3eff>命令<>：<#d94c49ff>定身<>一个敌方英雄时，使其<#92dc7bff>易损<>，持续 <#e8a800ff>{0}秒<>，<#d94c49ff>受到的伤害<>提高 <#d94c49ff>{1}%<>。再次施加会刷新此效果。"
@@ -1690,7 +1690,7 @@ $i18n.'zh-hans'.spirit_stone.option = $butcherZh -f $ssBonus, $ssHeal
 $cinderZh = "<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>{0}%<> 的<$hpIcon> <#60e84dff>最大生命值<>，最多 <#60e84dff>{1}%<>。"
 $i18n.'zh-hans'.philosophers_stone.option = ($bamiTemplateZh -f $psFlat, $psHpPct, $psRange, $psMinion) + "`n`n" + ($cinderZh -f $psHpMult, $psMaxHp)
 $i18n.'zh-hans'.radiant_philosophers_stone.option = ($bamiTemplateZh -f $rpsFlat, $rpsHpPct, $rpsRange, $rpsMinion) + "`n`n" + ($cinderZh -f $rpsHpMult, $rpsMaxHp)
-$igTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击会造成 <#ff9028ff>{0}<> - <#ff9028ff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>，并在目标脚下生成一个持续 <#e8a800ff>{3}秒<> 的冰冷地带（冷却 <#e8a800ff>{2}秒<>）。地带内的敌人会被<#d94c49ff>减速<> <#d94c49ff>{4}%<>。"
+$igTemplateZh = "<#ff7a3eff>咒刃<>：施放技能后，你在 <#e8a800ff>10秒<> 内的下一次普通攻击命中时会造成 <#ff9028ff>{0}<> - <#ff9028ff>{1}<>（基于<$levelIcon> <#d8c9b3ff>等级<>）的<#ff9028ff>额外物理伤害<>，并在目标脚下生成一个持续 <#e8a800ff>{3}秒<> 的冰冷地带（冷却 <#e8a800ff>{2}秒<>）。地带内的敌人会被<#d94c49ff>减速<> <#d94c49ff>{4}%<>。"
 $i18n.'zh-hans'.iceborn_gauntlet.option = $igTemplateZh -f $igMin, $igMax, $igCd, $igDur, $igSlow
 $i18n.'zh-hans'.radiant_iceborn_gauntlet.option = $igTemplateZh -f $rigMin, $rigMax, $rigCd, $rigDur, $rigSlow
 $moonTemplateZh = "<#ff7a3eff>星光恩典<>：为友方英雄（自己除外）治疗时，效果会连锁至其 <#ff86c2ff>{0} <$rangeIcon> 射程<>范围内的另一名友方英雄，<$hpRegenIcon> <#60e84dff>治疗<>原治疗值的 <#60e84dff>{1}%<>。"
@@ -1857,9 +1857,9 @@ $i18n.'pt-BR'.radiant_eclipse.option = $eclPt -f $reclDur, $reclHpPct, $reclShie
 $i18n.'pt-BR'.echoes_of_helia.option = "<#ff7a3eff>Sifão de Almas<>: Armazena <#e8a800ff>${eohConversion}%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado (exceto você) consome todas as <#92dc7bff>Cargas de Alma<>, <$hpRegenIcon> <#60e84dff>curando-o<> na quantidade consumida."
 $i18n.'pt-BR'.radiant_echoes_of_helia.option = "<#ff7a3eff>Sifão de Almas<>: Armazena <#e8a800ff>${reohConversion}%<> do dano causado e recebido como <#92dc7bff>Cargas de Alma<>, até <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (escalando com o <#d8c9b3ff>nível<>). Curar, escudar ou fortalecer um campeão aliado (exceto você) consome todas as <#92dc7bff>Cargas de Alma<>, <$hpRegenIcon> <#60e84dff>curando-o<> na quantidade consumida."
 
-$i18n.'pt-BR'.sheen.option = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>${sheenCd} segundos<>)."
+$i18n.'pt-BR'.sheen.option = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> ao contato (recarga de <#e8a800ff>${sheenCd} segundos<>)."
 
-$tfTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> (recarga de <#e8a800ff>{2} segundos<>)."
+$tfTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> do seu <$adIcon> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico bônus<> ao contato (recarga de <#e8a800ff>{2} segundos<>)."
 $i18n.'pt-BR'.trinity_force.option = $tfTemplatePt -f $tfFlat, $tfAdPct, $tfCd
 $i18n.'pt-BR'.radiant_trinity_force.option = $tfTemplatePt -f $rtfFlat, $rtfAdPct, $rtfCd
 
@@ -1890,12 +1890,12 @@ $i18n.'pt-BR'.eternal_iron_plate.option = $platingTemplatePt -f $tmPlating
 $i18n.'pt-BR'.impregnable_fortress.option = ($platingTemplatePt -f $rtmPlating) + "`n`n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <$armorIcon> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
 $i18n.'pt-BR'.plated_steelcaps.option = $platingTemplatePt -f $psPlating
 
-$dndTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> e <$hpRegenIcon> <#60e84dff>curar você<> em <#a974ffff>{2}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> e <#60e84dff>{3}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>{4} segundos<>)."
+$dndTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> ao contato e <$hpRegenIcon> <#60e84dff>curar você<> em <#a974ffff>{2}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> e <#60e84dff>{3}%<> da sua <$hpIcon> <#60e84dff>Vida Máxima<> (recarga de <#e8a800ff>{4} segundos<>)."
 $i18n.'pt-BR'.dusk_and_dawn.option = $dndTemplatePt -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.'pt-BR'.radiant_dusk_and_dawn.option = $dndTemplatePt -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
 $richesTemplatePt = "<#ff7a3eff>Riquezas Compartilhadas<>: Receba <$goldColor>{0} <$goldIcon> de ouro<> a cada <#e8a800ff>{1} segundos<>."
-$bsTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>{0}<> - <#a974ffff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>{2} segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>{3}%<> por <#e8a800ff>{4} segundos<>."
+$bsTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>{0}<> - <#a974ffff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#a974ffff>dano mágico bônus<> ao contato (recarga de <#e8a800ff>{2} segundos<>). Se o alvo for um campeão, aumenta o <#d94c49ff>dano que ele recebe<> em <#d94c49ff>{3}%<> por <#e8a800ff>{4} segundos<>."
 $i18n.'pt-BR'.bloodsong.option = ($richesTemplatePt -f $bsGold, $bsGoldEvery) + "`n`n" + ($bsTemplatePt -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur)
 $i18n.'pt-BR'.radiant_bloodsong.option = ($richesTemplatePt -f $rbsGold, $rbsGoldEvery) + "`n`n" + ($bsTemplatePt -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur)
 $i18n.'pt-BR'.world_atlas.option = $richesTemplatePt -f $atlasGold, $atlasEvery
@@ -1963,7 +1963,7 @@ $i18n.'pt-BR'.radiant_staff_of_flowing_water.option = $sofwPt -f $rsofwAp, $rsof
 $isbPt = "<#ff7a3eff>Salva-Vidas<>: Ao cair <#d94c49ff>abaixo de {0}% de Vida<>, concede um <#cab944ff>escudo<> por <#e8a800ff>{3} segundos<> que <#cab944ff>absorve<> <#cab944ff>{1}<> - <#cab944ff>{2}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) de <#cab944ff>dano<> (recarga de <#e8a800ff>{4} segundos<>)."
 $i18n.'pt-BR'.immortal_shieldbow.option = $isbPt -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
 $i18n.'pt-BR'.radiant_immortal_shieldbow.option = $isbPt -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
-$lbPt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> (recarga de <#e8a800ff>{2} segundos<>)."
+$lbPt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#a974ffff>{0}<> + <#a974ffff>{1}%<> do seu <$apIcon> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico bônus<> ao contato (recarga de <#e8a800ff>{2} segundos<>)."
 $i18n.'pt-BR'.lich_bane.option = $lbPt -f $lbFlat, $lbApPct, $lbCd
 $i18n.'pt-BR'.radiant_lich_bane.option = $lbPt -f $rlbFlat, $rlbApPct, $rlbCd
 $imPt = "<#ff7a3eff>Comando<>: <#d94c49ff>Imobilizar<> um campeão inimigo o marca como <#92dc7bff>Vulnerável<> por <#e8a800ff>{0} segundos<>, <#d94c49ff>aumentando o dano que ele recebe<> em <#d94c49ff>{1}%<>. Aplicações seguintes renovam este efeito."
@@ -1981,7 +1981,7 @@ $i18n.'pt-BR'.spirit_stone.option = $butcherPt -f $ssBonus, $ssHeal
 $cinderPt = "<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>{0}%<> de <$hpIcon> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>{1}%<>."
 $i18n.'pt-BR'.philosophers_stone.option = ($bamiTemplatePt -f $psFlat, $psHpPct, $psRange, $psMinion) + "`n`n" + ($cinderPt -f $psHpMult, $psMaxHp)
 $i18n.'pt-BR'.radiant_philosophers_stone.option = ($bamiTemplatePt -f $rpsFlat, $rpsHpPct, $rpsRange, $rpsMinion) + "`n`n" + ($cinderPt -f $rpsHpMult, $rpsMaxHp)
-$igTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> e criar um campo congelado sob o alvo por <#e8a800ff>{3} segundos<> (recarga de <#e8a800ff>{2} segundos<>). Inimigos dentro do campo sofrem <#d94c49ff>lentidão<> de <#d94c49ff>{4}%<>."
+$igTemplatePt = "<#ff7a3eff>Lâmina Arcana<>: Usar uma Habilidade faz seu próximo ataque básico dentro de <#e8a800ff>10 segundos<> causar <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (com base no <$levelIcon> <#d8c9b3ff>nível<>) como <#ff9028ff>dano físico bônus<> ao contato e criar um campo congelado sob o alvo por <#e8a800ff>{3} segundos<> (recarga de <#e8a800ff>{2} segundos<>). Inimigos dentro do campo sofrem <#d94c49ff>lentidão<> de <#d94c49ff>{4}%<>."
 $i18n.'pt-BR'.iceborn_gauntlet.option = $igTemplatePt -f $igMin, $igMax, $igCd, $igDur, $igSlow
 $i18n.'pt-BR'.radiant_iceborn_gauntlet.option = $igTemplatePt -f $rigMin, $rigMax, $rigCd, $rigDur, $rigSlow
 $moonTemplatePt = "<#ff7a3eff>Graça Estrelada<>: Curar um campeão aliado (exceto você) propaga o efeito em cadeia para outro campeão aliado dentro de <#ff86c2ff>{0} <$rangeIcon> alcance<> dele, <$hpRegenIcon> <#60e84dff>curando-o em {1}%<> do valor original."
@@ -2148,9 +2148,9 @@ $i18n.ru.radiant_eclipse.option = $eclRu -f $reclDur, $reclHpPct, $reclShield, $
 $i18n.ru.echoes_of_helia.option = "<#ff7a3eff>Похищение душ<>: Накапливает <#e8a800ff>${eohConversion}%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <$levelIcon> <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона (кроме вас) расходует все <#92dc7bff>Заряды Души<>, <$hpRegenIcon> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
 $i18n.ru.radiant_echoes_of_helia.option = "<#ff7a3eff>Похищение душ<>: Накапливает <#e8a800ff>${reohConversion}%<> нанесённого и полученного вами урона как <#92dc7bff>Заряды Души<>, до <$levelIcon> <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<> (в зависимости от <#d8c9b3ff>уровня<>). Лечение, щит или усиление союзного чемпиона (кроме вас) расходует все <#92dc7bff>Заряды Души<>, <$hpRegenIcon> <#60e84dff>восстанавливая ему здоровье<> на израсходованное количество."
 
-$i18n.ru.sheen.option = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>${sheenCd} секунд<>)."
+$i18n.ru.sheen.option = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести при попадании <#ff9028ff>${sheenMin}<> - <#ff9028ff>${sheenMax}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>${sheenCd} секунд<>)."
 
-$tfTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>{2} секунд<>)."
+$tfTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести при попадании <#ff9028ff>{0}<> + <#ff9028ff>{1}%<> вашей <$adIcon> <#ff9028ff>силы атаки<> в виде <#ff9028ff>дополнительного физического урона<> (перезарядка <#e8a800ff>{2} секунд<>)."
 $i18n.ru.trinity_force.option = $tfTemplateRu -f $tfFlat, $tfAdPct, $tfCd
 $i18n.ru.radiant_trinity_force.option = $tfTemplateRu -f $rtfFlat, $rtfAdPct, $rtfCd
 
@@ -2181,12 +2181,12 @@ $i18n.ru.eternal_iron_plate.option = $platingTemplateRu -f $tmPlating
 $i18n.ru.impregnable_fortress.option = ($platingTemplateRu -f $rtmPlating) + "`n`n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <$armorIcon> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
 $i18n.ru.plated_steelcaps.option = $platingTemplateRu -f $psPlating
 
-$dndTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <$hpRegenIcon> <#60e84dff>восстановить вам<> <#a974ffff>{2}%<> вашей <$apIcon> <#a974ffff>силы умений<> и <#60e84dff>{3}%<> вашего <$hpIcon> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>{4} секунд<>)."
+$dndTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести при попадании <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> и <$hpRegenIcon> <#60e84dff>восстановить вам<> <#a974ffff>{2}%<> вашей <$apIcon> <#a974ffff>силы умений<> и <#60e84dff>{3}%<> вашего <$hpIcon> <#60e84dff>максимального здоровья<> (перезарядка <#e8a800ff>{4} секунд<>)."
 $i18n.ru.dusk_and_dawn.option = $dndTemplateRu -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ru.radiant_dusk_and_dawn.option = $dndTemplateRu -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
 $richesTemplateRu = "<#ff7a3eff>Общие богатства<>: Вы получаете <$goldColor>{0} <$goldIcon> золота<> каждые <#e8a800ff>{1} секунд<>."
-$bsTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>{0}<> - <#a974ffff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>{3}%<> на <#e8a800ff>{4} секунды<>."
+$bsTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести при попадании <#a974ffff>{0}<> - <#a974ffff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<>). Если цель — чемпион, увеличивает <#d94c49ff>получаемый ею урон<> на <#d94c49ff>{3}%<> на <#e8a800ff>{4} секунды<>."
 $i18n.ru.bloodsong.option = ($richesTemplateRu -f $bsGold, $bsGoldEvery) + "`n`n" + ($bsTemplateRu -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur)
 $i18n.ru.radiant_bloodsong.option = ($richesTemplateRu -f $rbsGold, $rbsGoldEvery) + "`n`n" + ($bsTemplateRu -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur)
 $i18n.ru.world_atlas.option = $richesTemplateRu -f $atlasGold, $atlasEvery
@@ -2254,7 +2254,7 @@ $i18n.ru.radiant_staff_of_flowing_water.option = $sofwRu -f $rsofwAp, $rsofwAh, 
 $isbRu = "<#ff7a3eff>Линия жизни<>: При <#d94c49ff>падении здоровья ниже {0}%<> вы получаете <#cab944ff>щит<> на <#e8a800ff>{3} секунды<>, поглощающий <#cab944ff>{1}<> - <#cab944ff>{2}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) <#cab944ff>урона<> (перезарядка {4} секунд)."
 $i18n.ru.immortal_shieldbow.option = $isbRu -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
 $i18n.ru.radiant_immortal_shieldbow.option = $isbRu -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
-$lbRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<>)."
+$lbRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести при попадании <#a974ffff>{0}<> + <#a974ffff>{1}%<> вашей <$apIcon> <#a974ffff>силы умений<> в виде <#a974ffff>дополнительного магического урона<> (перезарядка <#e8a800ff>{2} секунд<>)."
 $i18n.ru.lich_bane.option = $lbRu -f $lbFlat, $lbApPct, $lbCd
 $i18n.ru.radiant_lich_bane.option = $lbRu -f $rlbFlat, $rlbApPct, $rlbCd
 $imRu = "<#ff7a3eff>Команда<>: <#d94c49ff>Обездвиживая<> вражеского чемпиона, вы накладываете на него <#92dc7bff>уязвимость<> на <#e8a800ff>{0} секунды<>, <#d94c49ff>увеличивая получаемый им урон<> на <#d94c49ff>{1}%<>. Повторное наложение обновляет этот эффект."
@@ -2272,7 +2272,7 @@ $i18n.ru.spirit_stone.option = $butcherRu -f $ssBonus, $ssHeal
 $cinderRu = "<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>{0}%<> <$hpIcon> <#60e84dff>максимального здоровья<>, до <#60e84dff>{1}%<>."
 $i18n.ru.philosophers_stone.option = ($bamiTemplateRu -f $psFlat, $psHpPct, $psRange, $psMinion) + "`n`n" + ($cinderRu -f $psHpMult, $psMaxHp)
 $i18n.ru.radiant_philosophers_stone.option = ($bamiTemplateRu -f $rpsFlat, $rpsHpPct, $rpsRange, $rpsMinion) + "`n`n" + ($cinderRu -f $rpsHpMult, $rpsMaxHp)
-$igTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> и создать под целью ледяное поле на <#e8a800ff>{3} секунды<> (перезарядка <#e8a800ff>{2} секунд<>). Враги в поле <#d94c49ff>замедляются<> на <#d94c49ff>{4}%<>."
+$igTemplateRu = "<#ff7a3eff>Чародейский клинок<>: Применение умения заставляет вашу следующую базовую атаку в течение <#e8a800ff>10 секунд<> нанести при попадании <#ff9028ff>{0}<> - <#ff9028ff>{1}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<>) в виде <#ff9028ff>дополнительного физического урона<> и создать под целью ледяное поле на <#e8a800ff>{3} секунды<> (перезарядка <#e8a800ff>{2} секунд<>). Враги в поле <#d94c49ff>замедляются<> на <#d94c49ff>{4}%<>."
 $i18n.ru.iceborn_gauntlet.option = $igTemplateRu -f $igMin, $igMax, $igCd, $igDur, $igSlow
 $i18n.ru.radiant_iceborn_gauntlet.option = $igTemplateRu -f $rigMin, $rigMax, $rigCd, $rigDur, $rigSlow
 $moonTemplateRu = "<#ff7a3eff>Подарок звезд<>: При лечении союзного чемпиона (кроме вас) эффект распространяется на другого союзного чемпиона в пределах <#ff86c2ff>{0} <$rangeIcon> дальности<> от него, <$hpRegenIcon> <#60e84dff>исцеляя его на {1}%<> от изначального значения."
@@ -2438,9 +2438,9 @@ $i18n.ko.radiant_eclipse.option = $eclKo -f $reclDur, $reclHpPct, $reclShield, $
 $i18n.ko.echoes_of_helia.option = "<#ff7a3eff>영혼 착취<>: 주고받은 피해의 <#e8a800ff>${eohConversion}%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <$levelIcon> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>${eohMinCap}<> - <#d8c9b3ff>${eohMaxCap}<>까지 저장합니다. 아군 챔피언(자신 제외)을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <$hpRegenIcon> <#60e84dff>회복<>시킵니다."
 $i18n.ko.radiant_echoes_of_helia.option = "<#ff7a3eff>영혼 착취<>: 주고받은 피해의 <#e8a800ff>${reohConversion}%<>를 <#92dc7bff>영혼 충전량<>으로 저장하며, <$levelIcon> <#d8c9b3ff>레벨<>에 따라 최대 <#d8c9b3ff>${reohMinCap}<> - <#d8c9b3ff>${reohMaxCap}<>까지 저장합니다. 아군 챔피언(자신 제외)을 회복시키거나 보호막 또는 버프를 부여하면 모든 <#92dc7bff>영혼 충전량<>을 소모해 해당 아군의 체력을 소모량만큼 <$hpRegenIcon> <#60e84dff>회복<>시킵니다."
 
-$i18n.ko.sheen.option = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>${sheenMin}<>~<#ff9028ff>${sheenMax}<>의 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>${sheenCd}초<>)"
+$i18n.ko.sheen.option = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 적중 시 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>${sheenMin}<>~<#ff9028ff>${sheenMax}<>의 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>${sheenCd}초<>)"
 
-$tfTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <#ff9028ff>{0}<> + <$adIcon> <#ff9028ff>공격력의 {1}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>)"
+$tfTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 적중 시 <#ff9028ff>{0}<> + <$adIcon> <#ff9028ff>공격력의 {1}%<>만큼 <#ff9028ff>추가 물리 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>)"
 $i18n.ko.trinity_force.option = $tfTemplateKo -f $tfFlat, $tfAdPct, $tfCd
 $i18n.ko.radiant_trinity_force.option = $tfTemplateKo -f $rtfFlat, $rtfAdPct, $rtfCd
 
@@ -2471,12 +2471,12 @@ $i18n.ko.eternal_iron_plate.option = $platingTemplateKo -f $tmPlating
 $i18n.ko.impregnable_fortress.option = ($platingTemplateKo -f $rtmPlating) + "`n`n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <$armorIcon> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
 $i18n.ko.plated_steelcaps.option = $platingTemplateKo -f $psPlating
 
-$dndTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <$apIcon> <#60e84dff>주문력의 {2}%<>와 <$hpIcon> <#60e84dff>최대 체력의 {3}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>{4}초<>)"
+$dndTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 적중 시 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입히고, <$apIcon> <#60e84dff>주문력의 {2}%<>와 <$hpIcon> <#60e84dff>최대 체력의 {3}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>합니다. (재사용 대기시간 <#e8a800ff>{4}초<>)"
 $i18n.ko.dusk_and_dawn.option = $dndTemplateKo -f $dndFlat, $dndApPct, $dndApHeal, $dndHpHeal, $dndCd
 $i18n.ko.radiant_dusk_and_dawn.option = $dndTemplateKo -f $rdndFlat, $rdndApPct, $rdndApHeal, $rdndHpHeal, $rdndCd
 
 $richesTemplateKo = "<#ff7a3eff>재물 공유<>: <#e8a800ff>{1}초<>마다 <$goldColor>{0} <$goldIcon> 골드<>를 획득합니다."
-$bsTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>{0}<>~<#a974ffff>{1}<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>) 대상이 챔피언이면 <#e8a800ff>{4}초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>{3}%<> 증가합니다."
+$bsTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 적중 시 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#a974ffff>{0}<>~<#a974ffff>{1}<>의 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>) 대상이 챔피언이면 <#e8a800ff>{4}초<> 동안 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>{3}%<> 증가합니다."
 $i18n.ko.bloodsong.option = ($richesTemplateKo -f $bsGold, $bsGoldEvery) + "`n`n" + ($bsTemplateKo -f $bsMin, $bsMax, $bsCd, $bsAmp, $bsDur)
 $i18n.ko.radiant_bloodsong.option = ($richesTemplateKo -f $rbsGold, $rbsGoldEvery) + "`n`n" + ($bsTemplateKo -f $rbsMin, $rbsMax, $rbsCd, $rbsAmp, $rbsDur)
 $i18n.ko.world_atlas.option = $richesTemplateKo -f $atlasGold, $atlasEvery
@@ -2544,7 +2544,7 @@ $i18n.ko.radiant_staff_of_flowing_water.option = $sofwKo -f $rsofwAp, $rsofwAh, 
 $isbKo = "<#ff7a3eff>생명선<>: <#d94c49ff>체력이 {0}% 아래로 내려가면<> <#e8a800ff>{3}초<> 동안 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>{1}<>~<#cab944ff>{2}<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다. 재사용 대기시간은 <#e8a800ff>{4}초<>입니다."
 $i18n.ko.immortal_shieldbow.option = $isbKo -f $isbThreshold, $isbMinShield, $isbMaxShield, $isbShieldDur, $isbCd
 $i18n.ko.radiant_immortal_shieldbow.option = $isbKo -f $risbThreshold, $risbMinShield, $risbMaxShield, $risbShieldDur, $risbCd
-$lbKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>)"
+$lbKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 적중 시 <#a974ffff>{0}<> + <$apIcon> <#a974ffff>주문력의 {1}%<>만큼 <#a974ffff>추가 마법 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>{2}초<>)"
 $i18n.ko.lich_bane.option = $lbKo -f $lbFlat, $lbApPct, $lbCd
 $i18n.ko.radiant_lich_bane.option = $lbKo -f $rlbFlat, $rlbApPct, $rlbCd
 $imKo = "<#ff7a3eff>명령<>: 적 챔피언에게 <#d94c49ff>이동 불가<> 효과를 적용하면 <#e8a800ff>{0}초<> 동안 <#92dc7bff>취약<> 표식을 남겨 대상이 <#d94c49ff>받는 피해<>가 <#d94c49ff>{1}%<> 증가합니다. 다시 적용하면 효과가 갱신됩니다."
@@ -2562,7 +2562,7 @@ $i18n.ko.spirit_stone.option = $butcherKo -f $ssBonus, $ssHeal
 $cinderKo = "<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <$hpIcon> <#60e84dff>최대 체력<>이 <#60e84dff>{0}%<> 증가하며, 최대 <#60e84dff>{1}%<>까지 쌓입니다."
 $i18n.ko.philosophers_stone.option = ($bamiTemplateKo -f $psFlat, $psHpPct, $psRange, $psMinion) + "`n`n" + ($cinderKo -f $psHpMult, $psMaxHp)
 $i18n.ko.radiant_philosophers_stone.option = ($bamiTemplateKo -f $rpsFlat, $rpsHpPct, $rpsRange, $rpsMinion) + "`n`n" + ($cinderKo -f $rpsHpMult, $rpsMaxHp)
-$igTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>{0}<>~<#ff9028ff>{1}<>의 <#ff9028ff>추가 물리 피해<>를 입히고 대상의 발밑에 <#e8a800ff>{3}초<> 동안 서리 영역을 생성합니다. (재사용 대기시간 <#e8a800ff>{2}초<>) 영역 안의 적은 <#d94c49ff>{4}%<> <#d94c49ff>둔화<>됩니다."
+$igTemplateKo = "<#ff7a3eff>주문 검<>: 스킬을 사용하면 <#e8a800ff>10초<> 내로 가하는 다음 기본 공격이 적중 시 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <#ff9028ff>{0}<>~<#ff9028ff>{1}<>의 <#ff9028ff>추가 물리 피해<>를 입히고 대상의 발밑에 <#e8a800ff>{3}초<> 동안 서리 영역을 생성합니다. (재사용 대기시간 <#e8a800ff>{2}초<>) 영역 안의 적은 <#d94c49ff>{4}%<> <#d94c49ff>둔화<>됩니다."
 $i18n.ko.iceborn_gauntlet.option = $igTemplateKo -f $igMin, $igMax, $igCd, $igDur, $igSlow
 $i18n.ko.radiant_iceborn_gauntlet.option = $igTemplateKo -f $rigMin, $rigMax, $rigCd, $rigDur, $rigSlow
 $moonTemplateKo = "<#ff7a3eff>별빛 은총<>: 아군 챔피언(자신 제외)의 체력을 회복시키면 대상으로부터 <$rangeIcon> <#ff86c2ff>사거리 {0}<> 안의 다른 아군 챔피언에게 연쇄 효과가 적용되어, 기존 수치의 <#60e84dff>{1}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>시킵니다."

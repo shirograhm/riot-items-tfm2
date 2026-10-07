@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta, ProcQueue, Spellblade};
+use crate::{apply_config, percent_of, ItemMeta, Spellblade};
 
 #[derive(Clone, Debug)]
 pub struct EssenceReaver {
@@ -15,7 +15,6 @@ pub struct EssenceReaver {
     effect_crit_percent_damage: f64,
     effect_cooldown_seconds: f64,
     spellblade: Spellblade,
-    procs: ProcQueue,
 }
 
 impl EssenceReaver {
@@ -36,7 +35,6 @@ impl EssenceReaver {
             effect_cooldown_seconds: 1.5,
             // Non-vital stats (internals)
             spellblade: Spellblade::default(),
-            procs: ProcQueue::new(),
         }
     }
 
@@ -129,18 +127,15 @@ impl StableItem for EssenceReaver {
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
         self.spellblade.reset();
-        self.procs.clear();
     }
 
-    // The crit term reads like Hamstringer's "(+100% crit)": each point of
-    // critical strike chance adds one point of bonus damage at 100%.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
@@ -154,15 +149,12 @@ impl StableItem for EssenceReaver {
         let bonus_damage = percent_of(stat.attack, self.effect_ad_percent_damage)
             + percent_of(stat.crit_chance, self.effect_crit_percent_damage);
 
-        self.procs.push_physical(ctx, target, bonus_damage);
+        Spellblade::on_hit_physical(ctx, caster, target, damage, damage_type, bonus_damage);
         self.spellblade
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and watches for
-    /// the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);
     }
 
