@@ -17,6 +17,11 @@ const TRAIL_EFFECT: &str = "riot_dead_mans_trail";
 /// by time, so the tail is as dense at any speed and nothing piles up under a
 /// carrier that stands still.
 const TRAIL_SPACING: u64 = 6 * DISTANCE_UNITS_PER_RANGE as u64;
+/// The burst on the target of a basic attack that spends a full bar of
+/// momentum, which is where the trail ends (`effects/dead_mans_burst`, bound
+/// in `view/effects.view_effects`). Lesser hits spend their momentum quietly:
+/// a carrier that keeps attacking spends a few stacks on every swing.
+const BURST_EFFECT: &str = "riot_dead_mans_burst";
 
 #[derive(Clone, Debug)]
 pub struct DeadMansPlate {
@@ -263,7 +268,7 @@ impl StableItem for DeadMansPlate {
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _caster: usize,
+        caster: usize,
         target: usize,
         _damage: &mut usize,
         _damage_type: DamageTypeV1,
@@ -279,6 +284,10 @@ impl StableItem for DeadMansPlate {
         self.stack_progress = 0;
         self.proc_cooldown = PROC_LOCKOUT_TICKS;
         self.refresh_cooldown = 0;
+
+        if consumed >= self.effect_max_stacks {
+            ctx.play_view_effect(BURST_EFFECT, caster, &InputTargetV1::target(target), 0, 0, 0);
+        }
 
         // Momentum is spent above, so the damage is priced off the stacks this
         // swing consumed rather than off whatever has rebuilt by landing time.

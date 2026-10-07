@@ -159,6 +159,14 @@
             "tag": "trail",
             "z": -1,
             "is_follow": false
+        },
+        {
+            "type": "Animation",
+            "name": "riot_dead_mans_burst",
+            "anim": "asset/riot_items_tfm2/effects/dead_mans_burst",
+            "tag": "burst",
+            "z": 1,
+            "is_follow": true
         }
     ],
     "view_projectiles": [
