@@ -62,6 +62,7 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 [h1] Smart Builds [/h1]
 [b]Enforce Smart Builds[/b] (Build Editor footer, on by default) cleans up the AI's picks. These get swapped for another item of the same category:
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
+- a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count.
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
 - support items (except Protoplasm Harness and Zeke's Convergence) outside the support role
 - heal, shield and buff items (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on supports that don't heal, shield or buff allies, and on mages

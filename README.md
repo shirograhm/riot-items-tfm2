@@ -30,6 +30,7 @@ https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. It cleans up what the AI picks. Any of these is swapped for another final item of the same category:
 - a duplicate item
 - a second Grievous Wounds item
+- a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet or Bloodsong). Sheen doesn't count, since it's the component they build from. A support whose World Atlas item is Bloodsong keeps that one and no other. If you pinned a Spellblade item yourself, the AI adds none (your own pins can hold more than one)
 - a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked)
 - a jungle item (Feral Flare, Grez's Spectral Lantern or Philosopher's Stone) on any champion not playing the jungle role, and on a jungler any jungle item other than its one (see below)
 - a melee item on a ranged champion (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone), or a ranged item on a melee champion (Runaan's Hurricane, Diamond Tipped Spear). A champion is melee when its basic attack range is 35 or less; champions from other mods are covered too

@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Fourteen of them:
+//! Fifteen of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -144,6 +144,14 @@
 //!    keeps it in the support role, and a marksman there keeps it whether it
 //!    is AD or AP. No tag or class says "attack speed champion", so the
 //!    `Range` class is all of that test for now.
+//! 15. **One Spellblade item** — Trinity Force, Dusk and Dawn, Lich Bane,
+//!    Essence Reaver, Iceborn Gauntlet and Bloodsong ([`SPELLBLADE_ITEMS`])
+//!    share one cooldown, so a build holds one of them (the user,
+//!    2026-10-06). Sheen is not counted: it is the component they are built
+//!    from, not a finished item. The AI's second makes way for an item of its
+//!    own category, like a duplicate. A support whose World Atlas item is
+//!    Bloodsong (rule 12) has its one already: it keeps no other the AI
+//!    picked, and that Bloodsong is never the one that goes.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
@@ -356,6 +364,8 @@ pub(crate) enum Reason {
     AtlasMismatch,
     /// A World Atlas item in a build that already holds one.
     SecondAtlas,
+    /// A Spellblade item in a build that already holds one (rule 15).
+    SecondSpellblade,
     MandateWithoutCc,
     /// An item that answers to healing, shielding or buffing an ally, on a
     /// support whose kit does none of that.
@@ -597,6 +607,13 @@ impl Fit {
     /// the one its champion builds ([`Fit::atlas_item`]).
     fn other_atlas_item(&self, key: &str) -> bool {
         self.is_atlas_pick(key) && crate::build_config::base_slug(key) != self.atlas_item()
+    }
+
+    /// Rule 15: whether this is a support whose World Atlas item is Bloodsong,
+    /// which rule 12 puts in its build and which is then its one Spellblade
+    /// item.
+    fn holds_bloodsong(&self) -> bool {
+        self.support_items && self.atlas_item() == BLOODSONG
     }
 }
 
@@ -888,6 +905,23 @@ fn is_ranged_item(key: &str) -> bool {
     RANGED_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
+/// Rule 15: the finished Spellblade items, of which a build holds one. By base
+/// slug, so the radiant tier follows. Sheen is left out: it is their
+/// component, not a finished item.
+const SPELLBLADE_ITEMS: [&str; 6] = [
+    "trinity_force",
+    "dusk_and_dawn",
+    "lich_bane",
+    "essence_reaver",
+    "iceborn_gauntlet",
+    BLOODSONG,
+];
+
+/// Whether `key` is one of [`SPELLBLADE_ITEMS`], base or radiant.
+fn is_spellblade_item(key: &str) -> bool {
+    SPELLBLADE_ITEMS.contains(&crate::build_config::base_slug(key))
+}
+
 /// What the items a build already holds have spent of the budgets the rules
 /// police, and the [`Fit`] of the champion it is for. Carries the trait table
 /// with it, so a scan across the catalog is a run of hash lookups rather than a
@@ -900,6 +934,8 @@ pub(crate) struct Budget {
     jungle_item: bool,
     /// Rule 12: whether the build already holds a World Atlas item.
     atlas_item: bool,
+    /// Rule 15: whether the build already holds a Spellblade item.
+    spellblade_item: bool,
     fit: Fit,
 }
 
@@ -912,6 +948,7 @@ impl Budget {
             crit_chance: 0,
             jungle_item: false,
             atlas_item: false,
+            spellblade_item: false,
             fit,
         }
     }
@@ -959,6 +996,15 @@ impl Budget {
         } else if self.atlas_item && self.fit.is_atlas_pick(key) {
             // The same for a support's World Atlas item.
             Some(Reason::SecondAtlas)
+        } else if is_spellblade_item(key)
+            && !self.fit.is_atlas_pick(key)
+            && (self.spellblade_item || (self.fit.holds_bloodsong() && !self.atlas_item))
+        {
+            // Rule 15. A support's Bloodsong is rule 12's to place, so it is
+            // never the one turned away, and a build still waiting for it
+            // counts as holding it. One with another Atlas item pinned is not
+            // getting a Bloodsong, and is judged like anyone's.
+            Some(Reason::SecondSpellblade)
         } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
         } else if self.crit_chance + traits.crit_chance > CRIT_CAP {
@@ -1002,6 +1048,7 @@ impl Budget {
         self.crit_chance += traits.crit_chance;
         self.jungle_item |= is_jungle_item(key);
         self.atlas_item |= is_atlas_item(key);
+        self.spellblade_item |= is_spellblade_item(key);
     }
 }
 
