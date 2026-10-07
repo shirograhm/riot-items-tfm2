@@ -45,6 +45,9 @@ static DB_PROBED: AtomicBool = AtomicBool::new(false);
 /// dereferencing it inside `forward` is an access violation no `catch_unwind`
 /// can catch.
 pub fn record_item_net(agent: usize) {
+    // For the 5th and 6th item, and ahead of everything below: none of it is
+    // about the `Database`, so none of those returns should keep it back.
+    super::NETWORK_AGENT.store(agent as u64, Ordering::Relaxed);
     // Nothing reads `db()` while this half is retired, and settling a
     // `Database` base costs a `VirtualQuery` plus a 64KB `readable` probe
     // on the weight array, on the detour's hot path.

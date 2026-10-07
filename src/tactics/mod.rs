@@ -4008,6 +4008,8 @@ fn tactics_on_server_start() {
     // management tick until it does.
     driver::reset_session();
     ITEM_NET_ADDR.store(0, Ordering::Relaxed);
+    NETWORK_AGENT.store(0, Ordering::Relaxed);
+    network_picks_forget();
     probe_db();
     install_replace_4th();
     install_launcher_hook();
@@ -4505,9 +4507,45 @@ unsafe fn wr_u64(p: usize, v: u64) {
 // ** 0.5.7 (2026-08-26): exe2exe unique, size 1609 and 409 instructions both sides, `pairdiff` clean, so the
 //   net layout (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) is unchanged and the per-call
 //   re-validation logic stays valid as-is.
-const ITEMNET_FORWARD_RVA: usize = 0x1228050; // 0.6.0-beta2 (0.6.0-beta was 0x12462b0, 0.5.7 0x17f09b0, 0.5.6 0xf53de0, 0.5.5 0x12624f0, 0.5.4 0x145a680, 0.5.3 0x10587e0). History for 0.5.3 follows. (0.5.2 was 0x1b9cce0). The first 24B of the entry are identical + all 5 feature-name strings match (self_item/champ_pos_build/lane_counter/synergy/global_counter) + the net layout is unchanged (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) => the mod's per-call re-validation logic stays valid as-is. History for 0.5.2 follows. (0.5.1 was 0x1bc82e0; exe2exe UNIQUE, identical prologue.) History for 0.5.1 follows: (0.5.0_3 was 0x1b78420, mask-sig UNIQUE PROL-OK push8 554157415641554154565753). WARNING it was OFF via AUTO4_FORWARD_SCORE=false (an AV at +0x44a inside forward on 0.5.1; see the flag comment above). A matching prologue does not imply identical internals.
+// ** 0.6.3 (2026-10-07): 0x1932130, back in service for the 5th and 6th item (`network_pick`). It was not
+//   migrated for 0.6.0 to 0.6.2, while nothing could reach it. Found from the item-build hook's target: that
+//   calls one 6.3KB beam search (0x1932b40), and this is the beam search's scoring callee, 0xa10 below it as
+//   in every build, still 1609 bytes, with the same five feature names. Its arguments are unchanged too:
+//   rcx net, rdx lineup ([rdx+0x50] = lane, a panic above 4; [rdx+lane*8] = the champion; +0x28 on = the
+//   five enemies, 9999 = nobody), r8/r9 the build slice, [rsp+0x20] a flag that adds noise when set. The
+//   net's constructor (0x196a2c0) still writes 16384 / ptr / 16384 / 1, though only a dword of that 1.
+//   xmm0 is the score; 0.6.3 also hands back p(1-p) in xmm1, which nothing here reads. A second function
+//   (0x1931cd0) builds the same features to TRAIN the weights, so a score is only good for the moment it
+//   was asked for: see `NETWORK_PICKS`.
+const ITEMNET_FORWARD_RVA: usize = 0x1932130; // 0.6.3 (0.6.0-beta2 was 0x1228050, 0.6.0-beta 0x12462b0, 0.5.7 0x17f09b0, 0.5.6 0xf53de0, 0.5.5 0x12624f0, 0.5.4 0x145a680, 0.5.3 0x10587e0). History for 0.5.3 follows. (0.5.2 was 0x1b9cce0). The first 24B of the entry are identical + all 5 feature-name strings match (self_item/champ_pos_build/lane_counter/synergy/global_counter) + the net layout is unchanged (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) => the mod's per-call re-validation logic stays valid as-is. History for 0.5.2 follows. (0.5.1 was 0x1bc82e0; exe2exe UNIQUE, identical prologue.) History for 0.5.1 follows: (0.5.0_3 was 0x1b78420, mask-sig UNIQUE PROL-OK push8 554157415641554154565753). WARNING it was OFF via AUTO4_FORWARD_SCORE=false (an AV at +0x44a inside forward on 0.5.1; see the flag comment above). A matching prologue does not imply identical internals.
+/// The eight pushes and `sub rsp, 0xd8`. The pushes alone open thousands of
+/// functions; the frame size is what makes a stale address fail this.
+const ITEMNET_FORWARD_PROLOGUE: [u8; 19] = [
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0xd8,
+    0x00, 0x00, 0x00,
+];
 type ItemNetFn = unsafe extern "C" fn(usize, usize, *const u64, u64, u8) -> f32;
 static ITEM_NET_ADDR: AtomicU64 = AtomicU64::new(0);
+/// The agent `hook::detour` was last handed, exactly as it came: the network
+/// the 5th and 6th item are scored with ([`network_pick`]), which proves it
+/// before every pick ([`network_ready`]). Kept apart from `ITEM_NET_ADDR`,
+/// which is only set together with the `Database` base, once, and under a test
+/// written for telling the network from its lookalikes in a memory scan.
+static NETWORK_AGENT: AtomicU64 = AtomicU64::new(0);
+/// Most weights [`network_ready`] accepts. The network has 16384.
+const NETWORK_WEIGHTS_MAX: usize = 1 << 20;
+/// Whether `net` can be handed to `itemnet_forward`: a weight array that is
+/// there to be read, for as many weights as the network says it has. The
+/// function checks every index against that count itself, so nothing else
+/// about the network can make it read out of bounds.
+unsafe fn network_ready(net: usize) -> bool {
+    if net < 0x10000 || !readable(net, 0x20) {
+        return false;
+    }
+    let weights = rd_u64(net + 0x8) as usize;
+    let count = rd_u64(net + 0x10) as usize;
+    weights >= 0x10000 && (1..=NETWORK_WEIGHTS_MAX).contains(&count) && readable(weights, count * 4)
+}
 static ITEMNET_VALID: AtomicU64 = AtomicU64::new(0); // 0 = unchecked, 1 = valid, 2 = invalid
 unsafe fn itemnet_addr_valid() -> bool {
     match ITEMNET_VALID.load(Ordering::Relaxed) {
@@ -4516,18 +4554,9 @@ unsafe fn itemnet_addr_valid() -> bool {
         _ => {}
     }
     let fa = exe_base_addr() + ITEMNET_FORWARD_RVA;
-    let expect = [
-        0x55u8, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
-    ]; // push8
-    let mut ok = readable(fa, 12);
-    if ok {
-        for i in 0..12 {
-            if *((fa + i) as *const u8) != expect[i] {
-                ok = false;
-                break;
-            }
-        }
-    }
+    let len = ITEMNET_FORWARD_PROLOGUE.len();
+    let ok = readable(fa, len)
+        && std::slice::from_raw_parts(fa as *const u8, len) == ITEMNET_FORWARD_PROLOGUE.as_slice();
     ITEMNET_VALID.store(if ok { 1 } else { 2 }, Ordering::Relaxed);
     ok
 }
@@ -4882,8 +4911,12 @@ fn item_id_to_key(id: u64) -> Option<String> {
 // * AUTO 4th = pick the highest-scoring final item via forward (neural recommendation). false = only capture beam4.
 // * 0.5.0: ON - roster offsets RE-confirmed (SimState+0x840 stride 0x8d0, team@0x820, pos@0x8b0, champ@0x420 — all three 0.5.4-era,
 //   net@Database+0xda0). compute_auto_4th_id / build_lineup_ctx back in service = neural automatic 4th selection.
-const AUTO4_FORWARD_SCORE: bool = true; // * Re-enabled (07-17): the crash cause was that the weight ptr net+0x8 goes stale after detection (session switch) and was never re-validated. itemnet_forward now re-checks net+0x8 readability on every call, so a stale net is skipped -> fallback (no crash). Feature kept + crash condition cut. ~~false (an attempt to drop the shadow-call)~~
-                                        // forward scoring at c6 (personal tactics application) time - abandoned (never fires for enemy/background). AUTO is handled at buy time (compute_auto_4th_id).
+// ** OFF 2026-10-07, and nothing changes by it: this has answered `None` since 0.6.0, when
+//    `ITEMNET_FORWARD_RVA` went stale. The address is current again for the 5th and 6th item
+//    (`network_pick`), and this is what keeps `compute_auto_4th_id` from coming back with it: its lineup
+//    walk (`build_lineup_ctx`, `ATH_STRIDE`) and its champion ids (`CHAMP_SHEET`) are both stale on 0.6.3.
+const AUTO4_FORWARD_SCORE: bool = false; // * Re-enabled (07-17): the crash cause was that the weight ptr net+0x8 goes stale after detection (session switch) and was never re-validated. itemnet_forward now re-checks net+0x8 readability on every call, so a stale net is skipped -> fallback (no crash). Feature kept + crash condition cut. ~~false (an attempt to drop the shadow-call)~~
+                                         // forward scoring at c6 (personal tactics application) time - abandoned (never fires for enemy/background). AUTO is handled at buy time (compute_auto_4th_id).
 const AUTO4_C6_SCORE: bool = false;
 // * 0.5.0 build extension: RVA_REALLOC (the real function 0x25a56c0) confirmed -> ON. Real purchases via the buy build Vec 3->4 are back.
 // ** OFF for game 0.6.0 (2026-09-16) -- this crashed users mid-match. `RVA_REALLOC` is still the beta2
@@ -5463,6 +5496,7 @@ const FIXB: bool = true;
 /// -- so an excluded athlete still gets a 5th and 6th, just not the player's.
 unsafe fn extra_slot_pick(
     ctx: usize,
+    buyer: Buyer,
     champ: &str,
     si: usize,
     taken: &[u64],
@@ -5478,7 +5512,7 @@ unsafe fn extra_slot_pick(
             } else {
                 Vec::new()
             };
-            auto_extra_pick(ctx, champ, si, taken, &reserved)
+            auto_extra_pick(ctx, buyer, champ, si, taken, &reserved)
         })
 }
 
@@ -5584,62 +5618,212 @@ unsafe fn rejection(
     budget.rejects(&catalog_name_at(ctx, t)?)
 }
 
-/// The automatic 5th and 6th item.
+/// The athlete a build slot is being filled for, and the seed of its match.
+#[derive(Clone, Copy)]
+struct Buyer {
+    athlete: usize,
+    seed: u64,
+}
+
+/// The automatic 5th and 6th item: what the game's own item network wants
+/// most on top of the build so far ([`network_pick`]), the way the engine
+/// arrives at the four it plans itself.
 ///
-/// A free final in the category of build[si - 4]: the 5th follows the 1st
-/// item and the 6th the 2nd, the way the 4th follows the 3rd
-/// (`third_slot_category`), so an attack-damage build stays one. Then a
-/// vanilla final the build does not hold, then any final at all. Never a
-/// duplicate: `taken` is every slot before this one, and `reserved` the
-/// player's pins for the slots after it, which count exactly as if placed.
+/// No slot decides it. Until 2026-10-07 the 5th copied the category of the
+/// 1st item and the 6th that of the 2nd, which since Smart Builds' boots rule
+/// is a pair of boots: Ionian Boots of Lucidity are a Magic item, so a Hunter
+/// and a Dual Blader went looking for their 6th among the mage items. The
+/// user's call was to drop the matching altogether rather than move the
+/// anchor: the 5th and 6th are picked the way the AI picks.
+///
+/// Smart Builds still has the last word on what may be picked: always on
+/// what suits the champion, and on the build as a whole while the toggle is
+/// on. Should the network be out of reach (its address not found after a game update, or no
+/// build asked for yet this session) the slot goes to the first final the
+/// rules accept, from a start spread by champion, and only then to any final
+/// at all. Never a duplicate: `taken` is every slot before this one, and
+/// `reserved` the player's pins for the slots after it, which count exactly
+/// as if placed.
 unsafe fn auto_extra_pick(
     ctx: usize,
+    buyer: Buyer,
     champ: &str,
     si: usize,
     taken: &[u64],
     reserved: &[u64],
 ) -> Option<u64> {
-    let anchor = if AUTO4_MATCH_3RD_CATEGORY {
-        si.checked_sub(4)
-            .and_then(|i| taken.get(i))
-            .and_then(|&index| catalog_name_at(ctx, index))
-    } else {
-        None
-    };
+    // `taken` stays the build in slot order, for the network; everything else
+    // works from the whole build, pins still to come included.
+    let spoken = [taken, reserved].concat();
+    // What the champion may hold at all, toggle or not. The engine's own
+    // search only offers a champion the finals whose tags match its own, and
+    // these two slots are picked on its behalf; an item it could not keep
+    // under the rules is the nearest thing here to one the engine would never
+    // have offered. The same line `item_build_hook::score_item` draws.
+    let fit = crate::smart_builds::fit(champ, crate::build_config::role_for_champion(champ));
+    let suits = crate::smart_builds::Budget::empty(fit);
     // Smart Builds applies to a pick the mod made as much as to a pinned one: a
     // 5th item that cuts healing a second time, or pushes the build past the crit
     // cap, is the same wasted slot either way. `None` while the toggle is off,
-    // which makes the test below pass for every candidate.
-    // `taken` stays positional for the anchor above; everything below works
-    // from the whole build, pins still to come included.
-    let spoken = [taken, reserved].concat();
-    let taken = spoken.as_slice();
+    // which leaves the test above as the only one.
     let budget =
-        crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, champ, taken));
+        crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, champ, &spoken));
     let allowed = |candidate: &str| {
-        budget
-            .as_ref()
-            .is_none_or(|budget| budget.rejects(candidate).is_none())
+        suits.rejects(candidate).is_none()
+            && budget
+                .as_ref()
+                .is_none_or(|budget| budget.rejects(candidate).is_none())
     };
-    anchor
-        .as_deref()
-        .and_then(engine_category)
-        .and_then(|category| {
-            pick_candidate(ctx, u64::MAX, taken, champ, |candidate| {
-                engine_category(candidate) == Some(category) && allowed(candidate)
-            })
-        })
-        .or_else(|| {
-            let start = champ_spread(champ, 6);
-            (0..6)
-                .filter_map(|k| item_id_to_key(VANILLA_FINAL[(start + k) % 6]))
-                .filter(|key| allowed(key))
-                .filter_map(|key| scan_idx_cached(ctx, key.as_bytes()))
-                .find(|index| !taken.contains(index))
-        })
+    network_pick(ctx, buyer, champ, si, taken, &spoken, &allowed)
+        .or_else(|| pick_candidate(ctx, u64::MAX, &spoken, champ, &allowed))
         // Last resort, deliberately unconstrained: a 5th item that breaks a rule
-        // still beats an empty slot, which is what the other two answered with.
-        .or_else(|| pick_candidate(ctx, u64::MAX, taken, champ, |_| true))
+        // still beats an empty slot.
+        .or_else(|| pick_candidate(ctx, u64::MAX, &spoken, champ, |_| true))
+}
+
+/// What the item network's lineup table holds for a seat nobody is in.
+const NET_NO_CHAMPION: u64 = 9999;
+
+/// The network's picks so far: `(seed, team, lane, slot)` to item key.
+///
+/// The network learns. `0x1931cd0` builds the same features `itemnet_forward`
+/// scores and moves the weights, so the same question can get a different
+/// answer an hour later, and a match is played more than once: in the
+/// background for its result and again on screen, each copy buying for itself
+/// (see [`FIXB`]). What a seat was given the first time is what it gets every
+/// time after, or the match the player watches stops being the one that was
+/// recorded. By key, because a catalog index is only good for the catalog it
+/// was read from.
+static NETWORK_PICKS: Mutex<Option<HashMap<(u64, u64, u64, u64), String>>> = Mutex::new(None);
+
+/// Seats [`NETWORK_PICKS`] holds before it starts over: about eight hundred
+/// matches of ten athletes and two slots.
+const NETWORK_PICKS_MAX: usize = 16384;
+
+fn network_pick_recall(seat: (u64, u64, u64, u64)) -> Option<String> {
+    let picks = NETWORK_PICKS.lock().unwrap_or_else(|e| e.into_inner());
+    picks.as_ref()?.get(&seat).cloned()
+}
+
+fn network_pick_remember(seat: (u64, u64, u64, u64), item: String) {
+    let mut guard = NETWORK_PICKS.lock().unwrap_or_else(|e| e.into_inner());
+    let picks = guard.get_or_insert_with(HashMap::new);
+    if picks.len() >= NETWORK_PICKS_MAX {
+        picks.clear();
+    }
+    picks.entry(seat).or_insert(item);
+}
+
+/// Drops every remembered pick: another save's matches reuse seeds.
+fn network_picks_forget() {
+    *NETWORK_PICKS.lock().unwrap_or_else(|e| e.into_inner()) = None;
+}
+
+/// The final the game's item network scores highest as this athlete's next
+/// item, among those `allowed` and not in `spoken`. `None` when the network
+/// cannot be asked.
+///
+/// This is one step of the engine's own search. `get_item_builds_list` runs a
+/// beam search four items deep, and at each depth it scores every candidate by
+/// appending it to the build so far and calling `itemnet_forward`. The same
+/// call is made here for a fifth and a sixth item, with three differences:
+///
+/// - **The candidates** are the finals `allowed`, which is Smart Builds'
+///   word on the champion and the build, not the engine's own short list
+///   (finals whose tags match the champion's).
+/// - **The lineup** holds this champion in its lane and nobody else. The
+///   detour is not told who the enemies are, so the two features that read
+///   them (`lane_counter`, `global_counter`) sit out; the three that do not
+///   (`self_item`, `champ_pos_build`, `synergy`) are scored in full.
+/// - **Boots are left out of the build** the network is shown. It has never
+///   seen a pair: they are not finals, so the engine never offers it one.
+///
+/// A seat keeps its first answer for as long as the session lasts; see
+/// [`NETWORK_PICKS`].
+unsafe fn network_pick(
+    ctx: usize,
+    buyer: Buyer,
+    champ: &str,
+    si: usize,
+    taken: &[u64],
+    spoken: &[u64],
+    allowed: &dyn Fn(&str) -> bool,
+) -> Option<u64> {
+    // The network indexes a five-entry table with the lane and panics past it.
+    let lane = (safe_read_u64(buyer.athlete + O_ATHLETE_POS)? & 0xffff_ffff) as usize;
+    if lane >= 5 {
+        return None;
+    }
+    let team = safe_read_u64(buyer.athlete + O_ATHLETE_TEAM)?;
+    let seat = (buyer.seed != 0).then_some((buyer.seed, team, lane as u64, si as u64));
+    if let Some(item) = seat.and_then(network_pick_recall) {
+        // Held to the rules and the build as they are now: a pin added since
+        // may have taken the item, or the slot before it.
+        if allowed(&item) {
+            if let Some(index) = scan_idx_cached(ctx, item.as_bytes()) {
+                if !spoken.contains(&index) {
+                    return Some(index);
+                }
+            }
+        }
+    }
+
+    let net = NETWORK_AGENT.load(Ordering::Relaxed) as usize;
+    // Once per pick, not per candidate: `network_ready` is two `VirtualQuery`
+    // calls, and a pick scores every final there is.
+    if !itemnet_addr_valid() || !network_ready(net) {
+        return None;
+    }
+    let champion = crate::build_config::champion_roster_index(champ)? as u64;
+    let mut lineup = [NET_NO_CHAMPION; 11];
+    lineup[lane] = champion;
+    lineup[10] = lane as u64;
+    let mut build: Vec<u64> = taken
+        .iter()
+        .copied()
+        .filter(|&index| !buy_is_boots(ctx, index))
+        .collect();
+    build.push(0);
+    let last = build.len() - 1;
+
+    let forward: ItemNetFn = core::mem::transmute(exe_base_addr() + ITEMNET_FORWARD_RVA);
+    let mut best: Option<(f32, u64, String)> = None;
+    // From a start spread by champion, like every other walk of this list: a
+    // network with nothing to say yet scores every build the same, and would
+    // otherwise hand the whole league the first final in it.
+    let candidates = auto_cands();
+    let start = champ_spread(champ, candidates.len());
+    for step in 0..candidates.len() {
+        let Some(key) = item_id_to_key(candidates[(start + step) % candidates.len()]) else {
+            continue;
+        };
+        if !allowed(&key) {
+            continue;
+        }
+        let Some(index) = scan_idx_cached(ctx, key.as_bytes()) else {
+            continue;
+        };
+        if spoken.contains(&index) {
+            continue;
+        }
+        build[last] = index;
+        let score = forward(
+            net,
+            lineup.as_ptr() as usize,
+            build.as_ptr(),
+            build.len() as u64,
+            0,
+        );
+        // The first of equals wins, so a tie falls the same way every time.
+        if !score.is_nan() && best.as_ref().is_none_or(|(top, _, _)| score > *top) {
+            best = Some((score, index, key));
+        }
+    }
+    let (_, index, key) = best?;
+    if let Some(seat) = seat {
+        network_pick_remember(seat, key);
+    }
+    Some(index)
 }
 
 /// Smart Builds' rules 6 and 9 over a build just grown to its 5th and 6th
@@ -6545,7 +6729,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 if grow && slots.len() >= 4 {
                     while (slots.len() as u64) < target {
                         let si = slots.len();
-                        match extra_slot_pick(ctx, champ, si, &slots, designate) {
+                        let buyer = Buyer {
+                            athlete,
+                            seed: seed_r9,
+                        };
+                        match extra_slot_pick(ctx, buyer, champ, si, &slots, designate) {
                             Some(t) => slots.push(t),
                             None => break,
                         }

@@ -3868,6 +3868,10 @@ impl StableExtension for StrategyPicker {
             crate::champion_traits::learn(ctx)
         });
 
+        // And the game's own items' stats, for the same rules. Unconditional
+        // for the same reason; one atomic read once it has them.
+        crate::item_stats::prime_item_traits(ctx);
+
         // Same again, for the statistics screen and its Item Stats tab. Inert
         // anywhere else: it returns on its first line unless that screen is up.
         perf::time(Section::FrameItemStatsUi, || {
