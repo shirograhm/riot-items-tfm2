@@ -222,7 +222,7 @@ const LOG: bool = false;
 /// what it made of them, and `server items:`, what the server's item
 /// settings held when the mod went over them. On at the user's word
 /// (2026-10-08) with the rest off. A few lines a session.
-const STATS_LOG: bool = true;
+const STATS_LOG: bool = false;
 
 /// Lines written in one session at most.
 const LOG_LINES: usize = 600;
