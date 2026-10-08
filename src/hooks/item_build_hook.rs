@@ -11,6 +11,12 @@ const MOD_ITEM_SCORE_BONUS: f32 = 0.5;
 /// scale nothing documents.
 const SUPPORT_ITEM_SCORE_BONUS: f32 = 1.0;
 
+/// What a heal, shield or buff item gets from a support that looks to those
+/// before its other support items (Smart Builds rule 17): half as much again
+/// as [`SUPPORT_ITEM_SCORE_BONUS`], as much of a guess on the same scale
+/// (2026-10-08).
+const ALLY_AID_ITEM_SCORE_BONUS: f32 = 1.5;
+
 pub struct ConfiguredBuilds;
 
 impl StableItemBuildHook for ConfiguredBuilds {
@@ -50,6 +56,9 @@ impl StableItemBuildHook for ConfiguredBuilds {
         let fit = champion_fit(ctx);
         if smart_builds::Budget::empty(fit).rejects(key).is_some() {
             return StableDraftDecision::Pass;
+        }
+        if fit.is_preferred_aid_item(key) {
+            return StableDraftDecision::Add(ALLY_AID_ITEM_SCORE_BONUS);
         }
         // A support's World Atlas item is its one dedicated support item, and
         // past that it prefers support items without being held to one.

@@ -64,7 +64,7 @@ During a match, you can see both sides' planned builds using the [b]Check Tactic
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
 - a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count.
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
-- support items (except Protoplasm Harness) outside the support role. tank supports are restricted to Tank/Support items
+- support items (except Protoplasm Harness) outside the support role. tank supports and heal/shield/buff supports (the ones that build Dream Maker) are restricted to Tank/Support items, and the latter prefer the heal, shield and buff items below
 - heal, shield and buff items (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on supports that don't heal, shield or buff allies, and on mages
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.

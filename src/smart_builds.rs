@@ -1,7 +1,7 @@
 //! The Smart Builds rules: what the editor's footer toggle
 //! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
 //!
-//! Fifteen of them:
+//! Seventeen of them:
 //!
 //! 1. **Unique items** — the same item twice is a wasted slot, because nothing
 //!    in this game stacks across two copies.
@@ -162,15 +162,28 @@
 //!    game's `Tank` tag builds items of the editor's Tank and Support classes
 //!    and no others, whatever its damage type (the user, 2026-10-08, after a
 //!    Shield Bearer support was seen holding damage items). Boots are rule
-//!    7's. An offender makes way the way rule 5's does: for an item of the
-//!    kind the rest of the build is made of.
+//!    7's. The game's own items have no class written down: its attack,
+//!    attack speed and magic power lines ([`GAME_ITEMS`]) are damage items
+//!    all the same and go, while its armor, magic resistance and health
+//!    lines stay. An offender makes way the way rule 5's does: for an item
+//!    of the kind the rest of the build is made of.
+//! 17. **Tank and support items for heal, shield and buff supports** — a
+//!    support whose World Atlas item is Dream Maker (rule 12) is held to the
+//!    same two classes (the user, 2026-10-08: "heal/shield/buff supports
+//!    (dream maker builders)"), and among them looks to the items that
+//!    answer to healing, shielding and buffing first ([`ALLY_AID_ITEMS`]):
+//!    they are where a stand-in for any of its picks is looked for before
+//!    anywhere else, the AI buys them right after the Atlas item, the
+//!    item-build hook pushes them hardest, and the automatic 5th and 6th
+//!    items come from them while one is left. A preference, not a quota: a
+//!    tank or support item the AI picked itself stays.
 //!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
 //! other item, so the AI's picks around it make way for it rather than the
 //! other way round.
 //!
-//! Rules 4, 5, 8 to 14 and 16 are about the champion, not the build, and come in
+//! Rules 4, 5, 8 to 14, 16 and 17 are about the champion, not the build, and come in
 //! as a [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
@@ -275,6 +288,15 @@ const GAME_ITEMS: [(&str, i32, i32, i32, i32); 15] = [
     ("angels_fang", 0, 0, 0, 75),
     ("prophet_of_the_abyss", 0, 0, 0, 100),
 ];
+
+/// Whether `key` is one of the game's own attack, attack speed or magic power
+/// items ([`GAME_ITEMS`]). Damage items, which no class says: the editor's
+/// classes are written down for this mod's items only, and rules 16 and 17
+/// go by the class.
+fn is_game_damage_item(key: &str) -> bool {
+    let slug = crate::build_config::base_slug(key);
+    GAME_ITEMS.iter().any(|(item, ..)| *item == slug)
+}
 
 impl Table {
     /// This mod's own record of the item, then the settings document's, then
@@ -445,9 +467,10 @@ pub(crate) enum Reason {
     AllyAidWithoutAid,
     /// An item only a marksman keeps (rule 14) on a champion that is none.
     MarksmanOnly,
-    /// An item that is neither a tank's nor a support's, on a support with
-    /// the `Tank` tag (rule 16).
-    TankSupport,
+    /// An item that is neither a tank's nor a support's, on a support held
+    /// to those two classes: one with the `Tank` tag (rule 16), or one whose
+    /// World Atlas item is Dream Maker (rule 17).
+    SupportClasses,
     Reach,
 }
 
@@ -482,7 +505,7 @@ impl Reason {
                 | Reason::MandateWithoutCc
                 | Reason::AllyAidWithoutAid
                 | Reason::MarksmanOnly
-                | Reason::TankSupport
+                | Reason::SupportClasses
         )
     }
 }
@@ -601,15 +624,41 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
 }
 
 impl Fit {
-    /// Rule 16 for one item: whether `key` is of a class a tank support does
-    /// not build. Boots are rule 7's, and an item no class is written down
-    /// for is left alone, like any item the rules cannot place.
-    fn off_tank_support(&self, key: &str) -> bool {
-        self.tank_support
-            && !matches!(
-                crate::item_catalog::category_of(crate::build_config::base_slug(key)),
-                None | Some("Tank" | "Support" | "Boots")
-            )
+    /// Rules 16 and 17 for one item: whether `key` is of a class this
+    /// support does not build. Boots are rule 7's. The game's own damage
+    /// items have no class written down and are turned away all the same
+    /// ([`is_game_damage_item`]): until 2026-10-08 they were let through, so
+    /// an AP tank support could keep the game's top magic power item. Any
+    /// other item without a class is left alone, like any item the rules
+    /// cannot place.
+    fn off_support_classes(&self, key: &str) -> bool {
+        (self.tank_support || self.aid_support())
+            && match crate::item_catalog::category_of(crate::build_config::base_slug(key)) {
+                Some("Tank" | "Support" | "Boots") => false,
+                Some(_) => true,
+                None => is_game_damage_item(key),
+            }
+    }
+
+    /// Rule 17: whether this is a heal, shield and buff support, which is one
+    /// whose World Atlas item is Dream Maker: the user's own way of naming
+    /// them. Chef and Monk with the rest ([`ATLAS_BY_CHAMPION`]). Not a tank
+    /// whose kit aids allies but whose Atlas item is another (Shield Bearer):
+    /// rule 16 holds it to the two classes, without the preference.
+    fn aid_support(&self) -> bool {
+        self.support_items && self.atlas_item() == DREAM_MAKER
+    }
+
+    /// Rule 17: whether this support has items it looks to before the other
+    /// tank and support items.
+    pub(crate) fn prefers_aid_items(&self) -> bool {
+        self.aid_support()
+    }
+
+    /// Rule 17: whether `key` is one of those items ([`ALLY_AID_ITEMS`]) and
+    /// this a support that looks to them first.
+    pub(crate) fn is_preferred_aid_item(&self, key: &str) -> bool {
+        self.aid_support() && is_ally_aid_item(key)
     }
 
     /// Rule 5 for one item: whether an item with these traits gives a stat the
@@ -778,13 +827,21 @@ fn timing(key: &str) -> Timing {
     }
 }
 
-/// The order rules 6, 9 and 12 buy AI picks in: a support's World Atlas item
-/// (rule 12) before anything, then the role's own items (rule 9), then by
-/// [`timing`]. Sorted on, so smaller is sooner.
-fn buy_order(key: Option<&str>, fit: Fit) -> (bool, bool, Timing) {
+/// The order rules 6, 9, 12 and 17 buy AI picks in: a support's World Atlas
+/// item (rule 12) before anything, then the heal, shield and buff items of a
+/// support that looks to them first (rule 17), then the role's own items
+/// (rule 9), then by [`timing`]. Sorted on, so smaller is sooner. The order is
+/// also what decides which pick drops off the end when rule 7 puts the boots
+/// in, so it is never one of the first two kinds while another is left.
+fn buy_order(key: Option<&str>, fit: Fit) -> (bool, bool, bool, Timing) {
     match key {
-        Some(key) => (!fit.is_atlas_pick(key), !fit.is_role_item(key), timing(key)),
-        None => (true, true, Timing::Any),
+        Some(key) => (
+            !fit.is_atlas_pick(key),
+            !fit.is_preferred_aid_item(key),
+            !fit.is_role_item(key),
+            timing(key),
+        ),
+        None => (true, true, true, Timing::Any),
     }
 }
 
@@ -1108,8 +1165,8 @@ impl Budget {
             Some(Reason::MandateWithoutCc)
         } else if self.fit.no_ally_aid && is_ally_aid_item(key) {
             Some(Reason::AllyAidWithoutAid)
-        } else if self.fit.off_tank_support(key) {
-            Some(Reason::TankSupport)
+        } else if self.fit.off_support_classes(key) {
+            Some(Reason::SupportClasses)
         } else if self.fit.wants_marksman(key) {
             Some(Reason::MarksmanOnly)
         } else if self.fit.mismatches(&traits) {
@@ -1145,7 +1202,7 @@ impl Budget {
     }
 
     /// Whether `key` is an item this champion may hold at all — rules 4, 5, 8,
-    /// 10, 11, 13 and 14, which do not depend on what else is in the build (rule 8's
+    /// 10, 11, 13, 14, 16 and 17, which do not depend on what else is in the build (rule 8's
     /// one-to-a-build half does, and is left out). An item that fails is no
     /// guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
@@ -1155,7 +1212,7 @@ impl Budget {
             && !self.fit.other_atlas_item(key)
             && !(self.fit.no_mandate && is_mandate(key))
             && !(self.fit.no_ally_aid && is_ally_aid_item(key))
-            && !self.fit.off_tank_support(key)
+            && !self.fit.off_support_classes(key)
             && !self.fit.wants_marksman(key)
             && !self.fit.mismatches(&self.table.traits(key))
             && !self.fit.out_of_reach(key)
@@ -1292,6 +1349,10 @@ pub(crate) fn keep_jungle_items_in_jungle<C, K, G, F>(
 /// in the same way, over the AI's first support item that is neither Mandate
 /// nor the Atlas one. None to spare, none swapped in.
 ///
+/// Rule 17 is in the walk itself: for a support that looks to the heal,
+/// shield and buff items first, one of those is the stand-in for whatever
+/// pick is turned away, while one is left that the build can hold.
+///
 /// Last, rule 6 reorders the AI's slots among themselves: the role's own items
 /// first (rule 9), then early items, late items last, and the engine's order
 /// within each group. A pinned slot keeps its position and its item, so the
@@ -1397,7 +1458,20 @@ pub(crate) fn enforce<C, K, G, F>(
                                 })
                         })
                 };
-                if reason.restyles() {
+                // Rule 17: a heal, shield and buff support's stand-in is one
+                // of the items that answer to that, whatever the pick was
+                // turned away for. A wrong World Atlas item is the exception:
+                // it makes way for the right one, below.
+                let aid_item = (fit.prefers_aid_items() && reason != Reason::AtlasMismatch)
+                    .then(|| {
+                        search(&|candidate| {
+                            key(candidate).is_some_and(|key| is_ally_aid_item(&key))
+                        })
+                    })
+                    .flatten();
+                if let Some(aid_item) = aid_item {
+                    aid_item
+                } else if reason.restyles() {
                     // An item of the champion's role that fails rule 5 (an
                     // AP-only support item on an AD support) or rule 8 (Feral
                     // Flare on a tank jungler) makes way for one of the role

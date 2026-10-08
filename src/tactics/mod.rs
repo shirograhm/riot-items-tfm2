@@ -2900,7 +2900,9 @@ struct Buyer {
 ///
 /// Smart Builds still has the last word on what may be picked: always on
 /// what suits the champion, and on the build as a whole while the toggle is
-/// on. Should the network be out of reach (its address not found after a game update, or no
+/// on. A support its rule 17 has looking to the heal, shield and buff items
+/// first is asked about those alone before the rest.
+/// Should the network be out of reach (its address not found after a game update, or no
 /// build asked for yet this session) the slot goes to the first final the
 /// rules accept, from a start spread by champion, and only then to any final
 /// at all. Never a duplicate: `taken` is every slot before this one, and
@@ -2936,8 +2938,27 @@ unsafe fn auto_extra_pick(
                 .as_ref()
                 .is_none_or(|budget| budget.rejects(candidate).is_none())
     };
-    network_pick(ctx, buyer, champ, si, taken, &spoken, &allowed)
-        .inspect(|_| picked_by("network"))
+    // Smart Builds rule 17: a support that looks to the heal, shield and buff
+    // items first takes these two slots from them while one is left, picked
+    // the same way, by the network, among those alone. Only with the toggle
+    // on: it is a preference among picks, not a line on what the champion
+    // may hold.
+    let aid_first = |candidate: &str| fit.is_preferred_aid_item(candidate) && allowed(candidate);
+    let preferred = if budget.is_some() && fit.prefers_aid_items() {
+        network_pick(ctx, buyer, champ, si, taken, &spoken, &aid_first)
+            .inspect(|_| picked_by("network, heal/shield/buff items first"))
+            .or_else(|| {
+                pick_candidate(ctx, u64::MAX, &spoken, champ, &aid_first)
+                    .inspect(|_| picked_by("first heal/shield/buff item the rules allow"))
+            })
+    } else {
+        None
+    };
+    preferred
+        .or_else(|| {
+            network_pick(ctx, buyer, champ, si, taken, &spoken, &allowed)
+                .inspect(|_| picked_by("network"))
+        })
         .or_else(|| {
             pick_candidate(ctx, u64::MAX, &spoken, champ, &allowed)
                 .inspect(|_| picked_by("first the rules allow"))

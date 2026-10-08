@@ -2459,9 +2459,30 @@ fn fill_tip(ctx: &mut StableClient<'_>, key: &str) -> TipBody {
     }
 }
 
+/// The tooltip's border for the slot it is up for: the slot's own, colour
+/// and width, so a pin's tooltip is edged in the pin's teal (the user,
+/// 2026-10-08). The border is what shows of the tooltip's own colour around
+/// its `#bg`, which is inset by this width.
+fn tip_edge(pinned: bool) -> (&'static str, usize) {
+    if pinned {
+        (PINNED_LINE, PINNED_STROKE)
+    } else {
+        (PICKED_LINE, PICKED_STROKE)
+    }
+}
+
+/// The slot at `spot` on the board, if it has one there.
+fn slot_at(board: &Rows, (side, lane, slot): Spot) -> Option<&Slot> {
+    board
+        .get(lane)
+        .and_then(|cells| cells[side].as_ref())
+        .and_then(|cell| cell.slots.get(slot))
+}
+
 /// Sizes the tooltip to its text and puts it by its slot: above where there
 /// is room, below where there is not, and inside the screen either way.
-fn place_tip(ctx: &mut StableClient<'_>, body: TipBody, slot: &str) {
+/// `edge` is the width of its border ([`tip_edge`]).
+fn place_tip(ctx: &mut StableClient<'_>, body: TipBody, slot: &str, edge: usize) {
     // The description's own height where the host measures a label's text,
     // which it does for width (`item_stats::toolbox_tab`). The box handed
     // back unchanged is no measurement, and then the estimate stands.
@@ -2492,7 +2513,7 @@ fn place_tip(ctx: &mut StableClient<'_>, body: TipBody, slot: &str) {
 
     ctx.ui_set_properties(
         &format!("{TIP}.bg"),
-        &format!("height: {}px;", height as i32 - 2),
+        &format!("height: {}px;", height as i32 - 2 * edge as i32),
     );
     // `ui_node_rect` is absolute and a node's own position is relative to its
     // parent, here the layout's root.
@@ -2569,20 +2590,17 @@ fn show_tip(ctx: &mut StableClient<'_>, board: &Rows, target: Option<Spot>) {
     })
     .unwrap_or((false, 0, None));
 
-    let Some((side, lane, slot)) = target else {
+    let Some(spot) = target else {
         if changed {
             ctx.ui_set_visible(TIP, false);
         }
         return;
     };
+    let held = slot_at(board, spot);
+    let (line, edge) = tip_edge(held.is_some_and(|held| held.pinned));
 
     if changed {
-        let Some(key) = board
-            .get(lane)
-            .and_then(|cells| cells[side].as_ref())
-            .and_then(|cell| cell.slots.get(slot))
-            .and_then(|held| held.key.clone())
-        else {
+        let Some(key) = held.and_then(|held| held.key.clone()) else {
             return;
         };
         // Spawned last under the root, so it draws over everything in the
@@ -2592,24 +2610,26 @@ fn show_tip(ctx: &mut StableClient<'_>, board: &Rows, target: Option<Spot>) {
             return;
         }
         let body = fill_tip(ctx, &key);
-        ctx.ui_set_properties(TIP, &format!("y: {PARKED_Y}px; visible: true;"));
+        ctx.ui_set_properties(
+            TIP,
+            &format!("y: {PARKED_Y}px; visible: true; color: {line};"),
+        );
+        ctx.ui_set_properties(
+            &format!("{TIP}.bg"),
+            &format!("width: {}px;", TIP_W - 2 * edge),
+        );
         let _ = with(|panel| panel.body = Some(body));
         return;
     }
 
     if age == FILL_AFTER {
-        let key = board
-            .get(lane)
-            .and_then(|cells| cells[side].as_ref())
-            .and_then(|cell| cell.slots.get(slot))
-            .and_then(|held| held.key.clone());
-        if let Some(key) = key {
+        if let Some(key) = held.and_then(|held| held.key.clone()) {
             fill_placeholders(ctx, &key);
         }
     }
     if age == MEASURE_AFTER {
         if let Some(body) = body {
-            place_tip(ctx, body, &slot_path((side, lane, slot)));
+            place_tip(ctx, body, &slot_path(spot), edge);
         }
     }
 }
