@@ -162,6 +162,23 @@ impl StableItem for ImperialMandate {
         }
     }
 
+    /// A skill's hit again, as `on_attack` tells of it: it is not known that
+    /// `on_skill_hit` hears of every one (see [`ImmobilizeWatch`]).
+    fn on_attack(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
+    ) {
+        if matches!(attack_type, AttackTypeV1::Skill) && self.watch.skill_hit(ctx, target, false) {
+            self.mark(ctx, target);
+        }
+    }
+
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         for target in self.watch.update(ctx, player) {
             self.mark(ctx, target);

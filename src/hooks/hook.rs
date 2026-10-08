@@ -804,13 +804,16 @@ fn apply_training_builds(
         }
 
         // For the in-match tactics panel (`crate::match_builds`), which shows
-        // the player's five; the stable hook notes league matches the same way.
+        // both teams; the stable hook notes league matches the same way. The
+        // route's place is its lane only in a five-a-side lineup: a one-lane
+        // match has one route, whatever lane it is played in.
         let keys = route
             .iter()
             .map(|&index| items.get(index).map(|item| item.key().to_string()))
             .collect::<Option<Vec<String>>>();
         if let Some(keys) = keys {
-            crate::match_builds::note_decision(champion, position, &allies, &enemies, keys);
+            let lane = (team1.len() == 5).then_some(position);
+            crate::match_builds::note_decision(champion, lane, &allies, &enemies, keys, None);
         }
     }
 }

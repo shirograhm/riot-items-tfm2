@@ -7,14 +7,25 @@
 //! no damage, and it never set Command off while it waited on one).
 //!
 //! For the rest the host does not say who applied a crowd control, so "you
-//! immobilized them" is read as one of your skills hitting a champion who
-//! becomes newly immobilized at that hit or within `IMMOBILIZE_WINDOW_TICKS`
-//! after it (a skill's stun may land either side of its hit report). "Newly"
-//! means more immobilizing effects than the last tick's baseline, so chaining
-//! a second stun onto a stunned target counts again. An ally's stun landing in
-//! that same window reads the same and will be credited to you, which is why a
-//! carrier with no such skill of its own claims nothing (`claims_hits`): its
-//! slows would otherwise collect every stun its allies land.
+//! immobilized them" is read as two things happening to the same enemy
+//! champion within [`WINDOW_TICKS`] of each other, in either order: one of
+//! your skills hitting it, and it becoming newly immobilized. "Newly" means
+//! more immobilizing effects than a tick before, so chaining a second stun
+//! onto a stunned target counts again.
+//!
+//! Either order, and a window of a sixth of a second, because how a skill
+//! lays its crowd control down beside its damage is the skill's own business.
+//! This used to wait for the stun on the hit alone, for two ticks, and only
+//! heard of hits through `on_skill_hit`: Berserker's slam, half a second of
+//! knock-up, never set Going Sledding off (the user, 2026-10-08). Which of the
+//! three it was is not known, so all three are gone: a stun that lands before
+//! its hit is remembered for it, the wait is longer, and a skill's hit is
+//! taken from `on_attack` as well.
+//!
+//! An ally's stun landing on a champion inside that window of your skill
+//! hitting it reads the same and is credited to you, which is why a carrier
+//! with no such skill of its own claims nothing (`claims_hits`): its slows
+//! would otherwise collect every stun its allies land.
 
 use mod_api_stable::*;
 
@@ -70,28 +81,24 @@ fn claims_hits(champion: &StableEntity<'_, '_>) -> bool {
         .map_or(true, |immobilize| immobilize.other)
 }
 
-/// Ticks after a skill hit in which a new immobilize still counts as that
-/// hit's: a skill's stun may land after its hit is reported, not before.
-const IMMOBILIZE_WINDOW_TICKS: usize = 2;
-
-/// A skill hit waiting to see whether it immobilized its target.
-#[derive(Clone, Copy, Debug)]
-struct PendingHit {
-    target: usize,
-    /// Immobilizing effects the target was under before the hit.
-    before: usize,
-    expires_at: usize,
-}
+/// Ticks a skill hit and a new immobilize on the same champion may be apart
+/// and still be one thing: a sixth of a second, either way round.
+const WINDOW_TICKS: usize = 10;
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct ImmobilizeWatch {
     /// Each enemy champion as of the last tick: (entity, immobilize count,
-    /// taunts onto the carrier). The first count is the "before" a skill hit is
-    /// compared against, the second the one a new taunt is.
+    /// taunts onto the carrier). What a new immobilize, or a new taunt, is
+    /// new against.
     baseline: Vec<(usize, usize, usize)>,
     /// The tick before's `baseline`, kept to swap with rather than reallocate.
     previous: Vec<(usize, usize, usize)>,
-    pending: Vec<PendingHit>,
+    /// The carrier's skill hits still waiting for their target to be
+    /// immobilized: (target, tick of the hit).
+    hits: Vec<(usize, usize)>,
+    /// Enemy champions newly immobilized and still waiting for a skill of the
+    /// carrier's to hit them: (target, tick it was seen).
+    stuns: Vec<(usize, usize)>,
     /// Whether a skill hit may claim an immobilize that lands with it: not for
     /// a carrier whose kit is known to immobilize with nothing but a taunt, or
     /// nothing at all, or every stun an ally lands on a target of its slows
@@ -105,12 +112,18 @@ impl ImmobilizeWatch {
     pub(crate) fn reset(&mut self) {
         self.baseline.clear();
         self.previous.clear();
-        self.pending.clear();
+        self.hits.clear();
+        self.stuns.clear();
     }
 
-    /// From `on_skill_hit`: whether this hit of the carrier's immobilized
-    /// `target` there and then. A hit that has not yet is kept an eye on for
-    /// `IMMOBILIZE_WINDOW_TICKS`, and `update` reports it if it does.
+    /// From `on_skill_hit`, and from `on_attack` for a hit of a skill's:
+    /// whether this hit of the carrier's goes with an immobilize on `target`,
+    /// one already seen or one that is there now. A hit with neither is
+    /// remembered for [`WINDOW_TICKS`], and `update` reports it if its
+    /// immobilize turns up.
+    ///
+    /// Both hooks may tell of the same hit, and a skill may hit the same
+    /// champion several times: an immobilize is only ever answered to once.
     pub(crate) fn skill_hit(&mut self, ctx: &StableSim<'_>, target: usize, is_ally: bool) -> bool {
         if is_ally || self.claims_hits == Some(false) {
             return false;
@@ -122,56 +135,54 @@ impl ImmobilizeWatch {
         else {
             return false;
         };
-        let before = self.baseline_of(target);
-        if now > before {
+        let tick = ctx.tick();
+
+        // An immobilize that turned up on this champion a moment ago, with no
+        // hit to its name yet.
+        let waiting = self
+            .stuns
+            .iter()
+            .position(|&(id, at)| id == target && tick.saturating_sub(at) <= WINDOW_TICKS);
+        if let Some(index) = waiting {
+            self.stuns.swap_remove(index);
             return true;
         }
-        let expires_at = ctx.tick() + IMMOBILIZE_WINDOW_TICKS;
-        match self.pending.iter_mut().find(|p| p.target == target) {
-            Some(pending) => pending.expires_at = expires_at,
-            None => self.pending.push(PendingHit {
-                target,
-                before,
-                expires_at,
-            }),
+        // One that has landed since the last tick, in step with this hit. The
+        // count is taken up at once, so `update` does not find it new again.
+        if now > self.baseline_of(target) {
+            self.set_baseline(target, now);
+            return true;
+        }
+        // Neither yet: the immobilize may still be on its way.
+        match self.hits.iter_mut().find(|(id, _)| *id == target) {
+            Some(hit) => hit.1 = tick,
+            None => self.hits.push((target, tick)),
         }
         false
     }
 
     /// From `update`, every tick: the enemy champions the carrier has
-    /// immobilized since the last one. Skill hits that were waiting on their
-    /// stun first, then new taunts.
+    /// immobilized since the last one. Those whose immobilize has caught up
+    /// with a skill hit, then new taunts.
     pub(crate) fn update(&mut self, ctx: &StableSim<'_>, player: usize) -> Vec<usize> {
         let tick = ctx.tick();
         let mut immobilized = Vec::new();
-
-        // Hits still waiting on their stun, judged against the count from
-        // before they landed.
-        if !self.pending.is_empty() {
-            self.pending.retain(|p| {
-                let now = ctx
-                    .get_entity(p.target)
-                    .filter(|t| t.is_alive())
-                    .map_or(0, |t| immobilize_count(&t));
-                if now > p.before {
-                    immobilized.push(p.target);
-                    return false;
-                }
-                tick < p.expires_at
-            });
-        }
+        let fresh = |&(_, at): &(usize, usize)| tick.saturating_sub(at) <= WINDOW_TICKS;
+        self.hits.retain(fresh);
+        self.stuns.retain(fresh);
 
         let Some(carrier) = ctx.get_player(player).and_then(|p| p.champion()) else {
             return immobilized;
         };
         let (carrier_id, team) = (carrier.id(), carrier.team());
-        if self.claims_hits.is_none() {
-            self.claims_hits = Some(claims_hits(&carrier));
-        }
+        let claims = *self
+            .claims_hits
+            .get_or_insert_with(|| claims_hits(&carrier));
 
-        // This tick's counts become the next hit's "before", and a champion
-        // under more of the carrier's taunts than a tick ago has just been
-        // taunted by them.
+        // This tick's counts are what the next is new against. A champion
+        // under more immobilizing effects than a tick ago has just been
+        // immobilized by someone; one under more of the carrier's taunts, by
+        // the carrier.
         std::mem::swap(&mut self.baseline, &mut self.previous);
         self.baseline.clear();
         for index in 0..ctx.champion_count() {
@@ -183,13 +194,26 @@ impl ImmobilizeWatch {
             else {
                 continue;
             };
-            let before = self
+            let (count_before, taunts_before) = self
                 .previous
                 .iter()
                 .find(|&&(known, _, _)| known == id)
-                .map_or(0, |&(_, _, taunts)| taunts);
-            if taunts > before {
+                .map_or((0, 0), |&(_, count, taunts)| (count, taunts));
+            if taunts > taunts_before {
                 immobilized.push(id);
+            }
+            if claims && count > count_before {
+                // The carrier's if one of its skills has just hit this
+                // champion; otherwise it waits to see whether one is about to.
+                match self.hits.iter().position(|&(target, _)| target == id) {
+                    Some(hit) => {
+                        self.hits.swap_remove(hit);
+                        if !immobilized.contains(&id) {
+                            immobilized.push(id);
+                        }
+                    }
+                    None => self.stuns.push((id, tick)),
+                }
             }
             self.baseline.push((id, count, taunts));
         }
@@ -201,5 +225,14 @@ impl ImmobilizeWatch {
             .iter()
             .find(|&&(id, _, _)| id == target)
             .map_or(0, |&(_, count, _)| count)
+    }
+
+    /// Takes `count` as what `target` was already under, so the next tick
+    /// does not see it as new.
+    fn set_baseline(&mut self, target: usize, count: usize) {
+        match self.baseline.iter_mut().find(|(id, _, _)| *id == target) {
+            Some(known) => known.1 = count,
+            None => self.baseline.push((target, count, 0)),
+        }
     }
 }

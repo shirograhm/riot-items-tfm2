@@ -246,6 +246,23 @@ impl StableItem for SolsticeSleigh {
         }
     }
 
+    /// A skill's hit again, as `on_attack` tells of it: it is not known that
+    /// `on_skill_hit` hears of every one (see [`ImmobilizeWatch`]).
+    fn on_attack(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        caster: usize,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
+    ) {
+        if matches!(attack_type, AttackTypeV1::Skill) && self.watch.skill_hit(ctx, target, false) {
+            self.sled(ctx, caster);
+        }
+    }
+
     /// Sleds once however many enemies were immobilized this tick.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         if !self.watch.update(ctx, player).is_empty() {

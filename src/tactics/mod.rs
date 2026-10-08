@@ -2766,7 +2766,10 @@ unsafe fn extra_slot_pick(
     designate
         .then(|| pinned_extra_slot(ctx, champ, si, taken))
         .flatten()
-        .or_else(|| extra_slot_boots(ctx, champ, si, taken, designate))
+        .inspect(|_| picked_by("pin"))
+        .or_else(|| {
+            extra_slot_boots(ctx, champ, si, taken, designate).inspect(|_| picked_by("boots rule"))
+        })
         .or_else(|| {
             let reserved = if designate {
                 later_pins(ctx, champ, si + 1)
@@ -2775,6 +2778,17 @@ unsafe fn extra_slot_pick(
             };
             auto_extra_pick(ctx, buyer, champ, si, taken, &reserved)
         })
+}
+
+thread_local! {
+    // Which of the ways above and below filled the slot `extra_slot_pick` was
+    // last asked for on this thread. Only read back by the growth that asked,
+    // for the Check Tactics panel's test log.
+    static PICKED_BY: core::cell::Cell<&'static str> = const { core::cell::Cell::new("") };
+}
+
+fn picked_by(how: &'static str) {
+    PICKED_BY.with(|picked| picked.set(how));
 }
 
 /// Smart Builds' boots for build slot `si` (the 5th or 6th), in a build that
@@ -2923,7 +2937,11 @@ unsafe fn auto_extra_pick(
                 .is_none_or(|budget| budget.rejects(candidate).is_none())
     };
     network_pick(ctx, buyer, champ, si, taken, &spoken, &allowed)
-        .or_else(|| pick_candidate(ctx, u64::MAX, &spoken, champ, &allowed))
+        .inspect(|_| picked_by("network"))
+        .or_else(|| {
+            pick_candidate(ctx, u64::MAX, &spoken, champ, &allowed)
+                .inspect(|_| picked_by("first the rules allow"))
+        })
         // Last resort, unconstrained but for the one rule that holds even
         // here: a 5th item that breaks a rule still beats an empty slot, a
         // jungle item on a champion that is not jungling does not.
@@ -2931,6 +2949,7 @@ unsafe fn auto_extra_pick(
             pick_candidate(ctx, u64::MAX, &spoken, champ, |candidate| {
                 !fit.off_role_jungle_item(candidate)
             })
+            .inspect(|_| picked_by("last resort, no rule held"))
         })
 }
 
@@ -3763,6 +3782,9 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     }
                 }
                 if grow {
+                    // Each new slot's item and how it was come by, for the
+                    // Check Tactics panel's test log.
+                    let mut picks: Vec<(u64, &'static str)> = Vec::new();
                     while (slots.len() as u64) < target {
                         let si = slots.len();
                         let buyer = Buyer {
@@ -3770,7 +3792,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                             seed: seed_r9,
                         };
                         match extra_slot_pick(ctx, buyer, champ, si, &slots, designate) {
-                            Some(t) => slots.push(t),
+                            Some(t) => {
+                                picks.push((t, PICKED_BY.with(|picked| picked.get())));
+                                slots.push(t);
+                            }
                             None => break,
                         }
                     }
@@ -3809,6 +3834,38 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                                 if rd_u64(new_ptr + j * 8) != index {
                                     wr_u64(new_ptr + j * 8, index);
                                 }
+                            }
+                        }
+                        // For the Check Tactics panel, which shows what each
+                        // of the player's athletes will buy: the whole build
+                        // as it stands now, the two new slots included and in
+                        // the order rule 6 left it. Once per athlete, here
+                        // where the growth held.
+                        if build_len as usize == slots.len() {
+                            let keys = slots
+                                .iter()
+                                .map(|&index| catalog_name_at(ctx, index))
+                                .collect::<Option<Vec<String>>>();
+                            let lane = safe_read_u64(athlete + O_ATHLETE_POS)
+                                .map(|pos| (pos & 0xffff_ffff) as usize);
+                            let side = safe_read_u64(athlete + O_ATHLETE_TEAM);
+                            let picks = picks
+                                .iter()
+                                .filter_map(|&(index, how)| {
+                                    Some((catalog_name_at(ctx, index)?, how))
+                                })
+                                .collect();
+                            if let (Some(keys), Some(lane), Some(side)) = (keys, lane, side) {
+                                crate::match_builds::note_grown(
+                                    seed_r9,
+                                    side,
+                                    lane,
+                                    safe_read_u64(athlete + O_ATHLETE_ID),
+                                    champ,
+                                    keys,
+                                    picks,
+                                    designate,
+                                );
                             }
                         }
                     }

@@ -125,7 +125,7 @@ impl StableItemBuildHook for ConfiguredBuilds {
                 own = pins_over(ctx, &build);
             }
         }
-        note_for_match_panel(ctx, own.as_deref().unwrap_or(&build));
+        note_for_match_panel(ctx, &build, own.as_deref());
 
         if build.is_empty() || build == base {
             Vec::new()
@@ -270,26 +270,28 @@ fn pins_over(ctx: &StableItemBuildContext<'_>, build: &[usize]) -> Option<Vec<us
 }
 
 /// Hands the build this champion ends up with to the in-match tactics panel
-/// ([`crate::match_builds`]), which shows the player's five. Every match's
-/// builds pass through here and this cannot tell which are the player's, so
-/// all of them are noted and the panel picks its match out by lineup.
-fn note_for_match_panel(ctx: &StableItemBuildContext<'_>, build: &[usize]) {
-    let Some(lane) = ctx.lane() else {
-        return;
+/// ([`crate::match_builds`]), which shows both teams. Every match's builds
+/// pass through here and this cannot tell whose a build is, so all of them
+/// are noted and the panel picks its match out by lineup: `build` is what
+/// anyone playing the champion is handed, and `own` what the player's athlete
+/// is, where `own_team_only` makes that another build.
+fn note_for_match_panel(ctx: &StableItemBuildContext<'_>, build: &[usize], own: Option<&[usize]>) {
+    let keys = |build: &[usize]| {
+        build
+            .iter()
+            .map(|&index| ctx.item_key(index).map(str::to_string))
+            .collect::<Option<Vec<String>>>()
     };
-    let keys = build
-        .iter()
-        .map(|&index| ctx.item_key(index).map(str::to_string))
-        .collect::<Option<Vec<String>>>();
-    let Some(keys) = keys else {
+    let Some(shared) = keys(build) else {
         return;
     };
     crate::match_builds::note_decision(
         ctx.champion_key(),
-        lane.code() as usize,
+        ctx.lane().map(|lane| lane.code() as usize),
         &ctx.ally_champions(),
         &ctx.enemy_champions(),
-        keys,
+        shared,
+        own.and_then(keys),
     );
 }
 

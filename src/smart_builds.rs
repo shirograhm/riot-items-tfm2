@@ -13,8 +13,9 @@
 //!    at all, rather than one that merely fits: a stand-in worth having is one
 //!    whose stats the champion can use.
 //! 4. **Support items stay in the support role** — the Support class (bar
-//!    Protoplasm Harness and Zeke's Convergence) is only kept by whoever plays
-//!    support, whatever the champion.
+//!    Protoplasm Harness) is only kept by whoever plays support, whatever the
+//!    champion. Zeke's Convergence was a second exception until 2026-10-08,
+//!    when the user had it made a support item like the rest.
 //! 5. **Items the champion scales with** — an AP-only champion keeps no item
 //!    that gives a physical stat (attack, attack speed or crit), and an
 //!    AD-only champion none that gives magic power. That takes a hybrid item,
@@ -60,8 +61,8 @@
 //!    neither a pin nor an AI pick is one, the AI's last pick makes way for
 //!    it. A support is guaranteed nothing here: its World Atlas item (rule
 //!    12) is its one dedicated support item (the user, 2026-10-04). Past
-//!    that, a support *prefers* Support-class items (the two exceptions to
-//!    rule 4 included) without being held to one: the item-build hook pushes
+//!    that, a support *prefers* Support-class items (the exception to rule
+//!    4 included) without being held to one: the item-build hook pushes
 //!    them harder than the mod's other items, the AI's picks among them are
 //!    bought right after the Atlas item, and they are the first place a
 //!    stand-in is looked for when one of its AI picks does not suit the
@@ -98,18 +99,18 @@
 //!    role's starting item, and what it grows into ([`ATLAS_ITEMS`]) is to a
 //!    support what a jungle item is to a jungler: its build holds one, the one
 //!    for its champion, bought before everything else, so the match starts on
-//!    World Atlas and its gold. Zaz'Zak's Realmspike on a mage (the game's
-//!    `Magician` class), whose abilities are there to hurt whatever else its
-//!    kit does: a Brand stuns and a Lux shields, and both cast to deal damage
-//!    (rules 9 and 13 pass a mage over for the same reason); else
-//!    Dream Maker on a champion whose kit heals,
-//!    shields or buffs allies, whose casts on them are what blow its bubbles
-//!    (rule 13's test); else Celestial Opposition on a champion tagged `Tank`,
-//!    the one the enemy hits, which is what Blessing of the Mountain answers
-//!    to; else Solstice Sleigh on a support whose kit immobilizes, which is
-//!    what Going Sledding pays off on (rule 10's test); else Zaz'Zak's
-//!    Realmspike on any other AP champion, for the same reason as a mage's;
-//!    else Bloodsong, whose Spellblade any
+//!    World Atlas and its gold. Which one, in the order the user set out
+//!    (2026-10-08): Solstice Sleigh on a champion tagged `Tank` whose kit
+//!    immobilizes for a second or more in all, ultimate included, which is
+//!    what Going Sledding pays off on; else Celestial Opposition on any
+//!    other champion tagged `Tank`, the one the enemy hits, which is what
+//!    Blessing of the Mountain answers to; else Dream Maker on a champion
+//!    whose kit heals, shields or buffs allies, whose casts on them are what
+//!    blow its bubbles (rule 13's test, so not a mage: rules 9 and 13 pass a
+//!    mage over, and a Lux that shields still casts to deal damage); else
+//!    Zaz'Zak's Realmspike on a mage (the game's `Magician` class), whose
+//!    abilities are there to hurt; else Zaz'Zak's Realmspike on any other AP
+//!    champion, for the same reason; else Bloodsong, whose Spellblade any
 //!    cast readies. The AI's
 //!    other Atlas items make way, all of them when the player pinned one. A
 //!    build with none, pinned or picked, has the AI's
@@ -157,12 +158,19 @@
 //!    Bloodsong (rule 12) has its one already: it keeps no other the AI
 //!    picked, and that Bloodsong is never the one that goes.
 //!
+//! 16. **Tank and support items for tank supports** — a support with the
+//!    game's `Tank` tag builds items of the editor's Tank and Support classes
+//!    and no others, whatever its damage type (the user, 2026-10-08, after a
+//!    Shield Bearer support was seen holding damage items). Boots are rule
+//!    7's. An offender makes way the way rule 5's does: for an item of the
+//!    kind the rest of the build is made of.
+//!
 //! The rules only ever replace what the AI picked. A slot the player pinned in
 //! the editor is kept whatever it holds, and counts toward the budgets like any
 //! other item, so the AI's picks around it make way for it rather than the
 //! other way round.
 //!
-//! Rules 4, 5 and 8 to 14 are about the champion, not the build, and come in
+//! Rules 4, 5, 8 to 14 and 16 are about the champion, not the build, and come in
 //! as a [`Fit`]; see [`crate::champion_traits`] for where its facts come from.
 //!
 //! An earlier slot always wins: the walk keeps the first heal-cut item and the
@@ -238,13 +246,53 @@ struct Table {
     engine_items: HashMap<String, ItemTraits>,
 }
 
+/// The game's own items that give attack, attack speed, crit or ability
+/// power, at the values this mod ships for them (`setting/item_setting`): key,
+/// crit chance, attack, attack speed, magic power. The other fifteen give
+/// none of the four.
+///
+/// What the rules go by for as long as the settings document has not
+/// described the game's items, which is most of the time: it only has them in
+/// it around a match (see `item_stats::prime_item_traits`), and the buy
+/// detour's first picks of a session can come before the client has read it.
+/// Once read, the document's values win, since a player can edit them.
+/// Without this the rules took Luden's Tempest for an item with no ability
+/// power, and handed it to AD champions as a 6th item (2026-10-08).
+const GAME_ITEMS: [(&str, i32, i32, i32, i32); 15] = [
+    ("ironsword", 0, 10, 0, 0),
+    ("soldiers_longsword", 0, 20, 0, 0),
+    ("ruinous_blade", 0, 25, 0, 0),
+    ("conquerors_greatsword", 0, 40, 0, 0),
+    ("warlords_final_judgement", 0, 50, 0, 0),
+    ("dagger", 0, 0, 10, 0),
+    ("wind_dagger", 0, 0, 20, 0),
+    ("twin_stormblade", 10, 0, 30, 0),
+    ("thunderclaw", 20, 0, 45, 0),
+    ("storm_sovereign", 25, 0, 60, 0),
+    ("arcane_crystal", 0, 0, 0, 15),
+    ("spirit_crystal", 0, 0, 0, 30),
+    ("staff_of_rapture", 0, 0, 0, 50),
+    ("angels_fang", 0, 0, 0, 75),
+    ("prophet_of_the_abyss", 0, 0, 0, 100),
+];
+
 impl Table {
-    /// An item neither source describes has no traits, which no rule rejects.
+    /// This mod's own record of the item, then the settings document's, then
+    /// [`GAME_ITEMS`]. An item none of them describes has no traits, which no
+    /// rule rejects.
     fn traits(&self, key: &str) -> ItemTraits {
         self.mod_items
             .get(key)
             .or_else(|| self.engine_items.get(key))
             .copied()
+            .or_else(|| {
+                GAME_ITEMS
+                    .iter()
+                    .find(|(item, ..)| *item == key)
+                    .map(|&(_, crit, attack, speed, power)| {
+                        ItemTraits::from_stats(crit, attack, speed, power)
+                    })
+            })
             .unwrap_or_default()
     }
 }
@@ -349,6 +397,27 @@ pub(crate) fn note_engine_item(
     });
 }
 
+/// What the rules make of `key` on `champion` in `role`, for the Check Tactics
+/// test log: the stats the item is taken to give (`P` physical, `M` magic) and
+/// why an empty build would turn it away, if it would.
+pub(crate) fn explain(champion: &str, role: Role, key: &str) -> String {
+    let budget = Budget::empty(fit(champion, role));
+    let traits = budget.table.traits(key);
+    format!(
+        "{key}({}{}:{})",
+        if traits.physical { "P" } else { "" },
+        if traits.magic { "M" } else { "" },
+        budget
+            .rejects(key)
+            .map_or_else(|| "ok".to_string(), |reason| format!("{reason:?}"))
+    )
+}
+
+/// What `champion` is taken to scale with, for the same log.
+pub(crate) fn explain_champion(champion: &str, role: Role) -> String {
+    format!("{:?}", fit(champion, role).scaling)
+}
+
 /// Why an item cannot join a build. Also what its stand-in has to fix: a crit
 /// overflow is the one case that demands a stand-in adding no crit, rather than
 /// any item the build can still afford.
@@ -376,6 +445,9 @@ pub(crate) enum Reason {
     AllyAidWithoutAid,
     /// An item only a marksman keeps (rule 14) on a champion that is none.
     MarksmanOnly,
+    /// An item that is neither a tank's nor a support's, on a support with
+    /// the `Tank` tag (rule 16).
+    TankSupport,
     Reach,
 }
 
@@ -410,13 +482,13 @@ impl Reason {
                 | Reason::MandateWithoutCc
                 | Reason::AllyAidWithoutAid
                 | Reason::MarksmanOnly
+                | Reason::TankSupport
         )
     }
 }
 
-/// The Support-class items any champion may build, by base slug. Zeke's
-/// Convergence keeps its old key, `zekes_herald`.
-const SUPPORT_ITEM_EXCEPTIONS: [&str; 2] = ["protoplasm_harness", "zekes_herald"];
+/// The Support-class items any champion may build, by base slug.
+const SUPPORT_ITEM_EXCEPTIONS: [&str; 1] = ["protoplasm_harness"];
 
 /// What the champion a build is for may hold, whatever the build already has.
 #[derive(Clone, Copy, Debug)]
@@ -443,6 +515,10 @@ pub(crate) struct Fit {
     /// immobilize, who never keeps Mandate. `false` when the champion is
     /// unknown.
     no_mandate: bool,
+    /// Rule 12: whether this is a support whose World Atlas item is Solstice
+    /// Sleigh: a champion tagged `Tank` whose kit immobilizes for
+    /// [`SLEIGH_IMMOBILIZE_TICKS`] or more in all. The first test of the five.
+    sleigh: bool,
     /// Rule 12: whether this is a support of the game's `Magician` class,
     /// whose World Atlas item is Zaz'Zak's Realmspike ahead of every other
     /// test. A mage that roots or shields still casts to deal damage: Brand
@@ -461,9 +537,16 @@ pub(crate) struct Fit {
     /// champion is unknown.
     no_ally_aid: bool,
     /// Rule 12: whether this is a support whose World Atlas item is Celestial
-    /// Opposition: a champion tagged `Tank`, the one the enemy hits. It comes
-    /// after the mage and Dream Maker tests and before the other two.
+    /// Opposition: a champion tagged `Tank`, the one the enemy hits, that
+    /// `sleigh` did not take. The second test of the five.
     celestial: bool,
+    /// Rule 16: whether this is a support with the `Tank` tag, which builds
+    /// tank and support items and no others.
+    tank_support: bool,
+    /// Rule 12: the World Atlas item the user named for this champion as a
+    /// support, where they named one ([`ATLAS_BY_CHAMPION`]). It is the
+    /// answer, whatever the tests would say.
+    atlas_named: Option<&'static str>,
     /// Rule 12: whether this is a support whose World Atlas item is Zaz'Zak's
     /// Realmspike without being a mage: an AP champion none of the tests
     /// before it took, so its abilities are there to deal damage.
@@ -495,6 +578,10 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
             && traits.is_some_and(|traits| traits.tank && traits.ranged != Some(true)),
         mandate: role == Role::Support && traits.is_some_and(|traits| traits.can_immobilize()),
         no_mandate: role == Role::Support && traits.is_some_and(|traits| !traits.can_immobilize()),
+        sleigh: role == Role::Support
+            && traits.is_some_and(|traits| {
+                traits.tank && traits.immobilizes_for(SLEIGH_IMMOBILIZE_TICKS)
+            }),
         mage,
         ally_aid: role == Role::Support
             && !mage
@@ -502,6 +589,11 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
         no_ally_aid: role == Role::Support
             && (mage || traits.is_some_and(|traits| !traits.aids_allies())),
         celestial: role == Role::Support && traits.is_some_and(|traits| traits.tank),
+        tank_support: role == Role::Support && traits.is_some_and(|traits| traits.tank),
+        atlas_named: ATLAS_BY_CHAMPION
+            .iter()
+            .find(|(key, _)| role == Role::Support && *key == champion)
+            .map(|&(_, item)| item),
         realmspike: role == Role::Support
             && traits.is_some_and(|traits| traits.scaling == Some(Scaling::Ap)),
         ranged: traits.and_then(|traits| traits.ranged),
@@ -509,6 +601,17 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
 }
 
 impl Fit {
+    /// Rule 16 for one item: whether `key` is of a class a tank support does
+    /// not build. Boots are rule 7's, and an item no class is written down
+    /// for is left alone, like any item the rules cannot place.
+    fn off_tank_support(&self, key: &str) -> bool {
+        self.tank_support
+            && !matches!(
+                crate::item_catalog::category_of(crate::build_config::base_slug(key)),
+                None | Some("Tank" | "Support" | "Boots")
+            )
+    }
+
     /// Rule 5 for one item: whether an item with these traits gives a stat the
     /// champion cannot use. A hybrid item gives both kinds, so only a hybrid
     /// champion keeps one.
@@ -592,21 +695,23 @@ impl Fit {
         self.support_items && is_atlas_item(key)
     }
 
-    /// Rule 12, for a support: the World Atlas item its champion builds —
-    /// Zaz'Zak's Realmspike for a mage, else Dream Maker when its kit aids
-    /// allies, else Celestial Opposition for a tank, else Solstice Sleigh when
-    /// its kit immobilizes, else Zaz'Zak's Realmspike for an AP champion,
-    /// Bloodsong for the rest and for a champion nothing is known about.
+    /// Rule 12, for a support: the World Atlas item its champion builds, in
+    /// the user's order — Solstice Sleigh for a tank that immobilizes for a
+    /// second or more, else Celestial Opposition for any other tank, else
+    /// Dream Maker when its kit aids allies, else Zaz'Zak's Realmspike for a
+    /// mage, else Zaz'Zak's Realmspike for an AP champion, Bloodsong for the
+    /// rest and for a champion nothing is known about. A champion the user
+    /// named an item for has that one, ahead of all of it.
     fn atlas_item(&self) -> &'static str {
-        if self.mage {
-            ZAZZAKS_REALMSPIKE
-        } else if self.ally_aid {
-            DREAM_MAKER
+        if let Some(named) = self.atlas_named {
+            named
+        } else if self.sleigh {
+            SOLSTICE_SLEIGH
         } else if self.celestial {
             CELESTIAL_OPPOSITION
-        } else if self.mandate {
-            SOLSTICE_SLEIGH
-        } else if self.realmspike {
+        } else if self.ally_aid {
+            DREAM_MAKER
+        } else if self.mage || self.realmspike {
             ZAZZAKS_REALMSPIKE
         } else {
             BLOODSONG
@@ -836,8 +941,21 @@ const CELESTIAL_OPPOSITION: &str = "celestial_opposition";
 /// Rule 12: the World Atlas item of a support that heals or shields.
 const DREAM_MAKER: &str = "dream_maker";
 
-/// Rule 12: the World Atlas item of a support whose kit immobilizes.
+/// Rule 12: champions whose World Atlas item the user named outright, ahead
+/// of the five tests in [`Fit::atlas_item`]. Both are tagged `Tank` and aid
+/// their allies, and the tests look at the tag first: Chef has no immobilize,
+/// which they answer with Celestial Opposition, and Monk immobilizes for a
+/// second, which they answer with Solstice Sleigh. The user wanted Dream
+/// Maker on the two, with the order of the tests left as it is (2026-10-08).
+/// Only the Atlas item follows: both are still tanks to rule 16.
+const ATLAS_BY_CHAMPION: [(&str, &str); 2] = [("chef", DREAM_MAKER), ("monk", DREAM_MAKER)];
+
+/// Rule 12: the World Atlas item of a tank that immobilizes.
 const SOLSTICE_SLEIGH: &str = "solstice_sleigh";
+
+/// Rule 12: how long a tank's kit has to immobilize for in all to be handed
+/// Solstice Sleigh: a second, in ticks (the user, 2026-10-08).
+const SLEIGH_IMMOBILIZE_TICKS: usize = 60;
 
 /// Rule 12: the World Atlas item of a mage, and of any other AP support that
 /// only deals damage.
@@ -990,6 +1108,8 @@ impl Budget {
             Some(Reason::MandateWithoutCc)
         } else if self.fit.no_ally_aid && is_ally_aid_item(key) {
             Some(Reason::AllyAidWithoutAid)
+        } else if self.fit.off_tank_support(key) {
+            Some(Reason::TankSupport)
         } else if self.fit.wants_marksman(key) {
             Some(Reason::MarksmanOnly)
         } else if self.fit.mismatches(&traits) {
@@ -1035,6 +1155,7 @@ impl Budget {
             && !self.fit.other_atlas_item(key)
             && !(self.fit.no_mandate && is_mandate(key))
             && !(self.fit.no_ally_aid && is_ally_aid_item(key))
+            && !self.fit.off_tank_support(key)
             && !self.fit.wants_marksman(key)
             && !self.fit.mismatches(&self.table.traits(key))
             && !self.fit.out_of_reach(key)

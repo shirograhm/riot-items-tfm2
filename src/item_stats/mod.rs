@@ -700,6 +700,11 @@ pub(crate) fn catalog() -> BTreeMap<String, ItemInfo> {
         .unwrap_or_default()
 }
 
+/// One of the game's own thirty items, by its key in the settings document
+/// (the mod draws it as Radiant Luden's Tempest). A settings document that
+/// describes it has the game's items in it, not only the ones mods registered.
+pub(crate) const A_GAME_ITEM: &str = "prophet_of_the_abyss";
+
 /// Frames between two tries of [`prime_item_traits`] while the settings
 /// document cannot be read: half a second at 60 frames a second.
 const TRAITS_RETRY_FRAMES: u32 = 30;
@@ -733,16 +738,21 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
     let Ok(Value::Object(root)) = serde_json::from_str::<Value>(&json) else {
         return;
     };
-    let mut described = 0;
+    let mut games = false;
     each_item(
         &root,
         0,
         &mut |key: &str, object: &serde_json::Map<String, Value>| {
+            // A whole number either way: the host is free to write `50.0`.
             let stat = |name: &str| {
                 object
                     .get("stat")
                     .and_then(|stat| stat.get(name))
-                    .and_then(Value::as_i64)
+                    .and_then(|value| {
+                        value
+                            .as_i64()
+                            .or_else(|| value.as_f64().map(|value| value as i64))
+                    })
                     .unwrap_or(0) as i32
             };
             crate::smart_builds::note_engine_item(
@@ -752,12 +762,19 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
                 stat("attack_speed_mult"),
                 stat("magic_power"),
             );
-            described += 1;
+            games |= key == A_GAME_ITEM;
         },
     );
-    // Nothing described means the document was not ready, not that the game
-    // has no items: try again.
-    if described > 0 {
+    // Settled only once the game's own items are in the document, however
+    // long that takes. Mods' items are there from the moment they register,
+    // and the game's only around a match: settling on "something was
+    // described" settled at the title screen with not one of the game's
+    // items read, and settling after two minutes of tries did the same in a
+    // session that took longer than that to reach a match (both 2026-10-08:
+    // Luden's Tempest read as giving no ability power, so rule 5 let it be an
+    // AD champion's 6th item). Until then `smart_builds::GAME_ITEMS` stands
+    // in.
+    if games {
         PRIMED.store(true, Ordering::Relaxed);
     }
 }

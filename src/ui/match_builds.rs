@@ -1,37 +1,47 @@
-//! The player's item builds in the in-match Check Tactics panel.
+//! Both teams' item builds in the in-match Check Tactics panel.
 //!
-//! Vanilla's Personal Tactics table lists four item columns per player, and
+//! Vanilla's Personal Tactics table lists four item columns for one team, and
 //! with this mod every cell reads "Let Player Decide": the builds are made by
 //! the Build Editor and the item-build hooks, which the game's own personal
-//! tactics know nothing about. This puts the build each of the player's
-//! athletes was actually handed in those cells instead, as item icons, with a
-//! tooltip for the one under the cursor.
+//! tactics know nothing about. This draws a table of its own over it: one
+//! line a lane, the blue champion's build on the left and the red one's on
+//! the right, as item icons with a tooltip for the one under the cursor.
 //!
 //! # Where the builds come from
 //!
-//! Nothing hands a mod "the match on screen". What there is:
+//! Nothing hands a mod the builds of the match on screen, so they are pieced
+//! together:
 //!
-//! * Every build decision passes through one of the two item-build hooks
-//!   (`item_build_hook::decide_build` for league matches, `hook`'s route
-//!   rewrite for the rest), and each call names the champion, the lane and
-//!   both lineups. [`note_decision`] keeps the last [`DECISIONS_KEPT`] of them.
-//!   Background fixtures go through the same hooks, so most are not the
-//!   player's.
-//! * The draft the player just watched is read off its screen by
-//!   [`super::draft_watch`], as two sets of champions. The strategy screen
-//!   hands them over as it closes ([`note_lineup`]).
-//! * The panel names the player's team, and the match header names both
-//!   sides, so the two can be compared ([`player_side`]).
+//! * **Which match is on screen.** Two ways. The match hook is called for
+//!   every simulation, and `sim_origin` says which is the client's own
+//!   ([`on_match_tick`]): a watched match says so (`ClientMatchView`, seen in
+//!   game), and its players give both lineups by lane and its seed. A
+//!   spectated match is not simulated through the hook at all (tried twice,
+//!   2026-10-08), so it is found by its athletes instead: the layout's camera
+//!   buttons name every athlete by side and lane ([`camera_seats`]), the buy
+//!   detour files each grown build under its athlete's id, and the newest
+//!   match whose athletes are those, seat for seat, is the one on screen
+//!   ([`seed_by_athletes`]).
+//! * **What each athlete will buy.** The native buy detour grows every
+//!   build to six in the athlete's first moments in the match and reports
+//!   what it leaves ([`note_grown`]): all six, in buying order, filed under
+//!   the match's seed, side and lane. That is the build a cell shows.
+//! * **Until then, or where the detour is not running**, what the item-build
+//!   hooks decided for the champion ([`note_decision`]): the game's four
+//!   slots, found by lineup, with whatever is pinned in the last two.
 //!
-//! A row's build is the newest decision for its lane whose team is the
-//! player's five champions and whose enemies are the other side's. When any
-//! link is missing (no draft was seen, a pick could not be tied to a champion,
-//! the hooks were never asked) nothing is drawn and the vanilla cells stay.
+//! When no match can be made out nothing is drawn and the vanilla table
+//! stays.
 //!
-//! A decision holds the four slots the game allocates. The fifth and sixth
-//! are bought by the native buy detour, which picks them when the athlete can
-//! afford one, so they are only known here when they are pinned; otherwise
-//! the slot is drawn empty.
+//! The draft the player watched is kept as a second source for the lineup
+//! ([`note_lineup`], from [`super::draft_watch`] by way of the strategy
+//! screen), for a host too old to say where a simulation runs.
+//!
+//! Whose side the player is on only decides two details: which cells may
+//! carry pin borders under `own_team_only` until the buy detour has said so
+//! itself ([`Grown::pins`]), and which side's cells can be labelled with the
+//! athletes' names the vanilla rows hold ([`player_side`]). A side nobody
+//! could be placed on is labelled by champion.
 //!
 //! # Hover
 //!
@@ -43,19 +53,25 @@
 //! the slots' own rects. The tooltip is this module's node, not the game's
 //! `#item_tooltip`, which game code shows and hides on its own schedule.
 //!
-//! The scaling assumes the layout is fitted to the window and centred. Should
-//! that be wrong somewhere, a click on an icon shows the same tooltip
-//! ([`handle_event`]); clicks stop counting once a hover has been seen.
+//! Seen working in game on a 2560x1440 window (2026-10-08). The scaling
+//! assumes the layout is fitted to the window and centred; should that be
+//! wrong on some other shape of window, a click on an icon shows the same
+//! tooltip ([`handle_event`]). Clicks stop counting once a hover has been
+//! seen.
 //!
-//! None of this has been seen in game yet. `own_team_log` reports how each
-//! match was resolved.
+//! While [`LOG`] is on, `match-builds.log` beside the DLL says how each match
+//! was identified and what the rules make of every item shown.
 
 use std::collections::{BTreeSet, HashMap, VecDeque};
 use std::ffi::c_void;
+use std::io::Write;
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::sync::{Arc, Mutex};
 
-use mod_api_stable::{BuffV1, SettingTargetV1, StableClient, StableItem, UiEventKindV1};
+use mod_api_stable::{
+    BuffV1, RecordKindV1, SettingTargetV1, SimOriginKindV1, SimOriginV1, StableClient, StableItem,
+    StableSim, UiEventKindV1,
+};
 use serde_json::Value;
 
 use crate::build_config::{self, Role};
@@ -68,34 +84,73 @@ const INGAME: &str = "ingame";
 /// The Check Tactics panel. Authored hidden; game code shows it.
 const PANEL: &str = "ingame.strategy_info";
 const PERSONAL: &str = "ingame.strategy_info.personal_panel";
+/// Vanilla's column headings and its rows, both hidden while the board is up.
 const HEADER: &str = "ingame.strategy_info.personal_panel.header";
 const ROWS_PATH: &str = "ingame.strategy_info.personal_panel.rows";
-/// The team the panel is about: the player's.
+/// The team the panel is about.
 const TEAM_NAME: &str = "ingame.strategy_info.team_panel.header.name";
-/// The match header's team names, blue then red.
-const SIDE_NAMES: [&str; 2] = [
-    "ingame.header.blue_info.team_name",
-    "ingame.header.red_info.team_name",
+/// Where the layout names the two teams, blue then red: the match header,
+/// and the Details tab's two columns.
+const SIDE_NAMES: [[&str; 2]; 2] = [
+    [
+        "ingame.header.blue_info.team_name",
+        "ingame.header.red_info.team_name",
+    ],
+    [
+        "ingame.center_detail.stat.center.team_info.name",
+        "ingame.center_detail.stat.right.team_info.name",
+    ],
 ];
+/// Where the camera buttons are spawned, one child a lane, in the two views.
+/// Each child holds a `blue_player` and a `red_player` button with a `text`.
+const CAMERA_HOSTS: [&str; 2] = [
+    "ingame.center_data.camera_buttons",
+    "ingame.wide_data.camera_buttons",
+];
+const CAMERA_HALVES: [&str; 2] = ["blue_player", "red_player"];
 
-/// This module's node in each row, and its header and tooltip.
-const BUILD: &str = "riot_build";
-const HEAD: &str = "riot_build_head";
+/// This module's table, spawned into the panel, and its tooltip.
+const BOARD: &str = "riot_builds";
+const BOARD_PATH: &str = "ingame.strategy_info.personal_panel.riot_builds";
 const TIP_NAME: &str = "riot_build_tip";
 const TIP: &str = "ingame.riot_build_tip";
 
-/// Rows in the table, one per lane from Top, and vanilla item cells in each.
+/// Lanes, from Top, with the icon the layout draws for each.
 const LANES: usize = 5;
-const VANILLA_CELLS: usize = 4;
+const LANE_ICONS: [&str; LANES] = ["top", "jungle", "mid", "bottom", "support"];
+/// The two sides' cells in a line, their colour, and the heading over each.
+const SIDE_NODES: [&str; 2] = ["blue", "red"];
+const SIDE_COLOR: [&str; 2] = ["#5b73ffff", "#e0555cff"];
+const SIDE_HEADS: [(&str, &str); 2] = [
+    ("builds.side_blue", "Blue Team"),
+    ("builds.side_red", "Red Team"),
+];
 
 // -- geometry -----------------------------------------------------------------
 
-/// Where vanilla's first item column starts, in a row 36px tall.
-const BUILD_X: usize = 300;
+/// The board takes the place of vanilla's headings and rows inside the panel:
+/// their x, the headings' y, their width.
+const BOARD_X: usize = 15;
+const BOARD_Y: usize = 55;
+const BOARD_W: usize = 877;
+/// Height of the heading line, and where the first lane's line starts.
+const HEAD_H: usize = 24;
+const LINES_Y: usize = 34;
+/// A line is as tall as a vanilla row and as far apart.
 const ROW_H: usize = 36;
+const LINE_STRIDE: usize = 38;
+/// Where each side's cell starts in a line, after the lane's icon, and inside
+/// a cell: the side's bar, the portrait, the name, then the slots.
+const CELL_X: [usize; 2] = [36, 466];
+const CELL_W: usize = 376;
+const PORTRAIT_X: usize = 10;
+const PORTRAIT: usize = 28;
+const NAME_X: usize = 46;
+const NAME_W: usize = 112;
+const SLOTS_X: usize = 164;
 const SLOT: usize = 30;
 const SLOT_Y: usize = (ROW_H - SLOT) / 2;
-const SLOT_STRIDE: usize = 38;
+const SLOT_STRIDE: usize = 36;
 const ICON: usize = 26;
 
 const SLOT_FILL: &str = "#1d1f2cff";
@@ -104,8 +159,22 @@ const SLOT_FILL: &str = "#1d1f2cff";
 const PICKED_LINE: &str = "#4a4c56ff";
 const PINNED_LINE: &str = "#37d5b3ff";
 const HOVER_LINE: &str = "#e8e8e8ff";
+/// How wide each border is. A pin's was one pixel too, at first: on a 1440p
+/// screen that came out as a line a pixel and a third wide, blended down to
+/// two thirds of its colour, and it was lost beside the gold frames the icons
+/// have of their own (the user, 2026-10-08: "more pronounced"). The line is
+/// drawn centred on the slot's edge, so at two it still clears the icon.
+const PICKED_STROKE: usize = 1;
+const PINNED_STROKE: usize = 2;
+/// What shows of a pinned slot between its border and its icon: a dark teal
+/// where a picked one has [`SLOT_FILL`], so the border reads a pixel wider
+/// than it is drawn.
+const PINNED_FILL: &str = "#1a6557ff";
 
-const TIP_W: usize = 300;
+/// Wide enough for an effect's sentence to run about fifty characters a line.
+/// It was 300 at first, a little over the game's own 274, and read cramped
+/// (the user, 2026-10-08).
+const TIP_W: usize = 420;
 const TIP_PAD: usize = 12;
 /// Top of the stat lines, under the icon, name, price and rule.
 const TIP_BODY_Y: usize = 64;
@@ -114,19 +183,68 @@ const LINE_H: usize = 20;
 /// description, so what comes back is the text's height and not the box's.
 const DESC_BOX: usize = 600;
 /// Characters of description taken to fill one line, for when the text cannot
-/// be measured. On the short side, so the estimate runs tall rather than
-/// leaving text hanging out of the tooltip.
-const DESC_LINE_CHARS: usize = 34;
-const STATS_PER_LINE: usize = 3;
+/// be measured: one for every eight pixels of the text's width. On the short
+/// side, so the estimate runs tall rather than leaving text hanging out of
+/// the tooltip.
+const DESC_LINE_CHARS: usize = (TIP_W - 2 * TIP_PAD) / 8;
+const STATS_PER_LINE: usize = 4;
 /// Gap kept between the tooltip and the slot, and the edge of the screen.
 const TIP_GAP: f32 = 8.0;
 /// Where the tooltip waits for a layout pass before it is placed. Off screen
 /// rather than hidden: a hidden node may be skipped by the pass.
 const PARKED_Y: i32 = -4000;
-/// Frames between writing a tooltip's text and reading its size back.
-const MEASURE_AFTER: u32 = 2;
+/// Frames after a tooltip's text is written at which its placeholders are
+/// filled in ([`fill_placeholders`]): one, for the label to have resolved the
+/// text in the game's language.
+const FILL_AFTER: u32 = 1;
+/// Frames after a tooltip's text is written at which its size is read back:
+/// a layout pass after the last thing that can change the text.
+const MEASURE_AFTER: u32 = 3;
 
 const STAT_ICONS: &str = "asset/base/ui/banpick/champion_stat_icon";
+
+// -- test log ------------------------------------------------------------------
+
+/// Whether `match-builds.log` is written beside the DLL: how each match was
+/// identified, a line whenever an answer changes. On while this is being
+/// tried in game. Turn it off before a release.
+const LOG: bool = true;
+
+/// Lines written in one session at most.
+const LOG_LINES: usize = 600;
+
+struct TestLog {
+    file: Option<std::fs::File>,
+    lines: usize,
+    /// What was last written under each key.
+    last: HashMap<String, String>,
+}
+
+static TEST_LOG: Mutex<Option<TestLog>> = Mutex::new(None);
+
+/// Appends `text` under `key`, unless it is what that key last said.
+fn log(key: &str, text: impl FnOnce() -> String) {
+    if !LOG {
+        return;
+    }
+    let text = text();
+    let Ok(mut guard) = TEST_LOG.lock() else {
+        return;
+    };
+    let log = guard.get_or_insert_with(|| TestLog {
+        file: std::fs::File::create(crate::config::mod_dir().join("match-builds.log")).ok(),
+        lines: 0,
+        last: HashMap::new(),
+    });
+    if log.lines >= LOG_LINES || log.last.get(key) == Some(&text) {
+        return;
+    }
+    log.lines += 1;
+    if let Some(file) = log.file.as_mut() {
+        let _ = writeln!(file, "{key}: {text}");
+    }
+    log.last.insert(key.to_string(), text);
+}
 
 // -- item cards ---------------------------------------------------------------
 
@@ -138,6 +256,56 @@ struct Card {
     price: usize,
     /// Stat icon tag and value, in [`STAT_ROWS`] order.
     stats: Vec<(&'static str, String)>,
+    /// What stands for each placeholder in the item's effect text, for the
+    /// few items whose text has any: see [`FILLS`].
+    fills: Vec<(&'static str, String)>,
+}
+
+/// The placeholders the game's own items carry in their effect text, the
+/// settings field each is filled from, and what the field's value is divided
+/// by to be shown. Read off the game's own text and settings: Thornmail's
+/// `{Flat} + {Ratio}%` of armor is `flat_damage` and `defence_ratio`, the
+/// health items' `{Flat} + {Ratio}%` a second is `flat_regen` and
+/// `max_hp_regen_ratio`, and the Sunfire line names its four outright. A range
+/// is kept in thousandths.
+///
+/// One placeholder can stand for two fields, on different items; an item has
+/// only one of them, and the first it has is the one. This mod's own items
+/// have their numbers written into their text and need none of this.
+const FILLS: &[(&str, &str, f64)] = &[
+    ("Flat", "flat_damage", 1.0),
+    ("Flat", "flat_regen", 1.0),
+    ("Ratio", "defence_ratio", 1.0),
+    ("Ratio", "max_hp_regen_ratio", 1.0),
+    ("RegenFlat", "flat_regen", 1.0),
+    ("DmgFlat", "flat_aoe_damage", 1.0),
+    ("DmgRatio", "max_hp_aoe_ratio", 1.0),
+    ("Range", "aoe_range", 1000.0),
+];
+
+/// A number as an item's text shows it: whole where it is whole.
+fn shown_number(value: f64) -> String {
+    if value.fract() == 0.0 {
+        format!("{value:.0}")
+    } else {
+        let text = format!("{value:.2}");
+        text.trim_end_matches('0').to_string()
+    }
+}
+
+/// What fills each placeholder for one of the game's items, from its object
+/// in the settings document.
+fn fills_of(object: &serde_json::Map<String, Value>) -> Vec<(&'static str, String)> {
+    let mut fills: Vec<(&'static str, String)> = Vec::new();
+    for &(placeholder, field, divisor) in FILLS {
+        if fills.iter().any(|(known, _)| *known == placeholder) {
+            continue;
+        }
+        if let Some(value) = object.get(field).and_then(Value::as_f64) {
+            fills.push((placeholder, shown_number(value / divisor)));
+        }
+    }
+    fills
 }
 
 static CARDS: Mutex<Option<HashMap<String, Card>>> = Mutex::new(None);
@@ -218,6 +386,7 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
         frame: item.icon(),
         price: item.price(),
         stats: stat_lines(|field| buff_field(&stat, field)),
+        fills: Vec::new(),
     };
     if let Ok(mut cards) = CARDS.lock() {
         cards
@@ -257,7 +426,11 @@ fn prime_engine_cards(ctx: &StableClient<'_>) {
                 object
                     .get("stat")
                     .and_then(|stat| stat.get(field))
-                    .and_then(Value::as_i64)
+                    .and_then(|value| {
+                        value
+                            .as_i64()
+                            .or_else(|| value.as_f64().map(|value| value as i64))
+                    })
                     .unwrap_or(0)
             };
             let card = Card {
@@ -269,21 +442,27 @@ fn prime_engine_cards(ctx: &StableClient<'_>) {
                     .to_string(),
                 price: object.get("price").and_then(Value::as_u64).unwrap_or(0) as usize,
                 stats: stat_lines(stat),
+                fills: fills_of(object),
             };
             found.push((key.to_string(), card));
         },
     );
-    // Nothing found means the document was not ready: try again.
-    if found.is_empty() {
-        return;
-    }
+    // Mods' items are in the document from the moment they register, and
+    // the game's own only around a match: it is read for good once one of
+    // the game's is in it, and not before. See
+    // `item_stats::prime_item_traits`, which was caught out by exactly that.
+    let games = found
+        .iter()
+        .any(|(key, _)| key == crate::item_stats::A_GAME_ITEM);
     if let Ok(mut cards) = CARDS.lock() {
         let cards = cards.get_or_insert_with(HashMap::new);
         for (key, card) in found {
             cards.entry(key).or_insert(card);
         }
     }
-    ENGINE_CARDS.store(true, Ordering::Relaxed);
+    if games {
+        ENGINE_CARDS.store(true, Ordering::Relaxed);
+    }
 }
 
 fn card(key: &str) -> Option<Card> {
@@ -293,20 +472,26 @@ fn card(key: &str) -> Option<Card> {
 // -- decisions ----------------------------------------------------------------
 
 /// One slot of a build: the item, and whether the player pinned it there.
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 struct Slot {
     key: Option<String>,
     pinned: bool,
 }
 
-/// One build either item-build hook settled on.
+/// One build either item-build hook settled on, as item keys.
 struct Decision {
-    lane: usize,
+    /// The champion's key, as the hook gave it.
+    champion: String,
+    /// The lane, where the hook was told it.
+    lane: Option<usize>,
     /// The champion's own team, itself included, and the other one. Sorted.
     team: Vec<String>,
     enemies: Vec<String>,
-    /// [`build_config::picker_slots`] long.
-    slots: Vec<Slot>,
+    /// The game's slots, in order: what anyone playing the champion is handed.
+    build: Vec<String>,
+    /// What the player's own athlete is handed instead, where `own_team_only`
+    /// makes that another build.
+    own: Option<Vec<String>>,
 }
 
 /// Decisions kept: sixty matches' worth. The player's are read within a
@@ -316,64 +501,37 @@ const DECISIONS_KEPT: usize = 600;
 
 static DECISIONS: Mutex<VecDeque<Decision>> = Mutex::new(VecDeque::new());
 
+/// A champion's name as this module compares it. The hooks give a champion's
+/// key and the simulation an entity's name; they are the same word (seen in
+/// game), and this keeps case and stray space from saying otherwise.
+fn fold(text: &str) -> String {
+    text.trim().to_lowercase()
+}
+
 fn champion_set<'a>(champions: impl Iterator<Item = &'a str>) -> Vec<String> {
-    let mut set: Vec<String> = champions.map(str::to_string).collect();
+    let mut set: Vec<String> = champions.map(fold).collect();
     set.sort();
     set.dedup();
     set
 }
 
-/// Records the build a champion was handed: `build` is the game's slots, in
-/// order, as item keys. Called by both item-build hooks for every athlete of
-/// every match, on whichever thread decides it.
-///
-/// The slots past the game's are read off the pin row here, since no hook
-/// decides them.
+/// Records the build a champion was handed. Called by both item-build hooks
+/// for every athlete of every match, on whichever thread decides it.
 pub(crate) fn note_decision(
     champion: &str,
-    lane: usize,
+    lane: Option<usize>,
     allies: &[&str],
     enemies: &[&str],
     build: Vec<String>,
+    own: Option<Vec<String>>,
 ) {
-    if lane >= LANES {
-        return;
-    }
-    // Publishes the pin snapshot `pin_row` reads.
-    build_config::load_cached();
-    let row = build_config::pin_row(champion, Role::from_lane_code(lane));
-    let pin = |slot: usize| row.get(slot).and_then(Option::as_ref);
-
-    let game_slots = build_config::game_slots();
-    let mut slots: Vec<Slot> = build
-        .into_iter()
-        .take(game_slots)
-        .enumerate()
-        .map(|(slot, key)| Slot {
-            pinned: pin(slot) == Some(&key),
-            key: Some(key),
-        })
-        .collect();
-    slots.resize(
-        game_slots,
-        Slot {
-            key: None,
-            pinned: false,
-        },
-    );
-    for slot in game_slots..build_config::picker_slots() {
-        let key = pin(slot).cloned();
-        slots.push(Slot {
-            pinned: key.is_some(),
-            key,
-        });
-    }
-
     let decision = Decision {
-        lane,
+        champion: champion.to_string(),
+        lane: lane.filter(|lane| *lane < LANES),
         team: champion_set(allies.iter().copied().chain([champion])),
         enemies: champion_set(enemies.iter().copied()),
-        slots,
+        build,
+        own,
     };
     let Ok(mut decisions) = DECISIONS.lock() else {
         return;
@@ -384,15 +542,351 @@ pub(crate) fn note_decision(
     decisions.push_back(decision);
 }
 
+/// A build as the slots a cell draws.
+///
+/// A slot is pinned where the pin row names the item it holds, when `pins`
+/// apply to this athlete at all. A build the buy detour has grown is whole.
+/// One it has not holds the game's slots, and past them only what is pinned
+/// there: no hook decides those.
+fn slots_of(champion: &str, lane: usize, keys: &[String], pins: bool, grown: bool) -> Vec<Slot> {
+    let row = if pins {
+        // Publishes the pin snapshot `pin_row` reads.
+        build_config::load_cached();
+        build_config::pin_row(champion, Role::from_lane_code(lane))
+    } else {
+        Vec::new()
+    };
+    let pin = |slot: usize| row.get(slot).and_then(Option::as_ref);
+    let (game_slots, all) = (build_config::game_slots(), build_config::picker_slots());
+    let empty = Slot {
+        key: None,
+        pinned: false,
+    };
+
+    let mut slots: Vec<Slot> = keys
+        .iter()
+        .take(if grown { all } else { game_slots })
+        .enumerate()
+        .map(|(slot, key)| Slot {
+            pinned: pin(slot) == Some(key),
+            key: Some(key.clone()),
+        })
+        .collect();
+    if !grown {
+        slots.resize(game_slots, empty.clone());
+        for slot in game_slots..all {
+            let key = pin(slot).cloned();
+            slots.push(Slot {
+                pinned: key.is_some(),
+                key,
+            });
+        }
+    }
+    slots.resize(all, empty);
+    slots
+}
+
+// -- grown builds -------------------------------------------------------------
+
+/// One athlete's whole build once the buy detour has grown it past the game's
+/// four slots: what it will buy, in the order it will buy it.
+struct Grown {
+    /// The match's seed, or 0 where the detour could not read one.
+    seed: u64,
+    /// 0 blue, 1 red, as the athlete has it.
+    side: u64,
+    lane: usize,
+    /// The athlete's id, where the detour could read it.
+    athlete: Option<u64>,
+    champion: String,
+    keys: Vec<String>,
+    /// The items the growth added and how each was come by, for the test log.
+    picks: Vec<(String, &'static str)>,
+    /// Whether the detour gave this athlete its pins: everyone with
+    /// `own_team_only` off, the player's own with it on, and both sides of a
+    /// lane or 5v5 test either way. The detour's own answer, because the
+    /// panel's idea of the player's side is one side at most: it left the
+    /// red team of a 5v5 test without a single pin border (2026-10-08).
+    pins: bool,
+}
+
+/// Grown builds kept: two hundred matches' worth. More than the decisions,
+/// because a spectated match is found among these alone, and it may have been
+/// simulated a good while before it is watched.
+const GROWN_KEPT: usize = 2000;
+
+static GROWN: Mutex<VecDeque<Grown>> = Mutex::new(VecDeque::new());
+
+/// Records an athlete's build as the buy detour left it after growing it
+/// (`tactics::buy_replace_ctx`). Called on the simulation's thread, once for
+/// each athlete of each copy of a match that grows its own.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn note_grown(
+    seed: u64,
+    side: u64,
+    lane: usize,
+    athlete: Option<u64>,
+    champion: &str,
+    keys: Vec<String>,
+    picks: Vec<(String, &'static str)>,
+    pins: bool,
+) {
+    if lane >= LANES {
+        return;
+    }
+    let Ok(mut grown) = GROWN.lock() else {
+        return;
+    };
+    // A match is played in several copies and each grows the same build for
+    // the same seat: one entry a seat.
+    if seed != 0 {
+        let known = grown
+            .iter_mut()
+            .rev()
+            .find(|known| known.seed == seed && known.side == side && known.lane == lane);
+        if let Some(known) = known {
+            known.athlete = athlete;
+            known.champion = champion.to_string();
+            known.keys = keys;
+            known.picks = picks;
+            known.pins = pins;
+            return;
+        }
+    }
+    if grown.len() >= GROWN_KEPT {
+        grown.pop_front();
+    }
+    grown.push_back(Grown {
+        seed,
+        side,
+        lane,
+        athlete,
+        champion: champion.to_string(),
+        keys,
+        picks,
+        pins,
+    });
+}
+
+/// A seat's grown build, and how sure it is to be that seat's.
+struct Found {
+    keys: Vec<String>,
+    picks: Vec<(String, &'static str)>,
+    how: &'static str,
+    /// Whether it was filed under this very seat of this very match.
+    exact: bool,
+    /// [`Grown::pins`] of the build found. This seat's own answer only where
+    /// the build is `exact`.
+    pins: bool,
+}
+
+/// The grown build of one seat of the match on screen, if the detour has made
+/// one. Three ways, the surest first:
+///
+/// 1. The same seat of the same match, by seed, which is the athlete itself.
+/// 2. The newest build grown for this champion in this lane that holds
+///    everything the hook decided for it.
+/// 3. With the lineup read off the simulation on screen, the newest build
+///    grown for this champion in this lane on this side: the match on screen
+///    grows its builds as it starts, so that is nearly always its own.
+///
+/// The last two stand in until the first is there, which the caller keeps
+/// looking for.
+fn grown_for(
+    grown: &VecDeque<Grown>,
+    game: &Match,
+    side: usize,
+    lane: usize,
+    seat: &Seat,
+) -> Option<Found> {
+    let name = fold(&seat.champion);
+    let here = |known: &Grown| known.lane == lane && fold(&known.champion) == name;
+    let found = |known: &Grown, how: &'static str, exact: bool| Found {
+        keys: known.keys.clone(),
+        picks: known.picks.clone(),
+        how,
+        exact,
+        pins: known.pins,
+    };
+    if let Some(seed) = game.seed.filter(|seed| *seed != 0) {
+        let same = grown
+            .iter()
+            .rev()
+            .find(|known| here(*known) && known.seed == seed && known.side == side as u64);
+        if let Some(known) = same {
+            return Some(found(known, "grown, this seat", true));
+        }
+    }
+    if let Some(decided) = seat.decided_for(game.player_side == Some(side)) {
+        let held = &decided[..decided.len().min(build_config::game_slots())];
+        let same = grown
+            .iter()
+            .rev()
+            .find(|known| here(*known) && held.iter().all(|key| known.keys.contains(key)));
+        if let Some(known) = same {
+            return Some(found(known, "grown, same four", false));
+        }
+    }
+    if game.on_screen {
+        let same = grown
+            .iter()
+            .rev()
+            .find(|known| here(*known) && known.side == side as u64);
+        if let Some(known) = same {
+            return Some(found(known, "grown, newest for the champion", false));
+        }
+    }
+    None
+}
+
 // -- the match on screen ------------------------------------------------------
 
-/// The champions each side drafted for the match about to be played, blue
-/// then red, as champion ids.
-static LINEUP: Mutex<Option<[Vec<String>; 2]>> = Mutex::new(None);
+/// The match on screen, as the simulation that draws it describes it.
+#[derive(Clone, Debug)]
+struct Screen {
+    seed: u64,
+    /// The replay record of this set, or [`SimOriginV1::NONE`] while it has
+    /// none: a match being played for the first time is only recorded later.
+    replay: u64,
+    /// Champions by side (0 blue, 1 red) and by lane. A seat is empty until
+    /// its champion has been alive on a tick this looked at, and for good in
+    /// a match with fewer than five a side.
+    sides: [[String; LANES]; 2],
+    /// Seats the simulation has a player in.
+    seats: usize,
+}
 
-/// Goes up with every lineup taken, so a panel still showing the last one's
-/// builds can tell.
-static LINEUP_TAKEN: AtomicU32 = AtomicU32::new(0);
+impl Screen {
+    fn named(&self) -> usize {
+        self.sides
+            .iter()
+            .flatten()
+            .filter(|name| !name.is_empty())
+            .count()
+    }
+
+    /// Whether every player's champion has been read.
+    fn complete(&self) -> bool {
+        self.seats > 0 && self.named() == self.seats
+    }
+}
+
+static SCREEN: Mutex<Option<Screen>> = Mutex::new(None);
+
+/// Sim ticks between two looks at a simulation: twice a second.
+const SCREEN_EVERY: usize = 30;
+
+/// The kinds of simulation the match hook has been called for, a bit per
+/// `SimOriginKindV1` code and the top one for a host that names none. For the
+/// test log.
+static KINDS_SEEN: AtomicU32 = AtomicU32::new(0);
+
+/// Goes up whenever what a panel is resolved from changes: the match on
+/// screen, or the drafted lineup. A panel resolved before that starts over.
+static SOURCES: AtomicU32 = AtomicU32::new(0);
+
+/// Reads both lineups off the simulation the client is showing. Called from
+/// the mod's match hook on every tick of every simulation, so it leaves at
+/// once for any tick but each [`SCREEN_EVERY`]th, and for any simulation but
+/// the client's own.
+///
+/// Only what the host vouches for. A spectated match never gets here (see
+/// the module's notes); guessing at it by how fast a simulation ticks was
+/// tried for one build and matched nothing.
+pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
+    if sim.tick() % SCREEN_EVERY != 0 {
+        return;
+    }
+    let origin = sim.sim_origin();
+    KINDS_SEEN.fetch_or(
+        origin.map_or(1 << 31, |origin| 1u32 << origin.kind.min(30)),
+        Ordering::Relaxed,
+    );
+    let Some(origin) = origin else {
+        return;
+    };
+    if !matches!(
+        SimOriginKindV1::from_code(origin.kind),
+        Some(
+            SimOriginKindV1::ClientMatchView
+                | SimOriginKindV1::ClientSpectate
+                | SimOriginKindV1::ClientReplay
+        )
+    ) {
+        return;
+    }
+
+    let seed = sim.seed();
+    let known = SCREEN
+        .lock()
+        .ok()
+        .and_then(|screen| screen.clone())
+        .filter(|screen| screen.seed == seed);
+    if known
+        .as_ref()
+        .is_some_and(|screen| screen.complete() && screen.replay == origin.replay_id)
+    {
+        return;
+    }
+    // Whether there is anything new to tell the panel. A seat that never gets
+    // a name must not have it start over twice a second for the whole match.
+    let mut news = known
+        .as_ref()
+        .is_none_or(|screen| screen.replay != origin.replay_id);
+    let mut screen = known.unwrap_or_else(|| Screen {
+        seed,
+        replay: origin.replay_id,
+        sides: Default::default(),
+        seats: 0,
+    });
+    screen.replay = origin.replay_id;
+    let mut seats = 0;
+    for index in 0..sim.player_count() {
+        let Some(player) = sim.player_at(index) else {
+            continue;
+        };
+        let team = player.team();
+        let Some(lane) = player
+            .lane()
+            .map(|lane| lane.code() as usize)
+            .filter(|lane| *lane < LANES)
+        else {
+            continue;
+        };
+        if team >= 2 {
+            continue;
+        }
+        seats += 1;
+        if !screen.sides[team][lane].is_empty() {
+            continue;
+        }
+        // A live entity: a champion that is dead on this tick has no name
+        // until the next one it is alive on.
+        if let Some(name) = player.champion().and_then(|champion| champion.name()) {
+            let name = fold(&name);
+            if !name.is_empty() {
+                screen.sides[team][lane] = name;
+                news = true;
+            }
+        }
+    }
+    if seats != screen.seats {
+        screen.seats = seats;
+        news = true;
+    }
+    if !news {
+        return;
+    }
+    if let Ok(mut held) = SCREEN.lock() {
+        *held = Some(screen);
+    }
+    SOURCES.fetch_add(1, Ordering::Relaxed);
+}
+
+/// The champions each side drafted for the match about to be played, blue
+/// then red, as champion ids. The second source for the lineup, see the
+/// module's notes.
+static LINEUP: Mutex<Option<[Vec<String>; 2]>> = Mutex::new(None);
 
 /// Takes the draft's picks from the strategy screen as it closes, which is
 /// the match starting. A screen that knew no picks leaves the last ones be:
@@ -405,104 +899,610 @@ pub(crate) fn note_lineup(sides: [Vec<String>; 2]) {
     if let Ok(mut lineup) = LINEUP.lock() {
         *lineup = Some(sides);
     }
-    LINEUP_TAKEN.fetch_add(1, Ordering::Relaxed);
+    SOURCES.fetch_add(1, Ordering::Relaxed);
 }
 
-/// Enemy picks that have to be known before a decision is taken for the
-/// player's match. Fewer than five, because a pick the draft grid named in a
-/// way no champion answers to is missing from the lineup; not fewer than
-/// this, because the player's five alone could be some other fixture's.
+/// Enemy picks that have to be known before a decision is taken for a side,
+/// when the lineup is the drafted one. Fewer than five, because a pick the
+/// draft grid named in a way no champion answers to is missing from it; not
+/// fewer than this, because one side's five alone could be some other
+/// fixture's.
 const ENEMIES_NEEDED: usize = 3;
 
-type Rows = Arc<Vec<Vec<Slot>>>;
+/// The athletes of both sides as the layout's camera buttons name them, by
+/// side and by lane.
+type Athletes = [[Option<String>; LANES]; 2];
 
-fn fold(text: &str) -> String {
-    text.trim().to_lowercase()
+/// The lane a camera button's node is named for. The layout names it like
+/// its lane icon ("mid", seen in game); the rest are what else it might call
+/// one.
+fn lane_of(node: &str) -> Option<usize> {
+    let node = node.to_lowercase();
+    LANE_ICONS
+        .iter()
+        .position(|lane| *lane == node)
+        .or(match node.as_str() {
+            "jg" | "jungler" => Some(1),
+            "middle" => Some(2),
+            "bot" | "adc" | "ad" => Some(3),
+            "sup" | "supporter" => Some(4),
+            _ => None,
+        })
 }
 
-/// Which side of the match the player's team is on: 0 blue, 1 red.
+/// The athlete's name out of a camera button's text, which reads
+/// "Lv.3 Caps (F3)": the level before it and the hotkey after it come off.
+fn athlete_of(text: &str) -> Option<String> {
+    let text = text.trim();
+    let rest = match text.split_once(' ') {
+        Some((level, rest)) if level.to_lowercase().starts_with("lv") => rest,
+        _ => text,
+    };
+    let name = match rest.rsplit_once(" (") {
+        Some((name, key)) if key.ends_with(')') => name,
+        _ => rest,
+    };
+    let name = name.trim();
+    (!name.is_empty()).then(|| name.to_string())
+}
+
+/// Reads who is playing where off the camera buttons: one a player, in either
+/// view, under a node named for its lane, with a half for each side.
+fn camera_seats(ctx: &StableClient<'_>) -> Athletes {
+    let mut seats: Athletes = Default::default();
+    let mut nodes = Vec::new();
+    for host in CAMERA_HOSTS {
+        for child in ctx.ui_child_names(host) {
+            let lane = lane_of(&child);
+            for (side, half) in CAMERA_HALVES.iter().enumerate() {
+                let name = ctx
+                    .ui_text(&format!("{host}.{child}.{half}.text"))
+                    .and_then(|text| athlete_of(&text));
+                if let (Some(lane), Some(name)) = (lane, name) {
+                    seats[side][lane].get_or_insert(name);
+                }
+            }
+            if LOG && !nodes.contains(&child) {
+                nodes.push(child);
+            }
+        }
+    }
+    log("cameras", || format!("nodes={nodes:?} -> {seats:?}"));
+    seats
+}
+
+/// Athlete names by id, as this module compares them. The buy detour only
+/// has an athlete's id and the layout only its name, and only the client can
+/// ask the host for one from the other.
+static ATHLETE_NAMES: Mutex<Option<HashMap<u64, String>>> = Mutex::new(None);
+
+/// Athletes asked about in one go, newest grown builds first: enough for a
+/// match that has just started, and no more of the frame than that.
+const ATHLETES_A_CALL: usize = 40;
+
+/// Asks the host for the names of the athletes behind the newest grown
+/// builds that have none yet.
+fn learn_athletes(ctx: &StableClient<'_>) {
+    let unknown: Vec<u64> = {
+        let Ok(names) = ATHLETE_NAMES.lock() else {
+            return;
+        };
+        let Ok(grown) = GROWN.lock() else {
+            return;
+        };
+        let mut ids = Vec::new();
+        for known in grown.iter().rev() {
+            let Some(id) = known.athlete else {
+                continue;
+            };
+            if names.as_ref().is_some_and(|names| names.contains_key(&id)) || ids.contains(&id) {
+                continue;
+            }
+            ids.push(id);
+            if ids.len() >= ATHLETES_A_CALL {
+                break;
+            }
+        }
+        ids
+    };
+    if unknown.is_empty() {
+        return;
+    }
+    // An athlete the host does not name is settled too, as nobody.
+    let learned: Vec<(u64, String)> = unknown
+        .into_iter()
+        .map(|id| {
+            let name = ctx.athlete_name(id as usize);
+            (id, name.map(|name| fold(&name)).unwrap_or_default())
+        })
+        .collect();
+    if let Ok(mut names) = ATHLETE_NAMES.lock() {
+        names.get_or_insert_with(HashMap::new).extend(learned);
+    }
+}
+
+/// The seed of the newest match whose athletes are the ones the camera
+/// buttons name, seat for seat: the match on screen, when no simulation says
+/// so itself.
+fn seed_by_athletes(athletes: &Athletes) -> Option<u64> {
+    let wanted: Vec<(u64, usize, String)> = athletes
+        .iter()
+        .enumerate()
+        .flat_map(|(side, lanes)| {
+            lanes
+                .iter()
+                .enumerate()
+                .filter_map(move |(lane, name)| Some((side as u64, lane, fold(name.as_ref()?))))
+        })
+        .collect();
+    if wanted.is_empty() {
+        return None;
+    }
+    let names = ATHLETE_NAMES.lock().ok()?;
+    let names = names.as_ref()?;
+    let grown = GROWN.lock().ok()?;
+    // The seats each match covers, newest match first.
+    let mut seeds: Vec<(u64, u32)> = Vec::new();
+    for known in grown.iter().rev() {
+        if known.seed == 0 {
+            continue;
+        }
+        let Some(name) = known.athlete.and_then(|id| names.get(&id)) else {
+            continue;
+        };
+        let seat = wanted.iter().position(|(side, lane, athlete)| {
+            known.side == *side && known.lane == *lane && athlete == name
+        });
+        let Some(seat) = seat else {
+            continue;
+        };
+        match seeds.iter_mut().find(|(seed, _)| *seed == known.seed) {
+            Some((_, covered)) => *covered |= 1 << seat,
+            None => seeds.push((known.seed, 1 << seat)),
+        }
+    }
+    let all = (1u32 << wanted.len()) - 1;
+    let found = seeds
+        .iter()
+        .find(|(_, covered)| *covered == all)
+        .map(|(seed, _)| *seed);
+    log("athletes", || {
+        format!(
+            "{} seats wanted, {} athletes named, {} grown builds, {} matches with one of them -> {found:?}",
+            wanted.len(),
+            names.len(),
+            grown.len(),
+            seeds.len()
+        )
+    });
+    found
+}
+
+/// Which side of the match the panel's team is on: 0 blue, 1 red.
 ///
-/// By name, the panel's against the header's. Tried exactly first and then as
-/// one name inside the other, in case the header shortens it; an answer that
-/// fits both sides or neither is no answer.
-fn player_side(ctx: &StableClient<'_>) -> Option<usize> {
+/// Three ways, the first that gives an answer:
+///
+/// 1. The set's replay record names both teams by id, and the host says which
+///    is the player's. A replayed set has its record; a match being played
+///    for the first time does not yet.
+/// 2. The panel names the team it is about, and the layout names both sides
+///    in two places. Tried exactly and then as one name inside the other: the
+///    header says "G2 Esports #1" where the panel says "G2 Esports". This is
+///    the one seen answering in a match of the player's own.
+/// 3. The panel names its athletes and so do the camera buttons, by side. A
+///    spectated match has no team names in its header, so this is its one.
+///
+/// An answer that fits both sides or neither is no answer, and then the
+/// board does without: see the module's notes.
+fn player_side(ctx: &StableClient<'_>, replay: Option<u64>, cameras: &Athletes) -> Option<usize> {
+    let pick = |blue: bool, red: bool| match (blue, red) {
+        (true, false) => Some(0),
+        (false, true) => Some(1),
+        _ => None,
+    };
+
+    let own_team = ctx.player_team_id();
+    let recorded = replay.filter(|id| *id != SimOriginV1::NONE).map(|id| {
+        let team = |field: &str| ctx.record_get_i64(RecordKindV1::MatchReplay, id as usize, field);
+        (team("blue_team_id"), team("red_team_id"))
+    });
+    let by_record = recorded.and_then(|(blue, red)| {
+        let own = own_team? as i64;
+        pick(blue == Some(own), red == Some(own))
+    });
+    log("side.record", || {
+        format!("replay={replay:?} teams={recorded:?} own_team={own_team:?} -> {by_record:?}")
+    });
+    if by_record.is_some() {
+        return by_record;
+    }
+
     let text = |path: &str| {
         ctx.ui_text(path)
             .map(|text| fold(&text))
             .filter(|text| !text.is_empty())
     };
-    let sides = SIDE_NAMES.map(|path| text(path));
     let own = [
         text(TEAM_NAME),
-        ctx.player_team_id()
+        own_team
             .and_then(|team| ctx.team_name(team))
             .map(|name| fold(&name))
             .filter(|name| !name.is_empty()),
     ];
-    for exact in [true, false] {
-        for name in own.iter().flatten() {
-            let is = |side: &Option<String>| {
-                side.as_deref().is_some_and(|side| {
-                    if exact {
-                        side == name.as_str()
-                    } else {
-                        side.contains(name.as_str()) || name.contains(side)
-                    }
-                })
-            };
-            match (is(&sides[0]), is(&sides[1])) {
-                (true, false) => return Some(0),
-                (false, true) => return Some(1),
-                _ => {}
+    let named = SIDE_NAMES.map(|pair| pair.map(|path| text(path)));
+    let mut by_name = None;
+    'names: for exact in [true, false] {
+        for sides in &named {
+            for name in own.iter().flatten() {
+                let is = |side: &Option<String>| {
+                    side.as_deref().is_some_and(|side| {
+                        if exact {
+                            side == name.as_str()
+                        } else {
+                            side.contains(name.as_str()) || name.contains(side)
+                        }
+                    })
+                };
+                by_name = pick(is(&sides[0]), is(&sides[1]));
+                if by_name.is_some() {
+                    break 'names;
+                }
             }
         }
     }
-    None
+    log("side.names", || {
+        format!("own={own:?} layout={named:?} -> {by_name:?}")
+    });
+    if by_name.is_some() {
+        return by_name;
+    }
+
+    let panel: Vec<String> = (0..LANES)
+        .filter_map(|row| text(&format!("{ROWS_PATH}.row{row}.name")))
+        .collect();
+    let hits = [0, 1].map(|side: usize| {
+        cameras[side]
+            .iter()
+            .flatten()
+            .filter(|name| panel.contains(&fold(name)))
+            .count()
+    });
+    let by_athlete = pick(hits[0] > 0 && hits[1] == 0, hits[1] > 0 && hits[0] == 0);
+    log("side.athletes", || {
+        format!("panel={panel:?} named by the cameras [blue, red]={hits:?} -> {by_athlete:?}")
+    });
+    by_athlete
 }
 
-/// The build of each of the player's five lanes in the match on screen, or
-/// nothing until every one is known.
-fn resolve(ctx: &StableClient<'_>) -> Option<Rows> {
-    let lineup = LINEUP.lock().ok()?.clone();
-    let side = player_side(ctx);
-    if crate::own_team_log::ENABLED {
-        crate::own_team_log::on_change(
-            "match_builds.lineup",
-            format!("match builds: lineup={lineup:?} player_side={side:?}"),
-        );
+/// One champion of the match on screen.
+struct Seat {
+    /// The champion's key.
+    champion: String,
+    /// What its cell says beside the portrait: the athlete where the panel
+    /// names one, the champion otherwise.
+    name: String,
+    /// What the item-build hooks decided for it, where a decision answers to
+    /// this lineup: for anyone, and for the player's own athlete.
+    decided: Option<Vec<String>>,
+    own: Option<Vec<String>>,
+}
+
+impl Seat {
+    /// The decided build as it applies to this seat, the player's or not.
+    fn decided_for(&self, players: bool) -> Option<&Vec<String>> {
+        if players {
+            self.own.as_ref().or(self.decided.as_ref())
+        } else {
+            self.decided.as_ref()
+        }
     }
-    let (lineup, side) = (lineup?, side?);
-    let (mine, theirs) = (&lineup[side], &lineup[1 - side]);
-    if mine.len() != LANES || theirs.len() < ENEMIES_NEEDED {
+}
+
+/// The match on screen: who is in it, and what the hooks decided for them.
+struct Match {
+    /// The match's seed, where the simulation on screen was seen.
+    seed: Option<u64>,
+    /// Whether the seats are the simulation's own, lanes and all.
+    on_screen: bool,
+    /// The side the panel's team is on, where that could be worked out.
+    player_side: Option<usize>,
+    /// By side (0 blue, 1 red) and by lane.
+    seats: [Vec<Option<Seat>>; 2],
+}
+
+/// A champion's name as a label shows it: the game's own, as a reference the
+/// label resolves in the game's language, or the key with its underscores
+/// out for a champion the game's text does not name.
+fn champion_label(ctx: &StableClient<'_>, champion: &str) -> String {
+    let reference = format!("#asset/base/text/champion?description.{champion}.name");
+    match ctx.i18n(&reference) {
+        Some(name) if !name.is_empty() && !name.starts_with('#') => reference,
+        _ => champion.replace('_', " "),
+    }
+}
+
+/// The match on screen, or nothing while no champion of it is known.
+fn resolve(ctx: &StableClient<'_>) -> Option<Match> {
+    let screen = SCREEN.lock().ok().and_then(|screen| screen.clone());
+    let drafted = LINEUP.lock().ok().and_then(|lineup| lineup.clone());
+    log("sources", || {
+        format!(
+            "screen={screen:?} drafted={drafted:?} sim kinds seen={:#b}",
+            KINDS_SEEN.load(Ordering::Relaxed)
+        )
+    });
+    let cameras = camera_seats(ctx);
+    let player_side = player_side(ctx, screen.as_ref().map(|screen| screen.replay), &cameras);
+
+    // Champion key, the build decided for anyone, and for the player's own.
+    type Raw = (String, Option<Vec<String>>, Option<Vec<String>>);
+    let mut raw: [Vec<Option<Raw>>; 2] = [vec![None; LANES], vec![None; LANES]];
+    let mut seed = screen.as_ref().map(|screen| screen.seed);
+    let simulated = screen.as_ref().is_some_and(|screen| screen.named() > 0);
+    let mut on_screen = simulated;
+    let mut how = "nothing";
+    let mut matched = 0;
+
+    if let Some(screen) = screen.as_ref().filter(|_| simulated) {
+        // The simulation says who sits where. A decision is this seat's when
+        // it is for the champion and names both lineups as they are.
+        how = "the simulation";
+        let sets = [0, 1].map(|side: usize| {
+            champion_set(
+                screen.sides[side]
+                    .iter()
+                    .filter(|name| !name.is_empty())
+                    .map(String::as_str),
+            )
+        });
+        let decisions = DECISIONS.lock().ok()?;
+        for side in 0..2 {
+            for lane in 0..LANES {
+                let champion = &screen.sides[side][lane];
+                if champion.is_empty() {
+                    continue;
+                }
+                // Newest first: a match decided twice keeps its last answer.
+                let decision = decisions.iter().rev().find(|decision| {
+                    fold(&decision.champion) == *champion
+                        && decision.team == sets[side]
+                        && sets[1 - side]
+                            .iter()
+                            .all(|enemy| decision.enemies.contains(enemy))
+                });
+                matched += usize::from(decision.is_some());
+                raw[side][lane] = Some(match decision {
+                    Some(decision) => (
+                        decision.champion.clone(),
+                        Some(decision.build.clone()),
+                        decision.own.clone(),
+                    ),
+                    None => (champion.clone(), None, None),
+                });
+            }
+        }
+    } else {
+        // No simulation vouched for: a spectated match. Its athletes say
+        // which match it is, and the builds grown for that match who plays
+        // what.
+        learn_athletes(ctx);
+        if let Some(found) = seed_by_athletes(&cameras) {
+            how = "its athletes";
+            seed = Some(found);
+            on_screen = true;
+            let grown = GROWN.lock().ok()?;
+            for known in grown.iter().filter(|known| known.seed == found) {
+                if let Some(seat) = raw
+                    .get_mut(known.side as usize)
+                    .and_then(|lanes| lanes.get_mut(known.lane))
+                {
+                    *seat = Some((known.champion.clone(), None, None));
+                }
+            }
+        } else if let Some(drafted) = drafted.as_ref() {
+            // The draft says who plays, not where: the decisions do.
+            how = "the draft";
+            let decisions = DECISIONS.lock().ok()?;
+            for side in 0..2 {
+                let (team, enemies) = (&drafted[side], &drafted[1 - side]);
+                if team.len() != LANES || enemies.len() < ENEMIES_NEEDED {
+                    continue;
+                }
+                for decision in decisions.iter().rev() {
+                    let Some(lane) = decision.lane else {
+                        continue;
+                    };
+                    if raw[side][lane].is_some()
+                        || decision.team != *team
+                        || !enemies.iter().all(|enemy| decision.enemies.contains(enemy))
+                    {
+                        continue;
+                    }
+                    matched += 1;
+                    raw[side][lane] = Some((
+                        decision.champion.clone(),
+                        Some(decision.build.clone()),
+                        decision.own.clone(),
+                    ));
+                }
+            }
+        }
+    }
+    let seated = raw.iter().flatten().flatten().count();
+    log("seats", || {
+        format!(
+            "{seated} seated by {how}, {matched} with a decision; seed={seed:?} panel side={player_side:?}"
+        )
+    });
+    if seated == 0 {
         return None;
     }
 
-    let mut rows: Vec<Option<Vec<Slot>>> = vec![None; LANES];
-    {
-        let decisions = DECISIONS.lock().ok()?;
-        // Newest first: a match decided twice keeps its last answer.
-        for decision in decisions.iter().rev() {
-            if rows[decision.lane].is_some()
-                || &decision.team != mine
-                || !theirs
-                    .iter()
-                    .all(|champion| decision.enemies.contains(champion))
-            {
-                continue;
+    // A cell is labelled with its athlete: the camera buttons name both
+    // sides', the vanilla rows the panel team's, and failing both the
+    // champion's own name stands in.
+    let panel: Vec<String> = (0..LANES)
+        .map(|lane| {
+            ctx.ui_text(&format!("{ROWS_PATH}.row{lane}.name"))
+                .map(|name| name.trim().to_string())
+                .unwrap_or_default()
+        })
+        .collect();
+    let mut side = 0;
+    let seats = raw.map(|lanes| {
+        let here = side;
+        side += 1;
+        lanes
+            .into_iter()
+            .enumerate()
+            .map(|(lane, seat)| {
+                let (champion, decided, own) = seat?;
+                let athlete = cameras[here][lane].clone().or_else(|| {
+                    panel
+                        .get(lane)
+                        .filter(|name| player_side == Some(here) && !name.is_empty())
+                        .cloned()
+                });
+                Some(Seat {
+                    name: athlete.unwrap_or_else(|| champion_label(ctx, &champion)),
+                    champion,
+                    decided,
+                    own,
+                })
+            })
+            .collect::<Vec<Option<Seat>>>()
+    });
+    Some(Match {
+        seed,
+        on_screen,
+        player_side,
+        seats,
+    })
+}
+
+// -- the board ----------------------------------------------------------------
+
+/// One champion's cell in the table.
+#[derive(Clone, PartialEq)]
+struct Cell {
+    champion: String,
+    name: String,
+    slots: Vec<Slot>,
+}
+
+/// What is drawn: by lane, the blue cell and the red one.
+type Board = Vec<[Option<Cell>; 2]>;
+type Rows = Arc<Board>;
+
+/// Where a slot is: side, lane, slot.
+type Spot = (usize, usize, usize);
+
+/// One cell in the test log's words: where its build came from, what the
+/// rules make of each item on this champion, and how the grown slots were
+/// picked.
+fn describe(
+    side: usize,
+    lane: usize,
+    seat: &Seat,
+    slots: &[Slot],
+    how: &str,
+    picks: &[(String, &'static str)],
+) -> String {
+    let role = Role::from_lane_code(lane);
+    let items: Vec<String> = slots
+        .iter()
+        .filter_map(|slot| slot.key.as_deref())
+        .map(|key| crate::smart_builds::explain(&seat.champion, role, key))
+        .collect();
+    format!(
+        "{} {} {} scaling={} [{how}]: {} picks={picks:?}",
+        SIDE_NODES[side],
+        LANE_ICONS[lane],
+        seat.champion,
+        crate::smart_builds::explain_champion(&seat.champion, role),
+        items.join(" ")
+    )
+}
+
+/// The cells to draw for a match: each seat's grown build where the buy
+/// detour has made one, its decided build until then, nothing where neither
+/// is known. And whether every seat has the build grown for that very seat,
+/// after which there is nothing more to wait for.
+fn board_of(game: &Match) -> (Board, bool) {
+    // Looked up under the lock and turned into slots after it: the pin row
+    // has locks of its own.
+    let found: Vec<[Option<Found>; 2]> = match GROWN.lock() {
+        Ok(grown) => (0..LANES)
+            .map(|lane| {
+                [0, 1].map(|side| {
+                    let seat = game.seats[side].get(lane)?.as_ref()?;
+                    grown_for(&grown, game, side, lane, seat)
+                })
+            })
+            .collect(),
+        Err(_) => (0..LANES).map(|_| [None, None]).collect(),
+    };
+
+    let own_only = build_config::own_team_only_enabled();
+    // A lane or 5v5 test: both of its sides are the player's.
+    let test = game.seed.is_some_and(build_config::is_test_match);
+    let mut exact = true;
+    let mut said = Vec::new();
+    let board: Board = found
+        .into_iter()
+        .enumerate()
+        .map(|(lane, found)| {
+            let mut cells: [Option<Cell>; 2] = [None, None];
+            for (side, found) in found.into_iter().enumerate() {
+                let Some(seat) = game.seats[side].get(lane).and_then(Option::as_ref) else {
+                    continue;
+                };
+                let players = game.player_side == Some(side);
+                // Under `own_team_only` only the player's athletes carry the
+                // pins, and in a test that is both sides. A side nobody could
+                // be placed on carries none. This is the panel's reckoning,
+                // for a seat the detour has not answered for itself.
+                let pins = !own_only || players || test;
+                exact &= found.as_ref().is_some_and(|found| found.exact);
+                let (slots, how, picks) = match found {
+                    Some(found) => (
+                        slots_of(
+                            &seat.champion,
+                            lane,
+                            &found.keys,
+                            if found.exact { found.pins } else { pins },
+                            true,
+                        ),
+                        found.how,
+                        found.picks,
+                    ),
+                    None => match seat.decided_for(players) {
+                        Some(keys) => (
+                            slots_of(&seat.champion, lane, keys, pins, false),
+                            "decided",
+                            Vec::new(),
+                        ),
+                        None => continue,
+                    },
+                };
+                if LOG {
+                    said.push(describe(side, lane, seat, &slots, how, &picks));
+                }
+                cells[side] = Some(Cell {
+                    champion: seat.champion.clone(),
+                    name: seat.name.clone(),
+                    slots,
+                });
             }
-            rows[decision.lane] = Some(decision.slots.clone());
-        }
-    }
-    if crate::own_team_log::ENABLED {
-        crate::own_team_log::on_change(
-            "match_builds.rows",
-            format!(
-                "match builds: lanes decided={:?}",
-                rows.iter().map(Option::is_some).collect::<Vec<_>>()
-            ),
-        );
-    }
-    rows.into_iter().collect::<Option<Vec<_>>>().map(Arc::new)
+            cells
+        })
+        .collect();
+    log("board", || said.join(" | "));
+    (board, exact)
+}
+
+fn drawn(board: &Board) -> bool {
+    board.iter().flatten().any(Option::is_some)
 }
 
 // -- panel state --------------------------------------------------------------
@@ -528,18 +1528,26 @@ struct Panel {
     frame: u32,
     /// The frame [`resolve`] is next due on.
     resolve_at: u32,
-    /// [`LINEUP_TAKEN`] as of the lineup `rows` were resolved against.
-    lineup: u32,
+    /// [`SOURCES`] as of what `game` was resolved against.
+    sources: u32,
+    /// The match on screen, and the board drawn from it.
+    game: Option<Arc<Match>>,
     rows: Option<Rows>,
-    /// Whether the rows on screen were spawned with the game's own items
+    /// Whether every cell is the build the buy detour grew for that seat.
+    /// Until then the board is worked out again on the frame `grown_at`.
+    full: bool,
+    grown_at: u32,
+    /// The board changed under what is drawn: draw it again.
+    repaint: bool,
+    /// Whether the board on screen was spawned with the game's own items
     /// described: before that, their icons are guesses.
     spawned_with_cards: Option<bool>,
     /// The slot the tooltip is up for, and how many frames it has been.
-    shown: Option<(usize, usize)>,
+    shown: Option<Spot>,
     shown_for: u32,
     body: Option<TipBody>,
     /// A slot a click asked the tooltip for.
-    sticky: Option<(usize, usize)>,
+    sticky: Option<Spot>,
     clicked_frame: u32,
 }
 
@@ -550,8 +1558,12 @@ impl Panel {
             open: false,
             frame: 0,
             resolve_at: 0,
-            lineup: 0,
+            sources: 0,
+            game: None,
             rows: None,
+            full: false,
+            grown_at: 0,
+            repaint: false,
             spawned_with_cards: None,
             shown: None,
             shown_for: 0,
@@ -594,7 +1606,8 @@ fn register_once(ctx: &mut StableClient<'_>, path: &str) {
 /// stands in for hovering.
 static HOVER_SEEN: AtomicBool = AtomicBool::new(false);
 
-/// Frames between two tries of [`resolve`] while the match is not yet known.
+/// Frames between two tries of [`resolve`] while the match is not yet known,
+/// and of [`board_of`] while a cell still waits for its grown build.
 const RESOLVE_EVERY: u32 = 30;
 
 // -- per frame ----------------------------------------------------------------
@@ -605,8 +1618,17 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     let Some(open) = ctx.ui_visible(PANEL) else {
         // The match is over, and everything spawned into its layout with it.
         if with(|panel| std::mem::replace(panel, Panel::new()).up).unwrap_or(false) {
+            // None of these outlives its match. A simulation still running
+            // puts itself back on its next look, and athletes are asked about
+            // again: another save numbers them differently.
+            if let Ok(mut names) = ATHLETE_NAMES.lock() {
+                *names = None;
+            }
             if let Ok(mut lineup) = LINEUP.lock() {
                 *lineup = None;
+            }
+            if let Ok(mut screen) = SCREEN.lock() {
+                *screen = None;
             }
             if let Ok(mut set) = REGISTERED.lock() {
                 set.clear();
@@ -615,18 +1637,21 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         return;
     };
 
-    let taken = LINEUP_TAKEN.load(Ordering::Relaxed);
-    let (frame, opened, due, rows, outdated) = with(|panel| {
+    let sources = SOURCES.load(Ordering::Relaxed);
+    let (frame, opened, due, game, rows, grow_due, outdated) = with(|panel| {
         panel.up = true;
         panel.frame = panel.frame.wrapping_add(1);
         let opened = open && !panel.open;
         panel.open = open;
-        // A layout that outlived its match would go on showing that match's
-        // builds: a new lineup starts this one over.
-        let outdated = panel.lineup != taken && panel.spawned_with_cards.is_some();
-        if panel.lineup != taken {
-            panel.lineup = taken;
+        // What the board was resolved from has changed, a new match on
+        // screen above all: start over, taking down what was drawn.
+        let outdated = panel.sources != sources && panel.spawned_with_cards.is_some();
+        if panel.sources != sources {
+            panel.sources = sources;
+            panel.game = None;
             panel.rows = None;
+            panel.full = false;
+            panel.repaint = false;
             panel.resolve_at = 0;
             panel.spawned_with_cards = None;
             panel.shown = None;
@@ -637,28 +1662,61 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
             panel.frame,
             opened,
             panel.frame >= panel.resolve_at,
+            panel.game.clone(),
             panel.rows.clone(),
+            !panel.full && panel.frame >= panel.grown_at,
             outdated,
         )
     })
-    .unwrap_or((0, false, false, None, false));
+    .unwrap_or((0, false, false, None, None, false, false));
     if outdated {
-        unpaint_rows(ctx);
+        unpaint(ctx);
     }
 
     // Asked for from the start of the match rather than when the panel opens,
-    // so the icons are there the first time it does. The panel opening is a
-    // reason to ask again at once: its team name may only be filled in then.
-    let rows = match rows {
-        Some(rows) => rows,
-        None => {
+    // so the icons are there the first time it does.
+    let rows = match (game, rows) {
+        (Some(game), Some(rows)) => {
+            // The buy detour grows a build in its athlete's first moments in
+            // the match, which is after this was resolved: looked for until
+            // every cell has its own.
+            if grow_due {
+                let (board, full) = board_of(&game);
+                let changed = board != *rows;
+                let rows = if changed { Arc::new(board) } else { rows };
+                let _ = with(|panel| {
+                    panel.full = full;
+                    panel.grown_at = frame.wrapping_add(RESOLVE_EVERY);
+                    if changed {
+                        panel.rows = Some(rows.clone());
+                        panel.repaint = true;
+                        panel.shown = None;
+                        panel.body = None;
+                        panel.sticky = None;
+                    }
+                });
+                if changed {
+                    ctx.ui_set_visible(TIP, false);
+                }
+                rows
+            } else {
+                rows
+            }
+        }
+        _ => {
             if !due && !opened {
                 return;
             }
-            let rows = resolve(ctx);
+            let game = resolve(ctx).map(Arc::new);
+            let found = game.as_ref().map(|game| board_of(game));
+            let full = found.as_ref().is_some_and(|(_, full)| *full);
+            let rows = found.map(|(board, _)| Arc::new(board));
             let _ = with(|panel| {
                 panel.resolve_at = frame.wrapping_add(RESOLVE_EVERY);
+                panel.grown_at = frame.wrapping_add(RESOLVE_EVERY);
+                panel.game = game.clone();
                 panel.rows = rows.clone();
+                panel.full = full;
             });
             let Some(rows) = rows else {
                 return;
@@ -667,13 +1725,17 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         }
     };
 
+    // Nobody's build is known yet: the vanilla table stays.
+    if !drawn(&rows) {
+        return;
+    }
     if !open {
         show_tip(ctx, &rows, None);
         return;
     }
 
     prime_engine_cards(ctx);
-    if !paint_rows(ctx, &rows) {
+    if !paint(ctx, &rows) {
         return;
     }
 
@@ -691,106 +1753,107 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     show_tip(ctx, &rows, target);
 }
 
-fn row_path(row: usize) -> String {
-    format!("{ROWS_PATH}.row{row}")
+fn line_path(lane: usize) -> String {
+    format!("{BOARD_PATH}.l{lane}")
 }
 
-fn slot_path(row: usize, slot: usize) -> String {
-    format!("{ROWS_PATH}.row{row}.{BUILD}.s{slot}")
+fn cell_path(side: usize, lane: usize) -> String {
+    format!("{BOARD_PATH}.l{lane}.{}", SIDE_NODES[side])
 }
 
-/// Keeps the icons in the table and the vanilla cells out of it. False until
-/// every row has its icons, and the vanilla table is left whole until then.
+fn slot_path((side, lane, slot): Spot) -> String {
+    format!("{BOARD_PATH}.l{lane}.{}.s{slot}", SIDE_NODES[side])
+}
+
+/// The slot a path names.
+fn spot_of(path: &str) -> Option<Spot> {
+    let rest = path.strip_prefix(BOARD_PATH)?.strip_prefix(".l")?;
+    let (lane, rest) = rest.split_once('.')?;
+    let (side, slot) = rest.split_once('.')?;
+    let side = SIDE_NODES.iter().position(|node| *node == side)?;
+    Some((
+        side,
+        lane.parse().ok()?,
+        slot.strip_prefix('s')?.parse().ok()?,
+    ))
+}
+
+/// Keeps the board in the panel and the vanilla table out of it. False while
+/// the board could not be spawned, and the vanilla table is left alone then.
 ///
-/// Re-asserted every frame the panel is open: game code owns these rows, and
-/// what it does to them when it refills the panel is not known.
-fn paint_rows(ctx: &mut StableClient<'_>, rows: &Rows) -> bool {
+/// Re-asserted every frame the panel is open: game code owns the rows and the
+/// headings, and what it does to them when it refills the panel is not known.
+fn paint(ctx: &mut StableClient<'_>, board: &Rows) -> bool {
     let cards = ENGINE_CARDS.load(Ordering::Relaxed);
     let redraw = with(|panel| {
-        let redraw = panel
-            .spawned_with_cards
-            .is_some_and(|before| before != cards);
+        let redraw = panel.repaint
+            || panel
+                .spawned_with_cards
+                .is_some_and(|before| before != cards);
+        panel.repaint = false;
         panel.spawned_with_cards = Some(cards);
         redraw
     })
     .unwrap_or(false);
 
-    let mut complete = true;
-    for (row, slots) in rows.iter().enumerate() {
-        let host = row_path(row);
-        let node = format!("{host}.{BUILD}");
-        if redraw {
-            ctx.ui_remove_node(&node);
+    if redraw {
+        ctx.ui_remove_node(BOARD_PATH);
+    }
+    if !ctx.ui_exists(BOARD_PATH) {
+        let heads = SIDE_HEADS.map(|(key, fallback)| {
+            let reference = format!("#asset/base/text/ui?{key}");
+            match ctx.i18n(&reference) {
+                Some(text) if !text.is_empty() && !text.starts_with('#') => reference,
+                _ => fallback.to_string(),
+            }
+        });
+        let spawned = ctx.ui_spawn_source(PERSONAL, &board_source(board, &heads));
+        log("paint", || {
+            format!("board spawned={spawned} (game items described={cards})")
+        });
+        if !spawned {
+            return false;
         }
-        if ctx.ui_exists(&node) {
-            continue;
-        }
-        if !ctx.ui_spawn_source(&host, &row_source(slots)) {
-            complete = false;
-            continue;
-        }
-        for (slot, held) in slots.iter().enumerate() {
-            if held.key.is_some() {
-                register_once(ctx, &slot_path(row, slot));
+        for (lane, cells) in board.iter().enumerate() {
+            for (side, cell) in cells.iter().enumerate() {
+                let Some(cell) = cell else {
+                    continue;
+                };
+                // The game's own portrait, by the champion's key.
+                let face = PORTRAIT as f32;
+                let portrait = ctx.ui_set_champion_icon(
+                    &format!("{}.champ.icon", cell_path(side, lane)),
+                    &cell.champion,
+                    face,
+                    face,
+                    2.0,
+                );
+                if !portrait {
+                    log(&format!("portrait.{}", cell.champion), || {
+                        "the host drew no portrait for this champion".to_string()
+                    });
+                }
+                for (slot, held) in cell.slots.iter().enumerate() {
+                    if held.key.is_some() {
+                        register_once(ctx, &slot_path((side, lane, slot)));
+                    }
+                }
             }
         }
     }
-    if !complete {
-        return false;
-    }
 
-    for row in 0..rows.len() {
-        for cell in 0..VANILLA_CELLS {
-            ctx.ui_set_visible(&format!("{ROWS_PATH}.row{row}.item{cell}"), false);
-        }
-    }
-    for column in 1..=VANILLA_CELLS {
-        ctx.ui_set_visible(&format!("{HEADER}.col_item{column}"), false);
-    }
-    if !ctx.ui_exists(&format!("{HEADER}.{HEAD}")) {
-        let source = head_source(ctx);
-        ctx.ui_spawn_source(HEADER, &source);
-    }
+    ctx.ui_set_visible(ROWS_PATH, false);
+    ctx.ui_set_visible(HEADER, false);
     true
 }
 
-/// Gives the table back to vanilla: this module's nodes out, the game's
-/// cells and headings back in.
-fn unpaint_rows(ctx: &mut StableClient<'_>) {
+/// Gives the panel back to vanilla: the board out, the game's headings and
+/// rows back in.
+fn unpaint(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(TIP, false);
-    for row in 0..LANES {
-        ctx.ui_remove_node(&format!("{}.{BUILD}", row_path(row)));
-        for cell in 0..VANILLA_CELLS {
-            ctx.ui_set_visible(&format!("{ROWS_PATH}.row{row}.item{cell}"), true);
-        }
-    }
-    for column in 1..=VANILLA_CELLS {
-        ctx.ui_set_visible(&format!("{HEADER}.col_item{column}"), true);
-    }
-    ctx.ui_remove_node(&format!("{HEADER}.{HEAD}"));
-}
-
-/// The one column heading that replaces vanilla's four. The Builds tab's own
-/// name, which every language the mod ships already has.
-fn head_source(ctx: &StableClient<'_>) -> String {
-    let reference = "#asset/base/text/ui?builds.tab";
-    let text = match ctx.i18n(reference) {
-        Some(text) if !text.is_empty() && !text.starts_with('#') => reference,
-        _ => "Builds",
-    };
-    format!(
-        "{HEAD}:label {{\n\
-         @\"asset/base/style/main#label\";\n\
-         ignore_event: true;\n\
-         x: {BUILD_X}px;\n\
-         width: 300px;\n\
-         height: 24px;\n\
-         size: 15;\n\
-         color: #a3a9b6ff;\n\
-         align_y: Center;\n\
-         text: \"{text}\";\n\
-         }}\n"
-    )
+    ctx.ui_remove_node(BOARD_PATH);
+    ctx.ui_set_visible(ROWS_PATH, true);
+    ctx.ui_set_visible(HEADER, true);
 }
 
 /// Strips what would end a `.ui` string literal.
@@ -807,21 +1870,134 @@ fn frame_of(key: &str) -> String {
     card(key).map_or_else(|| key.to_string(), |card| card.frame)
 }
 
-/// One row's slots, all of them stated up front: a build does not change
-/// during its match, so nothing here is ever repainted.
+/// The whole board, stated up front: a heading over each side, then a line
+/// for every lane somebody's build is known in, the lane's icon and the two
+/// cells. It is spawned again whole when a build changes, which each does
+/// once, as the buy detour grows it.
+fn board_source(board: &Board, heads: &[String; 2]) -> String {
+    let lines = board
+        .iter()
+        .filter(|cells| cells.iter().any(Option::is_some))
+        .count();
+    let height = LINES_Y + lines * LINE_STRIDE;
+    let mut source = format!(
+        "{BOARD}:empty {{\n\
+         x: {BOARD_X}px;\n\
+         y: {BOARD_Y}px;\n\
+         width: {BOARD_W}px;\n\
+         height: {height}px;\n"
+    );
+    for side in 0..2 {
+        source.push_str(&format!(
+            "#head_{node}:label {{\n\
+             @\"asset/base/style/main#bold_label\";\n\
+             ignore_event: true;\n\
+             x: {x}px;\n\
+             width: {CELL_W}px;\n\
+             height: {HEAD_H}px;\n\
+             size: 15;\n\
+             color: {color};\n\
+             align_y: Center;\n\
+             text: \"{text}\";\n\
+             }}\n",
+            node = SIDE_NODES[side],
+            x = CELL_X[side] + PORTRAIT_X,
+            color = SIDE_COLOR[side],
+            text = escape(&heads[side]),
+        ));
+    }
+
+    let mut line = 0;
+    for (lane, cells) in board.iter().enumerate() {
+        if cells.iter().all(Option::is_none) {
+            continue;
+        }
+        let y = LINES_Y + line * LINE_STRIDE;
+        line += 1;
+        source.push_str(&format!(
+            "#l{lane}:empty {{\n\
+             y: {y}px;\n\
+             width: {BOARD_W}px;\n\
+             height: {ROW_H}px;\n\
+             \n\
+             #lane:image {{\n\
+             ignore_event: true;\n\
+             y: 4px;\n\
+             width: 28px;\n\
+             height: 28px;\n\
+             source: \"asset/base/ui/icons/{icon}\";\n\
+             }}\n",
+            icon = LANE_ICONS[lane],
+        ));
+        for (side, cell) in cells.iter().enumerate() {
+            if let Some(cell) = cell {
+                source.push_str(&cell_source(side, cell));
+            }
+        }
+        source.push_str("}\n");
+    }
+    source.push_str("}\n");
+    source
+}
+
+/// One champion's cell: its side's bar, its portrait (filled in after the
+/// spawn, by the host), its name and its slots.
 ///
 /// A filled slot is a button so that it takes a click and draws its own hover
 /// border; an empty one is a plain square.
-fn row_source(slots: &[Slot]) -> String {
-    let width = slots.len() * SLOT_STRIDE;
+fn cell_source(side: usize, cell: &Cell) -> String {
     let mut source = format!(
-        "{BUILD}:empty {{\n\
-         x: {BUILD_X}px;\n\
-         width: {width}px;\n\
-         height: {ROW_H}px;\n"
+        "#{node}:empty {{\n\
+         x: {x}px;\n\
+         width: {CELL_W}px;\n\
+         height: {ROW_H}px;\n\
+         \n\
+         #bar:color {{\n\
+         ignore_event: true;\n\
+         y: 4px;\n\
+         width: 4px;\n\
+         height: 28px;\n\
+         color: {color};\n\
+         }}\n\
+         \n\
+         #champ:color {{\n\
+         ignore_event: true;\n\
+         x: {PORTRAIT_X}px;\n\
+         y: 4px;\n\
+         width: {PORTRAIT}px;\n\
+         height: {PORTRAIT}px;\n\
+         color: {SLOT_FILL};\n\
+         rounding: Uniform {{ rounding: 6; }}\n\
+         \n\
+         #icon:image {{\n\
+         ignore_event: true;\n\
+         anchor_x: 0.5;\n\
+         anchor_y: 0.5;\n\
+         pivot_x: 0.5;\n\
+         pivot_y: 0.5;\n\
+         width: {PORTRAIT}px;\n\
+         height: {PORTRAIT}px;\n\
+         }}\n\
+         }}\n\
+         \n\
+         #name:label {{\n\
+         @\"asset/base/style/main#bold_label\";\n\
+         ignore_event: true;\n\
+         x: {NAME_X}px;\n\
+         width: {NAME_W}px;\n\
+         height: {ROW_H}px;\n\
+         size: 15;\n\
+         align_y: Center;\n\
+         fit_width: true;\n\
+         text: \"{name}\";\n\
+         }}\n",
+        node = SIDE_NODES[side],
+        x = CELL_X[side],
+        color = SIDE_COLOR[side],
+        name = escape(&cell.name),
     );
-    for (index, slot) in slots.iter().enumerate() {
-        let x = index * SLOT_STRIDE;
+    for (index, slot) in cell.slots.iter().enumerate() {
+        let x = SLOTS_X + index * SLOT_STRIDE;
         let Some(key) = &slot.key else {
             source.push_str(&format!(
                 "#s{index}:color {{\n\
@@ -836,10 +2012,10 @@ fn row_source(slots: &[Slot]) -> String {
             ));
             continue;
         };
-        let line = if slot.pinned {
-            PINNED_LINE
+        let (line, stroke, fill) = if slot.pinned {
+            (PINNED_LINE, PINNED_STROKE, PINNED_FILL)
         } else {
-            PICKED_LINE
+            (PICKED_LINE, PICKED_STROKE, SLOT_FILL)
         };
         let frame = escape(&frame_of(key));
         source.push_str(&format!(
@@ -851,16 +2027,16 @@ fn row_source(slots: &[Slot]) -> String {
              \n\
              btn: {{\n\
              color: {line};\n\
-             back_color: {SLOT_FILL};\n\
-             stroke: 1;\n\
+             back_color: {fill};\n\
+             stroke: {stroke};\n\
              rounding: Uniform {{ rounding: 6; }}\n\
              }}\n\
              \n\
              hover: {{\n\
              btn: {{\n\
              color: {HOVER_LINE};\n\
-             back_color: {SLOT_FILL};\n\
-             stroke: 1;\n\
+             back_color: {fill};\n\
+             stroke: {stroke};\n\
              rounding: Uniform {{ rounding: 6; }}\n\
              }}\n\
              }}\n\
@@ -966,14 +2142,20 @@ fn cursor(ctx: &StableClient<'_>) -> Option<(f32, f32)> {
     let (x, y, client_w, client_h) = client_cursor()?;
     let (left, top, width, height) = canvas(ctx);
     let scale = (width / client_w).max(height / client_h);
+    log("cursor", || {
+        format!(
+            "window {client_w}x{client_h} -> layout {width}x{height} at ({left}, {top}), scale {scale}; table at {:?}",
+            ctx.ui_node_rect(PERSONAL)
+        )
+    });
     Some((
         left + width / 2.0 + (x - client_w / 2.0) * scale,
         top + height / 2.0 + (y - client_h / 2.0) * scale,
     ))
 }
 
-/// The filled slot under the cursor, as row and slot.
-fn hovered_slot(ctx: &StableClient<'_>, rows: &Rows) -> Option<(usize, usize)> {
+/// The filled slot under the cursor.
+fn hovered_slot(ctx: &StableClient<'_>, board: &Rows) -> Option<Spot> {
     let (x, y) = cursor(ctx)?;
     let under = |path: &str| {
         ctx.ui_node_rect(path)
@@ -985,25 +2167,33 @@ fn hovered_slot(ctx: &StableClient<'_>, rows: &Rows) -> Option<(usize, usize)> {
     if !under(PERSONAL) {
         return None;
     }
-    for (row, slots) in rows.iter().enumerate() {
-        if !under(&format!("{}.{BUILD}", row_path(row))) {
+    for (lane, cells) in board.iter().enumerate() {
+        if cells.iter().all(Option::is_none) || !under(&line_path(lane)) {
             continue;
         }
-        return slots
-            .iter()
-            .enumerate()
-            .find(|(slot, held)| held.key.is_some() && under(&slot_path(row, *slot)))
-            .map(|(slot, _)| (row, slot));
+        for (side, cell) in cells.iter().enumerate() {
+            let Some(cell) = cell else {
+                continue;
+            };
+            if !under(&cell_path(side, lane)) {
+                continue;
+            }
+            let found = cell
+                .slots
+                .iter()
+                .enumerate()
+                .find(|(slot, held)| held.key.is_some() && under(&slot_path((side, lane, *slot))))
+                .map(|(slot, _)| (side, lane, slot));
+            if found.is_some() {
+                log("hover", || {
+                    "the cursor has been found over a slot".to_string()
+                });
+            }
+            return found;
+        }
+        return None;
     }
     None
-}
-
-/// The row and slot a slot's path names.
-fn slot_of(path: &str) -> Option<(usize, usize)> {
-    let rest = path.strip_prefix(ROWS_PATH)?.strip_prefix(".row")?;
-    let (row, rest) = rest.split_once('.')?;
-    let slot = rest.strip_prefix(BUILD)?.strip_prefix(".s")?;
-    Some((row.parse().ok()?, slot.parse().ok()?))
 }
 
 /// A click on a slot, for a window the cursor cannot be placed in: it puts
@@ -1020,7 +2210,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     if HOVER_SEEN.load(Ordering::Relaxed) {
         return;
     }
-    let Some(target) = slot_of(&event.path) else {
+    let Some(target) = spot_of(&event.path) else {
         return;
     };
     let _ = with(|panel| {
@@ -1317,12 +2507,55 @@ fn place_tip(ctx: &mut StableClient<'_>, body: TipBody, slot: &str) {
     );
 }
 
+/// Fills in the placeholders in the effect text the tooltip is showing, for
+/// an item whose text has them: `{Flat}` and the like, which the game's own
+/// tooltip fills from the item's settings and a label leaves as written.
+///
+/// The text went to the label as a reference, which it resolves in the
+/// game's language, and nothing tells a mod which language that is. So the
+/// label is asked for what it now holds: where that is the resolved text, the
+/// numbers go into it and it stays in the game's language. Where the label
+/// hands the reference back, they go into the English text, which is the
+/// only one a mod can ask for. Either way no placeholder is left showing.
+fn fill_placeholders(ctx: &mut StableClient<'_>, key: &str) {
+    let Some(card) = card(key).filter(|card| !card.fills.is_empty()) else {
+        return;
+    };
+    let Some((_, english)) = text_ref(ctx, &format!("{key}.option")) else {
+        return;
+    };
+    if !english.contains('{') {
+        return;
+    }
+    let path = format!("{TIP}.desc");
+    let resolved = ctx
+        .ui_text(&path)
+        .filter(|text| !text.starts_with('#') && text.contains('{'));
+    log(&format!("fill.{key}"), || {
+        format!(
+            "placeholders filled with {:?} in {}",
+            card.fills,
+            if resolved.is_some() {
+                "the label's own text"
+            } else {
+                "the English text"
+            }
+        )
+    });
+    let mut text = resolved.unwrap_or(english);
+    for (placeholder, value) in &card.fills {
+        text = text.replace(&format!("{{{placeholder}}}"), value);
+    }
+    ctx.ui_set_text(&path, &text);
+}
+
 /// Puts the tooltip up for `target`, or takes it down for none.
 ///
-/// A new item's text is written with the tooltip parked off screen, and it is
-/// only sized and placed [`MEASURE_AFTER`] frames on, once a layout pass has
-/// said how tall that text is.
-fn show_tip(ctx: &mut StableClient<'_>, rows: &Rows, target: Option<(usize, usize)>) {
+/// A new item's text is written with the tooltip parked off screen. A frame
+/// on its placeholders are filled in, and it is only sized and placed
+/// [`MEASURE_AFTER`] frames on, once a layout pass has said how tall that
+/// text is.
+fn show_tip(ctx: &mut StableClient<'_>, board: &Rows, target: Option<Spot>) {
     let (changed, age, body) = with(|panel| {
         let changed = panel.shown != target;
         if changed {
@@ -1336,7 +2569,7 @@ fn show_tip(ctx: &mut StableClient<'_>, rows: &Rows, target: Option<(usize, usiz
     })
     .unwrap_or((false, 0, None));
 
-    let Some((row, slot)) = target else {
+    let Some((side, lane, slot)) = target else {
         if changed {
             ctx.ui_set_visible(TIP, false);
         }
@@ -1344,9 +2577,10 @@ fn show_tip(ctx: &mut StableClient<'_>, rows: &Rows, target: Option<(usize, usiz
     };
 
     if changed {
-        let Some(key) = rows
-            .get(row)
-            .and_then(|slots| slots.get(slot))
+        let Some(key) = board
+            .get(lane)
+            .and_then(|cells| cells[side].as_ref())
+            .and_then(|cell| cell.slots.get(slot))
             .and_then(|held| held.key.clone())
         else {
             return;
@@ -1363,9 +2597,19 @@ fn show_tip(ctx: &mut StableClient<'_>, rows: &Rows, target: Option<(usize, usiz
         return;
     }
 
+    if age == FILL_AFTER {
+        let key = board
+            .get(lane)
+            .and_then(|cells| cells[side].as_ref())
+            .and_then(|cell| cell.slots.get(slot))
+            .and_then(|held| held.key.clone());
+        if let Some(key) = key {
+            fill_placeholders(ctx, &key);
+        }
+    }
     if age == MEASURE_AFTER {
         if let Some(body) = body {
-            place_tip(ctx, body, &slot_path(row, slot));
+            place_tip(ctx, body, &slot_path((side, lane, slot)));
         }
     }
 }
