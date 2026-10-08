@@ -1737,6 +1737,12 @@ fn paint_toggle_off(ctx: &mut StableClient<'_>, lit_path: &str, dim_path: &str) 
 /// One toggle cell's appearance, in the vanilla `strategy_option` colours the
 /// tabs and list rows already use.
 fn toggle_style(lit: bool) -> String {
+    toggle_style_sized(lit, 13)
+}
+
+/// [`toggle_style`] with the label at `size`: the footer's cells are 13, the
+/// game's own option rows 16 (`crate::options_row`).
+pub(crate) fn toggle_style_sized(lit: bool, size: u32) -> String {
     let (fill, text, stroke) = if lit {
         (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
     } else {
@@ -1747,7 +1753,7 @@ fn toggle_style(lit: bool) -> String {
     } else {
         (TAB_HOVER_LINE, TAB_HOVER_TEXT)
     };
-    toggle_cell_style(fill, text, stroke, hover_line, hover_text)
+    toggle_cell_style(fill, text, stroke, hover_line, hover_text, size)
 }
 
 /// One cell of a greyed-out toggle (see [`paint_toggle_off`]). Its hover
@@ -1758,7 +1764,7 @@ fn toggle_off_style(lit: bool) -> String {
     } else {
         (TAB_IDLE_FILL, TOGGLE_OFF_IDLE_TEXT, 1)
     };
-    toggle_cell_style(fill, text, stroke, fill, text)
+    toggle_cell_style(fill, text, stroke, fill, text, 13)
 }
 
 /// The property blocks of one toggle cell in the given colours.
@@ -1768,6 +1774,7 @@ fn toggle_cell_style(
     stroke: u32,
     hover_line: &str,
     hover_text: &str,
+    size: u32,
 ) -> String {
     // `size` and `align_x` are restated rather than left to the `.ui`, because a
     // property write replaces the block it names: a `label` carrying only a
@@ -1777,7 +1784,7 @@ fn toggle_cell_style(
             "{image_key}: {{ color: {fill}; back_color: {fill}; stroke: {stroke}; \
              rounding: Uniform {{ rounding: 6; }} \
              hover: {{ color: {hover_line}; back_color: {fill}; }} }} \
-             {label_key}: {{ size: 13; align_x: Center; color: {text}; \
+             {label_key}: {{ size: {size}; align_x: Center; color: {text}; \
              hover: {{ color: {hover_text}; }} }}"
         )
     };
@@ -3934,6 +3941,13 @@ impl StableExtension for StrategyPicker {
         // because that screen is not this one; outside a match it is one failed
         // lookup.
         crate::match_builds::sync(ctx);
+
+        // Item Rules: the save's own setting, read and written here, where
+        // the save can be reached. Then the row that shows it, in the game's
+        // Options dialog, which can be opened over any screen: one failed
+        // lookup while it has not been.
+        crate::item_tiers::sync(ctx);
+        crate::options_row::sync(ctx);
 
         // Everything from here to whichever return this frame takes.
         let _editor = perf::Probe::start(Section::FrameEditor);

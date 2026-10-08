@@ -6,6 +6,7 @@ mod champion_traits;
 mod hooks;
 mod item_catalog;
 mod item_stats;
+mod item_tiers;
 mod items;
 mod smart_builds;
 mod tactics;
@@ -25,7 +26,7 @@ pub(crate) use utils::shared_riches::SharedRiches;
 // Re-exported under their old names, so paths like `crate::config::ItemConfig`
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
-pub(crate) use ui::{match_builds, solo_rank_ui, strategy_ui};
+pub(crate) use ui::{match_builds, options_row, solo_rank_ui, strategy_ui};
 pub(crate) use utils::{config, own_team_log, perf, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
@@ -224,6 +225,8 @@ impl StableServerExtension for NativeTapExtension {
         // server's item settings, before it creates a match.
         item_stats::server_started();
         item_stats::sync_server_items(ctx);
+        // And its own Item Rules setting, not the last save's.
+        item_tiers::server_started();
 
         match hook::install_hook() {
             Ok(address) => {

@@ -243,6 +243,11 @@ fn log(key: &str, text: impl FnOnce() -> String) {
     }
 }
 
+/// A line from another module's own test switch, into the same file.
+pub(crate) fn log_note(key: &str, text: impl FnOnce() -> String) {
+    write_log(key, text());
+}
+
 /// A stats line, under its own switch ([`STATS_LOG`]).
 pub(crate) fn log_stats(key: &str, text: impl FnOnce() -> String) {
     if STATS_LOG {
@@ -585,13 +590,13 @@ fn slots_of(champion: &str, lane: usize, keys: &[String], pins: bool, grown: boo
         .enumerate()
         .map(|(slot, key)| Slot {
             pinned: pin(slot) == Some(key),
-            key: Some(key.clone()),
+            key: Some(ruled_key(key, slot)),
         })
         .collect();
     if !grown {
         slots.resize(game_slots, empty.clone());
         for slot in game_slots..all {
-            let key = pin(slot).cloned();
+            let key = pin(slot).map(|key| ruled_key(key, slot));
             slots.push(Slot {
                 pinned: key.is_some(),
                 key,
@@ -600,6 +605,21 @@ fn slots_of(champion: &str, lane: usize, keys: &[String], pins: bool, grown: boo
     }
     slots.resize(all, empty);
     slots
+}
+
+/// `key` as Item Rules has a build hold it in `slot` (`crate::item_tiers`):
+/// under First Item Radiant the legendary in every slot after the first. What
+/// reaches this is a build as it was decided, in radiants; the buy detour
+/// makes it this as the match gets under way, and the board says so from the
+/// start. Only where this mod has a card for the other form, so an item it
+/// cannot place is drawn as decided.
+fn ruled_key(key: &str, slot: usize) -> String {
+    if !crate::item_tiers::first_item_radiant() {
+        return key.to_string();
+    }
+    crate::item_tiers::for_slot(key, slot)
+        .filter(|other| card(other).is_some())
+        .unwrap_or_else(|| key.to_string())
 }
 
 // -- grown builds -------------------------------------------------------------
