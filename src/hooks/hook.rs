@@ -37,7 +37,7 @@
 //!
 //! 1. `hook-target.json` next to the DLL, if present — either an explicit `rva` or
 //!    a hex `signature`. Update that file after a game patch instead of rebuilding.
-//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.6.3.
+//! 2. Otherwise [`FALLBACK_SIGNATURE`], which is current for game 0.7.0-beta.
 //!
 //! The finder identifies the target by its **argument shape** rather than by
 //! anything in its body: the return type is 24 bytes so it comes back via `sret`
@@ -246,10 +246,22 @@ const ABSOLUTE_JUMP_LEN: usize = 12;
 /// `CL_LAUNCHER`'s callers. Its callees agree: the 567-byte pair at +0xa7/+0x164 and the
 /// 6354-byte one at +0x610, all 0.6.2's sizes. The stack arguments are still read at
 /// entry+0x28/+0x30. 48 bytes are unique; 47 hit 3 functions, so do not shorten.
+///
+/// 0.6.3 -> 0.7.0-beta (2026-10-07): the bytes are **0.6.2's again**, all 48 of them. The
+/// target is **`0x2518460`** (2709 bytes), and it is 0.6.2's function, not 0.6.3's: exe2exe
+/// from 0.6.3 finds nothing, while from 0.6.2's `0x205ae40` a 157-byte signature with nothing
+/// masked hits exactly once, at this function start of identical size, and `pairdiff` at
+/// `--min-disp 0x4 --imm` is clean over all 557 instructions (the one differing immediate
+/// is a source line number in a log record). So the argument contract is 0.6.2's too.
+/// Independently: it is the only caller of the beam search (`0x1ad8a90`, at +0x630), which
+/// is the only caller of `itemnet_forward`, and both of those pair with 0.6.3's. The locator
+/// returns 5 candidates; the other four have one or two callers each. This one has 10 sites
+/// in 5 functions, the match-sim megafunction (80806) among them and a new 5495-byte one,
+/// both of which are `CL_LAUNCHER` callers. 48 bytes are unique; 47 hit 2, so do not shorten.
 const FALLBACK_SIGNATURE: [u8; 48] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x18,
-    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x80, 0x01,
-    0x00, 0x00, 0x48, 0xC7, 0x85, 0x78, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0xCB,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x38,
+    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0xA0, 0x01,
+    0x00, 0x00, 0x48, 0xC7, 0x85, 0x98, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4D, 0x89, 0xCE,
 ];
 
 /// Plausible size range for the target in bytes (1869 in SDK 0.5.2). Narrows the
@@ -484,7 +496,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.6.3 and this build differs — \
+            "{error}; the built-in signature is for game 0.7.0-beta and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;

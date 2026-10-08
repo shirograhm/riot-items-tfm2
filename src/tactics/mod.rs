@@ -2279,7 +2279,7 @@ static PLAYER_TEAM_ID: AtomicU64 = AtomicU64::new(u64::MAX); // u64::MAX = not c
                                                              // 0.5.8 = 0x920, unchanged and **measured again, not carried forward**: the 286-byte roster walk pairs
                                                              // clean (0x18c84b0 -> 0x191e560, zero differing displacements) and in the new body still reads the id as
                                                              // `mov r14,[rdx+0x920]` at 0x191e58d, immediately before `add rbx,0x9e0` (= ATH_STRIDE) at 0x191e5aa.
-const O_ATHLETE_ID: usize = 0x7f0; // 0.6.3 (0.6.0-beta2..0.6.2 0x9f0, 0.6.0-beta was 0x9b0, 0.5.5..0.5.8 0x920, 0.5.4 0x800, 0.5.3 0x810)
+const O_ATHLETE_ID: usize = 0x7f0; // 0.6.3..0.7.0-beta, re-measured on 0.7.0-beta: the 313-byte roster walk pairs clean (0x1b72360 -> 0x1c87df0) and still reads `mov rax,[rdx] / mov r14,[rax+0x7f0]` (0.6.0-beta2..0.6.2 0x9f0, 0.6.0-beta was 0x9b0, 0.5.5..0.5.8 0x920, 0.5.4 0x800, 0.5.3 0x810)
 
 /// The rest of the athlete fields this module reads, as constants rather than
 /// literals — which is the whole point of them existing.
@@ -2352,23 +2352,34 @@ const O_ATHLETE_ID: usize = 0x7f0; // 0.6.3 (0.6.0-beta2..0.6.2 0x9f0, 0.6.0-bet
 /// `[rdx+0x358]/[rdx+0x360]`, the items at `[rax+0x310]/[rax+0x318]` and the
 /// gold again at `[rsi+0x868]`; both spawn callers copy `0x898` bytes, where
 /// 0.6.2's copied `0xa98`.
-const O_ATHLETE_CHAMP_PTR: usize = 0x2e0; // 0.6.3 (0.6.0-beta2..0.6.2 0x4e0, 0.6.0-beta was 0x4a0, 0.5.5..0.5.8 0x470, 0.5.4 0x410, 0.5.3 0x420)
-const O_ATHLETE_CHAMP_LEN: usize = 0x2e8; // 0.6.3 (0.6.0-beta2..0.6.2 0x4e8, 0.6.0-beta was 0x4a8, 0.5.5..0.5.8 0x478, 0.5.4 0x418, 0.5.3 0x428)
-const O_ATHLETE_TEAM: usize = 0x800; // 0.6.3 (0.6.0-beta2..0.6.2 0xa00, 0.6.0-beta was 0x9c0, 0.5.5..0.5.8 0x930, 0.5.4 0x810, 0.5.3 0x820)
-const O_ATHLETE_POS: usize = 0x890; // dword. 0.6.3 (0.6.0-beta2..0.6.2 0xa90, 0.6.0-beta was 0xa50, 0.5.5..0.5.8 0x9c0, 0.5.4 0x8b0)
+///
+/// # 0.7.0-beta (2026-10-07)
+///
+/// Nothing moved, measured rather than carried: `buy_item`, the resolver, the
+/// roster walk and both spawn callers pair with 0.6.3's at identical size with
+/// no differing displacement (`pairdiff --min-disp 0x4 --imm`), and the spawn
+/// function (1818 -> 1754 bytes, changed only away from these reads) still
+/// reads gold, id, team, position and champion len/ptr at the offsets below,
+/// through the same registers. The `Game` reads there are unchanged too
+/// (`[rcx+0x1e30]`, `[rcx+0x1ba0..0x1bb8]`, `[rsi+0x1db8]/[rsi+0x1dc0]`), and
+/// the builders that take the catalog still do `lea rdx,[reg+0x1d98]`.
+const O_ATHLETE_CHAMP_PTR: usize = 0x2e0; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x4e0, 0.6.0-beta was 0x4a0, 0.5.5..0.5.8 0x470, 0.5.4 0x410, 0.5.3 0x420)
+const O_ATHLETE_CHAMP_LEN: usize = 0x2e8; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x4e8, 0.6.0-beta was 0x4a8, 0.5.5..0.5.8 0x478, 0.5.4 0x418, 0.5.3 0x428)
+const O_ATHLETE_TEAM: usize = 0x800; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0xa00, 0.6.0-beta was 0x9c0, 0.5.5..0.5.8 0x930, 0.5.4 0x810, 0.5.3 0x820)
+const O_ATHLETE_POS: usize = 0x890; // dword. 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0xa90, 0.6.0-beta was 0xa50, 0.5.5..0.5.8 0x9c0, 0.5.4 0x8b0)
 /// The athlete's owned-item count and its build `Vec` (`{cap, ptr, len}`), the
 /// size of the athlete the spawn callers copy, and the `Game` fields the spawn
 /// detour reads. The detours spelled these out as literals through 0.6.2;
 /// 0.6.3 moved every one, so they are named like the fields above. How each
 /// was measured is in the 0.6.3 notes there and at `SPAWN_RVA`.
-const O_ATHLETE_ITEMS_LEN: usize = 0x318; // 0.6.3 (0.6.0-beta2..0.6.2 0x518)
-const O_ATHLETE_BUILD_CAP: usize = 0x350; // 0.6.3 (0.6.0-beta2..0.6.2 0x550)
-const O_ATHLETE_BUILD_PTR: usize = 0x358; // 0.6.3 (0.6.0-beta2..0.6.2 0x558)
-const O_ATHLETE_BUILD_LEN: usize = 0x360; // 0.6.3 (0.6.0-beta2..0.6.2 0x560)
-const ATHLETE_COPY_SIZE: usize = 0x898; // 0.6.3 (0.6.0-beta2..0.6.2 0xa98)
-const O_GAME_PROVIDER: usize = 0x1ba0; // 0.6.3 (0.5.3..0.6.2 0x1dc0)
-const O_GAME_CATALOG_PTR: usize = 0x1da0; // 0.6.3 (through 0.6.2 0x1fd0)
-const O_GAME_CATALOG_LEN: usize = 0x1da8; // 0.6.3 (through 0.6.2 0x1fd8)
+const O_ATHLETE_ITEMS_LEN: usize = 0x318; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x518)
+const O_ATHLETE_BUILD_CAP: usize = 0x350; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x550)
+const O_ATHLETE_BUILD_PTR: usize = 0x358; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x558)
+const O_ATHLETE_BUILD_LEN: usize = 0x360; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x560)
+const ATHLETE_COPY_SIZE: usize = 0x898; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0xa98)
+const O_GAME_PROVIDER: usize = 0x1ba0; // 0.6.3..0.7.0-beta (0.5.3..0.6.2 0x1dc0)
+const O_GAME_CATALOG_PTR: usize = 0x1da0; // 0.6.3..0.7.0-beta (through 0.6.2 0x1fd0)
+const O_GAME_CATALOG_LEN: usize = 0x1da8; // 0.6.3..0.7.0-beta (through 0.6.2 0x1fd8)
 static MY_ATHLETES: AtomicPtr<std::collections::HashSet<u64>> =
     AtomicPtr::new(core::ptr::null_mut());
 static MY_ATH_PREV: AtomicPtr<std::collections::HashSet<u64>> =
@@ -2473,7 +2484,7 @@ static BUY_ORDER_BUF: Mutex<String> = Mutex::new(String::new());
 //   0x29a7640. The body is __rust_realloc outright: `cmp r8,0x11 / jae` splits the over-aligned path, the
 //   align<=16 path tail-jmps to HeapReAlloc(heap, 0, ptr, size), and the over-aligned path allocs (0x29bb920),
 //   memcpys, then frees. Argument contract (rcx=ptr, rdx=old, r8=align, r9=new) is unchanged.
-const RVA_REALLOC: usize = 0x2f855a0; // 0.6.3 (2026-10-06: exe2exe from 0.6.2 strict unique, FUNCTION START, size 174 both sides, the 12 prologue bytes unchanged). 0.6.2 was 0x2f9f0e0 (2026-09-29: exe2exe from 0.6.1 strict unique, FUNCTION START, size 174 both sides, pairdiff clean at --min-disp 0x4 --imm). 0.6.1 was 0x2f50ad0 (2026-09-21: exe2exe from 0.6.0 strict unique, FUNCTION START, size 174 both sides, pairdiff clean). 0.6.0 release was 0x2f23bf0 (2026-09-18: exe2exe from beta2 0x2f1b320 is unique, FUNCTION START, size 174 both sides; the 23-byte entry below is also unique in .text on its own). 0.6.0-beta2 was 0x2f1b320 (0.6.0-beta was 0x2dc0690, 0.5.7 0x2a9fb50, 0.5.6 0x2a9d1b0; exe2exe unique, size 174 both sides, pairdiff clean). History for 0.5.6 follows. (0.5.5 was 0x2a87a70; exe2exe unique, size 174 both sides, instruction-identical). History for 0.5.5 follows. (0.5.4 was 0x29a7640; exe2exe unique, size 174 both sides, body still the __rust_realloc shape). History for 0.5.4 follows. (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
+const RVA_REALLOC: usize = 0x32c7bf0; // 0.7.0-beta (2026-10-07: exe2exe from 0.6.3 strict unique, FUNCTION START, size 174 both sides, pairdiff clean at --min-disp 0x4 --imm, the 12 prologue bytes unchanged). 0.6.3 was 0x2f855a0 (2026-10-06: exe2exe from 0.6.2 strict unique, FUNCTION START, size 174 both sides, the 12 prologue bytes unchanged). 0.6.2 was 0x2f9f0e0 (2026-09-29: exe2exe from 0.6.1 strict unique, FUNCTION START, size 174 both sides, pairdiff clean at --min-disp 0x4 --imm). 0.6.1 was 0x2f50ad0 (2026-09-21: exe2exe from 0.6.0 strict unique, FUNCTION START, size 174 both sides, pairdiff clean). 0.6.0 release was 0x2f23bf0 (2026-09-18: exe2exe from beta2 0x2f1b320 is unique, FUNCTION START, size 174 both sides; the 23-byte entry below is also unique in .text on its own). 0.6.0-beta2 was 0x2f1b320 (0.6.0-beta was 0x2dc0690, 0.5.7 0x2a9fb50, 0.5.6 0x2a9d1b0; exe2exe unique, size 174 both sides, pairdiff clean). History for 0.5.6 follows. (0.5.5 was 0x2a87a70; exe2exe unique, size 174 both sides, instruction-identical). History for 0.5.5 follows. (0.5.4 was 0x29a7640; exe2exe unique, size 174 both sides, body still the __rust_realloc shape). History for 0.5.4 follows. (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
 type ReallocFn = unsafe extern "win64" fn(usize, usize, usize, usize) -> usize;
 /// First 12 bytes of `RVA_REALLOC` (6 push + `sub rsp,0x28`), checked before
 /// every call. The call is a raw transmute, and on 2026-09-16 a stale beta2
@@ -2607,7 +2618,7 @@ unsafe fn catalog_name_in(data: usize, len: u64, idx: u64) -> Option<String> {
 //     (3) the entry idiom is byte-for-byte the same apart from the frame imm, `mov r12,r8` still saves the
 //         seed, and every rbp spill moved by exactly -0x20 = the frame delta. The r8=seed contract holds.
 //   CL_LAUNCHER_PROLOGUE therefore needs its last 4 bytes changed with the frame; that is the only edit.
-const CL_LAUNCHER_RVA: usize = 0x13f3950; // 0.6.3 (2026-10-06; 0.6.2 was 0x17277c0). From the seedctor callers once more: 3 sites inside 0x13f3950 at +0x1c8/+0x29b/+0x372 (0.6.2: +0x1c5/+0x298/+0x36f) plus 1 in 0x13f55c0 (+0x116), 60 direct calls and 9 caller sites in 8 functions on both sides (4445/5757 identical; the match-sim megafunction 79953 -> 80906 is again the hook.rs target's caller), size 4490 -> 4367, frame 0x25478 -> 0x25ef8. `mov r12,r8` still saves the seed at +0x41 and the seedctor call still gets it in rdx. 0.6.2 notes follow: (2026-09-29; 0.6.1 was 0x1a88440). exe2exe finds nothing (size 4454 -> 4490); from the seedctor callers again: 3 sites inside 0x17277c0 at the SAME +0x1c5/+0x298/+0x36f plus 1 in 0x1729490 (+0x113 both builds), 9 direct callers both sides (3078/4312/4445/5757 identical; the match-sim megafunction 79985 -> 79953 is also the hook.rs target's caller), frame 0x25458 -> 0x25478. 0.6.1 notes follow: (2026-09-21; 0.6.0 release was 0x16d9180). exe2exe finds nothing again (size 4486 -> 4454), so it came from the seedctor callers once more: 3 sites inside 0x1a88440 at +0x1c5/+0x298/+0x36f (0.6.0: +0x1c8/+0x29b/+0x372) plus 1 in 0x1a8a0f0, 9 direct callers both sides with the same caller sizes (only the match-sim megafunction grew, 79937 -> 79985, and it is also the hook.rs target's caller), frame 0x25478 -> 0x25458. 0.6.0 release notes follow: (0.6.0-beta2 was 0x16f7270). exe2exe finds NOTHING here - the body changed - so it came from the seedctor callers, the same way 0.5.3 did: beta2's seedctor had 3 call sites inside the launcher plus 1 elsewhere, and the release's seedctor (0x16e98c0) has exactly 3 inside 0x16d9180 plus 1 inside 0x16dae50. Cross-checked three more ways: 9 direct callers (the same count beta2 had), two of them in one function (the render scene builder calling it twice, 0x81ba60 here vs 0x814a20 there), and the same prologue idiom with only the chkstk frame moving. 0.6.0-beta2 (0.6.0-beta was 0x1183bb0, 0.5.7 0x106dd60, 0.5.6 0x14dda60, 0.5.5 0x14ac3e0, 0.5.4 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
+const CL_LAUNCHER_RVA: usize = 0x16cd4e0; // 0.7.0-beta (2026-10-07; 0.6.3 was 0x13f3950). exe2exe strict unique at 160 bytes, a function start, and the frame did not move this time (0x25ef8, so CL_LAUNCHER_PROLOGUE is unchanged); the body shrank 4367 -> 4319 past the head, whose first 39 instructions are 0.6.3's (`mov r12,r8` still saves the seed). Confirmed from the seedctor callers: 3 sites inside 0x16cd4e0 at +0x1c5/+0x298/+0x36f plus 1 in 0x16cf120 (+0x113); 10 caller sites now (4445/5757 identical; the match-sim megafunction 80906 -> 80806 is again the hook.rs target's caller). 0.6.3 notes follow: (2026-10-06; 0.6.2 was 0x17277c0). From the seedctor callers once more: 3 sites inside 0x13f3950 at +0x1c8/+0x29b/+0x372 (0.6.2: +0x1c5/+0x298/+0x36f) plus 1 in 0x13f55c0 (+0x116), 60 direct calls and 9 caller sites in 8 functions on both sides (4445/5757 identical; the match-sim megafunction 79953 -> 80906 is again the hook.rs target's caller), size 4490 -> 4367, frame 0x25478 -> 0x25ef8. `mov r12,r8` still saves the seed at +0x41 and the seedctor call still gets it in rdx. 0.6.2 notes follow: (2026-09-29; 0.6.1 was 0x1a88440). exe2exe finds nothing (size 4454 -> 4490); from the seedctor callers again: 3 sites inside 0x17277c0 at the SAME +0x1c5/+0x298/+0x36f plus 1 in 0x1729490 (+0x113 both builds), 9 direct callers both sides (3078/4312/4445/5757 identical; the match-sim megafunction 79985 -> 79953 is also the hook.rs target's caller), frame 0x25458 -> 0x25478. 0.6.1 notes follow: (2026-09-21; 0.6.0 release was 0x16d9180). exe2exe finds nothing again (size 4486 -> 4454), so it came from the seedctor callers once more: 3 sites inside 0x1a88440 at +0x1c5/+0x298/+0x36f (0.6.0: +0x1c8/+0x29b/+0x372) plus 1 in 0x1a8a0f0, 9 direct callers both sides with the same caller sizes (only the match-sim megafunction grew, 79937 -> 79985, and it is also the hook.rs target's caller), frame 0x25478 -> 0x25458. 0.6.0 release notes follow: (0.6.0-beta2 was 0x16f7270). exe2exe finds NOTHING here - the body changed - so it came from the seedctor callers, the same way 0.5.3 did: beta2's seedctor had 3 call sites inside the launcher plus 1 elsewhere, and the release's seedctor (0x16e98c0) has exactly 3 inside 0x16d9180 plus 1 inside 0x16dae50. Cross-checked three more ways: 9 direct callers (the same count beta2 had), two of them in one function (the render scene builder calling it twice, 0x81ba60 here vs 0x814a20 there), and the same prologue idiom with only the chkstk frame moving. 0.6.0-beta2 (0.6.0-beta was 0x1183bb0, 0.5.7 0x106dd60, 0.5.6 0x14dda60, 0.5.5 0x14ac3e0, 0.5.4 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
 const CL_LAUNCHER_PROLOGUE: [u8; 17] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0xf8, 0x5e, 0x02,
     0x00,
@@ -2788,7 +2799,7 @@ fn install_launcher_hook() {
 //   both sides). `pairdiff` reports only two differing displacements, both in the TLS block reached through
 //   `gs:[0x58]` (0x187e8 -> 0x18830), which is thread-local layout, not the provider struct. Entry shape
 //   unchanged (8 push + mov eax,frame + call chkstk), so SEEDCTOR_PROLOGUE needs no edit.
-const SEEDCTOR_RVA: usize = 0x13fddb0; // 0.6.3 (2026-10-06: exe2exe finds nothing, size 4586 -> 4468, frame 0x11bc8 -> 0x11f38. Found as the function holding the seed store, which moved: the masked `48 89 86 ?? ec 00 00` has 5 hits and one of them, `mov [rsi+0xec88],rax` at +0xf06, follows the same three `[rsi+0x70]/[rsi]/[rsi+0x10]` initialisers 0.6.2's store follows and stores the same value, the rdx seed spilled at +0x44. The launcher calls it three times and one other function once, as before. 12B prologue byte-identical). 0.6.2 was 0x1749a50 (2026-09-29: exe2exe finds nothing, size 4411 -> 4586, frame 0x11ba8 -> 0x11bc8; the `mov [rsi+0xec90],rax` O_PROVIDER_SEED store is unique in the image and sits in this function at +0xeed (0.6.1 +0xecd), and the launcher calls it at the same three offsets. 12B prologue byte-identical). 0.6.1 was 0x1a98e60 (2026-09-21: exe2exe strict unique, fn start, size 4411 both sides; the O_PROVIDER_SEED store is byte-identical at +0xecd). 0.6.0 release was 0x16e98c0 (0.6.0-beta2 was 0x1712c90; exe2exe unique at 154B, fn start, size 4407 -> 4411, 12B prologue byte-identical) (0.6.0-beta was 0x1697a30, 0.5.7 0x1635ae0, 0.5.6 0x10a3be0, 0.5.5 0x14c2380, 0.5.4 0x14e16d0, 0.5.3 0x12b9ab0). History for 0.5.3 follows. (0.5.2 was 0x22c1da0). The 12B prologue is completely identical (8 push); the chkstk frame went 0x11b58 -> 0x11b98; confirmed via the call inside launcher (0xeb8810) with rdx = the saved r8 (seed). WARNING: the seed store offset moved from provider+0xeab8 to **+0xeaf8** (measured at 0x12ba92d).
+const SEEDCTOR_RVA: usize = 0x16e61d0; // 0.7.0-beta (2026-10-07: exe2exe strict unique, fn start, size 4468 both sides, frame still 0x11f38; pairdiff at --min-disp 0x4 --imm shows two differing displacements, 0x176a0/0x176b0 -> 0x17768/0x17778, far above anything read here, and the `mov [rsi+0xec88],rax` seed store is byte-identical at the same +0xf06 and still the only one in the image. 12B prologue byte-identical). 0.6.3 was 0x13fddb0 (2026-10-06: exe2exe finds nothing, size 4586 -> 4468, frame 0x11bc8 -> 0x11f38. Found as the function holding the seed store, which moved: the masked `48 89 86 ?? ec 00 00` has 5 hits and one of them, `mov [rsi+0xec88],rax` at +0xf06, follows the same three `[rsi+0x70]/[rsi]/[rsi+0x10]` initialisers 0.6.2's store follows and stores the same value, the rdx seed spilled at +0x44. The launcher calls it three times and one other function once, as before. 12B prologue byte-identical). 0.6.2 was 0x1749a50 (2026-09-29: exe2exe finds nothing, size 4411 -> 4586, frame 0x11ba8 -> 0x11bc8; the `mov [rsi+0xec90],rax` O_PROVIDER_SEED store is unique in the image and sits in this function at +0xeed (0.6.1 +0xecd), and the launcher calls it at the same three offsets. 12B prologue byte-identical). 0.6.1 was 0x1a98e60 (2026-09-21: exe2exe strict unique, fn start, size 4411 both sides; the O_PROVIDER_SEED store is byte-identical at +0xecd). 0.6.0 release was 0x16e98c0 (0.6.0-beta2 was 0x1712c90; exe2exe unique at 154B, fn start, size 4407 -> 4411, 12B prologue byte-identical) (0.6.0-beta was 0x1697a30, 0.5.7 0x1635ae0, 0.5.6 0x10a3be0, 0.5.5 0x14c2380, 0.5.4 0x14e16d0, 0.5.3 0x12b9ab0). History for 0.5.3 follows. (0.5.2 was 0x22c1da0). The 12B prologue is completely identical (8 push); the chkstk frame went 0x11b58 -> 0x11b98; confirmed via the call inside launcher (0xeb8810) with rdx = the saved r8 (seed). WARNING: the seed store offset moved from provider+0xeab8 to **+0xeaf8** (measured at 0x12ba92d).
                                        // * 0.5.3: the seed store offset inside the provider struct moved (0.5.2 +0xeab8 -> 0.5.3 +0xeaf8).
                                        //   Measured = `mov [reg+0xeaf8], rdx` inside seedctor @0x12ba92d (the old exe has 0xeab8 in the same place).
                                        //   WARNING keep it in a single constant - updating only this on each patch carries the whole is_live gate along.
@@ -2805,7 +2816,7 @@ const SEEDCTOR_RVA: usize = 0x13fddb0; // 0.6.3 (2026-10-06: exe2exe finds nothi
                                        // 0.5.6 and 0.5.7 = 0xec90, **unchanged and verified, not assumed**: the whole seven-store cluster inside
                                        // seedctor corresponds one for one, in the same order, at the same displacements — 0xecc2, **0xec90 (the
                                        // `mov [rsi+...],rax` seed store, at 0x1636a0d)**, 0xec98, 0xecc0, 0xecc1, 0xeca0, 0xecb0.
-const O_PROVIDER_SEED: usize = 0xec88; // 0.6.3: `mov [rsi+0xec88],rax` at seedctor +0xf06 (0.6.2 0xec90 at +0xeed; the qword after it is still zeroed by the next instruction)
+const O_PROVIDER_SEED: usize = 0xec88; // 0.6.3..0.7.0-beta: `mov [rsi+0xec88],rax` at seedctor +0xf06 on both (0.6.2 0xec90 at +0xeed; the qword after it is still zeroed by the next instruction)
 const SEEDCTOR_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ]; // ghidra-re confirmed: 8 push (12B) + mov eax,0x11b58 + call chkstk (same pattern as launcher)
@@ -2942,7 +2953,13 @@ fn install_seed_ctor_hook() {
 //   apart from that neighbour: the 67-byte drop glue `lea rcx,[rsi+0x1fc8] / call` exists with
 //   `0x1d98` at the same +0x27 in 0.6.3, and so do the two large builders that take
 //   `lea rdx,[reg+0x1fc8]`. For the next build, the filter's disp32s are 0x1ba0/0x1ba8/0x1bb0/0x1bb8.
-const SPAWN_RVA: usize = 0x13f7550; // 0.6.3 (0.6.2 0x172ff50, 0.6.1 0x1a8c100, 0.6.0 0x16dcdd0, beta2 0x16ff930, beta 0x118c260, 0.5.8 0x1819300, 0.5.3 0xebfe50, 0.5.2 0x1d9e0e0, 0.5.1 0x2060280).
+// * 0.7.0-beta re-derivation (2026-10-07). exe2exe strict from 0.6.3 is unique at 160 bytes:
+//   **0x16d1080** (size 1818 -> 1754, frame still 0x108, the same 2 direct callers: 0x16d0710 at
+//   +0x204 and 0x16d0a70 at +0x91, both pairing clean and both still copying 0x898 bytes). The
+//   first 165 instructions are 0.6.3's, so the gold store is at the same +0x41 and every Game
+//   read is byte-identical; the id/team/position/champion reads are the same instructions 0x41
+//   bytes earlier (+0x35f on). The gold store's second hit in .text is still mid-function.
+const SPAWN_RVA: usize = 0x16d1080; // 0.7.0-beta (0.6.3 0x13f7550, 0.6.2 0x172ff50, 0.6.1 0x1a8c100, 0.6.0 0x16dcdd0, beta2 0x16ff930, beta 0x118c260, 0.5.8 0x1819300, 0.5.3 0xebfe50, 0.5.2 0x1d9e0e0, 0.5.1 0x2060280).
 const SPAWN_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ]; // 0.5.8: unchanged since 0.5.3 - 8 push (12B) + sub rsp,0xf8, byte-identical at the new address (0.5.2 was 7 push + mov eax,0x4d20)
@@ -4158,8 +4175,8 @@ fn roster_scan_step(client: &StableClient<'_>, team_id: usize) -> bool {
     if scan.next >= scan.ids.len() {
         scan.idle_frames += 1;
         let day: GameDay = client.game_time().map(|(y, m, d, _, _)| (y, m, d));
-        let due = scan.done.is_none()
-            || (scan.day != day && scan.idle_frames >= ROSTER_RESCAN_FRAMES);
+        let due =
+            scan.done.is_none() || (scan.day != day && scan.idle_frames >= ROSTER_RESCAN_FRAMES);
         if !due {
             return false;
         }
@@ -4423,7 +4440,7 @@ fn probe_db() {
 //   NOT this function: 0xea1670 (189 bytes) has the same `cmp qword [r8+0x360],0` head, but takes
 //   the Game through r9 and returns a bare bool. It is the AI's "is there anything to buy" test,
 //   new in this build, called from three AI functions and never from `run_tick`.
-const RVA_BUY_ITEM: usize = 0xf3f510; // 0.6.3 (2026-10-06: see the note above; vtable 0x3b08bd8 +0x80 -> jmp 0xf61b80 -> here, size 317). 0.6.2 was 0xe82e40 (2026-09-29: exe2exe strict unique, fn start, size 230 both sides; buy_item and all three callees pairdiff clean at --min-disp 0x4 --imm, no struct offset moved). 0.6.1 was 0xeae130 (2026-09-21: exe2exe strict unique, fn start, size 230 both sides, pairdiff: no struct offset moved). 0.6.0 release was 0xf3d570 (0.6.0-beta2 was 0xfe23b0; exe2exe unique, fn start, size 230 both sides, prologue byte-identical) (0.6.0-beta was 0xf33680, 0.5.7 0xdf5490, 0.5.6 0xebca20, 0.5.5 0xeb2c40, 0.5.4 0xe767e0, 0.5.3 0xd0c680). History for 0.5.3 follows.(0.5.2 was 0x211e070). **The first 24B of the entry are byte-identical** (a single unique hit in the whole exe) + the body is instruction-for-instruction isomorphic + the argument contract is unchanged (r8=athlete, [rsp_entry+0x30]=Game, Game+0x30=catalog). orig_len=19 is unchanged too (11B < 12B -> the next clean boundary is the 8B mov rax,[rsp+0xa8]). WARNING 0.5.3 change: the call path became a vtable (+0x78) thunk 0xd22340 instead of a direct call, but **since we hook the function entry, every call is still caught**. History for 0.5.2 follows. (0.5.1 was 0x1f01090; exe2exe skeleton UNIQUE, the 24B prologue completely identical = body unchanged, delta +0x21cfe0.) History for 0.5.1 follows: the function was heavily reworked (8 push/sub 0x38 -> 5 push/sub 0x50, with build/name comparison split out into the subfunction 0x1f00920) so mask-sig was NONE, but it was confirmed by the unchanged argument contract (r8=athlete, p6=Game@rsp_entry+0x30, Game+0x30=catalog). Cross-checked against the buy driver FUN_142234430 (successor to the old FUN_1420e76e0) + the vtable slot.
+const RVA_BUY_ITEM: usize = 0xfd1b30; // 0.7.0-beta (2026-10-07: exe2exe strict unique, fn start, size 317 and 96 instructions both sides, prologue byte-identical; vtable 0x3e5dd48 +0x80 -> jmp 0xffa590 -> here, still the only reference. pairdiff at --min-disp 0x4 --imm: one displacement moved, `[r14+0x4448]` -> `[r14+0x44a8]`, a field of the AI object in rcx that nothing here reads; buy_item's resolver and the AI predicate pair clean with none). 0.6.3 was 0xf3f510 (2026-10-06: see the note above; vtable 0x3b08bd8 +0x80 -> jmp 0xf61b80 -> here, size 317). 0.6.2 was 0xe82e40 (2026-09-29: exe2exe strict unique, fn start, size 230 both sides; buy_item and all three callees pairdiff clean at --min-disp 0x4 --imm, no struct offset moved). 0.6.1 was 0xeae130 (2026-09-21: exe2exe strict unique, fn start, size 230 both sides, pairdiff: no struct offset moved). 0.6.0 release was 0xf3d570 (0.6.0-beta2 was 0xfe23b0; exe2exe unique, fn start, size 230 both sides, prologue byte-identical) (0.6.0-beta was 0xf33680, 0.5.7 0xdf5490, 0.5.6 0xebca20, 0.5.5 0xeb2c40, 0.5.4 0xe767e0, 0.5.3 0xd0c680). History for 0.5.3 follows.(0.5.2 was 0x211e070). **The first 24B of the entry are byte-identical** (a single unique hit in the whole exe) + the body is instruction-for-instruction isomorphic + the argument contract is unchanged (r8=athlete, [rsp_entry+0x30]=Game, Game+0x30=catalog). orig_len=19 is unchanged too (11B < 12B -> the next clean boundary is the 8B mov rax,[rsp+0xa8]). WARNING 0.5.3 change: the call path became a vtable (+0x78) thunk 0xd22340 instead of a direct call, but **since we hook the function entry, every call is still caught**. History for 0.5.2 follows. (0.5.1 was 0x1f01090; exe2exe skeleton UNIQUE, the 24B prologue completely identical = body unchanged, delta +0x21cfe0.) History for 0.5.1 follows: the function was heavily reworked (8 push/sub 0x38 -> 5 push/sub 0x50, with build/name comparison split out into the subfunction 0x1f00920) so mask-sig was NONE, but it was confirmed by the unchanged argument contract (r8=athlete, p6=Game@rsp_entry+0x30, Game+0x30=catalog). Cross-checked against the buy driver FUN_142234430 (successor to the old FUN_1420e76e0) + the vtable slot.
 const BUY_PROLOGUE: [u8; 12] = [
     0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x55, 0x53,
 ]; // 0.6.3: push r15/r14/r13/r12/rsi/rdi/rbp/rbx = 12B, a clean boundary and all the trampoline relocates (`install_replace_4th`). Through 0.6.2 this was 41 57 41 56 56 57 53 48 83 EC 50 48, the first 12B of the 0.5.1 prologue: push r15/r14/rsi/rdi/rbx; sub rsp,0x50; (11B = a clean boundary) + the first byte of the following mov (0x48...). Trampoline relocation = 19B (next clean boundary = + mov rax,[rsp+0xa8])
@@ -4505,7 +4522,23 @@ unsafe fn wr_u64(p: usize, v: u64) {
 // ** 0.5.7 (2026-08-26): exe2exe unique, size 1609 and 409 instructions both sides, `pairdiff` clean, so the
 //   net layout (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) is unchanged and the per-call
 //   re-validation logic stays valid as-is.
-const ITEMNET_FORWARD_RVA: usize = 0x1228050; // 0.6.0-beta2 (0.6.0-beta was 0x12462b0, 0.5.7 0x17f09b0, 0.5.6 0xf53de0, 0.5.5 0x12624f0, 0.5.4 0x145a680, 0.5.3 0x10587e0). History for 0.5.3 follows. (0.5.2 was 0x1b9cce0). The first 24B of the entry are identical + all 5 feature-name strings match (self_item/champ_pos_build/lane_counter/synergy/global_counter) + the net layout is unchanged (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) => the mod's per-call re-validation logic stays valid as-is. History for 0.5.2 follows. (0.5.1 was 0x1bc82e0; exe2exe UNIQUE, identical prologue.) History for 0.5.1 follows: (0.5.0_3 was 0x1b78420, mask-sig UNIQUE PROL-OK push8 554157415641554154565753). WARNING it was OFF via AUTO4_FORWARD_SCORE=false (an AV at +0x44a inside forward on 0.5.1; see the flag comment above). A matching prologue does not imply identical internals.
+// ** 0.6.3 (2026-10-07): 0x1932130, back in service for the 5th and 6th item (`network_pick`). It was not
+//   migrated for 0.6.0 to 0.6.2, while nothing could reach it. Found from the item-build hook's target: that
+//   calls one 6.3KB beam search (0x1932b40), and this is the beam search's scoring callee, 0xa10 below it as
+//   in every build, still 1609 bytes, with the same five feature names. Its arguments are unchanged too:
+//   rcx net, rdx lineup ([rdx+0x50] = lane, a panic above 4; [rdx+lane*8] = the champion; +0x28 on = the
+//   five enemies, 9999 = nobody), r8/r9 the build slice, [rsp+0x20] a flag that adds noise when set. The
+//   net's constructor (0x196a2c0) still writes 16384 / ptr / 16384 / 1, though only a dword of that 1.
+//   xmm0 is the score; 0.6.3 also hands back p(1-p) in xmm1, which nothing here reads. A second function
+//   (0x1931cd0) builds the same features to TRAIN the weights, so a score is only good for the moment it
+//   was asked for: see `NETWORK_PICKS`.
+const ITEMNET_FORWARD_RVA: usize = 0x1ad8080; // 0.7.0-beta (2026-10-07: exe2exe strict unique, fn start, size 1609 and 409 instructions both sides, pairdiff clean at --min-disp 0x4 --imm; still called only by the beam search, 0x1ad8a90, which only the hook.rs target calls, and the net's constructor, 0x1b296e0, pairs clean as well). 0.6.3 was 0x1932130 (0.6.0-beta2 was 0x1228050, 0.6.0-beta 0x12462b0, 0.5.7 0x17f09b0, 0.5.6 0xf53de0, 0.5.5 0x12624f0, 0.5.4 0x145a680, 0.5.3 0x10587e0). History for 0.5.3 follows. (0.5.2 was 0x1b9cce0). The first 24B of the entry are identical + all 5 feature-name strings match (self_item/champ_pos_build/lane_counter/synergy/global_counter) + the net layout is unchanged (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) => the mod's per-call re-validation logic stays valid as-is. History for 0.5.2 follows. (0.5.1 was 0x1bc82e0; exe2exe UNIQUE, identical prologue.) History for 0.5.1 follows: (0.5.0_3 was 0x1b78420, mask-sig UNIQUE PROL-OK push8 554157415641554154565753). WARNING it was OFF via AUTO4_FORWARD_SCORE=false (an AV at +0x44a inside forward on 0.5.1; see the flag comment above). A matching prologue does not imply identical internals.
+/// The eight pushes and `sub rsp, 0xd8`. The pushes alone open thousands of
+/// functions; the frame size is what makes a stale address fail this.
+const ITEMNET_FORWARD_PROLOGUE: [u8; 19] = [
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0xd8,
+    0x00, 0x00, 0x00,
+];
 type ItemNetFn = unsafe extern "C" fn(usize, usize, *const u64, u64, u8) -> f32;
 static ITEM_NET_ADDR: AtomicU64 = AtomicU64::new(0);
 static ITEMNET_VALID: AtomicU64 = AtomicU64::new(0); // 0 = unchecked, 1 = valid, 2 = invalid
@@ -5879,7 +5912,10 @@ fn buy_memo_store(inputs: BuyInputs) {
         let Ok(mut memo) = memo.try_borrow_mut() else {
             return;
         };
-        let known = memo.entries.iter().position(|(known_key, _)| *known_key == key);
+        let known = memo
+            .entries
+            .iter()
+            .position(|(known_key, _)| *known_key == key);
         let slot = known.unwrap_or(memo.next);
         if known.is_none() {
             memo.next = (slot + 1) % BUY_MEMO_SLOTS;
@@ -7240,7 +7276,7 @@ unsafe fn patch_bytes(
 //   rbx and the reload is `mov r14,[rsp+0x48]`, where 0.6.2 had `cmp rax,3` and
 //   `mov r13,[rsp+0x68]`. Same gate, same `jbe`, different bytes.
 unsafe fn patch_final_gate() -> String {
-    let sig = exe_base_addr() + 0xea216a; // 0.6.3, container 0xea1ea0 +0x2ca (buy_item's second callee again; the form changed with the address, see above) (0.6.2 0xe83251, container 0xe82f30 +0x321) (0.6.1 0xeae541; container a strict exe2exe match, bytes unchanged) (0.6.0 release 0xf3d981; container a strict exe2exe match, bytes unchanged)
+    let sig = exe_base_addr() + 0xe94a4a; // 0.7.0-beta, container 0xe94780 +0x2ca (a strict exe2exe match at identical size 917, pairdiff clean; bytes unchanged, form still unique) (0.6.3 0xea216a, container 0xea1ea0 +0x2ca) (buy_item's second callee again; the form changed with the address, see above) (0.6.2 0xe83251, container 0xe82f30 +0x321) (0.6.1 0xeae541; container a strict exe2exe match, bytes unchanged) (0.6.0 release 0xf3d981; container a strict exe2exe match, bytes unchanged)
     const EXPECT: [(usize, u8); 11] = [
         (0, 0x48),
         (1, 0x83),
@@ -7259,7 +7295,7 @@ unsafe fn patch_final_gate() -> String {
 
 // * The tick's own finals cap, the one `patch_final_gate` could not reach.
 //
-//   `run_tick` (0x1465e80 on 0.6.3, 0x17a7b60 on 0.6.2, 0x1afad10 on 0.6.1, 0x174d640 on 0.6.0) calls buy_item through its vtable (+0x80 on 0.6.2 and 0.6.3), and on
+//   `run_tick` (0x1745420 on 0.7.0-beta, 0x1465e80 on 0.6.3, 0x17a7b60 on 0.6.2, 0x1afad10 on 0.6.1, 0x174d640 on 0.6.0) calls buy_item through its vtable (+0x80 on 0.6.2 through 0.7.0-beta), and on
 //   an approved purchase counts the athlete's owned finals again -- the same
 //   inlined loop the resolver has -- then
 //
@@ -7268,11 +7304,11 @@ unsafe fn patch_final_gate() -> String {
 //   so a 5th item buy_item said yes to was dropped here, every time. Raising
 //   the imm to `slots - 1` keeps a hard cap, now at `slots` finals, instead of
 //   deleting the check. The 17-byte form below (through the
-//   `mov r9,[rbp+0x42f0]` after the ja; 0x4cd0 on 0.6.2, 0x4e18 on 0.6.1, 0x4e20 on 0.6.0) is unique in .text; so is the
+//   `mov r9,[rbp+0x4598]` after the ja; 0x42f0 on 0.6.3, 0x4cd0 on 0.6.2, 0x4e18 on 0.6.1, 0x4e20 on 0.6.0) is unique in .text; so is the
 //   13-byte form with the rel32 masked, which is how to re-find it. That trailing frame slot has
 //   moved on every update, so re-read it from the disassembly rather than carrying it forward.
 unsafe fn patch_tick_finals_cap(slots: u8) -> String {
-    let sig = exe_base_addr() + 0x146baf3; // 0.6.3, run_tick 0x1465e80 +0x5c73 (run_tick 20694 -> 25507 bytes; the rel32-masked 13-byte form is still unique, the ja rel32 is 0x24a now and the gold read after it is [rax+0x868]) (0.6.2 0x17ac532, run_tick 0x17a7b60 +0x49d2) (0.6.1 0x1aff8f2; run_tick 21164 -> 20694 bytes, the rel32-masked 13-byte form is unique, the ja rel32 and the [rax+0xa68] gold read after it are unchanged) (0.6.0 release 0x1752342; run_tick changed size, found by the rel32-masked 13-byte form, unique)
+    let sig = exe_base_addr() + 0x174ab91; // 0.7.0-beta, run_tick 0x1745420 +0x5771 (run_tick 25507 -> 24170 bytes; the rel32-masked 13-byte form is still unique, the ja rel32 is still 0x24a, the trailing slot moved to [rbp+0x4598] and the gold read after it is still [rax+0x868]) (0.6.3 0x146baf3, run_tick 0x1465e80 +0x5c73) (run_tick 20694 -> 25507 bytes; the rel32-masked 13-byte form is still unique, the ja rel32 is 0x24a now and the gold read after it is [rax+0x868]) (0.6.2 0x17ac532, run_tick 0x17a7b60 +0x49d2) (0.6.1 0x1aff8f2; run_tick 21164 -> 20694 bytes, the rel32-masked 13-byte form is unique, the ja rel32 and the [rax+0xa68] gold read after it are unchanged) (0.6.0 release 0x1752342; run_tick changed size, found by the rel32-masked 13-byte form, unique)
     const EXPECT: [(usize, u8); 17] = [
         (0, 0x48),
         (1, 0x83),
@@ -7287,10 +7323,10 @@ unsafe fn patch_tick_finals_cap(slots: u8) -> String {
         (10, 0x4c),
         (11, 0x8b),
         (12, 0x8d),
-        (13, 0xf0),
-        (14, 0x42),
+        (13, 0x98),
+        (14, 0x45),
         (15, 0x00),
-        (16, 0x00), // mov r9, [rbp+0x42f0] (0.6.2: 0x4cd0, 0.6.1: 0x4e18, 0.6.0: 0x4e20)
+        (16, 0x00), // mov r9, [rbp+0x4598] (0.6.3: 0x42f0, 0.6.2: 0x4cd0, 0.6.1: 0x4e18, 0.6.0: 0x4e20)
     ];
     patch_bytes("tick_finals_cap", sig, &EXPECT, &[(3, slots - 1)])
 }
@@ -7308,7 +7344,7 @@ unsafe fn patch_tick_finals_cap(slots: u8) -> String {
 //   Pinned by the same masked form `patch_slot_count` used, with the release
 //   immediates -- the bare cmp/mov/cmov is a stock idiom with dozens of hits.
 unsafe fn patch_row_floor(slots: u8) -> String {
-    let sig = exe_base_addr() + 0xba33f1; // 0.6.3, inside the ingame mega-function 0xb9c970 at +0x6a81 (135436 -> 135652 bytes; the masked form is still unique) (0.6.2 0xb8b0f1 in 0xb84660) (0.6.1 0xb34d91 in 0xb2e260; the masked form is still unique) (0.6.0 release 0xa6a501 in 0xa63a70; the masked form is unique)
+    let sig = exe_base_addr() + 0x91b021; // 0.7.0-beta, inside the ingame mega-function 0x9148a0 at +0x6781 (135652 -> 135868 bytes; the masked form is still unique) (0.6.3 0xba33f1 in 0xb9c970) (0.6.2 0xb8b0f1 in 0xb84660) (0.6.1 0xb34d91 in 0xb2e260; the masked form is still unique) (0.6.0 release 0xa6a501 in 0xa63a70; the masked form is unique)
     const EXPECT: [(usize, u8); 18] = [
         (0, 0x8a),
         (1, 0x9d), //                           mov bl, [rbp+disp32]
@@ -7339,7 +7375,7 @@ unsafe fn patch_row_floor(slots: u8) -> String {
 //   `patch_result_slot_count` explains the screen; the form is the same
 //   19 bytes with the release immediates, and still unique.
 unsafe fn patch_result_row_floor(slots: u8) -> String {
-    let sig = exe_base_addr() + 0x910f8a; // 0.6.3, in the match-result screen builder 0x90eb40 at +0x244a (a strict exe2exe match at identical size 33673; the full 19-byte form is still unique, bytes unchanged) (0.6.2 0xa6b9da in 0xa69590) (0.6.1 0x8bf9de in 0x8bd560; the full 19-byte form is still unique, bytes unchanged) (0.6.0 release 0xc5264e in 0xc501d0; bytes unchanged)
+    let sig = exe_base_addr() + 0xaf96ea; // 0.7.0-beta, in the match-result screen builder 0xaf72a0 at the same +0x244a (a strict exe2exe match at identical size 33673; the full 19-byte form is still unique, bytes unchanged) (0.6.3 0x910f8a in 0x90eb40; a strict exe2exe match at identical size 33673; the full 19-byte form is still unique, bytes unchanged) (0.6.2 0xa6b9da in 0xa69590) (0.6.1 0x8bf9de in 0x8bd560; the full 19-byte form is still unique, bytes unchanged) (0.6.0 release 0xc5264e in 0xc501d0; bytes unchanged)
     const EXPECT: [(usize, u8); 19] = [
         (0, 0x48),
         (1, 0x83),
@@ -7774,7 +7810,7 @@ unsafe fn patch_slot_ui_inner() -> String {
 //   (1) exe file size - 0.6.0_beta1 = 81,422,336B (0.5.7 was 77,111,808B, 0.5.6 77,101,056B, 0.5.5 76,957,696B, 0.5.4 75,936,256B, 0.5.3 74,970,624B). It reliably differs per version and costs nothing to read.
 //   (2) measured entry prologues of 3 key hooks - catches a repackage that happens to have the same size but different code.
 //  WARNING a loose check (size only) could misbehave on a hotfix, so we look at the prologues too.
-const GAME_EXE_SIZE_063: u64 = 86_804_992; // 0.6.3 (0.6.2 was 86_674_944, 0.6.1 86_330_880, 0.6.0 release 86_082_048, 0.6.0_beta2 86_023_680) (0.6.0_beta1 was 81_422_336)
+const GAME_EXE_SIZE_070_BETA: u64 = 91_006_464; // 0.7.0-beta, the exe that reports 0.7.0_beta1 (0.6.3 was 86_804_992, 0.6.2 86_674_944, 0.6.1 86_330_880, 0.6.0 release 86_082_048, 0.6.0_beta2 86_023_680) (0.6.0_beta1 was 81_422_336)
 static VERSION_OK: AtomicBool = AtomicBool::new(false);
 static VERSION_MSG: Mutex<String> = Mutex::new(String::new());
 /// Decide whether this is 0.6.0_beta1. Called once from init; the result is stored in VERSION_OK.
@@ -7784,12 +7820,12 @@ fn check_game_version() -> bool {
     let size_ok = match exe_path().and_then(|p| fs::metadata(p).ok()) {
         Some(m) => {
             let sz = m.len();
-            if sz == GAME_EXE_SIZE_063 {
+            if sz == GAME_EXE_SIZE_070_BETA {
                 true
             } else {
                 why = format!(
-                    "exe size mismatch: {}B (0.6.3 = {}B)",
-                    sz, GAME_EXE_SIZE_063
+                    "exe size mismatch: {}B (0.7.0-beta = {}B)",
+                    sz, GAME_EXE_SIZE_070_BETA
                 );
                 false
             }
@@ -7851,7 +7887,7 @@ fn check_game_version() -> bool {
     };
     let ok = size_ok && proto_ok;
     *VERSION_MSG.lock().unwrap_or_else(|e| e.into_inner()) = if ok {
-        "0.6.3 confirmed - active".to_string()
+        "0.7.0-beta confirmed - active".to_string()
     } else {
         format!("version mismatch -> this half is fully disabled ({})", why)
     };

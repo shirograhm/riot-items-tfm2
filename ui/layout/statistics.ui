@@ -297,9 +297,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -314,9 +314,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -331,9 +331,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -370,9 +370,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -409,9 +409,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -448,9 +448,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -487,9 +487,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -526,9 +526,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -565,9 +565,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -604,9 +604,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -643,9 +643,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -682,9 +682,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -721,9 +721,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -792,9 +792,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -809,9 +809,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -848,10 +848,10 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 6px;
-            y: 18px;
+            y: 6px;
 
             width: 34px;
-            height: 20px;
+            height: 44px;
             align_x: Left;
             align_y: Center;
 
@@ -889,9 +889,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -928,9 +928,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -967,9 +967,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1006,9 +1006,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1045,9 +1045,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1084,9 +1084,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1123,9 +1123,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1162,9 +1162,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1201,9 +1201,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1296,9 +1296,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1313,9 +1313,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1330,9 +1330,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1369,9 +1369,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1408,9 +1408,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1447,9 +1447,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1486,9 +1486,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1525,9 +1525,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1564,9 +1564,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1603,9 +1603,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1642,9 +1642,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;
@@ -1659,9 +1659,9 @@ statistics:statistics_ui {
           #text:label {
             @"asset/base/style/main#label";
             x: 21px;
-            y: 18px;
+            y: 6px;
 
-            height: 20px;
+            height: 44px;
             align_y: Center;
 
             size: 16;

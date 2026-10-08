@@ -3,6 +3,7 @@ ingame:ingame_ui {
   height: 1080px;
 
   #center_log:empty {
+    palette: false;
     x: 18px;
     y: 64px;
     width: 960px;
@@ -860,6 +861,7 @@ ingame:ingame_ui {
   }
 
   #kills:empty {
+    palette: false;
     x: 378px;
     y: 141px;
 
@@ -2149,6 +2151,7 @@ ingame:ingame_ui {
   }
 
   #chat_list:empty {
+    palette: false;
     x: 19px;
     y: 780px;
     height: 300px;
@@ -2178,6 +2181,7 @@ ingame:ingame_ui {
       height: 54px;
 
       #level:label {
+        palette: false;
         @"asset/base/style/main#label";
         width: 100%;
         height: 100%;
@@ -2257,6 +2261,7 @@ ingame:ingame_ui {
       }
 
       #cooldown:label {
+        palette: false;
         @"asset/base/style/main#label";
 
         width: 100%;
@@ -2300,6 +2305,7 @@ ingame:ingame_ui {
       }
 
       #cooldown:label {
+        palette: false;
         @"asset/base/style/main#label";
 
         width: 100%;
@@ -2343,6 +2349,7 @@ ingame:ingame_ui {
       }
 
       #cooldown:label {
+        palette: false;
         @"asset/base/style/main#label";
 
         width: 100%;
@@ -2727,11 +2734,11 @@ ingame:ingame_ui {
       #price:label {
         @"asset/base/style/main#label";
         width: 92px;
-        height: 17px;
+        height: 24px;
         size: 16;
 
         x: 62px;
-        y: 21px;
+        y: 17.5px;
 
         text: "1200";
         color: #fde99fff;

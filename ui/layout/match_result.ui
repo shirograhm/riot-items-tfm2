@@ -1359,11 +1359,11 @@ main:match_result_ui {
       #price:label {
         @"asset/base/style/main#label";
         width: 92px;
-        height: 17px;
+        height: 24px;
         z: 1012;
         size: 16;
         x: 62px;
-        y: 21px;
+        y: 17.5px;
         text: "1200";
         color: #fde99fff;
         align_y: Center;
