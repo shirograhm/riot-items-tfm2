@@ -24,8 +24,8 @@ impl UnendingDespair {
             price: 750,
             hp: 250,
             defence: 15,
-            effect_bonus_flat_heal: 35,
-            effect_caster_hp_percent_heal: 1.0,
+            effect_bonus_flat_heal: 15,
+            effect_caster_hp_percent_heal: 1.5,
         }
     }
 
@@ -35,7 +35,7 @@ impl UnendingDespair {
             price: 1050,
             hp: 350,
             defence: 25,
-            effect_bonus_flat_heal: 50,
+            effect_bonus_flat_heal: 20,
             effect_caster_hp_percent_heal: 2.5,
             ..Self::base()
         }

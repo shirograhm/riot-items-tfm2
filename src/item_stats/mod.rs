@@ -69,7 +69,7 @@ pub(crate) mod toolbox_tab;
 pub(crate) mod ui;
 
 use std::collections::{BTreeMap, HashMap, HashSet};
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::sync::Mutex;
 
 use mod_api_stable::*;
@@ -654,7 +654,7 @@ pub(crate) fn prime_catalog(ctx: &StableClient<'_>) {
     let mut out = BTreeMap::new();
     if let Some(json) = ctx.setting_get_json(SettingTargetV1::ItemSetting, "") {
         if let Ok(Value::Object(root)) = serde_json::from_str::<Value>(&json) {
-            collect_items(ctx, &root, 0, &mut out);
+            collect_items(ctx, &root, &mut out);
         }
     }
 
@@ -700,11 +700,74 @@ pub(crate) fn catalog() -> BTreeMap<String, ItemInfo> {
         .unwrap_or_default()
 }
 
-fn collect_items(
-    ctx: &StableClient<'_>,
+/// Frames between two tries of [`prime_item_traits`] while the settings
+/// document cannot be read: half a second at 60 frames a second.
+const TRAITS_RETRY_FRAMES: u32 = 30;
+
+/// Hands the stats of the game's own items to the Smart Builds rules, once.
+///
+/// Called every client frame, on every screen, until it succeeds. The rules
+/// learn this mod's items as `init` registers them, but the game's are
+/// described only in the settings document, and until 2026-10-07 that was read
+/// by [`prime_catalog`] alone, which runs on the statistics screen. A player
+/// who had not opened that screen since launching the game played with rules
+/// that knew nothing about the thirty vanilla items: none gave ability power,
+/// attack or crit as far as rule 5 and the crit cap could tell. That is how a
+/// Hunter and a Dual Blader, both attack-damage champions, came to buy Radiant
+/// Luden's Tempest as their 6th item.
+///
+/// Its own function rather than an earlier [`prime_catalog`]: that one also
+/// caches every item's display name, which must not happen on a screen where
+/// the item text may not be loaded yet.
+pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
+    static PRIMED: AtomicBool = AtomicBool::new(false);
+    static FRAME: AtomicU32 = AtomicU32::new(0);
+    if PRIMED.load(Ordering::Relaxed)
+        || FRAME.fetch_add(1, Ordering::Relaxed) % TRAITS_RETRY_FRAMES != 0
+    {
+        return;
+    }
+    let Some(json) = ctx.setting_get_json(SettingTargetV1::ItemSetting, "") else {
+        return;
+    };
+    let Ok(Value::Object(root)) = serde_json::from_str::<Value>(&json) else {
+        return;
+    };
+    let mut described = 0;
+    each_item(
+        &root,
+        0,
+        &mut |key: &str, object: &serde_json::Map<String, Value>| {
+            let stat = |name: &str| {
+                object
+                    .get("stat")
+                    .and_then(|stat| stat.get(name))
+                    .and_then(Value::as_i64)
+                    .unwrap_or(0) as i32
+            };
+            crate::smart_builds::note_engine_item(
+                key,
+                stat("crit_chance"),
+                stat("attack"),
+                stat("attack_speed_mult"),
+                stat("magic_power"),
+            );
+            described += 1;
+        },
+    );
+    // Nothing described means the document was not ready, not that the game
+    // has no items: try again.
+    if described > 0 {
+        PRIMED.store(true, Ordering::Relaxed);
+    }
+}
+
+/// Calls `visit` with the key and the settings object of every item under
+/// `map`, the root of the settings document at `depth` 0.
+fn each_item(
     map: &serde_json::Map<String, Value>,
     depth: usize,
-    out: &mut BTreeMap<String, ItemInfo>,
+    visit: &mut dyn FnMut(&str, &serde_json::Map<String, Value>),
 ) {
     for (key, value) in map {
         let Some(object) = value.as_object() else {
@@ -717,7 +780,7 @@ fn collect_items(
             // Two levels, not one: mod items sit under a per-mod bucket
             // (`mod_items.riot_items_tfm2.collector`).
             if depth < 2 {
-                collect_items(ctx, object, depth + 1, out);
+                each_item(object, depth + 1, visit);
             }
             continue;
         }
@@ -732,35 +795,32 @@ fn collect_items(
             .and_then(Value::as_str)
             .filter(|inner| !inner.is_empty())
             .unwrap_or(key);
-        // Crit and offensive stats for the Smart Builds pass. This mod's own
-        // items report theirs at registration; the game's are described only
-        // here.
-        let stat = |name: &str| {
-            object
-                .get("stat")
-                .and_then(|stat| stat.get(name))
-                .and_then(Value::as_i64)
-                .unwrap_or(0) as i32
-        };
-        crate::smart_builds::note_engine_item(
-            key,
-            stat("crit_chance"),
-            stat("attack"),
-            stat("attack_speed_mult"),
-            stat("magic_power"),
-        );
-        out.insert(
-            key.to_string(),
-            ItemInfo {
-                name: display_name(ctx, key),
-                frame: icon_frame(object, key),
-                tier: object
-                    .get("tier")
-                    .and_then(Value::as_u64)
-                    .map(|tier| tier as usize),
-            },
-        );
+        visit(key, object);
     }
+}
+
+fn collect_items(
+    ctx: &StableClient<'_>,
+    root: &serde_json::Map<String, Value>,
+    out: &mut BTreeMap<String, ItemInfo>,
+) {
+    each_item(
+        root,
+        0,
+        &mut |key: &str, object: &serde_json::Map<String, Value>| {
+            out.insert(
+                key.to_string(),
+                ItemInfo {
+                    name: display_name(ctx, key),
+                    frame: icon_frame(object, key),
+                    tier: object
+                        .get("tier")
+                        .and_then(Value::as_u64)
+                        .map(|tier| tier as usize),
+                },
+            );
+        },
+    );
 }
 
 /// The item's own name, tier word included.

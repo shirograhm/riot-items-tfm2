@@ -281,7 +281,7 @@ fn init(host: &StableHost) -> StableMod {
         }};
         ($key:literal => $T:ty, boots) => {{
             let item = configured!($key => $T);
-            strategy_ui::note_final_item($key, StableItem::category(&item));
+            strategy_ui::note_final_item($key);
             item
         }};
         ($key:literal => $T:ty, passive_crit) => {{
@@ -334,7 +334,7 @@ fn init(host: &StableHost) -> StableMod {
                 .unwrap_or_else(<$T>::radiant);
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
-            strategy_ui::note_final_item($key, StableItem::category(&item));
+            strategy_ui::note_final_item($key);
             perf::timed($key, item)
         }};
     }
