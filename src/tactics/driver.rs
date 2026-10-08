@@ -1,152 +1,39 @@
-//! Adapter between the host mod's stable-ABI extensions and the classic-ABI
-//! bodies in `super`.
+//! Adapter between the host mod's stable-ABI extensions and the bodies in
+//! `super`, which began life as a classic-ABI mod.
 //!
-//! The classic API used to *hand* `tfm2_item_tactics` three things this mod
-//! cannot ask for over the stable boundary:
-//!
-//! | classic | why the stable ABI can't provide it | substitute here |
-//! |---|---|---|
-//! | `ServerModContext::database` | the boundary is JSON/path based; no object pointers cross it | [`db`] — derived from the item network address, which `src/hook.rs` receives as `&LogisticSGDAgent` |
-//! | `&mut GameUI` (`ui.root`) | `StableClient` exposes UI by *path*, not as a node tree | [`ui_root`] — the root node pointer `super::TIP_ROOT`, captured from the UI mega-function detour |
-//! | `Scene::InGame { .. }` | no scene payload crosses the boundary | `StableClient::is_in_game()`, threaded in as a `bool` |
-//!
-//! Everything else in `super` is raw pointers and kernel32 and needed no change.
+//! The classic API handed that mod its `Database`, the UI root node and the
+//! scene. Nothing here needs the first two any more: the `Database` scan and
+//! the node-tree UI code are gone. The scene's one remaining use, "is a match
+//! on screen", is `StableClient::is_in_game()`, threaded in as a `bool`.
 
-use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
-
-// `Node` is `mod_api`'s (the live UI tree); `Database` is `game_core`'s, the
-// same crate `src/hook.rs` already links — `mod_api` names the type in
-// `ServerModContext::database` but does not re-export it.
-use game_core::Database;
-use mod_api::Node;
-
-/// Offset of the item recommendation network inside the `Database` object
-/// (`GameData`). Established by `tfm2_item_tactics` on 0.5.1 and unchanged
-/// since — see `probe_db`, which prefers this offset and keeps a window scan as
-/// a fallback. Used here in reverse: network address minus this is the
-/// `Database` base.
-const ITEM_NET_DB_OFFSET: usize = 0x1558;
-
-static DB_ADDR: AtomicUsize = AtomicUsize::new(0);
-/// Set once `probe_db` has run against a `DB_ADDR` it accepted.
-static DB_PROBED: AtomicBool = AtomicBool::new(false);
+use std::sync::atomic::{AtomicBool, Ordering};
 
 /// Records the item recommendation network the host's item-build detour was
-/// handed, and derives the `Database` base from it.
+/// handed, for the 5th and 6th item (`super::network_pick`).
 ///
-/// This is the *only* route to the `Database` in a stable-ABI mod, which is why
-/// it runs from `hook::detour` rather than from mod init: the agent is an
-/// argument of the detoured function, so nothing is known until the game first
-/// asks for an item build.
-///
-/// Both the network header (`16384 / 16384 / 1`) and its weight pointer are
-/// validated before anything is stored, for the same reason `probe_db` does:
-/// a lookalike passing only the header has a dangling weight pointer, and
-/// dereferencing it inside `forward` is an access violation no `catch_unwind`
-/// can catch.
+/// The agent is an argument of the detoured function, so nothing is known
+/// until the game first asks for an item build, which is why this runs from
+/// `hook::detour` rather than from mod init. It is stored exactly as it came;
+/// `network_pick` proves it before every use (`super::network_ready`).
 pub fn record_item_net(agent: usize) {
-    // For the 5th and 6th item, and ahead of everything below: none of it is
-    // about the `Database`, so none of those returns should keep it back.
     super::NETWORK_AGENT.store(agent as u64, Ordering::Relaxed);
-    // Nothing reads `db()` while this half is retired, and settling a
-    // `Database` base costs a `VirtualQuery` plus a 64KB `readable` probe
-    // on the weight array, on the detour's hot path.
-    if RETIRED {
-        return;
-    }
-    if DB_ADDR.load(Ordering::Relaxed) != 0 || agent < ITEM_NET_DB_OFFSET {
-        return;
-    }
-    if !unsafe { super::itemnet_header_ok(agent) } {
-        // Not the network `probe_db` is looking for. Leave `DB_ADDR` unset so a
-        // later call can still settle it — guessing a base would send the
-        // mod-item scan walking 0x60000 bytes of unrelated memory.
-        return;
-    }
-    super::ITEM_NET_ADDR.store(agent as u64, Ordering::Relaxed);
-    DB_ADDR.store(agent - ITEM_NET_DB_OFFSET, Ordering::Relaxed);
 }
 
-/// The `Database` base, or 0 until the host's item-build detour has fired once.
-pub fn db_addr() -> usize {
-    DB_ADDR.load(Ordering::Relaxed)
-}
-
-/// Forgets the `Database` base so the next `record_item_net` can settle a new
-/// one. Called at the session boundary (`tactics_on_server_start`).
+/// Kill switch for this half. `false` since 2026-09-16.
 ///
-/// [`record_item_net`] takes the first address that validates and then refuses
-/// to look again — which is right within a session and wrong across one. The
-/// `Database` does not survive a return to the main menu, so without this the
-/// mod spent every session after the first holding the address of a freed
-/// object. It did not crash, because the scorer wrapper of the time re-checked
-/// the weight pointer on every call, but that check only *skipped* the neural
-/// 4th-item pick
-/// — so it silently fell back to the champion-hash vanilla choice for the whole
-/// second session, and every session after it.
-pub fn reset_session() {
-    DB_ADDR.store(0, Ordering::Relaxed);
-    DB_PROBED.store(false, Ordering::Relaxed);
-}
-
-/// The game's `Database`, once [`record_item_net`] has settled its address.
+/// The half existed for the fourth item slot, which game 0.6.0 ships itself,
+/// so it was retired on 2026-09-15. It came back for what the stable API
+/// cannot do: `own_team_only`, since restricting configured builds to the
+/// player's own athletes needs the athlete pointer the native buy detour is
+/// handed (`StableItemBuildContext` offers only a 0/1 lineup index), and, from
+/// 2026-09-18, the 5th and 6th item slots. What served only the old fourth
+/// slot has been removed.
 ///
-/// # Safety
-/// The `Database` outlives every caller here (it is owned by the running game),
-/// and the layout is `repr(Rust)` fixed by the pinned compiler — the same
-/// contract `src/hook.rs` already relies on.
-pub unsafe fn db() -> Option<&'static Database> {
-    let addr = DB_ADDR.load(Ordering::Relaxed);
-    (addr != 0).then(|| &*(addr as *const Database))
-}
-
-/// The live UI root node, or `None` before the UI mega-function detour has run.
+/// Live, and re-derived every game update (`tools/verify_rvas.py`): the buy,
+/// spawn, launcher and seed-ctor detours, `RVA_REALLOC`, the item network's
+/// scorer and the four byte patches in `tactics_init`.
 ///
-/// # Safety
-/// Valid only while the game is inside a UI update — which is exactly when the
-/// host's `post_update` runs, and the only place this is called.
-pub unsafe fn ui_root() -> Option<&'static mut Node> {
-    let addr = super::TIP_ROOT.load(Ordering::Relaxed);
-    (addr > 0x10000).then(|| &mut *(addr as *mut Node))
-}
-
-/// **Partly revived, 2026-09-16, for the team gate only.**
-///
-/// This half existed for the fourth item slot, and 0.6.0 ships that natively
-/// -- the game's own slot-count clamps already read 4 and every build row
-/// carries `#item3`. So it was retired on 2026-09-15 and none of its RVAs
-/// were re-derived.
-///
-/// One thing came back with it that is not about slots at all:
-/// **`own_team_only`**. Restricting configured builds to the player's own
-/// athletes needs `is_my_athlete`, and the stable API cannot express it --
-/// `StableItemBuildContext` (re-checked at ABI 9) offers only a 0/1 lineup
-/// index that says neither which side is the player's nor whether the player
-/// is in the match at all. The native buy detour is the only thing that can,
-/// because it is handed the athlete pointer.
-///
-/// So the three addresses that path needs were re-derived against the
-/// release and this is `false` again. **Everything else stays inert**, and
-/// through gates that already existed rather than new ones: `slot_count()`
-/// is pinned at 3, which is what the slot-3 icon is keyed on (the 3 -> 4
-/// byte patches it also gated were removed on 2026-10-07, and `tactics_init`
-/// pins `uinj::MODE4` off);
-/// `UI_INJECT_ENABLED` and `SPAWN_INJECT_ENABLED` are off in `super`, each
-/// with its reason recorded there.
-///
-/// Live, and therefore re-derived and covered by `tools/verify_rvas.py`:
-/// `RVA_BUY_ITEM`, `SEEDCTOR_RVA`, `CL_LAUNCHER_RVA` and the athlete/provider
-/// offsets (`O_ATHLETE_ID`, `ATH_STRIDE`, `O_PROVIDER_SEED` -- all three
-/// unchanged from beta2, confirmed by a STRICT exe2exe match of the 286-byte
-/// roster walk). Not re-derived, and not reachable: LOADER/PARSER/ALLOC,
-/// GV_UPDATE, ITEMNET_FORWARD, SPAWN, PV_*.
-///
-/// **Added 2026-09-18, for the 5th and 6th item slots:** `RVA_REALLOC`
-/// (re-derived, and prologue-checked before every call by `realloc_ok`) and
-/// the three release byte patches `patch_final_gate`, `patch_row_floor` and
-/// `patch_result_row_floor`. All four are covered by `tools/verify_rvas.py`.
-///
-/// `src/hook.rs` is unaffected either way -- it installs from
+/// `src/hooks/hook.rs` is unaffected either way -- it installs from
 /// `lib.rs::on_server_start` independently, and is still the only route to
 /// training/comp-test builds and the 60-champion roster.
 const RETIRED: bool = false;
@@ -199,11 +86,10 @@ pub fn before_management_tick() {
 }
 
 /// Was `ModExtension::post_update`. The client answers what the `Scene::InGame`
-/// payload used to; the UI root is fetched from `TIP_ROOT` rather than passed
-/// in.
+/// payload used to.
 pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
-    // Also the per-frame cost: this retried four detour installs every
-    // frame, each of which can only fail on the release image.
+    // Also the per-frame cost: the detour installs below are retried from
+    // here, and on an unrecognised game build each can only fail.
     if inert() {
         return;
     }
@@ -211,13 +97,11 @@ pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
     super::tactics_post_update(client, in_game);
 }
 
-/// Hands over the game's item catalog so the mod-item registry can be built
-/// from it rather than by scanning the `Database`.
+/// Hands over the game's item catalog, which the mod-item registry is built
+/// from.
 ///
 /// Called from `hook::detour`, which receives the catalog as an argument. Like
-/// [`record_item_net`], this is the only route to that data in a stable-ABI mod;
-/// unlike it, the data arrives typed and needs no base address, so it is the
-/// more trustworthy of the two.
+/// [`record_item_net`], this is the only route to that data in a stable-ABI mod.
 ///
 /// Idempotent — every call after the first that sticks is ignored.
 pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
@@ -239,13 +123,4 @@ pub fn item_catalog_recorded() -> bool {
         return true;
     }
     super::item_catalog_recorded()
-}
-
-/// Whether `probe_db` has completed against an accepted `Database` base.
-pub fn db_probed() -> bool {
-    DB_PROBED.load(Ordering::Relaxed)
-}
-
-pub(super) fn mark_db_probed() {
-    DB_PROBED.store(true, Ordering::Relaxed);
 }

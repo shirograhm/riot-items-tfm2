@@ -157,10 +157,10 @@ use crate::tactics;
 /// regardless of the game's language, so resolving here and writing the result
 /// produced an English editor inside a Korean game. Handing the *reference* to
 /// the label instead lets the engine's LabelRunner substitute it at draw time,
-/// against the active locale — the same mechanism `tactics::VANILLA_OPTS` uses
-/// for the personal-tactics dropdown, which is verified working in game.
+/// against the active locale — the mechanism the old personal-tactics dropdown
+/// labels used, which was verified working in game.
 ///
-/// The catch, also recorded there: LabelRunner substitutes **whole-string**
+/// The catch: LabelRunner substitutes **whole-string**
 /// labels only, with no inline composition. So every key here is a complete
 /// label — `col_item1`..`col_item4` rather than one `"ITEM {n}"` template — and
 /// anything this mod concatenates (padded rows, truncated item names) cannot use

@@ -1,87 +1,27 @@
-//! tfm2_item_tactics — inject mod items into the native Personal Tactics item dropdowns
+//! The native half of the mod: what the stable mod API cannot express.
 //! ===========================================================================
-//! Goal: on the pre-match "Strategy -> Personal" screen (strategy.ui #personal), expose
-//!       mod-added items as options in each player's item dropdowns (#item0/#item1/#item2).
-//!       When picked, force-inject them into the live match build (approach B, save-safe).
+//! - `own_team_only`: the buy and spawn detours hold the athlete pointer, so
+//!   they can restrict the player's pins to the player's own athletes.
+//! - The 5th and 6th item slots: the buy detour grows every build past the
+//!   game's four, and four byte patches let the engine buy and draw them.
 //!
-//! - Phase 1a (done)    - detect the strategy screen + inject native dropdown options + poll selection.
-//! - Phase 1b (current) - enumerate real mod final items (dump_mod_items -> MOD_REGISTRY/MOD_FINALS,
-//!                        active filter, i18n labels). No game function hooking = no crashes.
-//! - Phase 2  (next)    - detour the 3 write sites in FUN_140c6c430 to inject into the live build.
-//!
-//! Reused from: C:\tfm2mods\tfm2_scrim\src\lib.rs (nat_dd_*, SEH, dump_mod_items, item machinery).
+//! Everything here is pinned to one exact game build (`check_game_version`):
+//! hardcoded addresses, byte patches and struct offsets, re-derived every game
+//! update. It began as the standalone mod `tfm2_item_tactics`, whose original
+//! purpose, a fourth item slot, the game has shipped itself since 0.6.0; the
+//! code for that was removed on 2026-10-07.
 //! ===========================================================================
 #![allow(dead_code, unused_imports, unused_variables)]
-// MERGED INTO riot_items_tfm2 (2026-08-04).
-//
-// This was a standalone classic-ABI mod. The host mod is a stable-ABI mod, and a
-// DLL gets exactly one entry point (see `mod-api-stable/src/entry.rs`: exporting
-// `tfm2_mod_entry_stable` tells the loader to skip the legacy path), so the
-// classic `init`/`declare_mod!`/`ModExtension`/`ModServerExtension` scaffolding
-// is gone and the bodies are driven from the host's stable extensions instead —
-// see `driver` below and the call sites in `src/lib.rs`.
-//
-// `mod_api` is still LINKED, but only for its *types* (`Node`, `Database`,
-// `GameUI`, `find_node`, …). Their `repr(Rust)` layout is fixed by the compiler,
-// not by the SDK version, and `rust-toolchain.toml` pins the compiler the game
-// is built with — the same reasoning that already lets `src/hooks/hook.rs` link
-// `game_core`. What the classic API used to *hand* us (`ctx.database`,
-// `&mut GameUI`, `Scene`) is now sourced from raw addresses the mod captures
-// itself; see `driver::db()` and `driver::ui_root()`.
-extern crate mod_api;
-use mod_api::*;
-// `ctx.database` used to supply this; the merged build reaches it through
-// `driver::db()` instead, so the type has to be named directly.
-use game_core::Database;
+
 // The client half of what the classic `Scene`/`ClientDatabase` used to give.
 use mod_api_stable::{RecordKindV1, StableClient};
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
-use std::sync::atomic::{
-    AtomicBool, AtomicI64, AtomicPtr, AtomicU64, AtomicU8, AtomicUsize, Ordering,
-};
+use std::sync::atomic::{AtomicBool, AtomicPtr, AtomicU64, AtomicU8, AtomicUsize, Ordering};
 use std::sync::Mutex;
-use std::time::{SystemTime, UNIX_EPOCH};
-
-#[path = "ui_inject.rs"]
-mod uinj; // 4th-slot UI injection (chained loader hook): item3 dropdown + in-match slot3 display
 
 pub mod driver;
-mod ui_root;
-
-/// Kill switch for everything in `tactics_post_update` that walks the live UI
-/// node tree — now the in-match 4th slot icon, its tooltip, and the compact
-/// slot spacing. (The strategy and comp-test handlers it also used to cover are
-/// gone; see below.)
-///
-/// The root itself comes from [`ui_root::resolve`], which *finds and validates*
-/// the address rather than assuming one. That distinction is the whole reason
-/// this constant exists: the merge's first attempt reused `TIP_ROOT` — the
-/// tooltip function's search root, which is not a `Node` — and walking it was an
-/// access violation on the first UI frame, in both slot modes, which no
-/// `catch_unwind` can catch.
-///
-/// Set to `false` to rule this half out if a startup crash ever returns. The
-/// engine half does not depend on it: the byte patches, the `buy_item` detour
-/// and its build injection, and `ui_inject`'s loader hook (which edits
-/// *templates* through offsets it owns) all run regardless.
-///
-/// One caveat if you do turn it off: `seh_install` used to be reached only from
-/// the strategy handler, so disabling this silently disabled every
-/// `safe_read_*` in the module. That call now lives in `tactics_init`, which is
-/// where it belongs, so the two are independent.
-// ** OFF 2026-08-12 (game 0.5.5). Everything this gated now runs over the stable
-//    UI API by path instead — the 4th-slot icon and the blue-row re-layout,
-//    which were its only remaining consumers. (The re-layout is gone entirely as
-//    of 0.6.0; the game lays the row out itself.) The node route needs a UI root
-//    pointer, and on 0.5.5 the search for one cannot succeed: `build_ext_diag`
-//    showed the scan landing in live UI memory (1167 nodes, real ids) yet never
-//    finding the root, because `subtree_has_id` searches *downward* for `main`
-//    while the nodes it lands on are branches with `main` above them. That is a
-//    direction error, not a tuning problem, so the search was also costing a
-//    160KB sweep per frame for an answer nobody could use.
-const UI_TREE_WALK_ENABLED: bool = false;
 
 // This half no longer touches the game's native **Personal** tactics tab.
 // `crate::strategy_ui` replaces that tab outright with the mod's own `#builds`
@@ -90,26 +30,6 @@ const UI_TREE_WALK_ENABLED: bool = false;
 // and the code that hid the native dropdowns underneath were all driving a panel
 // nobody could see. All of it is deleted, along with the comp-test screen's copy
 // of the same machinery. `item-builds.json` is the single authority on builds.
-//
-// What survived, because none of it is that tab: `handle_ingame_slot3` (the
-// in-match 4th-item icon and its tooltip), `ui_inject`'s
-// `player_info`/`wide_player_info` template edit (the four item slots in the
-// match panel), and everything on the simulation side.
-
-// Native dropdown set-options function (0.4.14 hotfix, same RVA as scrim).
-//   Prologue 55 56 57 48 83 ec 70, options Vec@+0x1528, selected idx@+0x1788.
-//   WARNING: moves with every patch -> re-locate during MIGRATION.
-// Confirmed for 0.5.0 (was 0x218a5f0). Validated by the dd_addr_valid() prologue guard (55 56 57 48 83 ec 70) before use.
-// ** 0.5.4 re-derivation (2026-08-04, `tools/rederive.py fields` + `calls`). The recorded fingerprints made this
-//   the easiest of the set: 9 functions in the whole image touch **all six** documented offsets
-//   (+0x1788 selected / +0x1528,0x1530,0x1538 option Vec / +0x1570,0x1578 callback), and of those exactly one
-//   has **103 direct callers — the same count recorded for 0.5.3**. It also sits in the same region
-
-// * Production master diagnostic gate (07-11): this session's diagnostics (nn_moditem, timing, liveroster, p6/channel scan, shadow-call catalog name lookup) plus
-//   the older diagnostic flush/hooks (c6new, countprobe, auto4, teamgate) are all OFF. The team gate (is_live/is_player) lives outside the gate = unaffected.
-//   (The SLOT012 injection named here has no compile-time gate of its own any more: it runs when the editor's `own_team_only` toggle is on, and
-//    otherwise slots 0/1/2 are set by `crate::item_build_hook` on the stable API.)
-const DIAG_ENABLED: bool = false;
 
 /// Trace files this half drops in its own folder: `4items_patches.txt` at
 /// every init, `version_gate.txt` when the version gate closes, and
@@ -133,35 +53,6 @@ const TRACE_FILES: bool = false;
 /// switched back on, so flipping this to `false` answers "is it this half?" in
 /// one rebuild. Leave it `true` in any shipped build.
 const TACTICS_ENABLED: bool = true;
-
-/// Slots **this half** adds to the game's own. Pinned at 3 from game 0.6.0
-/// (2026-09-16), which ships the fourth slot itself: this is the old question
-/// "does this half need to manufacture a slot", and the answer is permanently
-/// no. How many slots a build has is `build_config::game_slots` and
-/// `build_config::picker_slots`.
-///
-/// What still reads it is the pre-0.6.0 in-match slot icon
-/// (`handle_ingame_slot3`, and its call in `tactics_post_update`), which
-/// stays inert at 3. The 3 -> 4 byte patches and the `4items.cfg` toggle it
-/// also gated were removed on 2026-10-07; `tactics_init` pins the two `uinj`
-/// switches that toggle used to set.
-fn slot_count() -> usize {
-    3
-}
-
-// Vanilla 7 option labels (idx 0~6). 1:1 with the game's personal_tactics ItemBuildOverride.
-//   * References the game i18n assets -> the dropdown is localized automatically to the game language (base.json lang),
-//   the same way mod items (vi>=7) are; verified. Single whole-string labels, so LabelRunner substitutes them (only inline composition is unsupported). Hardcoded Korean was dropped.
-//   Key sources: strategy.i18n (build_auto) / ui.i18n (attack, magic_power, attack_speed, defence, magic_resistance, hp).
-const VANILLA_OPTS: [&str; 7] = [
-    "#asset/base/text/strategy?personal.build_auto",
-    "#asset/base/text/item?category.ad",
-    "#asset/base/text/item?category.magic",
-    "#asset/base/text/item?category.attack_speed",
-    "#asset/base/text/item?category.defense",
-    "#asset/base/text/item?category.magic_resistance",
-    "#asset/base/text/item?category.hp",
-];
 
 // ===========================================================================
 //  WinAPI FFI
@@ -292,9 +183,6 @@ unsafe fn code_ptr_ok(p: usize) -> bool {
     const EXEC: u32 = 0x10 | 0x20 | 0x40 | 0x80; // PAGE_EXECUTE / _READ / _READWRITE / _WRITECOPY
     const BAD: u32 = 0x100 | 0x01; // GUARD | NOACCESS
     mbi.state == MEM_COMMIT && (mbi.protect & BAD) == 0 && (mbi.protect & EXEC) != 0
-}
-fn looks_heap(v: u64) -> bool {
-    v & 0x7 == 0 && v >= 0x10000 && v < 0x0000_8000_0000_0000 && (v & 0xffff) != 0
 }
 
 // ===========================================================================
@@ -443,12 +331,6 @@ unsafe fn safe_read_bytes(addr: usize, len: usize, out: &mut Vec<u8>) -> bool {
 // ===========================================================================
 //  Logging / paths
 // ===========================================================================
-fn now_ms() -> u64 {
-    SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map(|d| d.as_millis() as u64)
-        .unwrap_or(0)
-}
 // Game exe path (GetModuleHandleW(NULL) = main exe). Never hardcode - derive the path dynamically.
 fn exe_path() -> Option<PathBuf> {
     let mut buf = [0u16; 1024];
@@ -464,10 +346,6 @@ fn exe_path() -> Option<PathBuf> {
     }
     Some(PathBuf::from(String::from_utf16_lossy(&buf[..n as usize])))
 }
-// Game root = the exe folder (...\Teamfight Manager2).
-fn game_root() -> Option<PathBuf> {
-    exe_path()?.parent().map(|p| p.to_path_buf())
-}
 /// Where this half's diagnostic files live.
 ///
 /// Was `<game>/mods/tfm2_item_tactics`. After the merge there is no such folder:
@@ -482,87 +360,6 @@ fn mod_dir() -> Option<PathBuf> {
     crate::config::dll_dir()
 }
 
-unsafe fn runner_base(n: &Node) -> usize {
-    let any: &dyn std::any::Any = n.runner.as_any();
-    let parts: [usize; 2] = std::mem::transmute::<*const dyn std::any::Any, [usize; 2]>(
-        any as *const dyn std::any::Any,
-    );
-    parts[0]
-}
-fn find_node<'a>(n: &'a Node, t: &str) -> Option<&'a Node> {
-    if n.id.as_str() == t {
-        return Some(n);
-    }
-    for c in n.child.iter() {
-        if let Some(x) = find_node(c, t) {
-            return Some(x);
-        }
-    }
-    None
-}
-unsafe fn set_img_src(n: &Node, s: &'static str) -> bool {
-    if !n.runner.type_name().contains("ImageRunner") {
-        return false;
-    }
-    let dp = runner_base(n);
-    if dp < 0x10000 {
-        return false;
-    }
-    std::ptr::write_unaligned(dp as *mut u64, s.len() as u64);
-    std::ptr::write_unaligned((dp + 8) as *mut u64, s.as_ptr() as u64);
-    true
-}
-// * Verification: set every in-match #slot3 icon source to a test item (t5_0) and see whether it shows.
-//   If the #slot3 node exists in the live match tree and the source write takes, the whole approach is validated.
-const TEST_ITEM_SRC: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18#t5_0";
-static SLOT3_TEST_LOGGED: AtomicBool = AtomicBool::new(false);
-unsafe fn runner_bytes(n: &Node) -> String {
-    let dp = runner_base(n);
-    let mut s = format!("rb={:#x}", dp);
-    for o in (0..0x48).step_by(8) {
-        s.push_str(&format!(
-            " +{:#x}={:#x}",
-            o,
-            std::ptr::read_unaligned((dp + o) as *const u64)
-        ));
-    }
-    s
-}
-// ImageRunner source string (champion portrait path etc.). Data ptr: len@+0, ptr@+8.
-unsafe fn read_img_source(n: &Node) -> Option<String> {
-    if !n.runner.type_name().contains("ImageRunner") {
-        return None;
-    }
-    let dp = runner_base(n);
-    let len = std::ptr::read_unaligned(dp as *const u64) as usize;
-    let ptr = std::ptr::read_unaligned((dp + 8) as *const u64) as *const u8;
-    if ptr.is_null() || len == 0 || len > 512 || !readable(ptr as usize, len) {
-        return None;
-    }
-    Some(String::from_utf8_lossy(std::slice::from_raw_parts(ptr, len)).to_string())
-}
-// LabelRunner text (text@+352, len@+352, ptr@+360).
-//   filled slot0/1/2 vs the empty slot3 ImageRunner source + runner base bytes (to pin the layout).
-static SLOTDIAG_CNT: AtomicU64 = AtomicU64::new(0);
-// The blue-row re-layout (`force_blue_slot_spacing` + `set_node_x_all_states`)
-// stood here, with `FORCE_BLUE_SPACING = 42.0`. It walked the live node tree for
-// `blue_player`, wrote `slot{i}.x = base + 42*i` into the +0x84 authored-x family
-// (all four state blocks) and pinned kda 242 / cs 290, every frame, because up to
-// 0.5.7 the game reset that row to 50px spacing on each pass.
-//
-// 0.6.0 removed the thing it was fighting. The item row is no longer authored in
-// `player_info` at all: each side holds an `#items` container that the game fills
-// with `slot0..slotN-1` and lays out itself, sizing them from the container's
-// width. So the reset is gone, and the writes had become actively wrong twice
-// over — `find_node` is recursive, so it still found the slots one level deeper
-// inside `#items`, and stamped container-relative x values that had been computed
-// against `blue_player`.
-//
-// The row's geometry now lives where the game reads it, in
-// `ui/layout/ingame_component/*.ui` (see `uinj::IN_MATCH_UI`). Deleted rather
-// than gated: this was the second copy of the same stale write, and the first one
-// — the by-path version in `drive_slot3_by_path` — is what broke the panel in
-// 0.6.0.
 // ===========================================================================
 //  JSON parser (for mods.json / item.i18n, ported from scrim)
 // ===========================================================================
@@ -738,25 +535,11 @@ impl<'a> JsonParser<'a> {
 }
 
 // ===========================================================================
-//  Mod item registry (dump_mod_items fills it once at server start, ported from scrim)
+//  Mod item registry (filled once, from the catalog the item-build detour is handed)
 // ===========================================================================
 static MOD_REGISTRY: Mutex<Vec<String>> = Mutex::new(Vec::new()); // idx i -> key (game ID = 30+i)
 static MOD_FINALS: Mutex<Vec<u64>> = Mutex::new(Vec::new()); // mod item IDs whose next_tier is empty
-static MOD_BUF: AtomicU64 = AtomicU64::new(0); // mod_items array base (element = MOD_BUF + i*stride, key@element+0)
-static MOD_STRIDE: AtomicU64 = AtomicU64::new(0);
-static NT_OFFSET: AtomicUsize = AtomicUsize::new(0);
 static MODITEMS_DONE: AtomicBool = AtomicBool::new(false);
-// * 0.5.2: ModItemEntry +0x190 = active flag (!=0 active / ==0 inactive). idx i -> active?
-//   Evidence = the game's own Debug impl (0x21a0c10) branches on this field to build "ModItemEntry(<id>, active|inactive)"
-//   (cmp qword [rcx+0x190],0 / sete / cmove ", inactive" vs ", active"). Independent confirmation = 0x1408f0870
-//   loops over the mod_items array and only processes entries with [rsi+0x190]==0.
-//   WARNING: the old rule "present in the mod_items Vec = active" (demonstrated 2026-07-05) died in 0.5.2 - items of disabled mods
-//   land in the same Vec as inactive (the game filters them out of the codex; we could not, which is exactly why this field was adopted).
-static MOD_ACTIVE: Mutex<Vec<bool>> = Mutex::new(Vec::new());
-const MODITEM_ACTIVE_OFF: usize = 0x190;
-// One-shot verification dump (key/ID/flag) - written regardless of LOG_ENABLED.
-// * OFF for release (2026-07-22): the rule is settled by a two-way demonstration - with riot **disabled** all 104 had raw=0 (X),
-//   with riot **enabled** all 110 had raw=pointer (O). No remaining chance of misjudgement -> the dump is unnecessary.
 
 // The 30 vanilla JSON keys (order = ID 0..29). A fingerprint for validating the in-memory master list.
 const VANILLA_KEYS: [&str; 30] = [
@@ -795,13 +578,13 @@ const VANILLA_KEYS: [&str; 30] = [
 /// Fills `MOD_REGISTRY`/`MOD_FINALS` from the game's own item catalog, which the
 /// host mod's item-build detour is handed as `&Vec<Box<dyn ItemInfo>>`.
 ///
-/// This replaces `dump_mod_items` below, which finds the same information by
-/// scanning `Database + 0..0x60000` for something Vec-shaped. That scan needs a
-/// correct `Database` base, and the merged build derives one as
-/// `item_network - 0x1558` — a value whose only self-check is circular
+/// This replaced a scan of `Database + 0..0x60000` for something Vec-shaped
+/// (`dump_mod_items`, removed 2026-10-07). That scan needed a correct
+/// `Database` base, and the merged build derived one as
+/// `item_network - 0x1558` — a value whose only self-check was circular
 /// (`sig_ok(db + 0x1558)` is true by construction). It found 0 items, so the
-/// 4th-item candidate list was `VANILLA_FINAL` alone and the auto-picked 4th
-/// item could never be a mod item.
+/// candidate list was `VANILLA_FINAL` alone and an automatic pick could never
+/// be a mod item.
 ///
 /// The catalog is strictly better evidence: it is the list the game is actually
 /// using, it arrives typed, and it needs no base address at all.
@@ -860,423 +643,11 @@ fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
         registry.push(key.clone());
     }
 
-    let registry_len = registry.len();
-    let finals_len = finals.len();
     *MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner()) = registry;
     *MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()) = finals;
     // `auto_cands` memoizes on first call and never reconsiders, so a list built
     // before this ran would pin the 4th item to vanilla for the whole session.
     *AUTO_CANDS.lock().unwrap_or_else(|e| e.into_inner()) = None;
-
-    *CATALOG_NOTE.lock().unwrap_or_else(|e| e.into_inner()) = format!(
-        "from host item-build hook catalog: {} entries, {registry_len} mod items, {finals_len} finals",
-        catalog.len()
-    );
-}
-
-/// How `MOD_REGISTRY` was populated, for the diagnostic report.
-static CATALOG_NOTE: Mutex<String> = Mutex::new(String::new());
-
-// Scan the Database mod_items Vec in memory -> fill MOD_REGISTRY/MOD_FINALS. (ported from scrim's dump_mod_items)
-unsafe fn dump_mod_items(db: usize) {
-    if MODITEMS_DONE.swap(true, Ordering::Relaxed) {
-        return;
-    }
-    seh_install();
-    let mut s = format!("[{}ms] mod_items walk (db={:#x})\n", now_ms(), db);
-
-    let key_at = |pa: usize| -> Option<String> {
-        let ptr = safe_read_u64(pa)? as usize;
-        if ptr <= 0x10000 {
-            return None;
-        }
-        for &m in &[64usize, 32, 16, 8] {
-            let mut b = Vec::new();
-            if !safe_read_bytes(ptr, m, &mut b) {
-                continue;
-            }
-            let mut v = Vec::new();
-            for &c in b.iter() {
-                if c == b'_' || c.is_ascii_alphanumeric() {
-                    v.push(c);
-                } else {
-                    break;
-                }
-            }
-            if v.len() >= 3 && (v[0] as char).is_ascii_alphabetic() {
-                return String::from_utf8(v).ok();
-            }
-        }
-        None
-    };
-    let is_vanilla = |k: &str| k == "ironsword" || VANILLA_KEYS.contains(&k);
-    let item_strides: [usize; 3] = [0x1a8, 0x198, 0x1b0];
-    let detect_stride = |buf: usize| -> usize {
-        for &st in item_strides.iter() {
-            let k: Vec<Option<String>> = (0..4).map(|i| key_at(buf + i * st + 0x8)).collect();
-            if k.iter().all(|x| x.is_some()) && k[0] != k[1] && k[1] != k[2] && k[2] != k[3] {
-                return st;
-            }
-        }
-        0
-    };
-    let mut found: Vec<(usize, usize, usize, usize)> = Vec::new();
-    let mut o = 0usize;
-    while o + 0x18 <= 0x60000 && found.len() < 16 {
-        let a = db + o;
-        o += 8;
-        let (Some(q0), Some(q1), Some(q2)) = (
-            safe_read_u64(a),
-            safe_read_u64(a + 8),
-            safe_read_u64(a + 0x10),
-        ) else {
-            continue;
-        };
-        for &(p, c) in [(q1, q0), (q1, q2), (q0, q2), (q0, q1)].iter() {
-            let (p, c) = (p as usize, c as usize);
-            if !looks_heap(p as u64) || c < 3 || c > 2000 {
-                continue;
-            }
-            let Some(k0) = key_at(p + 0x8) else {
-                continue;
-            };
-            if is_vanilla(&k0) {
-                continue;
-            }
-            let cst = detect_stride(p);
-            if cst == 0 {
-                continue;
-            }
-            let probe = c.min(48);
-            let valid = (0..probe)
-                .filter(|&i| key_at(p + i * cst + 0x8).is_some())
-                .count();
-            if valid * 10 < probe * 8 || valid < 3 {
-                continue;
-            }
-            if found.iter().any(|&(b, _, _, _)| b == p) {
-                continue;
-            }
-            found.push((p, c, cst, a));
-        }
-    }
-    if found.is_empty() {
-        s.push_str("  X no non-vanilla item-struct array found (item mods not applied?)\n");
-        return;
-    }
-    found.sort_by(|x, y| y.1.cmp(&x.1));
-    let key_of_elem = |elem: usize| -> Option<String> {
-        let a = safe_read_u64(elem)? as usize;
-        let ptr = safe_read_u64(elem + 8)? as usize;
-        let c = safe_read_u64(elem + 0x10)? as usize;
-        let len = a.min(c);
-        if ptr <= 0x10000 || len < 2 || len > 48 {
-            return None;
-        }
-        let mut b = Vec::new();
-        if !safe_read_bytes(ptr, len, &mut b) {
-            return None;
-        }
-        if b.iter().all(|&x| x == b'_' || x.is_ascii_alphanumeric())
-            && (b[0] as char).is_ascii_alphabetic()
-        {
-            String::from_utf8(b).ok()
-        } else {
-            None
-        }
-    };
-    // read_nt: read elem's next_tier Vec (at offset o) as a key list. (core of item-tree detection)
-    let read_nt = |elem: usize, o: usize| -> Option<Vec<String>> {
-        let len = safe_read_u64(elem + o)? as usize;
-        if len == 0 {
-            return Some(Vec::new());
-        }
-        if len > 8 {
-            return None;
-        }
-        let ptr = safe_read_u64(elem + o + 8)? as usize;
-        let cap = safe_read_u64(elem + o + 0x10)? as usize;
-        if ptr <= 0x10000 || cap < len {
-            return None;
-        }
-        let mut out = Vec::new();
-        for j in 0..len {
-            out.push(key_of_elem(ptr + j * 0x18)?);
-        }
-        Some(out)
-    };
-    // Extract the key list of a candidate array.
-    let build_keys = |buf: usize, st: usize, hdr_cnt: usize| -> Vec<String> {
-        let mut keys = Vec::new();
-        let mut cnt = 0usize;
-        while cnt < hdr_cnt.max(1) && cnt < 500 {
-            if let Some(k) = key_of_elem(buf + cnt * st) {
-                keys.push(k);
-                cnt += 1;
-            } else {
-                break;
-            }
-        }
-        keys
-    };
-    // Best next_tier offset for a candidate array + votes (item-tree strength). Player/champion arrays score low votes.
-    let best_nt = |buf: usize, st: usize, keys: &[String]| -> (usize, u32) {
-        let mut best_off = 0usize;
-        let mut best_votes = 0u32;
-        let mut o = 0x18usize;
-        while o + 0x18 <= st {
-            let mut votes = 0u32;
-            for i in 0..keys.len() {
-                if let Some(v) = read_nt(buf + i * st, o) {
-                    if !v.is_empty()
-                        && v.iter()
-                            .all(|k| keys.iter().any(|x| x.as_str() == k.as_str()))
-                    {
-                        votes += 1;
-                    }
-                }
-            }
-            if votes > best_votes {
-                best_votes = votes;
-                best_off = o;
-            }
-            o += 8;
-        }
-        (best_off, best_votes)
-    };
-    // * Adopt the candidate array that has a next_tier (item tree) (fixes the bug of picking purely by max count -
-    //   player/champion mod arrays can be larger than the item array yet we still pick items correctly. 2026-07-04).
-    // * Adoption rule (hardened 07-22): the old rule was "the **first** candidate with votes>=3" (= #1 by descending cnt in found), so
-    //   if a disabled mod's staging array was bigger than the active merged array it picked that one. -> switched the **primary key to
-    //   the number of active entries** (the array that actually has active items is the one the game uses). Ties break by larger cnt.
-    //   If every candidate has 0 active (= the normal state with no item mods enabled), fall back to the old rule and take #1 by cnt.
-    let mut diag = String::from("  --- candidate scan (all) ---\n");
-    let mut cands: Vec<(usize, usize, Vec<String>, usize, u32, usize)> = Vec::new();
-    for &(fbuf, fcnt, fst, _) in &found {
-        let keys = build_keys(fbuf, fst, fcnt);
-        let (bo, bv) = best_nt(fbuf, fst, &keys);
-        let act = (0..keys.len())
-            .filter(|&i| {
-                safe_read_u64(fbuf + i * fst + MODITEM_ACTIVE_OFF)
-                    .map(|v| v != 0)
-                    .unwrap_or(false)
-            })
-            .count();
-        diag.push_str(&format!(
-            "  buf={:#x} cnt={} stride={:#x} first={:?} nt_off={:#x} votes={} active={}\n",
-            fbuf,
-            keys.len(),
-            fst,
-            keys.first(),
-            bo,
-            bv,
-            act
-        ));
-        if bv >= 3 {
-            cands.push((fbuf, fst, keys, bo, bv, act));
-        }
-    }
-    // active desc -> cnt desc (found is already cnt-desc, so a stable sort keeps the original order on ties)
-    cands.sort_by(|a, b| b.5.cmp(&a.5));
-    let chosen = cands
-        .into_iter()
-        .next()
-        .map(|(b, st, k, o, v, _)| (b, st, k, o, v));
-    let Some((buf, st, keys, best_off, best_votes)) = chosen else {
-        s.push_str("  X no array carrying an item tree (next_tier) -> item mod probably not loaded or not recognised\n");
-        s.push_str(&diag);
-
-        return;
-    };
-    let cnt = keys.len();
-    MOD_BUF.store(buf as u64, Ordering::Relaxed);
-    MOD_STRIDE.store(st as u64, Ordering::Relaxed);
-    NT_OFFSET.store(best_off, Ordering::Relaxed);
-    {
-        let mut reg = MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner());
-        reg.clear();
-        for k in keys.iter() {
-            reg.push(k.clone());
-        }
-    }
-    // * Collect the active flags (+0x190). Entries that fail to read fall back to true (active) - dropping something from
-    //   the list just because we could not read it would silently erase a user's selection, so when unsure, showing it is safer.
-    let actives: Vec<bool> = (0..cnt)
-        .map(|i| {
-            safe_read_u64(buf + i * st + MODITEM_ACTIVE_OFF)
-                .map(|v| v != 0)
-                .unwrap_or(true)
-        })
-        .collect();
-    let n_act = actives.iter().filter(|&&a| a).count();
-    *MOD_ACTIVE.lock().unwrap_or_else(|e| e.into_inner()) = actives.clone();
-    s.push_str(&format!("  [chosen] buf={:#x} cnt={} stride={:#x} nt_off={:#x} votes={} active={}/{}\n  idx | ID | act | key\n",
-        buf, cnt, st, best_off, best_votes, n_act, cnt));
-    for (i, k) in keys.iter().enumerate() {
-        s.push_str(&format!(
-            "  {:>3} | {:>3} | {} | {}\n",
-            i,
-            30 + i,
-            if actives.get(i).copied().unwrap_or(true) {
-                "O"
-            } else {
-                "X"
-            },
-            k
-        ));
-    }
-    s.push_str(&diag);
-
-    // * Pass 1: collect all next_tier targets (built_set) - if anything builds into this item, it is a real final candidate.
-    //   (Base components like needlessly_large_rod have an empty next_tier but are not targets either, so they are excluded.)
-    let mut built: std::collections::HashSet<String> = std::collections::HashSet::new();
-    for i in 0..cnt {
-        if let Some(nt) = read_nt(buf + i * st, best_off) {
-            for k in nt {
-                built.insert(k);
-            }
-        }
-    }
-    let mut finals: Vec<u64> = Vec::new();
-    let mut tree = format!(
-        "[{}ms] next_tier offset=+{:#x} votes={}/{} built_targets={}\n",
-        now_ms(),
-        best_off,
-        best_votes,
-        cnt,
-        built.len()
-    );
-    for i in 0..cnt {
-        let elem = buf + i * st;
-        let k = key_of_elem(elem).unwrap_or_default();
-        // * Handoff §3 fix: branch read_nt with a match. None (next_tier undecidable at that offset) is
-        //   excluded from finals (the old unwrap_or_default() mistook None for an empty Vec -> wrong final items. It really happened with overrides.)
-        match read_nt(elem, best_off) {
-            Some(nt) if nt.is_empty() => {
-                // Upgraded boots pass both tests but are no legendary: they
-                // reach a build through Smart Builds' boots rule only.
-                if built.contains(&k) && !crate::smart_builds::is_boots(&k) {
-                    finals.push(30 + i as u64);
-                    tree.push_str(&format!("  {:>3} {} *FINAL\n", 30 + i, k));
-                } else {
-                    tree.push_str(&format!(
-                        "  {:>3} {} (base component - excluded)\n",
-                        30 + i,
-                        k
-                    ));
-                }
-            }
-            Some(nt) => {
-                tree.push_str(&format!("  {:>3} {} -> {}\n", 30 + i, k, nt.join(", ")));
-            }
-            None => {
-                tree.push_str(&format!(
-                    "  {:>3} {} (next_tier undecidable - excluded)\n",
-                    30 + i,
-                    k
-                ));
-            }
-        }
-    }
-    tree.push_str(&format!(
-        "  -> {} final items: {:?}\n",
-        finals.len(),
-        finals
-    ));
-    *MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()) = finals;
-}
-
-// ===========================================================================
-//  Active mod item filter (ported from scrim) - mods.json enabled_mods x each mod's text/item.i18n
-// ===========================================================================
-fn enabled_mods() -> Vec<String> {
-    let mut out = Vec::new();
-    let Some(root) = game_root() else {
-        return out;
-    };
-    let Ok(txt) = fs::read_to_string(root.join("config").join("game").join("mods.json")) else {
-        return out;
-    };
-    if let Some(p) = txt.find("\"enabled_mods\"") {
-        if let Some(lb) = txt[p..].find('[') {
-            let start = p + lb + 1;
-            if let Some(rb) = txt[start..].find(']') {
-                for part in txt[start..start + rb].split(',') {
-                    let s = part.trim().trim_matches('"').trim();
-                    if !s.is_empty() {
-                        out.push(s.to_string());
-                    }
-                }
-            }
-        }
-    }
-    out
-}
-fn build_active_item_keys() -> std::collections::HashSet<String> {
-    let mut set = std::collections::HashSet::new();
-    let enabled = enabled_mods();
-    if enabled.is_empty() {
-        return set;
-    }
-    let Some(root) = game_root() else {
-        return set;
-    };
-    let mut dirs: Vec<PathBuf> = Vec::new();
-    if let Ok(rd) = fs::read_dir(root.join("mods")) {
-        for e in rd.flatten() {
-            dirs.push(e.path());
-        }
-    }
-    if let Some(ws) = root
-        .parent()
-        .and_then(|p| p.parent())
-        .map(|p| p.join("workshop").join("content").join("3009300"))
-    {
-        if let Ok(rd) = fs::read_dir(&ws) {
-            for e in rd.flatten() {
-                dirs.push(e.path());
-            }
-        }
-    }
-    for d in dirs {
-        let Ok(info) = fs::read_to_string(d.join("mod.mod_info")) else {
-            continue;
-        };
-        let Some(iv) = JsonParser::new(&info).parse_value() else {
-            continue;
-        };
-        let Some(mid) = iv.get("mod_id").and_then(|x| x.as_str()) else {
-            continue;
-        };
-        if !enabled.iter().any(|e| e == mid) {
-            continue;
-        }
-        let Ok(i18n) = fs::read_to_string(d.join("text").join("item.i18n")) else {
-            continue;
-        };
-        if let Some(JsonValue::Obj(langs)) = JsonParser::new(&i18n).parse_value() {
-            for (_, lobj) in langs {
-                if let JsonValue::Obj(items) = lobj {
-                    for (k, _) in items {
-                        set.insert(k);
-                    }
-                }
-            }
-        }
-    }
-    set
-}
-static ACTIVE_KEYS: Mutex<Option<std::collections::HashSet<String>>> = Mutex::new(None);
-fn active_item_keys() -> std::collections::HashSet<String> {
-    {
-        let g = ACTIVE_KEYS.lock().unwrap_or_else(|e| e.into_inner());
-        if let Some(s) = g.as_ref() {
-            return s.clone();
-        }
-    }
-    let set = build_active_item_keys();
-    *ACTIVE_KEYS.lock().unwrap_or_else(|e| e.into_inner()) = Some(set.clone());
-    set
 }
 
 // All dynamic final items = (game ID, key). Map MOD_FINALS (empty next_tier) through MOD_REGISTRY to keys.
@@ -1290,832 +661,6 @@ fn mod_final_opts_all() -> Vec<(u64, String)> {
             reg.get(i).map(|k| (id, k.clone()))
         })
         .collect()
-}
-// Finals exposed in the picker = only the **active** ones (+0x190 != 0) among the DB scan results.
-//   ~~Old: the scan result as-is (disabled mods were never merged in anyway)~~ -> invalidated in 0.5.2 (2026-07-22):
-//   disabled mods' items also arrive in the same Vec as inactive and showed up in the dropdown (user-confirmed:
-//   they do not appear in the in-game codex = the game filters them and only we failed to). Mirror the game's own Debug impl criterion.
-//   WARNING: the fail-safe is **only the "flags not yet collected (pre-scan)" layer**. The first version (07-22) added "if everything is inactive, suspect
-//   a misjudgement -> no filter", which **inverted the correct answer**: in an environment with no item-adding mod enabled, 0 active is
-//   normal (measured: the enabled mods map_free / leefs_variety* / banpick_illust have no item.i18n at all), and treating that as
-//   a misjudgement re-exposed the 104 inactive items = the exact symptom again. Treat **0 active as a valid state**.
-//   (Even with an empty list the 7 vanilla categories always remain, so the dropdown is never completely empty.)
-fn mod_final_opts() -> Vec<(u64, String)> {
-    let all = mod_final_opts_all();
-    let act = MOD_ACTIVE.lock().unwrap_or_else(|e| e.into_inner());
-    if act.is_empty() {
-        return all;
-    } // not scanned yet = undecidable -> no filter
-    all.iter()
-        .filter(|(id, _)| {
-            (*id as usize)
-                .checked_sub(30)
-                .and_then(|i| act.get(i).copied())
-                .unwrap_or(true)
-        })
-        .cloned()
-        .collect()
-}
-const SLOT3_ICON_ENABLED: bool = true; // set false on trouble = immediate return to the previous state (no icon)
-                                       // ═══════════════════════════════════════════════════════════════════════════
-                                       //  ** Stage 3 = **reading the view model (GameView) directly** (full RE confirmed 2026-07-30) - no game code patching
-                                       // ═══════════════════════════════════════════════════════════════════════════
-                                       //  Two abandoned approaches and why they failed (do not retry):
-                                       //    (1) extending the game loop's upper bound (frame extension + array relocation) = freeze on match entry (failed even with all 84/84 sites applied).
-                                       //    (2) champion name cache (champ -> icon cache from the buy hook) = **inherently contaminated**. My players exist simultaneously in the
-                                       //      background pre-sim and in the on-screen match (the athlete+0x810 join is valid for both = canonical), so a build completed with 4 items in the
-                                       //      background leaks onto the on-screen player (who owns 3). On top of that we assumed a single `blue_player` node (there is really one per lane = 5+5),
-                                       //      so the first lane was written with someone else's values => the true identity of the user-reported "wrong items".
-                                       //  CORRECT = the mod reads **exactly the same data** the game reads when drawing slot0~2:
-                                       //    GameView (= App+0x4a50, constant for the whole process lifetime) -> player_view HashMap (key = (team, position))
-                                       //    -> PlayerViewInfo.items: Vec<u64> (indices into item_list) -> item_list[idx] = (data, vtable) -> vtable+0x60 = icon()
-                                       //  * items[3] already exists: the `cmp rbx,0x30` in the game's slot loop is not an item count limit but the
-                                       //    **byte size of the hardcoded 3-element node-name array ("slotN")**, while the actual item iteration is guarded by
-                                       //    `i < items.len()` (0xa6339f). There is no take(3)/min(3) anywhere along the view chain (apply_frame 0x952170 = capless collect).
-const GV_OFF_ITEMLIST_CAP: usize = 0xa8; // -1 means None
-const GV_OFF_ITEMLIST_PTR: usize = 0xb0;
-const GV_OFF_ITEMLIST_LEN: usize = 0xb8;
-const GV_OFF_PV_CTRL: usize = 0x1d8; // hashbrown RawTable ctrl. 0.6.0-beta2 (0.6.0-beta was 0x1d0)
-                                     // ** 0.6.0_beta2 (2026-09-09): the mask is no longer a guess. `ctrl` and `items` are read straight out of
-                                     //   `gv_update` (0x1d8 dereferenced for the group load, 0x1f0 as the element count), which brackets the
-                                     //   RawTable into four 8-byte slots. The two unknown middle slots are told apart by what the code does to
-                                     //   them: hashbrown decrements `growth_left` in place on every insert and never touches `bucket_mask`
-                                     //   outside a resize. Scanning for an in-place `sub qword [reg+disp],rax` finds **6 sites for the upper
-                                     //   slot and 0 for the lower, in BOTH builds** — beta1 `sub [r13+0x1e0],rax` @0x988510 vs beta2
-                                     //   `sub [r13+0x1e8],rax` @0x7c50c3, byte-identical but for the displacement (49 29 85 e0/e8 01 00 00).
-                                     //   So growth_left = 0x1e0 -> 0x1e8 and the mask is the slot below it. This also retro-confirms the
-                                     //   beta1 value 0x1d8, which shipped from 0.5.5 on with the note that no instruction had been matched
-                                     //   to it.
-const GV_OFF_PV_MASK: usize = 0x1e0; // 0.6.0-beta2 (0.6.0-beta was 0x1d8) - derived, see above
-const GV_OFF_PV_ITEMS: usize = 0x1f0; // element count (0 = not in a match). 0.6.0-beta2 (0.6.0-beta was 0x1e8)
-                                      // ** 0.5.5 (2026-08-12): PlayerViewInfo grew 0x260 -> 0x2c0. The simulation-side offsets were migrated and this
-                                      //   one was not, so the (team,pos) probe landed between buckets and found nothing to draw — the 4th item was
-                                      //   bought and then displayed empty.
-                                      //
-                                      //   The stride is not read off a single instruction. `gv_update`'s hashbrown group scan steps sixteen buckets at
-                                      //   a time, `add r13, -0x2600` -> `add r13, -0x2c00`, and 0x2600/16 = 0x260 while 0x2c00/16 = 0x2c0 — the ×16
-                                      //   relationship is what identifies the constant as a bucket stride rather than some unrelated frame offset.
-                                      //
-                                      //   Everything else here was **checked, not assumed**. In 0x2ba350 -> 0x2bafc0 (a clean recompile: 119
-                                      //   instructions, zero mnemonic mismatches) every access is stride-relative, and converting each back to a field
-                                      //   offset gives 0x20, 0x28, 0x38, 0x40, 0x50, **0x58**, 0x68, 0x70 on *both* sides — identical. So the 0x60 of
-                                      //   growth is above 0x70 and every field below it, the items Vec included, keeps its offset. `gv_update` tells
-                                      //   the same story for GameView: across all 1040 instructions the only operands that differ are the three
-                                      //   stride-relative ones, and 0xa8/0xb0/0x1d0/0x1e8 appear at the same instruction offsets through the same
-                                      //   base registers in both builds.
-const PV_STRIDE: usize = 0x2f0; // PlayerViewInfo. 0.6.0-beta (0.5.5..0.5.7 were 0x2c0, 0.5.4 0x260)
-const PV_OFF_TEAM: usize = 0x00; // u64 tag: 0=blue(Team0) 1=red(Team1)
-const PV_OFF_POS: usize = 0x08; // u32: 0 top /1 jungle /2 mid /3 bottom /4 support
-const PV_OFF_ITEMS_PTR: usize = 0x58; // Vec<u64> = {cap@0x50, ptr@0x58, len@0x60}
-const PV_OFF_ITEMS_LEN: usize = 0x60;
-const LANES: [&str; 5] = ["top", "jungle", "mid", "bottom", "support"];
-// === slot3 tooltip = **reusing the game's `#item_tooltip` node** (2026-07-30) ===
-//  The game's tooltip code walks only the 3 hardcoded paths `"<side>_player.item0/1/2"` and **never visits #slot3**
-//  (setting focus does not catch it = plan A impossible; the emit is tightly bound to the mega-function's frame locals = not callable from outside = plan B impossible).
-//  => But **the tooltip node itself already exists in `ingame.ui`** (`#item_tooltip`, visible:false, z on top) =>
-//     if the mod fills that node's labels/icon and sets position + visible, the result looks **100% identical to the game's**.
-//  Node structure (measured from the bundle): #item_tooltip(274x250) > #bg / #data > {#slot>#icon, #name, #tier, #price, #desc}
-//  WARNING: on frames where the game shows its own tooltip (hovering slot0~2) we **do not touch it** - avoids an ownership race.
-//    We only borrow it on frames the game does not use, and restore visible=false when our hover ends.
-// * Re-enabled (2026-07-30): the crash causes were a **misunderstood vtable slot** (+0x50 assumed to be name and dereferenced; it is really a bool) and
-//   calling the game's show function directly (mismatch against its 11-argument contract). Both were dropped in favour of **confirmed slots + filling the labels ourselves**.
-//   Set false on trouble for an immediate revert (the icon keeps working).
-// * Re-enabled (2026-07-30, after full RE): the crash cause = **arguments shifted by one slot** (p1 <- arg4; the correct one is arg5).
-//   The empty-tooltip cause = wrong bundle path (`bundle_unpacked` - the game only has `_full`) + layout not refreshed.
-//   => switched to calling the game's show function wholesale (content, size and position all handled by the game). Set false on trouble for an immediate revert.
-// ** OFF for 0.5.4 (2026-08-04) **: RVA_TIP_SHOW could not be re-derived. Its body diverges ~100 bytes in,
-//   so exe2exe leaves 6 candidates; the only one of a comparable size (0x1470450, 10591 vs 9912) has 8 callers
-//   where 0.5.3 had 3. This function is called with ELEVEN arguments - a wrong target is a crash, not a
-//   degradation - so the tooltip is disabled rather than guessed. The 4th-item ICON is unaffected
-//   (`SLOT3_ICON_ENABLED`); only hovering it for a tooltip is lost. RVA_TIP_SHOW/RVA_TIP_MEASURE_VT below
-//   are 0.5.3 values and are never reached while this is false.
-const TOOLTIP_ENABLED: bool = false;
-const LABEL_TEXT_OFF: usize = 352; // LabelRunner.text (ui_kit canonical, assign the whole String)
-const NODE_OFF_FOCUS: usize = 0x262; // 1|2 = hover
-const NODE_OFF_RECT: usize = 0x240; // x,y,w,h (f32 ×4)
-static TIP_SHOWN: AtomicU64 = AtomicU64::new(0); // frames we displayed (diagnostic)
-static TIP_OWNED: AtomicBool = AtomicBool::new(false); // are we currently borrowing it?
-                                                       // * The game's tooltip show function = `game-view\src\ui\item_tooltip.rs` (RE-confirmed on 0.5.3).
-                                                       //   Contract: (p1 = asset/i18n registry, p2 = text measurement ctx, p3 = its vtable (a constant), node = #item_tooltip,
-                                                       //          item_data, item_vtable, x, y, pivot_x, pivot_y, clamp_rect{x,y,w,h})
-                                                       //   * The item (data, vtable) is only **borrowed** (never dropped inside) => passing the item_list originals straight through is safe.
-const RVA_TIP_SHOW: usize = 0x1ab52f0;
-const RVA_TIP_MEASURE_VT: usize = 0x318b4c0; // p3 = vtable of the text measurement ctx (constant)
-static TIP_P1: AtomicUsize = AtomicUsize::new(0);
-static TIP_P2: AtomicUsize = AtomicUsize::new(0);
-static TIP_ROOT: AtomicUsize = AtomicUsize::new(0);
-// Node field read/write (all after VEH-protected range validation)
-unsafe fn node_focus(n: &Node) -> u8 {
-    let p = (n as *const Node as usize) + NODE_OFF_FOCUS;
-    if readable(p, 1) {
-        *(p as *const u8)
-    } else {
-        0
-    }
-}
-unsafe fn node_rect(n: &Node) -> Option<(f32, f32, f32, f32)> {
-    let p = (n as *const Node as usize) + NODE_OFF_RECT;
-    if !readable(p, 16) {
-        return None;
-    }
-    Some((
-        *(p as *const f32),
-        *((p + 4) as *const f32),
-        *((p + 8) as *const f32),
-        *((p + 12) as *const f32),
-    ))
-}
-unsafe fn node_set_xy(n: &Node, x: f32, y: f32) {
-    // Layout x/y = authored position (the game recomputes the rect itself every frame rather than the +0x84 family,
-    // so for a node like the tooltip whose position the game does not touch, writing the rect directly works).
-    let p = (n as *const Node as usize) + NODE_OFF_RECT;
-    if writable(p, 8) {
-        *(p as *mut f32) = x;
-        *((p + 4) as *mut f32) = y;
-    }
-}
-// item_list[idx] → (data, vtable)
-// -- Item vtable access (fully RE-confirmed 2026-07-30) ---------------------------
-//  OK  +0x58 key(&String) / +0x60 icon(&String) / +0x68 price(u64 **value**) / +0x70 tier(u64 **value**, 0-based)
-//  NO  +0x50 = bool (self+0x190 != 0) - **not name**. Name has no vtable slot; the i18n key is assembled from key.
-//     (Mistaking this for a String pointer and dereferencing it caused a crash. Do not repeat.)
-const RVA_GAME_ALLOC: usize = 0x2f2f7e0; // 0.6.0-beta2 (0.6.0-beta was 0x2dd4b50, 0.5.7 0x2ab4010, 0.5.6 0x2ab1670, 0.5.5 0x2a9bf30, 0.5.4 0x29bb920, 0.5.3 0x28f7df0). Same helper `ui_inject::ALLOC_RVA` pins - see the evidence there.  // (rcx = ignored, rdx = flags 0, r8 = size) -> ptr
-unsafe fn item_obj_at(gv: usize, idx: u64) -> Option<(usize, usize)> {
-    if !readable(gv + GV_OFF_ITEMLIST_CAP, 24) {
-        return None;
-    }
-    if rd_u64(gv + GV_OFF_ITEMLIST_CAP) == u64::MAX {
-        return None;
-    }
-    let ptr = rd_u64(gv + GV_OFF_ITEMLIST_PTR) as usize;
-    let len = rd_u64(gv + GV_OFF_ITEMLIST_LEN);
-    if idx >= len || ptr < 0x10000 {
-        return None;
-    }
-    let e = ptr + (idx as usize) * 0x10;
-    if !readable(e, 16) {
-        return None;
-    }
-    let (d, v) = (rd_u64(e) as usize, rd_u64(e + 8) as usize);
-    if d < 0x10000 || v < 0x10000 {
-        None
-    } else {
-        Some((d, v))
-    }
-}
-// GameView pointer (read-only capture). rcx of game.rs update (0x960df0) = GameView. The value never changes, so capturing once is enough.
-static GAME_VIEW: AtomicUsize = AtomicUsize::new(0);
-// 0.5.4 (2026-08-04): exe2exe `match`, 1 hit at 320 and 640 bytes, size 4575, 12-push prologue intact.
-// 0.5.5 (2026-08-11): exe2exe again, 1 hit, size 4575 on both sides, prologue still the same 12 pushes.
-// 0.5.6 (2026-08-19): exe2exe, 1 hit, size 4575 again.
-// 0.5.7 (2026-08-26): exe2exe, 1 hit, size 4575 and 1040 instructions on both sides, prologue unchanged.
-//   `pairdiff --imm --min-disp 0x4` reports **zero** differing values across the whole body, which is the
-//   positive evidence for the view chain: GV_OFF_ITEMLIST_*, GV_OFF_PV_* and PV_OFF_* did not move, and
-//   `add r13,-0x2c00` (PV_STRIDE * 16) is still there at 0x90a534. Re-check this next build; do not assume it.
-const RVA_GV_UPDATE: usize = 0x7d2550; // 0.6.0-beta2 (0.6.0-beta was 0x995970, 0.5.7 0x90a090, 0.5.6 0xb52b80, 0.5.5 0x964350, 0.5.4 0xaa06c0).
-const GV_UPDATE_PROLOGUE: [u8; 12] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
-];
-static GV_HOOK_INSTALLED: AtomicU64 = AtomicU64::new(0);
-static GV_HITS: AtomicU64 = AtomicU64::new(0);
-// WARNING minimal detour: this UI path fires every frame, so atomic stores only (no locks, allocation or file I/O).
-unsafe extern "C" fn cap_game_view(saved: *mut u64, _e: usize) -> u64 {
-    if saved.is_null() {
-        return 0;
-    }
-    let gv = *saved as usize; // rcx = &mut GameView
-    if gv >= 0x10000 && gv < 0x0000_8000_0000_0000 {
-        GAME_VIEW.store(gv, Ordering::Relaxed);
-        GV_HITS.fetch_add(1, Ordering::Relaxed);
-    }
-    // * Capturing the arguments of the game's tooltip show function (full RE confirmed 2026-07-30 - the previous indices were **shifted by one** and crashed)
-    //   Call chain: 0x960df0 (game.rs update) -> 0xa5c1e0 (ingame_ui) -> 0x1ab52f0 (tooltip show)
-    //   The mega-function passes its own arg1/arg2 as the tooltip's p1/p2, and uses arg4 as the node search root.
-    //   And the values the 0x960df0 call site passes = rcx <- [rbp+0x140] = entry rsp+0x28 = **arg5**, rdx <- [rbp+0x148] = **arg6**, r9 <- **arg4**.
-    //   ⟹ p1 = arg5 / p2 = arg6 / root = arg4(r9).
-    //   NO old implementation: p1 <- r9 (arg4), p2 <- arg5, root <- arg7 => it passed **the UI root node as the registry** and died instantly in the hash lookup.
-    //   Stub layout: push r12,rsi,rdi,rbx,r11,r10,r9,r8,rdx,rcx -> r9 = saved+3, entry rsp = saved+10.
-    let root = *saved.add(3) as usize; // arg4 (r9)
-    let sp = saved.add(10) as usize; // entry rsp
-    let p1 = safe_read_u64(sp + 0x28).unwrap_or(0) as usize; // arg5 = asset/settings registry
-    let p2 = safe_read_u64(sp + 0x30).unwrap_or(0) as usize; // arg6 = text measurement ctx
-    if p1 >= 0x10000 {
-        TIP_P1.store(p1, Ordering::Relaxed);
-    }
-    if p2 >= 0x10000 {
-        TIP_P2.store(p2, Ordering::Relaxed);
-    }
-    if root >= 0x10000 {
-        TIP_ROOT.store(root, Ordering::Relaxed);
-    }
-    0
-}
-fn install_game_view_hook() {
-    let state = GV_HOOK_INSTALLED.load(Ordering::Relaxed);
-    if state == 1 {
-        return;
-    }
-    // See `install_retry_due`: a wrong RVA here would otherwise cost a loader
-    // lock and an address-space lock on every frame for the whole session.
-    static RETRY: AtomicU64 = AtomicU64::new(0);
-    if state == 2 && !install_retry_due(&RETRY) {
-        return;
-    }
-    let r = unsafe {
-        install_detour_generic(
-            RVA_GV_UPDATE,
-            12,
-            cap_game_view as *const () as usize,
-            &GV_UPDATE_PROLOGUE,
-        )
-    };
-    GV_HOOK_INSTALLED.store(if r.is_ok() { 1 } else { 2 }, Ordering::Relaxed);
-}
-// Icon string of item_list[idx] (vtable +0x60 = icon()). Same path as the game's set_item_icon (0x97b540).
-//   WARNING: this is a shadow-call, so the code_ptr_ok guard + range validation of the returned String are mandatory.
-unsafe fn item_icon_by_index(gv: usize, idx: u64) -> Option<String> {
-    if !readable(gv + GV_OFF_ITEMLIST_CAP, 24) {
-        return None;
-    }
-    if rd_u64(gv + GV_OFF_ITEMLIST_CAP) == u64::MAX {
-        return None;
-    } // None sentinel
-    let ptr = rd_u64(gv + GV_OFF_ITEMLIST_PTR) as usize;
-    let len = rd_u64(gv + GV_OFF_ITEMLIST_LEN);
-    if idx >= len || ptr < 0x10000 {
-        return None;
-    }
-    let e = ptr + (idx as usize) * 0x10;
-    if !readable(e, 16) {
-        return None;
-    }
-    let data = rd_u64(e) as usize;
-    let vt = rd_u64(e + 8) as usize;
-    if data < 0x10000 || vt < 0x10000 || !readable(vt + 0x60, 8) {
-        return None;
-    }
-    let f = rd_u64(vt + 0x60) as usize;
-    if !code_ptr_ok(f) {
-        return None;
-    }
-    let g: unsafe extern "win64" fn(usize) -> usize = core::mem::transmute(f);
-    let s = g(data);
-    if s < 0x10000 || !readable(s, 0x18) {
-        return None;
-    }
-    let sp = rd_u64(s + 8) as usize; // String = {cap@0, ptr@8, len@0x10}
-    let sl = rd_u64(s + 0x10) as usize;
-    if sp < 0x10000 || sl == 0 || sl > 64 || !readable(sp, sl) {
-        return None;
-    }
-    Some(String::from_utf8_lossy(std::slice::from_raw_parts(sp as *const u8, sl)).into_owned())
-}
-// Walk the whole player_view hash map -> (team, position) -> items[3] icon. No hashing needed (linear bucket scan).
-//   hashbrown: a ctrl byte with the top bit clear = FULL, and entries run **backwards** from ctrl (ctrl - (i+1)*stride).
-unsafe fn collect_slot3_icons(gv: usize) -> HashMap<(u64, u32), String> {
-    let mut out = HashMap::new();
-    if !readable(gv + GV_OFF_PV_CTRL, 32) {
-        return out;
-    }
-    let ctrl = rd_u64(gv + GV_OFF_PV_CTRL) as usize;
-    let mask = rd_u64(gv + GV_OFF_PV_MASK) as usize;
-    let nitems = rd_u64(gv + GV_OFF_PV_ITEMS);
-    if ctrl < 0x10000 || nitems == 0 || nitems > 64 || mask > 0x1000 {
-        // All four header fields are confirmed for 0.6.0_beta2 (see the note on
-        // GV_OFF_PV_MASK), so a rejection here means the GameView pointer is
-        // wrong, not the offsets.
-        return out;
-    }
-    for i in 0..=mask {
-        if !readable(ctrl + i, 1) {
-            break;
-        }
-        if *((ctrl + i) as *const u8) & 0x80 != 0 {
-            continue;
-        } // not FULL
-        let e = ctrl.wrapping_sub((i + 1) * PV_STRIDE);
-        if e < 0x10000 || !readable(e, PV_STRIDE) {
-            continue;
-        }
-        let team = rd_u64(e + PV_OFF_TEAM);
-        let pos = (rd_u64(e + PV_OFF_POS) & 0xffff_ffff) as u32;
-        if team > 1 || pos > 4 {
-            continue;
-        }
-        let it_ptr = rd_u64(e + PV_OFF_ITEMS_PTR) as usize;
-        let it_len = rd_u64(e + PV_OFF_ITEMS_LEN);
-        if it_len < 4 || it_ptr < 0x10000 || !readable(it_ptr + 3 * 8, 8) {
-            continue;
-        } // does not own a 4th
-        let idx = rd_u64(it_ptr + 3 * 8);
-        if let Some(tag) = item_icon_by_index(gv, idx) {
-            out.insert((team, pos), tag);
-        }
-    }
-    out
-}
-
-const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
-const IMG_STATE_OFF: [usize; 4] = [0, 208, 416, 624]; // normal/hover/active/disabled
-const IMG_OFF_SOURCE: usize = 0;
-const IMG_OFF_RECT_TAG: usize = 24;
-const NODE_OFF_VISIBLE: usize = 0x260;
-static SLOT3_ICON_N: AtomicU64 = AtomicU64::new(0); // nodes successfully set (cumulative)
-static SLOT3_ICON_MISS: AtomicU64 = AtomicU64::new(0); // skipped due to a node/runner mismatch
-                                                       // Write sheet + tag into all 4 states of the ImageRunner data area. Assign the whole String (never write partial fields -
-                                                       //   the old set_img_src wrote {len@0, ptr@8}, corrupting cap, which was a latent bug that HeapFree'd a static ptr at
-                                                       //   teardown. The real layout is {cap@0, ptr@8, len@0x10}). Both game and mod use the process heap (GetProcessHeap),
-                                                       //   so it is safe for the game to drop a String the mod created.
-unsafe fn set_icon_rect_tag(n: &Node, tag: &str) -> bool {
-    if !n.runner.type_name().contains("ImageRunner") {
-        return false;
-    }
-    let base = runner_base(n);
-    if base < 0x10000 || !readable(base, 848) {
-        return false;
-    }
-    for st in IMG_STATE_OFF {
-        let sp = base + st + IMG_OFF_SOURCE;
-        let tp = base + st + IMG_OFF_RECT_TAG;
-        if !writable(sp, 24) || !writable(tp, 24) {
-            return false;
-        }
-        *(sp as *mut String) = ICON_SHEET.to_string();
-        *(tp as *mut Option<String>) = Some(tag.to_string());
-    }
-    true
-}
-unsafe fn node_set_visible(n: &Node, v: bool) {
-    let p = (n as *const Node as usize) + NODE_OFF_VISIBLE;
-    if writable(p, 1) {
-        *(p as *mut u8) = if v { 1 } else { 0 };
-    }
-}
-// Read the current rect_tag and skip rewriting if it is the same value (avoids a String alloc per frame).
-unsafe fn icon_tag_is(n: &Node, tag: &str) -> bool {
-    let base = runner_base(n);
-    if base < 0x10000 || !readable(base + IMG_OFF_RECT_TAG, 24) {
-        return false;
-    }
-    // Option<String> niche optimization: ptr == 0 means None
-    let ptr = rd_u64(base + IMG_OFF_RECT_TAG + 8) as usize;
-    let len = rd_u64(base + IMG_OFF_RECT_TAG + 0x10) as usize;
-    if ptr < 0x10000 || len != tag.len() || !readable(ptr, len) {
-        return false;
-    }
-    std::slice::from_raw_parts(ptr as *const u8, len) == tag.as_bytes()
-}
-// * Stage 2 preparation diagnostic: dump "player identification clues + the real slot0~2 tags" from the in-match player_info subtree once.
-//   Purpose = decide how to find the 4th item (matching a node's name/champion label against the athlete the mod knows).
-//   Reversing the slot0~2 tags (t{a}_{b} -> idx = b*5 + (a-1)) reveals that player's items[0..2].
-unsafe fn read_icon_tag(n: &Node) -> Option<String> {
-    if !n.runner.type_name().contains("ImageRunner") {
-        return None;
-    }
-    let base = runner_base(n);
-    if base < 0x10000 || !readable(base + IMG_OFF_RECT_TAG, 24) {
-        return None;
-    }
-    let ptr = rd_u64(base + IMG_OFF_RECT_TAG + 8) as usize;
-    let len = rd_u64(base + IMG_OFF_RECT_TAG + 0x10) as usize;
-    if ptr < 0x10000 || len == 0 || len > 64 || !readable(ptr, len) {
-        return None;
-    }
-    Some(String::from_utf8_lossy(std::slice::from_raw_parts(ptr as *const u8, len)).into_owned())
-}
-// Tag -> catalog index (t{a}_{b} -> b*5 + (a-1))
-fn tag_to_idx(t: &str) -> Option<usize> {
-    let rest = t.strip_prefix('t')?;
-    let (a, b) = rest.split_once('_')?;
-    let a: usize = a.parse().ok()?;
-    let b: usize = b.parse().ok()?;
-    if a == 0 || a > 5 {
-        return None;
-    }
-    Some(b * 5 + (a - 1))
-}
-static SLOT3_PV_N: AtomicU64 = AtomicU64::new(0); // number of players seen owning a 4th item in the view model
-                                                  // ═══ 4th-slot icon over the stable UI API ══════════════════════════════════════════════════════════════════
-                                                  //
-                                                  // `handle_ingame_slot3` below walks the live `Node` tree, which needs a UI root
-                                                  // pointer, which needs a window scan through the `App`. Game 0.5.5 broke that
-                                                  // and `build_ext_diag.txt` showed why it cannot be repaired by widening the
-                                                  // window: the scan *does* land in live UI memory (95 nodes, real ids —
-                                                  // `rank`, `logo`, `team`, `match`, `win`, `lose`) but never finds the root,
-                                                  // because `subtree_has_id` searches **downward** for `main` while the nodes the
-                                                  // scan lands on are branches with `main` above them. Raising the depth cannot
-                                                  // fix a direction error.
-                                                  //
-                                                  // The stable API addresses nodes by path and `ui_child_names("")` starts at the
-                                                  // UI root by definition, so this route needs no root pointer, no
-                                                  // `GAME_VIEW_IN_APP`, and no agreement with the SDK 0.5.2 `Node` layout — the
-                                                  // three things that have broken on successive game updates. The view model is
-                                                  // still read natively, because nothing on the stable side exposes it.
-static SLOT3_PATHS: Mutex<Vec<(String, u64, u32)>> = Mutex::new(Vec::new());
-
-/// Depth and expansion budget for the path search. The item panel sits a few
-/// levels down; the budget stops a pathological tree from costing a frame.
-const PATH_DEPTH: usize = 14;
-const PATH_BUDGET: usize = 4000;
-/// Frames between discovery attempts while the cache is unusable. At 60fps this
-/// is one search per second, which is the difference between "notices the match
-/// screen a frame late" and the stutter an unthrottled search causes.
-const DISCOVER_EVERY: u64 = 60;
-static DISCOVER_TICK: AtomicU64 = AtomicU64::new(0);
-static LAST_DISCOVER: AtomicU64 = AtomicU64::new(0);
-
-/// `(team, pos)` implied by a `slot3` path, from the `blue_player`/`red_player`
-/// and lane segments the template nests it under.
-fn team_pos_from_path(path: &str) -> Option<(u64, u32)> {
-    let mut team = None;
-    let mut pos = None;
-    for seg in path.split('.') {
-        match seg {
-            "blue_player" => team = Some(0),
-            "red_player" => team = Some(1),
-            _ => {
-                if let Some(i) = LANES.iter().position(|l| *l == seg) {
-                    pos = Some(i as u32);
-                }
-            }
-        }
-    }
-    Some((team?, pos?))
-}
-
-/// Every `slot3` node currently in the tree, with the seat it belongs to.
-///
-/// Breadth-first from the UI root. `slot3` itself is not descended into — its
-/// only children are the `bg`/`icon` pair this addresses directly.
-fn discover_slot3_paths(client: &StableClient<'_>) -> Vec<(String, u64, u32)> {
-    let mut found = Vec::new();
-    let mut queue = std::collections::VecDeque::new();
-    queue.push_back((String::new(), 0usize));
-    let mut budget = PATH_BUDGET;
-    while let Some((path, depth)) = queue.pop_front() {
-        if budget == 0 {
-            break;
-        }
-        budget -= 1;
-        if depth > PATH_DEPTH {
-            continue;
-        }
-        for name in client.ui_child_names(&path) {
-            let child = if path.is_empty() {
-                name.clone()
-            } else {
-                format!("{path}.{name}")
-            };
-            if name == "slot3" {
-                if let Some((team, pos)) = team_pos_from_path(&child) {
-                    found.push((child, team, pos));
-                }
-                continue;
-            }
-            queue.push_back((child, depth + 1));
-        }
-    }
-    found
-}
-
-/// Paints the 4th slot for every seat, discovering the paths on first use and
-/// whenever the cached ones stop existing (a new match builds a new screen).
-fn drive_slot3_by_path(client: &mut StableClient<'_>, icons: &HashMap<(u64, u32), String>) {
-    let mut cache = SLOT3_PATHS.lock().unwrap_or_else(|e| e.into_inner());
-    // Re-discover when the cache is empty or its first entry has gone: the
-    // screen is rebuilt per match, so yesterday's paths address nothing.
-    //
-    // THROTTLED, and it must stay that way. The search is breadth-first over the
-    // whole UI tree with a 4000-node budget, and the first version ran it on
-    // every frame the cache looked stale — which, off the match screen or with
-    // an unusable path, is *every* frame. That is the hard lag reported on
-    // 2026-08-12: thousands of cross-ABI `ui_child_names` calls per frame. A
-    // failed search must cost no more than one search per second.
-    let stale = cache
-        .first()
-        .map(|(p, _, _)| !client.ui_exists(p))
-        .unwrap_or(true);
-    let tick = DISCOVER_TICK.fetch_add(1, Ordering::Relaxed);
-    let due = tick.saturating_sub(LAST_DISCOVER.load(Ordering::Relaxed)) >= DISCOVER_EVERY;
-    if stale && due {
-        LAST_DISCOVER.store(tick, Ordering::Relaxed);
-        *cache = discover_slot3_paths(client);
-    }
-
-    for (path, team, pos) in cache.iter() {
-        let icon = format!("{path}.bg.icon");
-        match icons.get(&(*team, *pos)) {
-            Some(tag) => {
-                // Sheet and tag are **two properties**, not one `sheet#tag`
-                // string. Confirmed against the game's own `.ui` assets in
-                // `bundle.game_data`, where every aseprite image reads
-                //
-                //     source: "asset/base/aseprite_resources/team_logo";
-                //     rect_tag: "0_0";
-                //
-                // and where no `source:` anywhere contains a `#` at all. The `#`
-                // form this used at first comes from `set_img_src`, which writes
-                // the runner's source *field* directly rather than going through
-                // the `.ui` parser — a different interface with different rules.
-                // `set_icon_rect_tag`, the native writer this replaces, always
-                // split them the same way the assets do.
-                let source = format!("source: \"{ICON_SHEET}\"; rect_tag: \"{tag}\";");
-                if client.ui_set_properties(&icon, &source) {
-                    client.ui_set_visible(&icon, true);
-                }
-            }
-            // No 4th item: match the game's own empty-slot handling.
-            None => {
-                client.ui_set_visible(&icon, false);
-            }
-        }
-
-        // A per-frame re-layout of the blue compact row stood here, forcing
-        // `slot{i}.x = 59 + 42*i` plus kda 242 / cs 290, because up to 0.5.7 the
-        // game reset `blue_player` to its vanilla 50px spacing every frame and
-        // the mod's own `#slot3` had to be placed against that.
-        //
-        // **In 0.6.0 it was the bug, not the fix.** The slots moved a level down
-        // — `blue_player.items.slot{i}` — so `x` is now relative to `#items`,
-        // which itself sits at x:59. Writing 59..185 into children of a
-        // container already offset by 59 pushed the whole blue row 59px right,
-        // onto the KDA and past it, while red (never touched here) laid out
-        // correctly. That is the "4th item is off on its own" report.
-        //
-        // Nothing replaces it, deliberately: the game lays the row out itself
-        // now, from the container width, and `ui/layout/ingame_component/*.ui`
-        // sets that width so all four come out full size. Geometry belongs in
-        // the layout, not in a frame loop fighting one.
-    }
-}
-
-fn handle_ingame_slot3(ui: &Node) {
-    if !SLOT3_ICON_ENABLED || slot_count() != 4 {
-        return;
-    }
-    let gv = GAME_VIEW.load(Ordering::Relaxed);
-    if gv < 0x10000 {
-        return;
-    } // not captured yet (before entering the match screen)
-      // * Read exactly the data the game reads when drawing slot0~2 = no cache, no champion matching, no is_live needed.
-    let icons = unsafe { collect_slot3_icons(gv) };
-    SLOT3_PV_N.store(icons.len() as u64, Ordering::Relaxed);
-    // * Node path = player_info.<lane>.{blue_player|red_player}.slot3.bg.icon (normal)
-    //             + wide_data.player_info.<lane>....                        (wide)
-    //   WARNING: blue_player/red_player exist **once per lane (5+5)**, and counting both layouts that is up to 20.
-    //     The old code handling only the **first match** via find_node(root,"blue_player") was the real cause of the wrong display.
-    let roots: [Option<&Node>; 2] = [
-        find_node(ui, "player_info"),
-        find_node(ui, "wide_data").and_then(|w| find_node(w, "player_info")),
-    ];
-    let mut hover: Option<(u64, u32, f32, f32, f32, f32)> = None; // (team,pos,x,y,w,h)
-    for root in roots.iter().flatten() {
-        for (pos, lane) in LANES.iter().enumerate() {
-            let Some(ln) = find_node(root, lane) else {
-                continue;
-            };
-            for (team, side) in ["blue_player", "red_player"].iter().enumerate() {
-                let Some(sp) = find_node(ln, side) else {
-                    continue;
-                };
-                let Some(slot3) = find_node(sp, "slot3") else {
-                    continue;
-                };
-                let Some(bg) = find_node(slot3, "bg") else {
-                    continue;
-                };
-                let Some(icon) = find_node(bg, "icon") else {
-                    SLOT3_ICON_MISS.fetch_add(1, Ordering::Relaxed);
-                    continue;
-                };
-                let tag = icons.get(&(team as u64, pos as u32));
-                unsafe {
-                    match tag {
-                        // No 4th item = behave like the game's empty slot handling (visible=false only; image fields untouched)
-                        None => node_set_visible(icon, false),
-                        Some(t) => {
-                            // * Hover detection: focus of the slot node (or bg) is in {1,2}. The game's hit-test sets it.
-                            if TOOLTIP_ENABLED
-                                && hover.is_none()
-                                && (node_focus(slot3) == 1
-                                    || node_focus(slot3) == 2
-                                    || node_focus(bg) == 1
-                                    || node_focus(bg) == 2)
-                            {
-                                if let Some((x, y, w, h)) = node_rect(slot3) {
-                                    hover = Some((team as u64, pos as u32, x, y, w, h));
-                                }
-                            }
-                            if icon_tag_is(icon, t) {
-                                node_set_visible(icon, true);
-                                continue;
-                            } // same value = skip the rewrite
-                            if set_icon_rect_tag(icon, t) {
-                                node_set_visible(icon, true);
-                                node_set_visible(slot3, true);
-                                SLOT3_ICON_N.fetch_add(1, Ordering::Relaxed);
-                            } else {
-                                SLOT3_ICON_MISS.fetch_add(1, Ordering::Relaxed);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if TOOLTIP_ENABLED {
-        let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| unsafe {
-            drive_slot3_tooltip(ui, gv, hover);
-        }));
-    }
-}
-
-// * Borrow the game's `#item_tooltip` node to show the slot3 tooltip (the mod draws nothing new = 100% identical appearance).
-//   WARNING ownership rule: on frames where the game uses its own tooltip (hovering slot0~2 -> the game sets visible=true)
-//     we never touch it. We borrow it **only on frames the game does not use**, and restore it when our hover ends.
-unsafe fn drive_slot3_tooltip(ui: &Node, gv: usize, hover: Option<(u64, u32, f32, f32, f32, f32)>) {
-    let Some(tip) = find_node(ui, "item_tooltip") else {
-        return;
-    };
-    let Some((team, pos, sx, sy, sw, sh)) = hover else {
-        // Our hover ended -> take down only what we raised (never touch what the game raised)
-        if TIP_OWNED.swap(false, Ordering::Relaxed) {
-            node_set_visible(tip, false);
-        }
-        return;
-    };
-    // NO old bug (2026-07-30 user report "the tooltip of the last hovered item stays up"):
-    //   with `if !TIP_OWNED && tip.visible { return; }` as the yield rule, on a frame where the game had finished a slot0~2 hover but
-    //   **had not taken the tooltip down yet** (it does so the next frame), moving the mouse to slot3 saw the leftover
-    //   visible=true tooltip and returned -> **the previous item's tooltip stayed on screen with no content filled in**.
-    //   => the yield decision was changed from "before filling content" to **"is the game actually hovering one of its own slots this frame"**.
-    //   If any of slot0~2 is hovered it is the game's turn and we keep our hands off.
-    if game_hovering_own_slot(ui) {
-        if TIP_OWNED.swap(false, Ordering::Relaxed) { /* if it was ours, let it go (the game overwrites it) */
-        }
-        return;
-    }
-    // That player's items[3] -> the item object
-    let Some(pv) = find_player_view(gv, team, pos) else {
-        return;
-    };
-    let it_ptr = rd_u64(pv + PV_OFF_ITEMS_PTR) as usize;
-    let it_len = rd_u64(pv + PV_OFF_ITEMS_LEN);
-    if it_len < 4 || it_ptr < 0x10000 || !readable(it_ptr + 24, 8) {
-        return;
-    }
-    let Some((data, vt)) = item_obj_at(gv, rd_u64(it_ptr + 3 * 8)) else {
-        return;
-    };
-    // ** Call the game's own tooltip show function (contract confirmed by full RE 2026-07-30).
-    //   Name, tier, price, stats, effect text, i18n, size, position and clamping are **all handled by the game** => mod items come out right automatically.
-    //   NO three abandoned attempts (do not retry):
-    //     (1) mistaking vtable +0x50 for name(&String) and dereferencing it -> crash (it is really a bool).
-    //     (2) calling the same function but with **arguments shifted by one** (p1 <- arg4) -> instant death. Correct is p1=arg5 / p2=arg6 / root=arg4.
-    //     (3) writing the labels directly + parsing the bundle files -> blank text (the path used `bundle_unpacked` while the game only has `_full`)
-    //       + size/position not refreshed (the game writes the 4 authored blocks together with the rect).
-    let (p1, p2) = (
-        TIP_P1.load(Ordering::Relaxed),
-        TIP_P2.load(Ordering::Relaxed),
-    );
-    if p1 < 0x10000 || p2 < 0x10000 {
-        return;
-    }
-    // WARNING precondition: all 8 children must exist (if even one is missing the game panics on unwrap -> abort).
-    let Some(d) = find_node(tip, "data") else {
-        return;
-    };
-    let ok = find_node(tip, "bg").is_some()
-        && find_node(d, "name").is_some()
-        && find_node(d, "tier").is_some()
-        && find_node(d, "price").is_some()
-        && find_node(d, "desc").is_some()
-        && find_node(d, "bar").is_some()
-        && find_node(d, "slot")
-            .and_then(|s| find_node(s, "icon"))
-            .is_some();
-    if !ok {
-        return;
-    }
-    let base = exe_base_addr();
-    if base == 0 {
-        return;
-    }
-    let f = base + RVA_TIP_SHOW;
-    if !code_ptr_ok(f) {
-        return;
-    }
-    // Anchor (game rule): blue = right-aligned to the slot, 12px below / red = left of the slot, 12px above.
-    //   authored w/h = tip+0x74 / tip+0x7c.
-    let tn = tip as *const Node as usize;
-    let aw = if readable(tn + 0x74, 4) {
-        *((tn + 0x74) as *const f32)
-    } else {
-        274.0
-    };
-    let ah = if readable(tn + 0x7c, 4) {
-        *((tn + 0x7c) as *const f32)
-    } else {
-        250.0
-    };
-    let (ax, ay) = if team == 0 {
-        (sx + sw - aw, sy + sh + 12.0)
-    } else {
-        (sx, sy - ah - 12.0)
-    };
-    let clamp: [f32; 4] = [0.0, 0.0, 1920.0, 1080.0];
-    type TipShow = unsafe extern "win64" fn(
-        usize,
-        usize,
-        usize,
-        usize, // p1, p2, p3 (measurement vtable constant), node
-        usize,
-        usize, // item_data, item_vtable  (borrowed only - never dropped)
-        f32,
-        f32,
-        f32,
-        f32, // x, y, pivot_x, pivot_y
-        *const [f32; 4],
-    ); // clamp rect
-    let g: TipShow = core::mem::transmute(f);
-    g(
-        p1,
-        p2,
-        base + RVA_TIP_MEASURE_VT,
-        tn,
-        data,
-        vt,
-        ax,
-        ay,
-        0.0,
-        0.0,
-        &clamp,
-    );
-    // visible=1 is set by the function itself.
-    TIP_OWNED.store(true, Ordering::Relaxed);
-    TIP_SHOWN.fetch_add(1, Ordering::Relaxed);
-}
-// Is the game hovering one of its own slots (slot0~2) this frame? If so the tooltip is the game's turn.
-//   * Do not decide this from the tooltip node's visible - the game does not take it down on the same frame the hover ends,
-//     which produced the "previous item's tooltip stays visible" bug (see the drive_slot3_tooltip comment above).
-unsafe fn game_hovering_own_slot(ui: &Node) -> bool {
-    let roots: [Option<&Node>; 2] = [
-        find_node(ui, "player_info"),
-        find_node(ui, "wide_data").and_then(|w| find_node(w, "player_info")),
-    ];
-    for root in roots.iter().flatten() {
-        for lane in LANES.iter() {
-            let Some(ln) = find_node(root, lane) else {
-                continue;
-            };
-            for side in ["blue_player", "red_player"].iter() {
-                let Some(sp) = find_node(ln, side) else {
-                    continue;
-                };
-                for k in 0..3 {
-                    let Some(sl) = find_node(sp, &format!("slot{}", k)) else {
-                        continue;
-                    };
-                    if node_focus(sl) == 1 || node_focus(sl) == 2 {
-                        return true;
-                    }
-                    if let Some(bg) = find_node(sl, "bg") {
-                        if node_focus(bg) == 1 || node_focus(bg) == 2 {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    false
-}
-// Find the address of the (team,pos) entry in the player_view hash map (linear bucket scan).
-unsafe fn find_player_view(gv: usize, team: u64, pos: u32) -> Option<usize> {
-    if !readable(gv + GV_OFF_PV_CTRL, 32) {
-        return None;
-    }
-    let ctrl = rd_u64(gv + GV_OFF_PV_CTRL) as usize;
-    let mask = rd_u64(gv + GV_OFF_PV_MASK) as usize;
-    if ctrl < 0x10000 || mask > 0x1000 {
-        return None;
-    }
-    for i in 0..=mask {
-        if !readable(ctrl + i, 1) {
-            break;
-        }
-        if *((ctrl + i) as *const u8) & 0x80 != 0 {
-            continue;
-        }
-        let e = ctrl.wrapping_sub((i + 1) * PV_STRIDE);
-        if e < 0x10000 || !readable(e, PV_STRIDE) {
-            continue;
-        }
-        if rd_u64(e + PV_OFF_TEAM) == team && (rd_u64(e + PV_OFF_POS) & 0xffff_ffff) as u32 == pos {
-            return Some(e);
-        }
-    }
-    None
 }
 
 // Vanilla category (1~6) -> final item game ID. Same conversion as the game's c6 jump table (cat1=AD .. cat6=HP).
@@ -2220,8 +765,8 @@ const O_ATHLETE_ID: usize = 0x7f0; // 0.6.3 (0.6.0-beta2..0.6.2 0x9f0, 0.6.0-bet
 /// silently: `athlete_lineup_at` validates `team <= 1` against whatever now sits
 /// at `0x820`, so the roster scan finds bogus bounds and `build_lineup_ctx`
 /// hands `compute_auto_4th_id` a lineup of `9999`s. The auto 4th-item pick has
-/// been scoring on that since 0.5.5. (All of them but `valid_ps_elem` went on
-/// 2026-10-07, with the automatic 4th pick they served.)
+/// been scoring on that since 0.5.5. (All of them went on 2026-10-07, with the
+/// automatic 4th pick and the probes they served.)
 ///
 /// A named constant is what stops the next migration repeating it: one place to
 /// change, and a grep for the name finds every reader.
@@ -2302,32 +847,8 @@ static MY_ATH_PREV: AtomicPtr<std::collections::HashSet<u64>> =
     AtomicPtr::new(core::ptr::null_mut());
 static MY_ATH_N: AtomicU64 = AtomicU64::new(0); // published starter count (0 = not obtained)
 static ROSTER_TICK: AtomicU64 = AtomicU64::new(0);
-static SPAWN_AID_OK: AtomicU64 = AtomicU64::new(0); // diagnostic: athlete_id (+0x810) valid at spawn (!=0, !=MAX)
-static SPAWN_AID_ZERO: AtomicU64 = AtomicU64::new(0); // diagnostic: aid=0 at spawn (= not filled in yet at spawn time -> this path is unusable)
-static SP4_NOBUILD: AtomicU64 = AtomicU64::new(0); // (4) diagnostic: build Vec (+0x498/+0x4a0) invalid
-static SP4_NOCAT: AtomicU64 = AtomicU64::new(0); // (4) diagnostic: catalog (Game+0x1fc8 Vec) invalid
-static SP4_NOIDX: AtomicU64 = AtomicU64::new(0); // (4) diagnostic: failed to obtain the designated item index (scan returned None)
-static SP4_RANGE: AtomicU64 = AtomicU64::new(0); // (4) diagnostic: t >= cat_len (out of range)
-static SP4_BLEN: AtomicU64 = AtomicU64::new(0); // (4) diagnostic: sample of the observed build len
-static SP4_CATLEN: AtomicU64 = AtomicU64::new(0); // (4) diagnostic: sample of the observed catalog len
-static SPAWN_AID_SAMPLE: [AtomicU64; 4] = [
-    AtomicU64::new(0),
-    AtomicU64::new(0),
-    AtomicU64::new(0),
-    AtomicU64::new(0),
-];
 // Publish my team's starting roster (after the swap the previous copy is released lazily - a sim thread may be reading it, so never free immediately).
-// * Diagnostic (2026-07-30): the actual published starter athlete_ids. Lets us decide "why is this player considered my team"
-//   without guessing (especially when a sentinel such as aid=0 slips in and causes broad false positives).
-static MY_ATH_IDS: [AtomicU64; 8] = [const { AtomicU64::new(u64::MAX) }; 8];
 fn publish_my_athletes(set: std::collections::HashSet<u64>) {
-    {
-        let mut v: Vec<u64> = set.iter().copied().collect();
-        v.sort_unstable();
-        for k in 0..8 {
-            MY_ATH_IDS[k].store(v.get(k).copied().unwrap_or(u64::MAX), Ordering::Relaxed);
-        }
-    }
     MY_ATH_N.store(set.len() as u64, Ordering::Relaxed);
     let boxed = Box::into_raw(Box::new(set));
     let old = MY_ATHLETES.swap(boxed, Ordering::AcqRel);
@@ -2365,36 +886,6 @@ unsafe fn is_my_athlete(athlete: usize) -> Option<bool> {
     //   solved by ignoring 0 in comp-test context + the team-0 acceptance rule; see the mod's implementation notes, section 12).
     Some((*p).contains(&aid))
 }
-// * buy-path team gate: a sim athlete has no global team_id path, only side (`O_ATHLETE_TEAM`, 0/1) (ghidra-re). Which side the player is on
-//   = decided by majority vote over the side holding more user-designated/PT champions. Reset per match (before_management_tick). Enemy team = skip designation.
-static PLAYER_SIDE: AtomicU64 = AtomicU64::new(u64::MAX); // 0/1, u64::MAX = undecided (fallback = apply)
-static D_WROTE: AtomicU64 = AtomicU64::new(0); // an actual build[si] write happened
-
-fn is_skill_key(k: &str) -> bool {
-    k.contains("_skill")
-        || k.contains("_passive")
-        || k.contains("_ult")
-        || k.contains("_slow")
-        || k.contains("_stack")
-        || k.contains("_buff")
-        || k.contains("_curse")
-        || k.contains("_road")
-        || k.contains("move_speed")
-        || k.contains("_aura")
-        || k.contains("_mark")
-}
-
-// -- 4th slot (slot3) build buffer extension diagnostics/control --
-//   The candidate build element c6 reads: [elem+8] = inner ptr, [elem+0x10] = len. [elem+0] presumed cap (confirmed by diagnostics).
-//   Writing slot3 needs the inner Vec len >= 4 (the extractor only builds 3) -> extend len to 4 here when cap allows.
-const EXTEND_BUILD: bool = false; // extending the candidate build is useless because the extractor discards slot3 -> OFF
-                                  // * Purchase order diagnostic (2026-07-30): write a snapshot of my team's build[] array to a file once per (champ, owned).
-const BUY_ORDER_DIAG: bool = false; // Not needed: the question it was going to answer (can the buy path reach slot 0?) is moot now that `SPAWN_INJECT_ENABLED` sets slot 0 before any purchase. Also writes a .txt into the mod folder, which the user asked not to have.
-                                    // * For diagnosing comp-test injection failure - record the measured launcher retaddr list to a file (set false once the cause is confirmed).
-                                    // * Cause identified and fixed (comp-test injection = the missing team gate bypass; all 9 launcher retaddrs confirmed) -> OFF in production.
-                                    //   Set true to re-investigate = the measured list is written to launcher_retaddr.txt (it was decisive in tracking the cause down).
-static BUY_ORDER_SEEN: Mutex<Option<std::collections::HashSet<String>>> = Mutex::new(None);
-static BUY_ORDER_BUF: Mutex<String> = Mutex::new(String::new());
 // ** 0.5.4 (2026-08-04): found by its documented body rather than an exe2exe signature (no old exe - see
 //   `tools/rederive.py`). `mov rdi,r9 / mov rsi,rcx / cmp r8,0x11` is **1 hit in .text**, at +0x11 inside fn
 //   0x29a7640. The body is __rust_realloc outright: `cmp r8,0x11 / jae` splits the over-aligned path, the
@@ -2437,15 +928,6 @@ fn exe_base_addr() -> usize {
     v
 }
 
-// === Pipeline firing map (count-only entry probes) - measures which setup stage runs in a spectated match ===
-//  0 = score-many (0x100d150), 1 = megafunc/team gate (0x1447850), 2 = roster gen (0x11b77a0). Identical prologue (8 push, 55..).
-static FIRE: [AtomicU64; 4] = [
-    AtomicU64::new(0),
-    AtomicU64::new(0),
-    AtomicU64::new(0),
-    AtomicU64::new(0),
-];
-static NN_ID_NAME: Mutex<Option<HashMap<u64, String>>> = Mutex::new(None);
 /// Catalog index -> item name (evt[0x50] shadow-call). The inverse of scan_recipe_safe_in.
 ///
 /// Every read is VEH-guarded (`safe_read_*`) rather than `readable` + a raw
@@ -2540,13 +1022,9 @@ const CL_LAUNCHER_PROLOGUE: [u8; 17] = [
     0x00,
 ]; // 0.6.3: 8 push + mov eax,0x25ef8 (0.6.2 was 0x25478, 0.6.1 0x25458, 0.6.0 release 0x25478, 0.6.0-beta2 0x25468) (0.6.0-beta was 0x25438, 0.5.7 0x25418, 0.5.6 0x25438, 0.5.5 0x25438, 0.5.4 0x25168, 0.5.3 0x25108, 0.5.2 0x165c8)
 static CLAUNCH_INSTALLED: AtomicU64 = AtomicU64::new(0);
-static LAUNCH_N: AtomicU64 = AtomicU64::new(0);
-static LAUNCH_RENDER_N: AtomicU64 = AtomicU64::new(0);
-static LAUNCH_RENDER_RA: AtomicU64 = AtomicU64::new(0); // the retaddr rva judged to be rendering
-                                                        // * Is the current match a comp test? Comp test is a sandbox where the user composes both blue and red themselves, so
-                                                        //   there is no notion of "my team" -> bypass the team gate and apply to both sides for designated champions.
+// * Is the current match a comp test? Comp test is a sandbox where the user composes both blue and red themselves, so
+//   there is no notion of "my team" -> bypass the team gate and apply to both sides for designated champions.
 static COMPTEST_MATCH: AtomicBool = AtomicBool::new(false);
-static LAUNCH_ERR_N: AtomicU64 = AtomicU64::new(0); // launcher install failure log count (<=3)
 static CLAUNCH_STUB: AtomicU64 = AtomicU64::new(0); // address of our launcher stub (for re-validating the entry point)
 static LAUNCH_WAIT: AtomicU64 = AtomicU64::new(0); // frames spent waiting for serpen to install
                                                    // WARNING minimal detour: the launcher has a 91KB chkstk frame and fires for every 30~40 background matches -> no format!/fs/locks/catch_unwind (stack overflow).
@@ -2563,7 +1041,6 @@ unsafe extern "C" fn cap_launcher(saved: *mut u64, _e: usize) -> u64 {
         return 0;
     }
     let rva = retaddr - base;
-    LAUNCH_N.fetch_add(1, Ordering::Relaxed);
     // * Caller within the client render scene builder range 0x722ca0 -> rendered match seed
     // * serpen canonical (CURRENT_MATCH_DETECT.md, verified in game): on-screen match call sites = exactly 0x72f507 (path A) and 0x733e9f (path B). 0x2061132 = background.
     // * Comp test (comp_test) added (07-21, ghidra-re confirmed): retaddr 0xc884fa (call site 0xc884f5, function 0xc831b0).
@@ -2594,25 +1071,11 @@ unsafe extern "C" fn cap_launcher(saved: *mut u64, _e: usize) -> u64 {
             RENDER_PROVIDER.store(0, Ordering::Relaxed);
         } // new match seed -> the ctor right after re-captures the provider
         COMPTEST_MATCH.store(is_comptest, Ordering::Relaxed);
-        LAUNCH_RENDER_N.fetch_add(1, Ordering::Relaxed);
-        LAUNCH_RENDER_RA.store(rva, Ordering::Relaxed);
     }
     0
 }
-// * Hook install path counters (2026-07-22 diagnostic): "hook retry" was measured at 189us per frame = 470k cycles -
-//   far too large for an early-return path. This distinguishes whether we actually reinstall (VirtualAlloc + VirtualProtect xN) every frame.
-//   If a real install happens once per frame it means stub leakage + a mutual re-chaining cycle with serpen (as in the draft_overlay hang).
-static HK_L_CALLS: AtomicU64 = AtomicU64::new(0); // install_launcher_hook calls
-static HK_L_OURS: AtomicU64 = AtomicU64::new(0); // entry point confirmed to be our stub -> immediate return (normal path)
-static HK_L_WAIT: AtomicU64 = AtomicU64::new(0); // returned while waiting for serpen
-static HK_L_INSTALL: AtomicU64 = AtomicU64::new(0); // * actually entered install_detour_generic
-static HK_L_B0: AtomicU64 = AtomicU64::new(0); // first byte of the last observed entry point
-static HK_L_TGT: AtomicU64 = AtomicU64::new(0); // last observed movabs target
-static HK_S_INSTALL: AtomicU64 = AtomicU64::new(0); // seed-ctor actually entered install
 static HK_L_TICK: AtomicU64 = AtomicU64::new(0);
-static HK_L_SKIP: AtomicU64 = AtomicU64::new(0); // frames skipped by the throttle
 fn install_launcher_hook() {
-    HK_L_CALLS.fetch_add(1, Ordering::Relaxed);
     // * Cost optimization (2026-07-22 perf measurement - this function cost **at least 106us** every frame, the single largest
     //   real main-thread expense. It is the minimum, not the average, that is 106us, so it is real work and not preemption noise):
     //   (1) `GetModuleHandleW` (loader lock) called directly every frame -> **the cached `exe_base_addr()`**
@@ -2627,7 +1090,6 @@ fn install_launcher_hook() {
     //      frame, which still runs immediately.
     if CLAUNCH_INSTALLED.load(Ordering::Relaxed) != 0 {
         if HK_L_TICK.fetch_add(1, Ordering::Relaxed) % 60 != 0 {
-            HK_L_SKIP.fetch_add(1, Ordering::Relaxed);
             return;
         }
     }
@@ -2654,21 +1116,16 @@ fn install_launcher_hook() {
         0
     };
     let our = CLAUNCH_STUB.load(Ordering::Relaxed) as usize;
-    HK_L_B0.store(b0 as u64, Ordering::Relaxed);
-    HK_L_TGT.store(cur_tgt as u64, Ordering::Relaxed);
     if our != 0 && cur_tgt == our {
         CLAUNCH_INSTALLED.store(1, Ordering::Relaxed);
-        HK_L_OURS.fetch_add(1, Ordering::Relaxed);
         return;
     } // entry point = our stub -> fine
     let is_foreign = b0 == 0x48 && cur_tgt >= 0x10000 && cur_tgt != our; // a foreign hook (serpen etc.) is present
     let waited = LAUNCH_WAIT.fetch_add(1, Ordering::Relaxed);
     if !is_foreign && b0 != 0x48 && waited < 240 {
-        HK_L_WAIT.fetch_add(1, Ordering::Relaxed);
         return;
     } // original prologue and still waiting -> wait for serpen to install
       // Install (or re-chain). install_detour_generic chains automatically when it detects a foreign hook.
-    HK_L_INSTALL.fetch_add(1, Ordering::Relaxed);
     let r = unsafe {
         install_detour_generic(
             CL_LAUNCHER_RVA,
@@ -2682,10 +1139,7 @@ fn install_launcher_hook() {
             CLAUNCH_STUB.store(stub as u64, Ordering::Relaxed);
             CLAUNCH_INSTALLED.store(1, Ordering::Relaxed);
         }
-        Err(e) => {
-            CLAUNCH_INSTALLED.store(2, Ordering::Relaxed);
-            if LAUNCH_ERR_N.fetch_add(1, Ordering::Relaxed) < 3 {}
-        }
+        Err(_) => CLAUNCH_INSTALLED.store(2, Ordering::Relaxed),
     }
 }
 
@@ -2740,22 +1194,15 @@ const SEEDCTOR_ORIG_LEN: usize = 12; // relocate the 8 pushes only (excluding th
 static SEEDCTOR_INSTALLED: AtomicU64 = AtomicU64::new(0);
 static RENDER_PROVIDER: AtomicU64 = AtomicU64::new(0); // * rendered sim provider pointer (the primary is_live gate)
 static LIVE_SEED: AtomicU64 = AtomicU64::new(0); // * my match's seed (captured from r8 in the launcher hook). The v13 value-comparison key.
-static PROV_HIT: AtomicU64 = AtomicU64::new(0); // is_live (v13 provider/seed match) firings
-static VT_OK: AtomicU64 = AtomicU64::new(0); // of those, firings via seed value comparison
-static INGAME_NOW: AtomicBool = AtomicBool::new(false); // "spectating right now" flag set by post_update
-static SEEDCTOR_N: AtomicU64 = AtomicU64::new(0); // total ctor firings
-static SEEDCTOR_MATCH_N: AtomicU64 = AtomicU64::new(0); // rdx == LIVE_SEED hits (rendered provider captured)
 unsafe extern "C" fn cap_seed_ctor(saved: *mut u64, _e: usize) -> u64 {
     if saved.is_null() {
         return 0;
     }
     let provider = *saved; // saved+0 = rcx = arg1 = provider(this)
     let seed = *saved.add(1); // saved+1 = rdx = arg2 = seed(=launcher r8)
-    SEEDCTOR_N.fetch_add(1, Ordering::Relaxed);
     let ls = LIVE_SEED.load(Ordering::Relaxed);
     if ls != 0 && seed == ls && provider >= 0x10000 && provider < 0x0000_8000_0000_0000 {
         RENDER_PROVIDER.store(provider as u64, Ordering::Relaxed);
-        SEEDCTOR_MATCH_N.fetch_add(1, Ordering::Relaxed);
     }
     0
 }
@@ -2770,7 +1217,6 @@ fn install_seed_ctor_hook() {
     if state == 2 && !install_retry_due(&RETRY) {
         return;
     }
-    HK_S_INSTALL.fetch_add(1, Ordering::Relaxed);
     let r = unsafe {
         install_detour_generic(
             SEEDCTOR_RVA,
@@ -2883,11 +1329,6 @@ const SPAWN_INJECT_ENABLED: bool = true; // was false 2026-09-16..09-23; was tru
                                          //   The old 0x1fe8/0x1ff0 = a neighbouring empty Vec (always len=0) -> the real catalog is Game+0x1fd0/+0x1fd8 (ghidra-re confirmed).
                                          //   The v15 team decision (athlete_id membership) is verified (aid valid 10/10, my team 5/10 correct) -> (4) injection expected to complete.
 static SPAWN_INSTALLED: AtomicU64 = AtomicU64::new(0);
-static SPAWN_N: AtomicU64 = AtomicU64::new(0); // total hook firings
-static SPAWN_LIVE_N: AtomicU64 = AtomicU64::new(0); // athletes judged to be in a rendered match
-static SPAWN_PLAYER_N: AtomicU64 = AtomicU64::new(0); // of those, my team (injection targets)
-static SPAWN_WROTE: AtomicU64 = AtomicU64::new(0); // actual build[] writes
-static SPAWN_NOSIDE: AtomicU64 = AtomicU64::new(0); // skipped because the side was undecided (= covered by the buy path)
 unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
         let _probe = crate::perf::Probe::sim(crate::perf::Section::SpawnDetour);
@@ -2898,7 +1339,6 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         {
             return;
         }
-        SPAWN_N.fetch_add(1, Ordering::Relaxed);
         let game = *saved as usize; // rcx = Game
         let athlete = *saved.add(1) as usize; // rdx = athlete (stack copy, the final build)
         if game < 0x10000 || athlete < 0x10000 {
@@ -2934,29 +1374,6 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             lseed != 0 && safe_read_u64(provider as usize + O_PROVIDER_SEED) == Some(lseed);
         let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
         let rendered = seed_ok || (rp != 0 && provider == rp);
-        if rendered {
-            SPAWN_LIVE_N.fetch_add(1, Ordering::Relaxed);
-        }
-        // * Diagnostic (v15 prerequisite check): is athlete_id (+0x810) already filled in at spawn time? If it is 0 this path is impossible.
-        if readable(athlete + O_ATHLETE_ID, 8) {
-            let aid = rd_u64(athlete + O_ATHLETE_ID);
-            if aid == 0 || aid == u64::MAX {
-                SPAWN_AID_ZERO.fetch_add(1, Ordering::Relaxed);
-            } else {
-                SPAWN_AID_OK.fetch_add(1, Ordering::Relaxed);
-                for k in 0..4 {
-                    if SPAWN_AID_SAMPLE[k].load(Ordering::Relaxed) == aid {
-                        break;
-                    }
-                    if SPAWN_AID_SAMPLE[k]
-                        .compare_exchange(0, aid, Ordering::Relaxed, Ordering::Relaxed)
-                        .is_ok()
-                    {
-                        break;
-                    }
-                }
-            }
-        }
         // -- (2) Is this a designated champion? --
         if !readable(athlete, ATHLETE_COPY_SIZE) {
             return;
@@ -3050,10 +1467,8 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             }
         };
         if !ok {
-            SPAWN_NOSIDE.fetch_add(1, Ordering::Relaxed);
             return;
         }
-        SPAWN_PLAYER_N.fetch_add(1, Ordering::Relaxed);
         // -- (4) Inject the build[] targets --
         // ** Catalog offset correction (07-19 ghidra-re confirmed): the old 0x1fe8/0x1ff0 were a **neighbouring empty Vec** 0x18 off
         //   (the Game ctor initializes it cap=0 / ptr=8 (dangling) / len=0, and there is no push site anywhere in the exe -> always len=0.
@@ -3066,14 +1481,11 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         let cat_len = rd_u64(game + O_GAME_CATALOG_LEN);
         let bptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
         let blen = rd_u64(athlete + O_ATHLETE_BUILD_LEN);
-        SP4_BLEN.store(blen, Ordering::Relaxed);
-        SP4_CATLEN.store(cat_len, Ordering::Relaxed);
         if bptr < 0x10000 || blen == 0 || blen > 8 || !writable(bptr, (blen as usize) * 8) {
-            SP4_NOBUILD.fetch_add(1, Ordering::Relaxed);
             return;
         }
         if cat_base < 0x10000 || cat_len == 0 || cat_len > 100000 {
-            SP4_NOCAT.fetch_add(1, Ordering::Relaxed); // vanilla designations need no scan, so keep going
+            // vanilla designations need no scan, so keep going
         } else {
             let held = spawn_build_names(bptr, blen, cat_base, cat_len);
             // The stable hook gave this athlete the build it gives both teams,
@@ -3105,7 +1517,6 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             let idx =
                 slot_n_catalog_index(champ, si, |key| scan_catalog_index(cat_base, cat_len, key));
             let Some(t) = idx else {
-                SP4_NOIDX.fetch_add(1, Ordering::Relaxed);
                 continue;
             };
             if cat_len > 0 && t < cat_len {
@@ -3143,10 +1554,7 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                         }
                     }
                     wr_u64(bptr + (si as usize) * 8, t);
-                    SPAWN_WROTE.fetch_add(1, Ordering::Relaxed);
                 }
-            } else {
-                SP4_RANGE.fetch_add(1, Ordering::Relaxed);
             }
         }
         // Boots the player pinned past the slots above (the 5th and 6th, which
@@ -3287,168 +1695,6 @@ fn install_spawn_hook() {
     SPAWN_INSTALLED.store(if r.is_ok() { 1 } else { 2 }, Ordering::Relaxed);
     crate::own_team_log::line(|| format!("spawn hook install @ {SPAWN_RVA:#x}: {r:?}"));
 }
-
-static VIEW_OK: AtomicU64 = AtomicU64::new(0); // successful view captures
-static VIEWSCAN_DONE: AtomicBool = AtomicBool::new(false); // one-shot gate for the detailed failure dump
-                                                           // ** Reverse-search diagnostic: derive the db view offset at runtime from a buy athlete (a confirmed element of the spectated roster). Not a heuristic = deterministic.
-                                                           // ** Thread identity gate check (07-11 RE priority 1): hypothesis that spectating (re-sim) = main thread, background sim = rayon workers.
-                                                           //   Compare the post_update (main thread) tid with the buy hook (sim thread) tid -> if they differ, spectating can be detected with no offsets at all.
-static CP_INSTALLED: AtomicU64 = AtomicU64::new(0);
-const CP_PROLOGUE: [u8; 12] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
-];
-const BS_INJECT_TEST: bool = false; // input injection = heap DB corruption crash -> OFF. Switched to return hooking // * overwrite the build-score item key (on the stack) with "dagger" to tell whether it affects the real build
-
-// ===========================================================================
-//  player-state array probe - find the array that feeds the top item bar display (GamePlayerState array)
-//  by scanning, and pin the items Vec offset. (GameViewSystem+0x840 array, stride 0x8d0)
-//  champion@`O_ATHLETE_CHAMP_PTR`, team@`O_ATHLETE_TEAM`, position@`O_ATHLETE_POS`. items = between champion and team.
-// ===========================================================================
-const PS_PROBE_ENABLED: bool = false; // production: playerstate diagnostics OFF
-static PS_DONE: AtomicBool = AtomicBool::new(false);
-static PS_ATTEMPTS: AtomicUsize = AtomicUsize::new(0);
-
-// * Hooking the sim driver FUN_14204f810: rdx = p2 = the match input data. Find the athlete item build here, before precomputation.
-const SIM_PROBE_ENABLED: bool = false; // production: sim driver diagnostic hook OFF
-const SIM_RVA: usize = 0x223d1b0; // WARNING STALE for 0.5.2/0.5.3 (exe2exe NO MATCH = logic changed; harmless because SIM_PROBE_ENABLED=false) // 0.5.0_3 (0.5.0_2 was 0x204f810; the 47-instruction anchor matches, diff = stack slot displacements only = codegen churn, not a structural change). SIM_PROBE_ENABLED=false (OFF)
-const SIM_ORIG_LEN: usize = 12; // push rbp/r15/r14/r13/r12/rsi/rdi/rbx (8 of them, position independent)
-const SIM_PROLOGUE: [u8; 12] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
-];
-static SIM_INSTALLED: AtomicBool = AtomicBool::new(false);
-static SIM_DUMPED: AtomicBool = AtomicBool::new(false);
-// From a heap ptr v, look for a String such as a champion name / item key nearby (v+0..v+0x28).
-unsafe fn find_str_near(v: usize) -> Option<(usize, String)> {
-    let mut o = 0usize;
-    while o <= 0x28 {
-        if let Some(st) = read_str_try(v + o) {
-            if st.len() >= 3 {
-                return Some((o, st));
-            }
-        }
-        o += 8;
-    }
-    None
-}
-unsafe fn dump_region(label: &str, base: usize) -> String {
-    let mut s = format!("  {} = {:#x} (+0x0..+0x400):\n", label, base);
-    if base <= 0x10000 {
-        return s;
-    }
-    let mut oo = 0usize;
-    while oo < 0x400 {
-        let v = safe_read_u64(base + oo).unwrap_or(0);
-        if looks_heap(v) {
-            let mut note = String::new();
-            if let Some(st) = read_str_try(v as usize) {
-                note = format!(" →Str'{}'", st);
-            } else if let Some((o2, st)) = find_str_near(v as usize) {
-                note = format!(" →+{:#x}Str'{}'", o2, st);
-            } else {
-                note.push_str(" →[");
-                for j in 0..4 {
-                    let e = safe_read_u64(v as usize + j * 8).unwrap_or(0);
-                    note.push_str(&format!("{:#x} ", e));
-                }
-                note.push(']');
-            }
-            s.push_str(&format!("    +{:#x} = {:#018x}{}\n", oo, v, note));
-        }
-        oo += 8;
-    }
-    s
-}
-// * Display-source confirmation test: overwrite every champion's +0x410 (Vec<u64> of 3) with a recognizable item ID and see whether the bar changes.
-const DISPLAY_TEST: bool = false; // +0x410 = a copy of the build plan, not the bar -> OFF
-const DISPLAY_TEST_ID: u64 = 29; // a recognizable vanilla final item ID (all 3 slots get this)
-static DTEST_LOGGED: AtomicBool = AtomicBool::new(false);
-// * Capturing the view (GameViewSystem) pointer: FUN_1422360c0 mid-function 0x22360cc (rcx = view). view+0x840 = array / +0x848 = count.
-//   (0.5.0: function start 0x22360c0, was 0x1e84d50; mid 0x22360cc, was 0x1e84d5c.)
-static VIEW_PTR: AtomicU64 = AtomicU64::new(0);
-// WARNING WARNING not migrated for 0.5.0_3 (STALE): 0x22360cc -> mask-sig MULTI (a monomorphic family of roster getters; candidates 0x19b77cc/787c/792c/79dc/..., stride 0xb0). No string-xref available = cannot be pinned statically -> follow-up via ghidra-re.
-//   * Risk: the whole family shares VIEW_PROLOGUE (14B) -> pre-validation cannot prevent installing on the wrong one. With AUTO4_FORWARD_SCORE enabled the wrong getter could be hooked -> keep AUTO4 disabled until ghidra-re re-pins it.
-const VIEW_RVA: usize = 0x20ae1ac; // WARNING STALE for 0.5.2/0.5.3 (not migrated; harmless because VIEW_HOOK_ENABLED=false) // 0.5.0_3 (0.5.0_2 was 0x22360cc, sig-xref UNIQUE: mov rax,[rcx+0x840]; imul rcx,r9,0x8d0). VIEW_HOOK_ENABLED=false (OFF)
-const VIEW_ORIG_LEN: usize = 14; // mov rax,[rcx+0x840](7) + imul rcx,r9,0x8d0(7)
-                                 // 0.5.0: mov rax,[rcx+0x840] = 48 8B 81 40 08 00 00 / imul rcx,r9,0x8d0 = 49 69 C9 D0 08 00 00
-const VIEW_PROLOGUE: [u8; 14] = [
-    0x48, 0x8b, 0x81, 0x40, 0x08, 0x00, 0x00, 0x49, 0x69, 0xc9, 0xd0, 0x08, 0x00, 0x00,
-];
-static VIEW_INSTALLED: AtomicBool = AtomicBool::new(false);
-const VIEW_HOOK_ENABLED: bool = false; // * hooking a hot render function = crash -> OFF. Replaced by scanning.
-                                       // Try both game String layouts: {len,ptr,cap} or {ptr,len,cap}. Return it if it is an ASCII key/name.
-unsafe fn read_str_try(addr: usize) -> Option<String> {
-    if !readable(addr, 24) {
-        return None;
-    }
-    let q0 = safe_read_u64(addr)? as usize;
-    let q8 = safe_read_u64(addr + 8)? as usize;
-    for &(ptr, len) in &[(q8, q0), (q0, q8)] {
-        // (len,ptr)=len@0,ptr@8 / (ptr,len)=ptr@0,len@8
-        if ptr <= 0x10000 || ptr >= (1usize << 48) || len < 2 || len > 48 {
-            continue;
-        }
-        let mut b = Vec::new();
-        if !safe_read_bytes(ptr, len, &mut b) {
-            continue;
-        }
-        if b.iter().all(|&x| x == b'_' || x.is_ascii_alphanumeric())
-            && (b[0] as char).is_ascii_alphabetic()
-        {
-            return String::from_utf8(b).ok();
-        }
-    }
-    None
-}
-// Detect item keys found by the push probe (used to identify the displayed items Vec).
-fn is_known_item_key(k: &str) -> bool {
-    const ITEMS: [&str; 20] = [
-        "dagger",
-        "ironsword",
-        "vital_orb",
-        "arcane_crystal",
-        "steel_armor",
-        "mystic_cloak",
-        "soldiers_longsword",
-        "wind_dagger",
-        "spirit_crystal",
-        "hardened_heart",
-        "nashors_tooth",
-        "ring_of_reincarnation",
-        "ruinous_blade",
-        "souls_edge",
-        "dusk_raven",
-        "staff_of_rapture",
-        "twin_stormblade",
-        "angels_fang",
-        "thunderclaw",
-        "spirit_visage",
-    ];
-    ITEMS.contains(&k)
-        || k.starts_with("radiant_")
-        || k.contains("_blade")
-        || k.contains("sword")
-        || k.contains("_armor")
-        || k.contains("_plate")
-}
-// Validate a roster element by the position of its champion String, at `O_ATHLETE_CHAMP_PTR`.
-//   WARNING looking only at the legacy +0x388~0x3b0 offsets fails to recognize a 0.5.0 athlete -> find_view_by_scan fails -> LIVE_ARR=0 (the team gate collapses).
-unsafe fn valid_ps_elem(elem: usize) -> bool {
-    if read_str_try(elem + O_ATHLETE_CHAMP_PTR).is_some() {
-        return true;
-    } // 0.6.0-beta champ String ptr (0.5.5..0.5.7 0x470, 0.5.0_3 0x420)
-    let mut o = 0x388usize; // fallback (for older versions / layout variants)
-    while o <= 0x3b0 {
-        if read_str_try(elem + o).is_some() {
-            return true;
-        }
-        o += 8;
-    }
-    false
-}
-static CAP_MATCH_DONE: AtomicBool = AtomicBool::new(false);
-static CAP_MPID: AtomicU64 = AtomicU64::new(0);
-static CAP_MTID: AtomicU64 = AtomicU64::new(0);
-static INJ_LOG: Mutex<Vec<(Vec<u8>, u8, u64)>> = Mutex::new(Vec::new());
 
 /// Frames between retries of a hook install that has not succeeded.
 const INSTALL_RETRY_FRAMES: u64 = 60;
@@ -3674,82 +1920,22 @@ unsafe fn install_detour_r11(
 // (Was `impl ModExtension for ItemTacticsExt`. Driven from the host mod's
 // `StableExtension::post_update` — see `driver` and `src/lib.rs`.)
 //
-// Two parameters changed shape in the move to the stable ABI:
-//   * `scene: &mut Scene` -> `in_game: bool` plus the `StableClient` itself,
-//     which answers what `Scene::InGame { data }.db()` used to;
-//   * `ui: &mut GameUI` -> `driver::ui_root()`, the root `Node` captured by the
-//     UI mega-function detour. The `ui` binding is now the root node itself, so
-//     the field access that used to reach it is gone from every call below.
-// `_assets` and `_dt` were unused and are gone.
+// `scene: &mut Scene` became `in_game: bool` plus the `StableClient` itself,
+// which answers what `Scene::InGame { data }.db()` used to. The `ui`, `_assets`
+// and `_dt` parameters went with the code that used them.
 fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
     {
-        // The hook retry block below is what installs `cap_game_view`, and
-        // `cap_game_view` is what publishes `TIP_ROOT` — so the root must be
-        // fetched AFTER it, never as an early guard at the top of the function.
-        // Guarding first would mean the hook is never installed, the root is
-        // never captured, and every frame returns early forever.
-        {
-            install_launcher_hook();
-            install_seed_ctor_hook();
-            install_spawn_hook();
-            install_game_view_hook();
-        }
-        // Validated `GameUI.root`, or 0 until the UI exists. NOT `TIP_ROOT` —
-        // see `ui_root` for why that pointer crashed the game.
-        // Gated, because `resolve()` is not free when it fails: each attempt
-        // sweeps a 160KB window testing every 8-byte slot, and it re-arms
-        // whenever `GAME_VIEW` changes, which it does repeatedly in a session.
-        // With `UI_TREE_WALK_ENABLED` off there is no consumer for the answer,
-        // so paying for the search is pure per-frame cost — a measurable part of
-        // the lag reported on 2026-08-12.
-        let ui_root_ptr = if UI_TREE_WALK_ENABLED {
-            ui_root::resolve().unwrap_or(0)
-        } else {
-            0
-        };
-        // (the every-frame hook retry that used to sit here now runs at the top
-        //  of the function, because it is what publishes `TIP_ROOT`)
-        if !in_game {
-            INGAME_NOW.store(false, Ordering::Relaxed);
-        }
-        if UI_INJECT_ENABLED {
-            unsafe {
-                let _ = uinj::install();
-            }
-        } // strategy screen dropdown injection hook (mode 3 = item0m/1m/2m, mode 4 = + item3/slot3). Idempotent.
-
-        // * In-match 4th slot icon, over the stable UI API. Deliberately here and
-        //   not in the node-tree block far below: this route needs no UI root, so
-        //   gating it on one would reintroduce the dependency it exists to avoid.
-        //   The view model is still read natively — only the drawing is by path.
-        if SLOT3_ICON_ENABLED && in_game && slot_count() == 4 {
-            let gv = GAME_VIEW.load(Ordering::Relaxed);
-            if gv > 0x10000 {
-                let icons = unsafe { collect_slot3_icons(gv) };
-                SLOT3_PV_N.store(icons.len() as u64, Ordering::Relaxed);
-                let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                    drive_slot3_by_path(client, &icons);
-                }));
-            }
-        }
-        // NOTE the UI-root gate is NOT here. It used to be, and that broke the
-        // fourth item: the block below publishes `MY_ATHLETES`, which is the
-        // team gate's only remaining input now that the `SCENE_SIDE` fast path
-        // is off. Gating it made `is_my_athlete` return `None` forever, so the
-        // gate closed on the safe side and nothing was ever injected. This block
-        // needs the `client`, not the node tree.
-        // * Capture the player team id (for team scoping) + the personal_tactics snapshot (for restoring the display).
-        //   WARNING the strategy screen may not be InGame, so the #personal visible gate was removed -> fill it in ahead of time on the management screen.
-        //   Throttled to every 20 frames (cuts the cost of walking the HashMap).
+        install_launcher_hook();
+        install_seed_ctor_hook();
+        install_spawn_hook();
+        // * Capture the player team id, for team scoping.
         // (was `if let Scene::InGame { data } = scene`)
         //
         // `data.db()` returned `mod_api::ClientDatabase` — the *client* scene's
-        // database, a different object from the `game_core::Database` that
-        // `probe_db` works on, and not something a stable-ABI mod can be handed.
-        // The three things this block read off it are read from the stable
-        // client instead; `stable_team_ids` and `stable_personal_tactics` are
-        // the JSON-record equivalents of `team.last_starting` and
-        // `team.champion_personal_tactics`.
+        // database, which a stable-ABI mod cannot be handed. What this block
+        // read off it is read from the stable client instead;
+        // `stable_last_starting` is the JSON-record equivalent of
+        // `team.last_starting`.
         if let (true, Some(pid)) = (in_game, client.player_team_id()) {
             // * During a match player_team_id() returns 0/-1 -> store only when in the valid range (1~9999), otherwise keep the last valid value.
             //   My team id is constant during a session, so the value captured on the management/pre-match screen is used during the match too.
@@ -3786,15 +1972,9 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
             //   tactics at all — the pid is used for the starter roster, which a
             //   comp test does not have.
             let ct_ctx = in_comptest;
-            if pu == 0 {
-                PID_OBS_ZERO.fetch_add(1, Ordering::Relaxed);
-                if ct_ctx {
-                    PID_SKIP_CT.fetch_add(1, Ordering::Relaxed);
-                } else {
-                    PID_ZERO_CLEAN.fetch_add(1, Ordering::Relaxed);
-                } // an observation of 0 unrelated to comp test
-            } else if pu != u64::MAX && pu < 10000 {
-                PID_OBS_NONZERO.fetch_add(1, Ordering::Relaxed);
+            if pu == 0 && !ct_ctx {
+                // an observation of 0 unrelated to comp test
+                PID_ZERO_CLEAN.fetch_add(1, Ordering::Relaxed);
             }
             if pu != u64::MAX && pu < 10000 && !(pu == 0 && ct_ctx) {
                 if pu != 0 {
@@ -3803,7 +1983,6 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                 } else if PID_NONZERO_SEEN.load(Ordering::Relaxed) == 0 {
                     PLAYER_TEAM_ID.store(0, Ordering::Relaxed);
                 }
-                PID_EVER_VALID.store(1, Ordering::Relaxed);
             }
             // ** v15: publish my team's athlete_ids - the material for the spawn hook's scene-free team decision.
             //   Everyone under contract (`roster_scan_step`, published the frame a pass finishes) plus the last starting five,
@@ -3824,13 +2003,7 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                     let roster = contracted_roster(known as usize);
                     let mut my = starting.clone();
                     my.extend(roster.iter().copied());
-                    let pt_n = stable_personal_tactics(client, known as usize).len();
-                    MY_PT_N.store(pt_n as u64, Ordering::Relaxed);
-                    // NO **PT-count cross-check abandoned (refuted by measurement 2026-07-30)**: based on an old note that "my team has dozens of PT entries
-                    //   while an AI team has only a few (team(0) has 5)", `pt_n >= 20` was used, but measurement showed
-                    //   **team(0) PT = 95**, which passes the threshold meaninglessly => the PT count has no discriminating power.
-                    //   (pt_n is kept for diagnostic display only.)
-                    // * Replacement rule: `pid=0` is **treated as undetermined and withheld by default** (withheld = is_my_athlete returns None
+                    // * `pid=0` is **treated as undetermined and withheld by default** (withheld = is_my_athlete returns None
                     //   = the team gate closes on the safe side). But if 0 has been observed **long enough (600 ticks, ~10s) in an InGame unrelated to
                     //   comp test**, accept it as a genuine team-id-0 save and publish.
                     //   => it is never published in a comp-test-only session, and playing a normal match captures the real pid.
@@ -3851,15 +2024,12 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                     });
                     if !my.is_empty() && trust {
                         publish_my_athletes(my);
-                    } else if !trust {
-                        MY_TRUST_SKIP.fetch_add(1, Ordering::Relaxed);
                     }
                 }
             }
             // ** lean (07-18): spectate identification = launcher (LIVE_SEED) + seed-ctor (RENDER_PROVIDER) + buy r9 comparison (v13).
             //   The old db scan (v10), P6 probe and link scan are all gone. Only the scene side (my-team decision) and LIVE_DB/PID remain here.
             if !DIAG_BUY_OFF {
-                INGAME_NOW.store(true, Ordering::Relaxed);
                 {
                     let pu = PLAYER_TEAM_ID.load(Ordering::Relaxed);
                     if pu != u64::MAX && pu < 10000 {
@@ -3883,111 +2053,41 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                 // cost is the fast path — the spawn hook's early side decision,
                 // which existed to cover the owned=0 injection window.
                 //
-                // Restoring it needs the `ClientDatabase` address from somewhere:
-                // another detour argument, or a fixed offset off the `App` pointer
-                // that `cap_game_view` already captures.
+                // Restoring it needs the `ClientDatabase` address from somewhere,
+                // such as another detour argument.
             }
-            // The per-frame `force_blue_slot_spacing(player_info)` call stood
-            // here. The game lays the item row out itself in 0.6.0 and the row's
-            // geometry comes from the layout now — see the note where the
-            // function was, above the JSON parser.
-            // The personal-tactics snapshot rebuild stood here. It fed
-            // `PT_SNAPSHOT` (read only by the dropdown option injection) and
-            // `OVERRIDE_SNAPSHOT` (read only by the c6 injection, which is off —
-            // that snapshot had a store and no load anywhere). Both consumers
-            // are gone, and it cost ~174us per InGame frame and leaked a boxed
-            // `Vec` on every change, so it went with them.
         }
-        // Everything from here down walks the live UI node tree. This is the
-        // only thing `UI_TREE_WALK_ENABLED` is meant to cover — see its doc
-        // comment for why it is off and what that costs.
-        if !UI_TREE_WALK_ENABLED || ui_root_ptr <= 0x10000 {
-            return;
-        }
-        let ui: &Node = unsafe { &*(ui_root_ptr as *const Node) };
-        // The native Personal tab handlers stood here — the dropdown overlay,
-        // the selection polling and the two `hide_*_native_dds` calls. All of it
-        // acted on `#personal`, which `crate::strategy_ui` hides and replaces
-        // with the mod's own `#builds` editor, so it drove a panel nobody could
-        // see. Deleted rather than re-gated: if that tab is ever wanted back it
-        // wants writing against the UI as it is now.
-        //
-        // * In-match 4th slot icon (direct node writing - no game code modification).
-        //   Kept: a different screen entirely, and independent of the tab above.
-        let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-            handle_ingame_slot3(ui);
-        }));
     }
 }
 
-// Server side: access the Database and fill the mod item registry once.
-// (Was `impl ModServerExtension for ItemTacticsServerExt`. Driven from the host
-// mod's `StableServerExtension` — see `driver` and `src/lib.rs`.)
+// Server side. (Was `impl ModServerExtension for ItemTacticsServerExt`. Driven
+// from the host mod's `StableServerExtension` — see `driver` and `src/lib.rs`.)
 fn tactics_on_server_start() {
-    // -- Session boundary. Everything below this line is an address from the
-    //    *previous* save, and none of those objects survive a return to the
-    //    main menu. Dropping them here is what makes load / menu / load work;
-    //    each is re-derived on demand from the new session.
-    //
-    // The UI tree: `resolve` re-proves its cache per call too, but that is a
-    // shallow check, and this is the one point we *know* is a boundary.
-    ui_root::invalidate();
-    // The `Database` base and the item network derived from it. `probe_db`
-    // below re-derives the network once the item-build detour has handed
-    // `record_item_net` a fresh agent address, and it runs again on every
-    // management tick until it does.
-    driver::reset_session();
-    ITEM_NET_ADDR.store(0, Ordering::Relaxed);
+    // Session boundary: the item network belongs to the save that was just
+    // left, and its picks were made for that save's matches.
     NETWORK_AGENT.store(0, Ordering::Relaxed);
     network_picks_forget();
-    probe_db();
     install_replace_4th();
     install_launcher_hook();
     install_seed_ctor_hook();
     install_spawn_hook();
-} // resolver = common to modes 3 and 4 (slot 0/1/2 designation) + the v13 identification hooks (launcher seed + seed-ctor provider)
+}
 
 fn tactics_before_management_tick() {
-    // * Reset the team gate cache between matches (management screen) -> re-scan the roster next match (in case addresses are reused).
-    //   The management tick does not run during a match sim, so there is no race with the sim thread's decisions.
-    //   (`SIDE_CACHE` went with `player_side_for_match`, the SEL-based majority
-    //   vote — it counted champions the user had designated in the dropdowns,
-    //   and with `SEL` gone it had no input left.)
-    PLAYER_SIDE.store(u64::MAX, Ordering::Relaxed);
-    probe_db();
-    install_replace_4th(); // resolver = common to modes 3 and 4 (idempotent)
-}
-static NETSCAN_DONE: AtomicBool = AtomicBool::new(false);
-/// Whether `a` looks like the item recommendation network: header
-/// `16384 / 16384 / 1` **and** a weight pointer that is actually readable.
-///
-/// * Signature hardened for 0.5.1 (ghidra-re): a lookalike matching only the header (16384/16384/1) at db+0xd30 has a dangling weight ptr at +0x8
-///   -> AV when dereferenced at +0x44a inside forward. Adding a readable check on the weight ptr rejects the fake and passes only the real net (db+0x1558).
-///
-/// Lifted out of `probe_db` (was a local closure) so `driver::record_item_net`
-/// can apply the same test to the agent the host's item-build detour is handed.
-unsafe fn itemnet_header_ok(a: usize) -> bool {
-    readable(a, 0x20)
-        && rd_u64(a) == 16384
-        && rd_u64(a + 0x10) == 16384
-        && rd_u64(a + 0x18) == 1
-        && {
-            let w = rd_u64(a + 0x8) as usize;
-            w >= 0x10000 && readable(w, 16384 * 4)
-        }
+    install_replace_4th(); // idempotent
 }
 
 // ===========================================================================
-//  Stable-ABI replacements for the two `ClientDatabase` reads
+//  Stable-ABI replacement for the `ClientDatabase` read
 // ===========================================================================
 // `Scene::InGame { data }.db()` gave a `mod_api::ClientDatabase`, whose `team()`
-// returned a struct these two fields were read straight off. The stable client
+// returned a struct the starting five were read straight off. The stable client
 // exposes the same management records as JSON documents instead, so the shape
 // of the answer is unchanged and only the route to it differs.
 //
-// Both are called from throttled paths (the roster every 120 frames, the
-// tactics snapshot every 20), which is what makes a JSON round-trip per call
-// acceptable where a field read was before.
+// It is called from a throttled path (the roster, every 120 frames), which is
+// what makes a JSON round-trip per call acceptable where a field read was
+// before.
 
 /// Athlete ids of `team_id`'s starting five — was `team.last_starting`.
 ///
@@ -4090,8 +2190,8 @@ fn roster_scan_step(client: &StableClient<'_>, team_id: usize) -> bool {
     if scan.next >= scan.ids.len() {
         scan.idle_frames += 1;
         let day: GameDay = client.game_time().map(|(y, m, d, _, _)| (y, m, d));
-        let due = scan.done.is_none()
-            || (scan.day != day && scan.idle_frames >= ROSTER_RESCAN_FRAMES);
+        let due =
+            scan.done.is_none() || (scan.day != day && scan.idle_frames >= ROSTER_RESCAN_FRAMES);
         if !due {
             return false;
         }
@@ -4171,147 +2271,6 @@ fn contract_team_id(json: &str) -> Option<usize> {
     rest[..end].parse().ok()
 }
 
-/// Per-champion vanilla item categories — was `team.champion_personal_tactics`,
-/// a `HashMap<String, [u8; 3]>`.
-///
-/// Three entries per champion, one per vanilla item slot. A champion whose
-/// array is short or malformed is dropped rather than padded: this map is the
-/// baseline the delegate/injection compares against, and inventing a zero there
-/// would read as "the user chose category 0".
-fn stable_personal_tactics(client: &StableClient<'_>, team_id: usize) -> HashMap<String, [u8; 3]> {
-    let mut out = HashMap::new();
-    let Some(json) =
-        client.record_get_json(RecordKindV1::Team, team_id, "champion_personal_tactics")
-    else {
-        return out;
-    };
-    let Some(JsonValue::Obj(entries)) = JsonParser::new(&json).parse_value() else {
-        return out;
-    };
-    for (champion, value) in entries {
-        let JsonValue::Arr(categories) = value else {
-            continue;
-        };
-        if categories.len() < 3 {
-            continue;
-        }
-        let mut slots = [0u8; 3];
-        let mut ok = true;
-        for (slot, category) in slots.iter_mut().zip(categories.iter()) {
-            match category {
-                JsonValue::Num(n) if *n >= 0.0 && *n <= u8::MAX as f64 => *slot = *n as u8,
-                _ => ok = false,
-            }
-        }
-        if ok {
-            out.insert(champion, slots);
-        }
-    }
-    out
-}
-
-/// Was `probe_db(ctx: &mut ServerModContext)`, which read the `Database` base as
-/// `&ctx.database.champion_patch_statistics - 0x16698`. A stable-ABI mod never
-/// sees that object, so the base now arrives from `driver::db_addr()` and this
-/// no-ops until the host's item-build detour has settled it.
-fn probe_db() {
-    let db = driver::db_addr();
-    if db == 0 {
-        return;
-    }
-    // -- Item neural network probe + self-validation (16384/16384/1) --
-    //   * Measured on 0.5.0_3: db+0xd30 (moved -0x70 from the old 0xda0; the netscan diagnostic hit it). Sequential candidates + a window scan fallback (patch-robust).
-    if ITEM_NET_ADDR.load(Ordering::Relaxed) == 0 {
-        unsafe {
-            let sig_ok = |a: usize| itemnet_header_ok(a);
-            let mut found = 0usize;
-            for &off in &[0x1558usize, 0xd30, 0xda0] {
-                // * 0.5.1: prefer the game's real net = GameData+0x1558 (ghidra-re confirmed, identical in both versions). db == the GameData base.
-                if sig_ok(db + off) {
-                    found = db + off;
-                    break;
-                }
-            }
-            if found == 0 {
-                // automatic window search (self-heals if it moves again in a future patch)
-                let mut o = 0usize;
-                while o < 0x18000 {
-                    let a = db + o;
-                    if sig_ok(a) {
-                        found = a;
-                        break;
-                    }
-                    o += 8;
-                }
-            }
-            if found != 0 {
-                ITEM_NET_ADDR.store(found as u64, Ordering::Relaxed);
-            } else {
-                let net = db + 0xda0;
-                // * Diagnostic (regardless of LOG): +0xda0 failed -> scan a wide window from db for the net signature (16384/*/16384/1) to find the real offset.
-                //   + also dump the forward RVA prologue (to distinguish itemnet_addr_valid failure causes). Only once.
-                // The `cps` (champion_patch_statistics @ db+0x16698) figure is gone
-                // from this dump: it was how the classic build *derived* db, and the
-                // merged build derives db from the item network instead — so there
-                // is no second, independent address left to cross-check against.
-                if !NETSCAN_DONE.swap(true, Ordering::Relaxed) {
-                    let mut out = format!("db={:#x} (from item-build hook agent - 0x1558)\n net@+0xda0={:#x} sig=({},{},{}) readable={}\n",
-                        db, net,
-                        if readable(net,0x20){rd_u64(net) as i64}else{-1}, if readable(net,0x20){rd_u64(net+0x10) as i64}else{-1},
-                        if readable(net,0x20){rd_u64(net+0x18) as i64}else{-1}, readable(net,0x20));
-                    // Scan 0..0x18000 from db: rd(O)==16384 && rd(O+0x10)==16384 && rd(O+0x18)==1
-                    let mut hits = 0;
-                    let mut o = 0usize;
-                    while o < 0x18000 && hits < 8 {
-                        let a = db + o;
-                        if readable(a, 0x20)
-                            && rd_u64(a) == 16384
-                            && rd_u64(a + 0x10) == 16384
-                            && rd_u64(a + 0x18) == 1
-                        {
-                            out.push_str(&format!(" ★HIT db+{:#x} (abs={:#x})\n", o, a));
-                            hits += 1;
-                        }
-                        o += 8;
-                    }
-                    if hits == 0 {
-                        out.push_str(" (scan found nothing - suspect the db base itself, or a changed signature)
-");
-                    }
-                    // forward RVA prologue
-                    let fa = exe_base_addr() + ITEMNET_FORWARD_RVA;
-                    if readable(fa, 12) {
-                        let pb: Vec<String> = (0..12)
-                            .map(|i| format!("{:02x}", *((fa + i) as *const u8)))
-                            .collect();
-                        out.push_str(&format!(
-                            " fwd RVA={:#x} prologue={} (expected 55415741...)
-",
-                            ITEMNET_FORWARD_RVA,
-                            pb.join(" ")
-                        ));
-                    } else {
-                        out.push_str(" fwd RVA unreadable\n");
-                    }
-                    if TRACE_FILES {
-                        if let Some(d) = mod_dir() {
-                            let _ = fs::create_dir_all(&d);
-                            let _ = fs::write(d.join("4items_netscan.txt"), out);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if MODITEMS_DONE.load(Ordering::Relaxed) {
-        return;
-    }
-    unsafe {
-        dump_mod_items(db);
-    }
-    driver::mark_db_probed();
-}
-
 // == athlete -> champion mapping probe (scanning buy_item's r8 = athlete) =====================
 // ** 0.5.4 re-derivation (2026-08-04) - `tools/rederive.py sig`, no old exe available (see that file's header).
 //   The mod relocates 19B of this entry, so its exact opening was already known and became the search key:
@@ -4360,63 +2319,6 @@ const BUY_PROLOGUE: [u8; 12] = [
     0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x55, 0x53,
 ]; // 0.6.3: push r15/r14/r13/r12/rsi/rdi/rbp/rbx = 12B, a clean boundary and all the trampoline relocates (`install_replace_4th`). Through 0.6.2 this was 41 57 41 56 56 57 53 48 83 EC 50 48, the first 12B of the 0.5.1 prologue: push r15/r14/rsi/rdi/rbx; sub rsp,0x50; (11B = a clean boundary) + the first byte of the following mov (0x48...). Trampoline relocation = 19B (next clean boundary = + mov rax,[rsp+0xa8])
 static BUY_PROBE_INSTALLED: AtomicU64 = AtomicU64::new(0);
-static CHAMP_SCAN: Mutex<Vec<u64>> = Mutex::new(Vec::new());
-static SCAN_DIAG_DONE: AtomicBool = AtomicBool::new(false); // * one-shot gate for the 0.5.1 scan diagnostic
-
-// install_detour (trampoline): saved = push rcx rdx r8 r9 r10 r11 -> r8 = saved.add(3). cap_fn(rcx=saved, rdx=entry_rsp).
-unsafe fn install_detour(
-    rva: usize,
-    orig_len: usize,
-    cap_fn: usize,
-) -> Result<usize, &'static str> {
-    let mbase = exe_base_addr();
-    if mbase == 0 {
-        return Err("module 0");
-    }
-    let fn_addr = mbase + rva;
-    if !readable(fn_addr, orig_len + 4) {
-        return Err("fn unreadable");
-    }
-    const MEM_CR: u32 = 0x1000 | 0x2000;
-    const RWX: u32 = 0x40;
-    let stub = VirtualAlloc(0, 256, MEM_CR, RWX);
-    if stub == 0 {
-        return Err("VirtualAlloc");
-    }
-    let ret_addr = fn_addr + orig_len;
-    let mut s: Vec<u8> = Vec::new();
-    s.extend_from_slice(&[0x49, 0x89, 0xe2]);
-    s.extend_from_slice(&[0x51, 0x52, 0x41, 0x50, 0x41, 0x51, 0x41, 0x52, 0x41, 0x53]);
-    s.extend_from_slice(&[0x48, 0x89, 0xe1]);
-    s.extend_from_slice(&[0x4c, 0x89, 0xd2]);
-    s.extend_from_slice(&[0x48, 0x83, 0xec, 0x28]);
-    s.extend_from_slice(&[0x48, 0xb8]);
-    s.extend_from_slice(&cap_fn.to_le_bytes());
-    s.extend_from_slice(&[0xff, 0xd0]);
-    s.extend_from_slice(&[0x48, 0x83, 0xc4, 0x28]);
-    s.extend_from_slice(&[0x41, 0x5b, 0x41, 0x5a, 0x41, 0x59, 0x41, 0x58, 0x5a, 0x59]);
-    let mut orig = vec![0u8; orig_len];
-    core::ptr::copy_nonoverlapping(fn_addr as *const u8, orig.as_mut_ptr(), orig_len);
-    s.extend_from_slice(&orig);
-    s.extend_from_slice(&[0x48, 0xb8]);
-    s.extend_from_slice(&ret_addr.to_le_bytes());
-    s.extend_from_slice(&[0xff, 0xe0]);
-    core::ptr::copy_nonoverlapping(s.as_ptr(), stub as *mut u8, s.len());
-    let mut patch = vec![0x90u8; orig_len];
-    patch[0] = 0x48;
-    patch[1] = 0xb8;
-    patch[2..10].copy_from_slice(&stub.to_le_bytes());
-    patch[10] = 0xff;
-    patch[11] = 0xe0;
-    let mut old: u32 = 0;
-    if VirtualProtect(fn_addr, orig_len, RWX, &mut old) == 0 {
-        return Err("VirtualProtect");
-    }
-    core::ptr::copy_nonoverlapping(patch.as_ptr(), fn_addr as *mut u8, orig_len);
-    VirtualProtect(fn_addr, orig_len, old, &mut old);
-    FlushInstructionCache(GetCurrentProcess(), fn_addr, orig_len);
-    Ok(stub)
-}
 
 #[inline]
 unsafe fn rd_u64(p: usize) -> u64 {
@@ -4455,12 +2357,9 @@ const ITEMNET_FORWARD_PROLOGUE: [u8; 19] = [
     0x00, 0x00, 0x00,
 ];
 type ItemNetFn = unsafe extern "C" fn(usize, usize, *const u64, u64, u8) -> f32;
-static ITEM_NET_ADDR: AtomicU64 = AtomicU64::new(0);
 /// The agent `hook::detour` was last handed, exactly as it came: the network
 /// the 5th and 6th item are scored with ([`network_pick`]), which proves it
-/// before every pick ([`network_ready`]). Kept apart from `ITEM_NET_ADDR`,
-/// which is only set together with the `Database` base, once, and under a test
-/// written for telling the network from its lookalikes in a memory scan.
+/// before every pick ([`network_ready`]).
 static NETWORK_AGENT: AtomicU64 = AtomicU64::new(0);
 /// Most weights [`network_ready`] accepts. The network has 16384.
 const NETWORK_WEIGHTS_MAX: usize = 1 << 20;
@@ -4561,22 +2460,6 @@ fn item_id_to_key(id: u64) -> Option<String> {
 //    which checks the entry bytes first -- the check whose absence turned the stale address into a crash.
 //    The Vec grows from whatever the engine built (normally 4) to `build_config::picker_slots()`.
 const BUILD_EXTEND_ENABLED: bool = true;
-// * 0.5.0 ui_inject (#item3 dropdown + #slot3 node): loader hook RVAs (LOADER 0x4d8fb0 / PARSER 0x2493b90 /
-//   ALLOC 0x25a5620) confirmed -> ON. Strategy-screen 4th dropdown / in-match slot3 node injection are back.
-// ** OFF for game 0.6.0 (2026-09-16). Two independent reasons, either
-// enough on its own:
-//
-//  1. `LOADER_RVA` was NOT re-derived for the release, and `uinj::install`
-//     is the only installer in this file that does **not** validate a
-//     prologue first -- it saves whatever 12 bytes are at the address and
-//     prepends a jump. On the release those bytes are the middle of an
-//     unrelated function, so turning this on without re-deriving
-//     LOADER/PARSER/ALLOC corrupts live code rather than failing closed.
-//  2. What it delivered was the widened 4-slot `#items` row, and the game
-//     ships four slots itself now; the widening was dropped deliberately.
-//
-// Re-deriving LOADER_RVA is the prerequisite for ever setting this true.
-const UI_INJECT_ENABLED: bool = false; // * 0.5.0 fix: player_info/wide .ui rewritten on a 0.5.0 base with 4 slots -> re-enabled (isolated test)
 static AUTO_CANDS: Mutex<Option<std::sync::Arc<Vec<u64>>>> = Mutex::new(None);
 fn auto_cands() -> std::sync::Arc<Vec<u64>> {
     {
@@ -4586,7 +2469,7 @@ fn auto_cands() -> std::sync::Arc<Vec<u64>> {
         } // Arc clone = refcount only (no data copy)
     }
     let mut v: Vec<u64> = VANILLA_FINAL.to_vec();
-    for (id, _) in mod_final_opts() {
+    for (id, _) in mod_final_opts_all() {
         v.push(id);
     }
     let arc = std::sync::Arc::new(v);
@@ -5428,7 +3311,10 @@ fn buy_memo_store(inputs: BuyInputs) {
         let Ok(mut memo) = memo.try_borrow_mut() else {
             return;
         };
-        let known = memo.entries.iter().position(|(known_key, _)| *known_key == key);
+        let known = memo
+            .entries
+            .iter()
+            .position(|(known_key, _)| *known_key == key);
         let slot = known.unwrap_or(memo.next);
         if known.is_none() {
             memo.next = (slot + 1) % BUY_MEMO_SLOTS;
@@ -5477,13 +3363,6 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         if !is_live && !FIXB {
             // (FIXB=false, old behaviour) background league sim = passthrough with no injection.
             return 0;
-        }
-        // * fix B: with FIXB=true, background sims are injected too (team scope = is_my_athlete). Only the is_live-specific counters stay gated.
-        if is_live {
-            PROV_HIT.fetch_add(1, Ordering::Relaxed);
-            if seed_match_r9 {
-                VT_OK.fetch_add(1, Ordering::Relaxed);
-            }
         }
         // ** fix B performance (2026-07-27): in background buys only my players (is_my_athlete) are injection targets -> a background buy by anyone else
         //   passes through immediately after a cheap VEH read (+0x810) + HashSet lookup, before the expensive readable (= VirtualQuery kernel call).
@@ -5804,44 +3683,6 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 }
             }
         }
-        // ** Purchase order diagnostic (2026-07-30, investigating "it buys the 4th first"): record a snapshot of my players' build[] arrays
-        //   once per (champ, owned) combination. What the game really targets is build[0..len], so recording which item each index is
-        //   (catalog name) plus the current owned count shows directly **which build slot the game completes first**.
-        //   This point is after the slot 0/1/2 injection, so the targets this half plants are visible.
-        if BUY_ORDER_DIAG && is_player {
-            let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                let ctx = rd_u64(rsp_entry + 0x30) as usize;
-                let bp = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
-                let bl = rd_u64(athlete + O_ATHLETE_BUILD_LEN);
-                if ctx < 0x10000
-                    || bp < 0x10000
-                    || bl == 0
-                    || bl > 8
-                    || !readable(bp, (bl as usize) * 8)
-                {
-                    return;
-                }
-                let key = format!("{}#{}", champ, owned);
-                let mut seen = BUY_ORDER_SEEN.lock().unwrap_or_else(|e| e.into_inner());
-                let set = seen.get_or_insert_with(std::collections::HashSet::new);
-                if set.contains(&key) || set.len() > 200 {
-                    return;
-                }
-                set.insert(key);
-                let mut line = format!("{} owned={} build_len={} build=[", champ, owned, bl);
-                for i in 0..bl as usize {
-                    let idx = rd_u64(bp + i * 8);
-                    let nm = catalog_name_at(ctx, idx).unwrap_or_else(|| "?".into());
-                    line.push_str(&format!("{}={} ", idx, nm));
-                }
-                line.push_str("]\n");
-                let mut buf = BUY_ORDER_BUF.lock().unwrap_or_else(|e| e.into_inner());
-                buf.push_str(&line);
-                if let Some(d) = mod_dir() {
-                    let _ = fs::write(d.join("buy_order.txt"), buf.clone());
-                }
-            }));
-        }
         // How long this athlete's build should end up: the game's four, and
         // the 5th and 6th this half adds.
         let target = crate::build_config::picker_slots() as u64;
@@ -6065,10 +3906,9 @@ const SCENE_BLUE_IS_SIDE0: bool = true; // blue team = sim side0 (confirmed in g
 static SCENE_SIDE: AtomicU64 = AtomicU64::new(u64::MAX); // 0/1 = the player's side in a live match, MAX = undetermined (not a match / not spectating)
 static LIVE_DB: AtomicU64 = AtomicU64::new(0); // * v6: the absolute db address stored by the InGame post_update (for the spawn hook's early side decision)
 static LIVE_PID: AtomicU64 = AtomicU64::new(u64::MAX); // * v6: the stored PLAYER_TEAM_ID
-static SPAWN_SCENE_OK: AtomicU64 = AtomicU64::new(0); // diagnostic: successful early side decisions in the spawn hook
-static SPAWN_NO_DB: AtomicU64 = AtomicU64::new(0); // diagnostic: no LIVE_DB at spawn time (spawn before InGame)
-                                                   // * v6 lightweight side-only decision (called from the spawn hook = a sim thread; VEH-safe reads only, no file I/O or locks).
-                                                   //   scene tag9 + team_id Normal + is_team1_blue + pid matching -> player side (0/1). Same offsets as update_scene_side.
+
+// * v6 lightweight side-only decision (called from the spawn hook = a sim thread; VEH-safe reads only, no file I/O or locks).
+//   scene tag9 + team_id Normal + is_team1_blue + pid matching -> player side (0/1). Same offsets as update_scene_side.
 unsafe fn quick_scene_side(db: usize, pid: u64) -> Option<u64> {
     if db < 0x10000 || pid == u64::MAX {
         return None;
@@ -6099,23 +3939,11 @@ unsafe fn quick_scene_side(db: usize, pid: u64) -> Option<u64> {
         None
     }
 }
-static PID_EVER_VALID: AtomicU64 = AtomicU64::new(0); // has player_team_id() ever returned a valid value (1~9999)?
-                                                      // * 2026-07-30: have we ever seen a valid **non-zero** pid? If 1, ignore later reports of 0 (prevents pid regression - measurement showed
-                                                      //   the same save alternating between 105 and 0 depending on the moment, and trusting the 0 breaks the team gate).
+// * 2026-07-30: have we ever seen a valid **non-zero** pid? If 1, ignore later reports of 0 (prevents pid regression - measurement showed
+//   the same save alternating between 105 and 0 depending on the moment, and trusting the 0 breaks the team gate).
 static PID_NONZERO_SEEN: AtomicU64 = AtomicU64::new(0);
-static MY_PT_N: AtomicU64 = AtomicU64::new(0); // number of champion_personal_tactics entries of the team to publish (for validating "my team")
-static MY_TRUST_SKIP: AtomicU64 = AtomicU64::new(0); // times MY_ATHLETES publication was withheld due to pid=0 + insufficient PT
-static PID_OBS_ZERO: AtomicU64 = AtomicU64::new(0); // observations where player_team_id() returned 0
-static PID_OBS_NONZERO: AtomicU64 = AtomicU64::new(0); // observations of a valid non-zero value
-static PID_SKIP_CT: AtomicU64 = AtomicU64::new(0); // times a 0 report was ignored in comp-test context (during the sim or with the popup open)
 static PID_ZERO_CLEAN: AtomicU64 = AtomicU64::new(0); // * times pid=0 was observed in an InGame unrelated to comp test
                                                       //   (>=600 accepts it as "a save whose real team id is 0" = MY_ATHLETES publication allowed)
-static SCENE_DIAG_LAST: AtomicU64 = AtomicU64::new(u64::MAX); // diagnostic state fingerprint (rewrite the file only when it changes)
-static LINK_SCAN_DONE: AtomicBool = AtomicBool::new(true); // pointer scan abandoned (closed after confirming the match_id was a coincidental hit)
-static BUY_SIMS: Mutex<Vec<(usize, String)>> = Mutex::new(Vec::new()); // SimStates (base-0x840) + champ0 seen in the buy hook (while deciding the scene)
-                                                                       // === FLOW diagnostic: scene tag transitions + SimState birth / tag9 activity timeline (the whole flow of one match) ===
-static CUR_TAG: AtomicU64 = AtomicU64::new(u64::MAX);
-static FLOW_SIMS: Mutex<Vec<(usize, u64, bool)>> = Mutex::new(Vec::new()); // (sim, first_tag, tag9_logged)
 fn scene_player_side() -> Option<u64> {
     if !SCENE_GATE_ENABLED {
         return None;
@@ -6125,13 +3953,6 @@ fn scene_player_side() -> Option<u64> {
         _ => None,
     }
 }
-// * Raw scene values (for diagnostic dumps) - refreshed every frame by update_scene_side.
-static SCENE_T1: AtomicU64 = AtomicU64::new(u64::MAX);
-static SCENE_T2: AtomicU64 = AtomicU64::new(u64::MAX);
-static SCENE_BLUEB: AtomicU64 = AtomicU64::new(u64::MAX);
-// ** Typed hedge (07-11): SDK db.replay_view -> match_replays -> blue/red_team_id (canonical side0=blue / side1=red, MatchReplayData).
-//   Cross-checked against the direct scene read (SCENE_T1/T2/BLUEB) = verifies "do the two sources give exactly the same team_id". Behind the DIAG_ENABLED gate.
-//   WARNING MatchReplayData describes a finished/recorded match, so it may be unrecorded while live (MRD=MAX) -> the comparison is only valid after the match is recorded.
 const DIAG_BUY_OFF: bool = false; // master switch for buy injection (true = injection/identification OFF)
 fn install_replace_4th() {
     if DIAG_BUY_OFF {
@@ -6150,21 +3971,7 @@ fn install_replace_4th() {
     if !ok {
         // State 2 = signature moved (re-derive RVA_BUY_ITEM/BUY_PROLOGUE);
         // state 3 below = signature matched but the trampoline install failed.
-        // Different causes, different fixes, so they are not merged — and the
-        // observed bytes are recorded because that is what re-deriving needs.
         BUY_PROBE_INSTALLED.store(2, Ordering::Relaxed);
-        let seen: Vec<String> = (0..12)
-            .map(|i| match unsafe { safe_read_u64(fn_addr + i) } {
-                Some(w) => format!("{:02x}", (w & 0xff) as u8),
-                None => "??".to_string(),
-            })
-            .collect();
-        let expected: Vec<String> = BUY_PROLOGUE.iter().map(|b| format!("{b:02x}")).collect();
-        *BUY_INSTALL_NOTE.lock().unwrap_or_else(|e| e.into_inner()) = format!(
-            "buy_item prologue mismatch at rva={RVA_BUY_ITEM:#x}\n    expected {}\n    saw      {}",
-            expected.join(" "),
-            seen.join(" ")
-        );
         return;
     }
     // orig_len=12 since 0.6.3: the prologue is 8 pushes, 12B, exactly the jmp patch. (Through 0.6.2 it was 19:
@@ -6172,19 +3979,9 @@ fn install_replace_4th() {
     // + mov rax,[rsp+0xa8] (8).)
     match unsafe { install_replace_buy(RVA_BUY_ITEM, 12, buy_replace_ctx as *const () as usize) } {
         Ok(_) => BUY_PROBE_INSTALLED.store(1, Ordering::Relaxed),
-        Err(e) => {
-            BUY_PROBE_INSTALLED.store(3, Ordering::Relaxed);
-            *BUY_INSTALL_NOTE.lock().unwrap_or_else(|e| e.into_inner()) =
-                format!("buy_item prologue matched but install_replace_buy failed: {e}");
-        }
+        Err(_) => BUY_PROBE_INSTALLED.store(3, Ordering::Relaxed),
     }
 }
-
-/// Why `install_replace_4th` gave up, for the diagnostic report. Empty until it
-/// fails. Held as a string rather than logged because `append_log` is gated on
-/// `LOG_ENABLED`, which is off in production — and this is exactly the failure
-/// that makes every other counter read zero.
-static BUY_INSTALL_NOTE: Mutex<String> = Mutex::new(String::new());
 
 // ===========================================================================
 //  5th and 6th item slots (game 0.6.0 release, derived 2026-09-18)
@@ -6428,9 +4225,8 @@ unsafe fn patch_result_row_floor(slots: u8) -> String {
 //   (2) measured entry prologues of 3 key hooks - catches a repackage that happens to have the same size but different code.
 //  WARNING a loose check (size only) could misbehave on a hotfix, so we look at the prologues too.
 const GAME_EXE_SIZE_063: u64 = 86_804_992; // 0.6.3 (0.6.2 was 86_674_944, 0.6.1 86_330_880, 0.6.0 release 86_082_048, 0.6.0_beta2 86_023_680) (0.6.0_beta1 was 81_422_336)
-static VERSION_OK: AtomicBool = AtomicBool::new(false);
 static VERSION_MSG: Mutex<String> = Mutex::new(String::new());
-/// Decide whether this is 0.6.0_beta1. Called once from init; the result is stored in VERSION_OK.
+/// Decides whether this is the one game build this half is pinned to. Called once from init.
 fn check_game_version() -> bool {
     let mut why = String::new();
     // (1) exe size
@@ -6508,19 +4304,7 @@ fn check_game_version() -> bool {
     } else {
         format!("version mismatch -> this half is fully disabled ({})", why)
     };
-    VERSION_OK.store(ok, Ordering::Relaxed);
     ok
-}
-/// Whether the gate passed (queried from runtime hook/patch entry points).
-///
-/// Currently unread: its last caller was `injects_builds`, which went with the
-/// slot 0/1/2 injection. Kept as the query point for `VERSION_OK` — the gate
-/// itself still runs and still decides whether `tactics_init` installs anything
-/// — so that a future entry point has something to ask.
-#[allow(dead_code)]
-#[inline]
-fn version_ok() -> bool {
-    VERSION_OK.load(Ordering::Relaxed)
 }
 
 /// Was `init(_ctx: &GameCtx) -> ModRegistration` + `declare_mod!(init)`.
@@ -6544,13 +4328,8 @@ fn tactics_init() -> bool {
     // entry while `SEH_INSTALLED` is false, so until this runs EVERY protected
     // read in this module fails — `safe_read_u64`, `safe_read_bytes`, all of it.
     //
-    // Upstream called this from only two places: `dump_mod_items`, and
-    // `handle_tactics_screen`. The second one is what actually did the work,
-    // because it ran every frame — the VEH was registered as a side effect of
-    // the tactics screen handler existing. Disabling the UI tree walk
-    // (`UI_TREE_WALK_ENABLED`) removed that, and `dump_mod_items` cannot cover
-    // for it: it needs a `Database` address that only arrives once the host's
-    // item-build detour has fired.
+    // It used to be registered only as a side effect of a per-frame UI
+    // handler, and gating that handler off left it unregistered.
     //
     // The symptom was total and silent. `install_launcher_hook` returned at its
     // first `safe_read_u64` on all 18,902 calls, so `LIVE_SEED` stayed 0 and no
@@ -6598,10 +4377,6 @@ If the game has updated, please wait for a mod update. The rest of the mod is un
         // Register only, attaching **not a single** extension, hook or patch = completely disabled.
         return false;
     }
-    // The switches `4items.cfg` used to set, pinned where 3-slot mode left
-    // them: the game ships the fourth slot, so nothing here widens the row.
-    uinj::MODE4.store(false, Ordering::Relaxed);
-    uinj::IN_MATCH_UI.store(false, Ordering::Relaxed);
     // Byte-patch results always leave a trace, regardless of `LOG_ENABLED`.
     // Every patch validates its target byte-for-byte and skips silently on a
     // mismatch, so through `append_log`, which `LOG_ENABLED = false` turns off
